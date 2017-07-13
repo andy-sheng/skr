@@ -14,19 +14,15 @@ import com.wali.live.proto.LiveProto.EnterLiveRsp;
  * 注意修改命令字和Action
  */
 public class EnterLiveRequest extends BaseRequest {
-    private EnterLiveReq.Builder builder;
-
-    {
-        builder = EnterLiveReq.newBuilder();
-    }
+    private EnterLiveReq.Builder builder = EnterLiveReq.newBuilder();
 
     public EnterLiveRequest(long ownerId, String liveId) {
-        super(MiLinkCommand.COMMAND_LIVE_ENTER, "EnterLive", null);
+        super(MiLinkCommand.COMMAND_LIVE_ENTER, "EnterLive");
         build(ownerId, liveId);
     }
 
     public EnterLiveRequest(long ownerId, String liveId, String password) {
-        super(MiLinkCommand.COMMAND_LIVE_ENTER, "EnterLive", null);
+        super(MiLinkCommand.COMMAND_LIVE_ENTER, "EnterLive");
         if (!TextUtils.isEmpty(password)) {
             builder.setPassword(password.trim());
         }

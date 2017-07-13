@@ -1,4 +1,4 @@
-package com.mi.liveassistant.proto;
+package com.wali.live.proto;
 
 option java_package = "com.wali.live.proto";
 option java_outer_classname = "CommonProto";
@@ -53,4 +53,5 @@ message GetUpgradeInfoRsp {
     optional int32 fullSize = 9;             //完整apk大小，供展示用
     optional string fullHash = 10;           //完整apk的md5值
     optional bool forced = 11;               //是否是强制升级
+    optional string additionalMd5 = 12;      //增量包的md5
 }

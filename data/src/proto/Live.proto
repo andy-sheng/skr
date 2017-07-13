@@ -1,9 +1,9 @@
+package com.wali.live.proto;
 
 import "Common.proto";
 import "Account.proto";
 import "LiveCommon.proto";
 import "Live2.proto";
-package com.wali.live.proto;
 
 option java_package = "com.wali.live.proto";
 option java_outer_classname = "LiveProto";
@@ -171,6 +171,7 @@ message RoomInfoReq {
     required string liveId = 3;
     optional string password = 4; //如果是加密类型，带密码
     optional bool getLatestLive = 5; //true：优先返回当前正在直播的信息 ,不管是否跟liveId一致。没有直播时，再返回指定liveId的回放; false:返回指定liveid的直播，如果改liveid的房间已关闭，返回liveid回放
+    optional bool getGameInfoOnly = 6;//true:只返回游戏信息
 }
 
 message RoomInfoRsp {
@@ -182,6 +183,27 @@ message RoomInfoRsp {
     optional string liveid = 6; //房间id
     optional uint32 type = 7; //类型，0公开，1私密,2 口令,3 门票
     optional TicketLiveStatus ticketStatus = 8; //用户观看门票直播状态信息
+    optional GamePackInfo gamepack_info = 9; //游戏包信息
+}
+
+message GamePackInfo {
+    optional uint64 zuid        = 1;
+    optional string roomId      = 2;
+    optional string cdnDomain   = 3;
+    optional string displayName = 4;
+    optional uint32 gameId      = 5;
+    optional string pacakgeName = 6;
+    optional string icon        = 7;
+    optional string gameApkSs1  = 8;
+    optional string gameApk     = 9;
+    optional string shortName   = 10;
+    optional GameTagInfoDetail level1 = 11; //一级标签
+    optional GameTagInfoDetail level2 = 12; //二级标签
+}
+
+message GameTagInfoDetail {
+    optional uint32 id = 1;
+    optional string name = 2;
 }
 
 //离开房间

@@ -9,7 +9,7 @@ public final class CommonProto {
       com.google.protobuf.ExtensionRegistry registry) {
   }
   public interface AttachmentOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.Attachment)
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.Attachment)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -184,11 +184,11 @@ public final class CommonProto {
     int getHeight();
   }
   /**
-   * Protobuf type {@code com.mi.liveassistant.proto.Attachment}
+   * Protobuf type {@code com.wali.live.proto.Attachment}
    */
   public static final class Attachment extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.Attachment)
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.Attachment)
       AttachmentOrBuilder {
     // Use Attachment.newBuilder() to construct.
     private Attachment(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -296,12 +296,12 @@ public final class CommonProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_Attachment_descriptor;
+      return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_Attachment_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_Attachment_fieldAccessorTable
+      return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_Attachment_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonProto.Attachment.class, com.wali.live.proto.CommonProto.Attachment.Builder.class);
     }
@@ -770,20 +770,20 @@ public final class CommonProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.mi.liveassistant.proto.Attachment}
+     * Protobuf type {@code com.wali.live.proto.Attachment}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.Attachment)
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.Attachment)
         com.wali.live.proto.CommonProto.AttachmentOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_Attachment_descriptor;
+        return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_Attachment_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_Attachment_fieldAccessorTable
+        return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_Attachment_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonProto.Attachment.class, com.wali.live.proto.CommonProto.Attachment.Builder.class);
       }
@@ -835,7 +835,7 @@ public final class CommonProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_Attachment_descriptor;
+        return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_Attachment_descriptor;
       }
 
       public com.wali.live.proto.CommonProto.Attachment getDefaultInstanceForType() {
@@ -1507,7 +1507,7 @@ public final class CommonProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.Attachment)
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.Attachment)
     }
 
     static {
@@ -1515,11 +1515,11 @@ public final class CommonProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.Attachment)
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.Attachment)
   }
 
   public interface LocationOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.Location)
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.Location)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -1652,11 +1652,11 @@ public final class CommonProto {
     int getType();
   }
   /**
-   * Protobuf type {@code com.mi.liveassistant.proto.Location}
+   * Protobuf type {@code com.wali.live.proto.Location}
    */
   public static final class Location extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.Location)
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.Location)
       LocationOrBuilder {
     // Use Location.newBuilder() to construct.
     private Location(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -1750,12 +1750,12 @@ public final class CommonProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_Location_descriptor;
+      return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_Location_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_Location_fieldAccessorTable
+      return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_Location_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonProto.Location.class, com.wali.live.proto.CommonProto.Location.Builder.class);
     }
@@ -2158,20 +2158,20 @@ public final class CommonProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.mi.liveassistant.proto.Location}
+     * Protobuf type {@code com.wali.live.proto.Location}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.Location)
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.Location)
         com.wali.live.proto.CommonProto.LocationOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_Location_descriptor;
+        return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_Location_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_Location_fieldAccessorTable
+        return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_Location_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonProto.Location.class, com.wali.live.proto.CommonProto.Location.Builder.class);
       }
@@ -2217,7 +2217,7 @@ public final class CommonProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_Location_descriptor;
+        return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_Location_descriptor;
       }
 
       public com.wali.live.proto.CommonProto.Location getDefaultInstanceForType() {
@@ -2771,7 +2771,7 @@ public final class CommonProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.Location)
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.Location)
     }
 
     static {
@@ -2779,11 +2779,11 @@ public final class CommonProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.Location)
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.Location)
   }
 
   public interface GetUpgradeInfoReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetUpgradeInfoReq)
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetUpgradeInfoReq)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -3020,7 +3020,7 @@ public final class CommonProto {
         getLocalBytes();
   }
   /**
-   * Protobuf type {@code com.mi.liveassistant.proto.GetUpgradeInfoReq}
+   * Protobuf type {@code com.wali.live.proto.GetUpgradeInfoReq}
    *
    * <pre>
    * C2S 命令字： zhibo.upgrade.get ...............................
@@ -3028,7 +3028,7 @@ public final class CommonProto {
    */
   public static final class GetUpgradeInfoReq extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetUpgradeInfoReq)
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetUpgradeInfoReq)
       GetUpgradeInfoReqOrBuilder {
     // Use GetUpgradeInfoReq.newBuilder() to construct.
     private GetUpgradeInfoReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -3146,12 +3146,12 @@ public final class CommonProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_descriptor;
+      return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_GetUpgradeInfoReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_fieldAccessorTable
+      return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_GetUpgradeInfoReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonProto.GetUpgradeInfoReq.class, com.wali.live.proto.CommonProto.GetUpgradeInfoReq.Builder.class);
     }
@@ -3810,7 +3810,7 @@ public final class CommonProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.mi.liveassistant.proto.GetUpgradeInfoReq}
+     * Protobuf type {@code com.wali.live.proto.GetUpgradeInfoReq}
      *
      * <pre>
      * C2S 命令字： zhibo.upgrade.get ...............................
@@ -3818,16 +3818,16 @@ public final class CommonProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetUpgradeInfoReq)
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetUpgradeInfoReq)
         com.wali.live.proto.CommonProto.GetUpgradeInfoReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_descriptor;
+        return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_GetUpgradeInfoReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_fieldAccessorTable
+        return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_GetUpgradeInfoReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonProto.GetUpgradeInfoReq.class, com.wali.live.proto.CommonProto.GetUpgradeInfoReq.Builder.class);
       }
@@ -3881,7 +3881,7 @@ public final class CommonProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_descriptor;
+        return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_GetUpgradeInfoReq_descriptor;
       }
 
       public com.wali.live.proto.CommonProto.GetUpgradeInfoReq getDefaultInstanceForType() {
@@ -4879,7 +4879,7 @@ public final class CommonProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GetUpgradeInfoReq)
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetUpgradeInfoReq)
     }
 
     static {
@@ -4887,11 +4887,11 @@ public final class CommonProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetUpgradeInfoReq)
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetUpgradeInfoReq)
   }
 
   public interface GetUpgradeInfoRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetUpgradeInfoRsp)
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetUpgradeInfoRsp)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -5120,9 +5120,35 @@ public final class CommonProto {
      * </pre>
      */
     boolean getForced();
+
+    /**
+     * <code>optional string additionalMd5 = 12;</code>
+     *
+     * <pre>
+     *增量包的md5
+     * </pre>
+     */
+    boolean hasAdditionalMd5();
+    /**
+     * <code>optional string additionalMd5 = 12;</code>
+     *
+     * <pre>
+     *增量包的md5
+     * </pre>
+     */
+    java.lang.String getAdditionalMd5();
+    /**
+     * <code>optional string additionalMd5 = 12;</code>
+     *
+     * <pre>
+     *增量包的md5
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getAdditionalMd5Bytes();
   }
   /**
-   * Protobuf type {@code com.mi.liveassistant.proto.GetUpgradeInfoRsp}
+   * Protobuf type {@code com.wali.live.proto.GetUpgradeInfoRsp}
    *
    * <pre>
    *只有err_code == 0 , 并且has_update == true才需要更新，其他情况不更新
@@ -5133,7 +5159,7 @@ public final class CommonProto {
    */
   public static final class GetUpgradeInfoRsp extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetUpgradeInfoRsp)
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetUpgradeInfoRsp)
       GetUpgradeInfoRspOrBuilder {
     // Use GetUpgradeInfoRsp.newBuilder() to construct.
     private GetUpgradeInfoRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -5241,6 +5267,12 @@ public final class CommonProto {
               forced_ = input.readBool();
               break;
             }
+            case 98: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000800;
+              additionalMd5_ = bs;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -5255,12 +5287,12 @@ public final class CommonProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_GetUpgradeInfoRsp_descriptor;
+      return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_GetUpgradeInfoRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_GetUpgradeInfoRsp_fieldAccessorTable
+      return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_GetUpgradeInfoRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonProto.GetUpgradeInfoRsp.class, com.wali.live.proto.CommonProto.GetUpgradeInfoRsp.Builder.class);
     }
@@ -5706,6 +5738,60 @@ public final class CommonProto {
       return forced_;
     }
 
+    public static final int ADDITIONALMD5_FIELD_NUMBER = 12;
+    private java.lang.Object additionalMd5_;
+    /**
+     * <code>optional string additionalMd5 = 12;</code>
+     *
+     * <pre>
+     *增量包的md5
+     * </pre>
+     */
+    public boolean hasAdditionalMd5() {
+      return ((bitField0_ & 0x00000800) == 0x00000800);
+    }
+    /**
+     * <code>optional string additionalMd5 = 12;</code>
+     *
+     * <pre>
+     *增量包的md5
+     * </pre>
+     */
+    public java.lang.String getAdditionalMd5() {
+      java.lang.Object ref = additionalMd5_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          additionalMd5_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string additionalMd5 = 12;</code>
+     *
+     * <pre>
+     *增量包的md5
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getAdditionalMd5Bytes() {
+      java.lang.Object ref = additionalMd5_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        additionalMd5_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       errCode_ = 0;
       errMsg_ = "";
@@ -5718,6 +5804,7 @@ public final class CommonProto {
       fullSize_ = 0;
       fullHash_ = "";
       forced_ = false;
+      additionalMd5_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -5764,6 +5851,9 @@ public final class CommonProto {
       }
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
         output.writeBool(11, forced_);
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        output.writeBytes(12, getAdditionalMd5Bytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -5817,6 +5907,10 @@ public final class CommonProto {
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(11, forced_);
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(12, getAdditionalMd5Bytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -5897,7 +5991,7 @@ public final class CommonProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.mi.liveassistant.proto.GetUpgradeInfoRsp}
+     * Protobuf type {@code com.wali.live.proto.GetUpgradeInfoRsp}
      *
      * <pre>
      *只有err_code == 0 , 并且has_update == true才需要更新，其他情况不更新
@@ -5908,16 +6002,16 @@ public final class CommonProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetUpgradeInfoRsp)
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetUpgradeInfoRsp)
         com.wali.live.proto.CommonProto.GetUpgradeInfoRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_GetUpgradeInfoRsp_descriptor;
+        return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_GetUpgradeInfoRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_GetUpgradeInfoRsp_fieldAccessorTable
+        return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_GetUpgradeInfoRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonProto.GetUpgradeInfoRsp.class, com.wali.live.proto.CommonProto.GetUpgradeInfoRsp.Builder.class);
       }
@@ -5964,6 +6058,8 @@ public final class CommonProto {
         bitField0_ = (bitField0_ & ~0x00000200);
         forced_ = false;
         bitField0_ = (bitField0_ & ~0x00000400);
+        additionalMd5_ = "";
+        bitField0_ = (bitField0_ & ~0x00000800);
         return this;
       }
 
@@ -5973,7 +6069,7 @@ public final class CommonProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonProto.internal_static_com_mi_liveassistant_proto_GetUpgradeInfoRsp_descriptor;
+        return com.wali.live.proto.CommonProto.internal_static_com_wali_live_proto_GetUpgradeInfoRsp_descriptor;
       }
 
       public com.wali.live.proto.CommonProto.GetUpgradeInfoRsp getDefaultInstanceForType() {
@@ -6036,6 +6132,10 @@ public final class CommonProto {
           to_bitField0_ |= 0x00000400;
         }
         result.forced_ = forced_;
+        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+          to_bitField0_ |= 0x00000800;
+        }
+        result.additionalMd5_ = additionalMd5_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -6096,6 +6196,11 @@ public final class CommonProto {
         }
         if (other.hasForced()) {
           setForced(other.getForced());
+        }
+        if (other.hasAdditionalMd5()) {
+          bitField0_ |= 0x00000800;
+          additionalMd5_ = other.additionalMd5_;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -6936,7 +7041,107 @@ public final class CommonProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GetUpgradeInfoRsp)
+      private java.lang.Object additionalMd5_ = "";
+      /**
+       * <code>optional string additionalMd5 = 12;</code>
+       *
+       * <pre>
+       *增量包的md5
+       * </pre>
+       */
+      public boolean hasAdditionalMd5() {
+        return ((bitField0_ & 0x00000800) == 0x00000800);
+      }
+      /**
+       * <code>optional string additionalMd5 = 12;</code>
+       *
+       * <pre>
+       *增量包的md5
+       * </pre>
+       */
+      public java.lang.String getAdditionalMd5() {
+        java.lang.Object ref = additionalMd5_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            additionalMd5_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string additionalMd5 = 12;</code>
+       *
+       * <pre>
+       *增量包的md5
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getAdditionalMd5Bytes() {
+        java.lang.Object ref = additionalMd5_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          additionalMd5_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string additionalMd5 = 12;</code>
+       *
+       * <pre>
+       *增量包的md5
+       * </pre>
+       */
+      public Builder setAdditionalMd5(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000800;
+        additionalMd5_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string additionalMd5 = 12;</code>
+       *
+       * <pre>
+       *增量包的md5
+       * </pre>
+       */
+      public Builder clearAdditionalMd5() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        additionalMd5_ = getDefaultInstance().getAdditionalMd5();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string additionalMd5 = 12;</code>
+       *
+       * <pre>
+       *增量包的md5
+       * </pre>
+       */
+      public Builder setAdditionalMd5Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000800;
+        additionalMd5_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetUpgradeInfoRsp)
     }
 
     static {
@@ -6944,29 +7149,29 @@ public final class CommonProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetUpgradeInfoRsp)
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetUpgradeInfoRsp)
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_Attachment_descriptor;
+    internal_static_com_wali_live_proto_Attachment_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_Attachment_fieldAccessorTable;
+      internal_static_com_wali_live_proto_Attachment_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_Location_descriptor;
+    internal_static_com_wali_live_proto_Location_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_Location_fieldAccessorTable;
+      internal_static_com_wali_live_proto_Location_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_descriptor;
+    internal_static_com_wali_live_proto_GetUpgradeInfoReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_fieldAccessorTable;
+      internal_static_com_wali_live_proto_GetUpgradeInfoReq_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_GetUpgradeInfoRsp_descriptor;
+    internal_static_com_wali_live_proto_GetUpgradeInfoRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_GetUpgradeInfoRsp_fieldAccessorTable;
+      internal_static_com_wali_live_proto_GetUpgradeInfoRsp_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -6976,25 +7181,25 @@ public final class CommonProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014Common.proto\022\032com.mi.liveassistant.pro" +
-      "to\"\226\001\n\nAttachment\022\014\n\004type\030\001 \002(\r\022\014\n\004text\030" +
-      "\002 \001(\t\022\013\n\003url\030\003 \001(\t\022\020\n\010duration\030\004 \001(\r\022\014\n\004" +
-      "size\030\005 \001(\r\022\017\n\007exttype\030\006 \001(\004\022\017\n\007extdata\030\007" +
-      " \001(\014\022\r\n\005width\030\010 \001(\r\022\016\n\006height\030\t \001(\r\"c\n\010L" +
-      "ocation\022\013\n\003lon\030\001 \001(\001\022\013\n\003lat\030\002 \001(\001\022\017\n\007cou" +
-      "ntry\030\003 \001(\t\022\020\n\010province\030\004 \001(\t\022\014\n\004city\030\005 \001" +
-      "(\t\022\014\n\004type\030\006 \001(\r\"\266\001\n\021GetUpgradeInfoReq\022\013" +
-      "\n\003app\030\001 \001(\t\022\020\n\010platform\030\002 \001(\t\022\016\n\006system\030" +
-      "\003 \001(\005\022\017\n\007channel\030\004 \002(\t\022\016\n\006device\030\005 \001(\t\022\026",
-      "\n\016currentVersion\030\006 \002(\005\022\020\n\010language\030\007 \001(\t" +
-      "\022\013\n\003uid\030\010 \001(\003\022\013\n\003md5\030\t \001(\t\022\r\n\005local\030\n \001(" +
-      "\t\"\337\001\n\021GetUpgradeInfoRsp\022\020\n\010err_code\030\001 \001(" +
-      "\005\022\017\n\007err_msg\030\002 \001(\t\022\021\n\thasUpdate\030\003 \001(\010\022\021\n" +
-      "\ttoVersion\030\004 \001(\005\022\016\n\006apkUrl\030\005 \001(\t\022\016\n\006rema" +
-      "rk\030\006 \001(\t\022\025\n\radditionalUrl\030\007 \001(\t\022\026\n\016addit" +
-      "ionalSize\030\010 \001(\t\022\020\n\010fullSize\030\t \001(\005\022\020\n\010ful" +
-      "lHash\030\n \001(\t\022\016\n\006forced\030\013 \001(\010B\"\n\023com.wali." +
-      "live.protoB\013CommonProto"
+      "\n\014Common.proto\022\023com.wali.live.proto\"\226\001\n\n" +
+      "Attachment\022\014\n\004type\030\001 \002(\r\022\014\n\004text\030\002 \001(\t\022\013" +
+      "\n\003url\030\003 \001(\t\022\020\n\010duration\030\004 \001(\r\022\014\n\004size\030\005 " +
+      "\001(\r\022\017\n\007exttype\030\006 \001(\004\022\017\n\007extdata\030\007 \001(\014\022\r\n" +
+      "\005width\030\010 \001(\r\022\016\n\006height\030\t \001(\r\"c\n\010Location" +
+      "\022\013\n\003lon\030\001 \001(\001\022\013\n\003lat\030\002 \001(\001\022\017\n\007country\030\003 " +
+      "\001(\t\022\020\n\010province\030\004 \001(\t\022\014\n\004city\030\005 \001(\t\022\014\n\004t" +
+      "ype\030\006 \001(\r\"\266\001\n\021GetUpgradeInfoReq\022\013\n\003app\030\001" +
+      " \001(\t\022\020\n\010platform\030\002 \001(\t\022\016\n\006system\030\003 \001(\005\022\017" +
+      "\n\007channel\030\004 \002(\t\022\016\n\006device\030\005 \001(\t\022\026\n\016curre",
+      "ntVersion\030\006 \002(\005\022\020\n\010language\030\007 \001(\t\022\013\n\003uid" +
+      "\030\010 \001(\003\022\013\n\003md5\030\t \001(\t\022\r\n\005local\030\n \001(\t\"\366\001\n\021G" +
+      "etUpgradeInfoRsp\022\020\n\010err_code\030\001 \001(\005\022\017\n\007er" +
+      "r_msg\030\002 \001(\t\022\021\n\thasUpdate\030\003 \001(\010\022\021\n\ttoVers" +
+      "ion\030\004 \001(\005\022\016\n\006apkUrl\030\005 \001(\t\022\016\n\006remark\030\006 \001(" +
+      "\t\022\025\n\radditionalUrl\030\007 \001(\t\022\026\n\016additionalSi" +
+      "ze\030\010 \001(\t\022\020\n\010fullSize\030\t \001(\005\022\020\n\010fullHash\030\n" +
+      " \001(\t\022\016\n\006forced\030\013 \001(\010\022\025\n\radditionalMd5\030\014 " +
+      "\001(\tB\"\n\023com.wali.live.protoB\013CommonProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -7008,30 +7213,30 @@ public final class CommonProto {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_com_mi_liveassistant_proto_Attachment_descriptor =
+    internal_static_com_wali_live_proto_Attachment_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_com_mi_liveassistant_proto_Attachment_fieldAccessorTable = new
+    internal_static_com_wali_live_proto_Attachment_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_mi_liveassistant_proto_Attachment_descriptor,
+        internal_static_com_wali_live_proto_Attachment_descriptor,
         new java.lang.String[] { "Type", "Text", "Url", "Duration", "Size", "Exttype", "Extdata", "Width", "Height", });
-    internal_static_com_mi_liveassistant_proto_Location_descriptor =
+    internal_static_com_wali_live_proto_Location_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_com_mi_liveassistant_proto_Location_fieldAccessorTable = new
+    internal_static_com_wali_live_proto_Location_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_mi_liveassistant_proto_Location_descriptor,
+        internal_static_com_wali_live_proto_Location_descriptor,
         new java.lang.String[] { "Lon", "Lat", "Country", "Province", "City", "Type", });
-    internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_descriptor =
+    internal_static_com_wali_live_proto_GetUpgradeInfoReq_descriptor =
       getDescriptor().getMessageTypes().get(2);
-    internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_fieldAccessorTable = new
+    internal_static_com_wali_live_proto_GetUpgradeInfoReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_descriptor,
+        internal_static_com_wali_live_proto_GetUpgradeInfoReq_descriptor,
         new java.lang.String[] { "App", "Platform", "System", "Channel", "Device", "CurrentVersion", "Language", "Uid", "Md5", "Local", });
-    internal_static_com_mi_liveassistant_proto_GetUpgradeInfoRsp_descriptor =
+    internal_static_com_wali_live_proto_GetUpgradeInfoRsp_descriptor =
       getDescriptor().getMessageTypes().get(3);
-    internal_static_com_mi_liveassistant_proto_GetUpgradeInfoRsp_fieldAccessorTable = new
+    internal_static_com_wali_live_proto_GetUpgradeInfoRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_mi_liveassistant_proto_GetUpgradeInfoRsp_descriptor,
-        new java.lang.String[] { "ErrCode", "ErrMsg", "HasUpdate", "ToVersion", "ApkUrl", "Remark", "AdditionalUrl", "AdditionalSize", "FullSize", "FullHash", "Forced", });
+        internal_static_com_wali_live_proto_GetUpgradeInfoRsp_descriptor,
+        new java.lang.String[] { "ErrCode", "ErrMsg", "HasUpdate", "ToVersion", "ApkUrl", "Remark", "AdditionalUrl", "AdditionalSize", "FullSize", "FullHash", "Forced", "AdditionalMd5", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -25,8 +25,8 @@ public abstract class BaseBottomButton<PRESENTER, VIEW extends IViewProxy> imple
         View.OnClickListener, IComponentView<PRESENTER, VIEW> {
     protected final String TAG = getTAG();
 
-    private static final int BTN_MARGIN = DisplayUtils.dip2px(3.33f);
-    private static final int BTN_MARGIN_LEFT = DisplayUtils.dip2px(6.67f);
+    protected static final int BTN_MARGIN = DisplayUtils.dip2px(3.33f);
+    protected static final int BTN_MARGIN_LEFT = DisplayUtils.dip2px(6.67f);
 
     protected RelativeLayout mContentContainer;
     protected final List<View> mLeftBtnSetPort = new ArrayList<>();
@@ -57,6 +57,15 @@ public abstract class BaseBottomButton<PRESENTER, VIEW extends IViewProxy> imple
     protected final void addCreatedView(@NonNull View view, @IdRes int id) {
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.alignWithParent = true;
+        layoutParams.setMargins(BTN_MARGIN, BTN_MARGIN, BTN_MARGIN, BTN_MARGIN);
+        mContentContainer.addView(view, layoutParams);
+        view.setId(id);
+        view.setOnClickListener(this);
+    }
+
+    protected final void addCreatedView(@NonNull View view, int width, int height, @IdRes int id) {
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(width, height);
         layoutParams.alignWithParent = true;
         layoutParams.setMargins(BTN_MARGIN, BTN_MARGIN, BTN_MARGIN, BTN_MARGIN);
         mContentContainer.addView(view, layoutParams);

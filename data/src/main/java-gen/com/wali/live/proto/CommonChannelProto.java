@@ -9,7 +9,7 @@ public final class CommonChannelProto {
       com.google.protobuf.ExtensionRegistry registry) {
   }
   /**
-   * Protobuf enum {@code com.wali.live.proto.BarMessageType}
+   * Protobuf enum {@code com.mi.liveassistant.proto.BarMessageType}
    */
   public enum BarMessageType
       implements com.google.protobuf.ProtocolMessageEnum {
@@ -120,11 +120,11 @@ public final class CommonChannelProto {
       this.value = value;
     }
 
-    // @@protoc_insertion_point(enum_scope:com.wali.live.proto.BarMessageType)
+    // @@protoc_insertion_point(enum_scope:com.mi.liveassistant.proto.BarMessageType)
   }
 
   public interface ChannelBannerOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ChannelBanner)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.ChannelBanner)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -206,11 +206,11 @@ public final class CommonChannelProto {
         getDescBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.ChannelBanner}
+   * Protobuf type {@code com.mi.liveassistant.proto.ChannelBanner}
    */
   public static final class ChannelBanner extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ChannelBanner)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.ChannelBanner)
       ChannelBannerOrBuilder {
     // Use ChannelBanner.newBuilder() to construct.
     private ChannelBanner(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -289,12 +289,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ChannelBanner_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ChannelBanner_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ChannelBanner_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ChannelBanner_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.ChannelBanner.class, com.wali.live.proto.CommonChannelProto.ChannelBanner.Builder.class);
     }
@@ -612,20 +612,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.ChannelBanner}
+     * Protobuf type {@code com.mi.liveassistant.proto.ChannelBanner}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ChannelBanner)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.ChannelBanner)
         com.wali.live.proto.CommonChannelProto.ChannelBannerOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ChannelBanner_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ChannelBanner_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ChannelBanner_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ChannelBanner_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.ChannelBanner.class, com.wali.live.proto.CommonChannelProto.ChannelBanner.Builder.class);
       }
@@ -665,7 +665,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ChannelBanner_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ChannelBanner_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.ChannelBanner getDefaultInstanceForType() {
@@ -1062,7 +1062,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ChannelBanner)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.ChannelBanner)
     }
 
     static {
@@ -1070,11 +1070,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ChannelBanner)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.ChannelBanner)
   }
 
   public interface ChannelItemOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ChannelItem)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.ChannelItem)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -1114,7 +1114,7 @@ public final class CommonChannelProto {
     int getSectionId();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.ChannelItem}
+   * Protobuf type {@code com.mi.liveassistant.proto.ChannelItem}
    *
    * <pre>
    *http://wiki.n.miui.com/pages/viewpage.action?pageId=25049393
@@ -1122,7 +1122,7 @@ public final class CommonChannelProto {
    */
   public static final class ChannelItem extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ChannelItem)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.ChannelItem)
       ChannelItemOrBuilder {
     // Use ChannelItem.newBuilder() to construct.
     private ChannelItem(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -1203,12 +1203,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ChannelItem_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ChannelItem_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ChannelItem_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ChannelItem_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.ChannelItem.class, com.wali.live.proto.CommonChannelProto.ChannelItem.Builder.class);
     }
@@ -1432,7 +1432,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.ChannelItem}
+     * Protobuf type {@code com.mi.liveassistant.proto.ChannelItem}
      *
      * <pre>
      *http://wiki.n.miui.com/pages/viewpage.action?pageId=25049393
@@ -1440,16 +1440,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ChannelItem)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.ChannelItem)
         com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ChannelItem_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ChannelItem_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ChannelItem_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ChannelItem_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.ChannelItem.class, com.wali.live.proto.CommonChannelProto.ChannelItem.Builder.class);
       }
@@ -1491,7 +1491,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ChannelItem_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ChannelItem_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.ChannelItem getDefaultInstanceForType() {
@@ -1720,7 +1720,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ChannelItem)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.ChannelItem)
     }
 
     static {
@@ -1728,15 +1728,15 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ChannelItem)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.ChannelItem)
   }
 
   public interface UiTemplateOneTextOneImgOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UiTemplateOneTextOneImg)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UiTemplateOneTextOneImg)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字
@@ -1745,7 +1745,7 @@ public final class CommonChannelProto {
     java.util.List<com.wali.live.proto.CommonChannelProto.OneTextOneImgItemData> 
         getItemDatasList();
     /**
-     * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字
@@ -1753,7 +1753,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.OneTextOneImgItemData getItemDatas(int index);
     /**
-     * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字
@@ -1761,7 +1761,7 @@ public final class CommonChannelProto {
      */
     int getItemDatasCount();
     /**
-     * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字
@@ -1770,7 +1770,7 @@ public final class CommonChannelProto {
     java.util.List<? extends com.wali.live.proto.CommonChannelProto.OneTextOneImgItemDataOrBuilder> 
         getItemDatasOrBuilderList();
     /**
-     * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字
@@ -1832,7 +1832,7 @@ public final class CommonChannelProto {
         getHeaderViewAllUriBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.UiTemplateOneTextOneImg}
+   * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateOneTextOneImg}
    *
    * <pre>
    *type = 1,2,4,16
@@ -1840,7 +1840,7 @@ public final class CommonChannelProto {
    */
   public static final class UiTemplateOneTextOneImg extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UiTemplateOneTextOneImg)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UiTemplateOneTextOneImg)
       UiTemplateOneTextOneImgOrBuilder {
     // Use UiTemplateOneTextOneImg.newBuilder() to construct.
     private UiTemplateOneTextOneImg(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -1924,12 +1924,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateOneTextOneImg_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateOneTextOneImg_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.UiTemplateOneTextOneImg.class, com.wali.live.proto.CommonChannelProto.UiTemplateOneTextOneImg.Builder.class);
     }
@@ -1953,7 +1953,7 @@ public final class CommonChannelProto {
     public static final int ITEMDATAS_FIELD_NUMBER = 1;
     private java.util.List<com.wali.live.proto.CommonChannelProto.OneTextOneImgItemData> itemDatas_;
     /**
-     * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字
@@ -1963,7 +1963,7 @@ public final class CommonChannelProto {
       return itemDatas_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字
@@ -1974,7 +1974,7 @@ public final class CommonChannelProto {
       return itemDatas_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字
@@ -1984,7 +1984,7 @@ public final class CommonChannelProto {
       return itemDatas_.size();
     }
     /**
-     * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字
@@ -1994,7 +1994,7 @@ public final class CommonChannelProto {
       return itemDatas_.get(index);
     }
     /**
-     * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字
@@ -2246,7 +2246,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.UiTemplateOneTextOneImg}
+     * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateOneTextOneImg}
      *
      * <pre>
      *type = 1,2,4,16
@@ -2254,16 +2254,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UiTemplateOneTextOneImg)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UiTemplateOneTextOneImg)
         com.wali.live.proto.CommonChannelProto.UiTemplateOneTextOneImgOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateOneTextOneImg_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateOneTextOneImg_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.UiTemplateOneTextOneImg.class, com.wali.live.proto.CommonChannelProto.UiTemplateOneTextOneImg.Builder.class);
       }
@@ -2308,7 +2308,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateOneTextOneImg_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.UiTemplateOneTextOneImg getDefaultInstanceForType() {
@@ -2442,7 +2442,7 @@ public final class CommonChannelProto {
           com.wali.live.proto.CommonChannelProto.OneTextOneImgItemData, com.wali.live.proto.CommonChannelProto.OneTextOneImgItemData.Builder, com.wali.live.proto.CommonChannelProto.OneTextOneImgItemDataOrBuilder> itemDatasBuilder_;
 
       /**
-       * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字
@@ -2456,7 +2456,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字
@@ -2470,7 +2470,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字
@@ -2484,7 +2484,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字
@@ -2505,7 +2505,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字
@@ -2523,7 +2523,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字
@@ -2543,7 +2543,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字
@@ -2564,7 +2564,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字
@@ -2582,7 +2582,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字
@@ -2600,7 +2600,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字
@@ -2619,7 +2619,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字
@@ -2636,7 +2636,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字
@@ -2653,7 +2653,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字
@@ -2664,7 +2664,7 @@ public final class CommonChannelProto {
         return getItemDatasFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字
@@ -2678,7 +2678,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字
@@ -2693,7 +2693,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字
@@ -2704,7 +2704,7 @@ public final class CommonChannelProto {
             com.wali.live.proto.CommonChannelProto.OneTextOneImgItemData.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字
@@ -2716,7 +2716,7 @@ public final class CommonChannelProto {
             index, com.wali.live.proto.CommonChannelProto.OneTextOneImgItemData.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.OneTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字
@@ -2941,7 +2941,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UiTemplateOneTextOneImg)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.UiTemplateOneTextOneImg)
     }
 
     static {
@@ -2949,11 +2949,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UiTemplateOneTextOneImg)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UiTemplateOneTextOneImg)
   }
 
   public interface OneTextOneImgItemDataOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.OneTextOneImgItemData)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.OneTextOneImgItemData)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -3035,7 +3035,7 @@ public final class CommonChannelProto {
         getJumpSchemeUriBytes();
 
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 4;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;</code>
      *
      * <pre>
      *用户信息//16需要带userinfo
@@ -3043,7 +3043,7 @@ public final class CommonChannelProto {
      */
     boolean hasUserInfo();
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 4;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;</code>
      *
      * <pre>
      *用户信息//16需要带userinfo
@@ -3051,7 +3051,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.UserInfo getUserInfo();
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 4;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;</code>
      *
      * <pre>
      *用户信息//16需要带userinfo
@@ -3060,11 +3060,11 @@ public final class CommonChannelProto {
     com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder getUserInfoOrBuilder();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.OneTextOneImgItemData}
+   * Protobuf type {@code com.mi.liveassistant.proto.OneTextOneImgItemData}
    */
   public static final class OneTextOneImgItemData extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.OneTextOneImgItemData)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.OneTextOneImgItemData)
       OneTextOneImgItemDataOrBuilder {
     // Use OneTextOneImgItemData.newBuilder() to construct.
     private OneTextOneImgItemData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -3156,12 +3156,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_OneTextOneImgItemData_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_OneTextOneImgItemData_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.OneTextOneImgItemData.class, com.wali.live.proto.CommonChannelProto.OneTextOneImgItemData.Builder.class);
     }
@@ -3347,7 +3347,7 @@ public final class CommonChannelProto {
     public static final int USERINFO_FIELD_NUMBER = 4;
     private com.wali.live.proto.CommonChannelProto.UserInfo userInfo_;
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 4;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;</code>
      *
      * <pre>
      *用户信息//16需要带userinfo
@@ -3357,7 +3357,7 @@ public final class CommonChannelProto {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 4;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;</code>
      *
      * <pre>
      *用户信息//16需要带userinfo
@@ -3367,7 +3367,7 @@ public final class CommonChannelProto {
       return userInfo_;
     }
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 4;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;</code>
      *
      * <pre>
      *用户信息//16需要带userinfo
@@ -3518,20 +3518,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.OneTextOneImgItemData}
+     * Protobuf type {@code com.mi.liveassistant.proto.OneTextOneImgItemData}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.OneTextOneImgItemData)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.OneTextOneImgItemData)
         com.wali.live.proto.CommonChannelProto.OneTextOneImgItemDataOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_OneTextOneImgItemData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_OneTextOneImgItemData_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.OneTextOneImgItemData.class, com.wali.live.proto.CommonChannelProto.OneTextOneImgItemData.Builder.class);
       }
@@ -3578,7 +3578,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_OneTextOneImgItemData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.OneTextOneImgItemData getDefaultInstanceForType() {
@@ -3988,7 +3988,7 @@ public final class CommonChannelProto {
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.CommonChannelProto.UserInfo, com.wali.live.proto.CommonChannelProto.UserInfo.Builder, com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder> userInfoBuilder_;
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 4;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;</code>
        *
        * <pre>
        *用户信息//16需要带userinfo
@@ -3998,7 +3998,7 @@ public final class CommonChannelProto {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 4;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;</code>
        *
        * <pre>
        *用户信息//16需要带userinfo
@@ -4012,7 +4012,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 4;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;</code>
        *
        * <pre>
        *用户信息//16需要带userinfo
@@ -4032,7 +4032,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 4;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;</code>
        *
        * <pre>
        *用户信息//16需要带userinfo
@@ -4050,7 +4050,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 4;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;</code>
        *
        * <pre>
        *用户信息//16需要带userinfo
@@ -4073,7 +4073,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 4;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;</code>
        *
        * <pre>
        *用户信息//16需要带userinfo
@@ -4090,7 +4090,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 4;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;</code>
        *
        * <pre>
        *用户信息//16需要带userinfo
@@ -4102,7 +4102,7 @@ public final class CommonChannelProto {
         return getUserInfoFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 4;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;</code>
        *
        * <pre>
        *用户信息//16需要带userinfo
@@ -4116,7 +4116,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 4;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;</code>
        *
        * <pre>
        *用户信息//16需要带userinfo
@@ -4136,7 +4136,7 @@ public final class CommonChannelProto {
         return userInfoBuilder_;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.OneTextOneImgItemData)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.OneTextOneImgItemData)
     }
 
     static {
@@ -4144,15 +4144,15 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.OneTextOneImgItemData)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.OneTextOneImgItemData)
   }
 
   public interface UiTemplateUserInfoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UiTemplateUserInfo)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UiTemplateUserInfo)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -4161,7 +4161,7 @@ public final class CommonChannelProto {
     java.util.List<com.wali.live.proto.CommonChannelProto.UserInfoItemData> 
         getItemDatasList();
     /**
-     * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -4169,7 +4169,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.UserInfoItemData getItemDatas(int index);
     /**
-     * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -4177,7 +4177,7 @@ public final class CommonChannelProto {
      */
     int getItemDatasCount();
     /**
-     * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -4186,7 +4186,7 @@ public final class CommonChannelProto {
     java.util.List<? extends com.wali.live.proto.CommonChannelProto.UserInfoItemDataOrBuilder> 
         getItemDatasOrBuilderList();
     /**
-     * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -4274,7 +4274,7 @@ public final class CommonChannelProto {
         getSubHeaderNameBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.UiTemplateUserInfo}
+   * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateUserInfo}
    *
    * <pre>
    *type=3,5,9,24,29
@@ -4282,7 +4282,7 @@ public final class CommonChannelProto {
    */
   public static final class UiTemplateUserInfo extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UiTemplateUserInfo)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UiTemplateUserInfo)
       UiTemplateUserInfoOrBuilder {
     // Use UiTemplateUserInfo.newBuilder() to construct.
     private UiTemplateUserInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -4372,12 +4372,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateUserInfo_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateUserInfo_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.UiTemplateUserInfo.class, com.wali.live.proto.CommonChannelProto.UiTemplateUserInfo.Builder.class);
     }
@@ -4401,7 +4401,7 @@ public final class CommonChannelProto {
     public static final int ITEMDATAS_FIELD_NUMBER = 1;
     private java.util.List<com.wali.live.proto.CommonChannelProto.UserInfoItemData> itemDatas_;
     /**
-     * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -4411,7 +4411,7 @@ public final class CommonChannelProto {
       return itemDatas_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -4422,7 +4422,7 @@ public final class CommonChannelProto {
       return itemDatas_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -4432,7 +4432,7 @@ public final class CommonChannelProto {
       return itemDatas_.size();
     }
     /**
-     * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -4442,7 +4442,7 @@ public final class CommonChannelProto {
       return itemDatas_.get(index);
     }
     /**
-     * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -4756,7 +4756,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.UiTemplateUserInfo}
+     * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateUserInfo}
      *
      * <pre>
      *type=3,5,9,24,29
@@ -4764,16 +4764,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UiTemplateUserInfo)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UiTemplateUserInfo)
         com.wali.live.proto.CommonChannelProto.UiTemplateUserInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateUserInfo_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateUserInfo_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.UiTemplateUserInfo.class, com.wali.live.proto.CommonChannelProto.UiTemplateUserInfo.Builder.class);
       }
@@ -4820,7 +4820,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateUserInfo_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.UiTemplateUserInfo getDefaultInstanceForType() {
@@ -4963,7 +4963,7 @@ public final class CommonChannelProto {
           com.wali.live.proto.CommonChannelProto.UserInfoItemData, com.wali.live.proto.CommonChannelProto.UserInfoItemData.Builder, com.wali.live.proto.CommonChannelProto.UserInfoItemDataOrBuilder> itemDatasBuilder_;
 
       /**
-       * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -4977,7 +4977,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -4991,7 +4991,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -5005,7 +5005,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -5026,7 +5026,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -5044,7 +5044,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -5064,7 +5064,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -5085,7 +5085,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -5103,7 +5103,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -5121,7 +5121,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -5140,7 +5140,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -5157,7 +5157,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -5174,7 +5174,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -5185,7 +5185,7 @@ public final class CommonChannelProto {
         return getItemDatasFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -5199,7 +5199,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -5214,7 +5214,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -5225,7 +5225,7 @@ public final class CommonChannelProto {
             com.wali.live.proto.CommonChannelProto.UserInfoItemData.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -5237,7 +5237,7 @@ public final class CommonChannelProto {
             index, com.wali.live.proto.CommonChannelProto.UserInfoItemData.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.UserInfoItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
@@ -5562,7 +5562,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UiTemplateUserInfo)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.UiTemplateUserInfo)
     }
 
     static {
@@ -5570,15 +5570,15 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UiTemplateUserInfo)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UiTemplateUserInfo)
   }
 
   public interface UserInfoItemDataOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UserInfoItemData)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UserInfoItemData)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
      *
      * <pre>
      *用户资料
@@ -5586,7 +5586,7 @@ public final class CommonChannelProto {
      */
     boolean hasUserInfo();
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
      *
      * <pre>
      *用户资料
@@ -5594,7 +5594,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.UserInfo getUserInfo();
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
      *
      * <pre>
      *用户资料
@@ -5629,11 +5629,11 @@ public final class CommonChannelProto {
         getJumpSchemeUriBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.UserInfoItemData}
+   * Protobuf type {@code com.mi.liveassistant.proto.UserInfoItemData}
    */
   public static final class UserInfoItemData extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UserInfoItemData)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UserInfoItemData)
       UserInfoItemDataOrBuilder {
     // Use UserInfoItemData.newBuilder() to construct.
     private UserInfoItemData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -5713,12 +5713,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UserInfoItemData_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UserInfoItemData_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UserInfoItemData_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UserInfoItemData_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.UserInfoItemData.class, com.wali.live.proto.CommonChannelProto.UserInfoItemData.Builder.class);
     }
@@ -5742,7 +5742,7 @@ public final class CommonChannelProto {
     public static final int USERINFO_FIELD_NUMBER = 1;
     private com.wali.live.proto.CommonChannelProto.UserInfo userInfo_;
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
      *
      * <pre>
      *用户资料
@@ -5752,7 +5752,7 @@ public final class CommonChannelProto {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
      *
      * <pre>
      *用户资料
@@ -5762,7 +5762,7 @@ public final class CommonChannelProto {
       return userInfo_;
     }
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
      *
      * <pre>
      *用户资料
@@ -5951,20 +5951,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.UserInfoItemData}
+     * Protobuf type {@code com.mi.liveassistant.proto.UserInfoItemData}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UserInfoItemData)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UserInfoItemData)
         com.wali.live.proto.CommonChannelProto.UserInfoItemDataOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UserInfoItemData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UserInfoItemData_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UserInfoItemData_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UserInfoItemData_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.UserInfoItemData.class, com.wali.live.proto.CommonChannelProto.UserInfoItemData.Builder.class);
       }
@@ -6007,7 +6007,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UserInfoItemData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UserInfoItemData_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.UserInfoItemData getDefaultInstanceForType() {
@@ -6099,7 +6099,7 @@ public final class CommonChannelProto {
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.CommonChannelProto.UserInfo, com.wali.live.proto.CommonChannelProto.UserInfo.Builder, com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder> userInfoBuilder_;
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
        *
        * <pre>
        *用户资料
@@ -6109,7 +6109,7 @@ public final class CommonChannelProto {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
        *
        * <pre>
        *用户资料
@@ -6123,7 +6123,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
        *
        * <pre>
        *用户资料
@@ -6143,7 +6143,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
        *
        * <pre>
        *用户资料
@@ -6161,7 +6161,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
        *
        * <pre>
        *用户资料
@@ -6184,7 +6184,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
        *
        * <pre>
        *用户资料
@@ -6201,7 +6201,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
        *
        * <pre>
        *用户资料
@@ -6213,7 +6213,7 @@ public final class CommonChannelProto {
         return getUserInfoFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
        *
        * <pre>
        *用户资料
@@ -6227,7 +6227,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
        *
        * <pre>
        *用户资料
@@ -6347,7 +6347,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UserInfoItemData)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.UserInfoItemData)
     }
 
     static {
@@ -6355,11 +6355,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UserInfoItemData)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UserInfoItemData)
   }
 
   public interface UserInfoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UserInfo)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UserInfo)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -6594,11 +6594,11 @@ public final class CommonChannelProto {
     int getFansCount();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.UserInfo}
+   * Protobuf type {@code com.mi.liveassistant.proto.UserInfo}
    */
   public static final class UserInfo extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UserInfo)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UserInfo)
       UserInfoOrBuilder {
     // Use UserInfo.newBuilder() to construct.
     private UserInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -6741,12 +6741,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UserInfo_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UserInfo_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UserInfo_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UserInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.UserInfo.class, com.wali.live.proto.CommonChannelProto.UserInfo.Builder.class);
     }
@@ -7347,20 +7347,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.UserInfo}
+     * Protobuf type {@code com.mi.liveassistant.proto.UserInfo}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UserInfo)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UserInfo)
         com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UserInfo_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UserInfo_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UserInfo_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UserInfo_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.UserInfo.class, com.wali.live.proto.CommonChannelProto.UserInfo.Builder.class);
       }
@@ -7418,7 +7418,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UserInfo_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UserInfo_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.UserInfo getDefaultInstanceForType() {
@@ -8344,7 +8344,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UserInfo)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.UserInfo)
     }
 
     static {
@@ -8352,11 +8352,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UserInfo)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UserInfo)
   }
 
   public interface BannerItemDataOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.BannerItemData)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.BannerItemData)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -8558,7 +8558,7 @@ public final class CommonChannelProto {
     int getLang();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.BannerItemData}
+   * Protobuf type {@code com.mi.liveassistant.proto.BannerItemData}
    *
    * <pre>
    *type=6
@@ -8566,7 +8566,7 @@ public final class CommonChannelProto {
    */
   public static final class BannerItemData extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.BannerItemData)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.BannerItemData)
       BannerItemDataOrBuilder {
     // Use BannerItemData.newBuilder() to construct.
     private BannerItemData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -8677,12 +8677,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BannerItemData_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_BannerItemData_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BannerItemData_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_BannerItemData_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.BannerItemData.class, com.wali.live.proto.CommonChannelProto.BannerItemData.Builder.class);
     }
@@ -9252,7 +9252,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.BannerItemData}
+     * Protobuf type {@code com.mi.liveassistant.proto.BannerItemData}
      *
      * <pre>
      *type=6
@@ -9260,16 +9260,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.BannerItemData)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.BannerItemData)
         com.wali.live.proto.CommonChannelProto.BannerItemDataOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BannerItemData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_BannerItemData_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BannerItemData_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_BannerItemData_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.BannerItemData.class, com.wali.live.proto.CommonChannelProto.BannerItemData.Builder.class);
       }
@@ -9321,7 +9321,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BannerItemData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_BannerItemData_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.BannerItemData getDefaultInstanceForType() {
@@ -10160,7 +10160,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.BannerItemData)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.BannerItemData)
     }
 
     static {
@@ -10168,33 +10168,33 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.BannerItemData)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.BannerItemData)
   }
 
   public interface UiTemplateBannerOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UiTemplateBanner)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UiTemplateBanner)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
      */
     java.util.List<com.wali.live.proto.CommonChannelProto.BannerItemData> 
         getItemDatasList();
     /**
-     * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
      */
     com.wali.live.proto.CommonChannelProto.BannerItemData getItemDatas(int index);
     /**
-     * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
      */
     int getItemDatasCount();
     /**
-     * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
      */
     java.util.List<? extends com.wali.live.proto.CommonChannelProto.BannerItemDataOrBuilder> 
         getItemDatasOrBuilderList();
     /**
-     * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
      */
     com.wali.live.proto.CommonChannelProto.BannerItemDataOrBuilder getItemDatasOrBuilder(
         int index);
@@ -10217,11 +10217,11 @@ public final class CommonChannelProto {
     int getType();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.UiTemplateBanner}
+   * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateBanner}
    */
   public static final class UiTemplateBanner extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UiTemplateBanner)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UiTemplateBanner)
       UiTemplateBannerOrBuilder {
     // Use UiTemplateBanner.newBuilder() to construct.
     private UiTemplateBanner(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -10298,12 +10298,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateBanner_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateBanner_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateBanner_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateBanner_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.UiTemplateBanner.class, com.wali.live.proto.CommonChannelProto.UiTemplateBanner.Builder.class);
     }
@@ -10327,32 +10327,32 @@ public final class CommonChannelProto {
     public static final int ITEMDATAS_FIELD_NUMBER = 1;
     private java.util.List<com.wali.live.proto.CommonChannelProto.BannerItemData> itemDatas_;
     /**
-     * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
      */
     public java.util.List<com.wali.live.proto.CommonChannelProto.BannerItemData> getItemDatasList() {
       return itemDatas_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
      */
     public java.util.List<? extends com.wali.live.proto.CommonChannelProto.BannerItemDataOrBuilder> 
         getItemDatasOrBuilderList() {
       return itemDatas_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
      */
     public int getItemDatasCount() {
       return itemDatas_.size();
     }
     /**
-     * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
      */
     public com.wali.live.proto.CommonChannelProto.BannerItemData getItemDatas(int index) {
       return itemDatas_.get(index);
     }
     /**
-     * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
      */
     public com.wali.live.proto.CommonChannelProto.BannerItemDataOrBuilder getItemDatasOrBuilder(
         int index) {
@@ -10507,20 +10507,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.UiTemplateBanner}
+     * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateBanner}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UiTemplateBanner)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UiTemplateBanner)
         com.wali.live.proto.CommonChannelProto.UiTemplateBannerOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateBanner_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateBanner_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateBanner_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateBanner_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.UiTemplateBanner.class, com.wali.live.proto.CommonChannelProto.UiTemplateBanner.Builder.class);
       }
@@ -10563,7 +10563,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateBanner_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateBanner_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.UiTemplateBanner getDefaultInstanceForType() {
@@ -10686,7 +10686,7 @@ public final class CommonChannelProto {
           com.wali.live.proto.CommonChannelProto.BannerItemData, com.wali.live.proto.CommonChannelProto.BannerItemData.Builder, com.wali.live.proto.CommonChannelProto.BannerItemDataOrBuilder> itemDatasBuilder_;
 
       /**
-       * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
        */
       public java.util.List<com.wali.live.proto.CommonChannelProto.BannerItemData> getItemDatasList() {
         if (itemDatasBuilder_ == null) {
@@ -10696,7 +10696,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
        */
       public int getItemDatasCount() {
         if (itemDatasBuilder_ == null) {
@@ -10706,7 +10706,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.BannerItemData getItemDatas(int index) {
         if (itemDatasBuilder_ == null) {
@@ -10716,7 +10716,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
        */
       public Builder setItemDatas(
           int index, com.wali.live.proto.CommonChannelProto.BannerItemData value) {
@@ -10733,7 +10733,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
        */
       public Builder setItemDatas(
           int index, com.wali.live.proto.CommonChannelProto.BannerItemData.Builder builderForValue) {
@@ -10747,7 +10747,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
        */
       public Builder addItemDatas(com.wali.live.proto.CommonChannelProto.BannerItemData value) {
         if (itemDatasBuilder_ == null) {
@@ -10763,7 +10763,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
        */
       public Builder addItemDatas(
           int index, com.wali.live.proto.CommonChannelProto.BannerItemData value) {
@@ -10780,7 +10780,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
        */
       public Builder addItemDatas(
           com.wali.live.proto.CommonChannelProto.BannerItemData.Builder builderForValue) {
@@ -10794,7 +10794,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
        */
       public Builder addItemDatas(
           int index, com.wali.live.proto.CommonChannelProto.BannerItemData.Builder builderForValue) {
@@ -10808,7 +10808,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
        */
       public Builder addAllItemDatas(
           java.lang.Iterable<? extends com.wali.live.proto.CommonChannelProto.BannerItemData> values) {
@@ -10823,7 +10823,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
        */
       public Builder clearItemDatas() {
         if (itemDatasBuilder_ == null) {
@@ -10836,7 +10836,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
        */
       public Builder removeItemDatas(int index) {
         if (itemDatasBuilder_ == null) {
@@ -10849,14 +10849,14 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.BannerItemData.Builder getItemDatasBuilder(
           int index) {
         return getItemDatasFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.BannerItemDataOrBuilder getItemDatasOrBuilder(
           int index) {
@@ -10866,7 +10866,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
        */
       public java.util.List<? extends com.wali.live.proto.CommonChannelProto.BannerItemDataOrBuilder> 
            getItemDatasOrBuilderList() {
@@ -10877,14 +10877,14 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.BannerItemData.Builder addItemDatasBuilder() {
         return getItemDatasFieldBuilder().addBuilder(
             com.wali.live.proto.CommonChannelProto.BannerItemData.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.BannerItemData.Builder addItemDatasBuilder(
           int index) {
@@ -10892,7 +10892,7 @@ public final class CommonChannelProto {
             index, com.wali.live.proto.CommonChannelProto.BannerItemData.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.BannerItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
        */
       public java.util.List<com.wali.live.proto.CommonChannelProto.BannerItemData.Builder> 
            getItemDatasBuilderList() {
@@ -10961,7 +10961,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UiTemplateBanner)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.UiTemplateBanner)
     }
 
     static {
@@ -10969,15 +10969,15 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UiTemplateBanner)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UiTemplateBanner)
   }
 
   public interface UiTemplateTwoTextOneImgOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UiTemplateTwoTextOneImg)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UiTemplateTwoTextOneImg)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，两段文字
@@ -10986,7 +10986,7 @@ public final class CommonChannelProto {
     java.util.List<com.wali.live.proto.CommonChannelProto.TwoTextOneImgItemData> 
         getItemDatasList();
     /**
-     * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，两段文字
@@ -10994,7 +10994,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.TwoTextOneImgItemData getItemDatas(int index);
     /**
-     * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，两段文字
@@ -11002,7 +11002,7 @@ public final class CommonChannelProto {
      */
     int getItemDatasCount();
     /**
-     * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，两段文字
@@ -11011,7 +11011,7 @@ public final class CommonChannelProto {
     java.util.List<? extends com.wali.live.proto.CommonChannelProto.TwoTextOneImgItemDataOrBuilder> 
         getItemDatasOrBuilderList();
     /**
-     * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，两段文字
@@ -11073,7 +11073,7 @@ public final class CommonChannelProto {
         getHeaderViewAllUriBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.UiTemplateTwoTextOneImg}
+   * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateTwoTextOneImg}
    *
    * <pre>
    *type=8.
@@ -11081,7 +11081,7 @@ public final class CommonChannelProto {
    */
   public static final class UiTemplateTwoTextOneImg extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UiTemplateTwoTextOneImg)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UiTemplateTwoTextOneImg)
       UiTemplateTwoTextOneImgOrBuilder {
     // Use UiTemplateTwoTextOneImg.newBuilder() to construct.
     private UiTemplateTwoTextOneImg(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -11165,12 +11165,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateTwoTextOneImg_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateTwoTextOneImg_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.UiTemplateTwoTextOneImg.class, com.wali.live.proto.CommonChannelProto.UiTemplateTwoTextOneImg.Builder.class);
     }
@@ -11194,7 +11194,7 @@ public final class CommonChannelProto {
     public static final int ITEMDATAS_FIELD_NUMBER = 1;
     private java.util.List<com.wali.live.proto.CommonChannelProto.TwoTextOneImgItemData> itemDatas_;
     /**
-     * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，两段文字
@@ -11204,7 +11204,7 @@ public final class CommonChannelProto {
       return itemDatas_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，两段文字
@@ -11215,7 +11215,7 @@ public final class CommonChannelProto {
       return itemDatas_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，两段文字
@@ -11225,7 +11225,7 @@ public final class CommonChannelProto {
       return itemDatas_.size();
     }
     /**
-     * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，两段文字
@@ -11235,7 +11235,7 @@ public final class CommonChannelProto {
       return itemDatas_.get(index);
     }
     /**
-     * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
      *
      * <pre>
      *这种模版的元素必须都是一张图，两段文字
@@ -11487,7 +11487,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.UiTemplateTwoTextOneImg}
+     * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateTwoTextOneImg}
      *
      * <pre>
      *type=8.
@@ -11495,16 +11495,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UiTemplateTwoTextOneImg)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UiTemplateTwoTextOneImg)
         com.wali.live.proto.CommonChannelProto.UiTemplateTwoTextOneImgOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateTwoTextOneImg_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateTwoTextOneImg_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.UiTemplateTwoTextOneImg.class, com.wali.live.proto.CommonChannelProto.UiTemplateTwoTextOneImg.Builder.class);
       }
@@ -11549,7 +11549,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateTwoTextOneImg_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.UiTemplateTwoTextOneImg getDefaultInstanceForType() {
@@ -11683,7 +11683,7 @@ public final class CommonChannelProto {
           com.wali.live.proto.CommonChannelProto.TwoTextOneImgItemData, com.wali.live.proto.CommonChannelProto.TwoTextOneImgItemData.Builder, com.wali.live.proto.CommonChannelProto.TwoTextOneImgItemDataOrBuilder> itemDatasBuilder_;
 
       /**
-       * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，两段文字
@@ -11697,7 +11697,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，两段文字
@@ -11711,7 +11711,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，两段文字
@@ -11725,7 +11725,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，两段文字
@@ -11746,7 +11746,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，两段文字
@@ -11764,7 +11764,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，两段文字
@@ -11784,7 +11784,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，两段文字
@@ -11805,7 +11805,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，两段文字
@@ -11823,7 +11823,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，两段文字
@@ -11841,7 +11841,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，两段文字
@@ -11860,7 +11860,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，两段文字
@@ -11877,7 +11877,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，两段文字
@@ -11894,7 +11894,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，两段文字
@@ -11905,7 +11905,7 @@ public final class CommonChannelProto {
         return getItemDatasFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，两段文字
@@ -11919,7 +11919,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，两段文字
@@ -11934,7 +11934,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，两段文字
@@ -11945,7 +11945,7 @@ public final class CommonChannelProto {
             com.wali.live.proto.CommonChannelProto.TwoTextOneImgItemData.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，两段文字
@@ -11957,7 +11957,7 @@ public final class CommonChannelProto {
             index, com.wali.live.proto.CommonChannelProto.TwoTextOneImgItemData.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.TwoTextOneImgItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
        *
        * <pre>
        *这种模版的元素必须都是一张图，两段文字
@@ -12182,7 +12182,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UiTemplateTwoTextOneImg)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.UiTemplateTwoTextOneImg)
     }
 
     static {
@@ -12190,11 +12190,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UiTemplateTwoTextOneImg)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UiTemplateTwoTextOneImg)
   }
 
   public interface TwoTextOneImgItemDataOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.TwoTextOneImgItemData)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.TwoTextOneImgItemData)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -12302,7 +12302,7 @@ public final class CommonChannelProto {
         getJumpSchemeUriBytes();
 
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 5;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;</code>
      *
      * <pre>
      *用户信息
@@ -12310,7 +12310,7 @@ public final class CommonChannelProto {
      */
     boolean hasUserInfo();
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 5;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;</code>
      *
      * <pre>
      *用户信息
@@ -12318,7 +12318,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.UserInfo getUserInfo();
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 5;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;</code>
      *
      * <pre>
      *用户信息
@@ -12327,11 +12327,11 @@ public final class CommonChannelProto {
     com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder getUserInfoOrBuilder();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.TwoTextOneImgItemData}
+   * Protobuf type {@code com.mi.liveassistant.proto.TwoTextOneImgItemData}
    */
   public static final class TwoTextOneImgItemData extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.TwoTextOneImgItemData)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.TwoTextOneImgItemData)
       TwoTextOneImgItemDataOrBuilder {
     // Use TwoTextOneImgItemData.newBuilder() to construct.
     private TwoTextOneImgItemData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -12429,12 +12429,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_TwoTextOneImgItemData_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_TwoTextOneImgItemData_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.TwoTextOneImgItemData.class, com.wali.live.proto.CommonChannelProto.TwoTextOneImgItemData.Builder.class);
     }
@@ -12674,7 +12674,7 @@ public final class CommonChannelProto {
     public static final int USERINFO_FIELD_NUMBER = 5;
     private com.wali.live.proto.CommonChannelProto.UserInfo userInfo_;
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 5;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;</code>
      *
      * <pre>
      *用户信息
@@ -12684,7 +12684,7 @@ public final class CommonChannelProto {
       return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 5;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;</code>
      *
      * <pre>
      *用户信息
@@ -12694,7 +12694,7 @@ public final class CommonChannelProto {
       return userInfo_;
     }
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 5;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;</code>
      *
      * <pre>
      *用户信息
@@ -12853,20 +12853,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.TwoTextOneImgItemData}
+     * Protobuf type {@code com.mi.liveassistant.proto.TwoTextOneImgItemData}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.TwoTextOneImgItemData)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.TwoTextOneImgItemData)
         com.wali.live.proto.CommonChannelProto.TwoTextOneImgItemDataOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_TwoTextOneImgItemData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_TwoTextOneImgItemData_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.TwoTextOneImgItemData.class, com.wali.live.proto.CommonChannelProto.TwoTextOneImgItemData.Builder.class);
       }
@@ -12915,7 +12915,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_TwoTextOneImgItemData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.TwoTextOneImgItemData getDefaultInstanceForType() {
@@ -13434,7 +13434,7 @@ public final class CommonChannelProto {
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.CommonChannelProto.UserInfo, com.wali.live.proto.CommonChannelProto.UserInfo.Builder, com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder> userInfoBuilder_;
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 5;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;</code>
        *
        * <pre>
        *用户信息
@@ -13444,7 +13444,7 @@ public final class CommonChannelProto {
         return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 5;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;</code>
        *
        * <pre>
        *用户信息
@@ -13458,7 +13458,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 5;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;</code>
        *
        * <pre>
        *用户信息
@@ -13478,7 +13478,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 5;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;</code>
        *
        * <pre>
        *用户信息
@@ -13496,7 +13496,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 5;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;</code>
        *
        * <pre>
        *用户信息
@@ -13519,7 +13519,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 5;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;</code>
        *
        * <pre>
        *用户信息
@@ -13536,7 +13536,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 5;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;</code>
        *
        * <pre>
        *用户信息
@@ -13548,7 +13548,7 @@ public final class CommonChannelProto {
         return getUserInfoFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 5;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;</code>
        *
        * <pre>
        *用户信息
@@ -13562,7 +13562,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 5;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;</code>
        *
        * <pre>
        *用户信息
@@ -13582,7 +13582,7 @@ public final class CommonChannelProto {
         return userInfoBuilder_;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.TwoTextOneImgItemData)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.TwoTextOneImgItemData)
     }
 
     static {
@@ -13590,33 +13590,33 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.TwoTextOneImgItemData)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.TwoTextOneImgItemData)
   }
 
   public interface UiTemplateLiveOrReplayInfoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UiTemplateLiveOrReplayInfo)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UiTemplateLiveOrReplayInfo)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
      */
     java.util.List<com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo> 
         getItemsList();
     /**
-     * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
      */
     com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo getItems(int index);
     /**
-     * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
      */
     int getItemsCount();
     /**
-     * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
      */
     java.util.List<? extends com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfoOrBuilder> 
         getItemsOrBuilderList();
     /**
-     * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
      */
     com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfoOrBuilder getItemsOrBuilder(
         int index);
@@ -13717,7 +13717,7 @@ public final class CommonChannelProto {
     int getHeaderUiType();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.UiTemplateLiveOrReplayInfo}
+   * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateLiveOrReplayInfo}
    *
    * <pre>
    *type=7,10,11 12,13,15,17,18,19,  21, 22,25,26,28,31,32
@@ -13725,7 +13725,7 @@ public final class CommonChannelProto {
    */
   public static final class UiTemplateLiveOrReplayInfo extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UiTemplateLiveOrReplayInfo)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UiTemplateLiveOrReplayInfo)
       UiTemplateLiveOrReplayInfoOrBuilder {
     // Use UiTemplateLiveOrReplayInfo.newBuilder() to construct.
     private UiTemplateLiveOrReplayInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -13820,12 +13820,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateLiveOrReplayInfo_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateLiveOrReplayInfo_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.UiTemplateLiveOrReplayInfo.class, com.wali.live.proto.CommonChannelProto.UiTemplateLiveOrReplayInfo.Builder.class);
     }
@@ -13849,32 +13849,32 @@ public final class CommonChannelProto {
     public static final int ITEMS_FIELD_NUMBER = 1;
     private java.util.List<com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo> items_;
     /**
-     * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
      */
     public java.util.List<com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo> getItemsList() {
       return items_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
      */
     public java.util.List<? extends com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfoOrBuilder> 
         getItemsOrBuilderList() {
       return items_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
      */
     public int getItemsCount() {
       return items_.size();
     }
     /**
-     * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
      */
     public com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo getItems(int index) {
       return items_.get(index);
     }
     /**
-     * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
      */
     public com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfoOrBuilder getItemsOrBuilder(
         int index) {
@@ -14215,7 +14215,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.UiTemplateLiveOrReplayInfo}
+     * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateLiveOrReplayInfo}
      *
      * <pre>
      *type=7,10,11 12,13,15,17,18,19,  21, 22,25,26,28,31,32
@@ -14223,16 +14223,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UiTemplateLiveOrReplayInfo)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UiTemplateLiveOrReplayInfo)
         com.wali.live.proto.CommonChannelProto.UiTemplateLiveOrReplayInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateLiveOrReplayInfo_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateLiveOrReplayInfo_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.UiTemplateLiveOrReplayInfo.class, com.wali.live.proto.CommonChannelProto.UiTemplateLiveOrReplayInfo.Builder.class);
       }
@@ -14281,7 +14281,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateLiveOrReplayInfo_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.UiTemplateLiveOrReplayInfo getDefaultInstanceForType() {
@@ -14431,7 +14431,7 @@ public final class CommonChannelProto {
           com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo, com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo.Builder, com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfoOrBuilder> itemsBuilder_;
 
       /**
-       * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
        */
       public java.util.List<com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo> getItemsList() {
         if (itemsBuilder_ == null) {
@@ -14441,7 +14441,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
        */
       public int getItemsCount() {
         if (itemsBuilder_ == null) {
@@ -14451,7 +14451,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo getItems(int index) {
         if (itemsBuilder_ == null) {
@@ -14461,7 +14461,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
        */
       public Builder setItems(
           int index, com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo value) {
@@ -14478,7 +14478,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
        */
       public Builder setItems(
           int index, com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo.Builder builderForValue) {
@@ -14492,7 +14492,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
        */
       public Builder addItems(com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo value) {
         if (itemsBuilder_ == null) {
@@ -14508,7 +14508,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
        */
       public Builder addItems(
           int index, com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo value) {
@@ -14525,7 +14525,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
        */
       public Builder addItems(
           com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo.Builder builderForValue) {
@@ -14539,7 +14539,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
        */
       public Builder addItems(
           int index, com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo.Builder builderForValue) {
@@ -14553,7 +14553,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
        */
       public Builder addAllItems(
           java.lang.Iterable<? extends com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo> values) {
@@ -14568,7 +14568,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
        */
       public Builder clearItems() {
         if (itemsBuilder_ == null) {
@@ -14581,7 +14581,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
        */
       public Builder removeItems(int index) {
         if (itemsBuilder_ == null) {
@@ -14594,14 +14594,14 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo.Builder getItemsBuilder(
           int index) {
         return getItemsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfoOrBuilder getItemsOrBuilder(
           int index) {
@@ -14611,7 +14611,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
        */
       public java.util.List<? extends com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfoOrBuilder> 
            getItemsOrBuilderList() {
@@ -14622,14 +14622,14 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo.Builder addItemsBuilder() {
         return getItemsFieldBuilder().addBuilder(
             com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo.Builder addItemsBuilder(
           int index) {
@@ -14637,7 +14637,7 @@ public final class CommonChannelProto {
             index, com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveOrReplayItemInfo items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
        */
       public java.util.List<com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo.Builder> 
            getItemsBuilderList() {
@@ -15006,7 +15006,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UiTemplateLiveOrReplayInfo)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.UiTemplateLiveOrReplayInfo)
     }
 
     static {
@@ -15014,11 +15014,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UiTemplateLiveOrReplayInfo)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UiTemplateLiveOrReplayInfo)
   }
 
   public interface LiveOrReplayItemInfoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LiveOrReplayItemInfo)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.LiveOrReplayItemInfo)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -15255,7 +15255,7 @@ public final class CommonChannelProto {
         getImgUrl2Bytes();
 
     /**
-     * <code>optional .com.wali.live.proto.ListWidgetInfo widget = 11;</code>
+     * <code>optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;</code>
      *
      * <pre>
      *列表挂件信息
@@ -15263,7 +15263,7 @@ public final class CommonChannelProto {
      */
     boolean hasWidget();
     /**
-     * <code>optional .com.wali.live.proto.ListWidgetInfo widget = 11;</code>
+     * <code>optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;</code>
      *
      * <pre>
      *列表挂件信息
@@ -15271,7 +15271,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.ListWidgetInfo getWidget();
     /**
-     * <code>optional .com.wali.live.proto.ListWidgetInfo widget = 11;</code>
+     * <code>optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;</code>
      *
      * <pre>
      *列表挂件信息
@@ -15280,7 +15280,7 @@ public final class CommonChannelProto {
     com.wali.live.proto.CommonChannelProto.ListWidgetInfoOrBuilder getWidgetOrBuilder();
 
     /**
-     * <code>optional .com.wali.live.proto.RichText topLeft = 12;</code>
+     * <code>optional .com.mi.liveassistant.proto.RichText topLeft = 12;</code>
      *
      * <pre>
      *封面左上角信息
@@ -15288,7 +15288,7 @@ public final class CommonChannelProto {
      */
     boolean hasTopLeft();
     /**
-     * <code>optional .com.wali.live.proto.RichText topLeft = 12;</code>
+     * <code>optional .com.mi.liveassistant.proto.RichText topLeft = 12;</code>
      *
      * <pre>
      *封面左上角信息
@@ -15296,7 +15296,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.RichText getTopLeft();
     /**
-     * <code>optional .com.wali.live.proto.RichText topLeft = 12;</code>
+     * <code>optional .com.mi.liveassistant.proto.RichText topLeft = 12;</code>
      *
      * <pre>
      *封面左上角信息
@@ -15305,7 +15305,7 @@ public final class CommonChannelProto {
     com.wali.live.proto.CommonChannelProto.RichTextOrBuilder getTopLeftOrBuilder();
 
     /**
-     * <code>optional .com.wali.live.proto.MiddleInfo middle = 13;</code>
+     * <code>optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;</code>
      *
      * <pre>
      *封面中间文本
@@ -15313,7 +15313,7 @@ public final class CommonChannelProto {
      */
     boolean hasMiddle();
     /**
-     * <code>optional .com.wali.live.proto.MiddleInfo middle = 13;</code>
+     * <code>optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;</code>
      *
      * <pre>
      *封面中间文本
@@ -15321,7 +15321,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.MiddleInfo getMiddle();
     /**
-     * <code>optional .com.wali.live.proto.MiddleInfo middle = 13;</code>
+     * <code>optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;</code>
      *
      * <pre>
      *封面中间文本
@@ -15330,7 +15330,7 @@ public final class CommonChannelProto {
     com.wali.live.proto.CommonChannelProto.MiddleInfoOrBuilder getMiddleOrBuilder();
 
     /**
-     * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
      *
      * <pre>
      *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -15339,7 +15339,7 @@ public final class CommonChannelProto {
     java.util.List<com.wali.live.proto.CommonChannelProto.RichText> 
         getLabelList();
     /**
-     * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
      *
      * <pre>
      *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -15347,7 +15347,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.RichText getLabel(int index);
     /**
-     * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
      *
      * <pre>
      *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -15355,7 +15355,7 @@ public final class CommonChannelProto {
      */
     int getLabelCount();
     /**
-     * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
      *
      * <pre>
      *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -15364,7 +15364,7 @@ public final class CommonChannelProto {
     java.util.List<? extends com.wali.live.proto.CommonChannelProto.RichTextOrBuilder> 
         getLabelOrBuilderList();
     /**
-     * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
      *
      * <pre>
      *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -15391,11 +15391,11 @@ public final class CommonChannelProto {
     int getDistance();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.LiveOrReplayItemInfo}
+   * Protobuf type {@code com.mi.liveassistant.proto.LiveOrReplayItemInfo}
    */
   public static final class LiveOrReplayItemInfo extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LiveOrReplayItemInfo)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.LiveOrReplayItemInfo)
       LiveOrReplayItemInfoOrBuilder {
     // Use LiveOrReplayItemInfo.newBuilder() to construct.
     private LiveOrReplayItemInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -15568,12 +15568,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveOrReplayItemInfo_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveOrReplayItemInfo_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo.class, com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo.Builder.class);
     }
@@ -16044,7 +16044,7 @@ public final class CommonChannelProto {
     public static final int WIDGET_FIELD_NUMBER = 11;
     private com.wali.live.proto.CommonChannelProto.ListWidgetInfo widget_;
     /**
-     * <code>optional .com.wali.live.proto.ListWidgetInfo widget = 11;</code>
+     * <code>optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;</code>
      *
      * <pre>
      *列表挂件信息
@@ -16054,7 +16054,7 @@ public final class CommonChannelProto {
       return ((bitField0_ & 0x00000400) == 0x00000400);
     }
     /**
-     * <code>optional .com.wali.live.proto.ListWidgetInfo widget = 11;</code>
+     * <code>optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;</code>
      *
      * <pre>
      *列表挂件信息
@@ -16064,7 +16064,7 @@ public final class CommonChannelProto {
       return widget_;
     }
     /**
-     * <code>optional .com.wali.live.proto.ListWidgetInfo widget = 11;</code>
+     * <code>optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;</code>
      *
      * <pre>
      *列表挂件信息
@@ -16077,7 +16077,7 @@ public final class CommonChannelProto {
     public static final int TOPLEFT_FIELD_NUMBER = 12;
     private com.wali.live.proto.CommonChannelProto.RichText topLeft_;
     /**
-     * <code>optional .com.wali.live.proto.RichText topLeft = 12;</code>
+     * <code>optional .com.mi.liveassistant.proto.RichText topLeft = 12;</code>
      *
      * <pre>
      *封面左上角信息
@@ -16087,7 +16087,7 @@ public final class CommonChannelProto {
       return ((bitField0_ & 0x00000800) == 0x00000800);
     }
     /**
-     * <code>optional .com.wali.live.proto.RichText topLeft = 12;</code>
+     * <code>optional .com.mi.liveassistant.proto.RichText topLeft = 12;</code>
      *
      * <pre>
      *封面左上角信息
@@ -16097,7 +16097,7 @@ public final class CommonChannelProto {
       return topLeft_;
     }
     /**
-     * <code>optional .com.wali.live.proto.RichText topLeft = 12;</code>
+     * <code>optional .com.mi.liveassistant.proto.RichText topLeft = 12;</code>
      *
      * <pre>
      *封面左上角信息
@@ -16110,7 +16110,7 @@ public final class CommonChannelProto {
     public static final int MIDDLE_FIELD_NUMBER = 13;
     private com.wali.live.proto.CommonChannelProto.MiddleInfo middle_;
     /**
-     * <code>optional .com.wali.live.proto.MiddleInfo middle = 13;</code>
+     * <code>optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;</code>
      *
      * <pre>
      *封面中间文本
@@ -16120,7 +16120,7 @@ public final class CommonChannelProto {
       return ((bitField0_ & 0x00001000) == 0x00001000);
     }
     /**
-     * <code>optional .com.wali.live.proto.MiddleInfo middle = 13;</code>
+     * <code>optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;</code>
      *
      * <pre>
      *封面中间文本
@@ -16130,7 +16130,7 @@ public final class CommonChannelProto {
       return middle_;
     }
     /**
-     * <code>optional .com.wali.live.proto.MiddleInfo middle = 13;</code>
+     * <code>optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;</code>
      *
      * <pre>
      *封面中间文本
@@ -16143,7 +16143,7 @@ public final class CommonChannelProto {
     public static final int LABEL_FIELD_NUMBER = 14;
     private java.util.List<com.wali.live.proto.CommonChannelProto.RichText> label_;
     /**
-     * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
      *
      * <pre>
      *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -16153,7 +16153,7 @@ public final class CommonChannelProto {
       return label_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
      *
      * <pre>
      *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -16164,7 +16164,7 @@ public final class CommonChannelProto {
       return label_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
      *
      * <pre>
      *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -16174,7 +16174,7 @@ public final class CommonChannelProto {
       return label_.size();
     }
     /**
-     * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
      *
      * <pre>
      *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -16184,7 +16184,7 @@ public final class CommonChannelProto {
       return label_.get(index);
     }
     /**
-     * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
      *
      * <pre>
      *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -16449,20 +16449,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.LiveOrReplayItemInfo}
+     * Protobuf type {@code com.mi.liveassistant.proto.LiveOrReplayItemInfo}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LiveOrReplayItemInfo)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.LiveOrReplayItemInfo)
         com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveOrReplayItemInfo_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveOrReplayItemInfo_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo.class, com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo.Builder.class);
       }
@@ -16546,7 +16546,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveOrReplayItemInfo_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo getDefaultInstanceForType() {
@@ -17626,7 +17626,7 @@ public final class CommonChannelProto {
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.CommonChannelProto.ListWidgetInfo, com.wali.live.proto.CommonChannelProto.ListWidgetInfo.Builder, com.wali.live.proto.CommonChannelProto.ListWidgetInfoOrBuilder> widgetBuilder_;
       /**
-       * <code>optional .com.wali.live.proto.ListWidgetInfo widget = 11;</code>
+       * <code>optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;</code>
        *
        * <pre>
        *列表挂件信息
@@ -17636,7 +17636,7 @@ public final class CommonChannelProto {
         return ((bitField0_ & 0x00000400) == 0x00000400);
       }
       /**
-       * <code>optional .com.wali.live.proto.ListWidgetInfo widget = 11;</code>
+       * <code>optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;</code>
        *
        * <pre>
        *列表挂件信息
@@ -17650,7 +17650,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.ListWidgetInfo widget = 11;</code>
+       * <code>optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;</code>
        *
        * <pre>
        *列表挂件信息
@@ -17670,7 +17670,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.ListWidgetInfo widget = 11;</code>
+       * <code>optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;</code>
        *
        * <pre>
        *列表挂件信息
@@ -17688,7 +17688,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.ListWidgetInfo widget = 11;</code>
+       * <code>optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;</code>
        *
        * <pre>
        *列表挂件信息
@@ -17711,7 +17711,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.ListWidgetInfo widget = 11;</code>
+       * <code>optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;</code>
        *
        * <pre>
        *列表挂件信息
@@ -17728,7 +17728,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.ListWidgetInfo widget = 11;</code>
+       * <code>optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;</code>
        *
        * <pre>
        *列表挂件信息
@@ -17740,7 +17740,7 @@ public final class CommonChannelProto {
         return getWidgetFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.wali.live.proto.ListWidgetInfo widget = 11;</code>
+       * <code>optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;</code>
        *
        * <pre>
        *列表挂件信息
@@ -17754,7 +17754,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.ListWidgetInfo widget = 11;</code>
+       * <code>optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;</code>
        *
        * <pre>
        *列表挂件信息
@@ -17778,7 +17778,7 @@ public final class CommonChannelProto {
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.CommonChannelProto.RichText, com.wali.live.proto.CommonChannelProto.RichText.Builder, com.wali.live.proto.CommonChannelProto.RichTextOrBuilder> topLeftBuilder_;
       /**
-       * <code>optional .com.wali.live.proto.RichText topLeft = 12;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText topLeft = 12;</code>
        *
        * <pre>
        *封面左上角信息
@@ -17788,7 +17788,7 @@ public final class CommonChannelProto {
         return ((bitField0_ & 0x00000800) == 0x00000800);
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText topLeft = 12;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText topLeft = 12;</code>
        *
        * <pre>
        *封面左上角信息
@@ -17802,7 +17802,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText topLeft = 12;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText topLeft = 12;</code>
        *
        * <pre>
        *封面左上角信息
@@ -17822,7 +17822,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText topLeft = 12;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText topLeft = 12;</code>
        *
        * <pre>
        *封面左上角信息
@@ -17840,7 +17840,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText topLeft = 12;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText topLeft = 12;</code>
        *
        * <pre>
        *封面左上角信息
@@ -17863,7 +17863,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText topLeft = 12;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText topLeft = 12;</code>
        *
        * <pre>
        *封面左上角信息
@@ -17880,7 +17880,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText topLeft = 12;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText topLeft = 12;</code>
        *
        * <pre>
        *封面左上角信息
@@ -17892,7 +17892,7 @@ public final class CommonChannelProto {
         return getTopLeftFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText topLeft = 12;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText topLeft = 12;</code>
        *
        * <pre>
        *封面左上角信息
@@ -17906,7 +17906,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText topLeft = 12;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText topLeft = 12;</code>
        *
        * <pre>
        *封面左上角信息
@@ -17930,7 +17930,7 @@ public final class CommonChannelProto {
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.CommonChannelProto.MiddleInfo, com.wali.live.proto.CommonChannelProto.MiddleInfo.Builder, com.wali.live.proto.CommonChannelProto.MiddleInfoOrBuilder> middleBuilder_;
       /**
-       * <code>optional .com.wali.live.proto.MiddleInfo middle = 13;</code>
+       * <code>optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;</code>
        *
        * <pre>
        *封面中间文本
@@ -17940,7 +17940,7 @@ public final class CommonChannelProto {
         return ((bitField0_ & 0x00001000) == 0x00001000);
       }
       /**
-       * <code>optional .com.wali.live.proto.MiddleInfo middle = 13;</code>
+       * <code>optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;</code>
        *
        * <pre>
        *封面中间文本
@@ -17954,7 +17954,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.MiddleInfo middle = 13;</code>
+       * <code>optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;</code>
        *
        * <pre>
        *封面中间文本
@@ -17974,7 +17974,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.MiddleInfo middle = 13;</code>
+       * <code>optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;</code>
        *
        * <pre>
        *封面中间文本
@@ -17992,7 +17992,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.MiddleInfo middle = 13;</code>
+       * <code>optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;</code>
        *
        * <pre>
        *封面中间文本
@@ -18015,7 +18015,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.MiddleInfo middle = 13;</code>
+       * <code>optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;</code>
        *
        * <pre>
        *封面中间文本
@@ -18032,7 +18032,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.MiddleInfo middle = 13;</code>
+       * <code>optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;</code>
        *
        * <pre>
        *封面中间文本
@@ -18044,7 +18044,7 @@ public final class CommonChannelProto {
         return getMiddleFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.wali.live.proto.MiddleInfo middle = 13;</code>
+       * <code>optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;</code>
        *
        * <pre>
        *封面中间文本
@@ -18058,7 +18058,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.MiddleInfo middle = 13;</code>
+       * <code>optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;</code>
        *
        * <pre>
        *封面中间文本
@@ -18091,7 +18091,7 @@ public final class CommonChannelProto {
           com.wali.live.proto.CommonChannelProto.RichText, com.wali.live.proto.CommonChannelProto.RichText.Builder, com.wali.live.proto.CommonChannelProto.RichTextOrBuilder> labelBuilder_;
 
       /**
-       * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
        *
        * <pre>
        *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -18105,7 +18105,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
        *
        * <pre>
        *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -18119,7 +18119,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
        *
        * <pre>
        *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -18133,7 +18133,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
        *
        * <pre>
        *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -18154,7 +18154,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
        *
        * <pre>
        *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -18172,7 +18172,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
        *
        * <pre>
        *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -18192,7 +18192,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
        *
        * <pre>
        *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -18213,7 +18213,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
        *
        * <pre>
        *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -18231,7 +18231,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
        *
        * <pre>
        *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -18249,7 +18249,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
        *
        * <pre>
        *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -18268,7 +18268,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
        *
        * <pre>
        *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -18285,7 +18285,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
        *
        * <pre>
        *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -18302,7 +18302,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
        *
        * <pre>
        *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -18313,7 +18313,7 @@ public final class CommonChannelProto {
         return getLabelFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
        *
        * <pre>
        *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -18327,7 +18327,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
        *
        * <pre>
        *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -18342,7 +18342,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
        *
        * <pre>
        *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -18353,7 +18353,7 @@ public final class CommonChannelProto {
             com.wali.live.proto.CommonChannelProto.RichText.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
        *
        * <pre>
        *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -18365,7 +18365,7 @@ public final class CommonChannelProto {
             index, com.wali.live.proto.CommonChannelProto.RichText.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.RichText label = 14;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
        *
        * <pre>
        *标签[目前只有一个，考虑会扩展为多个，定义为repeated]
@@ -18438,7 +18438,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LiveOrReplayItemInfo)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.LiveOrReplayItemInfo)
     }
 
     static {
@@ -18446,11 +18446,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.LiveOrReplayItemInfo)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.LiveOrReplayItemInfo)
   }
 
   public interface RichTextOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.RichText)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.RichText)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -18549,7 +18549,7 @@ public final class CommonChannelProto {
         getIconUrlBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.RichText}
+   * Protobuf type {@code com.mi.liveassistant.proto.RichText}
    *
    * <pre>
    *富文本信息
@@ -18557,7 +18557,7 @@ public final class CommonChannelProto {
    */
   public static final class RichText extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.RichText)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.RichText)
       RichTextOrBuilder {
     // Use RichText.newBuilder() to construct.
     private RichText(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -18641,12 +18641,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_RichText_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_RichText_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_RichText_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_RichText_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.RichText.class, com.wali.live.proto.CommonChannelProto.RichText.Builder.class);
     }
@@ -18987,7 +18987,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.RichText}
+     * Protobuf type {@code com.mi.liveassistant.proto.RichText}
      *
      * <pre>
      *富文本信息
@@ -18995,16 +18995,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.RichText)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.RichText)
         com.wali.live.proto.CommonChannelProto.RichTextOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_RichText_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_RichText_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_RichText_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_RichText_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.RichText.class, com.wali.live.proto.CommonChannelProto.RichText.Builder.class);
       }
@@ -19046,7 +19046,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_RichText_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_RichText_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.RichText getDefaultInstanceForType() {
@@ -19490,7 +19490,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.RichText)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.RichText)
     }
 
     static {
@@ -19498,11 +19498,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.RichText)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.RichText)
   }
 
   public interface MiddleInfoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.MiddleInfo)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.MiddleInfo)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -19558,7 +19558,7 @@ public final class CommonChannelProto {
         getText2Bytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.MiddleInfo}
+   * Protobuf type {@code com.mi.liveassistant.proto.MiddleInfo}
    *
    * <pre>
    *封面中间文案信息
@@ -19566,7 +19566,7 @@ public final class CommonChannelProto {
    */
   public static final class MiddleInfo extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.MiddleInfo)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.MiddleInfo)
       MiddleInfoOrBuilder {
     // Use MiddleInfo.newBuilder() to construct.
     private MiddleInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -19639,12 +19639,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_MiddleInfo_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_MiddleInfo_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_MiddleInfo_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_MiddleInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.MiddleInfo.class, com.wali.live.proto.CommonChannelProto.MiddleInfo.Builder.class);
     }
@@ -19892,7 +19892,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.MiddleInfo}
+     * Protobuf type {@code com.mi.liveassistant.proto.MiddleInfo}
      *
      * <pre>
      *封面中间文案信息
@@ -19900,16 +19900,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.MiddleInfo)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.MiddleInfo)
         com.wali.live.proto.CommonChannelProto.MiddleInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_MiddleInfo_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_MiddleInfo_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_MiddleInfo_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_MiddleInfo_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.MiddleInfo.class, com.wali.live.proto.CommonChannelProto.MiddleInfo.Builder.class);
       }
@@ -19947,7 +19947,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_MiddleInfo_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_MiddleInfo_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.MiddleInfo getDefaultInstanceForType() {
@@ -20227,7 +20227,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.MiddleInfo)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.MiddleInfo)
     }
 
     static {
@@ -20235,11 +20235,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.MiddleInfo)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.MiddleInfo)
   }
 
   public interface ListWidgetInfoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ListWidgetInfo)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.ListWidgetInfo)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -20295,7 +20295,7 @@ public final class CommonChannelProto {
         getIconUrlBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.ListWidgetInfo}
+   * Protobuf type {@code com.mi.liveassistant.proto.ListWidgetInfo}
    *
    * <pre>
    *列表挂件信息
@@ -20303,7 +20303,7 @@ public final class CommonChannelProto {
    */
   public static final class ListWidgetInfo extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ListWidgetInfo)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.ListWidgetInfo)
       ListWidgetInfoOrBuilder {
     // Use ListWidgetInfo.newBuilder() to construct.
     private ListWidgetInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -20376,12 +20376,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ListWidgetInfo_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ListWidgetInfo_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ListWidgetInfo_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ListWidgetInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.ListWidgetInfo.class, com.wali.live.proto.CommonChannelProto.ListWidgetInfo.Builder.class);
     }
@@ -20629,7 +20629,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.ListWidgetInfo}
+     * Protobuf type {@code com.mi.liveassistant.proto.ListWidgetInfo}
      *
      * <pre>
      *列表挂件信息
@@ -20637,16 +20637,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ListWidgetInfo)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.ListWidgetInfo)
         com.wali.live.proto.CommonChannelProto.ListWidgetInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ListWidgetInfo_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ListWidgetInfo_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ListWidgetInfo_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ListWidgetInfo_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.ListWidgetInfo.class, com.wali.live.proto.CommonChannelProto.ListWidgetInfo.Builder.class);
       }
@@ -20684,7 +20684,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ListWidgetInfo_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ListWidgetInfo_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.ListWidgetInfo getDefaultInstanceForType() {
@@ -20964,7 +20964,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ListWidgetInfo)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.ListWidgetInfo)
     }
 
     static {
@@ -20972,11 +20972,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ListWidgetInfo)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.ListWidgetInfo)
   }
 
   public interface UiTemplateSeparatorOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UiTemplateSeparator)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UiTemplateSeparator)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -21028,7 +21028,7 @@ public final class CommonChannelProto {
         getTitleBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.UiTemplateSeparator}
+   * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateSeparator}
    *
    * <pre>
    *type=14
@@ -21036,7 +21036,7 @@ public final class CommonChannelProto {
    */
   public static final class UiTemplateSeparator extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UiTemplateSeparator)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UiTemplateSeparator)
       UiTemplateSeparatorOrBuilder {
     // Use UiTemplateSeparator.newBuilder() to construct.
     private UiTemplateSeparator(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -21113,12 +21113,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateSeparator_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateSeparator_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.UiTemplateSeparator.class, com.wali.live.proto.CommonChannelProto.UiTemplateSeparator.Builder.class);
     }
@@ -21354,7 +21354,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.UiTemplateSeparator}
+     * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateSeparator}
      *
      * <pre>
      *type=14
@@ -21362,16 +21362,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UiTemplateSeparator)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UiTemplateSeparator)
         com.wali.live.proto.CommonChannelProto.UiTemplateSeparatorOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateSeparator_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateSeparator_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.UiTemplateSeparator.class, com.wali.live.proto.CommonChannelProto.UiTemplateSeparator.Builder.class);
       }
@@ -21411,7 +21411,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateSeparator_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.UiTemplateSeparator getDefaultInstanceForType() {
@@ -21668,7 +21668,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UiTemplateSeparator)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.UiTemplateSeparator)
     }
 
     static {
@@ -21676,11 +21676,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UiTemplateSeparator)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UiTemplateSeparator)
   }
 
   public interface UserBriefOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UserBrief)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UserBrief)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -21778,7 +21778,7 @@ public final class CommonChannelProto {
     int getCertType();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.UserBrief}
+   * Protobuf type {@code com.mi.liveassistant.proto.UserBrief}
    *
    * <pre>
    *主播部分信息
@@ -21786,7 +21786,7 @@ public final class CommonChannelProto {
    */
   public static final class UserBrief extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UserBrief)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UserBrief)
       UserBriefOrBuilder {
     // Use UserBrief.newBuilder() to construct.
     private UserBrief(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -21873,12 +21873,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UserBrief_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UserBrief_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UserBrief_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UserBrief_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.UserBrief.class, com.wali.live.proto.CommonChannelProto.UserBrief.Builder.class);
     }
@@ -22192,7 +22192,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.UserBrief}
+     * Protobuf type {@code com.mi.liveassistant.proto.UserBrief}
      *
      * <pre>
      *主播部分信息
@@ -22200,16 +22200,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UserBrief)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UserBrief)
         com.wali.live.proto.CommonChannelProto.UserBriefOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UserBrief_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UserBrief_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UserBrief_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UserBrief_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.UserBrief.class, com.wali.live.proto.CommonChannelProto.UserBrief.Builder.class);
       }
@@ -22253,7 +22253,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UserBrief_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UserBrief_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.UserBrief getDefaultInstanceForType() {
@@ -22648,7 +22648,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UserBrief)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.UserBrief)
     }
 
     static {
@@ -22656,11 +22656,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UserBrief)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UserBrief)
   }
 
   public interface ShopBriefOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ShopBrief)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.ShopBrief)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -22698,7 +22698,7 @@ public final class CommonChannelProto {
     int getDesiredCnt();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.ShopBrief}
+   * Protobuf type {@code com.mi.liveassistant.proto.ShopBrief}
    *
    * <pre>
    *购物直播信息
@@ -22706,7 +22706,7 @@ public final class CommonChannelProto {
    */
   public static final class ShopBrief extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ShopBrief)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.ShopBrief)
       ShopBriefOrBuilder {
     // Use ShopBrief.newBuilder() to construct.
     private ShopBrief(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -22777,12 +22777,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ShopBrief_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ShopBrief_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ShopBrief_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ShopBrief_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.ShopBrief.class, com.wali.live.proto.CommonChannelProto.ShopBrief.Builder.class);
     }
@@ -22968,7 +22968,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.ShopBrief}
+     * Protobuf type {@code com.mi.liveassistant.proto.ShopBrief}
      *
      * <pre>
      *购物直播信息
@@ -22976,16 +22976,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ShopBrief)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.ShopBrief)
         com.wali.live.proto.CommonChannelProto.ShopBriefOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ShopBrief_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ShopBrief_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ShopBrief_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ShopBrief_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.ShopBrief.class, com.wali.live.proto.CommonChannelProto.ShopBrief.Builder.class);
       }
@@ -23023,7 +23023,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ShopBrief_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ShopBrief_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.ShopBrief getDefaultInstanceForType() {
@@ -23195,7 +23195,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ShopBrief)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.ShopBrief)
     }
 
     static {
@@ -23203,11 +23203,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ShopBrief)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.ShopBrief)
   }
 
   public interface LiveInfoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LiveInfo)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.LiveInfo)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -23237,7 +23237,7 @@ public final class CommonChannelProto {
         getLiveIdBytes();
 
     /**
-     * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
      *
      * <pre>
      *主播信息
@@ -23245,7 +23245,7 @@ public final class CommonChannelProto {
      */
     boolean hasUser();
     /**
-     * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
      *
      * <pre>
      *主播信息
@@ -23253,7 +23253,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.UserBrief getUser();
     /**
-     * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
      *
      * <pre>
      *主播信息
@@ -23426,7 +23426,7 @@ public final class CommonChannelProto {
         getTagBytes();
 
     /**
-     * <code>optional .com.wali.live.proto.ShopBrief shop = 10;</code>
+     * <code>optional .com.mi.liveassistant.proto.ShopBrief shop = 10;</code>
      *
      * <pre>
      *购物信息[has判断有该字段,说明是购物直播]
@@ -23434,7 +23434,7 @@ public final class CommonChannelProto {
      */
     boolean hasShop();
     /**
-     * <code>optional .com.wali.live.proto.ShopBrief shop = 10;</code>
+     * <code>optional .com.mi.liveassistant.proto.ShopBrief shop = 10;</code>
      *
      * <pre>
      *购物信息[has判断有该字段,说明是购物直播]
@@ -23442,7 +23442,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.ShopBrief getShop();
     /**
-     * <code>optional .com.wali.live.proto.ShopBrief shop = 10;</code>
+     * <code>optional .com.mi.liveassistant.proto.ShopBrief shop = 10;</code>
      *
      * <pre>
      *购物信息[has判断有该字段,说明是购物直播]
@@ -23485,7 +23485,7 @@ public final class CommonChannelProto {
     int getLiveType();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.LiveInfo}
+   * Protobuf type {@code com.mi.liveassistant.proto.LiveInfo}
    *
    * <pre>
    *一条直播记录
@@ -23493,7 +23493,7 @@ public final class CommonChannelProto {
    */
   public static final class LiveInfo extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LiveInfo)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.LiveInfo)
       LiveInfoOrBuilder {
     // Use LiveInfo.newBuilder() to construct.
     private LiveInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -23636,12 +23636,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveInfo_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveInfo_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveInfo_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.LiveInfo.class, com.wali.live.proto.CommonChannelProto.LiveInfo.Builder.class);
     }
@@ -23719,7 +23719,7 @@ public final class CommonChannelProto {
     public static final int USER_FIELD_NUMBER = 2;
     private com.wali.live.proto.CommonChannelProto.UserBrief user_;
     /**
-     * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
      *
      * <pre>
      *主播信息
@@ -23729,7 +23729,7 @@ public final class CommonChannelProto {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
      *
      * <pre>
      *主播信息
@@ -23739,7 +23739,7 @@ public final class CommonChannelProto {
       return user_;
     }
     /**
-     * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
      *
      * <pre>
      *主播信息
@@ -24068,7 +24068,7 @@ public final class CommonChannelProto {
     public static final int SHOP_FIELD_NUMBER = 10;
     private com.wali.live.proto.CommonChannelProto.ShopBrief shop_;
     /**
-     * <code>optional .com.wali.live.proto.ShopBrief shop = 10;</code>
+     * <code>optional .com.mi.liveassistant.proto.ShopBrief shop = 10;</code>
      *
      * <pre>
      *购物信息[has判断有该字段,说明是购物直播]
@@ -24078,7 +24078,7 @@ public final class CommonChannelProto {
       return ((bitField0_ & 0x00000200) == 0x00000200);
     }
     /**
-     * <code>optional .com.wali.live.proto.ShopBrief shop = 10;</code>
+     * <code>optional .com.mi.liveassistant.proto.ShopBrief shop = 10;</code>
      *
      * <pre>
      *购物信息[has判断有该字段,说明是购物直播]
@@ -24088,7 +24088,7 @@ public final class CommonChannelProto {
       return shop_;
     }
     /**
-     * <code>optional .com.wali.live.proto.ShopBrief shop = 10;</code>
+     * <code>optional .com.mi.liveassistant.proto.ShopBrief shop = 10;</code>
      *
      * <pre>
      *购物信息[has判断有该字段,说明是购物直播]
@@ -24353,7 +24353,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.LiveInfo}
+     * Protobuf type {@code com.mi.liveassistant.proto.LiveInfo}
      *
      * <pre>
      *一条直播记录
@@ -24361,16 +24361,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LiveInfo)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.LiveInfo)
         com.wali.live.proto.CommonChannelProto.LiveInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveInfo_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveInfo_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveInfo_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveInfo_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.LiveInfo.class, com.wali.live.proto.CommonChannelProto.LiveInfo.Builder.class);
       }
@@ -24438,7 +24438,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveInfo_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveInfo_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.LiveInfo getDefaultInstanceForType() {
@@ -24718,7 +24718,7 @@ public final class CommonChannelProto {
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.CommonChannelProto.UserBrief, com.wali.live.proto.CommonChannelProto.UserBrief.Builder, com.wali.live.proto.CommonChannelProto.UserBriefOrBuilder> userBuilder_;
       /**
-       * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
        *
        * <pre>
        *主播信息
@@ -24728,7 +24728,7 @@ public final class CommonChannelProto {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
        *
        * <pre>
        *主播信息
@@ -24742,7 +24742,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
        *
        * <pre>
        *主播信息
@@ -24762,7 +24762,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
        *
        * <pre>
        *主播信息
@@ -24780,7 +24780,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
        *
        * <pre>
        *主播信息
@@ -24803,7 +24803,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
        *
        * <pre>
        *主播信息
@@ -24820,7 +24820,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
        *
        * <pre>
        *主播信息
@@ -24832,7 +24832,7 @@ public final class CommonChannelProto {
         return getUserFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
        *
        * <pre>
        *主播信息
@@ -24846,7 +24846,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
        *
        * <pre>
        *主播信息
@@ -25466,7 +25466,7 @@ public final class CommonChannelProto {
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.CommonChannelProto.ShopBrief, com.wali.live.proto.CommonChannelProto.ShopBrief.Builder, com.wali.live.proto.CommonChannelProto.ShopBriefOrBuilder> shopBuilder_;
       /**
-       * <code>optional .com.wali.live.proto.ShopBrief shop = 10;</code>
+       * <code>optional .com.mi.liveassistant.proto.ShopBrief shop = 10;</code>
        *
        * <pre>
        *购物信息[has判断有该字段,说明是购物直播]
@@ -25476,7 +25476,7 @@ public final class CommonChannelProto {
         return ((bitField0_ & 0x00000200) == 0x00000200);
       }
       /**
-       * <code>optional .com.wali.live.proto.ShopBrief shop = 10;</code>
+       * <code>optional .com.mi.liveassistant.proto.ShopBrief shop = 10;</code>
        *
        * <pre>
        *购物信息[has判断有该字段,说明是购物直播]
@@ -25490,7 +25490,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.ShopBrief shop = 10;</code>
+       * <code>optional .com.mi.liveassistant.proto.ShopBrief shop = 10;</code>
        *
        * <pre>
        *购物信息[has判断有该字段,说明是购物直播]
@@ -25510,7 +25510,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.ShopBrief shop = 10;</code>
+       * <code>optional .com.mi.liveassistant.proto.ShopBrief shop = 10;</code>
        *
        * <pre>
        *购物信息[has判断有该字段,说明是购物直播]
@@ -25528,7 +25528,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.ShopBrief shop = 10;</code>
+       * <code>optional .com.mi.liveassistant.proto.ShopBrief shop = 10;</code>
        *
        * <pre>
        *购物信息[has判断有该字段,说明是购物直播]
@@ -25551,7 +25551,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.ShopBrief shop = 10;</code>
+       * <code>optional .com.mi.liveassistant.proto.ShopBrief shop = 10;</code>
        *
        * <pre>
        *购物信息[has判断有该字段,说明是购物直播]
@@ -25568,7 +25568,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.ShopBrief shop = 10;</code>
+       * <code>optional .com.mi.liveassistant.proto.ShopBrief shop = 10;</code>
        *
        * <pre>
        *购物信息[has判断有该字段,说明是购物直播]
@@ -25580,7 +25580,7 @@ public final class CommonChannelProto {
         return getShopFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.wali.live.proto.ShopBrief shop = 10;</code>
+       * <code>optional .com.mi.liveassistant.proto.ShopBrief shop = 10;</code>
        *
        * <pre>
        *购物信息[has判断有该字段,说明是购物直播]
@@ -25594,7 +25594,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.ShopBrief shop = 10;</code>
+       * <code>optional .com.mi.liveassistant.proto.ShopBrief shop = 10;</code>
        *
        * <pre>
        *购物信息[has判断有该字段,说明是购物直播]
@@ -25710,7 +25710,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LiveInfo)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.LiveInfo)
     }
 
     static {
@@ -25718,11 +25718,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.LiveInfo)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.LiveInfo)
   }
 
   public interface BackInfoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.BackInfo)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.BackInfo)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -25752,7 +25752,7 @@ public final class CommonChannelProto {
         getBackIdBytes();
 
     /**
-     * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
      *
      * <pre>
      *主播信息
@@ -25760,7 +25760,7 @@ public final class CommonChannelProto {
      */
     boolean hasUser();
     /**
-     * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
      *
      * <pre>
      *主播信息
@@ -25768,7 +25768,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.UserBrief getUser();
     /**
-     * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
      *
      * <pre>
      *主播信息
@@ -25958,7 +25958,7 @@ public final class CommonChannelProto {
         getLocationBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.BackInfo}
+   * Protobuf type {@code com.mi.liveassistant.proto.BackInfo}
    *
    * <pre>
    *一条回放记录详情
@@ -25966,7 +25966,7 @@ public final class CommonChannelProto {
    */
   public static final class BackInfo extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.BackInfo)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.BackInfo)
       BackInfoOrBuilder {
     // Use BackInfo.newBuilder() to construct.
     private BackInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -26091,12 +26091,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BackInfo_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_BackInfo_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BackInfo_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_BackInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.BackInfo.class, com.wali.live.proto.CommonChannelProto.BackInfo.Builder.class);
     }
@@ -26174,7 +26174,7 @@ public final class CommonChannelProto {
     public static final int USER_FIELD_NUMBER = 2;
     private com.wali.live.proto.CommonChannelProto.UserBrief user_;
     /**
-     * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
      *
      * <pre>
      *主播信息
@@ -26184,7 +26184,7 @@ public final class CommonChannelProto {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
      *
      * <pre>
      *主播信息
@@ -26194,7 +26194,7 @@ public final class CommonChannelProto {
       return user_;
     }
     /**
-     * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
      *
      * <pre>
      *主播信息
@@ -26736,7 +26736,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.BackInfo}
+     * Protobuf type {@code com.mi.liveassistant.proto.BackInfo}
      *
      * <pre>
      *一条回放记录详情
@@ -26744,16 +26744,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.BackInfo)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.BackInfo)
         com.wali.live.proto.CommonChannelProto.BackInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BackInfo_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_BackInfo_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BackInfo_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_BackInfo_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.BackInfo.class, com.wali.live.proto.CommonChannelProto.BackInfo.Builder.class);
       }
@@ -26812,7 +26812,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BackInfo_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_BackInfo_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.BackInfo getDefaultInstanceForType() {
@@ -27074,7 +27074,7 @@ public final class CommonChannelProto {
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.CommonChannelProto.UserBrief, com.wali.live.proto.CommonChannelProto.UserBrief.Builder, com.wali.live.proto.CommonChannelProto.UserBriefOrBuilder> userBuilder_;
       /**
-       * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
        *
        * <pre>
        *主播信息
@@ -27084,7 +27084,7 @@ public final class CommonChannelProto {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
        *
        * <pre>
        *主播信息
@@ -27098,7 +27098,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
        *
        * <pre>
        *主播信息
@@ -27118,7 +27118,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
        *
        * <pre>
        *主播信息
@@ -27136,7 +27136,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
        *
        * <pre>
        *主播信息
@@ -27159,7 +27159,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
        *
        * <pre>
        *主播信息
@@ -27176,7 +27176,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
        *
        * <pre>
        *主播信息
@@ -27188,7 +27188,7 @@ public final class CommonChannelProto {
         return getUserFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
        *
        * <pre>
        *主播信息
@@ -27202,7 +27202,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
        *
        * <pre>
        *主播信息
@@ -27866,7 +27866,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.BackInfo)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.BackInfo)
     }
 
     static {
@@ -27874,11 +27874,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.BackInfo)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.BackInfo)
   }
 
   public interface VideoInfoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.VideoInfo)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.VideoInfo)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -27925,7 +27925,7 @@ public final class CommonChannelProto {
     long getViewCount();
 
     /**
-     * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
      *
      * <pre>
      *用户资料
@@ -27933,7 +27933,7 @@ public final class CommonChannelProto {
      */
     boolean hasUserInfo();
     /**
-     * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
      *
      * <pre>
      *用户资料
@@ -27941,7 +27941,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.UserInfo getUserInfo();
     /**
-     * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
      *
      * <pre>
      *用户资料
@@ -27950,7 +27950,7 @@ public final class CommonChannelProto {
     com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder getUserInfoOrBuilder();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.VideoInfo}
+   * Protobuf type {@code com.mi.liveassistant.proto.VideoInfo}
    *
    * <pre>
    *小视频信息
@@ -27958,7 +27958,7 @@ public final class CommonChannelProto {
    */
   public static final class VideoInfo extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.VideoInfo)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.VideoInfo)
       VideoInfoOrBuilder {
     // Use VideoInfo.newBuilder() to construct.
     private VideoInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -28043,12 +28043,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoInfo_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoInfo_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoInfo_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.VideoInfo.class, com.wali.live.proto.CommonChannelProto.VideoInfo.Builder.class);
     }
@@ -28149,7 +28149,7 @@ public final class CommonChannelProto {
     public static final int USER_INFO_FIELD_NUMBER = 3;
     private com.wali.live.proto.CommonChannelProto.UserInfo userInfo_;
     /**
-     * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
      *
      * <pre>
      *用户资料
@@ -28159,7 +28159,7 @@ public final class CommonChannelProto {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
      *
      * <pre>
      *用户资料
@@ -28169,7 +28169,7 @@ public final class CommonChannelProto {
       return userInfo_;
     }
     /**
-     * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
      *
      * <pre>
      *用户资料
@@ -28316,7 +28316,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.VideoInfo}
+     * Protobuf type {@code com.mi.liveassistant.proto.VideoInfo}
      *
      * <pre>
      *小视频信息
@@ -28324,16 +28324,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.VideoInfo)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.VideoInfo)
         com.wali.live.proto.CommonChannelProto.VideoInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoInfo_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoInfo_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoInfo_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoInfo_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.VideoInfo.class, com.wali.live.proto.CommonChannelProto.VideoInfo.Builder.class);
       }
@@ -28378,7 +28378,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoInfo_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoInfo_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.VideoInfo getDefaultInstanceForType() {
@@ -28629,7 +28629,7 @@ public final class CommonChannelProto {
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.CommonChannelProto.UserInfo, com.wali.live.proto.CommonChannelProto.UserInfo.Builder, com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder> userInfoBuilder_;
       /**
-       * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
        *
        * <pre>
        *用户资料
@@ -28639,7 +28639,7 @@ public final class CommonChannelProto {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
        *
        * <pre>
        *用户资料
@@ -28653,7 +28653,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
        *
        * <pre>
        *用户资料
@@ -28673,7 +28673,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
        *
        * <pre>
        *用户资料
@@ -28691,7 +28691,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
        *
        * <pre>
        *用户资料
@@ -28714,7 +28714,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
        *
        * <pre>
        *用户资料
@@ -28731,7 +28731,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
        *
        * <pre>
        *用户资料
@@ -28743,7 +28743,7 @@ public final class CommonChannelProto {
         return getUserInfoFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
        *
        * <pre>
        *用户资料
@@ -28757,7 +28757,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
        *
        * <pre>
        *用户资料
@@ -28777,7 +28777,7 @@ public final class CommonChannelProto {
         return userInfoBuilder_;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.VideoInfo)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.VideoInfo)
     }
 
     static {
@@ -28785,11 +28785,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.VideoInfo)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.VideoInfo)
   }
 
   public interface NavigationDataOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.NavigationData)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.NavigationData)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -28966,7 +28966,7 @@ public final class CommonChannelProto {
         getText1Bytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.NavigationData}
+   * Protobuf type {@code com.mi.liveassistant.proto.NavigationData}
    *
    * <pre>
    *type=20, 27, 30（圈子新增）
@@ -28974,7 +28974,7 @@ public final class CommonChannelProto {
    */
   public static final class NavigationData extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.NavigationData)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.NavigationData)
       NavigationDataOrBuilder {
     // Use NavigationData.newBuilder() to construct.
     private NavigationData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -29076,12 +29076,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NavigationData_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NavigationData_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NavigationData_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NavigationData_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.NavigationData.class, com.wali.live.proto.CommonChannelProto.NavigationData.Builder.class);
     }
@@ -29608,7 +29608,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.NavigationData}
+     * Protobuf type {@code com.mi.liveassistant.proto.NavigationData}
      *
      * <pre>
      *type=20, 27, 30（圈子新增）
@@ -29616,16 +29616,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.NavigationData)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.NavigationData)
         com.wali.live.proto.CommonChannelProto.NavigationDataOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NavigationData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NavigationData_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NavigationData_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NavigationData_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.NavigationData.class, com.wali.live.proto.CommonChannelProto.NavigationData.Builder.class);
       }
@@ -29673,7 +29673,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NavigationData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NavigationData_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.NavigationData getDefaultInstanceForType() {
@@ -30444,7 +30444,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.NavigationData)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.NavigationData)
     }
 
     static {
@@ -30452,15 +30452,15 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.NavigationData)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.NavigationData)
   }
 
   public interface UiTemplateNavigationOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UiTemplateNavigation)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UiTemplateNavigation)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
      *
      * <pre>
      *导航数据
@@ -30469,7 +30469,7 @@ public final class CommonChannelProto {
     java.util.List<com.wali.live.proto.CommonChannelProto.NavigationData> 
         getItemDatasList();
     /**
-     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
      *
      * <pre>
      *导航数据
@@ -30477,7 +30477,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.NavigationData getItemDatas(int index);
     /**
-     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
      *
      * <pre>
      *导航数据
@@ -30485,7 +30485,7 @@ public final class CommonChannelProto {
      */
     int getItemDatasCount();
     /**
-     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
      *
      * <pre>
      *导航数据
@@ -30494,7 +30494,7 @@ public final class CommonChannelProto {
     java.util.List<? extends com.wali.live.proto.CommonChannelProto.NavigationDataOrBuilder> 
         getItemDatasOrBuilderList();
     /**
-     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
      *
      * <pre>
      *导航数据
@@ -30504,11 +30504,11 @@ public final class CommonChannelProto {
         int index);
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.UiTemplateNavigation}
+   * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateNavigation}
    */
   public static final class UiTemplateNavigation extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UiTemplateNavigation)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UiTemplateNavigation)
       UiTemplateNavigationOrBuilder {
     // Use UiTemplateNavigation.newBuilder() to construct.
     private UiTemplateNavigation(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -30580,12 +30580,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNavigation_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNavigation_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.UiTemplateNavigation.class, com.wali.live.proto.CommonChannelProto.UiTemplateNavigation.Builder.class);
     }
@@ -30608,7 +30608,7 @@ public final class CommonChannelProto {
     public static final int ITEMDATAS_FIELD_NUMBER = 1;
     private java.util.List<com.wali.live.proto.CommonChannelProto.NavigationData> itemDatas_;
     /**
-     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
      *
      * <pre>
      *导航数据
@@ -30618,7 +30618,7 @@ public final class CommonChannelProto {
       return itemDatas_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
      *
      * <pre>
      *导航数据
@@ -30629,7 +30629,7 @@ public final class CommonChannelProto {
       return itemDatas_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
      *
      * <pre>
      *导航数据
@@ -30639,7 +30639,7 @@ public final class CommonChannelProto {
       return itemDatas_.size();
     }
     /**
-     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
      *
      * <pre>
      *导航数据
@@ -30649,7 +30649,7 @@ public final class CommonChannelProto {
       return itemDatas_.get(index);
     }
     /**
-     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
      *
      * <pre>
      *导航数据
@@ -30771,20 +30771,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.UiTemplateNavigation}
+     * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateNavigation}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UiTemplateNavigation)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UiTemplateNavigation)
         com.wali.live.proto.CommonChannelProto.UiTemplateNavigationOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNavigation_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNavigation_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.UiTemplateNavigation.class, com.wali.live.proto.CommonChannelProto.UiTemplateNavigation.Builder.class);
       }
@@ -30825,7 +30825,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNavigation_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.UiTemplateNavigation getDefaultInstanceForType() {
@@ -30933,7 +30933,7 @@ public final class CommonChannelProto {
           com.wali.live.proto.CommonChannelProto.NavigationData, com.wali.live.proto.CommonChannelProto.NavigationData.Builder, com.wali.live.proto.CommonChannelProto.NavigationDataOrBuilder> itemDatasBuilder_;
 
       /**
-       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
        *
        * <pre>
        *导航数据
@@ -30947,7 +30947,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
        *
        * <pre>
        *导航数据
@@ -30961,7 +30961,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
        *
        * <pre>
        *导航数据
@@ -30975,7 +30975,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
        *
        * <pre>
        *导航数据
@@ -30996,7 +30996,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
        *
        * <pre>
        *导航数据
@@ -31014,7 +31014,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
        *
        * <pre>
        *导航数据
@@ -31034,7 +31034,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
        *
        * <pre>
        *导航数据
@@ -31055,7 +31055,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
        *
        * <pre>
        *导航数据
@@ -31073,7 +31073,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
        *
        * <pre>
        *导航数据
@@ -31091,7 +31091,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
        *
        * <pre>
        *导航数据
@@ -31110,7 +31110,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
        *
        * <pre>
        *导航数据
@@ -31127,7 +31127,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
        *
        * <pre>
        *导航数据
@@ -31144,7 +31144,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
        *
        * <pre>
        *导航数据
@@ -31155,7 +31155,7 @@ public final class CommonChannelProto {
         return getItemDatasFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
        *
        * <pre>
        *导航数据
@@ -31169,7 +31169,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
        *
        * <pre>
        *导航数据
@@ -31184,7 +31184,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
        *
        * <pre>
        *导航数据
@@ -31195,7 +31195,7 @@ public final class CommonChannelProto {
             com.wali.live.proto.CommonChannelProto.NavigationData.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
        *
        * <pre>
        *导航数据
@@ -31207,7 +31207,7 @@ public final class CommonChannelProto {
             index, com.wali.live.proto.CommonChannelProto.NavigationData.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
        *
        * <pre>
        *导航数据
@@ -31232,7 +31232,7 @@ public final class CommonChannelProto {
         return itemDatasBuilder_;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UiTemplateNavigation)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.UiTemplateNavigation)
     }
 
     static {
@@ -31240,33 +31240,33 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UiTemplateNavigation)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UiTemplateNavigation)
   }
 
   public interface UiTemplateNoticeOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UiTemplateNotice)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UiTemplateNotice)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
      */
     java.util.List<com.wali.live.proto.CommonChannelProto.NoticeData> 
         getNoticeItemsList();
     /**
-     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
      */
     com.wali.live.proto.CommonChannelProto.NoticeData getNoticeItems(int index);
     /**
-     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
      */
     int getNoticeItemsCount();
     /**
-     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
      */
     java.util.List<? extends com.wali.live.proto.CommonChannelProto.NoticeDataOrBuilder> 
         getNoticeItemsOrBuilderList();
     /**
-     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
      */
     com.wali.live.proto.CommonChannelProto.NoticeDataOrBuilder getNoticeItemsOrBuilder(
         int index);
@@ -31298,7 +31298,7 @@ public final class CommonChannelProto {
         getHeaderViewAllUriBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.UiTemplateNotice}
+   * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateNotice}
    *
    * <pre>
    *type=23
@@ -31306,7 +31306,7 @@ public final class CommonChannelProto {
    */
   public static final class UiTemplateNotice extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UiTemplateNotice)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UiTemplateNotice)
       UiTemplateNoticeOrBuilder {
     // Use UiTemplateNotice.newBuilder() to construct.
     private UiTemplateNotice(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -31384,12 +31384,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNotice_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNotice_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNotice_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNotice_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.UiTemplateNotice.class, com.wali.live.proto.CommonChannelProto.UiTemplateNotice.Builder.class);
     }
@@ -31413,32 +31413,32 @@ public final class CommonChannelProto {
     public static final int NOTICEITEMS_FIELD_NUMBER = 1;
     private java.util.List<com.wali.live.proto.CommonChannelProto.NoticeData> noticeItems_;
     /**
-     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
      */
     public java.util.List<com.wali.live.proto.CommonChannelProto.NoticeData> getNoticeItemsList() {
       return noticeItems_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
      */
     public java.util.List<? extends com.wali.live.proto.CommonChannelProto.NoticeDataOrBuilder> 
         getNoticeItemsOrBuilderList() {
       return noticeItems_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
      */
     public int getNoticeItemsCount() {
       return noticeItems_.size();
     }
     /**
-     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
      */
     public com.wali.live.proto.CommonChannelProto.NoticeData getNoticeItems(int index) {
       return noticeItems_.get(index);
     }
     /**
-     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
      */
     public com.wali.live.proto.CommonChannelProto.NoticeDataOrBuilder getNoticeItemsOrBuilder(
         int index) {
@@ -31618,7 +31618,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.UiTemplateNotice}
+     * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateNotice}
      *
      * <pre>
      *type=23
@@ -31626,16 +31626,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UiTemplateNotice)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UiTemplateNotice)
         com.wali.live.proto.CommonChannelProto.UiTemplateNoticeOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNotice_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNotice_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNotice_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNotice_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.UiTemplateNotice.class, com.wali.live.proto.CommonChannelProto.UiTemplateNotice.Builder.class);
       }
@@ -31678,7 +31678,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNotice_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNotice_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.UiTemplateNotice getDefaultInstanceForType() {
@@ -31797,7 +31797,7 @@ public final class CommonChannelProto {
           com.wali.live.proto.CommonChannelProto.NoticeData, com.wali.live.proto.CommonChannelProto.NoticeData.Builder, com.wali.live.proto.CommonChannelProto.NoticeDataOrBuilder> noticeItemsBuilder_;
 
       /**
-       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
        */
       public java.util.List<com.wali.live.proto.CommonChannelProto.NoticeData> getNoticeItemsList() {
         if (noticeItemsBuilder_ == null) {
@@ -31807,7 +31807,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
        */
       public int getNoticeItemsCount() {
         if (noticeItemsBuilder_ == null) {
@@ -31817,7 +31817,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.NoticeData getNoticeItems(int index) {
         if (noticeItemsBuilder_ == null) {
@@ -31827,7 +31827,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
        */
       public Builder setNoticeItems(
           int index, com.wali.live.proto.CommonChannelProto.NoticeData value) {
@@ -31844,7 +31844,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
        */
       public Builder setNoticeItems(
           int index, com.wali.live.proto.CommonChannelProto.NoticeData.Builder builderForValue) {
@@ -31858,7 +31858,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
        */
       public Builder addNoticeItems(com.wali.live.proto.CommonChannelProto.NoticeData value) {
         if (noticeItemsBuilder_ == null) {
@@ -31874,7 +31874,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
        */
       public Builder addNoticeItems(
           int index, com.wali.live.proto.CommonChannelProto.NoticeData value) {
@@ -31891,7 +31891,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
        */
       public Builder addNoticeItems(
           com.wali.live.proto.CommonChannelProto.NoticeData.Builder builderForValue) {
@@ -31905,7 +31905,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
        */
       public Builder addNoticeItems(
           int index, com.wali.live.proto.CommonChannelProto.NoticeData.Builder builderForValue) {
@@ -31919,7 +31919,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
        */
       public Builder addAllNoticeItems(
           java.lang.Iterable<? extends com.wali.live.proto.CommonChannelProto.NoticeData> values) {
@@ -31934,7 +31934,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
        */
       public Builder clearNoticeItems() {
         if (noticeItemsBuilder_ == null) {
@@ -31947,7 +31947,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
        */
       public Builder removeNoticeItems(int index) {
         if (noticeItemsBuilder_ == null) {
@@ -31960,14 +31960,14 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.NoticeData.Builder getNoticeItemsBuilder(
           int index) {
         return getNoticeItemsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.NoticeDataOrBuilder getNoticeItemsOrBuilder(
           int index) {
@@ -31977,7 +31977,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
        */
       public java.util.List<? extends com.wali.live.proto.CommonChannelProto.NoticeDataOrBuilder> 
            getNoticeItemsOrBuilderList() {
@@ -31988,14 +31988,14 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.NoticeData.Builder addNoticeItemsBuilder() {
         return getNoticeItemsFieldBuilder().addBuilder(
             com.wali.live.proto.CommonChannelProto.NoticeData.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.NoticeData.Builder addNoticeItemsBuilder(
           int index) {
@@ -32003,7 +32003,7 @@ public final class CommonChannelProto {
             index, com.wali.live.proto.CommonChannelProto.NoticeData.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
        */
       public java.util.List<com.wali.live.proto.CommonChannelProto.NoticeData.Builder> 
            getNoticeItemsBuilderList() {
@@ -32124,7 +32124,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UiTemplateNotice)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.UiTemplateNotice)
     }
 
     static {
@@ -32132,11 +32132,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UiTemplateNotice)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UiTemplateNotice)
   }
 
   public interface NoticeDataOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.NoticeData)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.NoticeData)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -32226,11 +32226,11 @@ public final class CommonChannelProto {
         getTitleBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.NoticeData}
+   * Protobuf type {@code com.mi.liveassistant.proto.NoticeData}
    */
   public static final class NoticeData extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.NoticeData)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.NoticeData)
       NoticeDataOrBuilder {
     // Use NoticeData.newBuilder() to construct.
     private NoticeData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -32313,12 +32313,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NoticeData_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NoticeData_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NoticeData_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NoticeData_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.NoticeData.class, com.wali.live.proto.CommonChannelProto.NoticeData.Builder.class);
     }
@@ -32628,20 +32628,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.NoticeData}
+     * Protobuf type {@code com.mi.liveassistant.proto.NoticeData}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.NoticeData)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.NoticeData)
         com.wali.live.proto.CommonChannelProto.NoticeDataOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NoticeData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NoticeData_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NoticeData_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NoticeData_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.NoticeData.class, com.wali.live.proto.CommonChannelProto.NoticeData.Builder.class);
       }
@@ -32683,7 +32683,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NoticeData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NoticeData_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.NoticeData getDefaultInstanceForType() {
@@ -33073,7 +33073,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.NoticeData)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.NoticeData)
     }
 
     static {
@@ -33081,33 +33081,33 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.NoticeData)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.NoticeData)
   }
 
   public interface UiTemplateRankingOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UiTemplateRanking)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UiTemplateRanking)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
      */
     java.util.List<com.wali.live.proto.CommonChannelProto.RankingItemData> 
         getItemDatasList();
     /**
-     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
      */
     com.wali.live.proto.CommonChannelProto.RankingItemData getItemDatas(int index);
     /**
-     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
      */
     int getItemDatasCount();
     /**
-     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
      */
     java.util.List<? extends com.wali.live.proto.CommonChannelProto.RankingItemDataOrBuilder> 
         getItemDatasOrBuilderList();
     /**
-     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
      */
     com.wali.live.proto.CommonChannelProto.RankingItemDataOrBuilder getItemDatasOrBuilder(
         int index);
@@ -33184,7 +33184,7 @@ public final class CommonChannelProto {
     int getIconStyle();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.UiTemplateRanking}
+   * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateRanking}
    *
    * <pre>
    *uitype=29
@@ -33192,7 +33192,7 @@ public final class CommonChannelProto {
    */
   public static final class UiTemplateRanking extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UiTemplateRanking)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UiTemplateRanking)
       UiTemplateRankingOrBuilder {
     // Use UiTemplateRanking.newBuilder() to construct.
     private UiTemplateRanking(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -33287,12 +33287,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateRanking_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateRanking_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateRanking_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateRanking_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.UiTemplateRanking.class, com.wali.live.proto.CommonChannelProto.UiTemplateRanking.Builder.class);
     }
@@ -33316,32 +33316,32 @@ public final class CommonChannelProto {
     public static final int ITEMDATAS_FIELD_NUMBER = 1;
     private java.util.List<com.wali.live.proto.CommonChannelProto.RankingItemData> itemDatas_;
     /**
-     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
      */
     public java.util.List<com.wali.live.proto.CommonChannelProto.RankingItemData> getItemDatasList() {
       return itemDatas_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
      */
     public java.util.List<? extends com.wali.live.proto.CommonChannelProto.RankingItemDataOrBuilder> 
         getItemDatasOrBuilderList() {
       return itemDatas_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
      */
     public int getItemDatasCount() {
       return itemDatas_.size();
     }
     /**
-     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
      */
     public com.wali.live.proto.CommonChannelProto.RankingItemData getItemDatas(int index) {
       return itemDatas_.get(index);
     }
     /**
-     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
      */
     public com.wali.live.proto.CommonChannelProto.RankingItemDataOrBuilder getItemDatasOrBuilder(
         int index) {
@@ -33658,7 +33658,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.UiTemplateRanking}
+     * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateRanking}
      *
      * <pre>
      *uitype=29
@@ -33666,16 +33666,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UiTemplateRanking)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UiTemplateRanking)
         com.wali.live.proto.CommonChannelProto.UiTemplateRankingOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateRanking_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateRanking_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateRanking_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateRanking_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.UiTemplateRanking.class, com.wali.live.proto.CommonChannelProto.UiTemplateRanking.Builder.class);
       }
@@ -33724,7 +33724,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateRanking_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateRanking_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.UiTemplateRanking getDefaultInstanceForType() {
@@ -33874,7 +33874,7 @@ public final class CommonChannelProto {
           com.wali.live.proto.CommonChannelProto.RankingItemData, com.wali.live.proto.CommonChannelProto.RankingItemData.Builder, com.wali.live.proto.CommonChannelProto.RankingItemDataOrBuilder> itemDatasBuilder_;
 
       /**
-       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
        */
       public java.util.List<com.wali.live.proto.CommonChannelProto.RankingItemData> getItemDatasList() {
         if (itemDatasBuilder_ == null) {
@@ -33884,7 +33884,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
        */
       public int getItemDatasCount() {
         if (itemDatasBuilder_ == null) {
@@ -33894,7 +33894,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.RankingItemData getItemDatas(int index) {
         if (itemDatasBuilder_ == null) {
@@ -33904,7 +33904,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
        */
       public Builder setItemDatas(
           int index, com.wali.live.proto.CommonChannelProto.RankingItemData value) {
@@ -33921,7 +33921,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
        */
       public Builder setItemDatas(
           int index, com.wali.live.proto.CommonChannelProto.RankingItemData.Builder builderForValue) {
@@ -33935,7 +33935,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
        */
       public Builder addItemDatas(com.wali.live.proto.CommonChannelProto.RankingItemData value) {
         if (itemDatasBuilder_ == null) {
@@ -33951,7 +33951,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
        */
       public Builder addItemDatas(
           int index, com.wali.live.proto.CommonChannelProto.RankingItemData value) {
@@ -33968,7 +33968,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
        */
       public Builder addItemDatas(
           com.wali.live.proto.CommonChannelProto.RankingItemData.Builder builderForValue) {
@@ -33982,7 +33982,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
        */
       public Builder addItemDatas(
           int index, com.wali.live.proto.CommonChannelProto.RankingItemData.Builder builderForValue) {
@@ -33996,7 +33996,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
        */
       public Builder addAllItemDatas(
           java.lang.Iterable<? extends com.wali.live.proto.CommonChannelProto.RankingItemData> values) {
@@ -34011,7 +34011,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
        */
       public Builder clearItemDatas() {
         if (itemDatasBuilder_ == null) {
@@ -34024,7 +34024,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
        */
       public Builder removeItemDatas(int index) {
         if (itemDatasBuilder_ == null) {
@@ -34037,14 +34037,14 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.RankingItemData.Builder getItemDatasBuilder(
           int index) {
         return getItemDatasFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.RankingItemDataOrBuilder getItemDatasOrBuilder(
           int index) {
@@ -34054,7 +34054,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
        */
       public java.util.List<? extends com.wali.live.proto.CommonChannelProto.RankingItemDataOrBuilder> 
            getItemDatasOrBuilderList() {
@@ -34065,14 +34065,14 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.RankingItemData.Builder addItemDatasBuilder() {
         return getItemDatasFieldBuilder().addBuilder(
             com.wali.live.proto.CommonChannelProto.RankingItemData.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.RankingItemData.Builder addItemDatasBuilder(
           int index) {
@@ -34080,7 +34080,7 @@ public final class CommonChannelProto {
             index, com.wali.live.proto.CommonChannelProto.RankingItemData.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
        */
       public java.util.List<com.wali.live.proto.CommonChannelProto.RankingItemData.Builder> 
            getItemDatasBuilderList() {
@@ -34401,7 +34401,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UiTemplateRanking)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.UiTemplateRanking)
     }
 
     static {
@@ -34409,15 +34409,15 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UiTemplateRanking)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UiTemplateRanking)
   }
 
   public interface RankingItemDataOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.RankingItemData)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.RankingItemData)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
      *
      * <pre>
      *用户资料
@@ -34425,7 +34425,7 @@ public final class CommonChannelProto {
      */
     boolean hasUserInfo();
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
      *
      * <pre>
      *用户资料
@@ -34433,7 +34433,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.UserInfo getUserInfo();
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
      *
      * <pre>
      *用户资料
@@ -34468,11 +34468,11 @@ public final class CommonChannelProto {
         getJumpSchemeUriBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.RankingItemData}
+   * Protobuf type {@code com.mi.liveassistant.proto.RankingItemData}
    */
   public static final class RankingItemData extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.RankingItemData)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.RankingItemData)
       RankingItemDataOrBuilder {
     // Use RankingItemData.newBuilder() to construct.
     private RankingItemData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -34552,12 +34552,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_RankingItemData_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_RankingItemData_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_RankingItemData_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_RankingItemData_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.RankingItemData.class, com.wali.live.proto.CommonChannelProto.RankingItemData.Builder.class);
     }
@@ -34581,7 +34581,7 @@ public final class CommonChannelProto {
     public static final int USERINFO_FIELD_NUMBER = 1;
     private com.wali.live.proto.CommonChannelProto.UserInfo userInfo_;
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
      *
      * <pre>
      *用户资料
@@ -34591,7 +34591,7 @@ public final class CommonChannelProto {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
      *
      * <pre>
      *用户资料
@@ -34601,7 +34601,7 @@ public final class CommonChannelProto {
       return userInfo_;
     }
     /**
-     * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
      *
      * <pre>
      *用户资料
@@ -34790,20 +34790,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.RankingItemData}
+     * Protobuf type {@code com.mi.liveassistant.proto.RankingItemData}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.RankingItemData)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.RankingItemData)
         com.wali.live.proto.CommonChannelProto.RankingItemDataOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_RankingItemData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_RankingItemData_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_RankingItemData_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_RankingItemData_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.RankingItemData.class, com.wali.live.proto.CommonChannelProto.RankingItemData.Builder.class);
       }
@@ -34846,7 +34846,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_RankingItemData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_RankingItemData_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.RankingItemData getDefaultInstanceForType() {
@@ -34938,7 +34938,7 @@ public final class CommonChannelProto {
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.CommonChannelProto.UserInfo, com.wali.live.proto.CommonChannelProto.UserInfo.Builder, com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder> userInfoBuilder_;
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
        *
        * <pre>
        *用户资料
@@ -34948,7 +34948,7 @@ public final class CommonChannelProto {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
        *
        * <pre>
        *用户资料
@@ -34962,7 +34962,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
        *
        * <pre>
        *用户资料
@@ -34982,7 +34982,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
        *
        * <pre>
        *用户资料
@@ -35000,7 +35000,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
        *
        * <pre>
        *用户资料
@@ -35023,7 +35023,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
        *
        * <pre>
        *用户资料
@@ -35040,7 +35040,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
        *
        * <pre>
        *用户资料
@@ -35052,7 +35052,7 @@ public final class CommonChannelProto {
         return getUserInfoFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
        *
        * <pre>
        *用户资料
@@ -35066,7 +35066,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
        *
        * <pre>
        *用户资料
@@ -35186,7 +35186,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.RankingItemData)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.RankingItemData)
     }
 
     static {
@@ -35194,39 +35194,39 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.RankingItemData)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.RankingItemData)
   }
 
   public interface LiveRecvFlagReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LiveRecvFlagReq)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.LiveRecvFlagReq)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
      */
     java.util.List<com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem> 
         getItemsList();
     /**
-     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
      */
     com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem getItems(int index);
     /**
-     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
      */
     int getItemsCount();
     /**
-     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
      */
     java.util.List<? extends com.wali.live.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder> 
         getItemsOrBuilderList();
     /**
-     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
      */
     com.wali.live.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder getItemsOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.LiveRecvFlagReq}
+   * Protobuf type {@code com.mi.liveassistant.proto.LiveRecvFlagReq}
    *
    * <pre>
    * ======== recommendflag milink 打点 =======
@@ -35234,7 +35234,7 @@ public final class CommonChannelProto {
    */
   public static final class LiveRecvFlagReq extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LiveRecvFlagReq)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.LiveRecvFlagReq)
       LiveRecvFlagReqOrBuilder {
     // Use LiveRecvFlagReq.newBuilder() to construct.
     private LiveRecvFlagReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -35306,12 +35306,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagReq_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagReq_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq.class, com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq.Builder.class);
     }
@@ -35334,32 +35334,32 @@ public final class CommonChannelProto {
     public static final int ITEMS_FIELD_NUMBER = 1;
     private java.util.List<com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem> items_;
     /**
-     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
      */
     public java.util.List<com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem> getItemsList() {
       return items_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
      */
     public java.util.List<? extends com.wali.live.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder> 
         getItemsOrBuilderList() {
       return items_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
      */
     public int getItemsCount() {
       return items_.size();
     }
     /**
-     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
      */
     public com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem getItems(int index) {
       return items_.get(index);
     }
     /**
-     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
      */
     public com.wali.live.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder getItemsOrBuilder(
         int index) {
@@ -35477,7 +35477,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.LiveRecvFlagReq}
+     * Protobuf type {@code com.mi.liveassistant.proto.LiveRecvFlagReq}
      *
      * <pre>
      * ======== recommendflag milink 打点 =======
@@ -35485,16 +35485,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LiveRecvFlagReq)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.LiveRecvFlagReq)
         com.wali.live.proto.CommonChannelProto.LiveRecvFlagReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagReq_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagReq_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq.class, com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq.Builder.class);
       }
@@ -35535,7 +35535,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagReq_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq getDefaultInstanceForType() {
@@ -35643,7 +35643,7 @@ public final class CommonChannelProto {
           com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder> itemsBuilder_;
 
       /**
-       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
        */
       public java.util.List<com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem> getItemsList() {
         if (itemsBuilder_ == null) {
@@ -35653,7 +35653,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
        */
       public int getItemsCount() {
         if (itemsBuilder_ == null) {
@@ -35663,7 +35663,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem getItems(int index) {
         if (itemsBuilder_ == null) {
@@ -35673,7 +35673,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
        */
       public Builder setItems(
           int index, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem value) {
@@ -35690,7 +35690,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
        */
       public Builder setItems(
           int index, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder builderForValue) {
@@ -35704,7 +35704,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
        */
       public Builder addItems(com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem value) {
         if (itemsBuilder_ == null) {
@@ -35720,7 +35720,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
        */
       public Builder addItems(
           int index, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem value) {
@@ -35737,7 +35737,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
        */
       public Builder addItems(
           com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder builderForValue) {
@@ -35751,7 +35751,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
        */
       public Builder addItems(
           int index, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder builderForValue) {
@@ -35765,7 +35765,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
        */
       public Builder addAllItems(
           java.lang.Iterable<? extends com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem> values) {
@@ -35780,7 +35780,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
        */
       public Builder clearItems() {
         if (itemsBuilder_ == null) {
@@ -35793,7 +35793,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
        */
       public Builder removeItems(int index) {
         if (itemsBuilder_ == null) {
@@ -35806,14 +35806,14 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder getItemsBuilder(
           int index) {
         return getItemsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder getItemsOrBuilder(
           int index) {
@@ -35823,7 +35823,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
        */
       public java.util.List<? extends com.wali.live.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder> 
            getItemsOrBuilderList() {
@@ -35834,14 +35834,14 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder addItemsBuilder() {
         return getItemsFieldBuilder().addBuilder(
             com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder addItemsBuilder(
           int index) {
@@ -35849,7 +35849,7 @@ public final class CommonChannelProto {
             index, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
        */
       public java.util.List<com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder> 
            getItemsBuilderList() {
@@ -35870,7 +35870,7 @@ public final class CommonChannelProto {
         return itemsBuilder_;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LiveRecvFlagReq)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.LiveRecvFlagReq)
     }
 
     static {
@@ -35878,11 +35878,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.LiveRecvFlagReq)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.LiveRecvFlagReq)
   }
 
   public interface LiveRecvFlagItemOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LiveRecvFlagItem)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.LiveRecvFlagItem)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -35963,11 +35963,11 @@ public final class CommonChannelProto {
         getRecommendBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.LiveRecvFlagItem}
+   * Protobuf type {@code com.mi.liveassistant.proto.LiveRecvFlagItem}
    */
   public static final class LiveRecvFlagItem extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LiveRecvFlagItem)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.LiveRecvFlagItem)
       LiveRecvFlagItemOrBuilder {
     // Use LiveRecvFlagItem.newBuilder() to construct.
     private LiveRecvFlagItem(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -36049,12 +36049,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagItem_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagItem_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.class, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder.class);
     }
@@ -36333,20 +36333,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.LiveRecvFlagItem}
+     * Protobuf type {@code com.mi.liveassistant.proto.LiveRecvFlagItem}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LiveRecvFlagItem)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.LiveRecvFlagItem)
         com.wali.live.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagItem_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagItem_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.class, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder.class);
       }
@@ -36388,7 +36388,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagItem_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem getDefaultInstanceForType() {
@@ -36727,7 +36727,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LiveRecvFlagItem)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.LiveRecvFlagItem)
     }
 
     static {
@@ -36735,11 +36735,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.LiveRecvFlagItem)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.LiveRecvFlagItem)
   }
 
   public interface GiftDetailOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GiftDetail)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GiftDetail)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -36777,7 +36777,7 @@ public final class CommonChannelProto {
     int getGiftWorth();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GiftDetail}
+   * Protobuf type {@code com.mi.liveassistant.proto.GiftDetail}
    *
    * <pre>
    *type=3 extData填充内容
@@ -36785,7 +36785,7 @@ public final class CommonChannelProto {
    */
   public static final class GiftDetail extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GiftDetail)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GiftDetail)
       GiftDetailOrBuilder {
     // Use GiftDetail.newBuilder() to construct.
     private GiftDetail(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -36856,12 +36856,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GiftDetail_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GiftDetail_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GiftDetail_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GiftDetail_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.GiftDetail.class, com.wali.live.proto.CommonChannelProto.GiftDetail.Builder.class);
     }
@@ -37047,7 +37047,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GiftDetail}
+     * Protobuf type {@code com.mi.liveassistant.proto.GiftDetail}
      *
      * <pre>
      *type=3 extData填充内容
@@ -37055,16 +37055,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GiftDetail)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GiftDetail)
         com.wali.live.proto.CommonChannelProto.GiftDetailOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GiftDetail_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GiftDetail_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GiftDetail_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GiftDetail_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.GiftDetail.class, com.wali.live.proto.CommonChannelProto.GiftDetail.Builder.class);
       }
@@ -37102,7 +37102,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GiftDetail_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GiftDetail_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.GiftDetail getDefaultInstanceForType() {
@@ -37274,7 +37274,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GiftDetail)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GiftDetail)
     }
 
     static {
@@ -37282,11 +37282,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GiftDetail)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GiftDetail)
   }
 
   public interface LeaveRoomOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LeaveRoom)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.LeaveRoom)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -37324,7 +37324,7 @@ public final class CommonChannelProto {
     long getLeaveTime();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.LeaveRoom}
+   * Protobuf type {@code com.mi.liveassistant.proto.LeaveRoom}
    *
    * <pre>
    *type=4 或102 extData填充内容
@@ -37332,7 +37332,7 @@ public final class CommonChannelProto {
    */
   public static final class LeaveRoom extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LeaveRoom)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.LeaveRoom)
       LeaveRoomOrBuilder {
     // Use LeaveRoom.newBuilder() to construct.
     private LeaveRoom(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -37403,12 +37403,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LeaveRoom_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LeaveRoom_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LeaveRoom_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LeaveRoom_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.LeaveRoom.class, com.wali.live.proto.CommonChannelProto.LeaveRoom.Builder.class);
     }
@@ -37594,7 +37594,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.LeaveRoom}
+     * Protobuf type {@code com.mi.liveassistant.proto.LeaveRoom}
      *
      * <pre>
      *type=4 或102 extData填充内容
@@ -37602,16 +37602,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LeaveRoom)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.LeaveRoom)
         com.wali.live.proto.CommonChannelProto.LeaveRoomOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LeaveRoom_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LeaveRoom_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LeaveRoom_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LeaveRoom_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.LeaveRoom.class, com.wali.live.proto.CommonChannelProto.LeaveRoom.Builder.class);
       }
@@ -37649,7 +37649,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LeaveRoom_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LeaveRoom_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.LeaveRoom getDefaultInstanceForType() {
@@ -37821,7 +37821,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LeaveRoom)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.LeaveRoom)
     }
 
     static {
@@ -37829,11 +37829,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.LeaveRoom)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.LeaveRoom)
   }
 
   public interface FollowRoomOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.FollowRoom)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.FollowRoom)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -37871,7 +37871,7 @@ public final class CommonChannelProto {
     long getFollowTime();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.FollowRoom}
+   * Protobuf type {@code com.mi.liveassistant.proto.FollowRoom}
    *
    * <pre>
    *type=5 extData填充内容
@@ -37879,7 +37879,7 @@ public final class CommonChannelProto {
    */
   public static final class FollowRoom extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.FollowRoom)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.FollowRoom)
       FollowRoomOrBuilder {
     // Use FollowRoom.newBuilder() to construct.
     private FollowRoom(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -37950,12 +37950,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_FollowRoom_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_FollowRoom_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_FollowRoom_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_FollowRoom_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.FollowRoom.class, com.wali.live.proto.CommonChannelProto.FollowRoom.Builder.class);
     }
@@ -38141,7 +38141,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.FollowRoom}
+     * Protobuf type {@code com.mi.liveassistant.proto.FollowRoom}
      *
      * <pre>
      *type=5 extData填充内容
@@ -38149,16 +38149,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.FollowRoom)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.FollowRoom)
         com.wali.live.proto.CommonChannelProto.FollowRoomOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_FollowRoom_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_FollowRoom_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_FollowRoom_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_FollowRoom_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.FollowRoom.class, com.wali.live.proto.CommonChannelProto.FollowRoom.Builder.class);
       }
@@ -38196,7 +38196,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_FollowRoom_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_FollowRoom_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.FollowRoom getDefaultInstanceForType() {
@@ -38368,7 +38368,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.FollowRoom)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.FollowRoom)
     }
 
     static {
@@ -38376,11 +38376,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.FollowRoom)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.FollowRoom)
   }
 
   public interface LikeFeedbackOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LikeFeedback)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.LikeFeedback)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -38427,7 +38427,7 @@ public final class CommonChannelProto {
         getRoomIdBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.LikeFeedback}
+   * Protobuf type {@code com.mi.liveassistant.proto.LikeFeedback}
    *
    * <pre>
    *type=6 extData填充内容
@@ -38435,7 +38435,7 @@ public final class CommonChannelProto {
    */
   public static final class LikeFeedback extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LikeFeedback)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.LikeFeedback)
       LikeFeedbackOrBuilder {
     // Use LikeFeedback.newBuilder() to construct.
     private LikeFeedback(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -38507,12 +38507,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LikeFeedback_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LikeFeedback_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LikeFeedback_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LikeFeedback_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.LikeFeedback.class, com.wali.live.proto.CommonChannelProto.LikeFeedback.Builder.class);
     }
@@ -38729,7 +38729,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.LikeFeedback}
+     * Protobuf type {@code com.mi.liveassistant.proto.LikeFeedback}
      *
      * <pre>
      *type=6 extData填充内容
@@ -38737,16 +38737,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LikeFeedback)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.LikeFeedback)
         com.wali.live.proto.CommonChannelProto.LikeFeedbackOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LikeFeedback_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LikeFeedback_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LikeFeedback_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LikeFeedback_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.LikeFeedback.class, com.wali.live.proto.CommonChannelProto.LikeFeedback.Builder.class);
       }
@@ -38784,7 +38784,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LikeFeedback_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LikeFeedback_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.LikeFeedback getDefaultInstanceForType() {
@@ -39010,7 +39010,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LikeFeedback)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.LikeFeedback)
     }
 
     static {
@@ -39018,11 +39018,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.LikeFeedback)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.LikeFeedback)
   }
 
   public interface VideoLikeOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.VideoLike)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.VideoLike)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -39043,7 +39043,7 @@ public final class CommonChannelProto {
     long getBefCount();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.VideoLike}
+   * Protobuf type {@code com.mi.liveassistant.proto.VideoLike}
    *
    * <pre>
    *type=103 extData填充内容
@@ -39051,7 +39051,7 @@ public final class CommonChannelProto {
    */
   public static final class VideoLike extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.VideoLike)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.VideoLike)
       VideoLikeOrBuilder {
     // Use VideoLike.newBuilder() to construct.
     private VideoLike(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -39117,12 +39117,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoLike_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoLike_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoLike_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoLike_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.VideoLike.class, com.wali.live.proto.CommonChannelProto.VideoLike.Builder.class);
     }
@@ -39277,7 +39277,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.VideoLike}
+     * Protobuf type {@code com.mi.liveassistant.proto.VideoLike}
      *
      * <pre>
      *type=103 extData填充内容
@@ -39285,16 +39285,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.VideoLike)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.VideoLike)
         com.wali.live.proto.CommonChannelProto.VideoLikeOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoLike_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoLike_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoLike_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoLike_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.VideoLike.class, com.wali.live.proto.CommonChannelProto.VideoLike.Builder.class);
       }
@@ -39330,7 +39330,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoLike_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoLike_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.VideoLike getDefaultInstanceForType() {
@@ -39447,7 +39447,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.VideoLike)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.VideoLike)
     }
 
     static {
@@ -39455,11 +39455,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.VideoLike)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.VideoLike)
   }
 
   public interface VideoCommentOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.VideoComment)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.VideoComment)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -39489,7 +39489,7 @@ public final class CommonChannelProto {
         getContentBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.VideoComment}
+   * Protobuf type {@code com.mi.liveassistant.proto.VideoComment}
    *
    * <pre>
    *type=104 extData填充内容
@@ -39497,7 +39497,7 @@ public final class CommonChannelProto {
    */
   public static final class VideoComment extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.VideoComment)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.VideoComment)
       VideoCommentOrBuilder {
     // Use VideoComment.newBuilder() to construct.
     private VideoComment(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -39564,12 +39564,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoComment_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoComment_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoComment_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoComment_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.VideoComment.class, com.wali.live.proto.CommonChannelProto.VideoComment.Builder.class);
     }
@@ -39755,7 +39755,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.VideoComment}
+     * Protobuf type {@code com.mi.liveassistant.proto.VideoComment}
      *
      * <pre>
      *type=104 extData填充内容
@@ -39763,16 +39763,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.VideoComment)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.VideoComment)
         com.wali.live.proto.CommonChannelProto.VideoCommentOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoComment_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoComment_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoComment_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoComment_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.VideoComment.class, com.wali.live.proto.CommonChannelProto.VideoComment.Builder.class);
       }
@@ -39808,7 +39808,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoComment_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoComment_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.VideoComment getDefaultInstanceForType() {
@@ -39979,7 +39979,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.VideoComment)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.VideoComment)
     }
 
     static {
@@ -39987,11 +39987,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.VideoComment)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.VideoComment)
   }
 
   public interface LiveRecvFlagRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LiveRecvFlagRsp)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.LiveRecvFlagRsp)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -40012,11 +40012,11 @@ public final class CommonChannelProto {
     int getRetCode();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.LiveRecvFlagRsp}
+   * Protobuf type {@code com.mi.liveassistant.proto.LiveRecvFlagRsp}
    */
   public static final class LiveRecvFlagRsp extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LiveRecvFlagRsp)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.LiveRecvFlagRsp)
       LiveRecvFlagRspOrBuilder {
     // Use LiveRecvFlagRsp.newBuilder() to construct.
     private LiveRecvFlagRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -40082,12 +40082,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagRsp_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagRsp_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp.class, com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp.Builder.class);
     }
@@ -40246,20 +40246,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.LiveRecvFlagRsp}
+     * Protobuf type {@code com.mi.liveassistant.proto.LiveRecvFlagRsp}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LiveRecvFlagRsp)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.LiveRecvFlagRsp)
         com.wali.live.proto.CommonChannelProto.LiveRecvFlagRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagRsp_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagRsp_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp.class, com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp.Builder.class);
       }
@@ -40295,7 +40295,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagRsp_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp getDefaultInstanceForType() {
@@ -40416,7 +40416,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LiveRecvFlagRsp)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.LiveRecvFlagRsp)
     }
 
     static {
@@ -40424,19 +40424,19 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.LiveRecvFlagRsp)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.LiveRecvFlagRsp)
   }
 
   public interface BarMessageOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.BarMessage)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.BarMessage)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .com.wali.live.proto.BarMessageType bmt = 1;</code>
+     * <code>optional .com.mi.liveassistant.proto.BarMessageType bmt = 1;</code>
      */
     boolean hasBmt();
     /**
-     * <code>optional .com.wali.live.proto.BarMessageType bmt = 1;</code>
+     * <code>optional .com.mi.liveassistant.proto.BarMessageType bmt = 1;</code>
      */
     com.wali.live.proto.CommonChannelProto.BarMessageType getBmt();
 
@@ -40487,11 +40487,11 @@ public final class CommonChannelProto {
     long getEnd();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.BarMessage}
+   * Protobuf type {@code com.mi.liveassistant.proto.BarMessage}
    */
   public static final class BarMessage extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.BarMessage)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.BarMessage)
       BarMessageOrBuilder {
     // Use BarMessage.newBuilder() to construct.
     private BarMessage(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -40585,12 +40585,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BarMessage_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_BarMessage_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BarMessage_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_BarMessage_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.BarMessage.class, com.wali.live.proto.CommonChannelProto.BarMessage.Builder.class);
     }
@@ -40614,13 +40614,13 @@ public final class CommonChannelProto {
     public static final int BMT_FIELD_NUMBER = 1;
     private com.wali.live.proto.CommonChannelProto.BarMessageType bmt_;
     /**
-     * <code>optional .com.wali.live.proto.BarMessageType bmt = 1;</code>
+     * <code>optional .com.mi.liveassistant.proto.BarMessageType bmt = 1;</code>
      */
     public boolean hasBmt() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional .com.wali.live.proto.BarMessageType bmt = 1;</code>
+     * <code>optional .com.mi.liveassistant.proto.BarMessageType bmt = 1;</code>
      */
     public com.wali.live.proto.CommonChannelProto.BarMessageType getBmt() {
       return bmt_;
@@ -40883,20 +40883,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.BarMessage}
+     * Protobuf type {@code com.mi.liveassistant.proto.BarMessage}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.BarMessage)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.BarMessage)
         com.wali.live.proto.CommonChannelProto.BarMessageOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BarMessage_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_BarMessage_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BarMessage_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_BarMessage_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.BarMessage.class, com.wali.live.proto.CommonChannelProto.BarMessage.Builder.class);
       }
@@ -40940,7 +40940,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BarMessage_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_BarMessage_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.BarMessage getDefaultInstanceForType() {
@@ -41043,19 +41043,19 @@ public final class CommonChannelProto {
 
       private com.wali.live.proto.CommonChannelProto.BarMessageType bmt_ = com.wali.live.proto.CommonChannelProto.BarMessageType.OP;
       /**
-       * <code>optional .com.wali.live.proto.BarMessageType bmt = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.BarMessageType bmt = 1;</code>
        */
       public boolean hasBmt() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional .com.wali.live.proto.BarMessageType bmt = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.BarMessageType bmt = 1;</code>
        */
       public com.wali.live.proto.CommonChannelProto.BarMessageType getBmt() {
         return bmt_;
       }
       /**
-       * <code>optional .com.wali.live.proto.BarMessageType bmt = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.BarMessageType bmt = 1;</code>
        */
       public Builder setBmt(com.wali.live.proto.CommonChannelProto.BarMessageType value) {
         if (value == null) {
@@ -41067,7 +41067,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.BarMessageType bmt = 1;</code>
+       * <code>optional .com.mi.liveassistant.proto.BarMessageType bmt = 1;</code>
        */
       public Builder clearBmt() {
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -41292,7 +41292,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.BarMessage)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.BarMessage)
     }
 
     static {
@@ -41300,11 +41300,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.BarMessage)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.BarMessage)
   }
 
   public interface GetBarMessageRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetBarMessageRequest)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetBarMessageRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -41317,7 +41317,7 @@ public final class CommonChannelProto {
     long getFrom();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetBarMessageRequest}
+   * Protobuf type {@code com.mi.liveassistant.proto.GetBarMessageRequest}
    *
    * <pre>
    * zhibo.get.barmsg	拉去通知栏消息
@@ -41325,7 +41325,7 @@ public final class CommonChannelProto {
    */
   public static final class GetBarMessageRequest extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetBarMessageRequest)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetBarMessageRequest)
       GetBarMessageRequestOrBuilder {
     // Use GetBarMessageRequest.newBuilder() to construct.
     private GetBarMessageRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -41391,12 +41391,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageRequest_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetBarMessageRequest_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageRequest_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetBarMessageRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.GetBarMessageRequest.class, com.wali.live.proto.CommonChannelProto.GetBarMessageRequest.Builder.class);
     }
@@ -41543,7 +41543,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetBarMessageRequest}
+     * Protobuf type {@code com.mi.liveassistant.proto.GetBarMessageRequest}
      *
      * <pre>
      * zhibo.get.barmsg	拉去通知栏消息
@@ -41551,16 +41551,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetBarMessageRequest)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetBarMessageRequest)
         com.wali.live.proto.CommonChannelProto.GetBarMessageRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageRequest_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetBarMessageRequest_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageRequest_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetBarMessageRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.GetBarMessageRequest.class, com.wali.live.proto.CommonChannelProto.GetBarMessageRequest.Builder.class);
       }
@@ -41596,7 +41596,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageRequest_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetBarMessageRequest_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.GetBarMessageRequest getDefaultInstanceForType() {
@@ -41697,7 +41697,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetBarMessageRequest)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GetBarMessageRequest)
     }
 
     static {
@@ -41705,11 +41705,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetBarMessageRequest)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetBarMessageRequest)
   }
 
   public interface GetBarMessageResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetBarMessageResponse)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetBarMessageResponse)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -41736,35 +41736,35 @@ public final class CommonChannelProto {
         getErrMsgBytes();
 
     /**
-     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
      */
     java.util.List<com.wali.live.proto.CommonChannelProto.BarMessage> 
         getBarMsgList();
     /**
-     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
      */
     com.wali.live.proto.CommonChannelProto.BarMessage getBarMsg(int index);
     /**
-     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
      */
     int getBarMsgCount();
     /**
-     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
      */
     java.util.List<? extends com.wali.live.proto.CommonChannelProto.BarMessageOrBuilder> 
         getBarMsgOrBuilderList();
     /**
-     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
      */
     com.wali.live.proto.CommonChannelProto.BarMessageOrBuilder getBarMsgOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetBarMessageResponse}
+   * Protobuf type {@code com.mi.liveassistant.proto.GetBarMessageResponse}
    */
   public static final class GetBarMessageResponse extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetBarMessageResponse)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetBarMessageResponse)
       GetBarMessageResponseOrBuilder {
     // Use GetBarMessageResponse.newBuilder() to construct.
     private GetBarMessageResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -41847,12 +41847,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageResponse_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetBarMessageResponse_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageResponse_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetBarMessageResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.GetBarMessageResponse.class, com.wali.live.proto.CommonChannelProto.GetBarMessageResponse.Builder.class);
     }
@@ -41933,32 +41933,32 @@ public final class CommonChannelProto {
     public static final int BAR_MSG_FIELD_NUMBER = 3;
     private java.util.List<com.wali.live.proto.CommonChannelProto.BarMessage> barMsg_;
     /**
-     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
      */
     public java.util.List<com.wali.live.proto.CommonChannelProto.BarMessage> getBarMsgList() {
       return barMsg_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
      */
     public java.util.List<? extends com.wali.live.proto.CommonChannelProto.BarMessageOrBuilder> 
         getBarMsgOrBuilderList() {
       return barMsg_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
      */
     public int getBarMsgCount() {
       return barMsg_.size();
     }
     /**
-     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
      */
     public com.wali.live.proto.CommonChannelProto.BarMessage getBarMsg(int index) {
       return barMsg_.get(index);
     }
     /**
-     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
      */
     public com.wali.live.proto.CommonChannelProto.BarMessageOrBuilder getBarMsgOrBuilder(
         int index) {
@@ -42092,20 +42092,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetBarMessageResponse}
+     * Protobuf type {@code com.mi.liveassistant.proto.GetBarMessageResponse}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetBarMessageResponse)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetBarMessageResponse)
         com.wali.live.proto.CommonChannelProto.GetBarMessageResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageResponse_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetBarMessageResponse_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageResponse_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetBarMessageResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.GetBarMessageResponse.class, com.wali.live.proto.CommonChannelProto.GetBarMessageResponse.Builder.class);
       }
@@ -42150,7 +42150,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageResponse_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetBarMessageResponse_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.GetBarMessageResponse getDefaultInstanceForType() {
@@ -42384,7 +42384,7 @@ public final class CommonChannelProto {
           com.wali.live.proto.CommonChannelProto.BarMessage, com.wali.live.proto.CommonChannelProto.BarMessage.Builder, com.wali.live.proto.CommonChannelProto.BarMessageOrBuilder> barMsgBuilder_;
 
       /**
-       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
        */
       public java.util.List<com.wali.live.proto.CommonChannelProto.BarMessage> getBarMsgList() {
         if (barMsgBuilder_ == null) {
@@ -42394,7 +42394,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
        */
       public int getBarMsgCount() {
         if (barMsgBuilder_ == null) {
@@ -42404,7 +42404,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
        */
       public com.wali.live.proto.CommonChannelProto.BarMessage getBarMsg(int index) {
         if (barMsgBuilder_ == null) {
@@ -42414,7 +42414,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
        */
       public Builder setBarMsg(
           int index, com.wali.live.proto.CommonChannelProto.BarMessage value) {
@@ -42431,7 +42431,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
        */
       public Builder setBarMsg(
           int index, com.wali.live.proto.CommonChannelProto.BarMessage.Builder builderForValue) {
@@ -42445,7 +42445,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
        */
       public Builder addBarMsg(com.wali.live.proto.CommonChannelProto.BarMessage value) {
         if (barMsgBuilder_ == null) {
@@ -42461,7 +42461,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
        */
       public Builder addBarMsg(
           int index, com.wali.live.proto.CommonChannelProto.BarMessage value) {
@@ -42478,7 +42478,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
        */
       public Builder addBarMsg(
           com.wali.live.proto.CommonChannelProto.BarMessage.Builder builderForValue) {
@@ -42492,7 +42492,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
        */
       public Builder addBarMsg(
           int index, com.wali.live.proto.CommonChannelProto.BarMessage.Builder builderForValue) {
@@ -42506,7 +42506,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
        */
       public Builder addAllBarMsg(
           java.lang.Iterable<? extends com.wali.live.proto.CommonChannelProto.BarMessage> values) {
@@ -42521,7 +42521,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
        */
       public Builder clearBarMsg() {
         if (barMsgBuilder_ == null) {
@@ -42534,7 +42534,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
        */
       public Builder removeBarMsg(int index) {
         if (barMsgBuilder_ == null) {
@@ -42547,14 +42547,14 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
        */
       public com.wali.live.proto.CommonChannelProto.BarMessage.Builder getBarMsgBuilder(
           int index) {
         return getBarMsgFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
        */
       public com.wali.live.proto.CommonChannelProto.BarMessageOrBuilder getBarMsgOrBuilder(
           int index) {
@@ -42564,7 +42564,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
        */
       public java.util.List<? extends com.wali.live.proto.CommonChannelProto.BarMessageOrBuilder> 
            getBarMsgOrBuilderList() {
@@ -42575,14 +42575,14 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
        */
       public com.wali.live.proto.CommonChannelProto.BarMessage.Builder addBarMsgBuilder() {
         return getBarMsgFieldBuilder().addBuilder(
             com.wali.live.proto.CommonChannelProto.BarMessage.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
        */
       public com.wali.live.proto.CommonChannelProto.BarMessage.Builder addBarMsgBuilder(
           int index) {
@@ -42590,7 +42590,7 @@ public final class CommonChannelProto {
             index, com.wali.live.proto.CommonChannelProto.BarMessage.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       * <code>repeated .com.mi.liveassistant.proto.BarMessage bar_msg = 3;</code>
        */
       public java.util.List<com.wali.live.proto.CommonChannelProto.BarMessage.Builder> 
            getBarMsgBuilderList() {
@@ -42611,7 +42611,7 @@ public final class CommonChannelProto {
         return barMsgBuilder_;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetBarMessageResponse)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GetBarMessageResponse)
     }
 
     static {
@@ -42619,11 +42619,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetBarMessageResponse)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetBarMessageResponse)
   }
 
   public interface GetWaterfallListReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetWaterfallListReq)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetWaterfallListReq)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -42695,7 +42695,7 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString getParam();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetWaterfallListReq}
+   * Protobuf type {@code com.mi.liveassistant.proto.GetWaterfallListReq}
    *
    * <pre>
    ****************** zhibo.recommend.videolist 拉小视频列表  *****************
@@ -42703,7 +42703,7 @@ public final class CommonChannelProto {
    */
   public static final class GetWaterfallListReq extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetWaterfallListReq)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetWaterfallListReq)
       GetWaterfallListReqOrBuilder {
     // Use GetWaterfallListReq.newBuilder() to construct.
     private GetWaterfallListReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -42784,12 +42784,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListReq_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallListReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListReq_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallListReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.GetWaterfallListReq.class, com.wali.live.proto.CommonChannelProto.GetWaterfallListReq.Builder.class);
     }
@@ -43041,7 +43041,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetWaterfallListReq}
+     * Protobuf type {@code com.mi.liveassistant.proto.GetWaterfallListReq}
      *
      * <pre>
      ****************** zhibo.recommend.videolist 拉小视频列表  *****************
@@ -43049,16 +43049,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetWaterfallListReq)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetWaterfallListReq)
         com.wali.live.proto.CommonChannelProto.GetWaterfallListReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListReq_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallListReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListReq_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallListReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.GetWaterfallListReq.class, com.wali.live.proto.CommonChannelProto.GetWaterfallListReq.Builder.class);
       }
@@ -43100,7 +43100,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListReq_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallListReq_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.GetWaterfallListReq getDefaultInstanceForType() {
@@ -43389,7 +43389,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetWaterfallListReq)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GetWaterfallListReq)
     }
 
     static {
@@ -43397,11 +43397,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetWaterfallListReq)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetWaterfallListReq)
   }
 
   public interface GetWaterfallListRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetWaterfallListRsp)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetWaterfallListRsp)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -43422,7 +43422,7 @@ public final class CommonChannelProto {
     int getRet();
 
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -43431,7 +43431,7 @@ public final class CommonChannelProto {
     java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> 
         getElemList();
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -43439,7 +43439,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.WatElement getElem(int index);
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -43447,7 +43447,7 @@ public final class CommonChannelProto {
      */
     int getElemCount();
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -43456,7 +43456,7 @@ public final class CommonChannelProto {
     java.util.List<? extends com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> 
         getElemOrBuilderList();
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -43500,11 +43500,11 @@ public final class CommonChannelProto {
     boolean getHasMore();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetWaterfallListRsp}
+   * Protobuf type {@code com.mi.liveassistant.proto.GetWaterfallListRsp}
    */
   public static final class GetWaterfallListRsp extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetWaterfallListRsp)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetWaterfallListRsp)
       GetWaterfallListRspOrBuilder {
     // Use GetWaterfallListRsp.newBuilder() to construct.
     private GetWaterfallListRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -43591,12 +43591,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListRsp_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallListRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListRsp_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallListRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp.class, com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp.Builder.class);
     }
@@ -43643,7 +43643,7 @@ public final class CommonChannelProto {
     public static final int ELEM_FIELD_NUMBER = 2;
     private java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> elem_;
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -43653,7 +43653,7 @@ public final class CommonChannelProto {
       return elem_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -43664,7 +43664,7 @@ public final class CommonChannelProto {
       return elem_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -43674,7 +43674,7 @@ public final class CommonChannelProto {
       return elem_.size();
     }
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -43684,7 +43684,7 @@ public final class CommonChannelProto {
       return elem_.get(index);
     }
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -43886,20 +43886,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetWaterfallListRsp}
+     * Protobuf type {@code com.mi.liveassistant.proto.GetWaterfallListRsp}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetWaterfallListRsp)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetWaterfallListRsp)
         com.wali.live.proto.CommonChannelProto.GetWaterfallListRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListRsp_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallListRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListRsp_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallListRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp.class, com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp.Builder.class);
       }
@@ -43946,7 +43946,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListRsp_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallListRsp_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp getDefaultInstanceForType() {
@@ -44135,7 +44135,7 @@ public final class CommonChannelProto {
           com.wali.live.proto.CommonChannelProto.WatElement, com.wali.live.proto.CommonChannelProto.WatElement.Builder, com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> elemBuilder_;
 
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -44149,7 +44149,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -44163,7 +44163,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -44177,7 +44177,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -44198,7 +44198,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -44216,7 +44216,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -44236,7 +44236,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -44257,7 +44257,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -44275,7 +44275,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -44293,7 +44293,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -44312,7 +44312,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -44329,7 +44329,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -44346,7 +44346,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -44357,7 +44357,7 @@ public final class CommonChannelProto {
         return getElemFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -44371,7 +44371,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -44386,7 +44386,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -44397,7 +44397,7 @@ public final class CommonChannelProto {
             com.wali.live.proto.CommonChannelProto.WatElement.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -44409,7 +44409,7 @@ public final class CommonChannelProto {
             index, com.wali.live.proto.CommonChannelProto.WatElement.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -44533,7 +44533,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetWaterfallListRsp)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GetWaterfallListRsp)
     }
 
     static {
@@ -44541,11 +44541,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetWaterfallListRsp)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetWaterfallListRsp)
   }
 
   public interface WatElementOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.WatElement)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.WatElement)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -44583,11 +44583,11 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString getData();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.WatElement}
+   * Protobuf type {@code com.mi.liveassistant.proto.WatElement}
    */
   public static final class WatElement extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.WatElement)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.WatElement)
       WatElementOrBuilder {
     // Use WatElement.newBuilder() to construct.
     private WatElement(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -44658,12 +44658,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_WatElement_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_WatElement_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_WatElement_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_WatElement_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.WatElement.class, com.wali.live.proto.CommonChannelProto.WatElement.Builder.class);
     }
@@ -44857,20 +44857,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.WatElement}
+     * Protobuf type {@code com.mi.liveassistant.proto.WatElement}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.WatElement)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.WatElement)
         com.wali.live.proto.CommonChannelProto.WatElementOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_WatElement_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_WatElement_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_WatElement_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_WatElement_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.WatElement.class, com.wali.live.proto.CommonChannelProto.WatElement.Builder.class);
       }
@@ -44908,7 +44908,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_WatElement_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_WatElement_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.WatElement getDefaultInstanceForType() {
@@ -45091,7 +45091,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.WatElement)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.WatElement)
     }
 
     static {
@@ -45099,11 +45099,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.WatElement)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.WatElement)
   }
 
   public interface VideoDataOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.VideoData)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.VideoData)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -45262,7 +45262,7 @@ public final class CommonChannelProto {
     long getLikeCount();
 
     /**
-     * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo user = 8;</code>
      *
      * <pre>
      *用户资料[同模板协议UserInfo]
@@ -45270,7 +45270,7 @@ public final class CommonChannelProto {
      */
     boolean hasUser();
     /**
-     * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo user = 8;</code>
      *
      * <pre>
      *用户资料[同模板协议UserInfo]
@@ -45278,7 +45278,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.UserInfo getUser();
     /**
-     * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo user = 8;</code>
      *
      * <pre>
      *用户资料[同模板协议UserInfo]
@@ -45287,7 +45287,7 @@ public final class CommonChannelProto {
     com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder getUserOrBuilder();
 
     /**
-     * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+     * <code>optional .com.mi.liveassistant.proto.RichText mark = 9;</code>
      *
      * <pre>
      *封面运营角标[同模板协议RichText]
@@ -45295,7 +45295,7 @@ public final class CommonChannelProto {
      */
     boolean hasMark();
     /**
-     * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+     * <code>optional .com.mi.liveassistant.proto.RichText mark = 9;</code>
      *
      * <pre>
      *封面运营角标[同模板协议RichText]
@@ -45303,7 +45303,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.RichText getMark();
     /**
-     * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+     * <code>optional .com.mi.liveassistant.proto.RichText mark = 9;</code>
      *
      * <pre>
      *封面运营角标[同模板协议RichText]
@@ -45329,11 +45329,11 @@ public final class CommonChannelProto {
     boolean getIsLiked();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.VideoData}
+   * Protobuf type {@code com.mi.liveassistant.proto.VideoData}
    */
   public static final class VideoData extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.VideoData)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.VideoData)
       VideoDataOrBuilder {
     // Use VideoData.newBuilder() to construct.
     private VideoData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -45464,12 +45464,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoData_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoData_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoData_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoData_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.VideoData.class, com.wali.live.proto.CommonChannelProto.VideoData.Builder.class);
     }
@@ -45778,7 +45778,7 @@ public final class CommonChannelProto {
     public static final int USER_FIELD_NUMBER = 8;
     private com.wali.live.proto.CommonChannelProto.UserInfo user_;
     /**
-     * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo user = 8;</code>
      *
      * <pre>
      *用户资料[同模板协议UserInfo]
@@ -45788,7 +45788,7 @@ public final class CommonChannelProto {
       return ((bitField0_ & 0x00000080) == 0x00000080);
     }
     /**
-     * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo user = 8;</code>
      *
      * <pre>
      *用户资料[同模板协议UserInfo]
@@ -45798,7 +45798,7 @@ public final class CommonChannelProto {
       return user_;
     }
     /**
-     * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+     * <code>optional .com.mi.liveassistant.proto.UserInfo user = 8;</code>
      *
      * <pre>
      *用户资料[同模板协议UserInfo]
@@ -45811,7 +45811,7 @@ public final class CommonChannelProto {
     public static final int MARK_FIELD_NUMBER = 9;
     private com.wali.live.proto.CommonChannelProto.RichText mark_;
     /**
-     * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+     * <code>optional .com.mi.liveassistant.proto.RichText mark = 9;</code>
      *
      * <pre>
      *封面运营角标[同模板协议RichText]
@@ -45821,7 +45821,7 @@ public final class CommonChannelProto {
       return ((bitField0_ & 0x00000100) == 0x00000100);
     }
     /**
-     * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+     * <code>optional .com.mi.liveassistant.proto.RichText mark = 9;</code>
      *
      * <pre>
      *封面运营角标[同模板协议RichText]
@@ -45831,7 +45831,7 @@ public final class CommonChannelProto {
       return mark_;
     }
     /**
-     * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+     * <code>optional .com.mi.liveassistant.proto.RichText mark = 9;</code>
      *
      * <pre>
      *封面运营角标[同模板协议RichText]
@@ -46053,20 +46053,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.VideoData}
+     * Protobuf type {@code com.mi.liveassistant.proto.VideoData}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.VideoData)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.VideoData)
         com.wali.live.proto.CommonChannelProto.VideoDataOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoData_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoData_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoData_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.VideoData.class, com.wali.live.proto.CommonChannelProto.VideoData.Builder.class);
       }
@@ -46130,7 +46130,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoData_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.VideoData getDefaultInstanceForType() {
@@ -46832,7 +46832,7 @@ public final class CommonChannelProto {
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.CommonChannelProto.UserInfo, com.wali.live.proto.CommonChannelProto.UserInfo.Builder, com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder> userBuilder_;
       /**
-       * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo user = 8;</code>
        *
        * <pre>
        *用户资料[同模板协议UserInfo]
@@ -46842,7 +46842,7 @@ public final class CommonChannelProto {
         return ((bitField0_ & 0x00000080) == 0x00000080);
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo user = 8;</code>
        *
        * <pre>
        *用户资料[同模板协议UserInfo]
@@ -46856,7 +46856,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo user = 8;</code>
        *
        * <pre>
        *用户资料[同模板协议UserInfo]
@@ -46876,7 +46876,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo user = 8;</code>
        *
        * <pre>
        *用户资料[同模板协议UserInfo]
@@ -46894,7 +46894,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo user = 8;</code>
        *
        * <pre>
        *用户资料[同模板协议UserInfo]
@@ -46917,7 +46917,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo user = 8;</code>
        *
        * <pre>
        *用户资料[同模板协议UserInfo]
@@ -46934,7 +46934,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo user = 8;</code>
        *
        * <pre>
        *用户资料[同模板协议UserInfo]
@@ -46946,7 +46946,7 @@ public final class CommonChannelProto {
         return getUserFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo user = 8;</code>
        *
        * <pre>
        *用户资料[同模板协议UserInfo]
@@ -46960,7 +46960,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+       * <code>optional .com.mi.liveassistant.proto.UserInfo user = 8;</code>
        *
        * <pre>
        *用户资料[同模板协议UserInfo]
@@ -46984,7 +46984,7 @@ public final class CommonChannelProto {
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.CommonChannelProto.RichText, com.wali.live.proto.CommonChannelProto.RichText.Builder, com.wali.live.proto.CommonChannelProto.RichTextOrBuilder> markBuilder_;
       /**
-       * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText mark = 9;</code>
        *
        * <pre>
        *封面运营角标[同模板协议RichText]
@@ -46994,7 +46994,7 @@ public final class CommonChannelProto {
         return ((bitField0_ & 0x00000100) == 0x00000100);
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText mark = 9;</code>
        *
        * <pre>
        *封面运营角标[同模板协议RichText]
@@ -47008,7 +47008,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText mark = 9;</code>
        *
        * <pre>
        *封面运营角标[同模板协议RichText]
@@ -47028,7 +47028,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText mark = 9;</code>
        *
        * <pre>
        *封面运营角标[同模板协议RichText]
@@ -47046,7 +47046,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText mark = 9;</code>
        *
        * <pre>
        *封面运营角标[同模板协议RichText]
@@ -47069,7 +47069,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText mark = 9;</code>
        *
        * <pre>
        *封面运营角标[同模板协议RichText]
@@ -47086,7 +47086,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText mark = 9;</code>
        *
        * <pre>
        *封面运营角标[同模板协议RichText]
@@ -47098,7 +47098,7 @@ public final class CommonChannelProto {
         return getMarkFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText mark = 9;</code>
        *
        * <pre>
        *封面运营角标[同模板协议RichText]
@@ -47112,7 +47112,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText mark = 9;</code>
        *
        * <pre>
        *封面运营角标[同模板协议RichText]
@@ -47180,7 +47180,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.VideoData)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.VideoData)
     }
 
     static {
@@ -47188,11 +47188,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.VideoData)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.VideoData)
   }
 
   public interface ImageDataOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ImageData)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.ImageData)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -47308,7 +47308,7 @@ public final class CommonChannelProto {
         getTitleBytes();
 
     /**
-     * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+     * <code>optional .com.mi.liveassistant.proto.RichText mark = 6;</code>
      *
      * <pre>
      *封面运营角标[同模板协议RichText]
@@ -47316,7 +47316,7 @@ public final class CommonChannelProto {
      */
     boolean hasMark();
     /**
-     * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+     * <code>optional .com.mi.liveassistant.proto.RichText mark = 6;</code>
      *
      * <pre>
      *封面运营角标[同模板协议RichText]
@@ -47324,7 +47324,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.RichText getMark();
     /**
-     * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+     * <code>optional .com.mi.liveassistant.proto.RichText mark = 6;</code>
      *
      * <pre>
      *封面运营角标[同模板协议RichText]
@@ -47333,11 +47333,11 @@ public final class CommonChannelProto {
     com.wali.live.proto.CommonChannelProto.RichTextOrBuilder getMarkOrBuilder();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.ImageData}
+   * Protobuf type {@code com.mi.liveassistant.proto.ImageData}
    */
   public static final class ImageData extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ImageData)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.ImageData)
       ImageDataOrBuilder {
     // Use ImageData.newBuilder() to construct.
     private ImageData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -47439,12 +47439,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ImageData_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ImageData_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ImageData_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ImageData_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.ImageData.class, com.wali.live.proto.CommonChannelProto.ImageData.Builder.class);
     }
@@ -47676,7 +47676,7 @@ public final class CommonChannelProto {
     public static final int MARK_FIELD_NUMBER = 6;
     private com.wali.live.proto.CommonChannelProto.RichText mark_;
     /**
-     * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+     * <code>optional .com.mi.liveassistant.proto.RichText mark = 6;</code>
      *
      * <pre>
      *封面运营角标[同模板协议RichText]
@@ -47686,7 +47686,7 @@ public final class CommonChannelProto {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+     * <code>optional .com.mi.liveassistant.proto.RichText mark = 6;</code>
      *
      * <pre>
      *封面运营角标[同模板协议RichText]
@@ -47696,7 +47696,7 @@ public final class CommonChannelProto {
       return mark_;
     }
     /**
-     * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+     * <code>optional .com.mi.liveassistant.proto.RichText mark = 6;</code>
      *
      * <pre>
      *封面运营角标[同模板协议RichText]
@@ -47857,20 +47857,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.ImageData}
+     * Protobuf type {@code com.mi.liveassistant.proto.ImageData}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ImageData)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.ImageData)
         com.wali.live.proto.CommonChannelProto.ImageDataOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ImageData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ImageData_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ImageData_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ImageData_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.ImageData.class, com.wali.live.proto.CommonChannelProto.ImageData.Builder.class);
       }
@@ -47921,7 +47921,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ImageData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ImageData_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.ImageData getDefaultInstanceForType() {
@@ -48435,7 +48435,7 @@ public final class CommonChannelProto {
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.CommonChannelProto.RichText, com.wali.live.proto.CommonChannelProto.RichText.Builder, com.wali.live.proto.CommonChannelProto.RichTextOrBuilder> markBuilder_;
       /**
-       * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText mark = 6;</code>
        *
        * <pre>
        *封面运营角标[同模板协议RichText]
@@ -48445,7 +48445,7 @@ public final class CommonChannelProto {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText mark = 6;</code>
        *
        * <pre>
        *封面运营角标[同模板协议RichText]
@@ -48459,7 +48459,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText mark = 6;</code>
        *
        * <pre>
        *封面运营角标[同模板协议RichText]
@@ -48479,7 +48479,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText mark = 6;</code>
        *
        * <pre>
        *封面运营角标[同模板协议RichText]
@@ -48497,7 +48497,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText mark = 6;</code>
        *
        * <pre>
        *封面运营角标[同模板协议RichText]
@@ -48520,7 +48520,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText mark = 6;</code>
        *
        * <pre>
        *封面运营角标[同模板协议RichText]
@@ -48537,7 +48537,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText mark = 6;</code>
        *
        * <pre>
        *封面运营角标[同模板协议RichText]
@@ -48549,7 +48549,7 @@ public final class CommonChannelProto {
         return getMarkFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText mark = 6;</code>
        *
        * <pre>
        *封面运营角标[同模板协议RichText]
@@ -48563,7 +48563,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+       * <code>optional .com.mi.liveassistant.proto.RichText mark = 6;</code>
        *
        * <pre>
        *封面运营角标[同模板协议RichText]
@@ -48583,7 +48583,7 @@ public final class CommonChannelProto {
         return markBuilder_;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ImageData)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.ImageData)
     }
 
     static {
@@ -48591,11 +48591,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ImageData)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.ImageData)
   }
 
   public interface ButtonDataOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ButtonData)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.ButtonData)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -48729,11 +48729,11 @@ public final class CommonChannelProto {
         getJumpUriBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.ButtonData}
+   * Protobuf type {@code com.mi.liveassistant.proto.ButtonData}
    */
   public static final class ButtonData extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ButtonData)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.ButtonData)
       ButtonDataOrBuilder {
     // Use ButtonData.newBuilder() to construct.
     private ButtonData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -48824,12 +48824,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ButtonData_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ButtonData_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ButtonData_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ButtonData_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.ButtonData.class, com.wali.live.proto.CommonChannelProto.ButtonData.Builder.class);
     }
@@ -49263,20 +49263,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.ButtonData}
+     * Protobuf type {@code com.mi.liveassistant.proto.ButtonData}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ButtonData)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.ButtonData)
         com.wali.live.proto.CommonChannelProto.ButtonDataOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ButtonData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ButtonData_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ButtonData_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ButtonData_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.ButtonData.class, com.wali.live.proto.CommonChannelProto.ButtonData.Builder.class);
       }
@@ -49320,7 +49320,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ButtonData_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ButtonData_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.ButtonData getDefaultInstanceForType() {
@@ -49927,7 +49927,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ButtonData)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.ButtonData)
     }
 
     static {
@@ -49935,11 +49935,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ButtonData)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.ButtonData)
   }
 
   public interface GetWaterfallSubListReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetWaterfallSubListReq)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetWaterfallSubListReq)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -50011,11 +50011,11 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString getParam();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetWaterfallSubListReq}
+   * Protobuf type {@code com.mi.liveassistant.proto.GetWaterfallSubListReq}
    */
   public static final class GetWaterfallSubListReq extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetWaterfallSubListReq)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetWaterfallSubListReq)
       GetWaterfallSubListReqOrBuilder {
     // Use GetWaterfallSubListReq.newBuilder() to construct.
     private GetWaterfallSubListReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -50096,12 +50096,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListReq_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallSubListReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListReq_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallSubListReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq.class, com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq.Builder.class);
     }
@@ -50353,20 +50353,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetWaterfallSubListReq}
+     * Protobuf type {@code com.mi.liveassistant.proto.GetWaterfallSubListReq}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetWaterfallSubListReq)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetWaterfallSubListReq)
         com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListReq_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallSubListReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListReq_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallSubListReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq.class, com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq.Builder.class);
       }
@@ -50408,7 +50408,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListReq_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallSubListReq_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq getDefaultInstanceForType() {
@@ -50697,7 +50697,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetWaterfallSubListReq)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GetWaterfallSubListReq)
     }
 
     static {
@@ -50705,11 +50705,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetWaterfallSubListReq)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetWaterfallSubListReq)
   }
 
   public interface GetWaterfallSubListRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetWaterfallSubListRsp)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetWaterfallSubListRsp)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -50730,7 +50730,7 @@ public final class CommonChannelProto {
     int getRet();
 
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -50739,7 +50739,7 @@ public final class CommonChannelProto {
     java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> 
         getElemList();
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -50747,7 +50747,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.WatElement getElem(int index);
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -50755,7 +50755,7 @@ public final class CommonChannelProto {
      */
     int getElemCount();
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -50764,7 +50764,7 @@ public final class CommonChannelProto {
     java.util.List<? extends com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> 
         getElemOrBuilderList();
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -50808,11 +50808,11 @@ public final class CommonChannelProto {
     boolean getHasMore();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetWaterfallSubListRsp}
+   * Protobuf type {@code com.mi.liveassistant.proto.GetWaterfallSubListRsp}
    */
   public static final class GetWaterfallSubListRsp extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetWaterfallSubListRsp)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetWaterfallSubListRsp)
       GetWaterfallSubListRspOrBuilder {
     // Use GetWaterfallSubListRsp.newBuilder() to construct.
     private GetWaterfallSubListRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -50899,12 +50899,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListRsp_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallSubListRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListRsp_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallSubListRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp.class, com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp.Builder.class);
     }
@@ -50951,7 +50951,7 @@ public final class CommonChannelProto {
     public static final int ELEM_FIELD_NUMBER = 2;
     private java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> elem_;
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -50961,7 +50961,7 @@ public final class CommonChannelProto {
       return elem_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -50972,7 +50972,7 @@ public final class CommonChannelProto {
       return elem_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -50982,7 +50982,7 @@ public final class CommonChannelProto {
       return elem_.size();
     }
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -50992,7 +50992,7 @@ public final class CommonChannelProto {
       return elem_.get(index);
     }
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -51194,20 +51194,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetWaterfallSubListRsp}
+     * Protobuf type {@code com.mi.liveassistant.proto.GetWaterfallSubListRsp}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetWaterfallSubListRsp)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetWaterfallSubListRsp)
         com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListRsp_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallSubListRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListRsp_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallSubListRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp.class, com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp.Builder.class);
       }
@@ -51254,7 +51254,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListRsp_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetWaterfallSubListRsp_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp getDefaultInstanceForType() {
@@ -51443,7 +51443,7 @@ public final class CommonChannelProto {
           com.wali.live.proto.CommonChannelProto.WatElement, com.wali.live.proto.CommonChannelProto.WatElement.Builder, com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> elemBuilder_;
 
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -51457,7 +51457,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -51471,7 +51471,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -51485,7 +51485,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -51506,7 +51506,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -51524,7 +51524,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -51544,7 +51544,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -51565,7 +51565,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -51583,7 +51583,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -51601,7 +51601,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -51620,7 +51620,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -51637,7 +51637,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -51654,7 +51654,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -51665,7 +51665,7 @@ public final class CommonChannelProto {
         return getElemFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -51679,7 +51679,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -51694,7 +51694,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -51705,7 +51705,7 @@ public final class CommonChannelProto {
             com.wali.live.proto.CommonChannelProto.WatElement.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -51717,7 +51717,7 @@ public final class CommonChannelProto {
             index, com.wali.live.proto.CommonChannelProto.WatElement.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -51841,7 +51841,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetWaterfallSubListRsp)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GetWaterfallSubListRsp)
     }
 
     static {
@@ -51849,11 +51849,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetWaterfallSubListRsp)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetWaterfallSubListRsp)
   }
 
   public interface GetLikedVideoReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetLikedVideoReq)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetLikedVideoReq)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -51891,7 +51891,7 @@ public final class CommonChannelProto {
     long getStart();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetLikedVideoReq}
+   * Protobuf type {@code com.mi.liveassistant.proto.GetLikedVideoReq}
    *
    * <pre>
    ****************** zhibo.recommend.videolike 分页拉点赞的小视频列表  *****************
@@ -51899,7 +51899,7 @@ public final class CommonChannelProto {
    */
   public static final class GetLikedVideoReq extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetLikedVideoReq)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetLikedVideoReq)
       GetLikedVideoReqOrBuilder {
     // Use GetLikedVideoReq.newBuilder() to construct.
     private GetLikedVideoReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -51970,12 +51970,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoReq_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetLikedVideoReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoReq_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetLikedVideoReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.GetLikedVideoReq.class, com.wali.live.proto.CommonChannelProto.GetLikedVideoReq.Builder.class);
     }
@@ -52165,7 +52165,7 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetLikedVideoReq}
+     * Protobuf type {@code com.mi.liveassistant.proto.GetLikedVideoReq}
      *
      * <pre>
      ****************** zhibo.recommend.videolike 分页拉点赞的小视频列表  *****************
@@ -52173,16 +52173,16 @@ public final class CommonChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetLikedVideoReq)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetLikedVideoReq)
         com.wali.live.proto.CommonChannelProto.GetLikedVideoReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoReq_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetLikedVideoReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoReq_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetLikedVideoReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.GetLikedVideoReq.class, com.wali.live.proto.CommonChannelProto.GetLikedVideoReq.Builder.class);
       }
@@ -52220,7 +52220,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoReq_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetLikedVideoReq_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.GetLikedVideoReq getDefaultInstanceForType() {
@@ -52396,7 +52396,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetLikedVideoReq)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GetLikedVideoReq)
     }
 
     static {
@@ -52404,11 +52404,11 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetLikedVideoReq)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetLikedVideoReq)
   }
 
   public interface GetLikedVideoRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetLikedVideoRsp)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetLikedVideoRsp)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -52429,7 +52429,7 @@ public final class CommonChannelProto {
     int getRet();
 
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -52438,7 +52438,7 @@ public final class CommonChannelProto {
     java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> 
         getElemList();
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -52446,7 +52446,7 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.WatElement getElem(int index);
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -52454,7 +52454,7 @@ public final class CommonChannelProto {
      */
     int getElemCount();
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -52463,7 +52463,7 @@ public final class CommonChannelProto {
     java.util.List<? extends com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> 
         getElemOrBuilderList();
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -52490,11 +52490,11 @@ public final class CommonChannelProto {
     long getNextStart();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetLikedVideoRsp}
+   * Protobuf type {@code com.mi.liveassistant.proto.GetLikedVideoRsp}
    */
   public static final class GetLikedVideoRsp extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetLikedVideoRsp)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetLikedVideoRsp)
       GetLikedVideoRspOrBuilder {
     // Use GetLikedVideoRsp.newBuilder() to construct.
     private GetLikedVideoRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -52576,12 +52576,12 @@ public final class CommonChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoRsp_descriptor;
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetLikedVideoRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoRsp_fieldAccessorTable
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetLikedVideoRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp.class, com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp.Builder.class);
     }
@@ -52628,7 +52628,7 @@ public final class CommonChannelProto {
     public static final int ELEM_FIELD_NUMBER = 2;
     private java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> elem_;
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -52638,7 +52638,7 @@ public final class CommonChannelProto {
       return elem_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -52649,7 +52649,7 @@ public final class CommonChannelProto {
       return elem_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -52659,7 +52659,7 @@ public final class CommonChannelProto {
       return elem_.size();
     }
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -52669,7 +52669,7 @@ public final class CommonChannelProto {
       return elem_.get(index);
     }
     /**
-     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
      *
      * <pre>
      *数据
@@ -52840,20 +52840,20 @@ public final class CommonChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetLikedVideoRsp}
+     * Protobuf type {@code com.mi.liveassistant.proto.GetLikedVideoRsp}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetLikedVideoRsp)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetLikedVideoRsp)
         com.wali.live.proto.CommonChannelProto.GetLikedVideoRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoRsp_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetLikedVideoRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoRsp_fieldAccessorTable
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetLikedVideoRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp.class, com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp.Builder.class);
       }
@@ -52898,7 +52898,7 @@ public final class CommonChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoRsp_descriptor;
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GetLikedVideoRsp_descriptor;
       }
 
       public com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp getDefaultInstanceForType() {
@@ -53080,7 +53080,7 @@ public final class CommonChannelProto {
           com.wali.live.proto.CommonChannelProto.WatElement, com.wali.live.proto.CommonChannelProto.WatElement.Builder, com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> elemBuilder_;
 
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -53094,7 +53094,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -53108,7 +53108,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -53122,7 +53122,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -53143,7 +53143,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -53161,7 +53161,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -53181,7 +53181,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -53202,7 +53202,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -53220,7 +53220,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -53238,7 +53238,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -53257,7 +53257,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -53274,7 +53274,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -53291,7 +53291,7 @@ public final class CommonChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -53302,7 +53302,7 @@ public final class CommonChannelProto {
         return getElemFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -53316,7 +53316,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -53331,7 +53331,7 @@ public final class CommonChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -53342,7 +53342,7 @@ public final class CommonChannelProto {
             com.wali.live.proto.CommonChannelProto.WatElement.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -53354,7 +53354,7 @@ public final class CommonChannelProto {
             index, com.wali.live.proto.CommonChannelProto.WatElement.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.WatElement elem = 2;</code>
        *
        * <pre>
        *数据
@@ -53427,7 +53427,7 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetLikedVideoRsp)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GetLikedVideoRsp)
     }
 
     static {
@@ -53435,259 +53435,259 @@ public final class CommonChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetLikedVideoRsp)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetLikedVideoRsp)
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_ChannelBanner_descriptor;
+    internal_static_com_mi_liveassistant_proto_ChannelBanner_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_ChannelBanner_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_ChannelBanner_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_ChannelItem_descriptor;
+    internal_static_com_mi_liveassistant_proto_ChannelItem_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_ChannelItem_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_ChannelItem_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_UiTemplateOneTextOneImg_descriptor;
+    internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_UiTemplateOneTextOneImg_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_OneTextOneImgItemData_descriptor;
+    internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_OneTextOneImgItemData_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_UiTemplateUserInfo_descriptor;
+    internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_UiTemplateUserInfo_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_UserInfoItemData_descriptor;
+    internal_static_com_mi_liveassistant_proto_UserInfoItemData_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_UserInfoItemData_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_UserInfoItemData_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_UserInfo_descriptor;
+    internal_static_com_mi_liveassistant_proto_UserInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_UserInfo_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_UserInfo_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_BannerItemData_descriptor;
+    internal_static_com_mi_liveassistant_proto_BannerItemData_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_BannerItemData_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_BannerItemData_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_UiTemplateBanner_descriptor;
+    internal_static_com_mi_liveassistant_proto_UiTemplateBanner_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_UiTemplateBanner_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_UiTemplateBanner_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_UiTemplateTwoTextOneImg_descriptor;
+    internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_UiTemplateTwoTextOneImg_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_TwoTextOneImgItemData_descriptor;
+    internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_TwoTextOneImgItemData_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_UiTemplateLiveOrReplayInfo_descriptor;
+    internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_UiTemplateLiveOrReplayInfo_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_LiveOrReplayItemInfo_descriptor;
+    internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_LiveOrReplayItemInfo_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_RichText_descriptor;
+    internal_static_com_mi_liveassistant_proto_RichText_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_RichText_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_RichText_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_MiddleInfo_descriptor;
+    internal_static_com_mi_liveassistant_proto_MiddleInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_MiddleInfo_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_MiddleInfo_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_ListWidgetInfo_descriptor;
+    internal_static_com_mi_liveassistant_proto_ListWidgetInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_ListWidgetInfo_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_ListWidgetInfo_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_UiTemplateSeparator_descriptor;
+    internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_UiTemplateSeparator_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_UserBrief_descriptor;
+    internal_static_com_mi_liveassistant_proto_UserBrief_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_UserBrief_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_UserBrief_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_ShopBrief_descriptor;
+    internal_static_com_mi_liveassistant_proto_ShopBrief_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_ShopBrief_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_ShopBrief_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_LiveInfo_descriptor;
+    internal_static_com_mi_liveassistant_proto_LiveInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_LiveInfo_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_LiveInfo_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_BackInfo_descriptor;
+    internal_static_com_mi_liveassistant_proto_BackInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_BackInfo_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_BackInfo_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_VideoInfo_descriptor;
+    internal_static_com_mi_liveassistant_proto_VideoInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_VideoInfo_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_VideoInfo_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_NavigationData_descriptor;
+    internal_static_com_mi_liveassistant_proto_NavigationData_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_NavigationData_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_NavigationData_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_UiTemplateNavigation_descriptor;
+    internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_UiTemplateNavigation_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_UiTemplateNotice_descriptor;
+    internal_static_com_mi_liveassistant_proto_UiTemplateNotice_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_UiTemplateNotice_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_UiTemplateNotice_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_NoticeData_descriptor;
+    internal_static_com_mi_liveassistant_proto_NoticeData_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_NoticeData_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_NoticeData_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_UiTemplateRanking_descriptor;
+    internal_static_com_mi_liveassistant_proto_UiTemplateRanking_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_UiTemplateRanking_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_UiTemplateRanking_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_RankingItemData_descriptor;
+    internal_static_com_mi_liveassistant_proto_RankingItemData_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_RankingItemData_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_RankingItemData_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_LiveRecvFlagReq_descriptor;
+    internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_LiveRecvFlagReq_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_LiveRecvFlagItem_descriptor;
+    internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_LiveRecvFlagItem_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GiftDetail_descriptor;
+    internal_static_com_mi_liveassistant_proto_GiftDetail_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GiftDetail_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_GiftDetail_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_LeaveRoom_descriptor;
+    internal_static_com_mi_liveassistant_proto_LeaveRoom_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_LeaveRoom_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_LeaveRoom_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_FollowRoom_descriptor;
+    internal_static_com_mi_liveassistant_proto_FollowRoom_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_FollowRoom_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_FollowRoom_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_LikeFeedback_descriptor;
+    internal_static_com_mi_liveassistant_proto_LikeFeedback_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_LikeFeedback_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_LikeFeedback_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_VideoLike_descriptor;
+    internal_static_com_mi_liveassistant_proto_VideoLike_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_VideoLike_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_VideoLike_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_VideoComment_descriptor;
+    internal_static_com_mi_liveassistant_proto_VideoComment_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_VideoComment_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_VideoComment_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_LiveRecvFlagRsp_descriptor;
+    internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_LiveRecvFlagRsp_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_BarMessage_descriptor;
+    internal_static_com_mi_liveassistant_proto_BarMessage_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_BarMessage_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_BarMessage_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetBarMessageRequest_descriptor;
+    internal_static_com_mi_liveassistant_proto_GetBarMessageRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetBarMessageRequest_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_GetBarMessageRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetBarMessageResponse_descriptor;
+    internal_static_com_mi_liveassistant_proto_GetBarMessageResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetBarMessageResponse_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_GetBarMessageResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetWaterfallListReq_descriptor;
+    internal_static_com_mi_liveassistant_proto_GetWaterfallListReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetWaterfallListReq_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_GetWaterfallListReq_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetWaterfallListRsp_descriptor;
+    internal_static_com_mi_liveassistant_proto_GetWaterfallListRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetWaterfallListRsp_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_GetWaterfallListRsp_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_WatElement_descriptor;
+    internal_static_com_mi_liveassistant_proto_WatElement_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_WatElement_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_WatElement_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_VideoData_descriptor;
+    internal_static_com_mi_liveassistant_proto_VideoData_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_VideoData_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_VideoData_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_ImageData_descriptor;
+    internal_static_com_mi_liveassistant_proto_ImageData_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_ImageData_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_ImageData_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_ButtonData_descriptor;
+    internal_static_com_mi_liveassistant_proto_ButtonData_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_ButtonData_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_ButtonData_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetWaterfallSubListReq_descriptor;
+    internal_static_com_mi_liveassistant_proto_GetWaterfallSubListReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetWaterfallSubListReq_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_GetWaterfallSubListReq_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetWaterfallSubListRsp_descriptor;
+    internal_static_com_mi_liveassistant_proto_GetWaterfallSubListRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetWaterfallSubListRsp_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_GetWaterfallSubListRsp_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetLikedVideoReq_descriptor;
+    internal_static_com_mi_liveassistant_proto_GetLikedVideoReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetLikedVideoReq_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_GetLikedVideoReq_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetLikedVideoRsp_descriptor;
+    internal_static_com_mi_liveassistant_proto_GetLikedVideoRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetLikedVideoRsp_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_GetLikedVideoRsp_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -53697,148 +53697,153 @@ public final class CommonChannelProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\023CommonChannel.proto\022\023com.wali.live.pro" +
-      "to\"?\n\rChannelBanner\022\016\n\006bg_url\030\001 \002(\t\022\020\n\010l" +
-      "ink_url\030\002 \002(\t\022\014\n\004desc\030\003 \001(\t\"T\n\013ChannelIt" +
-      "em\022\016\n\006uiType\030\001 \002(\r\022\016\n\006uiData\030\002 \002(\014\022\022\n\nfu" +
-      "llColumn\030\003 \001(\010\022\021\n\tsectionId\030\004 \001(\r\"\206\001\n\027Ui" +
-      "TemplateOneTextOneImg\022=\n\titemDatas\030\001 \003(\013" +
-      "2*.com.wali.live.proto.OneTextOneImgItem" +
-      "Data\022\022\n\nheaderName\030\002 \001(\t\022\030\n\020headerViewAl" +
-      "lUri\030\003 \001(\t\"}\n\025OneTextOneImgItemData\022\014\n\004t" +
-      "ext\030\001 \001(\t\022\016\n\006imgUrl\030\002 \001(\t\022\025\n\rjumpSchemeU",
-      "ri\030\003 \001(\t\022/\n\010userInfo\030\004 \001(\0132\035.com.wali.li" +
-      "ve.proto.UserInfo\"\223\001\n\022UiTemplateUserInfo" +
-      "\0228\n\titemDatas\030\001 \003(\0132%.com.wali.live.prot" +
-      "o.UserInfoItemData\022\022\n\nheaderName\030\002 \001(\t\022\030" +
-      "\n\020headerViewAllUri\030\003 \001(\t\022\025\n\rsubHeaderNam" +
-      "e\030\004 \001(\t\"Z\n\020UserInfoItemData\022/\n\010userInfo\030" +
-      "\001 \001(\0132\035.com.wali.live.proto.UserInfo\022\025\n\r" +
-      "jumpSchemeUri\030\002 \001(\t\"\343\001\n\010UserInfo\022\014\n\004zuid" +
-      "\030\001 \002(\004\022\016\n\006avatar\030\002 \001(\004\022\020\n\010nickname\030\003 \001(\t" +
-      "\022\014\n\004sign\030\004 \001(\t\022\016\n\006gender\030\005 \001(\r\022\r\n\005level\030",
-      "\006 \001(\r\022\r\n\005badge\030\007 \001(\r\022\022\n\nupdateTime\030\010 \001(\004" +
-      "\022\021\n\tadminUids\030\t \003(\004\022\025\n\rcertification\030\n \001" +
-      "(\t\022\032\n\022certification_type\030\013 \001(\r\022\021\n\tfansCo" +
-      "unt\030\014 \001(\r\"\277\001\n\016BannerItemData\022\016\n\006picUrl\030\001" +
-      " \002(\t\022\021\n\007skipUrl\030\002 \002(\t:\000\022\024\n\014lastUpdateTs\030" +
-      "\003 \002(\004\022\020\n\010bannerId\030\004 \001(\r\022\024\n\014shareIconUrl\030" +
-      "\005 \001(\t\022\022\n\nshareTitle\030\006 \001(\t\022\021\n\tshareDesc\030\007" +
-      " \001(\t\022\024\n\tchannelId\030\010 \001(\r:\0011\022\017\n\004lang\030\t \001(\r" +
-      ":\0011\"X\n\020UiTemplateBanner\0226\n\titemDatas\030\001 \003" +
-      "(\0132#.com.wali.live.proto.BannerItemData\022",
-      "\014\n\004type\030\002 \001(\r\"\206\001\n\027UiTemplateTwoTextOneIm" +
-      "g\022=\n\titemDatas\030\001 \003(\0132*.com.wali.live.pro" +
-      "to.TwoTextOneImgItemData\022\022\n\nheaderName\030\002" +
-      " \001(\t\022\030\n\020headerViewAllUri\030\003 \001(\t\"\213\001\n\025TwoTe" +
-      "xtOneImgItemData\022\014\n\004name\030\001 \001(\t\022\014\n\004desc\030\002" +
-      " \001(\t\022\016\n\006imgUrl\030\003 \001(\t\022\025\n\rjumpSchemeUri\030\004 " +
-      "\001(\t\022/\n\010userInfo\030\005 \001(\0132\035.com.wali.live.pr" +
-      "oto.UserInfo\"\261\001\n\032UiTemplateLiveOrReplayI" +
-      "nfo\0228\n\005items\030\001 \003(\0132).com.wali.live.proto" +
-      ".LiveOrReplayItemInfo\022\022\n\nheaderName\030\002 \001(",
-      "\t\022\030\n\020headerViewAllUri\030\003 \001(\t\022\025\n\rsubHeader" +
-      "Name\030\004 \001(\t\022\024\n\014headerUiType\030\005 \001(\r\"\245\003\n\024Liv" +
-      "eOrReplayItemInfo\022\014\n\004type\030\001 \002(\r\022\r\n\005items" +
-      "\030\002 \002(\014\022\025\n\rjumpSchemeUri\030\003 \001(\t\022\023\n\013upRight" +
-      "Text\030\004 \001(\t\022\021\n\tdownText1\030\005 \001(\t\022\021\n\tdownTex" +
-      "t2\030\006 \001(\t\022\016\n\006imgUrl\030\007 \001(\t\022\023\n\013publishTime\030" +
-      "\010 \001(\004\022\022\n\nupLeftText\030\t \001(\t\022\017\n\007imgUrl2\030\n \001" +
-      "(\t\0223\n\006widget\030\013 \001(\0132#.com.wali.live.proto" +
-      ".ListWidgetInfo\022.\n\007topLeft\030\014 \001(\0132\035.com.w" +
-      "ali.live.proto.RichText\022/\n\006middle\030\r \001(\0132",
-      "\037.com.wali.live.proto.MiddleInfo\022,\n\005labe" +
-      "l\030\016 \003(\0132\035.com.wali.live.proto.RichText\022\020" +
-      "\n\010distance\030\017 \001(\r\"S\n\010RichText\022\014\n\004text\030\001 \001" +
-      "(\t\022\025\n\rjumpSchemeUri\030\002 \001(\t\022\021\n\tbgImageID\030\003" +
-      " \001(\r\022\017\n\007iconUrl\030\004 \001(\t\"*\n\nMiddleInfo\022\r\n\005t" +
-      "ext1\030\001 \001(\t\022\r\n\005text2\030\002 \001(\t\"8\n\016ListWidgetI" +
-      "nfo\022\025\n\rjumpSchemeUri\030\001 \001(\t\022\017\n\007iconUrl\030\002 " +
-      "\001(\t\"C\n\023UiTemplateSeparator\022\r\n\005color\030\001 \001(" +
-      "\r\022\016\n\006height\030\002 \001(\r\022\r\n\005title\030\003 \001(\t\"[\n\tUser" +
-      "Brief\022\013\n\003uId\030\001 \002(\004\022\020\n\010nickname\030\002 \001(\t\022\016\n\006",
-      "avatar\030\003 \001(\004\022\r\n\005level\030\004 \001(\r\022\020\n\010certType\030" +
-      "\005 \001(\r\"2\n\tShopBrief\022\021\n\thideGoods\030\001 \001(\010\022\022\n" +
-      "\ndesiredCnt\030\002 \001(\r\"\216\002\n\010LiveInfo\022\016\n\006liveId" +
-      "\030\001 \002(\t\022,\n\004user\030\002 \001(\0132\036.com.wali.live.pro" +
-      "to.UserBrief\022\020\n\010location\030\003 \001(\t\022\021\n\tviewer" +
-      "Cnt\030\004 \001(\r\022\013\n\003url\030\005 \001(\t\022\020\n\010coverUrl\030\006 \001(\t" +
-      "\022\017\n\007liTitle\030\007 \001(\t\022\021\n\tstartTime\030\010 \001(\004\022\013\n\003" +
-      "tag\030\t \001(\t\022,\n\004shop\030\n \001(\0132\036.com.wali.live." +
-      "proto.ShopBrief\022\017\n\007appType\030\013 \001(\r\022\020\n\010live" +
-      "Type\030\014 \001(\r\"\325\001\n\010BackInfo\022\016\n\006backId\030\001 \002(\t\022",
-      ",\n\004user\030\002 \001(\0132\036.com.wali.live.proto.User" +
-      "Brief\022\021\n\tviewerCnt\030\003 \001(\r\022\013\n\003url\030\004 \001(\t\022\021\n" +
-      "\tstartTime\030\005 \001(\004\022\017\n\007endTime\030\006 \001(\004\022\021\n\tbac" +
-      "kTitle\030\007 \001(\t\022\020\n\010coverUrl\030\010 \001(\t\022\020\n\010shareU" +
-      "rl\030\t \001(\t\022\020\n\010location\030\n \001(\t\"]\n\tVideoInfo\022" +
-      "\n\n\002id\030\001 \002(\t\022\022\n\nview_count\030\002 \001(\004\0220\n\tuser_" +
-      "info\030\003 \001(\0132\035.com.wali.live.proto.UserInf" +
+      "\n\023CommonChannel.proto\022\032com.mi.liveassist" +
+      "ant.proto\"?\n\rChannelBanner\022\016\n\006bg_url\030\001 \002" +
+      "(\t\022\020\n\010link_url\030\002 \002(\t\022\014\n\004desc\030\003 \001(\t\"T\n\013Ch" +
+      "annelItem\022\016\n\006uiType\030\001 \002(\r\022\016\n\006uiData\030\002 \002(" +
+      "\014\022\022\n\nfullColumn\030\003 \001(\010\022\021\n\tsectionId\030\004 \001(\r" +
+      "\"\215\001\n\027UiTemplateOneTextOneImg\022D\n\titemData" +
+      "s\030\001 \003(\01321.com.mi.liveassistant.proto.One" +
+      "TextOneImgItemData\022\022\n\nheaderName\030\002 \001(\t\022\030" +
+      "\n\020headerViewAllUri\030\003 \001(\t\"\204\001\n\025OneTextOneI" +
+      "mgItemData\022\014\n\004text\030\001 \001(\t\022\016\n\006imgUrl\030\002 \001(\t",
+      "\022\025\n\rjumpSchemeUri\030\003 \001(\t\0226\n\010userInfo\030\004 \001(" +
+      "\0132$.com.mi.liveassistant.proto.UserInfo\"" +
+      "\232\001\n\022UiTemplateUserInfo\022?\n\titemDatas\030\001 \003(" +
+      "\0132,.com.mi.liveassistant.proto.UserInfoI" +
+      "temData\022\022\n\nheaderName\030\002 \001(\t\022\030\n\020headerVie" +
+      "wAllUri\030\003 \001(\t\022\025\n\rsubHeaderName\030\004 \001(\t\"a\n\020" +
+      "UserInfoItemData\0226\n\010userInfo\030\001 \001(\0132$.com" +
+      ".mi.liveassistant.proto.UserInfo\022\025\n\rjump" +
+      "SchemeUri\030\002 \001(\t\"\343\001\n\010UserInfo\022\014\n\004zuid\030\001 \002" +
+      "(\004\022\016\n\006avatar\030\002 \001(\004\022\020\n\010nickname\030\003 \001(\t\022\014\n\004",
+      "sign\030\004 \001(\t\022\016\n\006gender\030\005 \001(\r\022\r\n\005level\030\006 \001(" +
+      "\r\022\r\n\005badge\030\007 \001(\r\022\022\n\nupdateTime\030\010 \001(\004\022\021\n\t" +
+      "adminUids\030\t \003(\004\022\025\n\rcertification\030\n \001(\t\022\032" +
+      "\n\022certification_type\030\013 \001(\r\022\021\n\tfansCount\030" +
+      "\014 \001(\r\"\277\001\n\016BannerItemData\022\016\n\006picUrl\030\001 \002(\t" +
+      "\022\021\n\007skipUrl\030\002 \002(\t:\000\022\024\n\014lastUpdateTs\030\003 \002(" +
+      "\004\022\020\n\010bannerId\030\004 \001(\r\022\024\n\014shareIconUrl\030\005 \001(" +
+      "\t\022\022\n\nshareTitle\030\006 \001(\t\022\021\n\tshareDesc\030\007 \001(\t" +
+      "\022\024\n\tchannelId\030\010 \001(\r:\0011\022\017\n\004lang\030\t \001(\r:\0011\"" +
+      "_\n\020UiTemplateBanner\022=\n\titemDatas\030\001 \003(\0132*",
+      ".com.mi.liveassistant.proto.BannerItemDa" +
+      "ta\022\014\n\004type\030\002 \001(\r\"\215\001\n\027UiTemplateTwoTextOn" +
+      "eImg\022D\n\titemDatas\030\001 \003(\01321.com.mi.liveass" +
+      "istant.proto.TwoTextOneImgItemData\022\022\n\nhe" +
+      "aderName\030\002 \001(\t\022\030\n\020headerViewAllUri\030\003 \001(\t" +
+      "\"\222\001\n\025TwoTextOneImgItemData\022\014\n\004name\030\001 \001(\t" +
+      "\022\014\n\004desc\030\002 \001(\t\022\016\n\006imgUrl\030\003 \001(\t\022\025\n\rjumpSc" +
+      "hemeUri\030\004 \001(\t\0226\n\010userInfo\030\005 \001(\0132$.com.mi" +
+      ".liveassistant.proto.UserInfo\"\270\001\n\032UiTemp" +
+      "lateLiveOrReplayInfo\022?\n\005items\030\001 \003(\01320.co",
+      "m.mi.liveassistant.proto.LiveOrReplayIte" +
+      "mInfo\022\022\n\nheaderName\030\002 \001(\t\022\030\n\020headerViewA" +
+      "llUri\030\003 \001(\t\022\025\n\rsubHeaderName\030\004 \001(\t\022\024\n\014he" +
+      "aderUiType\030\005 \001(\r\"\301\003\n\024LiveOrReplayItemInf" +
+      "o\022\014\n\004type\030\001 \002(\r\022\r\n\005items\030\002 \002(\014\022\025\n\rjumpSc" +
+      "hemeUri\030\003 \001(\t\022\023\n\013upRightText\030\004 \001(\t\022\021\n\tdo" +
+      "wnText1\030\005 \001(\t\022\021\n\tdownText2\030\006 \001(\t\022\016\n\006imgU" +
+      "rl\030\007 \001(\t\022\023\n\013publishTime\030\010 \001(\004\022\022\n\nupLeftT" +
+      "ext\030\t \001(\t\022\017\n\007imgUrl2\030\n \001(\t\022:\n\006widget\030\013 \001" +
+      "(\0132*.com.mi.liveassistant.proto.ListWidg",
+      "etInfo\0225\n\007topLeft\030\014 \001(\0132$.com.mi.liveass" +
+      "istant.proto.RichText\0226\n\006middle\030\r \001(\0132&." +
+      "com.mi.liveassistant.proto.MiddleInfo\0223\n" +
+      "\005label\030\016 \003(\0132$.com.mi.liveassistant.prot" +
+      "o.RichText\022\020\n\010distance\030\017 \001(\r\"S\n\010RichText" +
+      "\022\014\n\004text\030\001 \001(\t\022\025\n\rjumpSchemeUri\030\002 \001(\t\022\021\n" +
+      "\tbgImageID\030\003 \001(\r\022\017\n\007iconUrl\030\004 \001(\t\"*\n\nMid" +
+      "dleInfo\022\r\n\005text1\030\001 \001(\t\022\r\n\005text2\030\002 \001(\t\"8\n" +
+      "\016ListWidgetInfo\022\025\n\rjumpSchemeUri\030\001 \001(\t\022\017" +
+      "\n\007iconUrl\030\002 \001(\t\"C\n\023UiTemplateSeparator\022\r",
+      "\n\005color\030\001 \001(\r\022\016\n\006height\030\002 \001(\r\022\r\n\005title\030\003" +
+      " \001(\t\"[\n\tUserBrief\022\013\n\003uId\030\001 \002(\004\022\020\n\010nickna" +
+      "me\030\002 \001(\t\022\016\n\006avatar\030\003 \001(\004\022\r\n\005level\030\004 \001(\r\022" +
+      "\020\n\010certType\030\005 \001(\r\"2\n\tShopBrief\022\021\n\thideGo" +
+      "ods\030\001 \001(\010\022\022\n\ndesiredCnt\030\002 \001(\r\"\234\002\n\010LiveIn" +
+      "fo\022\016\n\006liveId\030\001 \002(\t\0223\n\004user\030\002 \001(\0132%.com.m" +
+      "i.liveassistant.proto.UserBrief\022\020\n\010locat" +
+      "ion\030\003 \001(\t\022\021\n\tviewerCnt\030\004 \001(\r\022\013\n\003url\030\005 \001(" +
+      "\t\022\020\n\010coverUrl\030\006 \001(\t\022\017\n\007liTitle\030\007 \001(\t\022\021\n\t" +
+      "startTime\030\010 \001(\004\022\013\n\003tag\030\t \001(\t\0223\n\004shop\030\n \001",
+      "(\0132%.com.mi.liveassistant.proto.ShopBrie" +
+      "f\022\017\n\007appType\030\013 \001(\r\022\020\n\010liveType\030\014 \001(\r\"\334\001\n" +
+      "\010BackInfo\022\016\n\006backId\030\001 \002(\t\0223\n\004user\030\002 \001(\0132" +
+      "%.com.mi.liveassistant.proto.UserBrief\022\021" +
+      "\n\tviewerCnt\030\003 \001(\r\022\013\n\003url\030\004 \001(\t\022\021\n\tstartT" +
+      "ime\030\005 \001(\004\022\017\n\007endTime\030\006 \001(\004\022\021\n\tbackTitle\030" +
+      "\007 \001(\t\022\020\n\010coverUrl\030\010 \001(\t\022\020\n\010shareUrl\030\t \001(" +
+      "\t\022\020\n\010location\030\n \001(\t\"d\n\tVideoInfo\022\n\n\002id\030\001" +
+      " \002(\t\022\022\n\nview_count\030\002 \001(\004\0227\n\tuser_info\030\003 " +
+      "\001(\0132$.com.mi.liveassistant.proto.UserInf",
       "o\"\220\001\n\016NavigationData\022\014\n\004name\030\001 \001(\t\022\020\n\010bg" +
       "ImgUrl\030\002 \001(\t\022\017\n\007iconUrl\030\003 \001(\t\022\025\n\rjumpSch" +
-      "emeUri\030\004 \001(\t\022\021\n\ttextColor\030\005 \001(\r\022\024\n\014hexCo",
-      "lorCode\030\006 \001(\t\022\r\n\005text1\030\007 \001(\t\"N\n\024UiTempla" +
-      "teNavigation\0226\n\titemDatas\030\001 \003(\0132#.com.wa" +
-      "li.live.proto.NavigationData\"b\n\020UiTempla" +
-      "teNotice\0224\n\013noticeItems\030\001 \003(\0132\037.com.wali" +
-      ".live.proto.NoticeData\022\030\n\020headerViewAllU" +
-      "ri\030\002 \001(\t\"N\n\nNoticeData\022\020\n\010noticeId\030\001 \001(\t" +
-      "\022\014\n\004zuid\030\002 \001(\004\022\021\n\tbeginTime\030\003 \001(\004\022\r\n\005tit" +
-      "le\030\004 \001(\t\"\224\001\n\021UiTemplateRanking\0227\n\titemDa" +
-      "tas\030\001 \003(\0132$.com.wali.live.proto.RankingI" +
-      "temData\022\025\n\rjumpSchemeUri\030\002 \001(\t\022\r\n\005text1\030",
-      "\003 \001(\t\022\r\n\005text2\030\004 \001(\t\022\021\n\ticonStyle\030\005 \001(\r\"" +
-      "Y\n\017RankingItemData\022/\n\010userInfo\030\001 \001(\0132\035.c" +
-      "om.wali.live.proto.UserInfo\022\025\n\rjumpSchem" +
-      "eUri\030\002 \001(\t\"G\n\017LiveRecvFlagReq\0224\n\005items\030\001" +
-      " \003(\0132%.com.wali.live.proto.LiveRecvFlagI" +
-      "tem\"R\n\020LiveRecvFlagItem\022\014\n\004date\030\001 \001(\004\022\014\n" +
-      "\004type\030\002 \001(\r\022\017\n\007extData\030\003 \001(\014\022\021\n\trecommen" +
-      "d\030\004 \001(\t\"/\n\nGiftDetail\022\016\n\006giftId\030\001 \001(\r\022\021\n" +
-      "\tgiftWorth\030\002 \001(\r\"1\n\tLeaveRoom\022\021\n\tenterTi" +
-      "me\030\001 \001(\004\022\021\n\tleaveTime\030\002 \001(\004\"3\n\nFollowRoo",
-      "m\022\021\n\tenterTime\030\001 \001(\004\022\022\n\nfollowTime\030\002 \001(\004" +
-      "\",\n\014LikeFeedback\022\014\n\004zuid\030\001 \001(\004\022\016\n\006roomId" +
-      "\030\002 \001(\t\"\035\n\tVideoLike\022\020\n\010befCount\030\001 \001(\004\"\037\n" +
-      "\014VideoComment\022\017\n\007content\030\001 \001(\t\"\"\n\017LiveRe" +
-      "cvFlagRsp\022\017\n\007retCode\030\001 \002(\r\"{\n\nBarMessage" +
-      "\0220\n\003bmt\030\001 \001(\0162#.com.wali.live.proto.BarM" +
-      "essageType\022\017\n\007content\030\002 \001(\t\022\016\n\006schema\030\003 " +
-      "\001(\t\022\r\n\005start\030\004 \001(\004\022\013\n\003end\030\005 \001(\004\"$\n\024GetBa" +
-      "rMessageRequest\022\014\n\004from\030\001 \001(\004\"g\n\025GetBarM" +
-      "essageResponse\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002",
-      " \001(\t\0220\n\007bar_msg\030\003 \003(\0132\037.com.wali.live.pr" +
-      "oto.BarMessage\"X\n\023GetWaterfallListReq\022\013\n" +
-      "\003uid\030\001 \002(\004\022\021\n\toper_type\030\002 \001(\r\022\022\n\nchannel" +
-      "_id\030\003 \001(\r\022\r\n\005param\030\004 \001(\014\"r\n\023GetWaterfall" +
-      "ListRsp\022\013\n\003ret\030\001 \002(\r\022-\n\004elem\030\002 \003(\0132\037.com" +
-      ".wali.live.proto.WatElement\022\r\n\005param\030\003 \001" +
-      "(\014\022\020\n\010has_more\030\004 \001(\010\"-\n\nWatElement\022\021\n\tda" +
-      "ta_type\030\001 \002(\r\022\014\n\004data\030\002 \002(\014\"\357\001\n\tVideoDat" +
-      "a\022\017\n\007feed_id\030\001 \001(\t\022\020\n\010jump_uri\030\002 \001(\t\022\021\n\t" +
-      "cover_url\030\003 \001(\t\022\r\n\005width\030\004 \001(\r\022\016\n\006height",
-      "\030\005 \001(\r\022\r\n\005title\030\006 \001(\t\022\022\n\nlike_count\030\007 \001(" +
-      "\004\022+\n\004user\030\010 \001(\0132\035.com.wali.live.proto.Us" +
-      "erInfo\022+\n\004mark\030\t \001(\0132\035.com.wali.live.pro" +
-      "to.RichText\022\020\n\010is_liked\030\n \001(\010\"\213\001\n\tImageD" +
-      "ata\022\021\n\timage_url\030\001 \001(\t\022\020\n\010jump_uri\030\002 \001(\t" +
-      "\022\r\n\005width\030\003 \001(\r\022\016\n\006height\030\004 \001(\r\022\r\n\005title" +
-      "\030\005 \001(\t\022+\n\004mark\030\006 \001(\0132\035.com.wali.live.pro" +
-      "to.RichText\"h\n\nButtonData\022\023\n\013button_text" +
-      "\030\001 \001(\t\022\022\n\nbutton_uri\030\002 \001(\t\022\021\n\timage_url\030" +
-      "\003 \001(\t\022\014\n\004text\030\004 \001(\t\022\020\n\010jump_uri\030\005 \001(\t\"[\n",
-      "\026GetWaterfallSubListReq\022\013\n\003uid\030\001 \002(\004\022\021\n\t" +
-      "oper_type\030\002 \001(\r\022\022\n\nchannel_id\030\003 \001(\r\022\r\n\005p" +
-      "aram\030\004 \001(\014\"u\n\026GetWaterfallSubListRsp\022\013\n\003" +
-      "ret\030\001 \002(\r\022-\n\004elem\030\002 \003(\0132\037.com.wali.live." +
-      "proto.WatElement\022\r\n\005param\030\003 \001(\014\022\020\n\010has_m" +
-      "ore\030\004 \001(\010\".\n\020GetLikedVideoReq\022\013\n\003uid\030\001 \002" +
-      "(\004\022\r\n\005start\030\002 \001(\004\"b\n\020GetLikedVideoRsp\022\013\n" +
-      "\003ret\030\001 \002(\r\022-\n\004elem\030\002 \003(\0132\037.com.wali.live" +
-      ".proto.WatElement\022\022\n\nnext_start\030\003 \001(\004**\n" +
-      "\016BarMessageType\022\006\n\002OP\020\001\022\007\n\003SYS\020\002\022\007\n\003NTF\020",
-      "\003B)\n\023com.wali.live.protoB\022CommonChannelP" +
-      "roto"
+      "emeUri\030\004 \001(\t\022\021\n\ttextColor\030\005 \001(\r\022\024\n\014hexCo" +
+      "lorCode\030\006 \001(\t\022\r\n\005text1\030\007 \001(\t\"U\n\024UiTempla" +
+      "teNavigation\022=\n\titemDatas\030\001 \003(\0132*.com.mi" +
+      ".liveassistant.proto.NavigationData\"i\n\020U" +
+      "iTemplateNotice\022;\n\013noticeItems\030\001 \003(\0132&.c" +
+      "om.mi.liveassistant.proto.NoticeData\022\030\n\020" +
+      "headerViewAllUri\030\002 \001(\t\"N\n\nNoticeData\022\020\n\010" +
+      "noticeId\030\001 \001(\t\022\014\n\004zuid\030\002 \001(\004\022\021\n\tbeginTim",
+      "e\030\003 \001(\004\022\r\n\005title\030\004 \001(\t\"\233\001\n\021UiTemplateRan" +
+      "king\022>\n\titemDatas\030\001 \003(\0132+.com.mi.liveass" +
+      "istant.proto.RankingItemData\022\025\n\rjumpSche" +
+      "meUri\030\002 \001(\t\022\r\n\005text1\030\003 \001(\t\022\r\n\005text2\030\004 \001(" +
+      "\t\022\021\n\ticonStyle\030\005 \001(\r\"`\n\017RankingItemData\022" +
+      "6\n\010userInfo\030\001 \001(\0132$.com.mi.liveassistant" +
+      ".proto.UserInfo\022\025\n\rjumpSchemeUri\030\002 \001(\t\"N" +
+      "\n\017LiveRecvFlagReq\022;\n\005items\030\001 \003(\0132,.com.m" +
+      "i.liveassistant.proto.LiveRecvFlagItem\"R" +
+      "\n\020LiveRecvFlagItem\022\014\n\004date\030\001 \001(\004\022\014\n\004type",
+      "\030\002 \001(\r\022\017\n\007extData\030\003 \001(\014\022\021\n\trecommend\030\004 \001" +
+      "(\t\"/\n\nGiftDetail\022\016\n\006giftId\030\001 \001(\r\022\021\n\tgift" +
+      "Worth\030\002 \001(\r\"1\n\tLeaveRoom\022\021\n\tenterTime\030\001 " +
+      "\001(\004\022\021\n\tleaveTime\030\002 \001(\004\"3\n\nFollowRoom\022\021\n\t" +
+      "enterTime\030\001 \001(\004\022\022\n\nfollowTime\030\002 \001(\004\",\n\014L" +
+      "ikeFeedback\022\014\n\004zuid\030\001 \001(\004\022\016\n\006roomId\030\002 \001(" +
+      "\t\"\035\n\tVideoLike\022\020\n\010befCount\030\001 \001(\004\"\037\n\014Vide" +
+      "oComment\022\017\n\007content\030\001 \001(\t\"\"\n\017LiveRecvFla" +
+      "gRsp\022\017\n\007retCode\030\001 \002(\r\"\202\001\n\nBarMessage\0227\n\003" +
+      "bmt\030\001 \001(\0162*.com.mi.liveassistant.proto.B",
+      "arMessageType\022\017\n\007content\030\002 \001(\t\022\016\n\006schema" +
+      "\030\003 \001(\t\022\r\n\005start\030\004 \001(\004\022\013\n\003end\030\005 \001(\004\"$\n\024Ge" +
+      "tBarMessageRequest\022\014\n\004from\030\001 \001(\004\"n\n\025GetB" +
+      "arMessageResponse\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_ms" +
+      "g\030\002 \001(\t\0227\n\007bar_msg\030\003 \003(\0132&.com.mi.liveas" +
+      "sistant.proto.BarMessage\"X\n\023GetWaterfall" +
+      "ListReq\022\013\n\003uid\030\001 \002(\004\022\021\n\toper_type\030\002 \001(\r\022" +
+      "\022\n\nchannel_id\030\003 \001(\r\022\r\n\005param\030\004 \001(\014\"y\n\023Ge" +
+      "tWaterfallListRsp\022\013\n\003ret\030\001 \002(\r\0224\n\004elem\030\002" +
+      " \003(\0132&.com.mi.liveassistant.proto.WatEle",
+      "ment\022\r\n\005param\030\003 \001(\014\022\020\n\010has_more\030\004 \001(\010\"-\n" +
+      "\nWatElement\022\021\n\tdata_type\030\001 \002(\r\022\014\n\004data\030\002" +
+      " \002(\014\"\375\001\n\tVideoData\022\017\n\007feed_id\030\001 \001(\t\022\020\n\010j" +
+      "ump_uri\030\002 \001(\t\022\021\n\tcover_url\030\003 \001(\t\022\r\n\005widt" +
+      "h\030\004 \001(\r\022\016\n\006height\030\005 \001(\r\022\r\n\005title\030\006 \001(\t\022\022" +
+      "\n\nlike_count\030\007 \001(\004\0222\n\004user\030\010 \001(\0132$.com.m" +
+      "i.liveassistant.proto.UserInfo\0222\n\004mark\030\t" +
+      " \001(\0132$.com.mi.liveassistant.proto.RichTe" +
+      "xt\022\020\n\010is_liked\030\n \001(\010\"\222\001\n\tImageData\022\021\n\tim" +
+      "age_url\030\001 \001(\t\022\020\n\010jump_uri\030\002 \001(\t\022\r\n\005width",
+      "\030\003 \001(\r\022\016\n\006height\030\004 \001(\r\022\r\n\005title\030\005 \001(\t\0222\n" +
+      "\004mark\030\006 \001(\0132$.com.mi.liveassistant.proto" +
+      ".RichText\"h\n\nButtonData\022\023\n\013button_text\030\001" +
+      " \001(\t\022\022\n\nbutton_uri\030\002 \001(\t\022\021\n\timage_url\030\003 " +
+      "\001(\t\022\014\n\004text\030\004 \001(\t\022\020\n\010jump_uri\030\005 \001(\t\"[\n\026G" +
+      "etWaterfallSubListReq\022\013\n\003uid\030\001 \002(\004\022\021\n\top" +
+      "er_type\030\002 \001(\r\022\022\n\nchannel_id\030\003 \001(\r\022\r\n\005par" +
+      "am\030\004 \001(\014\"|\n\026GetWaterfallSubListRsp\022\013\n\003re" +
+      "t\030\001 \002(\r\0224\n\004elem\030\002 \003(\0132&.com.mi.liveassis" +
+      "tant.proto.WatElement\022\r\n\005param\030\003 \001(\014\022\020\n\010",
+      "has_more\030\004 \001(\010\".\n\020GetLikedVideoReq\022\013\n\003ui" +
+      "d\030\001 \002(\004\022\r\n\005start\030\002 \001(\004\"i\n\020GetLikedVideoR" +
+      "sp\022\013\n\003ret\030\001 \002(\r\0224\n\004elem\030\002 \003(\0132&.com.mi.l" +
+      "iveassistant.proto.WatElement\022\022\n\nnext_st" +
+      "art\030\003 \001(\004**\n\016BarMessageType\022\006\n\002OP\020\001\022\007\n\003S" +
+      "YS\020\002\022\007\n\003NTF\020\003B)\n\023com.wali.live.protoB\022Co" +
+      "mmonChannelProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -53852,305 +53857,305 @@ public final class CommonChannelProto {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_com_wali_live_proto_ChannelBanner_descriptor =
+    internal_static_com_mi_liveassistant_proto_ChannelBanner_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_com_wali_live_proto_ChannelBanner_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_ChannelBanner_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_ChannelBanner_descriptor,
+        internal_static_com_mi_liveassistant_proto_ChannelBanner_descriptor,
         new java.lang.String[] { "BgUrl", "LinkUrl", "Desc", });
-    internal_static_com_wali_live_proto_ChannelItem_descriptor =
+    internal_static_com_mi_liveassistant_proto_ChannelItem_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_com_wali_live_proto_ChannelItem_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_ChannelItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_ChannelItem_descriptor,
+        internal_static_com_mi_liveassistant_proto_ChannelItem_descriptor,
         new java.lang.String[] { "UiType", "UiData", "FullColumn", "SectionId", });
-    internal_static_com_wali_live_proto_UiTemplateOneTextOneImg_descriptor =
+    internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_descriptor =
       getDescriptor().getMessageTypes().get(2);
-    internal_static_com_wali_live_proto_UiTemplateOneTextOneImg_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_UiTemplateOneTextOneImg_descriptor,
+        internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_descriptor,
         new java.lang.String[] { "ItemDatas", "HeaderName", "HeaderViewAllUri", });
-    internal_static_com_wali_live_proto_OneTextOneImgItemData_descriptor =
+    internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_descriptor =
       getDescriptor().getMessageTypes().get(3);
-    internal_static_com_wali_live_proto_OneTextOneImgItemData_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_OneTextOneImgItemData_descriptor,
+        internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_descriptor,
         new java.lang.String[] { "Text", "ImgUrl", "JumpSchemeUri", "UserInfo", });
-    internal_static_com_wali_live_proto_UiTemplateUserInfo_descriptor =
+    internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_descriptor =
       getDescriptor().getMessageTypes().get(4);
-    internal_static_com_wali_live_proto_UiTemplateUserInfo_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_UiTemplateUserInfo_descriptor,
+        internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_descriptor,
         new java.lang.String[] { "ItemDatas", "HeaderName", "HeaderViewAllUri", "SubHeaderName", });
-    internal_static_com_wali_live_proto_UserInfoItemData_descriptor =
+    internal_static_com_mi_liveassistant_proto_UserInfoItemData_descriptor =
       getDescriptor().getMessageTypes().get(5);
-    internal_static_com_wali_live_proto_UserInfoItemData_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_UserInfoItemData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_UserInfoItemData_descriptor,
+        internal_static_com_mi_liveassistant_proto_UserInfoItemData_descriptor,
         new java.lang.String[] { "UserInfo", "JumpSchemeUri", });
-    internal_static_com_wali_live_proto_UserInfo_descriptor =
+    internal_static_com_mi_liveassistant_proto_UserInfo_descriptor =
       getDescriptor().getMessageTypes().get(6);
-    internal_static_com_wali_live_proto_UserInfo_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_UserInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_UserInfo_descriptor,
+        internal_static_com_mi_liveassistant_proto_UserInfo_descriptor,
         new java.lang.String[] { "Zuid", "Avatar", "Nickname", "Sign", "Gender", "Level", "Badge", "UpdateTime", "AdminUids", "Certification", "CertificationType", "FansCount", });
-    internal_static_com_wali_live_proto_BannerItemData_descriptor =
+    internal_static_com_mi_liveassistant_proto_BannerItemData_descriptor =
       getDescriptor().getMessageTypes().get(7);
-    internal_static_com_wali_live_proto_BannerItemData_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_BannerItemData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_BannerItemData_descriptor,
+        internal_static_com_mi_liveassistant_proto_BannerItemData_descriptor,
         new java.lang.String[] { "PicUrl", "SkipUrl", "LastUpdateTs", "BannerId", "ShareIconUrl", "ShareTitle", "ShareDesc", "ChannelId", "Lang", });
-    internal_static_com_wali_live_proto_UiTemplateBanner_descriptor =
+    internal_static_com_mi_liveassistant_proto_UiTemplateBanner_descriptor =
       getDescriptor().getMessageTypes().get(8);
-    internal_static_com_wali_live_proto_UiTemplateBanner_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_UiTemplateBanner_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_UiTemplateBanner_descriptor,
+        internal_static_com_mi_liveassistant_proto_UiTemplateBanner_descriptor,
         new java.lang.String[] { "ItemDatas", "Type", });
-    internal_static_com_wali_live_proto_UiTemplateTwoTextOneImg_descriptor =
+    internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_descriptor =
       getDescriptor().getMessageTypes().get(9);
-    internal_static_com_wali_live_proto_UiTemplateTwoTextOneImg_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_UiTemplateTwoTextOneImg_descriptor,
+        internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_descriptor,
         new java.lang.String[] { "ItemDatas", "HeaderName", "HeaderViewAllUri", });
-    internal_static_com_wali_live_proto_TwoTextOneImgItemData_descriptor =
+    internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_descriptor =
       getDescriptor().getMessageTypes().get(10);
-    internal_static_com_wali_live_proto_TwoTextOneImgItemData_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_TwoTextOneImgItemData_descriptor,
+        internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_descriptor,
         new java.lang.String[] { "Name", "Desc", "ImgUrl", "JumpSchemeUri", "UserInfo", });
-    internal_static_com_wali_live_proto_UiTemplateLiveOrReplayInfo_descriptor =
+    internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_descriptor =
       getDescriptor().getMessageTypes().get(11);
-    internal_static_com_wali_live_proto_UiTemplateLiveOrReplayInfo_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_UiTemplateLiveOrReplayInfo_descriptor,
+        internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_descriptor,
         new java.lang.String[] { "Items", "HeaderName", "HeaderViewAllUri", "SubHeaderName", "HeaderUiType", });
-    internal_static_com_wali_live_proto_LiveOrReplayItemInfo_descriptor =
+    internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_descriptor =
       getDescriptor().getMessageTypes().get(12);
-    internal_static_com_wali_live_proto_LiveOrReplayItemInfo_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_LiveOrReplayItemInfo_descriptor,
+        internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_descriptor,
         new java.lang.String[] { "Type", "Items", "JumpSchemeUri", "UpRightText", "DownText1", "DownText2", "ImgUrl", "PublishTime", "UpLeftText", "ImgUrl2", "Widget", "TopLeft", "Middle", "Label", "Distance", });
-    internal_static_com_wali_live_proto_RichText_descriptor =
+    internal_static_com_mi_liveassistant_proto_RichText_descriptor =
       getDescriptor().getMessageTypes().get(13);
-    internal_static_com_wali_live_proto_RichText_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_RichText_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_RichText_descriptor,
+        internal_static_com_mi_liveassistant_proto_RichText_descriptor,
         new java.lang.String[] { "Text", "JumpSchemeUri", "BgImageID", "IconUrl", });
-    internal_static_com_wali_live_proto_MiddleInfo_descriptor =
+    internal_static_com_mi_liveassistant_proto_MiddleInfo_descriptor =
       getDescriptor().getMessageTypes().get(14);
-    internal_static_com_wali_live_proto_MiddleInfo_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_MiddleInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_MiddleInfo_descriptor,
+        internal_static_com_mi_liveassistant_proto_MiddleInfo_descriptor,
         new java.lang.String[] { "Text1", "Text2", });
-    internal_static_com_wali_live_proto_ListWidgetInfo_descriptor =
+    internal_static_com_mi_liveassistant_proto_ListWidgetInfo_descriptor =
       getDescriptor().getMessageTypes().get(15);
-    internal_static_com_wali_live_proto_ListWidgetInfo_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_ListWidgetInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_ListWidgetInfo_descriptor,
+        internal_static_com_mi_liveassistant_proto_ListWidgetInfo_descriptor,
         new java.lang.String[] { "JumpSchemeUri", "IconUrl", });
-    internal_static_com_wali_live_proto_UiTemplateSeparator_descriptor =
+    internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_descriptor =
       getDescriptor().getMessageTypes().get(16);
-    internal_static_com_wali_live_proto_UiTemplateSeparator_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_UiTemplateSeparator_descriptor,
+        internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_descriptor,
         new java.lang.String[] { "Color", "Height", "Title", });
-    internal_static_com_wali_live_proto_UserBrief_descriptor =
+    internal_static_com_mi_liveassistant_proto_UserBrief_descriptor =
       getDescriptor().getMessageTypes().get(17);
-    internal_static_com_wali_live_proto_UserBrief_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_UserBrief_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_UserBrief_descriptor,
+        internal_static_com_mi_liveassistant_proto_UserBrief_descriptor,
         new java.lang.String[] { "UId", "Nickname", "Avatar", "Level", "CertType", });
-    internal_static_com_wali_live_proto_ShopBrief_descriptor =
+    internal_static_com_mi_liveassistant_proto_ShopBrief_descriptor =
       getDescriptor().getMessageTypes().get(18);
-    internal_static_com_wali_live_proto_ShopBrief_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_ShopBrief_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_ShopBrief_descriptor,
+        internal_static_com_mi_liveassistant_proto_ShopBrief_descriptor,
         new java.lang.String[] { "HideGoods", "DesiredCnt", });
-    internal_static_com_wali_live_proto_LiveInfo_descriptor =
+    internal_static_com_mi_liveassistant_proto_LiveInfo_descriptor =
       getDescriptor().getMessageTypes().get(19);
-    internal_static_com_wali_live_proto_LiveInfo_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_LiveInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_LiveInfo_descriptor,
+        internal_static_com_mi_liveassistant_proto_LiveInfo_descriptor,
         new java.lang.String[] { "LiveId", "User", "Location", "ViewerCnt", "Url", "CoverUrl", "LiTitle", "StartTime", "Tag", "Shop", "AppType", "LiveType", });
-    internal_static_com_wali_live_proto_BackInfo_descriptor =
+    internal_static_com_mi_liveassistant_proto_BackInfo_descriptor =
       getDescriptor().getMessageTypes().get(20);
-    internal_static_com_wali_live_proto_BackInfo_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_BackInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_BackInfo_descriptor,
+        internal_static_com_mi_liveassistant_proto_BackInfo_descriptor,
         new java.lang.String[] { "BackId", "User", "ViewerCnt", "Url", "StartTime", "EndTime", "BackTitle", "CoverUrl", "ShareUrl", "Location", });
-    internal_static_com_wali_live_proto_VideoInfo_descriptor =
+    internal_static_com_mi_liveassistant_proto_VideoInfo_descriptor =
       getDescriptor().getMessageTypes().get(21);
-    internal_static_com_wali_live_proto_VideoInfo_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_VideoInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_VideoInfo_descriptor,
+        internal_static_com_mi_liveassistant_proto_VideoInfo_descriptor,
         new java.lang.String[] { "Id", "ViewCount", "UserInfo", });
-    internal_static_com_wali_live_proto_NavigationData_descriptor =
+    internal_static_com_mi_liveassistant_proto_NavigationData_descriptor =
       getDescriptor().getMessageTypes().get(22);
-    internal_static_com_wali_live_proto_NavigationData_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_NavigationData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_NavigationData_descriptor,
+        internal_static_com_mi_liveassistant_proto_NavigationData_descriptor,
         new java.lang.String[] { "Name", "BgImgUrl", "IconUrl", "JumpSchemeUri", "TextColor", "HexColorCode", "Text1", });
-    internal_static_com_wali_live_proto_UiTemplateNavigation_descriptor =
+    internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_descriptor =
       getDescriptor().getMessageTypes().get(23);
-    internal_static_com_wali_live_proto_UiTemplateNavigation_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_UiTemplateNavigation_descriptor,
+        internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_descriptor,
         new java.lang.String[] { "ItemDatas", });
-    internal_static_com_wali_live_proto_UiTemplateNotice_descriptor =
+    internal_static_com_mi_liveassistant_proto_UiTemplateNotice_descriptor =
       getDescriptor().getMessageTypes().get(24);
-    internal_static_com_wali_live_proto_UiTemplateNotice_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_UiTemplateNotice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_UiTemplateNotice_descriptor,
+        internal_static_com_mi_liveassistant_proto_UiTemplateNotice_descriptor,
         new java.lang.String[] { "NoticeItems", "HeaderViewAllUri", });
-    internal_static_com_wali_live_proto_NoticeData_descriptor =
+    internal_static_com_mi_liveassistant_proto_NoticeData_descriptor =
       getDescriptor().getMessageTypes().get(25);
-    internal_static_com_wali_live_proto_NoticeData_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_NoticeData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_NoticeData_descriptor,
+        internal_static_com_mi_liveassistant_proto_NoticeData_descriptor,
         new java.lang.String[] { "NoticeId", "Zuid", "BeginTime", "Title", });
-    internal_static_com_wali_live_proto_UiTemplateRanking_descriptor =
+    internal_static_com_mi_liveassistant_proto_UiTemplateRanking_descriptor =
       getDescriptor().getMessageTypes().get(26);
-    internal_static_com_wali_live_proto_UiTemplateRanking_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_UiTemplateRanking_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_UiTemplateRanking_descriptor,
+        internal_static_com_mi_liveassistant_proto_UiTemplateRanking_descriptor,
         new java.lang.String[] { "ItemDatas", "JumpSchemeUri", "Text1", "Text2", "IconStyle", });
-    internal_static_com_wali_live_proto_RankingItemData_descriptor =
+    internal_static_com_mi_liveassistant_proto_RankingItemData_descriptor =
       getDescriptor().getMessageTypes().get(27);
-    internal_static_com_wali_live_proto_RankingItemData_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_RankingItemData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_RankingItemData_descriptor,
+        internal_static_com_mi_liveassistant_proto_RankingItemData_descriptor,
         new java.lang.String[] { "UserInfo", "JumpSchemeUri", });
-    internal_static_com_wali_live_proto_LiveRecvFlagReq_descriptor =
+    internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_descriptor =
       getDescriptor().getMessageTypes().get(28);
-    internal_static_com_wali_live_proto_LiveRecvFlagReq_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_LiveRecvFlagReq_descriptor,
+        internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_descriptor,
         new java.lang.String[] { "Items", });
-    internal_static_com_wali_live_proto_LiveRecvFlagItem_descriptor =
+    internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_descriptor =
       getDescriptor().getMessageTypes().get(29);
-    internal_static_com_wali_live_proto_LiveRecvFlagItem_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_LiveRecvFlagItem_descriptor,
+        internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_descriptor,
         new java.lang.String[] { "Date", "Type", "ExtData", "Recommend", });
-    internal_static_com_wali_live_proto_GiftDetail_descriptor =
+    internal_static_com_mi_liveassistant_proto_GiftDetail_descriptor =
       getDescriptor().getMessageTypes().get(30);
-    internal_static_com_wali_live_proto_GiftDetail_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_GiftDetail_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GiftDetail_descriptor,
+        internal_static_com_mi_liveassistant_proto_GiftDetail_descriptor,
         new java.lang.String[] { "GiftId", "GiftWorth", });
-    internal_static_com_wali_live_proto_LeaveRoom_descriptor =
+    internal_static_com_mi_liveassistant_proto_LeaveRoom_descriptor =
       getDescriptor().getMessageTypes().get(31);
-    internal_static_com_wali_live_proto_LeaveRoom_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_LeaveRoom_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_LeaveRoom_descriptor,
+        internal_static_com_mi_liveassistant_proto_LeaveRoom_descriptor,
         new java.lang.String[] { "EnterTime", "LeaveTime", });
-    internal_static_com_wali_live_proto_FollowRoom_descriptor =
+    internal_static_com_mi_liveassistant_proto_FollowRoom_descriptor =
       getDescriptor().getMessageTypes().get(32);
-    internal_static_com_wali_live_proto_FollowRoom_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_FollowRoom_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_FollowRoom_descriptor,
+        internal_static_com_mi_liveassistant_proto_FollowRoom_descriptor,
         new java.lang.String[] { "EnterTime", "FollowTime", });
-    internal_static_com_wali_live_proto_LikeFeedback_descriptor =
+    internal_static_com_mi_liveassistant_proto_LikeFeedback_descriptor =
       getDescriptor().getMessageTypes().get(33);
-    internal_static_com_wali_live_proto_LikeFeedback_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_LikeFeedback_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_LikeFeedback_descriptor,
+        internal_static_com_mi_liveassistant_proto_LikeFeedback_descriptor,
         new java.lang.String[] { "Zuid", "RoomId", });
-    internal_static_com_wali_live_proto_VideoLike_descriptor =
+    internal_static_com_mi_liveassistant_proto_VideoLike_descriptor =
       getDescriptor().getMessageTypes().get(34);
-    internal_static_com_wali_live_proto_VideoLike_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_VideoLike_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_VideoLike_descriptor,
+        internal_static_com_mi_liveassistant_proto_VideoLike_descriptor,
         new java.lang.String[] { "BefCount", });
-    internal_static_com_wali_live_proto_VideoComment_descriptor =
+    internal_static_com_mi_liveassistant_proto_VideoComment_descriptor =
       getDescriptor().getMessageTypes().get(35);
-    internal_static_com_wali_live_proto_VideoComment_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_VideoComment_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_VideoComment_descriptor,
+        internal_static_com_mi_liveassistant_proto_VideoComment_descriptor,
         new java.lang.String[] { "Content", });
-    internal_static_com_wali_live_proto_LiveRecvFlagRsp_descriptor =
+    internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_descriptor =
       getDescriptor().getMessageTypes().get(36);
-    internal_static_com_wali_live_proto_LiveRecvFlagRsp_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_LiveRecvFlagRsp_descriptor,
+        internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_descriptor,
         new java.lang.String[] { "RetCode", });
-    internal_static_com_wali_live_proto_BarMessage_descriptor =
+    internal_static_com_mi_liveassistant_proto_BarMessage_descriptor =
       getDescriptor().getMessageTypes().get(37);
-    internal_static_com_wali_live_proto_BarMessage_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_BarMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_BarMessage_descriptor,
+        internal_static_com_mi_liveassistant_proto_BarMessage_descriptor,
         new java.lang.String[] { "Bmt", "Content", "Schema", "Start", "End", });
-    internal_static_com_wali_live_proto_GetBarMessageRequest_descriptor =
+    internal_static_com_mi_liveassistant_proto_GetBarMessageRequest_descriptor =
       getDescriptor().getMessageTypes().get(38);
-    internal_static_com_wali_live_proto_GetBarMessageRequest_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_GetBarMessageRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetBarMessageRequest_descriptor,
+        internal_static_com_mi_liveassistant_proto_GetBarMessageRequest_descriptor,
         new java.lang.String[] { "From", });
-    internal_static_com_wali_live_proto_GetBarMessageResponse_descriptor =
+    internal_static_com_mi_liveassistant_proto_GetBarMessageResponse_descriptor =
       getDescriptor().getMessageTypes().get(39);
-    internal_static_com_wali_live_proto_GetBarMessageResponse_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_GetBarMessageResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetBarMessageResponse_descriptor,
+        internal_static_com_mi_liveassistant_proto_GetBarMessageResponse_descriptor,
         new java.lang.String[] { "Ret", "ErrMsg", "BarMsg", });
-    internal_static_com_wali_live_proto_GetWaterfallListReq_descriptor =
+    internal_static_com_mi_liveassistant_proto_GetWaterfallListReq_descriptor =
       getDescriptor().getMessageTypes().get(40);
-    internal_static_com_wali_live_proto_GetWaterfallListReq_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_GetWaterfallListReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetWaterfallListReq_descriptor,
+        internal_static_com_mi_liveassistant_proto_GetWaterfallListReq_descriptor,
         new java.lang.String[] { "Uid", "OperType", "ChannelId", "Param", });
-    internal_static_com_wali_live_proto_GetWaterfallListRsp_descriptor =
+    internal_static_com_mi_liveassistant_proto_GetWaterfallListRsp_descriptor =
       getDescriptor().getMessageTypes().get(41);
-    internal_static_com_wali_live_proto_GetWaterfallListRsp_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_GetWaterfallListRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetWaterfallListRsp_descriptor,
+        internal_static_com_mi_liveassistant_proto_GetWaterfallListRsp_descriptor,
         new java.lang.String[] { "Ret", "Elem", "Param", "HasMore", });
-    internal_static_com_wali_live_proto_WatElement_descriptor =
+    internal_static_com_mi_liveassistant_proto_WatElement_descriptor =
       getDescriptor().getMessageTypes().get(42);
-    internal_static_com_wali_live_proto_WatElement_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_WatElement_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_WatElement_descriptor,
+        internal_static_com_mi_liveassistant_proto_WatElement_descriptor,
         new java.lang.String[] { "DataType", "Data", });
-    internal_static_com_wali_live_proto_VideoData_descriptor =
+    internal_static_com_mi_liveassistant_proto_VideoData_descriptor =
       getDescriptor().getMessageTypes().get(43);
-    internal_static_com_wali_live_proto_VideoData_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_VideoData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_VideoData_descriptor,
+        internal_static_com_mi_liveassistant_proto_VideoData_descriptor,
         new java.lang.String[] { "FeedId", "JumpUri", "CoverUrl", "Width", "Height", "Title", "LikeCount", "User", "Mark", "IsLiked", });
-    internal_static_com_wali_live_proto_ImageData_descriptor =
+    internal_static_com_mi_liveassistant_proto_ImageData_descriptor =
       getDescriptor().getMessageTypes().get(44);
-    internal_static_com_wali_live_proto_ImageData_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_ImageData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_ImageData_descriptor,
+        internal_static_com_mi_liveassistant_proto_ImageData_descriptor,
         new java.lang.String[] { "ImageUrl", "JumpUri", "Width", "Height", "Title", "Mark", });
-    internal_static_com_wali_live_proto_ButtonData_descriptor =
+    internal_static_com_mi_liveassistant_proto_ButtonData_descriptor =
       getDescriptor().getMessageTypes().get(45);
-    internal_static_com_wali_live_proto_ButtonData_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_ButtonData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_ButtonData_descriptor,
+        internal_static_com_mi_liveassistant_proto_ButtonData_descriptor,
         new java.lang.String[] { "ButtonText", "ButtonUri", "ImageUrl", "Text", "JumpUri", });
-    internal_static_com_wali_live_proto_GetWaterfallSubListReq_descriptor =
+    internal_static_com_mi_liveassistant_proto_GetWaterfallSubListReq_descriptor =
       getDescriptor().getMessageTypes().get(46);
-    internal_static_com_wali_live_proto_GetWaterfallSubListReq_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_GetWaterfallSubListReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetWaterfallSubListReq_descriptor,
+        internal_static_com_mi_liveassistant_proto_GetWaterfallSubListReq_descriptor,
         new java.lang.String[] { "Uid", "OperType", "ChannelId", "Param", });
-    internal_static_com_wali_live_proto_GetWaterfallSubListRsp_descriptor =
+    internal_static_com_mi_liveassistant_proto_GetWaterfallSubListRsp_descriptor =
       getDescriptor().getMessageTypes().get(47);
-    internal_static_com_wali_live_proto_GetWaterfallSubListRsp_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_GetWaterfallSubListRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetWaterfallSubListRsp_descriptor,
+        internal_static_com_mi_liveassistant_proto_GetWaterfallSubListRsp_descriptor,
         new java.lang.String[] { "Ret", "Elem", "Param", "HasMore", });
-    internal_static_com_wali_live_proto_GetLikedVideoReq_descriptor =
+    internal_static_com_mi_liveassistant_proto_GetLikedVideoReq_descriptor =
       getDescriptor().getMessageTypes().get(48);
-    internal_static_com_wali_live_proto_GetLikedVideoReq_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_GetLikedVideoReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetLikedVideoReq_descriptor,
+        internal_static_com_mi_liveassistant_proto_GetLikedVideoReq_descriptor,
         new java.lang.String[] { "Uid", "Start", });
-    internal_static_com_wali_live_proto_GetLikedVideoRsp_descriptor =
+    internal_static_com_mi_liveassistant_proto_GetLikedVideoRsp_descriptor =
       getDescriptor().getMessageTypes().get(49);
-    internal_static_com_wali_live_proto_GetLikedVideoRsp_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_GetLikedVideoRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetLikedVideoRsp_descriptor,
+        internal_static_com_mi_liveassistant_proto_GetLikedVideoRsp_descriptor,
         new java.lang.String[] { "Ret", "Elem", "NextStart", });
   }
 

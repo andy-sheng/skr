@@ -16,8 +16,6 @@ import com.wali.live.proto.LiveProto.HistoryDeleteReq;
 import com.wali.live.proto.LiveProto.HistoryDeleteRsp;
 import com.wali.live.proto.LiveProto.HistoryLiveReq;
 import com.wali.live.proto.LiveProto.HistoryLiveRsp;
-import com.wali.live.proto.LiveProto.RoomInfoReq;
-import com.wali.live.proto.LiveProto.RoomInfoRsp;
 import com.wali.live.proto.LiveProto.ViewerTopReq;
 import com.wali.live.proto.LiveProto.ViewerTopRsp;
 
@@ -37,52 +35,6 @@ public class LiveManager {
     public static final int TYPE_LIVE_TICKET = 3;
     public static final int TYPE_LIVE_VR = 5;
     public static final int TYPE_LIVE_GAME = 6;
-
-    /**
-     * MiLinkCommand : zhibo.live.roomInfo
-     * 查询房间状态
-     */
-    public static RoomInfoRsp roomInfoRsp(long zuid, String liveId) {
-        RoomInfoReq req = RoomInfoReq.newBuilder()
-                .setUuid(UserAccountManager.getInstance().getUuidAsLong())
-                .setZuid(zuid)
-                .setGetLatestLive(false)
-                .setLiveId(liveId)
-                .build();
-
-        return roomInfoRspFromServer(req);
-    }
-
-    public static RoomInfoRsp roomInfoRspGetLatestLive(long zuid, String liveId) {
-        RoomInfoReq req = RoomInfoReq.newBuilder()
-                .setUuid(UserAccountManager.getInstance().getUuidAsLong())
-                .setZuid(zuid)
-                .setLiveId(liveId)
-                .setGetLatestLive(true)
-                .build();
-
-        return roomInfoRspFromServer(req);
-    }
-
-    private static RoomInfoRsp roomInfoRspFromServer(RoomInfoReq req) {
-        PacketData data = new PacketData();
-        data.setCommand(MiLinkCommand.COMMAND_LIVE_ROOM_INFO);
-        data.setData(req.toByteArray());
-        MyLog.e(TAG, "roomInfo request : \n" + req.toString());
-
-        PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
-        if (rspData != null) {
-            try {
-                RoomInfoRsp rsp = RoomInfoRsp.parseFrom(rspData.getData());
-                MyLog.e(TAG, "roomInfo response : \n" + rsp.toString());
-
-                return rsp;
-            } catch (InvalidProtocolBufferException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
 
     /**
      * MiLinkCommand : zhibo.live.historydelete

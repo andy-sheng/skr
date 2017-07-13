@@ -9,3 +9,6 @@ protoc --java_out=$genPath ./Relation.proto
 protoc --java_out=$genPath ./Statistics.proto
 protoc --java_out=$genPath ./CommonChannel.proto
 protoc --java_out=$genPath ./Banner.proto
+protoc --java_out=$genPath ./Common.proto
+protoc --java_out=$genPath ./LiveCommon.proto
+protoc --java_out=$genPath ./Live.proto
