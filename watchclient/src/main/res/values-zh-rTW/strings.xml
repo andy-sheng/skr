@@ -94,4 +94,7 @@
     <string name="feeds_comment_delete_failed">評論刪除失敗</string>
     <string name="open_same_video_hint">現正播放該重播</string>
     <string name="live_lottery_no_comment_toast">暫時沒有評論</string>
+
+    <string name="money_coming">土豪紅包來了</string>
+    <string name="grap_hongbao">搶紅包</string>
 </resources>

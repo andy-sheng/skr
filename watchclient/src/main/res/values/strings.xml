@@ -96,4 +96,7 @@
     <string name="feeds_comment_delete_failed">Couldn\'t remove comments</string>
     <string name="open_same_video_hint">Replaying…</string>
     <string name="live_lottery_no_comment_toast">No comments yet</string>
+
+    <string name="money_coming">Red envelope</string>
+    <string name="grap_hongbao">Open</string>
 </resources>
