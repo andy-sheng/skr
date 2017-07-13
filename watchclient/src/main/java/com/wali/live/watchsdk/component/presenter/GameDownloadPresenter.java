@@ -12,12 +12,15 @@ import com.base.version.http.HttpUtils;
 import com.base.version.http.SimpleRequest;
 import com.base.version.http.bean.BasicNameValuePair;
 import com.base.version.http.bean.NameValuePair;
+import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
+import com.mi.live.data.api.request.RoomInfoRequest;
 import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
+import com.wali.live.proto.LiveProto;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.component.view.panel.GameDownloadPanel;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
@@ -65,10 +68,56 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
 
     private void getGameInfo() {
         MyLog.d(TAG, "getGameInfo: gameId=" + mMyRoomData.getGameId());
-        if (TextUtils.isEmpty(mMyRoomData.getGameId())) {
-            return;
-        }
-        startGameWork();
+//        if (TextUtils.isEmpty(mMyRoomData.getGameId())) {
+//            getGameId();
+//            return;
+//        }
+//        startGameWork();
+        getGameId();
+    }
+
+    private void getGameId() {
+        MyLog.d(TAG, "getGameId");
+        Observable
+                .create((new Observable.OnSubscribe<String>() {
+                    @Override
+                    public void call(Subscriber<? super String> subscriber) {
+                        LiveProto.RoomInfoRsp rsp = new RoomInfoRequest(mMyRoomData.getUid(), mMyRoomData.getRoomId(), true).syncRsp();
+                        if (rsp != null) {
+                            MyLog.d(TAG, "rsp=" + rsp.toString());
+                            int retCode = rsp.getRetCode();
+                            if (retCode == ErrorCode.CODE_SUCCESS) {
+                                LiveProto.GamePackInfo protoInfo = rsp.getGamepackInfo();
+                                if (protoInfo != null) {
+                                    subscriber.onNext(String.valueOf(protoInfo.getGameId()));
+                                }
+                            } else {
+                                MyLog.w(TAG, "roomInfoRsp code=" + retCode);
+                            }
+                        } else {
+                            MyLog.w(TAG, "roomInfoRsp is null");
+                        }
+                        subscriber.onCompleted();
+                    }
+                }))
+                .subscribeOn(Schedulers.io())
+                .compose(GameDownloadPresenter.this.<String>bindUntilEvent(PresenterEvent.DESTROY))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String gameId) {
+                        MyLog.w(TAG, "getGameId=" + gameId);
+                        if (!TextUtils.isEmpty(gameId)) {
+                            mMyRoomData.setGameId(gameId);
+                            startGameWork();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, throwable);
+                    }
+                });
     }
 
     private void startGameWork() {

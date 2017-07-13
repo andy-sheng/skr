@@ -8,7 +8,7 @@ import com.base.preference.PreferenceUtils;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
-import com.mi.live.data.api.LiveManager;
+import com.mi.live.data.api.request.RoomInfoRequest;
 import com.mi.live.data.data.LiveShow;
 import com.mi.live.data.manager.model.LiveRoomManagerModel;
 import com.mi.live.data.milink.MiLinkClientAdapter;
@@ -452,7 +452,7 @@ public class UserInfoManager {
             return new LiveShow();
         }
         LiveShow liveShow = new LiveShow();
-        LiveProto.RoomInfoRsp rsp = LiveManager.roomInfoRsp(uuid, liveId);
+        LiveProto.RoomInfoRsp rsp = new RoomInfoRequest(uuid, liveId).syncRsp();
         if (rsp == null) {
             return liveShow;
         }

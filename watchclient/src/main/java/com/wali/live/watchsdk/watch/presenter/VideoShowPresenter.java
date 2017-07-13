@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import com.base.log.MyLog;
 import com.base.presenter.RxLifeCyclePresenter;
 import com.mi.live.data.api.ErrorCode;
-import com.mi.live.data.api.LiveManager;
+import com.mi.live.data.api.request.RoomInfoRequest;
 import com.mi.live.data.data.LiveShow;
 import com.mi.live.data.manager.UserInfoManager;
 import com.wali.live.proto.LiveProto;
@@ -56,7 +56,7 @@ public class VideoShowPresenter extends RxLifeCyclePresenter {
                 .map(new Func1<String, String>() {
                     @Override
                     public String call(String s) {
-                        LiveProto.RoomInfoRsp rsp = LiveManager.roomInfoRsp(uuid, roomId);
+                        LiveProto.RoomInfoRsp rsp = new RoomInfoRequest(uuid, roomId).syncRsp();
                         if (rsp != null) {
                             switch (rsp.getRetCode()) {
                                 case ErrorCode.CODE_SUCCESS:

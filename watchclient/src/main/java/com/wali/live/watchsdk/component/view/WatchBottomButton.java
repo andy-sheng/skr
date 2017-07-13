@@ -5,12 +5,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.ImageFactory;
+import com.base.log.MyLog;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mi.live.data.account.HostChannelManager;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
@@ -133,16 +135,19 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     }
 
     private void showGameIcon(final GameViewModel gameModel) {
+        if (gameModel == null) {
+            MyLog.w(TAG, "showGameIcon gameModel is null");
+            return;
+        }
         mGameBtn = new SimpleDraweeView(getContext());
-        addCreatedView(mGameBtn, mCommentBtn.getWidth(), mCommentBtn.getHeight(), R.id.game_btn);
+        int extraMargin = mCommentBtn.getHeight() >> 4;
+        addCreatedView(mGameBtn, (mCommentBtn.getWidth() * 7 >> 3), (mCommentBtn.getHeight() * 7 >> 3), R.id.game_btn);
 
-        BaseImage image = null;
-        if (gameModel != null) {
-//            image = ImageFactory.newHttpImage(gameModel.getIconUrl()).setCornerRadius(10).build();
-        }
-        if (image == null) {
-            image = ImageFactory.newResImage(R.drawable.live_icon_game_btn).build();
-        }
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) mCommentBtn.getLayoutParams();
+        lp.topMargin = BTN_MARGIN + extraMargin;
+
+        // ImageFactory.newResImage(R.drawable.live_icon_game_btn).build();
+        BaseImage image = ImageFactory.newHttpImage(gameModel.getIconUrl()).setCornerRadius(10).build();
         FrescoWorker.loadImage((SimpleDraweeView) mGameBtn, image);
 
         mRightBtnSetPort.add(mGameBtn);
