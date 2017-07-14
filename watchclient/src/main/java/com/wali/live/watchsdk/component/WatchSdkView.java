@@ -20,6 +20,7 @@ import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.BottomButtonPresenter;
+import com.wali.live.watchsdk.component.presenter.EnvelopePresenter;
 import com.wali.live.watchsdk.component.presenter.GameBarragePresenter;
 import com.wali.live.watchsdk.component.presenter.GameDownloadPresenter;
 import com.wali.live.watchsdk.component.presenter.GameInputPresenter;
@@ -179,6 +180,14 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             BottomButtonPresenter presenter =
                     new BottomButtonPresenter(mComponentController, mComponentController.mMyRoomData);
             addComponentView(view, presenter);
+        }
+
+        // 抢红包
+        {
+            RelativeLayout relativeLayout = $(R.id.main_act_container);
+            EnvelopePresenter presenter = new EnvelopePresenter(mComponentController);
+            presenter.setComponentView(relativeLayout);
+            addComponentView(presenter);
         }
 
         if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
