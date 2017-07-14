@@ -68,12 +68,15 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
 
     private void getGameInfo() {
         MyLog.d(TAG, "getGameInfo: gameId=" + mMyRoomData.getGameId());
-//        if (TextUtils.isEmpty(mMyRoomData.getGameId())) {
-//            getGameId();
-//            return;
-//        }
-//        startGameWork();
-        getGameId();
+        if (mGameModel != null) {
+            MyLog.d(TAG, "gameModel is not null");
+            return;
+        }
+        if (TextUtils.isEmpty(mMyRoomData.getGameId())) {
+            getGameId();
+            return;
+        }
+        startGameWork();
     }
 
     private void getGameId() {
