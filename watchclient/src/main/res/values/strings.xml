@@ -96,4 +96,9 @@
     <string name="feeds_comment_delete_failed">Couldn\'t remove comments</string>
     <string name="open_same_video_hint">Replaying…</string>
     <string name="live_lottery_no_comment_toast">No comments yet</string>
+
+    <string name="game_guide_close_tip">close after %d s</string>
+    <!--关注主播，不错过任何一次直播-->
+    <string name="game_guide_normal_tip">关注主播，不错过任何一次直播</string>
+
 </resources>

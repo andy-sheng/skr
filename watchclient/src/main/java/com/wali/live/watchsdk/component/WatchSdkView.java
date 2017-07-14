@@ -20,6 +20,7 @@ import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.BottomButtonPresenter;
+import com.wali.live.watchsdk.component.presenter.FollowGuidePresenter;
 import com.wali.live.watchsdk.component.presenter.GameBarragePresenter;
 import com.wali.live.watchsdk.component.presenter.GameDownloadPresenter;
 import com.wali.live.watchsdk.component.presenter.GameInputPresenter;
@@ -27,6 +28,7 @@ import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
+import com.wali.live.watchsdk.component.view.FollowGuideView;
 import com.wali.live.watchsdk.component.view.GameBarrageView;
 import com.wali.live.watchsdk.component.view.GameInputView;
 import com.wali.live.watchsdk.component.view.InputAreaView;
@@ -60,6 +62,8 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
     protected View mLiveCommentView;
     @Nullable
     protected GiftContinueViewGroup mGiftContinueViewGroup;
+    protected FollowGuideView mFollowGuideView;
+    protected FollowGuidePresenter mFollowGuidePresenter;
 
     protected boolean mIsGameMode = false;
     protected boolean mIsLandscape = false;
@@ -98,7 +102,6 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
                 addViewAboveAnchor(view, layoutParams, $(R.id.input_area_view));
             }
-
             // 游戏直播横屏弹幕
             {
                 GameBarrageView view = new GameBarrageView(mActivity);
@@ -115,13 +118,11 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
                 addViewAboveAnchor(view, layoutParams, $(R.id.comment_rv));
             }
-
             {
                 GameDownloadPanel panel = new GameDownloadPanel((RelativeLayout) $(R.id.main_act_container));
                 GameDownloadPresenter presenter = new GameDownloadPresenter(mComponentController, mComponentController.mMyRoomData);
                 addComponentView(panel, presenter);
             }
-
         }
         setupSdkView();
     }
@@ -227,11 +228,16 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             addComponentView(presenter);
             presenter.setViewSet(mHorizontalMoveSet, mVerticalMoveSet, mIsGameMode);
         }
-
         mAction.registerAction(); // 最后注册该Action，任何事件mAction都最后收到
     }
 
     public class Action extends BaseSdkView.Action {
+        @Override
+        public void registerAction() {
+            super.registerAction();
+            mComponentController.registerAction(WatchComponentController.MSG_SHOW_FOLLOW_GUIDE, this);
+            mComponentController.registerAction(WatchComponentController.MSG_FOLLOW_COUNT_DOWN, this);
+        }
 
         @Override
         protected void startInputAnimator(boolean inputShow) {
@@ -421,6 +427,36 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                         return true;
                     }
                     break;
+                case WatchComponentController.MSG_FOLLOW_COUNT_DOWN:
+                    if (mFollowGuidePresenter != null) {
+                        return false;
+                    }
+                    int countTs = params.getItem(0);
+                    mFollowGuidePresenter = new FollowGuidePresenter(mComponentController,
+                            mComponentController.mMyRoomData);
+                    mFollowGuidePresenter.countDownOut(countTs);
+                    break;
+                case WatchComponentController.MSG_SHOW_FOLLOW_GUIDE: {
+                    if (mFollowGuidePresenter == null || mFollowGuideView != null) {
+                        return false;
+                    }
+                    mFollowGuideView = new FollowGuideView(mActivity);
+                    mFollowGuidePresenter.setComponentView(mFollowGuideView.getViewProxy());
+                    mFollowGuideView.setPresenter(mFollowGuidePresenter);
+                    addComponentView(mFollowGuideView, mFollowGuidePresenter);
+
+                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                    layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+                    ViewGroup rootView = (ViewGroup) mActivity.findViewById(R.id.main_act_container);
+                    rootView.addView(mFollowGuideView, layoutParams);
+
+                    mFollowGuideView.setMyRoomData(mComponentController.mMyRoomData);
+                    mFollowGuideView.onOrientation(mIsLandscape);
+                }
+                break;
                 default:
                     break;
             }

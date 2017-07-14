@@ -94,4 +94,7 @@
     <string name="feeds_comment_delete_failed">評論刪除失敗</string>
     <string name="open_same_video_hint">現正播放該重播</string>
     <string name="live_lottery_no_comment_toast">暫時沒有評論</string>
+    <string name="game_guide_close_tip">剩餘%ds關閉頁面</string>
+    <!--关注主播，不错过任何一次直播-->
+    <string name="game_guide_normal_tip">關注主播，不錯過任何一次直播</string>
 </resources>
