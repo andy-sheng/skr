@@ -125,7 +125,7 @@ public class FollowGuidePresenter extends ComponentPresenter<FollowGuideView.IVi
             time = 0;
         }
         final int countTime = time;
-        if (mSubscription != null && mSubscription.isUnsubscribed()) {
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
             mSubscription.unsubscribe();
         }
         mSubscription = Observable.interval(0, 1, TimeUnit.SECONDS)
@@ -169,7 +169,7 @@ public class FollowGuidePresenter extends ComponentPresenter<FollowGuideView.IVi
             guideFollowTs = 0;
         }
         final int countTime = guideFollowTs;
-        if (mSubscription != null && mSubscription.isUnsubscribed()) {
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
             mSubscription.unsubscribe();
         }
         mSubscription = Observable.interval(0, 1, TimeUnit.SECONDS)
@@ -185,7 +185,7 @@ public class FollowGuidePresenter extends ComponentPresenter<FollowGuideView.IVi
                 .subscribe(new Action1<Integer>() {
                     @Override
                     public void call(Integer i) {
-                        MyLog.w(TAG, "i=" + i);
+//                        MyLog.w(TAG, "i=" + i);
                     }
                 }, new Action1<Throwable>() {
                     @Override
