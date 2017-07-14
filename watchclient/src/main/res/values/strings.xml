@@ -120,4 +120,9 @@
     <string name="channel_shop_cnt">%d people want to buy</string>
     <string name="install_mi_video">Install Mi video first</string>
     <string name="all_people">All</string>
+
+    <string name="game_guide_close_tip">close after %d s</string>
+    <!--关注主播，不错过任何一次直播-->
+    <string name="game_guide_normal_tip">关注主播，不错过任何一次直播</string>
+
 </resources>

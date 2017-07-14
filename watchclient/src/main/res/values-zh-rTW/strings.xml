@@ -114,4 +114,7 @@
     <string name="channel_shop_cnt">%d 想買</string>
     <string name="install_mi_video">請安裝小米視頻</string>
     <string name="all_people">全部</string>
+    <string name="game_guide_close_tip">剩餘%ds關閉頁面</string>
+    <!--关注主播，不错过任何一次直播-->
+    <string name="game_guide_normal_tip">關注主播，不錯過任何一次直播</string>
 </resources>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="271.33dp"
+    android:layout_height="193.67dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="159.67dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/shape_upgrade">
+
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="44dp"
+            android:gravity="center"
+            android:text="name"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/view_dimen_48"/>
+
+        <ImageView
+            android:id="@+id/close_btn"
+            android:layout_width="8.9dp"
+            android:layout_height="8.9dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/image_close"/>
+
+        <TextView
+            android:id="@+id/close_tips_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/close_btn"
+            android:layout_toLeftOf="@+id/close_btn"
+            android:gravity="center"
+            android:textColor="@color/color_black_trans_30"
+            android:textSize="8dp"/>
+
+        <TextView
+            android:id="@+id/guide_tips_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8.67dp"
+            android:gravity="center"
+            android:text="@string/game_guide_normal_tip"
+            android:textColor="@color/color_black_trans_40"
+            android:textSize="12dp"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/guide_tips_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15.67dp"
+            android:background="@drawable/float_info_not_follow_bg">
+
+            <TextView
+                android:id="@+id/follow_tv"
+                android:layout_width="112dp"
+                android:layout_height="36dp"
+                android:background="@drawable/send_btn_bg"
+                android:gravity="center"
+                android:text="@string/follow"
+                android:textColor="@color/color_black"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/avatar_dv"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:padding="2dp"/>
+
+</RelativeLayout>

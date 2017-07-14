@@ -116,4 +116,7 @@
     <string name="install_mi_video">请安装小米视频</string>
     <string name="all_people">全部</string>
 
+    <string name="game_guide_close_tip">剩余%ds关闭页面</string>
+    <!--关注主播，不错过任何一次直播-->
+    <string name="game_guide_normal_tip">关注主播，不错过任何一次直播</string>
 </resources>

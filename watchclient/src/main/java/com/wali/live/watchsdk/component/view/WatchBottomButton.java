@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 
@@ -140,11 +139,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             return;
         }
         mGameBtn = new SimpleDraweeView(getContext());
-        int extraMargin = mCommentBtn.getHeight() >> 4;
-        addCreatedView(mGameBtn, (mCommentBtn.getWidth() * 7 >> 3), (mCommentBtn.getHeight() * 7 >> 3), R.id.game_btn);
-
-        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) mCommentBtn.getLayoutParams();
-        lp.topMargin = BTN_MARGIN + extraMargin;
+        addCreatedView(mGameBtn, mCommentBtn.getWidth(), mCommentBtn.getHeight(), R.id.game_btn);
 
         // ImageFactory.newResImage(R.drawable.live_icon_game_btn).build();
         BaseImage image = ImageFactory.newHttpImage(gameModel.getIconUrl()).setCornerRadius(10).build();
