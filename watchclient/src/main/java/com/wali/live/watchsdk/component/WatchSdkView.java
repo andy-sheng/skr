@@ -295,7 +295,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             mInputAnimatorRef = new WeakReference<>(valueAnimator);
         }
 
-        private WeakReference<ValueAnimator> mGameAnimatorRef; // 游戏直播竖屏时，隐藏显示动画
+        private WeakReference<ValueAnimator> mGameAnimatorRef; // 游戏直播横屏时，隐藏显示动画
         private boolean mGameHide = false;
 
         /**
