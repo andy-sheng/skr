@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import com.base.activity.BaseSdkActivity;
 import com.base.dialog.MyAlertDialog;
 import com.base.log.MyLog;
 import com.mi.live.data.account.HostChannelManager;
@@ -12,6 +13,7 @@ import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.login.LoginInternalService;
+import com.wali.live.watchsdk.login.LoginPresenter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -54,12 +56,18 @@ public class AccountAuthManager {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         int channelId = HostChannelManager.getInstance().getChannelId();
-                        MyLog.w(TAG, "triggerActionNeedAccount channelId=" + channelId);
+                        MyLog.w(TAG, "triggerAccount channelId=" + channelId);
                         if (sSpecialChannelSet.contains(channelId)) {
-                            MyLog.w(TAG, "triggerActionNeedAccount LoginInternalService");
-                            Intent serviceIntent = new Intent(activity, LoginInternalService.class);
-                            activity.startService(serviceIntent);
+                            if (activity instanceof BaseSdkActivity) {
+                                MyLog.w(TAG, "triggerAccount use 'Presenter'");
+                                new LoginPresenter((BaseSdkActivity) activity).miLogin(channelId);
+                            } else {
+                                MyLog.w(TAG, "triggerAccount use 'Service'");
+                                Intent serviceIntent = new Intent(activity, LoginInternalService.class);
+                                activity.startService(serviceIntent);
+                            }
                         } else {
+                            // 通知宿主进程，用户触发了账号操作，看宿主如何处理
                             MiLiveSdkBinder.getInstance().onEventWantLogin(HostChannelManager.getInstance().getChannelId());
                         }
                         dialog.dismiss();
@@ -74,7 +82,6 @@ public class AccountAuthManager {
                 alertDialog.show();
             }
         }
-        // 通知宿主进程，用户触发了账号操作，看宿主如何处理
         return false;
     }
 }

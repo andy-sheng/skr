@@ -16,7 +16,7 @@ import android.widget.EditText;
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
-import com.mi.live.data.account.XiaoMiOAuth;
+import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.liveassistant.R;
@@ -42,8 +42,6 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -91,34 +89,10 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
         ($(R.id.login_tv)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Observable.just(0).map(new Func1<Integer, Boolean>() {
-                    @Override
-                    public Boolean call(Integer integer) {
-                        String code = XiaoMiOAuth.getOAuthCode(MainActivity.this);
-                        if (!TextUtils.isEmpty(code)) {
-                            if (mLoginPresenter == null) {
-                                mLoginPresenter = new LoginPresenter(MainActivity.this);
-                                addPresent(mLoginPresenter);
-                            }
-                            mLoginPresenter.miLoginByCode(code);
-                            return true;
-                        }
-                        return false;
-                    }
-                }).subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Action1<Boolean>() {
-                            @Override
-                            public void call(Boolean b) {
-                                MyLog.w(TAG, "result = " + b);
-                            }
-                        }, new Action1<Throwable>() {
-                            @Override
-                            public void call(Throwable throwable) {
-                                throwable.printStackTrace();
-                                MyLog.w(TAG, "failed " + throwable);
-                            }
-                        });
+                if (mLoginPresenter == null) {
+                    mLoginPresenter = new LoginPresenter(MainActivity.this);
+                }
+                mLoginPresenter.miLogin(HostChannelManager.getInstance().getChannelId());
             }
         });
         ($(R.id.replay_tv)).setOnClickListener(new View.OnClickListener() {
