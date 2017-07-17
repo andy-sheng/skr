@@ -441,6 +441,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                         return false;
                     }
                     mFollowGuideView = new FollowGuideView(mActivity);
+                    mFollowGuideView.setVisibility(View.INVISIBLE);
                     mFollowGuidePresenter.setComponentView(mFollowGuideView.getViewProxy());
                     mFollowGuideView.setPresenter(mFollowGuidePresenter);
                     addComponentView(mFollowGuideView, mFollowGuidePresenter);
@@ -453,8 +454,13 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                     ViewGroup rootView = (ViewGroup) mActivity.findViewById(R.id.main_act_container);
                     rootView.addView(mFollowGuideView, layoutParams);
 
-                    mFollowGuideView.setMyRoomData(mComponentController.mMyRoomData);
-                    mFollowGuideView.onOrientation(mIsLandscape);
+                    mFollowGuideView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mFollowGuideView.setMyRoomData(mComponentController.mMyRoomData);
+                            mFollowGuideView.onOrientation(mIsLandscape);
+                        }
+                    });
                 }
                 break;
                 default:
