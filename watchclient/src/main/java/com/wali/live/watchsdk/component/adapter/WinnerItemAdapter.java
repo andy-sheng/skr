@@ -19,15 +19,15 @@ import java.util.List;
  *
  * @module 红包
  */
-public class EnvelopeItemAdapter extends RecyclerView.Adapter<EnvelopeItemAdapter.WinnerHolder> {
+public class WinnerItemAdapter extends RecyclerView.Adapter<WinnerItemAdapter.WinnerHolder> {
 
     protected LayoutInflater mInflater;
 
     protected final List<WinnerItem> mItems = new ArrayList<>(0);
 
-    private long mBestId;
+    protected long mBestId;
 
-    public EnvelopeItemAdapter() {
+    public WinnerItemAdapter() {
     }
 
     @Override
@@ -58,7 +58,7 @@ public class EnvelopeItemAdapter extends RecyclerView.Adapter<EnvelopeItemAdapte
         return mItems.size();
     }
 
-    protected static class WinnerHolder extends RecyclerView.ViewHolder {
+    public static class WinnerHolder extends RecyclerView.ViewHolder {
         private BaseImageView mWinnerAvatarIv;
         private TextView mDiamondNumTv;
         private TextView mLuckiestTv;

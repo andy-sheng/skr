@@ -13,11 +13,12 @@ import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.gift.redenvelope.RedEnvelopeModel;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.gift.exception.GiftErrorCode;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.proto.RedEnvelProto;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.component.adapter.EnvelopeItemAdapter;
+import com.wali.live.watchsdk.component.adapter.WinnerItemAdapter;
 import com.wali.live.watchsdk.component.utils.EnvelopeUtils;
 import com.wali.live.watchsdk.component.view.EnvelopeResultView;
 import com.wali.live.watchsdk.component.view.EnvelopeView;
@@ -56,10 +57,14 @@ public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
     private final LinkedList<EnvelopeView> mEnvelopeViewList = new LinkedList<>(); // 当前展示的红包列表，最多为MAX_ENVELOPE_CACHE_CNT
     private EnvelopeResultView mEnvelopeResultView; // 展示红包抽取结果
 
+    private RoomBaseDataModel mMyRoomData;
     protected boolean mIsLandscape = false;
 
-    public EnvelopePresenter(@NonNull IComponentController componentController) {
+    public EnvelopePresenter(
+            @NonNull IComponentController componentController,
+            @NonNull RoomBaseDataModel myRoomData) {
         super(componentController);
+        mMyRoomData = myRoomData;
         startPresenter();
     }
 
@@ -200,7 +205,7 @@ public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
             MyLog.w(TAG, "syncEnvelopeDetail, but grabEnvelope is null");
             return;
         }
-        final long anchorId = 0;
+        final long anchorId = mMyRoomData.getUid();
         Observable.just(0)
                 .map(new Func1<Integer, Object[]>() {
                     @Override
@@ -210,12 +215,12 @@ public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
                         if (rsp == null || rsp.getRetCode() != ErrorCode.CODE_SUCCESS) {
                             return null;
                         }
-                        EnvelopeItemAdapter.WinnerItem anchorItem = null;
-                        List<EnvelopeItemAdapter.WinnerItem> otherWinners = new ArrayList<>();
+                        WinnerItemAdapter.WinnerItem anchorItem = null;
+                        List<WinnerItemAdapter.WinnerItem> otherWinners = new ArrayList<>();
                         List<RedEnvelProto.Winner> winners = rsp.getWinnersList();
                         long bestId = winners.get(0).getUserId();
                         for (RedEnvelProto.Winner elem : winners) {
-                            EnvelopeItemAdapter.WinnerItem winnerItem = new EnvelopeItemAdapter.WinnerItem(
+                            WinnerItemAdapter.WinnerItem winnerItem = new WinnerItemAdapter.WinnerItem(
                                     elem.getUserId(), elem.getNickname(), elem.getGain());
                             if (anchorId != 0 && anchorId == elem.getUserId()) {
                                 anchorItem = winnerItem;
@@ -241,9 +246,10 @@ public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
                         }
                         if (mEnvelopeResultView != null) {
                             mEnvelopeResultView.onEnvelopeDetail(
-                                    (EnvelopeItemAdapter.WinnerItem) result[0],
+                                    envelopeInfo,
+                                    (WinnerItemAdapter.WinnerItem) result[0],
                                     (long) result[1],
-                                    (List<EnvelopeItemAdapter.WinnerItem>) result[2]);
+                                    (List<WinnerItemAdapter.WinnerItem>) result[2]);
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -362,7 +368,7 @@ public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
         public RedEnvelopeModel envelopeModel;
         public int state;
         public int grabCnt;
-        public List<EnvelopeItemAdapter.WinnerItem> winnerList;
+        public List<WinnerItemAdapter.WinnerItem> winnerList;
 
         public String getEnvelopeId() {
             return envelopeModel != null ? envelopeModel.getRedEnvelopeId() : null;
