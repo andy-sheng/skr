@@ -11,13 +11,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.image.fresco.BaseImageView;
+import com.base.log.MyLog;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.adapter.EnvelopeItemAdapter;
 import com.wali.live.watchsdk.component.presenter.EnvelopePresenter;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -71,27 +70,10 @@ public class EnvelopeResultView extends BaseBottomPanel<RelativeLayout, Relative
         }
         int id = view.getId();
         if (id == R.id.close_iv) {
-            // TODO 加入点击事件响应
+            mPresenter.removeEnvelope(mEnvelopeInfo);
         } else if (id == R.id.look_other_btn) {
-            testItems();
-            // mPresenter.syncEnvelopeDetail();
+            mPresenter.syncEnvelopeDetail(mEnvelopeInfo);
         }
-    }
-
-    private void testItems() {
-        List<EnvelopeItemAdapter.WinnerItem> envelopeItem = new ArrayList<>();
-        Collections.addAll(envelopeItem,
-                new EnvelopeItemAdapter.WinnerItem("test0", 111, 0l, false),
-                new EnvelopeItemAdapter.WinnerItem("test1", 111, 1l, false),
-                new EnvelopeItemAdapter.WinnerItem("test2", 112, 2l, false),
-                new EnvelopeItemAdapter.WinnerItem("test3", 113, 3l, false),
-                new EnvelopeItemAdapter.WinnerItem("test4", 114, 4l, false),
-                new EnvelopeItemAdapter.WinnerItem("test5", 115, 5l, false),
-                new EnvelopeItemAdapter.WinnerItem("test6", 116, 6l, false),
-                new EnvelopeItemAdapter.WinnerItem("test7", 117, 7l, false),
-                new EnvelopeItemAdapter.WinnerItem("test8", 118, 8l, false),
-                new EnvelopeItemAdapter.WinnerItem("test9", 119, 9l, true));
-        mEnvelopeItemAdapter.setItemData(envelopeItem);
     }
 
     public void setEnvelopeInfo(EnvelopePresenter.EnvelopeInfo envelopeInfo) {
@@ -99,6 +81,14 @@ public class EnvelopeResultView extends BaseBottomPanel<RelativeLayout, Relative
         if (envelopeInfo == null || mContentView == null) {
             return;
         }
+    }
+
+    public void onEnvelopeDetail(
+            EnvelopeItemAdapter.WinnerItem anchorInfo,
+            long bestId,
+            List<EnvelopeItemAdapter.WinnerItem> otherInfo) {
+        MyLog.w(TAG, "onEnvelopeDetail");
+        mEnvelopeItemAdapter.setItemData(otherInfo, bestId);
     }
 
     @Override
@@ -129,6 +119,12 @@ public class EnvelopeResultView extends BaseBottomPanel<RelativeLayout, Relative
         $click(R.id.look_other_btn, this);
 
         setEnvelopeInfo(mEnvelopeInfo);
+    }
+
+    @Override
+    public void showSelf(boolean useAnimation, boolean isLandscape) {
+        super.showSelf(useAnimation, isLandscape);
+        mContentView.bringToFront();
     }
 
     @Override

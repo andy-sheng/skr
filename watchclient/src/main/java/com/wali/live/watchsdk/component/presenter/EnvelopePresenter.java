@@ -26,12 +26,14 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -193,8 +195,63 @@ public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
     }
 
     @Override
-    public void syncEnvelopeDetail(EnvelopeInfo envelopeInfo) {
-        // TODO 获取抢红包详情
+    public void syncEnvelopeDetail(final EnvelopeInfo envelopeInfo) {
+        if (envelopeInfo == null) {
+            MyLog.w(TAG, "syncEnvelopeDetail, but grabEnvelope is null");
+            return;
+        }
+        final long anchorId = 0;
+        Observable.just(0)
+                .map(new Func1<Integer, Object[]>() {
+                    @Override
+                    public Object[] call(Integer integer) {
+                        RedEnvelProto.GetEnvelopRsp rsp = EnvelopeUtils.getRedEnvelope(envelopeInfo.getEnvelopeId(),
+                                envelopeInfo.getRoomId(), System.currentTimeMillis());
+                        if (rsp == null || rsp.getRetCode() != ErrorCode.CODE_SUCCESS) {
+                            return null;
+                        }
+                        EnvelopeItemAdapter.WinnerItem anchorItem = null;
+                        List<EnvelopeItemAdapter.WinnerItem> otherWinners = new ArrayList<>();
+                        List<RedEnvelProto.Winner> winners = rsp.getWinnersList();
+                        long bestId = winners.get(0).getUserId();
+                        for (RedEnvelProto.Winner elem : winners) {
+                            EnvelopeItemAdapter.WinnerItem winnerItem = new EnvelopeItemAdapter.WinnerItem(
+                                    elem.getUserId(), elem.getNickname(), elem.getGain());
+                            if (anchorId != 0 && anchorId == elem.getUserId()) {
+                                anchorItem = winnerItem;
+                            } else {
+                                otherWinners.add(winnerItem);
+                            }
+                        }
+                        return new Object[]{anchorItem, bestId, otherWinners};
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Object[]>bindUntilEvent(PresenterEvent.DESTROY))
+                .subscribe(new Action1<Object[]>() {
+                    @Override
+                    public void call(Object[] result) {
+                        if (mView == null) {
+                            return;
+                        }
+                        if (result == null) {
+                            ToastUtils.showToast(R.string.net_is_busy_tip);
+                            return;
+                        }
+                        if (mEnvelopeResultView != null) {
+                            mEnvelopeResultView.onEnvelopeDetail(
+                                    (EnvelopeItemAdapter.WinnerItem) result[0],
+                                    (long) result[1],
+                                    (List<EnvelopeItemAdapter.WinnerItem>) result[2]);
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, "syncEnvelopeDetail failed, exception=" + throwable);
+                    }
+                });
     }
 
     private void updateEnvelopeView(boolean isAddNew) {
@@ -225,11 +282,11 @@ public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
                 if (isAddNew) {
                     envelopeView = mEnvelopeViewList.size() < MAX_ENVELOPE_CACHE_CNT ?
                             new EnvelopeView(mView) : mEnvelopeViewList.removeLast();
+                    envelopeView.hideSelf(false);
                 } else {
                     envelopeView = mEnvelopeViewList.isEmpty() ?
                             new EnvelopeView(mView) : mEnvelopeViewList.removeFirst();
                 }
-                envelopeView.hideSelf(false);
                 envelopeView.setPresenter(this);
                 envelopeView.setEnvelopeInfo(currTopItem);
                 envelopeView.showSelf(isAddNew, mIsLandscape);
@@ -309,6 +366,10 @@ public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
 
         public String getEnvelopeId() {
             return envelopeModel != null ? envelopeModel.getRedEnvelopeId() : null;
+        }
+
+        public String getRoomId() {
+            return envelopeModel != null ? envelopeModel.getRoomId() : null;
         }
 
         public EnvelopeInfo(RedEnvelopeModel envelopeModel) {

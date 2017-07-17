@@ -36,4 +36,26 @@ public class EnvelopeUtils {
         }
         return grabEnvelopRsp;
     }
+
+    /**
+     * 获取抢红包结果详细列表
+     */
+    public static RedEnvelProto.GetEnvelopRsp getRedEnvelope(String redEnvelopeId, String roomId, long timeStamp) {
+        RedEnvelProto.GetEnvelopReq req = RedEnvelProto.GetEnvelopReq.newBuilder()
+                .setUserId(UserAccountManager.getInstance().getUuidAsLong())
+                .setRedEnvelopId(redEnvelopeId)
+                .build();
+        PacketData data = new PacketData();
+        data.setCommand(MiLinkCommand.COMMAND_GET_RED_ENVELOP);
+        data.setData(req.toByteArray());
+        MyLog.d(TAG, "getRedEnvelope request:" + req.toString());
+        PacketData response = MiLinkClientAdapter.getsInstance().sendSync(data, 10 * 1000);
+        RedEnvelProto.GetEnvelopRsp getEnvelopRsp = null;
+        try {
+            getEnvelopRsp = RedEnvelProto.GetEnvelopRsp.parseFrom(response.getData());
+            MyLog.d(TAG, "getRedEnvelope response:" + getEnvelopRsp);
+        } catch (Exception e) {
+        }
+        return getEnvelopRsp;
+    }
 }

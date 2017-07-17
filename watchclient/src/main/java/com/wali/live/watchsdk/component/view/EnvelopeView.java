@@ -77,6 +77,9 @@ public class EnvelopeView extends BaseBottomPanel<RelativeLayout, RelativeLayout
     }
 
     public void startRotation() {
+        if (mGrabBtn == null) {
+            return;
+        }
         if (mRotationAnimator == null) {
             mRotationAnimator = ObjectAnimator.ofFloat(mGrabBtn, "rotationY", 0f, 360f);
             mRotationAnimator.setDuration(300);
@@ -89,6 +92,9 @@ public class EnvelopeView extends BaseBottomPanel<RelativeLayout, RelativeLayout
     }
 
     public void stopRotation() {
+        if (mGrabBtn == null) {
+            return;
+        }
         if (mRotationAnimator != null) {
             mRotationAnimator.cancel();
         }
@@ -144,6 +150,18 @@ public class EnvelopeView extends BaseBottomPanel<RelativeLayout, RelativeLayout
         $click(R.id.close_iv, this);
 
         setEnvelopeInfo(mEnvelopeInfo);
+    }
+
+    @Override
+    public void showSelf(boolean useAnimation, boolean isLandscape) {
+        super.showSelf(useAnimation, isLandscape);
+        mContentView.bringToFront();
+    }
+
+    @Override
+    public void hideSelf(boolean useAnimation) {
+        super.hideSelf(useAnimation);
+        stopRotation();
     }
 
     @Override

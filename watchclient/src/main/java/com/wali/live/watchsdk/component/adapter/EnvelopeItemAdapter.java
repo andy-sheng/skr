@@ -20,8 +20,12 @@ import java.util.List;
  * @module 红包
  */
 public class EnvelopeItemAdapter extends RecyclerView.Adapter<EnvelopeItemAdapter.WinnerHolder> {
+
     protected LayoutInflater mInflater;
+
     protected final List<WinnerItem> mItems = new ArrayList<>(0);
+
+    private long mBestId;
 
     public EnvelopeItemAdapter() {
     }
@@ -37,14 +41,15 @@ public class EnvelopeItemAdapter extends RecyclerView.Adapter<EnvelopeItemAdapte
 
     @Override
     public void onBindViewHolder(WinnerHolder holder, int position) {
-        holder.bindView(mItems.get(position));
+        holder.bindView(mItems.get(position), mBestId);
     }
 
-    public void setItemData(List<WinnerItem> items) {
+    public void setItemData(List<WinnerItem> items, long bestId) {
         mItems.clear();
         if (items != null) {
             mItems.addAll(items);
         }
+        mBestId = bestId;
         notifyDataSetChanged();
     }
 
@@ -56,7 +61,7 @@ public class EnvelopeItemAdapter extends RecyclerView.Adapter<EnvelopeItemAdapte
     protected static class WinnerHolder extends RecyclerView.ViewHolder {
         private BaseImageView mWinnerAvatarIv;
         private TextView mDiamondNumTv;
-        private TextView mLuckestTv;
+        private TextView mLuckiestTv;
         private TextView mNameTv;
 
         protected final <T extends View> T $(@IdRes int resId) {
@@ -67,33 +72,28 @@ public class EnvelopeItemAdapter extends RecyclerView.Adapter<EnvelopeItemAdapte
             super(view);
             mWinnerAvatarIv = $(R.id.winner_avatar_iv);
             mDiamondNumTv = $(R.id.diamond_num_tv);
-            mLuckestTv = $(R.id.luckest_tv);
+            mLuckiestTv = $(R.id.luckest_tv);
             mNameTv = $(R.id.name_tv);
         }
 
-        public void bindView(WinnerItem item) {
-            mNameTv.setText(item.mName);
+        public void bindView(WinnerItem item, long bestId) {
+            mNameTv.setText(item.mNickName);
             mDiamondNumTv.setText(item.mDiamondNum + "");
             AvatarUtils.loadAvatarByUidTs(mWinnerAvatarIv, item.mUserId, 0, true);
-            if (item.mIsLuckest) {
-                mLuckestTv.setVisibility(View.VISIBLE);
-            } else {
-                mLuckestTv.setVisibility(View.GONE);
-            }
+            mLuckiestTv.setVisibility(bestId != 0 && bestId == item.mUserId
+                    ? View.VISIBLE : View.GONE);
         }
     }
 
     public static class WinnerItem {
-        public String mName;
+        public long mUserId;
+        public String mNickName;
         public int mDiamondNum;
-        public Long mUserId;
-        public boolean mIsLuckest;
 
-        public WinnerItem(String name, int diamondNum, Long userId, boolean isLuckest) {
-            mName = name;
-            mDiamondNum = diamondNum;
+        public WinnerItem(long userId, String nickName, int diamondNum) {
             mUserId = userId;
-            mIsLuckest = isLuckest;
+            mNickName = nickName;
+            mDiamondNum = diamondNum;
         }
     }
 }
