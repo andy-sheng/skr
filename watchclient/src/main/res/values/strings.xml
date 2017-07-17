@@ -123,6 +123,6 @@
 
     <string name="game_guide_close_tip">close after %d s</string>
     <!--关注主播，不错过任何一次直播-->
-    <string name="game_guide_normal_tip">关注主播，不错过任何一次直播</string>
+    <string name="game_guide_normal_tip">Follow the hosts to view their latest updates</string>
 
 </resources>

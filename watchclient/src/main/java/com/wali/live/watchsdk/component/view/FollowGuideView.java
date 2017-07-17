@@ -155,7 +155,8 @@ public class FollowGuideView extends RelativeLayout implements IComponentView<Fo
         MyLog.w(TAG, "onOrientation isLandScape=" + isLandscape);
         LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
         if (isLandscape) {
-            layoutParams.bottomMargin = (DisplayUtils.getScreenWidth() - getHeight()) / 2;
+            int min = Math.min(DisplayUtils.getScreenWidth(), DisplayUtils.getScreenHeight());
+            layoutParams.bottomMargin = (min - getHeight()) / 2;
         } else {
             layoutParams.bottomMargin = mMarginBottomLandscape;
         }
