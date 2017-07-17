@@ -95,7 +95,6 @@
     <string name="feeds_comment_delete_failed">評論刪除失敗</string>
     <string name="open_same_video_hint">現正播放該重播</string>
     <string name="live_lottery_no_comment_toast">暫時沒有評論</string>
-    <string name="location_unknown_new">未知星球</string>
     <string name="ten_thousand">萬</string>
     <plurals name="channel_view_count">
         <item quantity="other">%s人看過</item>
@@ -115,6 +114,8 @@
     <string name="install_mi_video">請安裝小米視頻</string>
     <string name="all_people">全部</string>
     <string name="game_guide_close_tip">剩餘%ds關閉頁面</string>
-    <!--关注主播，不错过任何一次直播-->
     <string name="game_guide_normal_tip">關注主播，不錯過任何一次直播</string>
+    <string name="anchor_rank">主播勢力日排行</string>
+    <string name="michannel_default_title">其他遊戲</string>
+    <string name="michannel_type_live">直播</string>
 </resources>

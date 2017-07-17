@@ -175,7 +175,7 @@ public class DefaultCardHolder extends FixedHolder {
         if (!TextUtils.isEmpty(item.getLocation())) {
             mLocationTv.setText(item.getLocation());
         } else {
-            mLocationTv.setText(GlobalData.app().getString(R.string.location_unknown_new));
+            mLocationTv.setText(GlobalData.app().getString(R.string.live_location_unknown));
         }
         mLocationTv.setVisibility(View.VISIBLE);
 
