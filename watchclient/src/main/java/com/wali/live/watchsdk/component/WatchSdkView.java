@@ -184,7 +184,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
 
         // 抢红包
         {
-            RelativeLayout relativeLayout = $(R.id.main_act_container);
+            RelativeLayout relativeLayout = $(R.id.envelope_view);
             EnvelopePresenter presenter = new EnvelopePresenter(mComponentController);
             presenter.setComponentView(relativeLayout);
             addComponentView(presenter);

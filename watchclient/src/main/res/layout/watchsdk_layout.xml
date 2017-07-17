@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/main_act_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:soundEffectsEnabled="false">
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:soundEffectsEnabled="false">
 
     <View
         android:id="@+id/touch_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <com.mi.live.engine.player.widget.VideoPlayerTextureView
         android:id="@+id/video_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <com.base.image.fresco.BaseImageView
         android:id="@+id/blur_iv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <com.wali.live.watchsdk.watchtop.view.WatchTopInfoSingleView
         android:id="@+id/watch_top_info_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true" />
 
     <!--评论栏-->
     <com.wali.live.watchsdk.component.view.LiveCommentView
@@ -40,14 +40,14 @@
         android:paddingBottom="13.33dp"
         android:paddingLeft="6dip"
         android:paddingRight="6.67dip"
-        android:requiresFadingEdge="none"/>
+        android:requiresFadingEdge="none" />
 
     <com.wali.live.watchsdk.component.view.WidgetView
         android:id="@+id/widget_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/live_comment_view"
-        android:layout_below="@id/watch_top_info_view"/>
+        android:layout_below="@id/watch_top_info_view" />
 
     <!--游戏模式 输入框与弹幕 改为在代码中动态添加，见WatchSdkView-->
     <ViewStub
@@ -59,7 +59,7 @@
         android:layout_marginBottom="@dimen/margin_168"
         android:layout_marginRight="@dimen/margin_168"
         android:inflatedId="@+id/game_barrage_view"
-        android:layout="@layout/view_game_barrage"/>
+        android:layout="@layout/view_game_barrage" />
 
     <!--<ViewStub-->
     <!--android:id="@+id/game_bottom_viewstub"-->
@@ -76,7 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:inflatedId="@+id/gift_mall_view"
-        android:layout="@layout/view_gift_mall"/>
+        android:layout="@layout/view_gift_mall" />
 
     <ImageView
         android:id="@+id/rotate_btn"
@@ -86,7 +86,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="6.67dp"
         android:src="@drawable/live_icon_rotate_screen"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <!--礼物展示需要-->
     <include
@@ -94,28 +94,28 @@
         android:layout_width="wrap_content"
         android:layout_height="140dp"
         android:layout_above="@id/live_comment_view"
-        android:layout_marginBottom="61.33dip"/>
+        android:layout_marginBottom="61.33dip" />
 
     <com.wali.live.common.flybarrage.view.FlyBarrageViewGroup
         android:id="@+id/fly_barrage_viewgroup"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_alignBottom="@+id/gift_continue_vg"/>
+        android:layout_alignBottom="@+id/gift_continue_vg" />
 
     <!--房间特效礼物-->
     <com.wali.live.common.gift.view.GiftRoomEffectView
         android:id="@+id/gift_room_effect_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <!-- 礼物大动画 -->
     <com.wali.live.common.gift.view.GiftAnimationView
         android:id="@+id/gift_animation_player_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/close_btn"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="12dp"/>
+        android:layout_below="@+id/close_btn"
+        android:layout_marginTop="12dp" />
 
     <!--底部按钮(供BaseBottomButton使用)-->
     <RelativeLayout
@@ -123,7 +123,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true" />
 
     <ImageView
         android:id="@+id/close_btn"
@@ -132,7 +132,7 @@
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/margin_20"
         android:src="@drawable/live_icon_close_btn"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <!--底部面板(供BasePanelContainer使用)-->
     <RelativeLayout
@@ -140,7 +140,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/transparent"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <!--输入框-->
     <com.wali.live.watchsdk.component.view.InputAreaView
@@ -149,6 +149,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
+
+    <!--红包容器-->
+    <RelativeLayout
+        android:id="@+id/envelope_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </RelativeLayout>
