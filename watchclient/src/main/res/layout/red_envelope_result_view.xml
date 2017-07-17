@@ -1,122 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_white"
     android:layout_width="275dp"
     android:layout_height="350dp"
     android:layout_centerInParent="true"
     android:background="#fdefe4">
 
     <View
-        android:id="@+id/bottom_view"
-        android:layout_width="wrap_content"
-        android:layout_height="33.33dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/red_packet_bg_bottom" />
-
-    <View
         android:layout_width="match_parent"
         android:layout_height="86.66dp"
         android:layout_alignParentTop="true"
         android:background="@drawable/red_packet_bg_top" />
-
-    <com.base.image.fresco.BaseImageView
-        android:id="@+id/sender_avatar_iv"
-        android:layout_width="46.66dp"
-        android:layout_height="46.66dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="57.33dp"
-        app:roundAsCircle="false" />
-
-    <ImageView
-        android:id="@+id/user_badge_iv"
-        android:layout_width="@dimen/lvl_small_icon_size_width"
-        android:layout_height="@dimen/lvl_small_icon_size_height"
-        android:layout_below="@+id/sender_avatar_iv"
-        android:layout_marginLeft="@dimen/lvl_small_icon_margin"
-        android:layout_marginTop="@dimen/lvl_small_icon_margin"
-        android:layout_toRightOf="@+id/sender_avatar_iv"
-        android:scaleType="fitStart" />
-
-    <TextView
-        android:id="@+id/info_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/sender_avatar_iv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="6.66dp"
-        android:singleLine="true"
-        android:text="Angelababy的红包"
-        android:textColor="@color/color_black_trans_70"
-        android:textSize="12dp" />
-
-    <TextView
-        android:id="@+id/diamond_num_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/info_tv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:gravity="center"
-        android:padding="0dp"
-        android:singleLine="true"
-        android:textColor="@color/color_black"
-        android:textSize="40sp" />
-
-    <ImageView
-        android:id="@+id/diamond_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/diamond_num_tv"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@id/diamond_num_tv"
-        android:scaleType="centerInside"
-        android:src="@drawable/me_argentum_diamond" />
-
-    <TextView
-        android:id="@+id/tips_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/diamond_num_tv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="6.66dp"
-        android:singleLine="true"
-        android:text="@string/already_in_pocket"
-        android:textColor="@color/color_black_trans_30"
-        android:textSize="9.33sp" />
-
-    <TextView
-        android:id="@+id/look_other_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/bottom_view"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp"
-        android:text="@string/look_other_money"
-        android:textColor="#e0bd85"
-        android:textSize="12sp" />
-
-    <ImageView
-        android:id="@+id/close_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:padding="10dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/red_envelope_close_btn_bg" />
-
-    <TextView
-        android:id="@+id/empty_tips_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/info_tv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="53.33dp"
-        android:singleLine="true"
-        android:text="@string/your_hand_is_too_slow"
-        android:textColor="@color/color_black_trans_70"
-        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/top_anchor_tv"
@@ -125,7 +20,7 @@
         android:layout_below="@id/info_tv"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="28dp"
-        android:singleLine="true"
+        android:maxLines="1"
         android:text="@string/anchor_text"
         android:textColor="#d64a4a"
         android:textSize="11.33sp"
@@ -157,29 +52,126 @@
         android:background="#fefefe"
         android:visibility="gone" />
 
-    <include
-        android:id="@+id/anchor_item"
-        layout="@layout/red_envelope_winner_item"
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/sender_avatar_iv"
+        android:layout_width="46.66dp"
+        android:layout_height="46.66dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="57.33dp"
+        app:roundAsCircle="false" />
+
+    <ImageView
+        android:id="@+id/user_badge_iv"
+        android:layout_width="@dimen/lvl_small_icon_size_width"
+        android:layout_height="@dimen/lvl_small_icon_size_height"
+        android:layout_below="@+id/sender_avatar_iv"
+        android:layout_marginLeft="@dimen/lvl_small_icon_margin"
+        android:layout_marginTop="@dimen/lvl_small_icon_margin"
+        android:layout_toRightOf="@+id/sender_avatar_iv"
+        android:scaleType="fitStart" />
+
+    <TextView
+        android:id="@+id/info_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/top_anchor_tv"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:visibility="gone" />
+        android:layout_below="@id/sender_avatar_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="6.66dp"
+        android:singleLine="true"
+        android:text="Angelababy的红包"
+        android:textColor="@color/color_black_trans_70"
+        android:textSize="12dp" />
 
+    <!--抢红包结果-->
+    <RelativeLayout
+        android:id="@+id/result_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottom_view"
+        android:layout_below="@id/info_tv">
+
+        <TextView
+            android:id="@+id/diamond_num_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:padding="0dp"
+            android:singleLine="true"
+            android:textColor="@color/color_black"
+            android:textSize="40sp" />
+
+        <ImageView
+            android:id="@+id/diamond_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/diamond_num_tv"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/diamond_num_tv"
+            android:scaleType="centerInside"
+            android:src="@drawable/me_argentum_diamond" />
+
+        <TextView
+            android:id="@+id/tips_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/diamond_num_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="6.66dp"
+            android:singleLine="true"
+            android:text="@string/already_in_pocket"
+            android:textColor="@color/color_black_trans_30"
+            android:textSize="9.33sp" />
+
+        <TextView
+            android:id="@+id/look_other_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tips_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="40dp"
+            android:text="@string/look_other_money"
+            android:textColor="#e0bd85"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/empty_tips_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="53.33dp"
+            android:singleLine="true"
+            android:text="@string/your_hand_is_too_slow"
+            android:textColor="@color/color_black_trans_70"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <!--抢红包排行榜-->
     <RelativeLayout
         android:id="@+id/top_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/bottom_view"
-        android:layout_below="@id/anchor_item"
+        android:layout_below="@id/info_tv"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
+
+        <include
+            android:id="@+id/anchor_item"
+            layout="@layout/red_envelope_winner_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/top_info_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/anchor_item"
             android:layout_centerHorizontal="true"
             android:singleLine="true"
             android:text="@string/top_50"
@@ -211,7 +203,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/top_info_tv"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:maxHeight="@dimen/height_305"
+            android:minHeight="@dimen/height_305" />
 
     </RelativeLayout>
+
+    <View
+        android:id="@+id/bottom_view"
+        android:layout_width="wrap_content"
+        android:layout_height="33.33dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/red_packet_bg_bottom" />
+
+    <ImageView
+        android:id="@+id/close_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/red_envelope_close_btn_bg" />
 </RelativeLayout>
