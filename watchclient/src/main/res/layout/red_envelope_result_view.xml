@@ -46,7 +46,7 @@
     <RelativeLayout
         android:id="@+id/result_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_above="@+id/bottom_view"
         android:layout_below="@id/info_tv">
 
@@ -89,7 +89,7 @@
             android:id="@+id/look_other_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tips_tv"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="40dp"
             android:text="@string/look_other_money"
@@ -116,6 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/bottom_view"
         android:layout_below="@id/info_tv"
+        android:layout_marginTop="28dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
@@ -135,8 +136,7 @@
             layout="@layout/red_envelope_winner_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_below="@id/anchor_tips"
             android:visibility="gone" />
 
         <TextView

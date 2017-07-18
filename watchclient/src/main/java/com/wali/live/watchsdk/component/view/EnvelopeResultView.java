@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
+import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.gift.redenvelope.RedEnvelopeModel;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.utils.AvatarUtils;
@@ -97,10 +98,12 @@ public class EnvelopeResultView extends BaseBottomPanel<RelativeLayout, Relative
         AvatarUtils.loadAvatarByUidTs(mSenderAvatarIv, model.getUserId(), model.getAvatarTimestamp(), true);
         mUserBadgeIv.setImageDrawable(ItemDataFormatUtils.getLevelSmallImgSource(model.getLevel()));
         mInfoTv.setText(model.getMsg());
+        mInfoTv.setText(mContentView.getResources().getString(R.string.red_result_msg, model.getNickName()));
         if (mMode != MODE_RESULT) {
             mMode = MODE_RESULT;
             mDetailView.setVisibility(View.GONE);
             mResultView.setVisibility(View.VISIBLE);
+            mContentView.getLayoutParams().height = DisplayUtils.dip2px(350f);
         }
         if (mEnvelopeInfo.grabCnt > 0) {
             mDiamondNumTv.setVisibility(View.VISIBLE);
@@ -130,6 +133,7 @@ public class EnvelopeResultView extends BaseBottomPanel<RelativeLayout, Relative
             mMode = MODE_DETAIL;
             mDetailView.setVisibility(View.VISIBLE);
             mResultView.setVisibility(View.GONE);
+            mContentView.getLayoutParams().height = DisplayUtils.dip2px(446.66f);
         }
         if (anchorItem != null) {
             mAnchorTips.setVisibility(View.VISIBLE);

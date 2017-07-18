@@ -3,6 +3,7 @@ package com.wali.live.watchsdk.component.presenter;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.base.global.GlobalData;
@@ -38,7 +39,6 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.wali.live.component.ComponentController.MSG_ON_BACK_PRESSED;
 import static com.wali.live.component.ComponentController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.ComponentController.MSG_ON_ORIENT_PORTRAIT;
 
@@ -69,11 +69,22 @@ public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
     }
 
     @Override
+    public void setComponentView(@Nullable RelativeLayout relativeLayout) {
+        super.setComponentView(relativeLayout);
+        relativeLayout.setSoundEffectsEnabled(false);
+        relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 吃点点击事件
+            }
+        });
+    }
+
+    @Override
     public void startPresenter() {
         super.startPresenter();
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
-        registerAction(MSG_ON_BACK_PRESSED);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -272,7 +283,12 @@ public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
             EnvelopeInfo currTopItem = mEnvelopeInfoList.getFirst();
             if (currTopItem.state == EnvelopeInfo.STATE_GRAB_SUCCESS) { // 显示红包结果页
                 if (!mEnvelopeViewList.isEmpty()) { // 停止当前顶层View的动画
-                    mEnvelopeViewList.getFirst().stopRotation();
+                    EnvelopeView envelopeView = mEnvelopeViewList.getFirst();
+                    envelopeView.stopRotation();
+                    if (envelopeView.getEnvelopeInfo() == currTopItem) {
+                        envelopeView.hideSelf(false);
+                        mEnvelopeViewList.removeFirst();
+                    }
                 }
                 if (mEnvelopeResultView == null) {
                     mEnvelopeResultView = new EnvelopeResultView(mView);
@@ -323,13 +339,6 @@ public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
         }
     }
 
-    private boolean onBackPressed() {
-//        if (mEnvelopeResultView != null && mEnvelopeResultView.isShow()) {
-//            removeEnvelope(mEnvelopeResultView.get());
-//        }
-        return !mEnvelopeInfoList.isEmpty();
-    }
-
     @Nullable
     @Override
     protected IAction createAction() {
@@ -350,8 +359,6 @@ public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
                 case MSG_ON_ORIENT_LANDSCAPE:
                     onOrientation(true);
                     return true;
-                case MSG_ON_BACK_PRESSED:
-                    return onBackPressed();
                 default:
                     break;
             }
@@ -366,9 +373,8 @@ public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
         public static final int STATE_GRAB_FAILED = 3; // 抢红包失败了
 
         public RedEnvelopeModel envelopeModel;
-        public int state;
-        public int grabCnt;
-        public List<WinnerItemAdapter.WinnerItem> winnerList;
+        public int state = STATE_NEW;
+        public int grabCnt = 0;
 
         public String getEnvelopeId() {
             return envelopeModel != null ? envelopeModel.getRedEnvelopeId() : null;

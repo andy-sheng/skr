@@ -83,4 +83,5 @@
         android:padding="10dp"
         android:scaleType="centerInside"
         android:src="@drawable/red_envelope_close_btn_bg" />
+
 </RelativeLayout>

@@ -104,4 +104,5 @@
     <string name="top_50">Top 50</string>
     <string name="red_envelope_best_luck">手氣超棒!!!</string>
     <string name="net_is_busy_tip">網路繁忙，請稍後再試</string>
+    <string name="red_result_msg">%s的紅包</string>
 </resources>
