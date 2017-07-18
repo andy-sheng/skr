@@ -89,10 +89,8 @@ public class ThirdPartLoginActivity extends AppCompatActivity implements RadioGr
             public void onClick(View v) {
                 String channelId = channelIdEt.getText().toString();
                 if (!TextUtils.isEmpty(channelId)) {
-                    String uri = "livesdk://channel?channel_id=" + channelId;
+                    String uri = "livesdk://channel?channel=50001&package_name=com.wali.live.sdk.manager.demo&channel_id=" + channelId;
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                    intent.putExtra("extra_channel_id", 50001);
-                    intent.putExtra("extra_package_name", "com.wali.live.sdk.manager.demo");
                     startActivity(intent);
                 } else {
                     ToastUtils.showToast("channel id empty");
