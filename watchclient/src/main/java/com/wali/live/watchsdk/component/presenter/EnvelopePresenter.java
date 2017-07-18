@@ -201,7 +201,8 @@ public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
     private void processGrabDone(
             @NonNull EnvelopeInfo envelopeInfo,
             @Nullable RedEnvelProto.GrabEnvelopRsp grabEnvelopRsp) {
-        if (grabEnvelopRsp == null || grabEnvelopRsp.getRetCode() != ErrorCode.CODE_SUCCESS) {
+        if (grabEnvelopRsp == null || (grabEnvelopRsp.getRetCode() != ErrorCode.CODE_SUCCESS
+                && grabEnvelopRsp.getRetCode() != GiftErrorCode.REDENVELOP_HAS_DONE)) { // 加入这个判断，防止SDK与直播同一账号抢红包
             envelopeInfo.state = EnvelopeInfo.STATE_GRAB_FAILED;
         } else {
             envelopeInfo.state = EnvelopeInfo.STATE_GRAB_SUCCESS;
