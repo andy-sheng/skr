@@ -25,8 +25,8 @@ public abstract class BaseBottomButton<PRESENTER, VIEW extends IViewProxy> imple
         View.OnClickListener, IComponentView<PRESENTER, VIEW> {
     protected final String TAG = getTAG();
 
-    private static final int BTN_MARGIN = DisplayUtils.dip2px(3.33f);
-    private static final int BTN_MARGIN_LEFT = DisplayUtils.dip2px(6.67f);
+    protected static final int BTN_MARGIN = DisplayUtils.dip2px(3.33f);
+    protected static final int BTN_MARGIN_LEFT = DisplayUtils.dip2px(6.67f);
 
     protected RelativeLayout mContentContainer;
     protected final List<View> mLeftBtnSetPort = new ArrayList<>();

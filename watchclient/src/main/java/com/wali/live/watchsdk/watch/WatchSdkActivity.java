@@ -22,12 +22,12 @@ import com.base.activity.BaseActivity;
 import com.base.dialog.DialogUtils;
 import com.base.dialog.MyAlertDialog;
 import com.base.event.SdkEventClass;
-import com.base.fragment.FragmentListener;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
+import com.base.preference.PreferenceUtils;
 import com.base.utils.CommonUtils;
 import com.base.utils.rx.RxRetryAssist;
 import com.jakewharton.rxbinding.view.RxView;
@@ -44,9 +44,11 @@ import com.mi.live.data.location.Location;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
+import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.mi.live.data.user.User;
 import com.mi.live.engine.player.widget.VideoPlayerTextureView;
 import com.mi.milink.sdk.base.CustomHandlerThread;
@@ -55,6 +57,7 @@ import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
+import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.event.EventClass;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.manager.WatchRoomCharactorManager;
@@ -694,6 +697,31 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     protected void onEventShare(EventClass.ShareEvent event) {
         if (event != null && event.state == EventClass.ShareEvent.TYPE_SUCCESS) {
             mRoomChatMsgManager.sendShareBarrageMessageAsync(mMyRoomData.getRoomId(), mMyRoomData.getUid());
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(RoomDataChangeEvent event) {
+        if (event == null) {
+            return;
+        }
+        MyLog.w(TAG, "RoomDataChangeEvent " + event.type);
+        switch (event.type) {
+            case RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE: {
+                RoomBaseDataModel roomBaseDataModel = event.source;
+                if (roomBaseDataModel != null && !roomBaseDataModel.isFocused()
+                        && (mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME)) {
+                    int guideFollowTs = PreferenceUtils.getSettingInt(GlobalData.app(),
+                            PreferenceKeys.PRE_KEY_GAME_FOLLOW_TIME, 0);
+                    if (guideFollowTs > 0) {
+                        mComponentController.onEvent(WatchComponentController.MSG_FOLLOW_COUNT_DOWN,
+                                new ComponentPresenter.Params().putItem(guideFollowTs));
+                    }
+                }
+            }
+            break;
+            default:
+                break;
         }
     }
 

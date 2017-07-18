@@ -93,6 +93,8 @@ public class GetConfigManager {
     private static final String CONFIG_H5_WITHDRAW_ENABLE = "isTXH5";
     private static final String CONFIG_WECHAT_H5_WITHDRAW_URL = "wechatTXUrl";
     private static final String CONFIG_PAYPAL_H5_WITHDRAW_URL = "ppalTXUrl";
+    private static final String CONFIG_ROOT_ZHIBO_COMMON = "zhibo_comm"; // 和zhibo_biz 同一级
+    private static final String CONFIG_GAME_FOLLOW_TS = "game_follow_start_time"; //游戏直播房间内引导关注时机
 
     private static GetConfigManager sInstance;
 
@@ -617,6 +619,15 @@ public class GetConfigManager {
                             if (!TextUtils.isEmpty(interval)) {
                                 PreferenceUtils.setSettingString(GlobalData.app(), PreferenceKeys.PRE_KEY_REDNAM_SENDSMS_INTERVAL, interval);
                             }
+                        }
+                    }
+
+                    if (root.has(CONFIG_ROOT_ZHIBO_COMMON)) {
+                        JSONObject zhiboCommon = root.getJSONObject(CONFIG_ROOT_ZHIBO_COMMON);
+                        MyLog.w(TAG,  CONFIG_ROOT_ZHIBO_COMMON + "=" + zhiboCommon.toString());
+                        if (zhiboCommon.has(CONFIG_GAME_FOLLOW_TS)) {
+                            int gameFollowTs = zhiboCommon.getInt(CONFIG_GAME_FOLLOW_TS);
+                            PreferenceUtils.setSettingInt(GlobalData.app(), PreferenceKeys.PRE_KEY_GAME_FOLLOW_TIME, gameFollowTs);
                         }
                     }
                     if (root.has(CONFIG_ZHIBO_AND_CONFIG)) {
