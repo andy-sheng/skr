@@ -607,9 +607,9 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                 .filter(new Func1<Gift, Boolean>() {
                     @Override
                     public Boolean call(Gift gift) {
-                        if (gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
-                            return false;
-                        }
+//                        if (gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
+//                            return false;
+//                        }
                         return true;
                     }
                 })

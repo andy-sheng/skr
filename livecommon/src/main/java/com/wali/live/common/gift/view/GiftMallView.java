@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -22,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.base.activity.BaseActivity;
 import com.base.activity.RxActivity;
 import com.base.activity.assist.IBindActivityLIfeCycle;
 import com.base.dialog.MyAlertDialog;
@@ -39,12 +41,12 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.common.gift.adapter.GiftDisplayRecycleViewAdapter;
 import com.wali.live.common.gift.adapter.GiftDisplayViewPagerAdapter;
-import com.wali.live.common.gift.adapter.viewHolder.GiftDisplayDividerItemDecoration;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
 import com.wali.live.common.gift.utils.MyAnimationUtils;
 import com.wali.live.common.view.ErrorView;
 import com.wali.live.common.view.ViewPagerWithCircleIndicator;
 import com.wali.live.dao.Gift;
+import com.wali.live.envelope.SendEnvelopeFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -182,12 +184,12 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
             }
 
             if (info.gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
-//                getRxActivity().onBackPressed();
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable(SendRedPacketFragment.KEY_ROOM_ID, mMyRoomData.getRoomId());
-//                bundle.putSerializable(SendRedPacketFragment.KEY_ZU_ID, mMyRoomData.getUid());
-//                bundle.putInt(SendRedPacketFragment.KEY_VIEWERCOUNT, mMyRoomData.getViewerCnt());
-//                SendRedPacketFragment.openFragment((BaseAppActivity) getContext(), bundle);
+                getRxActivity().onBackPressed();
+                Bundle bundle = new Bundle();
+//                bundle.putSerializable(SendEnvelopeFragment.KEY_ROOM_ID, mMyRoomData.getRoomId());
+//                bundle.putSerializable(SendEnvelopeFragment.KEY_ZU_ID, mMyRoomData.getUid());
+//                bundle.putInt(SendEnvelopeFragment.KEY_VIEWERCOUNT, mMyRoomData.getViewerCnt());
+                SendEnvelopeFragment.openFragment((BaseActivity) getContext());
             } else {
                 if (v != mSelectedView) {
                     if (mSelectedView != null) {
