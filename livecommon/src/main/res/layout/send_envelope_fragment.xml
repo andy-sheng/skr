@@ -21,10 +21,28 @@
         android:textSize="@dimen/text_size_42" />
 
     <LinearLayout
+        android:id="@+id/envelope_container1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/select_tips"
+        android:layout_marginTop="3dp"
+        android:gravity="center"
+        android:orientation="horizontal" />
+
+    <LinearLayout
+        android:id="@+id/envelope_container2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_below="@id/envelope_container1"
+        android:gravity="center"
+        android:orientation="horizontal" />
+
+    <LinearLayout
         android:id="@+id/diamond_info_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/select_tips"
+        android:layout_below="@+id/envelope_container2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/margin_20"
         android:gravity="center_vertical">
