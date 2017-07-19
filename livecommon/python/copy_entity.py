@@ -1,22 +1,38 @@
 #!/usr/bin/env python
-#coding: UTF-8
+# coding: UTF-8
 
 import os
 import shutil
 
-# 待拷贝资源的所在路径
-org_res_path = "/home/wuxiaoshan/android-workspace/walilive/app/src/main/res"
-# 资源拷贝的目标路径
-dst_res_path = "../src/main/res"
-
-if not os.path.exists(org_res_path):
-    print "error: org res path not found, please modify org_res_path in " \
-            + os.path.basename(__file__)
+if not os.path.exists("local_setting.py"):
+    print "error: local_setting.py not found, please create one" \
+          + os.path.basename(__file__)
     exit()
 
-if not os.path.exists(dst_res_path):
-    print "error: dst res path not found, please modify dst_res_path in " \
-          + os.path.basename(__file__)
+from local_setting import *
+
+try:
+    if not os.path.exists(org_res_path):
+        print "error: org res path not found, please modify org_res_path variable to correct path in " \
+              + "local_setting.py"
+        exit()
+
+    if not os.path.exists(dst_res_path):
+        print "error: dst res path not found, please modify dst_res_path variable to correct path in " \
+              + "local_setting.py"
+        exit()
+
+except NameError:
+    print "error: org_res_path or dst_res_path not found, please define them in " \
+          + "local_setting.py"
+    print "sample code:"
+    print "#!/usr/bin/env python"
+    print "#coding: UTF-8"
+    print ""
+    print "# 待拷贝资源的所在路径"
+    print "org_res_path = \"/Users/yangli/Development/huyu/walilive/app/src/main/res\""
+    print "# 资源拷贝的目标路径
+    print "dst_res_path = \"../src/main/res\""
     exit()
 
 # 图片资源拷贝
@@ -48,7 +64,7 @@ class CopyDrawableRes:
         resFile = ""
         for fileName in os.listdir(srcPath):
             (name, ext) = os.path.splitext(fileName)
-            if name == resItem:
+            if name == resItem or name == (resItem + '.9'):
                 resFile = fileName
                 break
 
@@ -105,9 +121,10 @@ class CopyDrawableRes:
 
         pass
 
+
 # 字符串资源拷贝
 class CopyStringRes:
-    addExtraLine = False # 是否字符串前增加空行
+    addExtraLine = False  # 是否字符串前增加空行
 
     def __init__(self, addExtraLine):
         self.addExtraLine = addExtraLine
@@ -167,7 +184,7 @@ class CopyStringRes:
                 continue
             end = srcData.find('</string>', start)
             content = '    ' + srcData[start:(end + len('</string>'))] + '\n'
-            if self.addExtraLine: # 增加空行
+            if self.addExtraLine:  # 增加空行
                 content = '\n' + content
                 pass
             # print 'content: "' + content + '"\nwrite before: "' + dstData[dstPos:] + '"'
@@ -182,9 +199,9 @@ class CopyStringRes:
             out.close()
         pass
 
+
 # layout资源拷贝
 class CopyLayoutRes:
-
     def __init__(self):
         pass
 
@@ -197,15 +214,14 @@ class CopyLayoutRes:
             return
         print "copy layout"
         for srcItem in itemList:
-           print "copy layout " + srcItem
-           ret = self.__doCopy("/layout/", srcItem)
-           if not ret:
-               print "copy /layout/ " + srcItem
-               self.__doCopy("/layout/", srcItem)
+            print "copy layout " + srcItem
+            ret = self.__doCopy("/layout/", srcItem)
+            if not ret:
+                print "copy /layout/ " + srcItem
+                self.__doCopy("/layout/", srcItem)
         pass
 
-
-    def __doCopy(self, resPath,fileName):
+    def __doCopy(self, resPath, fileName):
         srcFile = org_res_path + resPath + fileName
         dstPath = dst_res_path + resPath
 

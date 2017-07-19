@@ -53,4 +53,4 @@ build
 *~
 *.swp
 
-watchclient/python/local_setting.*
+*/**/local_setting.py*

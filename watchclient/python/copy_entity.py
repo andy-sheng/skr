@@ -1,7 +1,39 @@
 #!/usr/bin/env python
 # coding: UTF-8
 
+import os
+import shutil
+
+if not os.path.exists("local_setting.py"):
+    print "error: local_setting.py not found, please create one" \
+          + os.path.basename(__file__)
+    exit()
+
 from local_setting import *
+
+try:
+    if not os.path.exists(org_res_path):
+        print "error: org res path not found, please modify org_res_path variable to correct path in " \
+              + "local_setting.py"
+        exit()
+
+    if not os.path.exists(dst_res_path):
+        print "error: dst res path not found, please modify dst_res_path variable to correct path in " \
+              + "local_setting.py"
+        exit()
+
+except NameError:
+    print "error: org_res_path or dst_res_path not found, please define them in " \
+          + "local_setting.py"
+    print "sample code:"
+    print "#!/usr/bin/env python"
+    print "#coding: UTF-8"
+    print ""
+    print "# 待拷贝资源的所在路径"
+    print "org_res_path = \"/Users/yangli/Development/huyu/walilive/app/src/main/res\""
+    print "# 资源拷贝的目标路径
+    print "dst_res_path = \"../src/main/res\""
+    exit()
 
 # 图片资源拷贝
 class CopyDrawableRes:
@@ -32,7 +64,7 @@ class CopyDrawableRes:
         resFile = ""
         for fileName in os.listdir(srcPath):
             (name, ext) = os.path.splitext(fileName)
-            if name == resItem:
+            if name == resItem or name == (resItem + '.9'):
                 resFile = fileName
                 break
 
