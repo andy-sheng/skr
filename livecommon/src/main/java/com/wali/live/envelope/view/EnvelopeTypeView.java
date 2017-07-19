@@ -1,7 +1,6 @@
 package com.wali.live.envelope.view;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
@@ -13,15 +12,13 @@ import android.widget.TextView;
 
 import com.live.module.common.R;
 
-
 /**
  * Created by wangmengjie on 2017/7/18.
  *
  * @module 自定义红包view
  */
-
 public class EnvelopeTypeView extends RelativeLayout {
-    private boolean mIsSelected = false;
+    private static final String TAG = "EnvelopeTypeView";
 
     private ImageView mEnvelopeTypeIv;
     private TextView mDiamondNumTv;
@@ -29,10 +26,6 @@ public class EnvelopeTypeView extends RelativeLayout {
 
     protected final <T extends View> T $(@IdRes int resId) {
         return (T) findViewById(resId);
-    }
-
-    public EnvelopeTypeView(Context context, Drawable envelopeLevel, int diamondNum) {
-        super(context);
     }
 
     public EnvelopeTypeView(Context context) {
@@ -50,17 +43,9 @@ public class EnvelopeTypeView extends RelativeLayout {
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.envelope_type_view, this);
-
         mEnvelopeTypeIv = $(R.id.envelope_type_iv);
         mDiamondNumTv = $(R.id.diamond_num_tv);
         mSelectRightIv = $(R.id.select_right);
-
-        mDiamondNumTv.setGravity(CENTER_IN_PARENT);
-        LayoutParams envelopeTypeLp = (LayoutParams) mEnvelopeTypeIv.getLayoutParams();
-        LayoutParams selectRightLp = (LayoutParams) mSelectRightIv.getLayoutParams();
-        selectRightLp.leftMargin = envelopeTypeLp.width - selectRightLp.width;
-        selectRightLp.topMargin = envelopeTypeLp.height - selectRightLp.height;
-        mSelectRightIv.setVisibility(View.GONE);
     }
 
     public void setData(EnvelopeType type) {
@@ -84,8 +69,10 @@ public class EnvelopeTypeView extends RelativeLayout {
 
     public static class EnvelopeType {
         public int mDiamondNum;
-        public @ColorRes int mColorId;
-        public @DrawableRes int mDrawableId;
+        @ColorRes
+        public int mColorId;
+        @DrawableRes
+        public int mDrawableId;
 
         public EnvelopeType(int diamondNum, int colorId, int drawableId) {
             mDiamondNum = diamondNum;

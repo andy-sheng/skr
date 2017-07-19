@@ -73,8 +73,6 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     public static final int MSG_SHOW_PERSONAL_INFO = MSG_POPUP_FIRST + 9;       // 显示 个人信息页
     public static final int MSG_SHOW_FOLLOW_GUIDE = MSG_POPUP_FIRST + 10;       // 显示 游戏引导页面
     public static final int MSG_FOLLOW_COUNT_DOWN = MSG_POPUP_FIRST + 11;       // 显示 游戏引导页面之前的倒计时
-
-
     // 详情播放相关
     private static final int MSG_DETAIL_VIDEO_FIRST = 40000;
     public static final int MSG_UPDATE_LIKE_STATUS = MSG_DETAIL_VIDEO_FIRST; // 更新 点赞状态
@@ -87,7 +85,6 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     public static final int MSG_COMPLETE_USER_INFO = MSG_DETAIL_VIDEO_FIRST + 7;  // 点击回放每一条
     public static final int MSG_UPDATE_START_TIME = MSG_DETAIL_VIDEO_FIRST + 8; // 更新 回放的录制时间(用于拉取房间消息/弹幕)
     public static final int MSG_PLAYER_ROTATE_ORIENTATION = MSG_DETAIL_VIDEO_FIRST + 9; //方向变换事件
-
     // 播放器相关消息
     private static final int MSG_PLAYER_FIRST = 41000;
     public static final int MSG_PLAYER_FULL_SCREEN = MSG_PLAYER_FIRST;
