@@ -5,8 +5,7 @@ import os
 import shutil
 
 if not os.path.exists("local_setting.py"):
-    print "error: local_setting.py not found, please create one" \
-          + os.path.basename(__file__)
+    print "error: local_setting.py not found, please create one"
     exit()
 
 from local_setting import *
@@ -31,7 +30,7 @@ except NameError:
     print ""
     print "# 待拷贝资源的所在路径"
     print "org_res_path = \"/Users/yangli/Development/huyu/walilive/app/src/main/res\""
-    print "# 资源拷贝的目标路径
+    print "# 资源拷贝的目标路径"
     print "dst_res_path = \"../src/main/res\""
     exit()
 
