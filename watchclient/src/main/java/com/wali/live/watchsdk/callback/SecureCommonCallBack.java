@@ -1,7 +1,7 @@
 package com.wali.live.watchsdk.callback;
 
 import com.base.log.MyLog;
-import com.mi.live.data.account.HostChannelManager;
+import com.mi.live.data.account.channel.HostChannelManager;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;

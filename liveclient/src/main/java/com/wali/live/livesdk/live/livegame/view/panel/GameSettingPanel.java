@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.base.utils.toast.ToastUtils;
-import com.mi.live.data.account.HostChannelManager;
+import com.mi.live.data.account.channel.HostChannelManager;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.component.view.panel.BaseBottomPanel;

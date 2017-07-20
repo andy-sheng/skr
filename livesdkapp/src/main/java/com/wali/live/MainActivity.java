@@ -16,7 +16,7 @@ import android.widget.EditText;
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
-import com.mi.live.data.account.HostChannelManager;
+import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.liveassistant.R;

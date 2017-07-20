@@ -8,15 +8,13 @@ import android.content.Intent;
 import com.base.activity.BaseSdkActivity;
 import com.base.dialog.MyAlertDialog;
 import com.base.log.MyLog;
-import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.account.channel.HostChannelManager;
+import com.mi.live.data.account.channel.SpecialChannel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.login.LoginInternalService;
 import com.wali.live.watchsdk.login.LoginPresenter;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by chengsimin on 2017/2/9.
@@ -25,13 +23,6 @@ public class AccountAuthManager {
     private static final String TAG = AccountAuthManager.class.getSimpleName();
 
     public static boolean sShowWindow = false;
-
-    private static Set<Integer> sSpecialChannelSet = new HashSet<>();
-
-    static {
-        sSpecialChannelSet.add(50001);
-        sSpecialChannelSet.add(50014);
-    }
 
     public static boolean triggerActionNeedAccount(final Context activity) {
         if (UserAccountManager.getInstance().hasAccount()) {
@@ -57,7 +48,7 @@ public class AccountAuthManager {
                     public void onClick(DialogInterface dialog, int which) {
                         int channelId = HostChannelManager.getInstance().getChannelId();
                         MyLog.w(TAG, "triggerAccount channelId=" + channelId);
-                        if (sSpecialChannelSet.contains(channelId)) {
+                        if (SpecialChannel.sChannelSet.contains(channelId)) {
                             if (activity instanceof BaseSdkActivity) {
                                 MyLog.w(TAG, "triggerAccount use 'Presenter'");
                                 new LoginPresenter((BaseSdkActivity) activity).miLogin(channelId);

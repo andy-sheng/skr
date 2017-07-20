@@ -150,6 +150,13 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name="com.mi.live.data.account.receiver.AccountChangedReceiver">
+            <intent-filter>
+                <action android:name="android.accounts.LOGIN_ACCOUNTS_PRE_CHANGED"/>
+                <action android:name="android.accounts.LOGIN_ACCOUNTS_POST_CHANGED"/>
+            </intent-filter>
+        </receiver>
+
         <service
             android:name="com.wali.live.watchsdk.ipc.service.MiLiveSdkService"
             android:exported="true"/>

@@ -1,6 +1,7 @@
-package com.mi.live.data.account;
+package com.mi.live.data.account.channel;
 
 import com.base.log.MyLog;
+import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.repository.datasource.AccountLocalStore;
 import com.wali.live.dao.UserAccount;
 
