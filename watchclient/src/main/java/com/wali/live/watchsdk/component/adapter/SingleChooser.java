@@ -1,4 +1,4 @@
-package com.wali.live.component.presenter.adapter;
+package com.wali.live.watchsdk.component.adapter;
 
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;

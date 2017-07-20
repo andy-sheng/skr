@@ -1,4 +1,4 @@
-package com.wali.live.envelope.view;
+package com.wali.live.watchsdk.component.view;
 
 import android.content.Context;
 import android.support.annotation.ColorRes;

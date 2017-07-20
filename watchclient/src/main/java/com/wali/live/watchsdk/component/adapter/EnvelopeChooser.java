@@ -1,4 +1,4 @@
-package com.wali.live.envelope.adapter;
+package com.wali.live.watchsdk.component.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.View;

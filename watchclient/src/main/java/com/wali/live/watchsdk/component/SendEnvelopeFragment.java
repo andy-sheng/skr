@@ -1,4 +1,4 @@
-package com.wali.live.envelope;
+package com.wali.live.watchsdk.component;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +11,8 @@ import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.view.BackTitleBar;
 import com.live.module.common.R;
 import com.wali.live.component.presenter.adapter.SingleChooser;
-import com.wali.live.envelope.adapter.EnvelopeChooser;
-import com.wali.live.envelope.view.EnvelopeTypeView;
+import com.wali.live.watchsdk.component.adapter.EnvelopeChooser;
+import com.wali.live.watchsdk.component.view.EnvelopeTypeView;
 
 import java.util.LinkedList;
 import java.util.List;
