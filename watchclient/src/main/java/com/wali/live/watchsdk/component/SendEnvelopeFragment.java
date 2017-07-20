@@ -8,8 +8,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.base.activity.BaseActivity;
-import com.base.fragment.BaseFragment;
+import com.base.event.KeyboardEvent;
+import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
+import com.base.keyboard.KeyboardUtils;
+import com.base.log.MyLog;
 import com.base.utils.language.LocaleUtil;
 import com.base.view.BackTitleBar;
 import com.mi.live.data.account.MyUserInfoManager;
@@ -21,6 +24,9 @@ import com.wali.live.watchsdk.component.adapter.SingleChooser;
 import com.wali.live.watchsdk.component.view.EnvelopeTypeView;
 import com.wali.live.watchsdk.webview.WebViewActivity;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,12 +37,16 @@ import static com.base.utils.language.LocaleUtil.RED_ENVELOPE_DESC;
  *
  * @module 发红包
  */
-public class SendEnvelopeFragment extends BaseFragment implements View.OnClickListener {
+public class SendEnvelopeFragment extends BaseEventBusFragment implements View.OnClickListener {
     private final String TAG = "SendEnvelopeFragment";
 
+    private int mNormalTopMargin;
+
     private BackTitleBar mTitleBar;
+    private View mSelectTips;
     private TextView mGoldDiamondTv;
     private TextView mSilverDiamondTv;
+    private View mSendBtn;
 
     private final EnvelopeChooser mEnvelopeChooser = new EnvelopeChooser(new SingleChooser.IChooserListener() {
         @Override
@@ -90,8 +100,11 @@ public class SendEnvelopeFragment extends BaseFragment implements View.OnClickLi
     @Override
     protected void bindView() {
         mTitleBar = $(R.id.title_bar);
+        mTitleBar.hideBottomLine();
         mTitleBar.setTitle(R.string.send_redpacket);
         mTitleBar.setBackgroundColor(getResources().getColor(R.color.color_ff5345));
+        mTitleBar.getBackBtn().setTextColor(getResources().getColorStateList(R.color.color_feefc9_pressed_trans50));
+        mTitleBar.getBackBtn().setCompoundDrawablesWithIntrinsicBounds(R.drawable.red_topbar_icon_all_back_bg, 0, 0, 0);
         mTitleBar.getBackBtn().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,19 +123,48 @@ public class SendEnvelopeFragment extends BaseFragment implements View.OnClickLi
                 new EnvelopeTypeView.EnvelopeType(8888, R.color.color_ffda7b_90, R.drawable.red_item_5)));
         mEnvelopeChooser.setup(envelopeViews, envelopeViews.get(0));
 
+        mSelectTips = $(R.id.select_tips);
         mGoldDiamondTv = $(R.id.gold_diamond_tv);
         mSilverDiamondTv = $(R.id.silver_diamond_tv);
+        mSendBtn = $(R.id.send_btn);
 
         $click(R.id.send_btn, this);
         $click(R.id.instruction_btn, this);
         $click(R.id.recharge, this);
 
+        mNormalTopMargin = ((ViewGroup.MarginLayoutParams) mSelectTips.getLayoutParams()).topMargin;
         mGoldDiamondTv.setText(getString(R.string.gold_count, MyUserInfoManager.getInstance().getDiamondNum()));
         mSilverDiamondTv.setText(getString(R.string.silver_count, MyUserInfoManager.getInstance().getVirtualDiamondNum()));
     }
 
     private void finish() {
+        KeyboardUtils.hideKeyboard(getActivity());
         FragmentNaviUtils.popFragment(getActivity());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, priority = 1)
+    public void onEventMainThread(KeyboardEvent event) {
+        MyLog.w(TAG, "KeyboardEvent eventType=" + event.eventType);
+        switch (event.eventType) {
+            case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE: {
+                int keyboardHeight = Integer.parseInt(String.valueOf(event.obj1));
+                int y = mRootView.getHeight() - mSendBtn.getBottom();
+                ViewGroup.MarginLayoutParams layoutParams =
+                        (ViewGroup.MarginLayoutParams) mSelectTips.getLayoutParams();
+                if (y > 0 && y < keyboardHeight) {
+                    layoutParams.topMargin = mNormalTopMargin + (y - keyboardHeight);
+                }
+                mSelectTips.setLayoutParams(layoutParams);
+                break;
+            }
+            case KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN: {
+                ViewGroup.MarginLayoutParams layoutParams =
+                        (ViewGroup.MarginLayoutParams) mSelectTips.getLayoutParams();
+                layoutParams.topMargin = mNormalTopMargin;
+                mSelectTips.setLayoutParams(layoutParams);
+                break;
+            }
+        }
     }
 
     public static void openFragment(BaseActivity activity, RoomBaseDataModel myRoomData) {
