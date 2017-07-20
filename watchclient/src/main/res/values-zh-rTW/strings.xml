@@ -110,4 +110,7 @@
     <string name="red_result_msg">%s的紅包</string>
     <string name="gold_count">金鑽:%1$d</string>
     <string name="silver_count">銀鑽:%1$d</string>
+    <string name="bottom_tip_send_red">未領取的紅包，將於24小時後自動退回</string>
+    <string name="money_not_enough_tip">餘額不足啦，要加值才能繼續發送紅包哦，是否去加值</string>
+    <string name="create_red_envelop_failed_error">網路出錯啦</string>
 </resources>

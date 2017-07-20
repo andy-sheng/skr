@@ -27,6 +27,7 @@ import com.wali.live.livesdk.live.liveshow.view.LiveDisplayView;
 import com.wali.live.livesdk.live.liveshow.view.button.MagicControlBtnView;
 import com.wali.live.livesdk.live.liveshow.view.button.PlusControlBtnView;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
+import com.wali.live.watchsdk.component.presenter.EnvelopePresenter;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
@@ -180,6 +181,14 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                         new MagicControlBtnPresenter(mComponentController);
                 addComponentView(btnView, btnPresenter);
             }
+        }
+
+        // 抢红包
+        {
+            RelativeLayout relativeLayout = $(com.wali.live.watchsdk.R.id.envelope_view);
+            EnvelopePresenter presenter = new EnvelopePresenter(mComponentController, mComponentController.mMyRoomData);
+            presenter.setComponentView(relativeLayout);
+            addComponentView(presenter);
         }
 
         // 运营位

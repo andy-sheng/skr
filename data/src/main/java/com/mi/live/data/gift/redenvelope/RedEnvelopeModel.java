@@ -16,14 +16,6 @@ public class RedEnvelopeModel {
 
     public RedEnvelopeModel() {}
 
-    public RedEnvelopeModel(SendRedEnvelopModel model, String redId) {
-        this.redEnvelopeId = redId;
-        setGemCnt(model.getGemCnt());
-        setMsg(model.getMsg());
-        setRoomId(model.getRoomId());
-        setUserId(model.getZuId());
-    }
-
     public int getGemCnt() {
         return gemCnt;
     }

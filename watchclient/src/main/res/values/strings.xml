@@ -112,4 +112,7 @@
     <string name="red_result_msg">%s\'s red envelope</string>
     <string name="gold_count">Gold gems: %1$d</string>
     <string name="silver_count">Silver gems: %1$d</string>
+    <string name="bottom_tip_send_red">Expired red envelopes will be refunded in 24h</string>
+    <string name="money_not_enough_tip">Insufficient funds, top up to send red envelopes. Top up now?</string>
+    <string name="create_red_envelop_failed_error">Network error</string>
 </resources>

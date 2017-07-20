@@ -58,4 +58,33 @@ public class EnvelopeUtils {
         }
         return getEnvelopRsp;
     }
+
+    /**
+     * 发红包
+     */
+    public static RedEnvelProto.CreateRedEnvelopRsp createRedEnvelope(
+            long anchorId, String roomId, int viewerCnt, int gemCnt, String msg) {
+        RedEnvelProto.CreateRedEnvelopReq req = RedEnvelProto.CreateRedEnvelopReq.newBuilder()
+                .setUserId(UserAccountManager.getInstance().getUuidAsLong())
+                .setZuid(anchorId)
+                .setRoomId(roomId)
+                .setViewerCnt(viewerCnt)
+                .setGemCnt(gemCnt)
+                .setMsg(msg)
+                .setClientId(String.valueOf(System.currentTimeMillis()))
+                .setPlatform(RedEnvelProto.Platform.ANDROID)
+                .build();
+        PacketData data = new PacketData();
+        data.setCommand(MiLinkCommand.COMMAND_CREATE_REDENVELOP);
+        data.setData(req.toByteArray());
+        MyLog.v(TAG, "grabRedEnvelope request:" + req.toString());
+        PacketData response = MiLinkClientAdapter.getsInstance().sendSync(data, 10 * 1000);
+        RedEnvelProto.CreateRedEnvelopRsp createRedEnvelopRsp = null;
+        try {
+            createRedEnvelopRsp = RedEnvelProto.CreateRedEnvelopRsp.parseFrom(response.getData());
+            MyLog.v(TAG, "grabRedEnvelope response:" + createRedEnvelopRsp);
+        } catch (Exception e) {
+        }
+        return createRedEnvelopRsp;
+    }
 }

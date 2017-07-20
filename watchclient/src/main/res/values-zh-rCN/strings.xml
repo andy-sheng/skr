@@ -110,4 +110,7 @@
     <string name="red_result_msg">%s的红包</string>
     <string name="gold_count">金钻:%1$d</string>
     <string name="silver_count">银钻:%1$d</string>
+    <string name="bottom_tip_send_red">未领取的红包，将于24小时后自动退回</string>
+    <string name="money_not_enough_tip">余额不足啦，要充值才能继续发送红包哦，是否去充值</string>
+    <string name="create_red_envelop_failed_error">网络出错啦</string>
 </resources>

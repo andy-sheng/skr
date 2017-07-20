@@ -1,9 +1,12 @@
-package com.wali.live.watchsdk.component.view;
+package com.wali.live.watchsdk.envelope.view;
 
 import android.content.Context;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.AbsoluteSizeSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,6 +26,8 @@ public class EnvelopeTypeView extends RelativeLayout {
     private ImageView mEnvelopeTypeIv;
     private TextView mDiamondNumTv;
     private ImageView mSelectRightIv;
+
+    private int mSelectedDiamondNum;
 
     protected final <T extends View> T $(@IdRes int resId) {
         return (T) findViewById(resId);
@@ -50,9 +55,18 @@ public class EnvelopeTypeView extends RelativeLayout {
 
     public void setData(EnvelopeType type) {
         mEnvelopeTypeIv.setImageResource(type.mDrawableId);
-        mDiamondNumTv.setText(type.mDiamondNum + "\n" +
+        SpannableString diameondSpan = new SpannableString(type.mDiamondNum + "\n" +
                 getResources().getString(R.string.gift_item_diamond_text));
+        int startPos = diameondSpan.toString().indexOf('\n');
+        diameondSpan.setSpan(new AbsoluteSizeSpan((int) getResources().getDimensionPixelSize(R.dimen.text_size_32)),
+                startPos + 1, diameondSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mDiamondNumTv.setText(diameondSpan);
+        mSelectedDiamondNum = type.mDiamondNum;
         mDiamondNumTv.setTextColor(getResources().getColor(type.mColorId));
+    }
+
+    public int getmSelectedDiamondNum() {
+        return mSelectedDiamondNum;
     }
 
     @Override

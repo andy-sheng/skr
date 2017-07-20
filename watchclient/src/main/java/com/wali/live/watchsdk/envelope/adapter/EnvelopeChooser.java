@@ -1,7 +1,9 @@
-package com.wali.live.watchsdk.component.adapter;
+package com.wali.live.watchsdk.envelope.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.View;
+
+import com.wali.live.watchsdk.component.adapter.SingleChooser;
 
 import java.util.List;
 

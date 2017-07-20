@@ -26,10 +26,10 @@
 
     <LinearLayout
         android:id="@+id/envelope_container2"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/envelope_container1"
-        android:layout_marginTop="3dp"
+        android:layout_centerHorizontal="true"
         android:gravity="center"
         android:orientation="horizontal" />
 
@@ -106,6 +106,18 @@
         android:text="@string/send_red_btn"
         android:textColor="@color/color_feefc9"
         android:textSize="@dimen/text_size_45" />
+
+    <TextView
+        android:id="@+id/bottom_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/send_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_dimen_26"
+        android:text="@string/bottom_tip_send_red"
+        android:textColor="@color/color_black_trans_50"
+        android:textSize="@dimen/view_dimen_36"/>
 
     <TextView
         android:id="@+id/instruction_btn"
