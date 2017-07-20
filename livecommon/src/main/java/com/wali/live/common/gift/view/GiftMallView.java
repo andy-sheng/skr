@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -23,7 +22,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.base.activity.BaseActivity;
 import com.base.activity.RxActivity;
 import com.base.activity.assist.IBindActivityLIfeCycle;
 import com.base.dialog.MyAlertDialog;
@@ -46,7 +44,6 @@ import com.wali.live.common.gift.utils.MyAnimationUtils;
 import com.wali.live.common.view.ErrorView;
 import com.wali.live.common.view.ViewPagerWithCircleIndicator;
 import com.wali.live.dao.Gift;
-import com.wali.live.envelope.SendEnvelopeFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -185,11 +182,7 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
 
             if (info.gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
                 getRxActivity().onBackPressed();
-                Bundle bundle = new Bundle();
-//                bundle.putSerializable(SendEnvelopeFragment.KEY_ROOM_ID, mMyRoomData.getRoomId());
-//                bundle.putSerializable(SendEnvelopeFragment.KEY_ZU_ID, mMyRoomData.getUid());
-//                bundle.putInt(SendEnvelopeFragment.KEY_VIEWERCOUNT, mMyRoomData.getViewerCnt());
-                SendEnvelopeFragment.openFragment((BaseActivity) getContext());
+                mGiftMallPresenter.showSendEnvelopeView();
             } else {
                 if (v != mSelectedView) {
                     if (mSelectedView != null) {

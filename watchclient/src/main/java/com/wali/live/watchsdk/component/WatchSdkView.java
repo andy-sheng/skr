@@ -4,12 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
 import com.base.utils.Constants;
 import com.base.utils.display.DisplayUtils;
@@ -246,6 +248,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             super.registerAction();
             mComponentController.registerAction(WatchComponentController.MSG_SHOW_FOLLOW_GUIDE, this);
             mComponentController.registerAction(WatchComponentController.MSG_FOLLOW_COUNT_DOWN, this);
+            mComponentController.registerAction(WatchComponentController.MSG_SHOW_SEND_ENVELOPE, this);
         }
 
         @Override
@@ -472,6 +475,10 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                     });
                 }
                 break;
+                case WatchComponentController.MSG_SHOW_SEND_ENVELOPE:
+                    SendEnvelopeFragment.openFragment((BaseActivity) mActivity,
+                            mComponentController.mMyRoomData);
+                    break;
                 default:
                     break;
             }

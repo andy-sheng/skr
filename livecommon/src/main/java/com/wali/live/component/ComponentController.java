@@ -73,6 +73,7 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     public static final int MSG_SHOW_PERSONAL_INFO = MSG_POPUP_FIRST + 9;       // 显示 个人信息页
     public static final int MSG_SHOW_FOLLOW_GUIDE = MSG_POPUP_FIRST + 10;       // 显示 游戏引导页面
     public static final int MSG_FOLLOW_COUNT_DOWN = MSG_POPUP_FIRST + 11;       // 显示 游戏引导页面之前的倒计时
+    public static final int MSG_SHOW_SEND_ENVELOPE = MSG_POPUP_FIRST + 12;      // 显示 发送红包页面
     // 详情播放相关
     private static final int MSG_DETAIL_VIDEO_FIRST = 40000;
     public static final int MSG_UPDATE_LIKE_STATUS = MSG_DETAIL_VIDEO_FIRST; // 更新 点赞状态

@@ -1,5 +1,7 @@
 package com.wali.live.watchsdk.component;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,14 +10,19 @@ import android.widget.TextView;
 import com.base.activity.BaseActivity;
 import com.base.fragment.BaseFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
+import com.base.utils.language.LocaleUtil;
 import com.base.view.BackTitleBar;
 import com.live.module.common.R;
-import com.wali.live.component.presenter.adapter.SingleChooser;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.watchsdk.component.adapter.EnvelopeChooser;
+import com.wali.live.watchsdk.component.adapter.SingleChooser;
 import com.wali.live.watchsdk.component.view.EnvelopeTypeView;
+import com.wali.live.watchsdk.webview.WebViewActivity;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import static com.base.utils.language.LocaleUtil.RED_ENVELOPE_DESC;
 
 /**
  * Created by yangli on 2017/7/18.
@@ -23,6 +30,7 @@ import java.util.List;
  * @module 发红包
  */
 public class SendEnvelopeFragment extends BaseFragment implements View.OnClickListener {
+    private final String TAG = "SendEnvelopeFragment";
 
     private BackTitleBar mTitleBar;
     private TextView mGoldDiamondTv;
@@ -47,9 +55,9 @@ public class SendEnvelopeFragment extends BaseFragment implements View.OnClickLi
         if (i == R.id.send_btn) {
             // todo 加入发红包逻辑
         } else if (i == R.id.instruction_btn) {
-//            Intent intent = new Intent(getActivity(), WebViewActivity.class);
-//            intent.putExtra(WebViewActivity.EXTRA_URL, AppCommonUtils.getWebViewUrl(RED_ENVELOPE_DESC));
-//            startActivity(intent);
+            Intent intent = new Intent(getActivity(), WebViewActivity.class);
+            intent.putExtra(WebViewActivity.EXTRA_URL, LocaleUtil.getWebViewUrl(RED_ENVELOPE_DESC));
+            startActivity(intent);
         } else if (i == R.id.recharge) {
 //            Bundle bundle = new Bundle();
 //            bundle.putInt(StatisticsKey.Recharge.RECHARGE_FROM, StatisticsKey.Recharge.FROM_ROOM);
@@ -114,7 +122,11 @@ public class SendEnvelopeFragment extends BaseFragment implements View.OnClickLi
         FragmentNaviUtils.popFragment(getActivity());
     }
 
-    public static void openFragment(BaseActivity activity) {
+    public static void openFragment(BaseActivity activity, RoomBaseDataModel myRoomData) {
+        Bundle bundle = new Bundle();
+//        bundle.putSerializable(SendEnvelopeFragment.KEY_ROOM_ID, myRoomData.getRoomId());
+//        bundle.putSerializable(SendEnvelopeFragment.KEY_ZU_ID, myRoomData.getUid());
+//        bundle.putInt(SendEnvelopeFragment.KEY_VIEWER_COUNT, myRoomData.getViewerCnt());
         FragmentNaviUtils.addFragment(activity, R.id.main_act_container, SendEnvelopeFragment.class,
                 null, true, true, true);
     }

@@ -945,6 +945,12 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         }
     }
 
+    public void showSendEnvelopeView() {
+        if (mComponentController != null) {
+            mComponentController.onEvent(ComponentController.MSG_SHOW_SEND_ENVELOPE);
+        }
+    }
+
     public static class GiftWithCard {
         public Gift gift;
         public GiftCard card;
