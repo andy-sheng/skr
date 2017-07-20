@@ -110,4 +110,6 @@
     <string name="red_envelope_best_luck">Winner</string>
     <string name="net_is_busy_tip">Network error, try again later</string>
     <string name="red_result_msg">%s\'s red envelope</string>
+    <string name="gold_count">Gold gems: %1$d</string>
+    <string name="silver_count">Silver gems: %1$d</string>
 </resources>

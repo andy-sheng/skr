@@ -108,4 +108,6 @@
     <string name="red_envelope_best_luck">手气最佳</string>
     <string name="net_is_busy_tip">网络繁忙，请稍候再试</string>
     <string name="red_result_msg">%s的红包</string>
+    <string name="gold_count">金钻:%1$d</string>
+    <string name="silver_count">银钻:%1$d</string>
 </resources>

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.live.module.common.R;
+import com.wali.live.watchsdk.R;
 
 /**
  * Created by wangmengjie on 2017/7/18.

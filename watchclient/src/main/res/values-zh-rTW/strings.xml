@@ -108,4 +108,6 @@
     <string name="red_envelope_best_luck">手氣超棒!!!</string>
     <string name="net_is_busy_tip">網路繁忙，請稍後再試</string>
     <string name="red_result_msg">%s的紅包</string>
+    <string name="gold_count">金鑽:%1$d</string>
+    <string name="silver_count">銀鑽:%1$d</string>
 </resources>

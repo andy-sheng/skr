@@ -12,8 +12,10 @@ import com.base.fragment.BaseFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.utils.language.LocaleUtil;
 import com.base.view.BackTitleBar;
-import com.live.module.common.R;
+import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.wali.live.recharge.view.RechargeFragment;
+import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.adapter.EnvelopeChooser;
 import com.wali.live.watchsdk.component.adapter.SingleChooser;
 import com.wali.live.watchsdk.component.view.EnvelopeTypeView;
@@ -59,10 +61,8 @@ public class SendEnvelopeFragment extends BaseFragment implements View.OnClickLi
             intent.putExtra(WebViewActivity.EXTRA_URL, LocaleUtil.getWebViewUrl(RED_ENVELOPE_DESC));
             startActivity(intent);
         } else if (i == R.id.recharge) {
-//            Bundle bundle = new Bundle();
-//            bundle.putInt(StatisticsKey.Recharge.RECHARGE_FROM, StatisticsKey.Recharge.FROM_ROOM);
-//            RechargeActivity.openActivity(getActivity(), bundle);
-//            StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, "redEnvelope-recharge-" + zuId + "-click", 1);
+            RechargeFragment.openFragment(getActivity(), R.id.main_act_container, null, true);
+            // StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, "redEnvelope-recharge-" + zuId + "-click", 1);
         }
     }
 
@@ -116,6 +116,9 @@ public class SendEnvelopeFragment extends BaseFragment implements View.OnClickLi
         $click(R.id.send_btn, this);
         $click(R.id.instruction_btn, this);
         $click(R.id.recharge, this);
+
+        mGoldDiamondTv.setText(getString(R.string.gold_count, MyUserInfoManager.getInstance().getDiamondNum()));
+        mSilverDiamondTv.setText(getString(R.string.silver_count, MyUserInfoManager.getInstance().getVirtualDiamondNum()));
     }
 
     private void finish() {
