@@ -1,4 +1,4 @@
-package com.wali.live.proto;
+package com.mi.liveassistant.proto;
 
 option java_package = "com.wali.live.proto";
 option java_outer_classname = "CommonChannelProto";
@@ -119,6 +119,7 @@ message LiveOrReplayItemInfo {
     optional RichText topLeft               = 12;//封面左上角信息
     optional MiddleInfo middle              = 13;//封面中间文本
     repeated RichText label                 = 14;//标签[目前只有一个，考虑会扩展为多个，定义为repeated]
+    optional uint32 distance       = 15;//距离，单位：米[样式7距离>0时，右下角优先展示距离]
 }
 
 //富文本信息
@@ -126,6 +127,7 @@ message RichText {
     optional string text          = 1; //文案
     optional string jumpSchemeUri = 2; //跳转地址
     optional uint32 bgImageID     = 3; //客户端预留底图id[需考虑不识别底图情况]
+    optional string iconUrl       = 4; //图标地址[优先展示小图片，等同于ListWidgetInfo]
 }
 
 //封面中间文案信息
@@ -136,8 +138,8 @@ message MiddleInfo {
 
 //列表挂件信息
 message ListWidgetInfo {
-optional string jumpSchemeUri = 1; //跳转地址
-optional string iconUrl = 2; //图标地址
+    optional string jumpSchemeUri = 1; //跳转地址
+    optional string iconUrl = 2; //图标地址
 }
 
 //type=14
@@ -190,4 +192,205 @@ message BackInfo {
     optional string coverUrl    = 8; //房间的封面图片地址
     optional string shareUrl    = 9; //分享地址
     optional string location    = 10;//地点
+}
+
+//小视频信息
+message VideoInfo {
+    required string id          = 1; //小视频id
+    optional uint64 view_count  = 2; //小视频观看次数
+    optional UserInfo user_info = 3; //用户资料
+}
+
+//type=20, 27, 30（圈子新增）
+message NavigationData {
+    optional string name            = 1; //导航标签名 话题
+    optional string bgImgUrl        = 2; //背景图
+    optional string iconUrl         = 3; //小图标
+    optional string jumpSchemeUri   = 4; //跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
+    optional uint32 textColor       = 5; //文本颜色[话题用到],0=客户端默认颜色,1=金色
+    optional string hexColorCode    = 6; //十六进制颜色码，如#FFFFFF
+    optional string text1           = 7; //导航新增text1
+}
+
+message UiTemplateNavigation {
+    repeated NavigationData itemDatas = 1; //导航数据
+}
+
+//type=23
+message UiTemplateNotice {
+    repeated NoticeData noticeItems =1;
+    optional string headerViewAllUri = 2;//查看全部的uri，如果没有这个字段不展示查看全部
+}
+
+message NoticeData {
+    optional string noticeId    = 1; //预告ID
+    optional uint64 zuid        = 2; //主播ID
+    optional uint64 beginTime   = 3; //预告开始时间
+    optional string title       = 4; //标题
+}
+//uitype=29
+message UiTemplateRanking {
+    repeated RankingItemData itemDatas = 1;
+    optional string jumpSchemeUri = 2; //uitemplate跳转schemaUri
+    optional string text1 = 3;
+    optional string text2 = 4;
+    optional uint32 iconStyle = 5; //目前用于控制uitype=29用户头像左上角是否显示小图标，默认0=无，1=排名
+}
+
+message RankingItemData {
+    optional UserInfo userInfo = 1; //用户资料
+    optional string jumpSchemeUri = 2; //item跳转schemeUri
+}
+
+// ======== recommendflag milink 打点 =======
+message LiveRecvFlagReq {
+    repeated LiveRecvFlagItem items = 1;
+}
+
+message LiveRecvFlagItem {
+    optional uint64 date      = 1; //用户产生行为的时间（毫秒）
+    optional uint32 type      = 2; //打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈 小视频打点类型  100=曝光 101=点击 102=观看 103=点赞 104=评论 105=分享
+    optional bytes extData    = 3; //对应打点类型的扩展信息
+    optional string recommend = 4; //服务器下发的打点字串
+}
+
+//type=3 extData填充内容
+message GiftDetail {
+    optional uint32 giftId    = 1; //礼物id
+    optional uint32 giftWorth = 2; //礼物价值
+}
+
+//type=4 或102 extData填充内容
+message LeaveRoom{
+    optional uint64 enterTime = 1; //进入房间时间
+    optional uint64 leaveTime = 2; //离开房间时间
+}
+
+//type=5 extData填充内容
+message FollowRoom{
+    optional uint64 enterTime  = 1; //进入房间时间
+    optional uint64 followTime = 2; //关注主播时间
+}
+
+//type=6 extData填充内容
+message LikeFeedback{
+    optional uint64 zuid    = 1; //不喜欢主播的id
+    optional string roomId  = 2; //不喜欢直播的房间id
+}
+//type=103 extData填充内容
+message VideoLike{
+    optional uint64 befCount = 1; //点赞前的点赞数
+}
+
+//type=104 extData填充内容
+message VideoComment{
+    optional string content = 1; //评论的内容
+}
+
+message LiveRecvFlagRsp {
+    required uint32 retCode = 1; //0=成功
+}
+// ======== recommendflag milink 打点  end =====
+
+
+enum BarMessageType {
+    OP = 1; // 运营
+    SYS = 2; // 系统
+    NTF = 3; // 即时
+}
+message BarMessage {
+    optional BarMessageType bmt = 1;
+    optional string content = 2;
+    optional string schema = 3;
+    optional uint64 start = 4;
+    optional uint64 end = 5;
+}
+// zhibo.get.barmsg	拉去通知栏消息
+message GetBarMessageRequest {
+    optional uint64 from = 1;
+}
+message GetBarMessageResponse {
+    optional uint32 ret = 1;
+    optional string err_msg = 2;
+    repeated BarMessage bar_msg = 3;
+}
+/****************** zhibo.recommend.videolist 拉小视频列表  ******************/
+message GetWaterfallListReq {
+    required uint64 uid        = 1;  //拉列表的用户id
+    optional uint32 oper_type  = 2;  //拉列表类型。默认0=第一屏或下滑刷新，1=上滑加载更多
+    optional uint32 channel_id = 3;  //小视频首页频道id
+    optional bytes param       = 4;  //拉列表算法参数[客户端不用关心，透传给服务器]。app第一次安装或者清掉缓存后不用填，
+    //下一次请求填rsp中的param，下一次启动app填客户端最近一次缓存的param
+}
+
+message GetWaterfallListRsp {
+    required uint32 ret      = 1;  //返回码
+    repeated WatElement elem = 2;  //数据
+    optional bytes param     = 3;  //拉列表算法参数[客户端不用关心，下一次请求透传给服务器]
+    optional bool has_more   = 4;  //是否有更多小视频
+}
+
+message WatElement {
+    required uint32 data_type = 1; //数据类型[同模板协议LiveOrReplayItemInfo中的type],目前只有2种类型，4=feeds小视频,6=可跳转图文 7 = ButtonData 小视频创建button
+    required bytes data       = 2; //数据内容, data_type：4=VideoData，6=ImageData
+}
+
+message VideoData {
+    optional string feed_id    = 1;  //视频对应的feedId
+    optional string jump_uri   = 2;  //跳转schema
+    optional string cover_url  = 3;  //视频封面
+    optional uint32 width      = 4;  //图片或者小视频宽度
+    optional uint32 height     = 5;  //图片或者小视频高度
+    optional string title      = 6;  //标题
+    optional uint64 like_count = 7;  //点赞数
+    optional UserInfo user     = 8;  //用户资料[同模板协议UserInfo]
+    optional RichText mark     = 9;  //封面运营角标[同模板协议RichText]
+    optional bool is_liked     = 10; //用户是否已经赞过
+}
+
+message ImageData {
+    optional string image_url = 1;  //封面url
+    optional string jump_uri  = 2;  //跳转schema
+    optional uint32 width     = 3;  //图片宽度
+    optional uint32 height    = 4;  //图片高度
+    optional string title     = 5;  //标题
+    optional RichText mark    = 6;  //封面运营角标[同模板协议RichText]
+}
+
+message ButtonData {
+    optional string button_text = 1;  //button文案
+    optional string button_uri  = 2;  //点击button跳转scheme
+    optional string image_url   = 3;  //头图
+    optional string text        = 4;  //文案
+    optional string jump_uri    = 5;  //点击封面跳转scheme
+}
+
+/****************** zhibo.recommend.videolist 拉小视频列表  end ******************/
+
+// zhibo.recommend.videosublist 拉小视频二级页列表
+
+message GetWaterfallSubListReq {
+    required uint64 uid        = 1;  //拉列表的用户id
+    optional uint32 oper_type  = 2;  //拉列表类型。默认0=第一屏或下滑刷新，1=上滑加载更多
+    optional uint32 channel_id = 3;  //小视频二级页的频道id
+    optional bytes param       = 4;  //拉列表算法参数[客户端不用关心，透传给服务器]。第一屏不用填，下一屏填rsp中的param
+}
+
+message GetWaterfallSubListRsp {
+    required uint32 ret      = 1;  //返回码
+    repeated WatElement elem = 2;  //数据
+    optional bytes param     = 3;  //拉列表算法参数[客户端不用关心，下一次请求透传给服务器]
+    optional bool has_more   = 4;  //是否有更多小视频
+}
+
+/****************** zhibo.recommend.videolike 分页拉点赞的小视频列表  ******************/
+message GetLikedVideoReq {
+    required uint64 uid   = 1;  //点赞的用户id
+    optional uint64 start = 2;  //当前页水位。默认0=第一屏，下一屏用rsp中的next_start
+}
+
+message GetLikedVideoRsp {
+    required uint32 ret        = 1;  //返回码
+    repeated WatElement elem   = 2;  //数据
+    optional uint64 next_start = 3;  //下一页的水位。ret=0&next_start=0 表示列表拉完了
 }

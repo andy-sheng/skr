@@ -13,7 +13,7 @@ import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.mi.live.data.account.HostChannelManager;
+import com.mi.live.data.account.channel.HostChannelManager;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.component.view.BaseBottomButton;
 import com.wali.live.component.view.IOrientationListener;

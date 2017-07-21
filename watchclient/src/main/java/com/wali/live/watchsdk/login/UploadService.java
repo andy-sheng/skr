@@ -35,7 +35,7 @@ public class UploadService {
         public int gender;
         public long uuid;
         public boolean needEditUserInfo;
-        public boolean avatarNeedDowload;
+        public boolean avatarNeedDownload;
         public int channelId;
 
         public UploadInfo(AccountProto.MiSsoLoginRsp miSsoLoginRsp, int channelId) {
@@ -48,7 +48,7 @@ public class UploadService {
             gender = miSsoLoginRsp.getSex();
             uuid = miSsoLoginRsp.getUuid();
             needEditUserInfo = miSsoLoginRsp.getIsSetGuide();
-            avatarNeedDowload = true;
+            avatarNeedDownload = true;
             this.channelId = channelId;
         }
 
@@ -61,7 +61,7 @@ public class UploadService {
             nickName = loginRsp.getNickname();
             gender = loginRsp.getSex();
             uuid = loginRsp.getUuid();
-            avatarNeedDowload = true;
+            avatarNeedDownload = true;
             needEditUserInfo = loginRsp.getIsSetGuide();
             this.channelId = channelId;
         }
@@ -76,7 +76,7 @@ public class UploadService {
             gender = loginData.getSex();
             uuid = rsp.getUuid();
             needEditUserInfo = false;
-            avatarNeedDowload = true;
+            avatarNeedDownload = true;
             this.channelId = loginData.getChannelId();
         }
 

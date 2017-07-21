@@ -84,6 +84,7 @@
     </plurals>
     <string name="feeds_detail_label_comment" formatted="false">評論(%s)</string>
     <string name="feeds_detail_label_replay">重播(%s)</string>
+    <string name="feeds_detail_label_detail">詳細資料</string>
     <string name="recomment_text">回覆\u0020</string>
     <string name="feeds_hot_comment" formatted="false">熱門評論</string>
     <string name="feeds_hot_all" formatted="false">全部評論</string>
@@ -94,10 +95,30 @@
     <string name="feeds_comment_delete_failed">評論刪除失敗</string>
     <string name="open_same_video_hint">現正播放該重播</string>
     <string name="live_lottery_no_comment_toast">暫時沒有評論</string>
+    <string name="ten_thousand">萬</string>
+    <plurals name="channel_view_count">
+        <item quantity="other">%s人看過</item>
+    </plurals>
+    <plurals name="channel_viewer_count">
+        <item quantity="other">%s人</item>
+    </plurals>
+    <string name="michannel_forecast">預告</string>
+    <string name="ticket_watermark">門票</string>
+    <string name="michannel_notice">預約</string>
+    <string name="live_location_unknown">未知星球</string>
+    <string name="read_count">%1$d閱讀</string>
+    <string name="michannel_fans_cnt">粉絲：%s</string>
+    <string name="fold_view_show_all">顯示全部</string>
+    <string name="pack_up">收起</string>
+    <string name="channel_shop_cnt">%d 想買</string>
+    <string name="install_mi_video">請安裝小米視頻</string>
+    <string name="all_people">全部</string>
     <string name="game_guide_close_tip">剩餘%ds關閉頁面</string>
-    <!--关注主播，不错过任何一次直播-->
     <string name="game_guide_normal_tip">關注主播，不錯過任何一次直播</string>
-
+    <string name="anchor_rank">主播勢力日排行</string>
+    <string name="michannel_default_title">其他遊戲</string>
+    <string name="michannel_type_live">直播</string>
+    
     <string name="money_coming">土豪紅包來了</string>
     <string name="grap_hongbao">搶紅包</string>
     <string name="already_in_pocket">已存入帳戶</string>
@@ -113,4 +134,9 @@
     <string name="bottom_tip_send_red">未領取的紅包，將於24小時後自動退回</string>
     <string name="money_not_enough_tip">餘額不足啦，要加值才能繼續發送紅包哦，是否去加值</string>
     <string name="create_red_envelop_failed_error">網路出錯啦</string>
+    <string name="please_select_redpacket">請選擇紅包金額</string>
+    <string name="red_packet_instruction">紅包說明 &gt;</string>
+    <string name="send_redpacket">發放紅包</string>
+    <string name="send_red_btn">發送紅包</string>
+    <string name="buy_diamond">加值 &gt;</string>
 </resources>

@@ -36,6 +36,8 @@ import rx.schedulers.Schedulers;
 
 import static com.mi.live.data.event.FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW;
 import static com.wali.live.component.ComponentController.MSG_NEW_DETAIL_REPLAY;
+import static com.wali.live.component.ComponentController.MSG_PLAYER_FEEDS_DETAIL;
+import static com.wali.live.component.ComponentController.MSG_PLAYER_START;
 import static com.wali.live.component.ComponentController.MSG_SHOW_PERSONAL_INFO;
 import static com.wali.live.component.ComponentController.MSG_UPDATE_LIKE_STATUS;
 import static com.wali.live.component.ComponentController.MSG_UPDATE_START_TIME;
@@ -161,18 +163,49 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                         }
                         FeedsInfo outInfo = new FeedsInfo();
                         try {
+                            //feedinfo 的type 0 ：正常feed 1：推荐列表
                             Feeds.FeedInfo feedInfo = rsp.getFeedInfo();
                             outInfo.timestamp = feedInfo.getFeedCteateTime();
                             outInfo.mySelfLike = feedInfo.getFeedLikeContent().getMyselfLike();
-                            LiveShowProto.BackInfo backInfo = feedInfo.getFeedContent().getBackInfo();
-                            outInfo.title = backInfo.getBaTitle();
-                            outInfo.viewerCnt = backInfo.getViewerCnt();
-                            outInfo.coverUrl = backInfo.getCoverUrl();
+                            //feedContent的feedType://Feed的Type类型.0 直播，1 图片，2. 小视频， 3 回放视频,
+                            // 4, 直播结束，等待回放, 5,聚合回放, 6 作品
+                            Feeds.FeedContent content = feedInfo.getFeedContent();
+                            switch (content.getFeedType()) {
+                                case FeedsInfo.TYPE_LIVE:
+                                    LiveShowProto.LiveShow liveShow = content.getLiveShow();
+                                    outInfo.title = liveShow.getLiTitle();
+                                    outInfo.viewerCnt = liveShow.getViewerCnt();
+                                    outInfo.coverUrl = liveShow.getCoverUrl();
+                                    outInfo.url = liveShow.getUrl();
+                                    outInfo.shareUrl = liveShow.getShareUrl();
+                                    break;
+                                case FeedsInfo.TYPE_BACK:
+                                    LiveShowProto.BackInfo backInfo = content.getBackInfo();
+                                    outInfo.title = backInfo.getBaTitle();
+                                    outInfo.viewerCnt = backInfo.getViewerCnt();
+                                    outInfo.coverUrl = backInfo.getCoverUrl();
+                                    outInfo.url = backInfo.getUrl();
+                                    outInfo.shareUrl = backInfo.getShareUrl();
+                                    break;
+                                case FeedsInfo.TYPE_VIDEO:
+                                default:
+                                    Feeds.UGCFeed ugcFeed = content.getUgcFeed();
+                                    if (ugcFeed != null) {
+                                        outInfo.title = ugcFeed.getTiltle();
+                                        outInfo.description = ugcFeed.getDesc();
+                                        outInfo.viewerCnt = ugcFeed.getViewCount();
+                                        outInfo.coverUrl = ugcFeed.getCoverPage();
+                                        outInfo.url = ugcFeed.getUrl();
+                                        outInfo.shareUrl = ugcFeed.getShareUrl();
+                                        outInfo.isReplay = false;
+                                    }
+                                    break;
+                            }
                             //分享相关需要的信息
-                            mMyRoomData.setShareUrl(backInfo.getShareUrl());
-                            mMyRoomData.setCoverUrl(backInfo.getCoverUrl());
-                            mMyRoomData.setLiveTitle(backInfo.getBaTitle());
-                            mMyRoomData.setViewerCnt(backInfo.getViewerCnt());
+                            mMyRoomData.setShareUrl(outInfo.shareUrl);
+                            mMyRoomData.setCoverUrl(outInfo.coverUrl);
+                            mMyRoomData.setLiveTitle(outInfo.title);
+                            mMyRoomData.setViewerCnt(outInfo.viewerCnt);
                         } catch (Exception e) {
                             MyLog.e(TAG, "syncFeedsInfo failed, exception=" + e);
                         }
@@ -186,10 +219,19 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                     @Override
                     public void call(FeedsInfo outInfo) {
                         if (mView != null && outInfo != null) {
+                            if (!outInfo.isReplay) {
+                                //詳情頁需要再刷一下ui
+                                mComponentController.onEvent(MSG_PLAYER_FEEDS_DETAIL, new Params()
+                                        .putItem(outInfo));
+                            }
                             mComponentController.onEvent(MSG_UPDATE_LIKE_STATUS, new Params()
                                     .putItem(outInfo.mySelfLike));
                             mComponentController.onEvent(MSG_UPDATE_START_TIME, new Params()
                                     .putItem(outInfo.timestamp));
+                            if (TextUtils.isEmpty(mMyRoomData.getVideoUrl()) && !TextUtils.isEmpty(outInfo.url)) {
+                                mMyRoomData.setVideoUrl(outInfo.url);
+                                mComponentController.onEvent(MSG_PLAYER_START);
+                            }
                             mView.onFeedsInfo(mMyRoomData.getUid(), outInfo.title, outInfo.timestamp,
                                     outInfo.viewerCnt, outInfo.coverUrl);
                         }
@@ -269,10 +311,19 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
     }
 
     public static class FeedsInfo {
+        //Feed的Type类型.0 直播，1 图片，2. 小视频， 3 回放视频, 4, 直播结束，等待回放, 5,聚合回放, 6 作品
+        public static final int TYPE_LIVE = 0;
+        public static final int TYPE_IMG = 1;
+        public static final int TYPE_VIDEO = 2;
+        public static final int TYPE_BACK = 3;
+        boolean isReplay = true;
         String title = "";
+        String description = "";
         boolean mySelfLike = false;
         long timestamp = 0;
         int viewerCnt = 0;
         String coverUrl = "";
+        String url = "";
+        String shareUrl = "";
     }
 }

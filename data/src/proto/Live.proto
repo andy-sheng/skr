@@ -1,9 +1,9 @@
+package com.wali.live.proto;
 
 import "Common.proto";
 import "Account.proto";
 import "LiveCommon.proto";
 import "Live2.proto";
-package com.wali.live.proto;
 
 option java_package = "com.wali.live.proto";
 option java_outer_classname = "LiveProto";

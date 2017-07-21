@@ -25,7 +25,6 @@ import com.wali.live.common.gift.view.GiftRoomEffectView;
 import com.wali.live.event.EventClass;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.active.KeepActiveProcessor;
-import com.wali.live.watchsdk.login.LoginPresenter;
 import com.wali.live.watchsdk.watch.event.WatchOrReplayActivityCreated;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.wali.live.watchsdk.watch.presenter.ExpLevelPresenter;
@@ -129,8 +128,6 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
         //取消activity生命周期管理
         removePresent(processor);
     }
-
-    private LoginPresenter mLoginPresenter;
 
     protected final boolean fragmentBackPressed(Fragment fragment) {
         if (fragment != null && fragment instanceof FragmentListener) {

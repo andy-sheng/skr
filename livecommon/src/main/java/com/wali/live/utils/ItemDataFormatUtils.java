@@ -1,8 +1,14 @@
 package com.wali.live.utils;
 
 import android.graphics.drawable.Drawable;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.view.View;
 
 import com.base.global.GlobalData;
+import com.base.utils.CommonUtils;
+import com.base.utils.span.SpanUtils;
 import com.live.module.common.R;
 import com.mi.live.data.config.GetConfigManager;
 
@@ -292,38 +298,39 @@ public class ItemDataFormatUtils {
         return displayText.toString();
     }
 
-//    public static SpannableStringBuilder getLiveTitle(String className, String text) {
-//        SpannableStringBuilder title = new SpannableStringBuilder(text);
-//        int len = title.length();
-//        int l = -1;
-//        for (int i = 0; i < len; i++) {
-//            if (title.charAt(i) == '#') {
-//                if (l == -1) {
-//                    l = i;
-//                } else {
-//                    String str;
-//                    if (l + 1 == i) {
-//                        str = "";
-//                    } else {
-//                        str = title.toString().substring(l + 1, i);
-//                    }
-////                    if(!TextUtils.isEmpty(str)) {
-//                    // 加点击事件
-//                    title.setSpan(new SpanUtils.MyClickableSpan(v -> {
-//                        if (CommonUtils.isFastDoubleClick()) {
-//                            return;
-//                        }
-//                        EventBus.getDefault().post(new EventClass.TopicClickEvent(className, str));
-//                    }), l, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-////                    }
-//                    title.setSpan(new ForegroundColorSpan(GlobalData.app().getResources().getColor(R.color.color_e5aa1e)), l, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                    l = -1;
-//                }
-//            }
-//
-//        }
-//        return title;
-//    }
+    public static SpannableStringBuilder getLiveTitle(String className, String text) {
+        SpannableStringBuilder title = new SpannableStringBuilder(text);
+        int len = title.length();
+        int l = -1;
+        for (int i = 0; i < len; i++) {
+            if (title.charAt(i) == '#') {
+                if (l == -1) {
+                    l = i;
+                } else {
+                    String str;
+                    if (l + 1 == i) {
+                        str = "";
+                    } else {
+                        str = title.toString().substring(l + 1, i);
+                    }
+                    // 加点击事件
+                    title.setSpan(new SpanUtils.MyClickableSpan(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (CommonUtils.isFastDoubleClick()) {
+                                return;
+                            }
+                            //这里没有话题页，所以暂时拿掉点击事件跳转
+                        }
+                    }), l, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    title.setSpan(new ForegroundColorSpan(GlobalData.app().getResources().getColor(R.color.color_e5aa1e)), l, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    l = -1;
+                }
+            }
+
+        }
+        return title;
+    }
 //
 //
 //    public static SpannableStringBuilder getLiveTitle(SpannableStringBuilder title, ForegroundColorSpan foregroundColorSpan, String className, String text) {

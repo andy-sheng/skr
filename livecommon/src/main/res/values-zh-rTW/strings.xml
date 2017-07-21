@@ -295,10 +295,4 @@
         <item quantity="other">%1$s銀鑽</item>
     </plurals>
     <string name="no_support_magic_gift_tips">主播版本不支援該禮物</string>
-    <string name="please_select_redpacket">請選擇紅包金額</string>
-    <string name="red_packet_instruction">紅包說明 &gt;</string>
-    <string name="send_redpacket">發放紅包</string>
-    <string name="send_red_btn">發送紅包</string>
-    <string name="money_coming">土豪紅包來了</string>
-    <string name="buy_diamond">加值 &gt;</string>
 </resources>

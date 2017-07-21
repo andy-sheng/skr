@@ -2,8 +2,8 @@ package com.mi.live.data.milink;
 
 import android.text.TextUtils;
 
-import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.milink.callback.MiLinkEventListener;
 import com.mi.live.data.milink.callback.MiLinkPacketDispatcher;
 import com.mi.live.data.milink.callback.MiLinkStatusObserver;

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/split_area"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/color_f2f2f2"/>
+
+    <include
+        android:id="@+id/title_area"
+        layout="@layout/michannel_head_item"
+        android:layout_width="match_parent"
+        android:layout_height="37.33dp"
+        android:visibility="gone"/>
+
+    <RelativeLayout
+        android:id="@+id/content_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="6.67dp"
+        android:paddingLeft="@dimen/channel_side_margin"
+        android:paddingRight="@dimen/channel_side_margin"
+        android:paddingTop="6.67dp">
+
+        <com.base.image.fresco.view.TintableImageView
+            android:id="@+id/single_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/single_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="13.33dp"
+            android:layout_toRightOf="@id/single_iv"
+            android:ellipsize="end"
+            android:lines="2"
+            android:textColor="@color/color_black_trans_90"
+            android:textSize="@dimen/text_size_40"/>
+
+        <LinearLayout
+            android:id="@+id/user_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/single_tv"
+            android:layout_below="@id/single_tv"
+            android:orientation="horizontal">
+
+            <com.base.image.fresco.view.TintableImageView
+                android:id="@+id/avatar_iv"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/single_tv"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="6.67dp"
+                android:layout_toRightOf="@id/avatar_iv"
+                android:textColor="@color/color_black_trans_50"
+                android:textSize="@dimen/text_size_34"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/list_split_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.33dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/channel_side_margin"
+        android:layout_marginRight="@dimen/channel_side_margin"
+        android:background="@color/color_black_trans_10"/>
+</LinearLayout>

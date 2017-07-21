@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.base.log.MyLog;
 import com.base.thread.ThreadPool;
 import com.base.utils.language.LocaleUtil;
+import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.account.event.UserInfoEvent;
 import com.mi.live.data.api.request.GetOwninfoRequest;
 import com.mi.live.data.milink.MiLinkClientAdapter;

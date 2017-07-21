@@ -5,8 +5,8 @@ import android.text.TextUtils;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
-import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.milink.callback.MiLinkChannelStatusObserver;
 import com.mi.live.data.milink.callback.MiLinkEventListener;
 import com.mi.live.data.milink.callback.MiLinkPacketDispatcher;
@@ -212,6 +212,7 @@ public class MiLinkClientAdapter {
             MiLinkCommand.COMMAND_FEEDS_COMMENT_QUERY,
             MiLinkCommand.COMMAND_LIST_HISTORY,
             MiLinkCommand.COMMAND_STATISTICS_RECOMMEND_TAG,
+            MiLinkCommand.COMMAND_HOT_CHANNEL_SUB_LIST
     };
 
     public void sendAsync(PacketData packet, int timeout, final SendPacketListener l) {

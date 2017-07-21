@@ -3,7 +3,7 @@ package com.wali.live.recharge.net;
 import android.support.annotation.NonNull;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.mi.live.data.account.HostChannelManager;
+import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.request.BaseRequest;
 import com.mi.live.data.milink.command.MiLinkCommand;

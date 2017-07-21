@@ -2,6 +2,7 @@ package com.wali.live;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,18 +16,18 @@ import android.widget.EditText;
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
-import com.mi.live.data.account.XiaoMiOAuth;
+import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.liveassistant.R;
 import com.trello.rxlifecycle.ActivityEvent;
-import com.wali.live.channel.adapter.ChannelRecyclerAdapter;
-import com.wali.live.channel.presenter.ChannelPresenter;
-import com.wali.live.channel.presenter.IChannelPresenter;
-import com.wali.live.channel.presenter.IChannelView;
-import com.wali.live.channel.viewmodel.BaseViewModel;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
+import com.wali.live.watchsdk.channel.adapter.ChannelRecyclerAdapter;
+import com.wali.live.watchsdk.channel.presenter.ChannelPresenter;
+import com.wali.live.watchsdk.channel.presenter.IChannelPresenter;
+import com.wali.live.watchsdk.channel.presenter.IChannelView;
+import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
 import com.wali.live.watchsdk.login.LoginPresenter;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
@@ -41,11 +42,7 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-
-//import com.wali.live.livesdk.live.LiveSdkActivity;
 
 /**
  * Created by lan on 16/11/25.
@@ -69,10 +66,8 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
 
         initViews();
         initPresenters();
-
         initData();
         getChannelFromServer();
-
         $(R.id.show_live_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,46 +89,28 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
         ($(R.id.login_tv)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Observable.just(0).map(new Func1<Integer, Boolean>() {
-                    @Override
-                    public Boolean call(Integer integer) {
-                        String code = XiaoMiOAuth.getOAuthCode(MainActivity.this);
-                        if (!TextUtils.isEmpty(code)) {
-                            if (mLoginPresenter == null) {
-                                mLoginPresenter = new LoginPresenter(MainActivity.this);
-                                addPresent(mLoginPresenter);
-                            }
-                            mLoginPresenter.miLoginByCode(code);
-                            return true;
-                        }
-                        return false;
-                    }
-                }).subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Action1<Boolean>() {
-                            @Override
-                            public void call(Boolean b) {
-                                MyLog.w(TAG, "result = " + b);
-                            }
-                        }, new Action1<Throwable>() {
-                            @Override
-                            public void call(Throwable throwable) {
-                                throwable.printStackTrace();
-                                MyLog.w(TAG, "failed " + throwable);
-                            }
-                        });
+                if (mLoginPresenter == null) {
+                    mLoginPresenter = new LoginPresenter(MainActivity.this);
+                }
+                mLoginPresenter.miLogin(HostChannelManager.getInstance().getChannelId());
             }
         });
         ($(R.id.replay_tv)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // http://playback.ks.zb.mi.com/record/live/100067_1490154994/hls/100067_1490154994.m3u8?playui=0
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(101743, "101743_1471260348",
                         "http://playback.ks.zb.mi.com/record/live/101743_1471260348/hls/101743_1471260348.m3u8?playui=1")
                         .setLiveType(6)
                         .setEnableShare(true)
                         .build();
                 VideoDetailSdkActivity.openActivity(MainActivity.this, roomInfo);
+            }
+        });
+
+        ($(R.id.channel_tv)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getChannelById(201);
             }
         });
     }
@@ -187,7 +164,6 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
 
         mRecyclerAdapter = new ChannelRecyclerAdapter(this, mChannelId);
         mRecyclerView.setAdapter(mRecyclerAdapter);
-
         mInputEditText = $(R.id.live_input_tv);
 
         $(R.id.watch_btn).setOnClickListener(new View.OnClickListener() {
@@ -250,5 +226,13 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
     public static void openActivity(@NonNull Activity activity) {
         Intent intent = new Intent(activity, MainActivity.class);
         activity.startActivity(intent);
+    }
+
+    public void getChannelById(int channelId) {
+        String uri = "livesdk://channel?channel_id=" + channelId;
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        intent.putExtra("extra_channel_id", 50001);
+        intent.putExtra("extra_package_name", "com.wali.live.sdk.manager.demo");
+        startActivity(intent);
     }
 }

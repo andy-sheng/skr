@@ -86,6 +86,7 @@
     </plurals>
     <string name="feeds_detail_label_comment" formatted="false">Comments (%s)</string>
     <string name="feeds_detail_label_replay">Replay(%s)</string>
+    <string name="feeds_detail_label_detail">Details</string>
     <string name="recomment_text">\@\u0020</string>
     <string name="feeds_hot_comment" formatted="false">Top comments</string>
     <string name="feeds_hot_all" formatted="false">All comments</string>
@@ -96,10 +97,32 @@
     <string name="feeds_comment_delete_failed">Couldn\'t remove comments</string>
     <string name="open_same_video_hint">Replaying…</string>
     <string name="live_lottery_no_comment_toast">No comments yet</string>
+    <string name="michannel_type_live">Live</string>
+    <string name="ten_thousand">0K</string>
+    <plurals name="channel_view_count">
+        <item quantity="one"> %s viewer</item>
+        <item quantity="other"> %s viewers</item>
+    </plurals>
+    <plurals name="channel_viewer_count">
+        <item quantity="one">%s viewer</item>
+        <item quantity="other">%s viewers</item>
+    </plurals>
+    <string name="ticket_watermark">Tickets</string>
+    <string name="michannel_forecast">Preview</string>
+    <string name="michannel_notice">Book</string>
+    <string name="michannel_default_title">More games</string>
+    <string name="anchor_rank">Daily popular hosts</string>
+    <string name="read_count">Viewed %1$d times</string>
+    <string name="michannel_fans_cnt">Fan: %s</string>
+    <string name="fold_view_show_all">Show all</string>
+    <string name="pack_up">Collapse</string>
+    <string name="channel_shop_cnt">%d people want to buy</string>
+    <string name="install_mi_video">Install Mi video first</string>
+    <string name="all_people">All</string>
     <string name="game_guide_close_tip">close after %d s</string>
-    <!--关注主播，不错过任何一次直播-->
     <string name="game_guide_normal_tip">Follow the hosts to view their latest updates</string>
-
+    <string name="live_location_unknown">Unknown planet</string>
+	
     <string name="money_coming">Red envelope</string>
     <string name="grap_hongbao">Open</string>
     <string name="already_in_pocket">Deposited successfully</string>
@@ -115,4 +138,9 @@
     <string name="bottom_tip_send_red">Expired red envelopes will be refunded in 24h</string>
     <string name="money_not_enough_tip">Insufficient funds, top up to send red envelopes. Top up now?</string>
     <string name="create_red_envelop_failed_error">Network error</string>
+    <string name="please_select_redpacket">Select amount</string>
+    <string name="red_packet_instruction">Instructions&gt;</string>
+    <string name="send_redpacket">Send red envelope</string>
+    <string name="send_red_btn">Send red envelope</string>
+    <string name="buy_diamond">Top-up&gt;</string>
 </resources>

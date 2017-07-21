@@ -22,7 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.log.MyLog;
-import com.mi.live.data.account.HostChannelManager;
+import com.mi.live.data.account.channel.HostChannelManager;
 import com.wali.live.common.barrage.view.LiveCommentView;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.livesdk.R;

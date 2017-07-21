@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/split_area"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/color_f2f2f2"/>
+
+    <com.base.image.fresco.view.TintableImageView
+        android:id="@+id/avatar_iv"
+        android:layout_width="36.66dp"
+        android:layout_height="36.66dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/split_area"
+        android:layout_marginLeft="6.66dip"
+        android:layout_marginTop="10dip"
+        app:roundAsCircle="true"/>
+
+    <ImageView
+        android:id="@+id/badge_iv"
+        android:layout_width="40dp"
+        android:layout_height="14dp"
+        android:layout_below="@+id/avatar_iv"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="@dimen/lvl_small_icon_margin_top"
+        android:scaleType="fitStart"/>
+
+    <com.base.view.MLTextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/avatar_iv"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="5dip"
+        android:layout_marginTop="3.33dp"
+        android:layout_toLeftOf="@+id/count_tv"
+        android:layout_toRightOf="@+id/avatar_iv"
+        android:includeFontPadding="false"
+        android:maxLength="20"
+        android:singleLine="true"
+        android:textColor="@color/color_black_trans_90"
+        android:textSize="@dimen/text_size_42"/>
+
+    <com.base.view.MLTextView
+        android:id="@+id/location_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/name_tv"
+        android:layout_below="@+id/name_tv"
+        android:layout_marginTop="4dip"
+        android:drawableLeft="@drawable/home_top_icon_position"
+        android:drawablePadding="2.66dip"
+        android:includeFontPadding="false"
+        android:maxLength="20"
+        android:textColor="@color/color_black_trans_50"
+        android:textSize="@dimen/text_size_32"/>
+
+    <com.base.view.MLTextView
+        android:id="@+id/concern_tv"
+        android:layout_width="@dimen/view_dimen_180"
+        android:layout_height="@dimen/view_dimen_75"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/split_area"
+        android:layout_marginRight="6.66dip"
+        android:layout_marginTop="16dip"
+        android:background="@drawable/follow_btn_bg"
+        android:gravity="center"
+        android:text="@string/follow"
+        android:textColor="@color/color_follow_btn"
+        android:textSize="@dimen/text_size_36"/>
+
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/cover_iv"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_below="@id/avatar_iv"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="38.33dp"
+        android:layout_below="@id/cover_iv"
+        android:clickable="true"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:singleLine="true"
+        android:textColor="@color/color_black_trans_90"
+        android:textSize="@dimen/text_size_39"/>
+
+    <!-- 右上角的直播回放的提示-->
+    <TextView
+        android:id="@+id/live_tv"
+        style="@style/michannel_type_label"
+        android:layout_width="wrap_content"
+        android:layout_height="18.66dp"
+        android:layout_alignRight="@id/cover_iv"
+        android:layout_alignTop="@id/cover_iv"
+        android:text="@string/live"/>
+</RelativeLayout>

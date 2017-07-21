@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.base.activity.RxActivity;
 import com.base.log.MyLog;
+import com.wali.live.watchsdk.channel.ChannelSdkActivity;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeUtils;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
@@ -37,6 +38,9 @@ public class SchemeProcessor {
                 break;
             case SchemeConstants.HOST_PLAYBACK:
                 processHostPlayback(uri, activity);
+                break;
+            case SchemeConstants.HOST_CHANNEL:
+                processHostChannel(uri, activity);
                 break;
             default:
                 return false;
@@ -73,6 +77,10 @@ public class SchemeProcessor {
     }
 
     private static void processHostPlayback(Uri uri, Activity activity) {
+        if (!isLegalPath(uri, "processHostPlayback", SchemeConstants.PATH_JOIN)) {
+            return;
+        }
+
         long playerId = SchemeUtils.getLong(uri, SchemeConstants.PARAM_PLAYER_ID, 0);
         String liveId = uri.getQueryParameter(SchemeConstants.PARAM_LIVE_ID);
         String videoUrl = Uri.decode(uri.getQueryParameter(SchemeConstants.PARAM_VIDEO_URL));
@@ -82,5 +90,13 @@ public class SchemeProcessor {
                 .setLiveType(liveType)
                 .build();
         VideoDetailSdkActivity.openActivity(activity, roomInfo);
+    }
+
+    private static void processHostChannel(Uri uri, Activity activity) {
+        long channelId = SchemeUtils.getLong(uri, SchemeConstants.PARAM_CHANNEL_ID, 0);
+        MyLog.w(TAG, "channel id=" + channelId);
+        if (channelId != 0) {
+            ChannelSdkActivity.openActivity(activity, channelId);
+        }
     }
 }

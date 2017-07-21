@@ -30,6 +30,20 @@
         android:supportsRtl="true">
 
         <activity
+            android:name="com.wali.live.watchsdk.channel.sublist.activity.SubChannelActivity"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeLive"/>
+
+        <activity
+            android:name="com.wali.live.watchsdk.channel.ChannelSdkActivity"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeLive"/>
+
+        <activity
             android:name="com.wali.live.watchsdk.watch.WatchSdkActivity"
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
             android:hardwareAccelerated="true"
@@ -136,8 +150,19 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name="com.mi.live.data.account.receiver.AccountChangedReceiver">
+            <intent-filter>
+                <action android:name="android.accounts.LOGIN_ACCOUNTS_PRE_CHANGED"/>
+                <action android:name="android.accounts.LOGIN_ACCOUNTS_POST_CHANGED"/>
+            </intent-filter>
+        </receiver>
+
         <service
             android:name="com.wali.live.watchsdk.ipc.service.MiLiveSdkService"
             android:exported="true"/>
+
+        <service
+            android:name=".login.LoginInternalService"
+            android:exported="false"/>
     </application>
 </manifest>

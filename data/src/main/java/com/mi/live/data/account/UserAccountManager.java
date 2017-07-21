@@ -3,6 +3,7 @@ package com.mi.live.data.account;
 import android.text.TextUtils;
 
 import com.base.log.MyLog;
+import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.account.event.AccountEventController;
 import com.mi.live.data.account.event.SetUserAccountEvent;
 import com.mi.live.data.account.task.AccountCaller;
@@ -76,10 +77,7 @@ public class UserAccountManager {
     }
 
     public void logoff(int channelid) {
-        MyLog.w(TAG, "logoff:" + channelid + "  HostChannelManager.getInstance().getChannelId()" + HostChannelManager.getInstance().getChannelId());
-        if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
-            return;
-        }
+        MyLog.w(TAG, "logoff:" + channelid + "  HostChannelManager.getInstance().getChannelId()=" + HostChannelManager.getInstance().getChannelId());
         AccountLocalStore.getInstance().deleteAccount(channelid);
         if (channelid == HostChannelManager.getInstance().getChannelId()) {
             // 和当前渠道一致,当前账号置为空
@@ -88,11 +86,13 @@ public class UserAccountManager {
 
             // 实名模式登出
             MiLinkClientAdapter.getsInstance().logoff();
-            // milink 切换成匿名模式
-            MiLinkClientAdapter.getsInstance().setIsTouristMode(true);
+            if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
+                // milink 切换成匿名模式
+                MiLinkClientAdapter.getsInstance().setIsTouristMode(true);
 
-            MyLog.w(TAG, "logoff post event");
-            AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_NORMAL_LOGOFF, channelid);
+                MyLog.w(TAG, "logoff post event");
+                AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_NORMAL_LOGOFF, channelid);
+            }
         }
     }
 

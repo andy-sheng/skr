@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.base.image.fresco.view.TintableImageView
+        android:id="@+id/avatar_iv"
+        android:layout_width="match_parent"
+        android:layout_height="163.3dp"/>
+
+    <TextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:lineSpacingExtra="2dp"
+        android:singleLine="true"
+        android:text="阳光女孩"
+        android:textColor="@color/color_black_trans_90"
+        android:textSize="@dimen/text_size_42"/>
+
+    <TextView
+        android:id="@+id/display_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="北京"
+        android:textColor="@color/color_black_trans_50"
+        android:textSize="@dimen/text_size_36"/>
+
+    <TextView
+        android:id="@+id/concern_btn"
+        android:layout_width="@dimen/view_dimen_270"
+        android:layout_height="@dimen/view_dimen_70"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/round_corner_e5aa1e_bg"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="4dp"
+        android:singleLine="true"
+        android:text="北京"
+        android:textColor="@color/color_e5aa3b"
+        android:textSize="12dp"/>
+</LinearLayout>

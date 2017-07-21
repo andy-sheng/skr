@@ -14,4 +14,10 @@
         <item>Copy</item>
         <item>Cancel</item>
     </string-array>
+    <string-array name="subchannel_select_gender">
+        <item>View all</item>
+        <item>View female</item>
+        <item>View male</item>
+        <item>Cancel</item>
+    </string-array>
 </resources>

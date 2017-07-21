@@ -297,7 +297,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                             @Override
                             public void onError(Throwable e) {
                                 MyLog.e(TAG, "miSsoLogin error", e);
-                                onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                                onEventLogin(channelId, ErrorCode.CODE_EXCEPTION);
                             }
 
                             @Override
@@ -305,25 +305,26 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                                 try {
                                     if (miSsoLoginRsp == null) {
                                         MyLog.w(TAG, "miSsoLoginRsp is null");
-                                        onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                                        onEventLogin(channelId, ErrorCode.CODE_TIME_OUT);
                                         return;
                                     }
 
-                                    MyLog.w(TAG, "miSsoLogin retCode=" + miSsoLoginRsp.getRetCode());
-                                    if (miSsoLoginRsp.getRetCode() == ErrorCode.CODE_ACCOUT_FORBIDDEN) {
-                                        onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                                    int code = miSsoLoginRsp.getRetCode();
+                                    MyLog.w(TAG, "miSsoLogin retCode=" + code);
+                                    if (code == ErrorCode.CODE_ACCOUT_FORBIDDEN) {
+                                        onEventLogin(channelId, code);
                                         return;
-                                    } else if (miSsoLoginRsp.getRetCode() != ErrorCode.CODE_SUCCESS) {
-                                        onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                                    } else if (code != ErrorCode.CODE_SUCCESS) {
+                                        onEventLogin(channelId, code);
                                         return;
                                     }
 
                                     reportLoginSuccess(channelId, miid);
                                     UploadService.toUpload(new UploadService.UploadInfo(miSsoLoginRsp, channelId));
-                                    onEventLogin(channelId, MiLiveSdkEvent.SUCCESS);
+                                    onEventLogin(channelId, code);
                                 } catch (Exception e) {
                                     MyLog.w(TAG, "miSsoLogin error", e);
-                                    onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                                    onEventLogin(channelId, ErrorCode.CODE_EXCEPTION);
                                     return;
                                 }
                             }
@@ -339,7 +340,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void processFailure() {
                 MyLog.w(TAG, "loginByMiAccountSso failure callback");
-                onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                onEventLogin(channelId, ErrorCode.CODE_ERROR_NORMAL);
             }
         });
     }
@@ -385,19 +386,19 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                             @Override
                             public void onError(Throwable e) {
                                 MyLog.w(TAG, "miLoginByCode login onError=" + e.getMessage());
-                                onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                                onEventLogin(channelId, ErrorCode.CODE_EXCEPTION);
                             }
 
                             @Override
                             public void onNext(AccountProto.LoginRsp rsp) {
                                 MyLog.w(TAG, "miLoginByCode login onNext");
-                                if (rsp.getRetCode() == MiLiveSdkEvent.SUCCESS) {
+                                if (rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
                                     UploadService.toUpload(new UploadService.UploadInfo(rsp, channelId));
                                 }
                                 if (rsp != null) {
                                     onEventLogin(channelId, rsp.getRetCode());
                                 } else {
-                                    onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                                    onEventLogin(channelId, ErrorCode.CODE_TIME_OUT);
                                 }
                             }
                         });
@@ -412,7 +413,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void processFailure() {
                 MyLog.d(TAG, "loginByMiAccountOAuth failure callback");
-                onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                onEventLogin(channelId, ErrorCode.CODE_ERROR_NORMAL);
             }
         });
     }
@@ -428,7 +429,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
                 // 账号这一块
                 UserAccountManager.getInstance().logoff(channelId);
-                onEventLogoff(channelId, MiLiveSdkEvent.SUCCESS);
+                onEventLogoff(channelId, ErrorCode.CODE_SUCCESS);
             }
 
             @Override
@@ -813,19 +814,19 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                             @Override
                             public void onError(Throwable e) {
                                 MyLog.e(TAG, "thirdPartLogin error", e);
-                                onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                                onEventLogin(channelId, ErrorCode.CODE_EXCEPTION);
                             }
 
                             @Override
                             public void onNext(AccountProto.ThirdPartSignLoginRsp rsp) {
                                 MyLog.w(TAG, "thirdPartLogin onNext,retCode:" + rsp.getRetCode());
-                                if (rsp.getRetCode() == MiLiveSdkEvent.SUCCESS) {
+                                if (rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
                                     UploadService.toUpload(new UploadService.UploadInfo(rsp, loginData));
                                 }
                                 if (rsp != null) {
                                     onEventLogin(channelId, rsp.getRetCode());
                                 } else {
-                                    onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                                    onEventLogin(channelId, ErrorCode.CODE_TIME_OUT);
                                 }
 
                             }
@@ -841,7 +842,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void processFailure() {
                 MyLog.d(TAG, "loginByMiAccountOAuth failure callback");
-                onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                onEventLogin(channelId, ErrorCode.CODE_ERROR_NORMAL);
             }
         });
     }

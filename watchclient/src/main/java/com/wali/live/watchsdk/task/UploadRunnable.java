@@ -8,13 +8,13 @@ import com.base.log.MyLog;
 import com.base.thread.ThreadPool;
 import com.base.utils.CommonUtils;
 import com.mi.live.data.account.MyUserInfoManager;
+import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.assist.Attachment;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.wali.live.common.MessageType;
 import com.wali.live.task.TaskCallBackWrapper;
 import com.wali.live.upload.UploadTask;
 import com.wali.live.utils.AttachmentUtils;
-import com.wali.live.watchsdk.ipc.service.MiLiveSdkEvent;
 import com.wali.live.watchsdk.login.UploadService;
 import com.wali.live.watchsdk.request.UploadUserInfoRequest;
 
@@ -58,7 +58,7 @@ public class UploadRunnable implements Runnable {
         MyLog.w(TAG, "uploadUserInfo start,UploadUserInfo:" + mUploadInfo.toString());
         if (!mUploadInfo.hasInnerAvatar && !TextUtils.isEmpty(mUploadInfo.avatar)) {
             String localImgUrl = mUploadInfo.avatar;
-            if (mUploadInfo.avatarNeedDowload) {
+            if (mUploadInfo.avatarNeedDownload) {
                 localImgUrl = CommonUtils.downloadImg(mUploadInfo.avatar);
             }
             generateAtt(localImgUrl);
@@ -133,7 +133,7 @@ public class UploadRunnable implements Runnable {
         if (!MiLinkClientAdapter.getsInstance().isTouristMode()) {
             UploadUserInfoRequest request = new UploadUserInfoRequest(mUploadInfo.uuid, nickName, gender, mAvatar, mAvatarMd5, !mUploadInfo.hasInnerSex);
             int retCode = request.sendRequest();
-            if (retCode == MiLiveSdkEvent.SUCCESS) {
+            if (retCode == ErrorCode.CODE_SUCCESS) {
                 MyUserInfoManager.getInstance().syncSelfDetailInfo(mUploadInfo.uuid, mUploadInfo.channelId);
             }
             MyLog.w(TAG, "upload user info retCode=" + retCode);

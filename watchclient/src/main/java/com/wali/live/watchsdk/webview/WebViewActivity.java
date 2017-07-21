@@ -40,7 +40,7 @@ import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
-import com.wali.live.watchsdk.scheme.gamecenter.GamecenterConstants;
+import com.wali.live.watchsdk.scheme.specific.SpecificConstants;
 import com.wali.live.watchsdk.watch.event.WatchOrReplayActivityCreated;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -56,6 +56,9 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
     public static final String EXTRA_DISPLAY_TYPE = "extra_display_type";
     public static final String EXTRA_WIDGET_ID = "extra_widget_id";
     public static final String EXTRA_RESULT_OK = "extra_result_ok";
+
+    protected final float TITLE_BAR_RIGHT_BTN_MARGIN = 0.33f;
+
 
     public static boolean sIsAlive = false;
 
@@ -239,8 +242,7 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
         handleIntent(intent);
     }
 
-    private void
-    handleIntent(@NonNull Intent intent) {
+    private void handleIntent(@NonNull Intent intent) {
         mUrl = intent.getStringExtra(EXTRA_URL);
         mOwnerId = intent.getLongExtra(EXTRA_UID, 0);
         mAvatarTs = intent.getLongExtra(EXTRA_AVATAR, 0);
@@ -318,7 +320,7 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
                 openUrlWithBrowserIntent(url, this);
                 return;
             } else if (url.startsWith(SchemeConstants.SCHEME_WALILIVE) ||
-                    url.startsWith(GamecenterConstants.SCHEME_GAMECENTER)) {
+                    url.startsWith(SpecificConstants.SCHEME_GAMECENTER)) {
                 SchemeSdkActivity.openActivity(this, Uri.parse(url));
                 return;
             } else {

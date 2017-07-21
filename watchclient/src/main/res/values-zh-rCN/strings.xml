@@ -85,6 +85,7 @@
     </plurals>
     <string name="feeds_detail_label_comment" formatted="false">评论(%s)</string>
     <string name="feeds_detail_label_replay">回放(%s)</string>
+    <string name="feeds_detail_label_detail">详情</string>
     <string name="recomment_text">回复\u0020</string>
     <string name="feeds_hot_comment" formatted="false">热门评论</string>
     <string name="feeds_hot_all" formatted="false">全部评论</string>
@@ -94,9 +95,29 @@
     <string name="feeds_comment_delete_dialog_title">确认删除该评论</string>
     <string name="feeds_comment_delete_failed">评论删除失败</string>
     <string name="live_lottery_no_comment_toast">暂时没有评论</string>
+    <string name="ten_thousand">万</string>
+    <plurals name="channel_view_count">
+        <item quantity="other">%s人看过</item>
+    </plurals>
+    <plurals name="channel_viewer_count">
+        <item quantity="other">%s人</item>
+    </plurals>
+    <string name="michannel_forecast">预告</string>
+    <string name="ticket_watermark">门票</string>
+    <string name="michannel_notice">预约</string>
+    <string name="live_location_unknown">未知星球</string>
+    <string name="read_count">%1$d阅读</string>
+    <string name="michannel_fans_cnt">粉丝：%s</string>
+    <string name="fold_view_show_all">显示全部</string>
+    <string name="pack_up">收起</string>
+    <string name="channel_shop_cnt">%d 想买</string>
+    <string name="install_mi_video">请安装小米视频</string>
+    <string name="all_people">全部</string>
     <string name="game_guide_close_tip">剩余%ds关闭页面</string>
-    <!--关注主播，不错过任何一次直播-->
     <string name="game_guide_normal_tip">关注主播，不错过任何一次直播</string>
+    <string name="anchor_rank">主播势力日榜</string>
+    <string name="michannel_default_title">其他游戏</string>
+    <string name="michannel_type_live">直播</string>
 
     <string name="money_coming">土豪红包来了</string>
     <string name="grap_hongbao">抢红包</string>
@@ -113,4 +134,9 @@
     <string name="bottom_tip_send_red">未领取的红包，将于24小时后自动退回</string>
     <string name="money_not_enough_tip">余额不足啦，要充值才能继续发送红包哦，是否去充值</string>
     <string name="create_red_envelop_failed_error">网络出错啦</string>
+    <string name="please_select_redpacket">请选择红包金额</string>
+    <string name="red_packet_instruction">红包说明 &gt;</string>
+    <string name="send_redpacket">发红包</string>
+    <string name="send_red_btn">发送红包</string>
+    <string name="buy_diamond">充值 ></string>
 </resources>

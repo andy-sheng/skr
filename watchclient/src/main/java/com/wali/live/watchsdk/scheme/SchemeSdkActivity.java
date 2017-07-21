@@ -9,17 +9,24 @@ import android.text.TextUtils;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
-import com.wali.live.watchsdk.callback.ISecureCallBack;
+import com.wali.live.watchsdk.callback.SecureCommonCallBack;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
-import com.wali.live.watchsdk.scheme.gamecenter.GamecenterConstants;
-import com.wali.live.watchsdk.scheme.gamecenter.GamecenterProcessor;
 import com.wali.live.watchsdk.scheme.processor.SchemeProcessor;
 import com.wali.live.watchsdk.scheme.processor.WaliliveProcessor;
+import com.wali.live.watchsdk.scheme.specific.SpecificProcessor;
 
 /**
  * Created by lan on 17/2/21.
  */
 public class SchemeSdkActivity extends BaseSdkActivity {
+    public static final String EXTRA_CHANNEL_ID = "extra_channel_id";
+    public static final String EXTRA_PACKAGE_NAME = "extra_package_name";
+    public static final String EXTRA_CHANNEL_SECRET = "extra_channel_secret";
+
+    public static final String EXTRA_MI_ID = "extra_mi_id";
+    public static final String EXTRA_SERVICE_TOKEN = "extra_service_token";
+
+    private Intent mIntent;
     private Uri mUri;
     private Handler mHandler = new Handler();
 
@@ -41,18 +48,17 @@ public class SchemeSdkActivity extends BaseSdkActivity {
     }
 
     private void process() {
-        Intent intent = getIntent();
-        if (intent == null) {
+        mIntent = getIntent();
+        if (mIntent == null) {
             MyLog.w(TAG, "process intent is null");
             finish();
             return;
         }
-        mUri = intent.getData();
+        mUri = mIntent.getData();
         if (mUri == null) {
             MyLog.w(TAG, "process intent data uri is null");
             finish();
         }
-        MyLog.d(TAG, "process intent data uri=" + mUri);
         try {
             process(mUri);
         } catch (Exception e) {
@@ -82,29 +88,41 @@ public class SchemeSdkActivity extends BaseSdkActivity {
         }
 
         if (scheme.equals(SchemeConstants.SCHEME_LIVESDK)) {
-            int channelId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_CHANNEL_ID, 0);
+            int channelId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_CHANNEL, 0);
             String packageName = uri.getQueryParameter(SchemeConstants.PARAM_PACKAGE_NAME);
             String channelSecret = uri.getQueryParameter(SchemeConstants.PARAM_CHANNEL_SECRET);
             if (channelSecret == null) {
                 channelSecret = "";
             }
 
-            MiLiveSdkBinder.getInstance().secureOperate(channelId, packageName, channelSecret, new ISecureCallBack() {
-                @Override
-                public void process(Object... objects) {
-                    if (SchemeProcessor.process(uri, host, SchemeSdkActivity.this, true)) {
-                        // activity finish 内置处理
-                    } else {
-                        finish();
-                    }
-                }
+//                int channelId = mIntent.getIntExtra(EXTRA_CHANNEL_ID, 0);
+//                String packageName = mIntent.getStringExtra(EXTRA_PACKAGE_NAME);
+//                String channelSecret = mIntent.getStringExtra(EXTRA_CHANNEL_SECRET);
 
-                @Override
-                public void processFailure() {
-                    MyLog.w(TAG, "processFailure");
-                    finish();
-                }
-            });
+            MiLiveSdkBinder.getInstance().secureOperate(channelId, packageName, channelSecret,
+                    new SecureCommonCallBack() {
+                        @Override
+                        public void postSuccess() {
+                            MyLog.w(TAG, "postSuccess callback");
+                            if (SchemeProcessor.process(uri, host, SchemeSdkActivity.this, true)) {
+                                // activity finish 内置处理
+                            } else {
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void postError() {
+                            MyLog.w(TAG, "postError");
+                            finish();
+                        }
+
+                        @Override
+                        public void processFailure() {
+                            MyLog.w(TAG, "processFailure");
+                            finish();
+                        }
+                    });
         } else if (scheme.equals(SchemeConstants.SCHEME_WALILIVE)) {
             // 内部处理，不对外暴露
             if (WaliliveProcessor.process(uri, host, this, true)) {
@@ -112,13 +130,8 @@ public class SchemeSdkActivity extends BaseSdkActivity {
             } else {
                 finish();
             }
-        } else if (scheme.equals(GamecenterConstants.SCHEME_GAMECENTER)) {
-            // 内部处理，不对外暴露
-            if (GamecenterProcessor.process(uri, host, this, true)) {
-                // activity finish 内置处理
-            } else {
-                finish();
-            }
+        } else if (SpecificProcessor.process(uri, scheme, this)) {
+            finish();
         } else {
             finish();
         }

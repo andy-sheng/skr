@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main_act_container"
+    android:background="@color/color_white">
+
+    <com.base.view.BackTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        app:is_profile_mode="true"/>
+
+    <TextView
+        android:id="@+id/tv_select"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin_20"
+        android:layout_alignBottom="@id/title_bar"
+        android:gravity="center_vertical"
+        android:drawableRight="@drawable/down_arrow_bg"
+        android:drawablePadding="3.33dp"
+        android:padding="3.33dp"
+        android:text="@string/all_people"
+        android:textColor="@color/color_black_tran_70"
+        android:textSize="@dimen/text_size_34"
+        android:visibility="gone"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingBottom="3dp"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</RelativeLayout>
