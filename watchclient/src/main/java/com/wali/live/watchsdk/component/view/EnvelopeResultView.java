@@ -56,6 +56,8 @@ public class EnvelopeResultView extends BaseBottomPanel<RelativeLayout, Relative
     private View mAnchorTips;
     private View mAnchorItem;
     private RecyclerView mRecyclerView;
+    private View mLeftLineTv;
+    private View mRightLineTv;
     private final WinnerItemAdapter mWinnerAdapter = new WinnerItemAdapter();
 
     protected <T> T $(View view, int id) {
@@ -138,10 +140,14 @@ public class EnvelopeResultView extends BaseBottomPanel<RelativeLayout, Relative
         if (anchorItem != null) {
             mAnchorTips.setVisibility(View.VISIBLE);
             mAnchorItem.setVisibility(View.VISIBLE);
+            mLeftLineTv.setVisibility(View.VISIBLE);
+            mRightLineTv.setVisibility(View.VISIBLE);
             new WinnerItemAdapter.WinnerHolder(mAnchorItem).bindView(anchorItem, bestId);
         } else {
             mAnchorTips.setVisibility(View.GONE);
             mAnchorItem.setVisibility(View.GONE);
+            mLeftLineTv.setVisibility(View.GONE);
+            mRightLineTv.setVisibility(View.GONE);
         }
     }
 
@@ -165,6 +171,8 @@ public class EnvelopeResultView extends BaseBottomPanel<RelativeLayout, Relative
         mAnchorTips = $(mDetailView, R.id.anchor_tips);
         mAnchorItem = $(mDetailView, R.id.anchor_item);
         mRecyclerView = $(R.id.recycler_view);
+        mLeftLineTv = $(R.id.left_line);
+        mRightLineTv = $(R.id.right_line);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mParentView.getContext()));
         mRecyclerView.setAdapter(mWinnerAdapter);

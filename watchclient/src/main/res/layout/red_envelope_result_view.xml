@@ -131,6 +131,30 @@
             android:textSize="11.33sp"
             android:visibility="gone" />
 
+        <View
+            android:id="@+id/left_line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/anchor_tips"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="6.33dp"
+            android:layout_toStartOf="@+id/anchor_tips"
+            android:background="#fefefe"
+            android:visibility="gone"/>
+
+        <View
+            android:id="@+id/right_line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/anchor_tips"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="6.33dp"
+            android:layout_toEndOf="@+id/anchor_tips"
+            android:background="#fefefe"
+            android:visibility="gone"/>
+
         <include
             android:id="@+id/anchor_item"
             layout="@layout/red_envelope_winner_item"
@@ -150,6 +174,26 @@
             android:text="@string/top_50"
             android:textColor="#d64a4a"
             android:textSize="11.33dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/others_tips"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="6.33dp"
+            android:layout_toStartOf="@+id/others_tips"
+            android:background="#fefefe" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/others_tips"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="6.33dp"
+            android:layout_toEndOf="@+id/others_tips"
+            android:background="#fefefe" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
