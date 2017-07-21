@@ -852,6 +852,9 @@ public class StatisticsKey {
     // 回放人数统计：sdk_replay-{channelId}-{userId}
     public static final String KEY_REPLAY_COUNT = "sdk_replay-%s";
 
+    // 第三方DAU统计
+    public static final String KEY_VIEW_COUNT = "sdk_view-%s";
+
     // 登录入口：sdk_login_entrance-{channelId}-{miid}
     public static final String KEY_SDK_LOGIN_ENTRANCE = "sdk_login_entrance-%s-%s";
     // 登录成功：sdk_login_success-{channelId}-{miid}

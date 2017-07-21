@@ -10,7 +10,8 @@ import org.json.JSONObject;
  */
 public class SimpleStatisticsItem extends MilinkStatisticsItem {
     // 内层数据类型
-    public static final int GAME_ACTIVE_BIZTYPE = LIVE_SDK_TYPE * 1000 + 1;        // 游戏标签tab日活
+    public static final int GAME_ACTIVE_BIZTYPE = LIVE_SDK_TYPE * 1000 + 1;             // 游戏标签tab日活
+    public static final int MIVIDEO_ACTIVE_BIZTYPE = LIVE_SDK_TYPE * 1000 + 2;          // 小米视频日活
 
     private static final String PARAM_KEY = "key";
     private static final String PARAM_TIME = "time";
