@@ -6,6 +6,9 @@ import android.support.annotation.Nullable;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.ComponentController;
+import com.wali.live.watchsdk.watch.model.RoomInfo;
+
+import java.util.List;
 
 /**
  * Created by yangli on 2017/2/18.
@@ -18,6 +21,9 @@ public class WatchComponentController extends ComponentController {
     @NonNull
     RoomBaseDataModel mMyRoomData;
 
+    List<RoomInfo> mRoomInfoList;
+    int mRoomInfoPosition;
+
     /**
      * 房间弹幕管理
      */
@@ -28,6 +34,37 @@ public class WatchComponentController extends ComponentController {
             @NonNull LiveRoomChatMsgManager roomChatMsgManager) {
         mMyRoomData = myRoomData;
         mRoomChatMsgManager = roomChatMsgManager;
+    }
+
+    public void setVerticalList(List<RoomInfo> list, int position) {
+        mRoomInfoList = list;
+        mRoomInfoPosition = position;
+    }
+
+    public void switchToNextPosition() {
+        mRoomInfoPosition += 1;
+        if (mRoomInfoPosition >= mRoomInfoList.size()) {
+            mRoomInfoPosition -= mRoomInfoList.size();
+        }
+    }
+
+    public void switchToLastPosition() {
+        mRoomInfoPosition -= 1;
+        if (mRoomInfoPosition < 0) {
+            mRoomInfoPosition += mRoomInfoList.size();
+        }
+    }
+
+    public void switchRoom() {
+        mMyRoomData.reset();
+
+        RoomInfo roomInfo = mRoomInfoList.get(mRoomInfoPosition);
+        mMyRoomData.setRoomId(roomInfo.getLiveId());
+        mMyRoomData.setUid(roomInfo.getPlayerId());
+        mMyRoomData.setVideoUrl(roomInfo.getVideoUrl());
+        mMyRoomData.setLiveType(roomInfo.getLiveType());
+        mMyRoomData.setGameId(roomInfo.getGameId());
+        mMyRoomData.setEnableShare(roomInfo.isEnableShare());
     }
 
     @Nullable

@@ -1,8 +1,5 @@
 package com.wali.live.watchsdk.component.presenter;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
@@ -14,7 +11,6 @@ import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.component.WatchComponentController;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,14 +29,20 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
 
     @NonNull
     private List<View> mHorizontalSet;
+
     @NonNull
     private List<View> mVerticalSet;
+    private View[] mHalfArray = new View[0];
+    private View[] mPagerArray = new View[0];
 
     private boolean mIsHideAll = false;
     private boolean mIsGameMode = false;
 
     private boolean mHorizontalMoveEnabled = true;
-    private boolean mVerticalMoveEnabled = false;
+    private boolean mVerticalMoveEnabled = true;
+
+    // 增加竖屏滑动的开关，用于在只有一个观看列表的情况下进行控制
+    private boolean mOpenVerticalMove = false;
 
     private View mTouchView;
     private int mViewWidth = GlobalData.screenWidth;
@@ -60,6 +62,12 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         mHorizontalSet = horizontalSet;
         mVerticalSet = verticalSet;
         mIsGameMode = isGameMode;
+    }
+
+    public void setVerticalMoveEnabled(View[] pagerArray, View[] halfArray) {
+        mOpenVerticalMove = true;
+        mPagerArray = pagerArray;
+        mHalfArray = halfArray;
     }
 
     public TouchPresenter(
@@ -123,7 +131,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         mCurrX = currX;
         mCurrY = currY;
         float deltaX = mCurrX - mDownX, deltaY = mCurrY - mDownY;
-        if (mVerticalMoveEnabled && mTranslateX == 0) {
+        if (checkVerticalMovable() && mTranslateX == 0) {
             float translateY = Math.abs(deltaY) >= MOVE_THRESHOLD ? deltaY : 0;
             if (mTranslateY != translateY) {
                 onMoveVertical(mTranslateY, translateY);
@@ -157,6 +165,16 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         for (View view : mVerticalSet) {
             if (view != null) {
                 view.setTranslationY(newTranslateY);
+            }
+        }
+        for (View view : mPagerArray) {
+            if (view != null) {
+                view.setTranslationY(newTranslateY);
+            }
+        }
+        for (View view : mHalfArray) {
+            if (view != null) {
+                view.setTranslationY(newTranslateY / 2);
             }
         }
     }
@@ -209,25 +227,43 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     }
 
     private void onFlingUp() {
+        MyLog.d(TAG, "onFlingUp");
         mTranslateY = 0;
         for (View view : mVerticalSet) {
             if (view != null) {
                 view.setTranslationY(0);
             }
         }
+        for (View view : mHalfArray) {
+            if (view != null) {
+                view.setTranslationY(0);
+            }
+        }
+        mComponentController.onEvent(ComponentController.MSG_PAGE_UP);
     }
 
     private void onFlingDown() {
+        MyLog.d(TAG, "onFlingDown");
         mTranslateY = 0;
         for (View view : mVerticalSet) {
             if (view != null) {
                 view.setTranslationY(0);
             }
         }
+        for (View view : mHalfArray) {
+            if (view != null) {
+                view.setTranslationY(0);
+            }
+        }
+        mComponentController.onEvent(ComponentController.MSG_PAGE_DOWN);
     }
 
     public void onBackgroundClick() {
         mComponentController.onEvent(ComponentController.MSG_BACKGROUND_CLICK);
+    }
+
+    private boolean checkVerticalMovable() {
+        return mOpenVerticalMove && mVerticalMoveEnabled;
     }
 
     @Nullable
@@ -258,9 +294,11 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                     return true;
                 case WatchComponentController.MSG_ENABLE_MOVE_VIEW:
                     mHorizontalMoveEnabled = true;
+                    mVerticalMoveEnabled = true;
                     return true;
                 case WatchComponentController.MSG_DISABLE_MOVE_VIEW:
                     mHorizontalMoveEnabled = false;
+                    mVerticalMoveEnabled = false;
                     return true;
                 default:
                     break;

@@ -49,6 +49,9 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     public static final int MSG_ENABLE_MOVE_VIEW = MSG_TOUCH_FIRST;     // 开启滑动
     public static final int MSG_DISABLE_MOVE_VIEW = MSG_TOUCH_FIRST + 1; // 禁止滑动
     public static final int MSG_BACKGROUND_CLICK = MSG_TOUCH_FIRST + 2; // 背景点击
+    public static final int MSG_PAGE_DOWN = MSG_TOUCH_FIRST + 3;
+    public static final int MSG_PAGE_UP = MSG_TOUCH_FIRST + 4;
+
     // 输入框相关消息
     private static final int MSG_INPUT_FIRST = 30000;
     public static final int MSG_SHOW_INPUT_VIEW = MSG_INPUT_FIRST;     // 请求弹起 输入框
@@ -73,7 +76,6 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     public static final int MSG_SHOW_PERSONAL_INFO = MSG_POPUP_FIRST + 9;       // 显示 个人信息页
     public static final int MSG_SHOW_FOLLOW_GUIDE = MSG_POPUP_FIRST + 10;       // 显示 游戏引导页面
     public static final int MSG_FOLLOW_COUNT_DOWN = MSG_POPUP_FIRST + 11;       // 显示 游戏引导页面之前的倒计时
-
 
     // 详情播放相关
     private static final int MSG_DETAIL_VIDEO_FIRST = 40000;

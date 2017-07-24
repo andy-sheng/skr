@@ -96,7 +96,6 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
     @Override
     protected void inflateContentView() {
         super.inflateContentView();
-
         // 阻断下层点击事件
         mContentView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +133,7 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
         mHeadBgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hideSelf(true);
+                hideGameDownloadView();
             }
         });
     }

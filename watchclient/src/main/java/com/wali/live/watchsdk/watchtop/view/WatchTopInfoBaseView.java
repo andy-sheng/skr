@@ -407,7 +407,6 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
         int ticket = mMyRoomBaseDataModel.getTicket() - mMyRoomBaseDataModel.getInitTicket();
         MyLog.v(TAG + " updateTicketView liveTicketNum=" + mMyRoomBaseDataModel.getTicket() + " mInitTicket=" + mMyRoomBaseDataModel.getInitTicket() + " mIsTicketing=" + mIsTicketing + " mIsTicketAnimating=" + mIsTicketAnimating + " firstinf=" + mMyRoomBaseDataModel.isTicketFirstIn());
 
-
         if (mMyRoomBaseDataModel.isTicketFirstIn()) {
             mIsTicketing = false;
             mMyRoomBaseDataModel.setTicketing(mIsTicketing);

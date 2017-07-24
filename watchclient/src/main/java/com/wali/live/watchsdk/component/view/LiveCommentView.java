@@ -230,22 +230,18 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
         refreshComment(false);
     }
 
-    private Runnable afterRefresh = new Runnable() {
-        @Override
-        public void run() {
-            mHasDataUpdate = false;
-            mCommentRv.scrollToPosition(0);
-        }
-    };
-
     private void refreshComment(boolean force) {
         if (mAdapter != null && mDataList != null) {
             MyLog.d(TAG, "setLiveCommentList, dataList.size:" + mDataList.size() + ",force:" + force);
             mLastSetCommentListTs = System.currentTimeMillis();
             if (force) {
-                mAdapter.setLiveCommentList(mDataList, afterRefresh);
+                mAdapter.setCommentList(mDataList);
+                mHasDataUpdate = false;
+                mCommentRv.scrollToPosition(0);
             } else if (mOnBottom && this.getVisibility() == VISIBLE && !mDragging) {
-                mAdapter.setLiveCommentList(mDataList, afterRefresh);
+                mAdapter.setCommentList(mDataList);
+                mHasDataUpdate = false;
+                mCommentRv.scrollToPosition(0);
             }
         }
     }
@@ -283,6 +279,8 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
         if (mMoveToLastItemIv != null && mMoveToLastItemIv.getVisibility() == View.VISIBLE) {
             mMoveToLastItemIv.setVisibility(View.INVISIBLE);
         }
+        mDataList.clear();
+        refreshComment();
     }
 
     @Override

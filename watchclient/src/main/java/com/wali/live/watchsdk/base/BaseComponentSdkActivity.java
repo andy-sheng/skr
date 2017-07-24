@@ -208,7 +208,7 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
                     return;
                 }
                 String roomId = mMyRoomData.getRoomId();
-                MyLog.d(TAG, "mMyRoomData.getRoomId():" + roomId);
+                // MyLog.d(TAG, "mMyRoomData.getRoomId():" + roomId);
                 if (TextUtils.isEmpty(roomId)) {
                     return;
                 }
@@ -236,9 +236,9 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
                 }
             }
             // 处理自己房间的push消息
-            MyLog.d(TAG, "processPushMsgList msg=" + msg.getBody() + ",msgType" + msg.getMsgType());
+            // MyLog.d(TAG, "processPushMsgList msg=" + msg.getBody() + ",msgType" + msg.getMsgType());
             processPushMessage(msg, mMyRoomData);
-            MyLog.d(TAG, "processPushMsgList msg=" + msg.getBody() + ",msgType" + msg.getMsgType() + " over");
+            // MyLog.d(TAG, "processPushMsgList msg=" + msg.getBody() + ",msgType" + msg.getMsgType() + " over");
         }
     }
 
@@ -247,7 +247,7 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
         HashSet<IPushMsgProcessor> set = mIPushMsgProcessorMap.get(msg.getMsgType());
         if (set != null) {
             for (IPushMsgProcessor msgProcessor : set) {
-                MyLog.d(TAG, "recv msg,msgType" + msg.getMsgType());
+                // MyLog.d(TAG, "recv msg,msgType" + msg.getMsgType());
                 msgProcessor.process(msg, roomData);
             }
         } else {

@@ -24,6 +24,7 @@ import com.wali.live.watchsdk.component.presenter.FollowGuidePresenter;
 import com.wali.live.watchsdk.component.presenter.GameBarragePresenter;
 import com.wali.live.watchsdk.component.presenter.GameDownloadPresenter;
 import com.wali.live.watchsdk.component.presenter.GameInputPresenter;
+import com.wali.live.watchsdk.component.presenter.ImagePagerPresenter;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
@@ -31,6 +32,7 @@ import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.FollowGuideView;
 import com.wali.live.watchsdk.component.view.GameBarrageView;
 import com.wali.live.watchsdk.component.view.GameInputView;
+import com.wali.live.watchsdk.component.view.ImagePagerView;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
@@ -59,11 +61,13 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
     @Nullable
     protected View mTopInfoView;
     @Nullable
-    protected View mLiveCommentView;
+    protected LiveCommentView mLiveCommentView;
     @Nullable
     protected GiftContinueViewGroup mGiftContinueViewGroup;
     protected FollowGuideView mFollowGuideView;
     protected FollowGuidePresenter mFollowGuidePresenter;
+
+    protected ImagePagerView mPagerView;
 
     protected boolean mIsGameMode = false;
     protected boolean mIsLandscape = false;
@@ -196,7 +200,20 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             }
         }
 
-        mVerticalMoveSet.add($(R.id.close_btn));
+        if (mComponentController.mRoomInfoList != null && mComponentController.mRoomInfoList.size() > 1) {
+            {
+                mPagerView = new ImagePagerView(mActivity);
+                mPagerView.setVerticalList(mComponentController.mRoomInfoList, mComponentController.mRoomInfoPosition);
+
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                addViewAboveAnchor(mPagerView, layoutParams, $(R.id.blur_iv));
+
+                ImagePagerPresenter presenter = new ImagePagerPresenter(mComponentController);
+                addComponentView(mPagerView, presenter);
+            }
+        }
+
         addViewToSet(new int[]{
                 R.id.watch_top_info_view,
                 R.id.bottom_button_view,
@@ -204,8 +221,21 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 R.id.gift_animation_player_view,
                 R.id.gift_continue_vg,
                 R.id.gift_room_effect_view,
-                R.id.widget_view
-        }, mHorizontalMoveSet, mVerticalMoveSet);
+                R.id.widget_view,
+        }, mHorizontalMoveSet);
+
+        addViewToSet(new int[]{
+                R.id.watch_top_info_view,
+                R.id.bottom_button_view,
+                R.id.live_comment_view,
+                R.id.gift_animation_player_view,
+                R.id.gift_continue_vg,
+                R.id.gift_room_effect_view,
+                R.id.widget_view,
+                R.id.blur_iv,
+                R.id.rotate_btn,
+                R.id.close_btn,
+        }, mVerticalMoveSet);
 
         if (mIsGameMode) {
             addViewToSet(new int[]{
@@ -227,8 +257,40 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             TouchPresenter presenter = new TouchPresenter(mComponentController, view);
             addComponentView(presenter);
             presenter.setViewSet(mHorizontalMoveSet, mVerticalMoveSet, mIsGameMode);
+
+            // 增加上线滑动的判断
+            if (mComponentController.mRoomInfoList != null && mComponentController.mRoomInfoList.size() > 1) {
+                // 打开上下滑动的开关
+                presenter.setVerticalMoveEnabled(new View[]{$(R.id.last_dv), $(R.id.center_dv), $(R.id.next_dv)}, new View[]{$(R.id.video_view)});
+            }
         }
         mAction.registerAction(); // 最后注册该Action，任何事件mAction都最后收到
+    }
+
+    public void switchToNextRoom() {
+        if (mPagerView != null) {
+            mPagerView.switchNext(mComponentController.mRoomInfoPosition);
+        }
+    }
+
+    public void switchToLastRoom() {
+        if (mPagerView != null) {
+            mPagerView.switchLast(mComponentController.mRoomInfoPosition);
+        }
+    }
+
+    public void postSwitchRoom() {
+        if (mPagerView != null) {
+            MyLog.d(TAG, "postSwitchRoom");
+            mPagerView.postSwitch();
+        }
+    }
+
+    public void reset() {
+
+        if (mLiveCommentView != null) {
+            mLiveCommentView.reset();
+        }
     }
 
     public class Action extends BaseSdkView.Action {
@@ -237,6 +299,8 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             super.registerAction();
             mComponentController.registerAction(WatchComponentController.MSG_SHOW_FOLLOW_GUIDE, this);
             mComponentController.registerAction(WatchComponentController.MSG_FOLLOW_COUNT_DOWN, this);
+            mComponentController.registerAction(WatchComponentController.MSG_PAGE_DOWN, this);
+            mComponentController.registerAction(WatchComponentController.MSG_PAGE_UP, this);
         }
 
         @Override
@@ -436,7 +500,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                             mComponentController.mMyRoomData);
                     mFollowGuidePresenter.countDownOut(countTs);
                     break;
-                case WatchComponentController.MSG_SHOW_FOLLOW_GUIDE: {
+                case WatchComponentController.MSG_SHOW_FOLLOW_GUIDE:
                     if (mFollowGuidePresenter == null || mFollowGuideView != null) {
                         return false;
                     }
@@ -461,8 +525,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                             mFollowGuideView.onOrientation(mIsLandscape);
                         }
                     });
-                }
-                break;
+                    break;
                 default:
                     break;
             }

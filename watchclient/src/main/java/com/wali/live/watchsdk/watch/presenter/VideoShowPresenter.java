@@ -12,6 +12,7 @@ import com.wali.live.proto.LiveProto;
 import com.wali.live.watchsdk.watch.view.IWatchVideoView;
 
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -25,8 +26,20 @@ public class VideoShowPresenter extends RxLifeCyclePresenter {
     final private String TAG = "VideoShowPresenter";
     private IWatchVideoView mView;
 
+    private Subscription mRoomSubscription;
+    private Subscription mLiveSubscription;
+
     public VideoShowPresenter(IWatchVideoView view) {
         mView = view;
+    }
+
+    public void reset() {
+        if (mRoomSubscription != null && !mRoomSubscription.isUnsubscribed()) {
+            mRoomSubscription.unsubscribe();
+        }
+        if (mLiveSubscription != null && !mLiveSubscription.isUnsubscribed()) {
+            mLiveSubscription.unsubscribe();
+        }
     }
 
     /**
@@ -52,7 +65,7 @@ public class VideoShowPresenter extends RxLifeCyclePresenter {
 
     private void getVideoUrlInternal(final long uuid, final String roomId) {
         MyLog.w(TAG, "getVideoUrlInternal uuid=" + uuid);
-        Observable.just("")
+        mRoomSubscription = Observable.just("")
                 .map(new Func1<String, String>() {
                     @Override
                     public String call(String s) {
@@ -92,7 +105,7 @@ public class VideoShowPresenter extends RxLifeCyclePresenter {
 
     private void getLiveShowInternal(final long uuid) {
         MyLog.w(TAG, "getLiveShowInternal uuid=" + uuid);
-        Observable.just("")
+        mLiveSubscription = Observable.just("")
                 .map(new Func1<String, LiveShow>() {
                     @Override
                     public LiveShow call(String s) {

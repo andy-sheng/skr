@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class TouchDelegateView extends View {
     private static final String TAG = "TouchDelegateView";
+
     private List<View> mDispatchTouchDelegateList;
     private List<View> mOnTouchDelegateList;
 

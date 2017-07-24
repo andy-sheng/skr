@@ -140,6 +140,14 @@ public class RoomBaseDataModel implements Serializable {
         MyLog.d("RoomBaseDataModel", "name:" + name + ",new NO:" + NO++);
     }
 
+    /**
+     * @notice 用在上下滑屏切换房间，目前根据需要重置若干参数
+     */
+    public void reset() {
+        mRoomId = null;
+        mVideoUrl = null;
+    }
+
     public String getShareUrl() {
         return mShareUrl;
     }

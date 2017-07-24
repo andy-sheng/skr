@@ -28,6 +28,7 @@ import com.wali.live.watchsdk.channel.presenter.ChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelView;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
+import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
 import com.wali.live.watchsdk.login.LoginPresenter;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
@@ -36,6 +37,7 @@ import com.wali.live.watchsdk.watch.model.RoomInfo;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -58,6 +60,8 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
     protected IChannelPresenter mPresenter;
     protected long mChannelId = 201;
     protected LoginPresenter mLoginPresenter;
+
+    private ArrayList<RoomInfo> mRoomInfoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,6 +198,33 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
     @Override
     public void updateView(List<? extends BaseViewModel> models) {
         mRecyclerAdapter.setData(models);
+
+        if (mRoomInfoList == null) {
+            mRoomInfoList = new ArrayList<>();
+        }
+        mRoomInfoList.clear();
+        for (BaseViewModel model : models) {
+            if (model instanceof ChannelLiveViewModel) {
+                List<ChannelLiveViewModel.BaseItem> items = ((ChannelLiveViewModel) model).getItemDatas();
+                for (ChannelLiveViewModel.BaseItem item : items) {
+                    if (item instanceof ChannelLiveViewModel.LiveItem) {
+                        Uri uri = Uri.parse(item.getSchemeUri());
+
+                        long playerId = Long.parseLong(uri.getQueryParameter("playerid"));
+                        String liveId = uri.getQueryParameter("liveid");
+                        String videoUrl = uri.getQueryParameter("videourl");
+
+                        RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
+                                .setAvatar(item.getUser().getAvatar())
+                                .setCoverUrl(item.getImageUrl())
+                                .build();
+                        mRoomInfoList.add(roomInfo);
+                    }
+                }
+            }
+        }
+        MyLog.d(TAG, "size=" + mRoomInfoList.size());
+        WatchSdkActivity.openActivity(this, mRoomInfoList, 0);
     }
 
     @Override

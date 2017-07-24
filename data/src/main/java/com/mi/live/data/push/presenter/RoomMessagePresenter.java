@@ -79,8 +79,6 @@ public class RoomMessagePresenter implements Presenter {
         startWorkInternal();
     }
 
-    static int i = 0;
-
     private static List<BarrageMsg> loadFromPB(List<LiveMessageProto.Message> list) {
         List<BarrageMsg> resultList = new ArrayList<>();
         if (list != null) {

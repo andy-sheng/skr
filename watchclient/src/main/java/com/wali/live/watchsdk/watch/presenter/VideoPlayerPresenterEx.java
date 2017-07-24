@@ -334,7 +334,7 @@ public class VideoPlayerPresenterEx implements
 
     //停止播放
     public void stop() {
-        MyLog.w(TAG, "pause");
+        MyLog.w(TAG, "stop");
         mVideoPlayerPresenter.release();
         if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);

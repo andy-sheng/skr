@@ -209,9 +209,9 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
             MyLog.d(TAG, "setLiveCommentList, dataList.size:" + mDataList.size() + ",force:" + force);
             mLastSetCommentListTs = System.currentTimeMillis();
             if (force) {
-                mAdapter.setLiveCommentList(mDataList, afterRefresh);
+                mAdapter.setCommentList(mDataList);
             } else if (mOnBottom && this.getVisibility() == VISIBLE && !mDragging) {
-                mAdapter.setLiveCommentList(mDataList, afterRefresh);
+                mAdapter.setCommentList(mDataList);
             } else {
 
             }
@@ -227,7 +227,6 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
             }
         }
     }
-
 
     @Override
     public void onActivityDestroy() {
