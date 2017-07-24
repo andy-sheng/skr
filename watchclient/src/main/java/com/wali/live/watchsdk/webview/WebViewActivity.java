@@ -35,6 +35,7 @@ import com.base.utils.version.VersionManager;
 import com.base.view.BackTitleBar;
 import com.base.view.BottomButton;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.account.event.AccountEventController;
 import com.wali.live.event.EventClass;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
@@ -409,6 +410,29 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventH5Unlogin(EventClass.H5UnloginEvent event) {
         AccountAuthManager.triggerActionNeedAccount(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventLogin(final AccountEventController.LoginEvent event) {
+        MyLog.w(TAG, "onEventMainThread event = " + event + "WebViewActivity:" + this.toString());
+        if (event == null) {
+            MyLog.w(TAG, "LoginEvent event is null");
+            return;
+        }
+        switch (event.getEventType()) {
+            case AccountEventController.LoginEvent.EVENT_TYPE_LOGIN_SUCCESS:
+                MyLog.w(TAG, " onEventLogin EVENT_TYPE_LOGIN_SUCCESS");
+                //登录成功, 重新setCookies
+                setCookies();
+                break;
+            case AccountEventController.LoginEvent.EVENT_TYPE_LOGIN_CANCEL:
+            case AccountEventController.LoginEvent.EVENT_TYPE_LOGIN_FAILED:
+            case AccountEventController.LoginEvent.EVENT_TYPE_LOGIN_EXCEPTION:
+                MyLog.w(TAG, " onEventLogin　login failed or cancel");
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
