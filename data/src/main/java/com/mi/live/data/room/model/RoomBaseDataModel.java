@@ -146,6 +146,8 @@ public class RoomBaseDataModel implements Serializable {
     public void reset() {
         mRoomId = null;
         mVideoUrl = null;
+
+        mOwner.setLiveTicketNum(0);
     }
 
     public String getShareUrl() {

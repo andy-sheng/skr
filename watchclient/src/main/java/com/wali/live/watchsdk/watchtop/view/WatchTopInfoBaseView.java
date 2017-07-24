@@ -384,7 +384,6 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
         mMyRoomBaseDataModel.setInitTicket(-1);
         mMyRoomBaseDataModel.setTicketFirstIn(true);
         if (mTicketAnimatorSet != null) {
-
             mTicketAnimatorSet.removeAllListeners();
             mTicketAnimatorSet.end();
             mTicketAnimatorSet = null;

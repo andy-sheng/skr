@@ -1097,7 +1097,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 }
                 // 发送离开房间给服务器
                 leaveLiveToServer();
-
+                // 重置对应的view
+                mWatchTopInfoSingleView.resetData();
                 mSdkView.reset();
 
                 // 切换房间后，进入当前房间
