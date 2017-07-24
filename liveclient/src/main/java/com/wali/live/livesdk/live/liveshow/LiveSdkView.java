@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.component.BaseSdkView;
@@ -34,6 +35,7 @@ import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.component.view.WidgetView;
+import com.wali.live.watchsdk.envelope.SendEnvelopeFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -234,6 +236,7 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
         public void registerAction() {
             super.registerAction();
             mComponentController.registerAction(ComponentController.MSG_SHOW_ATMOSPHERE_VIEW, this);
+            mComponentController.registerAction(ComponentController.MSG_SHOW_SEND_ENVELOPE, this);
         }
 
         @Override
@@ -267,6 +270,10 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                     if (mComponentController.onEvent(ComponentController.MSG_HIDE_INPUT_VIEW)) {
                         return true;
                     }
+                    break;
+                case LiveComponentController.MSG_SHOW_SEND_ENVELOPE:
+                    SendEnvelopeFragment.openFragment((BaseActivity) mActivity,
+                            mComponentController.mMyRoomData);
                     break;
                 default:
                     break;

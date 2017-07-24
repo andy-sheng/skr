@@ -11,6 +11,7 @@ import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.manager.model.LiveRoomManagerModel;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.wali.live.livesdk.live.api.TitleListRequest;
+import com.wali.live.livesdk.live.component.utils.PlusParamUtils;
 import com.wali.live.livesdk.live.fragment.RoomAdminFragment;
 import com.wali.live.livesdk.live.presenter.cache.TitleCache;
 import com.wali.live.livesdk.live.presenter.view.IRoomPrepareView;
@@ -202,6 +203,7 @@ public class RoomPreparePresenter extends BaseRxPresenter<IRoomPrepareView> {
                                     }
                                 }
                             }
+                            PlusParamUtils.processIconConfig(getRoomAttachmentRsp);
                         }
                     }
                 }, new Action1<Throwable>() {

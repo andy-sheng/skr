@@ -194,4 +194,5 @@
     <string name="sel_count_hint">Can select up to %d people</string>
     <string name="remove_manager_fail">Couldn\'t cancle</string>
     <string name="cancel_banspeaker">Allow</string>
+    <string name="red_packet">Red envelope</string>
 </resources>

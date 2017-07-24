@@ -34,6 +34,11 @@ public class PlusParamUtils {
                 GlobalData.app(), KEY_PLUS_HIDE_ATMOSPHERE, false);
     }
 
+    public static boolean isHideEnvelope() {
+        return PreferenceUtils.getSettingBoolean(
+                GlobalData.app(), KEY_PLUS_HIDE_RED_PACKET, false);
+    }
+
     public static boolean isHideExpression(boolean defaultValue) {
         return PreferenceUtils.getSettingBoolean(
                 GlobalData.app(), KEY_PLUS_HIDE_EXPRESSION, defaultValue);

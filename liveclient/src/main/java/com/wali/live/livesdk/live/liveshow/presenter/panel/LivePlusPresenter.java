@@ -8,8 +8,8 @@ import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.utils.PlusParamUtils;
 import com.wali.live.livesdk.live.livegame.LiveComponentController;
-import com.wali.live.watchsdk.component.presenter.adapter.PlusItemAdapter;
 import com.wali.live.livesdk.live.liveshow.view.panel.LivePlusPanel;
+import com.wali.live.watchsdk.component.presenter.adapter.PlusItemAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +48,12 @@ public class LivePlusPresenter extends ComponentPresenter<LivePlusPanel.IView>
     }
 
     @Override
+    public void showEnvelopeView() {
+        mComponentController.onEvent(LiveComponentController.MSG_HIDE_BOTTOM_PANEL);
+        mComponentController.onEvent(LiveComponentController.MSG_SHOW_SEND_ENVELOPE);
+    }
+
+    @Override
     public void syncPlusBtnConfig() {
         Observable.just(0)
                 .map(new Func1<Integer, List<PlusItemAdapter.PlusItem>>() {
@@ -60,6 +66,10 @@ public class LivePlusPresenter extends ComponentPresenter<LivePlusPanel.IView>
                         }
                         plusItems.add(new PlusItemAdapter.PlusItem(R.id.comment_btn,
                                 R.string.live_plus_comment, R.drawable.live_plus_comment));
+                        if (!PlusParamUtils.isHideEnvelope()) {
+                            plusItems.add(new PlusItemAdapter.PlusItem(R.id.envelope_btn,
+                                    R.string.red_packet, R.drawable.live_plus_start_hongbao));
+                        }
                         return plusItems;
                     }
                 })
