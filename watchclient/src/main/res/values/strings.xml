@@ -120,6 +120,16 @@
     <string name="install_mi_video">Install Mi video first</string>
     <string name="all_people">All</string>
     <string name="game_guide_close_tip">close after %d s</string>
-    <string name="game_guide_normal_tip">Follow the hosts to view their latest updates</string>
+    <string name="follow_normal_tip">Follow the hosts to view their latest updates</string>
     <string name="live_location_unknown">Unknown planet</string>
+    <string name="live_end_time_words">Thank you for watching my live stream!</string>
+    <string name="mi_live_accounts">Mi Live ID</string>
+    <string name="live_end_replay_hint">Thanks for watching! Come back soon!</string>
+    <string name="live_end_time_hours">%sh</string>
+    <string name="live_end_time_minute">%sm</string>
+    <string name="live_end_time_second">%ss</string>
+    <string name="endlive_user_ticket">%1$s coins you gave me are most welcome!</string>
+    <string name="endlive_share_user_hint">Thanks for your support!</string>
+    <string name="live_end_hint">This live stream has ended.</string>
+    <string name="end_live_share">Share with friends</string>
 </resources>

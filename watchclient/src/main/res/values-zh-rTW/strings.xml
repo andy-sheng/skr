@@ -114,8 +114,18 @@
     <string name="install_mi_video">請安裝小米視頻</string>
     <string name="all_people">全部</string>
     <string name="game_guide_close_tip">剩餘%ds關閉頁面</string>
-    <string name="game_guide_normal_tip">關注主播，不錯過任何一次直播</string>
+    <string name="follow_normal_tip">關注主播，不錯過任何一次直播</string>
     <string name="anchor_rank">主播勢力日排行</string>
     <string name="michannel_default_title">其他遊戲</string>
     <string name="michannel_type_live">直播</string>
+    <string name="live_end_time_words">感謝寶寶陪伴</string>
+    <string name="mi_live_accounts">小米直播帳號</string>
+    <string name="end_live_share">把精彩內容分享給小夥伴</string>
+    <string name="live_end_hint">好可惜來晚了哦... 記得下次別遲到了^_^</string>
+    <string name="live_end_replay_hint">感謝寶寶觀看重播，記得下次要及時收看直播哦～</string>
+    <string name="live_end_time_hours">%s小時</string>
+    <string name="live_end_time_minute">%s分</string>
+    <string name="live_end_time_second">%s秒</string>
+    <string name="endlive_share_user_hint">謝謝你的支援與守護，有你在，很幸福！</string>
+    <string name="endlive_user_ticket">並送我%1$s星票</string>
 </resources>

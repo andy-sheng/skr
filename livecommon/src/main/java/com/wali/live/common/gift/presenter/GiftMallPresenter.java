@@ -92,6 +92,8 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
     private ExecutorService singleThreadForBuyGift = Executors.newSingleThreadExecutor(); // 送礼的线程池
 
     private Subscription mSountDownSubscription; // 倒计时的订阅
+    //房间花费星票数，结束页显示
+    private int mSpendTicket = 0;
 
     public GiftMallPresenter(
             Activity activity,
@@ -102,6 +104,10 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         mActivity = activity;
         mContext = baseContext;
         mComponentController = componentController;
+    }
+
+    public int getSpendTicket() {
+        return mSpendTicket;
     }
 
     public void setViewStub(ViewStub viewStub) {
@@ -425,6 +431,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                         //TODO 主播的票数也从这获得
                         MyLog.v(TAG, "sendGift onNext " + Thread.currentThread().getName());
                         MyLog.w(TAG, "buyGiftRsp:" + buyGiftRsp);
+                        mSpendTicket += buyGiftWithCard.gift.getPrice();
                         //扣钱
                         int deduct = buyGiftRsp.getUsableGemCnt();
                         int virtualGemCnt = buyGiftRsp.getUsableVirtualGemCnt();
@@ -945,8 +952,15 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         }
     }
 
+    //支持上下滑動的時候重置接口需要調用
+    public void resetTicket() {
+        mSpendTicket = 0;
+    }
+
     public static class GiftWithCard {
         public Gift gift;
+
+
         public GiftCard card;
         public static HashSet<Integer> hashSet = new HashSet<>();
 

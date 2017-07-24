@@ -10,7 +10,6 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,8 +61,6 @@ import com.wali.live.event.UserActionEvent;
 import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.receiver.PhoneStateReceiver;
 import com.wali.live.recharge.view.RechargeFragment;
-import com.wali.live.statistics.StatisticsKey;
-import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AppNetworkUtils;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
@@ -82,7 +79,6 @@ import com.wali.live.watchsdk.watch.event.LiveEndEvent;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.wali.live.watchsdk.watch.presenter.IWatchView;
 import com.wali.live.watchsdk.watch.presenter.LiveTaskPresenter;
-import com.wali.live.watchsdk.watch.presenter.SdkEndLivePresenter;
 import com.wali.live.watchsdk.watch.presenter.UserInfoPresenter;
 import com.wali.live.watchsdk.watch.presenter.VideoPlayerPresenterEx;
 import com.wali.live.watchsdk.watch.presenter.VideoShowPresenter;
@@ -478,7 +474,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         MyLog.d(TAG, "liveEndEvent");
 
         stopPlayer();
-        showEndLiveFragment(true);
+        showEndLiveFragment(true, UserEndLiveFragment.ENTER_TYPE_LIVE_END);
     }
 
     protected UserEndLiveFragment userEndLiveFragment;
@@ -488,28 +484,21 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
      *
      * @param failure
      */
-    protected void showEndLiveFragment(boolean failure) {
+    protected void showEndLiveFragment(boolean failure, String type) {
         //清空room信息
         RoomInfoGlobalCache.getsInstance().leaveCurrentRoom(mMyRoomData.getRoomId());
-
-//      EventBus.getDefault().post(new GiftEventClass(GiftEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST));
         //显示结束页时主动隐藏一次键盘 防止聊天时弹出结束页 键盘不消失
         MyLog.w(TAG, "showEndLiveFragment viewerCnt = " + mMyRoomData.getViewerCnt());
         MyLog.w(TAG, "FollowOrUnfollowEvent showEndLiveFragment isFocused" + mMyRoomData.getUser().isFocused());
-
         KeyboardUtils.hideKeyboardImmediately(this);
         if (userEndLiveFragment == null) {
-            this.userEndLiveFragment = new UserEndLiveFragment();
-            Bundle bundle = UserEndLiveFragment.getBundle(mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getAvatarTs(),
-                    mMyRoomData.getUser(), mMyRoomData.getViewerCnt(), mMyRoomData.getLiveType());
-            this.userEndLiveFragment.setPresenter(new SdkEndLivePresenter(userEndLiveFragment, bundle));
-
-            FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_act_container, this.userEndLiveFragment);
-            transaction.commitAllowingStateLoss();
-//          userEndLiveFragment = UserEndLiveFragment.openFragment(this, R.id.main_act_container,
-//                    mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getAvatarTs(),
-//                    mMyRoomData.getUser(), mMyRoomData.getViewerCnt(), mMyRoomData.getLiveType());
+            this.userEndLiveFragment = UserEndLiveFragment.openFragment(this,
+                    mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getAvatarTs(),
+                    mMyRoomData.getUser(), mMyRoomData.getViewerCnt(), mMyRoomData.getLiveType(),
+                    mGiftMallPresenter.getSpendTicket(), System.currentTimeMillis() - mMyRoomData.getEnterRoomTime(), type,
+                    mMyRoomData.getNickName(), mMyRoomData.getEnableShare(), mMyRoomData.getShareUrl(),
+                    mMyRoomData.getLiveTitle(), mMyRoomData.getCoverUrl(),
+                    TextUtils.isEmpty(mMyRoomData.getCity()) ? "" : mMyRoomData.getCity());
         }
     }
 
@@ -520,10 +509,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         if (uid <= 0) {
             return;
         }
-//        TODO 打开注释
-//        clearTop();
-        //打点
-        StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, StatisticsKey.KEY_USERINFO_CARD_OPEN, 1);
         FloatPersonInfoFragment.openFragment(this, uid, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this, mMyRoomData.getEnterRoomTime());
     }
 
@@ -532,9 +517,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         switch (event.eventType) {
             case GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST: {
                 mGiftMallPresenter.hideGiftMallView();
-//                if (mGameModePresenter == null || !mLandscape) {
-//                    mLiveCommentView.setVisibility(View.VISIBLE);
-//                }
             }
             break;
             case GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_SHOW_MALL_LIST: {
@@ -628,7 +610,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 if (TextUtils.isEmpty(scheme)) {
                     break;
                 }
-
                 if (scheme.startsWith(SchemeConstants.SCHEME_WALILIVE)) {
                     Uri uri = Uri.parse(scheme);
                     if (uri.getScheme().equals(SchemeConstants.SCHEME_WALILIVE)) {
@@ -783,7 +764,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 .subscribe(new Observer<GiftInfoForEnterRoom>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
@@ -1035,7 +1015,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
     @Override
     public void notifyLiveEnd() {
-        showEndLiveFragment(true);
+        showEndLiveFragment(true, UserEndLiveFragment.ENTER_TYPE_LATE);
     }
 
     public static void openActivity(@NonNull Activity activity, RoomInfo roomInfo) {
