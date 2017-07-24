@@ -35,15 +35,18 @@ import com.base.utils.version.VersionManager;
 import com.base.view.BackTitleBar;
 import com.base.view.BottomButton;
 import com.mi.live.data.account.UserAccountManager;
+import com.wali.live.event.EventClass;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 import com.wali.live.watchsdk.scheme.specific.SpecificConstants;
 import com.wali.live.watchsdk.watch.event.WatchOrReplayActivityCreated;
 
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by zhangzhiyuan on 2016/2/23.
@@ -401,6 +404,11 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
         if (event != null) {
             finish();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventH5Unlogin(EventClass.H5UnloginEvent event) {
+        AccountAuthManager.triggerActionNeedAccount(this);
     }
 
     @Override

@@ -283,4 +283,11 @@ public abstract class EventClass {
 
     }
 
+    /**
+     * h5页面上, 用户没有登录的事件
+     */
+    public static class H5UnloginEvent {
+
+    }
+
 }
