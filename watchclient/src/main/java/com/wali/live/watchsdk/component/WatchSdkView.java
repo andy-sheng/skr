@@ -207,7 +207,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
 
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                addViewAboveAnchor(mPagerView, layoutParams, $(R.id.blur_iv));
+                addViewAboveAnchor(mPagerView, layoutParams, $(R.id.mask_iv));
 
                 ImagePagerPresenter presenter = new ImagePagerPresenter(mComponentController);
                 addComponentView(mPagerView, presenter);
@@ -232,7 +232,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 R.id.gift_continue_vg,
                 R.id.gift_room_effect_view,
                 R.id.widget_view,
-                R.id.blur_iv,
+                R.id.mask_iv,
                 R.id.rotate_btn,
                 R.id.close_btn,
         }, mVerticalMoveSet);

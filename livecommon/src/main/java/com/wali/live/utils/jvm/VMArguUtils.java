@@ -1,4 +1,4 @@
-package com.wali.live.utils.vm;
+package com.wali.live.utils.jvm;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;

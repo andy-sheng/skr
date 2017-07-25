@@ -108,19 +108,21 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
         }
     }
 
-//    @Subscribe(threadMode = ThreadMode.POSTING)
-//    public void onEvent(EventClass.SwitchAnchor event) {
-//        mQueue.clear();
-//        mRightQueue.clear();
-//        for (GiftContinueView v : mFeedGiftContinueViews) {
-//            v.setVisibility(View.GONE);
-//            v.switchAnchor();
-//        }
-//        for (GiftContinueView v : mFeedGiftContinueRightViews) {
-//            v.setVisibility(View.GONE);
-//            v.switchAnchor();
-//        }
-//    }
+    /**
+     * 目前主要用来切换房间时，重置内部状态
+     */
+    public void reset() {
+        mQueue.clear();
+        mRightQueue.clear();
+        for (GiftContinueView v : mFeedGiftContinueViews) {
+            v.setVisibility(View.GONE);
+            v.switchAnchor();
+        }
+        for (GiftContinueView v : mFeedGiftContinueRightViews) {
+            v.setVisibility(View.GONE);
+            v.switchAnchor();
+        }
+    }
 
     private ExecutorService singleThreadForBuyGift = Executors.newSingleThreadExecutor();
 

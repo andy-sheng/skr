@@ -179,7 +179,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private ForbidManagePresenter mForbidManagePresenter;
     private RoomManagerPresenter mRoomManagerPresenter;
 
-    protected BaseImageView mBlurIv; // 高斯蒙层
+    protected BaseImageView mMaskIv; // 高斯蒙层
     protected ImageView mCloseBtn; // 关闭按钮
 
     protected LiveTopInfoSingleView mTopInfoSingleView;
@@ -240,8 +240,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         openOrientation();
 
         // 封面模糊图
-        mBlurIv = $(R.id.blur_iv);
-        AvatarUtils.loadAvatarByUidTs(mBlurIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
+        mMaskIv = $(R.id.mask_iv);
+        AvatarUtils.loadAvatarByUidTs(mMaskIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
                 AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
         check4GNet();
     }
@@ -307,7 +307,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (mMyRoomData.getUid() == 0 && !MiLinkClientAdapter.getsInstance().isTouristMode()) {
             mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
             mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
-            AvatarUtils.loadAvatarByUidTs(mBlurIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
+            AvatarUtils.loadAvatarByUidTs(mMaskIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
                     AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
         }
     }
@@ -1145,8 +1145,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(final LiveEventClass.LiveCoverEvent event) {
-        if (event != null && mBlurIv.getVisibility() == View.VISIBLE) {
-            FrescoWorker.loadImage(mBlurIv,
+        if (event != null && mMaskIv.getVisibility() == View.VISIBLE) {
+            FrescoWorker.loadImage(mMaskIv,
                     ImageFactory.newHttpImage(event.url)
                             .setPostprocessor(new BlurPostprocessor())
                             .build());

@@ -139,7 +139,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     protected WatchSdkView mSdkView;
 
     // 高斯蒙层
-    private BaseImageView mBlurIv;
+    private BaseImageView mMaskIv;
     protected GiftContinueViewGroup mGiftContinueViewGroup;
     // 礼物特效动画
     protected GiftAnimationView mGiftAnimationView;
@@ -292,13 +292,12 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mWatchTopInfoSingleView.initViewUseData();
 
         // 封面模糊图
-        mBlurIv = $(R.id.blur_iv);
-        if (!TextUtils.isEmpty(mRoomInfo.getCoverUrl())) {
-            AvatarUtils.loadAvatarByUrl(mBlurIv, mRoomInfo.getCoverUrl(), false, true, 0);
-        } else {
-            AvatarUtils.loadAvatarByUidTs(mBlurIv, mRoomInfo.getPlayerId(), mRoomInfo.getAvatar(),
-                    AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
+        mMaskIv = $(R.id.mask_iv);
+        String url = mRoomInfo.getCoverUrl();
+        if (TextUtils.isEmpty(url)) {
+            url = AvatarUtils.getAvatarUrlByUidTs(mRoomInfo.getPlayerId(), AvatarUtils.SIZE_TYPE_AVATAR_LARGE, mRoomInfo.getAvatar());
         }
+        AvatarUtils.loadAvatarByUrl(mMaskIv, url, false, false, R.drawable.rect_loading_bg_24292d);
 
         // 初始化弹幕区
 //        mLiveCommentView = $(R.id.comment_rv);
@@ -594,8 +593,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         switch (event.mType) {
             // onPrepared触发
             case EventClass.FeedsVideoEvent.TYPE_PLAYING:
-                if (mBlurIv.getVisibility() == View.VISIBLE) {
-                    mBlurIv.setVisibility(GONE);
+                if (mMaskIv.getVisibility() == View.VISIBLE) {
+                    mMaskIv.setVisibility(GONE);
                 }
                 if (mSdkView != null) {
                     mSdkView.postSwitchRoom();
@@ -1084,10 +1083,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
         private void switchRoom() {
             if (!isFinishing()) {
-                // 离开当前房间
                 MyLog.w(TAG, "switch anchor: leave room user=" + mMyRoomData.getUser());
                 // 清除房间消息
                 mRoomChatMsgManager.clear();
+
                 // 重置Presenter
                 mVideoPlayerPresenterEx.reset();
                 mUserInfoPresenter.reset();
@@ -1095,15 +1094,22 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 if (mVideoShowPresenter != null) {
                     mVideoShowPresenter.reset();
                 }
+                mGiftMallPresenter.reset();
+
                 // 发送离开房间给服务器
                 leaveLiveToServer();
+
                 // 重置对应的view
                 mWatchTopInfoSingleView.resetData();
+                mFlyBarrageViewGroup.reset();
+                mGiftAnimationView.reset();
+                mGiftContinueViewGroup.reset();
+                mGiftRoomEffectView.reset();
                 mSdkView.reset();
 
                 // 切换房间后，进入当前房间
                 mComponentController.switchRoom();
-                // 重新获取当前房间信息
+                // 重新获取当前房间信息，并重新进入房间
                 trySendDataWithServerOnce();
             }
         }

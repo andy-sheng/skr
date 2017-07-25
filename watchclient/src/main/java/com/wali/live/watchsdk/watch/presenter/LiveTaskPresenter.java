@@ -61,6 +61,9 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
         mMyRoomData = myRoomData;
     }
 
+    /**
+     * 目前主要用来切换房间时，重置内部状态
+     */
     public void reset() {
         mHasEnter = false;
         if (mEnterRoomSubscription != null && !mEnterRoomSubscription.isUnsubscribed()) {

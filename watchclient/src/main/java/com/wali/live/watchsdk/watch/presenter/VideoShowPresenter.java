@@ -33,6 +33,9 @@ public class VideoShowPresenter extends RxLifeCyclePresenter {
         mView = view;
     }
 
+    /**
+     * 目前主要用来切换房间时，重置内部状态
+     */
     public void reset() {
         if (mRoomSubscription != null && !mRoomSubscription.isUnsubscribed()) {
             mRoomSubscription.unsubscribe();

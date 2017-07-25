@@ -799,6 +799,18 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
     }
 
     /**
+     * 目前主要用来切换房间时，重置内部状态
+     */
+    public void reset() {
+        MyLog.w(TAG, "reset");
+        mGiftInfoForThisRoom = null;
+        mHasLoadData = false;
+        if (mGiftMallView != null) {
+            mGiftMallView.processSwitchAnchorEvent();
+        }
+    }
+
+    /**
      * giftcard的push
      *
      * @param event

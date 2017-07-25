@@ -16,7 +16,7 @@
         android:layout_height="match_parent"/>
 
     <com.base.image.fresco.BaseImageView
-        android:id="@+id/blur_iv"
+        android:id="@+id/mask_iv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

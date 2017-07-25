@@ -289,6 +289,23 @@ public class FlyBarrageViewGroup extends RelativeLayout implements IBindActivity
         return false;
     }
 
+    /**
+     * 目前主要用来切换房间时，重置内部状态
+     */
+    public void reset() {
+        mFlyBarrageControl.reset();
+        for (ObjectAnimator oa : mAnimatorSet) {
+            oa.cancel();
+        }
+        for (int i = 0; i < ROAD_NUM; i++) {
+            mRoadEnterNumber[i] = 0;
+            mRoadRunNumber[i] = 0;
+        }
+        mAnimatorSet.clear();
+        mFlyBarrageViewCache.clear();
+        removeAllViews();
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(GiftEventClass.GiftAttrMessage.FlyBarrage event) {
         FlyBarrageInfo model = (FlyBarrageInfo) event.obj1;

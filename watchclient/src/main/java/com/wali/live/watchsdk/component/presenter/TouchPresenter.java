@@ -25,13 +25,14 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     public static final int MOVE_UPDATE_THRESHOLD = 5;
     public static final int MOVE_THRESHOLD = 20;
     public static final int FLING_THRESHOLD_NORMAL = 300;
-    public static final int FLING_THRESHOLD_LARGE = 450;
+    public static final int FLING_THRESHOLD_LARGE = (GlobalData.screenHeight >> 1);
 
     @NonNull
     private List<View> mHorizontalSet;
 
     @NonNull
     private List<View> mVerticalSet;
+
     private View[] mHalfArray = new View[0];
     private View[] mPagerArray = new View[0];
 
