@@ -155,7 +155,7 @@ public class FollowGuidePresenter extends ComponentPresenter<FollowGuideView.IVi
                     public void call() {
                         //onComplete
                         if (mView != null) {
-                            mView.hideSelf();
+                            mView.hideSelf(true);
                         }
                     }
                 });
@@ -199,6 +199,13 @@ public class FollowGuidePresenter extends ComponentPresenter<FollowGuideView.IVi
                         mComponentController.onEvent(WatchComponentController.MSG_SHOW_FOLLOW_GUIDE);
                     }
                 });
+    }
+
+
+    public void reset() {
+        if (mView != null) {
+            mView.hideSelf(false);
+        }
     }
 
     @Nullable

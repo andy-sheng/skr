@@ -309,7 +309,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         protected String mVideoUrl;
         protected String mCoverUrl;
         protected String mLocation;
-        protected int distance;
+        protected int mDistance;
 
         protected boolean mIsEnterRoom;
         protected String mCountString;
@@ -410,7 +410,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         }
 
         public int getDistance() {
-            return distance;
+            return mDistance;
         }
     }
 
@@ -441,7 +441,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             } else {
                 mIsEnterRoom = true;
             }
-            distance = protoItem.getDistance();
+            mDistance = protoItem.getDistance();
             mCountString = parseCountString(true, mViewerCnt);
         }
 

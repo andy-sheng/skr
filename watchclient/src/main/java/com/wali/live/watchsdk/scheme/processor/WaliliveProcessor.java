@@ -8,6 +8,7 @@ import android.text.TextUtils;
 
 import com.base.activity.RxActivity;
 import com.base.log.MyLog;
+import com.mi.live.data.api.LiveManager;
 import com.wali.live.event.EventClass;
 import com.wali.live.watchsdk.channel.ChannelSdkActivity;
 import com.wali.live.watchsdk.channel.sublist.activity.SubChannelActivity;
@@ -119,8 +120,8 @@ public class WaliliveProcessor {
         String liveId = uri.getQueryParameter(SchemeConstants.PARAM_LIVE_ID);
         long playerId = SchemeUtils.getLong(uri, SchemeConstants.PARAM_PLAYER_ID, 0);
         String videoUrl = uri.getQueryParameter(SchemeConstants.PARAM_VIDEO_URL);
-        int liveType = SchemeUtils.getInt(uri, SchemeConstants.PARAM_TYPE, 0);
-
+        int type = SchemeUtils.getInt(uri, SchemeConstants.PARAM_TYPE, 0);
+        int liveType = LiveManager.mapLiveTypeFromListToRoom(type);
         RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
                 .setLiveType(liveType)
                 .build();

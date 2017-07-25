@@ -123,7 +123,6 @@ public class FollowGuideView extends RelativeLayout implements IComponentView<Fo
             mShowAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {
-                    super.onAnimationStart(animation);
                     setVisibility(VISIBLE);
                     mPresenter.countDownIn(mCountDownTime);
                 }
@@ -132,22 +131,25 @@ public class FollowGuideView extends RelativeLayout implements IComponentView<Fo
         mShowAnimator.start();
     }
 
-    private void hideSelf() {
+    private void hideSelf(boolean useAnimation) {
         if (mShowAnimator != null && mShowAnimator.isRunning()) {
             mShowAnimator.cancel();
         }
-        if (mHideAnimator == null) {
-            mHideAnimator = ObjectAnimator.ofFloat(this, "alpha", 1, 0);
-            mHideAnimator.setDuration(2000);
-            mHideAnimator.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    setVisibility(GONE);
-                }
-            });
+        if (useAnimation) {
+            if (mHideAnimator == null) {
+                mHideAnimator = ObjectAnimator.ofFloat(this, "alpha", 1, 0);
+                mHideAnimator.setDuration(2000);
+                mHideAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        setVisibility(GONE);
+                    }
+                });
+            }
+            mHideAnimator.start();
+        } else {
+            setVisibility(GONE);
         }
-        mHideAnimator.start();
     }
 
     @Override
@@ -167,7 +169,7 @@ public class FollowGuideView extends RelativeLayout implements IComponentView<Fo
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.close_btn) {
-            hideSelf();
+            hideSelf(true);
         } else if (i == R.id.follow_tv) {
             if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.follow(mMyRoomData.getUid(), mMyRoomData.getRoomId());
@@ -187,7 +189,7 @@ public class FollowGuideView extends RelativeLayout implements IComponentView<Fo
             @Override
             public void onFollowSuc() {
                 mFollowTv.setText(R.string.already_followed);
-                FollowGuideView.this.hideSelf();
+                FollowGuideView.this.hideSelf(true);
             }
 
             @Override
@@ -197,8 +199,8 @@ public class FollowGuideView extends RelativeLayout implements IComponentView<Fo
             }
 
             @Override
-            public void hideSelf() {
-                FollowGuideView.this.hideSelf();
+            public void hideSelf(boolean useAnimation) {
+                FollowGuideView.this.hideSelf(useAnimation);
             }
 
             @Override
@@ -235,7 +237,7 @@ public class FollowGuideView extends RelativeLayout implements IComponentView<Fo
         /**
          * view自身隐藏行为
          */
-        void hideSelf();
+        void hideSelf(boolean useAnimation);
 
         /**
          * 旋转屏处理

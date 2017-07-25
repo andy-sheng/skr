@@ -3,6 +3,7 @@ package com.mi.live.data.api;
 import com.base.log.MyLog;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.data.LiveShow;
 import com.mi.live.data.data.UserListData;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
@@ -349,5 +350,55 @@ public class LiveManager {
             }
         }
         return null;
+    }
+
+    /**
+     * 把列表服务里的类型转换为房间服务的类型<br/>
+     * 建议不要传入{@link LiveShow#LIVETYPE_BACKPLAY}和{@link LiveShow#LIVETYPE_PK}
+     *
+     * @param listLiveType 列表服务里的type，在{@link LiveShow}里定义
+     */
+    public static int mapLiveTypeFromListToRoom(int listLiveType) {
+        switch (listLiveType) {
+            case LiveShow.LIVETYPE_PUBLIC:
+                return LiveManager.TYPE_LIVE_PUBLIC;
+            case LiveShow.LIVETYPE_PRIVATE:
+                return LiveManager.TYPE_LIVE_PRIVATE;
+            case LiveShow.LIVETYPE_TOKEN:
+                return LiveManager.TYPE_LIVE_TOKEN;
+            case LiveShow.LIVETYPE_TICKET:
+                return LiveManager.TYPE_LIVE_TICKET;
+            case LiveShow.LIVETYPE_VR:
+                return LiveManager.TYPE_LIVE_VR;
+            case LiveShow.LIVETYPE_GAME:
+                return LiveManager.TYPE_LIVE_GAME;
+            default:
+                return LiveManager.TYPE_LIVE_PUBLIC;
+        }
+    }
+
+    /**
+     * 把房间服务的直播类型转换为列表服务的直播类型
+     *
+     * @param roomLiveType {@link LiveManager}中的常量
+     * @return {@link LiveShow}中的常量
+     */
+    public static int mapLiveTypeFromRoomToList(int roomLiveType) {
+        switch (roomLiveType) {
+            case LiveManager.TYPE_LIVE_PUBLIC:
+                return LiveShow.LIVETYPE_PUBLIC;
+            case LiveManager.TYPE_LIVE_PRIVATE:
+                return LiveShow.LIVETYPE_PRIVATE;
+            case LiveManager.TYPE_LIVE_TOKEN:
+                return LiveShow.LIVETYPE_TOKEN;
+            case LiveManager.TYPE_LIVE_TICKET:
+                return LiveShow.LIVETYPE_TICKET;
+            case LiveManager.TYPE_LIVE_VR:
+                return LiveShow.LIVETYPE_VR;
+            case LiveManager.TYPE_LIVE_GAME:
+                return LiveShow.LIVETYPE_GAME;
+            default:
+                return LiveShow.LIVETYPE_PUBLIC;
+        }
     }
 }

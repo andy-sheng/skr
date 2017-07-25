@@ -222,9 +222,9 @@ public class TwoCardHolder extends RepeatHolder {
     protected void bindDisplayText(BaseItem item, final int i) {
         if (item instanceof BaseLiveItem) {
 //            if (((BaseLiveItem) item).getDistance() > 0) {
-//                double distance = ((BaseLiveItem) item).getDistance() / 1000.0;
+//                double mDistance = ((BaseLiveItem) item).getDistance() / 1000.0;
 //                DecimalFormat df = new DecimalFormat("0.#");
-//                String s = df.format(distance);
+//                String s = df.format(mDistance);
 //                if (Float.valueOf(s) < 0.1) {
 //                    s = "< 0.1";
 //                } else if (Float.valueOf(s) > 100) {

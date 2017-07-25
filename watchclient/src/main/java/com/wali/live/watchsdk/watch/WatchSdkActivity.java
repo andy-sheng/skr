@@ -597,7 +597,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                     mMaskIv.setVisibility(GONE);
                 }
                 if (mSdkView != null) {
-                    mSdkView.postSwitchRoom();
+                    mSdkView.postPrepare();
                 }
                 break;
         }

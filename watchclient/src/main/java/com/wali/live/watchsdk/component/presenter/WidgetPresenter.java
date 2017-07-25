@@ -101,7 +101,6 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
         if (msg != null) {
             mView.updateWidgetView(msg.widgetID, msg.counter);
         }
-
     }
 
     public void destroy() {
@@ -293,7 +292,7 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
                 case ComponentController.MSG_ON_LIVE_SUCCESS:
                     if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
                         int liveType = mMyRoomData.getLiveType();
-                        MyLog.d(TAG, "live type=" + liveType);
+                        MyLog.w(TAG, "live type=" + liveType);
                         if (liveType != LiveManager.TYPE_LIVE_PRIVATE && liveType != LiveManager.TYPE_LIVE_TOKEN) {
                             getRoomAttachment(mMyRoomData.getRoomId(), mMyRoomData.getUid(), mMyRoomData.getLiveType()).compose(WidgetPresenter.this.bindUntilEvent(PresenterEvent.DESTROY))
                                     .retryWhen(new RxRetryAssist(3, 5, true)) // 重试3次，间隔5秒

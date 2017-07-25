@@ -21,8 +21,7 @@ public class HolderHelper {
      */
     public static void jumpScheme(Context context, String uri) {
         if (!TextUtils.isEmpty(uri)) {
-            SchemeSdkActivity.openActivity((BaseSdkActivity) context,
-                    Uri.parse(uri));
+            SchemeSdkActivity.openActivity((BaseSdkActivity) context, Uri.parse(uri));
         }
     }
 }

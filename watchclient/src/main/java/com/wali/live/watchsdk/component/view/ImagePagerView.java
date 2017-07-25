@@ -125,7 +125,7 @@ public class ImagePagerView extends RelativeLayout implements IComponentView<Ima
         bindTransferImage(mLastDv, mRoomInfoList.get(last));
     }
 
-    public void postSwitch() {
+    public void postPrepare() {
         mCenterDv.setVisibility(View.GONE);
     }
 
