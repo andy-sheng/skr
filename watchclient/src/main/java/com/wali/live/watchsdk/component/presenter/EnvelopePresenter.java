@@ -108,6 +108,7 @@ public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
 
     @Subscribe(threadMode = ThreadMode.MAIN, priority = 1)
     public void onEventMainThread(GiftEventClass.GiftAttrMessage.RedEnvelope event) {
+        MyLog.w(TAG, "onEventMainThread RedEnvelope");
         if (event != null && event.red != null) {
             addNewEnvelope(event.red);
         }

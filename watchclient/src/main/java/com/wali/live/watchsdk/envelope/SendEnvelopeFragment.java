@@ -23,8 +23,8 @@ import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.recharge.view.RechargeFragment;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.envelope.adapter.EnvelopeChooser;
 import com.wali.live.watchsdk.component.adapter.SingleChooser;
+import com.wali.live.watchsdk.envelope.adapter.EnvelopeChooser;
 import com.wali.live.watchsdk.envelope.presenter.SendEnvelopePresenter;
 import com.wali.live.watchsdk.envelope.view.EnvelopeTypeView;
 import com.wali.live.watchsdk.webview.WebViewActivity;
@@ -64,15 +64,13 @@ public class SendEnvelopeFragment extends BaseEventBusFragment implements View.O
     private EditText mInputViewEt;
     private View mSendBtn;
 
-    private final EnvelopeChooser mEnvelopeChooser = new EnvelopeChooser(new SingleChooser.IChooserListener() {
-        @Override
-        public void onItemSelected(View view) {
-            if (!view.isSelected()) {
-                view.setSelected(true);
-                mSelectedCnt = ((EnvelopeTypeView) view).getmSelectedDiamondNum();
-            }
-        }
-    });
+    private final EnvelopeChooser mEnvelopeChooser = new EnvelopeChooser(
+            new SingleChooser.IChooserListener() {
+                @Override
+                public void onItemSelected(View view) {
+                    mSelectedCnt = ((EnvelopeTypeView) view).getDiamondCnt();
+                }
+            });
 
     protected final void $click(int id, View.OnClickListener listener) {
         $(id).setOnClickListener(listener);
@@ -137,6 +135,11 @@ public class SendEnvelopeFragment extends BaseEventBusFragment implements View.O
 
     @Override
     protected void bindView() {
+        Bundle bundle = getArguments();
+        mRoomId = bundle.getString(SendEnvelopeFragment.KEY_ROOM_ID);
+        mAnchorId = bundle.getLong(SendEnvelopeFragment.KEY_ANCHOR_ID);
+        mViewerCnt = bundle.getInt(SendEnvelopeFragment.KEY_VIEWER_COUNT);
+
         mTitleBar = $(R.id.title_bar);
         mTitleBar.hideBottomLine();
         mTitleBar.setTitle(R.string.send_redpacket);
@@ -149,6 +152,7 @@ public class SendEnvelopeFragment extends BaseEventBusFragment implements View.O
                 finish();
             }
         });
+
         ViewGroup container1 = $(R.id.envelope_container1);
         List<View> envelopeViews = addEnvelopeView(container1,
                 new EnvelopeTypeView.EnvelopeType(666, R.color.color_white, R.drawable.red_item_0),
@@ -174,11 +178,6 @@ public class SendEnvelopeFragment extends BaseEventBusFragment implements View.O
         mNormalTopMargin = ((ViewGroup.MarginLayoutParams) mSelectTips.getLayoutParams()).topMargin;
         mGoldDiamondTv.setText(getString(R.string.gold_count, MyUserInfoManager.getInstance().getDiamondNum()));
         mSilverDiamondTv.setText(getString(R.string.silver_count, MyUserInfoManager.getInstance().getVirtualDiamondNum()));
-
-        Bundle bundle = getArguments();
-        mRoomId = bundle.getString(SendEnvelopeFragment.KEY_ROOM_ID);
-        mAnchorId = bundle.getLong(SendEnvelopeFragment.KEY_ANCHOR_ID);
-        mViewerCnt = bundle.getInt(SendEnvelopeFragment.KEY_VIEWER_COUNT);
 
         mPresenter = new SendEnvelopePresenter();
         mPresenter.setSendEnvelopeView(new ISendEnvelopeView() {

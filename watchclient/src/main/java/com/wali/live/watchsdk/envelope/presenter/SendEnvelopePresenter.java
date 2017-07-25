@@ -2,24 +2,17 @@ package com.wali.live.watchsdk.envelope.presenter;
 
 import android.text.TextUtils;
 
-import com.base.activity.RxActivity;
 import com.base.log.MyLog;
 import com.base.presenter.RxLifeCyclePresenter;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.MyUserInfoManager;
-import com.mi.live.data.account.event.UserInfoEvent;
 import com.mi.live.data.api.ErrorCode;
-import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.proto.RedEnvelProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.utils.EnvelopeUtils;
 import com.wali.live.watchsdk.envelope.SendEnvelopeFragment;
 
-import org.greenrobot.eventbus.EventBus;
-
 import rx.Observable;
-import rx.Observer;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -41,10 +34,6 @@ public class SendEnvelopePresenter extends RxLifeCyclePresenter implements SendE
         mView = view;
     }
 
-    private void syncBalance() {
-        MyUserInfoManager.getInstance().syncSelfDetailInfo();
-    }
-
     @Override
     public void sendEnvelope(final long anchorId, final String roomId,
                              final int viewerCnt, final int gemCnt, final String msg) {
@@ -52,6 +41,7 @@ public class SendEnvelopePresenter extends RxLifeCyclePresenter implements SendE
             MyLog.w(TAG, "sendEnvelope, but EnvelopeModel is null");
             return;
         }
+        MyLog.w(TAG, "sendEnvelope, roomId=" + roomId + ", gemCnt=" + gemCnt);
         Observable.just(0)
                 .map(new Func1<Integer, RedEnvelProto.CreateRedEnvelopRsp>() {
                     @Override
@@ -65,15 +55,15 @@ public class SendEnvelopePresenter extends RxLifeCyclePresenter implements SendE
                 .subscribe(new Action1<RedEnvelProto.CreateRedEnvelopRsp>() {
                     @Override
                     public void call(RedEnvelProto.CreateRedEnvelopRsp rsp) {
-                        if (mView == null){
+                        if (mView == null) {
                             return;
                         }
-                        if (rsp != null && rsp.getRetCode() == ErrorCode.CODE_SUCCESS){
-                            MyLog.w(TAG,"sendEnvelope done");
+                        if (rsp != null && rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
+                            MyLog.w(TAG, "sendEnvelope done");
                             mView.onSendSuccess();
-                            syncBalance();
+                            MyUserInfoManager.getInstance().syncSelfDetailInfo();
                         } else {
-                            MyLog.w(TAG,"sendEnvelope failed");
+                            MyLog.w(TAG, "sendEnvelope failed");
                             ToastUtils.showToast(R.string.create_red_envelop_failed_error);
                         }
                     }
