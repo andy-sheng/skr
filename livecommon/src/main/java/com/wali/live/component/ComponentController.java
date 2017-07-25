@@ -42,8 +42,8 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     private static final int MSG_COMPOUND_FIRST = 20000;
     public static final int MSG_INPUT_VIEW_SHOWED = MSG_COMPOUND_FIRST;             // 输入框 已显示
     public static final int MSG_INPUT_VIEW_HIDDEN = MSG_COMPOUND_FIRST + 1;         // 输入框 已隐藏
-    public static final int MSG_BOTTOM_POPUP_SHOWED = MSG_COMPOUND_FIRST + 2;       // 底部按钮/礼物页面等显示时，通知 底部按钮和弹幕区 隐藏
-    public static final int MSG_BOTTOM_POPUP_HIDDEN = MSG_COMPOUND_FIRST + 3;       // 底部按钮/礼物页面等隐藏时，通知 底部按钮和弹幕区 显示
+    public static final int MSG_BOTTOM_POPUP_SHOWED = MSG_COMPOUND_FIRST + 2;       // 底部面板/礼物页面等显示时，通知 底部按钮和弹幕区 隐藏
+    public static final int MSG_BOTTOM_POPUP_HIDDEN = MSG_COMPOUND_FIRST + 3;       // 底部面板/礼物页面等隐藏时，通知 底部按钮和弹幕区 显示
     // 触摸相关消息
     private static final int MSG_TOUCH_FIRST = 21000;
     public static final int MSG_ENABLE_MOVE_VIEW = MSG_TOUCH_FIRST;     // 开启滑动

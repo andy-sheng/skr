@@ -19,6 +19,7 @@ import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
+import com.wali.live.watchsdk.component.presenter.BarrageBtnPresenter;
 import com.wali.live.watchsdk.component.presenter.BottomButtonPresenter;
 import com.wali.live.watchsdk.component.presenter.FollowGuidePresenter;
 import com.wali.live.watchsdk.component.presenter.GameBarragePresenter;
@@ -28,6 +29,7 @@ import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
+import com.wali.live.watchsdk.component.view.BarrageBtnView;
 import com.wali.live.watchsdk.component.view.FollowGuideView;
 import com.wali.live.watchsdk.component.view.GameBarrageView;
 import com.wali.live.watchsdk.component.view.GameInputView;
@@ -163,7 +165,18 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             if (view == null) {
                 return;
             }
-            InputAreaPresenter presenter = new InputAreaPresenter(mComponentController, mComponentController.mMyRoomData);
+            InputAreaPresenter presenter = new InputAreaPresenter(
+                    mComponentController, mComponentController.mMyRoomData, true);
+            addComponentView(view, presenter);
+        }
+
+        //底部输入框
+        {
+            BarrageBtnView view = $(R.id.barrage_btn_view);
+            if (view == null) {
+                return;
+            }
+            BarrageBtnPresenter presenter = new BarrageBtnPresenter(mComponentController);
             addComponentView(view, presenter);
         }
 
@@ -204,7 +217,8 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 R.id.gift_animation_player_view,
                 R.id.gift_continue_vg,
                 R.id.gift_room_effect_view,
-                R.id.widget_view
+                R.id.widget_view,
+                R.id.barrage_btn_view
         }, mHorizontalMoveSet, mVerticalMoveSet);
 
         if (mIsGameMode) {
