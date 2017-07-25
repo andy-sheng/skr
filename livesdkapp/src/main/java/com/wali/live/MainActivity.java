@@ -23,6 +23,7 @@ import com.mi.live.data.repository.GiftRepository;
 import com.mi.liveassistant.R;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.livesdk.live.LiveSdkActivity;
+import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.channel.adapter.ChannelRecyclerAdapter;
 import com.wali.live.watchsdk.channel.presenter.ChannelPresenter;
@@ -224,7 +225,7 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
 
                         RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
                                 .setAvatar(liveItem.getUser().getAvatar())
-                                .setCoverUrl(liveItem.getImageUrl())
+                                .setCoverUrl(liveItem.getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_LARGE))
                                 .setLiveType(liveType)
                                 .build();
 

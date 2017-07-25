@@ -82,7 +82,7 @@ public class ImagePagerView extends RelativeLayout implements IComponentView<Ima
         if (TextUtils.isEmpty(url)) {
             url = AvatarUtils.getAvatarUrlByUidTs(info.getPlayerId(), AvatarUtils.SIZE_TYPE_AVATAR_LARGE, info.getAvatar());
         }
-        AvatarUtils.loadAvatarByUrl(iv, url, false, false, R.drawable.rect_loading_bg_24292d);
+        AvatarUtils.loadAvatarByUrl(iv, url, false, false, R.drawable.rect_loading_bg_24292d, 320, 320);
     }
 
     public void switchNext(int position) {

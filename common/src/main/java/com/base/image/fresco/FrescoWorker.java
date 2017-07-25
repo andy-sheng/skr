@@ -64,7 +64,7 @@ public class FrescoWorker {
 
         ThreadUtils.ensureUiThread();
 
-//        MyLog.d(TAG, "loadImage start url = " + baseImage.getUri());
+        MyLog.d(TAG, "loadImage start url = " + baseImage.getUri());
 //        checkResizeOption(draweeView, ba、seImage);
 
         if (baseImage.getScaleType() != null) {

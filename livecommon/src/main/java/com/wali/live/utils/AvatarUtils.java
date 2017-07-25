@@ -245,7 +245,7 @@ public class AvatarUtils {
         FrescoWorker.loadImage(draweeView, avatarImg);
     }
 
-    private static void loadAvatarByUrl(final SimpleDraweeView draweeView, final String url, final boolean isCircle, final boolean isBlur, int loadingAvatarResId, int width, int height) {
+    public static void loadAvatarByUrl(final SimpleDraweeView draweeView, final String url, final boolean isCircle, final boolean isBlur, int loadingAvatarResId, int width, int height) {
 //        MyLog.v(TAG, "loadAvatarByUid url = " + url);
         BaseImage avatarImg;
         if (TextUtils.isEmpty(url)) {
