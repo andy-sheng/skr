@@ -87,7 +87,7 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 return;
             }
             InputAreaPresenter presenter = new InputAreaPresenter(
-                    mComponentController, mComponentController.mMyRoomData);
+                    mComponentController, mComponentController.mMyRoomData, false);
             addComponentView(view, presenter);
         }
 

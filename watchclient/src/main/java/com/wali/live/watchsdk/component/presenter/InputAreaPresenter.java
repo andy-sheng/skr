@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import com.base.event.KeyboardEvent;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.utils.display.DisplayUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.data.LastBarrage;
@@ -45,6 +46,8 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
     private static final long CLEAR_BARRAGE_CACHE_INTERVAL = 12 * 60 * 60 * 1000;// 清理弹幕缓存的时间间隔
 
     private static final Map<String, LastBarrage> mLastBarrageMap = new HashMap<>();
+
+    private int mMinHeightLand;
 
     private String mInputContent;
 
@@ -95,9 +98,11 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
 
     public InputAreaPresenter(
             @NonNull IComponentController componentController,
-            @NonNull RoomBaseDataModel myRoomData) {
+            @NonNull RoomBaseDataModel myRoomData,
+            boolean isWatchState) {
         super(componentController);
         mMyRoomData = myRoomData;
+        setMinHeightLand(isWatchState);
         registerAction(ComponentController.MSG_ON_ORIENT_PORTRAIT);
         registerAction(ComponentController.MSG_ON_ORIENT_LANDSCAPE);
         registerAction(ComponentController.MSG_ON_BACK_PRESSED);
@@ -110,6 +115,14 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
         mUIHandler = new MyUIHandler(this);
         EventBus.getDefault().register(this);
         clearBarrageCache();
+    }
+
+    private void setMinHeightLand(boolean isWatchState) {
+        if (isWatchState) {
+            mMinHeightLand = DisplayUtils.dip2px(38f + 6.67f);
+        }else{
+            mMinHeightLand = DisplayUtils.dip2px(6.67f);
+        }
     }
 
     @Override
@@ -298,6 +311,11 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
     @Override
     public void notifyInputViewHidden() {
         mComponentController.onEvent(ComponentController.MSG_INPUT_VIEW_HIDDEN);
+    }
+
+    @Override
+    public int getMinHeightLand() {
+        return mMinHeightLand;
     }
 
     @Nullable

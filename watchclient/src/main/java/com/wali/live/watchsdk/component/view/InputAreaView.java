@@ -41,7 +41,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
     private static final String TAG = "InputAreaView";
 
     private static final int MINIMUM_HEIGHT_PORTRAIT = DisplayUtils.dip2px(38f + 6.67f);
-    private static final int MINIMUM_HEIGHT_LANDSCAPE = DisplayUtils.dip2px(6.67f);
+    private int mMinHeightLand = DisplayUtils.dip2px(6.67f);
 
     @Nullable
     protected IPresenter mPresenter;
@@ -337,7 +337,10 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
         mIsLandscape = isLandscape;
         mKeyboardHeight = MLPreferenceUtils.getKeyboardHeight(!isLandscape);
         hideInputView();
-        setMinimumHeight(mIsLandscape ? MINIMUM_HEIGHT_LANDSCAPE : MINIMUM_HEIGHT_PORTRAIT);
+        if (mPresenter != null) {
+            mMinHeightLand = mPresenter.getMinHeightLand();
+        }
+        setMinimumHeight(mIsLandscape ? mMinHeightLand : MINIMUM_HEIGHT_PORTRAIT);
     }
 
     @Override
@@ -441,6 +444,11 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
          * 输入框 已隐藏
          */
         void notifyInputViewHidden();
+
+        /**
+         * 得到横屏弹幕最小高度
+         */
+        int getMinHeightLand();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
