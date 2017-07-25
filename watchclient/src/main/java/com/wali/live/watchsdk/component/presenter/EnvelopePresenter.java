@@ -11,6 +11,7 @@ import com.base.log.MyLog;
 import com.base.utils.rx.RefuseRetryExeption;
 import com.base.utils.rx.RxRetryAssist;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.gift.redenvelope.RedEnvelopeModel;
@@ -206,6 +207,8 @@ public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
                 && grabEnvelopRsp.getRetCode() != GiftErrorCode.REDENVELOP_HAS_DONE)) { // 加入这个判断，防止SDK与直播同一账号抢红包
             envelopeInfo.state = EnvelopeInfo.STATE_GRAB_FAILED;
         } else {
+            MyUserInfoManager.getInstance().setDiamonds(grabEnvelopRsp.getAndUsableGemCnt(),
+                    grabEnvelopRsp.getUsableVirtualGemCnt());
             envelopeInfo.state = EnvelopeInfo.STATE_GRAB_SUCCESS;
             envelopeInfo.grabCnt = grabEnvelopRsp.getGain();
         }
