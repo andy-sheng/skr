@@ -20,6 +20,11 @@
         android:layout_alignParentTop="true"
         android:visibility="gone"/>
 
+    <!--加入该view，否则Fragment退出时状态栏会变透明-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_90"/>
+
     <ViewStub
         android:id="@+id/game_live_home_tv"
         android:layout_width="wrap_content"
