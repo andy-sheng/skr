@@ -77,12 +77,12 @@ public class EnvelopeUtils {
         PacketData data = new PacketData();
         data.setCommand(MiLinkCommand.COMMAND_CREATE_REDENVELOP);
         data.setData(req.toByteArray());
-        MyLog.v(TAG, "grabRedEnvelope request:" + req.toString());
+        MyLog.d(TAG, "createRedEnvelope request:" + req.toString());
         PacketData response = MiLinkClientAdapter.getsInstance().sendSync(data, 10 * 1000);
         RedEnvelProto.CreateRedEnvelopRsp createRedEnvelopRsp = null;
         try {
             createRedEnvelopRsp = RedEnvelProto.CreateRedEnvelopRsp.parseFrom(response.getData());
-            MyLog.v(TAG, "grabRedEnvelope response:" + createRedEnvelopRsp);
+            MyLog.d(TAG, "createRedEnvelope response:" + createRedEnvelopRsp);
         } catch (Exception e) {
         }
         return createRedEnvelopRsp;
