@@ -30,7 +30,7 @@
     <RelativeLayout
         android:id="@+id/middle_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_dimen_1005"
+        android:layout_height="@dimen/view_dimen_1020"
         android:layout_below="@+id/second_iv"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/margin_75"
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_dimen_125"
+            android:layout_marginTop="@dimen/view_dimen_145"
             android:text="李可儿"
             android:textColor="@color/color_black"
             android:textSize="@dimen/text_size_45"/>
