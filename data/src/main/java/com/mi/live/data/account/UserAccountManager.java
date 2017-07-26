@@ -83,10 +83,9 @@ public class UserAccountManager {
             // 和当前渠道一致,当前账号置为空
             MyUserInfoManager.getInstance().deleteUser();
             mAccount = null;
-
-            // 实名模式登出
-            MiLinkClientAdapter.getsInstance().logoff();
-            if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
+            if (!MiLinkClientAdapter.getsInstance().isTouristMode()) {
+                // 实名模式登出
+                MiLinkClientAdapter.getsInstance().logoff();
                 // milink 切换成匿名模式
                 MiLinkClientAdapter.getsInstance().setIsTouristMode(true);
 

@@ -6,6 +6,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -14,6 +15,7 @@ import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
 import com.base.utils.Constants;
 import com.base.utils.display.DisplayUtils;
+import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.ComponentController;
@@ -440,7 +442,8 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                     }
                     break;
                 case WatchComponentController.MSG_FOLLOW_COUNT_DOWN:
-                    if (mFollowGuidePresenter != null) {
+                    if (mFollowGuidePresenter != null ||
+                            TextUtils.isEmpty(RoomInfoGlobalCache.getsInstance().getCurrentRoomId())) {
                         return false;
                     }
                     int countTs = params.getItem(0);
@@ -449,7 +452,8 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                     mFollowGuidePresenter.countDownOut(countTs);
                     break;
                 case WatchComponentController.MSG_SHOW_FOLLOW_GUIDE: {
-                    if (mFollowGuidePresenter == null || mFollowGuideView != null) {
+                    if (mFollowGuidePresenter == null || mFollowGuideView != null
+                            || TextUtils.isEmpty(RoomInfoGlobalCache.getsInstance().getCurrentRoomId())) {
                         return false;
                     }
                     mFollowGuideView = new FollowGuideView(mActivity);

@@ -46,6 +46,20 @@ public class MilinkStatistics {
         }
     }
 
+
+    public void statisticsMiVideoActive(String key, long time) {
+        long date = System.currentTimeMillis();
+        try {
+            MilinkStatisticsItem item = new SimpleStatisticsItem(date,
+                    MilinkStatisticsItem.LIVE_SDK_TYPE,
+                    SimpleStatisticsItem.MIVIDEO_ACTIVE_BIZTYPE,
+                    key, time);
+            statisticsInternal(item);
+        } catch (JSONException e) {
+            MyLog.e(TAG, e);
+        }
+    }
+
     private void statisticsInternal(final MilinkStatisticsItem item) {
         Observable.just(0)
                 .map(new Func1<Object, Integer>() {

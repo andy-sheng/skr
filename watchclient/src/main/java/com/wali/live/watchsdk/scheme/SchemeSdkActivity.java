@@ -9,11 +9,13 @@ import android.text.TextUtils;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
+import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.callback.SecureCommonCallBack;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.scheme.processor.SchemeProcessor;
 import com.wali.live.watchsdk.scheme.processor.WaliliveProcessor;
 import com.wali.live.watchsdk.scheme.specific.SpecificProcessor;
+import com.wali.live.watchsdk.statistics.MilinkStatistics;
 
 /**
  * Created by lan on 17/2/21.
@@ -88,7 +90,7 @@ public class SchemeSdkActivity extends BaseSdkActivity {
         }
 
         if (scheme.equals(SchemeConstants.SCHEME_LIVESDK)) {
-            int channelId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_CHANNEL, 0);
+            final int channelId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_CHANNEL, 0);
             String packageName = uri.getQueryParameter(SchemeConstants.PARAM_PACKAGE_NAME);
             String channelSecret = uri.getQueryParameter(SchemeConstants.PARAM_CHANNEL_SECRET);
             if (channelSecret == null) {
@@ -106,6 +108,11 @@ public class SchemeSdkActivity extends BaseSdkActivity {
                             MyLog.w(TAG, "postSuccess callback");
                             if (SchemeProcessor.process(uri, host, SchemeSdkActivity.this, true)) {
                                 // activity finish 内置处理
+                                String key = String.format(StatisticsKey.KEY_VIEW_COUNT, channelId);
+                                MyLog.d(TAG, "scheme process statistics=" + key);
+                                if (!TextUtils.isEmpty(key)) {
+                                    MilinkStatistics.getInstance().statisticsMiVideoActive(key, 1);
+                                }
                             } else {
                                 finish();
                             }
