@@ -36,6 +36,7 @@ import java.util.Map;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -56,6 +57,9 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
 
     private GameViewModel mGameModel;
     private Map<String, String> mExtraMap = new HashMap<>();
+
+    private Subscription mSubscription;
+    private Subscription mHttpSubscription;
 
     public GameDownloadPresenter(@NonNull IComponentController componentController,
                                  @NonNull RoomBaseDataModel myRoomData) {
@@ -81,7 +85,10 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
 
     private void getGameId() {
         MyLog.d(TAG, "getGameId");
-        Observable
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
+        mSubscription = Observable
                 .create((new Observable.OnSubscribe<String>() {
                     @Override
                     public void call(Subscriber<? super String> subscriber) {
@@ -124,7 +131,10 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
     }
 
     private void startGameWork() {
-        Observable
+        if (mHttpSubscription != null && !mHttpSubscription.isUnsubscribed()) {
+            mHttpSubscription.unsubscribe();
+        }
+        mHttpSubscription = Observable
                 .create((new Observable.OnSubscribe<GameViewModel>() {
                     @Override
                     public void call(Subscriber<? super GameViewModel> subscriber) {
@@ -246,6 +256,16 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
 
     private void hideGameDownloadView() {
         mView.hideGameDownloadView();
+    }
+
+    public void reset() {
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
+        if (mHttpSubscription != null && !mHttpSubscription.isUnsubscribed()) {
+            mHttpSubscription.unsubscribe();
+        }
+        mGameModel = null;
     }
 
     @Override

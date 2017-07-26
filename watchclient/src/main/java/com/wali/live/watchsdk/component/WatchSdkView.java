@@ -69,6 +69,10 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
     protected FollowGuideView mFollowGuideView;
     protected FollowGuidePresenter mFollowGuidePresenter;
 
+    protected WatchBottomButton mWatchBottomButton;
+
+    protected GameDownloadPresenter mGameDownloadPresenter;
+
     protected ImagePagerView mPagerView;
 
     protected boolean mIsGameMode = false;
@@ -94,46 +98,47 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
     public void setupSdkView(boolean isGameMode) {
         mIsGameMode = isGameMode;
         if (mIsGameMode) {
+            // 游戏直播横屏输入框
+            {
+                GameInputView view = new GameInputView(mActivity);
+                view.setId(R.id.game_input_view);
+                view.setVisibility(View.GONE);
+                GameInputPresenter presenter = new GameInputPresenter(mComponentController, mComponentController.mMyRoomData);
+                addComponentView(view, presenter);
+
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                addViewAboveAnchor(view, layoutParams, $(R.id.input_area_view));
+            }
+            // 游戏直播横屏弹幕
+            {
+                GameBarrageView view = new GameBarrageView(mActivity);
+                view.setId(R.id.game_barrage_view);
+                view.setVisibility(View.GONE);
+                GameBarragePresenter presenter = new GameBarragePresenter(mComponentController);
+                addComponentView(view, presenter);
+
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, DisplayUtils.dip2px(96.77f));
+                layoutParams.bottomMargin = DisplayUtils.dip2px(56f);
+                layoutParams.rightMargin = DisplayUtils.dip2px(56f);
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                addViewAboveAnchor(view, layoutParams, $(R.id.comment_rv));
+            }
+
             setupGameSdkView();
         }
         setupSdkView();
     }
 
     private void setupGameSdkView() {
-        // 游戏直播横屏输入框
-        {
-            GameInputView view = new GameInputView(mActivity);
-            view.setId(R.id.game_input_view);
-            view.setVisibility(View.GONE);
-            GameInputPresenter presenter = new GameInputPresenter(mComponentController, mComponentController.mMyRoomData);
-            addComponentView(view, presenter);
-
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            addViewAboveAnchor(view, layoutParams, $(R.id.input_area_view));
-        }
-        // 游戏直播横屏弹幕
-        {
-            GameBarrageView view = new GameBarrageView(mActivity);
-            view.setId(R.id.game_barrage_view);
-            view.setVisibility(View.GONE);
-            GameBarragePresenter presenter = new GameBarragePresenter(mComponentController);
-            addComponentView(view, presenter);
-
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, DisplayUtils.dip2px(96.77f));
-            layoutParams.bottomMargin = DisplayUtils.dip2px(56f);
-            layoutParams.rightMargin = DisplayUtils.dip2px(56f);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            addViewAboveAnchor(view, layoutParams, $(R.id.comment_rv));
-        }
-        {
+        if (mGameDownloadPresenter == null) {
             GameDownloadPanel view = new GameDownloadPanel((RelativeLayout) $(R.id.main_act_container));
-            GameDownloadPresenter presenter = new GameDownloadPresenter(mComponentController, mComponentController.mMyRoomData);
-            addComponentView(view, presenter);
+            mGameDownloadPresenter = new GameDownloadPresenter(mComponentController, mComponentController.mMyRoomData);
+            addComponentView(view, mGameDownloadPresenter);
         }
     }
 
@@ -185,11 +190,11 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 return;
             }
             relativeLayout.setVisibility(View.VISIBLE);
-            WatchBottomButton view = new WatchBottomButton(relativeLayout, mIsGameMode,
+            mWatchBottomButton = new WatchBottomButton(relativeLayout, mIsGameMode,
                     mComponentController.mMyRoomData.getEnableShare());
             BottomButtonPresenter presenter =
                     new BottomButtonPresenter(mComponentController, mComponentController.mMyRoomData);
-            addComponentView(view, presenter);
+            addComponentView(mWatchBottomButton, presenter);
         }
 
         if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
@@ -289,9 +294,21 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
         if (mFollowGuidePresenter != null) {
             mFollowGuidePresenter.reset();
         }
-        if (mLiveCommentView != null) {
-            mLiveCommentView.reset();
+        if (mGameDownloadPresenter != null) {
+            mGameDownloadPresenter.reset();
         }
+
+        mLiveCommentView.reset();
+        mWatchBottomButton.reset();
+    }
+
+    public void postSwitch(boolean isGameMode) {
+        mIsGameMode = isGameMode;
+        if (mIsGameMode) {
+            setupGameSdkView();
+        }
+
+        mWatchBottomButton.postSwitch(mIsGameMode);
     }
 
     public void postPrepare() {

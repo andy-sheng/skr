@@ -1111,6 +1111,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 mComponentController.switchRoom();
                 // 重新获取当前房间信息，并重新进入房间
                 trySendDataWithServerOnce();
+                mSdkView.postSwitch(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
             }
         }
 

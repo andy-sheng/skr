@@ -138,6 +138,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             MyLog.w(TAG, "showGameIcon gameModel is null");
             return;
         }
+        MyLog.d(TAG, "gameModel=" + gameModel.getGameId());
+
         mGameBtn = new SimpleDraweeView(getContext());
         addCreatedView(mGameBtn, mCommentBtn.getWidth(), mCommentBtn.getHeight(), R.id.game_btn);
 
@@ -194,6 +196,23 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     }
 
     private void destroyView() {
+        clearAnimator();
+    }
+
+    public void reset() {
+        clearAnimator();
+        if (mGameBtn != null) {
+            mRightBtnSetPort.remove(mGameBtn);
+            mBottomBtnSetLand.remove(mGameBtn);
+            mContentContainer.removeView(mGameBtn);
+        }
+    }
+
+    public void postSwitch(boolean isGameMode) {
+        mIsGameMode = isGameMode;
+    }
+
+    private void clearAnimator() {
         if (mGameBtn != null) {
             mGameBtn.removeCallbacks(mAnimatorRunnable);
         }
