@@ -9,7 +9,6 @@ import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.holder.listener.BannerClickListener;
-import com.wali.live.watchsdk.channel.holder.listener.HolderHelper;
 import com.wali.live.watchsdk.channel.view.ChannelBannerView;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelBannerViewModel;
 
@@ -55,7 +54,7 @@ public class BannerHolder extends BaseHolder<ChannelBannerViewModel> implements 
     public void clickBanner(ChannelBannerViewModel.Banner banner) {
         String url = banner.getLinkUrl();
         if (!TextUtils.isEmpty(url)) {
-            HolderHelper.jumpScheme(itemView.getContext(), url);
+            mJumpListener.jumpScheme(banner.getLinkUrl());
         } else {
             MyLog.e(TAG, "clickBanner url is empty");
         }

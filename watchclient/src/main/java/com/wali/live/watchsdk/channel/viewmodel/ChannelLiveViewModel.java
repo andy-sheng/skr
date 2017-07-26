@@ -19,6 +19,7 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.helper.ModelHelper;
 import com.wali.live.watchsdk.channel.util.BannerManger;
+import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -346,22 +347,13 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             return mCountString;
         }
 
-        // 用getImageUrl
-        protected String getCoverUrl() {
-            if (TextUtils.isEmpty(mCoverUrl)) {
-                MyLog.w(TAG, "getCoverUrl coverUrl is Empty, getHead=" + getTitle());
-                return null;
-            }
-            return mCoverUrl + AvatarUtils.getAvatarSizeAppend(AvatarUtils.SIZE_TYPE_AVATAR_SMALL);
-        }
-
         public String getLocation() {
             return mLocation;
         }
 
         @Override
         public String getImageUrl() {
-            return getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE);
+            return getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_LARGE);
         }
 
         @Override
@@ -428,6 +420,9 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         private int mAppType = 0;
         private int mLiveType = 0;
 
+        private int mListPosition = -1;  //list的位置，不是服务器的数据
+        private RoomInfo mRoomInfo;
+
         private LiveItem() {
             super();
         }
@@ -489,22 +484,32 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             return mStartTime;
         }
 
-        private String getLiveCoverUrl() {
-            if (!TextUtils.isEmpty(mImgUrl)) {
-                return mImgUrl;
-            } else if (!TextUtils.isEmpty(mCoverUrl)) {
-                return mCoverUrl;
-            } else {
-                return AvatarUtils.getAvatarUrlByUidTsAndFormat(mUser.getUid(), AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, mUser.getAvatar(), false);
-            }
-        }
-
         public boolean isShowShop() {
             return mShowShop;
         }
 
         public int getShopCnt() {
             return mShopCnt;
+        }
+
+        public int getListPosition() {
+            return mListPosition;
+        }
+
+        public void setListPosition(int listPosition) {
+            mListPosition = listPosition;
+        }
+
+        public RoomInfo toRoomInfo() {
+            if (mRoomInfo == null) {
+                MyLog.d(TAG, "toRoomInfo liveType=" + mLiveType);
+                mRoomInfo = RoomInfo.Builder.newInstance(mUser.getUid(), mId, mVideoUrl)
+                        .setAvatar(mUser.getAvatar())
+                        .setCoverUrl(getImageUrl())
+                        .setLiveType(mLiveType)
+                        .build();
+            }
+            return mRoomInfo;
         }
 
         public static LiveItem newTestInstance() {
@@ -785,7 +790,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         String sCount = String.valueOf(count);
         if (count > 10000) {
             String unit = GlobalData.app().getResources().getString(R.string.ten_thousand);
-            sCount = String .format("%.1f" + unit, (float) (count / 10000.0));
+            sCount = String.format("%.1f" + unit, (float) (count / 10000.0));
         }
         if (!live) {
             return GlobalData.app().getResources().getQuantityString(R.plurals.channel_view_count, count, sCount);

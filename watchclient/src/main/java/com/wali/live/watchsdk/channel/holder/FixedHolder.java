@@ -19,7 +19,6 @@ import com.facebook.drawee.drawable.ScalingUtils.ScaleType;
 import com.mi.live.data.config.GetConfigManager;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.channel.holder.listener.HolderHelper;
 import com.wali.live.watchsdk.channel.viewmodel.BaseJumpItem;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelNavigateViewModel;
@@ -145,11 +144,14 @@ public abstract class FixedHolder extends HeadHolder {
     }
 
     protected void jumpItem(BaseJumpItem item) {
-        if (item != null && !TextUtils.isEmpty(item.getSchemeUri())) {
-            HolderHelper.jumpScheme(itemView.getContext(), item.getSchemeUri());
-        } else {
-            MyLog.e(TAG, "jumpItem schemeUrl is empty");
+        if (item instanceof ChannelLiveViewModel.LiveItem && (((ChannelLiveViewModel.BaseLiveItem) item).isEnterRoom())) {
+            int position = ((ChannelLiveViewModel.LiveItem) item).getListPosition();
+            if (position != -1) {
+                mJumpListener.jumpWatchWithLiveList(position);
+                return;
+            }
         }
+        mJumpListener.jumpScheme(item.getSchemeUri());
     }
 
     /**
@@ -176,13 +178,12 @@ public abstract class FixedHolder extends HeadHolder {
     }
 
     public class LabelClickSpan extends ClickableSpan {
-
         String url;
 
         @Override
         public void onClick(View widget) {
             if (!TextUtils.isEmpty(url)) {
-                HolderHelper.jumpScheme(itemView.getContext(), url);
+                mJumpListener.jumpScheme(url);
             } else {
                 MyLog.e(TAG, "LabelClickSpan onClick url is empty");
             }

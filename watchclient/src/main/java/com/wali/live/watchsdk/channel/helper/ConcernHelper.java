@@ -29,7 +29,6 @@ import rx.schedulers.Schedulers;
  * Created by zhaomin on 16-9-14.
  */
 public class ConcernHelper {
-
     private static final String TAG = "ConcernHelper";
 
     private Context mContext;

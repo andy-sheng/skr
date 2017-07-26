@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import com.base.global.GlobalData;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.holder.listener.BannerClickListener;
-import com.wali.live.watchsdk.channel.holder.listener.HolderHelper;
 import com.wali.live.watchsdk.channel.view.BannerVideoView;
 import com.wali.live.watchsdk.channel.view.ChannelVideoBannerView;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelBannerViewModel;
@@ -96,7 +95,7 @@ public class VideoBannerHolder extends FixedHolder implements BannerClickListene
     public void clickBanner(ChannelBannerViewModel.Banner banner) {
         String url = banner.getLinkUrl();
         if (!TextUtils.isEmpty(url)) {
-            HolderHelper.jumpScheme(itemView.getContext(), url);
+            mJumpListener.jumpScheme(url);
         }
     }
 }

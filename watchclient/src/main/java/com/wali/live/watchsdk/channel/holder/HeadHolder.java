@@ -8,7 +8,6 @@ import android.widget.TextView;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.channel.holder.listener.HolderHelper;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelViewModel;
 
 /**
@@ -157,7 +156,7 @@ public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
 
     private void jumpMore() {
         if (!TextUtils.isEmpty(mViewModel.getHeadUri())) {
-            HolderHelper.jumpScheme(itemView.getContext(), mViewModel.getHeadUri());
+            mJumpListener.jumpScheme(mViewModel.getHeadUri());
         } else {
             MyLog.e(TAG, "HeadHolder jumpMore uri is empty");
         }

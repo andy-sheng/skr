@@ -16,7 +16,6 @@ import com.wali.live.proto.CommonChannelProto;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.channel.holder.listener.HolderHelper;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel.BaseItem;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel.BaseLiveItem;
@@ -399,7 +398,7 @@ public abstract class RepeatHolder extends FixedHolder {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(item.getTopLeft().getJumpUrl())) {
-                    HolderHelper.jumpScheme(itemView.getContext(), item.getTopLeft().getJumpUrl());
+                    mJumpListener.jumpScheme(item.getTopLeft().getJumpUrl());
                 }
             }
         });
@@ -431,7 +430,7 @@ public abstract class RepeatHolder extends FixedHolder {
                     @Override
                     public void onClick(View v) {
                         if (!TextUtils.isEmpty(jumpUrl)) {
-                            HolderHelper.jumpScheme(itemView.getContext(), jumpUrl);
+                            mJumpListener.jumpScheme(jumpUrl);
                         }
                     }
                 });

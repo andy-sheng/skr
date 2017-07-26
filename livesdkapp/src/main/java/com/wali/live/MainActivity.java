@@ -17,23 +17,18 @@ import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.channel.HostChannelManager;
-import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.liveassistant.R;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.livesdk.live.LiveSdkActivity;
-import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.channel.adapter.ChannelRecyclerAdapter;
 import com.wali.live.watchsdk.channel.presenter.ChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelView;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
-import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
 import com.wali.live.watchsdk.login.LoginPresenter;
-import com.wali.live.watchsdk.scheme.SchemeConstants;
-import com.wali.live.watchsdk.scheme.SchemeUtils;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
@@ -41,7 +36,6 @@ import com.wali.live.watchsdk.watch.model.RoomInfo;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -64,8 +58,6 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
     protected IChannelPresenter mPresenter;
     protected long mChannelId = 20;
     protected LoginPresenter mLoginPresenter;
-
-    private ArrayList<RoomInfo> mRoomInfoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,45 +194,6 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
     @Override
     public void updateView(List<? extends BaseViewModel> models) {
         mRecyclerAdapter.setData(models);
-
-        if (mRoomInfoList == null) {
-            mRoomInfoList = new ArrayList<>();
-        }
-        mRoomInfoList.clear();
-        int i = 0;
-        for (BaseViewModel model : models) {
-            if (model instanceof ChannelLiveViewModel) {
-                List<ChannelLiveViewModel.BaseItem> items = ((ChannelLiveViewModel) model).getItemDatas();
-                for (ChannelLiveViewModel.BaseItem item : items) {
-                    if (item instanceof ChannelLiveViewModel.LiveItem) {
-                        ChannelLiveViewModel.LiveItem liveItem = (ChannelLiveViewModel.LiveItem) item;
-                        Uri uri = Uri.parse(liveItem.getSchemeUri());
-
-                        long playerId = Long.parseLong(uri.getQueryParameter("playerid"));
-                        String liveId = uri.getQueryParameter("liveid");
-                        String videoUrl = uri.getQueryParameter("videourl");
-
-                        int type = SchemeUtils.getInt(uri, SchemeConstants.PARAM_TYPE, 0);
-                        int liveType = LiveManager.mapLiveTypeFromListToRoom(type);
-
-                        RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
-                                .setAvatar(liveItem.getUser().getAvatar())
-                                .setCoverUrl(liveItem.getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_LARGE))
-                                .setLiveType(liveType)
-                                .build();
-
-                        if (i % 2 == 0) {
-                            roomInfo.setGameId("47631");
-                            roomInfo.setEnableShare(true);
-                        }
-                        mRoomInfoList.add(roomInfo);
-                        i++;
-                    }
-                }
-            }
-        }
-        MyLog.d(TAG, "size=" + mRoomInfoList.size());
-        WatchSdkActivity.openActivity(this, mRoomInfoList, 0);
     }
 
     @Override

@@ -7,7 +7,6 @@ import android.widget.TextView;
 import com.base.image.fresco.BaseImageView;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.channel.holder.listener.HolderHelper;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelRankingViewModel;
 
 import java.util.List;
@@ -68,7 +67,7 @@ public class CommunityRankHolder extends FixedHolder {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(viewModel.getSchemeUri())) {
-                    HolderHelper.jumpScheme(itemView.getContext(), viewModel.getSchemeUri());
+                    mJumpListener.jumpScheme(viewModel.getSchemeUri());
                 }
             }
         });
