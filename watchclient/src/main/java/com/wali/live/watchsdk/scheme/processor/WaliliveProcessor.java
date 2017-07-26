@@ -8,6 +8,7 @@ import android.text.TextUtils;
 
 import com.base.activity.RxActivity;
 import com.base.log.MyLog;
+import com.wali.live.event.EventClass;
 import com.wali.live.watchsdk.channel.ChannelSdkActivity;
 import com.wali.live.watchsdk.channel.sublist.activity.SubChannelActivity;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
@@ -17,6 +18,8 @@ import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.wali.live.watchsdk.webview.HalfWebViewActivity;
 import com.wali.live.watchsdk.webview.WebViewActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by lan on 16/10/26.
@@ -59,6 +62,9 @@ public class WaliliveProcessor {
                     //小视频二级页暂时不考虑
                     return false;
                 }
+                break;
+            case SchemeConstants.HOST_UNLOGIN_H5:
+                EventBus.getDefault().post(new EventClass.H5UnloginEvent());
                 break;
             default:
                 return false;

@@ -166,6 +166,11 @@ public class SchemeConstants {
      */
     public static final String HOST_LOGIN = "login";
 
+    /**
+     * h5页面上 未登录的scheme
+     */
+    public static final String HOST_UNLOGIN_H5 = "unloginHtml5";
+
 
     /**
      *SchemeConstants 和 SpecificConstants 添加的scheme和host都要在這裡添加一下。否則会被过滤掉导致ui上不被显示。
