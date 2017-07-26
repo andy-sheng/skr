@@ -1118,8 +1118,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         @Override
         public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
             switch (source) {
-                case WatchComponentController.MSG_PAGE_DOWN:
-                    MyLog.d(TAG, "page down");
+                case WatchComponentController.MSG_PAGE_UP:
+                    MyLog.d(TAG, "page up");
                     mComponentController.switchToNextPosition();
                     switchRoom();
                     if (mSdkView != null) {
@@ -1127,8 +1127,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                         mSdkView.switchToNextRoom();
                     }
                     break;
-                case WatchComponentController.MSG_PAGE_UP:
-                    MyLog.d(TAG, "page up");
+                case WatchComponentController.MSG_PAGE_DOWN:
+                    MyLog.d(TAG, "page down");
                     mComponentController.switchToLastPosition();
                     switchRoom();
                     if (mSdkView != null) {
