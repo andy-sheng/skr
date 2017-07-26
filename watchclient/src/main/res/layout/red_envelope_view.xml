@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="200dp"
+    android:layout_height="266dp"
+    android:layout_centerInParent="true">
+
+    <View
+        android:id="@+id/bg_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/red_packet_bg_23" />
+
+    <View
+        android:id="@+id/bg_top"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:background="@drawable/red_packet_top_3" />
+
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/sender_avatar_iv"
+        android:layout_width="@dimen/view_dimen_157"
+        android:layout_height="@dimen/view_dimen_157"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="43.33dp"
+        app:roundAsCircle="true" />
+
+    <ImageView
+        android:id="@+id/user_badge_iv"
+        android:layout_width="@dimen/lvl_small_icon_size_width"
+        android:layout_height="@dimen/lvl_small_icon_size_height"
+        android:layout_below="@+id/sender_avatar_iv"
+        android:layout_marginLeft="-12dp"
+        android:layout_marginTop="-15dp"
+        android:layout_toRightOf="@+id/sender_avatar_iv"
+        android:scaleType="fitStart" />
+
+    <TextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sender_avatar_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8.66dp"
+        android:singleLine="true"
+        android:text="Angelababy"
+        android:textColor="#f7efb8"
+        android:textSize="@dimen/text_size_34" />
+
+    <TextView
+        android:id="@+id/info_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4.66dp"
+        android:singleLine="true"
+        android:text="@string/money_coming"
+        android:textColor="#f7efb8"
+        android:textSize="@dimen/text_size_34" />
+
+    <TextView
+        android:id="@+id/grab_btn"
+        android:layout_width="53dp"
+        android:layout_height="53dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="170dp"
+        android:background="@drawable/red_envelope_grap_btn_bg"
+        android:gravity="center"
+        android:scaleType="centerInside"
+        android:text="@string/grap_hongbao"
+        android:textColor="@color/color_363636"
+        android:textSize="@dimen/text_size_36" />
+
+    <ImageView
+        android:id="@+id/close_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin_20"
+        android:layout_marginTop="@dimen/view_dimen_20"
+        android:padding="10dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/red_envelope_close_btn_bg" />
+
+</RelativeLayout>

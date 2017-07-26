@@ -4,19 +4,34 @@
 import os
 import shutil
 
-# 待拷贝资源的所在路径
-org_res_path = "/Users/xiaolan/Develop/XiaoMi/gerrit/walilive/app/src/main/res"
-# 资源拷贝的目标路径
-dst_res_path = "../src/main/res"
-
-if not os.path.exists(org_res_path):
-    print "error: org res path not found, please modify org_res_path in " \
-            + os.path.basename(__file__)
+if not os.path.exists("local_setting.py"):
+    print "error: local_setting.py not found, please create one"
     exit()
 
-if not os.path.exists(dst_res_path):
-    print "error: dst res path not found, please modify dst_res_path in " \
-          + os.path.basename(__file__)
+from local_setting import *
+
+try:
+    if not os.path.exists(org_res_path):
+        print "error: org res path not found, please modify org_res_path variable to correct path in " \
+              + "local_setting.py"
+        exit()
+
+    if not os.path.exists(dst_res_path):
+        print "error: dst res path not found, please modify dst_res_path variable to correct path in " \
+              + "local_setting.py"
+        exit()
+
+except NameError:
+    print "error: org_res_path or dst_res_path not found, please define them in " \
+          + "local_setting.py"
+    print "sample code:"
+    print "#!/usr/bin/env python"
+    print "#coding: UTF-8"
+    print ""
+    print "# 待拷贝资源的所在路径"
+    print "org_res_path = \"/Users/yangli/Development/huyu/walilive/app/src/main/res\""
+    print "# 资源拷贝的目标路径"
+    print "dst_res_path = \"../src/main/res\""
     exit()
 
 # 图片资源拷贝
@@ -48,9 +63,17 @@ class CopyDrawableRes:
         resFile = ""
         for fileName in os.listdir(srcPath):
             (name, ext) = os.path.splitext(fileName)
-            if name == resItem:
+            if name == resItem or name == (resItem + '.9'):
                 resFile = fileName
                 break
+
+        # if not resFile or not resFile.strip():
+        #    srcPath = org_res_path1 + resPath
+        #    for fileName in os.listdir(srcPath):
+        #        (name, ext) = os.path.splitext(fileName)
+        #        if name == resItem:
+        #            resFile = fileName
+        #            break
 
         if not resFile or not resFile.strip():
             print 'warning: res not found in src path'
@@ -105,27 +128,34 @@ class CopyDrawableRes:
 
         pass
 
-# 字符串资源拷贝
-class CopyStringRes:
-    addExtraLine = False # 是否字符串前增加空行
 
-    def __init__(self, addExtraLine):
+# 字符串资源拷贝
+class CopyValueRes:
+    addExtraLine = False  # 是否字符串前增加空行
+    subPath = 'strings'  # 资源路径，默认为strings
+    subType = 'string'  # 资源类别，默认为string
+
+    def __init__(self, addExtraLine, subPath, subType):
         self.addExtraLine = addExtraLine
+        if subPath and subPath.strip():
+            self.subPath = subPath
+        if subType and subType.strip():
+            self.subType = subType
         pass
 
     def __del__(self):
         pass
 
     def doCopy(self, itemList):
-        print "\ncopy string resource for: " + "".join(itemList)
+        print "\ncopy value resource in " + self.subPath + " of " + self.subType + " for: " + "".join(itemList)
         if not itemList or len(itemList) == 0:
             return
         print "copy default"
-        self.__doCopy("/values/strings.xml", itemList)
+        self.__doCopy('/values/' + self.subPath + '.xml', itemList)
         print "copy zh-rCN"
-        self.__doCopy("/values-zh-rCN/strings.xml", itemList)
+        self.__doCopy('/values-zh-rCN/' + self.subPath + '.xml', itemList)
         print "copy zh-rTW"
-        self.__doCopy("/values-zh-rTW/strings.xml", itemList)
+        self.__doCopy('/values-zh-rTW/' + self.subPath + '.xml', itemList)
         pass
 
     def __doCopy(self, resPath, resList):
@@ -149,25 +179,27 @@ class CopyStringRes:
         out = open(dstFile, "w")
 
         # 定位在文件末尾的写入位置
-        dstPos = dstData.rfind("</resources>")
+        dstPos = dstData.rfind('</resources>')
         if dstPos == -1:
             print "warning: cannot find </resources>"
             return
 
         # 依次处理每个待处理的项
         for item in resList:
-            pos = dstData.find('<string name="' + item + '">')
+            header = '<' + self.subType + ' name="' + item + '"'
+            tailor = '</' + self.subType + '>'
+            pos = dstData.find(header)
             if pos != -1:
                 # 目标中已有该项，则跳过不处理
                 print "warning: item " + item + " already exists in dst"
                 continue
-            start = srcData.find('<string name="' + item + '">')
+            start = srcData.find(header)
             if start == -1:
                 print "warning: cannot find item " + item + " in src"
                 continue
-            end = srcData.find('</string>', start)
-            content = '    ' + srcData[start:(end + len('</string>'))] + '\n'
-            if self.addExtraLine: # 增加空行
+            end = srcData.find(tailor, start)
+            content = '    ' + srcData[start:(end + len(tailor))] + '\n'
+            if self.addExtraLine:  # 增加空行
                 content = '\n' + content
                 pass
             # print 'content: "' + content + '"\nwrite before: "' + dstData[dstPos:] + '"'
@@ -182,9 +214,9 @@ class CopyStringRes:
             out.close()
         pass
 
+
 # layout资源拷贝
 class CopyLayoutRes:
-
     def __init__(self):
         pass
 
@@ -195,19 +227,19 @@ class CopyLayoutRes:
         print "copy layout for: ".join(itemList)
         if not itemList or len(itemList) == 0:
             return
-        print "copy layout"
         for srcItem in itemList:
-           print "copy layout " + srcItem
-           ret = self.__doCopy("/layout/", srcItem)
-           if not ret:
-               print "copy /layout/ " + srcItem
-               self.__doCopy("/layout/", srcItem)
+            print "copy layout " + srcItem
+            ret = self.__doCopy("/layout/", srcItem)
+            if not ret:
+                print "copy /layout/ " + srcItem
+                self.__doCopy("/layout/", srcItem)
         pass
 
-
-    def __doCopy(self, resPath,fileName):
-        srcFile = org_res_path + resPath + fileName
+    def __doCopy(self, resPath, fileName):
+        srcFile = org_res_path + resPath + fileName + '.xml'
+        print 'srcFile=' + srcFile
         dstPath = dst_res_path + resPath
+        print 'distFile=' + dstPath
 
         if not os.path.exists(dstPath):
             os.makedirs(dstPath)

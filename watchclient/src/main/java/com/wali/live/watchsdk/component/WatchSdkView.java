@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
 import com.base.utils.Constants;
 import com.base.utils.display.DisplayUtils;
@@ -22,6 +23,7 @@ import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.BottomButtonPresenter;
+import com.wali.live.watchsdk.component.presenter.EnvelopePresenter;
 import com.wali.live.watchsdk.component.presenter.FollowGuidePresenter;
 import com.wali.live.watchsdk.component.presenter.GameBarragePresenter;
 import com.wali.live.watchsdk.component.presenter.GameDownloadPresenter;
@@ -38,6 +40,7 @@ import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.view.WidgetView;
 import com.wali.live.watchsdk.component.view.panel.GameDownloadPanel;
+import com.wali.live.watchsdk.envelope.SendEnvelopeFragment;
 import com.wali.live.watchsdk.watch.presenter.PanelContainerPresenter;
 
 import java.lang.ref.WeakReference;
@@ -184,6 +187,14 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             addComponentView(view, presenter);
         }
 
+        // 抢红包
+        {
+            RelativeLayout relativeLayout = $(R.id.envelope_view);
+            EnvelopePresenter presenter = new EnvelopePresenter(mComponentController, mComponentController.mMyRoomData);
+            presenter.setComponentView(relativeLayout);
+            addComponentView(presenter);
+        }
+
         if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
             // 运营位
             {
@@ -239,6 +250,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             super.registerAction();
             mComponentController.registerAction(WatchComponentController.MSG_SHOW_FOLLOW_GUIDE, this);
             mComponentController.registerAction(WatchComponentController.MSG_FOLLOW_COUNT_DOWN, this);
+            mComponentController.registerAction(WatchComponentController.MSG_SHOW_SEND_ENVELOPE, this);
         }
 
         @Override
@@ -294,7 +306,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             mInputAnimatorRef = new WeakReference<>(valueAnimator);
         }
 
-        private WeakReference<ValueAnimator> mGameAnimatorRef; // 游戏直播竖屏时，隐藏显示动画
+        private WeakReference<ValueAnimator> mGameAnimatorRef; // 游戏直播横屏时，隐藏显示动画
         private boolean mGameHide = false;
 
         /**
@@ -467,6 +479,10 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                     });
                 }
                 break;
+                case WatchComponentController.MSG_SHOW_SEND_ENVELOPE:
+                    SendEnvelopeFragment.openFragment((BaseActivity) mActivity,
+                            mComponentController.mMyRoomData);
+                    break;
                 default:
                     break;
             }

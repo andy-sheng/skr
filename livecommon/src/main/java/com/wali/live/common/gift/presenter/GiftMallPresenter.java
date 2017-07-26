@@ -607,9 +607,9 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                 .filter(new Func1<Gift, Boolean>() {
                     @Override
                     public Boolean call(Gift gift) {
-                        if (gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
-                            return false;
-                        }
+//                        if (gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
+//                            return false;
+//                        }
                         return true;
                     }
                 })
@@ -942,6 +942,12 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
     public void onActivityCreate() {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
+        }
+    }
+
+    public void showSendEnvelopeView() {
+        if (mComponentController != null) {
+            mComponentController.onEvent(ComponentController.MSG_SHOW_SEND_ENVELOPE);
         }
     }
 
