@@ -1,5 +1,6 @@
 package com.mi.live.data.query.mapper;
 
+import com.base.log.MyLog;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.query.model.LiveCover;
@@ -102,7 +103,9 @@ public class RoomDataMapper {
         mMyRoomData.setCanSpeak(!enterRoomInfo.isBanSpeak());
         mMyRoomData.setMsgRule(enterRoomInfo.getMessageRule());
 
-        mMyRoomData.setLiveType(enterRoomInfo.getType());
+        // TODO 暂时注掉，等以后处理再加回来，以外面进房间的liveType为准
+        // mMyRoomData.setLiveType(enterRoomInfo.getType());
+        MyLog.d("RoomDataMapper", "ignore liveType=" + enterRoomInfo.getType() + "@" + mMyRoomData.hashCode());
         mMyRoomData.setShareUrl(enterRoomInfo.getShareUrl());
 
         mMyRoomData.canUpdateLastUpdateViewerCount(enterRoomInfo.getEnterTs());

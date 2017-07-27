@@ -502,7 +502,6 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
 
         public RoomInfo toRoomInfo() {
             if (mRoomInfo == null) {
-                MyLog.d(TAG, "toRoomInfo liveType=" + mLiveType);
                 mRoomInfo = RoomInfo.Builder.newInstance(mUser.getUid(), mId, mVideoUrl)
                         .setAvatar(mUser.getAvatar())
                         .setCoverUrl(getImageUrl())

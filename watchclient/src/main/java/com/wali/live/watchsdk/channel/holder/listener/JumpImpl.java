@@ -41,7 +41,11 @@ public class JumpImpl implements JumpListener {
                     if (item instanceof ChannelLiveViewModel.LiveItem) {
                         ChannelLiveViewModel.LiveItem liveItem = (ChannelLiveViewModel.LiveItem) item;
                         if (liveItem.isEnterRoom()) {
-                            mRoomList.add(liveItem.toRoomInfo());
+                            RoomInfo roomInfo = liveItem.toRoomInfo();
+                            if (position % 2 == 0) {
+                                roomInfo.setLiveType(0);
+                            }
+                            mRoomList.add(roomInfo);
                             liveItem.setListPosition(position);
                             position++;
                         }

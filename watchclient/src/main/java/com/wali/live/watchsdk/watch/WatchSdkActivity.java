@@ -39,7 +39,6 @@ import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
 import com.mi.live.data.gift.model.GiftRecvModel;
-import com.mi.live.data.gift.redenvelope.RedEnvelopeModel;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
@@ -104,9 +103,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
 import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
 import static android.view.View.GONE;
@@ -1117,9 +1114,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
                 // 切换房间后，进入当前房间
                 mComponentController.switchRoom();
+                MyLog.d(TAG, "liveType=" + mMyRoomData.getLiveType() + " @" + mMyRoomData.hashCode());
+                mSdkView.postSwitch(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
+
                 // 重新获取当前房间信息，并重新进入房间
                 trySendDataWithServerOnce();
-                mSdkView.postSwitch(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
             }
         }
 

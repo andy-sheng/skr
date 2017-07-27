@@ -26,19 +26,34 @@ public class GameBarragePresenter extends ComponentPresenter<GameBarrageView.IVi
     public GameBarragePresenter(
             @NonNull IComponentController componentController) {
         super(componentController);
-        registerAction(WatchComponentController.MSG_SHOW_GAME_BARRAGE);
-        registerAction(WatchComponentController.MSG_HIDE_GAME_BARRAGE);
-        EventBus.getDefault().register(this);
+        startPresenter();
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
+        stopPresenter();
         if (mView != null) {
             mView.destroy();
+        }
+    }
+
+    @Override
+    public void startPresenter() {
+        super.startPresenter();
+        registerAction(WatchComponentController.MSG_SHOW_GAME_BARRAGE);
+        registerAction(WatchComponentController.MSG_HIDE_GAME_BARRAGE);
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
         }
     }
 

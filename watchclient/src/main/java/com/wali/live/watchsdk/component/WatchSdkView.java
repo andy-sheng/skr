@@ -57,7 +57,6 @@ import java.util.List;
  * @module 游戏直播页面
  */
 public class WatchSdkView extends BaseSdkView<WatchComponentController> {
-
     @NonNull
     protected final Action mAction = new Action();
 
@@ -78,6 +77,8 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
 
     protected WatchBottomButton mWatchBottomButton;
 
+    protected GameBarragePresenter mGameBarragePresenter;
+    protected GameInputPresenter mGameInputPresenter;
     protected GameDownloadPresenter mGameDownloadPresenter;
 
     protected ImagePagerView mPagerView;
@@ -105,48 +106,81 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
     public void setupSdkView(boolean isGameMode) {
         mIsGameMode = isGameMode;
         if (mIsGameMode) {
-            // 游戏直播横屏输入框
-            {
-                GameInputView view = new GameInputView(mActivity);
-                view.setId(R.id.game_input_view);
-                view.setVisibility(View.GONE);
-                GameInputPresenter presenter = new GameInputPresenter(mComponentController, mComponentController.mMyRoomData);
-                addComponentView(view, presenter);
-
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                addViewAboveAnchor(view, layoutParams, $(R.id.input_area_view));
-            }
-            // 游戏直播横屏弹幕
-            {
-                GameBarrageView view = new GameBarrageView(mActivity);
-                view.setId(R.id.game_barrage_view);
-                view.setVisibility(View.GONE);
-                GameBarragePresenter presenter = new GameBarragePresenter(mComponentController);
-                addComponentView(view, presenter);
-
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, DisplayUtils.dip2px(96.77f));
-                layoutParams.bottomMargin = DisplayUtils.dip2px(56f);
-                layoutParams.rightMargin = DisplayUtils.dip2px(56f);
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                addViewAboveAnchor(view, layoutParams, $(R.id.comment_rv));
-            }
-
             setupGameSdkView();
         }
         setupSdkView();
     }
 
     private void setupGameSdkView() {
+        // 游戏直播横屏弹幕
+        if (mGameBarragePresenter == null) {
+            GameBarrageView view = new GameBarrageView(mActivity);
+            view.setId(R.id.game_barrage_view);
+            view.setVisibility(View.GONE);
+            mGameBarragePresenter = new GameBarragePresenter(mComponentController);
+            addComponentView(view, mGameBarragePresenter);
+
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, DisplayUtils.dip2px(96.77f));
+            layoutParams.bottomMargin = DisplayUtils.dip2px(56f);
+            layoutParams.rightMargin = DisplayUtils.dip2px(56f);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            addViewAboveAnchor(view, layoutParams, $(R.id.comment_rv));
+        } else {
+            mGameBarragePresenter.startPresenter();
+        }
+
+        // 游戏直播横屏输入框
+        if (mGameInputPresenter == null) {
+            GameInputView view = new GameInputView(mActivity);
+            view.setId(R.id.game_input_view);
+            view.setVisibility(View.GONE);
+            mGameInputPresenter = new GameInputPresenter(mComponentController, mComponentController.mMyRoomData);
+            addComponentView(view, mGameInputPresenter);
+
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            addViewAboveAnchor(view, layoutParams, $(R.id.input_area_view));
+        } else {
+            mGameInputPresenter.startPresenter();
+        }
+
+        // 游戏直播下载输入框
         if (mGameDownloadPresenter == null) {
             GameDownloadPanel view = new GameDownloadPanel((RelativeLayout) $(R.id.main_act_container));
             mGameDownloadPresenter = new GameDownloadPresenter(mComponentController, mComponentController.mMyRoomData);
             addComponentView(view, mGameDownloadPresenter);
+        } else {
+            mGameDownloadPresenter.startPresenter();
         }
+
+        if (mGameHideSet.size() == 0) {
+            addViewToSet(new int[]{
+                    R.id.watch_top_info_view,
+                    R.id.bottom_button_view,
+                    R.id.game_barrage_view,
+                    R.id.game_input_view,
+                    R.id.close_btn,
+                    R.id.widget_view
+            }, mGameHideSet);
+        }
+    }
+
+    private void cancelGameSdkView() {
+        if (mGameBarragePresenter != null) {
+            mGameBarragePresenter.stopPresenter();
+        }
+        if (mGameInputPresenter != null) {
+            mGameInputPresenter.stopPresenter();
+        }
+        if (mGameDownloadPresenter != null) {
+            mGameDownloadPresenter.stopPresenter();
+        }
+
+        mGameHideSet.clear();
     }
 
     @Override
@@ -276,17 +310,6 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 R.id.close_btn,
         }, mVerticalMoveSet);
 
-        if (mIsGameMode) {
-            addViewToSet(new int[]{
-                    R.id.watch_top_info_view,
-                    R.id.bottom_button_view,
-                    R.id.game_barrage_view,
-                    R.id.game_input_view,
-                    R.id.close_btn,
-                    R.id.widget_view
-            }, mGameHideSet);
-        }
-
         // 滑动
         {
             View view = $(R.id.touch_view);
@@ -331,11 +354,15 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
     }
 
     public void postSwitch(boolean isGameMode) {
-        mIsGameMode = isGameMode;
-        if (mIsGameMode) {
-            setupGameSdkView();
+        if (mIsGameMode != isGameMode) {
+            mIsGameMode = isGameMode;
+            if (mIsGameMode) {
+                setupGameSdkView();
+            } else {
+                cancelGameSdkView();
+            }
         }
-
+        MyLog.d(TAG, "liveType=" + mComponentController.mMyRoomData.getLiveType() + "@" + mComponentController.mMyRoomData.hashCode());
         mWatchBottomButton.postSwitch(mIsGameMode);
     }
 
