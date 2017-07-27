@@ -63,11 +63,9 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
     private final List<View> mVerticalMoveSet = new ArrayList(0);
     private final List<View> mGameHideSet = new ArrayList(0);
 
-    @Nullable
     protected View mTopInfoView;
-    @Nullable
     protected View mLiveCommentView;
-    @Nullable
+    protected View mBarrageBtnView;
     protected GiftContinueViewGroup mGiftContinueViewGroup;
     protected FollowGuideView mFollowGuideView;
     protected FollowGuidePresenter mFollowGuidePresenter;
@@ -183,6 +181,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             }
             BarrageBtnPresenter presenter = new BarrageBtnPresenter(mComponentController);
             addComponentView(view, presenter);
+            mBarrageBtnView = view;
         }
 
         // 底部按钮
@@ -310,7 +309,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                         setVisibility(mTopInfoView, View.GONE);
                     } else {
                         setAlpha(mTopInfoView, 1.0f);
-                        if (mIsLandscape && !mIsGameMode) {
+                        if (/*mIsLandscape && */!mIsGameMode) {
                             setVisibility(mLiveCommentView, View.VISIBLE);
                         }
                     }
@@ -416,6 +415,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                             }
                         }
                         setVisibility(mLiveCommentView, View.VISIBLE);
+                        setVisibility(mBarrageBtnView, View.VISIBLE);
                         mComponentController.onEvent(ComponentController.MSG_HIDE_GAME_INPUT);
                     }
                     return true;
@@ -425,6 +425,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                     if (mIsGameMode) { // 游戏直播横屏不需左右滑
                         mComponentController.onEvent(ComponentController.MSG_DISABLE_MOVE_VIEW);
                         setVisibility(mLiveCommentView, View.INVISIBLE);
+                        setVisibility(mBarrageBtnView, View.INVISIBLE);
                         mComponentController.onEvent(ComponentController.MSG_SHOW_GAME_INPUT);
                     }
                     return true;

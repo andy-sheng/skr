@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/live_bg_intelligent_barrage">
 
     <TextView
-        android:textColorHint="@color/color_white_trans_50"
         android:id="@+id/barrage_btn_view_txt"
         android:layout_width="@dimen/view_dimen_480"
         android:layout_height="@dimen/view_dimen_120"
-        android:layout_gravity="top|end"
-        android:layout_marginStart="@dimen/view_dimen_10"
+        android:layout_gravity="top|right"
+        android:layout_marginLeft="@dimen/view_dimen_10"
         android:gravity="left|center_vertical"
-        android:paddingStart="@dimen/margin_15"
-        android:paddingEnd="@dimen/margin_100"
         android:maxLines="1"
-        android:textColor="@color/white"
+        android:paddingLeft="@dimen/margin_15"
+        android:paddingRight="@dimen/margin_100"
         android:text=""
+        android:textColor="@color/white"
+        android:textColorHint="@color/color_white_trans_50"
         android:textSize="@dimen/text_size_44" />
 
     <ImageView
-        android:layout_marginRight="@dimen/margin_10"
         android:id="@+id/barrage_btn_view_img"
         android:layout_width="@dimen/view_dimen_100"
         android:layout_height="@dimen/view_dimen_100"
+        android:layout_gravity="right|center"
+        android:layout_marginRight="@dimen/margin_10"
         android:padding="@dimen/margin_15"
-        android:layout_gravity="end|center_horizontal"
-        android:src="@drawable/bg_send_smart_barrage"/>
+        android:src="@drawable/bg_send_smart_barrage" />
 
-</FrameLayout>
+</merge>
