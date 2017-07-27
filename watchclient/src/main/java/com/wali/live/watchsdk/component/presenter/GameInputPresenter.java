@@ -38,16 +38,31 @@ public class GameInputPresenter extends ComponentPresenter<GameInputView.IView>
             @NonNull RoomBaseDataModel myRoomData) {
         super(componentController);
         mMyRoomData = myRoomData;
-        registerAction(WatchComponentController.MSG_ON_BACK_PRESSED);
-        registerAction(WatchComponentController.MSG_HIDE_INPUT_VIEW);
-        registerAction(WatchComponentController.MSG_SHOW_GAME_INPUT);
-        registerAction(WatchComponentController.MSG_HIDE_GAME_INPUT);
-        EventBus.getDefault().register(this);
+        startPresenter();
     }
 
     @Override
     public void destroy() {
         super.destroy();
+        stopPresenter();
+    }
+
+    @Override
+    public void startPresenter() {
+        super.startPresenter();
+        registerAction(WatchComponentController.MSG_ON_BACK_PRESSED);
+        registerAction(WatchComponentController.MSG_HIDE_INPUT_VIEW);
+        registerAction(WatchComponentController.MSG_SHOW_GAME_INPUT);
+        registerAction(WatchComponentController.MSG_HIDE_GAME_INPUT);
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }

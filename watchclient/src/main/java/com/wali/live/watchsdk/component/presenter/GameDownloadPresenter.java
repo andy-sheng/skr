@@ -65,9 +65,7 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
                                  @NonNull RoomBaseDataModel myRoomData) {
         super(componentController);
         mMyRoomData = myRoomData;
-        registerAction(ComponentController.MSG_ON_LIVE_SUCCESS);
-        registerAction(ComponentController.MSG_SHOW_GAME_DOWNLOAD);
-        registerAction(ComponentController.MSG_ON_BACK_PRESSED);
+        startPresenter();
     }
 
     private void getGameInfo() {
@@ -271,7 +269,16 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
     @Override
     public void destroy() {
         super.destroy();
+        stopPresenter();
         mView.destroy();
+    }
+
+    @Override
+    public void startPresenter() {
+        super.startPresenter();
+        registerAction(ComponentController.MSG_ON_LIVE_SUCCESS);
+        registerAction(ComponentController.MSG_SHOW_GAME_DOWNLOAD);
+        registerAction(ComponentController.MSG_ON_BACK_PRESSED);
     }
 
     @Override
@@ -300,7 +307,7 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
                 case ComponentController.MSG_ON_LIVE_SUCCESS:
                     if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
                         int liveType = mMyRoomData.getLiveType();
-                        MyLog.d(TAG, "live type=" + liveType);
+                        MyLog.d(TAG, "liveType=" + liveType + " @" + mMyRoomData.hashCode());
                         if (liveType == LiveManager.TYPE_LIVE_GAME) {
                             getGameInfo();
                         }
