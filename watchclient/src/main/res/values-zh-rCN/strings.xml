@@ -150,4 +150,7 @@
     <string name="send_redpacket">发红包</string>
     <string name="send_red_btn">发送红包</string>
     <string name="buy_diamond">充值 ></string>
+    <plurals name="endlive_next_room_hint">
+        <item quantity="other">%1$d秒后自动进入下一场直播...</item>
+    </plurals>
 </resources>

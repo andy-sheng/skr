@@ -160,7 +160,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     private RoomSystemMsgPresenter mRoomSystemMsgPresenter;
     private VideoShowPresenter mVideoShowPresenter;
 
-    private List<RoomInfo> mRoomInfoList;
+    private ArrayList<RoomInfo> mRoomInfoList;
     private int mRoomInfoPosition;
 
     protected CustomHandlerThread mHandlerThread = new CustomHandlerThread("WatchActivity") {
@@ -547,9 +547,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                     mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getAvatarTs(),
                     mMyRoomData.getUser(), mMyRoomData.getViewerCnt(), mMyRoomData.getLiveType(),
                     mGiftMallPresenter.getSpendTicket(), System.currentTimeMillis() - mMyRoomData.getEnterRoomTime(), type,
-                    mMyRoomData.getNickName(), mMyRoomData.getEnableShare(), mMyRoomData.getShareUrl(),
-                    mMyRoomData.getLiveTitle(), mMyRoomData.getCoverUrl(),
-                    TextUtils.isEmpty(mMyRoomData.getCity()) ? "" : mMyRoomData.getCity());
+                    mMyRoomData.getNickName(), mRoomInfoList, mRoomInfoPosition);
         }
     }
 

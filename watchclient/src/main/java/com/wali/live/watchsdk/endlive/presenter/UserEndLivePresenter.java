@@ -12,8 +12,12 @@ import com.mi.live.data.user.User;
 import com.wali.live.utils.relation.RelationUtils;
 import com.wali.live.watchsdk.R;
 
+import java.util.concurrent.TimeUnit;
+
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -28,7 +32,8 @@ public class UserEndLivePresenter extends RxLifeCyclePresenter {
     @Nullable
     protected User mUser;
     @Nullable
-    IUserEndLiveView mView;
+    protected IUserEndLiveView mView;
+    protected Subscription mSubscription;
 
     public UserEndLivePresenter(User user, IUserEndLiveView view) {
         mUser = user;
@@ -93,7 +98,52 @@ public class UserEndLivePresenter extends RxLifeCyclePresenter {
                 });
     }
 
+    public void nextRoom(int time) {
+        if (time < 0) {
+            time = 0;
+        }
+        final int countTime = time;
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
+        mSubscription = Observable.interval(0, 1, TimeUnit.SECONDS)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .map(new Func1<Long, Integer>() {
+                    @Override
+                    public Integer call(Long t) {
+                        return countTime - t.intValue();
+                    }
+                })
+                .take(countTime + 1)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer t) {
+                        if (mView != null) {
+                            mView.onCountDown(t);
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, "countDown failed=" + throwable);
+                    }
+                }, new Action0() {
+                    @Override
+                    public void call() {
+                        //onComplete
+                        if (mView != null) {
+                            mView.onNextRoom();
+                        }
+                    }
+                });
+    }
+
     public interface IUserEndLiveView {
         void onFollowRefresh();
+
+        void onCountDown(int time);
+
+        void onNextRoom();
     }
 }

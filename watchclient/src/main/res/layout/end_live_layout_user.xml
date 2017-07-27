@@ -192,30 +192,24 @@
         android:textSize="@dimen/text_size_40"/>
 
     <LinearLayout
-        android:id="@+id/share_container"
+        android:id="@+id/next_room_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/middle_container"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_90"
         android:layout_marginTop="26dp"
         android:orientation="horizontal"
         android:padding="8dp">
 
-        <ImageView
-            android:id="@+id/share_friends_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="7.67dp"
-            android:src="@drawable/bg_live_share_selector"/>
-
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/next_room_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/end_live_share"
-            android:textColor="@color/color_white"
-            android:textSize="14dp"/>
+            android:text="跳转到下一个房间"
+            android:textColor="@color/color_white_trans_50"
+            android:textSize="@dimen/text_size_36"/>
+
     </LinearLayout>
 
     <FrameLayout

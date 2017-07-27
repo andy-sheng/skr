@@ -154,4 +154,8 @@
     <string name="send_redpacket">Send red envelope</string>
     <string name="send_red_btn">Send red envelope</string>
     <string name="buy_diamond">Top-up&gt;</string>
+    <plurals name="endlive_next_room_hint">
+        <item quantity="one">Switching to the next session in %1$ds…</item>
+        <item quantity="other">Switching to the next session in %1$ds…</item>
+    </plurals>
 </resources>

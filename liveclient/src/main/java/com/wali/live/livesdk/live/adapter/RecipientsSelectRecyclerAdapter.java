@@ -54,10 +54,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import rx.Observable;
-import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
@@ -471,12 +468,12 @@ public class RecipientsSelectRecyclerAdapter extends RecyclerView.Adapter<Recycl
                                 KeyboardUtils.hideKeyboard(mFragment.getActivity());
                             }
                             if (selList.contains(item.userId)) {
-                                EventBus.getDefault().post(new EventClass.ChangeBootomInvitee(item.userId, item.avatar, false));
+                                EventBus.getDefault().post(new EventClass.ChangeBottomInvitee(item.userId, item.avatar, false));
                                 selList.remove(item.userId);
                                 holder.checkbox.setChecked(false);
                             } else {
                                 if (selList.size() < selMaxCnt) {
-                                    EventBus.getDefault().post(new EventClass.ChangeBootomInvitee(item.userId, item.avatar, true));
+                                    EventBus.getDefault().post(new EventClass.ChangeBottomInvitee(item.userId, item.avatar, true));
                                     selList.add(item.userId);
                                     holder.checkbox.setChecked(true);
                                 } else {
