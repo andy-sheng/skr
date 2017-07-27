@@ -26,6 +26,8 @@ public class JumpImpl implements JumpListener {
     private WeakReference<Activity> mActRef;
     private ArrayList<RoomInfo> mRoomList;
 
+    // private RoomInfo mTempRoom;
+
     public JumpImpl(Activity activity) {
         mActRef = new WeakReference(activity);
         mRoomList = new ArrayList();
@@ -42,9 +44,6 @@ public class JumpImpl implements JumpListener {
                         ChannelLiveViewModel.LiveItem liveItem = (ChannelLiveViewModel.LiveItem) item;
                         if (liveItem.isEnterRoom()) {
                             RoomInfo roomInfo = liveItem.toRoomInfo();
-                            if (position % 2 == 0) {
-                                roomInfo.setLiveType(0);
-                            }
                             mRoomList.add(roomInfo);
                             liveItem.setListPosition(position);
                             position++;
@@ -53,6 +52,7 @@ public class JumpImpl implements JumpListener {
                 }
             }
         }
+        // mTempRoom = RoomInfo.Builder.newInstance(21050016, "21050016_1482903828", null).build();
     }
 
     @Override

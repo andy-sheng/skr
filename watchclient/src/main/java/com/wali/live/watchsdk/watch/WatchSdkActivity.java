@@ -58,6 +58,7 @@ import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.event.EventClass;
+import com.wali.live.event.EventEmitter;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.receiver.PhoneStateReceiver;
@@ -542,12 +543,14 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         MyLog.w(TAG, "showEndLiveFragment viewerCnt = " + mMyRoomData.getViewerCnt());
         MyLog.w(TAG, "FollowOrUnfollowEvent showEndLiveFragment isFocused" + mMyRoomData.getUser().isFocused());
         KeyboardUtils.hideKeyboardImmediately(this);
+
         if (userEndLiveFragment == null) {
+            boolean hasRoomList = mComponentController.removeCurrentRoom();
             this.userEndLiveFragment = UserEndLiveFragment.openFragment(this,
                     mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getAvatarTs(),
                     mMyRoomData.getUser(), mMyRoomData.getViewerCnt(), mMyRoomData.getLiveType(),
                     mGiftMallPresenter.getSpendTicket(), System.currentTimeMillis() - mMyRoomData.getEnterRoomTime(), type,
-                    mMyRoomData.getNickName(), mRoomInfoList, mRoomInfoPosition);
+                    mMyRoomData.getNickName(), hasRoomList);
         }
     }
 
@@ -703,6 +706,15 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     protected void onEventShare(EventClass.ShareEvent event) {
         if (event != null && event.state == EventClass.ShareEvent.TYPE_SUCCESS) {
             mRoomChatMsgManager.sendShareBarrageMessageAsync(mMyRoomData.getRoomId(), mMyRoomData.getUid());
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventEmitter.EnterRoomList event) {
+        if (event != null) {
+            MyLog.d(TAG, "enterRoomList");
+            mComponentController.enterRoomList(this);
+            finish();
         }
     }
 

@@ -1,7 +1,6 @@
 package com.wali.live.watchsdk.endlive;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.text.SpannableStringBuilder;
@@ -28,18 +27,14 @@ import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.user.User;
+import com.wali.live.event.EventEmitter;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.endlive.presenter.UserEndLivePresenter;
-import com.wali.live.watchsdk.watch.WatchSdkActivity;
-import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @module 新版直播结束页面 （用户界面）
@@ -57,8 +52,7 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
     private static final String EXTRA_TICKET = "extra_ticket";
     private static final String EXTRA_ENTER_TYPE = "extra_enter_type";
     private static final String EXTRA_ENTER_NICK_NAME = "extra_enter_nick_name";
-    private static final String EXTRA_ROOMINFO_LIST = "extra_room_info_list";
-    private static final String EXTRA_ROOMINFO_POSITION = "extra_roominfo_position";
+    private static final String EXTRA_HAS_ROOM_LIST = "extra_has_room_list";
 
     public static final String ENTER_TYPE_LIVE_END = "enter_type_live_end";     //进入房间后，正常直播结束
     public static final String ENTER_TYPE_LATE = "enter_type_late";             //进入房间时 已结束
@@ -95,9 +89,10 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
     private String mEndType;
     private User mOwner;
     private int mViewerCnt;
-    private int mRoomPosition;
-    private ArrayList<RoomInfo> mRoomInfoList;
+    private boolean mHasRoomList;
+
     private UserEndLivePresenter mUserEndLivePresenter;
+
     private UserEndLivePresenter.IUserEndLiveView mUserEndLiveView = new UserEndLivePresenter.IUserEndLiveView() {
         @Override
         public void onFollowRefresh() {
@@ -118,7 +113,8 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
 
         @Override
         public void onNextRoom() {
-            WatchSdkActivity.openActivity(getActivity(), mRoomInfoList, mRoomPosition);
+            MyLog.d(TAG, "onNextRoom");
+            EventEmitter.postEnterRoomList();
         }
     };
 
@@ -182,8 +178,7 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
             mEndType = arguments.getString(EXTRA_ENTER_TYPE, "");
             mViewerCnt = arguments.getInt(EXTRA_VIEWER, 0);
             mLiveType = arguments.getInt(EXTRA_LIVE_TYPE, 0);
-            mRoomInfoList = arguments.getParcelableArrayList(EXTRA_ROOMINFO_LIST);
-            mRoomPosition = arguments.getInt(EXTRA_ROOMINFO_POSITION);
+            mHasRoomList = arguments.getBoolean(EXTRA_HAS_ROOM_LIST, false);
         }
     }
 
@@ -259,11 +254,12 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
         } else {
             followResult(mOwner.isFocused());
         }
-        if (mRoomInfoList == null || mRoomInfoList.size() <= 1) {
-            mNextRoomContainer.setVisibility(View.GONE);
-        } else {
+
+        if (mHasRoomList) {
             mNextRoomContainer.setVisibility(View.VISIBLE);
             mUserEndLivePresenter.nextRoom(COUNT_DOWN_TIME);
+        } else {
+            mNextRoomContainer.setVisibility(View.GONE);
         }
     }
 
@@ -365,20 +361,20 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
      */
     public static UserEndLiveFragment openFragment(FragmentActivity activity, long ownerId, String roomId,
                                                    long avatarTs, User owner, int viewer, int liveType, int ticket,
-                                                   long time, String type, String nickName, ArrayList<RoomInfo> roomInfoList, int position) {
+                                                   long time, String type, String nickName, boolean hasRoomList) {
         if (activity == null || activity.isFinishing()) {
             MyLog.d(TAG, "openFragment activity state is illegal");
             return null;
         }
         Bundle bundle = getBundle(ownerId, roomId, avatarTs, owner, viewer,
-                liveType, ticket, time, type, nickName, roomInfoList, position);
+                liveType, ticket, time, type, nickName, hasRoomList);
         UserEndLiveFragment userEndLiveFragment = (UserEndLiveFragment) FragmentNaviUtils.addFragment(activity, R.id.main_act_container,
                 UserEndLiveFragment.class, bundle, true, false, true);
         return userEndLiveFragment;
     }
 
     public static Bundle getBundle(long ownerId, String roomId, long avatarTs, User owner, int viewer, int liveType,
-                                   int ticket, long time, String type, String nickName, ArrayList<RoomInfo> roomInfoList, int position) {
+                                   int ticket, long time, String type, String nickName, boolean hasRoomList) {
         Bundle bundle = new Bundle();
         bundle.putLong(EXTRA_OWNER_ID, ownerId);
         bundle.putString(EXTRA_ROOM_ID, roomId);
@@ -391,8 +387,7 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
         bundle.putLong(EXTRA_TIME, time);
         bundle.putString(EXTRA_ENTER_TYPE, type);
         bundle.putString(EXTRA_ENTER_NICK_NAME, nickName);
-        bundle.putParcelableArrayList(EXTRA_ROOMINFO_LIST, roomInfoList);
-        bundle.putInt(EXTRA_ROOMINFO_POSITION, position);
+        bundle.putBoolean(EXTRA_HAS_ROOM_LIST, hasRoomList);
         return bundle;
     }
 }
