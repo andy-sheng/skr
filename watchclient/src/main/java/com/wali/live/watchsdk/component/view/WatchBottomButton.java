@@ -3,7 +3,6 @@ package com.wali.live.watchsdk.component.view;
 import android.animation.ValueAnimator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
@@ -13,19 +12,12 @@ import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.mi.live.data.account.channel.HostChannelManager;
-import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.component.view.BaseBottomButton;
 import com.wali.live.component.view.IOrientationListener;
 import com.wali.live.component.view.IViewProxy;
-import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
-
-import static com.wali.live.statistics.StatisticsKey.AC_APP;
-import static com.wali.live.statistics.StatisticsKey.KEY;
-import static com.wali.live.statistics.StatisticsKey.TIMES;
 
 /**
  * Created by yangli on 16-8-29.
@@ -114,8 +106,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             return;
         }
         mGameBtn = new SimpleDraweeView(getContext());
-        addCreatedView(mGameBtn, R.id.game_btn);
-        //addCreatedView(mGameBtn, mCommentBtn.getWidth(), mCommentBtn.getHeight(), R.id.game_btn);
+        // addCreatedView(mGameBtn, R.id.game_btn);
+        addCreatedView(mGameBtn, mGiftBtn.getWidth(), mGiftBtn.getHeight(), R.id.game_btn);
 
         // ImageFactory.newResImage(R.drawable.live_icon_game_btn).build();
         BaseImage image = ImageFactory.newHttpImage(gameModel.getIconUrl()).setCornerRadius(10).build();
