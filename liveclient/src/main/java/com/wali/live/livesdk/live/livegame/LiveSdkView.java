@@ -19,6 +19,7 @@ import com.wali.live.livesdk.live.livegame.presenter.BottomButtonPresenter;
 import com.wali.live.livesdk.live.livegame.presenter.PanelContainerPresenter;
 import com.wali.live.livesdk.live.livegame.view.LiveBottomButton;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
+import com.wali.live.watchsdk.component.presenter.EnvelopePresenter;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
@@ -120,6 +121,14 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                             mComponentController.mMyRoomData,
                             mComponentController.mGameLivePresenter);
             addComponentView(view, presenter);
+        }
+
+        // 抢红包
+        {
+            RelativeLayout relativeLayout = $(com.wali.live.watchsdk.R.id.envelope_view);
+            EnvelopePresenter presenter = new EnvelopePresenter(mComponentController, mComponentController.mMyRoomData);
+            presenter.setComponentView(relativeLayout);
+            addComponentView(presenter);
         }
 
         // 运营位

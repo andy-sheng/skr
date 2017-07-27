@@ -140,4 +140,11 @@
         android:background="@color/color_black_trans_50"
         android:visibility="gone"/>
 
+    <!--红包容器-->
+    <RelativeLayout
+        android:id="@+id/envelope_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
 </RelativeLayout>

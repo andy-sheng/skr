@@ -614,9 +614,9 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                 .filter(new Func1<Gift, Boolean>() {
                     @Override
                     public Boolean call(Gift gift) {
-                        if (gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
-                            return false;
-                        }
+//                        if (gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
+//                            return false;
+//                        }
                         return true;
                     }
                 })
@@ -955,6 +955,12 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
     //支持上下滑動的時候重置接口需要調用
     public void resetTicket() {
         mSpendTicket = 0;
+    }
+
+    public void showSendEnvelopeView() {
+        if (mComponentController != null) {
+            mComponentController.onEvent(ComponentController.MSG_SHOW_SEND_ENVELOPE);
+        }
     }
 
     public static class GiftWithCard {

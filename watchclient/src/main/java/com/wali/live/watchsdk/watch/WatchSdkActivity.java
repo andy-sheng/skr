@@ -38,6 +38,7 @@ import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
 import com.mi.live.data.gift.model.GiftRecvModel;
+import com.mi.live.data.gift.redenvelope.RedEnvelopeModel;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
@@ -101,7 +102,9 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import rx.Observable;
 import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
 import static android.view.View.GONE;
@@ -432,6 +435,31 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     protected void onResume() {
         super.onResume();
         KeyboardUtils.hideKeyboard(this);
+
+//        // TEST
+//        Observable.interval(5, 5, TimeUnit.SECONDS)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .take(3)
+//                .subscribe(new Action1<Long>() {
+//                    @Override
+//                    public void call(Long aLong) {
+//                        RedEnvelopeModel redEnvelopeModel = new RedEnvelopeModel();
+//                        redEnvelopeModel.setRedEnvelopeId("" + aLong);
+//                        redEnvelopeModel.setUserId(100067);
+//                        redEnvelopeModel.setNickName("biglee");
+//                        redEnvelopeModel.setAvatarTimestamp(0);
+//                        redEnvelopeModel.setLevel(1);
+//                        redEnvelopeModel.setRoomId("123456789");
+//                        redEnvelopeModel.setMsg("红包测试");
+//                        redEnvelopeModel.setGemCnt((int)(long)aLong + 1);
+//                        redEnvelopeModel.setType(((int)(long)aLong % 3) + 1);
+//                        EventBus.getDefault().post(new GiftEventClass.GiftAttrMessage.RedEnvelope(redEnvelopeModel));
+//                    }
+//                }, new Action1<Throwable>() {
+//                    @Override
+//                    public void call(Throwable throwable) {
+//                    }
+//                });
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.mi.live.data.event.HotSpotEvent;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.gift.model.GiftType;
 import com.mi.live.data.gift.model.giftEntity.BigPackOfGift;
+import com.mi.live.data.gift.redenvelope.RedEnvelopeModel;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.repository.GiftRepository;
 
@@ -81,17 +82,17 @@ public class GiftPushMsgProcesser {
      * @param ext
      */
     public static void processRedEnvelopGiftPush(BarrageMsg.RedEnvelopMsgExt ext) {
-//        com.wali.live.redpacket.model.RedEnvelopeModel redEnvelopeModel = new com.wali.live.redpacket.model.RedEnvelopeModel();
-//        redEnvelopeModel.setRedEnvelopeId(ext.redEnvolopId);
-//        redEnvelopeModel.setUserId(ext.userId);
-//        redEnvelopeModel.setNickName(ext.nickName);
-//        redEnvelopeModel.setAvatarTimestamp(ext.avatar);
-//        redEnvelopeModel.setLevel(ext.level);
-//        redEnvelopeModel.setRoomId(ext.roomId);
-//        redEnvelopeModel.setMsg(ext.msg);
-//        redEnvelopeModel.setGemCnt(ext.gemCnt);
-//        redEnvelopeModel.setType(ext.type);
-//        EventBus.getDefault().post(new EventClass.GiftAttrMessage.RedBag(redEnvelopeModel));
+        RedEnvelopeModel redEnvelopeModel = new RedEnvelopeModel();
+        redEnvelopeModel.setRedEnvelopeId(ext.redEnvolopId);
+        redEnvelopeModel.setUserId(ext.userId);
+        redEnvelopeModel.setNickName(ext.nickName);
+        redEnvelopeModel.setAvatarTimestamp(ext.avatar);
+        redEnvelopeModel.setLevel(ext.level);
+        redEnvelopeModel.setRoomId(ext.roomId);
+        redEnvelopeModel.setMsg(ext.msg);
+        redEnvelopeModel.setGemCnt(ext.gemCnt);
+        redEnvelopeModel.setType(ext.type);
+        EventBus.getDefault().post(new GiftEventClass.GiftAttrMessage.RedEnvelope(redEnvelopeModel));
     }
 
     /**
@@ -103,9 +104,9 @@ public class GiftPushMsgProcesser {
         //验证一下是否重复
         // 根据礼物类型填充消息类型
         int gifType = model.getGifType();
-        if(model.getGifType() == GiftType.PRIVILEGE_GIFT) {
+        if (model.getGifType() == GiftType.PRIVILEGE_GIFT) {
             BarrageMsg.GiftMsgExt ext = (BarrageMsg.GiftMsgExt) msg.getMsgExt();
-            if(ext.isPrivilegeGift()) {
+            if (ext.isPrivilegeGift()) {
                 gifType = model.getGiftOriginType();
             }
         }
@@ -185,8 +186,8 @@ public class GiftPushMsgProcesser {
                 //大礼包
                 List<BarrageMsg> barrageMsgList = GiftRepository.getBigPackOfGiftBarrageMsgList((BigPackOfGift) model.getGift(), msg);
                 if (barrageMsgList != null) {
-                    MyLog.d(TAG,"GiftBigPackOfGift:other"+barrageMsgList.size());
-                    for(BarrageMsg barrageMsg: barrageMsgList) {
+                    MyLog.d(TAG, "GiftBigPackOfGift:other" + barrageMsgList.size());
+                    for (BarrageMsg barrageMsg : barrageMsgList) {
                         BarrageMsg.GiftMsgExt ext = (BarrageMsg.GiftMsgExt) barrageMsg.getMsgExt();
                         GiftRepository.processGiftMsgByPushWay(barrageMsg, ext, barrageMsg.getRoomId());
                     }

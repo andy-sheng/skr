@@ -118,6 +118,7 @@
     <string name="anchor_rank">主播勢力日排行</string>
     <string name="michannel_default_title">其他遊戲</string>
     <string name="michannel_type_live">直播</string>
+
     <string name="live_end_time_words">感謝寶寶陪伴</string>
     <string name="mi_live_accounts">小米直播帳號</string>
     <string name="end_live_share">把精彩內容分享給小夥伴</string>
@@ -128,4 +129,25 @@
     <string name="live_end_time_second">%s秒</string>
     <string name="endlive_share_user_hint">謝謝你的支援與守護，有你在，很幸福！</string>
     <string name="endlive_user_ticket">並送我%1$s星票</string>
+
+    <string name="money_coming">土豪紅包來了</string>
+    <string name="grap_hongbao">搶紅包</string>
+    <string name="already_in_pocket">已存入帳戶</string>
+    <string name="look_other_money"><![CDATA[查看大家手氣 >]]></string>
+    <string name="your_hand_is_too_slow">手慢了,紅包已被搶完</string>
+    <string name="anchor_text">主播</string>
+    <string name="top_50">Top 50</string>
+    <string name="red_envelope_best_luck">手氣超棒!!!</string>
+    <string name="net_is_busy_tip">網路繁忙，請稍後再試</string>
+    <string name="red_result_msg">%s的紅包</string>
+    <string name="gold_count">金鑽:%1$d</string>
+    <string name="silver_count">銀鑽:%1$d</string>
+    <string name="bottom_tip_send_red">未領取的紅包，將於24小時後自動退回</string>
+    <string name="money_not_enough_tip">餘額不足啦，要加值才能繼續發送紅包哦，是否去加值</string>
+    <string name="create_red_envelop_failed_error">網路出錯啦</string>
+    <string name="please_select_redpacket">請選擇紅包金額</string>
+    <string name="red_packet_instruction">紅包說明 &gt;</string>
+    <string name="send_redpacket">發放紅包</string>
+    <string name="send_red_btn">發送紅包</string>
+    <string name="buy_diamond">加值 &gt;</string>
 </resources>

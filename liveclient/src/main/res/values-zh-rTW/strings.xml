@@ -199,4 +199,5 @@
     <string name="endlive_top_three">本場貢獻前三甲</string>
     <string name="endlive_viewer">累計觀看</string>
     <string name="live_ended_enter_owner_chat_room">進入主播粉絲群</string>
+    <string name="red_packet">紅包</string>
 </resources>

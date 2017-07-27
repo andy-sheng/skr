@@ -203,4 +203,5 @@
         <item quantity="one">You\'ve had %d session already!</item>
         <item quantity="other">You\'ve had %d sessions already!</item>
     </plurals>
+    <string name="red_packet">Red envelope</string>
 </resources>
