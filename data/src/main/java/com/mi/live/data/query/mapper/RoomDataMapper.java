@@ -87,6 +87,7 @@ public class RoomDataMapper {
             enterRoomInfo.setShop(rsp.getIsShop());
             enterRoomInfo.setHideGift(rsp.getHideGift());
             enterRoomInfo.setSupportMgicFace(rsp.getSupportMagicFace());
+            enterRoomInfo.setEnterTs(System.currentTimeMillis());
         }
         return enterRoomInfo;
     }
@@ -117,5 +118,6 @@ public class RoomDataMapper {
             mMyRoomData.setCity(enterRoomInfo.getLocation().getCity());
         }
         mMyRoomData.setSupportMagicFace(enterRoomInfo.isSupportMgicFace());
+        mMyRoomData.setEnterRoomTime(enterRoomInfo.getEnterTs());
     }
 }

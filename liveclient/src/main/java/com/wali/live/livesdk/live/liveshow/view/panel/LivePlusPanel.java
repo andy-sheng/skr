@@ -54,6 +54,8 @@ public class LivePlusPanel extends BaseBottomPanel<RecyclerView, RelativeLayout>
             mPresenter.showAtmosphereView();
         } else if (id == R.id.comment_btn) {
             mPresenter.showInputView();
+        } else if (id == R.id.envelope_btn) {
+            mPresenter.showEnvelopeView();
         }
     }
 
@@ -117,6 +119,11 @@ public class LivePlusPanel extends BaseBottomPanel<RecyclerView, RelativeLayout>
          * 显示输入界面
          */
         void showInputView();
+
+        /**
+         * 显示发送包界面
+         */
+        void showEnvelopeView();
 
         /**
          * 同步直播加按钮可见性配置

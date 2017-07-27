@@ -120,6 +120,38 @@
     <string name="install_mi_video">Install Mi video first</string>
     <string name="all_people">All</string>
     <string name="game_guide_close_tip">close after %d s</string>
-    <string name="game_guide_normal_tip">Follow the hosts to view their latest updates</string>
+    <string name="follow_normal_tip">Follow the hosts to view their latest updates</string>
     <string name="live_location_unknown">Unknown planet</string>
+
+    <string name="live_end_time_words">Thank you for watching my live stream!</string>
+    <string name="mi_live_accounts">Mi Live ID</string>
+    <string name="live_end_replay_hint">Thanks for watching! Come back soon!</string>
+    <string name="live_end_time_hours">%sh</string>
+    <string name="live_end_time_minute">%sm</string>
+    <string name="live_end_time_second">%ss</string>
+    <string name="endlive_user_ticket">%1$s coins you gave me are most welcome!</string>
+    <string name="endlive_share_user_hint">Thanks for your support!</string>
+    <string name="live_end_hint">This live stream has ended.</string>
+    <string name="end_live_share">Share with friends</string>
+
+    <string name="money_coming">Red envelope</string>
+    <string name="grap_hongbao">Open</string>
+    <string name="already_in_pocket">Deposited successfully</string>
+    <string name="look_other_money"><![CDATA[View details >]]></string>
+    <string name="your_hand_is_too_slow">Better luck next time!</string>
+    <string name="anchor_text">Hosts</string>
+    <string name="top_50">Top 50</string>
+    <string name="red_envelope_best_luck">Winner</string>
+    <string name="net_is_busy_tip">Network error, try again later</string>
+    <string name="red_result_msg">%s\'s red envelope</string>
+    <string name="gold_count">Gold gems: %1$d</string>
+    <string name="silver_count">Silver gems: %1$d</string>
+    <string name="bottom_tip_send_red">Expired red envelopes will be refunded in 24h</string>
+    <string name="money_not_enough_tip">Insufficient funds, top up to send red envelopes. Top up now?</string>
+    <string name="create_red_envelop_failed_error">Network error</string>
+    <string name="please_select_redpacket">Select amount</string>
+    <string name="red_packet_instruction">Instructions&gt;</string>
+    <string name="send_redpacket">Send red envelope</string>
+    <string name="send_red_btn">Send red envelope</string>
+    <string name="buy_diamond">Top-up&gt;</string>
 </resources>

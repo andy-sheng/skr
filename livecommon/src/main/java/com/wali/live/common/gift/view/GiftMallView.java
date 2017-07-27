@@ -39,7 +39,6 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.common.gift.adapter.GiftDisplayRecycleViewAdapter;
 import com.wali.live.common.gift.adapter.GiftDisplayViewPagerAdapter;
-import com.wali.live.common.gift.adapter.viewHolder.GiftDisplayDividerItemDecoration;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
 import com.wali.live.common.gift.utils.MyAnimationUtils;
 import com.wali.live.common.view.ErrorView;
@@ -182,12 +181,8 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
             }
 
             if (info.gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
-//                getRxActivity().onBackPressed();
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable(SendRedPacketFragment.KEY_ROOM_ID, mMyRoomData.getRoomId());
-//                bundle.putSerializable(SendRedPacketFragment.KEY_ZU_ID, mMyRoomData.getUid());
-//                bundle.putInt(SendRedPacketFragment.KEY_VIEWERCOUNT, mMyRoomData.getViewerCnt());
-//                SendRedPacketFragment.openFragment((BaseAppActivity) getContext(), bundle);
+                getRxActivity().onBackPressed();
+                mGiftMallPresenter.showSendEnvelopeView();
             } else {
                 if (v != mSelectedView) {
                     if (mSelectedView != null) {

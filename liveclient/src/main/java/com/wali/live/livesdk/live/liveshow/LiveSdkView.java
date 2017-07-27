@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.component.BaseSdkView;
@@ -27,12 +28,14 @@ import com.wali.live.livesdk.live.liveshow.view.LiveDisplayView;
 import com.wali.live.livesdk.live.liveshow.view.button.MagicControlBtnView;
 import com.wali.live.livesdk.live.liveshow.view.button.PlusControlBtnView;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
+import com.wali.live.watchsdk.component.presenter.EnvelopePresenter;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.component.view.WidgetView;
+import com.wali.live.watchsdk.envelope.SendEnvelopeFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -116,7 +119,7 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 return;
             }
             InputAreaPresenter presenter = new InputAreaPresenter(
-                    mComponentController, mComponentController.mMyRoomData);
+                    mComponentController, mComponentController.mMyRoomData, false);
             addComponentView(view, presenter);
         }
 
@@ -182,6 +185,14 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
             }
         }
 
+        // 抢红包
+        {
+            RelativeLayout relativeLayout = $(com.wali.live.watchsdk.R.id.envelope_view);
+            EnvelopePresenter presenter = new EnvelopePresenter(mComponentController, mComponentController.mMyRoomData);
+            presenter.setComponentView(relativeLayout);
+            addComponentView(presenter);
+        }
+
         // 运营位
         {
             WidgetView view = $(R.id.widget_view);
@@ -225,6 +236,7 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
         public void registerAction() {
             super.registerAction();
             mComponentController.registerAction(ComponentController.MSG_SHOW_ATMOSPHERE_VIEW, this);
+            mComponentController.registerAction(ComponentController.MSG_SHOW_SEND_ENVELOPE, this);
         }
 
         @Override
@@ -258,6 +270,10 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                     if (mComponentController.onEvent(ComponentController.MSG_HIDE_INPUT_VIEW)) {
                         return true;
                     }
+                    break;
+                case LiveComponentController.MSG_SHOW_SEND_ENVELOPE:
+                    SendEnvelopeFragment.openFragment((BaseActivity) mActivity,
+                            mComponentController.mMyRoomData);
                     break;
                 default:
                     break;

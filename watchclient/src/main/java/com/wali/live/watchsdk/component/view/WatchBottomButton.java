@@ -35,7 +35,6 @@ import static com.wali.live.statistics.StatisticsKey.TIMES;
 public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPresenter, WatchBottomButton.IView> {
     private static final String TAG = "WatchBottomButton";
 
-    protected View mCommentBtn;
     protected View mGiftBtn;
     //    protected View mRotateBtn;
     protected View mGameBtn;
@@ -58,11 +57,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             return;
         }
         int id = view.getId();
-        String msgType = "";
-        if (id == R.id.comment_btn) {
-            mPresenter.showInputView();
-            msgType = StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_SENDMESSAGE;
-        } else if (id == R.id.gift_btn) {
+        if (id == R.id.gift_btn) {
             mPresenter.showGiftView();
         } else if (id == R.id.rotate_btn) {
             mPresenter.rotateScreen();
@@ -72,11 +67,6 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.showShareView();
             }
-        }
-        if (!TextUtils.isEmpty(msgType)) {
-            StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                    String.format(msgType, HostChannelManager.getInstance().getChannelId()),
-                    TIMES, "1");
         }
     }
 
@@ -90,9 +80,6 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     }
 
     protected void initView() {
-        mCommentBtn = createImageView(R.drawable.live_icon_comment_btn);
-        addCreatedView(mCommentBtn, R.id.comment_btn);
-
         mGiftBtn = createImageView(R.drawable.live_icon_gift_btn);
         addCreatedView(mGiftBtn, R.id.gift_btn);
 
@@ -100,11 +87,9 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 //        addCreatedView(mGiftBtn, R.id.rotate_btn);
 
         // 横竖屏时按钮排列顺序
-        mLeftBtnSetPort.add(mCommentBtn);
         mRightBtnSetPort.add(mGiftBtn);
 
         mBottomBtnSetLand.add(mGiftBtn);
-        mBottomBtnSetLand.add(mCommentBtn);
 
         //mBottomBtnSetLand.add(mRotateBtn);
 
@@ -123,16 +108,6 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         }
     }
 
-    @Override
-    protected void orientSelf() {
-        super.orientSelf();
-        if (mIsGameMode && mIsLandscape) {
-            mCommentBtn.setVisibility(View.GONE);
-        } else {
-            mCommentBtn.setVisibility(View.VISIBLE);
-        }
-    }
-
     private void showGameIcon(final GameViewModel gameModel) {
         if (gameModel == null) {
             MyLog.w(TAG, "showGameIcon gameModel is null");
@@ -141,7 +116,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         MyLog.d(TAG, "gameModel=" + gameModel.getGameId());
 
         mGameBtn = new SimpleDraweeView(getContext());
-        addCreatedView(mGameBtn, mCommentBtn.getWidth(), mCommentBtn.getHeight(), R.id.game_btn);
+        addCreatedView(mGameBtn, R.id.game_btn);
+        //addCreatedView(mGameBtn, mCommentBtn.getWidth(), mCommentBtn.getHeight(), R.id.game_btn);
 
         // ImageFactory.newResImage(R.drawable.live_icon_game_btn).build();
         BaseImage image = ImageFactory.newHttpImage(gameModel.getIconUrl()).setCornerRadius(10).build();

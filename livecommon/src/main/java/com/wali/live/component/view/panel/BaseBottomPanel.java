@@ -82,12 +82,16 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
         }
         if (useAnimation) {
             if (mAnimationHelper == null) {
-                mAnimationHelper = new AnimationHelper();
+                mAnimationHelper = createAnimationHelper();
             }
             mAnimationHelper.startAnimation();
         } else {
             mContentView.setVisibility(View.VISIBLE);
         }
+    }
+
+    protected AnimationHelper createAnimationHelper() {
+        return new AnimationHelper();
     }
 
     public void hideSelf(boolean useAnimation) {
@@ -186,9 +190,9 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
 
     // 面板动画辅助类
     protected class AnimationHelper {
-        private ValueAnimator valueAnimator;
+        protected ValueAnimator valueAnimator;
 
-        private void setupAnimation() {
+        protected void setupAnimation() {
             if (valueAnimator == null) {
                 valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
                 valueAnimator.setDuration(300);
@@ -216,14 +220,14 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
             }
         }
 
-        private void startAnimation() {
+        protected void startAnimation() {
             setupAnimation();
             if (!valueAnimator.isRunning()) {
                 valueAnimator.start();
             }
         }
 
-        private void stopAnimation() {
+        protected void stopAnimation() {
             if (valueAnimator != null && valueAnimator.isStarted()) {
                 valueAnimator.cancel();
             }

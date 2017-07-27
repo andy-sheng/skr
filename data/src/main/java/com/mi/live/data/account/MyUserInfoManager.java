@@ -291,6 +291,10 @@ public class MyUserInfoManager {
         EventBus.getDefault().post(new UserInfoEvent());
     }
 
+    public int getDiamondNum() {
+        return mMyInfo.getDiamondNum();
+    }
+
     public void updateUserInfoIfNeed() {
         int channelId = HostChannelManager.getInstance().getChannelId();
         Long lastInfoTs = mLastInfoTsMap.get(channelId);
@@ -333,7 +337,6 @@ public class MyUserInfoManager {
     public void deleteCache() {
         mMyInfo = new User();
     }
-
 
     public synchronized int getVirtualDiamondNum() {
         if (mMyInfo != null) {

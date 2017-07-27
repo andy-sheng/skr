@@ -51,12 +51,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     private LiveSettingPanel mLiveSettingPanel;
     private LiveMagicPanel mLiveMagicPanel;
 
-    private final void $click(View view, View.OnClickListener listener) {
-        if (view != null) {
-            view.setOnClickListener(listener);
-        }
-    }
-
     @Override
     public String getTAG() {
         return getClass().getSimpleName() + "#" + this.hashCode();

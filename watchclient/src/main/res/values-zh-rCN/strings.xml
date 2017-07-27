@@ -114,8 +114,40 @@
     <string name="install_mi_video">请安装小米视频</string>
     <string name="all_people">全部</string>
     <string name="game_guide_close_tip">剩余%ds关闭页面</string>
-    <string name="game_guide_normal_tip">关注主播，不错过任何一次直播</string>
+    <string name="follow_normal_tip">关注主播，不错过任何一次直播</string>
     <string name="anchor_rank">主播势力日榜</string>
     <string name="michannel_default_title">其他游戏</string>
     <string name="michannel_type_live">直播</string>
+
+    <string name="live_end_time_words">感謝宝宝陪伴</string>
+    <string name="mi_live_accounts">小米直播帐号</string>
+    <string name="end_live_share">把精彩内容分享给小伙伴</string>
+    <string name="live_end_hint">好可惜来晚了哦...记得下次别迟到了^_^</string>
+    <string name="live_end_replay_hint">感谢宝宝观看回放，记得下次要及时收看直播哦～</string>
+    <string name="live_end_time_hours">%s小时</string>
+    <string name="live_end_time_minute">%s分</string>
+    <string name="live_end_time_second">%s秒</string>
+    <string name="endlive_share_user_hint">谢谢你的支持与守护，有你在，很幸福！</string>
+    <string name="endlive_user_ticket">并送我%1$s星票</string>
+
+    <string name="money_coming">土豪红包来了</string>
+    <string name="grap_hongbao">抢红包</string>
+    <string name="already_in_pocket">已存入账户</string>
+    <string name="look_other_money"><![CDATA[查看大家手气 >]]></string>
+    <string name="your_hand_is_too_slow">手慢了,红包已被抢完</string>
+    <string name="anchor_text">主播</string>
+    <string name="top_50">Top 50</string>
+    <string name="red_envelope_best_luck">手气最佳</string>
+    <string name="net_is_busy_tip">网络繁忙，请稍候再试</string>
+    <string name="red_result_msg">%s的红包</string>
+    <string name="gold_count">金钻:%1$d</string>
+    <string name="silver_count">银钻:%1$d</string>
+    <string name="bottom_tip_send_red">未领取的红包，将于24小时后自动退回</string>
+    <string name="money_not_enough_tip">余额不足啦，要充值才能继续发送红包哦，是否去充值</string>
+    <string name="create_red_envelop_failed_error">网络出错啦</string>
+    <string name="please_select_redpacket">请选择红包金额</string>
+    <string name="red_packet_instruction">红包说明 &gt;</string>
+    <string name="send_redpacket">发红包</string>
+    <string name="send_red_btn">发送红包</string>
+    <string name="buy_diamond">充值 ></string>
 </resources>

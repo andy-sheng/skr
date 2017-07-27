@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/black">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/avatar_bg_dv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:overlayImage="@color/color_black_trans_60"/>
+
+    <ImageView
+        android:id="@+id/first_iv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_430"
+        android:layout_marginTop="-17.33dp"
+        android:background="@drawable/live_over_bg_atmosphere_yellow"/>
+
+    <ImageView
+        android:id="@+id/second_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_dimen_100"
+        android:src="@drawable/live_over_bg_atmosphere"/>
+
+    <RelativeLayout
+        android:id="@+id/middle_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_1020"
+        android:layout_below="@+id/second_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/margin_75"
+        android:layout_marginRight="@dimen/margin_75"
+        android:background="@drawable/corner_btn_bg">
+
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_dimen_145"
+            android:text="李可儿"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/text_size_45"/>
+
+
+        <TextView
+            android:id="@+id/mi_account_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin_10"
+            android:text="直播帳號：1111"
+            android:textColor="@color/color_black_trans_30"
+            android:textSize="@dimen/text_size_36"/>
+
+
+        <TextView
+            android:id="@+id/times_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mi_account_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin_50"
+            android:text="這是你第333場直播，寶寶幸苦了"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/text_size_45"/>
+
+        <View
+            android:id="@+id/line_one"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_1"
+            android:layout_below="@id/times_tv"
+            android:layout_marginLeft="@dimen/margin_60"
+            android:layout_marginRight="@dimen/margin_60"
+            android:layout_marginTop="@dimen/margin_40"
+            android:background="@color/color_black_trans_10"/>
+
+        <LinearLayout
+            android:id="@+id/information_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/line_one"
+            android:layout_marginLeft="@dimen/margin_60"
+            android:layout_marginRight="@dimen/margin_60"
+            android:layout_marginTop="@dimen/margin_30"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/duration_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="0px"
+                    android:layout_marginBottom="@dimen/margin_4"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="123"
+                    android:textSize="@dimen/text_size_44"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0px"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/endlive_duration"
+                    android:textColor="@color/color_black_trans_40"
+                    android:textSize="@dimen/text_size_32"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/viewer_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="0px"
+                    android:layout_marginBottom="@dimen/margin_4"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="123"
+                    android:textSize="@dimen/text_size_44"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0px"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/endlive_viewer"
+                    android:textColor="@color/color_black_trans_40"
+                    android:textSize="@dimen/text_size_32"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/new_fans_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="0px"
+                    android:layout_marginBottom="@dimen/margin_4"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="123"
+                    android:textSize="@dimen/text_size_44"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0px"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/endlive_newfans"
+                    android:textColor="@color/color_black_trans_40"
+                    android:textSize="@dimen/text_size_32"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/line_two"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_1"
+            android:layout_below="@id/information_container"
+            android:layout_marginLeft="@dimen/margin_60"
+            android:layout_marginRight="@dimen/margin_60"
+            android:layout_marginTop="@dimen/margin_40"
+            android:background="@color/color_black_trans_10"/>
+
+        <TextView
+            android:id="@+id/ticket_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/line_two"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin_50"
+            android:text="@string/endlive_ticket"
+            android:textColor="@color/color_black_trans_40"
+            android:textSize="@dimen/text_size_32"/>
+
+        <TextView
+            android:id="@+id/ticket_count_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ticket_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin_20"
+            android:text="23423"
+            android:textColor="@color/text_color_e5aa1c"
+            android:textSize="@dimen/text_size_45"/>
+
+        <TextView
+            android:id="@+id/top_three_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ticket_count_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin_35"
+            android:text="@string/endlive_top_three"
+            android:textColor="@color/color_black_trans_40"
+            android:textSize="@dimen/text_size_32"/>
+
+        <LinearLayout
+            android:id="@+id/top_three_container"
+            android:layout_width="@dimen/view_dimen_300"
+            android:layout_height="@dimen/view_dimen_80"
+            android:layout_below="@id/top_three_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/view_dimen_70"
+            android:layout_marginTop="@dimen/margin_20">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/first_dv"
+                android:layout_width="@dimen/view_dimen_80"
+                android:layout_height="@dimen/view_dimen_80"
+                android:layout_gravity="left"
+                android:layout_marginRight="@dimen/margin_15"/>
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/second_dv"
+                android:layout_width="@dimen/view_dimen_80"
+                android:layout_height="@dimen/view_dimen_80"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/margin_15"
+                android:layout_marginRight="@dimen/margin_15"/>
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/three_dv"
+                android:layout_width="@dimen/view_dimen_80"
+                android:layout_height="@dimen/view_dimen_80"
+                android:layout_gravity="right"
+                android:layout_marginLeft="@dimen/margin_15"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/middle_container"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/delete_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/view_dimen_80"
+            android:layout_marginLeft="@dimen/margin_15"
+            android:gravity="center"
+            android:text="@string/live_delete"
+            android:textColor="@color/text_color_e5aa1c"/>
+
+        <TextView
+            android:id="@+id/back_tv"
+            android:layout_width="@dimen/view_dimen_800"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/delete_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/view_dimen_50"
+            android:layout_marginTop="24.67dp"
+            android:background="@drawable/live_begin_btn_bg"
+            android:gravity="center"
+            android:text="@string/live_ended_back"
+            android:textColor="@color/color_white_pressed_white60_selected_fed533"
+            android:textSize="@dimen/text_size_44"/>
+
+        <LinearLayout
+            android:id="@+id/share_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/back_tv"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/share_friends_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="7.67dp"
+                android:src="@drawable/bg_live_share_selector"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/end_live_share"
+                android:textColor="@color/color_white"
+                android:textSize="14dp"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/avatar_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_220">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@drawable/cycle_bg"/>
+
+        <com.base.image.fresco.BaseImageView
+            android:id="@+id/avatar_iv"
+            android:layout_width="@dimen/view_dimen_200"
+            android:layout_height="@dimen/view_dimen_200"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+</RelativeLayout>
