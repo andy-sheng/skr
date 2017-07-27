@@ -353,7 +353,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
 
         @Override
         public String getImageUrl() {
-            return getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_LARGE);
+            return getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE);
         }
 
         @Override

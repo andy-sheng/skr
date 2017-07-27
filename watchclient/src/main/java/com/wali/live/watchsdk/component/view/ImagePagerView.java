@@ -80,9 +80,9 @@ public class ImagePagerView extends RelativeLayout implements IComponentView<Ima
     private void bindTransferImage(TransferImageView iv, RoomInfo info) {
         String url = info.getCoverUrl();
         if (TextUtils.isEmpty(url)) {
-            url = AvatarUtils.getAvatarUrlByUidTs(info.getPlayerId(), AvatarUtils.SIZE_TYPE_AVATAR_LARGE, info.getAvatar());
+            url = AvatarUtils.getAvatarUrlByUidTs(info.getPlayerId(), AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, info.getAvatar());
         }
-        AvatarUtils.loadAvatarByUrl(iv, url, false, false, R.drawable.rect_loading_bg_24292d, 320, 320);
+        AvatarUtils.loadAvatarByUrl(iv, url, false, true, R.drawable.rect_loading_bg_24292d, 320, 320);
     }
 
     public void switchNext(int position) {

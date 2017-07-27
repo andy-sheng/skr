@@ -197,7 +197,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             //自己不能进自己房间
             DialogUtils.showCancelableDialog(this,
                     "",
-                    com.base.global.GlobalData.app().getResources().getString(R.string.can_not_enter_room_use_myself),
+                    getString(R.string.can_not_enter_room_use_myself),
                     R.string.i_know,
                     0,
                     new DialogUtils.IDialogCallback() {
@@ -291,9 +291,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mMaskIv = $(R.id.mask_iv);
         String url = mRoomInfo.getCoverUrl();
         if (TextUtils.isEmpty(url)) {
-            url = AvatarUtils.getAvatarUrlByUidTs(mRoomInfo.getPlayerId(), AvatarUtils.SIZE_TYPE_AVATAR_LARGE, mRoomInfo.getAvatar());
+            url = AvatarUtils.getAvatarUrlByUidTs(mRoomInfo.getPlayerId(), AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, mRoomInfo.getAvatar());
         }
-        AvatarUtils.loadAvatarByUrl(mMaskIv, url, false, false, R.drawable.rect_loading_bg_24292d);
+        AvatarUtils.loadAvatarByUrl(mMaskIv, url, false, true, R.drawable.rect_loading_bg_24292d);
 
         // 初始化弹幕区
 //        mLiveCommentView = $(R.id.comment_rv);
@@ -982,14 +982,14 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         if (AppNetworkUtils.is4g()) {
             MyAlertDialog alertDialog = new MyAlertDialog.Builder(this).create();
             alertDialog.setMessage(GlobalData.app().getString(R.string.live_traffic_tip));
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, GlobalData.app().getString(R.string.live_traffic_positive), new DialogInterface.OnClickListener() {
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.live_traffic_positive), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     trySendDataWithServerOnce();
                     dialog.dismiss();
                 }
             });
-            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, GlobalData.app().getString(R.string.live_traffic_negative), new DialogInterface.OnClickListener() {
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.live_traffic_negative), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     finish();

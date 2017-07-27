@@ -31,15 +31,17 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     public static final int FLING_THRESHOLD_NORMAL = 300;
     public static final int FLING_THRESHOLD_LARGE = (GlobalData.screenHeight >> 1);
 
+    public static final float SLOW_SPEED = 0.6f;
+
     @NonNull
     private List<View> mHorizontalSet;
     @NonNull
     private List<View> mVerticalSet;
 
-    private ValueAnimator mVerticalAnim;
-    private AnimListener mListener;
+    private ValueAnimator mVerticalAnimator;
+    private MyAnimatorListener mAnimatorListener;
 
-    private View[] mHalfArray = new View[0];
+    private View[] mSlowArray = new View[0];
     private View[] mPagerArray = new View[0];
 
     private boolean mIsHideAll = false;
@@ -74,37 +76,24 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     public void setVerticalMoveEnabled(View[] pagerArray, View[] halfArray) {
         mOpenVerticalMove = true;
         mPagerArray = pagerArray;
-        mHalfArray = halfArray;
+        mSlowArray = halfArray;
         initAnimator();
     }
 
     private void initAnimator() {
-        if (mVerticalAnim == null) {
-            mVerticalAnim = new ValueAnimator();
-            mVerticalAnim.setInterpolator(new AccelerateInterpolator());
-            mVerticalAnim.setDuration(300);
-            mVerticalAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        if (mVerticalAnimator == null) {
+            mVerticalAnimator = new ValueAnimator();
+            mVerticalAnimator.setInterpolator(new AccelerateInterpolator());
+            mVerticalAnimator.setDuration(300);
+            mVerticalAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator valueAnimator) {
                     float value = (float) valueAnimator.getAnimatedValue();
-                    for (View view : mVerticalSet) {
-                        if (view != null) {
-                            view.setTranslationY(value);
-                        }
-                    }
-                    for (View view : mHalfArray) {
-                        if (view != null) {
-                            view.setTranslationY(value / 2);
-                        }
-                    }
-                    for (View view : mPagerArray) {
-                        if (view != null) {
-                            view.setTranslationY(value);
-                        }
-                    }
+                    directMoveVertical(value);
                 }
             });
-            mListener = new AnimListener();
+            mAnimatorListener = new MyAnimatorListener();
+            mVerticalAnimator.addListener(mAnimatorListener);
         }
     }
 
@@ -132,7 +121,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (mVerticalAnim != null && mVerticalAnim.isRunning()) {
+        if (mVerticalAnimator != null && mVerticalAnimator.isRunning()) {
             return false;
         }
         switch (event.getActionMasked()) {
@@ -202,6 +191,10 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     }
 
     private void onMoveVertical(float oldTranslateY, float newTranslateY) {
+        directMoveVertical(newTranslateY);
+    }
+
+    private void directMoveVertical(float newTranslateY) {
         for (View view : mVerticalSet) {
             if (view != null) {
                 view.setTranslationY(newTranslateY);
@@ -212,9 +205,9 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                 view.setTranslationY(newTranslateY);
             }
         }
-        for (View view : mHalfArray) {
+        for (View view : mSlowArray) {
             if (view != null) {
-                view.setTranslationY(newTranslateY / 2);
+                view.setTranslationY(newTranslateY * SLOW_SPEED);
             }
         }
     }
@@ -263,26 +256,22 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
 
     private void onFlingDown() {
         MyLog.d(TAG, "onFlingDown");
-        if (mVerticalAnim.isRunning()) {
-            mVerticalAnim.cancel();
+        if (mVerticalAnimator.isRunning()) {
+            mVerticalAnimator.cancel();
         }
-        mVerticalAnim.setFloatValues(mTranslateY, GlobalData.screenHeight);
-        mVerticalAnim.removeAllListeners();
-        mListener.setSource(ComponentController.MSG_PAGE_DOWN);
-        mVerticalAnim.addListener(mListener);
-        mVerticalAnim.start();
+        mVerticalAnimator.setFloatValues(mTranslateY, GlobalData.screenHeight);
+        mAnimatorListener.setSource(ComponentController.MSG_PAGE_DOWN);
+        mVerticalAnimator.start();
     }
 
     private void onFlingUp() {
         MyLog.d(TAG, "onFlingUp");
-        if (mVerticalAnim.isRunning()) {
-            mVerticalAnim.cancel();
+        if (mVerticalAnimator.isRunning()) {
+            mVerticalAnimator.cancel();
         }
-        mVerticalAnim.setFloatValues(mTranslateY, -GlobalData.screenHeight);
-        mVerticalAnim.removeAllListeners();
-        mListener.setSource(ComponentController.MSG_PAGE_UP);
-        mVerticalAnim.addListener(mListener);
-        mVerticalAnim.start();
+        mVerticalAnimator.setFloatValues(mTranslateY, -GlobalData.screenHeight);
+        mAnimatorListener.setSource(ComponentController.MSG_PAGE_UP);
+        mVerticalAnimator.start();
     }
 
     public void onBackgroundClick() {
@@ -297,14 +286,14 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     public void destroy() {
         super.destroy();
         stopAllAnimations();
-        if (mVerticalAnim != null) {
-            mVerticalAnim = null;
+        if (mVerticalAnimator != null) {
+            mVerticalAnimator = null;
         }
     }
 
     private void stopAllAnimations() {
-        if (mVerticalAnim != null && mVerticalAnim.isRunning()) {
-            mVerticalAnim.cancel();
+        if (mVerticalAnimator != null && mVerticalAnimator.isRunning()) {
+            mVerticalAnimator.cancel();
         }
     }
 
@@ -350,28 +339,16 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         }
     }
 
-    private class AnimListener extends AnimatorListenerAdapter {
+    private class MyAnimatorListener extends AnimatorListenerAdapter {
         private int mSource;
 
         @Override
         public void onAnimationEnd(Animator animation) {
             mTranslateY = 0;
-            for (View view : mVerticalSet) {
-                if (view != null) {
-                    view.setTranslationY(0);
-                }
+            directMoveVertical(mTranslateY);
+            if (mSource > 0) {
+                mComponentController.onEvent(mSource);
             }
-            for (View view : mHalfArray) {
-                if (view != null) {
-                    view.setTranslationY(0);
-                }
-            }
-            for (View view : mPagerArray) {
-                if (view != null) {
-                    view.setTranslationY(0);
-                }
-            }
-            mComponentController.onEvent(mSource);
         }
 
         private void setSource(int source) {
