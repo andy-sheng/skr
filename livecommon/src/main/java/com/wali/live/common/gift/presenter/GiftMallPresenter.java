@@ -430,8 +430,14 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                     public void onNext(GiftProto.BuyGiftRsp buyGiftRsp) {
                         //TODO 主播的票数也从这获得
                         MyLog.v(TAG, "sendGift onNext " + Thread.currentThread().getName());
-                        MyLog.w(TAG, "buyGiftRsp:" + buyGiftRsp);
-                        mSpendTicket += buyGiftWithCard.gift.getPrice();
+                        MyLog.w(TAG, "buyGiftRsp:" + buyGiftRsp.toString());
+                        if (buyGiftWithCard.gift.getCatagory() == GiftType.Mi_COIN_GIFT
+                                || buyGiftWithCard.gift.getBuyType() == BuyGiftType.BUY_GAME_ROOM_GIFT) {
+                            mSpendTicket += (int) ((float) buyGiftWithCard.gift.getPrice() / 10f);
+                        } else {
+                            mSpendTicket += buyGiftWithCard.gift.getPrice();
+                        }
+
                         //扣钱
                         int deduct = buyGiftRsp.getUsableGemCnt();
                         int virtualGemCnt = buyGiftRsp.getUsableVirtualGemCnt();

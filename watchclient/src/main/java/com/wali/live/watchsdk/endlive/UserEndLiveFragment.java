@@ -148,6 +148,7 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
         //click事件
         $click(mFollowTv, this);
         $click(mHomePageTv, this);
+        $click(mShareContainer,this);
     }
 
     private void initFromArguments() {

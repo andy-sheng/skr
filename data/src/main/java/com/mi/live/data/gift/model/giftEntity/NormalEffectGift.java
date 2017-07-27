@@ -62,7 +62,7 @@ public class NormalEffectGift extends Gift {
             }
             JSONArray jsonArrayBig = jsonObject.optJSONArray("bigConfigList");
             if (jsonArrayBig != null) {
-                int len = jsonArray.length();
+                int len = jsonArrayBig.length();
                 for (int i = 0; i < len; i++) {
                     JSONObject obj = jsonArrayBig.optJSONObject(i);
                     if (obj != null) {
