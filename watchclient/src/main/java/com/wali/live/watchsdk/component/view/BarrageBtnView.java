@@ -5,7 +5,6 @@ import android.support.annotation.AttrRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -71,24 +70,25 @@ public class BarrageBtnView extends FrameLayout
 
         mBarrageBtnViewTv = $(R.id.barrage_btn_view_txt);
         mBarrageBtnViewIv = $(R.id.barrage_btn_view_img);
+        mBarrageBtnViewIv.setEnabled(false);
 
         mBarrageBtnViewTv.setHint(getResources().getString(R.string.empty_edittext_hint));
         $click(mBarrageBtnViewTv, new OnClickListener() {
             @Override
             public void onClick(View view) {
-                MyLog.w(TAG, "open inputview!");
+                MyLog.w(TAG, "open input view!");
                 mPresenter.showInputView();
                 String msgType = StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_SENDMESSAGE;
                 StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                            String.format(msgType, HostChannelManager.getInstance().getChannelId()),
-                            TIMES, "1");
+                        String.format(msgType, HostChannelManager.getInstance().getChannelId()),
+                        TIMES, "1");
             }
         });
     }
 
     @Override
     public IView getViewProxy() {
-        class ComponentView implements IView{
+        class ComponentView implements IView {
 
             @Override
             public <T extends View> T getRealView() {
