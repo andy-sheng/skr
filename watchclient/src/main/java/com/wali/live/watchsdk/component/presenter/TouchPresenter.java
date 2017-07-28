@@ -34,7 +34,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     public static final int MOVE_UPDATE_THRESHOLD = 5;
     public static final int MOVE_THRESHOLD = 20;
     public static final int FLING_THRESHOLD_NORMAL = 300;
-    public static final int FLING_THRESHOLD_LARGE = (GlobalData.screenHeight >> 1);
+    public static final int FLING_THRESHOLD_LARGE = (GlobalData.screenHeight / 3);
 
     public static final float SLOW_SPEED = 0.6f;
 
@@ -100,9 +100,10 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         registerAction(WatchComponentController.MSG_DISABLE_MOVE_VIEW);
     }
 
-    private float mCurrX, mCurrY, mDownX, mDownY;
+    private float mCurrX = -1, mCurrY = -1, mDownX = -1, mDownY = -1;
     private float mTranslation;
     private int mMode = MODE_IDLE;
+    private boolean mTouchCanceled = true;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -111,14 +112,18 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         }
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
+                mTouchCanceled = false;
                 mMode = MODE_IDLE;
                 mCurrX = mDownX = event.getX();
                 mCurrY = mDownY = event.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
+                if (mTouchCanceled) {
+                    break;
+                }
                 if (mDownX == -1 && mDownY == -1) {
-                    mDownX = event.getX();
-                    mDownY = event.getY();
+                    mCurrX = mDownX = event.getX();
+                    mCurrY = mDownY = event.getY();
                 }
                 if (mMode == MODE_IDLE) {
                     calcDirection(event.getX(), event.getY());
@@ -129,6 +134,9 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                if (mTouchCanceled) {
+                    break;
+                }
                 if (mMode == MODE_VERTICAL) {
                     calcMoveVertical(event.getY());
                     if (mTranslation <= -FLING_THRESHOLD_LARGE) {
@@ -148,7 +156,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                         onCancelMoveHorizontal();
                     }
                 }
-                mDownY = mDownX = -1;
+                mCurrX = mCurrY = mDownY = mDownX = -1;
                 break;
             default:
                 break;
@@ -315,6 +323,20 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         return new Action();
     }
 
+    private void onOrientation(boolean isLandscape) {
+        if (mTouchCanceled || mMode == MODE_IDLE) {
+            return;
+        }
+        mTouchCanceled = true;
+        if (mMode == MODE_HORIZONTAL) {
+            onMoveHorizontal(mTranslation, 0);
+        } else if (mMode == MODE_VERTICAL) {
+            mAnimationHelper.clearAnimation();
+            onMoveVertical(mTranslation, 0);
+        }
+        mTranslation = 0;
+    }
+
     public class Action implements IAction {
         @Override
         public boolean onAction(int source, @Nullable Params params) {
@@ -323,10 +345,10 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                     mIsLandscape = false;
                     mViewWidth = GlobalData.screenWidth;
                     mFlingThreshold = FLING_THRESHOLD_NORMAL;
+                    onOrientation(false);
                     return true;
                 case WatchComponentController.MSG_ON_ORIENT_LANDSCAPE:
                     mIsLandscape = true;
-                    mAnimationHelper.clearAnimation();
                     mViewWidth = GlobalData.screenHeight;
                     mFlingThreshold = FLING_THRESHOLD_LARGE;
                     if (mIsGameMode && mIsHideAll) { // 竖屏转横屏，恢复被隐藏的View，横屏转竖屏的逻辑在WatchSdkView中处理
@@ -337,6 +359,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                             }
                         }
                     }
+                    onOrientation(true);
                     return true;
                 case WatchComponentController.MSG_ENABLE_MOVE_VIEW:
                     mHorizontalMoveEnabled = true;
