@@ -67,6 +67,7 @@ public class BarrageBtnView extends FrameLayout
 
     private void initView(Context context, AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.barrage_btn_view, this);
+        setBackgroundResource(R.drawable.live_bg_intelligent_barrage);
 
         mBarrageBtnViewTv = $(R.id.barrage_btn_view_txt);
         mBarrageBtnViewIv = $(R.id.barrage_btn_view_img);
