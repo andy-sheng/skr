@@ -38,6 +38,8 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
 
     public static final float SLOW_SPEED = 0.6f;
 
+    public static final int ANIMATION_TIME = 250;
+
     @NonNull
     private List<View> mHorizontalSet;
     @NonNull
@@ -114,6 +116,10 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                 mCurrY = mDownY = event.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
+                if (mDownX == -1 && mDownY == -1) {
+                    mDownX = event.getX();
+                    mDownY = event.getY();
+                }
                 if (mMode == MODE_IDLE) {
                     calcDirection(event.getX(), event.getY());
                 } else if (mMode == MODE_VERTICAL) {
@@ -142,6 +148,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                         onCancelMoveHorizontal();
                     }
                 }
+                mDownY = mDownX = -1;
                 break;
             default:
                 break;
@@ -369,7 +376,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
             if (mMoveAnimator == null) {
                 mMoveAnimator = new ValueAnimator();
                 mMoveAnimator.setInterpolator(new DecelerateInterpolator());
-                mMoveAnimator.setDuration(300);
+                mMoveAnimator.setDuration(ANIMATION_TIME);
                 mMoveAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -398,8 +405,8 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
             if (mShowAnimator == null) {
                 mShowAnimator = ValueAnimator.ofFloat(0, 1);
                 mShowAnimator.setInterpolator(new LinearInterpolator());
-                mShowAnimator.setDuration(300);
-                mShowAnimator.setStartDelay(300);
+                mShowAnimator.setDuration(ANIMATION_TIME);
+                mShowAnimator.setStartDelay(ANIMATION_TIME);
                 mShowAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -421,7 +428,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
             mSource = 0;
             mIsInAnimation = true;
             mMoveAnimator.setFloatValues(fromPos, toPos);
-            mMoveAnimator.setDuration(300);
+            mMoveAnimator.setDuration(ANIMATION_TIME);
             mMoveAnimator.start();
         }
 
@@ -430,7 +437,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
             mIsWithShow = true;
             mSource = msgType;
             mMoveAnimator.setFloatValues(fromPos, toPos);
-            mMoveAnimator.setDuration(300);
+            mMoveAnimator.setDuration(ANIMATION_TIME);
             mIsInAnimation = true;
             mMoveAnimator.start();
         }
