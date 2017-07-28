@@ -57,6 +57,10 @@ public class ImagePagerView extends RelativeLayout implements IComponentView<Ima
         mCenterDv = $(R.id.center_dv);
         mNextDv = $(R.id.next_dv);
 
+        bindLayoutParam(mLastDv);
+        bindLayoutParam(mCenterDv);
+        bindLayoutParam(mNextDv);
+
         mLastDv.provideInitTranslationY(-GlobalData.screenHeight);
         mNextDv.provideInitTranslationY(GlobalData.screenHeight);
     }
@@ -75,6 +79,16 @@ public class ImagePagerView extends RelativeLayout implements IComponentView<Ima
             next -= list.size();
         }
         bindTransferImage(mNextDv, list.get(next));
+    }
+
+    private void bindLayoutParam(TransferImageView iv) {
+        LayoutParams lp = (LayoutParams) iv.getLayoutParams();
+        if (lp == null) {
+            lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, GlobalData.screenHeight);
+        } else {
+            lp.height = GlobalData.screenHeight;
+        }
+        iv.setLayoutParams(lp);
     }
 
     private void bindTransferImage(TransferImageView iv, RoomInfo info) {
