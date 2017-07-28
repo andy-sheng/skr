@@ -7,7 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -26,6 +27,10 @@ import java.util.List;
 public class TouchPresenter extends ComponentPresenter implements View.OnTouchListener {
     private static final String TAG = "TouchPresenter";
 
+    private static final int MODE_IDLE = 0;
+    private static final int MODE_HORIZONTAL = 1;
+    private static final int MODE_VERTICAL = 2;
+
     public static final int MOVE_UPDATE_THRESHOLD = 5;
     public static final int MOVE_THRESHOLD = 20;
     public static final int FLING_THRESHOLD_NORMAL = 300;
@@ -37,9 +42,6 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     private List<View> mHorizontalSet;
     @NonNull
     private List<View> mVerticalSet;
-
-    private ValueAnimator mVerticalAnimator;
-    private MyAnimatorListener mAnimatorListener;
 
     private View[] mSlowArray = new View[0];
     private View[] mPagerArray = new View[0];
@@ -57,17 +59,16 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     private int mViewWidth = GlobalData.screenWidth;
     private int mFlingThreshold = FLING_THRESHOLD_NORMAL;
 
-    public void setViewSet(
-            @NonNull List<View> horizontalSet) {
+    private final AnimationHelper mAnimationHelper = new AnimationHelper();
+
+    public void setViewSet(@NonNull List<View> horizontalSet) {
         mHorizontalSet = horizontalSet;
         mVerticalSet = new ArrayList<>(0);
         mIsGameMode = false;
     }
 
-    public void setViewSet(
-            @NonNull List<View> horizontalSet,
-            @NonNull List<View> verticalSet,
-            boolean isGameMode) {
+    public void setViewSet(@NonNull List<View> horizontalSet, @NonNull List<View> verticalSet,
+                           boolean isGameMode) {
         mHorizontalSet = horizontalSet;
         mVerticalSet = verticalSet;
         mIsGameMode = isGameMode;
@@ -77,29 +78,9 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         mOpenVerticalMove = true;
         mPagerArray = pagerArray;
         mSlowArray = halfArray;
-        initAnimator();
     }
 
-    private void initAnimator() {
-        if (mVerticalAnimator == null) {
-            mVerticalAnimator = new ValueAnimator();
-            mVerticalAnimator.setInterpolator(new AccelerateInterpolator());
-            mVerticalAnimator.setDuration(300);
-            mVerticalAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    float value = (float) valueAnimator.getAnimatedValue();
-                    directMoveVertical(value);
-                }
-            });
-            mAnimatorListener = new MyAnimatorListener();
-            mVerticalAnimator.addListener(mAnimatorListener);
-        }
-    }
-
-    public TouchPresenter(
-            @NonNull IComponentController componentController,
-            @NonNull View touchView) {
+    public TouchPresenter(@NonNull IComponentController componentController, @NonNull View touchView) {
         super(componentController);
         mTouchView = touchView;
         mTouchView.setSoundEffectsEnabled(false);
@@ -117,33 +98,48 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     }
 
     private float mCurrX, mCurrY, mDownX, mDownY;
-    private float mTranslateX, mTranslateY;
+    private float mTranslation;
+    private int mMode = MODE_IDLE;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (mVerticalAnimator != null && mVerticalAnimator.isRunning()) {
+        if (mAnimationHelper.isInAnimation()) {
             return false;
         }
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
+                mMode = MODE_IDLE;
                 mCurrX = mDownX = event.getX();
                 mCurrY = mDownY = event.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
-                calcTranslation(event.getX(), event.getY(), false);
+                if (mMode == MODE_IDLE) {
+                    calcDirection(event.getX(), event.getY());
+                } else if (mMode == MODE_VERTICAL) {
+                    calcMoveVertical(event.getY());
+                } else if (mMode == MODE_HORIZONTAL) {
+                    calcMoveHorizontal(event.getX());
+                }
                 break;
             case MotionEvent.ACTION_UP:
-                calcTranslation(event.getX(), event.getY(), false);
-                if (mTranslateY >= FLING_THRESHOLD_LARGE) {
-                    onFlingDown();
-                } else if (mTranslateY <= -FLING_THRESHOLD_LARGE) {
-                    onFlingUp();
-                } else if (mTranslateX >= mFlingThreshold) {
-                    onFlingRight();
-                } else if (mTranslateX <= -mFlingThreshold) {
-                    onFlingLeft();
-                } else {
-                    calcTranslation(mDownX, mDownY, true);
+                if (mMode == MODE_VERTICAL) {
+                    calcMoveVertical(event.getY());
+                    if (mTranslation <= -FLING_THRESHOLD_LARGE) {
+                        onFlingUp();
+                    } else if (mTranslation >= FLING_THRESHOLD_LARGE) {
+                        onFlingDown();
+                    } else {
+                        onCancelMoveVertical();
+                    }
+                } else if (mMode == MODE_HORIZONTAL) {
+                    calcMoveHorizontal(event.getX());
+                    if (mTranslation <= -mFlingThreshold) {
+                        onFlingLeft();
+                    } else if (mTranslation >= mFlingThreshold) {
+                        onFlingRight();
+                    } else {
+                        onCancelMoveHorizontal();
+                    }
                 }
                 break;
             default:
@@ -152,49 +148,62 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         return false;
     }
 
-    private void calcTranslation(float currX, float currY, boolean isForce) {
-        if (!isForce && Math.abs(currX - mCurrX) < MOVE_UPDATE_THRESHOLD &&
+    private void calcDirection(float currX, float currY) {
+        if (Math.abs(currX - mCurrX) < MOVE_UPDATE_THRESHOLD &&
                 Math.abs(currY - mCurrY) < MOVE_UPDATE_THRESHOLD) { // 过滤一下，防止滑动事件通知过于频繁
             return;
         }
         mCurrX = currX;
         mCurrY = currY;
         float deltaX = mCurrX - mDownX, deltaY = mCurrY - mDownY;
-        if (checkVerticalMovable() && mTranslateX == 0) {
-            float translateY = Math.abs(deltaY) >= MOVE_THRESHOLD ? deltaY : 0;
-            if (mTranslateY != translateY) {
-                onMoveVertical(mTranslateY, translateY);
-                mTranslateY = translateY;
-                if (mTranslateY == 0) {
-                    mDownX = mCurrX; // 重置Down，防止动画跳动
-                    mDownY = mCurrY;
-                    deltaX = 0;
-                }
+        float distX = Math.abs(deltaX), distY = Math.abs(deltaY);
+        if (checkVerticalMovable() && distY >= MOVE_THRESHOLD) {
+            mMode = MODE_VERTICAL;
+            onMoveVertical(mTranslation, deltaY);
+            mTranslation = deltaY;
+        } else if (mHorizontalMoveEnabled && distX >= MOVE_THRESHOLD) {
+            if ((mIsHideAll && deltaX <= -MOVE_THRESHOLD) || (!mIsHideAll && deltaX >= MOVE_THRESHOLD)) {
+                mMode = MODE_HORIZONTAL;
+                onMoveHorizontal(mTranslation, deltaX);
+                mTranslation = deltaX;
             }
         }
-        if (mHorizontalMoveEnabled && mTranslateY == 0) {
-            float translateX;
-            if (mIsHideAll) {
-                translateX = deltaX <= -MOVE_THRESHOLD ? deltaX : 0;
-            } else {
-                translateX = deltaX >= MOVE_THRESHOLD ? deltaX : 0;
-            }
-            if (mTranslateX != translateX) {
-                onMoveHorizontal(mTranslateX, translateX);
-                mTranslateX = translateX;
-                if (mTranslateX == 0) {
-                    mDownX = mCurrX; // 重置Down，防止动画跳动
-                    mDownY = mCurrY;
-                }
-            }
+    }
+
+    private void calcMoveHorizontal(float currX) {
+        if (Math.abs(currX - mCurrX) < MOVE_UPDATE_THRESHOLD) { // 过滤一下，防止滑动事件通知过于频繁
+            return;
         }
+        mCurrX = currX;
+        float translateX, deltaX = mCurrX - mDownX;
+        if (mIsHideAll) {
+            translateX = deltaX <= -MOVE_THRESHOLD ? deltaX : 0;
+        } else {
+            translateX = deltaX >= MOVE_THRESHOLD ? deltaX : 0;
+        }
+        if (mTranslation != translateX) {
+            onMoveHorizontal(mTranslation, translateX);
+            mTranslation = translateX;
+        }
+    }
+
+    private void calcMoveVertical(float currY) {
+        if (Math.abs(currY - mCurrY) < MOVE_UPDATE_THRESHOLD) { // 过滤一下，防止滑动事件通知过于频繁
+            return;
+        }
+        mCurrY = currY;
+        float deltaY = mCurrY - mDownY, translateY = Math.abs(deltaY) >= MOVE_THRESHOLD ? deltaY : 0;
+        if (mTranslation != translateY) {
+            onMoveVertical(mTranslation, translateY);
+            mTranslation = translateY;
+        }
+    }
+
+    private boolean checkVerticalMovable() {
+        return mOpenVerticalMove && mVerticalMoveEnabled;
     }
 
     private void onMoveVertical(float oldTranslateY, float newTranslateY) {
-        directMoveVertical(newTranslateY);
-    }
-
-    private void directMoveVertical(float newTranslateY) {
         for (View view : mVerticalSet) {
             if (view != null) {
                 view.setTranslationY(newTranslateY);
@@ -233,7 +242,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
 
     private void onFlingLeft() {
         mIsHideAll = false;
-        mTranslateX = 0;
+        mTranslation = 0;
         for (View view : mHorizontalSet) {
             if (view != null) {
                 view.setTranslationX(0);
@@ -244,7 +253,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
 
     private void onFlingRight() {
         mIsHideAll = true;
-        mTranslateX = 0;
+        mTranslation = 0;
         for (View view : mHorizontalSet) {
             if (view != null) {
                 view.setTranslationX(0);
@@ -254,47 +263,42 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         MyLog.d(TAG, "onFlingRight setTranslationX 0");
     }
 
-    private void onFlingDown() {
-        MyLog.d(TAG, "onFlingDown");
-        if (mVerticalAnimator.isRunning()) {
-            mVerticalAnimator.cancel();
+    private void onCancelMoveHorizontal() {
+        mTranslation = 0;
+        int visibility = mIsHideAll ? View.GONE : View.VISIBLE;
+        for (View view : mHorizontalSet) {
+            if (view != null) {
+                view.setTranslationX(0);
+                view.setVisibility(visibility);
+            }
         }
-        mVerticalAnimator.setFloatValues(mTranslateY, GlobalData.screenHeight);
-        mAnimatorListener.setSource(ComponentController.MSG_PAGE_DOWN);
-        mVerticalAnimator.start();
+        MyLog.d(TAG, "onFlingRight setTranslationX 0");
     }
 
     private void onFlingUp() {
         MyLog.d(TAG, "onFlingUp");
-        if (mVerticalAnimator.isRunning()) {
-            mVerticalAnimator.cancel();
-        }
-        mVerticalAnimator.setFloatValues(mTranslateY, -GlobalData.screenHeight);
-        mAnimatorListener.setSource(ComponentController.MSG_PAGE_UP);
-        mVerticalAnimator.start();
+        mAnimationHelper.startSwitchAnimator(mTranslation, -GlobalData.screenHeight,
+                ComponentController.MSG_PAGE_UP);
+    }
+
+    private void onFlingDown() {
+        MyLog.d(TAG, "onFlingDown");
+        mAnimationHelper.startSwitchAnimator(mTranslation, GlobalData.screenHeight,
+                ComponentController.MSG_PAGE_DOWN);
+    }
+
+    private void onCancelMoveVertical() {
+        mAnimationHelper.startCancelAnimator(mTranslation, 0);
     }
 
     public void onBackgroundClick() {
         mComponentController.onEvent(ComponentController.MSG_BACKGROUND_CLICK);
     }
 
-    private boolean checkVerticalMovable() {
-        return mOpenVerticalMove && mVerticalMoveEnabled;
-    }
-
     @Override
     public void destroy() {
         super.destroy();
-        stopAllAnimations();
-        if (mVerticalAnimator != null) {
-            mVerticalAnimator = null;
-        }
-    }
-
-    private void stopAllAnimations() {
-        if (mVerticalAnimator != null && mVerticalAnimator.isRunning()) {
-            mVerticalAnimator.cancel();
-        }
+        mAnimationHelper.clearAnimation();
     }
 
     @Nullable
@@ -312,7 +316,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                     mFlingThreshold = FLING_THRESHOLD_NORMAL;
                     return true;
                 case WatchComponentController.MSG_ON_ORIENT_LANDSCAPE:
-                    stopAllAnimations();
+                    mAnimationHelper.clearAnimation();
                     mViewWidth = GlobalData.screenHeight;
                     mFlingThreshold = FLING_THRESHOLD_LARGE;
                     if (mIsGameMode && mIsHideAll) { // 竖屏转横屏，恢复被隐藏的View，横屏转竖屏的逻辑在WatchSdkView中处理
@@ -339,20 +343,106 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         }
     }
 
-    private class MyAnimatorListener extends AnimatorListenerAdapter {
+    private class AnimationHelper {
+        private ValueAnimator mMoveAnimator;
+        private ValueAnimator mShowAnimator;
         private int mSource;
+        private boolean mIsWithShow;
+        private boolean mIsInAnimation;
 
-        @Override
-        public void onAnimationEnd(Animator animation) {
-            mTranslateY = 0;
-            directMoveVertical(mTranslateY);
-            if (mSource > 0) {
-                mComponentController.onEvent(mSource);
+        public boolean isInAnimation() {
+            return mIsInAnimation;
+        }
+
+        private void onChangeAlphaVertical(float alpha) {
+            for (View view : mVerticalSet) {
+                if (view != null) {
+                    view.setAlpha(alpha);
+                }
             }
         }
 
-        private void setSource(int source) {
-            mSource = source;
+        protected void setupAnimator() {
+            if (mMoveAnimator == null) {
+                mMoveAnimator = new ValueAnimator();
+                mMoveAnimator.setInterpolator(new DecelerateInterpolator());
+                mMoveAnimator.setDuration(300);
+                mMoveAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        float value = (float) valueAnimator.getAnimatedValue();
+                        onMoveVertical(mTranslation, value);
+                        mTranslation = value;
+                    }
+                });
+                mMoveAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        onMoveVertical(mTranslation, 0);
+                        mTranslation = 0;
+                        if (!mIsWithShow) {
+                            mIsInAnimation = false;
+                        } else {
+                            onChangeAlphaVertical(0);
+                            mShowAnimator.start();
+                        }
+                        if (mSource > 0) {
+                            mComponentController.onEvent(mSource);
+                        }
+                    }
+                });
+            }
+            if (mShowAnimator == null) {
+                mShowAnimator = ValueAnimator.ofFloat(0, 1);
+                mShowAnimator.setInterpolator(new LinearInterpolator());
+                mShowAnimator.setDuration(300);
+                mShowAnimator.setStartDelay(300);
+                mShowAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        onChangeAlphaVertical((float) valueAnimator.getAnimatedValue());
+                    }
+                });
+                mShowAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mIsInAnimation = false;
+                    }
+                });
+            }
+        }
+
+        protected void startCancelAnimator(float fromPos, float toPos) {
+            setupAnimator();
+            mIsWithShow = false;
+            mSource = 0;
+            mIsInAnimation = true;
+            mMoveAnimator.setFloatValues(fromPos, toPos);
+            mMoveAnimator.setDuration(300);
+            mMoveAnimator.start();
+        }
+
+        protected void startSwitchAnimator(float fromPos, float toPos, int msgType) {
+            setupAnimator();
+            mIsWithShow = true;
+            mSource = msgType;
+            mMoveAnimator.setFloatValues(fromPos, toPos);
+            mMoveAnimator.setDuration(300);
+            mIsInAnimation = true;
+            mMoveAnimator.start();
+        }
+
+        protected void clearAnimation() {
+            mSource = 0;
+            mIsWithShow = false;
+            if (mIsInAnimation) {
+                if (mMoveAnimator.isRunning()) {
+                    mMoveAnimator.cancel();
+                }
+                if (mShowAnimator.isRunning()) {
+                    mShowAnimator.end();
+                }
+            }
         }
     }
 }
