@@ -48,6 +48,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
 
     private boolean mIsHideAll = false;
     private boolean mIsGameMode = false;
+    private boolean mIsLandscape = false;
 
     private boolean mHorizontalMoveEnabled = true;
     private boolean mVerticalMoveEnabled = true;
@@ -200,7 +201,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     }
 
     private boolean checkVerticalMovable() {
-        return mOpenVerticalMove && mVerticalMoveEnabled;
+        return mOpenVerticalMove && mVerticalMoveEnabled && !mIsLandscape;
     }
 
     private void onMoveVertical(float oldTranslateY, float newTranslateY) {
@@ -312,10 +313,12 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         public boolean onAction(int source, @Nullable Params params) {
             switch (source) {
                 case WatchComponentController.MSG_ON_ORIENT_PORTRAIT:
+                    mIsLandscape = false;
                     mViewWidth = GlobalData.screenWidth;
                     mFlingThreshold = FLING_THRESHOLD_NORMAL;
                     return true;
                 case WatchComponentController.MSG_ON_ORIENT_LANDSCAPE:
+                    mIsLandscape = true;
                     mAnimationHelper.clearAnimation();
                     mViewWidth = GlobalData.screenHeight;
                     mFlingThreshold = FLING_THRESHOLD_LARGE;
