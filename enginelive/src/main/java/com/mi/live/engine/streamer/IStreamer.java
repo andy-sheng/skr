@@ -149,4 +149,6 @@ public interface IStreamer {
     void setClientPublicIp(String clientPublicIp);
 
     long getIPCameraVideoSourceOberver();
+
+    void setQualityRate(float ratio);
 }

@@ -57,7 +57,7 @@ public class SendBarrageManager {
                         builder.setPkRoomInfo(pkRoomInfoBuilder.build());
                     }
                     packetData.setData(builder.build().toByteArray());
-                    MyLog.v(TAG, "sendBarrageMessageAsync send:" + msg.getSenderMsgId() + "body :" + msg.getBody());
+                    MyLog.d(TAG, "sendBarrageMessageAsync send:" + msg.getSenderMsgId() + "body :" + msg.getBody());
                     MiLinkClientAdapter.getsInstance().sendAsync(packetData);
                 }
                 subscriber.onCompleted();

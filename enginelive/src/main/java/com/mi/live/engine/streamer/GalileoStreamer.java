@@ -27,6 +27,7 @@ import com.xiaomi.devicemanager.DeviceCallback;
 import com.xiaomi.devicemanager.DeviceManager;
 import com.xiaomi.rendermanager.RenderManager;
 import com.xiaomi.rendermanager.videoRender.VideoStreamsView;
+import com.xiaomi.transport.MiLiveTransport;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -37,6 +38,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import static com.mi.milink.sdk.base.Global.getApplicationContext;
 
 /**
  * Created by chenyong on 16/4/9.
@@ -219,7 +222,7 @@ public class GalileoStreamer implements IStreamer {
                 mRenderManager = GalileoRenderManager.INSTANCE.getRenderManager();
                 if (mDeviceManager != null && mRenderManager != null) {
                     mBroadCaster = new BroadCaster();
-                    mBroadCaster.constructSession(context, mBroadcastCallback, GalileoConstants.LIVE_LOW_RESOLUTION_HEIGHT, GalileoConstants.LIVE_LOW_RESOLUTION_WIDTH, height, width, DEFAULT_FRAME_RATE, DEFAULT_BIT_RATE, mDeviceManager.getInstance(), hasMicSource);
+                    mBroadCaster.constructSession(context, mBroadcastCallback, GalileoConstants.LIVE_LOW_RESOLUTION_HEIGHT, GalileoConstants.LIVE_LOW_RESOLUTION_WIDTH, height, width, DEFAULT_FRAME_RATE, DEFAULT_BIT_RATE, mDeviceManager.getInstance(), hasMicSource, MiLiveTransport.TransportInit(getApplicationContext()));
                     mDeviceManager.attachCallback(mDeviceCallback);
                     mDeviceManager.setSpeaker(!mHeadsetPlugged);
                     mDeviceManager.enableRotation(true);
@@ -1174,7 +1177,7 @@ public class GalileoStreamer implements IStreamer {
             @Override
             public void run() {
                 if (mBroadCaster != null) {
-                    mBroadCaster.pushExtraAudioFrame(nSamples, nBytesPerSample, nChannels, samplesPerSec, data);
+                    mBroadCaster.pushExtraAudioFrame(nSamples, nBytesPerSample, nChannels, samplesPerSec, data, 0);
                 }
             }
         }, "putExtraAudioFrame");
@@ -1184,7 +1187,7 @@ public class GalileoStreamer implements IStreamer {
     public void putExtraAudioFrameWithTimestamp(int nSamples, int nBytesPerSample, int nChannels, int samplesPerSec, byte[] data, long timestamp) {
         mLock.lock();
         if (!mIsDestroyed && mBroadCaster != null) {
-            mBroadCaster.pushExtraAudioFrameWithTimestamp(nSamples, nBytesPerSample, nChannels, samplesPerSec, data, timestamp);
+            mBroadCaster.pushExtraAudioFrameWithTimestamp(nSamples, nBytesPerSample, nChannels, samplesPerSec, data, timestamp, 0);
         }
         mLock.unlock();
     }
@@ -1336,5 +1339,19 @@ public class GalileoStreamer implements IStreamer {
         } else {
             return 0;
         }
+    }
+
+    @Override
+    public void setQualityRate(final float rate) {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                if (mBroadCaster != null && mConfig != null) {
+                    MyLog.w(TAG, "onDropRate setQualityRate rate=" + rate);
+                    mBroadCaster.setVideoMinBitrate((int) (rate * mConfig.getMinAverageVideoBitrate() * 1024));
+                    mBroadCaster.setVideoMaxBitrate((int) (rate * mConfig.getMaxAverageVideoBitrate() * 1024));
+                }
+            }
+        }, "setBitRateRatio");
     }
 }
