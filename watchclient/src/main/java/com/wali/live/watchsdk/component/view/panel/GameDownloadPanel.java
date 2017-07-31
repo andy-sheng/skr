@@ -13,6 +13,7 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -30,6 +31,7 @@ import com.wali.live.component.view.IViewProxy;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
+import com.wali.live.watchsdk.log.LogConstants;
 
 import java.io.File;
 
@@ -93,13 +95,18 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
         return R.layout.game_download_view;
     }
 
+    protected String getTAG() {
+        return LogConstants.GAME_DOWNLOAD_PREFIX + BaseBottomPanel.class.getSimpleName();
+    }
+
     @Override
     protected void inflateContentView() {
         super.inflateContentView();
         // 阻断下层点击事件
-        mContentView.setOnClickListener(new View.OnClickListener() {
+        mContentView.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
             }
         });
 
@@ -154,6 +161,7 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
 
         GameViewModel gameModel = mPresenter.getGameModel();
         if (gameModel != mGameViewModel) {
+            MyLog.d(TAG, "gameModel start=" + mGameViewModel.getGameId());
             mGameViewModel = gameModel;
 
             FrescoWorker.loadImage(mGameIv, ImageFactory.newHttpImage(mGameViewModel.getIconUrl()).build());
@@ -177,11 +185,14 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
                 mHasInstalled = PackageUtils.isInstallPackage(mGameViewModel.getPackageName());
                 if (mHasInstalled) {
                     mDownloadTv.setText(R.string.open);
-                    mDownloadBar.setProgress(100);
+                } else {
+                    mDownloadTv.setText(R.string.download);
                 }
+                mDownloadBar.setProgress(100);
                 mDownloadTv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        MyLog.d(TAG, "onClick");
                         if (mHasInstalled) {
                             tryLaunchApk(mGameViewModel.getPackageName());
                             return;
@@ -207,6 +218,8 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
     }
 
     private void beginDownload() {
+        MyLog.d(TAG, "beginDownload");
+
         registerObserver();
         registerReceiver();
 
@@ -321,9 +334,11 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
         MyLog.w(TAG, "unregisterReceiver");
         if (mDownloadReceiver != null) {
             mParentView.getContext().unregisterReceiver(mDownloadReceiver);
+            mDownloadReceiver = null;
         }
         if (mInstallReceiver != null) {
             mParentView.getContext().unregisterReceiver(mInstallReceiver);
+            mInstallReceiver = null;
         }
     }
 
@@ -417,9 +432,20 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
 
     private void destroy() {
         MyLog.w(TAG, "destroy");
+        cancelDownloadTask();
+    }
+
+    private void cancelDownloadTask() {
+        MyLog.d(TAG, "cancelDownloadTask");
         unregisterObserver();
         unregisterReceiver();
         cancelSubscription();
+    }
+
+    // 隐藏自己，并且取消下载任务
+    private void reset() {
+        hideSelf(false);
+        cancelDownloadTask();
     }
 
     @Override
@@ -449,6 +475,11 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
             }
 
             @Override
+            public void reset() {
+                GameDownloadPanel.this.reset();
+            }
+
+            @Override
             public boolean isShow() {
                 return GameDownloadPanel.this.isShow();
             }
@@ -473,6 +504,8 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
         void showGameDownloadView();
 
         void hideGameDownloadView();
+
+        void reset();
 
         boolean isShow();
 

@@ -25,6 +25,7 @@ import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.component.cache.GameModelCache;
 import com.wali.live.watchsdk.component.view.panel.GameDownloadPanel;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
+import com.wali.live.watchsdk.log.LogConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,7 +48,7 @@ import rx.schedulers.Schedulers;
  */
 public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.IView>
         implements GameDownloadPanel.IPresenter {
-    private static final String TAG = "GameDownloadPresenter";
+    private static final String TAG = LogConstants.GAME_DOWNLOAD_PREFIX + "GameDownloadPresenter";
 
     private static final String GAME_INFO_URL = "http://app.migc.xiaomi.com/contentapi/m/gameinfo?gameId=%s";
     private static final String EXTRA_GAME_URL = "http://app.migc.xiaomi.com/contentapi/page/json/data/5377";
@@ -116,7 +117,7 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
                     @Override
                     public void call(String gameId) {
                         MyLog.w(TAG, "getGameId=" + gameId);
-                        if (!TextUtils.isEmpty(gameId)) {
+                        if (!TextUtils.isEmpty(gameId) && !gameId.equals("0")) {
                             mMyRoomData.setGameId(gameId);
                             startGameWork();
                         }
@@ -276,6 +277,7 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
             mHttpSubscription.unsubscribe();
         }
         mGameModel = null;
+        mView.reset();
     }
 
     @Override
