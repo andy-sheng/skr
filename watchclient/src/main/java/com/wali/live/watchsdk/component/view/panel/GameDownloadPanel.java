@@ -53,6 +53,7 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
     @Nullable
     protected GameDownloadPanel.IPresenter mPresenter;
 
+    private View mBgView;
     private View mHeadBgView;
     private BaseImageView mGameIv;
     private TextView mGameTv;
@@ -109,13 +110,8 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
                 return true;
             }
         });
-        mContentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideGameDownloadView();
-            }
-        });
 
+        mBgView = $(R.id.bg_view);
         mHeadBgView = $(R.id.head_bg_view);
         mGameIv = $(R.id.game_iv);
         mGameTv = $(R.id.game_tv);
@@ -143,6 +139,13 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
 //            }
 //        });
 
+        mBgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideGameDownloadView();
+            }
+        });
+        
         mHeadBgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -241,6 +244,9 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
         MyLog.w(TAG, "downloadId=" + mDownloadId);
 
         ToastUtils.showToast(R.string.downloading);
+        mDownloadTv.setText(0 + "%");
+        mDownloadBar.setProgress(0);
+
         mPresenter.reportDownloadKey();
     }
 
@@ -305,7 +311,7 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
         mInstallReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent != null) {
+                if (intent != null && mGameViewModel != null) {
                     String action = intent.getAction();
                     String packageName = intent.getData().getSchemeSpecificPart();
                     MyLog.d(TAG, "intent packageName=" + packageName + ";modelPackageName=" + mGameViewModel.getPackageName());
@@ -374,7 +380,6 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
                                 //下载地址
                                 if (TextUtils.isEmpty(mDownloadFilename)) {
                                     mDownloadFilename = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME));
-                                    MyLog.d(TAG, "download filename=" + mDownloadFilename);
                                 }
                             }
                             subscriber.onNext(result);
@@ -446,12 +451,15 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
         unregisterObserver();
         unregisterReceiver();
         cancelSubscription();
+
+        mDownloadId = 0;
     }
 
     // 隐藏自己，并且取消下载任务
     private void reset() {
         hideSelf(false);
         cancelDownloadTask();
+        mGameViewModel = null;
     }
 
     @Override

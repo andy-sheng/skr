@@ -105,4 +105,10 @@
         android:text="@string/recommend"
         android:textColor="@color/color_black_trans_60"
         android:textSize="@dimen/view_dimen_45"/>
+
+    <View
+        android:id="@+id/bg_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/head_bg_view"/>
 </RelativeLayout>
