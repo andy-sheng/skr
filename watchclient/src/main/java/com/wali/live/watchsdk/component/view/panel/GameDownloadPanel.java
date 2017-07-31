@@ -109,6 +109,12 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
                 return true;
             }
         });
+        mContentView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideGameDownloadView();
+            }
+        });
 
         mHeadBgView = $(R.id.head_bg_view);
         mGameIv = $(R.id.game_iv);
@@ -161,8 +167,8 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
 
         GameViewModel gameModel = mPresenter.getGameModel();
         if (gameModel != mGameViewModel) {
-            MyLog.d(TAG, "gameModel start=" + mGameViewModel.getGameId());
             mGameViewModel = gameModel;
+            MyLog.d(TAG, "gameModel start=" + mGameViewModel.getGameId());
 
             FrescoWorker.loadImage(mGameIv, ImageFactory.newHttpImage(mGameViewModel.getIconUrl()).build());
 
