@@ -95,8 +95,12 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
 
     private UserEndLivePresenter.IUserEndLiveView mUserEndLiveView = new UserEndLivePresenter.IUserEndLiveView() {
         @Override
-        public void onFollowRefresh() {
+        public void onRefresh() {
+            //刷新关注状态和用户昵称
             followResult(mOwner.isFocused());
+            if (TextUtils.isEmpty(mOwnerName) && !TextUtils.isEmpty(mOwner.getNickname())) {
+                mNameTv.setText(mOwner.getNickname());
+            }
         }
 
         @Override
@@ -131,10 +135,10 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
     @Override
     protected void bindView() {
         KeyboardUtils.hideKeyboard(getActivity());
-        initFromArguments();
+        initData();
         initView();
         initPresenter();
-        initData();
+        setViewData();
     }
 
     private void initView() {
@@ -163,8 +167,8 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
         $click(mHomePageTv, this);
     }
 
-    private void initFromArguments() {
-        MyLog.w(TAG, "initFromArguments");
+    private void initData() {
+        MyLog.w(TAG, "initData");
         Bundle arguments = getArguments();
         if (arguments != null) {
             mOwner = (User) arguments.getSerializable(EXTRA_OWNER);
@@ -182,7 +186,7 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
         }
     }
 
-    public void initData() {
+    public void setViewData() {
         AvatarUtils.loadAvatarByUidTs(mAvatarIv, mOwnerId, mAvatarTs, true);
         AvatarUtils.loadAvatarByUidTs(mAvatarBgDv, mOwnerId, mAvatarTs, AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
         mNameTv.setText(TextUtils.isEmpty(mOwnerName) ? String.valueOf(mOwnerId) : mOwnerName);

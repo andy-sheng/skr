@@ -22,6 +22,7 @@ import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.proto.LiveProto;
 import com.wali.live.statistics.StatisticsKey;
+import com.wali.live.watchsdk.component.cache.GameModelCache;
 import com.wali.live.watchsdk.component.view.panel.GameDownloadPanel;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
 
@@ -69,7 +70,7 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
     }
 
     private void getGameInfo() {
-        MyLog.d(TAG, "getGameInfo: gameId=" + mMyRoomData.getGameId());
+        MyLog.w(TAG, "getGameInfo: gameId=" + mMyRoomData.getGameId());
         if (mGameModel != null) {
             MyLog.d(TAG, "gameModel is not null");
             return;
@@ -138,16 +139,27 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
                     public void call(Subscriber<? super GameViewModel> subscriber) {
                         getExtraJson();
 
+                        GameViewModel gameModel = GameModelCache.getGameModel(mMyRoomData.getGameId());
+                        if (gameModel != null) {
+                            MyLog.w(TAG, "startGameWork gameModel from cache");
+                            subscriber.onNext(gameModel);
+                            subscriber.onCompleted();
+                            return;
+                        }
+
                         String url = String.format(GAME_INFO_URL, mMyRoomData.getGameId());
                         List<NameValuePair> postBody = new ArrayList();
                         postBody.add(new BasicNameValuePair("gameId", String.valueOf(mMyRoomData.getGameId())));
                         try {
                             SimpleRequest.StringContent result = HttpUtils.doV2Get(url, postBody);
-                            GameViewModel gameModel = new GameViewModel(result.getBody());
+                            gameModel = new GameViewModel(result.getBody());
 
                             if (mExtraMap.containsKey(gameModel.getGameId())) {
                                 gameModel.setDownloadUrl(mExtraMap.get(gameModel.getGameId()));
                             }
+                            GameModelCache.addGameModel(gameModel);
+
+                            MyLog.w(TAG, "startGameWork gameModel from server");
                             subscriber.onNext(gameModel);
                             subscriber.onCompleted();
                         } catch (Exception e) {

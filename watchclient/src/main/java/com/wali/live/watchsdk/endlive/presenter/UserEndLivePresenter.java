@@ -58,7 +58,7 @@ public class UserEndLivePresenter extends RxLifeCyclePresenter {
                         if (user != null) {
                             mUser = user;
                             if (mView != null) {
-                                mView.onFollowRefresh();
+                                mView.onRefresh();
                             }
                         }
                     }
@@ -83,8 +83,8 @@ public class UserEndLivePresenter extends RxLifeCyclePresenter {
                 .subscribe(new Action1<Boolean>() {
                     @Override
                     public void call(Boolean result) {
-                        mUser.setIsFocused(result);
                         if (result) {
+                            mUser.setIsFocused(result);
                             ToastUtils.showToast(GlobalData.app(), GlobalData.app().getString(R.string.endlive_follow_success));
                         } else {
                             ToastUtils.showToast(GlobalData.app(), GlobalData.app().getString(R.string.follow_failed));
@@ -140,10 +140,10 @@ public class UserEndLivePresenter extends RxLifeCyclePresenter {
     }
 
     public interface IUserEndLiveView {
-        void onFollowRefresh();
-
         void onCountDown(int time);
 
         void onNextRoom();
+
+        void onRefresh();
     }
 }
