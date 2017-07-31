@@ -24,11 +24,12 @@
 
         <ImageView
             android:id="@+id/close_btn"
-            android:layout_width="8.9dp"
-            android:layout_height="8.9dp"
+            android:layout_width="11dp"
+            android:layout_height="11dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_margin="10dp"
+            android:padding="8dp"
             android:background="@drawable/image_close"/>
 
         <TextView

@@ -873,11 +873,11 @@ public abstract class MLPreferenceUtils extends PreferenceUtils {
         }
     }
 
-    public static void setKeyboardHeight(final int height, final boolean isisPortrait) {
+    public static void setKeyboardHeight(final int height, final boolean isPortrait) {
         Observable.create(new Observable.OnSubscribe<Object>() {
             @Override
             public void call(Subscriber<? super Object> subscriber) {
-                if (isisPortrait) { //认为是竖屏，返回竖屏的值
+                if (isPortrait) { //认为是竖屏，返回竖屏的值
                     PreferenceUtils.setSettingInt(GlobalData.app(), PREF_KEY_KEBOARD_HEIGHT, height);
                 } else { //认为是横屏,返回横屏的值
                     PreferenceUtils.setSettingInt(GlobalData.app(), PREF_KEY_CROSS_KEBOARD_HEIGHT, height);

@@ -196,7 +196,7 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
                 }
                 if (mKeyboardHeight != keyboardHeight) {
                     mKeyboardHeight = keyboardHeight;
-                    mKeyboardHeight = MLPreferenceUtils.getKeyboardHeight(false);
+                    MLPreferenceUtils.setKeyboardHeight(mKeyboardHeight, false);
                 }
                 setTranslationY(-mKeyboardHeight);
                 MyLog.d(TAG, "setTranslationY " + -mKeyboardHeight);
