@@ -125,7 +125,7 @@
         android:layout_alignBottom="@id/bottom_button_view"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="@dimen/margin_20"
-        android:layout_marginStart="@dimen/margin_10"/>
+        android:layout_marginStart="@dimen/margin_20"/>
 
     <!--底部按钮(供BaseBottomButton使用)-->
     <RelativeLayout
