@@ -119,7 +119,7 @@ public class FollowGuideView extends RelativeLayout implements IComponentView<Fo
         }
         if (mShowAnimator == null) {
             mShowAnimator = ObjectAnimator.ofFloat(this, "alpha", 0, 1);
-            mShowAnimator.setDuration(2000);
+            mShowAnimator.setDuration(500);
             mShowAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {
@@ -129,7 +129,9 @@ public class FollowGuideView extends RelativeLayout implements IComponentView<Fo
                 }
             });
         }
-        mShowAnimator.start();
+        if (!mShowAnimator.isStarted()) {
+            mShowAnimator.start();
+        }
     }
 
     private void hideSelf() {
@@ -138,7 +140,7 @@ public class FollowGuideView extends RelativeLayout implements IComponentView<Fo
         }
         if (mHideAnimator == null) {
             mHideAnimator = ObjectAnimator.ofFloat(this, "alpha", 1, 0);
-            mHideAnimator.setDuration(2000);
+            mHideAnimator.setDuration(500);
             mHideAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -147,7 +149,9 @@ public class FollowGuideView extends RelativeLayout implements IComponentView<Fo
                 }
             });
         }
-        mHideAnimator.start();
+        if (!mHideAnimator.isStarted()) {
+            mHideAnimator.start();
+        }
     }
 
     @Override
