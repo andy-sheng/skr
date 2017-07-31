@@ -38,7 +38,6 @@ import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
 import com.mi.live.data.gift.model.GiftRecvModel;
-import com.mi.live.data.gift.redenvelope.RedEnvelopeModel;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
@@ -102,9 +101,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
 import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
 import static android.view.View.GONE;
@@ -264,7 +261,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mMyRoomData.setGameId(mRoomInfo.getGameId());
         mMyRoomData.setEnableShare(mRoomInfo.isEnableShare());
     }
-
 
     private void initView() {
         // 顶部view

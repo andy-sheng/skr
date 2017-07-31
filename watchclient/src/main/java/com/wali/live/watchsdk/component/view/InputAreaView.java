@@ -28,8 +28,8 @@ import com.wali.live.common.smiley.SmileyPicker;
 import com.wali.live.common.smiley.SmileyTranslateFilter;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IOrientationListener;
-import com.wali.live.component.view.IViewProxy;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
+import com.wali.live.watchsdk.component.presenter.InputPresenter;
 
 /**
  * Created by yangli on 17/02/20.
@@ -429,12 +429,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
         mPresenter = iPresenter;
     }
 
-    public interface IPresenter {
-        /**
-         * 发送消息
-         */
-        void sendBarrage(String msg, boolean isFlyBarrage);
-
+    public interface IPresenter extends InputPresenter.IPresenter {
         /**
          * 输入框 已显示
          */
@@ -451,7 +446,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
         int getMinHeightLand();
     }
 
-    public interface IView extends IViewProxy, IOrientationListener {
+    public interface IView extends InputPresenter.IView, IOrientationListener {
         /**
          * 响应返回键事件
          */
@@ -478,22 +473,8 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
         void setHint(String hint);
 
         /**
-         * 键盘弹起
-         */
-        void onKeyboardShowed(int keyboardHeight);
-
-        /**
-         * 键盘隐藏
-         */
-        void onKeyboardHidden();
-
-        /**
          * 设置是否显示飘屏弹幕开关按钮
          */
         void enableFlyBarrage(boolean isEnable);
-
-
-        EditText getInputView();
-
     }
 }
