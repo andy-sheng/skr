@@ -184,6 +184,7 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
         if (mStreamer != null && mBeautyLevel != beautyLevel) {
             mBeautyLevel = beautyLevel;
             mStreamer.setBeautyLevel(beautyLevel);
+            MagicParamUtils.saveBeautyLevel(beautyLevel);
         }
     }
 
