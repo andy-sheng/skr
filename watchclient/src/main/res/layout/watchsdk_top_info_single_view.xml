@@ -12,7 +12,6 @@
         android:layout_marginRight="@dimen/margin_20"
         android:layout_marginTop="@dimen/margin_80">
 
-
         <RelativeLayout
             android:id="@+id/owner_container"
             android:layout_width="wrap_content"
