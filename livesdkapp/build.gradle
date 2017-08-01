@@ -27,6 +27,7 @@ android {
             storePassword "XiaomiIs#1"
             keyAlias "release_key"
             keyPassword "XiaomiIs#1"
+            v2SigningEnabled false
         }
     }
 
