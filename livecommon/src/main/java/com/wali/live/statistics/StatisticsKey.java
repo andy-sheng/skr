@@ -860,4 +860,8 @@ public class StatisticsKey {
     // 登录成功：sdk_login_success-{channelId}-{miid}
     public static final String KEY_SDK_LOGIN_SUCCESS = "sdk_login_success-%s-%s";
 
+    //游戏直播间关注弹窗打点
+    public static final String KEY_SDK_FOLLOW_WINDOWS_SHOW = "follow_windows-show-%s";      //关注页面显示 %s roomId
+    public static final String KEY_SDK_FOLLOW__WINDOWS_FOLLOW = "follow_windows-follow-%s"; //点击关注  %s roomId
+    public static final String KEY_SDK_FOLLOW_WINDOWS_CLOSE = "follow_windows-close-%s";    //点击关闭 %s roomId
 }
