@@ -29,6 +29,7 @@ import com.wali.live.sdk.manager.demo.utils.StringUtils;
 import com.wali.live.sdk.manager.demo.utils.ToastUtils;
 import com.wali.live.watchsdk.ipc.service.LiveInfo;
 import com.wali.live.watchsdk.ipc.service.UserInfo;
+import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.xiaomi.passport.servicetoken.ServiceTokenFuture;
 import com.xiaomi.passport.servicetoken.ServiceTokenResult;
 import com.xiaomi.passport.servicetoken.ServiceTokenUtilFacade;
@@ -58,6 +59,50 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             public void run() {
                 MiLiveSdkController.getInstance().openWatch(
                         mActivity, 21050016, "21050016_1482903828", null, 6, "47631",
+                        new IMiLiveSdk.IAssistantCallback() {
+                            @Override
+                            public void notifyVersionLow() {
+                                ToastUtils.showToast("notifyVersionLow");
+                            }
+
+                            @Override
+                            public void notifyNotInstall() {
+                                ToastUtils.showToast("notifyNotInstall");
+                            }
+                        });
+            }
+        }));
+        mDataList.add(new Bean("跳转到直播2(Intent)", new Runnable() {
+            @Override
+            public void run() {
+                MiLiveSdkController.getInstance().openWatchRoom(
+                        mActivity,
+                        RoomInfo.Builder.newInstance(21050016, null, null)
+                                .setLiveType(6)
+                                .setGameId("47641")
+                                .build(),
+                        new IMiLiveSdk.IAssistantCallback() {
+                            @Override
+                            public void notifyVersionLow() {
+                                ToastUtils.showToast("notifyVersionLow");
+                            }
+
+                            @Override
+                            public void notifyNotInstall() {
+                                ToastUtils.showToast("notifyNotInstall");
+                            }
+                        });
+            }
+        }));
+        mDataList.add(new Bean("跳转到直播列表(Intent)", new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<RoomInfo> list = new ArrayList<RoomInfo>();
+                for (int i = 0; i < 10; i++) {
+                    list.add(RoomInfo.Builder.newInstance(21050016, null, null).build());
+                }
+                MiLiveSdkController.getInstance().openWatchRoomList(
+                        mActivity, list, 0,
                         new IMiLiveSdk.IAssistantCallback() {
                             @Override
                             public void notifyVersionLow() {

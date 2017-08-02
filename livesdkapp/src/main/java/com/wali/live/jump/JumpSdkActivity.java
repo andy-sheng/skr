@@ -15,11 +15,15 @@ import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
+import java.util.ArrayList;
+
 /**
  * Created by lan on 17/2/21.
  */
 public class JumpSdkActivity extends BaseSdkActivity {
     private static final String ACTION_OPEN_WATCH = "open_watch";
+    private static final String ACTION_OPEN_WATCH_ROOM = "open_watch_room";
+    private static final String ACTION_OPEN_WATCH_ROOM_LIST = "open_watch_room_list";
     private static final String ACTION_OPEN_REPLAY = "open_replay";
     private static final String ACTION_OPEN_NORMAL_LIVE = "open_normal_live";
     private static final String ACTION_OPEN_GAME_LIVE = "open_game_live";
@@ -36,6 +40,10 @@ public class JumpSdkActivity extends BaseSdkActivity {
     private static final String EXTRA_ENABLE_SHARE = "extra_enable_share";
 
     private static final String EXTRA_LOCATION = "extra_location";
+
+    private static final String EXTRA_WATCH_ROOM = "extra_watch_room";
+    private static final String EXTRA_WATCH_ROOM_LIST = "extra_watch_room_list";
+    private static final String EXTRA_WATCH_ROOM_POSITION = "extra_watch_room_position";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +88,30 @@ public class JumpSdkActivity extends BaseSdkActivity {
                                         .setEnableShare(enableShare)
                                         .build();
                                 WatchSdkActivity.openActivity(JumpSdkActivity.this, roomInfo);
+                            }
+                        }, true);
+                break;
+            }
+            case ACTION_OPEN_WATCH_ROOM: {
+                final RoomInfo roomInfo = intent.getParcelableExtra(EXTRA_WATCH_ROOM);
+                MiLiveSdkBinder.getInstance().openWatch(this, channelId, packageName, channelSecret,
+                        new ICommonCallBack() {
+                            @Override
+                            public void process(Object objects) {
+                                WatchSdkActivity.openActivity(JumpSdkActivity.this, roomInfo);
+                            }
+                        }, true);
+                break;
+            }
+            case ACTION_OPEN_WATCH_ROOM_LIST: {
+                final ArrayList<RoomInfo> list = intent.getParcelableArrayListExtra(EXTRA_WATCH_ROOM_LIST);
+                final int position = intent.getIntExtra(EXTRA_WATCH_ROOM_POSITION, 0);
+
+                MiLiveSdkBinder.getInstance().openWatch(this, channelId, packageName, channelSecret,
+                        new ICommonCallBack() {
+                            @Override
+                            public void process(Object objects) {
+                                WatchSdkActivity.openActivity(JumpSdkActivity.this, list, position);
                             }
                         }, true);
                 break;

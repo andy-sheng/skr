@@ -19,10 +19,12 @@ import com.wali.live.sdk.manager.log.Logger;
 import com.wali.live.sdk.manager.utils.CommonUtils;
 import com.wali.live.sdk.manager.version.VersionCheckManager;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkServiceProxy;
+import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -46,12 +48,18 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
     private static final String EXTRA_LOCATION = "extra_location";
 
+    private static final String EXTRA_WATCH_ROOM = "extra_watch_room";
+    private static final String EXTRA_WATCH_ROOM_LIST = "extra_watch_room_list";
+    private static final String EXTRA_WATCH_ROOM_POSITION = "extra_watch_room_position";
+
     private static final String ACTION_LOGIN_OAUTH = "login_oauth";
     private static final String ACTION_LOGIN_SSO = "login_sso";
     private static final String ACTION_THIRD_PART_LOGIN = "third_part_login";
     private static final String ACTION_CLEAR_ACCOUNT = "clear_account";
 
     private static final String ACTION_OPEN_WATCH = "open_watch";
+    private static final String ACTION_OPEN_WATCH_ROOM = "open_watch_room";
+    private static final String ACTION_OPEN_WATCH_ROOM_LIST = "open_watch_room_list";
     private static final String ACTION_OPEN_REPLAY = "open_replay";
 
     private static final String ACTION_OPEN_NORMAL_LIVE = "open_normal_live";
@@ -103,6 +111,9 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mMinVersionMap.put(ACTION_GET_FOLLOWING_LIVES, 205017);
 
         mMinVersionMap.put(ACTION_STATISTIC, 205025);
+
+        mMinVersionMap.put(ACTION_OPEN_WATCH_ROOM, 205036);
+        mMinVersionMap.put(ACTION_OPEN_WATCH_ROOM_LIST, 205036);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -363,6 +374,31 @@ public class MiLiveSdkController implements IMiLiveSdk {
         bundle.putInt(EXTRA_LIVE_TYPE, liveType);
         bundle.putString(EXTRA_GAME_ID, gameId);
         jumpToSdk(activity, bundle, ACTION_OPEN_WATCH, callback);
+    }
+
+    @Override
+    public void openWatchRoom(Activity activity, RoomInfo roomInfo, IAssistantCallback callback) {
+        if (!checkVersion(ACTION_OPEN_WATCH_ROOM, callback)) {
+            return;
+        }
+        checkHasInit();
+
+        Bundle bundle = getBasicBundle();
+        bundle.putParcelable(EXTRA_WATCH_ROOM, roomInfo);
+        jumpToSdk(activity, bundle, ACTION_OPEN_WATCH_ROOM, callback);
+    }
+
+    @Override
+    public void openWatchRoomList(Activity activity, ArrayList<RoomInfo> list, int position, IAssistantCallback callback) {
+        if (!checkVersion(ACTION_OPEN_WATCH_ROOM_LIST, callback)) {
+            return;
+        }
+        checkHasInit();
+
+        Bundle bundle = getBasicBundle();
+        bundle.putParcelableArrayList(EXTRA_WATCH_ROOM_LIST, list);
+        bundle.putInt(EXTRA_WATCH_ROOM_POSITION, position);
+        jumpToSdk(activity, bundle, ACTION_OPEN_WATCH_ROOM_LIST, callback);
     }
 
     @Override
