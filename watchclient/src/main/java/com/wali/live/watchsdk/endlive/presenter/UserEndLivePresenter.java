@@ -56,9 +56,8 @@ public class UserEndLivePresenter extends RxLifeCyclePresenter {
                     @Override
                     public void call(User user) {
                         if (user != null) {
-                            mUser = user;
                             if (mView != null) {
-                                mView.onRefresh();
+                                mView.onRefresh(user);
                             }
                         }
                     }
@@ -144,6 +143,6 @@ public class UserEndLivePresenter extends RxLifeCyclePresenter {
 
         void onNextRoom();
 
-        void onRefresh();
+        void onRefresh(User user);
     }
 }
