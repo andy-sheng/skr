@@ -2,11 +2,12 @@ package com.wali.live.watchsdk.videodetail.presenter;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.base.log.MyLog;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.IParams;
+import com.thornbirds.component.presenter.ComponentPresenter;
+import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.event.EventClass;
 import com.wali.live.watchsdk.component.view.VideoDetailPlayerView;
 
@@ -14,59 +15,71 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import static com.wali.live.component.ComponentController.MSG_NEW_DETAIL_REPLAY;
-import static com.wali.live.component.ComponentController.MSG_PLAYER_DETAIL_SCREEN;
-import static com.wali.live.component.ComponentController.MSG_PLAYER_FULL_SCREEN;
-import static com.wali.live.component.ComponentController.MSG_PLAYER_PAUSE;
-import static com.wali.live.component.ComponentController.MSG_PLAYER_START;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_NEW_DETAIL_REPLAY;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_DETAIL_SCREEN;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_FULL_SCREEN;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_PAUSE;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_START;
 
 /**
  * Created by zyh on 2017/05/31.
  *
  * @module 回放详情页的播放view的presenter
  */
-public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPlayerView.IView>
+public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPlayerView.IView, BaseSdkController>
         implements VideoDetailPlayerView.IPresenter {
     private static final String TAG = "VideoDetailPlayerPresenter";
+
     private RoomBaseDataModel mMyRoomData;
     private Activity mActivity;
     private boolean mVideoPlayerEnable = true; //詳情頁播放器work。
+
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
 
     public long getCurrentPosition() {
         return mView != null ? mView.onGetPlayingTime() : 0;
     }
 
     public VideoDetailPlayerPresenter(
-            @NonNull IComponentController componentController,
-            RoomBaseDataModel myRoomData,
-            Activity activity) {
-        super(componentController);
+            @NonNull BaseSdkController controller,
+            @NonNull RoomBaseDataModel myRoomData,
+            @NonNull Activity activity) {
+        super(controller);
         mMyRoomData = myRoomData;
         mActivity = activity;
-        registerAction();
-        EventBus.getDefault().register(this);
     }
 
-    public void registerAction() {
+    @Override
+    public void startPresenter() {
         registerAction(MSG_PLAYER_START);
         registerAction(MSG_PLAYER_PAUSE);
         registerAction(MSG_NEW_DETAIL_REPLAY);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
         if (mView != null) {
             mView.onDestroy();
             mView = null;
         }
-    }
-
-    @Nullable
-    @Override
-    protected IAction createAction() {
-        return new Action();
     }
 
     @Override
@@ -97,10 +110,10 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
             case EventClass.FeedsVideoEvent.TYPE_ON_CLOSE_ENDLIVE:
                 break;
             case EventClass.FeedsVideoEvent.TYPE_SMALL_TO_FULLSCREEN:
-                mComponentController.onEvent(MSG_PLAYER_FULL_SCREEN);
+                postEvent(MSG_PLAYER_FULL_SCREEN);
                 break;
             case EventClass.FeedsVideoEvent.TYPE_FULLSCREEN_TO_SMALL:
-                mComponentController.onEvent(MSG_PLAYER_DETAIL_SCREEN);
+                postEvent(MSG_PLAYER_DETAIL_SCREEN);
                 break;
             case EventClass.FeedsVideoEvent.TYPE_PLAYING:
                 mView.onPlaying();
@@ -116,28 +129,26 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
         }
     }
 
-    public class Action implements ComponentPresenter.IAction {
-        @Override
-        public boolean onAction(int source, @Nullable Params params) {
-            if (mView == null || mActivity == null) {
-                MyLog.e(TAG, "onAction but mView is null, source=" + source);
-                return false;
-            }
-            switch (source) {
-                case MSG_PLAYER_START:
-                    mView.onStartPlayer();
-                    break;
-                case MSG_PLAYER_PAUSE:
-                    mView.onPausePlayer();
-                    break;
-                case MSG_NEW_DETAIL_REPLAY:
-                    mView.onResetPlayer();
-                    mView.onStartPlayer();
-                    break;
-                default:
-                    break;
-            }
+    @Override
+    public boolean onEvent(int event, IParams params) {
+        if (mView == null || mActivity == null) {
+            MyLog.e(TAG, "onAction but mView is null, event=" + event);
             return false;
         }
+        switch (event) {
+            case MSG_PLAYER_START:
+                mView.onStartPlayer();
+                break;
+            case MSG_PLAYER_PAUSE:
+                mView.onPausePlayer();
+                break;
+            case MSG_NEW_DETAIL_REPLAY:
+                mView.onResetPlayer();
+                mView.onStartPlayer();
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 }

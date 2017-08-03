@@ -23,11 +23,11 @@ import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.live.module.common.R;
 import com.mi.live.data.preference.MLPreferenceUtils;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IOrientationListener;
 import com.wali.live.common.smiley.SmileyInputFilter;
 import com.wali.live.common.smiley.SmileyPicker;
 import com.wali.live.common.smiley.SmileyTranslateFilter;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IOrientationListener;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.presenter.InputPresenter;
 

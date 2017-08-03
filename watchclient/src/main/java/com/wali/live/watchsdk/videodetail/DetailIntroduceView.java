@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.view.EmptyView;
 
@@ -19,9 +19,10 @@ import com.wali.live.watchsdk.view.EmptyView;
  *
  * @module 详情页底下的详情view
  */
-public class DetailIntroduceView extends RelativeLayout implements IComponentView<DetailIntroduceView.IPresenter,
-        DetailIntroduceView.IView> {
+public class DetailIntroduceView extends RelativeLayout
+        implements IComponentView<DetailIntroduceView.IPresenter, DetailIntroduceView.IView> {
     private static final String TAG = "DetailIntroduceView";
+
     private EmptyView mEmptyView;
     private TextView mContentTv;
 
@@ -91,6 +92,6 @@ public class DetailIntroduceView extends RelativeLayout implements IComponentVie
     public interface IPresenter {
     }
 
-    public interface IView extends IViewProxy {
+    public interface IView extends IViewProxy<View> {
     }
 }

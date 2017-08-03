@@ -9,8 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.base.log.MyLog;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.presenter.ComponentPresenter;
 import com.wali.live.component.view.panel.BaseBottomPanel;
+import com.wali.live.componentwrapper.BaseSdkController;
 
 import java.lang.ref.WeakReference;
 
@@ -20,7 +21,7 @@ import java.lang.ref.WeakReference;
  * @module 面板表现基类
  */
 public abstract class BaseContainerPresenter<VIEW_GROUP extends ViewGroup>
-        extends ComponentPresenter<VIEW_GROUP> {
+        extends ComponentPresenter<VIEW_GROUP, BaseSdkController> {
 
     protected String TAG = getTAG();
 
@@ -35,8 +36,8 @@ public abstract class BaseContainerPresenter<VIEW_GROUP extends ViewGroup>
 
     protected abstract String getTAG();
 
-    public BaseContainerPresenter(@NonNull IComponentController componentController) {
-        super(componentController);
+    public BaseContainerPresenter(@NonNull BaseSdkController controller) {
+        super(controller);
     }
 
     protected final boolean hidePanel(boolean useAnimation) {

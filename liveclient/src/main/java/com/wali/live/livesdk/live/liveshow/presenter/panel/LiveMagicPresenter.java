@@ -4,7 +4,10 @@ import android.support.annotation.Nullable;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.IParams;
+import com.thornbirds.component.presenter.ComponentPresenter;
+import com.wali.live.componentwrapper.BaseSdkController;
+import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.FilterItemAdapter;
@@ -27,11 +30,16 @@ import rx.schedulers.Schedulers;
  *
  * @module 秀场美妆面板表现
  */
-public class LiveMagicPresenter extends ComponentPresenter<LiveMagicPanel.IView>
+public class LiveMagicPresenter extends BaseSdkRxPresenter<LiveMagicPanel.IView, BaseSdkController>
         implements LiveMagicPanel.IPresenter {
     private static final String TAG = "LiveMagicPresenter";
 
     private List<FilterItemAdapter.FilterItem> mFilterItems;
+
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
 
     public LiveMagicPresenter() {
         super(null);
@@ -99,9 +107,8 @@ public class LiveMagicPresenter extends ComponentPresenter<LiveMagicPanel.IView>
         mView.onFilterData(mFilterItems);
     }
 
-    @Nullable
     @Override
-    protected IAction createAction() {
-        return null;
+    public boolean onEvent(int event, IParams params) {
+        return false;
     }
 }

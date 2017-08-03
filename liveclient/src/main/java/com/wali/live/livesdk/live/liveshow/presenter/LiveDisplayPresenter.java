@@ -1,10 +1,10 @@
 package com.wali.live.livesdk.live.liveshow.presenter;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
-import com.base.log.MyLog;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.IParams;
+import com.thornbirds.component.presenter.ComponentPresenter;
+import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.livesdk.live.liveshow.view.LiveDisplayView;
 
 /**
@@ -14,33 +14,22 @@ import com.wali.live.livesdk.live.liveshow.view.LiveDisplayView;
  *
  * @module 直播大小窗表现
  */
-public class LiveDisplayPresenter extends ComponentPresenter<LiveDisplayView.IView>
+public class LiveDisplayPresenter extends ComponentPresenter<LiveDisplayView.IView, BaseSdkController>
         implements LiveDisplayView.IPresenter {
     private static final String TAG = "LiveDisplayPresenter";
 
-    public LiveDisplayPresenter(
-            @NonNull IComponentController componentController) {
-        super(componentController);
-    }
-
-    @Nullable
     @Override
-    protected IAction createAction() {
-        return new Action();
+    protected String getTAG() {
+        return TAG;
     }
 
-    public class Action implements IAction {
-        @Override
-        public boolean onAction(int source, @Nullable Params params) {
-            if (mView == null) {
-                MyLog.e(TAG, "onAction but mView is null, source=" + source);
-                return false;
-            }
-            switch (source) {
-                default:
-                    break;
-            }
-            return false;
-        }
+    public LiveDisplayPresenter(
+            @NonNull BaseSdkController controller) {
+        super(controller);
+    }
+
+    @Override
+    public boolean onEvent(int event, IParams params) {
+        return false;
     }
 }

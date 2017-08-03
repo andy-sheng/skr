@@ -26,9 +26,9 @@ import com.base.log.MyLog;
 import com.base.utils.system.PackageUtils;
 import com.base.utils.toast.ToastUtils;
 import com.base.view.MyRatingBar;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
-import com.wali.live.component.view.panel.BaseBottomPanel;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
+import com.wali.live.componentwrapper.view.panel.BaseBottomPanel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
 import com.wali.live.watchsdk.log.LogConstants;
@@ -86,6 +86,11 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
     // 安装监听
     private BroadcastReceiver mInstallReceiver;
     private boolean mHasInstalled;
+
+    @Override
+    public void setPresenter(@Nullable IPresenter presenter) {
+        mPresenter = presenter;
+    }
 
     public GameDownloadPanel(@NonNull RelativeLayout parentView) {
         super(parentView);
@@ -145,18 +150,13 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
                 hideGameDownloadView();
             }
         });
-        
+
         mHeadBgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hideGameDownloadView();
             }
         });
-    }
-
-    @Override
-    public void setPresenter(@Nullable GameDownloadPanel.IPresenter presenter) {
-        mPresenter = presenter;
     }
 
     private void inflate() {
@@ -512,7 +512,7 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
         void reportDownloadKey();
     }
 
-    public interface IView extends IViewProxy {
+    public interface IView extends IViewProxy<View> {
         void inflate();
 
         void showGameDownloadView();

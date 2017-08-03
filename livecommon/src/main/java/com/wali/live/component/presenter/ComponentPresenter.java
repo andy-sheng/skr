@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @module 基础架构表现
  */
-public abstract class ComponentPresenter<VIEW> extends RxLifeCyclePresenter {
+public final class ComponentPresenter<VIEW> extends RxLifeCyclePresenter {
 
     @NonNull
     protected IComponentController mComponentController;
@@ -71,7 +71,9 @@ public abstract class ComponentPresenter<VIEW> extends RxLifeCyclePresenter {
      */
     @Nullable
     @CheckResult
-    protected abstract IAction createAction();
+    protected IAction createAction() {
+        return null;
+    }
 
     /**
      * 事件参数

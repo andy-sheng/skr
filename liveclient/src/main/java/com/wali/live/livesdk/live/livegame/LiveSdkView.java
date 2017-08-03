@@ -1,19 +1,16 @@
 package com.wali.live.livesdk.live.livegame;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
+import com.thornbirds.component.IParams;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
-import com.wali.live.component.BaseSdkView;
-import com.wali.live.component.ComponentController;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.wali.live.componentwrapper.BaseSdkView;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.livegame.presenter.BottomButtonPresenter;
 import com.wali.live.livesdk.live.livegame.presenter.PanelContainerPresenter;
@@ -27,19 +24,25 @@ import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.component.view.WidgetView;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_BACKGROUND_CLICK;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ENABLE_MOVE_VIEW;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_INPUT_VIEW;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_BARRAGE_SWITCH;
 
 /**
  * Created by yangli on 2017/2/18.
  *
  * @module 游戏直播页面
  */
-public class LiveSdkView extends BaseSdkView<LiveComponentController> {
-
-    @NonNull
-    protected final Action mAction = new Action();
+public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
 
     private final List<View> mHorizontalMoveSet = new ArrayList<>();
 
@@ -57,14 +60,12 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
         return "LiveSdkView";
     }
 
-    public LiveSdkView(
-            @NonNull Activity activity,
-            @NonNull LiveComponentController componentController) {
-        super(activity, componentController);
+    public LiveSdkView(@NonNull Activity activity, @NonNull LiveComponentController controller) {
+        super(activity, (ViewGroup) activity.findViewById(android.R.id.content), controller);
     }
 
     @Override
-    public void setupSdkView() {
+    public void setupView() {
         mGiftContinueViewGroup = $(R.id.gift_continue_vg); // 礼物
         mTopInfoView = $(R.id.live_top_info_view); // 顶部view
 
@@ -74,9 +75,9 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
             if (view == null) {
                 return;
             }
-            LiveCommentPresenter presenter = new LiveCommentPresenter(mComponentController);
-            addComponentView(view, presenter);
-            view.setToken(mComponentController.mRoomChatMsgManager.toString());
+            LiveCommentPresenter presenter = new LiveCommentPresenter(mController);
+            registerComponent(view, presenter);
+            view.setToken(mController.mRoomChatMsgManager.toString());
 
             mLiveCommentView = view;
         }
@@ -88,8 +89,8 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 return;
             }
             InputAreaPresenter presenter = new InputAreaPresenter(
-                    mComponentController, mComponentController.mMyRoomData, false);
-            addComponentView(view, presenter);
+                    mController, mController.mMyRoomData, false);
+            registerComponent(view, presenter);
         }
 
         // 底部面板
@@ -100,10 +101,10 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 return;
             }
             PanelContainerPresenter presenter = new PanelContainerPresenter(
-                    mComponentController, mComponentController.mRoomChatMsgManager,
-                    mComponentController.mMyRoomData);
+                    mController, mController.mRoomChatMsgManager,
+                    mController.mMyRoomData);
             presenter.setComponentView(relativeLayout);
-            addComponentView(presenter);
+            registerComponent(presenter);
         }
 
         // 底部按钮
@@ -115,20 +116,18 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
             }
             relativeLayout.setVisibility(View.VISIBLE);
             LiveBottomButton view = new LiveBottomButton(relativeLayout,
-                    mComponentController.mMyRoomData.getEnableShare());
-            BottomButtonPresenter presenter =
-                    new BottomButtonPresenter(mComponentController,
-                            mComponentController.mMyRoomData,
-                            mComponentController.mGameLivePresenter);
-            addComponentView(view, presenter);
+                    mController.mMyRoomData.getEnableShare());
+            BottomButtonPresenter presenter = new BottomButtonPresenter(mController,
+                    mController.mMyRoomData, mController.mGameLivePresenter);
+            registerComponent(view, presenter);
         }
 
         // 抢红包
         {
             RelativeLayout relativeLayout = $(com.wali.live.watchsdk.R.id.envelope_view);
-            EnvelopePresenter presenter = new EnvelopePresenter(mComponentController, mComponentController.mMyRoomData);
+            EnvelopePresenter presenter = new EnvelopePresenter(mController, mController.mMyRoomData);
             presenter.setComponentView(relativeLayout);
-            addComponentView(presenter);
+            registerComponent(presenter);
         }
 
         // 运营位
@@ -138,8 +137,8 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 MyLog.e(TAG, "missing R.id.widget_view");
                 return;
             }
-            WidgetPresenter presenter = new WidgetPresenter(mComponentController, mComponentController.mMyRoomData, true);
-            addComponentView(view, presenter);
+            WidgetPresenter presenter = new WidgetPresenter(mController, mController.mMyRoomData, true);
+            registerComponent(view, presenter);
             ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
         }
 
@@ -159,122 +158,61 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
 //            if (view == null) {
 //                return;
 //            }
-//            TouchPresenter presenter = new TouchPresenter(mComponentController, view);
-//            addComponentView(presenter);
+//            TouchPresenter presenter = new TouchPresenter(mController, view);
+//            registerComponent(presenter);
 //            presenter.setViewSet(mHorizontalMoveSet);
         }
 
-        mAction.registerAction(); // 最后注册该Action，任何事件mAction都最后收到
-        mComponentController.onEvent(LiveComponentController.MSG_SHOW_BARRAGE_SWITCH);
+        mController.postEvent(MSG_SHOW_BARRAGE_SWITCH);
     }
 
-    public class Action extends BaseSdkView.Action {
+    @Override
+    public void startView() {
+        super.startView();
+        registerAction(MSG_ON_ORIENT_PORTRAIT);
+        registerAction(MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(MSG_INPUT_VIEW_SHOWED);
+        registerAction(MSG_INPUT_VIEW_HIDDEN);
+        registerAction(MSG_BACKGROUND_CLICK);
+    }
 
-        @Override
-        protected void startInputAnimator(boolean inputShow) {
-            if (mInputShow == inputShow) {
-                return;
-            }
-            mInputShow = inputShow;
-            ValueAnimator valueAnimator = deRef(mInputAnimatorRef);
-            if (valueAnimator != null) {
-                if (!valueAnimator.isStarted() && !valueAnimator.isRunning()) {
-                    valueAnimator.start();
+    @Override
+    public boolean onEvent(int event, IParams params) {
+        switch (event) {
+            case MSG_ON_ORIENT_PORTRAIT:
+                mIsLandscape = false;
+                mController.mGameLivePresenter.onOrientation(false);
+//                stopAllAnimator();
+                return true;
+            case MSG_ON_ORIENT_LANDSCAPE:
+                mIsLandscape = true;
+                mController.mGameLivePresenter.onOrientation(true);
+//                stopAllAnimator();
+                return true;
+            case MSG_INPUT_VIEW_SHOWED:
+                if (!mIsLandscape) {
+                    mController.postEvent(MSG_DISABLE_MOVE_VIEW);
                 }
-                return;
-            }
-            valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
-            valueAnimator.setDuration(300);
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    float value = (float) animation.getAnimatedValue();
-                    if (mInputShow) {
-                        value = 1.0f - value;
-                    }
-                    setAlpha(mTopInfoView, value);
+                if (mGiftContinueViewGroup != null) {
+                    mGiftContinueViewGroup.onShowInputView();
                 }
-            });
-            valueAnimator.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                    if (mInputShow) {
-                        if (mIsLandscape) {
-                            setVisibility(mLiveCommentView, View.GONE);
-                        }
-                    } else {
-                        setVisibility(mTopInfoView, View.VISIBLE);
-                    }
+                return true;
+            case MSG_INPUT_VIEW_HIDDEN:
+                if (!mIsLandscape) { // 游戏直播横屏不需左右滑
+                    mController.postEvent(MSG_ENABLE_MOVE_VIEW);
                 }
-
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    if (mInputShow) {
-                        setVisibility(mTopInfoView, View.GONE);
-                    } else {
-                        setAlpha(mTopInfoView, 1.0f);
-                        if (mIsLandscape) {
-                            setVisibility(mLiveCommentView, View.VISIBLE);
-                        }
-                    }
+                if (mGiftContinueViewGroup != null) {
+                    mGiftContinueViewGroup.onHideInputView();
                 }
-            });
-            valueAnimator.start();
-            mInputAnimatorRef = new WeakReference<>(valueAnimator);
-        }
-
-        @Override
-        protected void stopAllAnimator() {
-            ValueAnimator valueAnimator = deRef(mInputAnimatorRef);
-            if (valueAnimator != null) {
-                valueAnimator.cancel();
-            }
-        }
-
-        @Override
-        public void clearAnimation() {
-            stopAllAnimator();
-            mInputAnimatorRef = null;
-        }
-
-        @Override
-        public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
-            switch (source) {
-                case LiveComponentController.MSG_ON_ORIENT_PORTRAIT:
-                    mIsLandscape = false;
-                    mComponentController.mGameLivePresenter.onOrientation(false);
-                    stopAllAnimator();
+                return true;
+            case MSG_BACKGROUND_CLICK:
+                if (mController.postEvent(MSG_HIDE_INPUT_VIEW)) {
                     return true;
-                case LiveComponentController.MSG_ON_ORIENT_LANDSCAPE:
-                    mIsLandscape = true;
-                    mComponentController.mGameLivePresenter.onOrientation(true);
-                    stopAllAnimator();
-                    return true;
-                case LiveComponentController.MSG_INPUT_VIEW_SHOWED:
-                    if (!mIsLandscape) {
-                        mComponentController.onEvent(ComponentController.MSG_DISABLE_MOVE_VIEW);
-                    }
-                    if (mGiftContinueViewGroup != null) {
-                        mGiftContinueViewGroup.onShowInputView();
-                    }
-                    return true;
-                case LiveComponentController.MSG_INPUT_VIEW_HIDDEN:
-                    if (!mIsLandscape) { // 游戏直播横屏不需左右滑
-                        mComponentController.onEvent(ComponentController.MSG_ENABLE_MOVE_VIEW);
-                    }
-                    if (mGiftContinueViewGroup != null) {
-                        mGiftContinueViewGroup.onHideInputView();
-                    }
-                    return true;
-                case LiveComponentController.MSG_BACKGROUND_CLICK:
-                    if (mComponentController.onEvent(ComponentController.MSG_HIDE_INPUT_VIEW)) {
-                        return true;
-                    }
-                    break;
-                default:
-                    break;
-            }
-            return false;
+                }
+                break;
+            default:
+                break;
         }
+        return false;
     }
 }

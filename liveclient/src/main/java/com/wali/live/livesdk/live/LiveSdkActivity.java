@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
@@ -59,14 +58,14 @@ import com.mi.live.data.repository.datasource.RoomMessageStore;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
 import com.mi.milink.sdk.aidl.PacketData;
+import com.thornbirds.component.IEventObserver;
+import com.thornbirds.component.IParams;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.wali.live.component.BaseSdkView;
-import com.wali.live.component.ComponentController;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.wali.live.componentwrapper.BaseSdkView;
 import com.wali.live.event.EventClass;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.livesdk.R;
@@ -120,6 +119,15 @@ import java.util.concurrent.TimeUnit;
 
 import rx.functions.Action1;
 
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_END_LIVE_UNEXPECTED;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_INPUT_VIEW;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_BACK_PRESSED;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_STREAM_RECONNECT;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_STREAM_SUCCESS;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_OPEN_CAMERA_FAILED;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_OPEN_MIC_FAILED;
 import static com.wali.live.statistics.StatisticsKey.AC_APP;
 import static com.wali.live.statistics.StatisticsKey.KEY;
 import static com.wali.live.statistics.StatisticsKey.TIMES;
@@ -188,7 +196,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     protected TextView mTipsTv;
 
     protected StreamerPresenter mStreamerPresenter;
-    protected BaseLiveController mComponentController;
+    protected BaseLiveController mController;
     protected BaseSdkView mSdkView;
 
     protected RoomMessagePresenter mPullRoomMessagePresenter;
@@ -237,9 +245,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         setupRequiredComponent();
 
         if (!mIsGameLive) {
-            mComponentController.createStreamer(this, $(R.id.galileo_surface_view), 0, false, null);
+            mController.createStreamer(this, $(R.id.galileo_surface_view), 0, false, null);
         }
-        mComponentController.enterPreparePage(this, REQUEST_PREPARE_LIVE, this);
+        mController.enterPreparePage(this, REQUEST_PREPARE_LIVE, this);
         openOrientation();
 
         // 封面模糊图
@@ -273,26 +281,18 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private void setupRequiredComponent() {
         mStreamerPresenter = new StreamerPresenter(mMyRoomData);
         if (mIsGameLive) {
-            mComponentController = new com.wali.live.livesdk.live.livegame.LiveComponentController(
+            mController = new com.wali.live.livesdk.live.livegame.LiveComponentController(
                     mMyRoomData, mRoomChatMsgManager, mStreamerPresenter);
         } else {
-            mComponentController = new com.wali.live.livesdk.live.liveshow.LiveComponentController(
+            mController = new com.wali.live.livesdk.live.liveshow.LiveComponentController(
                     mMyRoomData, mRoomChatMsgManager, mStreamerPresenter);
         }
-        mStreamerPresenter.setComponentController(mComponentController);
-        mSdkView = mComponentController.createSdkView(this);
+        mStreamerPresenter.setComponentController(mController);
+        mSdkView = mController.createSdkView(this);
 
         addPresent(mStreamerPresenter);
 
-        Action action = new Action();
-        mComponentController.registerAction(ComponentController.MSG_END_LIVE_UNEXPECTED, action);
-        mComponentController.registerAction(ComponentController.MSG_END_LIVE_FOR_TIMEOUT, action);
-        mComponentController.registerAction(ComponentController.MSG_OPEN_MIC_FAILED, action);
-        mComponentController.registerAction(ComponentController.MSG_ON_STREAM_RECONNECT, action);
-        mComponentController.registerAction(ComponentController.MSG_ON_STREAM_SUCCESS, action);
-        if (!mIsGameLive) {
-            mComponentController.registerAction(ComponentController.MSG_OPEN_CAMERA_FAILED, action);
-        }
+        new Action().registerAction();
     }
 
     private void registerScreenStateReceiver() {
@@ -371,7 +371,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (!mIsGameLive) {
             resumeStream();
         }
-        mComponentController.onActivityResumed();
+        mController.onActivityResumed();
     }
 
     @Override
@@ -380,13 +380,13 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (!mIsGameLive) {
             pauseStream();
         }
-        mComponentController.onActivityPaused();
+        mController.onActivityPaused();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mComponentController.onActivityStopped();
+        mController.onActivityStopped();
     }
 
     private void pauseStream() {
@@ -394,7 +394,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (!mIsGameLive) {
             mStreamerPresenter.stopPreview();
         }
-        mComponentController.onPauseStream();
+        mController.onPauseStream();
 
         String roomId = mMyRoomData.getRoomId();
         if (sRecording && !TextUtils.isEmpty(roomId)) { // TODO 这里会有耗时，初始化这个pb对象会在static中耗时
@@ -409,7 +409,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (!mIsGameLive) {
             mStreamerPresenter.startPreview();
         }
-        mComponentController.onResumeStream();
+        mController.onResumeStream();
         String roomId = mMyRoomData.getRoomId();
         if (sRecording && !TextUtils.isEmpty(roomId)) {
             new ZuidActiveRequest(roomId).async();
@@ -428,12 +428,12 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             unregisterReceiver(mScreenStateReceiver);
         }
         PhoneStateReceiver.unregisterReceiver(this, mPhoneStateReceiver);
-        if (mComponentController != null) {
-            mComponentController.release();
-            mComponentController = null;
+        if (mController != null) {
+            mController.release();
+            mController = null;
         }
         if (mSdkView != null) {
-            mSdkView.releaseSdkView();
+            mSdkView.release();
             mSdkView = null;
         }
         MyUserInfoManager.getInstance().getUser().setRoomId("");
@@ -457,8 +457,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (mTopInfoSingleView != null) {
             mTopInfoSingleView.onScreenOrientationChanged(true);
         }
-        if (mComponentController != null) {
-            mComponentController.onEvent(BaseLiveController.MSG_ON_ORIENT_LANDSCAPE);
+        if (mController != null) {
+            mController.postEvent(MSG_ON_ORIENT_LANDSCAPE);
         }
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(true);
@@ -470,8 +470,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (mTopInfoSingleView != null) {
             mTopInfoSingleView.onScreenOrientationChanged(false);
         }
-        if (mComponentController != null) {
-            mComponentController.onEvent(BaseLiveController.MSG_ON_ORIENT_PORTRAIT);
+        if (mController != null) {
+            mController.postEvent(MSG_ON_ORIENT_PORTRAIT);
         }
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(false);
@@ -595,7 +595,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (mIsGameLive) {
             int quality = bundle.getInt(PrepareLiveFragment.EXTRA_GAME_LIVE_QUALITY, PrepareLiveFragment.MEDIUM_CLARITY);
             boolean isMute = bundle.getBoolean(PrepareLiveFragment.EXTRA_GAME_LIVE_MUTE, false);
-            mComponentController.createStreamer(this, null, quality, isMute, mScreenRecordIntent);
+            mController.createStreamer(this, null, quality, isMute, mScreenRecordIntent);
         }
     }
 
@@ -661,7 +661,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
         mTipsTv = $(R.id.tips_tv);
 
-        mSdkView.setupSdkView();
+        mSdkView.setupView();
 
         mFlyBarrageViewGroup = $(R.id.fly_barrage_viewgroup);
         addBindActivityLifeCycle(mFlyBarrageViewGroup, true);
@@ -673,8 +673,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         $(R.id.main_act_container).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mComponentController != null) {
-                    mComponentController.onEvent(BaseLiveController.MSG_HIDE_INPUT_VIEW);
+                if (mController != null) {
+                    mController.postEvent(MSG_HIDE_INPUT_VIEW);
                 }
             }
         });
@@ -682,7 +682,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.PhoneStateEvent event) {
-        if (event != null && mComponentController != null && !mIsLiveEnd) {
+        if (event != null && mController != null && !mIsLiveEnd) {
             MyLog.w(TAG, "onEventMainThread PhoneStateEvent type=" + event.type);
             switch (event.type) {
                 case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_IDLE:
@@ -705,7 +705,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LiveEventClass.ScreenStateEvent event) {
-        if (event != null && mComponentController != null) {
+        if (event != null && mController != null) {
             MyLog.w(TAG, "onEvent ScreenStateEvent state=" + event.screenState);
             switch (event.screenState) {
                 case LiveEventClass.ScreenStateEvent.ACTION_SCREEN_OFF:
@@ -947,8 +947,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mStreamerPresenter.setOriginalStreamUrl(upStreamUrlList, udpUpstreamUrl);
         startRecord();
         syncSystemMessage();
-        if (mComponentController != null) {
-            mComponentController.onEvent(BaseLiveController.MSG_ON_LIVE_SUCCESS);
+        if (mController != null) {
+            mController.postEvent(BaseLiveController.MSG_ON_LIVE_SUCCESS);
         }
     }
 
@@ -977,7 +977,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             }
             mPullRoomMessagePresenter.startWork();
             mStreamerPresenter.startLive();
-            mComponentController.onStartLive();
+            mController.onStartLive();
         }
     }
 
@@ -1004,7 +1004,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 mPullRoomMessagePresenter = null;
             }
             mStreamerPresenter.stopLive();
-            mComponentController.onStopLive(wasKicked);
+            mController.onStopLive(wasKicked);
             endLiveToServer();
             mUIHandler.removeCallbacksAndMessages(null);
             // 防止服务器返回太慢,超时1s
@@ -1061,8 +1061,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     @Override
     public void onBackPressed() {
-        if (mComponentController != null && mComponentController.onEvent(
-                BaseLiveController.MSG_ON_BACK_PRESSED)) {
+        if (mController != null && mController.postEvent(MSG_ON_BACK_PRESSED)) {
             return;
         }
         processBack(true);
@@ -1328,28 +1327,46 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         }
     }
 
-    private class Action implements ComponentPresenter.IAction {
+    private class Action implements IEventObserver {
+
+        private void registerAction() {
+            mController.registerObserverForEvent(MSG_END_LIVE_UNEXPECTED, this);
+            mController.registerObserverForEvent(MSG_END_LIVE_FOR_TIMEOUT, this);
+            mController.registerObserverForEvent(MSG_OPEN_MIC_FAILED, this);
+            mController.registerObserverForEvent(MSG_ON_STREAM_RECONNECT, this);
+            mController.registerObserverForEvent(MSG_ON_STREAM_SUCCESS, this);
+            if (!mIsGameLive) {
+                mController.registerObserverForEvent(MSG_OPEN_CAMERA_FAILED, this);
+            }
+        }
+
+        private void unregisterAction() {
+            if (mController != null) {
+                mController.unregisterObserver(this);
+            }
+        }
+
         @Override
-        public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
-            switch (source) {
-                case ComponentController.MSG_END_LIVE_UNEXPECTED: {
+        public boolean onEvent(int event, IParams params) {
+            switch (event) {
+                case MSG_END_LIVE_UNEXPECTED: {
                     int resId = params.getItem(0);
                     endLiveUnexpected(resId);
                     return true;
                 }
-                case ComponentController.MSG_OPEN_CAMERA_FAILED:
+                case MSG_OPEN_CAMERA_FAILED:
                     DialogUtils.showAlertDialog(LiveSdkActivity.this, getString(R.string.setting_dialog_black_title),
                             getString(R.string.camera_occupy), getString(R.string.ok));
                     return true;
-                case ComponentController.MSG_OPEN_MIC_FAILED:
+                case MSG_OPEN_MIC_FAILED:
                     DialogUtils.showAlertDialog(LiveSdkActivity.this, getString(R.string.setting_dialog_black_title),
                             getString(R.string.mic_occupy), getString(R.string.ok));
                     return true;
-                case ComponentController.MSG_ON_STREAM_SUCCESS:
+                case MSG_ON_STREAM_SUCCESS:
                     mUIHandler.removeMessages(MSG_HIDE_NETWORK_NOT_GOOD_TIPS);
                     mUIHandler.sendEmptyMessage(MSG_HIDE_NETWORK_NOT_GOOD_TIPS);
                     return true;
-                case ComponentController.MSG_ON_STREAM_RECONNECT:
+                case MSG_ON_STREAM_RECONNECT:
                     mUIHandler.sendEmptyMessage(MSG_SHOW_NETWORK_NOT_GOOD_TIPS);
                     mUIHandler.removeMessages(MSG_HIDE_NETWORK_NOT_GOOD_TIPS);
                     return true;

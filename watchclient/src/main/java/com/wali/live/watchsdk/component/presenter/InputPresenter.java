@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
 
 import com.base.event.KeyboardEvent;
@@ -17,8 +18,9 @@ import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.query.model.MessageRule;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.wali.live.component.presenter.ComponentPresenter;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.presenter.ComponentPresenter;
+import com.thornbirds.component.view.IViewProxy;
+import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.event.EventClass;
 import com.wali.live.watchsdk.R;
 
@@ -38,7 +40,7 @@ import java.util.Set;
  * @module 游戏和秀场输入框的基类, 主要放房间管理，禁言频率限制等操作
  */
 public abstract class InputPresenter<VIEW extends InputPresenter.IView>
-        extends ComponentPresenter<VIEW> {
+        extends ComponentPresenter<VIEW, BaseSdkController> {
     protected static final String TAG = "InputPresenter";
     protected static final long CLEAR_BARRAGE_CACHE_INTERVAL = 12 * 60 * 60 * 1000;// 清理弹幕缓存的时间间隔
     protected static final int MSG_SEND_BARRAGE_COUNT_DOWN = 301;
@@ -49,8 +51,10 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
     protected boolean mCanInput;
     protected boolean mViewIsShow;
 
-    public InputPresenter(@NonNull IComponentController componentController, RoomBaseDataModel myRoomData) {
-        super(componentController);
+    public InputPresenter(
+            @NonNull BaseSdkController controller,
+            @NonNull RoomBaseDataModel myRoomData) {
+        super(controller);
         mMyRoomData = myRoomData;
         mCanInput = true;
         mUIHandler = new MyUIHandler(this);
@@ -242,7 +246,7 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
         void sendBarrage(String msg, boolean isFlyBarrage);
     }
 
-    public interface IView extends IViewProxy {
+    public interface IView extends IViewProxy<View> {
         /**
          * 获取输入框
          */

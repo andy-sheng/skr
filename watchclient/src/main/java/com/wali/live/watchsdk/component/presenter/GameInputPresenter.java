@@ -1,14 +1,23 @@
 package com.wali.live.watchsdk.component.presenter;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.base.log.MyLog;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.wali.live.watchsdk.component.WatchComponentController;
+import com.thornbirds.component.IParams;
+import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.watchsdk.component.view.GameInputView;
 
 import org.greenrobot.eventbus.EventBus;
+
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_GAME_BARRAGE;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_GAME_INPUT;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_INPUT_VIEW;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_BACK_PRESSED;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_GAME_BARRAGE;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_GAME_INPUT;
 
 /**
  * Created by yangli on 2017/02/28.
@@ -19,20 +28,24 @@ public class GameInputPresenter extends InputPresenter<GameInputView.IView>
         implements GameInputView.IPresenter {
     private static final String TAG = "GameInputPresenter";
 
-    public GameInputPresenter(
-            @NonNull IComponentController componentController,
-            @NonNull RoomBaseDataModel myRoomData) {
-        super(componentController, myRoomData);
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
 
-        registerAction(WatchComponentController.MSG_ON_BACK_PRESSED);
-        registerAction(WatchComponentController.MSG_HIDE_INPUT_VIEW);
-        registerAction(WatchComponentController.MSG_SHOW_GAME_INPUT);
-        registerAction(WatchComponentController.MSG_HIDE_GAME_INPUT);
+    public GameInputPresenter(
+            @NonNull BaseSdkController controller,
+            @NonNull RoomBaseDataModel myRoomData) {
+        super(controller, myRoomData);
     }
 
     @Override
     public void startPresenter() {
         super.startPresenter();
+        registerAction(MSG_ON_BACK_PRESSED);
+        registerAction(MSG_HIDE_INPUT_VIEW);
+        registerAction(MSG_SHOW_GAME_INPUT);
+        registerAction(MSG_HIDE_GAME_INPUT);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -47,52 +60,50 @@ public class GameInputPresenter extends InputPresenter<GameInputView.IView>
     }
 
     @Override
+    public void destroy() {
+        stopPresenter();
+        super.destroy();
+    }
+
+    @Override
     public void showGameBarrage(boolean isShow) {
         if (isShow) {
-            mComponentController.onEvent(WatchComponentController.MSG_SHOW_GAME_BARRAGE);
+            postEvent(MSG_SHOW_GAME_BARRAGE);
         } else {
-            mComponentController.onEvent(WatchComponentController.MSG_HIDE_GAME_BARRAGE);
+            postEvent(MSG_HIDE_GAME_BARRAGE);
         }
     }
 
     @Override
     public void notifyInputViewShowed() {
-        mComponentController.onEvent(WatchComponentController.MSG_INPUT_VIEW_SHOWED);
+        postEvent(MSG_INPUT_VIEW_SHOWED);
     }
 
     @Override
     public void notifyInputViewHidden() {
-        mComponentController.onEvent(WatchComponentController.MSG_INPUT_VIEW_HIDDEN);
+        postEvent(MSG_INPUT_VIEW_HIDDEN);
     }
 
-    @Nullable
     @Override
-    protected IAction createAction() {
-        return new Action();
-    }
-
-    public class Action implements IAction {
-        @Override
-        public boolean onAction(int source, @Nullable Params params) {
-            if (mView == null) {
-                MyLog.e(TAG, "onAction but mView is null, source=" + source);
-                return false;
-            }
-            switch (source) {
-                case WatchComponentController.MSG_SHOW_GAME_INPUT:
-                    mView.showSelf();
-                    return true;
-                case WatchComponentController.MSG_HIDE_GAME_INPUT:
-                    mView.hideSelf();
-                    return true;
-                case WatchComponentController.MSG_ON_BACK_PRESSED:
-                    return mView.processBackPress();
-                case WatchComponentController.MSG_HIDE_INPUT_VIEW:
-                    return mView.hideInputView();
-                default:
-                    break;
-            }
+    public boolean onEvent(int event, IParams params) {
+        if (mView == null) {
+            MyLog.e(TAG, "onAction but mView is null, event=" + event);
             return false;
         }
+        switch (event) {
+            case MSG_SHOW_GAME_INPUT:
+                mView.showSelf();
+                return true;
+            case MSG_HIDE_GAME_INPUT:
+                mView.hideSelf();
+                return true;
+            case MSG_ON_BACK_PRESSED:
+                return mView.processBackPress();
+            case MSG_HIDE_INPUT_VIEW:
+                return mView.hideInputView();
+            default:
+                break;
+        }
+        return false;
     }
 }

@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.base.log.MyLog;
 import com.base.utils.Constants;
@@ -17,8 +16,9 @@ import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.milink.sdk.aidl.PacketData;
-import com.wali.live.component.ComponentController;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.IParams;
+import com.wali.live.componentwrapper.BaseSdkController;
+import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.proto.LiveProto;
@@ -35,14 +35,18 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_LIVE_SUCCESS;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+
 /**
  * Created by chenyong on 2017/03/24.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 运营位操作类
  */
-public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
+public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView, BaseSdkController>
         implements WidgetView.IPresenter, IPushMsgProcessor {
     private static final String TAG = "WidgetPresenter";
 
@@ -59,15 +63,21 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
     // TODO 改成不是proto的数据格式
     private List<LiveCommonProto.NewWidgetItem> mWidgetList = new ArrayList();
 
-    public WidgetPresenter(@NonNull IComponentController componentController,
-                           @NonNull RoomBaseDataModel myRoomData,
-                           boolean isAnchor) {
-        super(componentController);
-        registerAction(ComponentController.MSG_ON_ORIENT_PORTRAIT);
-        registerAction(ComponentController.MSG_ON_ORIENT_LANDSCAPE);
-        registerAction(ComponentController.MSG_ON_LIVE_SUCCESS);
-        registerAction(ComponentController.MSG_INPUT_VIEW_SHOWED);
-        registerAction(ComponentController.MSG_INPUT_VIEW_HIDDEN);
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
+
+    public WidgetPresenter(
+            @NonNull BaseSdkController controller,
+            @NonNull RoomBaseDataModel myRoomData,
+            boolean isAnchor) {
+        super(controller);
+        registerAction(MSG_ON_ORIENT_PORTRAIT);
+        registerAction(MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(MSG_ON_LIVE_SUCCESS);
+        registerAction(MSG_INPUT_VIEW_SHOWED);
+        registerAction(MSG_INPUT_VIEW_HIDDEN);
 
         mMyRoomData = myRoomData;
         mUIHandler = new Handler(Looper.getMainLooper());
@@ -110,11 +120,6 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
             mUIHandler.removeCallbacksAndMessages(null);
             mUIHandler = null;
         }
-    }
-
-    @Override
-    protected IAction createAction() {
-        return new Action();
     }
 
     @Override
@@ -275,57 +280,55 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
         };
     }
 
-    public class Action implements IAction {
-        @Override
-        public boolean onAction(int source, @Nullable Params params) {
-            if (mView == null) {
-                MyLog.e(TAG, "onAction but mView is null, source=" + source);
-                return false;
-            }
-            switch (source) {
-                case ComponentController.MSG_ON_ORIENT_PORTRAIT:
-                    mView.onOrientation(false);
-                    return true;
-                case ComponentController.MSG_ON_ORIENT_LANDSCAPE:
-                    mView.onOrientation(true);
-                    return true;
-                case ComponentController.MSG_ON_LIVE_SUCCESS:
-                    if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
-                        int liveType = mMyRoomData.getLiveType();
-                        MyLog.w(TAG, "live type=" + liveType);
-                        if (liveType != LiveManager.TYPE_LIVE_PRIVATE && liveType != LiveManager.TYPE_LIVE_TOKEN) {
-                            getRoomAttachment(mMyRoomData.getRoomId(), mMyRoomData.getUid(), mMyRoomData.getLiveType()).compose(WidgetPresenter.this.bindUntilEvent(PresenterEvent.DESTROY))
-                                    .retryWhen(new RxRetryAssist(3, 5, true)) // 重试3次，间隔5秒
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(new Action1<Object>() {
-                                        @Override
-                                        public void call(Object o) {
-                                            LiveProto.GetRoomAttachmentRsp rsp = (LiveProto.GetRoomAttachmentRsp) o;
-                                            setWidgetList(rsp.getNewWidgetInfo().getWidgetItemList());
-                                            if (rsp.getNewWidgetInfo().hasPullInterval()) {
-                                                getAttachmentDelay(rsp.getNewWidgetInfo().getPullInterval());
-                                            }
-                                        }
-                                    }, new Action1<Throwable>() {
-                                        @Override
-                                        public void call(Throwable throwable) {
-                                            MyLog.e(TAG, throwable);
-                                        }
-                                    });
-                        }
-                    }
-                    break;
-                case ComponentController.MSG_INPUT_VIEW_SHOWED:
-                    mView.adjustWidgetView(false);
-                    break;
-                case ComponentController.MSG_INPUT_VIEW_HIDDEN:
-                    mView.adjustWidgetView(true);
-                    break;
-                default:
-                    break;
-            }
+    @Override
+    public boolean onEvent(int event, IParams params) {
+        if (mView == null) {
+            MyLog.e(TAG, "onAction but mView is null, event=" + event);
             return false;
         }
+        switch (event) {
+            case MSG_ON_ORIENT_PORTRAIT:
+                mView.onOrientation(false);
+                return true;
+            case MSG_ON_ORIENT_LANDSCAPE:
+                mView.onOrientation(true);
+                return true;
+            case MSG_ON_LIVE_SUCCESS:
+                if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
+                    int liveType = mMyRoomData.getLiveType();
+                    MyLog.w(TAG, "live type=" + liveType);
+                    if (liveType != LiveManager.TYPE_LIVE_PRIVATE && liveType != LiveManager.TYPE_LIVE_TOKEN) {
+                        getRoomAttachment(mMyRoomData.getRoomId(), mMyRoomData.getUid(), mMyRoomData.getLiveType()).compose(WidgetPresenter.this.bindUntilEvent(PresenterEvent.DESTROY))
+                                .retryWhen(new RxRetryAssist(3, 5, true)) // 重试3次，间隔5秒
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Action1<Object>() {
+                                    @Override
+                                    public void call(Object o) {
+                                        LiveProto.GetRoomAttachmentRsp rsp = (LiveProto.GetRoomAttachmentRsp) o;
+                                        setWidgetList(rsp.getNewWidgetInfo().getWidgetItemList());
+                                        if (rsp.getNewWidgetInfo().hasPullInterval()) {
+                                            getAttachmentDelay(rsp.getNewWidgetInfo().getPullInterval());
+                                        }
+                                    }
+                                }, new Action1<Throwable>() {
+                                    @Override
+                                    public void call(Throwable throwable) {
+                                        MyLog.e(TAG, throwable);
+                                    }
+                                });
+                    }
+                }
+                break;
+            case MSG_INPUT_VIEW_SHOWED:
+                mView.adjustWidgetView(false);
+                break;
+            case MSG_INPUT_VIEW_HIDDEN:
+                mView.adjustWidgetView(true);
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 }

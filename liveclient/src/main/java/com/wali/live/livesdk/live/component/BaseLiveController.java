@@ -6,8 +6,8 @@ import android.view.View;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.fragment.FragmentDataListener;
-import com.wali.live.component.BaseSdkView;
-import com.wali.live.component.ComponentController;
+import com.wali.live.componentwrapper.BaseSdkController;
+import com.wali.live.componentwrapper.BaseSdkView;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 
 /**
@@ -15,7 +15,7 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
  *
  * @module 直播组件控制器基类
  */
-public abstract class BaseLiveController extends ComponentController {
+public abstract class BaseLiveController extends BaseSdkController {
 
     /**
      * 进入准备页

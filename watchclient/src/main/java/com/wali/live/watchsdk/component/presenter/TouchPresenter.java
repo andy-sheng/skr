@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -12,12 +11,20 @@ import android.view.animation.LinearInterpolator;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
-import com.wali.live.component.ComponentController;
-import com.wali.live.component.presenter.ComponentPresenter;
-import com.wali.live.watchsdk.component.WatchComponentController;
+import com.thornbirds.component.IParams;
+import com.thornbirds.component.presenter.ComponentPresenter;
+import com.wali.live.componentwrapper.BaseSdkController;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_BACKGROUND_CLICK;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ENABLE_MOVE_VIEW;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_PAGE_DOWN;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_PAGE_UP;
 
 /**
  * Created by yangli on 2017/03/05.
@@ -37,8 +44,6 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     public static final int FLING_THRESHOLD_LARGE = (GlobalData.screenHeight / 3);
 
     public static final float SLOW_SPEED = 0.6f;
-
-    public static final int ANIMATION_TIME = 250;
 
     @NonNull
     private List<View> mHorizontalSet;
@@ -70,8 +75,10 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         mIsGameMode = false;
     }
 
-    public void setViewSet(@NonNull List<View> horizontalSet, @NonNull List<View> verticalSet,
-                           boolean isGameMode) {
+    public void setViewSet(
+            @NonNull List<View> horizontalSet,
+            @NonNull List<View> verticalSet,
+            boolean isGameMode) {
         mHorizontalSet = horizontalSet;
         mVerticalSet = verticalSet;
         mIsGameMode = isGameMode;
@@ -83,8 +90,13 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         mSlowArray = halfArray;
     }
 
-    public TouchPresenter(@NonNull IComponentController componentController, @NonNull View touchView) {
-        super(componentController);
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
+
+    public TouchPresenter(@NonNull BaseSdkController controller, @NonNull View touchView) {
+        super(controller);
         mTouchView = touchView;
         mTouchView.setSoundEffectsEnabled(false);
         mTouchView.setOnTouchListener(this);
@@ -94,10 +106,22 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                 onBackgroundClick();
             }
         });
-        registerAction(WatchComponentController.MSG_ON_ORIENT_PORTRAIT);
-        registerAction(WatchComponentController.MSG_ON_ORIENT_LANDSCAPE);
-        registerAction(WatchComponentController.MSG_ENABLE_MOVE_VIEW);
-        registerAction(WatchComponentController.MSG_DISABLE_MOVE_VIEW);
+
+    }
+
+    @Override
+    public void startPresenter() {
+        super.startPresenter();
+        registerAction(MSG_ON_ORIENT_PORTRAIT);
+        registerAction(MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(MSG_ENABLE_MOVE_VIEW);
+        registerAction(MSG_DISABLE_MOVE_VIEW);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        mAnimationHelper.clearAnimation();
     }
 
     private float mCurrX = -1, mCurrY = -1, mDownX = -1, mDownY = -1;
@@ -294,13 +318,13 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     private void onFlingUp() {
         MyLog.d(TAG, "onFlingUp");
         mAnimationHelper.startSwitchAnimator(mTranslation, -GlobalData.screenHeight,
-                ComponentController.MSG_PAGE_UP);
+                MSG_PAGE_UP);
     }
 
     private void onFlingDown() {
         MyLog.d(TAG, "onFlingDown");
         mAnimationHelper.startSwitchAnimator(mTranslation, GlobalData.screenHeight,
-                ComponentController.MSG_PAGE_DOWN);
+                MSG_PAGE_DOWN);
     }
 
     private void onCancelMoveVertical() {
@@ -308,19 +332,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     }
 
     public void onBackgroundClick() {
-        mComponentController.onEvent(ComponentController.MSG_BACKGROUND_CLICK);
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
-        mAnimationHelper.clearAnimation();
-    }
-
-    @Nullable
-    @Override
-    protected ComponentPresenter.IAction createAction() {
-        return new Action();
+        postEvent(MSG_BACKGROUND_CLICK);
     }
 
     private void onOrientation(boolean isLandscape) {
@@ -337,46 +349,46 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         mTranslation = 0;
     }
 
-    public class Action implements IAction {
-        @Override
-        public boolean onAction(int source, @Nullable Params params) {
-            switch (source) {
-                case WatchComponentController.MSG_ON_ORIENT_PORTRAIT:
-                    mIsLandscape = false;
-                    mViewWidth = GlobalData.screenWidth;
-                    mFlingThreshold = FLING_THRESHOLD_NORMAL;
-                    onOrientation(false);
-                    return true;
-                case WatchComponentController.MSG_ON_ORIENT_LANDSCAPE:
-                    mIsLandscape = true;
-                    mViewWidth = GlobalData.screenHeight;
-                    mFlingThreshold = FLING_THRESHOLD_LARGE;
-                    if (mIsGameMode && mIsHideAll) { // 竖屏转横屏，恢复被隐藏的View，横屏转竖屏的逻辑在WatchSdkView中处理
-                        mIsHideAll = false;
-                        for (View view : mHorizontalSet) {
-                            if (view != null && view.getVisibility() != View.VISIBLE) {
-                                view.setVisibility(View.VISIBLE);
-                            }
+    @Override
+    public boolean onEvent(int event, IParams params) {
+        switch (event) {
+            case MSG_ON_ORIENT_PORTRAIT:
+                mIsLandscape = false;
+                mViewWidth = GlobalData.screenWidth;
+                mFlingThreshold = FLING_THRESHOLD_NORMAL;
+                onOrientation(false);
+                return true;
+            case MSG_ON_ORIENT_LANDSCAPE:
+                mIsLandscape = true;
+                mViewWidth = GlobalData.screenHeight;
+                mFlingThreshold = FLING_THRESHOLD_LARGE;
+                if (mIsGameMode && mIsHideAll) { // 竖屏转横屏，恢复被隐藏的View，横屏转竖屏的逻辑在WatchSdkView中处理
+                    mIsHideAll = false;
+                    for (View view : mHorizontalSet) {
+                        if (view != null && view.getVisibility() != View.VISIBLE) {
+                            view.setVisibility(View.VISIBLE);
                         }
                     }
-                    onOrientation(true);
-                    return true;
-                case WatchComponentController.MSG_ENABLE_MOVE_VIEW:
-                    mHorizontalMoveEnabled = true;
-                    mVerticalMoveEnabled = true;
-                    return true;
-                case WatchComponentController.MSG_DISABLE_MOVE_VIEW:
-                    mHorizontalMoveEnabled = false;
-                    mVerticalMoveEnabled = false;
-                    return true;
-                default:
-                    break;
-            }
-            return false;
+                }
+                onOrientation(true);
+                return true;
+            case MSG_ENABLE_MOVE_VIEW:
+                mHorizontalMoveEnabled = true;
+                mVerticalMoveEnabled = true;
+                return true;
+            case MSG_DISABLE_MOVE_VIEW:
+                mHorizontalMoveEnabled = false;
+                mVerticalMoveEnabled = false;
+                return true;
+            default:
+                break;
         }
+        return false;
     }
 
     private class AnimationHelper {
+        private static final int ANIMATION_TIME = 250;
+
         private ValueAnimator mMoveAnimator;
         private ValueAnimator mShowAnimator;
         private int mSource;
@@ -420,7 +432,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                             mShowAnimator.start();
                         }
                         if (mSource > 0) {
-                            mComponentController.onEvent(mSource);
+                            postEvent(mSource);
                         }
                     }
                 });

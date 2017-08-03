@@ -9,9 +9,9 @@ import com.base.log.MyLog;
 import com.base.presenter.Presenter;
 import com.base.utils.CommonUtils;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.IParams;
+import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
-import com.wali.live.livesdk.live.liveshow.LiveComponentController;
 import com.wali.live.livesdk.live.liveshow.presenter.panel.LiveMagicPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.panel.LivePlusPresenter;
 import com.wali.live.livesdk.live.liveshow.view.panel.LiveMagicPanel;
@@ -21,6 +21,15 @@ import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 
 import java.lang.ref.WeakReference;
+
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_BOTTOM_PANEL;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_BACK_PRESSED;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_MAGIC_PANEL;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_PLUS_PANEL;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SETTING_PANEL;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SHARE_PANEL;
 
 /**
  * Created by yangli on 2017/3/13.
@@ -46,20 +55,25 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     }
 
     public PanelContainerPresenter(
-            @NonNull ComponentPresenter.IComponentController componentController,
+            @NonNull BaseSdkController controller,
             @NonNull StreamerPresenter streamerPresenter,
             @NonNull RoomBaseDataModel myRoomData) {
-        super(componentController);
+        super(controller);
         mStreamerPresenter = streamerPresenter;
         mMyRoomData = myRoomData;
-        registerAction(LiveComponentController.MSG_ON_ORIENT_PORTRAIT);
-        registerAction(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
-        registerAction(LiveComponentController.MSG_ON_BACK_PRESSED);
-        registerAction(LiveComponentController.MSG_SHOW_SETTING_PANEL);
-        registerAction(LiveComponentController.MSG_SHOW_PLUS_PANEL);
-        registerAction(LiveComponentController.MSG_SHOW_MAGIC_PANEL);
-        registerAction(LiveComponentController.MSG_HIDE_BOTTOM_PANEL);
-        registerAction(LiveComponentController.MSG_SHOW_SHARE_PANEL);
+    }
+
+    @Override
+    public void startPresenter() {
+        super.startPresenter();
+        registerAction(MSG_ON_ORIENT_PORTRAIT);
+        registerAction(MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(MSG_ON_BACK_PRESSED);
+        registerAction(MSG_SHOW_SETTING_PANEL);
+        registerAction(MSG_SHOW_PLUS_PANEL);
+        registerAction(MSG_SHOW_MAGIC_PANEL);
+        registerAction(MSG_HIDE_BOTTOM_PANEL);
+        registerAction(MSG_SHOW_SHARE_PANEL);
     }
 
     @Override
@@ -98,7 +112,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     private void showSettingPanel() {
         LiveSettingPanel panel = deRef(mSettingPanelRef);
         if (panel == null) {
-            panel = new LiveSettingPanel(mView, mStreamerPresenter, mComponentController);
+            panel = new LiveSettingPanel(mView, mStreamerPresenter, mController);
             mSettingPanelRef = new WeakReference<>(panel);
         }
         showPanel(panel, true);
@@ -111,7 +125,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
             mPlusPanelRef = new WeakReference<>(panel);
             LivePlusPresenter presenter = deRef(mPlusPresenterRef);
             if (presenter == null) {
-                presenter = new LivePlusPresenter(mComponentController);
+                presenter = new LivePlusPresenter(mController);
                 mPlusPresenterRef = new WeakReference<>(presenter);
             }
             panel.setPresenter(presenter);
@@ -141,45 +155,37 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
         SnsShareHelper.getInstance().shareToSns(-1, mMyRoomData);
     }
 
-    @Nullable
     @Override
-    protected ComponentPresenter.IAction createAction() {
-        return new Action();
-    }
-
-    public class Action implements ComponentPresenter.IAction {
-        @Override
-        public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
-            if (mView == null || CommonUtils.isFastDoubleClick()) {
-                MyLog.e(TAG, "onAction but mView is null, source=" + source + " or CommonUtils.isFastDoubleClick() is true");
-                return false;
-            }
-            switch (source) {
-                case LiveComponentController.MSG_ON_ORIENT_PORTRAIT:
-                    onOrientation(false);
-                    return true;
-                case LiveComponentController.MSG_ON_ORIENT_LANDSCAPE:
-                    onOrientation(true);
-                    return true;
-                case LiveComponentController.MSG_SHOW_SETTING_PANEL:
-                    showSettingPanel();
-                    return true;
-                case LiveComponentController.MSG_SHOW_PLUS_PANEL:
-                    showPlusPanel();
-                    return true;
-                case LiveComponentController.MSG_SHOW_MAGIC_PANEL:
-                    showMagicPanel();
-                    return true;
-                case LiveComponentController.MSG_SHOW_SHARE_PANEL:
-                    showShareControlPanel();
-                    return true;
-                case LiveComponentController.MSG_HIDE_BOTTOM_PANEL:
-                case LiveComponentController.MSG_ON_BACK_PRESSED:
-                    return hidePanel(true);
-                default:
-                    break;
-            }
+    public boolean onEvent(int event, IParams params) {
+        if (mView == null || CommonUtils.isFastDoubleClick()) {
+            MyLog.e(TAG, "onAction but mView is null, event=" + event + " or CommonUtils.isFastDoubleClick() is true");
             return false;
         }
+        switch (event) {
+            case MSG_ON_ORIENT_PORTRAIT:
+                onOrientation(false);
+                return true;
+            case MSG_ON_ORIENT_LANDSCAPE:
+                onOrientation(true);
+                return true;
+            case MSG_SHOW_SETTING_PANEL:
+                showSettingPanel();
+                return true;
+            case MSG_SHOW_PLUS_PANEL:
+                showPlusPanel();
+                return true;
+            case MSG_SHOW_MAGIC_PANEL:
+                showMagicPanel();
+                return true;
+            case MSG_SHOW_SHARE_PANEL:
+                showShareControlPanel();
+                return true;
+            case MSG_HIDE_BOTTOM_PANEL:
+            case MSG_ON_BACK_PRESSED:
+                return hidePanel(true);
+            default:
+                break;
+        }
+        return false;
     }
 }

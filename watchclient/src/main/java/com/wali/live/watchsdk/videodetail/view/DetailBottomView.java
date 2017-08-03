@@ -6,8 +6,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.base.log.MyLog;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 
@@ -120,7 +120,7 @@ public class DetailBottomView implements View.OnClickListener,
         void showSharePanel();
     }
 
-    public interface IView extends IViewProxy {
+    public interface IView extends IViewProxy<View> {
         /**
          * 更新点赞按钮状态
          */

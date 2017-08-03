@@ -15,8 +15,9 @@ import com.base.event.SdkEventClass;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
-import com.wali.live.component.BaseSdkView;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.IEventObserver;
+import com.thornbirds.component.IParams;
+import com.wali.live.componentwrapper.BaseSdkView;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
@@ -35,15 +36,16 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 
-import static com.wali.live.component.ComponentController.MSG_ON_BACK_PRESSED;
-import static com.wali.live.component.ComponentController.MSG_ON_ORIENT_LANDSCAPE;
-import static com.wali.live.component.ComponentController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.component.ComponentController.MSG_PLAYER_DETAIL_SCREEN;
-import static com.wali.live.component.ComponentController.MSG_PLAYER_FULL_SCREEN;
-import static com.wali.live.component.ComponentController.MSG_PLAYER_ROTATE_ORIENTATION;
-import static com.wali.live.component.ComponentController.MSG_PLAYER_START;
-import static com.wali.live.component.ComponentController.MSG_SHOW_PERSONAL_INFO;
-import static com.wali.live.component.ComponentController.MSG_UPDATE_START_TIME;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_BACK_PRESSED;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_DETAIL_SCREEN;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_FULL_SCREEN;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_PAUSE;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_ROTATE_ORIENTATION;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_START;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_PERSONAL_INFO;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_UPDATE_START_TIME;
 
 /**
  * Created by yangli on 2017/5/26.
@@ -54,7 +56,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
 
     private long mVideoStartTime = -1;
 
-    private VideoDetailController mComponentController;
+    private VideoDetailController mController;
     private WeakReference<VideoDetailView> mDetailViewRef = new WeakReference<>(null);
     private WeakReference<ReplaySdkView> mFullScreenViewRef = new WeakReference<>(null);
     private BaseSdkView mSdkView;
@@ -115,15 +117,15 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
     }
 
     private void initView() {
-        mComponentController = new VideoDetailController(mMyRoomData, mRoomChatMsgManager);
-        mComponentController.setupController(this);
+        mController = new VideoDetailController(mMyRoomData, mRoomChatMsgManager);
+        mController.setupController(this);
         switchToDetailMode();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mComponentController.onEvent(VideoDetailController.MSG_PLAYER_PAUSE);
+        mController.postEvent(MSG_PLAYER_PAUSE);
     }
 
     private void getVideoUrlFromServer() {
@@ -143,19 +145,19 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
     protected void onDestroy() {
         MyLog.w(TAG, "onDestroy");
         super.onDestroy();
-        if (mComponentController != null) {
-            mComponentController.release();
-            mComponentController = null;
+        if (mController != null) {
+            mController.release();
+            mController = null;
         }
         if (mSdkView != null) {
-            mSdkView.stopSdkView();
+            mSdkView.stopView();
             mSdkView = null;
         }
         if (mDetailViewRef.get() != null) {
-            mDetailViewRef.get().releaseSdkView();
+            mDetailViewRef.get().release();
         }
         if (mFullScreenViewRef.get() != null) {
-            mFullScreenViewRef.get().releaseSdkView();
+            mFullScreenViewRef.get().release();
         }
     }
 
@@ -178,14 +180,14 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
     }
 
     protected void orientLandscape() {
-        if (mComponentController != null) {
-            mComponentController.onEvent(MSG_ON_ORIENT_LANDSCAPE);
+        if (mController != null) {
+            mController.postEvent(MSG_ON_ORIENT_LANDSCAPE);
         }
     }
 
     protected void orientPortrait() {
-        if (mComponentController != null) {
-            mComponentController.onEvent(MSG_ON_ORIENT_PORTRAIT);
+        if (mController != null) {
+            mController.postEvent(MSG_ON_ORIENT_PORTRAIT);
         }
     }
 
@@ -197,15 +199,15 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
             return;
         }
         if (mSdkView != null) {
-            mSdkView.stopSdkView();
+            mSdkView.stopView();
         }
         forcePortrait();
         if (compoundView == null) {
-            compoundView = new VideoDetailView(this, mComponentController);
-            compoundView.setupSdkView();
+            compoundView = new VideoDetailView(this, mController);
+            compoundView.setupView();
             mDetailViewRef = new WeakReference<>(compoundView);
         }
-        compoundView.startSdkView();
+        compoundView.startView();
         mSdkView = compoundView;
         $click($(R.id.back_iv), new View.OnClickListener() {
             @Override
@@ -225,15 +227,15 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
             return;
         }
         if (mSdkView != null) {
-            mSdkView.stopSdkView();
+            mSdkView.stopView();
         }
         openOrientation();
         if (compoundView == null) {
-            compoundView = new ReplaySdkView(this, mComponentController);
-            compoundView.setupSdkView();
+            compoundView = new ReplaySdkView(this, mController);
+            compoundView.setupView();
             mFullScreenViewRef = new WeakReference<>(compoundView);
         }
-        compoundView.startSdkView(mVideoStartTime);
+        compoundView.startView(mVideoStartTime);
         mSdkView = compoundView;
         mAction.unregisterAction();
         mAction.registerAction();
@@ -254,7 +256,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
                 FragmentNaviUtils.popFragmentFromStack(this);
                 return;
             }
-        } else if (mComponentController != null && mComponentController.onEvent(MSG_ON_BACK_PRESSED)) {
+        } else if (mController != null && mController.postEvent(MSG_ON_BACK_PRESSED)) {
             return;
         } else if (mSdkView != null && mSdkView == mFullScreenViewRef.get()) {
             switchToDetailMode();
@@ -274,7 +276,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
         if (TextUtils.isEmpty(mMyRoomData.getVideoUrl())
                 && !TextUtils.isEmpty(videoUrl)) {
             mMyRoomData.setVideoUrl(videoUrl);
-            mComponentController.onEvent(MSG_PLAYER_START);
+            mController.postEvent(MSG_PLAYER_START);
         }
     }
 
@@ -323,23 +325,23 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
     }
 
 
-    private class Action implements ComponentPresenter.IAction {
+    private class Action implements IEventObserver {
 
         private void registerAction() {
-            mComponentController.registerAction(MSG_PLAYER_FULL_SCREEN, this);
-            mComponentController.registerAction(MSG_SHOW_PERSONAL_INFO, this);
-            mComponentController.registerAction(MSG_UPDATE_START_TIME, this);
-            mComponentController.registerAction(MSG_PLAYER_DETAIL_SCREEN, this);
-            mComponentController.registerAction(MSG_PLAYER_ROTATE_ORIENTATION, this);
+            mController.registerObserverForEvent(MSG_PLAYER_FULL_SCREEN, this);
+            mController.registerObserverForEvent(MSG_SHOW_PERSONAL_INFO, this);
+            mController.registerObserverForEvent(MSG_UPDATE_START_TIME, this);
+            mController.registerObserverForEvent(MSG_PLAYER_DETAIL_SCREEN, this);
+            mController.registerObserverForEvent(MSG_PLAYER_ROTATE_ORIENTATION, this);
         }
 
         private void unregisterAction() {
-            mComponentController.unregisterAction(this);
+            mController.unregisterObserver(this);
         }
 
         @Override
-        public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
-            switch (source) {
+        public boolean onEvent(int event, IParams params) {
+            switch (event) {
                 case MSG_SHOW_PERSONAL_INFO:
                     startShowFloatPersonInfo((long) params.getItem(0));
                     return true;

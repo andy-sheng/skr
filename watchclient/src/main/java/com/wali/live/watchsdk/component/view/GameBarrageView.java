@@ -19,11 +19,11 @@ import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.push.model.BarrageMsgType;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.common.barrage.event.CommentRefreshEvent;
 import com.wali.live.common.gift.utils.AnimationPlayControlTemplate;
 import com.wali.live.common.model.CommentModel;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
 
 import java.util.ArrayList;
@@ -54,6 +54,11 @@ public class GameBarrageView extends RelativeLayout
 
     @Nullable
     protected IPresenter mPresenter;
+
+    @Override
+    public void setPresenter(@Nullable IPresenter iPresenter) {
+        mPresenter = iPresenter;
+    }
 
     public GameBarrageView(Context context) {
         this(context, null);
@@ -269,11 +274,6 @@ public class GameBarrageView extends RelativeLayout
     }
 
     @Override
-    public void setPresenter(@Nullable IPresenter iPresenter) {
-        mPresenter = iPresenter;
-    }
-
-    @Override
     public IView getViewProxy() {
         /**
          * 局部内部类，用于Presenter回调通知该View改变状态
@@ -315,7 +315,7 @@ public class GameBarrageView extends RelativeLayout
     public interface IPresenter {
     }
 
-    public interface IView extends IViewProxy {
+    public interface IView extends IViewProxy<View> {
         /**
          * 新的消息到来
          */

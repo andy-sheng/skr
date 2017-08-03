@@ -4,7 +4,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.base.log.MyLog;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.IParams;
+import com.thornbirds.component.presenter.ComponentPresenter;
+import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.livesdk.live.liveshow.view.button.MagicControlBtnView;
 
 /**
@@ -14,13 +16,18 @@ import com.wali.live.livesdk.live.liveshow.view.button.MagicControlBtnView;
  *
  * @module 美妆按钮表现
  */
-public class MagicControlBtnPresenter extends ComponentPresenter<MagicControlBtnView.IView>
+public class MagicControlBtnPresenter extends ComponentPresenter<MagicControlBtnView.IView, BaseSdkController>
         implements MagicControlBtnView.IPresenter {
     private static final String TAG = "MagicControlBtnPresenter";
 
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
+
     public MagicControlBtnPresenter(
-            @NonNull IComponentController componentController) {
-        super(componentController);
+            @NonNull BaseSdkController controller) {
+        super(controller);
 //        EventBus.getDefault().register(this);
     }
 
@@ -70,24 +77,8 @@ public class MagicControlBtnPresenter extends ComponentPresenter<MagicControlBtn
 //        mView.showRedDot(false);
 //    }
 
-    @Nullable
     @Override
-    protected IAction createAction() {
-        return new Action();
-    }
-
-    public class Action implements IAction {
-        @Override
-        public boolean onAction(int source, @Nullable Params params) {
-            if (mView == null) {
-                MyLog.e(TAG, "onAction but mView is null, source=" + source);
-                return false;
-            }
-            switch (source) {
-                default:
-                    break;
-            }
-            return false;
-        }
+    public boolean onEvent(int event, IParams params) {
+        return false;
     }
 }

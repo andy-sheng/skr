@@ -8,18 +8,17 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.livesdk.R;
 
 /**
  * Created by yangli on 2017/03/09.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 美妆按钮视图
  */
-public class MagicControlBtnView extends FrameLayout implements IComponentView<MagicControlBtnView.IPresenter, MagicControlBtnView.IView> {
+public class MagicControlBtnView extends FrameLayout
+        implements IComponentView<MagicControlBtnView.IPresenter, MagicControlBtnView.IView> {
     private static final String TAG = "MagicControlBtnView";
 
     @Nullable
@@ -87,7 +86,7 @@ public class MagicControlBtnView extends FrameLayout implements IComponentView<M
     public interface IPresenter {
     }
 
-    public interface IView extends IViewProxy {
+    public interface IView extends IViewProxy<View> {
         /**
          * 是否显示红点
          */

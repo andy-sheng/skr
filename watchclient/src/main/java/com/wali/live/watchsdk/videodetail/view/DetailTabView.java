@@ -11,8 +11,8 @@ import android.view.View;
 
 import com.base.utils.display.DisplayUtils;
 import com.base.view.SlidingTabLayout;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
 
@@ -132,7 +132,7 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
         void syncTabPageList(Context context);
     }
 
-    public interface IView extends IViewProxy {
+    public interface IView extends IViewProxy<View> {
         /**
          * 更新TAB页面列表
          *

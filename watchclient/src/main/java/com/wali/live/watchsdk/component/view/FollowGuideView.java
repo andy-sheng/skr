@@ -19,11 +19,11 @@ import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IOrientationListener;
-import com.wali.live.component.view.IViewProxy;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IOrientationListener;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
@@ -237,7 +237,7 @@ public class FollowGuideView extends RelativeLayout implements IComponentView<Fo
         void countDownIn(int time);
     }
 
-    public interface IView extends IViewProxy {
+    public interface IView extends IViewProxy<View> {
         /**
          * 关注成功后行为
          */

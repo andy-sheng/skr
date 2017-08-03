@@ -12,8 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.videodetail.adapter.DetailReplayAdapter;
 
@@ -148,7 +148,7 @@ public class DetailReplayView extends RelativeLayout implements IComponentView<D
         void onClickReplayItem(DetailReplayAdapter.ReplayInfoItem replayInfoItem);
     }
 
-    public interface IView extends IViewProxy {
+    public interface IView extends IViewProxy<View> {
         /**
          * 拉取回放成功
          */

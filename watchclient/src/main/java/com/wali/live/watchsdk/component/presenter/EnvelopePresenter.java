@@ -16,8 +16,10 @@ import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.gift.redenvelope.RedEnvelopeModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.IParams;
 import com.wali.live.common.gift.exception.GiftErrorCode;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.wali.live.componentwrapper.BaseSdkController;
+import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.RedEnvelProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.adapter.WinnerItemAdapter;
@@ -48,7 +50,7 @@ import static com.wali.live.component.ComponentController.MSG_ON_ORIENT_PORTRAIT
  *
  * @module 抢红包表现
  */
-public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
+public class EnvelopePresenter extends BaseSdkRxPresenter<RelativeLayout, BaseSdkController>
         implements EnvelopeView.IPresenter, EnvelopeResultView.IPresenter {
     private static final String TAG = "EnvelopePresenter";
 
@@ -61,10 +63,15 @@ public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
     private RoomBaseDataModel mMyRoomData;
     protected boolean mIsLandscape = false;
 
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
+
     public EnvelopePresenter(
-            @NonNull IComponentController componentController,
+            @NonNull BaseSdkController controller,
             @NonNull RoomBaseDataModel myRoomData) {
-        super(componentController);
+        super(controller);
         mMyRoomData = myRoomData;
         startPresenter();
     }
@@ -344,31 +351,23 @@ public class EnvelopePresenter extends ComponentPresenter<RelativeLayout>
         }
     }
 
-    @Nullable
     @Override
-    protected IAction createAction() {
-        return new Action();
-    }
-
-    public class Action implements IAction {
-        @Override
-        public boolean onAction(int source, @Nullable Params params) {
-            if (mView == null) {
-                MyLog.e(TAG, "onAction but mView is null, source=" + source);
-                return false;
-            }
-            switch (source) {
-                case MSG_ON_ORIENT_PORTRAIT:
-                    onOrientation(false);
-                    return true;
-                case MSG_ON_ORIENT_LANDSCAPE:
-                    onOrientation(true);
-                    return true;
-                default:
-                    break;
-            }
+    public boolean onEvent(int event, IParams params) {
+        if (mView == null) {
+            MyLog.e(TAG, "onAction but mView is null, event=" + event);
             return false;
         }
+        switch (event) {
+            case MSG_ON_ORIENT_PORTRAIT:
+                onOrientation(false);
+                return true;
+            case MSG_ON_ORIENT_LANDSCAPE:
+                onOrientation(true);
+                return true;
+            default:
+                break;
+        }
+        return false;
     }
 
     public static class EnvelopeInfo {

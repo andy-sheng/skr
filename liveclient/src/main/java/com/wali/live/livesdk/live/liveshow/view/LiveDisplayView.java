@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.livesdk.R;
 
 /**
@@ -19,7 +19,8 @@ import com.wali.live.livesdk.R;
  *
  * @module 直播大小窗视图
  */
-public class LiveDisplayView extends RelativeLayout implements IComponentView<LiveDisplayView.IPresenter, LiveDisplayView.IView> {
+public class LiveDisplayView extends RelativeLayout
+        implements IComponentView<LiveDisplayView.IPresenter, LiveDisplayView.IView> {
     private static final String TAG = "LiveDisplayView";
 
     @Nullable
@@ -82,7 +83,7 @@ public class LiveDisplayView extends RelativeLayout implements IComponentView<Li
     public interface IPresenter {
     }
 
-    public interface IView extends IViewProxy {
+    public interface IView extends IViewProxy<View> {
 
     }
 }

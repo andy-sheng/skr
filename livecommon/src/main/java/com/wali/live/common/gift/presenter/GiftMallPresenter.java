@@ -2,6 +2,7 @@ package com.wali.live.common.gift.presenter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -28,13 +29,13 @@ import com.mi.live.data.gift.model.giftEntity.PeckOfGift;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.EventController;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.common.gift.exception.GiftErrorCode;
 import com.wali.live.common.gift.exception.GiftException;
 import com.wali.live.common.gift.view.GiftDisPlayItemView;
 import com.wali.live.common.gift.view.GiftMallView;
-import com.wali.live.component.ComponentController;
 import com.wali.live.dao.Gift;
 import com.wali.live.proto.GiftProto;
 import com.wali.live.proto.PayProto;
@@ -60,6 +61,10 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
+
 /**
  * Created by zjn on 16-11-30.
  */
@@ -69,7 +74,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
     private RoomBaseDataModel mMyRoomData; // 主播id
     private Activity mActivity;
     @Nullable
-    private ComponentController mComponentController;
+    private EventController mController;
 
     private ViewStub mGiftMallViewStub;
     private GiftMallView mGiftMallView;
@@ -96,14 +101,14 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
     private int mSpendTicket = 0;
 
     public GiftMallPresenter(
-            Activity activity,
-            Context baseContext,
-            RoomBaseDataModel myRoomData,
-            @Nullable ComponentController componentController) {
+            @NonNull Activity activity,
+            @NonNull Context context,
+            @NonNull RoomBaseDataModel myRoomData,
+            @Nullable EventController controller) {
         mMyRoomData = myRoomData;
         mActivity = activity;
-        mContext = baseContext;
-        mComponentController = componentController;
+        mContext = context;
+        mController = controller;
     }
 
     public int getSpendTicket() {
@@ -133,8 +138,8 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         MyLog.d(TAG, "hideGiftMallView");
         if (mGiftMallView.getVisibility() == View.VISIBLE) {
             mGiftMallView.setVisibility(View.GONE);
-            if (mComponentController != null) {
-                mComponentController.onEvent(ComponentController.MSG_BOTTOM_POPUP_HIDDEN);
+            if (mController != null) {
+                mController.postEvent(MSG_BOTTOM_POPUP_HIDDEN);
             }
         }
     }
@@ -762,8 +767,8 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         MyLog.d(TAG, "showGiftMallView");
         if (mGiftMallView.getVisibility() != View.VISIBLE) {
             mGiftMallView.setVisibility(View.VISIBLE);
-            if (mComponentController != null) {
-                mComponentController.onEvent(ComponentController.MSG_BOTTOM_POPUP_SHOWED);
+            if (mController != null) {
+                mController.postEvent(MSG_BOTTOM_POPUP_SHOWED);
             }
         }
     }
@@ -976,8 +981,8 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
     }
 
     public void showSendEnvelopeView() {
-        if (mComponentController != null) {
-            mComponentController.onEvent(ComponentController.MSG_SHOW_SEND_ENVELOPE);
+        if (mController != null) {
+            mController.postEvent(MSG_SHOW_SEND_ENVELOPE);
         }
     }
 

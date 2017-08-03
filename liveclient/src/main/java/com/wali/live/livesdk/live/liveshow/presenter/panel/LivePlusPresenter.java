@@ -1,13 +1,13 @@
 package com.wali.live.livesdk.live.liveshow.presenter.panel;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.base.log.MyLog;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.IParams;
+import com.wali.live.componentwrapper.BaseSdkController;
+import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.utils.PlusParamUtils;
-import com.wali.live.livesdk.live.livegame.LiveComponentController;
 import com.wali.live.livesdk.live.liveshow.view.panel.LivePlusPanel;
 import com.wali.live.watchsdk.component.presenter.adapter.PlusItemAdapter;
 
@@ -20,6 +20,11 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_BOTTOM_PANEL;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_ATMOSPHERE_VIEW;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_INPUT_VIEW;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
+
 /**
  * Created by yangli on 2017/03/09.
  * <p>
@@ -27,30 +32,35 @@ import rx.schedulers.Schedulers;
  *
  * @module 秀场直播加面板表现
  */
-public class LivePlusPresenter extends ComponentPresenter<LivePlusPanel.IView>
+public class LivePlusPresenter extends BaseSdkRxPresenter<LivePlusPanel.IView, BaseSdkController>
         implements LivePlusPanel.IPresenter {
     private static final String TAG = "LivePlusPresenter";
 
-    public LivePlusPresenter(@NonNull IComponentController componentController) {
-        super(componentController);
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
+
+    public LivePlusPresenter(@NonNull BaseSdkController controller) {
+        super(controller);
     }
 
     @Override
     public void showAtmosphereView() {
-        mComponentController.onEvent(LiveComponentController.MSG_HIDE_BOTTOM_PANEL);
-        mComponentController.onEvent(LiveComponentController.MSG_SHOW_ATMOSPHERE_VIEW);
+        postEvent(MSG_HIDE_BOTTOM_PANEL);
+        postEvent(MSG_SHOW_ATMOSPHERE_VIEW);
     }
 
     @Override
     public void showInputView() {
-        mComponentController.onEvent(LiveComponentController.MSG_HIDE_BOTTOM_PANEL);
-        mComponentController.onEvent(LiveComponentController.MSG_SHOW_INPUT_VIEW);
+        postEvent(MSG_HIDE_BOTTOM_PANEL);
+        postEvent(MSG_SHOW_INPUT_VIEW);
     }
 
     @Override
     public void showEnvelopeView() {
-        mComponentController.onEvent(LiveComponentController.MSG_HIDE_BOTTOM_PANEL);
-        mComponentController.onEvent(LiveComponentController.MSG_SHOW_SEND_ENVELOPE);
+        postEvent(MSG_HIDE_BOTTOM_PANEL);
+        postEvent(MSG_SHOW_SEND_ENVELOPE);
     }
 
     @Override
@@ -91,9 +101,8 @@ public class LivePlusPresenter extends ComponentPresenter<LivePlusPanel.IView>
                 });
     }
 
-    @Nullable
     @Override
-    protected IAction createAction() {
-        return null;
+    public boolean onEvent(int event, IParams params) {
+        return false;
     }
 }

@@ -12,9 +12,9 @@ import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.wali.live.component.view.BaseBottomButton;
-import com.wali.live.component.view.IOrientationListener;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.view.IOrientationListener;
+import com.thornbirds.component.view.IViewProxy;
+import com.wali.live.componentwrapper.view.BaseBottomButton;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
@@ -248,7 +248,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         void showShareView();
     }
 
-    public interface IView extends IViewProxy, IOrientationListener {
+    public interface IView extends IViewProxy<View>, IOrientationListener {
         void showGameIcon(GameViewModel gameModel);
 
         void destroyView();

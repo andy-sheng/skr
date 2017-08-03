@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import com.base.view.RotatedSeekBar;
 import com.mi.live.engine.base.GalileoConstants;
+import com.thornbirds.component.IParams;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
 import com.wali.live.component.view.panel.BaseBottomPanel;
@@ -371,10 +372,9 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
 //            showPanel(mExpressionPanel, false);
 //        }
 
-        @Nullable
         @Override
-        protected IAction createAction() {
-            return null;
+        public boolean onEvent(int event, IParams params) {
+            return false;
         }
     }
 }

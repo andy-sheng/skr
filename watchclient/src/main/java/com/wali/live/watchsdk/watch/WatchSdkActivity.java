@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
@@ -51,12 +50,14 @@ import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.mi.live.data.user.User;
 import com.mi.live.engine.player.widget.VideoPlayerTextureView;
 import com.mi.milink.sdk.base.CustomHandlerThread;
+import com.thornbirds.component.IEventObserver;
+import com.thornbirds.component.IParams;
+import com.thornbirds.component.Params;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
-import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.event.EventClass;
 import com.wali.live.event.EventEmitter;
 import com.wali.live.event.UserActionEvent;
@@ -110,12 +111,17 @@ import rx.functions.Action1;
 import static android.view.View.GONE;
 import static com.wali.live.component.ComponentController.MSG_PAGE_DOWN;
 import static com.wali.live.component.ComponentController.MSG_PAGE_UP;
-
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_FOLLOW_COUNT_DOWN;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_BACK_PRESSED;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_LIVE_SUCCESS;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 
 /**
  * Created by lan on 16/11/25.
  */
-public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatPersonInfoFragment.FloatPersonInfoClickListener,
+public class WatchSdkActivity extends BaseComponentSdkActivity
+        implements FloatPersonInfoFragment.FloatPersonInfoClickListener,
         ForbidManagePresenter.IForbidManageProvider, IActionCallBack, IWatchVideoView {
     public static final String EXTRA_ROOM_INFO_LIST = "extra_room_info_list";
     public static final String EXTRA_ROOM_INFO_POSITION = "extra_room_info_position";
@@ -508,7 +514,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             mComponentController = null;
         }
         if (mSdkView != null) {
-            mSdkView.releaseSdkView();
+            mSdkView.release();
             mSdkView = null;
         }
         if (mHandlerThread != null) {
@@ -731,8 +737,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                     int guideFollowTs = PreferenceUtils.getSettingInt(GlobalData.app(),
                             PreferenceKeys.PRE_KEY_GAME_FOLLOW_TIME, 0);
                     if (guideFollowTs > 0) {
-                        mComponentController.onEvent(WatchComponentController.MSG_FOLLOW_COUNT_DOWN,
-                                new ComponentPresenter.Params().putItem(guideFollowTs));
+                        mComponentController.postEvent(MSG_FOLLOW_COUNT_DOWN,
+                                new Params().putItem(guideFollowTs));
                     }
                 }
                 break;
@@ -759,7 +765,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             WatchRoomCharactorManager.getInstance().clear();
             syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);
             if (mComponentController != null) {
-                mComponentController.onEvent(WatchComponentController.MSG_ON_LIVE_SUCCESS);
+                mComponentController.postEvent(MSG_ON_LIVE_SUCCESS);
             }
         }
     };
@@ -910,8 +916,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 FragmentNaviUtils.popFragmentFromStack(this);
             }
         } else {
-            if (mComponentController != null && mComponentController.onEvent(
-                    WatchComponentController.MSG_ON_BACK_PRESSED)) {
+            if (mComponentController != null && mComponentController.postEvent(MSG_ON_BACK_PRESSED)) {
                 return;
             } else if (mGiftMallPresenter.isGiftMallViewVisibility()) {
                 EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST));
@@ -959,7 +964,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             mGiftContinueViewGroup.setOrient(true);
         }
         if (mComponentController != null) {
-            mComponentController.onEvent(WatchComponentController.MSG_ON_ORIENT_LANDSCAPE);
+            mComponentController.postEvent(MSG_ON_ORIENT_LANDSCAPE);
         }
         orientCloseBtn(true);
     }
@@ -975,7 +980,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             mGiftContinueViewGroup.setOrient(false);
         }
         if (mComponentController != null) {
-            mComponentController.onEvent(WatchComponentController.MSG_ON_ORIENT_PORTRAIT);
+            mComponentController.postEvent(MSG_ON_ORIENT_PORTRAIT);
         }
 //        if (mGameModePresenter != null) {
 //            if (mCloseBtn.getVisibility() != View.VISIBLE) {
@@ -1082,18 +1087,46 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         showEndLiveFragment(true, UserEndLiveFragment.ENTER_TYPE_LATE);
     }
 
-    private class Action implements ComponentPresenter.IAction {
+    private class Action implements IEventObserver {
+
         private void registerAction() {
             if (mComponentController != null) {
-                mComponentController.registerAction(MSG_PAGE_DOWN, this);
-                mComponentController.registerAction(MSG_PAGE_UP, this);
+                mComponentController.registerObserverForEvent(MSG_PAGE_DOWN, this);
+                mComponentController.registerObserverForEvent(MSG_PAGE_UP, this);
             }
         }
 
         private void unregisterAction() {
             if (mComponentController != null) {
-                mComponentController.unregisterAction(this);
+                mComponentController.unregisterObserver(this);
             }
+        }
+
+        @Override
+        public boolean onEvent(int event, IParams params) {
+            switch (event) {
+                case MSG_PAGE_UP:
+                    MyLog.d(TAG, "page up");
+                    mComponentController.switchToNextPosition();
+                    switchRoom();
+                    if (mSdkView != null) {
+                        MyLog.d(TAG, "page down internal");
+                        mSdkView.switchToNextRoom();
+                    }
+                    break;
+                case MSG_PAGE_DOWN:
+                    MyLog.d(TAG, "page down");
+                    mComponentController.switchToLastPosition();
+                    switchRoom();
+                    if (mSdkView != null) {
+                        MyLog.d(TAG, "page up internal");
+                        mSdkView.switchToLastRoom();
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return false;
         }
 
         private void switchRoom() {
@@ -1130,33 +1163,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 // 重新获取当前房间信息，并重新进入房间
                 trySendDataWithServerOnce();
             }
-        }
-
-        @Override
-        public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
-            switch (source) {
-                case WatchComponentController.MSG_PAGE_UP:
-                    MyLog.d(TAG, "page up");
-                    mComponentController.switchToNextPosition();
-                    switchRoom();
-                    if (mSdkView != null) {
-                        MyLog.d(TAG, "page down internal");
-                        mSdkView.switchToNextRoom();
-                    }
-                    break;
-                case WatchComponentController.MSG_PAGE_DOWN:
-                    MyLog.d(TAG, "page down");
-                    mComponentController.switchToLastPosition();
-                    switchRoom();
-                    if (mSdkView != null) {
-                        MyLog.d(TAG, "page up internal");
-                        mSdkView.switchToLastRoom();
-                    }
-                    break;
-                default:
-                    break;
-            }
-            return false;
         }
     }
 

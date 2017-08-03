@@ -8,7 +8,9 @@ import android.widget.RelativeLayout;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.IParams;
 import com.wali.live.component.ComponentController;
+import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
 
 /**
@@ -26,9 +28,9 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     }
 
     public PanelContainerPresenter(
-            @NonNull IComponentController componentController,
+            @NonNull BaseSdkController controller,
             @NonNull RoomBaseDataModel myRoomData) {
-        super(componentController);
+        super(controller);
         mMyRoomData = myRoomData;
         registerAction(ComponentController.MSG_ON_ORIENT_PORTRAIT);
         registerAction(ComponentController.MSG_ON_ORIENT_LANDSCAPE);
@@ -52,37 +54,29 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
         SnsShareHelper.getInstance().shareToSns(-1, mMyRoomData);
     }
 
-    @Nullable
     @Override
-    protected IAction createAction() {
-        return new Action();
-    }
-
-    public class Action implements IAction {
-        @Override
-        public boolean onAction(int source, @Nullable Params params) {
-            if (mView == null || CommonUtils.isFastDoubleClick()) {
-                MyLog.e(TAG, "onAction but mView is null, source=" + source + " or CommonUtils.isFastDoubleClick() is true");
-                return false;
-            }
-            switch (source) {
-                case ComponentController.MSG_ON_ORIENT_PORTRAIT:
-                    onOrientation(false);
-                    return true;
-                case ComponentController.MSG_ON_ORIENT_LANDSCAPE:
-                    onOrientation(true);
-                    return true;
-                case ComponentController.MSG_SHOW_SHARE_PANEL:
-                    showSharePanel();
-                    return true;
-                case ComponentController.MSG_HIDE_BOTTOM_PANEL:
-                case ComponentController.MSG_ON_BACK_PRESSED:
-                    return hidePanel(true);
-                default:
-                    break;
-
-            }
+    public boolean onEvent(int event, IParams params) {
+        if (mView == null || CommonUtils.isFastDoubleClick()) {
+            MyLog.e(TAG, "onAction but mView is null, event=" + event + " or CommonUtils.isFastDoubleClick() is true");
             return false;
         }
+        switch (event) {
+            case ComponentController.MSG_ON_ORIENT_PORTRAIT:
+                onOrientation(false);
+                return true;
+            case ComponentController.MSG_ON_ORIENT_LANDSCAPE:
+                onOrientation(true);
+                return true;
+            case ComponentController.MSG_SHOW_SHARE_PANEL:
+                showSharePanel();
+                return true;
+            case ComponentController.MSG_HIDE_BOTTOM_PANEL:
+            case ComponentController.MSG_ON_BACK_PRESSED:
+                return hidePanel(true);
+            default:
+                break;
+
+        }
+        return false;
     }
 }

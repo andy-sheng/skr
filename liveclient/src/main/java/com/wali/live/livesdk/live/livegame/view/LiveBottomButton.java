@@ -7,10 +7,10 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.mi.live.data.account.channel.HostChannelManager;
+import com.thornbirds.component.view.IOrientationListener;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.wali.live.component.view.BaseBottomButton;
-import com.wali.live.component.view.IOrientationListener;
-import com.wali.live.component.view.IViewProxy;
+import com.wali.live.componentwrapper.view.BaseBottomButton;
 import com.wali.live.livesdk.R;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
@@ -165,7 +165,7 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         boolean isEnableShare();
     }
 
-    public interface IView extends IViewProxy, IOrientationListener {
+    public interface IView extends IViewProxy<View>, IOrientationListener {
         /**
          * 更新禁音按钮状态
          */

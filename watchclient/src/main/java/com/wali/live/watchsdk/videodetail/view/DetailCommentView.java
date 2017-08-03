@@ -11,10 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.videodetail.adapter.DetailCommentAdapter;
 
@@ -218,7 +217,7 @@ public class DetailCommentView extends RelativeLayout
         void showPersonalInfo(long uid);
     }
 
-    public interface IView extends IViewProxy {
+    public interface IView extends IViewProxy<View> {
         /**
          * 拉取评论成功
          */

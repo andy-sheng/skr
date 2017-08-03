@@ -1,78 +1,87 @@
 package com.wali.live.livesdk.live.liveshow.presenter;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.base.log.MyLog;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.wali.live.component.presenter.ComponentPresenter;
-import com.wali.live.livesdk.live.liveshow.LiveComponentController;
+import com.thornbirds.component.IParams;
+import com.thornbirds.component.presenter.ComponentPresenter;
+import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.livesdk.live.liveshow.view.LiveBottomButton;
+
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_MAGIC_PANEL;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_PLUS_PANEL;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SETTING_PANEL;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SHARE_PANEL;
 
 /**
  * Created by yangli on 2017/2/18.
  *
  * @module 底部按钮表现, 游戏直播
  */
-public class BottomButtonPresenter extends
-        ComponentPresenter<LiveBottomButton.IView> implements LiveBottomButton.IPresenter {
+public class BottomButtonPresenter extends ComponentPresenter<LiveBottomButton.IView, BaseSdkController>
+        implements LiveBottomButton.IPresenter {
     private static final String TAG = "BottomButtonPresenter";
 
     private RoomBaseDataModel mMyRoomData;
 
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
+
     public BottomButtonPresenter(
-            @NonNull IComponentController componentController,
+            @NonNull BaseSdkController controller,
             RoomBaseDataModel myRoomData) {
-        super(componentController);
-        registerAction(LiveComponentController.MSG_ON_ORIENT_PORTRAIT);
-        registerAction(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
+        super(controller);
         mMyRoomData = myRoomData;
     }
 
     @Override
+    public void startPresenter() {
+        super.startPresenter();
+        registerAction(MSG_ON_ORIENT_PORTRAIT);
+        registerAction(MSG_ON_ORIENT_LANDSCAPE);
+    }
+
+    @Override
     public void showPlusPanel() {
-        mComponentController.onEvent(LiveComponentController.MSG_SHOW_PLUS_PANEL);
+        postEvent(MSG_SHOW_PLUS_PANEL);
     }
 
     @Override
     public void showSettingPanel() {
-        mComponentController.onEvent(LiveComponentController.MSG_SHOW_SETTING_PANEL);
+        postEvent(MSG_SHOW_SETTING_PANEL);
     }
 
     @Override
     public void showMagicPanel() {
-        mComponentController.onEvent(LiveComponentController.MSG_SHOW_MAGIC_PANEL);
+        postEvent(MSG_SHOW_MAGIC_PANEL);
     }
 
     @Override
     public void showShareView() {
-        mComponentController.onEvent(LiveComponentController.MSG_SHOW_SHARE_PANEL);
+        postEvent(MSG_SHOW_SHARE_PANEL);
     }
 
-    @Nullable
     @Override
-    protected IAction createAction() {
-        return new Action();
-    }
-
-    public class Action implements IAction {
-        @Override
-        public boolean onAction(int source, @Nullable Params params) {
-            if (mView == null) {
-                MyLog.e(TAG, "onAction but mView is null, source=" + source);
-                return false;
-            }
-            switch (source) {
-                case LiveComponentController.MSG_ON_ORIENT_PORTRAIT:
-                    mView.onOrientation(false);
-                    return true;
-                case LiveComponentController.MSG_ON_ORIENT_LANDSCAPE:
-                    mView.onOrientation(true);
-                    return true;
-                default:
-                    break;
-            }
+    public boolean onEvent(int event, IParams params) {
+        if (mView == null) {
+            MyLog.e(TAG, "onAction but mView is null, event=" + event);
             return false;
         }
+        switch (event) {
+            case MSG_ON_ORIENT_PORTRAIT:
+                mView.onOrientation(false);
+                return true;
+            case MSG_ON_ORIENT_LANDSCAPE:
+                mView.onOrientation(true);
+                return true;
+            default:
+                break;
+        }
+        return false;
     }
 }

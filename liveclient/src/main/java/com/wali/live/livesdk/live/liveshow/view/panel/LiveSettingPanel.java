@@ -9,8 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
 import com.mi.live.engine.base.GalileoConstants;
-import com.wali.live.component.ComponentController;
-import com.wali.live.component.presenter.ComponentPresenter.IComponentController;
+import com.thornbirds.component.IEventController;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
@@ -18,6 +17,8 @@ import com.wali.live.livesdk.live.liveshow.presenter.adapter.SingleChooser;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.VolumeAdjuster;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
+
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_BOTTOM_PANEL;
 
 /**
  * Created by yangli on 2017/03/07.
@@ -31,7 +32,7 @@ public class LiveSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
     @Nullable
     protected StreamerPresenter mPresenter;
     @NonNull
-    protected IComponentController mComponentController;
+    protected IEventController mController;
 
     private ViewGroup mVolumeView;
     private ViewGroup mReverbView;
@@ -129,10 +130,11 @@ public class LiveSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
 
     public LiveSettingPanel(
             @NonNull RelativeLayout parentView,
-            @Nullable StreamerPresenter presenter, IComponentController componentController) {
+            @Nullable StreamerPresenter presenter,
+            IEventController controller) {
         super(parentView);
         mPresenter = presenter;
-        mComponentController = componentController;
+        mController = controller;
     }
 
     public void setHideCameraContainer(boolean hideCameraContainer) {
@@ -202,7 +204,7 @@ public class LiveSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
         if (isBackCamera) {
             updateFlashLight(mFlashLightBtn.isSelected());
         }
-        mComponentController.onEvent(ComponentController.MSG_HIDE_BOTTOM_PANEL);
+        mController.postEvent(MSG_HIDE_BOTTOM_PANEL);
     }
 
     private void updateMirrorImage(boolean enable) {

@@ -7,15 +7,15 @@ import android.support.annotation.Nullable;
 
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
-import com.wali.live.component.ComponentController;
+import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.videodetail.presenter.VideoDetailPlayerPresenter;
 import com.wali.live.watchsdk.component.view.VideoDetailPlayerView;
+import com.wali.live.watchsdk.videodetail.presenter.VideoDetailPlayerPresenter;
 
 /**
  * Created by yangli on 2017/5/26.
  */
-public class VideoDetailController extends ComponentController {
+public class VideoDetailController extends BaseSdkController {
     private static final String TAG = "VideoDetailController";
 
     protected RoomBaseDataModel mMyRoomData;
@@ -46,7 +46,7 @@ public class VideoDetailController extends ComponentController {
             mPlayerPresenter.setComponentView(mPlayerView.getViewProxy());
             mPlayerView.setPresenter(mPlayerPresenter);
         }
-        mPlayerPresenter.registerAction();
+        mPlayerPresenter.startPresenter();
     }
 
     @Override

@@ -11,8 +11,8 @@ import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.user.User;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
@@ -185,7 +185,7 @@ public class DetailInfoView implements View.OnClickListener,
         void followUser();
     }
 
-    public interface IView extends IViewProxy {
+    public interface IView extends IViewProxy<View> {
         /**
          * 拉取到用户信息
          */

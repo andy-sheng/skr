@@ -11,8 +11,8 @@ import android.view.ViewStub;
 import android.widget.RelativeLayout;
 
 import com.base.utils.display.DisplayUtils;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.watchsdk.R;
 
@@ -22,8 +22,6 @@ import java.util.Map;
 
 /**
  * Created by chenyong on 2017/03/24.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 运营位组件
  */
@@ -44,24 +42,6 @@ public class WidgetView extends RelativeLayout
 
     private boolean mNeedShow = true;
     private Map<Integer, Integer> mWidgetIDs = new HashMap<>();
-
-    public WidgetView(Context context) {
-        this(context, null, 0);
-    }
-
-    public WidgetView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public WidgetView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(context, attrs, defStyleAttr);
-    }
-
-    private void init(Context context, AttributeSet attrs, int defStyleAttr) {
-        inflate(context, R.layout.widget_view, this);
-        setPadding(PADDING, PADDING >> 1, PADDING, PADDING >> 1);
-    }
 
     protected final <T extends View> T $(@IdRes int resId) {
         return (T) findViewById(resId);
@@ -84,6 +64,24 @@ public class WidgetView extends RelativeLayout
     @Override
     public void setPresenter(@Nullable IPresenter iPresenter) {
         mPresenter = iPresenter;
+    }
+
+    public WidgetView(Context context) {
+        this(context, null, 0);
+    }
+
+    public WidgetView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public WidgetView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context, attrs, defStyleAttr);
+    }
+
+    private void init(Context context, AttributeSet attrs, int defStyleAttr) {
+        inflate(context, R.layout.widget_view, this);
+        setPadding(PADDING, PADDING >> 1, PADDING, PADDING >> 1);
     }
 
     private void showWidgetView(@NonNull List<LiveCommonProto.NewWidgetItem> list) {
@@ -293,7 +291,7 @@ public class WidgetView extends RelativeLayout
         String getRoomId();
     }
 
-    public interface IView extends IViewProxy {
+    public interface IView extends IViewProxy<View> {
         void onOrientation(boolean isLandscape);
 
         void hideWidgetView();

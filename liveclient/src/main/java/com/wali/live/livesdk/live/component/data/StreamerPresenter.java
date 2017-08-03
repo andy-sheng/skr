@@ -1,6 +1,5 @@
 package com.wali.live.livesdk.live.component.data;
 
-
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Message;
@@ -14,14 +13,13 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.engine.base.EngineEventClass;
 import com.mi.live.engine.base.GalileoConstants;
 import com.mi.live.engine.streamer.IStreamer;
-import com.wali.live.component.ComponentController;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.IEventController;
+import com.thornbirds.component.Params;
 import com.wali.live.dns.IDnsStatusListener;
 import com.wali.live.event.EventClass;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.utils.MagicParamUtils;
 import com.wali.live.livesdk.live.dns.MultiCdnIpSelectionHelper;
-import com.wali.live.livesdk.live.livegame.LiveComponentController;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.receiver.NetworkReceiver;
 
@@ -32,6 +30,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_END_LIVE_UNEXPECTED;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_STREAM_RECONNECT;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_STREAM_SUCCESS;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_OPEN_CAMERA_FAILED;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_OPEN_MIC_FAILED;
 
 /**
  * Created by yangli on 2017/03/08.
@@ -45,7 +49,7 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
     private static final String TAG = "StreamerPresenter";
 
     @NonNull
-    private ComponentPresenter.IComponentController mComponentController;
+    private IEventController mController;
     @NonNull
     protected RoomBaseDataModel mMyRoomData; // 房间数据
 
@@ -69,9 +73,8 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
         return TAG;
     }
 
-    public void setComponentController(
-            @NonNull ComponentPresenter.IComponentController componentController) {
-        mComponentController = componentController;
+    public void setComponentController(@NonNull IEventController controller) {
+        mController = controller;
     }
 
     public StreamerPresenter(
@@ -325,15 +328,15 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
                     mUIHandler.removeMessages(MSG_START_STREAM_TIMEOUT);
                     mIpSelectionHelper.onPushStreamSuccess();
                     mIpSelectionHelper.updateStutterStatus(false);
-                    mComponentController.onEvent(ComponentController.MSG_ON_STREAM_SUCCESS);
+                    mController.postEvent(MSG_ON_STREAM_SUCCESS);
                     break;
                 case EngineEventClass.StreamerEvent.EVENT_TYPE_OPEN_CAMERA_FAILED:
                     MyLog.e(TAG, "EVENT_TYPE_OPEN_CAMERA_FAILED");
-                    mComponentController.onEvent(LiveComponentController.MSG_OPEN_CAMERA_FAILED);
+                    mController.postEvent(MSG_OPEN_CAMERA_FAILED);
                     break;
                 case EngineEventClass.StreamerEvent.EVENT_TYPE_OPEN_MIC_FAILED:
                     MyLog.e(TAG, "EVENT_TYPE_OPEN_MIC_FAILED");
-                    mComponentController.onEvent(LiveComponentController.MSG_OPEN_MIC_FAILED);
+                    mController.postEvent(MSG_OPEN_MIC_FAILED);
                     break;
                 case EngineEventClass.StreamerEvent.EVENT_TYPE_ERROR:
                 case EngineEventClass.StreamerEvent.EVENT_TYPE_NEED_RECONNECT: // fall through
@@ -408,7 +411,7 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
                 MyLog.w(TAG, "startReconnect, code = " + code);
                 mStreamStarted = false;
                 if (!mIpSelectionHelper.isStuttering()) {
-                    mComponentController.onEvent(ComponentController.MSG_ON_STREAM_RECONNECT);
+                    mController.postEvent(MSG_ON_STREAM_RECONNECT);
                 }
                 mIpSelectionHelper.updateStutterStatus(true);
                 mStreamer.stopStream();
@@ -448,8 +451,8 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
                     break;
                 case MSG_START_STREAM_FAILED:
                     MyLog.w(TAG, "MSG_START_STREAM_FAILED");
-                    presenter.mComponentController.onEvent(LiveComponentController.MSG_END_LIVE_UNEXPECTED,
-                            new ComponentPresenter.Params().putItem(R.string.start_stream_failure));
+                    presenter.mController.postEvent(MSG_END_LIVE_UNEXPECTED,
+                            new Params().putItem(R.string.start_stream_failure));
                     break;
                 default:
                     break;

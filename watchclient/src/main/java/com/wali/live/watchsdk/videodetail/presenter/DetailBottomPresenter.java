@@ -1,11 +1,13 @@
 package com.wali.live.watchsdk.videodetail.presenter;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.base.log.MyLog;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.IParams;
+import com.thornbirds.component.Params;
+import com.wali.live.componentwrapper.BaseSdkController;
+import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
 import com.wali.live.watchsdk.feeds.FeedsLikeUtils;
 import com.wali.live.watchsdk.videodetail.view.DetailBottomView;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
@@ -16,8 +18,8 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.wali.live.component.ComponentController.MSG_SHOW_COMMENT_INPUT;
-import static com.wali.live.component.ComponentController.MSG_UPDATE_LIKE_STATUS;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_COMMENT_INPUT;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_UPDATE_LIKE_STATUS;
 import static com.wali.live.watchsdk.feeds.FeedsInfoUtils.FEED_TYPE_DEFAULT;
 
 /**
@@ -27,27 +29,33 @@ import static com.wali.live.watchsdk.feeds.FeedsInfoUtils.FEED_TYPE_DEFAULT;
  *
  * @module 详情播放表现
  */
-public class DetailBottomPresenter extends ComponentPresenter<DetailBottomView.IView>
+public class DetailBottomPresenter extends BaseSdkRxPresenter<DetailBottomView.IView, BaseSdkController>
         implements DetailBottomView.IPresenter {
     private static final String TAG = "DetailBottomPresenter";
 
     private RoomBaseDataModel mMyRoomData;
 
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
+
     public DetailBottomPresenter(
-            @NonNull IComponentController componentController,
+            @NonNull BaseSdkController controller,
             @NonNull RoomBaseDataModel roomData) {
-        super(componentController);
+        super(controller);
         mMyRoomData = roomData;
     }
 
     @Override
     public void startPresenter() {
+        super.startPresenter();
         registerAction(MSG_UPDATE_LIKE_STATUS);
     }
 
     @Override
     public void showInputView() {
-        mComponentController.onEvent(MSG_SHOW_COMMENT_INPUT, new Params().putItem(mMyRoomData.getRoomId()));
+        postEvent(MSG_SHOW_COMMENT_INPUT, new Params().putItem(mMyRoomData.getRoomId()));
     }
 
     @Override
@@ -95,27 +103,19 @@ public class DetailBottomPresenter extends ComponentPresenter<DetailBottomView.I
         SnsShareHelper.getInstance().shareToSns(-1, mMyRoomData);
     }
 
-    @Nullable
     @Override
-    protected IAction createAction() {
-        return new Action();
-    }
-
-    public class Action implements IAction {
-        @Override
-        public boolean onAction(int source, @Nullable Params params) {
-            if (mView == null) {
-                MyLog.e(TAG, "onAction but mView is null, source=" + source);
-                return false;
-            }
-            switch (source) {
-                case MSG_UPDATE_LIKE_STATUS:
-                    mView.onPraiseDone((boolean) params.getItem(0));
-                    break;
-                default:
-                    break;
-            }
+    public boolean onEvent(int event, IParams params) {
+        if (mView == null) {
+            MyLog.e(TAG, "onAction but mView is null, event=" + event);
             return false;
         }
+        switch (event) {
+            case MSG_UPDATE_LIKE_STATUS:
+                mView.onPraiseDone((boolean) params.getItem(0));
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 }
