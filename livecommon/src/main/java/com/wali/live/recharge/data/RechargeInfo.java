@@ -2,6 +2,7 @@ package com.wali.live.recharge.data;
 
 import android.support.annotation.Nullable;
 
+import com.mi.live.data.account.MyUserInfoManager;
 import com.wali.live.pay.model.Diamond;
 
 import java.util.List;
@@ -78,6 +79,7 @@ public class RechargeInfo {
 
     public static void setUsableGemCount(int sUsableGemCount) {
         RechargeInfo.sUsableGemCount = sUsableGemCount;
+        MyUserInfoManager.getInstance().setDiamondNum(sUsableGemCount);
     }
 
     public static int getUsableVirtualGemCount() {
@@ -86,6 +88,7 @@ public class RechargeInfo {
 
     public static void setUsableVirtualGemCount(int sUsableVirtualGemCount) {
         RechargeInfo.sUsableVirtualGemCount = sUsableVirtualGemCount;
+        MyUserInfoManager.getInstance().setVirtualDiamondNum(sUsableVirtualGemCount);
     }
 
 }

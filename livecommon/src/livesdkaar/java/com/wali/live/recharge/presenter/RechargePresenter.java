@@ -18,7 +18,6 @@ import com.base.utils.rx.RxRetryAssist;
 import com.base.utils.toast.ToastUtils;
 import com.live.module.common.R;
 import com.mi.live.data.account.MyUserInfoManager;
-import com.mi.live.data.account.event.UserInfoEvent;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.event.EventClass;
 import com.wali.live.income.model.ExceptionWithCode;
@@ -63,7 +62,7 @@ import static com.wali.live.pay.constant.PayConstant.SP_KEY_LAST_PAY_WAY;
  * Created by rongzhisheng on 16-12-23.
  */
 public class RechargePresenter extends RxLifeCyclePresenter implements IRechargePresenter {
-    private static final String TAG = RechargePresenter.class.getSimpleName();
+    private static final String TAG = "RechargePresenter";
 
     private volatile IRechargeView mRechargeView;
 
@@ -221,7 +220,8 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                     @Override
                     public Observable<?> call(Object o) {
                         if (!NetworkUtils.hasNetwork(GlobalData.app())) {
-                            return Observable.error(new RefuseRetryExeption(GlobalData.app().getString(R.string.network_unavailable).toString()));
+                            return Observable.error(new RefuseRetryExeption(GlobalData.app().
+                                    getString(R.string.network_unavailable).toString()));
                         }
                         return Observable.just(o);
                     }
@@ -286,7 +286,6 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                     }
                 });
     }
-
 
     /**
      * @param orderId
@@ -519,11 +518,6 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
 
     private void setHasReadRedPoint() {
         PayManager.setHasReadRedPoint();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(UserInfoEvent event) {
-        loadDataAndUpdateView();
     }
 
     /**

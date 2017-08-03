@@ -63,7 +63,7 @@ import static com.wali.live.pay.constant.PayConstant.SP_KEY_LAST_PAY_WAY;
  * Created by rongzhisheng on 16-12-23.
  */
 public class RechargePresenter extends RxLifeCyclePresenter implements IRechargePresenter {
-    private static final String TAG = RechargePresenter.class.getSimpleName();
+    private static final String TAG = "RechargePresenter";
 
     private volatile IRechargeView mRechargeView;
 
@@ -252,7 +252,7 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object o) {
-                        if(o instanceof PayProto.CreateOrderResponse) {
+                        if (o instanceof PayProto.CreateOrderResponse) {
                             PayProto.CreateOrderResponse response = (PayProto.CreateOrderResponse) o;
                             String orderId = response.getOrderId();
                             int price = goods.getPrice();
@@ -264,7 +264,7 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                                 payWayImpl.pay(mRechargeView.getActivity(), orderId, goods, cpUserInfo);
                             } else {
                                 MyLog.e(TAG, "unexpected payWay:" + payWay);
-                                if(curPayWay == PayWay.MIBI) {
+                                if (curPayWay == PayWay.MIBI) {
                                     mRechargeView.hideProcessDialog(1000);
                                 }
                             }
@@ -285,7 +285,7 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                 }, new Action0() {
                     @Override
                     public void call() {
-                        if(curPayWay != PayWay.MIBI) {
+                        if (curPayWay != PayWay.MIBI) {
                             mRechargeView.hideProcessDialog(1000);
                         }
                     }
@@ -316,8 +316,8 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object o) {
-                        if(o instanceof PayProto.CheckOrderResponse) {
-                            PayProto.CheckOrderResponse rsp = (PayProto.CheckOrderResponse)o;
+                        if (o instanceof PayProto.CheckOrderResponse) {
+                            PayProto.CheckOrderResponse rsp = (PayProto.CheckOrderResponse) o;
                             int retCode = rsp.getRetCode();
                             if (retCode == CODE_SUCCESS) {
                                 int diamondBalance = rsp.getUsableGemCnt();
@@ -526,11 +526,6 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
         PayManager.setHasReadRedPoint();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(UserInfoEvent event) {
-        loadDataAndUpdateView();
-    }
-
     /**
      * 礼物卡、虚拟钻变化的push
      *
@@ -548,15 +543,15 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EventClass.ShowRechargeProgressEvent event){
-        if(mRechargeView != null) {
+    public void onEvent(EventClass.ShowRechargeProgressEvent event) {
+        if (mRechargeView != null) {
             mRechargeView.showProcessDialog(5000, R.string.loading);
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EventClass.HideRechargeProgressEvent event){
-        if(mRechargeView != null) {
+    public void onEvent(EventClass.HideRechargeProgressEvent event) {
+        if (mRechargeView != null) {
             mRechargeView.hideProcessDialog(1000);
         }
     }
@@ -618,7 +613,7 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                             BalanceDetail balanceDetail = (BalanceDetail) o;
                             Bundle bundle = new Bundle();
                             bundle.putSerializable(BalanceFragment.BUNDLE_KEY_BALANCE_DETAIL, balanceDetail);
-                            BalanceFragment.openFragment((BaseActivity) mRechargeView.getActivity(), bundle, new WeakReference<>((IRechargePresenter)RechargePresenter.this));
+                            BalanceFragment.openFragment((BaseActivity) mRechargeView.getActivity(), bundle, new WeakReference<>((IRechargePresenter) RechargePresenter.this));
                         }
                     }, new Action1<Throwable>() {
                         @Override

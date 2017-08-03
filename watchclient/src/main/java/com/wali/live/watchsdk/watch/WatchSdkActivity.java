@@ -119,7 +119,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         ForbidManagePresenter.IForbidManageProvider, IActionCallBack, IWatchVideoView {
     public static final String EXTRA_ROOM_INFO_LIST = "extra_room_info_list";
     public static final String EXTRA_ROOM_INFO_POSITION = "extra_room_info_position";
-
     /**
      * view放在这里
      */
@@ -1044,7 +1043,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.KickEvent event) {
         stopPlayer();
-
         DialogUtils.showCancelableDialog(this,
                 "",
                 GlobalData.app().getResources().getString(R.string.have_been_kicked),
@@ -1057,6 +1055,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                     }
                 },
                 null);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventExchange(EventClass.H5ExchangeEvent event) {
+        WebViewActivity.open(this, WebViewActivity.GEM_EXCHANGE_H5_URL);
     }
 
     @Override
