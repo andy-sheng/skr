@@ -2,7 +2,6 @@ package com.wali.live.recharge.data;
 
 import android.support.annotation.Nullable;
 
-import com.mi.live.data.account.MyUserInfoManager;
 import com.wali.live.pay.model.Diamond;
 
 import java.util.List;
@@ -37,58 +36,56 @@ public class RechargeInfo {
         return sExchangeableGemCnt;
     }
 
-    public static void setExchangeableGemCnt(int sExchangeableGemCnt) {
-        RechargeInfo.sExchangeableGemCnt = sExchangeableGemCnt;
+    public static void setExchangeableGemCnt(int exchangeableGemCnt) {
+        RechargeInfo.sExchangeableGemCnt = exchangeableGemCnt;
     }
 
     public static int getMiWalletTodayAmount() {
         return sMiWalletTodayAmount;
     }
 
-    public static void setMiWalletTodayAmount(int sMiWalletTodayAmount) {
-        RechargeInfo.sMiWalletTodayAmount = sMiWalletTodayAmount;
+    public static void setMiWalletTodayAmount(int miWalletTodayAmount) {
+        RechargeInfo.sMiWalletTodayAmount = miWalletTodayAmount;
     }
 
     public static int getWeiXinTodayAmount() {
         return sWeiXinTodayAmount;
     }
 
-    public static void setWeiXinTodayAmount(int sWeiXinTodayAmount) {
-        RechargeInfo.sWeiXinTodayAmount = sWeiXinTodayAmount;
+    public static void setWeiXinTodayAmount(int weiXinTodayAmount) {
+        RechargeInfo.sWeiXinTodayAmount = weiXinTodayAmount;
     }
 
     public static int getWillExpireGemCnt() {
         return sWillExpireGemCnt;
     }
 
-    public static void setWillExpireGemCnt(int sWillExpireGemCnt) {
-        RechargeInfo.sWillExpireGemCnt = sWillExpireGemCnt;
+    public static void setWillExpireGemCnt(int willExpireGemCnt) {
+        RechargeInfo.sWillExpireGemCnt = willExpireGemCnt;
     }
 
     public static int getWillExpireGiftCardCnt() {
         return sWillExpireGiftCardCnt;
     }
 
-    public static void setWillExpireGiftCardCnt(int sWillExpireGiftCardCnt) {
-        RechargeInfo.sWillExpireGiftCardCnt = sWillExpireGiftCardCnt;
+    public static void setWillExpireGiftCardCnt(int willExpireGiftCardCnt) {
+        RechargeInfo.sWillExpireGiftCardCnt = willExpireGiftCardCnt;
     }
 
     public static int getUsableGemCount() {
         return sUsableGemCount;
     }
 
-    public static void setUsableGemCount(int sUsableGemCount) {
-        RechargeInfo.sUsableGemCount = sUsableGemCount;
-        MyUserInfoManager.getInstance().setDiamondNum(sUsableGemCount);
+    public static void setUsableGemCount(int usableGemCount) {
+        RechargeInfo.sUsableGemCount = usableGemCount;
     }
 
     public static int getUsableVirtualGemCount() {
         return sUsableVirtualGemCount;
     }
 
-    public static void setUsableVirtualGemCount(int sUsableVirtualGemCount) {
-        RechargeInfo.sUsableVirtualGemCount = sUsableVirtualGemCount;
-        MyUserInfoManager.getInstance().setVirtualDiamondNum(sUsableVirtualGemCount);
+    public static void setUsableVirtualGemCount(int usableVirtualGemCount) {
+        RechargeInfo.sUsableVirtualGemCount = usableVirtualGemCount;
     }
 
 }

@@ -7,7 +7,7 @@ import com.base.thread.ThreadPool;
 import com.base.utils.language.LocaleUtil;
 import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.account.event.UserInfoEvent;
-import com.mi.live.data.api.request.GetOwninfoRequest;
+import com.mi.live.data.api.request.GetOwnInfoRequest;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.live.data.repository.datasource.MyUserInfoLocalStore;
@@ -35,24 +35,20 @@ public class MyUserInfoManager {
     private final static String TAG = "MyUserInfoManager";
 
     private User mMyInfo = new User();
-
     private final static MyUserInfoManager sInstance = new MyUserInfoManager();
+    private Map<Integer, Long> mLastInfoTsMap = new HashMap<>();
 
-    Map<Integer, Long> mLastInfoTsMap = new HashMap<>();
-
-    /**
-     * MyUserInfoManager构造函数, 从
-     */
     private MyUserInfoManager() {
-
     }
 
     public static MyUserInfoManager getInstance() {
         return sInstance;
     }
 
+    /**
+     * 从数据库得到个人信息
+     */
     public void init() {
-//        // 从数据库得到个人信息
         Observable.just(null)
                 .observeOn(Schedulers.from(ThreadPool.getUserInfoExecutor()))
                 .subscribe(new Action1<Object>() {
@@ -74,7 +70,6 @@ public class MyUserInfoManager {
     private User readFromDB(int channelId) {
         User user = new User();
         OwnUserInfo ownUserInfo = MyUserInfoLocalStore.getInstance().getAccount(channelId);
-        MyLog.w(TAG, "ownUserInfo:" + ownUserInfo);
         if (ownUserInfo != null) {
             user.setUid(ownUserInfo.getUid());
             user.setNickname(ownUserInfo.getNickname());
@@ -113,7 +108,7 @@ public class MyUserInfoManager {
             user.firstAudit = ownUserInfo.getFirstAudit();
             user.setRedName(ownUserInfo.getRedName() == null ? false : ownUserInfo.getRedName());
         }
-        MyLog.d(TAG, "");
+        MyLog.w(TAG, "ownUserInfo:" + user.toString());
         return user;
     }
 
@@ -159,13 +154,8 @@ public class MyUserInfoManager {
      * 同步自己的个人信息
      */
     public void syncSelfDetailInfo() {
-        syncSelfDetailInfo(UserAccountManager.getInstance().getUuidAsLong(), HostChannelManager.getInstance().getChannelId());
-    }
-
-    /**
-     * 同步自己的个人信息
-     */
-    public void syncSelfDetailInfo(final long uuid, final int channelId) {
+        final long uuid = UserAccountManager.getInstance().getUuidAsLong();
+        final int channelId = HostChannelManager.getInstance().getChannelId();
         MyLog.w(TAG, "syncSelfDetailInfo,uuid=" + uuid + " channelId=" + channelId);
         if (uuid <= 0) {
             return;
@@ -174,7 +164,7 @@ public class MyUserInfoManager {
                 .map(new Func1<Integer, UserProto.GetOwnInfoRsp>() {
                     @Override
                     public UserProto.GetOwnInfoRsp call(Integer integer) {
-                        GetOwninfoRequest request = new GetOwninfoRequest(uuid);
+                        GetOwnInfoRequest request = new GetOwnInfoRequest(uuid);
                         return request.syncRsp();
                     }
                 })
@@ -204,7 +194,8 @@ public class MyUserInfoManager {
                         }
                         mLastInfoTsMap.put(channelId, System.currentTimeMillis());
                         saveInfoIntoDB(user, channelId);
-                        if (channelId == HostChannelManager.getInstance().getChannelId() && user != null && user.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
+                        if (channelId == HostChannelManager.getInstance().getChannelId() && user != null
+                                && user.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
                             // TODO 应该这里出问题了
                             mMyInfo = user;
                             EventBus.getDefault().post(new UserInfoEvent());
@@ -247,10 +238,7 @@ public class MyUserInfoManager {
     }
 
     public long getAvatar() {
-        if (mMyInfo != null) {
-            mMyInfo.getAvatar();
-        }
-        return 0;
+        return mMyInfo != null ? mMyInfo.getAvatar() : 0;
     }
 
     public long getUuid() {
@@ -280,30 +268,39 @@ public class MyUserInfoManager {
         return UserAccountManager.getInstance().getNickname();
     }
 
-    public void setDiamonds(int deduct, int virtualGemCnt) {
-        mMyInfo.setDiamondNum(deduct);
+    public synchronized void setDiamonds(int diamondNum, int virtualGemCnt) {
+        mMyInfo.setDiamondNum(diamondNum);
         mMyInfo.setVirtualDiamondNum(virtualGemCnt);
         EventBus.getDefault().post(new UserInfoEvent());
     }
 
-    public void setDiamondNum(int diamondNum) {
+    public synchronized void setDiamondNum(int diamondNum) {
         mMyInfo.setDiamondNum(diamondNum);
         EventBus.getDefault().post(new UserInfoEvent());
     }
 
-    public int getDiamondNum() {
+    public synchronized int getDiamondNum() {
         return mMyInfo.getDiamondNum();
     }
 
+    public synchronized int getVirtualDiamondNum() {
+        return mMyInfo.getVirtualDiamondNum();
+    }
+
+    public synchronized void setVirtualDiamondNum(int vDiamondNum) {
+        MyLog.w(TAG, "set virtual diamond to:" + vDiamondNum);
+        mMyInfo.setVirtualDiamondNum(vDiamondNum);
+        EventBus.getDefault().post(new UserInfoEvent()); //发送event
+    }
+
     public void updateUserInfoIfNeed() {
-        int channelId = HostChannelManager.getInstance().getChannelId();
-        Long lastInfoTs = mLastInfoTsMap.get(channelId);
+        Long lastInfoTs = mLastInfoTsMap.get(HostChannelManager.getInstance().getChannelId());
         lastInfoTs = lastInfoTs == null ? 0 : lastInfoTs;
         if (mMyInfo == null
                 || mMyInfo.getUid() <= 0
                 || TextUtils.isEmpty(mMyInfo.getNickname())
                 || (System.currentTimeMillis() - lastInfoTs > 5 * 60 * 1000)) {
-            syncSelfDetailInfo(UserAccountManager.getInstance().getUuidAsLong(), channelId);
+            syncSelfDetailInfo();
         }
     }
 
@@ -337,24 +334,4 @@ public class MyUserInfoManager {
     public void deleteCache() {
         mMyInfo = new User();
     }
-
-    public synchronized int getVirtualDiamondNum() {
-        if (mMyInfo != null) {
-            return mMyInfo.getVirtualDiamondNum();
-        } else {
-            return 0;
-        }
-    }
-
-    public synchronized void setVirtualDiamondNum(int vDiamondNum) {
-        MyLog.w(TAG, "set virtual diamond to:" + vDiamondNum);
-        if (mMyInfo == null) {
-            mMyInfo = new User();
-        }
-
-        mMyInfo.setVirtualDiamondNum(vDiamondNum);
-        //发送event
-        EventBus.getDefault().post(new UserInfoEvent());
-    }
-
 }

@@ -146,6 +146,8 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                         RechargeInfo.setExchangeableGemCnt(rsp.getExchangeableGemCnt());
                         RechargeInfo.setWillExpireGemCnt(rsp.getExpireVirtualGemCnt());
                         RechargeInfo.setWillExpireGiftCardCnt(rsp.getExpireGiftCardCnt());
+                        MyUserInfoManager.getInstance().setDiamonds(rsp.getUsableGemCnt(),
+                                rsp.getUsableVirtualGemCnt());
                         if (rsp.hasAmount()) {
                             PayProto.RechargeDayAmount amount = rsp.getAmount();
                             if (amount != null) {
@@ -252,7 +254,7 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object o) {
-                        if(o instanceof PayProto.CreateOrderResponse) {
+                        if (o instanceof PayProto.CreateOrderResponse) {
                             PayProto.CreateOrderResponse response = (PayProto.CreateOrderResponse) o;
                             String orderId = response.getOrderId();
                             int price = goods.getPrice();
@@ -310,8 +312,8 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object o) {
-                        if(o instanceof PayProto.CheckOrderResponse) {
-                            PayProto.CheckOrderResponse rsp = (PayProto.CheckOrderResponse)o;
+                        if (o instanceof PayProto.CheckOrderResponse) {
+                            PayProto.CheckOrderResponse rsp = (PayProto.CheckOrderResponse) o;
                             int retCode = rsp.getRetCode();
                             if (retCode == CODE_SUCCESS) {
                                 int diamondBalance = rsp.getUsableGemCnt();
@@ -593,7 +595,7 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                             BalanceDetail balanceDetail = (BalanceDetail) o;
                             Bundle bundle = new Bundle();
                             bundle.putSerializable(BalanceFragment.BUNDLE_KEY_BALANCE_DETAIL, balanceDetail);
-                            BalanceFragment.openFragment((BaseActivity) mRechargeView.getActivity(), bundle, new WeakReference<>((IRechargePresenter)RechargePresenter.this));
+                            BalanceFragment.openFragment((BaseActivity) mRechargeView.getActivity(), bundle, new WeakReference<>((IRechargePresenter) RechargePresenter.this));
                         }
                     }, new Action1<Throwable>() {
                         @Override

@@ -7,9 +7,9 @@ import com.wali.live.proto.UserProto;
 /**
  * Created by wuxiaoshan on 17-3-6.
  */
-public class GetOwninfoRequest extends BaseRequest {
-    public GetOwninfoRequest(long uuid) {
-        super(MiLinkCommand.COMMAND_GET_OWN_INFO, "getowninfo", null);
+public class GetOwnInfoRequest extends BaseRequest {
+    public GetOwnInfoRequest(long uuid) {
+        super(MiLinkCommand.COMMAND_GET_OWN_INFO, "GetOwnInfo", null);
         mRequest = UserProto.GetOwnInfoReq.newBuilder().setZuid(uuid).build();
     }
 
