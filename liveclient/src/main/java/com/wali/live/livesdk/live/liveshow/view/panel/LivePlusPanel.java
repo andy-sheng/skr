@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.base.global.GlobalData;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.common.gift.adapter.viewHolder.decoration.BaseItemDecoration;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
-import com.wali.live.component.view.panel.BaseBottomPanel;
+import com.wali.live.componentwrapper.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.R;
 import com.wali.live.watchsdk.component.presenter.adapter.PlusItemAdapter;
 
@@ -131,7 +131,7 @@ public class LivePlusPanel extends BaseBottomPanel<RecyclerView, RelativeLayout>
         void syncPlusBtnConfig();
     }
 
-    public interface IView extends IViewProxy {
+    public interface IView extends IViewProxy<View> {
         /**
          * 更新直播加按钮列表
          */

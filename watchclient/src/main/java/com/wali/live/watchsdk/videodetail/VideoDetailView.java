@@ -24,8 +24,8 @@ import com.wali.live.watchsdk.videodetail.view.DetailBottomView;
 import com.wali.live.watchsdk.videodetail.view.DetailInfoView;
 import com.wali.live.watchsdk.videodetail.view.DetailTabView;
 
-import static com.wali.live.component.ComponentController.MSG_INPUT_VIEW_HIDDEN;
-import static com.wali.live.component.ComponentController.MSG_INPUT_VIEW_SHOWED;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_INPUT_VIEW;
 
 /**
@@ -35,11 +35,6 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_INPUT_VI
  */
 public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
     private static final String TAG = "VideoDetailView";
-
-    @NonNull
-    protected ViewGroup mParentView;
-    @NonNull
-    protected View mContentView;
 
     protected View mTouchView;
 

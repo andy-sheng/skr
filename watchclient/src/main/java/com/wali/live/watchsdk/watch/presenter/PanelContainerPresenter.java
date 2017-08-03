@@ -9,9 +9,14 @@ import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IParams;
-import com.wali.live.component.ComponentController;
 import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
+
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_BOTTOM_PANEL;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_BACK_PRESSED;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SHARE_PANEL;
 
 /**
  * Created by yangli on 2017/2/18.
@@ -32,11 +37,11 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
             @NonNull RoomBaseDataModel myRoomData) {
         super(controller);
         mMyRoomData = myRoomData;
-        registerAction(ComponentController.MSG_ON_ORIENT_PORTRAIT);
-        registerAction(ComponentController.MSG_ON_ORIENT_LANDSCAPE);
-        registerAction(ComponentController.MSG_ON_BACK_PRESSED);
-        registerAction(ComponentController.MSG_SHOW_SHARE_PANEL);
-        registerAction(ComponentController.MSG_HIDE_BOTTOM_PANEL);
+        registerAction(MSG_ON_ORIENT_PORTRAIT);
+        registerAction(MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(MSG_ON_BACK_PRESSED);
+        registerAction(MSG_SHOW_SHARE_PANEL);
+        registerAction(MSG_HIDE_BOTTOM_PANEL);
     }
 
     @Override
@@ -61,17 +66,17 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
             return false;
         }
         switch (event) {
-            case ComponentController.MSG_ON_ORIENT_PORTRAIT:
+            case MSG_ON_ORIENT_PORTRAIT:
                 onOrientation(false);
                 return true;
-            case ComponentController.MSG_ON_ORIENT_LANDSCAPE:
+            case MSG_ON_ORIENT_LANDSCAPE:
                 onOrientation(true);
                 return true;
-            case ComponentController.MSG_SHOW_SHARE_PANEL:
+            case MSG_SHOW_SHARE_PANEL:
                 showSharePanel();
                 return true;
-            case ComponentController.MSG_HIDE_BOTTOM_PANEL:
-            case ComponentController.MSG_ON_BACK_PRESSED:
+            case MSG_HIDE_BOTTOM_PANEL:
+            case MSG_ON_BACK_PRESSED:
                 return hidePanel(true);
             default:
                 break;

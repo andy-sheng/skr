@@ -106,12 +106,12 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
         super(activity, (ViewGroup) activity.findViewById(android.R.id.content), controller);
     }
 
-    public void setupSdkView(boolean isGameMode) {
+    public void setupView(boolean isGameMode) {
         mIsGameMode = isGameMode;
+        setupView();
         if (mIsGameMode) {
             setupGameView();
         }
-        setupView();
     }
 
     private void setupGameView() {

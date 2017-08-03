@@ -62,11 +62,6 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_GAME_INP
 public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
         implements View.OnClickListener {
 
-    @NonNull
-    protected ViewGroup mParentView;
-    @NonNull
-    protected View mContentView;
-
     private final List<View> mHorizontalMoveSet = new ArrayList();
     private final List<View> mVerticalMoveSet = new ArrayList(0);
     private final List<View> mGameHideSet = new ArrayList(0);

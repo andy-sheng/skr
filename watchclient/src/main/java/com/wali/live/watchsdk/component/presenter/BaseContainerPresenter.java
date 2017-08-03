@@ -1,6 +1,5 @@
 package com.wali.live.watchsdk.component.presenter;
 
-
 import android.support.annotation.CallSuper;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
@@ -10,8 +9,8 @@ import android.view.ViewGroup;
 
 import com.base.log.MyLog;
 import com.thornbirds.component.presenter.ComponentPresenter;
-import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.componentwrapper.BaseSdkController;
+import com.wali.live.componentwrapper.view.panel.BaseBottomPanel;
 
 import java.lang.ref.WeakReference;
 

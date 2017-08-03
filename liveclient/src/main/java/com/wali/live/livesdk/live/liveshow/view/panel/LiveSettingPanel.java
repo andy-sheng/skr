@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 import com.base.log.MyLog;
 import com.mi.live.engine.base.GalileoConstants;
 import com.thornbirds.component.IEventController;
-import com.wali.live.component.view.panel.BaseBottomPanel;
+import com.wali.live.componentwrapper.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.SingleChooser;

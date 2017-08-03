@@ -42,8 +42,8 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.wali.live.component.ComponentController.MSG_ON_ORIENT_LANDSCAPE;
-import static com.wali.live.component.ComponentController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 
 /**
  * Created by yangli on 2017/07/12.

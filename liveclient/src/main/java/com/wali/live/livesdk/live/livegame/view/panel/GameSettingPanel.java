@@ -11,7 +11,7 @@ import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.channel.HostChannelManager;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.wali.live.component.view.panel.BaseBottomPanel;
+import com.wali.live.componentwrapper.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.R;
 import com.wali.live.statistics.StatisticsKey;
 

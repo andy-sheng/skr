@@ -21,8 +21,8 @@ import com.base.utils.network.NetworkUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.engine.player.widget.VideoPlayerTextureView;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.utils.AppNetworkUtils;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.video.widget.player.ReplaySeekBar;
@@ -340,7 +340,7 @@ public class VideoDetailPlayerView extends RelativeLayout
         void onBackPress();
     }
 
-    public interface IView extends IViewProxy {
+    public interface IView extends IViewProxy<View> {
         /**
          * 播放器打开
          */

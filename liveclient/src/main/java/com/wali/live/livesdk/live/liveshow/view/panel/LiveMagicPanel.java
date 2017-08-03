@@ -14,9 +14,9 @@ import android.widget.RelativeLayout;
 import com.base.view.RotatedSeekBar;
 import com.mi.live.engine.base.GalileoConstants;
 import com.thornbirds.component.IParams;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
-import com.wali.live.component.view.panel.BaseBottomPanel;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
+import com.wali.live.componentwrapper.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
@@ -184,7 +184,7 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
         void syncFilterData();
     }
 
-    public interface IView extends IViewProxy {
+    public interface IView extends IViewProxy<View> {
         /**
          * 同步美妆面板按钮可用性
          */
