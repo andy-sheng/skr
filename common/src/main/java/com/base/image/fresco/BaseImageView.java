@@ -1,15 +1,12 @@
 package com.base.image.fresco;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
+import com.base.global.GlobalData;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.base.global.GlobalData;
-import com.base.common.R;
 
 /**
  * Created by linjinbin on 16/2/19.
@@ -43,18 +40,6 @@ public class BaseImageView extends SimpleDraweeView {
 
     public BaseImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    @Override
-    public void setImageBitmap(Bitmap bm) {
-        setTag(R.id.fresco_view_tag, null);
-        super.setImageBitmap(bm);
-    }
-
-    @Override
-    public void setImageDrawable(Drawable drawable) {
-        setTag(R.id.fresco_view_tag, null);
-        super.setImageDrawable(drawable);
     }
 
     public <IV extends BaseImageView> IV get() {

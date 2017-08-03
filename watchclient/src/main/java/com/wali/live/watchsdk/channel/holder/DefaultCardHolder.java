@@ -15,7 +15,6 @@ import com.wali.live.proto.CommonChannelProto;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.channel.holder.listener.HolderHelper;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel.BaseLiveItem;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel.LiveItem;
@@ -146,8 +145,7 @@ public class DefaultCardHolder extends FixedHolder {
                     @Override
                     public void onClick(View v) {
                         if (!TextUtils.isEmpty(jumpUrl)) {
-                            HolderHelper.jumpScheme(itemView.getContext(), jumpUrl);
-
+                            mJumpListener.jumpScheme(jumpUrl);
                         } else {
                             MyLog.e(TAG, "leftLabelIv onClick jumpUrl is empty");
                         }

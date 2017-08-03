@@ -2,180 +2,313 @@ package com.wali.live.watchsdk.endlive;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.content.ContextCompat;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.base.activity.RxActivity;
 import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.BaseFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
+import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
-import com.base.utils.language.LocaleUtil;
-import com.base.utils.toast.ToastUtils;
+import com.base.utils.span.SpanUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.live.module.common.R;
-import com.mi.live.data.api.ErrorCode;
+import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
-import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.mi.live.data.user.User;
-import com.trello.rxlifecycle.ActivityEvent;
-import com.wali.live.proto.RoomRecommend;
+import com.wali.live.event.EventEmitter;
 import com.wali.live.utils.AvatarUtils;
+import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
+import com.wali.live.watchsdk.endlive.presenter.UserEndLivePresenter;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import rx.Observable;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-
 /**
  * @module 新版直播结束页面 （用户界面）
- * Created by jiyangli on 16-7-4.
  */
-public class UserEndLiveFragment extends BaseEventBusFragment implements View.OnClickListener, IUserEndLiveView {
+public class UserEndLiveFragment extends BaseEventBusFragment implements View.OnClickListener {
     private static final String TAG = UserEndLiveFragment.class.getSimpleName();
-    public static final String EXTRA_OWNER_ID = "extra_owner_id";
-    public static final String EXTRA_ROOM_ID = "extra_room_id";
-    public static final String EXTRA_AVATAR_TS = "extra_avatar_ts";
-    public static final String EXTRA_FROM = "extra_from";
-    public static final String EXTRA_OWNER = "extra_owner";
-    public static final String EXTRA_VIEWER = "extra_viewer";
-    public static final String EXTRA_LIVE_TYPE = "extra_live_type";
+    private static final int REQUEST_CODE = GlobalData.getRequestCode();
+    private static final String EXTRA_OWNER_ID = "extra_owner_id";
+    private static final String EXTRA_ROOM_ID = "extra_room_id";
+    private static final String EXTRA_AVATAR_TS = "extra_avatar_ts";
+    private static final String EXTRA_OWNER = "extra_owner";
+    private static final String EXTRA_VIEWER = "extra_viewer";
+    private static final String EXTRA_LIVE_TYPE = "extra_live_type";
+    private static final String EXTRA_TIME = "extra_time";
+    private static final String EXTRA_TICKET = "extra_ticket";
+    private static final String EXTRA_ENTER_TYPE = "extra_enter_type";
+    private static final String EXTRA_ENTER_NICK_NAME = "extra_enter_nick_name";
+    private static final String EXTRA_HAS_ROOM_LIST = "extra_has_room_list";
+
+    public static final String ENTER_TYPE_LIVE_END = "enter_type_live_end";     //进入房间后，正常直播结束
+    public static final String ENTER_TYPE_LATE = "enter_type_late";             //进入房间时 已结束
+    public static final String ENTER_TYPE_REPLAY = "enter_type_replay";         //回放结束
+    public static final int COUNT_DOWN_TIME = 5;
+
+    private SimpleDraweeView mAvatarBgDv;     //主播背景图
+    private BaseImageView mAvatarIv;          //主播头像
+    private TextView mNameTv;                 //主播名称
+    private TextView mFollowTv;               //关注按钮
+    private TextView mViewerTv;               //多少人看过
+    private TextView mHomePageTv;             //前往首页
+    private TextView mTimeHourTv;             //观看时长
+    private TextView mTimeMinuteTv;
+    private TextView mTimeSecondTv;
+    private TextView mTicketTv;
+    private TextView mHintTv;
+    private TextView mFollowHintTv;
+    private TextView mLiveIdTv;
+    private LinearLayout mTimeContainer;
+    private LinearLayout mNextRoomContainer;
+    private TextView mNextRoomTv;
+    private long mHour;
+    private long mMinute;
+    private long mSecond;
 
     private int mLiveType = LiveManager.TYPE_LIVE_PUBLIC;
-    private long mUuId;
+    private long mOwnerId;
+    private String mOwnerName;
+    private long mAvatarTs;
     private String mRoomId;
+    private int mTicket;
+    private long mTime;
+    private String mEndType;
+    private User mOwner;
+    private int mViewerCnt;
+    private boolean mHasRoomList;
 
-    private View mTouchDelegateView;
-    //主播背景图
-    private SimpleDraweeView mAvatarBg;
-    //主播头像
-    private BaseImageView imgAvatar;
-    //主播名称
-    private TextView txtAvatarName;
-    //关注按钮
-    private TextView txtFollow;
-    //关注按钮
-    private TextView txtViewer;
-    //进入聊天室按钮
-    private LinearLayout llytChatRoom;
-    //前往首页
-    private TextView imgHomePage;
+    private UserEndLivePresenter mUserEndLivePresenter;
 
-    private ImageView imgClose;
-
-    //------底部主播推荐相关控件------
-    private RelativeLayout rlytHint;
-    private RelativeLayout rlytRecommend;
-    private RecyclerView rylvRecommend;
-
-    private EndLivePresenter presenter;
-
-
-    private FrameLayout flytFirstRoot;
-    private FrameLayout flytSecondRoot;
-    private FrameLayout flytThirdRoot;
-    private FrameLayout flytFourthRoot;
-
-    private BaseImageView imgFirst;
-    private BaseImageView imgSecond;
-    private BaseImageView imgThird;
-    private BaseImageView imgFourth;
-
-    private int count = 0;
-
-    private void initFromArguments() {
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            mLiveType = arguments.getInt(EXTRA_LIVE_TYPE);
-            mUuId = arguments.getLong(EXTRA_OWNER_ID);
-            mRoomId = arguments.getString(EXTRA_ROOM_ID);
+    private UserEndLivePresenter.IUserEndLiveView mUserEndLiveView = new UserEndLivePresenter.IUserEndLiveView() {
+        @Override
+        public void onRefresh(User user) {
+            //刷新关注状态和用户昵称
+            if (user == null) {
+                return;
+            }
+            followResult(user.isFocused());
+            if (!TextUtils.isEmpty(user.getNickname())) {
+                mNameTv.setText(user.getNickname());
+            }
         }
-    }
+
+        @Override
+        public void onCountDown(int time) {
+            String plainText = getResources().getQuantityString(R.plurals.endlive_next_room_hint, time, time);
+            SpannableStringBuilder ssb = new SpannableStringBuilder(plainText);
+            int start = plainText.indexOf(String.valueOf(time));
+            int end = start + String.valueOf(time).length();
+            ssb.setSpan(new AbsoluteSizeSpan(48), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            int color = ContextCompat.getColor(getActivity(), R.color.color_ff2966);
+            ssb.setSpan(new ForegroundColorSpan(color), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            mNextRoomTv.setText(ssb);
+        }
+
+        @Override
+        public void onNextRoom() {
+            MyLog.d(TAG, "onNextRoom");
+            EventEmitter.postEnterRoomList();
+        }
+    };
 
     @Override
     public int getRequestCode() {
-        return 0;
+        return REQUEST_CODE;
     }
 
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.end_live_layout_new, container, false);
+        return inflater.inflate(R.layout.end_live_layout_user, container, false);
     }
 
     @Override
     protected void bindView() {
         KeyboardUtils.hideKeyboard(getActivity());
-        initView();
-        initFromArguments();
         initData();
-    }
-
-    public void setTouchDelegate(View v) {
-        this.mTouchDelegateView = v;
-    }
-
-    public void setPresenter(EndLivePresenter endLivePresenter) {
-        presenter = endLivePresenter;
+        initView();
+        initPresenter();
+        setViewData();
     }
 
     private void initView() {
-        mAvatarBg = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_bg_dv);
-        imgAvatar = (BaseImageView) mRootView.findViewById(R.id.end_live_ImgAvatar);
-        txtAvatarName = (TextView) mRootView.findViewById(R.id.end_live_txtAvatarName);
-        txtFollow = (TextView) mRootView.findViewById(R.id.end_live_txtFollow);
-        llytChatRoom = (LinearLayout) mRootView.findViewById(R.id.end_live_llytChatRoom);
-        rlytHint = (RelativeLayout) mRootView.findViewById(R.id.end_live_bottom_rlytHint);
-        rylvRecommend = (RecyclerView) mRootView.findViewById(R.id.end_live_rylvRecommend);
-        imgHomePage = (TextView) mRootView.findViewById(R.id.end_live_txtHomePage);
-        txtViewer = (TextView) mRootView.findViewById(R.id.end_live_txtViewer);
-        imgClose = (ImageView) mRootView.findViewById(R.id.end_live_btnClose);
-        rlytRecommend = (RelativeLayout) mRootView.findViewById(R.id.end_live_rlytRecommend);
+        mAvatarBgDv = $(R.id.avatar_bg_dv);
+        mAvatarIv = $(R.id.avatar_iv);
+        mViewerTv = $(R.id.viewer_tv);
+        mNameTv = $(R.id.name_tv);
+        mFollowTv = $(R.id.follow_tv);
+        mHomePageTv = $(R.id.home_page_tv);
 
-        flytFirstRoot = (FrameLayout) mRootView.findViewById(R.id.end_live_flytFirstRoot);
-        flytSecondRoot = (FrameLayout) mRootView.findViewById(R.id.end_live_flytSecondRoot);
-        flytThirdRoot = (FrameLayout) mRootView.findViewById(R.id.end_live_flytThirdRoot);
-        flytFourthRoot = (FrameLayout) mRootView.findViewById(R.id.end_live_flytFourthRoot);
-        imgFirst = (BaseImageView) mRootView.findViewById(R.id.end_live_imgFirst);
-        imgSecond = (BaseImageView) mRootView.findViewById(R.id.end_live_imgSecond);
-        imgThird = (BaseImageView) mRootView.findViewById(R.id.end_live_imgThird);
-        imgFourth = (BaseImageView) mRootView.findViewById(R.id.end_live_imgFourth);
+        mTimeHourTv = $(R.id.time_hour_tv);
+        mTimeMinuteTv = $(R.id.time_minute_tv);
+        mTimeSecondTv = $(R.id.time_second_tv);
+        mHintTv = $(R.id.hint_tv);
 
-        mRootView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (mTouchDelegateView != null) {
-                    mTouchDelegateView.onTouchEvent(event);
+        mTicketTv = $(R.id.ticket_tv);
+        mFollowHintTv = $(R.id.follow_hint_tv);
+        mLiveIdTv = $(R.id.live_id_tv);
+        mTimeContainer = $(R.id.hint_time_container);
+
+        mNextRoomContainer = $(R.id.next_room_container);
+        mNextRoomTv = $(R.id.next_room_tv);
+
+        //click事件
+        $click(mFollowTv, this);
+        $click(mHomePageTv, this);
+    }
+
+    private void initData() {
+        MyLog.w(TAG, "initData");
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mOwner = (User) arguments.getSerializable(EXTRA_OWNER);
+            mLiveType = arguments.getInt(EXTRA_LIVE_TYPE, 0);
+            mOwnerId = arguments.getLong(EXTRA_OWNER_ID, 0);
+            mAvatarTs = arguments.getLong(EXTRA_AVATAR_TS, 0);
+            mOwnerName = arguments.getString(EXTRA_ENTER_NICK_NAME, "");
+            mRoomId = arguments.getString(EXTRA_ROOM_ID, "");
+            mTicket = arguments.getInt(EXTRA_TICKET, 0);
+            mTime = arguments.getLong(EXTRA_TIME, 0);
+            mEndType = arguments.getString(EXTRA_ENTER_TYPE, "");
+            mViewerCnt = arguments.getInt(EXTRA_VIEWER, 0);
+            mLiveType = arguments.getInt(EXTRA_LIVE_TYPE, 0);
+            mHasRoomList = arguments.getBoolean(EXTRA_HAS_ROOM_LIST, false);
+        }
+    }
+
+    public void setViewData() {
+        AvatarUtils.loadAvatarByUidTs(mAvatarIv, mOwnerId, mAvatarTs, true);
+        AvatarUtils.loadAvatarByUidTs(mAvatarBgDv, mOwnerId, mAvatarTs, AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
+        mNameTv.setText(TextUtils.isEmpty(mOwnerName) ? String.valueOf(mOwnerId) : mOwnerName);
+        mLiveIdTv.setText(getString(R.string.mi_live_accounts) + ":" + mOwnerId);
+        mHour = mTime / (60 * 60 * 1000);
+        mMinute = (mTime - mHour * 60 * 60 * 1000) / (60 * 1000);
+        mSecond = (mTime - mHour * 60 * 60 * 1000 - mMinute * 60 * 1000) / 1000;
+
+        switch (mEndType) {
+            case ENTER_TYPE_REPLAY:
+                mTimeContainer.setVisibility(View.GONE);
+                mTicketTv.setVisibility(View.GONE);
+                mHintTv.setText(getString(R.string.live_end_replay_hint));
+                break;
+            case ENTER_TYPE_LIVE_END:
+                if (mHour > 0) {
+                    mTimeHourTv.setText(SpanUtils.addColorSpan(String.valueOf(mHour),
+                            String.format(getString(R.string.live_end_time_hours), String.valueOf(mHour)),
+                            R.color.text_color_e5aa1c,
+                            R.color.black));
+                    mTimeMinuteTv.setText(SpanUtils.addColorSpan(String.valueOf(mMinute),
+                            String.format(getString(R.string.live_end_time_minute), String.valueOf(mMinute)),
+                            R.color.text_color_e5aa1c,
+                            R.color.black));
+                } else {
+                    mTimeHourTv.setVisibility(View.GONE);
+                    if (mMinute > 0) {
+                        mTimeMinuteTv.setText(SpanUtils.addColorSpan(String.valueOf(mMinute),
+                                String.format(getString(R.string.live_end_time_minute), String.valueOf(mMinute)),
+                                R.color.text_color_e5aa1c,
+                                R.color.black));
+                    } else {
+                        mTimeMinuteTv.setVisibility(View.GONE);
+                    }
                 }
-                return true;
+                mTimeSecondTv.setText(SpanUtils.addColorSpan(String.valueOf(mSecond),
+                        String.format(getString(R.string.live_end_time_second), String.valueOf(mSecond)),
+                        R.color.text_color_e5aa1c,
+                        R.color.black));
+                if (mTicket > 0) {
+                    mTicketTv.setText(SpanUtils.addColorSpan(String.valueOf(mTicket), String.format(getString(R.string.endlive_user_ticket), String.valueOf(mTicket)),
+                            R.color.text_color_e5aa1c,
+                            R.color.black));
+                } else {
+                    mTicketTv.setVisibility(View.GONE);
+                }
+                mHintTv.setText(getString(R.string.endlive_share_user_hint));
+                break;
+            case ENTER_TYPE_LATE:
+                mTimeContainer.setVisibility(View.GONE);
+                mTicketTv.setVisibility(View.GONE);
+                mHintTv.setText(getString(R.string.live_end_hint));
+                break;
+            default:
+                mTimeContainer.setVisibility(View.GONE);
+                mTicketTv.setVisibility(View.GONE);
+                mHintTv.setText(getString(R.string.live_end_hint));
+                break;
+        }
+        if (mViewerCnt <= 0) {
+            mViewerTv.setVisibility(View.INVISIBLE);
+        } else {
+            mViewerTv.setText(getResources().getQuantityString(R.plurals.live_end_viewer_cnt,
+                    mViewerCnt, mViewerCnt));
+        }
+        if (UserAccountManager.getInstance().getUuidAsLong() == mOwnerId) {
+            mFollowTv.setVisibility(View.GONE);
+            mFollowHintTv.setVisibility(View.INVISIBLE);
+        } else {
+            followResult(mOwner.isFocused());
+        }
+
+        if (mHasRoomList) {
+            mNextRoomContainer.setVisibility(View.VISIBLE);
+            mUserEndLivePresenter.nextRoom(COUNT_DOWN_TIME);
+        } else {
+            mNextRoomContainer.setVisibility(View.GONE);
+        }
+    }
+
+    private void initPresenter() {
+        mUserEndLivePresenter = new UserEndLivePresenter(mOwner, mUserEndLiveView);
+        mUserEndLivePresenter.getUser();
+    }
+
+    private void setFollowStatus() {
+        mFollowTv.setVisibility(View.GONE);
+        mFollowHintTv.setVisibility(View.INVISIBLE);
+    }
+
+    private void setUnFollowStatus() {
+        mFollowTv.setClickable(true);
+        mFollowTv.setOnClickListener(this);
+    }
+
+    private void finish() {
+        getActivity().finish();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        finish();
+        return true;
+    }
+
+    @Override
+    public void onClick(View view) {
+        int i = view.getId();
+        if (i == R.id.home_page_tv) {
+            finish();
+        } else if (i == R.id.follow_tv) {
+            if (mUserEndLivePresenter != null && AccountAuthManager.triggerActionNeedAccount(getActivity())) {
+                mUserEndLivePresenter.follow(mRoomId);
             }
-        });
+        }
     }
 
     /**
      * 关注与取消关注
-     *
-     * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FollowOrUnfollowEvent event) {
@@ -183,341 +316,48 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
             MyLog.v(TAG, " onEventMainThread FollowOrUnfollowEvent event is null");
             return;
         }
-
         int type = event.eventType;
-        long uuid = event.uuid;
-        if (presenter.getOwnerId() == uuid) {
-            updateFollowTv(type != FollowOrUnfollowEvent.EVENT_TYPE_UNFOLLOW);
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(RoomDataChangeEvent event) {
-        if (event == null) {
-            return;
-        }
-        MyLog.w(TAG, "RoomDataChangeEvent " + event.type);
-        switch (event.type) {
-            case RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE: {
-                RoomBaseDataModel roomBaseDataModel = event.source;
-                if (roomBaseDataModel != null) {
-                    String nickName = roomBaseDataModel.getNickName();
-                    if (!TextUtils.isEmpty(nickName)) {
-                        txtAvatarName.setText(nickName);
-                    }
-                    updateFollowTv(roomBaseDataModel.isFocused());
-                    if (txtFollow.getVisibility() != View.VISIBLE) {
-                        txtFollow.setVisibility(View.VISIBLE);
-                    }
-                }
+        if (mOwnerId == event.uuid) {
+            if (type == FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW) {
+                setFollowStatus();
+            } else if (type == FollowOrUnfollowEvent.EVENT_TYPE_UNFOLLOW) {
+                setUnFollowStatus();
             }
-            break;
-            default:
-                break;
         }
-    }
-
-    private void updateFollowTv(boolean isFocused) {
-        MyLog.w(TAG, "isFocused=" + isFocused);
-        if (isFocused) {
-            txtFollow.setText(getResources().getString(R.string.live_ended_concerned));
-            txtFollow.setTextColor(getResources().getColor(R.color.color_white_trans_40));
-            txtFollow.setBackgroundResource(R.drawable.followed_button_normal);
-        } else {
-            txtFollow.setText(getResources().getString(R.string.add_follow));
-            txtFollow.setBackgroundResource(R.drawable.chat_room_button);
-            txtFollow.setTextColor(getResources().getColor(R.color.color_black_trans_90));
-            txtFollow.setOnClickListener(this);
-        }
-    }
-
-    @Override
-    public void initData() {
-        AvatarUtils.loadAvatarByUidTs(mAvatarBg, presenter.getOwnerId(), presenter.getAvatarTs(), AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
-        AvatarUtils.loadAvatarByUidTs(imgAvatar, presenter.getOwnerId(), 0, true);
-
-        if (TextUtils.isEmpty(presenter.getNickName()) || presenter.isMyReplay()) {
-            txtFollow.setVisibility(View.INVISIBLE);
-        } else {
-            txtAvatarName.setText(presenter.getNickName());
-            txtFollow.setVisibility(View.VISIBLE);
-        }
-        if (presenter.getViewerCount() < 0) {
-            txtViewer.setVisibility(View.INVISIBLE);
-        } else {
-            txtViewer.setText(getResources().getString(R.string.live_ended_viewer_cnt, String.valueOf(presenter.getViewerCount())));
-        }
-        if (presenter.isFocused()) {
-            txtFollow.setText(getResources().getString(R.string.live_ended_concerned));
-            txtFollow.setTextColor(getResources().getColor(R.color.color_white_trans_40));
-            txtFollow.setBackgroundResource(R.drawable.followed_button_normal);
-        } else {
-            txtFollow.setText(getResources().getString(R.string.add_follow));
-            txtFollow.setOnClickListener(this);
-        }
-
-        imgHomePage.setOnClickListener(this);
-        imgAvatar.setOnClickListener(this);
-        imgClose.setOnClickListener(this);
-
-        if (LocaleUtil.getLanguageCode().equals("zh_CN") || LocaleUtil.getLanguageCode().equals("zh_TW")) {
-            Observable.interval(0, 10, TimeUnit.SECONDS)
-                    .compose(this.<Long>bindUntilEvent())
-                    .subscribe(new Observer<Long>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            MyLog.e(TAG, "getRoomRecommendList error");
-                            e.printStackTrace();
-                        }
-
-                        @Override
-                        public void onNext(Long aLong) {
-                            presenter.getRoomRecommendList();
-                        }
-                    });
-        } else {
-            MyLog.d(TAG, "Language is not zh_CN");
-            hideAvatarZone();
-        }
-    }
-
-    @Override
-    public boolean onBackPressed() {
-        getActivity().finish();
-        return true;
-    }
-
-    @Override
-    public void onClick(View view) {
-        int i = view.getId();
-        if (i == R.id.end_live_btnClose) {
-            presenter.sendCloseCommend();
-            getActivity().finish();
-
-        } else if (i == R.id.end_live_txtHomePage) {
-//            String uri = "walilive://channel/channel_id=0";
-            // 跳到主播主页
-//            try {
-//                Intent intent = null;
-//                intent = Intent.parseUri(uri, Intent.URI_INTENT_SCHEME);
-//                SafeGoActivity.goCheckUpdateWhenFailed(getActivity(), intent);
-//                popFragment();
-//            } catch (URISyntaxException e) {
-//            }
-            // 打点
-//            presenter.sendHomePageCommend();
-        } else if (i == R.id.end_live_txtFollow) {
-            if (AccountAuthManager.triggerActionNeedAccount(getActivity())) {
-                followAvatar();
-            }
-
-        } else if (i == R.id.end_live_ImgAvatar) {
-//            PersonInfoActivity.openActivity(getActivity(), presenter.getOwnerId(), presenter.getOwnerCertType());
-//            presenter.sendClickAvatarCommend(presenter.getOwnerId());
-
-        }
-    }
-
-    /**
-     * 显示第一个推荐主播
-     */
-    @Override
-    public void showFirstAvatar(final RoomRecommend.RecommendRoom roomData) {
-        if (roomData == null) {
-            return;
-        }
-        AvatarUtils.loadAvatarNoLoading(imgFirst, roomData.getZuid(), roomData.getAvatar(), AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false);
-        imgFirst.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.startWatchActivity(getActivity(), roomData, 1);
-                popFragment();
-            }
-        });
-
-        imgFirst.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                flytFirstRoot.setVisibility(View.VISIBLE);
-            }
-        }, 200);
-    }
-
-    /**
-     * 显示第二个推荐主播
-     */
-    @Override
-    public void showSecondAvatar(final RoomRecommend.RecommendRoom roomData) {
-        if (roomData == null) {
-            return;
-        }
-        AvatarUtils.loadAvatarNoLoading(imgSecond, roomData.getZuid(), roomData.getAvatar(), AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false);
-        imgSecond.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.startWatchActivity(getActivity(), roomData, 2);
-                popFragment();
-            }
-        });
-
-
-        imgSecond.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                flytSecondRoot.setVisibility(View.VISIBLE);
-            }
-        }, 200);
-    }
-
-    /**
-     * 显示第三个推荐主播
-     */
-    @Override
-    public void showThirdAvatar(final RoomRecommend.RecommendRoom roomData) {
-        if (roomData == null) {
-            return;
-        }
-        AvatarUtils.loadAvatarNoLoading(imgThird, roomData.getZuid(), roomData.getAvatar(), AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false);
-        imgThird.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.startWatchActivity(getActivity(), roomData, 3);
-                popFragment();
-            }
-        });
-
-
-        imgThird.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                flytThirdRoot.setVisibility(View.VISIBLE);
-            }
-        }, 200);
-    }
-
-    /**
-     * 显示第四个推荐主播
-     */
-    @Override
-    public void showFourthAvatar(final RoomRecommend.RecommendRoom roomData) {
-        if (roomData == null) {
-            return;
-        }
-        AvatarUtils.loadAvatarNoLoading(imgFourth, roomData.getZuid(), roomData.getAvatar(), AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false);
-        imgFourth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.startWatchActivity(getActivity(), roomData, 4);
-                popFragment();
-            }
-        });
-
-        imgFourth.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                flytFourthRoot.setVisibility(View.VISIBLE);
-            }
-        }, 200);
-    }
-
-
-    private void followAvatar() {
-        presenter.followAvatar();
-    }
-
-    /**
-     * 隐藏底部主播推荐页面
-     */
-    @Override
-    public void hideAvatarZone() {
-        rlytRecommend.setVisibility(View.GONE);
-        rlytHint.setVisibility(View.GONE);
-        rylvRecommend.setVisibility(View.GONE);
     }
 
     /**
      * 更新关注按钮UI
      */
-    @Override
     public void setFollowText() {
-        txtFollow.setClickable(false);
-        txtFollow.setText(R.string.live_ended_concerned);
-        txtFollow.setTextColor(getResources().getColor(R.color.color_7a7a7a));
-        txtFollow.setBackgroundResource(R.drawable.followed_button_normal);
+        setFollowStatus();
     }
-
-    List<RoomRecommend.RecommendRoom> roomDatas = new ArrayList<>();
-
-    @Override
-    public void popFragment() {
-        Observable.timer(2000, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(((RxActivity) getContext())
-                        .bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribe(new Action1<Object>() {
-                    @Override
-                    public void call(Object o) {
-                        FragmentNaviUtils.popFragment(getActivity());
-                    }
-                });
-    }
-
 
     /**
      * 显示关注主播结果
      */
-    @Override
-    public void followResult(int errCode) {
+    public void followResult(boolean result) {
         if (getActivity() != null && !getActivity().isFinishing()) {
-            if (errCode == ErrorCode.CODE_SUCCESS) {
-                presenter.sendFollowCommend();
-                ToastUtils.showToast(getActivity(), getString(R.string.endlive_follow_success));
+            if (result) {
                 setFollowText();
             } else {
-                txtFollow.setClickable(true);
-                txtFollow.setText(R.string.live_ended_concern);
-                if (errCode == ErrorCode.CODE_RELATION_BLACK) {
-                    ToastUtils.showToast(getActivity(), getString(R.string.setting_black_follow_hint));
-                } else {
-                    ToastUtils.showToast(getActivity(), getString(R.string.follow_failed));
-                }
+                setUnFollowStatus();
             }
         }
     }
 
-    /**
-     * 显示获取推荐主播
-     *
-     * @param result
-     */
     @Override
-    public void getRoomListResult(List<RoomRecommend.RecommendRoom> result) {
-
-        if (result.size() > 0) {
-            showFirstAvatar(result.get(0));
-            showSecondAvatar(result.get(1));
-            showThirdAvatar(result.get(2));
-            showFourthAvatar(result.get(4));
-            if (count == 0) {
-                count++;
-                presenter.sendShowCommend(result.get(0).getZuid(), result.get(1).getZuid(), result.get(2).getZuid(), result.get(3).getZuid());
-            }
-        } else {
-            MyLog.d(TAG, "size less than 1 ");
-            hideAvatarZone();
+    public void onDestroy() {
+        super.onDestroy();
+        if (mUserEndLivePresenter != null) {
+            mUserEndLivePresenter.destroy();
         }
     }
 
     /**
      * 打开直播结束页面
      *
-     * @param activity Context>>>>
-     * @param layoutId 用来显示结束页面的layout id
+     * @param activity Context
      * @param ownerId  主播ID
      * @param roomId   房间Id
      * @param avatarTs 时间戳
@@ -526,16 +366,22 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
      * @param liveType 房间类型Live.proto里定义
      * @return
      */
-    public static UserEndLiveFragment openFragment(FragmentActivity activity, int layoutId, long ownerId, String roomId, long avatarTs, User owner, int viewer, int liveType) {
+    public static UserEndLiveFragment openFragment(FragmentActivity activity, long ownerId, String roomId,
+                                                   long avatarTs, User owner, int viewer, int liveType, int ticket,
+                                                   long time, String type, String nickName, boolean hasRoomList) {
         if (activity == null || activity.isFinishing()) {
             MyLog.d(TAG, "openFragment activity state is illegal");
             return null;
         }
-        Bundle bundle = getBundle(ownerId, roomId, avatarTs, owner, viewer, liveType);
-        return (UserEndLiveFragment) FragmentNaviUtils.addFragment(activity, layoutId, UserEndLiveFragment.class, bundle, true, false, true);
+        Bundle bundle = getBundle(ownerId, roomId, avatarTs, owner, viewer,
+                liveType, ticket, time, type, nickName, hasRoomList);
+        UserEndLiveFragment userEndLiveFragment = (UserEndLiveFragment) FragmentNaviUtils.addFragment(activity, R.id.main_act_container,
+                UserEndLiveFragment.class, bundle, true, false, true);
+        return userEndLiveFragment;
     }
 
-    public static Bundle getBundle(long ownerId, String roomId, long avatarTs, User owner, int viewer, int liveType) {
+    public static Bundle getBundle(long ownerId, String roomId, long avatarTs, User owner, int viewer, int liveType,
+                                   int ticket, long time, String type, String nickName, boolean hasRoomList) {
         Bundle bundle = new Bundle();
         bundle.putLong(EXTRA_OWNER_ID, ownerId);
         bundle.putString(EXTRA_ROOM_ID, roomId);
@@ -544,7 +390,11 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
         bundle.putBoolean(BaseFragment.PARAM_FORCE_PORTRAIT, true);
         bundle.putInt(EXTRA_VIEWER, viewer);
         bundle.putInt(EXTRA_LIVE_TYPE, liveType);
+        bundle.putInt(EXTRA_TICKET, ticket);
+        bundle.putLong(EXTRA_TIME, time);
+        bundle.putString(EXTRA_ENTER_TYPE, type);
+        bundle.putString(EXTRA_ENTER_NICK_NAME, nickName);
+        bundle.putBoolean(EXTRA_HAS_ROOM_LIST, hasRoomList);
         return bundle;
     }
-
 }

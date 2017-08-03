@@ -56,7 +56,7 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
     protected EditText mInputEditText;
 
     protected IChannelPresenter mPresenter;
-    protected long mChannelId = 201;
+    protected long mChannelId = 20;
     protected LoginPresenter mLoginPresenter;
 
     @Override

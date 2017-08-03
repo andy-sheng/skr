@@ -8,14 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.base.activity.RxActivity;
 import com.base.activity.assist.IBindActivityLIfeCycle;
+import com.base.log.MyLog;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
-import com.base.log.MyLog;
-import com.base.activity.RxActivity;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.gift.model.giftEntity.RoomEffectGift;
@@ -29,7 +29,7 @@ import org.greenrobot.eventbus.ThreadMode;
  * 房间特效播放
  * Created by chengsimin on 16/3/1.
  */
-public class GiftRoomEffectView extends FrameLayout implements IBindActivityLIfeCycle{
+public class GiftRoomEffectView extends FrameLayout implements IBindActivityLIfeCycle {
 
     public static String TAG = "GiftAnimationView";
 
@@ -116,7 +116,6 @@ public class GiftRoomEffectView extends FrameLayout implements IBindActivityLIfe
         };
     }
 
-
     public void onActivityCreate() {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -147,6 +146,11 @@ public class GiftRoomEffectView extends FrameLayout implements IBindActivityLIfe
 //        mRoomEffectAnimationControl.reset();
 //        cancelAllAnimation();
 //    }
+
+    public void reset() {
+        mRoomEffectAnimationControl.reset();
+        cancelAllAnimation();
+    }
 
     /**
      * 取消动画

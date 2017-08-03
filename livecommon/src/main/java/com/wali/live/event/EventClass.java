@@ -246,8 +246,8 @@ public abstract class EventClass {
         }
     }
 
-    public static class ChangeBootomInvitee {
-        public ChangeBootomInvitee(long userId, long avatar, boolean checked) {
+    public static class ChangeBottomInvitee {
+        public ChangeBottomInvitee(long userId, long avatar, boolean checked) {
             this.userId = userId;
             this.avatar = avatar;
             this.checked = checked;
@@ -289,5 +289,4 @@ public abstract class EventClass {
     public static class H5UnloginEvent {
 
     }
-
 }

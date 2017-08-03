@@ -22,8 +22,10 @@ import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.proto.LiveProto;
 import com.wali.live.statistics.StatisticsKey;
+import com.wali.live.watchsdk.component.cache.GameModelCache;
 import com.wali.live.watchsdk.component.view.panel.GameDownloadPanel;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
+import com.wali.live.watchsdk.log.LogConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +38,7 @@ import java.util.Map;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -45,7 +48,7 @@ import rx.schedulers.Schedulers;
  */
 public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.IView>
         implements GameDownloadPanel.IPresenter {
-    private static final String TAG = "GameDownloadPresenter";
+    private static final String TAG = LogConstants.GAME_DOWNLOAD_PREFIX + "GameDownloadPresenter";
 
     private static final String GAME_INFO_URL = "http://app.migc.xiaomi.com/contentapi/m/gameinfo?gameId=%s";
     private static final String EXTRA_GAME_URL = "http://app.migc.xiaomi.com/contentapi/page/json/data/5377";
@@ -57,17 +60,18 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
     private GameViewModel mGameModel;
     private Map<String, String> mExtraMap = new HashMap<>();
 
+    private Subscription mSubscription;
+    private Subscription mHttpSubscription;
+
     public GameDownloadPresenter(@NonNull IComponentController componentController,
                                  @NonNull RoomBaseDataModel myRoomData) {
         super(componentController);
         mMyRoomData = myRoomData;
-        registerAction(ComponentController.MSG_ON_LIVE_SUCCESS);
-        registerAction(ComponentController.MSG_SHOW_GAME_DOWNLOAD);
-        registerAction(ComponentController.MSG_ON_BACK_PRESSED);
+        startPresenter();
     }
 
     private void getGameInfo() {
-        MyLog.d(TAG, "getGameInfo: gameId=" + mMyRoomData.getGameId());
+        MyLog.w(TAG, "getGameInfo: gameId=" + mMyRoomData.getGameId());
         if (mGameModel != null) {
             MyLog.d(TAG, "gameModel is not null");
             return;
@@ -81,7 +85,10 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
 
     private void getGameId() {
         MyLog.d(TAG, "getGameId");
-        Observable
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
+        mSubscription = Observable
                 .create((new Observable.OnSubscribe<String>() {
                     @Override
                     public void call(Subscriber<? super String> subscriber) {
@@ -110,7 +117,7 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
                     @Override
                     public void call(String gameId) {
                         MyLog.w(TAG, "getGameId=" + gameId);
-                        if (!TextUtils.isEmpty(gameId)) {
+                        if (!TextUtils.isEmpty(gameId) && !gameId.equals("0")) {
                             mMyRoomData.setGameId(gameId);
                             startGameWork();
                         }
@@ -124,22 +131,36 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
     }
 
     private void startGameWork() {
-        Observable
+        if (mHttpSubscription != null && !mHttpSubscription.isUnsubscribed()) {
+            mHttpSubscription.unsubscribe();
+        }
+        mHttpSubscription = Observable
                 .create((new Observable.OnSubscribe<GameViewModel>() {
                     @Override
                     public void call(Subscriber<? super GameViewModel> subscriber) {
                         getExtraJson();
+
+                        GameViewModel gameModel = GameModelCache.getGameModel(mMyRoomData.getGameId());
+                        if (gameModel != null) {
+                            MyLog.w(TAG, "startGameWork gameModel from cache");
+                            subscriber.onNext(gameModel);
+                            subscriber.onCompleted();
+                            return;
+                        }
 
                         String url = String.format(GAME_INFO_URL, mMyRoomData.getGameId());
                         List<NameValuePair> postBody = new ArrayList();
                         postBody.add(new BasicNameValuePair("gameId", String.valueOf(mMyRoomData.getGameId())));
                         try {
                             SimpleRequest.StringContent result = HttpUtils.doV2Get(url, postBody);
-                            GameViewModel gameModel = new GameViewModel(result.getBody());
+                            gameModel = new GameViewModel(result.getBody());
 
                             if (mExtraMap.containsKey(gameModel.getGameId())) {
                                 gameModel.setDownloadUrl(mExtraMap.get(gameModel.getGameId()));
                             }
+                            GameModelCache.addGameModel(gameModel);
+
+                            MyLog.w(TAG, "startGameWork gameModel from server");
                             subscriber.onNext(gameModel);
                             subscriber.onCompleted();
                         } catch (Exception e) {
@@ -248,10 +269,30 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
         mView.hideGameDownloadView();
     }
 
+    public void reset() {
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
+        if (mHttpSubscription != null && !mHttpSubscription.isUnsubscribed()) {
+            mHttpSubscription.unsubscribe();
+        }
+        mGameModel = null;
+        mView.reset();
+    }
+
     @Override
     public void destroy() {
         super.destroy();
+        stopPresenter();
         mView.destroy();
+    }
+
+    @Override
+    public void startPresenter() {
+        super.startPresenter();
+        registerAction(ComponentController.MSG_ON_LIVE_SUCCESS);
+        registerAction(ComponentController.MSG_SHOW_GAME_DOWNLOAD);
+        registerAction(ComponentController.MSG_ON_BACK_PRESSED);
     }
 
     @Override
@@ -280,7 +321,7 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
                 case ComponentController.MSG_ON_LIVE_SUCCESS:
                     if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
                         int liveType = mMyRoomData.getLiveType();
-                        MyLog.d(TAG, "live type=" + liveType);
+                        MyLog.d(TAG, "liveType=" + liveType + " @" + mMyRoomData.hashCode());
                         if (liveType == LiveManager.TYPE_LIVE_GAME) {
                             getGameInfo();
                         }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
 import com.base.utils.Constants;
 import com.base.utils.display.DisplayUtils;
@@ -21,23 +22,29 @@ import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
+import com.wali.live.watchsdk.component.presenter.BarrageBtnPresenter;
 import com.wali.live.watchsdk.component.presenter.BottomButtonPresenter;
+import com.wali.live.watchsdk.component.presenter.EnvelopePresenter;
 import com.wali.live.watchsdk.component.presenter.FollowGuidePresenter;
 import com.wali.live.watchsdk.component.presenter.GameBarragePresenter;
 import com.wali.live.watchsdk.component.presenter.GameDownloadPresenter;
 import com.wali.live.watchsdk.component.presenter.GameInputPresenter;
+import com.wali.live.watchsdk.component.presenter.ImagePagerPresenter;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
+import com.wali.live.watchsdk.component.view.BarrageBtnView;
 import com.wali.live.watchsdk.component.view.FollowGuideView;
 import com.wali.live.watchsdk.component.view.GameBarrageView;
 import com.wali.live.watchsdk.component.view.GameInputView;
+import com.wali.live.watchsdk.component.view.ImagePagerView;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.view.WidgetView;
 import com.wali.live.watchsdk.component.view.panel.GameDownloadPanel;
+import com.wali.live.watchsdk.envelope.SendEnvelopeFragment;
 import com.wali.live.watchsdk.watch.presenter.PanelContainerPresenter;
 
 import java.lang.ref.WeakReference;
@@ -50,7 +57,6 @@ import java.util.List;
  * @module 游戏直播页面
  */
 public class WatchSdkView extends BaseSdkView<WatchComponentController> {
-
     @NonNull
     protected final Action mAction = new Action();
 
@@ -58,14 +64,24 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
     private final List<View> mVerticalMoveSet = new ArrayList(0);
     private final List<View> mGameHideSet = new ArrayList(0);
 
-    @Nullable
     protected View mTopInfoView;
     @Nullable
-    protected View mLiveCommentView;
-    @Nullable
+    protected LiveCommentView mLiveCommentView;
+    protected View mBarrageBtnView;
+
     protected GiftContinueViewGroup mGiftContinueViewGroup;
+
+    // 关注弹窗
     protected FollowGuideView mFollowGuideView;
     protected FollowGuidePresenter mFollowGuidePresenter;
+
+    protected WatchBottomButton mWatchBottomButton;
+
+    protected GameBarragePresenter mGameBarragePresenter;
+    protected GameInputPresenter mGameInputPresenter;
+    protected GameDownloadPresenter mGameDownloadPresenter;
+
+    protected ImagePagerView mPagerView;
 
     protected boolean mIsGameMode = false;
     protected boolean mIsLandscape = false;
@@ -90,43 +106,81 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
     public void setupSdkView(boolean isGameMode) {
         mIsGameMode = isGameMode;
         if (mIsGameMode) {
-            // 游戏直播横屏输入框
-            {
-                GameInputView view = new GameInputView(mActivity);
-                view.setId(R.id.game_input_view);
-                view.setVisibility(View.GONE);
-                GameInputPresenter presenter = new GameInputPresenter(mComponentController, mComponentController.mMyRoomData);
-                addComponentView(view, presenter);
-
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                addViewAboveAnchor(view, layoutParams, $(R.id.input_area_view));
-            }
-            // 游戏直播横屏弹幕
-            {
-                GameBarrageView view = new GameBarrageView(mActivity);
-                view.setId(R.id.game_barrage_view);
-                view.setVisibility(View.GONE);
-                GameBarragePresenter presenter = new GameBarragePresenter(mComponentController);
-                addComponentView(view, presenter);
-
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, DisplayUtils.dip2px(96.77f));
-                layoutParams.bottomMargin = DisplayUtils.dip2px(56f);
-                layoutParams.rightMargin = DisplayUtils.dip2px(56f);
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                addViewAboveAnchor(view, layoutParams, $(R.id.comment_rv));
-            }
-            {
-                GameDownloadPanel panel = new GameDownloadPanel((RelativeLayout) $(R.id.main_act_container));
-                GameDownloadPresenter presenter = new GameDownloadPresenter(mComponentController, mComponentController.mMyRoomData);
-                addComponentView(panel, presenter);
-            }
+            setupGameSdkView();
         }
         setupSdkView();
+    }
+
+    private void setupGameSdkView() {
+        // 游戏直播横屏弹幕
+        if (mGameBarragePresenter == null) {
+            GameBarrageView view = new GameBarrageView(mActivity);
+            view.setId(R.id.game_barrage_view);
+            view.setVisibility(View.GONE);
+            mGameBarragePresenter = new GameBarragePresenter(mComponentController);
+            addComponentView(view, mGameBarragePresenter);
+
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, DisplayUtils.dip2px(96.77f));
+            layoutParams.bottomMargin = DisplayUtils.dip2px(56f);
+            layoutParams.rightMargin = DisplayUtils.dip2px(56f);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            addViewAboveAnchor(view, layoutParams, $(R.id.comment_rv));
+        } else {
+            mGameBarragePresenter.startPresenter();
+        }
+
+        // 游戏直播横屏输入框
+        if (mGameInputPresenter == null) {
+            GameInputView view = new GameInputView(mActivity);
+            view.setId(R.id.game_input_view);
+            view.setVisibility(View.GONE);
+            mGameInputPresenter = new GameInputPresenter(mComponentController, mComponentController.mMyRoomData);
+            addComponentView(view, mGameInputPresenter);
+
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            addViewAboveAnchor(view, layoutParams, $(R.id.input_area_view));
+        } else {
+            mGameInputPresenter.startPresenter();
+        }
+
+        // 游戏直播下载输入框
+        if (mGameDownloadPresenter == null) {
+            GameDownloadPanel view = new GameDownloadPanel((RelativeLayout) $(R.id.main_act_container));
+            mGameDownloadPresenter = new GameDownloadPresenter(mComponentController, mComponentController.mMyRoomData);
+            addComponentView(view, mGameDownloadPresenter);
+        } else {
+            mGameDownloadPresenter.startPresenter();
+        }
+
+        if (mGameHideSet.size() == 0) {
+            addViewToSet(new int[]{
+                    R.id.watch_top_info_view,
+                    R.id.bottom_button_view,
+                    R.id.game_barrage_view,
+                    R.id.game_input_view,
+                    R.id.close_btn,
+                    R.id.widget_view
+            }, mGameHideSet);
+        }
+    }
+
+    private void cancelGameSdkView() {
+        if (mGameBarragePresenter != null) {
+            mGameBarragePresenter.stopPresenter();
+        }
+        if (mGameInputPresenter != null) {
+            mGameInputPresenter.stopPresenter();
+        }
+        if (mGameDownloadPresenter != null) {
+            mGameDownloadPresenter.stopPresenter();
+        }
+
+        mGameHideSet.clear();
     }
 
     @Override
@@ -165,8 +219,20 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             if (view == null) {
                 return;
             }
-            InputAreaPresenter presenter = new InputAreaPresenter(mComponentController, mComponentController.mMyRoomData);
+            InputAreaPresenter presenter = new InputAreaPresenter(
+                    mComponentController, mComponentController.mMyRoomData, true);
             addComponentView(view, presenter);
+        }
+
+        //底部输入框
+        {
+            BarrageBtnView view = $(R.id.barrage_btn_view);
+            if (view == null) {
+                return;
+            }
+            BarrageBtnPresenter presenter = new BarrageBtnPresenter(mComponentController);
+            addComponentView(view, presenter);
+            mBarrageBtnView = view;
         }
 
         // 底部按钮
@@ -177,11 +243,19 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 return;
             }
             relativeLayout.setVisibility(View.VISIBLE);
-            WatchBottomButton view = new WatchBottomButton(relativeLayout, mIsGameMode,
+            mWatchBottomButton = new WatchBottomButton(relativeLayout, mIsGameMode,
                     mComponentController.mMyRoomData.getEnableShare());
             BottomButtonPresenter presenter =
                     new BottomButtonPresenter(mComponentController, mComponentController.mMyRoomData);
-            addComponentView(view, presenter);
+            addComponentView(mWatchBottomButton, presenter);
+        }
+
+        // 抢红包
+        {
+            RelativeLayout relativeLayout = $(R.id.envelope_view);
+            EnvelopePresenter presenter = new EnvelopePresenter(mComponentController, mComponentController.mMyRoomData);
+            presenter.setComponentView(relativeLayout);
+            addComponentView(presenter);
         }
 
         if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
@@ -198,7 +272,20 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             }
         }
 
-        mVerticalMoveSet.add($(R.id.close_btn));
+        if (mComponentController.mRoomInfoList != null && mComponentController.mRoomInfoList.size() > 1) {
+            {
+                mPagerView = new ImagePagerView(mActivity);
+                mPagerView.setVerticalList(mComponentController.mRoomInfoList, mComponentController.mRoomInfoPosition);
+
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                addViewAboveAnchor(mPagerView, layoutParams, $(R.id.mask_iv));
+
+                ImagePagerPresenter presenter = new ImagePagerPresenter(mComponentController);
+                addComponentView(mPagerView, presenter);
+            }
+        }
+
         addViewToSet(new int[]{
                 R.id.watch_top_info_view,
                 R.id.bottom_button_view,
@@ -206,19 +293,23 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 R.id.gift_animation_player_view,
                 R.id.gift_continue_vg,
                 R.id.gift_room_effect_view,
-                R.id.widget_view
-        }, mHorizontalMoveSet, mVerticalMoveSet);
+                R.id.widget_view,
+                R.id.barrage_btn_view
+        }, mHorizontalMoveSet);
 
-        if (mIsGameMode) {
-            addViewToSet(new int[]{
-                    R.id.watch_top_info_view,
-                    R.id.bottom_button_view,
-                    R.id.game_barrage_view,
-                    R.id.game_input_view,
-                    R.id.close_btn,
-                    R.id.widget_view
-            }, mGameHideSet);
-        }
+        addViewToSet(new int[]{
+                R.id.watch_top_info_view,
+                R.id.bottom_button_view,
+                R.id.live_comment_view,
+                R.id.gift_animation_player_view,
+                R.id.gift_continue_vg,
+                R.id.gift_room_effect_view,
+                R.id.widget_view,
+                R.id.barrage_btn_view,
+                R.id.mask_iv,
+                R.id.rotate_btn,
+                R.id.close_btn,
+        }, mVerticalMoveSet);
 
         // 滑动
         {
@@ -229,8 +320,58 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             TouchPresenter presenter = new TouchPresenter(mComponentController, view);
             addComponentView(presenter);
             presenter.setViewSet(mHorizontalMoveSet, mVerticalMoveSet, mIsGameMode);
+
+            // 增加上线滑动的判断
+            if (mComponentController.mRoomInfoList != null && mComponentController.mRoomInfoList.size() > 1) {
+                // 打开上下滑动的开关
+                presenter.setVerticalMoveEnabled(new View[]{$(R.id.last_dv), $(R.id.center_dv), $(R.id.next_dv)}, new View[]{$(R.id.video_view)});
+            }
         }
         mAction.registerAction(); // 最后注册该Action，任何事件mAction都最后收到
+    }
+
+    public void switchToNextRoom() {
+        if (mPagerView != null) {
+            mPagerView.switchNext(mComponentController.mRoomInfoPosition);
+        }
+    }
+
+    public void switchToLastRoom() {
+        if (mPagerView != null) {
+            mPagerView.switchLast(mComponentController.mRoomInfoPosition);
+        }
+    }
+
+    public void reset() {
+        if (mFollowGuidePresenter != null) {
+            mFollowGuidePresenter.reset();
+        }
+        if (mGameDownloadPresenter != null) {
+            mGameDownloadPresenter.reset();
+        }
+
+        mLiveCommentView.reset();
+        mWatchBottomButton.reset();
+    }
+
+    public void postSwitch(boolean isGameMode) {
+        if (mIsGameMode != isGameMode) {
+            mIsGameMode = isGameMode;
+            if (mIsGameMode) {
+                setupGameSdkView();
+            } else {
+                cancelGameSdkView();
+            }
+        }
+        MyLog.d(TAG, "liveType=" + mComponentController.mMyRoomData.getLiveType() + "@" + mComponentController.mMyRoomData.hashCode());
+        mWatchBottomButton.postSwitch(mIsGameMode);
+    }
+
+    public void postPrepare() {
+        if (mPagerView != null) {
+            MyLog.d(TAG, "postPrepare");
+            mPagerView.postPrepare();
+        }
     }
 
     public class Action extends BaseSdkView.Action {
@@ -239,6 +380,9 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             super.registerAction();
             mComponentController.registerAction(WatchComponentController.MSG_SHOW_FOLLOW_GUIDE, this);
             mComponentController.registerAction(WatchComponentController.MSG_FOLLOW_COUNT_DOWN, this);
+            mComponentController.registerAction(WatchComponentController.MSG_PAGE_DOWN, this);
+            mComponentController.registerAction(WatchComponentController.MSG_PAGE_UP, this);
+            mComponentController.registerAction(WatchComponentController.MSG_SHOW_SEND_ENVELOPE, this);
         }
 
         @Override
@@ -284,7 +428,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                         setVisibility(mTopInfoView, View.GONE);
                     } else {
                         setAlpha(mTopInfoView, 1.0f);
-                        if (mIsLandscape && !mIsGameMode) {
+                        if (/*mIsLandscape && */!mIsGameMode) {
                             setVisibility(mLiveCommentView, View.VISIBLE);
                         }
                     }
@@ -294,7 +438,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             mInputAnimatorRef = new WeakReference<>(valueAnimator);
         }
 
-        private WeakReference<ValueAnimator> mGameAnimatorRef; // 游戏直播竖屏时，隐藏显示动画
+        private WeakReference<ValueAnimator> mGameAnimatorRef; // 游戏直播横屏时，隐藏显示动画
         private boolean mGameHide = false;
 
         /**
@@ -390,6 +534,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                             }
                         }
                         setVisibility(mLiveCommentView, View.VISIBLE);
+                        setVisibility(mBarrageBtnView, View.VISIBLE);
                         mComponentController.onEvent(ComponentController.MSG_HIDE_GAME_INPUT);
                     }
                     return true;
@@ -399,6 +544,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                     if (mIsGameMode) { // 游戏直播横屏不需左右滑
                         mComponentController.onEvent(ComponentController.MSG_DISABLE_MOVE_VIEW);
                         setVisibility(mLiveCommentView, View.INVISIBLE);
+                        setVisibility(mBarrageBtnView, View.INVISIBLE);
                         mComponentController.onEvent(ComponentController.MSG_SHOW_GAME_INPUT);
                     }
                     return true;
@@ -465,8 +611,15 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                             mFollowGuideView.onOrientation(mIsLandscape);
                         }
                     });
+
+                    // 出来关注，让关注一起移动
+                    mVerticalMoveSet.add(mFollowGuideView);
                 }
                 break;
+                case WatchComponentController.MSG_SHOW_SEND_ENVELOPE:
+                    SendEnvelopeFragment.openFragment((BaseActivity) mActivity,
+                            mComponentController.mMyRoomData);
+                    break;
                 default:
                     break;
             }

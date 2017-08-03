@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.base.utils.display.DisplayUtils;
+import com.wali.live.watchsdk.channel.holder.listener.JumpListener;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
 
 /**
@@ -35,6 +36,7 @@ public abstract class BaseHolder<VM extends BaseViewModel> extends RecyclerView.
     protected VM mViewModel;
 
     protected int mPosition;
+    protected JumpListener mJumpListener;
 
     public BaseHolder(View itemView) {
         super(itemView);
@@ -67,6 +69,10 @@ public abstract class BaseHolder<VM extends BaseViewModel> extends RecyclerView.
     }
 
     protected abstract void bindView();
+
+    public void setJumpListener(JumpListener listener) {
+        mJumpListener = listener;
+    }
 
     protected <V extends View> V $(int id) {
         return (V) itemView.findViewById(id);

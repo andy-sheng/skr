@@ -170,7 +170,13 @@ public class LiveRoomPresenter extends RxLifeCyclePresenter {
                         MyLog.w(TAG, "endLive rsp.toString()=" + rsp.toString());
                         if ((errCode = rsp.getRetCode()) == ErrorCode.CODE_SUCCESS) {
                             mCallback.processAction(MiLinkCommand.COMMAND_LIVE_END, errCode,
-                                    rsp.getHisViewerCnt(), rsp.getGenerateHistorySucc(), rsp.getGenerateHistoryMsg(), rsp.getTicketBuyerCount());
+                                    rsp.getHisViewerCnt(),
+                                    rsp.getGenerateHistorySucc(),
+                                    rsp.getGenerateHistoryMsg(),
+                                    rsp.getTicketBuyerCount(),
+                                    rsp.getHisBeginLiveCnt(),
+                                    rsp.getDuration(),
+                                    rsp.getNewFollowerCnt());
                         } else {
                             mCallback.processAction(MiLinkCommand.COMMAND_LIVE_END, errCode);
                         }

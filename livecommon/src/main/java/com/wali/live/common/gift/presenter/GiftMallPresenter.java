@@ -92,6 +92,8 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
     private ExecutorService singleThreadForBuyGift = Executors.newSingleThreadExecutor(); // 送礼的线程池
 
     private Subscription mSountDownSubscription; // 倒计时的订阅
+    //房间花费星票数，结束页显示
+    private int mSpendTicket = 0;
 
     public GiftMallPresenter(
             Activity activity,
@@ -102,6 +104,10 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         mActivity = activity;
         mContext = baseContext;
         mComponentController = componentController;
+    }
+
+    public int getSpendTicket() {
+        return mSpendTicket;
     }
 
     public void setViewStub(ViewStub viewStub) {
@@ -424,7 +430,14 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                     public void onNext(GiftProto.BuyGiftRsp buyGiftRsp) {
                         //TODO 主播的票数也从这获得
                         MyLog.v(TAG, "sendGift onNext " + Thread.currentThread().getName());
-                        MyLog.w(TAG, "buyGiftRsp:" + buyGiftRsp);
+                        MyLog.w(TAG, "buyGiftRsp:" + buyGiftRsp.toString());
+                        if (buyGiftWithCard.gift.getCatagory() == GiftType.Mi_COIN_GIFT
+                                || buyGiftWithCard.gift.getBuyType() == BuyGiftType.BUY_GAME_ROOM_GIFT) {
+                            mSpendTicket += (int) ((float) buyGiftWithCard.gift.getPrice() / 10f);
+                        } else {
+                            mSpendTicket += buyGiftWithCard.gift.getPrice();
+                        }
+
                         //扣钱
                         int deduct = buyGiftRsp.getUsableGemCnt();
                         int virtualGemCnt = buyGiftRsp.getUsableVirtualGemCnt();
@@ -607,9 +620,9 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                 .filter(new Func1<Gift, Boolean>() {
                     @Override
                     public Boolean call(Gift gift) {
-                        if (gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
-                            return false;
-                        }
+//                        if (gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
+//                            return false;
+//                        }
                         return true;
                     }
                 })
@@ -799,6 +812,18 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
     }
 
     /**
+     * 目前主要用来切换房间时，重置内部状态
+     */
+    public void reset() {
+        MyLog.w(TAG, "reset");
+        mGiftInfoForThisRoom = null;
+        mHasLoadData = false;
+        if (mGiftMallView != null) {
+            mGiftMallView.processSwitchAnchorEvent();
+        }
+    }
+
+    /**
      * giftcard的push
      *
      * @param event
@@ -945,8 +970,21 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         }
     }
 
+    //支持上下滑動的時候重置接口需要調用
+    public void resetTicket() {
+        mSpendTicket = 0;
+    }
+
+    public void showSendEnvelopeView() {
+        if (mComponentController != null) {
+            mComponentController.onEvent(ComponentController.MSG_SHOW_SEND_ENVELOPE);
+        }
+    }
+
     public static class GiftWithCard {
         public Gift gift;
+
+
         public GiftCard card;
         public static HashSet<Integer> hashSet = new HashSet<>();
 

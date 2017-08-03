@@ -208,7 +208,7 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
                     return;
                 }
                 String roomId = mMyRoomData.getRoomId();
-                MyLog.d(TAG, "mMyRoomData.getRoomId():" + roomId);
+                // MyLog.d(TAG, "mMyRoomData.getRoomId():" + roomId);
                 if (TextUtils.isEmpty(roomId)) {
                     return;
                 }
@@ -230,15 +230,15 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
             String roomId = mMyRoomData.getRoomId();
             if (roomId == null || !roomId.equals(msg.getRoomId())) {
                 if (msg.getMsgType() != BarrageMsgType.B_MSG_TYPE_GLOBAL_SYS_MSG && msg.getMsgType() != BarrageMsgType.B_MSG_TYPE_LEVEL_UPGRADE_SYS_MSG) {
-                    MyLog.w(TAG, "not this room msg, my_room_id:" + roomId + ", msg_room_id:" + msg.getRoomId());
+                    MyLog.w(TAG, "processPushMsgList not this room msg, my_room_id:" + roomId + ", msg_room_id:" + msg.getRoomId());
                     continue;
                 } else {
                 }
             }
             // 处理自己房间的push消息
-            MyLog.d(TAG, "processPushMsgList msg=" + msg.getBody() + ",msgType" + msg.getMsgType());
+            // MyLog.d(TAG, "processPushMsgList msg=" + msg.getBody() + ",msgType" + msg.getMsgType());
             processPushMessage(msg, mMyRoomData);
-            MyLog.d(TAG, "processPushMsgList msg=" + msg.getBody() + ",msgType" + msg.getMsgType() + " over");
+            // MyLog.d(TAG, "processPushMsgList msg=" + msg.getBody() + ",msgType" + msg.getMsgType() + " over");
         }
     }
 
@@ -247,11 +247,11 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
         HashSet<IPushMsgProcessor> set = mIPushMsgProcessorMap.get(msg.getMsgType());
         if (set != null) {
             for (IPushMsgProcessor msgProcessor : set) {
-                MyLog.d(TAG, "recv msg,msgType" + msg.getMsgType());
+                // MyLog.d(TAG, "processPushMessage recv msg, msgType=" + msg.getMsgType());
                 msgProcessor.process(msg, roomData);
             }
         } else {
-            MyLog.w(TAG, "recv this msg but no processor,check the code!!!msg:" + msg);
+            MyLog.w(TAG, "processPushMessage recv this msg but no processor,check the code!!!msg:" + msg);
         }
     }
 

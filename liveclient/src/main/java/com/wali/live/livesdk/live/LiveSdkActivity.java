@@ -75,8 +75,8 @@ import com.wali.live.livesdk.live.api.ZuidSleepRequest;
 import com.wali.live.livesdk.live.component.BaseLiveController;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.eventbus.LiveEventClass;
+import com.wali.live.livesdk.live.fragment.AnchorEndLiveFragment;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
-import com.wali.live.livesdk.live.fragment.EndLiveFragment;
 import com.wali.live.livesdk.live.fragment.RecipientsSelectFragment;
 import com.wali.live.livesdk.live.fragment.RoomAdminFragment;
 import com.wali.live.livesdk.live.livegame.fragment.PrepareLiveFragment;
@@ -157,7 +157,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     public static final int REQUEST_CODE_PICK_MANAGER = 1000;
 
     private boolean mIsLiveEnd;
-    private int mLastTicket;
     private Intent mScreenRecordIntent;
     private String mLiveTitle;
     private String mLiveCoverUrl;
@@ -179,7 +178,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private ForbidManagePresenter mForbidManagePresenter;
     private RoomManagerPresenter mRoomManagerPresenter;
 
-    protected BaseImageView mBlurIv; // 高斯蒙层
+    protected BaseImageView mMaskIv; // 高斯蒙层
     protected ImageView mCloseBtn; // 关闭按钮
 
     protected LiveTopInfoSingleView mTopInfoSingleView;
@@ -210,6 +209,10 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     private boolean mGenerateHistorySucc;
     private String mGenerateHistoryMsg;
+    private long mHisBeginLiveCnt;
+    private long mDuration;
+    private long mNewFollowerCnt;
+
     private MyAlertDialog mTrafficDialog; //流量窗
 
     @Override
@@ -240,8 +243,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         openOrientation();
 
         // 封面模糊图
-        mBlurIv = $(R.id.blur_iv);
-        AvatarUtils.loadAvatarByUidTs(mBlurIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
+        mMaskIv = $(R.id.mask_iv);
+        AvatarUtils.loadAvatarByUidTs(mMaskIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
                 AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
         check4GNet();
     }
@@ -307,7 +310,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (mMyRoomData.getUid() == 0 && !MiLinkClientAdapter.getsInstance().isTouristMode()) {
             mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
             mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
-            AvatarUtils.loadAvatarByUidTs(mBlurIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
+            AvatarUtils.loadAvatarByUidTs(mMaskIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
                     AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
         }
     }
@@ -664,9 +667,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         addBindActivityLifeCycle(mFlyBarrageViewGroup, true);
 
         mCountDownView = $(R.id.count_down_view);
-
-        mLastTicket = mMyRoomData.getTicket();
-        mMyRoomData.setInitTicket(mLastTicket);
+        mMyRoomData.setInitTicket(mMyRoomData.getTicket());
 
         // 用根View的点击事件代替mTouchDelegateView
         $(R.id.main_act_container).setOnClickListener(new View.OnClickListener() {
@@ -761,14 +762,10 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                     break;
                 case MiLinkCommand.COMMAND_LIVE_VIEWERINFO:
                     processViewerInfo(errCode, objects);
-//                    managerIsInRoomInfoFromServer(mMyRoomData);
                     break;
                 case MiLinkCommand.COMMAND_GET_USER_INFO_BY_ID:
                     processOwnerInfo(errCode, objects);
                     break;
-//                case MiLinkCommand.COMMAND_LIVE_ISINROOM:
-//                    processManagerIsInRoom(errCode, objects);
-//                    break;
                 case MiLinkCommand.COMMAND_LIVE_ROOM_INFO:
                     processRoomInfo(errCode, objects);
                     break;
@@ -803,8 +800,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             case ErrorCode.CODE_ZUID_CERTIFY_GOING:
             default:
                 ToastUtils.showToast(GlobalData.app(), R.string.live_failure);
-                EndLiveFragment.openFragmentWithFailure(this, R.id.main_act_container, mMyRoomData.getUid(), mMyRoomData.getRoomId(),
-                        mMyRoomData.getAvatarTs(), mMyRoomData.getViewerCnt(), LiveManager.TYPE_LIVE_GAME, mMyRoomData.getTicket(), mMyRoomData.getShareUrl(), mMyRoomData.getCity(), mMyRoomData.getUser(), mLiveCoverUrl, mLiveTitle);
+                //失敗到結束頁
+                enterEndFragment();
                 break;
         }
     }
@@ -819,6 +816,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 }
                 mGenerateHistorySucc = (boolean) objects[1];
                 mGenerateHistoryMsg = (String) objects[2];
+                //參數3是tickets暂时不用
+                mHisBeginLiveCnt = (long) objects[4];
+                mDuration = (long) objects[5];
+                mNewFollowerCnt = (long) objects[6];
+
                 RoomInfoGlobalCache.getsInstance().leaveCurrentRoom(mMyRoomData.getRoomId());
                 mUIHandler.removeMessages(MSG_END_LIVE);
                 enterEndFragment();
@@ -882,8 +884,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             case ErrorCode.CODE_ROOM_NOT_EXIST:
                 // 这个标记是指直播是否结束
                 try {
-                    EndLiveFragment.openFragmentWithFailure(this, R.id.main_act_container, mMyRoomData.getUid(), mMyRoomData.getRoomId(),
-                            mMyRoomData.getAvatarTs(), 0, LiveManager.TYPE_LIVE_GAME, 0, "", mMyRoomData.getCity(), mMyRoomData.getUser(), null, null);
+                    //失敗到結束頁
+                    enterEndFragment();
                 } catch (Exception e) {
                     MyLog.e(TAG + "process room info" + e);
                 }
@@ -1102,21 +1104,34 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             return;
         }
         mIsLiveEnd = true;
-        Bundle bundle = EndLiveFragment.getBundle(mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getAvatarTs(), mMyRoomData.getViewerCnt(), mMyRoomData.getLiveType(), mMyRoomData.getTicket() - mLastTicket, mMyRoomData.getShareUrl(),
-                (mLocation == null) ? "" : mLocation.getCity(), mMyRoomData.getUser(), mMyRoomData.getCoverUrl(), mMyRoomData.getLiveTitle());
-        bundle.putBoolean(EndLiveFragment.EXTRA_GENERATE_HISTORY, mGenerateHistorySucc);
-        bundle.putString(EndLiveFragment.EXTRA_GENERATE_HISTORY_MSG, mGenerateHistoryMsg);
-        bundle.putBoolean(EndLiveFragment.EXTRA_ENABLE_SHARE, mEnableShare);
-        EndLiveFragment.openFragment(LiveSdkActivity.this, bundle);
+        AnchorEndLiveFragment.openFragment(LiveSdkActivity.this,
+                mMyRoomData.getUser(),
+                mMyRoomData.getShareUrl(),
+                mMyRoomData.getLiveTitle(),
+                mMyRoomData.getCoverUrl(),
+                mLocation == null ? "" : mLocation.getCity(),
+                mMyRoomData.getViewerCnt(),
+                mDuration,
+                mNewFollowerCnt,
+                mMyRoomData.getTicket() - mMyRoomData.getInitTicket(),
+                mMyRoomData.getRoomId(),
+                mMyRoomData.getLiveType(),
+                mGenerateHistorySucc,
+                mGenerateHistoryMsg,
+                true, (int) mHisBeginLiveCnt, mEnableShare);
     }
 
     private void showStopDialog() {
-        DialogUtils.showNormalDialog(this, 0, R.string.stop_live_dialog_message, R.string.ok, R.string.cancel, new DialogUtils.IDialogCallback() {
-            @Override
-            public void process(DialogInterface dialogInterface, int i) {
-                stopRecord("showStopDialog", false);
-            }
-        }, null);
+        DialogUtils.showNormalDialog(this, 0,
+                R.string.stop_live_dialog_message,
+                R.string.ok,
+                R.string.cancel,
+                new DialogUtils.IDialogCallback() {
+                    @Override
+                    public void process(DialogInterface dialogInterface, int i) {
+                        stopRecord("showStopDialog", false);
+                    }
+                }, null);
     }
 
     private void showInfoTips(String tips) {
@@ -1145,8 +1160,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(final LiveEventClass.LiveCoverEvent event) {
-        if (event != null && mBlurIv.getVisibility() == View.VISIBLE) {
-            FrescoWorker.loadImage(mBlurIv,
+        if (event != null && mMaskIv.getVisibility() == View.VISIBLE) {
+            FrescoWorker.loadImage(mMaskIv,
                     ImageFactory.newHttpImage(event.url)
                             .setPostprocessor(new BlurPostprocessor())
                             .build());

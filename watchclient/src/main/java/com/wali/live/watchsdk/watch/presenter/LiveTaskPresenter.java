@@ -51,15 +51,28 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
 
     private RoomMessagePresenter mPullRoomMessagePresenter;
 
+    //这里限制进入房间只会被调用一次
+    private boolean mHasEnter = false;
+    private Subscription mEnterRoomSubscription;
+
     public LiveTaskPresenter(@NonNull RxActivity rxActivity, IWatchView view, @NonNull RoomBaseDataModel myRoomData) {
         mRxActivity = rxActivity;
         mView = view;
         mMyRoomData = myRoomData;
     }
 
-    //这里限制进入房间只会被调用一次
-    boolean mHasEnter = false;
-    Subscription mEnterRoomSubscription;
+    /**
+     * 目前主要用来切换房间时，重置内部状态
+     */
+    public void reset() {
+        mHasEnter = false;
+        if (mEnterRoomSubscription != null && !mEnterRoomSubscription.isUnsubscribed()) {
+            mEnterRoomSubscription.unsubscribe();
+        }
+        if (mPullRoomMessagePresenter != null) {
+            mPullRoomMessagePresenter.stopWork();
+        }
+    }
 
     private void pullRoomMessage() {
         // 对外的不收push了，统一走拉取模式

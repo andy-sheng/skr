@@ -20,6 +20,7 @@ public class LiveShow implements Serializable, JSONable {
     public static final String KEY_EXPOSE_LIVE_ID = "livepv_%s";
     public static final String KEY_CLICK_LIVE_ID = "liveclick_%s";
     static final long serialVersionUID = 4209360273858925922L;
+
     public static final int LIVETYPE_PUBLIC = 0;
     public static final int LIVETYPE_PRIVATE = 1;
     public static final int LIVETYPE_BACKPLAY = 2;
@@ -28,8 +29,8 @@ public class LiveShow implements Serializable, JSONable {
     public static final int LIVETYPE_TOKEN = 4;
     /*门票直播*/
     public static final int LIVETYPE_TICKET = 5;
-
     public static final int LIVETYPE_VR = 7;
+    public static final int LIVETYPE_GAME = 8;
 
     private String liveId;      //直播id
 

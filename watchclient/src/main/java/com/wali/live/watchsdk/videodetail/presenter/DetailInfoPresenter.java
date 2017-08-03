@@ -218,7 +218,10 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                 .subscribe(new Action1<FeedsInfo>() {
                     @Override
                     public void call(FeedsInfo outInfo) {
-                        if (mView != null && outInfo != null) {
+                        if (mView == null){
+                            return;
+                        }
+                        if (outInfo != null) {
                             if (!outInfo.isReplay) {
                                 //詳情頁需要再刷一下ui
                                 mComponentController.onEvent(MSG_PLAYER_FEEDS_DETAIL, new Params()
@@ -234,6 +237,9 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                             }
                             mView.onFeedsInfo(mMyRoomData.getUid(), outInfo.title, outInfo.timestamp,
                                     outInfo.viewerCnt, outInfo.coverUrl);
+                        } else {
+                            MyLog.d(TAG, "feedsInfo failed");
+                            mComponentController.onEvent(MSG_UPDATE_START_TIME, new Params().putItem(0l));
                         }
                     }
                 }, new Action1<Throwable>() {

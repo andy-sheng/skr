@@ -1,5 +1,6 @@
 package com.mi.live.data.event;
 
+import com.mi.live.data.gift.redenvelope.RedEnvelopeModel;
 import com.wali.live.dao.Gift;
 
 /**
@@ -71,6 +72,14 @@ public class GiftEventClass {
                 this.obj1 = obj1;
             }
         }
+
+        public static class RedEnvelope {
+            public RedEnvelopeModel red;
+
+            public RedEnvelope(RedEnvelopeModel red) {
+                this.red = red;
+            }
+        }
     }
 
     public static class GiftCardPush {
@@ -95,4 +104,5 @@ public class GiftEventClass {
             return mGift;
         }
     }
+
 }

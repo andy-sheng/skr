@@ -32,7 +32,7 @@ import com.mi.live.data.gift.model.giftEntity.BigAnimationGift;
 import com.wali.live.common.gift.manager.GiftInterceptor;
 import com.wali.live.common.gift.utils.AnimationPlayControlTemplate;
 import com.wali.live.dao.Gift;
-import com.wali.live.utils.vm.VMArguUtils;
+import com.wali.live.utils.jvm.VMArguUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -47,11 +47,9 @@ import java.util.List;
  * Created by chengsimin on 16/3/1.
  */
 public class GiftAnimationView extends RelativeLayout implements IBindActivityLIfeCycle, GiftInterceptor.OnAddGift {
-
     public static String TAG = "GiftAnimationView";
 
     public SimpleDraweeView mForegroundAnimationView = null;
-
     public SimpleDraweeView mBackgroundAnimationView = null;
 
     public GiftMoveAnimationView mMoveAnimationView = null;
@@ -435,12 +433,15 @@ public class GiftAnimationView extends RelativeLayout implements IBindActivityLI
         mBigAnimationControl.add(new GiftRecvModelWithCpu(model), model.isFromSelf());
     }
 
-    //    @Subscribe(threadMode = ThreadMode.POSTING)
-//    public void onEvent(EventClass.SwitchAnchor event) {
-//        mBigAnimationControl.reset();
-//        cancelAllAnimation();
-//    }
-//
+    /**
+     * 目前主要用来切换房间时，重置内部状态
+     */
+    public void reset() {
+        mBigAnimationControl.reset();
+        mGiftInterceptor.clear();
+        cancelAllAnimation();
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(SdkEventClass.OrientEvent event) {
         boolean isLandscape = false;

@@ -52,7 +52,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
 
     private final Action mAction = new Action();
 
-    private long mVideoStartTime;
+    private long mVideoStartTime = -1;
 
     private VideoDetailController mComponentController;
     private WeakReference<VideoDetailView> mDetailViewRef = new WeakReference<>(null);
@@ -344,12 +344,12 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
                     startShowFloatPersonInfo((long) params.getItem(0));
                     return true;
                 case MSG_PLAYER_FULL_SCREEN:
-                    if (mVideoStartTime > 0) {
+                    if (mVideoStartTime >= 0) {
                         switchToReplayMode();
                     }
                     break;
                 case MSG_PLAYER_DETAIL_SCREEN:
-                    if (mVideoStartTime > 0) {
+                    if (mVideoStartTime >= 0) {
                         switchToDetailMode();
                     }
                     break;

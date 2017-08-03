@@ -232,7 +232,10 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
             public void onAnimationStart(Animator animation) {
                 mFollowBtnAnimeStart = true;
                 mFollowBtnTv.setLayerType(LAYER_TYPE_HARDWARE, null);
-                mOriginFollowBtnWidth = mFollowBtnTv.getLayoutParams().width;
+
+                if (mOriginFollowBtnWidth == 0) {
+                    mOriginFollowBtnWidth = mFollowBtnTv.getWidth();
+                }
             }
 
             @Override
@@ -271,7 +274,10 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
             public void onAnimationStart(Animator animation) {
                 mFollowBtnAnimeStart = true;
                 mFollowBtnTv.setLayerType(LAYER_TYPE_HARDWARE, null);
-                mOriginFollowBtnWidth = mFollowBtnTv.getLayoutParams().width;
+
+                if (mOriginFollowBtnWidth == 0) {
+                    mOriginFollowBtnWidth = mFollowBtnTv.getWidth();
+                }
             }
 
             @Override
@@ -283,7 +289,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
         });
     }
 
-    public void clearAnimator() {
+    private void clearFollowAnimator() {
         if (mFollowBtnAnimeStart) {
             mFollowBtnTv.clearAnimation();
             if (mFollowAnimator != null) {
@@ -310,6 +316,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
 
     @Override
     public void onUserInfoComplete() {
+        MyLog.d(TAG, "onUserInfoComplete");
         updateTicketView();
         updateOwnerView();
         updateAnchorNickName();
@@ -336,6 +343,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
         mLinkUser = null;
         stopAnimation(mShowAnimation);
         stopAnimation(mHideAnimation);
+        clearFollowAnimator();
         adjustOriginalAlpha(1.0f);
         adjustOriginalVisibility(VISIBLE);
         adjustLinkingVisibility(GONE);

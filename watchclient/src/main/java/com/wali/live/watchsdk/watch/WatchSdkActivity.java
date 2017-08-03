@@ -8,9 +8,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,12 +58,11 @@ import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.event.EventClass;
+import com.wali.live.event.EventEmitter;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.receiver.PhoneStateReceiver;
 import com.wali.live.recharge.view.RechargeFragment;
-import com.wali.live.statistics.StatisticsKey;
-import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AppNetworkUtils;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
@@ -82,14 +81,13 @@ import com.wali.live.watchsdk.watch.event.LiveEndEvent;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.wali.live.watchsdk.watch.presenter.IWatchView;
 import com.wali.live.watchsdk.watch.presenter.LiveTaskPresenter;
-import com.wali.live.watchsdk.watch.presenter.SdkEndLivePresenter;
 import com.wali.live.watchsdk.watch.presenter.UserInfoPresenter;
 import com.wali.live.watchsdk.watch.presenter.VideoPlayerPresenterEx;
 import com.wali.live.watchsdk.watch.presenter.VideoShowPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomManagerPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
-import com.wali.live.watchsdk.watch.presenter.push.RoomSytemMsgPresenter;
+import com.wali.live.watchsdk.watch.presenter.push.RoomSystemMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
 import com.wali.live.watchsdk.watch.view.IWatchVideoView;
@@ -102,6 +100,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -109,6 +108,8 @@ import rx.Observer;
 import rx.functions.Action1;
 
 import static android.view.View.GONE;
+import static com.wali.live.component.ComponentController.MSG_PAGE_DOWN;
+import static com.wali.live.component.ComponentController.MSG_PAGE_UP;
 
 
 /**
@@ -116,6 +117,9 @@ import static android.view.View.GONE;
  */
 public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatPersonInfoFragment.FloatPersonInfoClickListener,
         ForbidManagePresenter.IForbidManageProvider, IActionCallBack, IWatchVideoView {
+    public static final String EXTRA_ROOM_INFO_LIST = "extra_room_info_list";
+    public static final String EXTRA_ROOM_INFO_POSITION = "extra_room_info_position";
+
     /**
      * view放在这里
      */
@@ -127,21 +131,23 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     protected ImageView mCloseBtn;// 关闭按钮
     protected ImageView mRotateBtn;// 关闭
 
+    protected final Action mAction = new Action();
     protected WatchComponentController mComponentController;
     protected WatchSdkView mSdkView;
 
     // 高斯蒙层
-    private BaseImageView mBlurIv;
+    private BaseImageView mMaskIv;
     protected GiftContinueViewGroup mGiftContinueViewGroup;
     // 礼物特效动画
     protected GiftAnimationView mGiftAnimationView;
     protected FlyBarrageViewGroup mFlyBarrageViewGroup;
+
     /**
      * presenter放在这里
      */
-    VideoPlayerPresenterEx mVideoPlayerPresenterEx;
-    protected RoomTextMsgPresenter mRoomTextMsgPresenter;
-    protected GiftPresenter mGiftPresenter;
+    private VideoPlayerPresenterEx mVideoPlayerPresenterEx;
+    private RoomTextMsgPresenter mRoomTextMsgPresenter;
+    private GiftPresenter mGiftPresenter;
     private RoomManagerPresenter mRoomManagerPresenter;
     private LiveTaskPresenter mLiveTaskPresenter;
     private GiftMallPresenter mGiftMallPresenter;
@@ -152,8 +158,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 //    private GameModePresenter mGameModePresenter;
 
     private PhoneStateReceiver mPhoneStateReceiver;
-    private RoomSytemMsgPresenter mRoomSytemMsgPresenter;
+    private RoomSystemMsgPresenter mRoomSystemMsgPresenter;
     private VideoShowPresenter mVideoShowPresenter;
+
+    private ArrayList<RoomInfo> mRoomInfoList;
+    private int mRoomInfoPosition;
 
     protected CustomHandlerThread mHandlerThread = new CustomHandlerThread("WatchActivity") {
         @Override
@@ -189,7 +198,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             //自己不能进自己房间
             DialogUtils.showCancelableDialog(this,
                     "",
-                    com.base.global.GlobalData.app().getResources().getString(R.string.can_not_enter_room_use_myself),
+                    getString(R.string.can_not_enter_room_use_myself),
                     R.string.i_know,
                     0,
                     new DialogUtils.IDialogCallback() {
@@ -252,11 +261,17 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
 
         mRoomInfo = data.getParcelableExtra(EXTRA_ROOM_INFO);
+        mRoomInfoList = data.getParcelableArrayListExtra(EXTRA_ROOM_INFO_LIST);
+        mRoomInfoPosition = data.getIntExtra(EXTRA_ROOM_INFO_POSITION, 0);
+        if (mRoomInfo == null && mRoomInfoList != null) {
+            mRoomInfo = mRoomInfoList.get(mRoomInfoPosition);
+        }
         if (mRoomInfo == null) {
             MyLog.e(TAG, "mRoomInfo is null");
             finish();
             return;
         }
+
         // 填充 MyRoomData
         mMyRoomData.setRoomId(mRoomInfo.getLiveId());
         mMyRoomData.setUid(mRoomInfo.getPlayerId());
@@ -266,7 +281,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mMyRoomData.setEnableShare(mRoomInfo.isEnableShare());
     }
 
-
     private void initView() {
         // 顶部view
         mWatchTopInfoSingleView = $(R.id.watch_top_info_view);
@@ -275,13 +289,12 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mWatchTopInfoSingleView.initViewUseData();
 
         // 封面模糊图
-        mBlurIv = $(R.id.blur_iv);
-        if (!TextUtils.isEmpty(mRoomInfo.getCoverUrl())) {
-            AvatarUtils.loadAvatarByUrl(mBlurIv, mRoomInfo.getCoverUrl(), false, true, 0);
-        } else {
-            AvatarUtils.loadAvatarByUidTs(mBlurIv, mRoomInfo.getPlayerId(), mRoomInfo.getAvatar(),
-                    AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
+        mMaskIv = $(R.id.mask_iv);
+        String url = mRoomInfo.getCoverUrl();
+        if (TextUtils.isEmpty(url)) {
+            url = AvatarUtils.getAvatarUrlByUidTs(mRoomInfo.getPlayerId(), AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, mRoomInfo.getAvatar());
         }
+        AvatarUtils.loadAvatarByUrl(mMaskIv, url, false, true, R.drawable.rect_loading_bg_24292d);
 
         // 初始化弹幕区
 //        mLiveCommentView = $(R.id.comment_rv);
@@ -327,8 +340,12 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 });
 
         mComponentController = new WatchComponentController(mMyRoomData, mRoomChatMsgManager);
+        mComponentController.setVerticalList(mRoomInfoList, mRoomInfoPosition);
+
         mSdkView = new WatchSdkView(this, mComponentController);
         mSdkView.setupSdkView(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
+
+        mAction.registerAction();
 
         mFlyBarrageViewGroup = $(R.id.fly_barrage_viewgroup);
         addBindActivityLifeCycle(mFlyBarrageViewGroup, true);
@@ -336,10 +353,12 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
     private void startPlayer() {
         if (mVideoPlayerPresenterEx != null) {
-            if (!mVideoPlayerPresenterEx.isActivate()) {
-                mVideoPlayerPresenterEx.play(mMyRoomData.getVideoUrl());//, mVideoContainer, false, VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE, true, true);
-                mVideoPlayerPresenterEx.setTransMode(VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE);
-            }
+            MyLog.d(TAG, "startPlayer enter");
+            // if (!mVideoPlayerPresenterEx.isActivate()) {
+            MyLog.d(TAG, "startPlayer start");
+            mVideoPlayerPresenterEx.play(mMyRoomData.getVideoUrl());//, mVideoContainer, false, VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE, true, true);
+            mVideoPlayerPresenterEx.setTransMode(VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE);
+            // }
         }
     }
 
@@ -397,8 +416,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mRoomStatusPresenter = new RoomStatusPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomStatusPresenter);
 
-        mRoomSytemMsgPresenter = new RoomSytemMsgPresenter(this, mRoomChatMsgManager, mVideoPlayerPresenterEx);
-        addPushProcessor(mRoomSytemMsgPresenter);
+        mRoomSystemMsgPresenter = new RoomSystemMsgPresenter(this, mRoomChatMsgManager, mVideoPlayerPresenterEx);
+        addPushProcessor(mRoomSystemMsgPresenter);
 
         mUserInfoPresenter = new UserInfoPresenter(this, mMyRoomData);
 
@@ -436,6 +455,31 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     protected void onResume() {
         super.onResume();
         KeyboardUtils.hideKeyboard(this);
+
+//        // TEST
+//        Observable.interval(5, 5, TimeUnit.SECONDS)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .take(3)
+//                .subscribe(new Action1<Long>() {
+//                    @Override
+//                    public void call(Long aLong) {
+//                        RedEnvelopeModel redEnvelopeModel = new RedEnvelopeModel();
+//                        redEnvelopeModel.setRedEnvelopeId("" + aLong);
+//                        redEnvelopeModel.setUserId(100067);
+//                        redEnvelopeModel.setNickName("biglee");
+//                        redEnvelopeModel.setAvatarTimestamp(0);
+//                        redEnvelopeModel.setLevel(1);
+//                        redEnvelopeModel.setRoomId("123456789");
+//                        redEnvelopeModel.setMsg("红包测试");
+//                        redEnvelopeModel.setGemCnt((int)(long)aLong + 1);
+//                        redEnvelopeModel.setType(((int)(long)aLong % 3) + 1);
+//                        EventBus.getDefault().post(new GiftEventClass.GiftAttrMessage.RedEnvelope(redEnvelopeModel));
+//                    }
+//                }, new Action1<Throwable>() {
+//                    @Override
+//                    public void call(Throwable throwable) {
+//                    }
+//                });
     }
 
     @Override
@@ -455,6 +499,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         stopPlayer();
         leaveLiveToServer();
         unregisterReceiver();
+
+        if (mAction != null) {
+            mAction.unregisterAction();
+        }
         if (mComponentController != null) {
             mComponentController.release();
             mComponentController = null;
@@ -478,7 +526,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         MyLog.d(TAG, "liveEndEvent");
 
         stopPlayer();
-        showEndLiveFragment(true);
+        showEndLiveFragment(true, UserEndLiveFragment.ENTER_TYPE_LIVE_END);
     }
 
     protected UserEndLiveFragment userEndLiveFragment;
@@ -488,28 +536,21 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
      *
      * @param failure
      */
-    protected void showEndLiveFragment(boolean failure) {
+    protected void showEndLiveFragment(boolean failure, String type) {
         //清空room信息
         RoomInfoGlobalCache.getsInstance().leaveCurrentRoom(mMyRoomData.getRoomId());
-
-//      EventBus.getDefault().post(new GiftEventClass(GiftEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST));
         //显示结束页时主动隐藏一次键盘 防止聊天时弹出结束页 键盘不消失
         MyLog.w(TAG, "showEndLiveFragment viewerCnt = " + mMyRoomData.getViewerCnt());
         MyLog.w(TAG, "FollowOrUnfollowEvent showEndLiveFragment isFocused" + mMyRoomData.getUser().isFocused());
-
         KeyboardUtils.hideKeyboardImmediately(this);
-        if (userEndLiveFragment == null) {
-            this.userEndLiveFragment = new UserEndLiveFragment();
-            Bundle bundle = UserEndLiveFragment.getBundle(mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getAvatarTs(),
-                    mMyRoomData.getUser(), mMyRoomData.getViewerCnt(), mMyRoomData.getLiveType());
-            this.userEndLiveFragment.setPresenter(new SdkEndLivePresenter(userEndLiveFragment, bundle));
 
-            FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_act_container, this.userEndLiveFragment);
-            transaction.commitAllowingStateLoss();
-//          userEndLiveFragment = UserEndLiveFragment.openFragment(this, R.id.main_act_container,
-//                    mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getAvatarTs(),
-//                    mMyRoomData.getUser(), mMyRoomData.getViewerCnt(), mMyRoomData.getLiveType());
+        if (userEndLiveFragment == null) {
+            boolean hasRoomList = mComponentController.removeCurrentRoom();
+            this.userEndLiveFragment = UserEndLiveFragment.openFragment(this,
+                    mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getAvatarTs(),
+                    mMyRoomData.getUser(), mMyRoomData.getViewerCnt(), mMyRoomData.getLiveType(),
+                    mGiftMallPresenter.getSpendTicket(), System.currentTimeMillis() - mMyRoomData.getEnterRoomTime(), type,
+                    mMyRoomData.getNickName(), hasRoomList);
         }
     }
 
@@ -520,10 +561,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         if (uid <= 0) {
             return;
         }
-//        TODO 打开注释
-//        clearTop();
-        //打点
-        StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, StatisticsKey.KEY_USERINFO_CARD_OPEN, 1);
         FloatPersonInfoFragment.openFragment(this, uid, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this, mMyRoomData.getEnterRoomTime());
     }
 
@@ -532,9 +569,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         switch (event.eventType) {
             case GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST: {
                 mGiftMallPresenter.hideGiftMallView();
-//                if (mGameModePresenter == null || !mLandscape) {
-//                    mLiveCommentView.setVisibility(View.VISIBLE);
-//                }
             }
             break;
             case GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_SHOW_MALL_LIST: {
@@ -565,9 +599,13 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventClass.FeedsVideoEvent event) {
         switch (event.mType) {
+            // onPrepared触发
             case EventClass.FeedsVideoEvent.TYPE_PLAYING:
-                if (mBlurIv.getVisibility() == View.VISIBLE) {
-                    mBlurIv.setVisibility(GONE);
+                if (mMaskIv.getVisibility() == View.VISIBLE) {
+                    mMaskIv.setVisibility(GONE);
+                }
+                if (mSdkView != null) {
+                    mSdkView.postPrepare();
                 }
                 break;
         }
@@ -628,7 +666,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 if (TextUtils.isEmpty(scheme)) {
                     break;
                 }
-
                 if (scheme.startsWith(SchemeConstants.SCHEME_WALILIVE)) {
                     Uri uri = Uri.parse(scheme);
                     if (uri.getScheme().equals(SchemeConstants.SCHEME_WALILIVE)) {
@@ -673,13 +710,21 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventEmitter.EnterRoomList event) {
+        if (event != null) {
+            MyLog.d(TAG, "enterRoomList");
+            mComponentController.enterRoomList(this);
+            finish();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(RoomDataChangeEvent event) {
         if (event == null) {
             return;
         }
-        MyLog.w(TAG, "RoomDataChangeEvent " + event.type);
         switch (event.type) {
-            case RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE: {
+            case RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE:
                 RoomBaseDataModel roomBaseDataModel = event.source;
                 if (roomBaseDataModel != null && !roomBaseDataModel.isFocused()
                         && (mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME)) {
@@ -690,8 +735,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                                 new ComponentPresenter.Params().putItem(guideFollowTs));
                     }
                 }
-            }
-            break;
+                break;
             default:
                 break;
         }
@@ -708,6 +752,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     private IWatchView mWatchView = new IWatchView() {
         @Override
         public void enterLive(EnterRoomInfo roomInfo) {
+            MyLog.d(TAG, "enterLive success");
             if (roomInfo != null) {
                 updateVideoUrl(roomInfo.getDownStreamUrl());
             }
@@ -783,7 +828,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 .subscribe(new Observer<GiftInfoForEnterRoom>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
@@ -948,14 +992,14 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         if (AppNetworkUtils.is4g()) {
             MyAlertDialog alertDialog = new MyAlertDialog.Builder(this).create();
             alertDialog.setMessage(GlobalData.app().getString(R.string.live_traffic_tip));
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, GlobalData.app().getString(R.string.live_traffic_positive), new DialogInterface.OnClickListener() {
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.live_traffic_positive), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     trySendDataWithServerOnce();
                     dialog.dismiss();
                 }
             });
-            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, GlobalData.app().getString(R.string.live_traffic_negative), new DialogInterface.OnClickListener() {
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.live_traffic_negative), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     finish();
@@ -1035,12 +1079,101 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
     @Override
     public void notifyLiveEnd() {
-        showEndLiveFragment(true);
+        showEndLiveFragment(true, UserEndLiveFragment.ENTER_TYPE_LATE);
+    }
+
+    private class Action implements ComponentPresenter.IAction {
+        private void registerAction() {
+            if (mComponentController != null) {
+                mComponentController.registerAction(MSG_PAGE_DOWN, this);
+                mComponentController.registerAction(MSG_PAGE_UP, this);
+            }
+        }
+
+        private void unregisterAction() {
+            if (mComponentController != null) {
+                mComponentController.unregisterAction(this);
+            }
+        }
+
+        private void switchRoom() {
+            if (!isFinishing()) {
+                MyLog.w(TAG, "switch anchor: leave room user=" + mMyRoomData.getUser());
+                // 清除房间消息
+                mRoomChatMsgManager.clear();
+
+                // 重置Presenter
+                mVideoPlayerPresenterEx.reset();
+                mUserInfoPresenter.reset();
+                mLiveTaskPresenter.reset();
+                if (mVideoShowPresenter != null) {
+                    mVideoShowPresenter.reset();
+                }
+                mGiftMallPresenter.reset();
+
+                // 发送离开房间给服务器
+                leaveLiveToServer();
+
+                // 重置对应的view
+                mWatchTopInfoSingleView.resetData();
+                mFlyBarrageViewGroup.reset();
+                mGiftAnimationView.reset();
+                mGiftContinueViewGroup.reset();
+                mGiftRoomEffectView.reset();
+                mSdkView.reset();
+
+                // 切换房间后，进入当前房间
+                mComponentController.switchRoom();
+                MyLog.d(TAG, "liveType=" + mMyRoomData.getLiveType() + " @" + mMyRoomData.hashCode());
+                mSdkView.postSwitch(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
+
+                // 重新获取当前房间信息，并重新进入房间
+                trySendDataWithServerOnce();
+            }
+        }
+
+        @Override
+        public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
+            switch (source) {
+                case WatchComponentController.MSG_PAGE_UP:
+                    MyLog.d(TAG, "page up");
+                    mComponentController.switchToNextPosition();
+                    switchRoom();
+                    if (mSdkView != null) {
+                        MyLog.d(TAG, "page down internal");
+                        mSdkView.switchToNextRoom();
+                    }
+                    break;
+                case WatchComponentController.MSG_PAGE_DOWN:
+                    MyLog.d(TAG, "page down");
+                    mComponentController.switchToLastPosition();
+                    switchRoom();
+                    if (mSdkView != null) {
+                        MyLog.d(TAG, "page up internal");
+                        mSdkView.switchToLastRoom();
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        }
     }
 
     public static void openActivity(@NonNull Activity activity, RoomInfo roomInfo) {
         Intent intent = new Intent(activity, WatchSdkActivity.class);
         intent.putExtra(EXTRA_ROOM_INFO, roomInfo);
         activity.startActivity(intent);
+    }
+
+    public static boolean openActivity(@NonNull Activity activity, ArrayList<RoomInfo> roomInfoList, int position) {
+        if (position < 0 || position >= roomInfoList.size()) {
+            return false;
+        }
+        Intent intent = new Intent(activity, WatchSdkActivity.class);
+        intent.putExtra(EXTRA_ROOM_INFO_LIST, roomInfoList);
+        intent.putExtra(EXTRA_ROOM_INFO_POSITION, position);
+        activity.startActivity(intent);
+        return true;
     }
 }

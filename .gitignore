@@ -52,3 +52,10 @@ build
 *.ipr
 *~
 *.swp
+
+*/**/local_setting.py*
+
+# freeline
+freeline.py
+freeline/*
+freeline_*.json

@@ -8,7 +8,7 @@
     android:soundEffectsEnabled="false">
 
     <com.base.image.fresco.BaseImageView
-        android:id="@+id/blur_iv"
+        android:id="@+id/mask_iv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
@@ -19,6 +19,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:visibility="gone"/>
+
+    <!--加入该view，否则Fragment退出时状态栏会变透明-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_90"/>
 
     <ViewStub
         android:id="@+id/game_live_home_tv"
@@ -134,5 +139,12 @@
         android:layout_height="match_parent"
         android:background="@color/color_black_trans_50"
         android:visibility="gone"/>
+
+    <!--红包容器-->
+    <RelativeLayout
+        android:id="@+id/envelope_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </RelativeLayout>

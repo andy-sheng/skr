@@ -17,6 +17,7 @@ import org.greenrobot.eventbus.EventBus;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -29,15 +30,18 @@ public class UserInfoPresenter {
     private RxActivity mRxActivity;
     private RoomBaseDataModel mMyRoomData;
 
-    public UserInfoPresenter(RxActivity mRxActivity, RoomBaseDataModel mMyRoomData) {
-        this.mRxActivity = mRxActivity;
-        this.mMyRoomData = mMyRoomData;
-    }
-
     private boolean mHasUpdateOwnerInfo = false;
 
     // 如果从登录过来，也需要更新，因为可能主播是自己关注过的
     private boolean mHasUpdateFromLogin = false;
+
+    private Subscription mFirstSubscription;
+    private Subscription mSecondSubscription;
+
+    public UserInfoPresenter(RxActivity mRxActivity, RoomBaseDataModel mMyRoomData) {
+        this.mRxActivity = mRxActivity;
+        this.mMyRoomData = mMyRoomData;
+    }
 
     // 更新主播信息
     public void updateOwnerInfo() {
@@ -49,6 +53,19 @@ public class UserInfoPresenter {
         }
     }
 
+    /**
+     * 目前主要用来切换房间时，重置内部状态
+     */
+    public void reset() {
+        if (mFirstSubscription != null && !mFirstSubscription.isUnsubscribed()) {
+            mFirstSubscription.unsubscribe();
+        }
+        if (mSecondSubscription != null && !mSecondSubscription.isUnsubscribed()) {
+            mSecondSubscription.unsubscribe();
+        }
+        clearLoginFlag();
+    }
+
     public void clearLoginFlag() {
         MyLog.w(TAG, "User info clear flag");
         mHasUpdateFromLogin = false;
@@ -56,7 +73,7 @@ public class UserInfoPresenter {
 
     private void updateHomePageFromServer() {
         MyLog.w(TAG, "update home page");
-        Observable
+        mFirstSubscription = Observable
                 .create(new Observable.OnSubscribe<User>() {
                     @Override
                     public void call(Subscriber<? super User> subscriber) {
@@ -100,7 +117,7 @@ public class UserInfoPresenter {
 
     private void updateOwnerInfoFromServer() {
         MyLog.w(TAG, "update owner info");
-        Observable
+        mSecondSubscription = Observable
                 .create(new Observable.OnSubscribe<User>() {
                     @Override
                     public void call(Subscriber<? super User> subscriber) {

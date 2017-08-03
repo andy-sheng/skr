@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/envelope_type_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/red_item_0" />
+
+    <TextView
+        android:id="@+id/diamond_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingTop="10dp"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_54" />
+
+    <ImageView
+        android:id="@+id/select_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/envelope_type_iv"
+        android:layout_alignEnd="@id/envelope_type_iv"
+        android:src="@drawable/seleced_red_right"
+        android:visibility="gone" />
+
+</merge>

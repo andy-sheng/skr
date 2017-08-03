@@ -44,6 +44,7 @@ import com.wali.live.watchsdk.channel.holder.TwoLayerHolder;
 import com.wali.live.watchsdk.channel.holder.TwoWideCardHolder;
 import com.wali.live.watchsdk.channel.holder.VariableLengthTagHolder;
 import com.wali.live.watchsdk.channel.holder.VideoBannerHolder;
+import com.wali.live.watchsdk.channel.holder.listener.JumpImpl;
 import com.wali.live.watchsdk.channel.view.FoldView;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelUiType;
@@ -63,11 +64,13 @@ public class ChannelRecyclerAdapter extends RecyclerView.Adapter<BaseHolder> {
     public static final String TAG = ChannelRecyclerAdapter.class.getSimpleName();
 
     private List<? extends BaseViewModel> mChannelModels = new ArrayList<>();
+
     private WeakReference<Activity> mActRef;
+    private JumpImpl mJumpImpl;
     private long mChannelId;
-    //标记是否有头条滑动的动画
 
     public ChannelRecyclerAdapter(Activity activity, long channelId) {
+        mJumpImpl = new JumpImpl(activity);
         mChannelId = channelId;
     }
 
@@ -77,6 +80,7 @@ public class ChannelRecyclerAdapter extends RecyclerView.Adapter<BaseHolder> {
 
     public void setData(List<? extends BaseViewModel> channelModels) {
         mChannelModels = channelModels;
+        mJumpImpl.process(mChannelModels);
         notifyDataSetChanged();
     }
 
@@ -253,6 +257,9 @@ public class ChannelRecyclerAdapter extends RecyclerView.Adapter<BaseHolder> {
             default:
                 MyLog.d(TAG, "viewType is : " + viewType);
                 break;
+        }
+        if (holder != null) {
+            holder.setJumpListener(mJumpImpl);
         }
         return holder;
     }

@@ -128,6 +128,12 @@ public class CommentInputPresenter extends ComponentPresenter<InputAreaView.IVie
         mComponentController.onEvent(ComponentController.MSG_INPUT_VIEW_HIDDEN);
     }
 
+    @Override
+    public int getMinHeightLand() {
+        //这个界面不会发生横竖屏切换，所以不会调用这个方法。
+        return 0;
+    }
+
     @Nullable
     @Override
     protected IAction createAction() {

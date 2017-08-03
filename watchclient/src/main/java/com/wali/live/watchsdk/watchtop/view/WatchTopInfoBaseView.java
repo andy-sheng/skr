@@ -384,7 +384,6 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
         mMyRoomBaseDataModel.setInitTicket(-1);
         mMyRoomBaseDataModel.setTicketFirstIn(true);
         if (mTicketAnimatorSet != null) {
-
             mTicketAnimatorSet.removeAllListeners();
             mTicketAnimatorSet.end();
             mTicketAnimatorSet = null;
@@ -406,7 +405,6 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
         int totalTicket = mMyRoomBaseDataModel.getTicket();
         int ticket = mMyRoomBaseDataModel.getTicket() - mMyRoomBaseDataModel.getInitTicket();
         MyLog.v(TAG + " updateTicketView liveTicketNum=" + mMyRoomBaseDataModel.getTicket() + " mInitTicket=" + mMyRoomBaseDataModel.getInitTicket() + " mIsTicketing=" + mIsTicketing + " mIsTicketAnimating=" + mIsTicketAnimating + " firstinf=" + mMyRoomBaseDataModel.isTicketFirstIn());
-
 
         if (mMyRoomBaseDataModel.isTicketFirstIn()) {
             mIsTicketing = false;

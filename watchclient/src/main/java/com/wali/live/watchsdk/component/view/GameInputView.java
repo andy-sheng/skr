@@ -19,9 +19,9 @@ import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.preference.MLPreferenceUtils;
 import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
+import com.wali.live.watchsdk.component.presenter.InputPresenter;
 
 /**
  * Created by yangli on 2017/02/28.
@@ -186,6 +186,11 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
             }
 
             @Override
+            public EditText getInputView() {
+                return mInputView;
+            }
+
+            @Override
             public void onKeyboardShowed(int keyboardHeight) {
                 MyLog.d(TAG, "onKeyboardShowed keyboardHeight=" + keyboardHeight);
                 if (!mIsInputMode) {
@@ -196,7 +201,7 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
                 }
                 if (mKeyboardHeight != keyboardHeight) {
                     mKeyboardHeight = keyboardHeight;
-                    mKeyboardHeight = MLPreferenceUtils.getKeyboardHeight(false);
+                    MLPreferenceUtils.setKeyboardHeight(mKeyboardHeight, false);
                 }
                 setTranslationY(-mKeyboardHeight);
                 MyLog.d(TAG, "setTranslationY " + -mKeyboardHeight);
@@ -217,12 +222,7 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
         return new ComponentView();
     }
 
-    public interface IPresenter {
-        /**
-         * 发送消息
-         */
-        void sendBarrage(String msg, boolean isFlyBarrage);
-
+    public interface IPresenter extends InputPresenter.IPresenter {
         /**
          * 显示游戏直播样式弹幕
          */
@@ -239,7 +239,7 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
         void notifyInputViewHidden();
     }
 
-    public interface IView extends IViewProxy {
+    public interface IView extends InputPresenter.IView {
         /**
          * 响应返回键事件
          */
@@ -259,15 +259,5 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
          * 隐藏输入框
          */
         boolean hideInputView();
-
-        /**
-         * 键盘弹起
-         */
-        void onKeyboardShowed(int keyboardHeight);
-
-        /**
-         * 键盘隐藏
-         */
-        void onKeyboardHidden();
     }
 }

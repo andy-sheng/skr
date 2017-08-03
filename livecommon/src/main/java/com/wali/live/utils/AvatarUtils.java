@@ -235,25 +235,23 @@ public class AvatarUtils {
                             isCircle ? ScalingUtils.ScaleType.CENTER_INSIDE : ScalingUtils.ScaleType.CENTER_CROP)
                     .build();
         }
-        // 设置模糊,模糊效果不设置加载图
+        if (loadingAvatarResId > 0) {
+            avatarImg.setLoadingDrawable(GlobalData.app().getResources().getDrawable(loadingAvatarResId));
+            avatarImg.setLoadingScaleType(isCircle ? ScalingUtils.ScaleType.CENTER_INSIDE : ScalingUtils.ScaleType.CENTER_CROP);
+        }
         if (isBlur) {
             avatarImg.setPostprocessor(new BlurPostprocessor());
-        } else {
-            avatarImg.setLoadingDrawable(loadingAvatarResId > 0 ? GlobalData.app().getResources().getDrawable(
-                    loadingAvatarResId) : null);
-            avatarImg.setLoadingScaleType(
-                    isCircle ? ScalingUtils.ScaleType.CENTER_INSIDE : ScalingUtils.ScaleType.CENTER_CROP);
         }
         FrescoWorker.loadImage(draweeView, avatarImg);
     }
 
-    private static void loadAvatarByUrl(final SimpleDraweeView draweeView, final String url, final boolean isCircle, final boolean isBlur, int loadingAvatarResId, int width, int heigh) {
+    public static void loadAvatarByUrl(final SimpleDraweeView draweeView, final String url, final boolean isCircle, final boolean isBlur, int loadingAvatarResId, int width, int height) {
 //        MyLog.v(TAG, "loadAvatarByUid url = " + url);
         BaseImage avatarImg;
         if (TextUtils.isEmpty(url)) {
             avatarImg = ImageFactory.newResImage(loadingAvatarResId).build();
         } else {
-            avatarImg = ImageFactory.newHttpImage(url).setWidth(width).setHeight(heigh)
+            avatarImg = ImageFactory.newHttpImage(url).setWidth(width).setHeight(height)
                     .setIsCircle(isCircle)
                     .setFailureDrawable(loadingAvatarResId > 0 ? GlobalData.app().getResources().getDrawable(
                             loadingAvatarResId) : null)
@@ -261,14 +259,12 @@ public class AvatarUtils {
                             isCircle ? ScalingUtils.ScaleType.CENTER_INSIDE : ScalingUtils.ScaleType.CENTER_CROP)
                     .build();
         }
-        // 设置模糊,模糊效果不设置加载图
+        if (loadingAvatarResId > 0) {
+            avatarImg.setLoadingDrawable(GlobalData.app().getResources().getDrawable(loadingAvatarResId));
+            avatarImg.setLoadingScaleType(isCircle ? ScalingUtils.ScaleType.CENTER_INSIDE : ScalingUtils.ScaleType.CENTER_CROP);
+        }
         if (isBlur) {
             avatarImg.setPostprocessor(new BlurPostprocessor());
-        } else {
-            avatarImg.setLoadingDrawable(loadingAvatarResId > 0 ? GlobalData.app().getResources().getDrawable(
-                    loadingAvatarResId) : null);
-            avatarImg.setLoadingScaleType(
-                    isCircle ? ScalingUtils.ScaleType.CENTER_INSIDE : ScalingUtils.ScaleType.CENTER_CROP);
         }
         FrescoWorker.loadImage(draweeView, avatarImg);
     }

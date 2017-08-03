@@ -9,7 +9,6 @@ import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.ImageFactory;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.channel.holder.listener.HolderHelper;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelNavigateViewModel;
 
 import java.util.Arrays;
@@ -77,7 +76,7 @@ public class NavigateHolder extends RepeatHolder {
         mImageViews[i].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HolderHelper.jumpScheme(itemView.getContext(), item.getSchemeUri());
+                mJumpListener.jumpScheme(item.getSchemeUri());
             }
         });
 

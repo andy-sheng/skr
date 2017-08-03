@@ -188,7 +188,16 @@
 
     <string name="prepare_live_share_tips">點擊\"開始直播\"，把直播分享到%1$s</string>
     <string name="uninstall_share_tips">未安裝%1$s，請安裝後分享</string>
-    <string name="end_live_share">把精彩內容分享給小夥伴</string>
     <string name="pre_live_share">通知好友來圍觀</string>
     <string name="cancel_banspeaker">取消禁言</string>
+    <plurals name="live_end_history_live_count">
+        <item quantity="other">這是你第%d場直播，寶寶辛苦了</item>
+    </plurals>
+    <string name="endlive_ticket">收獲星票</string>
+    <string name="endlive_duration">直播時長</string>
+    <string name="endlive_newfans">新增粉絲</string>
+    <string name="endlive_top_three">本場貢獻前三甲</string>
+    <string name="endlive_viewer">累計觀看</string>
+    <string name="live_ended_enter_owner_chat_room">進入主播粉絲群</string>
+    <string name="red_packet">紅包</string>
 </resources>

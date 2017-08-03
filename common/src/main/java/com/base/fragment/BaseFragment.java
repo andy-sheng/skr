@@ -351,7 +351,7 @@ public abstract class BaseFragment extends Fragment implements FragmentListener,
      * 不想使用ButterKnife，可以使用下面方法简化代码，JQuery选择器风格
      */
     @Nullable
-    public <V extends View> V $(@IdRes int resId) {
+    protected <V extends View> V $(@IdRes int resId) {
         if (mRootView == null) {
             return null;
         }
@@ -359,11 +359,18 @@ public abstract class BaseFragment extends Fragment implements FragmentListener,
     }
 
     @Nullable
-    public <V extends View> V $(ViewGroup parent, @IdRes int resId) {
+    protected <V extends View> V $(ViewGroup parent, @IdRes int resId) {
         if (parent == null) {
             return null;
         }
         return (V) parent.findViewById(resId);
+    }
+
+
+    protected void $click(View view, View.OnClickListener listener) {
+        if (view != null) {
+            view.setOnClickListener(listener);
+        }
     }
 
     @Override

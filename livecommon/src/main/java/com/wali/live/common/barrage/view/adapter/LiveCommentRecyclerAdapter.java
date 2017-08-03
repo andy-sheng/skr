@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -35,13 +34,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import rx.Observable;
-import rx.Observer;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-
 import static com.mi.live.data.push.model.BarrageMsgType.B_MSG_TYPE_TEXT;
 
 /**
@@ -56,6 +48,8 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
     WeakReference<Context> mContext;
 
     private boolean mIsGameLive;
+
+    private List<CommentModel> mCommentList = new ArrayList<>();
 
     private HashMap<String, Bitmap> mBitmapHashMap = new HashMap<>();
 
@@ -73,44 +67,13 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
         mIsGameLive = isGameLive;
     }
 
-    CommentDiffUtils mCommentDiffUtils = new CommentDiffUtils();
-
-    Subscription mSubscription;
-
-    public void setLiveCommentList(final List<CommentModel> dataList, final Runnable afterRefresh) {
-        // 一直都关闭看看能不能缓解跳变问题
-        if (null != dataList) {
-            if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-                return;
-            }
-            mSubscription = Observable
-                    .create(new Observable.OnSubscribe<DiffUtil.DiffResult>() {
-                        @Override
-                        public void call(Subscriber<? super DiffUtil.DiffResult> subscriber) {
-                            mCommentDiffUtils.setList(dataList);
-                            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(mCommentDiffUtils, true);
-                            // 把结果应用到 adapter
-                            subscriber.onNext(diffResult);
-                            subscriber.onCompleted();
-                        }
-                    })
-                    .subscribeOn(Schedulers.computation())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<DiffUtil.DiffResult>() {
-                        @Override
-                        public void onCompleted() {
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                        }
-
-                        @Override
-                        public void onNext(DiffUtil.DiffResult diffResult) {
-                            diffResult.dispatchUpdatesTo(LiveCommentRecyclerAdapter.this);
-                            afterRefresh.run();
-                        }
-                    });
+    public void setCommentList(List<CommentModel> dataList) {
+        if (dataList != null) {
+            mCommentList.clear();
+            List<CommentModel> reverseList = new ArrayList<>(dataList);
+            Collections.reverse(reverseList);
+            mCommentList.addAll(reverseList);
+            notifyDataSetChanged();
         }
     }
 
@@ -232,7 +195,7 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
             LiveCommentHolder liveCommentHolder = (LiveCommentHolder) holder;
             liveCommentHolder.reset();
 
-            CommentModel liveComment = mCommentDiffUtils.getList().get(position);
+            CommentModel liveComment = mCommentList.get(position);
             liveCommentHolder.setModel(liveComment);
 
             setBackground(liveCommentHolder, liveComment);
@@ -252,51 +215,11 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemCount() {
-        return mCommentDiffUtils.getList().size();
+        return mCommentList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
         return 1;
-    }
-
-    static class CommentDiffUtils extends DiffUtil.Callback {
-        private List<CommentModel> oldList = new ArrayList();
-        private List<CommentModel> newList = new ArrayList();
-
-        public List<CommentModel> getList() {
-            return newList;
-        }
-
-        public void setList(List<CommentModel> list) {
-            List<CommentModel> reverseList = new ArrayList<>(list);
-            Collections.reverse(reverseList);
-            oldList.clear();
-            oldList.addAll(newList);
-            newList.clear();
-            newList.addAll(reverseList);
-        }
-
-        @Override
-        public int getOldListSize() {
-            return oldList.size();
-        }
-
-        @Override
-        public int getNewListSize() {
-            return newList.size();
-        }
-
-        @Override
-        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            CommentModel oldCommentModel = oldList.get(oldItemPosition);
-            CommentModel newCommentModel = newList.get(newItemPosition);
-            return oldCommentModel == newCommentModel;
-        }
-
-        @Override
-        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            return true;
-        }
     }
 }
