@@ -16,7 +16,7 @@ import com.wali.live.proto.HotChannelProto.GetRecommendListRsp;
  */
 public class GetChannelRequest extends BaseRequest {
     public GetChannelRequest(long channelId) {
-        super(MiLinkCommand.COMMAND_HOT_CHANNEL_LIST, "GetRecommendChannel", String.valueOf(channelId));
+        super(MiLinkCommand.COMMAND_HOT_CHANNEL_LIST, "GetRecommendChannel");
         generateRequest(channelId);
     }
 

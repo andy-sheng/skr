@@ -14,7 +14,7 @@ import com.wali.live.proto.PayProto;
 
 public class CheckOrderRequest extends BaseRequest {
     public CheckOrderRequest(String orderId, String payId, String receipt, String transactionId) {
-        super(MiLinkCommand.COMMAND_PAY_CHECK_ORDER, "checkOrder", null);
+        super(MiLinkCommand.COMMAND_PAY_CHECK_ORDER, "checkOrder");
         PayProto.CheckOrderRequest.Builder reqBuilder = PayProto.CheckOrderRequest.newBuilder()
                 .setUuid(UserAccountManager.getInstance().getUuidAsLong())
                 .setPlatform(PayProto.Platform.ANDROID)

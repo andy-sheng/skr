@@ -17,7 +17,7 @@ public class TitleListRequest extends BaseRequest {
     }
 
     public TitleListRequest(int source) {
-        super(MiLinkCommand.COMMAND_LIVE_GET_TITLE_LIST, "GetTitleList", null);
+        super(MiLinkCommand.COMMAND_LIVE_GET_TITLE_LIST, "GetTitleList");
 
         GetTitleListReq.Builder builder =
                 GetTitleListReq.newBuilder()

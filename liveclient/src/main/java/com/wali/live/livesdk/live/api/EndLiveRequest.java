@@ -17,7 +17,7 @@ import com.wali.live.proto.LiveProto.EndLiveRsp;
  */
 public class EndLiveRequest extends BaseRequest {
     public EndLiveRequest() {
-        super(MiLinkCommand.COMMAND_LIVE_END, "EndLive", null);
+        super(MiLinkCommand.COMMAND_LIVE_END, "EndLive");
     }
 
     public EndLiveRequest(String liveId) {

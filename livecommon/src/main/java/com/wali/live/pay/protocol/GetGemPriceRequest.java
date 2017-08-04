@@ -12,11 +12,10 @@ import com.wali.live.proto.PayProto;
 @Deprecated
 public class GetGemPriceRequest extends BaseRequest {
     public GetGemPriceRequest() {
-        super(MiLinkCommand.COMMAND_PAY_PRICE_LIST, "getGemPriceListV2", null);
+        super(MiLinkCommand.COMMAND_PAY_PRICE_LIST, "getGemPriceListV2");
         mRequest = PayProto.GetGemPriceRequest.newBuilder()
                 .setPlatform(PayProto.Platform.ANDROID)
                 .setUuid(UserAccountManager.getInstance().getUuidAsLong())
-                .setChannel(null)//TODO
                 .build();
     }
 

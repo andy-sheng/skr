@@ -12,7 +12,7 @@ import com.wali.live.proto.LiveProto.ZuidSleepRsp;
  */
 public class ZuidSleepRequest extends BaseRequest {
     public ZuidSleepRequest() {
-        super(MiLinkCommand.COMMAND_LIVE_ZUID_SLEEP, "ZuidSleep", null);
+        super(MiLinkCommand.COMMAND_LIVE_ZUID_SLEEP, "ZuidSleep");
     }
 
     public ZuidSleepRequest(String liveId) {
