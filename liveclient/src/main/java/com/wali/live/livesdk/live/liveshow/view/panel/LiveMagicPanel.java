@@ -19,19 +19,17 @@ import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.componentwrapper.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
-import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
 import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.FilterItemAdapter;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.SingleChooser;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.VolumeAdjuster;
 import com.wali.live.livesdk.live.view.SwitchButton;
+import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
 
 import java.util.List;
 
 /**
  * Created by yangli on 2017/03/07.
- * <p>
- * Generated using create_bottom_panel.py
  *
  * @module 秀场美妆面板视图
  */
@@ -184,7 +182,7 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
         void syncFilterData();
     }
 
-    public interface IView extends IViewProxy<View> {
+    public interface IView extends IViewProxy {
         /**
          * 同步美妆面板按钮可用性
          */
@@ -348,7 +346,7 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
 
         public PanelContainer(@NonNull RelativeLayout relativeLayout) {
             super(null);
-            setComponentView(relativeLayout);
+            setView(relativeLayout);
         }
 
         protected void showBeautyPanel() {

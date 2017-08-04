@@ -53,13 +53,12 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_UPDATE_START_
 public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements IWatchVideoView {
 
     private final Action mAction = new Action();
-
-    private long mVideoStartTime = -1;
-
     private VideoDetailController mController;
     private WeakReference<VideoDetailView> mDetailViewRef = new WeakReference<>(null);
     private WeakReference<ReplaySdkView> mFullScreenViewRef = new WeakReference<>(null);
     private BaseSdkView mSdkView;
+
+    private long mVideoStartTime = -1;
 
     private VideoShowPresenter mVideoShowPresenter;
 
@@ -151,6 +150,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
         }
         if (mSdkView != null) {
             mSdkView.stopView();
+            mSdkView.release();
             mSdkView = null;
         }
         if (mDetailViewRef.get() != null) {
@@ -336,7 +336,9 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
         }
 
         private void unregisterAction() {
-            mController.unregisterObserver(this);
+            if (mController != null) {
+                mController.unregisterObserver(this);
+            }
         }
 
         @Override

@@ -37,7 +37,7 @@ import java.util.List;
  * @module 弹幕区视图
  */
 public class LiveCommentView extends RelativeLayout implements View.OnClickListener,
-        IComponentView<LiveCommentView.IPresenter, LiveCommentView.IView> {
+        IComponentView<LiveCommentView.IPresenter, LiveCommentView.IView>, IOrientationListener {
     private static final String TAG = "LiveCommentView1";
 
     // this value should be adjust when ui design is changed
@@ -256,7 +256,8 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
         }
     }
 
-    private void onOrientation(boolean isLandscape) {
+    @Override
+    public void onOrientation(boolean isLandscape) {
         if (mIsLandscape == isLandscape) {
             return;
         }
@@ -340,7 +341,7 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
     public interface IPresenter {
     }
 
-    public interface IView extends IViewProxy<View>, IOrientationListener {
+    public interface IView extends IViewProxy, IOrientationListener {
         /**
          * 新的消息到来
          */

@@ -138,7 +138,7 @@ public class PlusControlBtnView extends RelativeLayout implements View.OnClickLi
         void notifyInfoViewClick();
     }
 
-    public interface IView extends IViewProxy<View>, IOrientationListener {
+    public interface IView extends IViewProxy, IOrientationListener {
         /**
          * 显示文本
          */

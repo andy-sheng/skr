@@ -9,9 +9,9 @@ import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.Params;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.Live2Proto;
 import com.wali.live.watchsdk.R;
@@ -35,9 +35,9 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_COMPLETE_USER
 /**
  * Created by zyh on 2017/06/06.
  *
- * @module 詳情頁底下的回放
+ * @module 详情页底下的回放
  */
-public class DetailReplayPresenter extends BaseSdkRxPresenter<DetailReplayView.IView, BaseSdkController>
+public class DetailReplayPresenter extends BaseSdkRxPresenter<DetailReplayView.IView>
         implements DetailReplayView.IPresenter {
     private static final String TAG = "DetailReplayPresenter";
 
@@ -50,7 +50,7 @@ public class DetailReplayPresenter extends BaseSdkRxPresenter<DetailReplayView.I
     }
 
     public DetailReplayPresenter(
-            @NonNull BaseSdkController controller,
+            @NonNull IEventController controller,
             @NonNull RoomBaseDataModel myRoomData) {
         super(controller);
         mMyRoomData = myRoomData;
@@ -60,6 +60,12 @@ public class DetailReplayPresenter extends BaseSdkRxPresenter<DetailReplayView.I
     public void startPresenter() {
         super.startPresenter();
         registerAction(MSG_COMPLETE_USER_INFO);
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        unregisterAllAction();
     }
 
     @Override

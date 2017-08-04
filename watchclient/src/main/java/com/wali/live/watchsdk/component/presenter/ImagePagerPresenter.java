@@ -2,9 +2,9 @@ package com.wali.live.watchsdk.component.presenter;
 
 import android.support.annotation.NonNull;
 
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.watchsdk.component.view.ImagePagerView;
 
 /**
@@ -12,7 +12,7 @@ import com.wali.live.watchsdk.component.view.ImagePagerView;
  *
  * @module 模仿viewpager增加上下滑动的效果
  */
-public class ImagePagerPresenter extends ComponentPresenter<ImagePagerView.IView, BaseSdkController>
+public class ImagePagerPresenter extends ComponentPresenter<ImagePagerView.IView>
         implements ImagePagerView.IPresenter {
     private static final String TAG = "ImagePagerPresenter";
 
@@ -21,7 +21,7 @@ public class ImagePagerPresenter extends ComponentPresenter<ImagePagerView.IView
         return TAG;
     }
 
-    public ImagePagerPresenter(@NonNull BaseSdkController controller) {
+    public ImagePagerPresenter(@NonNull IEventController controller) {
         super(controller);
     }
 

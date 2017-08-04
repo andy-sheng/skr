@@ -174,6 +174,6 @@ public class ImagePagerView extends RelativeLayout
     public interface IPresenter {
     }
 
-    public interface IView extends IViewProxy<View> {
+    public interface IView extends IViewProxy {
     }
 }

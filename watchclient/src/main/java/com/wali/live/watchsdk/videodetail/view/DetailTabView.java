@@ -20,8 +20,6 @@ import java.util.List;
 
 /**
  * Created by yangli on 2017/06/02.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 详情TAB视图
  */
@@ -132,7 +130,7 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
         void syncTabPageList(Context context);
     }
 
-    public interface IView extends IViewProxy<View> {
+    public interface IView extends IViewProxy {
         /**
          * 更新TAB页面列表
          *

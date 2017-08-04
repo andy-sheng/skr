@@ -248,7 +248,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         void showShareView();
     }
 
-    public interface IView extends IViewProxy<View>, IOrientationListener {
+    public interface IView extends IViewProxy, IOrientationListener {
         void showGameIcon(GameViewModel gameModel);
 
         void destroyView();

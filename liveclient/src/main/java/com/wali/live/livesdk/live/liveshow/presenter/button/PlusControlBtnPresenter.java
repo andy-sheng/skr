@@ -6,9 +6,9 @@ import android.support.annotation.StringRes;
 import android.text.TextUtils;
 
 import com.base.log.MyLog;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.livesdk.live.liveshow.view.button.PlusControlBtnView;
 
 import rx.Subscription;
@@ -18,12 +18,10 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_POR
 
 /**
  * Created by yangli on 2017/03/08.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 直播加按钮表现
  */
-public class PlusControlBtnPresenter extends ComponentPresenter<PlusControlBtnView.IView, BaseSdkController>
+public class PlusControlBtnPresenter extends ComponentPresenter<PlusControlBtnView.IView>
         implements PlusControlBtnView.IPresenter {
     private static final String TAG = "PlusControlBtnPresenter";
 
@@ -49,7 +47,9 @@ public class PlusControlBtnPresenter extends ComponentPresenter<PlusControlBtnVi
         return TAG;
     }
 
-    public PlusControlBtnPresenter(@NonNull BaseSdkController controller, @NonNull Context context) {
+    public PlusControlBtnPresenter(
+            @NonNull IEventController controller,
+            @NonNull Context context) {
         super(controller);
         mContext = context;
         String country = mContext.getResources().getConfiguration().locale.getCountry();
@@ -64,8 +64,9 @@ public class PlusControlBtnPresenter extends ComponentPresenter<PlusControlBtnVi
     }
 
     @Override
-    public void destroy() {
-        super.destroy();
+    public void stopPresenter() {
+        super.stopPresenter();
+        unregisterAllAction();
         stopCountingDown();
     }
 

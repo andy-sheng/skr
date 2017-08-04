@@ -28,8 +28,8 @@ import static com.wali.live.statistics.StatisticsKey.TIMES;
  *
  * @module 底部输入框
  */
-public class BarrageBtnView extends FrameLayout
-        implements IComponentView<BarrageBtnView.IPresenter, BarrageBtnView.IView> {
+public class BarrageBtnView extends FrameLayout implements
+        IComponentView<BarrageBtnView.IPresenter, BarrageBtnView.IView> {
     private static final String TAG = "BarrageBtnView";
 
     protected IPresenter mPresenter;
@@ -105,6 +105,6 @@ public class BarrageBtnView extends FrameLayout
         void showInputView();
     }
 
-    public interface IView extends IViewProxy<View> {
+    public interface IView extends IViewProxy {
     }
 }

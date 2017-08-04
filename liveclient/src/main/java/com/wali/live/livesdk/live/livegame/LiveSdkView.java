@@ -103,8 +103,7 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
             PanelContainerPresenter presenter = new PanelContainerPresenter(
                     mController, mController.mRoomChatMsgManager,
                     mController.mMyRoomData);
-            presenter.setComponentView(relativeLayout);
-            registerComponent(presenter);
+            registerComponent(presenter, relativeLayout);
         }
 
         // 底部按钮
@@ -126,8 +125,7 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
         {
             RelativeLayout relativeLayout = $(com.wali.live.watchsdk.R.id.envelope_view);
             EnvelopePresenter presenter = new EnvelopePresenter(mController, mController.mMyRoomData);
-            presenter.setComponentView(relativeLayout);
-            registerComponent(presenter);
+            registerComponent(presenter, relativeLayout);
         }
 
         // 运营位

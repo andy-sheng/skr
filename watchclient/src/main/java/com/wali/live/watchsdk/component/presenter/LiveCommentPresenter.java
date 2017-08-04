@@ -24,7 +24,7 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_POR
  *
  * @module 弹幕区表现
  */
-public class LiveCommentPresenter extends ComponentPresenter<LiveCommentView.IView, BaseSdkController>
+public class LiveCommentPresenter extends ComponentPresenter<LiveCommentView.IView>
         implements LiveCommentView.IPresenter {
     private static final String TAG = "LiveCommentPresenter";
 
@@ -35,7 +35,6 @@ public class LiveCommentPresenter extends ComponentPresenter<LiveCommentView.IVi
 
     public LiveCommentPresenter(@NonNull BaseSdkController componentController) {
         super(componentController);
-        startPresenter();
         // TEST
 //        Observable.interval(3, 5, TimeUnit.SECONDS)
 //                .observeOn(AndroidSchedulers.mainThread())
@@ -57,6 +56,7 @@ public class LiveCommentPresenter extends ComponentPresenter<LiveCommentView.IVi
 
     @Override
     public void startPresenter() {
+        super.startPresenter();
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_BOTTOM_POPUP_SHOWED);
@@ -77,9 +77,6 @@ public class LiveCommentPresenter extends ComponentPresenter<LiveCommentView.IVi
     @Override
     public void destroy() {
         super.destroy();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
         if (mView != null) {
             mView.destroy();
         }

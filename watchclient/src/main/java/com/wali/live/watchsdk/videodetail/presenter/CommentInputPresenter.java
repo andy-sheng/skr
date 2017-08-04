@@ -7,9 +7,9 @@ import android.text.TextUtils;
 import com.base.event.KeyboardEvent;
 import com.base.log.MyLog;
 import com.mi.live.data.account.MyUserInfoManager;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.Params;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.view.InputAreaView;
@@ -29,7 +29,7 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_COMMENT_
 /**
  * Created by yangli on 2017/6/6.
  */
-public class CommentInputPresenter extends BaseSdkRxPresenter<InputAreaView.IView, BaseSdkController>
+public class CommentInputPresenter extends BaseSdkRxPresenter<InputAreaView.IView>
         implements InputAreaView.IPresenter {
     private static final String TAG = "CommentInputPresenter";
 
@@ -52,7 +52,7 @@ public class CommentInputPresenter extends BaseSdkRxPresenter<InputAreaView.IVie
         return TAG;
     }
 
-    public CommentInputPresenter(@NonNull BaseSdkController controller) {
+    public CommentInputPresenter(@NonNull IEventController controller) {
         super(controller);
     }
 
@@ -70,14 +70,7 @@ public class CommentInputPresenter extends BaseSdkRxPresenter<InputAreaView.IVie
     @Override
     public void stopPresenter() {
         super.stopPresenter();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
+        unregisterAllAction();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }

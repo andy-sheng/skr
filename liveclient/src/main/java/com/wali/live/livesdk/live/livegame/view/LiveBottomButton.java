@@ -165,7 +165,7 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         boolean isEnableShare();
     }
 
-    public interface IView extends IViewProxy<View>, IOrientationListener {
+    public interface IView extends IViewProxy, IOrientationListener {
         /**
          * 更新禁音按钮状态
          */

@@ -43,7 +43,7 @@ public class VideoDetailController extends BaseSdkController {
             mPlayerView.setId(R.id.video_view);
             mPlayerView.setMyRoomData(mMyRoomData);
             mPlayerPresenter = new VideoDetailPlayerPresenter(this, mMyRoomData, (Activity) context);
-            mPlayerPresenter.setComponentView(mPlayerView.getViewProxy());
+            mPlayerPresenter.setView(mPlayerView.getViewProxy());
             mPlayerView.setPresenter(mPlayerPresenter);
         }
         mPlayerPresenter.startPresenter();
@@ -52,6 +52,7 @@ public class VideoDetailController extends BaseSdkController {
     @Override
     public void release() {
         super.release();
+        mPlayerPresenter.stopPresenter();
         mPlayerPresenter.destroy();
     }
 }

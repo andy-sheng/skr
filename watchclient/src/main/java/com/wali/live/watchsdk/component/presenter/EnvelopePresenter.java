@@ -16,9 +16,10 @@ import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.gift.redenvelope.RedEnvelopeModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
+import com.thornbirds.component.view.IOrientationListener;
 import com.wali.live.common.gift.exception.GiftErrorCode;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.RedEnvelProto;
 import com.wali.live.watchsdk.R;
@@ -50,8 +51,9 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_POR
  *
  * @module 抢红包表现
  */
-public class EnvelopePresenter extends BaseSdkRxPresenter<RelativeLayout, BaseSdkController>
-        implements EnvelopeView.IPresenter, EnvelopeResultView.IPresenter {
+public class EnvelopePresenter extends BaseSdkRxPresenter<RelativeLayout>
+        implements EnvelopeView.IPresenter, EnvelopeResultView.IPresenter,
+        IOrientationListener {
     private static final String TAG = "EnvelopePresenter";
 
     private static final int MAX_ENVELOPE_CACHE_CNT = 2;
@@ -68,17 +70,9 @@ public class EnvelopePresenter extends BaseSdkRxPresenter<RelativeLayout, BaseSd
         return TAG;
     }
 
-    public EnvelopePresenter(
-            @NonNull BaseSdkController controller,
-            @NonNull RoomBaseDataModel myRoomData) {
-        super(controller);
-        mMyRoomData = myRoomData;
-        startPresenter();
-    }
-
     @Override
-    public void setComponentView(@Nullable RelativeLayout relativeLayout) {
-        super.setComponentView(relativeLayout);
+    public void setView(@Nullable RelativeLayout relativeLayout) {
+        super.setView(relativeLayout);
         relativeLayout.setSoundEffectsEnabled(false);
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +80,14 @@ public class EnvelopePresenter extends BaseSdkRxPresenter<RelativeLayout, BaseSd
                 // 吃点点击事件
             }
         });
+    }
+
+    public EnvelopePresenter(
+            @NonNull IEventController controller,
+            @NonNull RoomBaseDataModel myRoomData) {
+        super(controller);
+        mMyRoomData = myRoomData;
+        startPresenter();
     }
 
     @Override
@@ -101,14 +103,7 @@ public class EnvelopePresenter extends BaseSdkRxPresenter<RelativeLayout, BaseSd
     @Override
     public void stopPresenter() {
         super.stopPresenter();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
+        unregisterAllAction();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -337,6 +332,7 @@ public class EnvelopePresenter extends BaseSdkRxPresenter<RelativeLayout, BaseSd
         }
     }
 
+    @Override
     public void onOrientation(boolean isLandscape) {
         if (mIsLandscape == isLandscape) {
             return;

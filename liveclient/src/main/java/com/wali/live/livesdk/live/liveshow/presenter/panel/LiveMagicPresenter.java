@@ -25,12 +25,10 @@ import rx.schedulers.Schedulers;
 
 /**
  * Created by yangli on 2017/03/07.
- * <p>
- * Generated using create_bottom_panel.py
  *
  * @module 秀场美妆面板表现
  */
-public class LiveMagicPresenter extends BaseSdkRxPresenter<LiveMagicPanel.IView, BaseSdkController>
+public class LiveMagicPresenter extends BaseSdkRxPresenter<LiveMagicPanel.IView>
         implements LiveMagicPanel.IPresenter {
     private static final String TAG = "LiveMagicPresenter";
 

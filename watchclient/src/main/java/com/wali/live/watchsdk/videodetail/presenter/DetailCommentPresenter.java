@@ -13,9 +13,9 @@ import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.Params;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.Feeds;
 import com.wali.live.watchsdk.R;
@@ -47,12 +47,10 @@ import static com.wali.live.watchsdk.feeds.FeedsInfoUtils.FEED_TYPE_DEFAULT;
 
 /**
  * Created by yangli on 2017/06/02.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 评论列表页表现
  */
-public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView.IView, BaseSdkController>
+public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView.IView>
         implements DetailCommentView.IPresenter {
     private static final String TAG = "DetailCommentPresenter";
 
@@ -74,7 +72,7 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
     }
 
     public DetailCommentPresenter(
-            @NonNull BaseSdkController controller,
+            @NonNull IEventController controller,
             @NonNull RoomBaseDataModel roomData) {
         super(controller);
         mMyRoomData = roomData;
@@ -85,6 +83,12 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
         super.startPresenter();
         registerAction(MSG_SEND_COMMENT);
         registerAction(MSG_NEW_DETAIL_REPLAY);
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        unregisterAllAction();
     }
 
     @Override

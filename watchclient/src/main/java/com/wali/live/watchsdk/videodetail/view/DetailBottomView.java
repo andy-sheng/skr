@@ -13,8 +13,6 @@ import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 /**
  * Created by yangli on 2017/05/31.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 详情播放视图
  */
@@ -120,7 +118,7 @@ public class DetailBottomView implements View.OnClickListener,
         void showSharePanel();
     }
 
-    public interface IView extends IViewProxy<View> {
+    public interface IView extends IViewProxy {
         /**
          * 更新点赞按钮状态
          */

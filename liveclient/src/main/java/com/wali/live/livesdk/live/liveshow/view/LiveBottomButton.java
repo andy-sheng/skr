@@ -149,6 +149,6 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         void showShareView();
     }
 
-    public interface IView extends IViewProxy<View>, IOrientationListener {
+    public interface IView extends IViewProxy, IOrientationListener {
     }
 }

@@ -47,6 +47,7 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_DISABLE_MOVE_
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_ENABLE_MOVE_VIEW;
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_GAME_INPUT;
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_INPUT_VIEW;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
@@ -412,7 +413,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                 }
 //                startInputAnimator(true);
                 return true;
-            case WatchComponentController.MSG_INPUT_VIEW_HIDDEN:
+            case MSG_INPUT_VIEW_HIDDEN:
                 if (!mIsGameMode || !mIsLandscape) { // 游戏直播横屏不需左右滑
                     mController.postEvent(MSG_ENABLE_MOVE_VIEW);
                 }

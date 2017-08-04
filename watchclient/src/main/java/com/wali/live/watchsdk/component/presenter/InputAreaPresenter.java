@@ -41,6 +41,11 @@ public class InputAreaPresenter extends InputPresenter<InputAreaView.IView>
             boolean isWatchState) {
         super(controller, myRoomData);
         setMinHeightLand(isWatchState);
+    }
+
+    @Override
+    public void startPresenter() {
+        super.startPresenter();
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_ON_BACK_PRESSED);
@@ -49,6 +54,12 @@ public class InputAreaPresenter extends InputPresenter<InputAreaView.IView>
         // TODO 后续完善飘屏弹幕逻辑之后，再开启飘屏弹幕功能 YangLi
 //        registerAction(MSG_SHOW_BARRAGE_SWITCH);
 //        registerAction(MSG_HIDE_BARRAGE_SWITCH);
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        unregisterAllAction();
     }
 
     private void setMinHeightLand(boolean isWatchState) {

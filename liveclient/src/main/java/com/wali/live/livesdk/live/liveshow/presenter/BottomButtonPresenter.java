@@ -4,9 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.base.log.MyLog;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.livesdk.live.liveshow.view.LiveBottomButton;
 
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
@@ -21,7 +21,7 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SHARE_PA
  *
  * @module 底部按钮表现, 游戏直播
  */
-public class BottomButtonPresenter extends ComponentPresenter<LiveBottomButton.IView, BaseSdkController>
+public class BottomButtonPresenter extends ComponentPresenter<LiveBottomButton.IView>
         implements LiveBottomButton.IPresenter {
     private static final String TAG = "BottomButtonPresenter";
 
@@ -33,8 +33,8 @@ public class BottomButtonPresenter extends ComponentPresenter<LiveBottomButton.I
     }
 
     public BottomButtonPresenter(
-            @NonNull BaseSdkController controller,
-            RoomBaseDataModel myRoomData) {
+            @NonNull IEventController controller,
+            @NonNull RoomBaseDataModel myRoomData) {
         super(controller);
         mMyRoomData = myRoomData;
     }
@@ -44,6 +44,12 @@ public class BottomButtonPresenter extends ComponentPresenter<LiveBottomButton.I
         super.startPresenter();
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        unregisterAllAction();
     }
 
     @Override

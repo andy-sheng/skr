@@ -340,7 +340,7 @@ public class VideoDetailPlayerView extends RelativeLayout
         void onBackPress();
     }
 
-    public interface IView extends IViewProxy<View> {
+    public interface IView extends IViewProxy {
         /**
          * 播放器打开
          */

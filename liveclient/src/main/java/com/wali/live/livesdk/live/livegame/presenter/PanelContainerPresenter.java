@@ -8,9 +8,9 @@ import android.widget.RelativeLayout;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.componentwrapper.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.live.livegame.LiveComponentController;
 import com.wali.live.livesdk.live.livegame.view.panel.GameSettingPanel;
@@ -31,6 +31,7 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SHARE_PA
  */
 public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayout> {
     private static final String TAG = "PanelContainerPresenter";
+
     @Nullable
     protected RoomBaseDataModel mMyRoomData;
     @Nullable
@@ -44,7 +45,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     }
 
     public PanelContainerPresenter(
-            @NonNull BaseSdkController controller,
+            @NonNull IEventController controller,
             @Nullable LiveRoomChatMsgManager liveRoomChatMsgManager,
             @Nullable RoomBaseDataModel myRoomData) {
         super(controller);
@@ -59,8 +60,8 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     }
 
     @Override
-    public void setComponentView(@Nullable RelativeLayout relativeLayout) {
-        super.setComponentView(relativeLayout);
+    public void setView(@Nullable RelativeLayout relativeLayout) {
+        super.setView(relativeLayout);
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

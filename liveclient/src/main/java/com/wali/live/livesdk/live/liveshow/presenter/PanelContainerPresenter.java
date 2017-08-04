@@ -77,8 +77,8 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     }
 
     @Override
-    public void setComponentView(@Nullable RelativeLayout relativeLayout) {
-        super.setComponentView(relativeLayout);
+    public void setView(@Nullable RelativeLayout relativeLayout) {
+        super.setView(relativeLayout);
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,8 +128,8 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
                 presenter = new LivePlusPresenter(mController);
                 mPlusPresenterRef = new WeakReference<>(presenter);
             }
+            presenter.setView(panel.getViewProxy());
             panel.setPresenter(presenter);
-            presenter.setComponentView(panel.getViewProxy());
         }
         showPanel(panel, true);
     }
@@ -144,8 +144,8 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
                 presenter = new LiveMagicPresenter();
                 mMagicPresenterRef = new WeakReference<>(presenter);
             }
+            presenter.setView(panel.getViewProxy());
             panel.setPresenter(presenter);
-            presenter.setComponentView(panel.getViewProxy());
         }
         showPanel(panel, true);
     }

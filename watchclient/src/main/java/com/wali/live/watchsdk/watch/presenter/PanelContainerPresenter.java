@@ -37,6 +37,11 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
             @NonNull RoomBaseDataModel myRoomData) {
         super(controller);
         mMyRoomData = myRoomData;
+    }
+
+    @Override
+    public void startPresenter() {
+        super.startPresenter();
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_ON_BACK_PRESSED);
@@ -45,8 +50,14 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     }
 
     @Override
-    public void setComponentView(@Nullable RelativeLayout relativeLayout) {
-        super.setComponentView(relativeLayout);
+    public void stopPresenter() {
+        super.stopPresenter();
+        unregisterAllAction();
+    }
+
+    @Override
+    public void setView(@Nullable RelativeLayout relativeLayout) {
+        super.setView(relativeLayout);
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +91,6 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
                 return hidePanel(true);
             default:
                 break;
-
         }
         return false;
     }

@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 import com.base.log.MyLog;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
+import com.thornbirds.component.view.IOrientationListener;
 import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.liveshow.view.panel.FloatAtmospherePanel;
@@ -20,7 +21,8 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_ATMOSPHE
  *
  * @module 浮层容器表现
  */
-public class FloatContainerPresenter extends ComponentPresenter<RelativeLayout, BaseSdkController> {
+public class FloatContainerPresenter extends ComponentPresenter<RelativeLayout>
+        implements IOrientationListener {
     private static final String TAG = "FloatContainerPresenter";
 
     private StreamerPresenter mStreamerPresenter;
@@ -39,11 +41,23 @@ public class FloatContainerPresenter extends ComponentPresenter<RelativeLayout, 
             @NonNull StreamerPresenter streamerPresenter) {
         super(controller);
         mStreamerPresenter = streamerPresenter;
+    }
+
+    @Override
+    public void startPresenter() {
+        super.startPresenter();
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_SHOW_ATMOSPHERE_VIEW);
     }
 
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        unregisterAllAction();
+    }
+
+    @Override
     public void onOrientation(boolean isLandscape) {
         if (mIsLandscape == isLandscape) {
             return;

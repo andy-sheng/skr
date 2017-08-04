@@ -315,7 +315,7 @@ public class GameBarrageView extends RelativeLayout
     public interface IPresenter {
     }
 
-    public interface IView extends IViewProxy<View> {
+    public interface IView extends IViewProxy {
         /**
          * 新的消息到来
          */

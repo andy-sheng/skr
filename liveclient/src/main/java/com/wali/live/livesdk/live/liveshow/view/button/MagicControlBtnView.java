@@ -86,7 +86,7 @@ public class MagicControlBtnView extends FrameLayout
     public interface IPresenter {
     }
 
-    public interface IView extends IViewProxy<View> {
+    public interface IView extends IViewProxy {
         /**
          * 是否显示红点
          */

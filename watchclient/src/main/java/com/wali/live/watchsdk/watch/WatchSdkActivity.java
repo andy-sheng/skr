@@ -136,9 +136,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     protected ImageView mCloseBtn;// 关闭按钮
     protected ImageView mRotateBtn;// 关闭
 
-    protected final Action mAction = new Action();
     protected WatchComponentController mController;
     protected WatchSdkView mSdkView;
+    protected final Action mAction = new Action();
 
     // 高斯蒙层
     private BaseImageView mMaskIv;
@@ -349,6 +349,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
         mSdkView = new WatchSdkView(this, mController);
         mSdkView.setupView(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
+        mSdkView.startView();
 
         mAction.registerAction();
 
@@ -505,14 +506,12 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         leaveLiveToServer();
         unregisterReceiver();
 
-        if (mAction != null) {
-            mAction.unregisterAction();
-        }
         if (mController != null) {
             mController.release();
             mController = null;
         }
         if (mSdkView != null) {
+            mSdkView.stopView();
             mSdkView.release();
             mSdkView = null;
         }

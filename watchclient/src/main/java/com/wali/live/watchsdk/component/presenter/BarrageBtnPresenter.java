@@ -18,7 +18,7 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_INPUT_VI
  *
  * @module 底部输入框表现
  */
-public class BarrageBtnPresenter extends ComponentPresenter<BarrageBtnView.IView, BaseSdkController>
+public class BarrageBtnPresenter extends ComponentPresenter<BarrageBtnView.IView>
         implements BarrageBtnView.IPresenter {
     private static final String TAG = "BarrageBtnPresenter";
 
@@ -29,8 +29,19 @@ public class BarrageBtnPresenter extends ComponentPresenter<BarrageBtnView.IView
 
     public BarrageBtnPresenter(@NonNull BaseSdkController controller) {
         super(controller);
+    }
+
+    @Override
+    public void startPresenter() {
+        super.startPresenter();
         registerAction(MSG_BOTTOM_POPUP_SHOWED);
         registerAction(MSG_BOTTOM_POPUP_HIDDEN);
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        unregisterAllAction();
     }
 
     @Override

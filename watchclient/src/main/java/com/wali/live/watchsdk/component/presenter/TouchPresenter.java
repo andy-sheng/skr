@@ -13,6 +13,7 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
+import com.thornbirds.component.view.IOrientationListener;
 import com.wali.live.componentwrapper.BaseSdkController;
 
 import java.util.ArrayList;
@@ -31,7 +32,8 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_PAGE_UP;
  *
  * @module 触摸表现
  */
-public class TouchPresenter extends ComponentPresenter implements View.OnTouchListener {
+public class TouchPresenter extends ComponentPresenter implements View.OnTouchListener,
+        IOrientationListener {
     private static final String TAG = "TouchPresenter";
 
     private static final int MODE_IDLE = 0;
@@ -119,8 +121,9 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     }
 
     @Override
-    public void destroy() {
-        super.destroy();
+    public void stopPresenter() {
+        super.stopPresenter();
+        unregisterAllAction();
         mAnimationHelper.clearAnimation();
     }
 
@@ -335,7 +338,8 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         postEvent(MSG_BACKGROUND_CLICK);
     }
 
-    private void onOrientation(boolean isLandscape) {
+    @Override
+    public void onOrientation(boolean isLandscape) {
         if (mTouchCanceled || mMode == MODE_IDLE) {
             return;
         }

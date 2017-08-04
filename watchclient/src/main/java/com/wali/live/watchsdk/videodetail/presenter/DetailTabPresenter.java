@@ -8,11 +8,11 @@ import android.view.View;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.videodetail.DetailIntroduceView;
+import com.wali.live.watchsdk.videodetail.view.DetailIntroduceView;
 import com.wali.live.watchsdk.videodetail.view.DetailCommentView;
 import com.wali.live.watchsdk.videodetail.view.DetailReplayView;
 import com.wali.live.watchsdk.videodetail.view.DetailTabView;
@@ -27,12 +27,10 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_REPLAY_TOTAL_
 
 /**
  * Created by yangli on 2017/06/02.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 详情TAB表现
  */
-public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView, BaseSdkController>
+public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
         implements DetailTabView.IPresenter {
     private static final String TAG = "DetailTabPresenter";
 
@@ -54,7 +52,7 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView, 
     }
 
     public DetailTabPresenter(
-            @NonNull BaseSdkController controller,
+            @NonNull IEventController controller,
             @NonNull RoomBaseDataModel roomData) {
         super(controller);
         mMyRoomData = roomData;
@@ -93,7 +91,7 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView, 
         if (mIsReplay) {
             if (mCommentView == null) {
                 mCommentView = new DetailCommentView(context);
-                mCommentPresenter.setComponentView(mCommentView.getViewProxy());
+                mCommentPresenter.setView(mCommentView.getViewProxy());
                 mCommentView.setPresenter(mCommentPresenter);
             }
             tabPageList.add(Pair.create(String.format(context.getResources().getString(
@@ -101,8 +99,8 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView, 
 
             if (mReplayView == null) {
                 mReplayView = new DetailReplayView(context);
-                mReplayPresenter.setComponentView(mReplayView.getViewProxy());
                 mReplayView.setMyRoomData(mMyRoomData);
+                mReplayPresenter.setView(mReplayView.getViewProxy());
                 mReplayView.setPresenter(mReplayPresenter);
             }
             tabPageList.add(Pair.create(String.format(context.getResources().getString(
@@ -116,7 +114,7 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView, 
 
             if (mCommentView == null) {
                 mCommentView = new DetailCommentView(context);
-                mCommentPresenter.setComponentView(mCommentView.getViewProxy());
+                mCommentPresenter.setView(mCommentView.getViewProxy());
                 mCommentView.setPresenter(mCommentPresenter);
             }
             tabPageList.add(Pair.create(String.format(context.getResources().getString(

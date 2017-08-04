@@ -131,7 +131,7 @@ public class LivePlusPanel extends BaseBottomPanel<RecyclerView, RelativeLayout>
         void syncPlusBtnConfig();
     }
 
-    public interface IView extends IViewProxy<View> {
+    public interface IView extends IViewProxy {
         /**
          * 更新直播加按钮列表
          */

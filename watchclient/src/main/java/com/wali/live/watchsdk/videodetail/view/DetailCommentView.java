@@ -21,8 +21,6 @@ import java.util.Collection;
 
 /**
  * Created by yangli on 2017/06/02.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 评论列表页视图
  */
@@ -217,7 +215,7 @@ public class DetailCommentView extends RelativeLayout
         void showPersonalInfo(long uid);
     }
 
-    public interface IView extends IViewProxy<View> {
+    public interface IView extends IViewProxy {
         /**
          * 拉取评论成功
          */

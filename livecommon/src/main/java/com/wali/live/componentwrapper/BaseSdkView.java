@@ -8,14 +8,9 @@ import android.view.ViewGroup;
 
 import com.thornbirds.component.ComponentView;
 import com.thornbirds.component.IEventObserver;
+import com.thornbirds.component.presenter.IEventPresenter;
 
 import java.util.List;
-
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_BACKGROUND_CLICK;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 
 /**
  * Created by yangli on 2017/8/2.
@@ -85,21 +80,16 @@ public abstract class BaseSdkView<VIEW extends View, CONTROLLER extends BaseSdkC
     }
 
     @Override
-    @CallSuper
     public void startView() {
-        super.startView();
     }
 
     @Override
     @CallSuper
     public void stopView() {
-        super.stopView();
         mController.unregisterObserver(this);
     }
 
     @Override
-    @CallSuper
     public void release() {
-        super.release();
     }
 }

@@ -231,7 +231,6 @@ public class WidgetView extends RelativeLayout
                     break;
                 case 3:
                     mRightBottomWiv.updateDisplayItemTv(widgetID, counter, mNeedShow);
-
                     break;
                 default:
                     break;
@@ -291,7 +290,7 @@ public class WidgetView extends RelativeLayout
         String getRoomId();
     }
 
-    public interface IView extends IViewProxy<View> {
+    public interface IView extends IViewProxy {
         void onOrientation(boolean isLandscape);
 
         void hideWidgetView();

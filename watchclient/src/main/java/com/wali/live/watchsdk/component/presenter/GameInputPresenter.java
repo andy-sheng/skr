@@ -4,11 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.base.log.MyLog;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.watchsdk.component.view.GameInputView;
-
-import org.greenrobot.eventbus.EventBus;
 
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_GAME_BARRAGE;
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_GAME_INPUT;
@@ -34,7 +32,7 @@ public class GameInputPresenter extends InputPresenter<GameInputView.IView>
     }
 
     public GameInputPresenter(
-            @NonNull BaseSdkController controller,
+            @NonNull IEventController controller,
             @NonNull RoomBaseDataModel myRoomData) {
         super(controller, myRoomData);
     }
@@ -46,23 +44,12 @@ public class GameInputPresenter extends InputPresenter<GameInputView.IView>
         registerAction(MSG_HIDE_INPUT_VIEW);
         registerAction(MSG_SHOW_GAME_INPUT);
         registerAction(MSG_HIDE_GAME_INPUT);
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
     }
 
     @Override
     public void stopPresenter() {
         super.stopPresenter();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-    }
-
-    @Override
-    public void destroy() {
-        stopPresenter();
-        super.destroy();
+        unregisterAllAction();
     }
 
     @Override

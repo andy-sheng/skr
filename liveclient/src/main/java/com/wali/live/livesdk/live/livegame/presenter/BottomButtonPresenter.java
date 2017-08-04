@@ -5,9 +5,9 @@ import android.support.annotation.Nullable;
 
 import com.base.log.MyLog;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.livesdk.live.livegame.view.LiveBottomButton;
 import com.wali.live.livesdk.live.presenter.GameLivePresenter;
 
@@ -23,7 +23,7 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SHARE_PA
  *
  * @module 底部按钮表现, 游戏直播
  */
-public class BottomButtonPresenter extends ComponentPresenter<LiveBottomButton.IView, BaseSdkController>
+public class BottomButtonPresenter extends ComponentPresenter<LiveBottomButton.IView>
         implements LiveBottomButton.IPresenter {
     private static final String TAG = "BottomButtonPresenter";
 
@@ -37,7 +37,7 @@ public class BottomButtonPresenter extends ComponentPresenter<LiveBottomButton.I
     }
 
     public BottomButtonPresenter(
-            @NonNull BaseSdkController controller,
+            @NonNull IEventController controller,
             @NonNull RoomBaseDataModel myRoomData,
             @Nullable GameLivePresenter gameLivePresenter) {
         super(controller);
@@ -51,6 +51,12 @@ public class BottomButtonPresenter extends ComponentPresenter<LiveBottomButton.I
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_ON_ACTIVITY_RESUMED);
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        unregisterAllAction();
     }
 
     @Override

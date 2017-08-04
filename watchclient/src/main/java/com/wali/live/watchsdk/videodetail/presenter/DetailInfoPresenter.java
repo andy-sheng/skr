@@ -13,9 +13,9 @@ import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.Params;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.Feeds;
 import com.wali.live.proto.LiveShowProto;
@@ -46,12 +46,10 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_UPDATE_START_
 
 /**
  * Created by yangli on 2017/06/01.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 详情信息表现
  */
-public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView, BaseSdkController>
+public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView>
         implements DetailInfoView.IPresenter {
     private static final String TAG = "DetailInfoPresenter";
 
@@ -65,7 +63,7 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
     }
 
     public DetailInfoPresenter(
-            @NonNull BaseSdkController controller,
+            @NonNull IEventController controller,
             @NonNull RoomBaseDataModel roomData) {
         super(controller);
         mMyRoomData = roomData;
@@ -83,14 +81,7 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
     @Override
     public void stopPresenter() {
         super.stopPresenter();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
+        unregisterAllAction();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -293,10 +284,6 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
                 });
     }
 
-    private void onNewVideo() {
-        syncFeedsInfo();
-    }
-
     @Override
     public boolean onEvent(int event, IParams params) {
         if (mView == null) {
@@ -305,7 +292,7 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
         }
         switch (event) {
             case MSG_NEW_DETAIL_REPLAY:
-                onNewVideo();
+                syncFeedsInfo();
                 break;
             default:
                 break;

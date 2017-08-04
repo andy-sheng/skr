@@ -6,9 +6,9 @@ import android.view.View;
 import com.base.log.MyLog;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
@@ -29,7 +29,7 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SHARE_PA
  *
  * @module 底部按钮表现, 游戏直播
  */
-public class BottomButtonPresenter extends ComponentPresenter<WatchBottomButton.IView, BaseSdkController>
+public class BottomButtonPresenter extends ComponentPresenter<WatchBottomButton.IView>
         implements WatchBottomButton.IPresenter {
     private static final String TAG = "BottomButtonPresenter";
 
@@ -41,15 +41,26 @@ public class BottomButtonPresenter extends ComponentPresenter<WatchBottomButton.
     }
 
     public BottomButtonPresenter(
-            @NonNull BaseSdkController componentController,
+            @NonNull IEventController controller,
             RoomBaseDataModel myRoomData) {
-        super(componentController);
+        super(controller);
+        mMyRoomData = myRoomData;
+    }
+
+    @Override
+    public void startPresenter() {
+        super.startPresenter();
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_BOTTOM_POPUP_SHOWED);
         registerAction(MSG_BOTTOM_POPUP_HIDDEN);
         registerAction(MSG_SHOE_GAME_ICON);
-        mMyRoomData = myRoomData;
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        unregisterAllAction();
     }
 
     @Override
@@ -69,6 +80,7 @@ public class BottomButtonPresenter extends ComponentPresenter<WatchBottomButton.
 
     @Override
     public void rotateScreen() {
+        // TODO 增加转屏处理 YangLi
     }
 
     @Override

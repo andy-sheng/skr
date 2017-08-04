@@ -11,12 +11,10 @@ import com.wali.live.livesdk.live.liveshow.view.button.MagicControlBtnView;
 
 /**
  * Created by yangli on 2017/03/09.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 美妆按钮表现
  */
-public class MagicControlBtnPresenter extends ComponentPresenter<MagicControlBtnView.IView, BaseSdkController>
+public class MagicControlBtnPresenter extends ComponentPresenter<MagicControlBtnView.IView>
         implements MagicControlBtnView.IPresenter {
     private static final String TAG = "MagicControlBtnPresenter";
 

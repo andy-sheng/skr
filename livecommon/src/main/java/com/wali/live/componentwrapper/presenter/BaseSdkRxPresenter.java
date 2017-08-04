@@ -16,13 +16,13 @@ import rx.subjects.BehaviorSubject;
  * @author YangLi
  * @mail yanglijd@gmail.com
  */
-public abstract class BaseSdkRxPresenter<VIEW, CONTROLLER extends IEventController>
-        extends ComponentPresenter<VIEW, CONTROLLER> implements Presenter {
+public abstract class BaseSdkRxPresenter<VIEW> extends ComponentPresenter<VIEW>
+        implements Presenter {
 
     private BehaviorSubject<PresenterEvent> mBehaviorSubject = BehaviorSubject.create();
 
-    public BaseSdkRxPresenter(CONTROLLER eventController) {
-        super(eventController);
+    public BaseSdkRxPresenter(IEventController controller) {
+        super(controller);
     }
 
     @Deprecated

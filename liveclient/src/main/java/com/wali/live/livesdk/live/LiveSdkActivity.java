@@ -198,6 +198,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     protected StreamerPresenter mStreamerPresenter;
     protected BaseLiveController mController;
     protected BaseSdkView mSdkView;
+    protected final Action mAction = new Action();
 
     protected RoomMessagePresenter mPullRoomMessagePresenter;
     protected ExecutorService mHeartbeatService;
@@ -292,7 +293,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
         addPresent(mStreamerPresenter);
 
-        new Action().registerAction();
+        mAction.registerAction(); // 注册事件，准备可能需要
     }
 
     private void registerScreenStateReceiver() {
@@ -433,6 +434,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             mController = null;
         }
         if (mSdkView != null) {
+            mSdkView.stopView();
             mSdkView.release();
             mSdkView = null;
         }
@@ -662,6 +664,10 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mTipsTv = $(R.id.tips_tv);
 
         mSdkView.setupView();
+        mSdkView.startView();
+
+        mAction.unregisterAction(); // 重新注册，保证mAction最后收到事件
+        mAction.registerAction();
 
         mFlyBarrageViewGroup = $(R.id.fly_barrage_viewgroup);
         addBindActivityLifeCycle(mFlyBarrageViewGroup, true);

@@ -14,8 +14,6 @@ import com.wali.live.livesdk.R;
 
 /**
  * Created by yangli on 2017/03/08.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 直播大小窗视图
  */
@@ -83,7 +81,7 @@ public class LiveDisplayView extends RelativeLayout
     public interface IPresenter {
     }
 
-    public interface IView extends IViewProxy<View> {
+    public interface IView extends IViewProxy {
 
     }
 }

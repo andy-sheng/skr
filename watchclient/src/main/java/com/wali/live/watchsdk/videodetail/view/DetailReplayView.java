@@ -148,7 +148,7 @@ public class DetailReplayView extends RelativeLayout implements IComponentView<D
         void onClickReplayItem(DetailReplayAdapter.ReplayInfoItem replayInfoItem);
     }
 
-    public interface IView extends IViewProxy<View> {
+    public interface IView extends IViewProxy {
         /**
          * 拉取回放成功
          */

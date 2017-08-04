@@ -10,8 +10,8 @@ import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.relation.RelationApi;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.RelationProto;
 import com.wali.live.watchsdk.R;
@@ -33,15 +33,15 @@ import rx.schedulers.Schedulers;
 
 import static com.mi.live.data.event.FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW;
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_FOLLOW_GUIDE;
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_FOLLOW_GUIDE;
 
 /**
  * Created by zyh on 2017/07/13.
  *
  * @module 游戏直播间内关注引导的presenter
  */
-public class FollowGuidePresenter extends BaseSdkRxPresenter<FollowGuideView.IView, BaseSdkController>
+public class FollowGuidePresenter extends BaseSdkRxPresenter<FollowGuideView.IView>
         implements FollowGuideView.IPresenter {
     private static final String TAG = "FollowGuidePresenter";
 
@@ -53,25 +53,27 @@ public class FollowGuidePresenter extends BaseSdkRxPresenter<FollowGuideView.IVi
         return TAG;
     }
 
-    public FollowGuidePresenter(@NonNull BaseSdkController controller, RoomBaseDataModel myRoomData) {
+    public FollowGuidePresenter(
+            @NonNull IEventController controller,
+            @NonNull RoomBaseDataModel myRoomData) {
         super(controller);
         mMyRoomData = myRoomData;
-        startPresenter();
     }
 
     @Override
     public void startPresenter() {
         super.startPresenter();
+        registerAction(MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(MSG_ON_ORIENT_PORTRAIT);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        registerAction(MSG_ON_ORIENT_LANDSCAPE);
-        registerAction(MSG_ON_ORIENT_PORTRAIT);
     }
 
     @Override
     public void stopPresenter() {
         super.stopPresenter();
+        unregisterAllAction();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -80,7 +82,6 @@ public class FollowGuidePresenter extends BaseSdkRxPresenter<FollowGuideView.IVi
     @Override
     public void destroy() {
         super.destroy();
-        stopPresenter();
         if (mSubscription != null && mSubscription.isUnsubscribed()) {
             mSubscription.unsubscribe();
             mSubscription = null;

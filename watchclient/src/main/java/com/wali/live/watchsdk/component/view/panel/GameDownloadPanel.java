@@ -49,7 +49,9 @@ import static android.content.Context.DOWNLOAD_SERVICE;
  */
 public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
         implements IComponentView<GameDownloadPanel.IPresenter, GameDownloadPanel.IView> {
+
     private static final int STATUS_NONE = 0;
+
     @Nullable
     protected GameDownloadPanel.IPresenter mPresenter;
 
@@ -512,7 +514,7 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
         void reportDownloadKey();
     }
 
-    public interface IView extends IViewProxy<View> {
+    public interface IView extends IViewProxy {
         void inflate();
 
         void showGameDownloadView();

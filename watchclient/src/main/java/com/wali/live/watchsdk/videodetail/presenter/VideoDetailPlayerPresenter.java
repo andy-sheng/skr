@@ -5,9 +5,9 @@ import android.support.annotation.NonNull;
 
 import com.base.log.MyLog;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.event.EventClass;
 import com.wali.live.watchsdk.component.view.VideoDetailPlayerView;
 
@@ -26,7 +26,7 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_START;
  *
  * @module 回放详情页的播放view的presenter
  */
-public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPlayerView.IView, BaseSdkController>
+public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPlayerView.IView>
         implements VideoDetailPlayerView.IPresenter {
     private static final String TAG = "VideoDetailPlayerPresenter";
 
@@ -44,7 +44,7 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
     }
 
     public VideoDetailPlayerPresenter(
-            @NonNull BaseSdkController controller,
+            @NonNull IEventController controller,
             @NonNull RoomBaseDataModel myRoomData,
             @NonNull Activity activity) {
         super(controller);
@@ -54,6 +54,7 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
 
     @Override
     public void startPresenter() {
+        super.startPresenter();
         registerAction(MSG_PLAYER_START);
         registerAction(MSG_PLAYER_PAUSE);
         registerAction(MSG_NEW_DETAIL_REPLAY);
@@ -65,6 +66,7 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
     @Override
     public void stopPresenter() {
         super.stopPresenter();
+        unregisterAllAction();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -73,9 +75,6 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
     @Override
     public void destroy() {
         super.destroy();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
         if (mView != null) {
             mView.onDestroy();
             mView = null;

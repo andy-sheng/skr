@@ -119,16 +119,14 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
             PanelContainerPresenter presenter = new PanelContainerPresenter(
                     mController, mController.mStreamerPresenter,
                     mController.mMyRoomData);
-            presenter.setComponentView(relativeLayout);
-            registerComponent(presenter);
+            registerComponent(presenter, relativeLayout);
         }
 
         // 音效面板
         {
             FloatContainerPresenter presenter = new FloatContainerPresenter(
                     mController, mController.mStreamerPresenter);
-            presenter.setComponentView(mFloatContainer);
-            registerComponent(presenter);
+            registerComponent(presenter, mFloatContainer);
         }
 
         // 底部按钮
@@ -173,9 +171,12 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
         // 抢红包
         {
             RelativeLayout relativeLayout = $(com.wali.live.watchsdk.R.id.envelope_view);
+            if (relativeLayout == null) {
+                MyLog.e(TAG, "missing R.id.envelope_view");
+                return;
+            }
             EnvelopePresenter presenter = new EnvelopePresenter(mController, mController.mMyRoomData);
-            presenter.setComponentView(relativeLayout);
-            registerComponent(presenter);
+            registerComponent(presenter, relativeLayout);
         }
 
         // 运营位
@@ -210,8 +211,6 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
 //            registerComponent(presenter);
 //            presenter.setViewSet(mHorizontalMoveSet);
         }
-
-        mController.postEvent(MSG_SHOW_BARRAGE_SWITCH);
     }
 
     @Override
@@ -225,6 +224,7 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
         registerAction(MSG_BACKGROUND_CLICK);
         registerAction(MSG_SHOW_ATMOSPHERE_VIEW);
         registerAction(MSG_SHOW_SEND_ENVELOPE);
+        mController.postEvent(MSG_SHOW_BARRAGE_SWITCH);
     }
 
     private void addMissingView() {

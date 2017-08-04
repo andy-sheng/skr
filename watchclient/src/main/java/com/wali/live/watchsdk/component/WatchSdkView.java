@@ -213,8 +213,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
             }
             PanelContainerPresenter presenter = new PanelContainerPresenter(mController,
                     mController.mMyRoomData);
-            presenter.setComponentView(relativeLayout);
-            registerComponent(presenter);
+            registerComponent(presenter, relativeLayout);
         }
 
         // 输入框
@@ -258,8 +257,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
         {
             RelativeLayout relativeLayout = $(R.id.envelope_view);
             EnvelopePresenter presenter = new EnvelopePresenter(mController, mController.mMyRoomData);
-            presenter.setComponentView(relativeLayout);
-            registerComponent(presenter);
+            registerComponent(presenter, relativeLayout);
         }
 
         if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
@@ -468,8 +466,6 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                 }
                 mFollowGuideView = new FollowGuideView(mActivity);
                 mFollowGuideView.setVisibility(View.INVISIBLE);
-                mFollowGuidePresenter.setComponentView(mFollowGuideView.getViewProxy());
-                mFollowGuideView.setPresenter(mFollowGuidePresenter);
                 registerComponent(mFollowGuideView, mFollowGuidePresenter);
 
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(

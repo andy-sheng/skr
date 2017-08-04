@@ -16,8 +16,8 @@ import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.milink.sdk.aidl.PacketData;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveMessageProto;
@@ -46,7 +46,7 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_POR
  *
  * @module 运营位操作类
  */
-public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView, BaseSdkController>
+public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
         implements WidgetView.IPresenter, IPushMsgProcessor {
     private static final String TAG = "WidgetPresenter";
 
@@ -69,19 +69,39 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView, BaseSd
     }
 
     public WidgetPresenter(
-            @NonNull BaseSdkController controller,
+            @NonNull IEventController controller,
             @NonNull RoomBaseDataModel myRoomData,
             boolean isAnchor) {
         super(controller);
+        mMyRoomData = myRoomData;
+        mUIHandler = new Handler(Looper.getMainLooper());
+        mIsAnchor = isAnchor;
+    }
+
+    @Override
+    public void startPresenter() {
+        super.startPresenter();
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_ON_LIVE_SUCCESS);
         registerAction(MSG_INPUT_VIEW_SHOWED);
         registerAction(MSG_INPUT_VIEW_HIDDEN);
+    }
 
-        mMyRoomData = myRoomData;
-        mUIHandler = new Handler(Looper.getMainLooper());
-        mIsAnchor = isAnchor;
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        unregisterAllAction();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        mView.destroyView();
+        if (mUIHandler != null) {
+            mUIHandler.removeCallbacksAndMessages(null);
+            mUIHandler = null;
+        }
     }
 
     /**
@@ -110,15 +130,6 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView, BaseSd
     public void updateWidgetList(BarrageMsg.WidgetClickMessage msg) {
         if (msg != null) {
             mView.updateWidgetView(msg.widgetID, msg.counter);
-        }
-    }
-
-    public void destroy() {
-        super.destroy();
-        mView.destroyView();
-        if (mUIHandler != null) {
-            mUIHandler.removeCallbacksAndMessages(null);
-            mUIHandler = null;
         }
     }
 

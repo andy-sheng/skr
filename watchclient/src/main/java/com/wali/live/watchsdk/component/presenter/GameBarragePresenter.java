@@ -4,10 +4,10 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.base.log.MyLog;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
 import com.wali.live.common.barrage.event.CommentRefreshEvent;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.watchsdk.component.view.GameBarrageView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,7 +22,7 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_GAME_BAR
  *
  * @module 游戏直播弹幕表现, 观看
  */
-public class GameBarragePresenter extends ComponentPresenter<GameBarrageView.IView, BaseSdkController>
+public class GameBarragePresenter extends ComponentPresenter<GameBarrageView.IView>
         implements GameBarrageView.IPresenter {
     private static final String TAG = "GameBarragePresenter";
 
@@ -31,19 +31,9 @@ public class GameBarragePresenter extends ComponentPresenter<GameBarrageView.IVi
         return TAG;
     }
 
-    public GameBarragePresenter(
-            @NonNull BaseSdkController controller) {
+    public GameBarragePresenter(@NonNull IEventController controller) {
         super(controller);
         startPresenter();
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
-        stopPresenter();
-        if (mView != null) {
-            mView.destroy();
-        }
     }
 
     @Override
@@ -59,8 +49,17 @@ public class GameBarragePresenter extends ComponentPresenter<GameBarrageView.IVi
     @Override
     public void stopPresenter() {
         super.stopPresenter();
+        unregisterAllAction();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (mView != null) {
+            mView.destroy();
         }
     }
 

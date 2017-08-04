@@ -19,8 +19,6 @@ import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 /**
  * Created by yangli on 2017/06/01.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 详情信息视图
  */
@@ -185,7 +183,7 @@ public class DetailInfoView implements View.OnClickListener,
         void followUser();
     }
 
-    public interface IView extends IViewProxy<View> {
+    public interface IView extends IViewProxy {
         /**
          * 拉取到用户信息
          */

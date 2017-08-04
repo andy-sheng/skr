@@ -16,10 +16,10 @@ import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.api.request.RoomInfoRequest;
 import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.Params;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.LiveProto;
 import com.wali.live.statistics.StatisticsKey;
@@ -52,7 +52,7 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_GAME_DOW
 /**
  * Created by lan on 2017/04/10.
  */
-public class GameDownloadPresenter extends BaseSdkRxPresenter<GameDownloadPanel.IView, BaseSdkController>
+public class GameDownloadPresenter extends BaseSdkRxPresenter<GameDownloadPanel.IView>
         implements GameDownloadPanel.IPresenter {
     private static final String TAG = LogConstants.GAME_DOWNLOAD_PREFIX + "GameDownloadPresenter";
 
@@ -75,11 +75,10 @@ public class GameDownloadPresenter extends BaseSdkRxPresenter<GameDownloadPanel.
     }
 
     public GameDownloadPresenter(
-            @NonNull BaseSdkController controller,
+            @NonNull IEventController controller,
             @NonNull RoomBaseDataModel myRoomData) {
         super(controller);
         mMyRoomData = myRoomData;
-        startPresenter();
     }
 
     @Override
@@ -91,10 +90,17 @@ public class GameDownloadPresenter extends BaseSdkRxPresenter<GameDownloadPanel.
     }
 
     @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        unregisterAllAction();
+    }
+
+    @Override
     public void destroy() {
         super.destroy();
-        stopPresenter();
-        mView.destroy();
+        if (mView != null) {
+            mView.destroy();
+        }
     }
 
     private void getGameInfo() {
@@ -337,9 +343,8 @@ public class GameDownloadPresenter extends BaseSdkRxPresenter<GameDownloadPanel.
                 if (mView.isShow()) {
                     hideGameDownloadView();
                     return true;
-                } else {
-                    return false;
                 }
+                break;
             default:
                 break;
         }

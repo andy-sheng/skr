@@ -4,9 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.base.log.MyLog;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.Params;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
 import com.wali.live.watchsdk.feeds.FeedsLikeUtils;
 import com.wali.live.watchsdk.videodetail.view.DetailBottomView;
@@ -24,12 +24,10 @@ import static com.wali.live.watchsdk.feeds.FeedsInfoUtils.FEED_TYPE_DEFAULT;
 
 /**
  * Created by yangli on 2017/05/31.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 详情播放表现
  */
-public class DetailBottomPresenter extends BaseSdkRxPresenter<DetailBottomView.IView, BaseSdkController>
+public class DetailBottomPresenter extends BaseSdkRxPresenter<DetailBottomView.IView>
         implements DetailBottomView.IPresenter {
     private static final String TAG = "DetailBottomPresenter";
 
@@ -41,7 +39,7 @@ public class DetailBottomPresenter extends BaseSdkRxPresenter<DetailBottomView.I
     }
 
     public DetailBottomPresenter(
-            @NonNull BaseSdkController controller,
+            @NonNull IEventController controller,
             @NonNull RoomBaseDataModel roomData) {
         super(controller);
         mMyRoomData = roomData;
@@ -51,6 +49,12 @@ public class DetailBottomPresenter extends BaseSdkRxPresenter<DetailBottomView.I
     public void startPresenter() {
         super.startPresenter();
         registerAction(MSG_UPDATE_LIKE_STATUS);
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        unregisterAllAction();
     }
 
     @Override

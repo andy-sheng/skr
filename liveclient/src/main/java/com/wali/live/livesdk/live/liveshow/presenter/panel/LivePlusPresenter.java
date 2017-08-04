@@ -3,8 +3,8 @@ package com.wali.live.livesdk.live.liveshow.presenter.panel;
 import android.support.annotation.NonNull;
 
 import com.base.log.MyLog;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.utils.PlusParamUtils;
@@ -32,7 +32,7 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SEND_ENV
  *
  * @module 秀场直播加面板表现
  */
-public class LivePlusPresenter extends BaseSdkRxPresenter<LivePlusPanel.IView, BaseSdkController>
+public class LivePlusPresenter extends BaseSdkRxPresenter<LivePlusPanel.IView>
         implements LivePlusPanel.IPresenter {
     private static final String TAG = "LivePlusPresenter";
 
@@ -41,7 +41,7 @@ public class LivePlusPresenter extends BaseSdkRxPresenter<LivePlusPanel.IView, B
         return TAG;
     }
 
-    public LivePlusPresenter(@NonNull BaseSdkController controller) {
+    public LivePlusPresenter(@NonNull IEventController controller) {
         super(controller);
     }
 

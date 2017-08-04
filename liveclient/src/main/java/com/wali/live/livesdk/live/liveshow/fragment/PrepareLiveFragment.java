@@ -121,7 +121,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         if (mLiveMagicPanel == null && mStreamerPresenter != null) {
             mLiveMagicPanel = new LiveMagicPanel((RelativeLayout) mRootView, mStreamerPresenter);
             LiveMagicPresenter presenter = new LiveMagicPresenter();
-            presenter.setComponentView(mLiveMagicPanel.getViewProxy());
+            presenter.setView(mLiveMagicPanel.getViewProxy());
             mLiveMagicPanel.setPresenter(presenter);
         }
         mLiveMagicPanel.showSelf(useAnimation, false);
