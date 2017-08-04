@@ -150,12 +150,19 @@ public class MyUserInfoManager {
         MyUserInfoLocalStore.getInstance().replaceAccount(ownUserInfo, channelId);
     }
 
+
     /**
      * 同步自己的个人信息
      */
     public void syncSelfDetailInfo() {
-        final long uuid = UserAccountManager.getInstance().getUuidAsLong();
-        final int channelId = HostChannelManager.getInstance().getChannelId();
+        syncSelfDetailInfo(UserAccountManager.getInstance().getUuidAsLong(),
+                HostChannelManager.getInstance().getChannelId());
+    }
+
+    /**
+     * 同步自己的个人信息
+     */
+    public void syncSelfDetailInfo(final long uuid, final int channelId) {
         MyLog.w(TAG, "syncSelfDetailInfo,uuid=" + uuid + " channelId=" + channelId);
         if (uuid <= 0) {
             return;
