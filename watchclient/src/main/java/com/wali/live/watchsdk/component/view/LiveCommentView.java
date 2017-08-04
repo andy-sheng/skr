@@ -280,7 +280,9 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
         if (mMoveToLastItemIv != null && mMoveToLastItemIv.getVisibility() == View.VISIBLE) {
             mMoveToLastItemIv.setVisibility(View.INVISIBLE);
         }
-        mDataList.clear();
+        if (mDataList != null) {
+            mDataList.clear();
+        }
         refreshComment();
     }
 

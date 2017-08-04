@@ -81,15 +81,18 @@ public abstract class BaseSdkView<VIEW extends View, CONTROLLER extends BaseSdkC
 
     @Override
     public void startView() {
+        super.startView();
     }
 
     @Override
     @CallSuper
     public void stopView() {
+        super.stopView();
         mController.unregisterObserver(this);
     }
 
     @Override
     public void release() {
+        super.release();
     }
 }

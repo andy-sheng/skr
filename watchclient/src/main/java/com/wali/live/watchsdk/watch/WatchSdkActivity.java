@@ -122,12 +122,10 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_PAGE_UP;
 public class WatchSdkActivity extends BaseComponentSdkActivity
         implements FloatPersonInfoFragment.FloatPersonInfoClickListener,
         ForbidManagePresenter.IForbidManageProvider, IActionCallBack, IWatchVideoView {
+
     public static final String EXTRA_ROOM_INFO_LIST = "extra_room_info_list";
     public static final String EXTRA_ROOM_INFO_POSITION = "extra_room_info_position";
 
-    /**
-     * view放在这里
-     */
     // 播放器
     protected VideoPlayerTextureView mVideoView;
     // 播放器容器

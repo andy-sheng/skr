@@ -73,6 +73,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
     private final List<View> mVerticalMoveSet = new ArrayList(0);
     private final List<View> mGameHideSet = new ArrayList(0);
 
+    @Nullable
     protected View mTopInfoView;
     @Nullable
     protected LiveCommentView mLiveCommentView;
@@ -196,6 +197,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
         {
             LiveCommentView view = $(R.id.live_comment_view);
             if (view == null) {
+                MyLog.e(TAG, "missing R.id.live_comment_view");
                 return;
             }
             LiveCommentPresenter presenter = new LiveCommentPresenter(mController);
@@ -366,7 +368,6 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
         if (mGameDownloadPresenter != null) {
             mGameDownloadPresenter.reset();
         }
-
         mLiveCommentView.reset();
         mWatchBottomButton.reset();
     }
