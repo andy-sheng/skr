@@ -147,6 +147,8 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                         RechargeInfo.setExchangeableGemCnt(rsp.getExchangeableGemCnt());
                         RechargeInfo.setWillExpireGemCnt(rsp.getExpireVirtualGemCnt());
                         RechargeInfo.setWillExpireGiftCardCnt(rsp.getExpireGiftCardCnt());
+                        MyUserInfoManager.getInstance().setDiamonds(rsp.getUsableGemCnt(),
+                                rsp.getUsableVirtualGemCnt());
                         if (rsp.hasAmount()) {
                             PayProto.RechargeDayAmount amount = rsp.getAmount();
                             if (amount != null) {
