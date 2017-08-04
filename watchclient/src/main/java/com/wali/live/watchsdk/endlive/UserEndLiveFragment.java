@@ -95,11 +95,14 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
 
     private UserEndLivePresenter.IUserEndLiveView mUserEndLiveView = new UserEndLivePresenter.IUserEndLiveView() {
         @Override
-        public void onRefresh() {
+        public void onRefresh(User user) {
             //刷新关注状态和用户昵称
-            followResult(mOwner.isFocused());
-            if (TextUtils.isEmpty(mOwnerName) && !TextUtils.isEmpty(mOwner.getNickname())) {
-                mNameTv.setText(mOwner.getNickname());
+            if (user == null) {
+                return;
+            }
+            followResult(user.isFocused());
+            if (!TextUtils.isEmpty(user.getNickname())) {
+                mNameTv.setText(user.getNickname());
             }
         }
 

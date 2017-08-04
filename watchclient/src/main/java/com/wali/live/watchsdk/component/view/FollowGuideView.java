@@ -22,11 +22,11 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IOrientationListener;
 import com.wali.live.component.view.IViewProxy;
+import com.wali.live.statistics.StatisticsKey;
+import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
-
-import static com.wali.live.utils.AvatarUtils.SIZE_TYPE_AVATAR_SMALL;
 
 /**
  * Created by zyh on 2017/07/13.
@@ -99,7 +99,7 @@ public class FollowGuideView extends RelativeLayout implements IComponentView<Fo
             setVisibility(GONE);
             return;
         }
-        String url = AvatarUtils.getAvatarUrlByUidTs(mMyRoomData.getUid(), SIZE_TYPE_AVATAR_SMALL, mMyRoomData.getAvatarTs());
+        String url = AvatarUtils.getAvatarUrlByUidTs(mMyRoomData.getUid(), AvatarUtils.SIZE_TYPE_AVATAR_SMALL, mMyRoomData.getAvatarTs());
         FrescoWorker.loadImage(mAvatarDv, ImageFactory.newHttpImage(url)
                 .setIsCircle(true)
                 .setLoadingDrawable(GlobalData.app().getResources().getDrawable(R.color.color_f2f2f2))
@@ -123,6 +123,9 @@ public class FollowGuideView extends RelativeLayout implements IComponentView<Fo
             mShowAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {
+                    StatisticsWorker.getsInstance().sendCommandRealTime(StatisticsWorker.AC_APP,
+                            String.format(StatisticsKey.KEY_SDK_FOLLOW_WINDOWS_SHOW,
+                                    mMyRoomData.getRoomId()), 1);
                     setVisibility(VISIBLE);
                     mPresenter.countDownIn(mCountDownTime);
                 }
@@ -175,10 +178,16 @@ public class FollowGuideView extends RelativeLayout implements IComponentView<Fo
         int i = v.getId();
         if (i == R.id.close_btn) {
             hideSelf(true);
+            StatisticsWorker.getsInstance().sendCommandRealTime(StatisticsWorker.AC_APP,
+                    String.format(StatisticsKey.KEY_SDK_FOLLOW_WINDOWS_CLOSE,
+                            mMyRoomData.getRoomId()), 1);
         } else if (i == R.id.follow_tv) {
             if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.follow(mMyRoomData.getUid(), mMyRoomData.getRoomId());
             }
+            StatisticsWorker.getsInstance().sendCommandRealTime(StatisticsWorker.AC_APP,
+                    String.format(StatisticsKey.KEY_SDK_FOLLOW__WINDOWS_FOLLOW,
+                            mMyRoomData.getRoomId()), 1);
         }
     }
 

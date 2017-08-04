@@ -12,9 +12,8 @@ import com.wali.live.proto.LiveProto.ViewerTopRsp;
  * 注意修改命令字和Action
  */
 public class ViewerTopRequest extends BaseRequest {
-
     public ViewerTopRequest() {
-        super(MiLinkCommand.COMMAND_LIVE_VIEWER_TOP,"ViewerTop",null);
+        super(MiLinkCommand.COMMAND_LIVE_VIEWER_TOP, "ViewerTop");
     }
 
     public ViewerTopRequest(long ownerId, String liveId) {

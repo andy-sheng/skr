@@ -3,8 +3,8 @@ package com.wali.live.recharge.net;
 import android.support.annotation.NonNull;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.api.request.BaseRequest;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.wali.live.pay.model.Diamond;
@@ -16,7 +16,7 @@ import com.wali.live.proto.PayProto;
 
 public class CreateOrderRequest extends BaseRequest {
     public CreateOrderRequest(@NonNull Diamond goods, PayProto.PayType payType, PayProto.RChannel channel) {
-        super(MiLinkCommand.COMMAND_PAY_CREATE_ORDER, "createOrder", null);
+        super(MiLinkCommand.COMMAND_PAY_CREATE_ORDER, "createOrder");
         mRequest = PayProto.CreateOrderRequest.newBuilder()
                 .setUuid(UserAccountManager.getInstance().getUuidAsLong())
                 .setPlatform(PayProto.Platform.ANDROID)

@@ -12,7 +12,7 @@ import com.wali.live.proto.PayProto;
  */
 public class QueryBalanceDetailRequest extends BaseRequest {
     public QueryBalanceDetailRequest() {
-        super(MiLinkCommand.COMMAND_PAY_GET_BALANCE_DETAIL, "GetBalanceDetail", null);
+        super(MiLinkCommand.COMMAND_PAY_GET_BALANCE_DETAIL, "GetBalanceDetail");
         mRequest = PayProto.QueryBalanceDetailRequest.newBuilder()
                 .setUuid(UserAccountManager.getInstance().getUuidAsLong())
                 .setPlatform(PayProto.Platform.ANDROID)

@@ -38,7 +38,7 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 @Deprecated
 public class GameBarrageViewGroup extends RelativeLayout {
-    public static final String TAG = GameBarrageViewGroup.class.getSimpleName();
+    public static final String TAG = "GameBarrageViewGroup";
 
     private static final int FLY_SPEED = 220; // 飞行速度 220px/s
 

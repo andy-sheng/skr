@@ -16,7 +16,7 @@ import com.wali.live.proto.UserProto;
 public class UploadUserInfoRequest extends BaseRequest {
 
     public UploadUserInfoRequest(long uuid, String nickName, int gender, long avatar, String avatarMd5, boolean needUploadGender) {
-        super(MiLinkCommand.COMMAND_UPLOAD_USER_INFO, "uploaduserpro", null);
+        super(MiLinkCommand.COMMAND_UPLOAD_USER_INFO, "uploaduserpro");
         boolean needUpload = false;
         UserProto.UploadUserPropertiesReq.Builder builder = UserProto.UploadUserPropertiesReq.newBuilder();
         builder.setZuid(uuid);

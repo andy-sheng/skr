@@ -14,7 +14,7 @@ import com.wali.live.proto.Live2Proto.LiveCover;
  */
 public class RoomInfoChangeRequest extends BaseRequest {
     public RoomInfoChangeRequest(long zuid, String liveId, String coverUrl, String packageName) {
-        super(MiLinkCommand.COMMAND_LIVE_ROOM_INFO_CHANGE, "RoomInfoChange", null);
+        super(MiLinkCommand.COMMAND_LIVE_ROOM_INFO_CHANGE, "RoomInfoChange");
 
         ChangeRoomInfoReq.Builder builder = ChangeRoomInfoReq.newBuilder()
                 .setZuid(zuid)

@@ -56,22 +56,9 @@ public class RechargeFragment extends BaseEventBusFragment implements IRechargeV
     private static final String TAG = RechargeFragment.class.getSimpleName();
     public static final int REQUEST_CODE = com.base.global.GlobalData.getRequestCode();
 
-    public static RechargeFragment openFragment(@NonNull FragmentActivity fragmentActivity, @IdRes int containerId, Bundle bundle, boolean hasAnimation) {
-        return (RechargeFragment) FragmentNaviUtils.addFragment(fragmentActivity, containerId, RechargeFragment.class, bundle, true, hasAnimation, true);
-    }
-
-    //////////////////////////////////////////////////////
-    /////////////////////非静态成员变量/////////////////////
-    //////////////////////////////////////////////////////
-
     private RechargeRecyclerViewAdapter mRechargeAdapter;
-
-    //Inject
     private RechargePresenter mRechargePresenter = RechargePresenter.newInstance();
-
-    //////////////////////////////////////////////////////
-    /////////////////////////方法//////////////////////////
-    //////////////////////////////////////////////////////
+    private boolean mMayRechargeFromOutSide = false;    //是否可能去微信充值了
 
     @Override
     public int getRequestCode() {
@@ -129,7 +116,6 @@ public class RechargeFragment extends BaseEventBusFragment implements IRechargeV
         recyclerView.setAdapter(mRechargeAdapter);
         recyclerView.setHasFixedSize(true);
 
-
         mRechargePresenter.loadDataAndUpdateView();
         // 进入钻石充值页面打一次
 //        StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY, getRechargeTemplate(VISIT, RechargePresenter.getCurPayWay()), TIMES, "1");
@@ -141,11 +127,6 @@ public class RechargeFragment extends BaseEventBusFragment implements IRechargeV
         // 先隐藏弹窗，避免弹窗移到屏幕左上角被用户看到
         mRechargeAdapter.hidePopupWindow();
     }
-
-    /**
-     * 是否可能去微信充值了
-     */
-    private boolean mMayRechargeFromOutSide = false;
 
     @Override
     public void onResume() {
@@ -277,6 +258,16 @@ public class RechargeFragment extends BaseEventBusFragment implements IRechargeV
                 || !RechargePresenter.isFirstRecharge();//非首次充值的第二步
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(KeyboardEvent event) {
+        if (event == null || event.eventType != KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN) {
+            return;
+        }
+        if (mRechargeAdapter != null) {
+            mRechargeAdapter.clickGridViewItem();
+        }
+    }
+
     @MainThread
     @Override
     public void onFragmentResult(int requestCode, int resultCode, @Nullable Bundle bundle) {
@@ -289,13 +280,7 @@ public class RechargeFragment extends BaseEventBusFragment implements IRechargeV
         MyLog.e(TAG, "no match handle fragment result");
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(KeyboardEvent event) {
-        if (event == null || event.eventType != KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN) {
-            return;
-        }
-        if (mRechargeAdapter != null) {
-            mRechargeAdapter.clickGridViewItem();
-        }
+    public static RechargeFragment openFragment(@NonNull FragmentActivity fragmentActivity, @IdRes int containerId, Bundle bundle, boolean hasAnimation) {
+        return (RechargeFragment) FragmentNaviUtils.addFragment(fragmentActivity, containerId, RechargeFragment.class, bundle, true, hasAnimation, true);
     }
 }

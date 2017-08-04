@@ -17,8 +17,7 @@ import com.wali.live.watchsdk.channel.sublist.presenter.SubChannelParam;
  */
 public class GetSubListRequest extends BaseRequest {
     public GetSubListRequest(SubChannelParam param, int gender) {
-        super(MiLinkCommand.COMMAND_HOT_CHANNEL_SUB_LIST, "GetSubList",
-                String.valueOf(param.getChannelId()));
+        super(MiLinkCommand.COMMAND_HOT_CHANNEL_SUB_LIST, "GetSubList");
         generateRequest(param, gender);
     }
 
