@@ -110,15 +110,15 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
 
         mClarityTv = $(R.id.clarity_tv);
         mClarityTv.setText(mQualityArray[mQualityIndex]);
-        mClarityTv.setOnClickListener(this);
+        $click(mClarityTv, this);
 
         mBlockArea = $(R.id.block_area);
-        mBlockArea.setOnClickListener(this);
+        $click(mBlockArea, this);
 
         mMuteTv = $(R.id.mute_yes_tv);
-        mMuteTv.setOnClickListener(this);
         mUnMuteTv = $(R.id.mute_no_tv);
-        mUnMuteTv.setOnClickListener(this);
+        $click(mMuteTv, this);
+        $click(mUnMuteTv, this);
 
         mAdminSl = $(R.id.admin_sl);
     }
@@ -261,7 +261,9 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     public void setManagerCount(int count) {
         if (count >= 0) {
             mAdminSl.setVisibility(View.VISIBLE);
-            mAdminCount.setText(getString(R.string.has_add_manager_count, count));
+            mAdminCount.setText(count == 0 ?
+                    GlobalData.app().getString(R.string.has_add_manager_count_zero) :
+                    GlobalData.app().getString(R.string.has_add_manager_count, count));
             mAdminArea.setVisibility(View.VISIBLE);
         }
     }
