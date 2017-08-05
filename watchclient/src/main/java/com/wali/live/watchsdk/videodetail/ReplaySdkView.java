@@ -1,5 +1,8 @@
 package com.wali.live.watchsdk.videodetail;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,7 +29,6 @@ import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.utils.ReplayBarrageMessageManager;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
-import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
@@ -37,6 +39,7 @@ import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
 import com.wali.live.watchsdk.watchtop.view.WatchTopInfoSingleView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -66,6 +69,8 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
     private final List<View> mHorizontalMoveSet = new ArrayList();
     private final List<View> mVerticalMoveSet = new ArrayList(0);
     private final List<View> mGameHideSet = new ArrayList(0);
+
+    protected final AnimationHelper mAnimationHelper = new AnimationHelper();
 
     protected GiftPresenter mGiftPresenter;
     protected RoomTextMsgPresenter mRoomTextMsgPresenter;
@@ -113,11 +118,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
         mIsGameMode = (controller.mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
     }
 
-    public void startView(long videoStartTime) {
-        mVideoStartTime = videoStartTime;
-        startView();
-    }
-
     @Override
     public void setupView() {
         MyLog.w(TAG, "setupSdkView");
@@ -142,7 +142,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
             mTopInfoView = view;
             mTopInfoView.onActivityCreate();
         }
-
         // 大礼物动画
         {
             GiftAnimationView view = $(R.id.gift_animation_player_view);
@@ -153,7 +152,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
             mGiftAnimationView = view;
             mGiftAnimationView.onActivityCreate();
         }
-
         // 房间特效动画
         {
             GiftRoomEffectView view = $(R.id.gift_room_effect_view);
@@ -164,7 +162,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
             mGiftRoomEffectView = view;
             mGiftRoomEffectView.onActivityCreate();
         }
-
         // 礼物连送动画
         {
             GiftContinueViewGroup view = $(R.id.gift_continue_vg);
@@ -175,7 +172,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
             mGiftContinueViewGroup = view;
             mGiftContinueViewGroup.onActivityCreate();
         }
-
         // 飘屏弹幕
         {
             FlyBarrageViewGroup view = $(R.id.fly_barrage_viewgroup);
@@ -186,7 +182,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
             mFlyBarrageViewGroup = $(R.id.fly_barrage_viewgroup);
             mFlyBarrageViewGroup.onActivityCreate();
         }
-
         // 弹幕区
         {
             LiveCommentView view = $(R.id.live_comment_view);
@@ -215,7 +210,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                 R.id.gift_room_effect_view,
                 R.id.widget_view
         }, mHorizontalMoveSet, mVerticalMoveSet);
-
         if (mIsGameMode) {
             addViewToSet(new int[]{
                     R.id.watch_top_info_view,
@@ -226,7 +220,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                     R.id.widget_view
             }, mGameHideSet);
         }
-
         // 滑动
         {
             View view = $(R.id.touch_view);
@@ -240,6 +233,11 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
     }
 
     private Animation mShowAnimation;
+
+    public void startView(long videoStartTime) {
+        mVideoStartTime = videoStartTime;
+        startView();
+    }
 
     @Override
     public void startView() {
@@ -273,12 +271,18 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addViewUnderAnchor(view, layoutParams, $(R.id.watch_top_info_view));
+
+        registerAction(MSG_ON_ORIENT_PORTRAIT);
+        registerAction(MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(MSG_INPUT_VIEW_SHOWED);
+        registerAction(MSG_INPUT_VIEW_HIDDEN);
+        registerAction(MSG_BACKGROUND_CLICK);
     }
 
     @Override
     public void stopView() {
-        MyLog.w(TAG, "stopView");
         super.stopView();
+        mAnimationHelper.clearAnimation();
         mContentView.clearAnimation();
         mParentView.removeView(mContentView);
         ReplayBarrageMessageManager.getInstance().destory();
@@ -376,31 +380,31 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
         switch (event) {
             case MSG_ON_ORIENT_PORTRAIT:
                 mIsLandscape = false;
-//                stopAllAnimator();
+                mAnimationHelper.stopAllAnimator();
                 orientCloseBtn(false);
                 mTopInfoView.onScreenOrientationChanged(mIsLandscape);
                 if (mIsGameMode) {
                     mController.postEvent(MSG_ENABLE_MOVE_VIEW);
-//                    if (mGameHide) { // 横屏转竖屏，恢复被隐藏的View，竖屏转横屏的逻辑在TouchPresenter中处理
-//                        mGameHide = false;
-//                        for (View view : mGameHideSet) {
-//                            if (view != null && view.getVisibility() != View.VISIBLE) {
-//                                view.setVisibility(View.VISIBLE);
-//                            }
-//                        }
-//                    }
-//                    setVisibility(mLiveCommentView, View.VISIBLE);
+                    if (mAnimationHelper.mGameHide) { // 横屏转竖屏，恢复被隐藏的View，竖屏转横屏的逻辑在TouchPresenter中处理
+                        mAnimationHelper.mGameHide = false;
+                        for (View view : mGameHideSet) {
+                            if (view != null && view.getVisibility() != View.VISIBLE) {
+                                view.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+                    mLiveCommentView.setVisibility(View.VISIBLE);
                     mController.postEvent(MSG_HIDE_GAME_INPUT);
                 }
                 return true;
             case MSG_ON_ORIENT_LANDSCAPE:
                 mIsLandscape = true;
-//                stopAllAnimator();
+                mAnimationHelper.stopAllAnimator();
                 orientCloseBtn(true);
                 mTopInfoView.onScreenOrientationChanged(mIsLandscape);
                 if (mIsGameMode) { // 游戏直播横屏不需左右滑
                     mController.postEvent(MSG_DISABLE_MOVE_VIEW);
-//                    setVisibility(mLiveCommentView, View.INVISIBLE);
+                    mLiveCommentView.setVisibility(View.INVISIBLE);
                     mController.postEvent(MSG_SHOW_GAME_INPUT);
                 }
                 return true;
@@ -411,7 +415,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                 if (mGiftContinueViewGroup != null) {
                     mGiftContinueViewGroup.onShowInputView();
                 }
-//                startInputAnimator(true);
+                mAnimationHelper.startInputAnimator(true);
                 return true;
             case MSG_INPUT_VIEW_HIDDEN:
                 if (!mIsGameMode || !mIsLandscape) { // 游戏直播横屏不需左右滑
@@ -420,7 +424,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                 if (mGiftContinueViewGroup != null) {
                     mGiftContinueViewGroup.onHideInputView();
                 }
-//                startInputAnimator(false);
+                mAnimationHelper.startInputAnimator(false);
                 return true;
             case MSG_BACKGROUND_CLICK:
                 if (mController.postEvent(MSG_HIDE_INPUT_VIEW)) {
@@ -430,7 +434,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                     mController.mPlayerView.onSeekBarContainerClick();
                 }
                 if (mIsGameMode && mIsLandscape) {
-//                    startGameAnimator();
+                    mAnimationHelper.startGameAnimator();
                     return true;
                 }
                 break;
@@ -440,137 +444,137 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
         return false;
     }
 
-//    public class Action {
-//
-//        protected void startInputAnimator(boolean inputShow) {
-//            if (mInputShow == inputShow) {
-//                return;
-//            }
-//            mInputShow = inputShow;
-//            ValueAnimator valueAnimator = deRef(mInputAnimatorRef);
-//            if (valueAnimator != null) {
-//                if (!valueAnimator.isStarted() && !valueAnimator.isRunning()) {
-//                    valueAnimator.start();
-//                }
-//                return;
-//            }
-//            valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
-//            valueAnimator.setDuration(300);
-//            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//                @Override
-//                public void onAnimationUpdate(ValueAnimator animation) {
-//                    float value = (float) animation.getAnimatedValue();
-//                    if (mInputShow) {
-//                        value = 1.0f - value;
-//                    }
-//                    setAlpha(mTopInfoView, value);
-//                }
-//            });
-//            valueAnimator.addListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationStart(Animator animation) {
-//                    if (mInputShow) {
-//                        if (mIsLandscape && !mIsGameMode) {
-//                            setVisibility(mLiveCommentView, View.GONE);
-//                        }
-//                    } else {
-//                        setVisibility(mTopInfoView, View.VISIBLE);
-//                    }
-//                }
-//
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    if (mInputShow) {
-//                        setVisibility(mTopInfoView, View.GONE);
-//                    } else {
-//                        setAlpha(mTopInfoView, 1.0f);
-//                        if (mIsLandscape && !mIsGameMode) {
-//                            setVisibility(mLiveCommentView, View.VISIBLE);
-//                        }
-//                    }
-//                }
-//            });
-//            valueAnimator.start();
-//            mInputAnimatorRef = new WeakReference<>(valueAnimator);
-//        }
-//
-//        private WeakReference<ValueAnimator> mGameAnimatorRef; // 游戏直播竖屏时，隐藏显示动画
-//        private boolean mGameHide = false;
-//
-//        /**
-//         * 观看游戏直播横屏时，点击隐藏显示View
-//         */
-//        private void startGameAnimator() {
-//            mGameHide = !mGameHide;
-//            ValueAnimator valueAnimator = deRef(mGameAnimatorRef);
-//            if (valueAnimator != null) {
-//                if (!valueAnimator.isStarted() && !valueAnimator.isRunning()) {
-//                    valueAnimator.start();
-//                }
-//                return;
-//            }
-//            valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
-//            valueAnimator.setDuration(300);
-//            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//                @Override
-//                public void onAnimationUpdate(ValueAnimator animation) {
-//                    float value = (float) animation.getAnimatedValue();
-//                    if (mGameHide) {
-//                        value = 1.0f - value;
-//                    }
-//                    for (View view : mGameHideSet) {
-//                        if (view != null) {
-//                            setAlpha(view, value);
-//                        }
-//                    }
-//                }
-//            });
-//            valueAnimator.addListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationStart(Animator animation) {
-//                    if (!mGameHide) {
-//                        for (View view : mGameHideSet) {
-//                            if (view != null) {
-//                                setAlpha(view, 0.0f);
-//                                setVisibility(view, View.VISIBLE);
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    if (mGameHide) {
-//                        for (View view : mGameHideSet) {
-//                            if (view != null) {
-//                                setAlpha(view, 1.0f);
-//                                setVisibility(view, View.GONE);
-//                            }
-//                        }
-//                    }
-//                }
-//            });
-//            valueAnimator.start();
-//            mGameAnimatorRef = new WeakReference<>(valueAnimator);
-//        }
-//
-//        @Override
-//        protected void stopAllAnimator() {
-//            ValueAnimator valueAnimator = deRef(mInputAnimatorRef);
-//            if (valueAnimator != null) {
-//                valueAnimator.cancel();
-//            }
-//            valueAnimator = deRef(mGameAnimatorRef);
-//            if (valueAnimator != null) {
-//                valueAnimator.cancel();
-//            }
-//        }
-//
-//        @Override
-//        public void clearAnimation() {
-//            stopAllAnimator();
-//            mInputAnimatorRef = null;
-//            mGameAnimatorRef = null;
-//        }
-//    }
+    public class AnimationHelper extends BaseSdkView.AnimationHelper {
+
+        protected void startInputAnimator(boolean inputShow) {
+            if (mInputShow == inputShow) {
+                return;
+            }
+            mInputShow = inputShow;
+            ValueAnimator valueAnimator = deRef(mInputAnimatorRef);
+            if (valueAnimator != null) {
+                if (!valueAnimator.isStarted() && !valueAnimator.isRunning()) {
+                    valueAnimator.start();
+                }
+                return;
+            }
+            valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
+            valueAnimator.setDuration(300);
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    float value = (float) animation.getAnimatedValue();
+                    if (mInputShow) {
+                        value = 1.0f - value;
+                    }
+                    setAlpha(mTopInfoView, value);
+                }
+            });
+            valueAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    if (mInputShow) {
+                        if (mIsLandscape && !mIsGameMode) {
+                            setVisibility(mLiveCommentView, View.GONE);
+                        }
+                    } else {
+                        setVisibility(mTopInfoView, View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (mInputShow) {
+                        setVisibility(mTopInfoView, View.GONE);
+                    } else {
+                        setAlpha(mTopInfoView, 1.0f);
+                        if (mIsLandscape && !mIsGameMode) {
+                            setVisibility(mLiveCommentView, View.VISIBLE);
+                        }
+                    }
+                }
+            });
+            valueAnimator.start();
+            mInputAnimatorRef = new WeakReference<>(valueAnimator);
+        }
+
+        private WeakReference<ValueAnimator> mGameAnimatorRef; // 游戏直播竖屏时，隐藏显示动画
+        private boolean mGameHide = false;
+
+        /**
+         * 观看游戏直播横屏时，点击隐藏显示View
+         */
+        private void startGameAnimator() {
+            mGameHide = !mGameHide;
+            ValueAnimator valueAnimator = deRef(mGameAnimatorRef);
+            if (valueAnimator != null) {
+                if (!valueAnimator.isStarted() && !valueAnimator.isRunning()) {
+                    valueAnimator.start();
+                }
+                return;
+            }
+            valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
+            valueAnimator.setDuration(300);
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    float value = (float) animation.getAnimatedValue();
+                    if (mGameHide) {
+                        value = 1.0f - value;
+                    }
+                    for (View view : mGameHideSet) {
+                        if (view != null) {
+                            setAlpha(view, value);
+                        }
+                    }
+                }
+            });
+            valueAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    if (!mGameHide) {
+                        for (View view : mGameHideSet) {
+                            if (view != null) {
+                                setAlpha(view, 0.0f);
+                                setVisibility(view, View.VISIBLE);
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (mGameHide) {
+                        for (View view : mGameHideSet) {
+                            if (view != null) {
+                                setAlpha(view, 1.0f);
+                                setVisibility(view, View.GONE);
+                            }
+                        }
+                    }
+                }
+            });
+            valueAnimator.start();
+            mGameAnimatorRef = new WeakReference<>(valueAnimator);
+        }
+
+        @Override
+        protected void stopAllAnimator() {
+            ValueAnimator valueAnimator = deRef(mInputAnimatorRef);
+            if (valueAnimator != null) {
+                valueAnimator.cancel();
+            }
+            valueAnimator = deRef(mGameAnimatorRef);
+            if (valueAnimator != null) {
+                valueAnimator.cancel();
+            }
+        }
+
+        @Override
+        public void clearAnimation() {
+            stopAllAnimator();
+            mInputAnimatorRef = null;
+            mGameAnimatorRef = null;
+        }
+    }
 }

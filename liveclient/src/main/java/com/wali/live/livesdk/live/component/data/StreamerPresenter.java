@@ -77,8 +77,7 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
         mController = controller;
     }
 
-    public StreamerPresenter(
-            @NonNull RoomBaseDataModel myRoomData) {
+    public StreamerPresenter(@NonNull RoomBaseDataModel myRoomData) {
         mMyRoomData = myRoomData;
         mUIHandler = new MyUIHandler(this);
         mReconnectHelper = new ReconnectHelper();
@@ -88,6 +87,7 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
 
     @Override
     public void destroy() {
+        super.destroy();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }

@@ -1,5 +1,8 @@
 package com.wali.live.watchsdk.component;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -43,6 +46,7 @@ import com.wali.live.watchsdk.component.view.panel.GameDownloadPanel;
 import com.wali.live.watchsdk.envelope.SendEnvelopeFragment;
 import com.wali.live.watchsdk.watch.presenter.PanelContainerPresenter;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,8 +60,6 @@ import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_HI
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PAGE_DOWN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PAGE_UP;
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_FOLLOW_GUIDE;
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_GAME_INPUT;
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
@@ -72,6 +74,8 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
     private final List<View> mHorizontalMoveSet = new ArrayList();
     private final List<View> mVerticalMoveSet = new ArrayList(0);
     private final List<View> mGameHideSet = new ArrayList(0);
+
+    protected final AnimationHelper mAnimationHelper = new AnimationHelper();
 
     @Nullable
     protected View mTopInfoView;
@@ -183,7 +187,6 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
         if (mGameDownloadPresenter != null) {
             mGameDownloadPresenter.stopPresenter();
         }
-
         mGameHideSet.clear();
     }
 
@@ -192,7 +195,6 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
         mContentView = $(mParentView, R.id.main_act_container);
         mGiftContinueViewGroup = $(R.id.gift_continue_vg);  // 礼物
         mTopInfoView = $(R.id.watch_top_info_view);         // 顶部view
-
         // 弹幕区
         {
             LiveCommentView view = $(R.id.live_comment_view);
@@ -205,7 +207,6 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
             view.setToken(mController.mRoomChatMsgManager.toString());
             mLiveCommentView = view;
         }
-
         // 底部面板
         {
             RelativeLayout relativeLayout = $(R.id.bottom_panel_view);
@@ -215,31 +216,30 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
             }
             PanelContainerPresenter presenter = new PanelContainerPresenter(mController,
                     mController.mMyRoomData);
-            registerComponent(presenter, relativeLayout);
+            registerHybridComponent(presenter, relativeLayout);
         }
-
         // 输入框
         {
             InputAreaView view = $(R.id.input_area_view);
             if (view == null) {
+                MyLog.e(TAG, "missing R.id.input_area_view");
                 return;
             }
             InputAreaPresenter presenter = new InputAreaPresenter(
                     mController, mController.mMyRoomData, true);
             registerComponent(view, presenter);
         }
-
         //底部输入框
         {
             BarrageBtnView view = $(R.id.barrage_btn_view);
             if (view == null) {
+                MyLog.e(TAG, "missing R.id.barrage_btn_view");
                 return;
             }
             BarrageBtnPresenter presenter = new BarrageBtnPresenter(mController);
             registerComponent(view, presenter);
             mBarrageBtnView = view;
         }
-
         // 底部按钮
         {
             RelativeLayout relativeLayout = $(R.id.bottom_button_view);
@@ -254,40 +254,34 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                     mController, mController.mMyRoomData);
             registerComponent(mWatchBottomButton, presenter);
         }
-
         // 抢红包
         {
             RelativeLayout relativeLayout = $(R.id.envelope_view);
             EnvelopePresenter presenter = new EnvelopePresenter(mController, mController.mMyRoomData);
-            registerComponent(presenter, relativeLayout);
+            registerHybridComponent(presenter, relativeLayout);
         }
-
+        // 运营位
         if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
-            // 运营位
-            {
-                WidgetView view = $(R.id.widget_view);
-                if (view == null) {
-                    MyLog.e(TAG, "missing R.id.widget_view");
-                    return;
-                }
-                WidgetPresenter presenter = new WidgetPresenter(mController, mController.mMyRoomData, false);
-                registerComponent(view, presenter);
-                ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
+            WidgetView view = $(R.id.widget_view);
+            if (view == null) {
+                MyLog.e(TAG, "missing R.id.widget_view");
+                return;
             }
+            WidgetPresenter presenter = new WidgetPresenter(mController, mController.mMyRoomData, false);
+            registerComponent(view, presenter);
+            ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
         }
 
         if (mController.mRoomInfoList != null && mController.mRoomInfoList.size() > 1) {
-            {
-                mPagerView = new ImagePagerView(mActivity);
-                mPagerView.setVerticalList(mController.mRoomInfoList, mController.mRoomInfoPosition);
+            mPagerView = new ImagePagerView(mActivity);
+            mPagerView.setVerticalList(mController.mRoomInfoList, mController.mRoomInfoPosition);
 
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                addViewAboveAnchor(mPagerView, layoutParams, $(R.id.mask_iv));
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            addViewAboveAnchor(mPagerView, layoutParams, $(R.id.mask_iv));
 
-                ImagePagerPresenter presenter = new ImagePagerPresenter(mController);
-                registerComponent(mPagerView, presenter);
-            }
+            ImagePagerPresenter presenter = new ImagePagerPresenter(mController);
+            registerComponent(mPagerView, presenter);
         }
 
         addViewToSet(new int[]{
@@ -300,7 +294,6 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                 R.id.widget_view,
                 R.id.barrage_btn_view
         }, mHorizontalMoveSet);
-
         addViewToSet(new int[]{
                 R.id.watch_top_info_view,
                 R.id.bottom_button_view,
@@ -314,7 +307,6 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                 R.id.rotate_btn,
                 R.id.close_btn,
         }, mVerticalMoveSet);
-
         // 滑动
         {
             View view = $(R.id.touch_view);
@@ -336,17 +328,20 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
     @Override
     public void startView() {
         super.startView();
+        registerAction(MSG_ON_ORIENT_PORTRAIT);
+        registerAction(MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(MSG_INPUT_VIEW_SHOWED);
+        registerAction(MSG_INPUT_VIEW_HIDDEN);
+        registerAction(MSG_BACKGROUND_CLICK);
         registerAction(MSG_SHOW_FOLLOW_GUIDE);
         registerAction(MSG_FOLLOW_COUNT_DOWN);
-        registerAction(MSG_PAGE_DOWN);
-        registerAction(MSG_PAGE_UP);
         registerAction(MSG_SHOW_SEND_ENVELOPE);
     }
 
     @Override
-    public void release() {
-        super.release();
-//        clearAnimation();
+    public void stopView() {
+        super.stopView();
+        mAnimationHelper.clearAnimation();
     }
 
     public void switchToNextRoom() {
@@ -397,29 +392,29 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
         switch (event) {
             case MSG_ON_ORIENT_PORTRAIT:
                 mIsLandscape = false;
-//                stopAllAnimator();
+                mAnimationHelper.stopAllAnimator();
                 if (mIsGameMode) {
                     mController.postEvent(MSG_ENABLE_MOVE_VIEW);
-//                    if (mGameHide) { // 横屏转竖屏，恢复被隐藏的View，竖屏转横屏的逻辑在TouchPresenter中处理
-//                        mGameHide = false;
-//                        for (View view : mGameHideSet) {
-//                            if (view != null && view.getVisibility() != View.VISIBLE) {
-//                                view.setVisibility(View.VISIBLE);
-//                            }
-//                        }
-//                    }
-//                    setVisibility(mLiveCommentView, View.VISIBLE);
-//                    setVisibility(mBarrageBtnView, View.VISIBLE);
+                    if (mAnimationHelper.mGameHide) { // 横屏转竖屏，恢复被隐藏的View，竖屏转横屏的逻辑在TouchPresenter中处理
+                        mAnimationHelper.mGameHide = false;
+                        for (View view : mGameHideSet) {
+                            if (view != null && view.getVisibility() != View.VISIBLE) {
+                                view.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+                    mLiveCommentView.setVisibility(View.VISIBLE);
+                    mBarrageBtnView.setVisibility(View.VISIBLE);
                     mController.postEvent(MSG_HIDE_GAME_INPUT);
                 }
                 return true;
             case MSG_ON_ORIENT_LANDSCAPE:
                 mIsLandscape = true;
-//                stopAllAnimator();
+                mAnimationHelper.stopAllAnimator();
                 if (mIsGameMode) { // 游戏直播横屏不需左右滑
                     mController.postEvent(MSG_DISABLE_MOVE_VIEW);
-//                    setVisibility(mLiveCommentView, View.INVISIBLE);
-//                    setVisibility(mBarrageBtnView, View.INVISIBLE);
+                    mLiveCommentView.setVisibility(View.INVISIBLE);
+                    mBarrageBtnView.setVisibility(View.INVISIBLE);
                     mController.postEvent(MSG_SHOW_GAME_INPUT);
                 }
                 return true;
@@ -430,7 +425,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                 if (mGiftContinueViewGroup != null) {
                     mGiftContinueViewGroup.onShowInputView();
                 }
-//                startInputAnimator(true);
+                mAnimationHelper.startInputAnimator(true);
                 return true;
             case MSG_INPUT_VIEW_HIDDEN:
                 if (!mIsGameMode || !mIsLandscape) { // 游戏直播横屏不需左右滑
@@ -439,14 +434,14 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                 if (mGiftContinueViewGroup != null) {
                     mGiftContinueViewGroup.onHideInputView();
                 }
-//                startInputAnimator(false);
+                mAnimationHelper.startInputAnimator(false);
                 return true;
             case MSG_BACKGROUND_CLICK:
                 if (mController.postEvent(MSG_HIDE_INPUT_VIEW)) {
                     return true;
                 }
                 if (mIsGameMode && mIsLandscape) {
-//                    startGameAnimator();
+                    mAnimationHelper.startGameAnimator();
                     return true;
                 }
                 break;
@@ -496,5 +491,140 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                 break;
         }
         return false;
+    }
+
+    protected class AnimationHelper extends BaseSdkView.AnimationHelper {
+
+        @Override
+        protected void startInputAnimator(boolean inputShow) {
+            if (mInputShow == inputShow) {
+                return;
+            }
+            mInputShow = inputShow;
+            ValueAnimator valueAnimator = deRef(mInputAnimatorRef);
+            if (valueAnimator != null) {
+                if (!valueAnimator.isStarted() && !valueAnimator.isRunning()) {
+                    valueAnimator.start();
+                }
+                return;
+            }
+            valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
+            valueAnimator.setDuration(300);
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    float value = (float) animation.getAnimatedValue();
+                    if (mInputShow) {
+                        value = 1.0f - value;
+                    }
+                    setAlpha(mTopInfoView, value);
+                }
+            });
+            valueAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    if (mInputShow) {
+                        if (mIsLandscape && !mIsGameMode) {
+                            setVisibility(mLiveCommentView, View.GONE);
+                        }
+                    } else {
+                        setVisibility(mTopInfoView, View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (mInputShow) {
+                        setVisibility(mTopInfoView, View.GONE);
+                    } else {
+                        setAlpha(mTopInfoView, 1.0f);
+                        if (mIsLandscape && !mIsGameMode) {
+                            setVisibility(mLiveCommentView, View.VISIBLE);
+                        }
+                    }
+                }
+            });
+            valueAnimator.start();
+            mInputAnimatorRef = new WeakReference<>(valueAnimator);
+        }
+
+        private WeakReference<ValueAnimator> mGameAnimatorRef; // 游戏直播竖屏时，隐藏显示动画
+        private boolean mGameHide = false;
+
+        /**
+         * 观看游戏直播横屏时，点击隐藏显示View
+         */
+        private void startGameAnimator() {
+            mGameHide = !mGameHide;
+            ValueAnimator valueAnimator = deRef(mGameAnimatorRef);
+            if (valueAnimator != null) {
+                if (!valueAnimator.isStarted() && !valueAnimator.isRunning()) {
+                    valueAnimator.start();
+                }
+                return;
+            }
+            valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
+            valueAnimator.setDuration(300);
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    float value = (float) animation.getAnimatedValue();
+                    if (mGameHide) {
+                        value = 1.0f - value;
+                    }
+                    for (View view : mGameHideSet) {
+                        if (view != null) {
+                            setAlpha(view, value);
+                        }
+                    }
+                }
+            });
+            valueAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    if (!mGameHide) {
+                        for (View view : mGameHideSet) {
+                            if (view != null) {
+                                setAlpha(view, 0.0f);
+                                setVisibility(view, View.VISIBLE);
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (mGameHide) {
+                        for (View view : mGameHideSet) {
+                            if (view != null) {
+                                setAlpha(view, 1.0f);
+                                setVisibility(view, View.GONE);
+                            }
+                        }
+                    }
+                }
+            });
+            valueAnimator.start();
+            mGameAnimatorRef = new WeakReference<>(valueAnimator);
+        }
+
+        @Override
+        protected void stopAllAnimator() {
+            ValueAnimator valueAnimator = deRef(mInputAnimatorRef);
+            if (valueAnimator != null) {
+                valueAnimator.cancel();
+            }
+            valueAnimator = deRef(mGameAnimatorRef);
+            if (valueAnimator != null) {
+                valueAnimator.cancel();
+            }
+        }
+
+        @Override
+        public void clearAnimation() {
+            stopAllAnimator();
+            mInputAnimatorRef = null;
+            mGameAnimatorRef = null;
+        }
     }
 }

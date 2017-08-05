@@ -1,27 +1,32 @@
 package com.wali.live.componentwrapper;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.support.annotation.CallSuper;
+import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.thornbirds.component.ComponentView;
 import com.thornbirds.component.IEventObserver;
-import com.thornbirds.component.presenter.IEventPresenter;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
  * Created by yangli on 2017/8/2.
  *
- * @author YangLi
- * @mail yanglijd@gmail.com
+ * @module 基础架构页面
  */
 public abstract class BaseSdkView<VIEW extends View, CONTROLLER extends BaseSdkController>
         extends ComponentView<VIEW, CONTROLLER> implements IEventObserver {
 
     protected Activity mActivity;
+
+    protected final <T> T deRef(WeakReference reference) {
+        return reference != null ? (T) reference.get() : null;
+    }
 
     protected final void addViewToSet(int[] idSet, List<View>... listSet) {
         if (idSet == null || listSet == null) {
@@ -94,5 +99,39 @@ public abstract class BaseSdkView<VIEW extends View, CONTROLLER extends BaseSdkC
     @Override
     public void release() {
         super.release();
+    }
+
+    public abstract class AnimationHelper {
+
+        protected final void setAlpha(View view, @FloatRange(from = 0.0f, to = 1.0f) float alpha) {
+            if (view != null) {
+                view.setAlpha(alpha);
+            }
+        }
+
+        protected final void setVisibility(View view, int visibility) {
+            if (view != null) {
+                view.setVisibility(visibility);
+            }
+        }
+
+        protected WeakReference<ValueAnimator> mInputAnimatorRef; // 输入框弹起时，隐藏
+        protected boolean mInputShow = false;
+
+        /**
+         * 输入框显示时，隐藏弹幕区和头部区
+         * 弹幕区只在横屏下才需要显示和隐藏，直接修改visibility，在显示动画开始时显示，在消失动画结束时消失。
+         */
+        protected abstract void startInputAnimator(boolean inputShow);
+
+        /**
+         * 停止动画
+         */
+        protected abstract void stopAllAnimator();
+
+        /**
+         * 停止动画，并释放动画资源引用
+         */
+        public abstract void clearAnimation();
     }
 }

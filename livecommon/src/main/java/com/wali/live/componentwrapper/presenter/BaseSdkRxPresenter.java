@@ -13,8 +13,7 @@ import rx.subjects.BehaviorSubject;
 /**
  * Created by yangli on 2017/8/2.
  *
- * @author YangLi
- * @mail yanglijd@gmail.com
+ * @module 基础架构表现
  */
 public abstract class BaseSdkRxPresenter<VIEW> extends ComponentPresenter<VIEW>
         implements Presenter {

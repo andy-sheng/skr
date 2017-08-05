@@ -5,8 +5,7 @@ import com.thornbirds.component.ComponentController;
 /**
  * Created by yangli on 2017/8/2.
  *
- * @author YangLi
- * @mail yanglijd@gmail.com
+ * @module 基础架构控制器
  */
 public abstract class BaseSdkController extends ComponentController {
 
