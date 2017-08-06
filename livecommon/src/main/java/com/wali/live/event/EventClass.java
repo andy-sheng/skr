@@ -289,4 +289,13 @@ public abstract class EventClass {
     public static class H5UnloginEvent {
 
     }
+
+    /**
+     * 跳转兑换钻石事件
+     * ps:因为山叔把支付相关的放在LiveCommon里面，
+     * 点击兑换钻石需要跳转WebView,但是WebView相关的在WatchClient module下面，
+     * 相关文件太多，所以用EventBus将事件抛道上层。
+     */
+    public static class H5ExchangeEvent {
+    }
 }

@@ -28,9 +28,9 @@ import rx.functions.Action1;
  * Created by lan on 15-11-26.
  */
 public class UserAvatarRecyclerAdapter extends RecyclerView.Adapter<UserAvatarRecyclerAdapter.UserAvatarHolder> {
-    private static final String TAG = UserAvatarRecyclerAdapter.class.getSimpleName();
+    private static final String TAG = "UserAvatarRecyclerAdapter";
 
-    private static int[] mCrownBackgrounds = {R.drawable.avatar_item_crown_gold, R.drawable.avatar_item_crown_sliver, R.drawable.avatar_item_crown_cuprum };
+    private static int[] mCrownBackgrounds = {R.drawable.avatar_item_crown_gold, R.drawable.avatar_item_crown_sliver, R.drawable.avatar_item_crown_cuprum};
     private LinkedList<ViewerModel> mViewerList = new LinkedList<>();
 
     public static final int ITEM_TYPE_NORMAL = 100;    //列表的header
@@ -125,7 +125,7 @@ public class UserAvatarRecyclerAdapter extends RecyclerView.Adapter<UserAvatarRe
         //这个adapter观众头像和管理员头像 管理员头像maxCnt大于0
         ViewerModel viewer = mViewerList.get(position);
         AvatarUtils.loadAvatarByUidTs(holder.avatarIv, viewer.getUid(), viewer.getAvatar(), true);
-        if (position < 3 && mViewerList.size() >= 5 ) {
+        if (position < 3 && mViewerList.size() >= 5) {
             //         holder.crownIv.setVisibility(View.VISIBLE);
             holder.crownIv.setBackground(holder.crownIv.getContext().getResources().getDrawable(mCrownBackgrounds[position]));
         } else {
@@ -194,7 +194,7 @@ public class UserAvatarRecyclerAdapter extends RecyclerView.Adapter<UserAvatarRe
             }
             avatarIv = (BaseImageView) itemView.findViewById(R.id.user_avatar_iv);
             badgeIv = (ImageView) itemView.findViewById(R.id.user_badge_iv);
-            crownIv = (ImageView)itemView.findViewById(R.id.user_crown);
+            crownIv = (ImageView) itemView.findViewById(R.id.user_crown);
         }
     }
 }

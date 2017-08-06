@@ -74,14 +74,16 @@ public class RoomPreparePresenter extends BaseRxPresenter<IRoomPrepareView> {
                         int managerCount = managerModels.size();
                         boolean isTop1Manager = false;
                         mTop1Id = RoomAdminFragment.getTop1();
-                        for (LiveRoomManagerModel managerModel : managerModels) {
-                            if (mTop1Id == managerModel.uuid) {
-                                isTop1Manager = true;
-                                break;
+                        if (mTop1Id != 0 && managerModels != null) {
+                            for (LiveRoomManagerModel managerModel : managerModels) {
+                                if (mTop1Id == managerModel.uuid) {
+                                    isTop1Manager = true;
+                                    break;
+                                }
                             }
-                        }
-                        if (!isTop1Manager) {
-                            managerCount++;
+                            if (!isTop1Manager) {
+                                managerCount++;
+                            }
                         }
                         subscriber.onNext(managerCount);
                         subscriber.onCompleted();

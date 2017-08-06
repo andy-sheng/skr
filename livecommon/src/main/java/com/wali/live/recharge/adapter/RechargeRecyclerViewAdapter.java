@@ -1,6 +1,5 @@
 package com.wali.live.recharge.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -35,7 +34,7 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.live.module.common.R;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.common.view.ErrorView;
-import com.wali.live.income.exchange.ExchangeGemActivity;
+import com.wali.live.event.EventClass;
 import com.wali.live.pay.constant.PayWay;
 import com.wali.live.pay.handler.OneDayQuotaHandler;
 import com.wali.live.pay.handler.RechargeActionHandler;
@@ -46,6 +45,8 @@ import com.wali.live.recharge.config.RechargeConfig;
 import com.wali.live.recharge.data.RechargeInfo;
 import com.wali.live.recharge.presenter.RechargePresenter;
 import com.wali.live.recharge.view.RechargeFragment;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +111,7 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     private static final int DEFAULT_SELECTED_DELAY_MILLIS = 200;
 
     private static final int PAY_WAY_START_POSITION = 2;
+
 
     /////////////////界面相关//////////////////////
     private final Context mContext;
@@ -287,8 +289,8 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                     .subscribe(new Action1<Void>() {
                         @Override
                         public void call(Void aVoid) {
-                            //票换钻
-                            ExchangeGemActivity.openActivity((Activity) mContext);
+                            //跳转h5 WebViewActivity
+                            EventBus.getDefault().post(new EventClass.H5ExchangeEvent());
                         }
                     });
             RxView.clicks(mBalanceViewHolder.mBalanceGoldContainer)

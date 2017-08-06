@@ -1045,7 +1045,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.KickEvent event) {
         stopPlayer();
-
         DialogUtils.showCancelableDialog(this,
                 "",
                 GlobalData.app().getResources().getString(R.string.have_been_kicked),
@@ -1058,6 +1057,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                     }
                 },
                 null);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventExchange(EventClass.H5ExchangeEvent event) {
+        WebViewActivity.open(this, WebViewActivity.GEM_EXCHANGE_H5_URL);
     }
 
     @Override
