@@ -288,65 +288,56 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
 
     public class AnimationHelper extends BaseSdkView.AnimationHelper {
 
-        @Override
+        protected WeakReference<ValueAnimator> mInputAnimatorRef; // 输入框弹起和收起时，隐藏和显示View动画
+        protected boolean mInputShow = false;
+
         protected void startInputAnimator(boolean inputShow) {
             if (mInputShow == inputShow) {
                 return;
             }
             mInputShow = inputShow;
-            ValueAnimator valueAnimator = deRef(mInputAnimatorRef);
-            if (valueAnimator != null) {
-                if (!valueAnimator.isStarted() && !valueAnimator.isRunning()) {
-                    valueAnimator.start();
-                }
+            if (startRefAnimator(mInputAnimatorRef)) {
                 return;
             }
-            valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
-            valueAnimator.setDuration(300);
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            ValueAnimator valueAnimator = startNewAnimator(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     float value = (float) animation.getAnimatedValue();
                     if (mInputShow) {
                         value = 1.0f - value;
                     }
-                    setAlpha(mTopInfoView, value);
+                    mTopInfoView.setAlpha(value);
                 }
-            });
-            valueAnimator.addListener(new AnimatorListenerAdapter() {
+            }, new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {
                     if (mInputShow) {
                         if (mIsLandscape) {
-                            setVisibility(mLiveCommentView, View.GONE);
+                            mLiveCommentView.setVisibility(View.GONE);
                         }
                     } else {
-                        setVisibility(mTopInfoView, View.VISIBLE);
+                        mTopInfoView.setVisibility(View.VISIBLE);
                     }
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     if (mInputShow) {
-                        setVisibility(mTopInfoView, View.GONE);
+                        mTopInfoView.setVisibility(View.GONE);
                     } else {
-                        setAlpha(mTopInfoView, 1.0f);
+                        mTopInfoView.setAlpha(1.0f);
                         if (mIsLandscape) {
-                            setVisibility(mLiveCommentView, View.VISIBLE);
+                            mLiveCommentView.setVisibility(View.VISIBLE);
                         }
                     }
                 }
             });
-            valueAnimator.start();
             mInputAnimatorRef = new WeakReference<>(valueAnimator);
         }
 
         @Override
         protected void stopAllAnimator() {
-            ValueAnimator valueAnimator = deRef(mInputAnimatorRef);
-            if (valueAnimator != null) {
-                valueAnimator.cancel();
-            }
+            stopRefAnimator(mInputAnimatorRef);
         }
 
         @Override

@@ -120,11 +120,9 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
 
     @Override
     public void setupView() {
-        MyLog.w(TAG, "setupSdkView");
-        mParentView = (ViewGroup) mActivity.findViewById(android.R.id.content);
-        mContentView = LayoutInflater.from(mActivity).inflate(R.layout.video_replay_layout,
+        MyLog.w(TAG, "setupView");
+        mContentView = LayoutInflater.from(mParentView.getContext()).inflate(R.layout.video_replay_layout,
                 mParentView, false);
-
         mGiftPresenter = new GiftPresenter(mController.mRoomChatMsgManager, false);
         mRoomTextMsgPresenter = new RoomTextMsgPresenter(mController.mRoomChatMsgManager);
         mRoomViewerPresenter = new RoomViewerPresenter(mController.mRoomChatMsgManager);
@@ -232,8 +230,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
         }
     }
 
-    private Animation mShowAnimation;
-
     public void startView(long videoStartTime) {
         mVideoStartTime = videoStartTime;
         startView();
@@ -244,14 +240,9 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
         super.startView();
         if (mParentView.indexOfChild(mContentView) == -1) {
             mParentView.addView(mContentView);
-            if (mShowAnimation == null) {
-                mShowAnimation = new AlphaAnimation(0, 1);
-                mShowAnimation.setDuration(400);
-            }
-            mContentView.startAnimation(mShowAnimation);
+            mAnimationHelper.startShowAnimation();
         }
-        ReplayBarrageMessageManager.getInstance().init(
-                mController.mRoomChatMsgManager.toString()); //回放弹幕管理
+        ReplayBarrageMessageManager.getInstance().init(mController.mRoomChatMsgManager.toString()); //回放弹幕管理
         startGetBarrageTimer();
 
         BaseComponentSdkActivity sdkActivity = (BaseComponentSdkActivity) mActivity;
@@ -283,7 +274,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
     public void stopView() {
         super.stopView();
         mAnimationHelper.clearAnimation();
-        mContentView.clearAnimation();
         mParentView.removeView(mContentView);
         ReplayBarrageMessageManager.getInstance().destory();
         if (mTimer != null) {
@@ -308,13 +298,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
     @Override
     public void release() {
         super.release();
-
-        ReplayBarrageMessageManager.getInstance().destory();
-        if (mTimer != null) {
-            mTimer.cancel();
-            mTimer = null;
-        }
-
         mGiftPresenter.destroy();
         mRoomTextMsgPresenter.destroy();
         mRoomViewerPresenter.destroy();
@@ -446,55 +429,50 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
 
     public class AnimationHelper extends BaseSdkView.AnimationHelper {
 
+        protected WeakReference<ValueAnimator> mInputAnimatorRef; // 输入框弹起和收起时，隐藏和显示View动画
+        protected boolean mInputShow = false;
+
         protected void startInputAnimator(boolean inputShow) {
             if (mInputShow == inputShow) {
                 return;
             }
             mInputShow = inputShow;
-            ValueAnimator valueAnimator = deRef(mInputAnimatorRef);
-            if (valueAnimator != null) {
-                if (!valueAnimator.isStarted() && !valueAnimator.isRunning()) {
-                    valueAnimator.start();
-                }
+            if (startRefAnimator(mInputAnimatorRef)) {
                 return;
             }
-            valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
-            valueAnimator.setDuration(300);
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            ValueAnimator valueAnimator = startNewAnimator(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     float value = (float) animation.getAnimatedValue();
                     if (mInputShow) {
                         value = 1.0f - value;
                     }
-                    setAlpha(mTopInfoView, value);
+                    mTopInfoView.setAlpha(value);
                 }
-            });
-            valueAnimator.addListener(new AnimatorListenerAdapter() {
+            }, new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {
                     if (mInputShow) {
                         if (mIsLandscape && !mIsGameMode) {
-                            setVisibility(mLiveCommentView, View.GONE);
+                            mLiveCommentView.setVisibility(View.GONE);
                         }
                     } else {
-                        setVisibility(mTopInfoView, View.VISIBLE);
+                        mTopInfoView.setVisibility(View.VISIBLE);
                     }
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     if (mInputShow) {
-                        setVisibility(mTopInfoView, View.GONE);
+                        mTopInfoView.setVisibility(View.GONE);
                     } else {
-                        setAlpha(mTopInfoView, 1.0f);
+                        mTopInfoView.setAlpha(1.0f);
                         if (mIsLandscape && !mIsGameMode) {
-                            setVisibility(mLiveCommentView, View.VISIBLE);
+                            mLiveCommentView.setVisibility(View.VISIBLE);
                         }
                     }
                 }
             });
-            valueAnimator.start();
             mInputAnimatorRef = new WeakReference<>(valueAnimator);
         }
 
@@ -506,16 +484,10 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
          */
         private void startGameAnimator() {
             mGameHide = !mGameHide;
-            ValueAnimator valueAnimator = deRef(mGameAnimatorRef);
-            if (valueAnimator != null) {
-                if (!valueAnimator.isStarted() && !valueAnimator.isRunning()) {
-                    valueAnimator.start();
-                }
+            if (startRefAnimator(mGameAnimatorRef)) {
                 return;
             }
-            valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
-            valueAnimator.setDuration(300);
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            ValueAnimator valueAnimator = startNewAnimator(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     float value = (float) animation.getAnimatedValue();
@@ -524,19 +496,18 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                     }
                     for (View view : mGameHideSet) {
                         if (view != null) {
-                            setAlpha(view, value);
+                            view.setAlpha(value);
                         }
                     }
                 }
-            });
-            valueAnimator.addListener(new AnimatorListenerAdapter() {
+            }, new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {
                     if (!mGameHide) {
                         for (View view : mGameHideSet) {
                             if (view != null) {
-                                setAlpha(view, 0.0f);
-                                setVisibility(view, View.VISIBLE);
+                                view.setAlpha(0.0f);
+                                view.setVisibility(View.VISIBLE);
                             }
                         }
                     }
@@ -547,27 +518,33 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                     if (mGameHide) {
                         for (View view : mGameHideSet) {
                             if (view != null) {
-                                setAlpha(view, 1.0f);
-                                setVisibility(view, View.GONE);
+                                view.setAlpha(1.0f);
+                                view.setVisibility(View.GONE);
                             }
                         }
                     }
                 }
             });
-            valueAnimator.start();
             mGameAnimatorRef = new WeakReference<>(valueAnimator);
+        }
+
+        private WeakReference<Animation> mShowAnimationRef; // 出现动画
+
+        private void startShowAnimation() {
+            Animation animation = deRef(mShowAnimationRef);
+            if (animation == null) {
+                animation = new AlphaAnimation(0, 1);
+                animation.setDuration(400);
+                mShowAnimationRef = new WeakReference<>(animation);
+            }
+            mContentView.startAnimation(animation);
         }
 
         @Override
         protected void stopAllAnimator() {
-            ValueAnimator valueAnimator = deRef(mInputAnimatorRef);
-            if (valueAnimator != null) {
-                valueAnimator.cancel();
-            }
-            valueAnimator = deRef(mGameAnimatorRef);
-            if (valueAnimator != null) {
-                valueAnimator.cancel();
-            }
+            stopRefAnimator(mInputAnimatorRef);
+            stopRefAnimator(mGameAnimatorRef);
+            stopRefAnimation(mShowAnimationRef);
         }
 
         @Override

@@ -24,6 +24,8 @@ import com.wali.live.watchsdk.videodetail.view.DetailBottomView;
 import com.wali.live.watchsdk.videodetail.view.DetailInfoView;
 import com.wali.live.watchsdk.videodetail.view.DetailTabView;
 
+import java.lang.ref.WeakReference;
+
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_INPUT_VIEW;
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
@@ -37,6 +39,8 @@ public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
     private static final String TAG = "VideoDetailView";
 
     protected View mTouchView;
+
+    protected final AnimationHelper mAnimationHelper = new AnimationHelper();
 
     private Animation mShowAnimation;
 
@@ -68,7 +72,6 @@ public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
                     mController.mMyRoomData);
             registerComponent(view, presenter);
         }
-
         // TAB区域
         {
             DetailTabView view = new DetailTabView(mContentView);
@@ -76,7 +79,6 @@ public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
                     mController.mMyRoomData);
             registerComponent(view, presenter);
         }
-
         // 底部按钮
         {
             View contentView = $(R.id.bottom_button_view);
@@ -89,7 +91,6 @@ public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
                     mController.mMyRoomData);
             registerComponent(view, presenter);
         }
-
         // 输入框
         {
             InputAreaView view = $(R.id.input_area_view);
@@ -100,7 +101,6 @@ public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
             CommentInputPresenter presenter = new CommentInputPresenter(mController);
             registerComponent(view, presenter);
         }
-
         // 触摸
         {
             mTouchView = $(R.id.touch_view);
@@ -119,14 +119,9 @@ public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
     @Override
     public void startView() {
         super.startView();
-        MyLog.w(TAG, "startView");
         if (mParentView.indexOfChild(mContentView) == -1) {
             mParentView.addView(mContentView);
-            if (mShowAnimation == null) {
-                mShowAnimation = new AlphaAnimation(0, 1);
-                mShowAnimation.setDuration(400);
-            }
-            mContentView.startAnimation(mShowAnimation);
+            mAnimationHelper.startShowAnimation();
         }
 
         // 添加播放器View
@@ -150,8 +145,7 @@ public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
     @Override
     public void stopView() {
         super.stopView();
-        MyLog.w(TAG, "stopSdkView");
-        mContentView.clearAnimation();
+        mAnimationHelper.clearAnimation();
         mParentView.removeView(mContentView);
 
         // 将播放器View从其父View移出
@@ -160,12 +154,6 @@ public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
         if (parentView != null && parentView.indexOfChild(mController.mPlayerView) != -1) {
             parentView.removeView(mController.mPlayerView);
         }
-    }
-
-    @Override
-    public void release() {
-        super.release();
-        MyLog.w(TAG, "releaseSdkView");
     }
 
     @Override
@@ -181,5 +169,31 @@ public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
                 break;
         }
         return false;
+    }
+
+    public class AnimationHelper extends BaseSdkView.AnimationHelper {
+
+        private WeakReference<Animation> mShowAnimationRef; // 出现动画
+
+        private void startShowAnimation() {
+            Animation animation = deRef(mShowAnimationRef);
+            if (animation == null) {
+                animation = new AlphaAnimation(0, 1);
+                animation.setDuration(400);
+                mShowAnimationRef = new WeakReference<>(animation);
+            }
+            mContentView.startAnimation(animation);
+        }
+
+        @Override
+        protected void stopAllAnimator() {
+            stopRefAnimation(mShowAnimationRef);
+        }
+
+        @Override
+        public void clearAnimation() {
+            stopAllAnimator();
+            mShowAnimationRef = null;
+        }
     }
 }

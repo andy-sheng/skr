@@ -1,13 +1,15 @@
 package com.wali.live.componentwrapper;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.support.annotation.CallSuper;
-import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 
+import com.base.log.MyLog;
 import com.thornbirds.component.ComponentView;
 import com.thornbirds.component.IEventObserver;
 
@@ -87,51 +89,72 @@ public abstract class BaseSdkView<VIEW extends View, CONTROLLER extends BaseSdkC
     @Override
     public void startView() {
         super.startView();
+        MyLog.w(TAG, "startView");
     }
 
     @Override
     @CallSuper
     public void stopView() {
         super.stopView();
+        MyLog.w(TAG, "stopView");
         mController.unregisterObserver(this);
     }
 
     @Override
     public void release() {
         super.release();
+        MyLog.w(TAG, "release");
     }
 
     public abstract class AnimationHelper {
 
-        protected final void setAlpha(View view, @FloatRange(from = 0.0f, to = 1.0f) float alpha) {
-            if (view != null) {
-                view.setAlpha(alpha);
+        protected final boolean startRefAnimator(WeakReference<? extends Animator> reference) {
+            Animator animator = deRef(reference);
+            if (animator != null) {
+                if (!animator.isStarted() && !animator.isRunning()) {
+                    animator.start();
+                }
+                return true;
+            }
+            return false;
+        }
+
+        protected final void stopRefAnimator(WeakReference<? extends Animator> reference) {
+            Animator animator = deRef(reference);
+            if (animator != null) {
+                animator.cancel();
             }
         }
 
-        protected final void setVisibility(View view, int visibility) {
-            if (view != null) {
-                view.setVisibility(visibility);
+        protected final void stopRefAnimation(WeakReference<? extends Animation> reference) {
+            Animation animation = deRef(reference);
+            if (animation != null) {
+                animation.cancel();
+                animation.reset();
             }
         }
 
-        protected WeakReference<ValueAnimator> mInputAnimatorRef; // 输入框弹起时，隐藏
-        protected boolean mInputShow = false;
-
-        /**
-         * 输入框显示时，隐藏弹幕区和头部区
-         * 弹幕区只在横屏下才需要显示和隐藏，直接修改visibility，在显示动画开始时显示，在消失动画结束时消失。
-         */
-        protected abstract void startInputAnimator(boolean inputShow);
+        protected final ValueAnimator startNewAnimator(
+                ValueAnimator.AnimatorUpdateListener updateListener,
+                Animator.AnimatorListener listener) {
+            ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
+            valueAnimator.setDuration(300);
+            valueAnimator.addUpdateListener(updateListener);
+            valueAnimator.addListener(listener);
+            valueAnimator.start();
+            return valueAnimator;
+        }
 
         /**
          * 停止动画
          */
-        protected abstract void stopAllAnimator();
+        protected void stopAllAnimator() {
+        }
 
         /**
          * 停止动画，并释放动画资源引用
          */
-        public abstract void clearAnimation();
+        public void clearAnimation() {
+        }
     }
 }
