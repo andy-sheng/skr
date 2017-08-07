@@ -8,8 +8,8 @@ import android.widget.RelativeLayout;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
 
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_BOTTOM_PANEL;
@@ -33,7 +33,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     }
 
     public PanelContainerPresenter(
-            @NonNull BaseSdkController controller,
+            @NonNull IEventController controller,
             @NonNull RoomBaseDataModel myRoomData) {
         super(controller);
         mMyRoomData = myRoomData;

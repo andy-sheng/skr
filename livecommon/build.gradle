@@ -67,8 +67,8 @@ dependencies {
     compile presentationDependencies.rxJava
     compile presentationDependencies.butterKnife
 
-    compile 'com.thornbirds:component:1.0.1-SNAPSHOT'
-    compile 'com.thornbirds:componentAndroid:1.0.1-SNAPSHOT'
+    compile 'com.thornbirds:component:1.0.0'
+    compile 'com.thornbirds:componentAndroid:1.0.0'
     compile project(':data')
 
 //    /*

@@ -1,12 +1,10 @@
 package com.wali.live.livesdk.live.liveshow.presenter.button;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
-import com.base.log.MyLog;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.livesdk.live.liveshow.view.button.MagicControlBtnView;
 
 /**
@@ -24,7 +22,7 @@ public class MagicControlBtnPresenter extends ComponentPresenter<MagicControlBtn
     }
 
     public MagicControlBtnPresenter(
-            @NonNull BaseSdkController controller) {
+            @NonNull IEventController controller) {
         super(controller);
 //        EventBus.getDefault().register(this);
     }

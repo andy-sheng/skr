@@ -1,8 +1,9 @@
 package ${PACKAGE};
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.thornbirds.component.ComponentController;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
 
@@ -13,18 +14,18 @@ ${IMPORT}
  *
  * Generated using ${COMMAND}
  *
- * @module [TODO add module]
+ * @module [TODO-COMPONENT add module]
  */
-public class ${NAME}Presenter extends ComponentPresenter<${NAME}Panel.IView, ComponentController>
-		implements ${NAME}Panel.IPresenter {
-    private static final String TAG = "${NAME}Presenter";
+public class ${NAME1} extends ComponentPresenter<${NAME2}.IView>
+		implements ${NAME2}.IPresenter {
+    private static final String TAG = "${NAME1}";
 
     @Override
     protected String getTAG() {
         return TAG;
     }
 
-    public ${NAME}Presenter(ComponentController controller) {
+    public ${NAME1}(@NonNull IEventController controller) {
         super(controller);
     }
 
@@ -36,7 +37,7 @@ public class ${NAME}Presenter extends ComponentPresenter<${NAME}Panel.IView, Com
         }
         switch (event) {
             default:
-            break;
+                break;
         }
         return false;
     }

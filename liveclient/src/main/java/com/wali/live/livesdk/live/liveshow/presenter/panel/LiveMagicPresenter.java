@@ -1,12 +1,8 @@
 package com.wali.live.livesdk.live.liveshow.presenter.panel;
 
-import android.support.annotation.Nullable;
-
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.thornbirds.component.IParams;
-import com.thornbirds.component.presenter.ComponentPresenter;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;

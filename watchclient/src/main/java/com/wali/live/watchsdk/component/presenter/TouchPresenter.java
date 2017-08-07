@@ -11,10 +11,10 @@ import android.view.animation.LinearInterpolator;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
 import com.thornbirds.component.view.IOrientationListener;
-import com.wali.live.componentwrapper.BaseSdkController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +97,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         return TAG;
     }
 
-    public TouchPresenter(@NonNull BaseSdkController controller, @NonNull View touchView) {
+    public TouchPresenter(@NonNull IEventController controller, @NonNull View touchView) {
         super(controller);
         mTouchView = touchView;
         mTouchView.setSoundEffectsEnabled(false);

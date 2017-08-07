@@ -5,10 +5,10 @@ import android.support.annotation.NonNull;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
 import com.thornbirds.component.view.IOrientationListener;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.liveshow.view.panel.FloatAtmospherePanel;
 
@@ -37,7 +37,7 @@ public class FloatContainerPresenter extends ComponentPresenter<RelativeLayout>
     }
 
     public FloatContainerPresenter(
-            @NonNull BaseSdkController controller,
+            @NonNull IEventController controller,
             @NonNull StreamerPresenter streamerPresenter) {
         super(controller);
         mStreamerPresenter = streamerPresenter;

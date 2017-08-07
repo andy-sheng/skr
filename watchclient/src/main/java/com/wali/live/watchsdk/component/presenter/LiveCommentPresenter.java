@@ -4,10 +4,10 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.base.log.MyLog;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
 import com.wali.live.common.barrage.event.CommentRefreshEvent;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -33,8 +33,8 @@ public class LiveCommentPresenter extends ComponentPresenter<LiveCommentView.IVi
         return TAG;
     }
 
-    public LiveCommentPresenter(@NonNull BaseSdkController componentController) {
-        super(componentController);
+    public LiveCommentPresenter(@NonNull IEventController controller) {
+        super(controller);
         // TEST
 //        Observable.interval(3, 5, TimeUnit.SECONDS)
 //                .observeOn(AndroidSchedulers.mainThread())

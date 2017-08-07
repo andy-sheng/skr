@@ -14,10 +14,10 @@ ${IMPORT}
  *
  * Generated using ${COMMAND}
  *
- * @module [TODO add module]
+ * @module [TODO-COMPONENT add module]
  */
-public class ${NAME}View implements IComponentView<${NAME}View.IPresenter, ${NAME}View.IView> {
-	private static final String TAG = "${NAME}View";
+public class ${NAME1} implements IComponentView<${NAME1}.IPresenter, ${NAME1}.IView> {
+	private static final String TAG = "${NAME1}";
 
 	@Nullable
 	protected IPresenter mPresenter;
@@ -39,10 +39,11 @@ public class ${NAME}View implements IComponentView<${NAME}View.IPresenter, ${NAM
 		
 	@Override
 	public IView getViewProxy() {
-		/**
-		 * 局部内部类，用于Presenter回调通知该View改变状态
-		 */
 		class ComponentView implements IView {
+			@Override
+			public <T extends View> T getRealView() {
+				return null; // [TODO-COMPONENT return real view of proxy]
+			}
 		}
 		return new ComponentView();
 	}

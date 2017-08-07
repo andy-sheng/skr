@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_BARRAGE_SWITCH;
@@ -36,7 +36,7 @@ public class InputAreaPresenter extends InputPresenter<InputAreaView.IView>
     }
 
     public InputAreaPresenter(
-            @NonNull BaseSdkController controller,
+            @NonNull IEventController controller,
             @NonNull RoomBaseDataModel myRoomData,
             boolean isWatchState) {
         super(controller, myRoomData);

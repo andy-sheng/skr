@@ -4,9 +4,9 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.base.log.MyLog;
+import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
-import com.wali.live.componentwrapper.BaseSdkController;
 import com.wali.live.watchsdk.component.view.BarrageBtnView;
 
 import static com.wali.live.componentwrapper.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
@@ -27,7 +27,7 @@ public class BarrageBtnPresenter extends ComponentPresenter<BarrageBtnView.IView
         return TAG;
     }
 
-    public BarrageBtnPresenter(@NonNull BaseSdkController controller) {
+    public BarrageBtnPresenter(@NonNull IEventController controller) {
         super(controller);
     }
 
