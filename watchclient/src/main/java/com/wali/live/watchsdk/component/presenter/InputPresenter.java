@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.component.presenter;
 
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.widget.EditText;
@@ -17,8 +18,9 @@ import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.query.model.MessageRule;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.wali.live.component.presenter.ComponentPresenter;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.IEventController;
+import com.thornbirds.component.presenter.ComponentPresenter;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.event.EventClass;
 import com.wali.live.watchsdk.R;
 
@@ -39,31 +41,49 @@ import java.util.Set;
  */
 public abstract class InputPresenter<VIEW extends InputPresenter.IView>
         extends ComponentPresenter<VIEW> {
-    protected static final String TAG = "InputPresenter";
+
     protected static final long CLEAR_BARRAGE_CACHE_INTERVAL = 12 * 60 * 60 * 1000;// 清理弹幕缓存的时间间隔
     protected static final int MSG_SEND_BARRAGE_COUNT_DOWN = 301;
+
     protected static final Map<String, LastBarrage> mLastBarrageMap = new HashMap<>();
+
     protected RoomBaseDataModel mMyRoomData;
     protected MyUIHandler mUIHandler;
     protected String mInputContent;
     protected boolean mCanInput;
     protected boolean mViewIsShow;
 
-    public InputPresenter(@NonNull IComponentController componentController, RoomBaseDataModel myRoomData) {
-        super(componentController);
+    public InputPresenter(
+            @NonNull IEventController controller,
+            @NonNull RoomBaseDataModel myRoomData) {
+        super(controller);
         mMyRoomData = myRoomData;
         mCanInput = true;
         mUIHandler = new MyUIHandler(this);
-        EventBus.getDefault().register(this);
         clearBarrageCache();
+    }
+
+    @Override
+    @CallSuper
+    public void startPresenter() {
+        super.startPresenter();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    @CallSuper
+    public void stopPresenter() {
+        super.stopPresenter();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
         mUIHandler.removeCallbacksAndMessages(null);
     }
 

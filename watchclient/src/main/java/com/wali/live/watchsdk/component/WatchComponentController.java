@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import com.base.log.MyLog;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
-import com.wali.live.component.ComponentController;
+import com.wali.live.component.BaseSdkController;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
@@ -18,7 +18,7 @@ import java.util.ArrayList;
  *
  * @module 组件控制器, 游戏直播
  */
-public class WatchComponentController extends ComponentController {
+public class WatchComponentController extends BaseSdkController {
     private static final String TAG = "WatchComponentController";
 
     @NonNull
@@ -33,6 +33,12 @@ public class WatchComponentController extends ComponentController {
     LiveRoomChatMsgManager mRoomChatMsgManager;
 
     private boolean mSwitchNext;
+
+    @Nullable
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
 
     public WatchComponentController(
             @NonNull RoomBaseDataModel myRoomData,
@@ -102,11 +108,5 @@ public class WatchComponentController extends ComponentController {
         } else if (mRoomInfoList.size() == 1) {
             WatchSdkActivity.openActivity(activity, mRoomInfoList.get(0));
         }
-    }
-
-    @Nullable
-    @Override
-    protected String getTAG() {
-        return TAG;
     }
 }

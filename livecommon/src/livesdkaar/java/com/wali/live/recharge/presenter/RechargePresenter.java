@@ -18,7 +18,6 @@ import com.base.utils.rx.RxRetryAssist;
 import com.base.utils.toast.ToastUtils;
 import com.live.module.common.R;
 import com.mi.live.data.account.MyUserInfoManager;
-import com.mi.live.data.account.event.UserInfoEvent;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.event.EventClass;
 import com.wali.live.income.model.ExceptionWithCode;
@@ -63,7 +62,7 @@ import static com.wali.live.pay.constant.PayConstant.SP_KEY_LAST_PAY_WAY;
  * Created by rongzhisheng on 16-12-23.
  */
 public class RechargePresenter extends RxLifeCyclePresenter implements IRechargePresenter {
-    private static final String TAG = RechargePresenter.class.getSimpleName();
+    private static final String TAG = "RechargePresenter";
 
     private volatile IRechargeView mRechargeView;
 
@@ -147,6 +146,8 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                         RechargeInfo.setExchangeableGemCnt(rsp.getExchangeableGemCnt());
                         RechargeInfo.setWillExpireGemCnt(rsp.getExpireVirtualGemCnt());
                         RechargeInfo.setWillExpireGiftCardCnt(rsp.getExpireGiftCardCnt());
+                        MyUserInfoManager.getInstance().setDiamonds(rsp.getUsableGemCnt(),
+                                rsp.getUsableVirtualGemCnt());
                         if (rsp.hasAmount()) {
                             PayProto.RechargeDayAmount amount = rsp.getAmount();
                             if (amount != null) {
@@ -221,7 +222,8 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                     @Override
                     public Observable<?> call(Object o) {
                         if (!NetworkUtils.hasNetwork(GlobalData.app())) {
-                            return Observable.error(new RefuseRetryExeption(GlobalData.app().getString(R.string.network_unavailable).toString()));
+                            return Observable.error(new RefuseRetryExeption(GlobalData.app().
+                                    getString(R.string.network_unavailable).toString()));
                         }
                         return Observable.just(o);
                     }
@@ -252,7 +254,7 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object o) {
-                        if(o instanceof PayProto.CreateOrderResponse) {
+                        if (o instanceof PayProto.CreateOrderResponse) {
                             PayProto.CreateOrderResponse response = (PayProto.CreateOrderResponse) o;
                             String orderId = response.getOrderId();
                             int price = goods.getPrice();
@@ -287,7 +289,6 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                 });
     }
 
-
     /**
      * @param orderId
      * @param payId
@@ -311,8 +312,8 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object o) {
-                        if(o instanceof PayProto.CheckOrderResponse) {
-                            PayProto.CheckOrderResponse rsp = (PayProto.CheckOrderResponse)o;
+                        if (o instanceof PayProto.CheckOrderResponse) {
+                            PayProto.CheckOrderResponse rsp = (PayProto.CheckOrderResponse) o;
                             int retCode = rsp.getRetCode();
                             if (retCode == CODE_SUCCESS) {
                                 int diamondBalance = rsp.getUsableGemCnt();
@@ -521,11 +522,6 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
         PayManager.setHasReadRedPoint();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(UserInfoEvent event) {
-        loadDataAndUpdateView();
-    }
-
     /**
      * 礼物卡、虚拟钻变化的push
      *
@@ -599,7 +595,7 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                             BalanceDetail balanceDetail = (BalanceDetail) o;
                             Bundle bundle = new Bundle();
                             bundle.putSerializable(BalanceFragment.BUNDLE_KEY_BALANCE_DETAIL, balanceDetail);
-                            BalanceFragment.openFragment((BaseActivity) mRechargeView.getActivity(), bundle, new WeakReference<>((IRechargePresenter)RechargePresenter.this));
+                            BalanceFragment.openFragment((BaseActivity) mRechargeView.getActivity(), bundle, new WeakReference<>((IRechargePresenter) RechargePresenter.this));
                         }
                     }, new Action1<Throwable>() {
                         @Override

@@ -42,6 +42,7 @@ public class UserAccountDao extends AbstractDao<UserAccount, Void> {
         public final static Property IsNew = new Property(16, Integer.class, "isNew", false, "IS_NEW");
         public final static Property NeedEditUserInfo = new Property(17, Boolean.class, "needEditUserInfo", false, "NEED_EDIT_USER_INFO");
         public final static Property IsLogOff = new Property(18, Boolean.class, "isLogOff", false, "IS_LOG_OFF");
+        public final static Property Miid = new Property(19, Long.class, "miid", false, "MIID");
     };
 
 
@@ -75,7 +76,8 @@ public class UserAccountDao extends AbstractDao<UserAccount, Void> {
                 "'IS_RESET' INTEGER," + // 15: isReset
                 "'IS_NEW' INTEGER," + // 16: isNew
                 "'NEED_EDIT_USER_INFO' INTEGER," + // 17: needEditUserInfo
-                "'IS_LOG_OFF' INTEGER);"); // 18: isLogOff
+                "'IS_LOG_OFF' INTEGER," + // 18: isLogOff
+                "'MIID' INTEGER);"); // 19: miid
     }
 
     /** Drops the underlying database table. */
@@ -183,6 +185,11 @@ public class UserAccountDao extends AbstractDao<UserAccount, Void> {
         if (isLogOff != null) {
             stmt.bindLong(19, isLogOff ? 1l: 0l);
         }
+ 
+        Long miid = entity.getMiid();
+        if (miid != null) {
+            stmt.bindLong(20, miid);
+        }
     }
 
     /** @inheritdoc */
@@ -213,7 +220,8 @@ public class UserAccountDao extends AbstractDao<UserAccount, Void> {
             cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15), // isReset
             cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16), // isNew
             cursor.isNull(offset + 17) ? null : cursor.getShort(offset + 17) != 0, // needEditUserInfo
-            cursor.isNull(offset + 18) ? null : cursor.getShort(offset + 18) != 0 // isLogOff
+            cursor.isNull(offset + 18) ? null : cursor.getShort(offset + 18) != 0, // isLogOff
+            cursor.isNull(offset + 19) ? null : cursor.getLong(offset + 19) // miid
         );
         return entity;
     }
@@ -240,6 +248,7 @@ public class UserAccountDao extends AbstractDao<UserAccount, Void> {
         entity.setIsNew(cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16));
         entity.setNeedEditUserInfo(cursor.isNull(offset + 17) ? null : cursor.getShort(offset + 17) != 0);
         entity.setIsLogOff(cursor.isNull(offset + 18) ? null : cursor.getShort(offset + 18) != 0);
+        entity.setMiid(cursor.isNull(offset + 19) ? null : cursor.getLong(offset + 19));
      }
     
     /** @inheritdoc */

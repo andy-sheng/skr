@@ -12,7 +12,7 @@ import com.wali.live.proto.LiveProto.ZuidActiveRsp;
  */
 public class ZuidActiveRequest extends BaseRequest {
     public ZuidActiveRequest() {
-        super(MiLinkCommand.COMMAND_LIVE_ZUID_ACTIVE, "ZuidActive", null);
+        super(MiLinkCommand.COMMAND_LIVE_ZUID_ACTIVE, "ZuidActive");
     }
 
     public ZuidActiveRequest(String liveId) {

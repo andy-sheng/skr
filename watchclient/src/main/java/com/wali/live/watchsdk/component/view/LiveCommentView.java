@@ -17,13 +17,13 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IOrientationListener;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.common.barrage.event.CommentRefreshEvent;
 import com.wali.live.common.barrage.view.MyListView;
 import com.wali.live.common.barrage.view.adapter.LiveCommentRecyclerAdapter;
 import com.wali.live.common.model.CommentModel;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IOrientationListener;
-import com.wali.live.component.view.IViewProxy;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.watchsdk.R;
 
@@ -37,7 +37,7 @@ import java.util.List;
  * @module 弹幕区视图
  */
 public class LiveCommentView extends RelativeLayout implements View.OnClickListener,
-        IComponentView<LiveCommentView.IPresenter, LiveCommentView.IView> {
+        IComponentView<LiveCommentView.IPresenter, LiveCommentView.IView>, IOrientationListener {
     private static final String TAG = "LiveCommentView1";
 
     // this value should be adjust when ui design is changed
@@ -256,7 +256,8 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
         }
     }
 
-    private void onOrientation(boolean isLandscape) {
+    @Override
+    public void onOrientation(boolean isLandscape) {
         if (mIsLandscape == isLandscape) {
             return;
         }
@@ -279,7 +280,9 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
         if (mMoveToLastItemIv != null && mMoveToLastItemIv.getVisibility() == View.VISIBLE) {
             mMoveToLastItemIv.setVisibility(View.INVISIBLE);
         }
-        mDataList.clear();
+        if (mDataList != null) {
+            mDataList.clear();
+        }
         refreshComment();
     }
 

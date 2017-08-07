@@ -532,16 +532,16 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
      * @return
      */
     public static long getTop1() {
-        List<Long> rankThreers = new ArrayList<>();
+        List<Long> rankThrees = new ArrayList<>();
         RankProto.GetRankListResponse response = new GetRankListRequest().syncRsp();
         if (response != null) {
             List<RankProto.RankItem> rankItems = response.getItemsList();
             if (rankItems != null && rankItems.size() > 0) {
                 for (RankProto.RankItem rankItem : rankItems) {
-                    rankThreers.add(rankItem.getUuid());
+                    rankThrees.add(rankItem.getUuid());
                 }
+                return rankThrees.get(0);
             }
-            return rankThreers.get(0);
         }
         return 0;
     }

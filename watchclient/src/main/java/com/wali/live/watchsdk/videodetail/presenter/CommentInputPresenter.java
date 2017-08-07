@@ -2,14 +2,15 @@ package com.wali.live.watchsdk.videodetail.presenter;
 
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.base.event.KeyboardEvent;
 import com.base.log.MyLog;
 import com.mi.live.data.account.MyUserInfoManager;
-import com.wali.live.component.ComponentController;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.IEventController;
+import com.thornbirds.component.IParams;
+import com.thornbirds.component.Params;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.videodetail.adapter.DetailCommentAdapter;
@@ -18,15 +19,17 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import static com.wali.live.component.ComponentController.MSG_HIDE_INPUT_VIEW;
-import static com.wali.live.component.ComponentController.MSG_ON_BACK_PRESSED;
-import static com.wali.live.component.ComponentController.MSG_SEND_COMMENT;
-import static com.wali.live.component.ComponentController.MSG_SHOW_COMMENT_INPUT;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_INPUT_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
+import static com.wali.live.component.BaseSdkController.MSG_SEND_COMMENT;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_COMMENT_INPUT;
 
 /**
  * Created by yangli on 2017/6/6.
  */
-public class CommentInputPresenter extends ComponentPresenter<InputAreaView.IView>
+public class CommentInputPresenter extends BaseSdkRxPresenter<InputAreaView.IView>
         implements InputAreaView.IPresenter {
     private static final String TAG = "CommentInputPresenter";
 
@@ -44,12 +47,18 @@ public class CommentInputPresenter extends ComponentPresenter<InputAreaView.IVie
         }
     };
 
-    public CommentInputPresenter(@NonNull IComponentController componentController) {
-        super(componentController);
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
+
+    public CommentInputPresenter(@NonNull IEventController controller) {
+        super(controller);
     }
 
     @Override
     public void startPresenter() {
+        super.startPresenter();
         registerAction(MSG_ON_BACK_PRESSED);
         registerAction(MSG_SHOW_COMMENT_INPUT);
         registerAction(MSG_HIDE_INPUT_VIEW);
@@ -61,14 +70,7 @@ public class CommentInputPresenter extends ComponentPresenter<InputAreaView.IVie
     @Override
     public void stopPresenter() {
         super.stopPresenter();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
+        unregisterAllAction();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -113,19 +115,19 @@ public class CommentInputPresenter extends ComponentPresenter<InputAreaView.IVie
                 toUid,
                 toNickName,
                 msg);
-        mComponentController.onEvent(MSG_SEND_COMMENT, new Params().putItem(mFeedsIdToReply)
+        postEvent(MSG_SEND_COMMENT, new Params().putItem(mFeedsIdToReply)
                 .putItem(commentItem));
         mView.hideInputView();
     }
 
     @Override
     public void notifyInputViewShowed() {
-        mComponentController.onEvent(ComponentController.MSG_INPUT_VIEW_SHOWED);
+        postEvent(MSG_INPUT_VIEW_SHOWED);
     }
 
     @Override
     public void notifyInputViewHidden() {
-        mComponentController.onEvent(ComponentController.MSG_INPUT_VIEW_HIDDEN);
+        postEvent(MSG_INPUT_VIEW_HIDDEN);
     }
 
     @Override
@@ -134,61 +136,53 @@ public class CommentInputPresenter extends ComponentPresenter<InputAreaView.IVie
         return 0;
     }
 
-    @Nullable
     @Override
-    protected IAction createAction() {
-        return new Action();
-    }
-
-    public class Action implements IAction {
-        @Override
-        public boolean onAction(int source, @Nullable Params params) {
-            if (mView == null) {
-                MyLog.e(TAG, "onAction but mView is null, source=" + source);
-                return false;
-            }
-            switch (source) {
-                case MSG_ON_BACK_PRESSED:
-                    return mView.processBackPress();
-                case MSG_SHOW_COMMENT_INPUT: {
-                    mFeedsIdToReply = params.getItem(0);
-                    mCommentToReply = params.getItem(1);
-                    String hint;
-                    if (mCommentToReply != null) {
-                        String name = mCommentToReply.fromNickName;
-                        if (TextUtils.isEmpty(name)) {
-                            name = String.valueOf(mCommentToReply.fromUid);
-                        }
-                        hint = mView.getRealView().getResources().getString(R.string.recomment_text) + name;
-                    } else {
-                        hint = mView.getRealView().getResources().getString(R.string.write_comment);
-                    }
-                    mView.setHint(hint);
-                    mUiHandler.removeCallbacks(mHideInputDelay);
-                    if (mView.showInputView()) {
-                        mShowInputTs = System.currentTimeMillis();
-                        return true;
-                    }
-                    break;
-                }
-                case MSG_HIDE_INPUT_VIEW:
-                    if (mView.isInputViewShowed()) {
-                        mFeedsIdToReply = null;
-                        mCommentToReply = null;
-                        mView.setHint("");
-                        mUiHandler.removeCallbacks(mHideInputDelay);
-                        if (System.currentTimeMillis() - mShowInputTs < 500) {
-                            mUiHandler.postDelayed(mHideInputDelay, 300);
-                        } else {
-                            mView.hideInputView();
-                        }
-                        return true;
-                    }
-                    break;
-                default:
-                    break;
-            }
+    public boolean onEvent(int event, IParams params) {
+        if (mView == null) {
+            MyLog.e(TAG, "onAction but mView is null, event=" + event);
             return false;
         }
+        switch (event) {
+            case MSG_ON_BACK_PRESSED:
+                return mView.processBackPress();
+            case MSG_SHOW_COMMENT_INPUT: {
+                mFeedsIdToReply = params.getItem(0);
+                mCommentToReply = params.getItem(1);
+                String hint;
+                if (mCommentToReply != null) {
+                    String name = mCommentToReply.fromNickName;
+                    if (TextUtils.isEmpty(name)) {
+                        name = String.valueOf(mCommentToReply.fromUid);
+                    }
+                    hint = mView.getRealView().getResources().getString(R.string.recomment_text) + name;
+                } else {
+                    hint = mView.getRealView().getResources().getString(R.string.write_comment);
+                }
+                mView.setHint(hint);
+                mUiHandler.removeCallbacks(mHideInputDelay);
+                if (mView.showInputView()) {
+                    mShowInputTs = System.currentTimeMillis();
+                    return true;
+                }
+                break;
+            }
+            case MSG_HIDE_INPUT_VIEW:
+                if (mView.isInputViewShowed()) {
+                    mFeedsIdToReply = null;
+                    mCommentToReply = null;
+                    mView.setHint("");
+                    mUiHandler.removeCallbacks(mHideInputDelay);
+                    if (System.currentTimeMillis() - mShowInputTs < 500) {
+                        mUiHandler.postDelayed(mHideInputDelay, 300);
+                    } else {
+                        mView.hideInputView();
+                    }
+                    return true;
+                }
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 }

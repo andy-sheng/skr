@@ -7,10 +7,10 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.mi.live.data.account.channel.HostChannelManager;
+import com.thornbirds.component.view.IOrientationListener;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.component.view.BaseBottomButton;
-import com.wali.live.component.view.IOrientationListener;
-import com.wali.live.component.view.IViewProxy;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.liveshow.view.button.MagicControlBtnView;
 import com.wali.live.livesdk.live.liveshow.view.button.PlusControlBtnView;

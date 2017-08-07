@@ -1,6 +1,5 @@
 package com.wali.live.watchsdk.component.presenter;
 
-
 import android.support.annotation.CallSuper;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
@@ -9,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.base.log.MyLog;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.IEventController;
+import com.thornbirds.component.presenter.ComponentPresenter;
+import com.thornbirds.component.view.IOrientationListener;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 
 import java.lang.ref.WeakReference;
@@ -20,9 +21,7 @@ import java.lang.ref.WeakReference;
  * @module 面板表现基类
  */
 public abstract class BaseContainerPresenter<VIEW_GROUP extends ViewGroup>
-        extends ComponentPresenter<VIEW_GROUP> {
-
-    protected String TAG = getTAG();
+        extends ComponentPresenter<VIEW_GROUP> implements IOrientationListener {
 
     protected boolean mIsLandscape = false;
 
@@ -33,10 +32,8 @@ public abstract class BaseContainerPresenter<VIEW_GROUP extends ViewGroup>
         return reference != null ? reference.get() : null;
     }
 
-    protected abstract String getTAG();
-
-    public BaseContainerPresenter(@NonNull IComponentController componentController) {
-        super(componentController);
+    public BaseContainerPresenter(@NonNull IEventController controller) {
+        super(controller);
     }
 
     protected final boolean hidePanel(boolean useAnimation) {
@@ -62,6 +59,7 @@ public abstract class BaseContainerPresenter<VIEW_GROUP extends ViewGroup>
         }
     }
 
+    @Override
     @CallSuper
     public void onOrientation(boolean isLandscape) {
         if (mIsLandscape == isLandscape) {

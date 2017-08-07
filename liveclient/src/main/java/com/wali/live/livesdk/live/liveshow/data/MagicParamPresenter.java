@@ -17,6 +17,8 @@ import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.live.engine.base.GalileoConstants;
 import com.mi.milink.sdk.aidl.PacketData;
+import com.thornbirds.component.EventController;
+import com.thornbirds.component.IParams;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.livesdk.live.component.utils.PlusParamUtils;
 import com.wali.live.proto.CloudParamsProto;
@@ -46,10 +48,13 @@ public class MagicParamPresenter extends BaseParamPresenter {
 
     private Subscription mFaceBeautySub;
 
-    public MagicParamPresenter(
-            @NonNull IComponentController componentController,
-            @NonNull Context context) {
-        super(componentController, context);
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
+
+    public MagicParamPresenter(@NonNull EventController controller, @NonNull Context context) {
+        super(controller, context);
         syncMagicParams();
     }
 
@@ -98,7 +103,7 @@ public class MagicParamPresenter extends BaseParamPresenter {
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(this.<Integer>bindUntilEvent(PresenterEvent.DESTROY))
+                .compose(bindUntilEvent(PresenterEvent.DESTROY))
                 .subscribe(new Action1<Integer>() {
                     @Override
                     public void call(Integer errCode) {
@@ -147,21 +152,9 @@ public class MagicParamPresenter extends BaseParamPresenter {
         return null;
     }
 
-    @Nullable
     @Override
-    protected IAction createAction() {
-        return new Action();
-    }
-
-    public class Action implements IAction {
-        @Override
-        public boolean onAction(int source, @Nullable Params params) {
-            switch (source) {
-                default:
-                    break;
-            }
-            return false;
-        }
+    public boolean onEvent(int event, IParams params) {
+        return false;
     }
 
     public static class MagicParams {

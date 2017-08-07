@@ -33,7 +33,7 @@ public class BeginLiveRequest extends BaseRequest {
     public BeginLiveRequest(Location location, int liveType, List<Long> inviteeList, boolean addHistory,
                             String liveTitle, String CoverUrl, String liveId, AccountProto.AppInfo appInfo,
                             Integer playUi, int appType, RoomTag roomTag, boolean supportMagicFaceFlag) {
-        super(MiLinkCommand.COMMAND_LIVE_BEGIN, "BeginLive", null);
+        super(MiLinkCommand.COMMAND_LIVE_BEGIN, "BeginLive");
         build(location, liveType, inviteeList, addHistory, liveTitle, CoverUrl, liveId, appInfo, playUi, appType, roomTag, supportMagicFaceFlag);
     }
 

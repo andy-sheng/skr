@@ -17,11 +17,11 @@ ${IMPORT}
  *
  * Generated using ${COMMAND}
  *
- * @module [TODO add module]
+ * @module [TODO-COMPONENT add module]
  */
-public class ${NAME}Panel extends BaseBottomPanel<LinearLayout, RelativeLayout>
-	implements View.OnClickListener, IComponentView<${NAME}Panel.IPresenter, ${NAME}Panel.IView> {
-	private static final String TAG = "${NAME}Panel";
+public class ${NAME1} extends BaseBottomPanel<LinearLayout, RelativeLayout>
+	implements View.OnClickListener, IComponentView<${NAME1}.IPresenter, ${NAME1}.IView> {
+	private static final String TAG = "${NAME1}";
 
 	@Nullable
 	protected IPresenter mPresenter;
@@ -38,7 +38,7 @@ public class ${NAME}Panel extends BaseBottomPanel<LinearLayout, RelativeLayout>
 
 	@Override
 	protected int getLayoutResId() {
-		return 0; // TODO replace to correct LayoutRes
+		return 0; // [TODO-COMPONENT replace to correct LayoutRes]
 	}
 
 	@Override
@@ -46,16 +46,17 @@ public class ${NAME}Panel extends BaseBottomPanel<LinearLayout, RelativeLayout>
 		mPresenter = iPresenter;
 	}
 
-	public ${NAME}Panel(@NonNull RelativeLayout parentView) {
+	public ${NAME1}(@NonNull RelativeLayout parentView) {
 		super(parentView);
 	}
 
 	@Override
 	public IView getViewProxy() {
-		/**
-		 * 局部内部类，用于Presenter回调通知该View改变状态
-		 */
 		class ComponentView implements IView {
+			@Override
+			public <T extends View> T getRealView() {
+				return null; // [TODO-COMPONENT return real view of proxy]
+			}
 		}
 		return new ComponentView();
 	}

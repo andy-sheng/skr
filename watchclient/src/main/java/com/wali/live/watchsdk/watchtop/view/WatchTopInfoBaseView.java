@@ -62,7 +62,7 @@ import rx.schedulers.Schedulers;
  * Created by chengsimin on 16/3/31.
  */
 public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBindActivityLIfeCycle {
-    public static final String TAG = WatchTopInfoBaseView.class.getSimpleName();
+    public static final String TAG = "WatchTopInfoBaseView";
 
     public static final float AVATAR_MARGIN_TOP_PORTRAIT = 26.67f;
     public static final float AVATAR_MARGIN_TOP_LANDSCAPE = 6.67f;

@@ -19,7 +19,7 @@ public class GetGemPriceRequest extends BaseRequest {
     }
 
     public GetGemPriceRequest(@NonNull PayProto.RChannel channel) {
-        super(MiLinkCommand.COMMAND_PAY_PRICE_LIST, "getGemPriceListV2", null);
+        super(MiLinkCommand.COMMAND_PAY_PRICE_LIST, "getGemPriceListV2");
         mRequest = PayProto.GetGemPriceRequest.newBuilder()
                 .setPlatform(PayProto.Platform.ANDROID)
                 .setUuid(UserAccountManager.getInstance().getUuidAsLong())

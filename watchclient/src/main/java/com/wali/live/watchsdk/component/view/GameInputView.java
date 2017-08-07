@@ -18,7 +18,7 @@ import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.preference.MLPreferenceUtils;
-import com.wali.live.component.view.IComponentView;
+import com.thornbirds.component.view.IComponentView;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.presenter.InputPresenter;

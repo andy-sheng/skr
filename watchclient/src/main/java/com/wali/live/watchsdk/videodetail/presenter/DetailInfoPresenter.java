@@ -1,7 +1,6 @@
 package com.wali.live.watchsdk.videodetail.presenter;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.base.global.GlobalData;
@@ -14,7 +13,10 @@ import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.IEventController;
+import com.thornbirds.component.IParams;
+import com.thornbirds.component.Params;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.Feeds;
 import com.wali.live.proto.LiveShowProto;
 import com.wali.live.utils.relation.RelationUtils;
@@ -35,21 +37,19 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.mi.live.data.event.FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW;
-import static com.wali.live.component.ComponentController.MSG_NEW_DETAIL_REPLAY;
-import static com.wali.live.component.ComponentController.MSG_PLAYER_FEEDS_DETAIL;
-import static com.wali.live.component.ComponentController.MSG_PLAYER_START;
-import static com.wali.live.component.ComponentController.MSG_SHOW_PERSONAL_INFO;
-import static com.wali.live.component.ComponentController.MSG_UPDATE_LIKE_STATUS;
-import static com.wali.live.component.ComponentController.MSG_UPDATE_START_TIME;
+import static com.wali.live.component.BaseSdkController.MSG_NEW_DETAIL_REPLAY;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_FEEDS_DETAIL;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_PERSONAL_INFO;
+import static com.wali.live.component.BaseSdkController.MSG_UPDATE_LIKE_STATUS;
+import static com.wali.live.component.BaseSdkController.MSG_UPDATE_START_TIME;
 
 /**
  * Created by yangli on 2017/06/01.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 详情信息表现
  */
-public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView>
+public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView>
         implements DetailInfoView.IPresenter {
     private static final String TAG = "DetailInfoPresenter";
 
@@ -57,15 +57,21 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
 
     private Subscription mFeedsSubscription;
 
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
+
     public DetailInfoPresenter(
-            @NonNull IComponentController componentController,
+            @NonNull IEventController controller,
             @NonNull RoomBaseDataModel roomData) {
-        super(componentController);
+        super(controller);
         mMyRoomData = roomData;
     }
 
     @Override
     public void startPresenter() {
+        super.startPresenter();
         registerAction(MSG_NEW_DETAIL_REPLAY);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -75,14 +81,7 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
     @Override
     public void stopPresenter() {
         super.stopPresenter();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
+        unregisterAllAction();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -134,7 +133,7 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                             mMyRoomData.getUser().setAvatar(user.getAvatar());
                             mMyRoomData.setTicket(user.getLiveTicketNum());
                             mMyRoomData.getUser().setSign(user.getSign());
-                            mComponentController.onEvent(VideoDetailController.MSG_COMPLETE_USER_INFO);
+                            postEvent(VideoDetailController.MSG_COMPLETE_USER_INFO);
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -218,28 +217,25 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                 .subscribe(new Action1<FeedsInfo>() {
                     @Override
                     public void call(FeedsInfo outInfo) {
-                        if (mView == null){
+                        if (mView == null) {
                             return;
                         }
                         if (outInfo != null) {
                             if (!outInfo.isReplay) {
                                 //詳情頁需要再刷一下ui
-                                mComponentController.onEvent(MSG_PLAYER_FEEDS_DETAIL, new Params()
-                                        .putItem(outInfo));
+                                postEvent(MSG_PLAYER_FEEDS_DETAIL, new Params().putItem(outInfo));
+                                postEvent(MSG_UPDATE_LIKE_STATUS, new Params().putItem(outInfo.mySelfLike));
                             }
-                            mComponentController.onEvent(MSG_UPDATE_LIKE_STATUS, new Params()
-                                    .putItem(outInfo.mySelfLike));
-                            mComponentController.onEvent(MSG_UPDATE_START_TIME, new Params()
-                                    .putItem(outInfo.timestamp));
+                            postEvent(MSG_UPDATE_START_TIME, new Params().putItem(outInfo.timestamp));
                             if (TextUtils.isEmpty(mMyRoomData.getVideoUrl()) && !TextUtils.isEmpty(outInfo.url)) {
                                 mMyRoomData.setVideoUrl(outInfo.url);
-                                mComponentController.onEvent(MSG_PLAYER_START);
+                                postEvent(MSG_PLAYER_START);
                             }
                             mView.onFeedsInfo(mMyRoomData.getUid(), outInfo.title, outInfo.timestamp,
                                     outInfo.viewerCnt, outInfo.coverUrl);
                         } else {
                             MyLog.d(TAG, "feedsInfo failed");
-                            mComponentController.onEvent(MSG_UPDATE_START_TIME, new Params().putItem(0l));
+                            postEvent(MSG_UPDATE_START_TIME, new Params().putItem(0l));
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -254,7 +250,7 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
     public void showPersonalInfo() {
         long uid = mMyRoomData.getUid();
         if (uid > 0) {
-            mComponentController.onEvent(MSG_SHOW_PERSONAL_INFO, new Params().putItem(uid));
+            postEvent(MSG_SHOW_PERSONAL_INFO, new Params().putItem(uid));
         }
     }
 
@@ -288,32 +284,20 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                 });
     }
 
-    private void onNewVideo() {
-        syncFeedsInfo();
-    }
-
-    @Nullable
     @Override
-    protected IAction createAction() {
-        return new Action();
-    }
-
-    public class Action implements IAction {
-        @Override
-        public boolean onAction(int source, @Nullable Params params) {
-            if (mView == null) {
-                MyLog.e(TAG, "onAction but mView is null, source=" + source);
-                return false;
-            }
-            switch (source) {
-                case MSG_NEW_DETAIL_REPLAY:
-                    onNewVideo();
-                    break;
-                default:
-                    break;
-            }
+    public boolean onEvent(int event, IParams params) {
+        if (mView == null) {
+            MyLog.e(TAG, "onAction but mView is null, event=" + event);
             return false;
         }
+        switch (event) {
+            case MSG_NEW_DETAIL_REPLAY:
+                syncFeedsInfo();
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 
     public static class FeedsInfo {

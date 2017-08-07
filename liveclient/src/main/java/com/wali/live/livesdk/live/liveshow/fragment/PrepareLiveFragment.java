@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.utils.FragmentNaviUtils;
+import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
@@ -121,7 +122,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         if (mLiveMagicPanel == null && mStreamerPresenter != null) {
             mLiveMagicPanel = new LiveMagicPanel((RelativeLayout) mRootView, mStreamerPresenter);
             LiveMagicPresenter presenter = new LiveMagicPresenter();
-            presenter.setComponentView(mLiveMagicPanel.getViewProxy());
+            presenter.setView(mLiveMagicPanel.getViewProxy());
             mLiveMagicPanel.setPresenter(presenter);
         }
         mLiveMagicPanel.showSelf(useAnimation, false);
@@ -184,7 +185,9 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     @Override
     public void setManagerCount(int count) {
         if (count >= 0) {
-            mAdminCount.setText(getString(R.string.has_add_manager_count, count));
+            mAdminCount.setText(count == 0 ?
+                    GlobalData.app().getString(R.string.has_add_manager_count_zero) :
+                    GlobalData.app().getString(R.string.has_add_manager_count, count));
             mAdminArea.setVisibility(View.VISIBLE);
         }
     }

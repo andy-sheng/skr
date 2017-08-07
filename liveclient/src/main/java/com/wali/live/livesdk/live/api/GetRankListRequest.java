@@ -12,7 +12,7 @@ import com.wali.live.proto.RankProto;
 public class GetRankListRequest extends BaseRequest {
 
     public GetRankListRequest() {
-        super(MiLinkCommand.COMMAND_GET_RANK_LIST, "zhibo.rank.list", null);
+        super(MiLinkCommand.COMMAND_GET_RANK_LIST, "zhibo.rank.list");
         mRequest = RankProto.GetRankListRequest.newBuilder().setZuid(UserAccountManager.getInstance().getUuidAsLong()).setOffset(0).setLimit(3).build();
 
     }

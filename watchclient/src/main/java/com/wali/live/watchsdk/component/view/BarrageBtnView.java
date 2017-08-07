@@ -13,9 +13,9 @@ import android.widget.TextView;
 
 import com.base.log.MyLog;
 import com.mi.live.data.account.channel.HostChannelManager;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.R;
 
@@ -28,8 +28,8 @@ import static com.wali.live.statistics.StatisticsKey.TIMES;
  *
  * @module 底部输入框
  */
-public class BarrageBtnView extends FrameLayout
-        implements IComponentView<BarrageBtnView.IPresenter, BarrageBtnView.IView> {
+public class BarrageBtnView extends FrameLayout implements
+        IComponentView<BarrageBtnView.IPresenter, BarrageBtnView.IView> {
     private static final String TAG = "BarrageBtnView";
 
     protected IPresenter mPresenter;
@@ -90,7 +90,6 @@ public class BarrageBtnView extends FrameLayout
     @Override
     public IView getViewProxy() {
         class ComponentView implements IView {
-
             @Override
             public <T extends View> T getRealView() {
                 return (T) BarrageBtnView.this;

@@ -36,6 +36,7 @@ import com.base.view.BackTitleBar;
 import com.base.view.BottomButton;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.event.AccountEventController;
+import com.mi.live.data.milink.MilinkUtils;
 import com.wali.live.event.EventClass;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
@@ -60,9 +61,17 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
     public static final String EXTRA_DISPLAY_TYPE = "extra_display_type";
     public static final String EXTRA_WIDGET_ID = "extra_widget_id";
     public static final String EXTRA_RESULT_OK = "extra_result_ok";
+    public static final String GEM_EXCHANGE_H5_URL;
+
+    static {
+        if (Constants.isTestBuild) {
+            GEM_EXCHANGE_H5_URL = "http://staging.weixin.zb.mi.com/wechat-cgi/exchange/h5page";
+        } else {
+            GEM_EXCHANGE_H5_URL = "http://weixin.zb.mi.com/wechat-cgi/exchange/h5page";
+        }
+    }
 
     protected final float TITLE_BAR_RIGHT_BTN_MARGIN = 0.33f;
-
 
     public static boolean sIsAlive = false;
 
@@ -476,9 +485,11 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
         final String userId = userAccountManager.getUuid();
         final String passToken = userAccountManager.getPassToken();
         final String serviceToken = userAccountManager.getServiceToken();
+        final String qua = MilinkUtils.getQua();
         MyLog.v(" setCookies zhiboUuid == " + userId);
         MyLog.v(" setCookies passToken == " + passToken);
         MyLog.v(" setCookies zhiboServiceToken == " + serviceToken);
+        MyLog.v(" setCookies zhiboQua == " + qua);
 
         final CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(true);
@@ -503,6 +514,14 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
             cookieManager.setCookie(".xiaomi.net", "zhiboServiceToken =" + serviceToken);
             cookieManager.setCookie(".mi.com", "zhiboServiceToken =" + serviceToken);
         }
+
+        if (!TextUtils.isEmpty(qua)) {
+            cookieManager.setCookie(".xiaomi.com", "zhiboQua =" + qua);
+            cookieManager.setCookie(".xiaomi.cn", "zhiboQua =" + qua);
+            cookieManager.setCookie(".xiaomi.net", "zhiboQua =" + qua);
+            cookieManager.setCookie(".mi.com", "zhiboQua =" + qua);
+        }
+
         CookieSyncManager.getInstance().sync();
     }
 

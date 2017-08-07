@@ -1,10 +1,9 @@
 package com.wali.live.livesdk.live.liveshow.presenter.panel;
 
-import android.support.annotation.Nullable;
-
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.IParams;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.FilterItemAdapter;
@@ -22,16 +21,19 @@ import rx.schedulers.Schedulers;
 
 /**
  * Created by yangli on 2017/03/07.
- * <p>
- * Generated using create_bottom_panel.py
  *
  * @module 秀场美妆面板表现
  */
-public class LiveMagicPresenter extends ComponentPresenter<LiveMagicPanel.IView>
+public class LiveMagicPresenter extends BaseSdkRxPresenter<LiveMagicPanel.IView>
         implements LiveMagicPanel.IPresenter {
     private static final String TAG = "LiveMagicPresenter";
 
     private List<FilterItemAdapter.FilterItem> mFilterItems;
+
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
 
     public LiveMagicPresenter() {
         super(null);
@@ -99,9 +101,8 @@ public class LiveMagicPresenter extends ComponentPresenter<LiveMagicPanel.IView>
         mView.onFilterData(mFilterItems);
     }
 
-    @Nullable
     @Override
-    protected IAction createAction() {
-        return null;
+    public boolean onEvent(int event, IParams params) {
+        return false;
     }
 }

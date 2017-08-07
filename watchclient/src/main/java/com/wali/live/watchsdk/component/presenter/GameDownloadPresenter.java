@@ -1,7 +1,6 @@
 package com.wali.live.watchsdk.component.presenter;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.base.global.GlobalData;
@@ -17,9 +16,11 @@ import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.api.request.RoomInfoRequest;
 import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.IEventController;
+import com.thornbirds.component.IParams;
+import com.thornbirds.component.Params;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.wali.live.component.ComponentController;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.LiveProto;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.component.cache.GameModelCache;
@@ -43,10 +44,15 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
+import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_LIVE_SUCCESS;
+import static com.wali.live.component.BaseSdkController.MSG_SHOE_GAME_ICON;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_DOWNLOAD;
+
 /**
  * Created by lan on 2017/04/10.
  */
-public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.IView>
+public class GameDownloadPresenter extends BaseSdkRxPresenter<GameDownloadPanel.IView>
         implements GameDownloadPanel.IPresenter {
     private static final String TAG = LogConstants.GAME_DOWNLOAD_PREFIX + "GameDownloadPresenter";
 
@@ -63,11 +69,38 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
     private Subscription mSubscription;
     private Subscription mHttpSubscription;
 
-    public GameDownloadPresenter(@NonNull IComponentController componentController,
-                                 @NonNull RoomBaseDataModel myRoomData) {
-        super(componentController);
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
+
+    public GameDownloadPresenter(
+            @NonNull IEventController controller,
+            @NonNull RoomBaseDataModel myRoomData) {
+        super(controller);
         mMyRoomData = myRoomData;
-        startPresenter();
+    }
+
+    @Override
+    public void startPresenter() {
+        super.startPresenter();
+        registerAction(MSG_ON_LIVE_SUCCESS);
+        registerAction(MSG_SHOW_GAME_DOWNLOAD);
+        registerAction(MSG_ON_BACK_PRESSED);
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        unregisterAllAction();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (mView != null) {
+            mView.destroy();
+        }
     }
 
     private void getGameInfo() {
@@ -178,11 +211,8 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
                         if (gameModel.isValid()) {
                             MyLog.d(TAG, "call: onEvent MSG_BOTTOM_SHOE_GAME_ICON");
                             mGameModel = gameModel;
-
                             mView.inflate();
-                            Params params = new Params();
-                            params.putItem(mGameModel);
-                            mComponentController.onEvent(ComponentController.MSG_SHOE_GAME_ICON, params);
+                            postEvent(MSG_SHOE_GAME_ICON, new Params().putItem(mGameModel));
 
                             StatisticsAlmightyWorker.getsInstance().recordDelayDefault(formatGameIconShowKey(), 1);
                         }
@@ -281,21 +311,6 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
     }
 
     @Override
-    public void destroy() {
-        super.destroy();
-        stopPresenter();
-        mView.destroy();
-    }
-
-    @Override
-    public void startPresenter() {
-        super.startPresenter();
-        registerAction(ComponentController.MSG_ON_LIVE_SUCCESS);
-        registerAction(ComponentController.MSG_SHOW_GAME_DOWNLOAD);
-        registerAction(ComponentController.MSG_ON_BACK_PRESSED);
-    }
-
-    @Override
     public GameViewModel getGameModel() {
         return mGameModel;
     }
@@ -306,41 +321,33 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
     }
 
     @Override
-    protected IAction createAction() {
-        return new Action();
-    }
-
-    public class Action implements IAction {
-        @Override
-        public boolean onAction(int source, @Nullable Params params) {
-            if (mView == null) {
-                MyLog.e(TAG, "onAction: view is null, source=" + source);
-                return false;
-            }
-            switch (source) {
-                case ComponentController.MSG_ON_LIVE_SUCCESS:
-                    if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
-                        int liveType = mMyRoomData.getLiveType();
-                        MyLog.d(TAG, "liveType=" + liveType + " @" + mMyRoomData.hashCode());
-                        if (liveType == LiveManager.TYPE_LIVE_GAME) {
-                            getGameInfo();
-                        }
-                    }
-                    break;
-                case ComponentController.MSG_SHOW_GAME_DOWNLOAD:
-                    showGameDownloadView();
-                    break;
-                case ComponentController.MSG_ON_BACK_PRESSED:
-                    if (mView.isShow()) {
-                        hideGameDownloadView();
-                        return true;
-                    } else {
-                        return false;
-                    }
-                default:
-                    break;
-            }
+    public boolean onEvent(int event, IParams params) {
+        if (mView == null) {
+            MyLog.e(TAG, "onAction: view is null, event=" + event);
             return false;
         }
+        switch (event) {
+            case MSG_ON_LIVE_SUCCESS:
+                if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
+                    int liveType = mMyRoomData.getLiveType();
+                    MyLog.d(TAG, "liveType=" + liveType + " @" + mMyRoomData.hashCode());
+                    if (liveType == LiveManager.TYPE_LIVE_GAME) {
+                        getGameInfo();
+                    }
+                }
+                break;
+            case MSG_SHOW_GAME_DOWNLOAD:
+                showGameDownloadView();
+                break;
+            case MSG_ON_BACK_PRESSED:
+                if (mView.isShow()) {
+                    hideGameDownloadView();
+                    return true;
+                }
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 }
