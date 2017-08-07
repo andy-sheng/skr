@@ -13,8 +13,8 @@ import com.wali.live.livesdk.live.liveshow.view.button.PlusControlBtnView;
 
 import rx.Subscription;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 
 /**
  * Created by yangli on 2017/03/08.

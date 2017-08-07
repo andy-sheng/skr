@@ -7,7 +7,7 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.Params;
-import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.watchsdk.feeds.FeedsLikeUtils;
 import com.wali.live.watchsdk.videodetail.view.DetailBottomView;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
@@ -18,8 +18,8 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_COMMENT_INPUT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_UPDATE_LIKE_STATUS;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_COMMENT_INPUT;
+import static com.wali.live.component.BaseSdkController.MSG_UPDATE_LIKE_STATUS;
 import static com.wali.live.watchsdk.feeds.FeedsInfoUtils.FEED_TYPE_DEFAULT;
 
 /**

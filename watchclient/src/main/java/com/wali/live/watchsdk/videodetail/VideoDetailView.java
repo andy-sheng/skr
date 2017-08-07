@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
 import com.thornbirds.component.IParams;
-import com.wali.live.componentwrapper.BaseSdkView;
+import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.VideoDetailPlayerView;
@@ -26,9 +26,9 @@ import com.wali.live.watchsdk.videodetail.view.DetailTabView;
 
 import java.lang.ref.WeakReference;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_INPUT_VIEW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_INPUT_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 
 /**
  * Created by yangli on 2017/5/26.

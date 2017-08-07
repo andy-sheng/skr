@@ -11,18 +11,18 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
-import com.wali.live.componentwrapper.view.panel.BaseBottomPanel;
+import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.live.livegame.LiveComponentController;
 import com.wali.live.livesdk.live.livegame.view.panel.GameSettingPanel;
 import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_BOTTOM_PANEL;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_BACK_PRESSED;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SETTING_PANEL;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SHARE_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_BOTTOM_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_SETTING_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_SHARE_PANEL;
 
 /**
  * Created by yangli on 2017/2/18.

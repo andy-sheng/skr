@@ -1,4 +1,4 @@
-package com.wali.live.componentwrapper.view;
+package com.wali.live.component.view;
 
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.base.log.MyLog;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
-import com.wali.live.componentwrapper.view.panel.BaseBottomPanel;
+import com.wali.live.component.view.panel.BaseBottomPanel;
 
 /**
  * Created by yangli on 17-2-14.

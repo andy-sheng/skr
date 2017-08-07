@@ -22,14 +22,14 @@ import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 
 import java.lang.ref.WeakReference;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_BOTTOM_PANEL;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_BACK_PRESSED;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_MAGIC_PANEL;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_PLUS_PANEL;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SETTING_PANEL;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SHARE_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_BOTTOM_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_MAGIC_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_PLUS_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_SETTING_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_SHARE_PANEL;
 
 /**
  * Created by yangli on 2017/3/13.

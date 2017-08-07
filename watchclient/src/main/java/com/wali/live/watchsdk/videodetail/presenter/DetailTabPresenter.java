@@ -20,10 +20,10 @@ import com.wali.live.watchsdk.videodetail.view.DetailTabView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_COMMENT_TOTAL_CNT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_FOLD_INFO_AREA;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_FEEDS_DETAIL;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_REPLAY_TOTAL_CNT;
+import static com.wali.live.component.BaseSdkController.MSG_COMMENT_TOTAL_CNT;
+import static com.wali.live.component.BaseSdkController.MSG_FOLD_INFO_AREA;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_FEEDS_DETAIL;
+import static com.wali.live.component.BaseSdkController.MSG_REPLAY_TOTAL_CNT;
 
 /**
  * Created by yangli on 2017/06/02.

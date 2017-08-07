@@ -12,7 +12,7 @@ import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
-import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.RelationProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.view.FollowGuideView;
@@ -32,9 +32,9 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.mi.live.data.event.FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_FOLLOW_GUIDE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_FOLLOW_GUIDE;
 
 /**
  * Created by zyh on 2017/07/13.

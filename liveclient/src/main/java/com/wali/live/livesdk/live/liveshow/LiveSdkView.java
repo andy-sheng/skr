@@ -14,7 +14,7 @@ import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
 import com.thornbirds.component.IParams;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
-import com.wali.live.componentwrapper.BaseSdkView;
+import com.wali.live.component.BaseSdkView;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.liveshow.presenter.BottomButtonPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.FloatContainerPresenter;
@@ -40,16 +40,16 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_BACKGROUND_CLICK;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ENABLE_MOVE_VIEW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_INPUT_VIEW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_BARRAGE_SWITCH;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
+import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
+import static com.wali.live.component.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_ENABLE_MOVE_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_INPUT_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_BARRAGE_SWITCH;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
 
 /**
  * Created by yangli on 2017/2/18.

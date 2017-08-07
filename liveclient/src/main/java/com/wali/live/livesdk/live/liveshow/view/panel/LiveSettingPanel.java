@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 import com.base.log.MyLog;
 import com.mi.live.engine.base.GalileoConstants;
 import com.thornbirds.component.IEventController;
-import com.wali.live.componentwrapper.view.panel.BaseBottomPanel;
+import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.SingleChooser;
@@ -18,7 +18,7 @@ import com.wali.live.livesdk.live.liveshow.presenter.adapter.VolumeAdjuster;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_BOTTOM_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_BOTTOM_PANEL;
 
 /**
  * Created by yangli on 2017/03/07.

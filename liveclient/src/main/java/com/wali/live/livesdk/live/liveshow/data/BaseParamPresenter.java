@@ -7,8 +7,7 @@ import android.text.TextUtils;
 
 import com.base.utils.version.VersionManager;
 import com.thornbirds.component.IEventController;
-import com.thornbirds.component.presenter.ComponentPresenter;
-import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 
 /**
  * Created by yangli on 2017/3/8.

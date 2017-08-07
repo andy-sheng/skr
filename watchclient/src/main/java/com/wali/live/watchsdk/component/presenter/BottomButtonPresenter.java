@@ -15,14 +15,14 @@ import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOE_GAME_ICON;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_GAME_DOWNLOAD;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_INPUT_VIEW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SHARE_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
+import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_SHOE_GAME_ICON;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_DOWNLOAD;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_INPUT_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_SHARE_PANEL;
 
 /**
  * Created by yangli on 2017/2/18.

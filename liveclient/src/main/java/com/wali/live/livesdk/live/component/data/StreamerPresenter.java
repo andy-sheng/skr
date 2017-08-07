@@ -31,11 +31,11 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_END_LIVE_UNEXPECTED;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_STREAM_RECONNECT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_STREAM_SUCCESS;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_OPEN_CAMERA_FAILED;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_OPEN_MIC_FAILED;
+import static com.wali.live.component.BaseSdkController.MSG_END_LIVE_UNEXPECTED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_STREAM_RECONNECT;
+import static com.wali.live.component.BaseSdkController.MSG_ON_STREAM_SUCCESS;
+import static com.wali.live.component.BaseSdkController.MSG_OPEN_CAMERA_FAILED;
+import static com.wali.live.component.BaseSdkController.MSG_OPEN_MIC_FAILED;
 
 /**
  * Created by yangli on 2017/03/08.

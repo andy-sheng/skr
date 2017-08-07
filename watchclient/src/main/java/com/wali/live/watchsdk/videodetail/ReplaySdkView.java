@@ -24,7 +24,7 @@ import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.common.gift.view.GiftRoomEffectView;
-import com.wali.live.componentwrapper.BaseSdkView;
+import com.wali.live.component.BaseSdkView;
 import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.utils.ReplayBarrageMessageManager;
 import com.wali.live.watchsdk.R;
@@ -45,18 +45,18 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_BACKGROUND_CLICK;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ENABLE_MOVE_VIEW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_GAME_INPUT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_INPUT_VIEW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_DETAIL_SCREEN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_ROTATE_ORIENTATION;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_GAME_INPUT;
+import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
+import static com.wali.live.component.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_ENABLE_MOVE_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_GAME_INPUT;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_INPUT_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_DETAIL_SCREEN;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_ROTATE_ORIENTATION;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_INPUT;
 
 /**
  * Created by yangli on 2017/6/19.

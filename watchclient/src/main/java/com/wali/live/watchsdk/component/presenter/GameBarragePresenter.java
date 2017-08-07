@@ -14,8 +14,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_GAME_BARRAGE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_GAME_BARRAGE;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_GAME_BARRAGE;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_BARRAGE;
 
 /**
  * Created by yangli on 2017/03/02.

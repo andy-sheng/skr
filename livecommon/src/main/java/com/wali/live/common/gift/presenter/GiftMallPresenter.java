@@ -61,9 +61,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
+import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
+import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
 
 /**
  * Created by zjn on 16-11-30.

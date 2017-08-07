@@ -18,7 +18,7 @@ import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.thornbirds.component.IParams;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
-import com.wali.live.componentwrapper.BaseSdkView;
+import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.BarrageBtnPresenter;
@@ -50,19 +50,19 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_BACKGROUND_CLICK;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ENABLE_MOVE_VIEW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_FOLLOW_COUNT_DOWN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_GAME_INPUT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_INPUT_VIEW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_FOLLOW_GUIDE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_GAME_INPUT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
+import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
+import static com.wali.live.component.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_ENABLE_MOVE_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_FOLLOW_COUNT_DOWN;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_GAME_INPUT;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_INPUT_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_FOLLOW_GUIDE;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_INPUT;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
 
 /**
  * Created by yangli on 2017/2/18.

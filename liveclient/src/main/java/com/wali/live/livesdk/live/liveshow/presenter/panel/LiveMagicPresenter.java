@@ -3,7 +3,7 @@ package com.wali.live.livesdk.live.liveshow.presenter.panel;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.thornbirds.component.IParams;
-import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.FilterItemAdapter;

@@ -13,7 +13,7 @@ import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.gift.redenvelope.RedEnvelopeModel;
-import com.wali.live.componentwrapper.view.panel.BaseBottomPanel;
+import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;

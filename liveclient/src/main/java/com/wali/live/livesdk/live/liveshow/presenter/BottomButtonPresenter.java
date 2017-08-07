@@ -9,12 +9,12 @@ import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.live.liveshow.view.LiveBottomButton;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_MAGIC_PANEL;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_PLUS_PANEL;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SETTING_PANEL;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SHARE_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_MAGIC_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_PLUS_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_SETTING_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_SHARE_PANEL;
 
 /**
  * Created by yangli on 2017/2/18.

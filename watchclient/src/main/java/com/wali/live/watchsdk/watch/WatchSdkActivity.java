@@ -108,13 +108,13 @@ import java.util.concurrent.TimeUnit;
 import rx.Observer;
 import rx.functions.Action1;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_FOLLOW_COUNT_DOWN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_BACK_PRESSED;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_LIVE_SUCCESS;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PAGE_DOWN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PAGE_UP;
+import static com.wali.live.component.BaseSdkController.MSG_FOLLOW_COUNT_DOWN;
+import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_LIVE_SUCCESS;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_PAGE_DOWN;
+import static com.wali.live.component.BaseSdkController.MSG_PAGE_UP;
 
 /**
  * Created by lan on 16/11/25.

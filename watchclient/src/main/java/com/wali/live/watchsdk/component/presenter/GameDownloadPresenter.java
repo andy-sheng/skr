@@ -20,7 +20,7 @@ import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.Params;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.LiveProto;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.component.cache.GameModelCache;
@@ -44,10 +44,10 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_BACK_PRESSED;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_LIVE_SUCCESS;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOE_GAME_ICON;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_GAME_DOWNLOAD;
+import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_LIVE_SUCCESS;
+import static com.wali.live.component.BaseSdkController.MSG_SHOE_GAME_ICON;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_DOWNLOAD;
 
 /**
  * Created by lan on 2017/04/10.

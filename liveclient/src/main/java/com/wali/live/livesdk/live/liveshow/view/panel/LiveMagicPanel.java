@@ -16,7 +16,7 @@ import com.mi.live.engine.base.GalileoConstants;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
-import com.wali.live.componentwrapper.view.panel.BaseBottomPanel;
+import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;

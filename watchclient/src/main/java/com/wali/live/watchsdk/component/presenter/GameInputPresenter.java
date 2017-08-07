@@ -8,14 +8,14 @@ import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.wali.live.watchsdk.component.view.GameInputView;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_GAME_BARRAGE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_GAME_INPUT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_INPUT_VIEW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_BACK_PRESSED;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_GAME_BARRAGE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_GAME_INPUT;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_GAME_BARRAGE;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_GAME_INPUT;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_INPUT_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_BARRAGE;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_INPUT;
 
 /**
  * Created by yangli on 2017/02/28.

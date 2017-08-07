@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.base.log.MyLog;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
-import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.utils.PlusParamUtils;
 import com.wali.live.livesdk.live.liveshow.view.panel.LivePlusPanel;
@@ -20,10 +20,10 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_BOTTOM_PANEL;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_ATMOSPHERE_VIEW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_INPUT_VIEW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_BOTTOM_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_ATMOSPHERE_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_INPUT_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
 
 /**
  * Created by yangli on 2017/03/09.

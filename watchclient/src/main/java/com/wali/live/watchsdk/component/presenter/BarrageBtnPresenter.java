@@ -9,9 +9,9 @@ import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.component.view.BarrageBtnView;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_INPUT_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
+import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_INPUT_VIEW;
 
 /**
  * Created by wangmengjie on 17-7-24.

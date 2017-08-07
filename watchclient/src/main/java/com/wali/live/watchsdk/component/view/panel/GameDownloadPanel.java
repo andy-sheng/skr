@@ -28,7 +28,7 @@ import com.base.utils.toast.ToastUtils;
 import com.base.view.MyRatingBar;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
-import com.wali.live.componentwrapper.view.panel.BaseBottomPanel;
+import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
 import com.wali.live.watchsdk.log.LogConstants;

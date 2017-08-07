@@ -9,15 +9,15 @@ import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_BARRAGE_SWITCH;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_HIDE_INPUT_VIEW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_BACK_PRESSED;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_BARRAGE_SWITCH;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_INPUT_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_BARRAGE_SWITCH;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_INPUT_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_BARRAGE_SWITCH;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_INPUT_VIEW;
 
 /**
  * Created by yangli on 17/02/20.

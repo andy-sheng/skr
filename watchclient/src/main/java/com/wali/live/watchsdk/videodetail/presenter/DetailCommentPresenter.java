@@ -16,7 +16,7 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.Params;
-import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.Feeds;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.feeds.FeedsCommentUtils;
@@ -36,12 +36,12 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_COMMENT_TOTAL_CNT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_FOLD_INFO_AREA;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_NEW_DETAIL_REPLAY;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SEND_COMMENT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_COMMENT_INPUT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_PERSONAL_INFO;
+import static com.wali.live.component.BaseSdkController.MSG_COMMENT_TOTAL_CNT;
+import static com.wali.live.component.BaseSdkController.MSG_FOLD_INFO_AREA;
+import static com.wali.live.component.BaseSdkController.MSG_NEW_DETAIL_REPLAY;
+import static com.wali.live.component.BaseSdkController.MSG_SEND_COMMENT;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_COMMENT_INPUT;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_PERSONAL_INFO;
 import static com.wali.live.watchsdk.feeds.FeedsCommentUtils.PULL_TYPE_ALL_HYBRID;
 import static com.wali.live.watchsdk.feeds.FeedsInfoUtils.FEED_TYPE_DEFAULT;
 

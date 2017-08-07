@@ -14,7 +14,7 @@ import com.base.log.MyLog;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.thornbirds.component.view.IOrientationListener;
 import com.thornbirds.component.view.IViewProxy;
-import com.wali.live.componentwrapper.view.BaseBottomButton;
+import com.wali.live.component.view.BaseBottomButton;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;

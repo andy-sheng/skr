@@ -11,7 +11,7 @@ import com.base.log.MyLog;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.presenter.ComponentPresenter;
 import com.thornbirds.component.view.IOrientationListener;
-import com.wali.live.componentwrapper.view.panel.BaseBottomPanel;
+import com.wali.live.component.view.panel.BaseBottomPanel;
 
 import java.lang.ref.WeakReference;
 

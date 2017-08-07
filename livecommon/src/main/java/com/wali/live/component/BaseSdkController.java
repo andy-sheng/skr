@@ -1,4 +1,4 @@
-package com.wali.live.componentwrapper;
+package com.wali.live.component;
 
 import com.thornbirds.component.ComponentController;
 

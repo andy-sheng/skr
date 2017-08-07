@@ -17,7 +17,7 @@ import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.thornbirds.component.IEventObserver;
 import com.thornbirds.component.IParams;
-import com.wali.live.componentwrapper.BaseSdkView;
+import com.wali.live.component.BaseSdkView;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
@@ -36,16 +36,16 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_BACK_PRESSED;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_DETAIL_SCREEN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_FULL_SCREEN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_PAUSE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_ROTATE_ORIENTATION;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_START;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_PERSONAL_INFO;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_UPDATE_START_TIME;
+import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_DETAIL_SCREEN;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_FULL_SCREEN;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_ROTATE_ORIENTATION;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_PERSONAL_INFO;
+import static com.wali.live.component.BaseSdkController.MSG_UPDATE_START_TIME;
 
 /**
  * Created by yangli on 2017/5/26.

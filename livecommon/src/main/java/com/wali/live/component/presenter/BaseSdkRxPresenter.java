@@ -1,4 +1,4 @@
-package com.wali.live.componentwrapper.presenter;
+package com.wali.live.component.presenter;
 
 import android.support.annotation.CallSuper;
 

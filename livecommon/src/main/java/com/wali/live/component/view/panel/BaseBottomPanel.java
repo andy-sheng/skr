@@ -1,4 +1,4 @@
-package com.wali.live.componentwrapper.view.panel;
+package com.wali.live.component.view.panel;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

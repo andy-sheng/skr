@@ -12,7 +12,7 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.Params;
-import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.Live2Proto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.feeds.FeedsCommentUtils;
@@ -30,7 +30,7 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_COMPLETE_USER_INFO;
+import static com.wali.live.component.BaseSdkController.MSG_COMPLETE_USER_INFO;
 
 /**
  * Created by zyh on 2017/06/06.

@@ -21,7 +21,7 @@ import com.mi.live.engine.streamer.GalileoStreamer;
 import com.mi.live.engine.streamer.IStreamer;
 import com.mi.live.engine.streamer.StreamerConfig;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
-import com.wali.live.componentwrapper.BaseSdkView;
+import com.wali.live.component.BaseSdkView;
 import com.wali.live.livesdk.live.component.BaseLiveController;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.liveshow.fragment.PrepareLiveFragment;

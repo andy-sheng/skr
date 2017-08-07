@@ -19,13 +19,13 @@ import com.thornbirds.component.view.IOrientationListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_BACKGROUND_CLICK;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ENABLE_MOVE_VIEW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PAGE_DOWN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PAGE_UP;
+import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
+import static com.wali.live.component.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_ENABLE_MOVE_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_PAGE_DOWN;
+import static com.wali.live.component.BaseSdkController.MSG_PAGE_UP;
 
 /**
  * Created by yangli on 2017/03/05.

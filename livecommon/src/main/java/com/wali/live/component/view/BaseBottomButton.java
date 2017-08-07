@@ -1,4 +1,4 @@
-package com.wali.live.componentwrapper.view;
+package com.wali.live.component.view;
 
 import android.content.Context;
 import android.support.annotation.DrawableRes;

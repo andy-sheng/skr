@@ -15,11 +15,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_NEW_DETAIL_REPLAY;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_DETAIL_SCREEN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_FULL_SCREEN;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_PAUSE;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_START;
+import static com.wali.live.component.BaseSdkController.MSG_NEW_DETAIL_REPLAY;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_DETAIL_SCREEN;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_FULL_SCREEN;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
 
 /**
  * Created by zyh on 2017/05/31.

@@ -16,7 +16,7 @@ import com.mi.live.data.user.User;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.Params;
-import com.wali.live.componentwrapper.presenter.BaseSdkRxPresenter;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.Feeds;
 import com.wali.live.proto.LiveShowProto;
 import com.wali.live.utils.relation.RelationUtils;
@@ -37,12 +37,12 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.mi.live.data.event.FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_NEW_DETAIL_REPLAY;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_FEEDS_DETAIL;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_PLAYER_START;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_SHOW_PERSONAL_INFO;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_UPDATE_LIKE_STATUS;
-import static com.wali.live.componentwrapper.BaseSdkController.MSG_UPDATE_START_TIME;
+import static com.wali.live.component.BaseSdkController.MSG_NEW_DETAIL_REPLAY;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_FEEDS_DETAIL;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_PERSONAL_INFO;
+import static com.wali.live.component.BaseSdkController.MSG_UPDATE_LIKE_STATUS;
+import static com.wali.live.component.BaseSdkController.MSG_UPDATE_START_TIME;
 
 /**
  * Created by yangli on 2017/06/01.
