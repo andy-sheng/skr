@@ -1152,6 +1152,30 @@ public class GalileoStreamer implements IStreamer {
     }
 
     @Override
+    public void addExternalAudioStream(final int streamId, final boolean isMainStream, final int sampleRate, final int nChannels) {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                if (mBroadCaster != null) {
+                    mBroadCaster.addExternalAudioStream(streamId, isMainStream, sampleRate, nChannels);
+                }
+            }
+        }, "addExternalAudioStream");
+    }
+
+    @Override
+    public void removeExternalAudioStream(final long streamID) {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                if (mBroadCaster != null) {
+                    mBroadCaster.removeExternalAudioStream(streamID);
+                }
+            }
+        }, "removeExternalAudioStream");
+    }
+
+    @Override
     public void switchRenderWithUid(final String uid1, final String uid2) {
         MyLog.w(TAG, "switchRenderWithUid");
         ThreadPool.runOnEngine(new Runnable() {
@@ -1184,10 +1208,10 @@ public class GalileoStreamer implements IStreamer {
     }
 
     @Override
-    public void putExtraAudioFrameWithTimestamp(int nSamples, int nBytesPerSample, int nChannels, int samplesPerSec, byte[] data, long timestamp) {
+    public void putExtraAudioFrameWithTimestamp(int nSamples, int nBytesPerSample, int nChannels, int samplesPerSec, byte[] data, long streamID, long timestamp) {
         mLock.lock();
         if (!mIsDestroyed && mBroadCaster != null) {
-            mBroadCaster.pushExtraAudioFrameWithTimestamp(nSamples, nBytesPerSample, nChannels, samplesPerSec, data, timestamp, 0);
+            mBroadCaster.pushExtraAudioFrameWithTimestamp(nSamples, nBytesPerSample, nChannels, samplesPerSec, data, streamID, timestamp);
         }
         mLock.unlock();
     }

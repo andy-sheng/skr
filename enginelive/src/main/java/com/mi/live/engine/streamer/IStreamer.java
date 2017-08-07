@@ -122,9 +122,13 @@ public interface IStreamer {
 
     void handleZoom(double zoomFactor);
 
+    void addExternalAudioStream(int streamId, boolean isMainStream, int sampleRate, int nChannels);
+
+    void removeExternalAudioStream(long streamID);
+
     void putExtraAudioFrame(int nSamples, int nBytesPerSample, int nChannels, int samplesPerSec, byte[] data);
 
-    void putExtraAudioFrameWithTimestamp(int nSamples, int nBytesPerSample, int nChannels, int samplesPerSec, byte[] data, long timestamp);
+    void putExtraAudioFrameWithTimestamp(int nSamples, int nBytesPerSample, int nChannels, int samplesPerSec, byte[] data, long streamID, long timestamp);
 
     void loopbackAudio(boolean enable);
 
