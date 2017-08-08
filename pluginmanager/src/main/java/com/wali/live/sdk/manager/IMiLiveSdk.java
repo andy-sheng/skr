@@ -96,7 +96,7 @@ public interface IMiLiveSdk {
     /**
      * 打开直播观看页面
      *
-     * @version 205036
+     * @version 205037
      */
     void openWatchRoom(Activity activity, RoomInfo roomInfo, IAssistantCallback callback);
 
@@ -104,7 +104,7 @@ public interface IMiLiveSdk {
     /**
      * 打开直播观看页面，同时能够滑动
      *
-     * @version 205036
+     * @version 205037
      */
     void openWatchRoomList(Activity activity, ArrayList<RoomInfo> list, int position, IAssistantCallback callback);
 

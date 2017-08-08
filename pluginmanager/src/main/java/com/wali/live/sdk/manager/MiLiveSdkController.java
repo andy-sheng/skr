@@ -112,8 +112,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
         mMinVersionMap.put(ACTION_STATISTIC, 205025);
 
-        mMinVersionMap.put(ACTION_OPEN_WATCH_ROOM, 205036);
-        mMinVersionMap.put(ACTION_OPEN_WATCH_ROOM_LIST, 205036);
+        mMinVersionMap.put(ACTION_OPEN_WATCH_ROOM, 205037);
+        mMinVersionMap.put(ACTION_OPEN_WATCH_ROOM_LIST, 205037);
     }
 
     public static IMiLiveSdk getInstance() {
