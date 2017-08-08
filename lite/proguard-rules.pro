@@ -70,6 +70,7 @@
 -keep class com.xiaomi.devicemanager.**{ *; }
 -keep class com.xiaomi.rendermanager.**{ *; }
 -keep class com.xiaomi.player.** { *; }
+-keep class com.xiaomi.transport.**{ *; }
 
 -keep class com.xiaomi.mibi.** {
  *;
