@@ -216,9 +216,9 @@ public class GalileoStreamer implements IStreamer {
             @Override
             public void run() {
                 MyLog.w(TAG, "setSpeaker enable=" + !mHeadsetPlugged);
-                GalileoDeviceManager.INSTANCE.init(GlobalData.app());
+                GalileoDeviceManager.INSTANCE.init(context);
                 mDeviceManager = GalileoDeviceManager.INSTANCE.getDeviceManger();
-                GalileoRenderManager.INSTANCE.init(GlobalData.app());
+                GalileoRenderManager.INSTANCE.init(context);
                 mRenderManager = GalileoRenderManager.INSTANCE.getRenderManager();
                 if (mDeviceManager != null && mRenderManager != null) {
                     mBroadCaster = new BroadCaster();
