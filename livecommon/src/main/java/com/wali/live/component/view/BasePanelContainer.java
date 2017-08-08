@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.base.log.MyLog;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 
 /**

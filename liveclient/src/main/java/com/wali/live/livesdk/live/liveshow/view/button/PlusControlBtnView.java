@@ -11,15 +11,13 @@ import android.widget.TextView;
 
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IOrientationListener;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IOrientationListener;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.livesdk.R;
 
 /**
  * Created by yangli on 2017/03/08.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 直播加按钮视图
  */

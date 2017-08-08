@@ -2,6 +2,11 @@
 
 apply from: 'buildsystem/dependencies.gradle'
 
+configurations.all {
+    // check for updates every build
+    resolutionStrategy.cacheChangingModulesFor 5, 'minutes'
+}
+
 buildscript {
 
     repositories {
@@ -35,6 +40,10 @@ allprojects {
         //        flatDir {
 //        maven { url '//            dirs \'../framework/libs\'' }
         //        }
+
+        maven {
+            url 'https://raw.githubusercontent.com/ModerateFish/mvn-repo/master/'
+        }
     }
     ext {
         androidApplicationId = 'com.fernanependocejas.android10.sample.presentation'

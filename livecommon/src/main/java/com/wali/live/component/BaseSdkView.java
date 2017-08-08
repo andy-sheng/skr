@@ -1,58 +1,33 @@
 package com.wali.live.component;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.support.annotation.CallSuper;
-import android.support.annotation.CheckResult;
-import android.support.annotation.FloatRange;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 
-import com.base.presenter.Presenter;
-import com.live.module.common.R;
-import com.wali.live.component.presenter.ComponentPresenter;
-import com.wali.live.component.view.IComponentView;
+import com.base.log.MyLog;
+import com.thornbirds.component.ComponentView;
+import com.thornbirds.component.IEventObserver;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by yangli on 2017/2/17.
+ * Created by yangli on 2017/8/2.
  *
- * @author YangLi
- * @mail yanglijd@gmail.com
+ * @module 基础架构页面
  */
-public abstract class BaseSdkView<T extends ComponentController> {
-    protected final String TAG = getTAG();
+public abstract class BaseSdkView<VIEW extends View, CONTROLLER extends BaseSdkController>
+        extends ComponentView<VIEW, CONTROLLER> implements IEventObserver {
 
-    @NonNull
     protected Activity mActivity;
-    @NonNull
-    protected T mComponentController;
 
-    protected final List<IComponentView> mComponentViewSet = new ArrayList<>();
-    protected final List<ComponentPresenter> mComponentPresenterSet = new ArrayList<>();
-
-    @Nullable
-    @CheckResult
-    protected <V extends View> V $(@IdRes int id) {
-        return (V) mActivity.findViewById(id);
-    }
-
-    @Nullable
-    @CheckResult
-    protected final <V extends View> V $(@NonNull View view, @IdRes int id) {
-        return (V) view.findViewById(id);
-    }
-
-    protected final void $click(View v, View.OnClickListener clickListener) {
-        if (v != null) {
-            v.setOnClickListener(clickListener);
-        }
+    protected final <T> T deRef(WeakReference reference) {
+        return reference != null ? (T) reference.get() : null;
     }
 
     protected final void addViewToSet(int[] idSet, List<View>... listSet) {
@@ -67,12 +42,12 @@ public abstract class BaseSdkView<T extends ComponentController> {
         }
     }
 
-    // add view to activity
+    // add view to mContentView
     protected final <T extends View> void addViewAboveAnchor(
             @NonNull T view,
             @NonNull ViewGroup.LayoutParams params,
             View anchorView) {
-        ViewGroup rootView = (ViewGroup) mActivity.findViewById(R.id.main_act_container);
+        ViewGroup rootView = (ViewGroup) mContentView;
         int pos = anchorView != null ? rootView.indexOfChild(anchorView) : -1;
         if (pos >= 0) {
             rootView.addView(view, pos + 1, params);
@@ -81,12 +56,12 @@ public abstract class BaseSdkView<T extends ComponentController> {
         }
     }
 
-    // add view to activity
+    // add view to mContentView
     protected final <T extends View> void addViewUnderAnchor(
             @NonNull T view,
             @NonNull ViewGroup.LayoutParams params,
             View anchorView) {
-        ViewGroup rootView = (ViewGroup) mActivity.findViewById(R.id.main_act_container);
+        ViewGroup rootView = (ViewGroup) mContentView;
         int pos = anchorView != null ? rootView.indexOfChild(anchorView) : -1;
         if (pos >= 0) {
             rootView.addView(view, pos, params);
@@ -95,106 +70,91 @@ public abstract class BaseSdkView<T extends ComponentController> {
         }
     }
 
-    protected final void addComponentView(
-            @NonNull IComponentView view,
-            @NonNull ComponentPresenter presenter) {
-        presenter.setComponentView(view.getViewProxy());
-        view.setPresenter(presenter);
-        mComponentViewSet.add(view);
-        mComponentPresenterSet.add(presenter);
+    protected final void registerAction(int event) {
+        mController.registerObserverForEvent(event, this);
     }
 
-    protected final void addComponentView(
-            @NonNull ComponentPresenter presenter) {
-        mComponentPresenterSet.add(presenter);
+    protected final void unregisterAction(int event) {
+        mController.unregisterObserverForEvent(event, this);
     }
 
-    protected abstract String getTAG();
-
-    public BaseSdkView(@NonNull Activity activity,
-                       @NonNull T componentController) {
+    public BaseSdkView(
+            @NonNull Activity activity,
+            @NonNull ViewGroup parentView,
+            @NonNull CONTROLLER controller) {
+        super(parentView, controller);
         mActivity = activity;
-        mComponentController = componentController;
     }
 
-    /**
-     * 初始化SdkView
-     */
-    public abstract void setupSdkView();
-
-    /**
-     * 启动SdkView
-     */
-    public void startSdkView() {
+    @Override
+    public void startView() {
+        super.startView();
+        MyLog.w(TAG, "startView");
     }
 
-    /**
-     * 停止SdkView
-     */
-    public void stopSdkView() {
+    @Override
+    @CallSuper
+    public void stopView() {
+        super.stopView();
+        MyLog.w(TAG, "stopView");
+        mController.unregisterObserver(this);
     }
 
-    /**
-     * 销毁SdkView，并释放资源
-     */
-    public void releaseSdkView() {
-        for (Presenter presenter : mComponentPresenterSet) {
-            presenter.destroy();
-        }
-        mComponentPresenterSet.clear();
-        mComponentViewSet.clear();
+    @Override
+    public void release() {
+        super.release();
+        MyLog.w(TAG, "release");
     }
 
-    public abstract class Action implements ComponentPresenter.IAction {
+    public abstract class AnimationHelper {
 
-        protected final <T extends ValueAnimator> T deRef(WeakReference<T> reference) {
-            return reference != null ? reference.get() : null;
+        protected final boolean startRefAnimator(WeakReference<? extends Animator> reference) {
+            Animator animator = deRef(reference);
+            if (animator != null) {
+                if (!animator.isStarted() && !animator.isRunning()) {
+                    animator.start();
+                }
+                return true;
+            }
+            return false;
         }
 
-        protected final void setAlpha(View view, @FloatRange(from = 0.0f, to = 1.0f) float alpha) {
-            if (view != null) {
-                view.setAlpha(alpha);
+        protected final void stopRefAnimator(WeakReference<? extends Animator> reference) {
+            Animator animator = deRef(reference);
+            if (animator != null) {
+                animator.cancel();
             }
         }
 
-        protected final void setVisibility(View view, int visibility) {
-            if (view != null) {
-                view.setVisibility(visibility);
+        protected final void stopRefAnimation(WeakReference<? extends Animation> reference) {
+            Animation animation = deRef(reference);
+            if (animation != null) {
+                animation.cancel();
+                animation.reset();
             }
         }
 
-        protected WeakReference<ValueAnimator> mInputAnimatorRef; // 输入框弹起时，隐藏
-        protected boolean mInputShow = false;
-
-        /**
-         * 输入框显示时，隐藏弹幕区和头部区
-         * 弹幕区只在横屏下才需要显示和隐藏，直接修改visibility，在显示动画开始时显示，在消失动画结束时消失。
-         */
-        protected abstract void startInputAnimator(boolean inputShow);
+        protected final ValueAnimator startNewAnimator(
+                ValueAnimator.AnimatorUpdateListener updateListener,
+                Animator.AnimatorListener listener) {
+            ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
+            valueAnimator.setDuration(300);
+            valueAnimator.addUpdateListener(updateListener);
+            valueAnimator.addListener(listener);
+            valueAnimator.start();
+            return valueAnimator;
+        }
 
         /**
          * 停止动画
          */
-        protected abstract void stopAllAnimator();
+        protected void stopAllAnimator() {
+        }
 
         /**
          * 停止动画，并释放动画资源引用
          */
-        public abstract void clearAnimation();
-
-        @CallSuper
-        public void registerAction() {
-            mComponentController.registerAction(ComponentController.MSG_ON_ORIENT_PORTRAIT, this);
-            mComponentController.registerAction(ComponentController.MSG_ON_ORIENT_LANDSCAPE, this);
-            mComponentController.registerAction(ComponentController.MSG_INPUT_VIEW_SHOWED, this);
-            mComponentController.registerAction(ComponentController.MSG_INPUT_VIEW_HIDDEN, this);
-            mComponentController.registerAction(ComponentController.MSG_BACKGROUND_CLICK, this);
-        }
-
-        @CallSuper
-        public void unregisterAction() {
-            mComponentController.unregisterAction(this);
+        public void clearAnimation() {
         }
     }
-
 }

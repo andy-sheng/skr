@@ -11,9 +11,11 @@ root_package = root_package + '.data'
 root_path = os.path.join(root_path, 'data')
 
 # 生成Presenter
+name1 = name + 'Presenter'
+name2 = 'Object'
 class_package = root_package
 class_import = ''
-template = TemplateInfo(class_package, class_import, name, command, user_name, user_date)
-out_file = os.path.join(root_path, name + 'Presenter.java')
-check_path(root_path)
+template = TemplateInfo(class_package, class_import, name1, name2, command, user_name, user_date)
+out_file = os.path.join(root_path, name1 + '.java')
+check_path(os.path.dirname(out_file))
 template.write_to_file(os.path.join(template_path, 'data', 'DataPresenter.java'), out_file)

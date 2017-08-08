@@ -33,8 +33,9 @@ public class GameSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
     private View mForbidSystemTv;
     private View mForbidChatTv;
 
-    public GameSettingPanel(@NonNull RelativeLayout parentView,
-                            @NonNull LiveRoomChatMsgManager liveRoomChatMsgManager) {
+    public GameSettingPanel(
+            @NonNull RelativeLayout parentView,
+            @NonNull LiveRoomChatMsgManager liveRoomChatMsgManager) {
         super(parentView);
         mLiveRoomChatMsgManager = liveRoomChatMsgManager;
     }

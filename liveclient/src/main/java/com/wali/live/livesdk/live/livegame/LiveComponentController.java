@@ -41,7 +41,6 @@ public class LiveComponentController extends BaseLiveController {
     protected LiveRoomChatMsgManager mRoomChatMsgManager; // 房间弹幕管理
     @NonNull
     protected StreamerPresenter mStreamerPresenter; // 推流器
-
     @NonNull
     protected GameLivePresenter mGameLivePresenter;
     @NonNull
@@ -56,7 +55,7 @@ public class LiveComponentController extends BaseLiveController {
     public LiveComponentController(
             @NonNull RoomBaseDataModel myRoomData,
             @NonNull LiveRoomChatMsgManager roomChatMsgManager,
-            StreamerPresenter streamerPresenter) {
+            @NonNull StreamerPresenter streamerPresenter) {
         mMyRoomData = myRoomData;
         mRoomChatMsgManager = roomChatMsgManager;
         mStreamerPresenter = streamerPresenter;
@@ -166,7 +165,7 @@ public class LiveComponentController extends BaseLiveController {
 
     @Override
     public void onActivityResumed() {
-        onEvent(MSG_ON_ACTIVITY_RESUMED);
+        postEvent(MSG_ON_ACTIVITY_RESUMED);
         if (mGameLivePresenter != null) {
             mGameLivePresenter.resume();
         }

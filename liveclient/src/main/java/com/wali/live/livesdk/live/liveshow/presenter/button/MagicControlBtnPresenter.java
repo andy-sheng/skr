@@ -1,16 +1,14 @@
 package com.wali.live.livesdk.live.liveshow.presenter.button;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
-import com.base.log.MyLog;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.IEventController;
+import com.thornbirds.component.IParams;
+import com.thornbirds.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.live.liveshow.view.button.MagicControlBtnView;
 
 /**
  * Created by yangli on 2017/03/09.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 美妆按钮表现
  */
@@ -18,9 +16,14 @@ public class MagicControlBtnPresenter extends ComponentPresenter<MagicControlBtn
         implements MagicControlBtnView.IPresenter {
     private static final String TAG = "MagicControlBtnPresenter";
 
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
+
     public MagicControlBtnPresenter(
-            @NonNull IComponentController componentController) {
-        super(componentController);
+            @NonNull IEventController controller) {
+        super(controller);
 //        EventBus.getDefault().register(this);
     }
 
@@ -70,24 +73,8 @@ public class MagicControlBtnPresenter extends ComponentPresenter<MagicControlBtn
 //        mView.showRedDot(false);
 //    }
 
-    @Nullable
     @Override
-    protected IAction createAction() {
-        return new Action();
-    }
-
-    public class Action implements IAction {
-        @Override
-        public boolean onAction(int source, @Nullable Params params) {
-            if (mView == null) {
-                MyLog.e(TAG, "onAction but mView is null, source=" + source);
-                return false;
-            }
-            switch (source) {
-                default:
-                    break;
-            }
-            return false;
-        }
+    public boolean onEvent(int event, IParams params) {
+        return false;
     }
 }

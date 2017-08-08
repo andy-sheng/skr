@@ -6,22 +6,21 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.base.utils.version.VersionManager;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.IEventController;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 
 /**
  * Created by yangli on 2017/3/8.
  *
  * @module 云端配参数据
  */
-public abstract class BaseParamPresenter extends ComponentPresenter {
+public abstract class BaseParamPresenter extends BaseSdkRxPresenter {
 
     @NonNull
     protected Context mContext;
 
-    public BaseParamPresenter(
-            @NonNull IComponentController componentController,
-            @NonNull Context context) {
-        super(componentController);
+    public BaseParamPresenter(@NonNull IEventController controller, @NonNull Context context) {
+        super(controller);
         mContext = context;
     }
 

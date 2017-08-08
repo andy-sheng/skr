@@ -1,7 +1,6 @@
 package com.wali.live.watchsdk.component.presenter;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -11,11 +10,11 @@ import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.relation.RelationApi;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.wali.live.component.ComponentController;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.IEventController;
+import com.thornbirds.component.IParams;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.RelationProto;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.component.view.FollowGuideView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -33,38 +32,48 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.mi.live.data.event.FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_FOLLOW_GUIDE;
 
 /**
  * Created by zyh on 2017/07/13.
  *
  * @module 游戏直播间内关注引导的presenter
  */
-public class FollowGuidePresenter extends ComponentPresenter<FollowGuideView.IView>
+public class FollowGuidePresenter extends BaseSdkRxPresenter<FollowGuideView.IView>
         implements FollowGuideView.IPresenter {
     private static final String TAG = "FollowGuidePresenter";
 
     private Subscription mSubscription;
     private RoomBaseDataModel mMyRoomData;
 
-    public FollowGuidePresenter(@NonNull IComponentController componentController, RoomBaseDataModel myRoomData) {
-        super(componentController);
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
+
+    public FollowGuidePresenter(
+            @NonNull IEventController controller,
+            @NonNull RoomBaseDataModel myRoomData) {
+        super(controller);
         mMyRoomData = myRoomData;
-        startPresenter();
     }
 
     @Override
     public void startPresenter() {
         super.startPresenter();
+        registerAction(MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(MSG_ON_ORIENT_PORTRAIT);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        registerAction(WatchComponentController.MSG_ON_ORIENT_LANDSCAPE);
-        registerAction(WatchComponentController.MSG_ON_ORIENT_PORTRAIT);
     }
 
     @Override
     public void stopPresenter() {
         super.stopPresenter();
+        unregisterAllAction();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -73,7 +82,6 @@ public class FollowGuidePresenter extends ComponentPresenter<FollowGuideView.IVi
     @Override
     public void destroy() {
         super.destroy();
-        stopPresenter();
         if (mSubscription != null && mSubscription.isUnsubscribed()) {
             mSubscription.unsubscribe();
             mSubscription = null;
@@ -196,7 +204,7 @@ public class FollowGuidePresenter extends ComponentPresenter<FollowGuideView.IVi
                     @Override
                     public void call() {
                         //complete
-                        mComponentController.onEvent(WatchComponentController.MSG_SHOW_FOLLOW_GUIDE);
+                        postEvent(MSG_SHOW_FOLLOW_GUIDE);
                     }
                 });
     }
@@ -208,30 +216,22 @@ public class FollowGuidePresenter extends ComponentPresenter<FollowGuideView.IVi
         }
     }
 
-    @Nullable
     @Override
-    protected IAction createAction() {
-        return new Action();
-    }
-
-    public class Action implements IAction {
-        @Override
-        public boolean onAction(int source, @Nullable Params params) {
-            if (mView == null) {
-                MyLog.e(TAG, "onAction but mView is null, source=" + source);
-                return false;
-            }
-            switch (source) {
-                case ComponentController.MSG_ON_ORIENT_LANDSCAPE:
-                    mView.onScreenChanged(true);
-                    break;
-                case ComponentController.MSG_ON_ORIENT_PORTRAIT:
-                    mView.onScreenChanged(false);
-                    break;
-                default:
-                    break;
-            }
+    public boolean onEvent(int event, IParams params) {
+        if (mView == null) {
+            MyLog.e(TAG, "onAction but mView is null, event=" + event);
             return false;
         }
+        switch (event) {
+            case MSG_ON_ORIENT_LANDSCAPE:
+                mView.onScreenChanged(true);
+                break;
+            case MSG_ON_ORIENT_PORTRAIT:
+                mView.onScreenChanged(false);
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 }

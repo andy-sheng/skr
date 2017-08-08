@@ -6,15 +6,13 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.base.log.MyLog;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 /**
  * Created by yangli on 2017/05/31.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 详情播放视图
  */

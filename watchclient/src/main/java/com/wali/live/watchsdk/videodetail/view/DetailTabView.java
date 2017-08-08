@@ -11,8 +11,8 @@ import android.view.View;
 
 import com.base.utils.display.DisplayUtils;
 import com.base.view.SlidingTabLayout;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
 
@@ -20,8 +20,6 @@ import java.util.List;
 
 /**
  * Created by yangli on 2017/06/02.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 详情TAB视图
  */

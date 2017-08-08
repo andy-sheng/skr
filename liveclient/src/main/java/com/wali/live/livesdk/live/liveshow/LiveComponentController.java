@@ -68,11 +68,11 @@ public class LiveComponentController extends BaseLiveController {
 
     @Override
     public void enterPreparePage(
-            @NonNull BaseComponentSdkActivity fragmentActivity,
+            @NonNull BaseComponentSdkActivity activity,
             int requestCode,
             FragmentDataListener listener) {
         MyLog.w(TAG, "prepareShowLive");
-        PrepareLiveFragment.openFragment(fragmentActivity, requestCode, listener, this, mStreamerPresenter, mMyRoomData);
+        PrepareLiveFragment.openFragment(activity, requestCode, listener, this, mStreamerPresenter, mMyRoomData);
         mRoomChatMsgManager.setIsGameLiveMode(false);
     }
 

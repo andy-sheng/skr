@@ -13,24 +13,23 @@ import android.widget.RelativeLayout;
 
 import com.base.view.RotatedSeekBar;
 import com.mi.live.engine.base.GalileoConstants;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.IParams;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
-import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
 import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.FilterItemAdapter;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.SingleChooser;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.VolumeAdjuster;
 import com.wali.live.livesdk.live.view.SwitchButton;
+import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
 
 import java.util.List;
 
 /**
  * Created by yangli on 2017/03/07.
- * <p>
- * Generated using create_bottom_panel.py
  *
  * @module 秀场美妆面板视图
  */
@@ -347,7 +346,7 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
 
         public PanelContainer(@NonNull RelativeLayout relativeLayout) {
             super(null);
-            setComponentView(relativeLayout);
+            setView(relativeLayout);
         }
 
         protected void showBeautyPanel() {
@@ -371,10 +370,9 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
 //            showPanel(mExpressionPanel, false);
 //        }
 
-        @Nullable
         @Override
-        protected IAction createAction() {
-            return null;
+        public boolean onEvent(int event, IParams params) {
+            return false;
         }
     }
 }

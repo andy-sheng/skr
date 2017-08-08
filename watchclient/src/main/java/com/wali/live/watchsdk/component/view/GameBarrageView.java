@@ -19,11 +19,11 @@ import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.push.model.BarrageMsgType;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.common.barrage.event.CommentRefreshEvent;
 import com.wali.live.common.gift.utils.AnimationPlayControlTemplate;
 import com.wali.live.common.model.CommentModel;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
 
 import java.util.ArrayList;
@@ -54,6 +54,11 @@ public class GameBarrageView extends RelativeLayout
 
     @Nullable
     protected IPresenter mPresenter;
+
+    @Override
+    public void setPresenter(@Nullable IPresenter iPresenter) {
+        mPresenter = iPresenter;
+    }
 
     public GameBarrageView(Context context) {
         this(context, null);
@@ -266,11 +271,6 @@ public class GameBarrageView extends RelativeLayout
             }
         }
         return false;
-    }
-
-    @Override
-    public void setPresenter(@Nullable IPresenter iPresenter) {
-        mPresenter = iPresenter;
     }
 
     @Override

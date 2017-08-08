@@ -11,16 +11,14 @@ import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.user.User;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 /**
  * Created by yangli on 2017/06/01.
- * <p>
- * Generated using create_component_view.py
  *
  * @module 详情信息视图
  */

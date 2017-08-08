@@ -12,6 +12,8 @@ import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 
 import java.util.ArrayList;
 import java.util.List;

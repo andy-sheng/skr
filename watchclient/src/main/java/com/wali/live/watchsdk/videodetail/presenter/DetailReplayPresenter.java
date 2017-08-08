@@ -1,7 +1,6 @@
 package com.wali.live.watchsdk.videodetail.presenter;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.base.global.GlobalData;
@@ -10,7 +9,10 @@ import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.wali.live.component.presenter.ComponentPresenter;
+import com.thornbirds.component.IEventController;
+import com.thornbirds.component.IParams;
+import com.thornbirds.component.Params;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.Live2Proto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.feeds.FeedsCommentUtils;
@@ -28,28 +30,42 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.wali.live.component.ComponentController.MSG_COMPLETE_USER_INFO;
+import static com.wali.live.component.BaseSdkController.MSG_COMPLETE_USER_INFO;
 
 /**
  * Created by zyh on 2017/06/06.
  *
- * @module 詳情頁底下的回放
+ * @module 详情页底下的回放
  */
-public class DetailReplayPresenter extends ComponentPresenter<DetailReplayView.IView>
+public class DetailReplayPresenter extends BaseSdkRxPresenter<DetailReplayView.IView>
         implements DetailReplayView.IPresenter {
     private static final String TAG = "DetailReplayPresenter";
+
     private Subscription mSubscription;
     private RoomBaseDataModel mMyRoomData;
 
-    public DetailReplayPresenter(@NonNull IComponentController componentController
-            , RoomBaseDataModel myRoomData) {
-        super(componentController);
-        this.mMyRoomData = myRoomData;
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
+
+    public DetailReplayPresenter(
+            @NonNull IEventController controller,
+            @NonNull RoomBaseDataModel myRoomData) {
+        super(controller);
+        mMyRoomData = myRoomData;
     }
 
     @Override
     public void startPresenter() {
+        super.startPresenter();
         registerAction(MSG_COMPLETE_USER_INFO);
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        unregisterAllAction();
     }
 
     @Override
@@ -95,7 +111,7 @@ public class DetailReplayPresenter extends ComponentPresenter<DetailReplayView.I
                         if (itemList == null) {
                             mView.onPullReplayFailed();
                         } else {
-                            mComponentController.onEvent(VideoDetailController.MSG_REPLAY_TOTAL_CNT,
+                            postEvent(VideoDetailController.MSG_REPLAY_TOTAL_CNT,
                                     new Params().putItem(itemList.size()));
                             mView.onPullReplayDone(itemList);
                         }
@@ -120,30 +136,22 @@ public class DetailReplayPresenter extends ComponentPresenter<DetailReplayView.I
         }
         mMyRoomData.setVideoUrl(replayInfoItem.mUrl);
         mMyRoomData.setRoomId(replayInfoItem.mLiveId);
-        mComponentController.onEvent(VideoDetailController.MSG_NEW_DETAIL_REPLAY);
+        postEvent(VideoDetailController.MSG_NEW_DETAIL_REPLAY);
     }
 
-    @Nullable
     @Override
-    protected IAction createAction() {
-        return new Action();
-    }
-
-    public class Action implements IAction {
-        @Override
-        public boolean onAction(int source, @Nullable Params params) {
-            if (mView == null) {
-                MyLog.e(TAG, "onAction but mView is null, source=" + source);
-                return false;
-            }
-            switch (source) {
-                case MSG_COMPLETE_USER_INFO:
-                    mView.updateAllReplayView();
-                    break;
-                default:
-                    break;
-            }
+    public boolean onEvent(int event, IParams params) {
+        if (mView == null) {
+            MyLog.e(TAG, "onAction but mView is null, event=" + event);
             return false;
         }
+        switch (event) {
+            case MSG_COMPLETE_USER_INFO:
+                mView.updateAllReplayView();
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 }

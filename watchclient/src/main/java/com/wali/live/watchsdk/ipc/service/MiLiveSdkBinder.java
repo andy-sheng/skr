@@ -276,12 +276,11 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Override
-    public void loginByMiAccountSso(final int channelId, String packageName, String channelSecret,
+    public void loginByMiAccountSso(final int channelId, final String packageName, final String channelSecret,
                                     final long miid, final String serviceToken) throws RemoteException {
         MyLog.w(TAG, "loginByMiAccountSso channelId=" + channelId);
         reportLoginEntrance(channelId, miid);
-
-        secureOperate(channelId, packageName, channelSecret, new SecureLoginCallback() {
+        secureOperate(channelId, packageName, channelSecret, new SecureLoginCallback(miid) {
             @Override
             public void postSuccess() {
                 MyLog.w(TAG, "loginByMiAccountSso success callback");
@@ -329,6 +328,12 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                                 }
                             }
                         });
+            }
+
+            @Override
+            public void postSame() {
+                MyLog.w(TAG, "loginByMiAccountSso postSame callback");
+                onEventLogin(channelId, ErrorCode.CODE_SUCCESS);
             }
 
             @Override
@@ -402,6 +407,12 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                                 }
                             }
                         });
+            }
+
+            @Override
+            public void postSame() {
+                MyLog.w(TAG, "loginByMiAccountOAuth post callback");
+                onEventLogin(channelId, ErrorCode.CODE_SUCCESS);
             }
 
             @Override
@@ -543,7 +554,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         });
     }
 
-    public void openGameLive(final Activity activity, final int channelId, final String packageName, String channelSecret,
+    public void openGameLive(final Activity activity, final int channelId, final String packageName, final String channelSecret,
                              final ICommonCallBack callback, final boolean needFinish) {
         MyLog.w(TAG, "openGameLive by activity channelId=" + channelId);
 
@@ -578,7 +589,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         });
     }
 
-    public void secureOperate(final int channelId, final String packageName, final String channelSecret, final ISecureCallBack callback) {
+    public void secureOperate(final int channelId, final String packageName,
+                              final String channelSecret, final ISecureCallBack callback) {
         if (callback == null) {
             MyLog.w(TAG, " secureOperate callback is null");
             return;
@@ -834,14 +846,20 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             }
 
             @Override
+            public void postSame() {
+                MyLog.w(TAG, "thirdPartLogin postSame callback");
+                onEventLogin(channelId, ErrorCode.CODE_SUCCESS);
+            }
+
+            @Override
             public void postActive() {
-                MyLog.w(TAG, "loginByMiAccountOAuth postActive callback");
+                MyLog.w(TAG, "thirdPartLogin postActive callback");
                 onEventOtherAppActive(channelId);
             }
 
             @Override
             public void processFailure() {
-                MyLog.d(TAG, "loginByMiAccountOAuth failure callback");
+                MyLog.d(TAG, "thirdPartLogin failure callback");
                 onEventLogin(channelId, ErrorCode.CODE_ERROR_NORMAL);
             }
         });
@@ -973,5 +991,4 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         }
         MyLog.w(TAG, "onEventShare aidl success=" + aidlSuccess);
     }
-
 }

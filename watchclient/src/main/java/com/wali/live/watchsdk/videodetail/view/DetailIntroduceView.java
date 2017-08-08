@@ -1,16 +1,13 @@
-package com.wali.live.watchsdk.videodetail;
+package com.wali.live.watchsdk.videodetail.view;
 
 import android.content.Context;
 import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.view.EmptyView;
 
@@ -19,15 +16,11 @@ import com.wali.live.watchsdk.view.EmptyView;
  *
  * @module 详情页底下的详情view
  */
-public class DetailIntroduceView extends RelativeLayout implements IComponentView<DetailIntroduceView.IPresenter,
-        DetailIntroduceView.IView> {
+public class DetailIntroduceView extends RelativeLayout {
     private static final String TAG = "DetailIntroduceView";
+
     private EmptyView mEmptyView;
     private TextView mContentTv;
-
-    @Nullable
-    protected IPresenter mPresenter;
-
 
     protected final <T extends View> T $(@IdRes int resId) {
         return (T) findViewById(resId);
@@ -67,30 +60,5 @@ public class DetailIntroduceView extends RelativeLayout implements IComponentVie
             mContentTv.setVisibility(GONE);
             mEmptyView.setVisibility(VISIBLE);
         }
-    }
-
-    @Override
-    public void setPresenter(@Nullable IPresenter presenter) {
-        mPresenter = presenter;
-    }
-
-    @Override
-    public IView getViewProxy() {
-        /**
-         * 局部内部类，用于Presenter回调通知该View改变状态
-         */
-        class ComponentView implements IView {
-            @Override
-            public <T extends View> T getRealView() {
-                return (T) DetailIntroduceView.this;
-            }
-        }
-        return new ComponentView();
-    }
-
-    public interface IPresenter {
-    }
-
-    public interface IView extends IViewProxy {
     }
 }

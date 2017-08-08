@@ -10,8 +10,8 @@ import android.widget.RelativeLayout;
 
 import com.base.global.GlobalData;
 import com.base.image.fresco.view.TransferImageView;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
+import com.thornbirds.component.view.IComponentView;
+import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
@@ -20,12 +20,11 @@ import java.util.List;
 
 /**
  * Created by xiaolan on 2017/07/17.
- * <p>
- * Generated using create_component_view.py
  *
- * @module [TODO add module]
+ * @module 观看上下滑动
  */
-public class ImagePagerView extends RelativeLayout implements IComponentView<ImagePagerView.IPresenter, ImagePagerView.IView> {
+public class ImagePagerView extends RelativeLayout
+        implements IComponentView<ImagePagerView.IPresenter, ImagePagerView.IView> {
     private static final String TAG = "ImagePagerView";
 
     @Nullable
@@ -36,6 +35,21 @@ public class ImagePagerView extends RelativeLayout implements IComponentView<Ima
     private TransferImageView mNextDv;
 
     private List<RoomInfo> mRoomInfoList;
+
+    protected final <T extends View> T $(@IdRes int resId) {
+        return (T) findViewById(resId);
+    }
+
+    protected final void $click(View view, View.OnClickListener listener) {
+        if (view != null) {
+            view.setOnClickListener(listener);
+        }
+    }
+
+    @Override
+    public void setPresenter(@Nullable IPresenter iPresenter) {
+        mPresenter = iPresenter;
+    }
 
     public ImagePagerView(Context context) {
         this(context, null, 0);
@@ -141,21 +155,6 @@ public class ImagePagerView extends RelativeLayout implements IComponentView<Ima
 
     public void postPrepare() {
         mCenterDv.setVisibility(View.GONE);
-    }
-
-    protected final <T extends View> T $(@IdRes int resId) {
-        return (T) findViewById(resId);
-    }
-
-    protected final void $click(View view, View.OnClickListener listener) {
-        if (view != null) {
-            view.setOnClickListener(listener);
-        }
-    }
-
-    @Override
-    public void setPresenter(@Nullable IPresenter iPresenter) {
-        mPresenter = iPresenter;
     }
 
     @Override

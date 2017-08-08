@@ -13,13 +13,15 @@ import android.view.ViewGroup;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.thornbirds.component.view.IOrientationListener;
 
 /**
  * Created by yangli on 17-2-14.
  *
  * @module 底部面板
  */
-public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends ViewGroup> {
+public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends ViewGroup>
+        implements IOrientationListener {
     protected String TAG = getTAG();
 
     protected final static int PANEL_WIDTH_LANDSCAPE = GlobalData.screenWidth;
@@ -118,6 +120,7 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
         mContentView.setLayoutParams(layoutParams);
     }
 
+    @Override
     public final void onOrientation(boolean isLandscape) {
         MyLog.w(TAG, "onOrientation isLandscape=" + isLandscape);
         // 增加mHasFirstOriented变量，标识首次的初始化

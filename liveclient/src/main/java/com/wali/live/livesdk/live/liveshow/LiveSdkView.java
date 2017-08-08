@@ -12,10 +12,9 @@ import android.widget.RelativeLayout;
 
 import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
+import com.thornbirds.component.IParams;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.component.BaseSdkView;
-import com.wali.live.component.ComponentController;
-import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.liveshow.presenter.BottomButtonPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.FloatContainerPresenter;
@@ -41,17 +40,27 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
+import static com.wali.live.component.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_ENABLE_MOVE_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_INPUT_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_BARRAGE_SWITCH;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
+
 /**
  * Created by yangli on 2017/2/18.
  *
  * @module 秀场直播页面
  */
-public class LiveSdkView extends BaseSdkView<LiveComponentController> {
-
-    @NonNull
-    protected final Action mAction = new Action();
+public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
 
     private final List<View> mHorizontalMoveSet = new ArrayList<>();
+
+    protected final AnimationHelper mAnimationHelper = new AnimationHelper();
 
     @Nullable
     protected View mTopInfoView;
@@ -59,7 +68,6 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
     protected View mLiveCommentView;
     @Nullable
     protected GiftContinueViewGroup mGiftContinueViewGroup;
-
     @Nullable
     protected RelativeLayout mFloatContainer;
 
@@ -72,46 +80,45 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
 
     public LiveSdkView(
             @NonNull Activity activity,
-            @NonNull LiveComponentController componentController) {
-        super(activity, componentController);
+            @NonNull LiveComponentController controller) {
+        super(activity, (ViewGroup) activity.findViewById(android.R.id.content), controller);
+        mContentView = $(mParentView, R.id.main_act_container);
         addMissingView();
     }
 
     private void addMissingView() {
         // 画面
-        LiveDisplayView view = new LiveDisplayView(mActivity);
-        LiveDisplayPresenter presenter = new LiveDisplayPresenter(mComponentController);
-        addComponentView(view, presenter);
+        LiveDisplayView view = new LiveDisplayView(mContentView.getContext());
+        LiveDisplayPresenter presenter = new LiveDisplayPresenter(mController);
+        registerComponent(view, presenter);
         // add view to activity
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addViewUnderAnchor(view, layoutParams, $(R.id.live_top_info_view));
 
         // FloatContainer，放在BottomButtonView的下方，目前用来放氛围面板：FloatAtmospherePanel
-        mFloatContainer = new RelativeLayout(mActivity);
+        mFloatContainer = new RelativeLayout(mContentView.getContext());
         layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addViewUnderAnchor(mFloatContainer, layoutParams, $(R.id.bottom_button_view));
     }
 
     @Override
-    public void setupSdkView() {
+    public void setupView() {
         mGiftContinueViewGroup = $(R.id.gift_continue_vg); // 礼物
         mTopInfoView = $(R.id.live_top_info_view); // 顶部view
-
         // 弹幕区
         {
             LiveCommentView view = $(R.id.live_comment_view);
             if (view == null) {
                 return;
             }
-            LiveCommentPresenter presenter = new LiveCommentPresenter(mComponentController);
-            addComponentView(view, presenter);
-            view.setToken(mComponentController.mRoomChatMsgManager.toString());
+            LiveCommentPresenter presenter = new LiveCommentPresenter(mController);
+            registerComponent(view, presenter);
+            view.setToken(mController.mRoomChatMsgManager.toString());
 
             mLiveCommentView = view;
         }
-
         // 输入框
         {
             InputAreaView view = $(R.id.input_area_view);
@@ -119,10 +126,9 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 return;
             }
             InputAreaPresenter presenter = new InputAreaPresenter(
-                    mComponentController, mComponentController.mMyRoomData, false);
-            addComponentView(view, presenter);
+                    mController, mController.mMyRoomData, false);
+            registerComponent(view, presenter);
         }
-
         // 底部面板
         {
             RelativeLayout relativeLayout = $(R.id.bottom_panel_view);
@@ -131,20 +137,16 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 return;
             }
             PanelContainerPresenter presenter = new PanelContainerPresenter(
-                    mComponentController, mComponentController.mStreamerPresenter,
-                    mComponentController.mMyRoomData);
-            presenter.setComponentView(relativeLayout);
-            addComponentView(presenter);
+                    mController, mController.mStreamerPresenter,
+                    mController.mMyRoomData);
+            registerHybridComponent(presenter, relativeLayout);
         }
-
         // 音效面板
         {
             FloatContainerPresenter presenter = new FloatContainerPresenter(
-                    mComponentController, mComponentController.mStreamerPresenter);
-            presenter.setComponentView(mFloatContainer);
-            addComponentView(presenter);
+                    mController, mController.mStreamerPresenter);
+            registerHybridComponent(presenter, mFloatContainer);
         }
-
         // 底部按钮
         {
             RelativeLayout relativeLayout = $(R.id.bottom_button_view);
@@ -154,12 +156,10 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
             }
             relativeLayout.setVisibility(View.VISIBLE);
             LiveBottomButton view = new LiveBottomButton(relativeLayout,
-                    mComponentController.mMyRoomData.getEnableShare());
-            BottomButtonPresenter presenter =
-                    new BottomButtonPresenter(mComponentController,
-                            mComponentController.mMyRoomData);
-            addComponentView(view, presenter);
-
+                    mController.mMyRoomData.getEnableShare());
+            BottomButtonPresenter presenter = new BottomButtonPresenter(
+                    mController, mController.mMyRoomData);
+            registerComponent(view, presenter);
             // 直播加按钮
             {
                 PlusControlBtnView btnView = $(R.id.plus_btn);
@@ -168,10 +168,9 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                     return;
                 }
                 PlusControlBtnPresenter btnPresenter = new PlusControlBtnPresenter(
-                        mComponentController, mActivity.getApplicationContext());
-                addComponentView(btnView, btnPresenter);
+                        mController, mActivity.getApplicationContext());
+                registerComponent(btnView, btnPresenter);
             }
-
             // 美妆按钮
             {
                 MagicControlBtnView btnView = $(R.id.magic_btn);
@@ -180,19 +179,20 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                     return;
                 }
                 MagicControlBtnPresenter btnPresenter =
-                        new MagicControlBtnPresenter(mComponentController);
-                addComponentView(btnView, btnPresenter);
+                        new MagicControlBtnPresenter(mController);
+                registerComponent(btnView, btnPresenter);
             }
         }
-
         // 抢红包
         {
             RelativeLayout relativeLayout = $(com.wali.live.watchsdk.R.id.envelope_view);
-            EnvelopePresenter presenter = new EnvelopePresenter(mComponentController, mComponentController.mMyRoomData);
-            presenter.setComponentView(relativeLayout);
-            addComponentView(presenter);
+            if (relativeLayout == null) {
+                MyLog.e(TAG, "missing R.id.envelope_view");
+                return;
+            }
+            EnvelopePresenter presenter = new EnvelopePresenter(mController, mController.mMyRoomData);
+            registerHybridComponent(presenter, relativeLayout);
         }
-
         // 运营位
         {
             WidgetView view = $(R.id.widget_view);
@@ -200,8 +200,8 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 MyLog.e(TAG, "missing R.id.widget_view");
                 return;
             }
-            WidgetPresenter presenter = new WidgetPresenter(mComponentController, mComponentController.mMyRoomData, true);
-            addComponentView(view, presenter);
+            WidgetPresenter presenter = new WidgetPresenter(mController, mController.mMyRoomData, true);
+            registerComponent(view, presenter);
             ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
         }
 
@@ -214,133 +214,130 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 R.id.gift_room_effect_view,
                 R.id.widget_view
         }, mHorizontalMoveSet);
-
         // 滑动
         {
 //            View view = $(R.id.touch_view);
 //            if (view == null) {
 //                return;
 //            }
-//            TouchPresenter presenter = new TouchPresenter(mComponentController, view);
-//            addComponentView(presenter);
+//            TouchPresenter presenter = new TouchPresenter(mController, view);
+//            registerComponent(presenter);
 //            presenter.setViewSet(mHorizontalMoveSet);
         }
-
-        mAction.registerAction(); // 最后注册该Action，任何事件mAction都最后收到
-        mComponentController.onEvent(LiveComponentController.MSG_SHOW_BARRAGE_SWITCH);
     }
 
-    public class Action extends BaseSdkView.Action {
+    @Override
+    public void startView() {
+        super.startView();
+        registerAction(MSG_ON_ORIENT_PORTRAIT);
+        registerAction(MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(MSG_INPUT_VIEW_SHOWED);
+        registerAction(MSG_INPUT_VIEW_HIDDEN);
+        registerAction(MSG_BACKGROUND_CLICK);
+        registerAction(MSG_SHOW_SEND_ENVELOPE);
+        mController.postEvent(MSG_SHOW_BARRAGE_SWITCH);
+    }
 
-        @Override
-        public void registerAction() {
-            super.registerAction();
-            mComponentController.registerAction(ComponentController.MSG_SHOW_ATMOSPHERE_VIEW, this);
-            mComponentController.registerAction(ComponentController.MSG_SHOW_SEND_ENVELOPE, this);
+    @Override
+    public void stopView() {
+        super.stopView();
+        mAnimationHelper.clearAnimation();
+    }
+
+    @Override
+    public boolean onEvent(int event, IParams params) {
+        switch (event) {
+            case MSG_ON_ORIENT_PORTRAIT:
+                mIsLandscape = false;
+                mAnimationHelper.stopAllAnimator();
+                return true;
+            case MSG_ON_ORIENT_LANDSCAPE:
+                mIsLandscape = true;
+                mAnimationHelper.stopAllAnimator();
+                return true;
+            case MSG_INPUT_VIEW_SHOWED:
+                if (!mIsLandscape) {
+                    mController.postEvent(MSG_DISABLE_MOVE_VIEW);
+                }
+                if (mGiftContinueViewGroup != null) {
+                    mGiftContinueViewGroup.onShowInputView();
+                }
+                return true;
+            case MSG_INPUT_VIEW_HIDDEN:
+                if (!mIsLandscape) { // 游戏直播横屏不需左右滑
+                    mController.postEvent(MSG_ENABLE_MOVE_VIEW);
+                }
+                if (mGiftContinueViewGroup != null) {
+                    mGiftContinueViewGroup.onHideInputView();
+                }
+                return true;
+            case MSG_BACKGROUND_CLICK:
+                if (mController.postEvent(MSG_HIDE_INPUT_VIEW)) {
+                    return true;
+                }
+                break;
+            case MSG_SHOW_SEND_ENVELOPE:
+                SendEnvelopeFragment.openFragment((BaseActivity) mActivity,
+                        mController.mMyRoomData);
+                return true;
+            default:
+                break;
         }
+        return false;
+    }
 
-        @Override
-        public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
-            switch (source) {
-                case LiveComponentController.MSG_ON_ORIENT_PORTRAIT:
-                    mIsLandscape = false;
-                    stopAllAnimator();
-                    return true;
-                case LiveComponentController.MSG_ON_ORIENT_LANDSCAPE:
-                    mIsLandscape = true;
-                    stopAllAnimator();
-                    return true;
-                case LiveComponentController.MSG_INPUT_VIEW_SHOWED:
-                    if (!mIsLandscape) {
-                        mComponentController.onEvent(ComponentController.MSG_DISABLE_MOVE_VIEW);
-                    }
-                    if (mGiftContinueViewGroup != null) {
-                        mGiftContinueViewGroup.onShowInputView();
-                    }
-                    return true;
-                case LiveComponentController.MSG_INPUT_VIEW_HIDDEN:
-                    if (!mIsLandscape) { // 游戏直播横屏不需左右滑
-                        mComponentController.onEvent(ComponentController.MSG_ENABLE_MOVE_VIEW);
-                    }
-                    if (mGiftContinueViewGroup != null) {
-                        mGiftContinueViewGroup.onHideInputView();
-                    }
-                    return true;
-                case LiveComponentController.MSG_BACKGROUND_CLICK:
-                    if (mComponentController.onEvent(ComponentController.MSG_HIDE_INPUT_VIEW)) {
-                        return true;
-                    }
-                    break;
-                case LiveComponentController.MSG_SHOW_SEND_ENVELOPE:
-                    SendEnvelopeFragment.openFragment((BaseActivity) mActivity,
-                            mComponentController.mMyRoomData);
-                    break;
-                default:
-                    break;
-            }
-            return false;
-        }
+    public class AnimationHelper extends BaseSdkView.AnimationHelper {
 
+        protected WeakReference<ValueAnimator> mInputAnimatorRef; // 输入框弹起和收起时，隐藏和显示View动画
+        protected boolean mInputShow = false;
 
-        @Override
         protected void startInputAnimator(boolean inputShow) {
             if (mInputShow == inputShow) {
                 return;
             }
             mInputShow = inputShow;
-            ValueAnimator valueAnimator = deRef(mInputAnimatorRef);
-            if (valueAnimator != null) {
-                if (!valueAnimator.isStarted() && !valueAnimator.isRunning()) {
-                    valueAnimator.start();
-                }
+            if (startRefAnimator(mInputAnimatorRef)) {
                 return;
             }
-            valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
-            valueAnimator.setDuration(300);
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            ValueAnimator valueAnimator = startNewAnimator(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     float value = (float) animation.getAnimatedValue();
                     if (mInputShow) {
                         value = 1.0f - value;
                     }
-                    setAlpha(mTopInfoView, value);
+                    mTopInfoView.setAlpha(value);
                 }
-            });
-            valueAnimator.addListener(new AnimatorListenerAdapter() {
+            }, new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {
                     if (mInputShow) {
                         if (mIsLandscape) {
-                            setVisibility(mLiveCommentView, View.GONE);
+                            mLiveCommentView.setVisibility(View.GONE);
                         }
                     } else {
-                        setVisibility(mTopInfoView, View.VISIBLE);
+                        mTopInfoView.setVisibility(View.VISIBLE);
                     }
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     if (mInputShow) {
-                        setVisibility(mTopInfoView, View.GONE);
+                        mTopInfoView.setVisibility(View.GONE);
                     } else {
-                        setAlpha(mTopInfoView, 1.0f);
+                        mTopInfoView.setAlpha(1.0f);
                         if (mIsLandscape) {
-                            setVisibility(mLiveCommentView, View.VISIBLE);
+                            mLiveCommentView.setVisibility(View.VISIBLE);
                         }
                     }
                 }
             });
-            valueAnimator.start();
             mInputAnimatorRef = new WeakReference<>(valueAnimator);
         }
 
         @Override
         protected void stopAllAnimator() {
-            ValueAnimator valueAnimator = deRef(mInputAnimatorRef);
-            if (valueAnimator != null) {
-                valueAnimator.cancel();
-            }
+            stopRefAnimator(mInputAnimatorRef);
         }
 
         @Override

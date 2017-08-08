@@ -249,29 +249,29 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
         });
 
         mBeginBtn = $(R.id.begin_btn);
-        mBeginBtn.setOnClickListener(this);
+        $click(mBeginBtn, this);
 
         mCloseBtn = $(R.id.close_btn);
-        mCloseBtn.setOnClickListener(this);
+        $click(mCloseBtn, this);
 
         mShareContainer = $(R.id.share_container);
         mShareSelectedIv = $(R.id.share_friends_iv);
-        mShareContainer.setOnClickListener(this);
+        $click(mShareContainer, this);
         tryHideShareBtnView();
 
         mDailyTaskSl = $(R.id.daily_task_sl);
         mDailyTaskArea = $(R.id.daily_task_area);
-        mDailyTaskArea.setOnClickListener(this);
+        $click(mDailyTaskArea, this);
 
         mAdminArea = $(R.id.admin_area);
         mAdminCount = $(R.id.admin_count);
-        mAdminArea.setOnClickListener(this);
+        $click(mAdminArea, this);
 
         mControlTitleArea = $(R.id.control_title_area);
         mChangeTitleTv = $(R.id.change_title_tv);
-        mChangeTitleTv.setOnClickListener(this);
+        $click(mChangeTitleTv, this);
         mClearTitleTv = $(R.id.clear_title_tv);
-        mClearTitleTv.setOnClickListener(this);
+        $click(mClearTitleTv, this);
 
         mTopContainer = $(R.id.top_container);
         mTitleContainer = $(R.id.title_container);
@@ -279,7 +279,7 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
     }
 
     protected void initTitleView() {
-        mLiveTitleEt = (EditText) mRootView.findViewById(R.id.live_title_et);
+        mLiveTitleEt = $(R.id.live_title_et);
         mTitleTextWatcher = new TitleTextWatcher(mLiveTitleEt);
         mLiveTitleEt.addTextChangedListener(mTitleTextWatcher);
     }
@@ -431,15 +431,17 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
         List<LiveRoomManagerModel> managerModels = LiveRoomCharacterManager.getInstance().getRoomManagers();
         int managerCount = managerModels.size();
         long top1Id = mRoomPreparePresenter.getTop1Id();
-        boolean isTop1Manager = false;
-        for (LiveRoomManagerModel managerModel : managerModels) {
-            if (top1Id == managerModel.uuid) {
-                isTop1Manager = true;
-                break;
+        if (top1Id != 0) {
+            boolean isTop1Manager = false;
+            for (LiveRoomManagerModel managerModel : managerModels) {
+                if (top1Id == managerModel.uuid) {
+                    isTop1Manager = true;
+                    break;
+                }
             }
-        }
-        if (!isTop1Manager) {
-            managerCount++;
+            if (!isTop1Manager) {
+                managerCount++;
+            }
         }
         setManagerCount(managerCount);
     }

@@ -391,14 +391,23 @@ public class ScreenRecordManager implements SurfaceTexture.OnFrameAvailableListe
         AudioRecord record = new AudioRecord(MediaRecorder.AudioSource.MIC, AUDIO_FREQUENCY, AudioFormat.CHANNEL_IN_STEREO, AudioFormat.ENCODING_PCM_16BIT, bufferSize);
         final byte[] buffer = new byte[bufferSize * 2];
         record.startRecording();
+
+        int streamID = 0;
+        if (mStreamer != null) {
+            mStreamer.addExternalAudioStream(streamID, true, AUDIO_FREQUENCY, 2);
+        }
         while (mIsRecording && !mIsPause) {
             int size = record.read(buffer, 0, buffer.length);
             final long timestamp = System.currentTimeMillis() - 300;
             IStreamer streamer = mStreamer;
             if (streamer != null && mScreenRecordId != 0) {
-                streamer.putExtraAudioFrameWithTimestamp(size / 4, 2, 2, AUDIO_FREQUENCY, buffer, timestamp);
+                streamer.putExtraAudioFrameWithTimestamp(size / 4, 2, 2, AUDIO_FREQUENCY, buffer, streamID, timestamp);
             }
         }
+        if (mStreamer != null) {
+            mStreamer.removeExternalAudioStream(streamID);
+        }
+
         record.stop();
         record.release();
     }

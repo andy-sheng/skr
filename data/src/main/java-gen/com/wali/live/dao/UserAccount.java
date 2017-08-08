@@ -28,6 +28,7 @@ public class UserAccount {
     private Integer isNew;
     private Boolean needEditUserInfo;
     private Boolean isLogOff;
+    private Long miid;
 
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
@@ -35,7 +36,7 @@ public class UserAccount {
     public UserAccount() {
     }
 
-    public UserAccount(Integer channelid, String uuid, String serviceToken, String securityKey, String passToken, String nickName, String imgUrl, Integer sex, String slogan, String userName, String password, String oldPwd, String deviceId, String pSecurity, String sSecurity, Integer isReset, Integer isNew, Boolean needEditUserInfo, Boolean isLogOff) {
+    public UserAccount(Integer channelid, String uuid, String serviceToken, String securityKey, String passToken, String nickName, String imgUrl, Integer sex, String slogan, String userName, String password, String oldPwd, String deviceId, String pSecurity, String sSecurity, Integer isReset, Integer isNew, Boolean needEditUserInfo, Boolean isLogOff, Long miid) {
         this.channelid = channelid;
         this.uuid = uuid;
         this.serviceToken = serviceToken;
@@ -55,6 +56,7 @@ public class UserAccount {
         this.isNew = isNew;
         this.needEditUserInfo = needEditUserInfo;
         this.isLogOff = isLogOff;
+        this.miid = miid;
     }
 
     public Integer getChannelid() {
@@ -207,6 +209,14 @@ public class UserAccount {
 
     public void setIsLogOff(Boolean isLogOff) {
         this.isLogOff = isLogOff;
+    }
+
+    public Long getMiid() {
+        return miid;
+    }
+
+    public void setMiid(Long miid) {
+        this.miid = miid;
     }
 
     // KEEP METHODS - put your custom methods here
