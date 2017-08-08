@@ -216,9 +216,9 @@ public class GalileoStreamer implements IStreamer {
             @Override
             public void run() {
                 MyLog.w(TAG, "setSpeaker enable=" + !mHeadsetPlugged);
-                GalileoDeviceManager.INSTANCE.init(context);
+                GalileoDeviceManager.INSTANCE.init(GlobalData.app());
                 mDeviceManager = GalileoDeviceManager.INSTANCE.getDeviceManger();
-                GalileoRenderManager.INSTANCE.init(context);
+                GalileoRenderManager.INSTANCE.init(GlobalData.app());
                 mRenderManager = GalileoRenderManager.INSTANCE.getRenderManager();
                 if (mDeviceManager != null && mRenderManager != null) {
                     mBroadCaster = new BroadCaster();
@@ -231,6 +231,8 @@ public class GalileoStreamer implements IStreamer {
                         mBroadCaster.forceToUseHardWareCodec(true);
                         mBroadCaster.useVbrMode(true);
                     }
+                } else {
+                    MyLog.e(TAG, "GalileoStreamer() failed, mDeviceManager=" + mDeviceManager + ", mRenderManager=" + mRenderManager);
                 }
             }
         }, "GalileoStreamer");
