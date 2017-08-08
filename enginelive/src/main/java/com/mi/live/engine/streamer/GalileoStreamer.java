@@ -222,7 +222,7 @@ public class GalileoStreamer implements IStreamer {
                 mRenderManager = GalileoRenderManager.INSTANCE.getRenderManager();
                 if (mDeviceManager != null && mRenderManager != null) {
                     mBroadCaster = new BroadCaster();
-                    mBroadCaster.constructSession(context, mBroadcastCallback, GalileoConstants.LIVE_LOW_RESOLUTION_HEIGHT, GalileoConstants.LIVE_LOW_RESOLUTION_WIDTH, height, width, DEFAULT_FRAME_RATE, DEFAULT_BIT_RATE, mDeviceManager.getInstance(), hasMicSource, MiLiveTransport.TransportInit(getApplicationContext()));
+                    mBroadCaster.constructSession(context, mBroadcastCallback, height, width, height, width, DEFAULT_FRAME_RATE, DEFAULT_BIT_RATE, mDeviceManager.getInstance(), hasMicSource, MiLiveTransport.TransportInit(getApplicationContext()));
                     mDeviceManager.attachCallback(mDeviceCallback);
                     mDeviceManager.setSpeaker(!mHeadsetPlugged);
                     mDeviceManager.enableRotation(true);
