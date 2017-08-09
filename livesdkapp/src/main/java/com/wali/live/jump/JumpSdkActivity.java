@@ -98,6 +98,9 @@ public class JumpSdkActivity extends BaseSdkActivity {
                         new ICommonCallBack() {
                             @Override
                             public void process(Object objects) {
+                                if (roomInfo != null) {
+                                    roomInfo.setEnableShare(enableShare);
+                                }
                                 WatchSdkActivity.openActivity(JumpSdkActivity.this, roomInfo);
                             }
                         }, true);
@@ -111,6 +114,11 @@ public class JumpSdkActivity extends BaseSdkActivity {
                         new ICommonCallBack() {
                             @Override
                             public void process(Object objects) {
+                                for (RoomInfo roomInfo : list) {
+                                    if (roomInfo != null) {
+                                        roomInfo.setEnableShare(enableShare);
+                                    }
+                                }
                                 WatchSdkActivity.openActivity(JumpSdkActivity.this, list, position);
                             }
                         }, true);
