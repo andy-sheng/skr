@@ -1,6 +1,6 @@
 #!/bin/bash
 
-or module_name in enginebase enginelive
+for module_name in enginebase enginelive
 do
 	echo "################################################"
 	echo "rename file for module: $module_name"
