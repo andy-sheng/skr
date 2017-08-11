@@ -83,7 +83,6 @@ import com.wali.live.livesdk.live.presenter.LiveRoomPresenter;
 import com.wali.live.livesdk.live.receiver.ScreenStateReceiver;
 import com.wali.live.livesdk.live.task.IActionCallBack;
 import com.wali.live.livesdk.live.view.CountDownView;
-import com.wali.live.livesdk.live.view.topinfo.LiveTopInfoSingleView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveMessageProto;
@@ -188,8 +187,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     protected BaseImageView mMaskIv; // 高斯蒙层
     protected ImageView mCloseBtn; // 关闭按钮
-
-    protected LiveTopInfoSingleView mTopInfoSingleView;
 
     protected FlyBarrageViewGroup mFlyBarrageViewGroup;
 
@@ -456,9 +453,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     protected void orientLandscape() {
-        if (mTopInfoSingleView != null) {
-            mTopInfoSingleView.onScreenOrientationChanged(true);
-        }
         if (mController != null) {
             mController.postEvent(MSG_ON_ORIENT_LANDSCAPE);
         }
@@ -469,9 +463,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     protected void orientPortrait() {
-        if (mTopInfoSingleView != null) {
-            mTopInfoSingleView.onScreenOrientationChanged(false);
-        }
         if (mController != null) {
             mController.postEvent(MSG_ON_ORIENT_PORTRAIT);
         }
@@ -618,12 +609,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 MyUserInfoManager.getInstance().syncSelfDetailInfo();
             }
         }
-        // 顶部view
-        mTopInfoSingleView = $(R.id.live_top_info_view);
-        addBindActivityLifeCycle(mTopInfoSingleView, true);
-        mTopInfoSingleView.setMyRoomDataSet(mMyRoomData);
-        mTopInfoSingleView.initViewUseData();
-        mTopInfoSingleView.setVisibility(View.VISIBLE);
 
         // 礼物
         mGiftContinueViewGroup = $(R.id.gift_continue_vg);

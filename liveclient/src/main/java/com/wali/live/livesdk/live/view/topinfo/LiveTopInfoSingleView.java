@@ -16,6 +16,7 @@ import com.wali.live.watchsdk.watchtop.view.WatchTopInfoBaseView;
 /**
  * Created by lan on 17/2/14.
  */
+@Deprecated
 public class LiveTopInfoSingleView extends WatchTopInfoBaseView {
     public static final String TAG = LiveTopInfoSingleView.class.getSimpleName();
 

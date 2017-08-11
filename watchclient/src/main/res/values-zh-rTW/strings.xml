@@ -54,6 +54,7 @@
     <plurals name="contribute_ticket_num">
         <item quantity="other">貢獻%1$s星票</item>
     </plurals>
+    <string name="ticket_num">星票</string>
     <string name="btn_share">分享到</string>
     <string name="weixin_friend">微信</string>
     <string name="moment">朋友圈</string>
@@ -153,4 +154,6 @@
     <plurals name="endlive_next_room_hint">
         <item quantity="other">%1$d秒後自動進入下一場直播...</item>
     </plurals>
+
+    <string name="room_admin">房間管理</string>
 </resources>

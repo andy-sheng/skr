@@ -53,6 +53,7 @@
         <item quantity="one">Give %1$s coin</item>
         <item quantity="other">Give %1$s coins</item>
     </plurals>
+    <string name="ticket_num">coins</string>
     <string name="btn_share">Share with</string>
     <string name="weixin_friend">WeChat</string>
     <string name="moment">Moments</string>
@@ -158,4 +159,5 @@
         <item quantity="one">Switching to the next session in %1$ds…</item>
         <item quantity="other">Switching to the next session in %1$ds…</item>
     </plurals>
+    <string name="room_admin">Manager</string>
 </resources>
