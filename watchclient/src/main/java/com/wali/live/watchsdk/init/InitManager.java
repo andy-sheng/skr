@@ -110,6 +110,7 @@ public class InitManager {
     private static void initLibrary() {
         System.loadLibrary("gnustl_shared");
         System.loadLibrary("broadcast");
+        System.loadLibrary("milive_transport");
     }
 
     private static ClientAppInfo getClientAppInfo() {
