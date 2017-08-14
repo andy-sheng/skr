@@ -158,4 +158,10 @@
         <item quantity="one">Switching to the next session in %1$ds…</item>
         <item quantity="other">Switching to the next session in %1$ds…</item>
     </plurals>
+    <string name="gender">Gender</string>
+    <string name="name">Nickname</string>
+    <string name="avatar">Profile photo</string>
+    <string name="signature">Status</string>
+    <string name="pgc_addr">Location</string>
+    <string name="change_info">Edit</string>
 </resources>

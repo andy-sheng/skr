@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:orientation="vertical">
+
+    <!-- 返回 titlebar-->
+    <com.base.view.BackTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        app:is_profile_mode="true"/>
+
+    <!-- 区域头像 -->
+    <LinearLayout
+        android:id="@+id/avatar_ll"
+        android:layout_width="match_parent"
+        android:layout_height="58.33dp"
+        android:layout_marginTop="13.33dp"
+        android:background="@drawable/common_list_item_bg"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/avatar_tv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="13.33dp"
+            android:layout_weight="1.0"
+            android:gravity="center_vertical"
+            android:text="@string/avatar"
+            android:textColor="@color/color_black_trans_90"
+            android:textSize="@dimen/text_size_50"/>
+
+        <!-- 显示头像 -->
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/avatar_dv"
+            android:layout_width="@dimen/text_size_120"
+            android:layout_height="@dimen/text_size_120"
+            android:layout_gravity="center"
+            app:placeholderImage="@drawable/avatar_blue_default"
+            app:roundAsCircle="true"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="13.33dp"
+            android:layout_marginRight="13.33dp"
+            android:src="@drawable/set_list_icon_next"/>
+    </LinearLayout>
+
+    <!-- 姓名区域-->
+    <LinearLayout
+        android:id="@+id/name_ll"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="13.33dp"
+        android:background="@drawable/common_list_item_bg"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_40"
+            android:layout_weight="1.0"
+            android:gravity="center_vertical"
+            android:text="@string/name"
+            android:textColor="@color/color_black_trans_90"
+            android:textSize="@dimen/text_size_50"/>
+
+        <TextView
+            android:id="@+id/user_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/color_black_trans_60"
+            android:textSize="@dimen/text_size_40"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="@dimen/margin_40"
+            android:src="@drawable/set_list_icon_next"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:layout_marginLeft="13.33dp"
+        android:layout_marginRight="13.33dp"
+        android:background="#DCDCDC"/>
+
+    <!-- 性别区域 -->
+    <LinearLayout
+        android:id="@+id/gender_ll"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/common_list_item_bg"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/gender_tv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="13.33dp"
+            android:layout_weight="1.0"
+            android:gravity="center_vertical"
+            android:text="@string/gender"
+            android:textColor="@color/color_black_trans_90"
+            android:textSize="@dimen/text_size_50"/>
+
+        <TextView
+            android:id="@+id/user_gender_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/color_black_trans_60"
+            android:textSize="@dimen/text_size_40"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="13.33dp"
+            android:layout_marginRight="@dimen/margin_40"
+            android:src="@drawable/set_list_icon_next"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:layout_marginLeft="13.33dp"
+        android:layout_marginRight="13.33dp"
+        android:background="#DCDCDC"/>
+
+    <!-- 签名区域 -->
+    <RelativeLayout
+        android:id="@+id/signature_ll"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/common_list_item_bg"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/signature_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/margin_40"
+            android:gravity="center_vertical"
+            android:text="@string/signature"
+            android:textColor="@color/color_black_trans_90"
+            android:textSize="@dimen/text_size_50"/>
+
+        <ImageView
+            android:id="@+id/right_arrow_signature"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_40"
+            android:src="@drawable/set_list_icon_next"/>
+
+        <TextView
+            android:id="@+id/user_signature_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_size_30"
+            android:layout_marginRight="@dimen/text_size_30"
+            android:layout_toLeftOf="@id/right_arrow_signature"
+            android:layout_toRightOf="@id/signature_tv"
+            android:ellipsize="end"
+            android:gravity="right"
+            android:maxLines="1"
+            android:textColor="@color/color_black_trans_60"
+            android:textSize="@dimen/text_size_40"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:layout_marginLeft="13.33dp"
+        android:layout_marginRight="13.33dp"
+        android:background="#DCDCDC"/>
+
+    <!-- 地址区域 -->
+    <RelativeLayout
+        android:id="@+id/address_ll"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/common_list_item_bg"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/address_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/margin_40"
+            android:gravity="center_vertical"
+            android:text="@string/pgc_addr"
+            android:textColor="@color/color_black_trans_90"
+            android:textSize="@dimen/text_size_50"/>
+
+        <ImageView
+            android:id="@+id/right_arrow_address"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_40"
+            android:src="@drawable/set_list_icon_next"/>
+
+        <TextView
+            android:id="@+id/user_location_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_size_30"
+            android:layout_marginRight="@dimen/text_size_30"
+            android:layout_toLeftOf="@id/right_arrow_address"
+            android:layout_toRightOf="@id/address_tv"
+            android:ellipsize="end"
+            android:gravity="right"
+            android:maxLines="1"
+            android:textColor="@color/color_black_trans_60"
+            android:textSize="@dimen/text_size_40"/>
+    </RelativeLayout>
+</LinearLayout>

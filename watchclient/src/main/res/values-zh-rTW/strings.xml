@@ -153,4 +153,10 @@
     <plurals name="endlive_next_room_hint">
         <item quantity="other">%1$d秒後自動進入下一場直播...</item>
     </plurals>
+    <string name="gender">性別</string>
+    <string name="name">暱稱</string>
+    <string name="avatar">頭像</string>
+    <string name="signature">簽名</string>
+    <string name="pgc_addr">所在位置</string>
+    <string name="change_info">編輯資料</string>
 </resources>

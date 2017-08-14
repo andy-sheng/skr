@@ -409,7 +409,7 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
         }
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(WatchOrReplayActivityCreated event) {
         if (event != null) {
             finish();
