@@ -2,7 +2,6 @@ package com.wali.live.watchsdk.component.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.annotation.IdRes;
@@ -25,7 +24,6 @@ import com.base.utils.display.DisplayUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.query.model.ViewerModel;
-import com.mi.live.data.user.User;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.common.listener.OnItemClickListener;
@@ -53,15 +51,14 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
     private final AnimationHelper mAnimationHelper = new AnimationHelper();
     private boolean mIsFollowGone = false;
     private boolean mIsLinking = false;
-    private User mLinkUser;
     //主播信息
     private BaseImageView mAnchorIv;
     private ImageView mUserBadgeIv;
     private TextView mNameTv;
     private TextView mViewersNumTv;
     private TextView mFollowTv;
+    private ViewGroup mAnchorInfoContainer;
     //连麦
-    private ImageView mLinkAnchorIv;
     private BaseImageView mGuestIv;
     private View mLinkArea;
     //观众
@@ -114,22 +111,20 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
         mNameTv = $(R.id.name_tv);
         mViewersNumTv = $(R.id.viewers_num_tv);
         mFollowTv = $(R.id.follow_tv);
+        mAnchorInfoContainer = $(R.id.anchor_info_container);
         mAvatarRv = $(R.id.avatar_rv);
         mTicketNumTv = $(R.id.ticket_num_tv);
         mGuestIv = $(R.id.guest_iv);
-        mLinkAnchorIv = $(R.id.link_anchor_iv);
         mLinkArea = $(R.id.link_guest_area);
         mManagerArea = $(R.id.manager_area);
-        mLinkAnchorIv.setVisibility(View.GONE);
         mFollowTv.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mAnimationHelper.setFollowWidth(mFollowTv.getMeasuredWidth());
-        mLinkArea.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        mAnimationHelper.setLinkWidth(mLinkArea.getMeasuredWidth());
 
+        $(R.id.link_anchor_iv).setVisibility(View.GONE);
         $click(mFollowTv, this);
         $click(mManagerArea, this);
+        $click(mAnchorInfoContainer, this);
         $click($(R.id.ticket_area), this);
-        $click($(R.id.anchor_info_container), this);
 
         mAvatarRvAdapter = new UserAvatarRecyclerAdapter();
         mAvatarRvAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -194,26 +189,21 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
                     ToastUtils.showToast(getResources().getString(R.string.setting_black_follow_hint));
                 } else if (resultCode == 0) {
                     ToastUtils.showToast(getResources().getString(R.string.follow_success));
-                    mAnimationHelper.startFollow(false);
+                    mAnimationHelper.startFollowAnim(false);
                 } else if (resultCode == -1) {
                     ToastUtils.showToast(getResources().getString(R.string.follow_failed));
                 }
             }
 
             @Override
-            public void showFollowBtn(boolean needShow, boolean isSwitchScreen) {
-                if (isSwitchScreen) {
-                    if (needShow && !mIsLinking) {
-                        mFollowTv.setVisibility(View.VISIBLE);
-                    } else if (mIsLinking) {
-                        mLinkArea.setVisibility(View.VISIBLE);
-                        mIsFollowGone = needShow;
-                    }
+            public void showFollowBtn(boolean needShow, boolean useAnim) {
+                if (mIsLinking) {
+                    mIsFollowGone = needShow;
                 } else {
-                    if (mIsFollowGone && !needShow) {
-                        mIsFollowGone = false;
-                    } else if (needShow && mFollowTv.getVisibility() != View.VISIBLE) {
-                        mAnimationHelper.startFollow(true);
+                    if (useAnim) {
+                        mAnimationHelper.startFollowAnim(needShow);
+                    } else {
+                        mFollowTv.setVisibility(needShow ? View.VISIBLE : View.GONE);
                     }
                 }
             }
@@ -255,46 +245,37 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
             }
 
             @Override
-            public void linkToAnchor(final User user) {
-                if (user == null || mIsLinking) {
+            public void onLinkMicStarted(final long uid, long avatar) {
+                if (uid == 0 || mIsLinking) {
                     return;
                 }
                 mIsLinking = true;
-                mLinkUser = user;
-                AvatarUtils.loadAvatarByUidTs(mGuestIv, mLinkUser.getUid(), mLinkUser.getAvatar(), true);
+                AvatarUtils.loadAvatarByUidTs(mGuestIv, uid, avatar, true);
                 $click(mGuestIv, new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, user.getUid(), null);
+                        UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, uid, null);
                     }
                 });
                 if (mFollowTv.getVisibility() == View.VISIBLE) {
-                    mAnimationHelper.startFollowToLink(true);
+                    mFollowTv.setVisibility(View.GONE);
                     mIsFollowGone = true;
-                } else {
-                    mAnimationHelper.startLink(true);
                 }
+                mLinkArea.setVisibility(View.VISIBLE);
             }
 
             @Override
-            public void linkStop(boolean isNeedAnim) {
+            public void onLinkMicStopped() {
                 if (!mIsLinking) {
                     return;
                 }
                 mIsLinking = false;
-                mLinkUser = null;
-                if (isNeedAnim) {
-                    if (mIsFollowGone) {
-                        MyLog.d(TAG, "link to follow");
-                        mAnimationHelper.startFollowToLink(false);
-                    } else {
-                        MyLog.d(TAG, "link to null");
-                        mAnimationHelper.startLink(false);
-                    }
-                } else {
-                    mLinkArea.setVisibility(View.GONE);
+                mLinkArea.setVisibility(View.GONE);
+                if (mIsFollowGone) {
+                    MyLog.d(TAG, "link to follow");
+                    mFollowTv.setVisibility(View.VISIBLE);
+                    mIsFollowGone = false;
                 }
-
             }
 
             @Override
@@ -373,7 +354,7 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
         /**
          * 初始化关注
          */
-        void showFollowBtn(boolean needShow, boolean isSwitchScreen);
+        void showFollowBtn(boolean needShow, boolean needAnim);
 
         /**
          * 更新观看者头像
@@ -383,12 +364,12 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
         /**
          * 连麦
          */
-        void linkToAnchor(User user);
+        void onLinkMicStarted(long uid, long avatar);
 
         /**
          * 连麦结束
          */
-        void linkStop(boolean needAnim);
+        void onLinkMicStopped();
 
         /**
          * 取消动画
@@ -413,64 +394,26 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
     }
 
     private class AnimationHelper {
-        private ValueAnimator mLinkAnimator;
-        private int mLinkAreaWidth;
-        private boolean mLinkShow = false;
-
         private ValueAnimator mFollowAnimator;
         private int mFollowWidth;
         private boolean mFollowShow = false;
-
-        private AnimatorSet mFollowToLinkAnim;
-        private AnimatorSet mLinkToFollowAnim;
-
-        private void setupLinkAnimator() {
-            if (mLinkAnimator == null) {
-                mLinkAnimator = new ValueAnimator();
-                mLinkAnimator.setDuration(400);
-                mLinkAnimator.setStartDelay(300);
-                mLinkAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        int value = (int) animation.getAnimatedValue();
-                        ViewGroup.LayoutParams params = mLinkArea.getLayoutParams();
-                        params.width = value;
-                        mLinkArea.setLayoutParams(params);
-                        mLinkArea.setAlpha((float) value / mLinkAreaWidth);
-                    }
-                });
-                mLinkAnimator.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        super.onAnimationStart(animation);
-                        mLinkArea.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        mLinkArea.setVisibility(mLinkShow ? View.VISIBLE : View.GONE);
-                        ViewGroup.LayoutParams layoutParams = mLinkArea.getLayoutParams();
-                        layoutParams.width = mLinkAreaWidth;
-                        mLinkArea.setLayoutParams(layoutParams);
-                        mLinkArea.setAlpha(1f);
-                    }
-                });
-            }
-        }
+        private int mParentWidth;
 
         private void setupFollowAnimator() {
             if (mFollowAnimator == null) {
                 mFollowAnimator = new ValueAnimator();
                 mFollowAnimator.setDuration(400);
-                mFollowAnimator.setStartDelay(300);
                 mFollowAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         int value = (int) animation.getAnimatedValue();
-                        ViewGroup.LayoutParams layoutParams = mFollowTv.getLayoutParams();
-                        layoutParams.width = value;
-                        mFollowTv.setLayoutParams(layoutParams);
+                        ViewGroup.LayoutParams layoutParams = mAnchorInfoContainer.getLayoutParams();
+                        if (mFollowShow) {
+                            layoutParams.width = mParentWidth + value;
+                        } else {
+                            layoutParams.width = mParentWidth + value - mFollowWidth;
+                        }
+                        mAnchorInfoContainer.setLayoutParams(layoutParams);
                         mFollowTv.setAlpha((float) value / mFollowWidth);
                     }
                 });
@@ -479,9 +422,9 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
                         mFollowTv.setVisibility(mFollowShow ? View.VISIBLE : View.GONE);
-                        ViewGroup.LayoutParams layoutParams = mFollowTv.getLayoutParams();
-                        layoutParams.width = mFollowWidth;
-                        mFollowTv.setLayoutParams(layoutParams);
+                        ViewGroup.LayoutParams layoutParams = mAnchorInfoContainer.getLayoutParams();
+                        layoutParams.width = LayoutParams.WRAP_CONTENT;
+                        mAnchorInfoContainer.setLayoutParams(layoutParams);
                         mFollowTv.setAlpha(1f);
                     }
 
@@ -489,38 +432,19 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
                     public void onAnimationStart(Animator animation) {
                         super.onAnimationStart(animation);
                         mFollowTv.setVisibility(View.VISIBLE);
+                        mAnchorInfoContainer.measure(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                        mParentWidth = mAnchorInfoContainer.getMeasuredWidth();
                     }
                 });
             }
         }
 
-        private void initFollowToLinkAnim(boolean isShow) {
-            if (isShow) {
-                mFollowToLinkAnim = new AnimatorSet();
-                mFollowAnimator.setIntValues(mFollowWidth, 0);
-                mLinkAnimator.setIntValues(0, mLinkAreaWidth);
-                mFollowShow = false;
-                mLinkShow = true;
-                mFollowToLinkAnim.playSequentially(mFollowAnimator, mLinkAnimator);
-            } else {
-                mLinkToFollowAnim = new AnimatorSet();
-                mFollowAnimator.setIntValues(0, mFollowWidth);
-                mLinkAnimator.setIntValues(mLinkAreaWidth, 0);
-                mFollowShow = true;
-                mLinkShow = false;
-                mLinkToFollowAnim.playSequentially(mLinkAnimator, mFollowAnimator);
-            }
-        }
-
-        public void startFollow(boolean isShow) {
-            if (mFollowShow == isShow) {
+        public void startFollowAnim(boolean isShow) {
+            setupFollowAnimator();
+            if (mFollowAnimator.isStarted() || mFollowAnimator.isRunning()) {
                 return;
             }
             mFollowShow = isShow;
-            setupFollowAnimator();
-            if (checkAnimIsStart(mFollowAnimator)) {
-                return;
-            }
             if (isShow) {
                 mFollowAnimator.setIntValues(0, mFollowWidth);
             } else {
@@ -529,64 +453,17 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
             mFollowAnimator.start();
         }
 
-        public void startLink(boolean isShow) {
-            if (mLinkShow == isShow) {
-                return;
-            }
-            mLinkShow = isShow;
-            setupLinkAnimator();
-            if (checkAnimIsStart(mLinkAnimator)) {
-                return;
-            }
-            if (isShow) {
-                mLinkAnimator.setIntValues(0, mLinkAreaWidth);
-            } else {
-                mLinkAnimator.setIntValues(mLinkAreaWidth, 0);
-            }
-            mLinkAnimator.start();
-        }
-
-        public void startFollowToLink(boolean isShow) {
-            setupFollowAnimator();
-            setupLinkAnimator();
-            if (checkAnimIsStart(mFollowAnimator, mLinkAnimator)) {
-                return;
-            }
-            initFollowToLinkAnim(isShow);
-            if (isShow) {
-                mFollowToLinkAnim.start();
-            } else {
-                mLinkToFollowAnim.start();
-            }
-        }
-
-        public void setLinkWidth(int linkWidth) {
-            mLinkAreaWidth = linkWidth;
-        }
 
         public void setFollowWidth(int followWidth) {
-            mFollowWidth = followWidth;
-        }
-
-        private boolean checkAnimIsStart(Animator... anims) {
-            for (Animator anim : anims) {
-                if (anim.isStarted() || anim.isRunning()) {
-                    return true;
-                }
-            }
-            return false;
+            mFollowWidth = followWidth + 2 * DisplayUtils.dip2px(3.33f);
         }
 
         public void clearAnimator() {
             if (mFollowAnimator != null && (mFollowAnimator.isRunning() || mFollowAnimator.isStarted())) {
                 mFollowAnimator.cancel();
             }
-            if (mLinkAnimator != null && (mLinkAnimator.isRunning() || mLinkAnimator.isStarted())) {
-                mLinkAnimator.cancel();
-            }
             mIsFollowGone = false;
             mFollowShow = false;
-            mLinkShow = false;
         }
     }
 

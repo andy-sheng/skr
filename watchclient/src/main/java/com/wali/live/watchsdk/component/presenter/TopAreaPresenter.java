@@ -52,15 +52,16 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
     private RoomBaseDataModel mRoomDataModel;
     private boolean mIsLive;
 
-    //private Subscription mTestLinkSubscription;
+    private Subscription mFollowSubscription;
+    private Subscription mRefViewersSubscription;
+
+    //刷新观众头像
+    private Handler mRefViewersHandler = new Handler();
 
     @Override
     protected String getTAG() {
         return TAG;
     }
-
-    //刷新观众头像
-    private Handler mRefViewersHandler = new Handler();
 
     public TopAreaPresenter(
             @NonNull IEventController controller,
@@ -79,20 +80,6 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-
-//        mTestLinkSubscription = Observable.interval(5, 1, TimeUnit.SECONDS)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Action1<Long>() {
-//                    @Override
-//                    public void call(Long aLong) {
-//                        MyLog.d(TAG, "-------------aLong = " + aLong);
-//                        if (aLong % 2 == 0) {
-//                            testLinkAnchor();
-//                        } else {
-//                            testLinkStop();
-//                        }
-//                    }
-//                });
     }
 
     @Override
@@ -105,18 +92,12 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
         if (mView != null) {
             mView.cancelAnimator();
         }
-//        if (mTestLinkSubscription != null && !mTestLinkSubscription.isUnsubscribed()){
-//            mTestLinkSubscription.unsubscribe();
-//        }
     }
 
     @Override
     public void getAnchorInfo() {
-        MyLog.d(TAG, "get anchor info");
         UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, mRoomDataModel.getUid(), null);
     }
-
-    private Subscription mFollowSubscription;
 
     @Override
     public void followAnchor() {
@@ -146,7 +127,6 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
 
     @Override
     public void getTicketDetail() {
-        MyLog.d(TAG, "get ticket detail");
         UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_TICKET,
                 mRoomDataModel.getUid(), mRoomDataModel.getTicket(), mRoomDataModel.getRoomId());
     }
@@ -157,36 +137,20 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
         mView.updateAnchorInfo(mRoomDataModel.getUid(), mRoomDataModel.getAvatarTs(),
                 mRoomDataModel.getCertificationType(), mRoomDataModel.getLevel(), mRoomDataModel.getNickName());
         mView.showManager(mIsLive);
-        initFollowAndLink(false);
+        initFollowAndLink();
     }
 
-    private void initFollowAndLink(boolean isSwitchScreen) {
+    private void initFollowAndLink() {
         if (mView == null) {
             return;
         }
         if (!mRoomDataModel.isFocused() && mRoomDataModel.getUid() != UserAccountManager.getInstance().getUuidAsLong()) {
-            mView.showFollowBtn(true, isSwitchScreen);
+            mView.showFollowBtn(true, false);
         } else {
-            mView.showFollowBtn(false, isSwitchScreen);
+            mView.showFollowBtn(false, false);
         }
         //TODO 连麦情况下的准备工作
     }
-
-
-    // TODO 测试代码
-//    private void testLinkAnchor() {
-//        User user = new User();
-//        user.setUid(mRoomDataModel.getViewersList().get(0).getUid());
-//        user.setAvatar(mRoomDataModel.getViewersList().get(0).getAvatar());
-//        Params params = new Params();
-//        params.putItem(user);
-//        mController.postEvent(MSG_ON_LINK_MIC_START, params);
-//    }
-//
-//
-//    private void testLinkStop() {
-//        mController.postEvent(MSG_ON_LINK_MIC_STOP);
-//    }
 
     @Override
     public void postAvatarEvent(int eventTypeRequestLookMoreViewer, int itemCount) {
@@ -199,7 +163,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
     public void reset() {
         mView.cancelAnimator();
         mRefViewersHandler.removeCallbacks(mRefreshViewersRun);
-        mView.linkStop(false);
+        mView.onLinkMicStopped();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -214,9 +178,6 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
             case RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE: {
                 mRoomDataModel = event.source;
                 syncData();
-                /*if (mRoomDataModel.getViewerCnt() % 2 == 0) {
-                    testLinkAnchor();
-                }*/
             }
             break;
             case RoomDataChangeEvent.TYPE_CHANGE_TICKET:
@@ -244,11 +205,11 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
 
                 if (event.eventType == FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW) {
                     user.setIsFocused(true);
-                    mView.showFollowBtn(false, false);
+                    mView.showFollowBtn(false, true);
                     needUpdateDb = true;
                 } else if (event.eventType == FollowOrUnfollowEvent.EVENT_TYPE_UNFOLLOW) {
                     user.setIsFocused(false);
-                    mView.showFollowBtn(true, false);
+                    mView.showFollowBtn(true, true);
                     needUpdateDb = true;
                 } else {
                     MyLog.e(TAG, "type error");
@@ -283,8 +244,6 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
         }
 
     }
-
-    private Subscription mRefViewersSubscription;
 
     private Runnable mRefreshViewersRun = new Runnable() {
         @Override
@@ -338,13 +297,12 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
         switch (event) {
             case MSG_ON_LINK_MIC_START: {
                 if (params != null) {
-                    User user = params.getItem(0);
-                    mView.linkToAnchor(user);
+                    mView.onLinkMicStarted((long) params.getItem(0), (long) params.getItem(1));
                 }
                 break;
             }
             case MSG_ON_LINK_MIC_STOP: {
-                mView.linkStop(true);
+                mView.onLinkMicStopped();
                 break;
             }
             default:
