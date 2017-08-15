@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk.component.view;
 
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.wali.live.component.view.BaseBottomButton;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
+import com.wali.live.watchsdk.editinfo.EditInfoActivity;
 
 /**
  * Created by yangli on 16-8-29.
@@ -54,9 +56,10 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         } else if (id == R.id.rotate_btn) {
             mPresenter.rotateScreen();
         } else if (id == R.id.game_btn) {
-            mPresenter.showGameDownloadView();
+            // mPresenter.showGameDownloadView();
             // 点击的同时清除动画
-            clearAnimator();
+            // clearAnimator();
+            EditInfoActivity.open((Activity) getContext());
         } else if (id == R.id.share_btn) {
             if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.showShareView();

@@ -164,4 +164,6 @@
     <string name="signature">Status</string>
     <string name="pgc_addr">Location</string>
     <string name="change_info">Edit</string>
+    <string name="gender_man">Male</string>
+    <string name="gender_woman">Female</string>
 </resources>

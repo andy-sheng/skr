@@ -159,4 +159,6 @@
     <string name="signature">签名</string>
     <string name="pgc_addr">所在地</string>
     <string name="change_info">编辑资料</string>
+    <string name="gender_man">男</string>
+    <string name="gender_woman">女</string>
 </resources>
