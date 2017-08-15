@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.base.activity.RxActivity;
 import com.base.dialog.MyProgressDialogEx;
-import com.base.fragment.MyRxFragment;
+import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.log.MyLog;
 import com.base.utils.date.DateTimeUtils;
@@ -42,7 +42,7 @@ import rx.schedulers.Schedulers;
  * @moudle 充值
  * Created by caoxiangyu on 16-11-4.
  */
-public class RechargeRecordFragment extends MyRxFragment {
+public class RechargeRecordFragment extends RxFragment {
 
     private List<RechargeRecord> mData = new ArrayList<>();
     private MyAdapter mAdapter;

@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
 import com.base.activity.BaseActivity;
 import com.base.dialog.DialogUtils;
 import com.base.fragment.FragmentDataListener;
-import com.base.fragment.MyRxFragment;
+import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
@@ -64,7 +64,7 @@ import rx.schedulers.Schedulers;
  * <p/>
  * Created by wuxiaoshan on 16-6-13.
  */
-public class RoomAdminFragment extends MyRxFragment implements FragmentDataListener, ForbidManagePresenter.IForbidManageView {
+public class RoomAdminFragment extends RxFragment implements FragmentDataListener, ForbidManagePresenter.IForbidManageView {
     public static final String TAG = RoomAdminFragment.class.getSimpleName();
 
     public static final String KEY_ROOM_SEND_MSG_CONFIG = "key_room_send_msg_config";

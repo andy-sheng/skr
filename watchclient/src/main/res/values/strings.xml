@@ -166,4 +166,13 @@
     <string name="change_info">Edit</string>
     <string name="gender_man">Male</string>
     <string name="gender_woman">Female</string>
+    <string name="input_nickname_hint_text">A cool nickname helps other people remember you</string>
+    <string name="change_nickname_text">Edit nickname</string>
+    <string name="save">Save</string>
+    <string name="name_is_empty">Nickname can\'t be blank</string>
+    <string name="input_same_nickname">Enter a different nickname</string>
+    <string name="nickname_illegal">Nickname can contain up to 20 characters</string>
+    <string name="change_name_success">Nickname changed successfully</string>
+    <string name="change_failed_include_sensitive">Couldn\'t change nickname. It contains inappropriate language.</string>
+    <string name="change_name_failed">Couldn\'t change nickname</string>
 </resources>

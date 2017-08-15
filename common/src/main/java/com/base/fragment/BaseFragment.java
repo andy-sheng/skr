@@ -31,21 +31,9 @@ import butterknife.ButterKnife;
 public abstract class BaseFragment extends Fragment implements FragmentListener, FragmentPageListener, IStatusBarOperator {
     protected final String TAG = getTAG();
 
-    protected static final String PARAM_FROM_TYPE = "type";
     public static final String PARAM_FORCE_PORTRAIT = "forcePortrait";
     public static final String PAPAM_FORCE_LANDSCAPE = "forceLandscape";
     public static final String PARAM_FOLLOW_SYS = "follow_sys";
-
-    /**
-     * 总榜点击进入
-     */
-    public static final String PARAM_FROM_TOTAL = "total";
-    /**
-     * 本场榜点击进入
-     */
-    public static final String PARAM_FROM_CURRENT = "current";
-
-    public static final String IS_SHOW_CURRENT = "isShowCurrent";
 
     public static final String EXTRA_SCREEN_ORIENTATION = "extra_screen_orientation";
 

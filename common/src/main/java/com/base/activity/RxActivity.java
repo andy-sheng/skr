@@ -1,6 +1,5 @@
 package com.base.activity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.CheckResult;
@@ -85,14 +84,6 @@ public abstract class RxActivity extends AppCompatActivity implements LoadDataVi
     @Override
     public <T> Observable.Transformer<T, T> bindUntilEvent() {
         return bindUntilEvent(ActivityEvent.DESTROY);
-    }
-
-
-    /**
-     * Get a {@link android.content.Context}.
-     */
-    public Context context(){
-        return getApplicationContext();
     }
 
     @Override

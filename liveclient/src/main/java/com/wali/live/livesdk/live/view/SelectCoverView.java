@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.dialog.MyAlertDialog;
-import com.base.fragment.MyRxFragment;
+import com.base.fragment.RxFragment;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.HttpImage;
 import com.base.keyboard.KeyboardUtils;
@@ -40,12 +40,12 @@ public class SelectCoverView extends RelativeLayout implements View.OnClickListe
     private SimpleDraweeView mCoverBigDv;
     private SimpleDraweeView mCoverView;
     private TextView mCoverTv;
-    private MyRxFragment mFragment;
+    private RxFragment mFragment;
     private PrepareLiveCoverManager mPrepareLiveCoverManager;
 
     private String mCoverUrl;
 
-    public void setFragment(MyRxFragment fragment) {
+    public void setFragment(RxFragment fragment) {
         mFragment = fragment;
         initManager();
     }

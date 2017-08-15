@@ -13,8 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.base.activity.BaseActivity;
-import com.base.fragment.MyRxFragment;
+import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
+import com.base.global.GlobalData;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.BackTitleBar;
 import com.base.view.SlidingTabLayout;
@@ -34,11 +35,12 @@ import butterknife.ButterKnife;
  * @author caoxiangyu
  * @module 充值
  */
-public class BalanceFragment extends MyRxFragment {
+public class BalanceFragment extends RxFragment {
     public static String BUNDLE_KEY_BALANCE_DETAIL = "bundle_key_balance_detail";
     public static String BUNDLE_KEY_FROM = "from";
     public static String BUNDLE_VALUE_FROM_GIFT = "gift";
-    public static final int REQUEST_CODE = com.base.global.GlobalData.getRequestCode();
+
+    public static final int REQUEST_CODE = GlobalData.getRequestCode();
 
     SlidingTabLayout mSlidingTabLayout;
     ViewPager mBalanceViewPager;
@@ -57,8 +59,8 @@ public class BalanceFragment extends MyRxFragment {
 
     @Override
     protected void bindView() {
-        mSlidingTabLayout = (SlidingTabLayout)mRootView.findViewById(R.id.balance_sliding_tab);
-        mBalanceViewPager = (ViewPager)mRootView.findViewById(R.id.balance_view_pager);
+        mSlidingTabLayout = (SlidingTabLayout) mRootView.findViewById(R.id.balance_sliding_tab);
+        mBalanceViewPager = (ViewPager) mRootView.findViewById(R.id.balance_view_pager);
 
         BackTitleBar backTitleBar = (BackTitleBar) mRootView.findViewById(R.id.title_bar);
         backTitleBar.getBackBtn().setOnClickListener(new View.OnClickListener() {
@@ -160,7 +162,7 @@ public class BalanceFragment extends MyRxFragment {
     /**
      * 同时只能开一个这种Fragment<br/>
      *
-     * @param activity 必须包含id为main_act_container的view
+     * @param activity     必须包含id为main_act_container的view
      * @param bundle
      * @param presenterRef
      * @return

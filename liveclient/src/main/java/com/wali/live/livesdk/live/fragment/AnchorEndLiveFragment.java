@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.base.dialog.DialogUtils;
-import com.base.fragment.MyRxFragment;
+import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * @module 新版直播结束页面 （主播界面）
  */
-public class AnchorEndLiveFragment extends MyRxFragment implements View.OnClickListener {
+public class AnchorEndLiveFragment extends RxFragment implements View.OnClickListener {
     private static final String TAG = AnchorEndLiveFragment.class.getSimpleName();
     private static final int REQUEST_CODE = GlobalData.getRequestCode();
 

@@ -1,13 +1,11 @@
 package com.base.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.base.fragment.BaseFragment;
 import com.base.view.LoadDataView;
 import com.trello.rxlifecycle.FragmentEvent;
 import com.trello.rxlifecycle.RxLifecycle;
@@ -18,7 +16,7 @@ import rx.subjects.BehaviorSubject;
 /**
  * Created by chengsimin on 16/2/26.
  */
-public abstract class MyRxFragment extends BaseFragment implements LoadDataView {
+public abstract class RxFragment extends BaseFragment implements LoadDataView {
     private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
 
     @NonNull
@@ -138,10 +136,5 @@ public abstract class MyRxFragment extends BaseFragment implements LoadDataView 
     @Override
     public void showError(String message) {
 
-    }
-
-    @Override
-    public Context context() {
-        return getActivity().getApplicationContext();
     }
 }

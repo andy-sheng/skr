@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.base.activity.BaseSdkActivity;
+import com.base.fragment.FragmentDataListener;
 import com.base.log.MyLog;
 import com.base.view.BackTitleBar;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -15,26 +16,31 @@ import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.user.User;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.editinfo.fragment.EditNameFragment;
 
 /**
  * Created by lan on 2017/8/14.
  */
-public class EditInfoActivity extends BaseSdkActivity implements View.OnClickListener {
+public class EditInfoActivity extends BaseSdkActivity implements View.OnClickListener, FragmentDataListener {
     public final static String EXTRA_OUT_INFO_CHANGED = "info_changed";
 
     private BackTitleBar mTitleBar;
 
-    private View mAvatarContainer;      //头像区域
-    private SimpleDraweeView mAvatarDv;     //显示头像
+    //头像区域
+    private View mAvatarContainer;
+    private SimpleDraweeView mAvatarDv;
 
-    private View mNameContainer;        //名字区域
-    private TextView mUserNameTv;       //显示姓名
+    //名字区域
+    private View mNameContainer;
+    private TextView mUserNameTv;
 
-    private View mGenderContainer;      //性别区域
-    private TextView mUserGenderTv;     //显示性别
+    //性别区域
+    private View mGenderContainer;
+    private TextView mUserGenderTv;
 
-    private View mSloganContainer;      //签名区域
-    private TextView mUserSloganTv;     //显示签名
+    //签名区域
+    private View mSloganContainer;
+    private TextView mUserSloganTv;
 
     private User mMe;
 
@@ -67,9 +73,7 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
         mNameContainer = $(R.id.name_container);
         mNameContainer.setOnClickListener(this);
         mUserNameTv = $(R.id.user_name_tv);
-        if (!TextUtils.isEmpty(mMe.getNickname())) {
-            mUserNameTv.setText(mMe.getNickname());
-        }
+
 
         mGenderContainer = $(R.id.gender_container);
         mGenderContainer.setOnClickListener(this);
@@ -93,6 +97,19 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
         if (!TextUtils.isEmpty(mMe.getSign())) {
             mUserSloganTv.setText(mMe.getSign());
         }
+
+        // 第一次初始化更新UI
+        updateUI();
+    }
+
+    private void updateUI() {
+        updateNameContainer();
+    }
+
+    private void updateNameContainer() {
+        if (!TextUtils.isEmpty(mMe.getNickname())) {
+            mUserNameTv.setText(mMe.getNickname());
+        }
     }
 
     @Override
@@ -100,6 +117,10 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
         int i = v.getId();
         if (i == R.id.back_iv) {
             clickBackBtn();
+        } else if (i == R.id.name_container) {
+            clickNameContainer();
+        } else if (i == R.id.gender_container) {
+            clickGenderContainer();   //点击性别区域
         }
     }
 
@@ -108,6 +129,25 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
         intent.putExtra(EXTRA_OUT_INFO_CHANGED, mInfoChanged);
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    private void clickNameContainer() {
+        EditNameFragment.open(this, this, null);
+    }
+
+    private void clickGenderContainer() {
+
+    }
+
+    @Override
+    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
+        MyLog.w(TAG, "requestCode=" + requestCode + ", resultCode=" + resultCode);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        if (requestCode == EditNameFragment.REQUEST_CODE) {
+            updateNameContainer();
+        }
     }
 
     public static void open(Activity activity) {

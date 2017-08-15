@@ -161,4 +161,13 @@
     <string name="change_info">编辑资料</string>
     <string name="gender_man">男</string>
     <string name="gender_woman">女</string>
+    <string name="input_nickname_hint_text">好名字可以让宝宝们更容易记住你</string>
+    <string name="change_nickname_text">修改昵称</string>
+    <string name="save">保存</string>
+    <string name="name_is_empty">昵称不能为空</string>
+    <string name="input_same_nickname">请输入不同于当前昵称的昵称</string>
+    <string name="nickname_illegal">昵称不合法(20个字之内)</string>
+    <string name="change_name_success">修改昵称成功</string>
+    <string name="change_failed_include_sensitive">修改昵称失败, 包括敏感词</string>
+    <string name="change_name_failed">修改昵称失败</string>
 </resources>

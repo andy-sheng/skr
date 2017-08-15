@@ -35,11 +35,19 @@ import java.util.List;
 public class RankingPagerFragment extends BaseFragment {
     public static final int REQUEST_CODE = GlobalData.getRequestCode();
 
+    /*总榜点击进入*/
+    public static final String PARAM_FROM_TOTAL = "total";
+    /* 本场榜点击进入*/
+    public static final String PARAM_FROM_CURRENT = "current";
+
+    public static final String IS_SHOW_CURRENT = "isShowCurrent";
+
     public static final String EXTRA_TICKET_COUNT = "extra_ticket_count";
     public static final String EXTRA_START_TICKET_COUNT = "extra_start_ticket_count";
     public static final String EXTRA_UUID = "extra_uid";
     public static final String EXTRA_LIVEID = "extra_live_id";
     public static final String EXTRA_IS_LANDSCAPE = "extra_is_landscape";
+    public static final String EXTRA_FROM_TYPE = "extra_type";
 
     private List<Fragment> mTabContents = new ArrayList();
 
@@ -79,7 +87,7 @@ public class RankingPagerFragment extends BaseFragment {
             mUuid = bundle.getLong(EXTRA_UUID, 0);
             mTicketStartNum = bundle.getInt(EXTRA_START_TICKET_COUNT, 0);
             mLiveId = bundle.getString(EXTRA_LIVEID);
-            mFromType = bundle.getString(PARAM_FROM_TYPE);
+            mFromType = bundle.getString(EXTRA_FROM_TYPE);
             isShowCurrent = bundle.getBoolean(IS_SHOW_CURRENT);
             isLandSpace = bundle.getBoolean(EXTRA_IS_LANDSCAPE);
         }
@@ -258,7 +266,7 @@ public class RankingPagerFragment extends BaseFragment {
         bundle.putLong(RankingPagerFragment.EXTRA_UUID, ownerId);
         bundle.putString(RankingPagerFragment.EXTRA_LIVEID, roomId);
         bundle.putBoolean(BaseFragment.PARAM_FORCE_PORTRAIT, true);
-        bundle.putString(RankingPagerFragment.PARAM_FROM_TYPE, type);
+        bundle.putString(RankingPagerFragment.EXTRA_FROM_TYPE, type);
         bundle.putBoolean(RankingPagerFragment.IS_SHOW_CURRENT, isSHow);
 
         bundle.putBoolean(RankingPagerFragment.EXTRA_IS_LANDSCAPE, isLandspace);

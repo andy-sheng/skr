@@ -14,7 +14,7 @@ import android.text.TextUtils;
 import com.base.activity.BaseSdkActivity;
 import com.base.fragment.BaseFragment;
 import com.base.fragment.FragmentDataListener;
-import com.base.fragment.MyRxFragment;
+import com.base.fragment.RxFragment;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
@@ -171,7 +171,7 @@ public class PrepareLiveCoverManager {
         }
     }
 
-    public void onClickTakePicButton(MyRxFragment fragment) {
+    public void onClickTakePicButton(RxFragment fragment) {
         onClickTakePicButton((BaseSdkActivity) fragment.getActivity());
     }
 
