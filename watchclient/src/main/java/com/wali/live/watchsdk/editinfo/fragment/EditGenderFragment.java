@@ -2,13 +2,10 @@ package com.wali.live.watchsdk.editinfo.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.text.method.ReplacementTransformationMethod;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.base.activity.BaseActivity;
@@ -22,32 +19,34 @@ import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.base.view.BackTitleBar;
 import com.mi.live.data.account.MyUserInfoManager;
-import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.user.User;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.editinfo.EditInfoActivity;
-import com.wali.live.watchsdk.editinfo.fragment.presenter.EditNamePresenter;
-import com.wali.live.watchsdk.editinfo.fragment.presenter.IEditNameView;
+import com.wali.live.watchsdk.editinfo.fragment.presenter.EditGenderPresenter;
+import com.wali.live.watchsdk.editinfo.fragment.presenter.IEditGenderView;
 
 import rx.Observable;
+
+import static com.wali.live.watchsdk.R.string.gender;
 
 /**
  * Created by lan on 2017/8/15.
  */
-public class EditNameFragment extends RxFragment implements View.OnClickListener, FragmentListener,
-        IEditNameView {
+public class EditGenderFragment extends RxFragment implements View.OnClickListener, FragmentListener,
+        IEditGenderView {
     // Fragment单一的请求数据回调，直接使用REQUEST_CODE
     public static final int REQUEST_CODE = GlobalData.getRequestCode();
 
     private BackTitleBar mTitleBar;
     private TextView mRightButton;
 
-    private EditText mNameEt;
+    private ImageView mManBtn;
+    private ImageView mWomanBtn;
 
-    private int mNameMaxCount;
-    private String mName;
+    private int mGender;
+    private int mSelectedGender;
 
-    private EditNamePresenter mPresenter;
+    private EditGenderPresenter mPresenter;
     private User mMe;
     private boolean mInfoChanged;
 
@@ -58,37 +57,24 @@ public class EditNameFragment extends RxFragment implements View.OnClickListener
 
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.edit_name_layout, container, false);
+        return inflater.inflate(R.layout.edit_gender_layout, container, false);
     }
 
     @Override
     protected void bindView() {
         mTitleBar = $(R.id.title_bar);
-        mTitleBar.setTitle(getString(R.string.change_nickname_text));
+        mTitleBar.setTitle(getString(gender));
         mTitleBar.getBackBtn().setOnClickListener(this);
 
         mRightButton = mTitleBar.getRightTextBtn();
         mRightButton.setText(getString(R.string.save));
         mRightButton.setOnClickListener(this);
 
-        mNameEt = $(R.id.name_et);
-        mNameEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return (event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
-            }
-        });
-        mNameEt.setTransformationMethod(new ReplacementTransformationMethod() {
-            @Override
-            protected char[] getOriginal() {
-                return new char[]{'\r', '\n'};
-            }
+        mManBtn = $(R.id.check1);
+        mWomanBtn = $(R.id.check2);
 
-            @Override
-            protected char[] getReplacement() {
-                return new char[]{' ', ' '};
-            }
-        });
+        $(R.id.setting1).setOnClickListener(this);
+        $(R.id.setting2).setOnClickListener(this);
 
         initView();
         initPresenter();
@@ -96,16 +82,25 @@ public class EditNameFragment extends RxFragment implements View.OnClickListener
 
     private void initView() {
         mMe = MyUserInfoManager.getInstance().getUser();
-        mNameMaxCount = getResources().getInteger(R.integer.max_name_char_count);
+        mGender = mMe.getGender();
+        updateView(mGender);
+    }
 
-        mName = mMe.getNickname();
-        if (!TextUtils.isEmpty(mName)) {
-            mNameEt.setText(mName);
+    private void updateView(int selectedGender) {
+        if (mSelectedGender != selectedGender) {
+            mSelectedGender = selectedGender;
+            if (mSelectedGender == User.GENDER_MAN) {
+                mManBtn.setVisibility(View.VISIBLE);
+                mWomanBtn.setVisibility(View.GONE);
+            } else {
+                mManBtn.setVisibility(View.GONE);
+                mWomanBtn.setVisibility(View.VISIBLE);
+            }
         }
     }
 
     private void initPresenter() {
-        mPresenter = new EditNamePresenter(this);
+        mPresenter = new EditGenderPresenter(this);
     }
 
     @Override
@@ -115,30 +110,19 @@ public class EditNameFragment extends RxFragment implements View.OnClickListener
             closeFragment();
         } else if (i == R.id.right_text_btn) {
             clickSaveBtn();
+        } else if (i == R.id.setting1) {
+            updateView(User.GENDER_MAN);
+        } else if (i == R.id.setting2) {
+            updateView(User.GENDER_WOMAN);
         }
     }
 
     private void clickSaveBtn() {
-        String name = mNameEt.getText().toString().trim();
-        if (TextUtils.isEmpty(name)) {
-            ToastUtils.showToast(R.string.name_is_empty);
-            return;
+        if (mSelectedGender != mGender) {
+            mPresenter.uploadGender(mSelectedGender);
+        } else {
+            closeFragment();
         }
-        if (name.equals(mName)) {
-            ToastUtils.showToast(R.string.input_same_nickname);
-            return;
-        }
-        if (name.length() > mNameMaxCount) {
-            ToastUtils.showToast(R.string.nickname_illegal);
-            return;
-        }
-
-        //替换回车换行
-        name = name.replaceAll("(\\r\\n|\\r|\\n|\\n\\r)", " ");
-        //替换连续的空格
-        name = name.replaceAll("\\s+", " ");
-
-        mPresenter.uploadName(name);
     }
 
     @Override
@@ -147,14 +131,14 @@ public class EditNameFragment extends RxFragment implements View.OnClickListener
     }
 
     @Override
-    public void editSuccess(String name) {
-        MyLog.d(TAG, "editSuccess name=" + name);
+    public void editSuccess(int gender) {
+        MyLog.d(TAG, "editSuccess gender=" + gender);
         mInfoChanged = true;
-        ToastUtils.showToast(R.string.change_name_success);
+        ToastUtils.showToast(R.string.change_gender_success);
 
-        mName = name;
-        mMe.setNickname(mName);
-        mNameEt.setText(mName);
+        mGender = gender;
+        mMe.setGender(mGender);
+        updateView(mGender);
 
         closeFragment();
     }
@@ -162,11 +146,7 @@ public class EditNameFragment extends RxFragment implements View.OnClickListener
     @Override
     public void editFailure(int code) {
         MyLog.w(TAG, "editFailure code=" + code);
-        if (code == ErrorCode.CODE_NAME_SENSITIVE) {
-            ToastUtils.showToast(R.string.change_failed_include_sensitive);
-        } else {
-            ToastUtils.showToast(R.string.change_name_failed);
-        }
+        ToastUtils.showToast(R.string.change_gender_failed);
     }
 
     private void closeFragment() {
@@ -186,13 +166,13 @@ public class EditNameFragment extends RxFragment implements View.OnClickListener
 
     @Override
     public boolean onBackPressed() {
-        MyLog.d(TAG, " onBackPressed ");
+        MyLog.d(TAG, "onBackPressed");
         closeFragment();
         return true;
     }
 
     public static void open(BaseActivity activity, FragmentDataListener listener, Bundle bundle) {
-        BaseFragment fragment = FragmentNaviUtils.addFragment(activity, R.id.main_act_container, EditNameFragment.class,
+        BaseFragment fragment = FragmentNaviUtils.addFragment(activity, R.id.main_act_container, EditGenderFragment.class,
                 bundle, true, true, true);
         fragment.initDataResult(REQUEST_CODE, listener);
     }

@@ -16,7 +16,10 @@ import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.user.User;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.editinfo.fragment.EditGenderFragment;
 import com.wali.live.watchsdk.editinfo.fragment.EditNameFragment;
+
+import static com.wali.live.watchsdk.R.string.gender;
 
 /**
  * Created by lan on 2017/8/14.
@@ -78,18 +81,6 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
         mGenderContainer = $(R.id.gender_container);
         mGenderContainer.setOnClickListener(this);
         mUserGenderTv = $(R.id.user_gender_tv);
-        int gender = mMe.getGender();
-        switch (gender) {
-            case 1:
-                mUserGenderTv.setText(R.string.gender_man);
-                break;
-            case 2:
-                mUserGenderTv.setText(R.string.gender_woman);
-                break;
-            default:
-                MyLog.v(TAG, "unkown gender=" + gender);
-                break;
-        }
 
         mSloganContainer = $(R.id.signature_container);
         mSloganContainer.setOnClickListener(this);
@@ -104,11 +95,26 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
 
     private void updateUI() {
         updateNameContainer();
+        updateGenderContainer();
     }
 
     private void updateNameContainer() {
         if (!TextUtils.isEmpty(mMe.getNickname())) {
             mUserNameTv.setText(mMe.getNickname());
+        }
+    }
+
+    private void updateGenderContainer() {
+        switch (mMe.getGender()) {
+            case User.GENDER_MAN:
+                mUserGenderTv.setText(R.string.gender_man);
+                break;
+            case User.GENDER_WOMAN:
+                mUserGenderTv.setText(R.string.gender_woman);
+                break;
+            default:
+                MyLog.v(TAG, "unkown gender=" + gender);
+                break;
         }
     }
 
@@ -136,7 +142,7 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
     }
 
     private void clickGenderContainer() {
-
+        EditGenderFragment.open(this, this, null);
     }
 
     @Override
@@ -147,6 +153,8 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
         }
         if (requestCode == EditNameFragment.REQUEST_CODE) {
             updateNameContainer();
+        } else if (requestCode == EditGenderFragment.REQUEST_CODE) {
+            updateGenderContainer();
         }
     }
 

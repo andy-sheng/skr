@@ -175,4 +175,7 @@
     <string name="change_name_success">Nickname changed successfully</string>
     <string name="change_failed_include_sensitive">Couldn\'t change nickname. It contains inappropriate language.</string>
     <string name="change_name_failed">Couldn\'t change nickname</string>
+    <string name="modify_gender">Select gender</string>
+    <string name="change_gender_success">Gender changed successfully</string>
+    <string name="change_gender_failed">Couldn\'t change gender</string>
 </resources>

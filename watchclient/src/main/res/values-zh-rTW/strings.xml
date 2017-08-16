@@ -170,4 +170,7 @@
     <string name="change_name_success">修改暱稱成功</string>
     <string name="change_failed_include_sensitive">修改暱稱失敗, 包括敏感詞</string>
     <string name="change_name_failed">修改暱稱失敗</string>
+    <string name="modify_gender">選擇性別</string>
+    <string name="change_gender_success">修改性別成功</string>
+    <string name="change_gender_failed">修改性別失敗</string>
 </resources>

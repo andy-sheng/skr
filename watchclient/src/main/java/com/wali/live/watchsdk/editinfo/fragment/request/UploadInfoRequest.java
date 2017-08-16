@@ -30,6 +30,12 @@ public class UploadInfoRequest extends BaseRequest {
         return this;
     }
 
+    public UploadInfoRequest uploadGender(int gender) {
+        mBuilder.setGender(gender);
+        mRequest = mBuilder.build();
+        return this;
+    }
+
     @Override
     protected GeneratedMessage parse(byte[] bytes) throws InvalidProtocolBufferException {
         return UploadUserPropertiesRsp.parseFrom(bytes);
