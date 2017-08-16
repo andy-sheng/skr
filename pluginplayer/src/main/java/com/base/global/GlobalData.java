@@ -77,7 +77,6 @@ public class GlobalData {
         try {
             System.loadLibrary("gnustl_shared");
             System.loadLibrary("broadcast");
-            System.loadLibrary("milive_transport");
             sIsLoaded = true;
         } catch (Throwable e) {
             MyLog.e(e);
