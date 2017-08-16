@@ -13,7 +13,6 @@
         android:layout_alignParentTop="true"
         app:is_profile_mode="true"/>
 
-    <!-- 输入框 -->
     <EditText
         android:id="@+id/name_et"
         android:layout_width="match_parent"
@@ -28,7 +27,6 @@
         android:textColor="@color/color_black_trans_90"
         android:textSize="16dp"/>
 
-    <!-- 底部的提示-->
     <TextView
         android:id="@+id/name_hint"
         android:layout_width="match_parent"

@@ -173,4 +173,11 @@
     <string name="modify_gender">选择性别</string>
     <string name="change_gender_success">修改性别成功</string>
     <string name="change_gender_failed">修改性别失败</string>
+    <string name="signature_input_text">这里是签名</string>
+    <string name="change_signature_text">修改签名</string>
+    <string name="signature_is_empty">签名不能为空</string>
+    <string name="input_same_signature">请输入不同于当前签名的签名</string>
+    <string name="character_text">字</string>
+    <string name="change_sign_success">修改签名成功</string>
+    <string name="change_sign_failed">修改签名失败</string>
 </resources>

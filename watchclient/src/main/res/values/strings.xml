@@ -178,4 +178,11 @@
     <string name="modify_gender">Select gender</string>
     <string name="change_gender_success">Gender changed successfully</string>
     <string name="change_gender_failed">Couldn\'t change gender</string>
+    <string name="signature_input_text">Write your status here</string>
+    <string name="change_signature_text">Edit status</string>
+    <string name="signature_is_empty">Signature can\'t be blank</string>
+    <string name="input_same_signature">Enter a different signature</string>
+    <string name="character_text"> characters</string>
+    <string name="change_sign_success">Status changed successfully</string>
+    <string name="change_sign_failed">Couldn\'t change status</string>
 </resources>

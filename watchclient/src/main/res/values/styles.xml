@@ -10,6 +10,11 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+    <style name="AppTheme.WhiteBackground" parent="AppThemeLive">
+        <item name="android:windowBackground">@color/color_white</item>
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
+
     <style name="Theme.CustomDialog" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
@@ -31,7 +36,6 @@
         <item name="android:indeterminateDuration">720</item>
         <item name="android:scaleType">fitCenter</item>
     </style>
-
 
 
     <style name="michannel_type">
@@ -62,12 +66,14 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/text_size_30</item>
     </style>
+
     <style name="michannel_count">
         <item name="android:layout_marginRight">@dimen/view_dimen_18</item>
         <item name="android:layout_marginBottom">@dimen/view_dimen_12</item>
         <item name="android:textColor">@color/color_white_trans_80</item>
         <item name="android:textSize">@dimen/text_size_34</item>
     </style>
+
     <style name="michannel_count_top">
         <item name="android:layout_marginRight">@dimen/view_dimen_20</item>
         <item name="android:layout_marginTop">@dimen/view_dimen_12</item>

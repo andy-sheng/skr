@@ -24,6 +24,9 @@ public class EditGenderPresenter extends BaseRxPresenter<IEditGenderView> {
     }
 
     public void uploadGender(final int gender) {
+        if (mEditSubscription != null && !mEditSubscription.isUnsubscribed()) {
+            mEditSubscription.unsubscribe();
+        }
         mEditSubscription = Observable
                 .create(new Observable.OnSubscribe<UploadUserPropertiesRsp>() {
                     @Override

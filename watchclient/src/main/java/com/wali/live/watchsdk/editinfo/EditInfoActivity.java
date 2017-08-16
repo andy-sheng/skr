@@ -18,6 +18,7 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.editinfo.fragment.EditGenderFragment;
 import com.wali.live.watchsdk.editinfo.fragment.EditNameFragment;
+import com.wali.live.watchsdk.editinfo.fragment.EditSignFragment;
 
 import static com.wali.live.watchsdk.R.string.gender;
 
@@ -42,7 +43,7 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
     private TextView mUserGenderTv;
 
     //签名区域
-    private View mSloganContainer;
+    private View mSignContainer;
     private TextView mUserSloganTv;
 
     private User mMe;
@@ -77,17 +78,13 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
         mNameContainer.setOnClickListener(this);
         mUserNameTv = $(R.id.user_name_tv);
 
-
         mGenderContainer = $(R.id.gender_container);
         mGenderContainer.setOnClickListener(this);
         mUserGenderTv = $(R.id.user_gender_tv);
 
-        mSloganContainer = $(R.id.signature_container);
-        mSloganContainer.setOnClickListener(this);
-        mUserSloganTv = $(R.id.user_signature_tv);
-        if (!TextUtils.isEmpty(mMe.getSign())) {
-            mUserSloganTv.setText(mMe.getSign());
-        }
+        mSignContainer = $(R.id.sign_container);
+        mSignContainer.setOnClickListener(this);
+        mUserSloganTv = $(R.id.user_sign_tv);
 
         // 第一次初始化更新UI
         updateUI();
@@ -96,6 +93,7 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
     private void updateUI() {
         updateNameContainer();
         updateGenderContainer();
+        updateSignContainer();
     }
 
     private void updateNameContainer() {
@@ -118,6 +116,12 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
         }
     }
 
+    private void updateSignContainer() {
+        if (!TextUtils.isEmpty(mMe.getSign())) {
+            mUserSloganTv.setText(mMe.getSign());
+        }
+    }
+
     @Override
     public void onClick(View v) {
         int i = v.getId();
@@ -127,6 +131,8 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
             clickNameContainer();
         } else if (i == R.id.gender_container) {
             clickGenderContainer();   //点击性别区域
+        } else if (i == R.id.sign_container) {
+            clickSignContainer();
         }
     }
 
@@ -145,6 +151,10 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
         EditGenderFragment.open(this, this, null);
     }
 
+    private void clickSignContainer() {
+        EditSignFragment.open(this, this, null);
+    }
+
     @Override
     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
         MyLog.w(TAG, "requestCode=" + requestCode + ", resultCode=" + resultCode);
@@ -155,6 +165,8 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
             updateNameContainer();
         } else if (requestCode == EditGenderFragment.REQUEST_CODE) {
             updateGenderContainer();
+        } else if (requestCode == EditSignFragment.REQUEST_CODE) {
+            updateSignContainer();
         }
     }
 

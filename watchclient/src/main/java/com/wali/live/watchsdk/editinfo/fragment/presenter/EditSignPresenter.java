@@ -16,14 +16,14 @@ import rx.schedulers.Schedulers;
 /**
  * Created by lan on 2017/8/15.
  */
-public class EditNamePresenter extends BaseRxPresenter<IEditNameView> {
+public class EditSignPresenter extends BaseRxPresenter<IEditSignView> {
     private Subscription mEditSubscription;
 
-    public EditNamePresenter(IEditNameView view) {
+    public EditSignPresenter(IEditSignView view) {
         mView = view;
     }
 
-    public void uploadName(final String name) {
+    public void uploadSign(final String sign) {
         if (mEditSubscription != null && !mEditSubscription.isUnsubscribed()) {
             mEditSubscription.unsubscribe();
         }
@@ -31,7 +31,7 @@ public class EditNamePresenter extends BaseRxPresenter<IEditNameView> {
                 .create(new Observable.OnSubscribe<UploadUserPropertiesRsp>() {
                     @Override
                     public void call(Subscriber<? super UploadUserPropertiesRsp> subscriber) {
-                        UploadUserPropertiesRsp rsp = new UploadInfoRequest().uploadName(name).syncRsp();
+                        UploadUserPropertiesRsp rsp = new UploadInfoRequest().uploadSign(sign).syncRsp();
                         if (rsp == null) {
                             subscriber.onError(new Exception("UploadUserPropertiesRsp is null"));
                         } else {
@@ -46,19 +46,19 @@ public class EditNamePresenter extends BaseRxPresenter<IEditNameView> {
                 .subscribe(new Observer<UploadUserPropertiesRsp>() {
                     @Override
                     public void onCompleted() {
-                        MyLog.d(TAG, "uploadName onCompleted");
+                        MyLog.d(TAG, "uploadSign onCompleted");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        MyLog.d(TAG, "uploadName onError=" + e.getMessage());
+                        MyLog.d(TAG, "uploadSign onError=" + e.getMessage());
                     }
 
                     @Override
                     public void onNext(UploadUserPropertiesRsp rsp) {
-                        MyLog.d(TAG, "uploadName onNext");
+                        MyLog.d(TAG, "uploadSign onNext");
                         if (rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
-                            mView.editSuccess(rsp.getNickname());
+                            mView.editSuccess(sign);
                         } else {
                             mView.editFailure(rsp.getRetCode());
                         }

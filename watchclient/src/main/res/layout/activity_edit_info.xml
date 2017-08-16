@@ -140,7 +140,7 @@
         android:background="#dcdcdc"/>
 
     <RelativeLayout
-        android:id="@+id/signature_container"
+        android:id="@+id/sign_container"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/gender_split_line"
@@ -148,7 +148,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/signature_tv"
+            android:id="@+id/sign_tv"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
@@ -159,7 +159,7 @@
             android:textSize="@dimen/text_size_50"/>
 
         <ImageView
-            android:id="@+id/right_arrow_signature"
+            android:id="@+id/right_arrow_sign"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
@@ -167,14 +167,14 @@
             android:src="@drawable/set_list_icon_next"/>
 
         <TextView
-            android:id="@+id/user_signature_tv"
+            android:id="@+id/user_sign_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/text_size_30"
             android:layout_marginRight="@dimen/text_size_30"
-            android:layout_toLeftOf="@id/right_arrow_signature"
-            android:layout_toRightOf="@id/signature_tv"
+            android:layout_toLeftOf="@id/right_arrow_sign"
+            android:layout_toRightOf="@id/sign_tv"
             android:ellipsize="end"
             android:gravity="right"
             android:maxLines="1"

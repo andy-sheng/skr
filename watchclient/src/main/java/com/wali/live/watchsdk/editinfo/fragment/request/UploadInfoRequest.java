@@ -36,6 +36,14 @@ public class UploadInfoRequest extends BaseRequest {
         return this;
     }
 
+    public UploadInfoRequest uploadSign(String sign) {
+        if (!TextUtils.isEmpty(sign)) {
+            mBuilder.setSign(sign);
+        }
+        mRequest = mBuilder.build();
+        return this;
+    }
+
     @Override
     protected GeneratedMessage parse(byte[] bytes) throws InvalidProtocolBufferException {
         return UploadUserPropertiesRsp.parseFrom(bytes);

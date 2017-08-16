@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 签名最大字符数 -->
-    <integer name="max_signature_char_count">40</integer>
+    <integer name="max_sign_char_count">40</integer>
     <!-- 输入名字最大字符数-->
     <integer name="max_name_char_count">20</integer>
 </resources>
