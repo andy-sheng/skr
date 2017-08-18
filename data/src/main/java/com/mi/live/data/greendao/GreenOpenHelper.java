@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.base.log.MyLog;
 import com.wali.live.dao.DaoMaster;
+import com.wali.live.dao.UserAccountDao;
 
 
 /**
@@ -28,10 +29,23 @@ public class GreenOpenHelper extends DaoMaster.OpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         MyLog.w(TAG, "Upgrading schema from version " + oldVersion + " to " + newVersion);
         try {
-
+            if (oldVersion < 57 && newVersion >= 57) {
+                upgradeAccountFrom56To57(db);
+            }
         } catch (Exception e) {
             MyLog.e(TAG, e);
         }
 
+    }
+
+    public static void upgradeAccountFrom56To57(SQLiteDatabase db) {
+        try {
+            String sql = "alter table USER_ACCOUNT add column miid LONG";
+            db.execSQL(sql);
+        } catch (Exception e) {
+            MyLog.e(e);
+            UserAccountDao.dropTable(db, true);
+            UserAccountDao.createTable(db, true);
+        }
     }
 }

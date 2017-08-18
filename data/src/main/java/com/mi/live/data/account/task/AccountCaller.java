@@ -3,8 +3,6 @@ package com.mi.live.data.account.task;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.login.AccountLoginManager;
 import com.mi.live.data.api.ErrorCode;
-import com.mi.live.data.milink.command.MiLinkCommand;
-import com.mi.live.data.milink.event.MiLinkEvent;
 import com.wali.live.dao.UserAccount;
 import com.wali.live.proto.AccountProto;
 
@@ -20,12 +18,12 @@ public class AccountCaller {
     /**
      * 小米帐号sso登录
      */
-    public static Observable<AccountProto.MiSsoLoginRsp> miSsoLogin(final long mid, final String miservicetoken, final int channelId) {
+    public static Observable<AccountProto.MiSsoLoginRsp> miSsoLogin(final long miid, final String miservicetoken, final int channelId) {
         return Observable.create(new Observable.OnSubscribe<AccountProto.MiSsoLoginRsp>() {
             @Override
             public void call(Subscriber<? super AccountProto.MiSsoLoginRsp> subscriber) {
                 try {
-                    AccountProto.MiSsoLoginRsp rsp = AccountLoginManager.miSsoLogin(mid, miservicetoken, channelId);
+                    AccountProto.MiSsoLoginRsp rsp = AccountLoginManager.miSsoLogin(miid, miservicetoken, channelId);
 
                     if (rsp != null && ErrorCode.CODE_SUCCESS == rsp.getRetCode()) {
 //                        boolean isSameAccount = (UserAccountManager.getInstance().getUuidAsLong() == rsp.getUuid());
@@ -39,6 +37,7 @@ public class AccountCaller {
                         userAccount.setServiceToken(rsp.getServiceToken());
                         userAccount.setSSecurity(rsp.getSecurityKey());
                         userAccount.setNeedEditUserInfo(rsp.getIsSetGuide());
+                        userAccount.setMiid(miid);
                         UserAccountManager.getInstance().login(userAccount);
                     }
 
@@ -81,7 +80,7 @@ public class AccountCaller {
      * 第三方授权登陆
      */
     public static Observable<AccountProto.LoginRsp> login(final int channelId, final int accountType, final String code, final String openId, final String accessToken, final String expires_in,
-                                                final String refreshToken) {
+                                                          final String refreshToken) {
         return Observable.create(new Observable.OnSubscribe<AccountProto.LoginRsp>() {
             @Override
             public void call(Subscriber<? super AccountProto.LoginRsp> subscriber) {
@@ -126,7 +125,7 @@ public class AccountCaller {
         return Observable.create(new Observable.OnSubscribe<AccountProto.ThirdPartSignLoginRsp>() {
             @Override
             public void call(Subscriber<? super AccountProto.ThirdPartSignLoginRsp> subscriber) {
-                AccountProto.ThirdPartSignLoginRsp rsp = AccountLoginManager.thridPartLogin(channelId,xuid,sex,nickName,headUrl,sign);
+                AccountProto.ThirdPartSignLoginRsp rsp = AccountLoginManager.thridPartLogin(channelId, xuid, sex, nickName, headUrl, sign);
                 if (rsp == null) {
                     subscriber.onError(new Exception("rsp is null"));
                     return;

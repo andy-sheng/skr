@@ -178,6 +178,13 @@ public class UserAccountManager {
         return 0;
     }
 
+    public long getMiId() {
+        if (null != mAccount) {
+            return mAccount.getMiid() == null ? 0 : mAccount.getMiid();
+        }
+        return 0;
+    }
+
     public String getServiceToken() {
         if (null != mAccount) {
             return mAccount.getServiceToken();

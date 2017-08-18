@@ -28,5 +28,6 @@ dependencies {
     def testDependencies = rootProject.ext.dataTestDependencies
     compile presentationDependencies.androidAppCompat
     compile files('libs/broadcaster.jar')
+    compile files('libs/milive_transport.jar')
     compile project(':enginebase')
 }

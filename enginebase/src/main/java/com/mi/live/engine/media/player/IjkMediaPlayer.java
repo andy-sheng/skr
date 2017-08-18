@@ -402,7 +402,7 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
     @Override
     public void seekTo(long msec) throws IllegalStateException {
         MyLog.w(TAG, "seekTo: msec=" + msec);
-        m_player.seekTo(msec);
+        m_player.seekTo(msec, true);
     }
 
     @Override

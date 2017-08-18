@@ -9,7 +9,9 @@ import com.mi.live.data.location.Location;
 import com.wali.live.watchsdk.ipc.service.LiveInfo;
 import com.wali.live.watchsdk.ipc.service.ShareInfo;
 import com.wali.live.watchsdk.ipc.service.UserInfo;
+import com.wali.live.watchsdk.watch.model.RoomInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -90,6 +92,21 @@ public interface IMiLiveSdk {
      * @version 204000
      */
     void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, IAssistantCallback callback);
+
+    /**
+     * 打开直播观看页面
+     *
+     * @version 205037
+     */
+    void openWatchRoom(Activity activity, RoomInfo roomInfo, IAssistantCallback callback);
+
+
+    /**
+     * 打开直播观看页面，同时能够滑动
+     *
+     * @version 205037
+     */
+    void openWatchRoomList(Activity activity, ArrayList<RoomInfo> list, int position, IAssistantCallback callback);
 
     /**
      * 打开直播回放页面

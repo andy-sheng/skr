@@ -5,6 +5,7 @@ import de.greenrobot.daogenerator.Entity;
 import de.greenrobot.daogenerator.Schema;
 
 public class GreenDaoGenerator {
+    //account 添加 miid字段 版本号+1 56变为57
     //礼物添加buyType 版本变为56
     //特权礼物改版,版本好修改为55
     //添加观看记录表，版本号+1, 修改为54
@@ -20,7 +21,7 @@ public class GreenDaoGenerator {
     //新增虚拟钻，版本号变为43
     //新增红名，版本号变为42
     //新增聊天模块用户微博认证，版本号变为40
-    public static final int DB_VERSION = 56;
+    public static final int DB_VERSION = 57;
 
     public static final String PACKAGE_DAO_NAME = "com.wali.live.dao";
 
@@ -63,9 +64,8 @@ public class GreenDaoGenerator {
     private static void addAccount(final Schema schema) {
         Entity account = schema.addEntity("UserAccount");
 
-        account.addIntProperty("channelid");// channelid 调用方的渠道
+        account.addIntProperty("channelid"); // channelid 调用方的渠道
         account.addStringProperty("uuid");
-
         account.addStringProperty("serviceToken");
         account.addStringProperty("securityKey");
         account.addStringProperty("passToken");
@@ -87,6 +87,8 @@ public class GreenDaoGenerator {
         account.addBooleanProperty("needEditUserInfo");
         //账号退出和登录中的标志位
         account.addBooleanProperty("isLogOff");
+        account.addLongProperty("miid");   //sso 添加miid存儲
+
     }
 
     /**

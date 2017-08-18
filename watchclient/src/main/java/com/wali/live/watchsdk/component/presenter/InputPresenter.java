@@ -87,41 +87,53 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
         mUIHandler.removeCallbacksAndMessages(null);
     }
 
-    public void sendBarrage(String msg, boolean isFlyBarrage) {
-        if (TextUtils.isEmpty(msg)) {
-            return;
-        }
-        if (mMyRoomData != null && !mMyRoomData.canSpeak()) {
-            ToastUtils.showToast(GlobalData.app(), R.string.can_not_speak);
-            return;
-        }
+    /**
+     * 是否是观众
+     *
+     * @return
+     */
+    private boolean isVisitor() {
+        return mMyRoomData.getUid() != UserAccountManager.getInstance().getUuidAsLong();
+    }
 
-        LastBarrage lastBarrage = mLastBarrageMap.get(getBarrageCacheKey(mMyRoomData.getRoomId()));
-        long sendTime = System.currentTimeMillis();
-        if (mMyRoomData.getMsgRule() != null && lastBarrage != null) {
-            if (mMyRoomData.getMsgRule().isUnrepeatable() && lastBarrage.getLastSendContent() != null
-                    && msg.trim().equals(lastBarrage.getLastSendContent())) {
-                MyLog.w(TAG, "send barrage repeated,last content:" + lastBarrage.getLastSendContent() + " body:" + msg.trim());
-                ToastUtils.showToast(GlobalData.app().getApplicationContext(), R.string.send_barrage_repeated);
+    public void sendBarrage(String msg, boolean isFlyBarrage) {
+        if (TextUtils.isEmpty(msg) || mMyRoomData == null) {
+            return;
+        }
+        if (isVisitor()) {
+            if (!mMyRoomData.canSpeak()) {
+                ToastUtils.showToast(GlobalData.app(), R.string.can_not_speak);
                 return;
             }
-            if (mMyRoomData.getMsgRule().getSpeakPeriod() != 0 && lastBarrage.getLastSendTime() > 0) {
-                if ((sendTime - lastBarrage.getLastSendTime()) < mMyRoomData.getMsgRule().getSpeakPeriod() * 1000) {
+
+            LastBarrage lastBarrage = mLastBarrageMap.get(getBarrageCacheKey(mMyRoomData.getRoomId()));
+            long sendTime = System.currentTimeMillis();
+            if (mMyRoomData.getMsgRule() != null && lastBarrage != null) {
+                if (mMyRoomData.getMsgRule().isUnrepeatable() && lastBarrage.getLastSendContent() != null
+                        && msg.trim().equals(lastBarrage.getLastSendContent())) {
+                    MyLog.w(TAG, "send barrage repeated,last content:" + lastBarrage.getLastSendContent() + " body:" + msg.trim());
+                    ToastUtils.showToast(GlobalData.app().getApplicationContext(), R.string.send_barrage_repeated);
                     return;
                 }
+                if (mMyRoomData.getMsgRule().getSpeakPeriod() != 0 && lastBarrage.getLastSendTime() > 0) {
+                    if ((sendTime - lastBarrage.getLastSendTime()) < mMyRoomData.getMsgRule().getSpeakPeriod() * 1000) {
+                        MyLog.w(TAG, "send barrage too frequent,interval:" + mMyRoomData.getMsgRule().getSpeakPeriod() +
+                                "s senTime:" + sendTime + " last send time:" + lastBarrage.getLastSendTime());
+                        return;
+                    }
+                }
             }
+            //把此次发送的弹幕存入缓存
+            if (mMyRoomData.getMsgRule() != null) {
+                lastBarrage = lastBarrage == null ? new LastBarrage(new Date()) : lastBarrage;
+                if (mMyRoomData.getMsgRule().isUnrepeatable())
+                    lastBarrage.setLastSendContent(msg.trim());
+                if (mMyRoomData.getMsgRule().getSpeakPeriod() > 0)
+                    lastBarrage.setLastSendTime(sendTime);
+                mLastBarrageMap.put(getBarrageCacheKey(mMyRoomData.getRoomId()), lastBarrage);
+            }
+            checkShowCountdownTimer();
         }
-        //把此次发送的弹幕存入缓存
-        if (mMyRoomData.getMsgRule() != null) {
-            lastBarrage = lastBarrage == null ? new LastBarrage(new Date()) : lastBarrage;
-            if (mMyRoomData.getMsgRule().isUnrepeatable())
-                lastBarrage.setLastSendContent(msg.trim());
-            if (mMyRoomData.getMsgRule().getSpeakPeriod() > 0)
-                lastBarrage.setLastSendTime(sendTime);
-            mLastBarrageMap.put(getBarrageCacheKey(mMyRoomData.getRoomId()), lastBarrage);
-        }
-
-        checkShowCountdownTimer();
 
         BarrageMsg barrageMsg = SendBarrageManager.createBarrage(BarrageMsgType.B_MSG_TYPE_TEXT,
                 msg, mMyRoomData.getRoomId(), mMyRoomData.getUid(), System.currentTimeMillis(), null);
@@ -140,10 +152,10 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
         try {
             LastBarrage lastBarrage = mLastBarrageMap.get(getBarrageCacheKey(mMyRoomData.getRoomId()));
             long now = System.currentTimeMillis();
-            if (mMyRoomData.getMsgRule() != null && mMyRoomData.getMsgRule().getSpeakPeriod() != 0 && lastBarrage.getLastSendTime() > 0) {
+            if ((mMyRoomData.getMsgRule() != null && mMyRoomData.getMsgRule().getSpeakPeriod() != 0)
+                    && (lastBarrage != null && lastBarrage.getLastSendTime() > 0)) {
                 if ((now - lastBarrage.getLastSendTime()) < mMyRoomData.getMsgRule().getSpeakPeriod() * 1000) {
                     int interval = (int) (mMyRoomData.getMsgRule().getSpeakPeriod() - (now - lastBarrage.getLastSendTime()) / 1000);
-                    MyLog.w(TAG, "send barrage too frequent,interval:" + mMyRoomData.getMsgRule().getSpeakPeriod() + "s now:" + now + " last send time:" + lastBarrage.getLastSendTime());
                     return interval;
                 }
             }
@@ -183,7 +195,7 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
      */
     protected void checkShowCountdownTimer() {
         try {
-            if (getSendBarrageInterval() > 0) {
+            if (isVisitor() && getSendBarrageInterval() > 0) {
                 if (mCanInput == true) {
                     mCanInput = false;
                     mUIHandler.sendEmptyMessageDelayed(MSG_SEND_BARRAGE_COUNT_DOWN, 1000);
@@ -203,6 +215,10 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.MsgRuleChangedEvent event) {
+        if (event == null || !isVisitor()) {
+            MyLog.w(TAG, "this is anchor, don't limit");
+            return;
+        }
         if (event.getRoomId() != null && mMyRoomData.getRoomId().equals(event.getRoomId())) {
 //            changeCommentBtnResource();
 
