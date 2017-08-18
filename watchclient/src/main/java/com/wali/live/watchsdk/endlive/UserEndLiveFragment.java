@@ -40,7 +40,8 @@ import org.greenrobot.eventbus.ThreadMode;
  * @module 新版直播结束页面 （用户界面）
  */
 public class UserEndLiveFragment extends BaseEventBusFragment implements View.OnClickListener {
-    private static final String TAG = UserEndLiveFragment.class.getSimpleName();
+    private static final String TAG = "UserEndLiveFragment";
+
     private static final int REQUEST_CODE = GlobalData.getRequestCode();
     private static final String EXTRA_OWNER_ID = "extra_owner_id";
     private static final String EXTRA_ROOM_ID = "extra_room_id";

@@ -13,12 +13,30 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 public abstract class SecureLoginCallback implements ISecureCallBack {
     private static final String TAG = SecureLoginCallback.class.getSimpleName();
 
+    long mMiId = 0;
+
+    public SecureLoginCallback() {
+    }
+
+    public SecureLoginCallback(long miid) {
+        mMiId = miid;
+    }
+
     @Override
     public void process(Object... objects) {
         int channelId = (int) objects[0];
         String packageName = (String) objects[1];
         MyLog.w(TAG, "old channelId=" + channelId + "; new channelId=" + HostChannelManager.getInstance().getChannelId());
-        if (channelId == HostChannelManager.getInstance().getChannelId() || !BaseComponentSdkActivity.isActive()) {
+        //sso 登录 同一账号拦截
+        if (channelId == HostChannelManager.getInstance().getChannelId()
+                && (mMiId != 0 && mMiId == UserAccountManager.getInstance().getMiId())) {
+            MyLog.w(TAG, "the same account. channelId is equal channelId =" + channelId
+                    + " and miId is equal mid =" + mMiId);
+            postSame();
+            return;
+        }
+        if (channelId == HostChannelManager.getInstance().getChannelId()
+                || !BaseComponentSdkActivity.isActive()) {
             UserAccountManager.getInstance().logoffWithoutClearAccount(HostChannelManager.getInstance().getChannelId());
             HostChannelManager.getInstance().setChannelData(channelId, packageName);
             postSuccess();
@@ -26,6 +44,8 @@ public abstract class SecureLoginCallback implements ISecureCallBack {
             postActive();
         }
     }
+
+    public abstract void postSame();
 
     public abstract void postSuccess();
 

@@ -22,6 +22,7 @@ import com.wali.live.livesdk.live.component.utils.MagicParamUtils;
 import com.wali.live.livesdk.live.dns.MultiCdnIpSelectionHelper;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.receiver.NetworkReceiver;
+import com.xiaomi.broadcaster.dataStruct.ConnectedServerInfo;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -67,6 +68,8 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
     private int mBeautyLevel = MagicParamUtils.getBeautyLevel();
     private int mFilterIntensity = MagicParamUtils.getFilterIntensity();
     private String mFilter = "";
+
+    private float mQualityRate = 1.0f;
 
     @Override
     protected String getTAG() {
@@ -405,10 +408,30 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
             }
         }
 
+        private void onDropRate() {
+            ConnectedServerInfo serverInfo = mStreamer.getConnectedServerInfo();
+            if (serverInfo == null) {
+                MyLog.w(TAG, "onDropRate, but serverInfo is null");
+                return;
+            }
+            if (serverInfo.port == 8080 && (serverInfo.domain == null ||
+                    !serverInfo.domain.equals("udp.r2.zb.mi.com"))) {
+                serverInfo.domain = "udp.r2.zb.mi.com";
+            }
+            MyLog.d(TAG, "onDropRate domain=" + serverInfo.domain + ", port=" + serverInfo.port);
+            if (!serverInfo.domain.equals("udp.r2.zb.mi.com") || mQualityRate <= 0.6f) {
+                return;
+            }
+            mQualityRate -= 0.2f;
+            MyLog.w(TAG, "onDropRate rate=" + mQualityRate);
+            mStreamer.setQualityRate(mQualityRate);
+        }
+
         @Override
         protected void startReconnect(int code) {
             if (mStreamer != null && mStreamStarted) {
                 MyLog.w(TAG, "startReconnect, code = " + code);
+                onDropRate();
                 mStreamStarted = false;
                 if (!mIpSelectionHelper.isStuttering()) {
                     mController.postEvent(MSG_ON_STREAM_RECONNECT);
