@@ -90,7 +90,7 @@ public abstract class BaseExchangeActivity extends BaseActivity implements View.
         mShowBtn.setSelected(true);
         mShowTicket = (TextView)findViewById(R.id.excwhangeable_mibi_cnt_tv);
         mNotice = (TextView)findViewById(R.id.notice_top);
-        int showTip = PreferenceUtils.getSettingInt(GlobalData.app(), PreferenceKeys.PER_KEY_TICKET_EXCHANGE_NOTICE, 0);
+        int showTip = PreferenceUtils.getSettingInt(PreferenceKeys.PER_KEY_TICKET_EXCHANGE_NOTICE, 0);
         if (showTip == 1) {
             mNotice.setVisibility(View.VISIBLE);
         }
@@ -104,7 +104,7 @@ public abstract class BaseExchangeActivity extends BaseActivity implements View.
         });
         mGameTicket = (TextView)findViewById(R.id.exchangeable_mibi_cnt_tv);
         mExchangeTv = (TextView)findViewById(R.id.exchange_tv);
-        mShowTip = PreferenceUtils.getSettingInt(GlobalData.app(), PreferenceKeys.PER_KEY_TICKET_EXCHANGE_TYPE, 2);
+        mShowTip = PreferenceUtils.getSettingInt(PreferenceKeys.PER_KEY_TICKET_EXCHANGE_TYPE, 2);
         mExchangeRecycleAdapter = new ExchangeRecycleViewAdapter(mShowTip);
         mExchangeRecycleView = (RecyclerView)findViewById(R.id.recycler_view);
         mExchangeRecycleView.setAdapter(mExchangeRecycleAdapter);

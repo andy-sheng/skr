@@ -139,7 +139,7 @@ public abstract class PreferenceUtils {
         PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).edit().putBoolean(key, value).apply();
     }
 
-    public static void setSettingInt(final Context c, final String key, final int value) {
+    public static void setSettingInt(final String key, final int value) {
         PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).edit().putInt(key, value).apply();
     }
 
@@ -148,11 +148,11 @@ public abstract class PreferenceUtils {
     }
 
 
-    public static void increaseSettingInt(final Context c, final String key) {
+    public static void increaseSettingInt(final String key) {
         increaseSettingInt(PreferenceManager.getDefaultSharedPreferences(GlobalData.app()), key);
     }
 
-    public static int getSettingInt(final Context c, final String key, final int defaultValue) {
+    public static int getSettingInt(final String key, final int defaultValue) {
         return PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).getInt(key, defaultValue);
     }
 
@@ -172,11 +172,11 @@ public abstract class PreferenceUtils {
         return PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).getFloat(key, defaultValue);
     }
 
-    public static void setSettingLong(final Context c, final String key, final long value) {
+    public static void setSettingLong(final String key, final long value) {
         PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).edit().putLong(key, value).apply();
     }
 
-    public static long getSettingLong(final Context c, final String key, final long defaultValue) {
+    public static long getSettingLong(final String key, final long defaultValue) {
         return PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).getLong(key, defaultValue);
     }
 

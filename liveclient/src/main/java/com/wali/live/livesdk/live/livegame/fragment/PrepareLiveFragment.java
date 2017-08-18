@@ -106,7 +106,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         if (mQualityArray == null) {
             mQualityArray = getResources().getTextArray(R.array.quality_arrays);
         }
-        mQualityIndex = PreferenceUtils.getSettingInt(GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_GAME_CLARITY, MEDIUM_CLARITY);
+        mQualityIndex = PreferenceUtils.getSettingInt(PreferenceUtils.PREF_KEY_LIVE_GAME_CLARITY, MEDIUM_CLARITY);
 
         mClarityTv = $(R.id.clarity_tv);
         mClarityTv.setText(mQualityArray[mQualityIndex]);
@@ -174,7 +174,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
 
     @Override
     protected void openLive() {
-        PreferenceUtils.setSettingInt(GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_GAME_CLARITY, mQualityIndex);
+        PreferenceUtils.setSettingInt(PreferenceUtils.PREF_KEY_LIVE_GAME_CLARITY, mQualityIndex);
         openGameLive();
     }
 

@@ -185,4 +185,6 @@
     <string name="character_text"> characters</string>
     <string name="change_sign_success">Status changed successfully</string>
     <string name="change_sign_failed">Couldn\'t change status</string>
+    <string name="edit_info_tip">您还没有昵称，%s修改昵称结识更多的朋友吧~</string>
+    <string name="click_here">点击这里</string>
 </resources>

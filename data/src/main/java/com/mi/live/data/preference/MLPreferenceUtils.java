@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.base.global.GlobalData;
-import com.base.preference.PreferenceUtils;
 import com.base.log.MyLog;
+import com.base.preference.PreferenceUtils;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.R;
 
@@ -708,23 +708,15 @@ public abstract class MLPreferenceUtils extends PreferenceUtils {
     // NearbySettingActivity.TIMESPAN_SEVENDAYS);
     // }
     public static void setTimeSpan(final long timeSpan) {
-        setSettingLong(GlobalData.app(), PREF_KEY_TIMESPAN, timeSpan);
-    }
-
-    public static boolean getLbsVisible() {
-        return getSettingBoolean(GlobalData.app(), PREF_KEY_LBS_VISIBLE, true);
-    }
-
-    public static void setLbsVisible(final boolean isVisible) {
-        setSettingBoolean(GlobalData.app(), PREF_KEY_LBS_VISIBLE, isVisible);
+        setSettingLong(PREF_KEY_TIMESPAN, timeSpan);
     }
 
 //    public static int getNearbyStatus() {
-//        return PreferenceUtils.getSettingInt(GlobalData.app(), PREF_KEY_NEARBY, UserSettings.LBS_OFF_SERVER);
+//        return PreferenceUtils.getSettingInt( PREF_KEY_NEARBY, UserSettings.LBS_OFF_SERVER);
 //    }
 //
 //    public static void setNearbyStatus(final int value) {
-//        PreferenceUtils.setSettingInt(GlobalData.app(), PREF_KEY_NEARBY, value);
+//        PreferenceUtils.setSettingInt( PREF_KEY_NEARBY, value);
 //    }
 
     public static int getMsgNotificationMode(final Context c) {
@@ -841,9 +833,9 @@ public abstract class MLPreferenceUtils extends PreferenceUtils {
         int screenHeight = DisplayUtils.getScreenHeight();
 
         if (screenHeight > screenWidth) { //认为是竖屏，返回竖屏的值
-            return MLPreferenceUtils.getSettingInt(GlobalData.app(), PREF_KEY_KEBOARD_HEIGHT, GlobalData.app().getResources().getDimensionPixelSize(R.dimen.keyboard_default_height));
+            return MLPreferenceUtils.getSettingInt(PREF_KEY_KEBOARD_HEIGHT, GlobalData.app().getResources().getDimensionPixelSize(R.dimen.keyboard_default_height));
         } else { //认为是横屏,返回横屏的值
-            return MLPreferenceUtils.getSettingInt(GlobalData.app(), PREF_KEY_CROSS_KEBOARD_HEIGHT, GlobalData.app().getResources().getDimensionPixelSize(R.dimen.keyboard_default_cross_height));
+            return MLPreferenceUtils.getSettingInt(PREF_KEY_CROSS_KEBOARD_HEIGHT, GlobalData.app().getResources().getDimensionPixelSize(R.dimen.keyboard_default_cross_height));
         }
     }
 
@@ -854,9 +846,9 @@ public abstract class MLPreferenceUtils extends PreferenceUtils {
                 int screenWidth = DisplayUtils.getScreenWidth();
                 int screenHeight = DisplayUtils.getScreenHeight();
                 if (screenHeight > screenWidth) { //认为是竖屏，返回竖屏的值
-                    PreferenceUtils.setSettingInt(GlobalData.app(), PREF_KEY_KEBOARD_HEIGHT, height);
+                    PreferenceUtils.setSettingInt(PREF_KEY_KEBOARD_HEIGHT, height);
                 } else { //认为是横屏,返回横屏的值
-                    PreferenceUtils.setSettingInt(GlobalData.app(), PREF_KEY_CROSS_KEBOARD_HEIGHT, height);
+                    PreferenceUtils.setSettingInt(PREF_KEY_CROSS_KEBOARD_HEIGHT, height);
                 }
                 subscriber.onCompleted();
             }
@@ -867,9 +859,9 @@ public abstract class MLPreferenceUtils extends PreferenceUtils {
     public static int getKeyboardHeight(boolean isisPortrait) {
 
         if (isisPortrait) { //认为是竖屏，返回竖屏的值
-            return MLPreferenceUtils.getSettingInt(GlobalData.app(), PREF_KEY_KEBOARD_HEIGHT, GlobalData.app().getResources().getDimensionPixelSize(R.dimen.keyboard_default_height));
+            return MLPreferenceUtils.getSettingInt(PREF_KEY_KEBOARD_HEIGHT, GlobalData.app().getResources().getDimensionPixelSize(R.dimen.keyboard_default_height));
         } else { //认为是横屏,返回横屏的值
-            return MLPreferenceUtils.getSettingInt(GlobalData.app(), PREF_KEY_CROSS_KEBOARD_HEIGHT, GlobalData.app().getResources().getDimensionPixelSize(R.dimen.keyboard_default_cross_height));
+            return MLPreferenceUtils.getSettingInt(PREF_KEY_CROSS_KEBOARD_HEIGHT, GlobalData.app().getResources().getDimensionPixelSize(R.dimen.keyboard_default_cross_height));
         }
     }
 
@@ -878,9 +870,9 @@ public abstract class MLPreferenceUtils extends PreferenceUtils {
             @Override
             public void call(Subscriber<? super Object> subscriber) {
                 if (isPortrait) { //认为是竖屏，返回竖屏的值
-                    PreferenceUtils.setSettingInt(GlobalData.app(), PREF_KEY_KEBOARD_HEIGHT, height);
+                    PreferenceUtils.setSettingInt(PREF_KEY_KEBOARD_HEIGHT, height);
                 } else { //认为是横屏,返回横屏的值
-                    PreferenceUtils.setSettingInt(GlobalData.app(), PREF_KEY_CROSS_KEBOARD_HEIGHT, height);
+                    PreferenceUtils.setSettingInt(PREF_KEY_CROSS_KEBOARD_HEIGHT, height);
                 }
                 subscriber.onCompleted();
             }
@@ -891,11 +883,11 @@ public abstract class MLPreferenceUtils extends PreferenceUtils {
     private static final String PREF_KEY_SAVE_YZB_ACCOUNT_TS = "pref_key_save_yzb_account_ts";
 
     public static void setYzbSaveMemberTs(long ts) {
-        MLPreferenceUtils.setSettingLong(com.base.global.GlobalData.app(), MLPreferenceUtils.PREF_KEY_SAVE_YZB_ACCOUNT_TS, ts);
+        MLPreferenceUtils.setSettingLong(MLPreferenceUtils.PREF_KEY_SAVE_YZB_ACCOUNT_TS, ts);
     }
 
     public static long getYzbSaveMemberTs() {
-        return MLPreferenceUtils.getSettingLong(com.base.global.GlobalData.app(), MLPreferenceUtils.PREF_KEY_SAVE_YZB_ACCOUNT_TS, 0);
+        return MLPreferenceUtils.getSettingLong(MLPreferenceUtils.PREF_KEY_SAVE_YZB_ACCOUNT_TS, 0);
     }
 
 //    public static void setIsKickOff(final Context c, final boolean isKickOff) {
@@ -925,11 +917,11 @@ public abstract class MLPreferenceUtils extends PreferenceUtils {
 //    }
 //
 //    public static void setNearbyStatus(final int value) {
-//        PreferenceUtils.setSettingInt(GlobalData.app(), PREF_KEY_NEARBY, value);
+//        PreferenceUtils.setSettingInt( PREF_KEY_NEARBY, value);
 //    }
 //
 //    public static int getNearbyStatus() {
-//        return PreferenceUtils.getSettingInt(GlobalData.app(), PREF_KEY_NEARBY,
+//        return PreferenceUtils.getSettingInt( PREF_KEY_NEARBY,
 //                UserSettings.LBS_OFF_SERVER);
 //    }
 }

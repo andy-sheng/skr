@@ -108,7 +108,6 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                 onBackgroundClick();
             }
         });
-
     }
 
     @Override

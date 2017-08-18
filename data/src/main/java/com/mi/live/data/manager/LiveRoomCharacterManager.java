@@ -3,7 +3,6 @@ package com.mi.live.data.manager;
 import android.support.v4.util.LongSparseArray;
 
 import com.base.activity.RxActivity;
-import com.base.global.GlobalData;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.Constants;
 import com.mi.live.data.api.BanSpeakerUtils;
@@ -119,7 +118,7 @@ public class LiveRoomCharacterManager {
      * @return
      */
     public boolean haveKickPermission() {
-        int permission = PreferenceUtils.getSettingInt(GlobalData.app().getApplicationContext(), PreferenceKeys.PRE_KIK_PERMISSION_ANCHOR, 0);
+        int permission = PreferenceUtils.getSettingInt(PreferenceKeys.PRE_KIK_PERMISSION_ANCHOR, 0);
         return permission == Constants.HAVE_KICK_VIEWER_PERMISSION;
     }
 

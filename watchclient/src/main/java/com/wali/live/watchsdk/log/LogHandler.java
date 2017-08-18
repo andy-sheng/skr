@@ -2,7 +2,6 @@ package com.wali.live.watchsdk.log;
 
 import android.os.Message;
 
-import com.base.global.GlobalData;
 import com.base.preference.PreferenceUtils;
 import com.mi.live.data.milink.callback.MiLinkPacketDispatcher;
 import com.mi.live.data.milink.command.MiLinkCommand;
@@ -101,7 +100,7 @@ public class LogHandler implements MiLinkPacketDispatcher.PacketDataHandler {
                 long timeDelay = dataLoglevel.getTimeLong();
                 long revertTimestamp = System.currentTimeMillis() + timeDelay;
 
-                PreferenceUtils.setSettingLong(GlobalData.app(), SP_KEY_LOG_REVERT_TS, revertTimestamp);
+                PreferenceUtils.setSettingLong(SP_KEY_LOG_REVERT_TS, revertTimestamp);
 
                 //去检查回滚log级别
                 Message message = mCustomHandlerThread.obtainMessage();
@@ -119,12 +118,12 @@ public class LogHandler implements MiLinkPacketDispatcher.PacketDataHandler {
      * 处理MSG_CHECK_REVERT_LOG_LEVEL, 恢复日志级别
      */
     private void processMsgCheckRevertLogLevel() {
-        long revertTimestamp = PreferenceUtils.getSettingLong(GlobalData.app(), SP_KEY_LOG_REVERT_TS, 0);
+        long revertTimestamp = PreferenceUtils.getSettingLong(SP_KEY_LOG_REVERT_TS, 0);
         long now = System.currentTimeMillis();
 
         if (now >= revertTimestamp) {     //需要恢复日志级别
             InitManager.initLogger();
-            PreferenceUtils.setSettingLong(GlobalData.app(), SP_KEY_LOG_REVERT_TS, 0);
+            PreferenceUtils.setSettingLong(SP_KEY_LOG_REVERT_TS, 0);
 
             mCustomHandlerThread.removeMessage(MSG_CHECK_REVERT_LOG_LEVEL);
         } else {

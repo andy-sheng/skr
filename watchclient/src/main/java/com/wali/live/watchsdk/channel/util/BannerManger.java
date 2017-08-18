@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.CommonUtils;
@@ -189,7 +188,7 @@ public class BannerManger {
                     }
                 }
                 long time = rsp.getLastUpdateTs();
-                PreferenceUtils.setSettingLong(GlobalData.app(), BANNER_LAST_UPDATE_TIMESTAMP, time);
+                PreferenceUtils.setSettingLong(BANNER_LAST_UPDATE_TIMESTAMP, time);
             } else {
             }
         } catch (InvalidProtocolBufferException e) {

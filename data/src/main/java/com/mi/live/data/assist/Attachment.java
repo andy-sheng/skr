@@ -449,12 +449,10 @@ public class Attachment implements Serializable, JSONAble {
 
     public synchronized static long generateAttachmentId() {
         final long preferenceBaseId = PreferenceUtils.getSettingLong(
-                GlobalData.app(),
                 PreferenceUtils.PREF_KEY_ATTACHMENT_BASE_ID,
                 10240);
         long baseId = Math.max(System.currentTimeMillis(), preferenceBaseId) + 1;
-        PreferenceUtils.setSettingLong(GlobalData.app(),
-                PreferenceUtils.PREF_KEY_ATTACHMENT_BASE_ID, baseId);
+        PreferenceUtils.setSettingLong(PreferenceUtils.PREF_KEY_ATTACHMENT_BASE_ID, baseId);
         return baseId;
     }
 

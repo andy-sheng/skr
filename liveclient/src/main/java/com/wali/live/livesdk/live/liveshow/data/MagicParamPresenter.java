@@ -2,7 +2,6 @@ package com.wali.live.livesdk.live.liveshow.data;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.base.log.MyLog;
@@ -77,7 +76,7 @@ public class MagicParamPresenter extends BaseParamPresenter {
                     public Integer call(Integer integer) {
                         mMagicParams.loadParams(mContext); // 本地加载
                         // 防止频繁拉取
-                        final long lastTime = PreferenceUtils.getSettingLong(mContext, KEY_MAGIC_PARAM_SYNC_TIMESTAMP, 0);
+                        final long lastTime = PreferenceUtils.getSettingLong( KEY_MAGIC_PARAM_SYNC_TIMESTAMP, 0);
                         if (System.currentTimeMillis() - lastTime <= 60 * 1000) {
                             MyLog.w(TAG, "syncMagicParams, but too frequently, just ignore");
                             return 1;
@@ -181,7 +180,7 @@ public class MagicParamPresenter extends BaseParamPresenter {
         private void saveParams(@NonNull Context context) {
             try {
                 PreferenceUtils.setSettingString(context, KEY_MAGIC_PARAM_SUPPORT_CODE, new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(this));
-                PreferenceUtils.setSettingLong(context, KEY_MAGIC_PARAM_SYNC_TIMESTAMP, System.currentTimeMillis());
+                PreferenceUtils.setSettingLong( KEY_MAGIC_PARAM_SYNC_TIMESTAMP, System.currentTimeMillis());
             } catch (Exception e) {
                 MyLog.e(TAG, "saveParams failed, exception=" + e);
             }

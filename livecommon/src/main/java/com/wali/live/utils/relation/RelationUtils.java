@@ -2,7 +2,6 @@ package com.wali.live.utils.relation;
 
 import android.text.TextUtils;
 
-import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.UserAccountManager;
@@ -182,7 +181,7 @@ public class RelationUtils {
     public static FollowingListResponse getBothFollowingListResponse(long uuid, int count, int offset, boolean bothway, boolean loadByWater) {
         long syncTime = 0;
         if (loadByWater) {
-            syncTime = MLPreferenceUtils.getSettingLong(GlobalData.app(), PreferenceKeys.PRE_KEY_SIX_LOAD_BY_WATER, 0);
+            syncTime = MLPreferenceUtils.getSettingLong(PreferenceKeys.PRE_KEY_SIX_LOAD_BY_WATER, 0);
         }
         FollowingListRequest request = FollowingListRequest.newBuilder().setUserId(uuid).setLimit(count).setIsBothway(bothway).setOffset(offset).setSyncTime(syncTime).build();
         PacketData packetData = new PacketData();
@@ -197,7 +196,7 @@ public class RelationUtils {
                 MyLog.v(TAG, " getMnsCode:" + responseData.getMnsCode());
                 FollowingListResponse response = FollowingListResponse.parseFrom(responseData.getData());
                 if (response != null) {
-                    MLPreferenceUtils.setSettingLong(GlobalData.app(), PreferenceKeys.PRE_KEY_SIX_LOAD_BY_WATER, response.getSyncTime());
+                    MLPreferenceUtils.setSettingLong(PreferenceKeys.PRE_KEY_SIX_LOAD_BY_WATER, response.getSyncTime());
                 }
                 return response;
             }

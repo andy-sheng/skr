@@ -1,13 +1,12 @@
 package com.wali.live.manager;
 
-import com.base.global.GlobalData;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.Constants;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.api.BanSpeakerUtils;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
-import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.manager.model.LiveRoomManagerModel;
+import com.mi.live.data.preference.PreferenceKeys;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -58,7 +57,7 @@ public class WatchRoomCharactorManager {
      * @return
      */
     public boolean judgeManagerHaveClickPermission() {
-        int permission = PreferenceUtils.getSettingInt(GlobalData.app().getApplicationContext(), PreferenceKeys.PRE_KIK_PERMISSION_ADMIN, 0);
+        int permission = PreferenceUtils.getSettingInt( PreferenceKeys.PRE_KIK_PERMISSION_ADMIN, 0);
         return permission == Constants.HAVE_KICK_VIEWER_PERMISSION;
     }
 
@@ -68,7 +67,7 @@ public class WatchRoomCharactorManager {
      * @return
      */
     public boolean judgeTop1HaveClickPermission() {
-        int permission = PreferenceUtils.getSettingInt(GlobalData.app().getApplicationContext(), PreferenceKeys.PRE_KIK_PERMISSION_TOP1, 0);
+        int permission = PreferenceUtils.getSettingInt(PreferenceKeys.PRE_KIK_PERMISSION_TOP1, 0);
         return permission == Constants.HAVE_KICK_VIEWER_PERMISSION;
     }
 

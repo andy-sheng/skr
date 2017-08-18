@@ -24,6 +24,7 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.BarrageBtnPresenter;
 import com.wali.live.watchsdk.component.presenter.BottomButtonPresenter;
 import com.wali.live.watchsdk.component.presenter.EnvelopePresenter;
+import com.wali.live.watchsdk.component.presenter.ExtraContainerPresenter;
 import com.wali.live.watchsdk.component.presenter.FollowGuidePresenter;
 import com.wali.live.watchsdk.component.presenter.GameBarragePresenter;
 import com.wali.live.watchsdk.component.presenter.GameDownloadPresenter;
@@ -34,6 +35,7 @@ import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.BarrageBtnView;
+import com.wali.live.watchsdk.component.view.ExtraContainerView;
 import com.wali.live.watchsdk.component.view.FollowGuideView;
 import com.wali.live.watchsdk.component.view.GameBarrageView;
 import com.wali.live.watchsdk.component.view.GameInputView;
@@ -88,6 +90,8 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
     // 关注弹窗
     protected FollowGuideView mFollowGuideView;
     protected FollowGuidePresenter mFollowGuidePresenter;
+
+    protected ExtraContainerPresenter mExtraContainerPresenter;
 
     protected WatchBottomButton mWatchBottomButton;
 
@@ -260,6 +264,12 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
             EnvelopePresenter presenter = new EnvelopePresenter(mController, mController.mMyRoomData);
             registerHybridComponent(presenter, relativeLayout);
         }
+        // 额外控件的容器
+        {
+            ExtraContainerView view = $(R.id.extra_container);
+            mExtraContainerPresenter = new ExtraContainerPresenter(mController);
+            registerComponent(view, mExtraContainerPresenter);
+        }
         // 运营位
         if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
             WidgetView view = $(R.id.widget_view);
@@ -306,6 +316,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                 R.id.mask_iv,
                 R.id.rotate_btn,
                 R.id.close_btn,
+                R.id.extra_container,
         }, mVerticalMoveSet);
         // 滑动
         {

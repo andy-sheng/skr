@@ -2,7 +2,6 @@ package com.wali.live.utils;
 
 import android.text.TextUtils;
 
-import com.base.global.GlobalData;
 import com.base.preference.PreferenceUtils;
 import com.wali.live.common.MessageType;
 
@@ -12,11 +11,10 @@ public class AttachmentUtils {
 
     public synchronized static long generateAttachmentId() {
         final long preferenceBaseId = PreferenceUtils.getSettingLong(
-                GlobalData.app(),
                 PreferenceUtils.PREF_KEY_ATTACHMENT_BASE_ID,
                 MIN_ATTACHMENT_BASE_ID);
         long baseId = Math.max(System.currentTimeMillis(), preferenceBaseId) + 1;
-        PreferenceUtils.setSettingLong(GlobalData.app(),
+        PreferenceUtils.setSettingLong(
                 PreferenceUtils.PREF_KEY_ATTACHMENT_BASE_ID, baseId);
         return baseId;
     }
