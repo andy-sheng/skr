@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.Keep;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
@@ -49,7 +48,6 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
             if (mOuterCallBack != null) {
                 mOuterCallBack.onCompletion();
             }
-
         }
 
         @Override
@@ -163,6 +161,13 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         return false;
     }
 
+    public void notifyOrientation(boolean isLandscape) {
+        MyLog.w(TAG, "notifyOrientation isLandscape=" + isLandscape);
+        if (mVideoPlayerPresenter != null) {
+            mVideoPlayerPresenter.notifyOrientation(isLandscape);
+        }
+    }
+
     private void startReconnect() {
         MyLog.w(TAG, "startReconnect");
         mHandler.removeMessages(MSG_RELOAD_VIDEO);
@@ -237,7 +242,6 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         }
     }
 
-    @Keep
     public static class LoadLibraryException extends RuntimeException {
         public LoadLibraryException() {
         }
@@ -247,7 +251,6 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         }
     }
 
-    @Keep
     public interface IOuterCallBack {
         void bufferingStart();
 

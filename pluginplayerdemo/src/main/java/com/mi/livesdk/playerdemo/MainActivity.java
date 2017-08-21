@@ -26,31 +26,35 @@ public class MainActivity extends AppCompatActivity {
         mPlayerWrapperView.setVideoTransMode(VideoPlayerWrapperView.TRANS_MODE_CENTER_INSIDE);
         mPlayerWrapperView.setOuterCallBack(new VideoPlayerWrapperView.IOuterCallBack() {
             @Override
+            //缓冲开始
             public void bufferingStart() {
                 Log.d(TAG, "bufferingStart");
             }
 
             @Override
+            //缓冲结束
             public void bufferingEnd() {
                 Log.d(TAG, "bufferingEnd");
             }
 
             @Override
+            //解析地址成功，拉流准备
             public void onPrepared() {
                 Log.d(TAG, "onPrepared");
             }
 
             @Override
+            //正常错误
             public void onError() {
                 Log.d(TAG, "onError");
             }
 
             @Override
+            //正常结束
             public void onCompletion() {
                 Log.d(TAG, "onCompletion");
             }
         });
-
         mPlayBtn = (TextView) findViewById(R.id.play_btn);
         mPlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override

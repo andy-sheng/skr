@@ -37,6 +37,10 @@
     public *;
 }
 
+-keep class com.mi.liveassistant.player.VideoPlayerWrapperView$* {
+    *;
+}
+
 -keep class org.webrtc.**{ *; }
 -keep class org.xplatform_util.**{ *;}
 -keep class com.xiaomi.devicemanager.**{ *; }
