@@ -24,6 +24,32 @@ public class MainActivity extends AppCompatActivity {
 
         mPlayerWrapperView = (VideoPlayerWrapperView) findViewById(R.id.player_view);
         mPlayerWrapperView.setVideoTransMode(VideoPlayerWrapperView.TRANS_MODE_CENTER_INSIDE);
+        mPlayerWrapperView.setOuterCallBack(new VideoPlayerWrapperView.IOuterCallBack() {
+            @Override
+            public void bufferingStart() {
+                Log.d(TAG, "bufferingStart");
+            }
+
+            @Override
+            public void bufferingEnd() {
+                Log.d(TAG, "bufferingEnd");
+            }
+
+            @Override
+            public void onPrepared() {
+                Log.d(TAG, "onPrepared");
+            }
+
+            @Override
+            public void onError() {
+                Log.d(TAG, "onError");
+            }
+
+            @Override
+            public void onCompletion() {
+                Log.d(TAG, "onCompletion");
+            }
+        });
 
         mPlayBtn = (TextView) findViewById(R.id.play_btn);
         mPlayBtn.setOnClickListener(new View.OnClickListener() {
