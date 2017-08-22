@@ -42,7 +42,6 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
     private DetailCommentView mCommentView;
     private DetailReplayView mReplayView;
     private DetailIntroduceView mDetailIntroduceView; //详情页
-
     private boolean mIsReplay = true;
     private int mCommentCnt = 0;
 
@@ -135,6 +134,9 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
                 mView.updateCommentTotalCnt(mCommentCnt, mIsReplay);
                 break;
             case MSG_REPLAY_TOTAL_CNT:
+                if (!mIsReplay) {
+                    return false;
+                }
                 mView.updateReplayTotalCnt((int) params.getItem(0));
                 break;
             case MSG_FOLD_INFO_AREA:
@@ -145,6 +147,8 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
                 if (feedsInfo != null && !feedsInfo.isReplay) {
                     mIsReplay = feedsInfo.isReplay;
                     syncTabPageList(GlobalData.app());
+                    //防止详情评论拉取失败tab上显示回放以及回放的数目
+                    mView.updateCommentTotalCnt(mCommentCnt, mIsReplay);
                     mDetailIntroduceView.setData(feedsInfo.title, feedsInfo.description);
                 }
                 break;

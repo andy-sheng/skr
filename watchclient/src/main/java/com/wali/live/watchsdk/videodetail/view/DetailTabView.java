@@ -94,6 +94,7 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
             @Override
             public void onTabPageList(List<Pair<String, ? extends View>> tabPageList) {
                 mMessageAdapter.removeAll();
+                mViewPager.removeAllViews();
                 for (Pair<String, ? extends View> elem : tabPageList) {
                     mMessageAdapter.addView(elem.first, elem.second);
                 }
