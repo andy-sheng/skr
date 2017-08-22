@@ -12,7 +12,6 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -72,7 +71,7 @@ public class ExtraContainerView extends RelativeLayout implements IComponentView
         if (mEditInfoTv == null) {
             mEditInfoTv = new TextView(getContext());
 
-            mEditInfoTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, DisplayUtils.dip2px(13f));
+            mEditInfoTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, DisplayUtils.dip2px(12f));
             mEditInfoTv.setTextColor(Color.WHITE);
             mEditInfoTv.setBackgroundResource(R.drawable.round_rect_orange_bg);
 
@@ -92,7 +91,6 @@ public class ExtraContainerView extends RelativeLayout implements IComponentView
                     EditInfoActivity.open((Activity) getContext());
                 }
             }, start, start + click.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-            ss.setSpan(new UnderlineSpan(), start, start + click.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             ss.setSpan(new ForegroundColorSpan(0xffe5aa1e), start, start + click.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             mEditInfoTv.setText(ss);
         }
