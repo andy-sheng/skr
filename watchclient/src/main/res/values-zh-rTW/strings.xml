@@ -180,4 +180,11 @@
     <string name="character_text">字</string>
     <string name="change_sign_success">修改簽名成功</string>
     <string name="change_sign_failed">修改簽名失敗</string>
+    <string name="look_up_bin_avatar">查看頭像大圖</string>
+    <string name="take_pic">拍照</string>
+    <string name="select_photo_from_phone">從手機相簿選擇</string>
+    <string name="use">使用</string>
+    <string name="change_avatar_failed">更新頭像失敗</string>
+    <string name="modify_avatar_tip">正在更換頭像，請耐心等待</string>
+    <string name="change_avatar_success">更新頭像成功</string>
 </resources>

@@ -17,6 +17,7 @@ import com.mi.live.data.user.User;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.editinfo.fragment.EditGenderFragment;
+import com.wali.live.watchsdk.editinfo.fragment.EditAvatarFragment;
 import com.wali.live.watchsdk.editinfo.fragment.EditNameFragment;
 import com.wali.live.watchsdk.editinfo.fragment.EditSignFragment;
 
@@ -122,6 +123,12 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
         }
     }
 
+    private void updateAvatarContainer() {
+        if (mMe.getAvatar() != 0) {
+            AvatarUtils.loadAvatarByUidTs(mAvatarDv, mMe.getUid(), mMe.getAvatar(), true);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         int i = v.getId();
@@ -133,6 +140,8 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
             clickGenderContainer();   //点击性别区域
         } else if (i == R.id.sign_container) {
             clickSignContainer();
+        } else if (i == R.id.avatar_container) {
+            clickAvatarContainer();
         }
     }
 
@@ -155,13 +164,19 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
         EditSignFragment.open(this, this, null);
     }
 
+    private void clickAvatarContainer() {
+        EditAvatarFragment.open(this, this, null);
+    }
+
     @Override
     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
         MyLog.w(TAG, "requestCode=" + requestCode + ", resultCode=" + resultCode);
         if (resultCode != RESULT_OK) {
             return;
         }
-        if (requestCode == EditNameFragment.REQUEST_CODE) {
+        if (requestCode == EditAvatarFragment.REQUEST_CODE) {
+            updateAvatarContainer();
+        } else if (requestCode == EditNameFragment.REQUEST_CODE) {
             updateNameContainer();
         } else if (requestCode == EditGenderFragment.REQUEST_CODE) {
             updateGenderContainer();

@@ -44,6 +44,17 @@ public class UploadInfoRequest extends BaseRequest {
         return this;
     }
 
+    public UploadInfoRequest uploadAvatar(long avatar, String avatarMd5) {
+        if (avatar != 0) {
+            mBuilder.setAvatar(avatar);
+        }
+        if (!TextUtils.isEmpty(avatarMd5)) {
+            mBuilder.setAvatarMd5(avatarMd5);
+        }
+        mRequest = mBuilder.build();
+        return this;
+    }
+
     @Override
     protected GeneratedMessage parse(byte[] bytes) throws InvalidProtocolBufferException {
         return UploadUserPropertiesRsp.parseFrom(bytes);
