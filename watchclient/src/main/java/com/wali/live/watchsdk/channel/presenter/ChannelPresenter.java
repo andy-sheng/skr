@@ -126,7 +126,8 @@ public class ChannelPresenter implements IChannelPresenter {
     private List<? extends BaseViewModel> processRsp(@NonNull HotChannelProto.GetRecommendListRsp rsp) {
         MyLog.d(TAG, formatLog("processRsp"));
         List<ChannelViewModel> models = new ArrayList();
-
+        boolean splitFirst = true;
+        boolean splitDuplicate = false;
         for (CommonChannelProto.ChannelItem protoItem : rsp.getItemsList()) {
             ChannelViewModel viewModel = ChannelModelFactory.getChannelViewModel(protoItem);
             if (viewModel == null || viewModel != null && viewModel.isNeedRemove()) {
@@ -135,9 +136,20 @@ public class ChannelPresenter implements IChannelPresenter {
             }
 
             int uiType = viewModel.getUiType();
+            MyLog.w(TAG, "uiType=" + uiType);
             if (ChannelUiType.ALL_CHANNEL_UI_TYPE.contains(uiType)) {
-                models.add(viewModel);
+                if (viewModel.getUiType() == ChannelUiType.TYPE_SPLIT_LINE) {
+                    if (!splitFirst && !splitDuplicate) {
+                        models.add(viewModel);
+                        splitDuplicate = true;
+                    }
+                } else {
+                    models.add(viewModel);
+                    splitFirst = false;
+                    splitDuplicate = false;
+                }
             }
+
         }
         return models;
     }
