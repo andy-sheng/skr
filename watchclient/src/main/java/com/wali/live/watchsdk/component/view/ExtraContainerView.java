@@ -9,6 +9,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -89,6 +90,11 @@ public class ExtraContainerView extends RelativeLayout implements IComponentView
                 @Override
                 public void onClick(View widget) {
                     EditInfoActivity.open((Activity) getContext());
+                }
+
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    ds.setColor(ds.linkColor);
                 }
             }, start, start + click.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             ss.setSpan(new ForegroundColorSpan(0xffe5aa1e), start, start + click.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
