@@ -136,7 +136,6 @@ public class ChannelPresenter implements IChannelPresenter {
             }
 
             int uiType = viewModel.getUiType();
-            MyLog.w(TAG, "uiType=" + uiType);
             if (ChannelUiType.ALL_CHANNEL_UI_TYPE.contains(uiType)) {
                 if (viewModel.getUiType() == ChannelUiType.TYPE_SPLIT_LINE) {
                     if (!splitFirst && !splitDuplicate) {
@@ -149,7 +148,6 @@ public class ChannelPresenter implements IChannelPresenter {
                     splitDuplicate = false;
                 }
             }
-
         }
         return models;
     }

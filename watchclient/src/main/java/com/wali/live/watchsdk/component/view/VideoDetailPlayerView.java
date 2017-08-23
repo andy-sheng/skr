@@ -48,7 +48,6 @@ public class VideoDetailPlayerView extends RelativeLayout
 
     private VideoPlayerTextureView mVideoPlayerView;
     private ReplaySeekBar mDetailSeekBar;
-    private ProgressBar mLoadingProgressBar;
     private ImageButton mPlayBtn;
     private BaseImageView mCoverIv;
     private ImageView mBackIv;
@@ -102,7 +101,6 @@ public class VideoDetailPlayerView extends RelativeLayout
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.float_video_view, this);
         {
-            mLoadingProgressBar = $(R.id.loading_bar);
             mDetailSeekBar = $(R.id.detail_seek_bar);
             mCoverIv = $(R.id.cover_iv);
             mPlayBtn = $(R.id.play_button);
@@ -121,15 +119,6 @@ public class VideoDetailPlayerView extends RelativeLayout
         }
     }
 
-    private void showLoadingView() {
-        mLoadingProgressBar.setVisibility(VISIBLE);
-        mPlayBtn.setVisibility(GONE);
-    }
-
-    private void hideLoadingView() {
-        mLoadingProgressBar.setVisibility(GONE);
-    }
-
     private void resetPlayer() {
         MyLog.w(TAG, "resetPlayer");
         if (mVideoPlayerPresenterEx != null) {
@@ -140,7 +129,6 @@ public class VideoDetailPlayerView extends RelativeLayout
     private void startPlayer() {
         MyLog.w(TAG, "startPlayer url=" + mMyRoomData.getVideoUrl());
         mCoverIv.setVisibility(VISIBLE);
-        showLoadingView();
         if (mVideoPlayerPresenterEx != null) {
 //            if (!mVideoPlayerPresenterEx.isActivate()) {
             mVideoPlayerPresenterEx.play(mMyRoomData.getVideoUrl());
@@ -174,7 +162,6 @@ public class VideoDetailPlayerView extends RelativeLayout
 
     private void onPlayingState() {
         MyLog.w(TAG, "onPlayingState");
-        hideLoadingView();
         if (mCoverIv.getVisibility() == VISIBLE) {
             mCoverIv.setVisibility(GONE);
         }
@@ -234,7 +221,6 @@ public class VideoDetailPlayerView extends RelativeLayout
                             startPlayer();
                             break;
                         case PLAYER_SEEK:
-                            showLoadingView();
                             mVideoPlayerPresenterEx.seekTo(playingTime);
                             break;
                         default:
