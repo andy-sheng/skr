@@ -16,8 +16,8 @@ import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.user.User;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.editinfo.fragment.EditGenderFragment;
 import com.wali.live.watchsdk.editinfo.fragment.EditAvatarFragment;
+import com.wali.live.watchsdk.editinfo.fragment.EditGenderFragment;
 import com.wali.live.watchsdk.editinfo.fragment.EditNameFragment;
 import com.wali.live.watchsdk.editinfo.fragment.EditSignFragment;
 
@@ -73,7 +73,6 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
         mAvatarContainer = $(R.id.avatar_container);
         mAvatarContainer.setOnClickListener(this);
         mAvatarDv = (SimpleDraweeView) findViewById(R.id.avatar_dv);
-        AvatarUtils.loadAvatarByUidTs(mAvatarDv, mMe.getUid(), mMe.getAvatar(), true);
 
         mNameContainer = $(R.id.name_container);
         mNameContainer.setOnClickListener(this);
@@ -92,6 +91,7 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
     }
 
     private void updateUI() {
+        updateAvatarContainer();
         updateNameContainer();
         updateGenderContainer();
         updateSignContainer();

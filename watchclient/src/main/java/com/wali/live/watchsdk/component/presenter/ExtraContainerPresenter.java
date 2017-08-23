@@ -29,10 +29,10 @@ public class ExtraContainerPresenter extends ComponentPresenter<ExtraContainerVi
         implements ExtraContainerView.IPresenter {
     private static final String TAG = "ExtraContainerPresenter";
 
-    private static final int NOTIFY_LIMIT = 50;
+    private static final int NOTIFY_LIMIT = 5;
 
-    private static final int DELAY_TIME = 10 * 1000;
-    private static final int ONE_DAY_TIME = 10 * 1000;
+    private static final int DELAY_TIME = 30 * 1000;
+    private static final int ONE_DAY_TIME = 24 * 60 * 60 * 1000;
 
     private static final int SHOW_DURATION = 10 * 1000;
 
