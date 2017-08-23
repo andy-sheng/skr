@@ -187,5 +187,5 @@
     <string name="change_avatar_failed">更新头像失败</string>
     <string name="modify_avatar_tip">正在更换头像，请耐心等待</string>
     <string name="change_avatar_success">更新头像成功</string>
-    <string name="crop_failed">裁剪失敗</string>
+    <string name="crop_failed">裁剪失败</string>
 </resources>

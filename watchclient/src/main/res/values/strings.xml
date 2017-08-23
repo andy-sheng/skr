@@ -194,5 +194,6 @@
     <string name="change_avatar_failed">Couldn\'t change profile photo</string>
     <string name="modify_avatar_tip">Updating profile photo, just a sec…</string>
     <string name="change_avatar_success">Profile photo changed successfully</string>
+    <string name="crop_failed">裁剪失败</string>
 
 </resources>
