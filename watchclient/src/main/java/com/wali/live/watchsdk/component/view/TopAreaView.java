@@ -240,6 +240,11 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
             }
 
             @Override
+            public void initViewers(List<ViewerModel> viewersList) {
+                mAvatarRvAdapter.setViewerList(viewersList);
+            }
+
+            @Override
             public void updateViewers(List<ViewerModel> viewersList) {
                 mAvatarRvAdapter.setViewerList(viewersList);
             }
@@ -391,6 +396,10 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
          */
         void updateAnchorInfo(long uid, long avatarTs, int certificationType, int level, String nickName);
 
+        /**
+         * 初始化观众列表
+         */
+        void initViewers(List<ViewerModel> viewersList);
     }
 
     private class AnimationHelper {

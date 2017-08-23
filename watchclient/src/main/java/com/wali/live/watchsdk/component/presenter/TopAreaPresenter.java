@@ -137,6 +137,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
         mView.updateAnchorInfo(mRoomDataModel.getUid(), mRoomDataModel.getAvatarTs(),
                 mRoomDataModel.getCertificationType(), mRoomDataModel.getLevel(), mRoomDataModel.getNickName());
         mView.showManager(mIsLive);
+        mView.initViewers(mRoomDataModel.getViewersList());
         initFollowAndLink();
     }
 
