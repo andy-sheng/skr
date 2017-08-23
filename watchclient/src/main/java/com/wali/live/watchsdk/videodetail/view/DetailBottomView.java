@@ -25,7 +25,6 @@ public class DetailBottomView implements View.OnClickListener,
 
     private View mContentView;
     private View mPraiseBtn;
-    private View mShareBtn;
 
     protected final <T extends View> T $(@IdRes int resId) {
         return (T) mContentView.findViewById(resId);
@@ -64,14 +63,15 @@ public class DetailBottomView implements View.OnClickListener,
     public DetailBottomView(@NonNull View contentView, boolean enableShare) {
         mContentView = contentView;
         mPraiseBtn = $(R.id.praise_button);
-        mShareBtn = $(R.id.share_button);
         $click($(R.id.text_editor), this);
         $click(mPraiseBtn, this);
+
+        View shareBtn = $(R.id.share_button);
         if (enableShare) {
-            mShareBtn.setVisibility(View.VISIBLE);
-            $click(mShareBtn, this);
+            shareBtn.setVisibility(View.VISIBLE);
+            $click(shareBtn, this);
         } else {
-            mShareBtn.setVisibility(View.GONE);
+            shareBtn.setVisibility(View.GONE);
         }
     }
 

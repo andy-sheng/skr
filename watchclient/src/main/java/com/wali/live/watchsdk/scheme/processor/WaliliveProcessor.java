@@ -10,6 +10,7 @@ import com.base.activity.RxActivity;
 import com.base.log.MyLog;
 import com.mi.live.data.api.LiveManager;
 import com.wali.live.event.EventClass;
+import com.wali.live.pay.activity.RechargeActivity;
 import com.wali.live.watchsdk.channel.ChannelSdkActivity;
 import com.wali.live.watchsdk.channel.sublist.activity.SubChannelActivity;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
@@ -67,6 +68,9 @@ public class WaliliveProcessor {
             case SchemeConstants.HOST_UNLOGIN_H5:
                 EventBus.getDefault().post(new EventClass.H5UnloginEvent());
                 break;
+            case SchemeConstants.HOST_RECHARGE:
+                jumpToRechargeActivity(activity);
+                break;
             default:
                 return false;
         }
@@ -122,6 +126,15 @@ public class WaliliveProcessor {
         String videoUrl = uri.getQueryParameter(SchemeConstants.PARAM_VIDEO_URL);
         int type = SchemeUtils.getInt(uri, SchemeConstants.PARAM_TYPE, 0);
         int liveType = LiveManager.mapLiveTypeFromListToRoom(type);
+
+        if (TextUtils.isEmpty(videoUrl) && TextUtils.isEmpty(liveId)) {
+            int liveEndType = SchemeUtils.getInt(uri, SchemeConstants.PARAM_TYPE_LIVE_END, 0);
+            if (liveEndType == SchemeConstants.TYPE_PERSON_INFO) { //跳转个人资料页
+                //因為沒有个人资料页，所以这里做了拦截
+                return;
+            }
+        }
+
         RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
                 .setLiveType(liveType)
                 .build();
@@ -171,5 +184,12 @@ public class WaliliveProcessor {
         int select = SchemeUtils.getInt(uri, SchemeConstants.PARAM_SELECT, 0);
 
         SubChannelActivity.openActivity(activity, id, title, channelId, key, keyId, animation, source, select);
+    }
+
+    /**
+     * 跳转到充值页
+     */
+    public static void jumpToRechargeActivity(@NonNull Activity activity) {
+        RechargeActivity.openActivity(activity, null);
     }
 }
