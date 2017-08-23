@@ -3,12 +3,15 @@ package com.wali.live.watchsdk.editinfo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.base.activity.BaseSdkActivity;
+import com.base.fragment.BaseFragment;
 import com.base.fragment.FragmentDataListener;
+import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.log.MyLog;
 import com.base.view.BackTitleBar;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -20,6 +23,10 @@ import com.wali.live.watchsdk.editinfo.fragment.EditAvatarFragment;
 import com.wali.live.watchsdk.editinfo.fragment.EditGenderFragment;
 import com.wali.live.watchsdk.editinfo.fragment.EditNameFragment;
 import com.wali.live.watchsdk.editinfo.fragment.EditSignFragment;
+import com.wali.live.watchsdk.watch.event.WatchOrReplayActivityCreated;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import static com.wali.live.watchsdk.R.string.gender;
 
@@ -183,6 +190,36 @@ public class EditInfoActivity extends BaseSdkActivity implements View.OnClickLis
         } else if (requestCode == EditSignFragment.REQUEST_CODE) {
             updateSignContainer();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            //退出栈弹出
+            String fName = fm.getBackStackEntryAt(fm.getBackStackEntryCount() - 1).getName();
+            if (!TextUtils.isEmpty(fName)) {
+                BaseFragment fragment = (BaseFragment) fm.findFragmentByTag(fName);
+                MyLog.w(TAG, "fragment name=" + fName + ", fragment=" + fragment);
+
+                if (fragment.onBackPressed()) {
+                    return;
+                }
+                FragmentNaviUtils.popFragmentFromStack(this);
+            }
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean isKeyboardResize() {
+        return false;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(WatchOrReplayActivityCreated event) {
+        finish();
     }
 
     public static void open(Activity activity) {

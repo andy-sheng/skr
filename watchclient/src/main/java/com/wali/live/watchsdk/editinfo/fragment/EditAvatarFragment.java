@@ -277,6 +277,13 @@ public class EditAvatarFragment extends RxFragment implements View.OnClickListen
         FragmentNaviUtils.popFragmentFromStack(getActivity());
     }
 
+    @Override
+    public boolean onBackPressed() {
+        MyLog.d(TAG, "onBackPressed");
+        closeFragment();
+        return true;
+    }
+
     public static void open(BaseActivity activity, FragmentDataListener listener, Bundle bundle) {
         BaseFragment fragment = FragmentNaviUtils.addFragment(activity, R.id.main_act_container,
                 EditAvatarFragment.class, bundle, true, true, true);

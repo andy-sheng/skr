@@ -29,7 +29,6 @@ import com.wali.live.watchsdk.watch.event.WatchOrReplayActivityCreated;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.wali.live.watchsdk.watch.presenter.ExpLevelPresenter;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -142,7 +141,7 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().setBackgroundDrawableResource(R.color.color_black);
         // 通知别的观看的activity关闭
-        EventBus.getDefault().post(new WatchOrReplayActivityCreated());
+        WatchOrReplayActivityCreated.post();
         activeNum.incrementAndGet();
         KeepActiveProcessor.stopActive();
         super.onCreate(savedInstanceState);

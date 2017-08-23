@@ -260,6 +260,7 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
             MyLog.e(TAG, "KeyboardEvent but mView is null");
             return;
         }
+        //TODO 这里时间不对称，在跳转到其他页面的时候会有问题
         switch (event.eventType) {
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE_ALWAYS_SEND:
                 int keyboardHeight = Integer.parseInt(String.valueOf(event.obj1));
