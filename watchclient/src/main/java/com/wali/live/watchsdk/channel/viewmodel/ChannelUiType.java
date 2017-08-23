@@ -1,8 +1,5 @@
 package com.wali.live.watchsdk.channel.viewmodel;
 
-import com.wali.live.watchsdk.scheme.SchemeConstants;
-import com.wali.live.watchsdk.scheme.specific.SpecificConstants;
-
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -64,7 +61,7 @@ public class ChannelUiType {
                     TYPE_BANNER,
                     TYPE_TWO_CARD,
                     TYPE_SCROLL_CARD,
-//                    TYPE_SCROLL_CIRCLE,
+                    TYPE_SCROLL_CIRCLE,
                     TYPE_ONE_CARD,
                     TYPE_ONE_CARD_DEFAULT,
                     TYPE_SIX_CARD,
