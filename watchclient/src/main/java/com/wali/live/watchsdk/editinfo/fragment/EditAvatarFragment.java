@@ -154,14 +154,32 @@ public class EditAvatarFragment extends RxFragment implements View.OnClickListen
                     @Override
                     public void okProcess() {
                         MyLog.d(TAG, "camera permission ok");
-                        startActivityForResult(mPresenter.setupTakePicIntent(), REQUEST_CODE_TAKE_PIC);
+                        checkWritePermission(REQUEST_CODE_TAKE_PIC);
                     }
                 });
     }
 
     private void clickSelectPic() {
         MyLog.d(TAG, "select pic click");
-        startActivityForResult(mPresenter.setupSelectPicIntent(), REQUEST_CODE_SELECT_PIC);
+        checkWritePermission(REQUEST_CODE_SELECT_PIC);
+    }
+
+    private void checkWritePermission(final int from) {
+        PermissionUtils.checkPermissionByType(
+                (BaseActivity) getActivity(),
+                PermissionUtils.PermissionType.WRITE_EXTERNAL_STORAGE,
+                new PermissionUtils.IPermissionCallback() {
+                    @Override
+                    public void okProcess() {
+                        MyLog.d(TAG, "write permission ok");
+                        if (from == REQUEST_CODE_TAKE_PIC) {
+                            startActivityForResult(mPresenter.setupTakePicIntent(), from);
+                        } else if (from == REQUEST_CODE_SELECT_PIC) {
+                            startActivityForResult(mPresenter.setupSelectPicIntent(), from);
+                        }
+                    }
+                }
+        );
     }
 
     private void clickCancel() {
