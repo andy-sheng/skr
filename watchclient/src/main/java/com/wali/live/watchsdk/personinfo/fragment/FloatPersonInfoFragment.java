@@ -605,6 +605,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
 //                WebViewActivity.openUrlWithBrowserIntent(REDNAME_URL, getActivity());
                     break;
                 case TAG_EDIT_INFO:
+                    onBackPressed();
                     EditInfoActivity.open(getActivity());
                     break;
                 default:
@@ -789,6 +790,9 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
 
     private void onClickMainAvatar() {
         onBackPressed();
+        if (mEditIcon.getVisibility() == View.VISIBLE) {
+            EditInfoActivity.open(getActivity());
+        }
         if (mFloatPersonInfoClickListener != null) {
             mFloatPersonInfoClickListener.onClickMainAvatar(mUser);
         }
