@@ -144,12 +144,17 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
                 break;
             case MSG_PLAYER_FEEDS_DETAIL:
                 DetailInfoPresenter.FeedsInfo feedsInfo = params.getItem(0);
-                if (feedsInfo != null && !feedsInfo.isReplay) {
+                if (feedsInfo == null) {
+                    return false;
+                }
+                if (!feedsInfo.isReplay) {
                     mIsReplay = feedsInfo.isReplay;
                     syncTabPageList(GlobalData.app());
                     //防止详情评论拉取失败tab上显示回放以及回放的数目
                     mView.updateCommentTotalCnt(mCommentCnt, mIsReplay);
                     mDetailIntroduceView.setData(feedsInfo.title, feedsInfo.description);
+                } else {
+                    syncTabPageList(GlobalData.app());
                 }
                 break;
             default:

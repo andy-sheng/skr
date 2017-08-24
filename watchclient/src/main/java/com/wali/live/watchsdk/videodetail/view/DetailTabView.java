@@ -49,9 +49,6 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
     @Override
     public void setPresenter(@Nullable IPresenter iPresenter) {
         mPresenter = iPresenter;
-        if (mPresenter != null) {
-            mPresenter.syncTabPageList(mRootView.getContext());
-        }
     }
 
     public DetailTabView(@NonNull View rootView) {

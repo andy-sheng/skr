@@ -159,6 +159,8 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
                     public FeedsInfo call(Integer integer) {
                         Feeds.GetFeedInfoResponse rsp = FeedsInfoUtils.fetchFeedsInfo(feedId, ownerId, false);
                         if (rsp == null || rsp.getRet() != ErrorCode.CODE_SUCCESS) {
+                            //在刷新底部回放、评论
+                            postEvent(MSG_PLAYER_FEEDS_DETAIL, new Params().putItem(new FeedsInfo()));
                             return null;
                         }
                         FeedsInfo outInfo = new FeedsInfo();
@@ -222,11 +224,9 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
                             return;
                         }
                         if (outInfo != null) {
-                            if (!outInfo.isReplay) {
-                                //詳情頁需要再刷一下ui
-                                postEvent(MSG_PLAYER_FEEDS_DETAIL, new Params().putItem(outInfo));
-                                postEvent(MSG_UPDATE_LIKE_STATUS, new Params().putItem(outInfo.mySelfLike));
-                            }
+                            //詳情頁需要再刷一下ui
+                            postEvent(MSG_PLAYER_FEEDS_DETAIL, new Params().putItem(outInfo));
+                            postEvent(MSG_UPDATE_LIKE_STATUS, new Params().putItem(outInfo.mySelfLike));
                             postEvent(MSG_UPDATE_START_TIME, new Params().putItem(outInfo.timestamp));
                             if (TextUtils.isEmpty(mMyRoomData.getVideoUrl()) && !TextUtils.isEmpty(outInfo.url)) {
                                 mMyRoomData.setVideoUrl(outInfo.url);
