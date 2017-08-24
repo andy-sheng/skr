@@ -76,6 +76,7 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        syncUserInfo();
     }
 
     @Override

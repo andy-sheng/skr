@@ -70,7 +70,6 @@ public class DetailInfoView implements View.OnClickListener,
         mPresenter = iPresenter;
         if (mPresenter != null) {
             mPresenter.syncFeedsInfo();
-            mPresenter.syncUserInfo();
         }
     }
 
