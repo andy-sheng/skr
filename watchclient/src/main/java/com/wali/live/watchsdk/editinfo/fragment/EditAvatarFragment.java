@@ -190,7 +190,16 @@ public class EditAvatarFragment extends RxFragment implements View.OnClickListen
 
     private void clickUse() {
         MyLog.d(TAG, "use click");
-        mPresenter.uploadAvatar(mPath);
+        PermissionUtils.checkPermissionByType(
+                (BaseActivity) getActivity(),
+                PermissionUtils.PermissionType.READ_PHONE_STATE,
+                new PermissionUtils.IPermissionCallback() {
+                    @Override
+                    public void okProcess() {
+                        mPresenter.uploadAvatar(mPath);
+                    }
+                }
+        );
     }
 
     @Override
