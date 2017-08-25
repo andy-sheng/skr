@@ -44,6 +44,7 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
     private DetailIntroduceView mDetailIntroduceView; //详情页
     private boolean mIsReplay = true;
     private int mCommentCnt = 0;
+    private int mReplayCnt = 0;
 
     @Override
     protected String getTAG() {
@@ -103,7 +104,7 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
                 mReplayView.setPresenter(mReplayPresenter);
             }
             tabPageList.add(Pair.create(String.format(context.getResources().getString(
-                    R.string.feeds_detail_label_replay), "0"), mReplayView));
+                    R.string.feeds_detail_label_replay), String.valueOf(mReplayCnt)), mReplayView));
         } else {
             if (mDetailIntroduceView == null) {
                 mDetailIntroduceView = new DetailIntroduceView(context);
@@ -137,7 +138,8 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
                 if (!mIsReplay) {
                     return false;
                 }
-                mView.updateReplayTotalCnt((int) params.getItem(0));
+                mReplayCnt = (int) params.getItem(0);
+                mView.updateReplayTotalCnt(mReplayCnt);
                 break;
             case MSG_FOLD_INFO_AREA:
                 mView.onFoldInfoArea();
