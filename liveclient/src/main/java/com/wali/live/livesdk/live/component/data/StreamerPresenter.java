@@ -258,7 +258,7 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
             object.put(IStreamer.OPTIMAL_VOICE_IN_HEADSET_MODE,
                     PreferenceUtils.getSettingFloat(GlobalData.app(), IStreamer.OPTIMAL_VOICE_IN_HEADSET_MODE, 1.0f));
             object.put(IStreamer.OPTIMAL_INTRINSIC_MUSIC_VOICE_DELAY,
-                    PreferenceUtils.getSettingInt(GlobalData.app(), IStreamer.OPTIMAL_INTRINSIC_MUSIC_VOICE_DELAY, 0));
+                    PreferenceUtils.getSettingInt(IStreamer.OPTIMAL_INTRINSIC_MUSIC_VOICE_DELAY, 0));
         } catch (JSONException e) {
             MyLog.e(TAG, "getOptimalKaraOkParams failed, exception=" + e);
         }

@@ -9,7 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 
-import com.base.activity.BaseActivity;
+import com.base.activity.BaseSdkActivity;
 import com.base.fragment.FragmentListener;
 import com.live.module.common.R;
 import com.wali.live.recharge.view.RechargeFragment;
@@ -23,7 +23,7 @@ import com.wali.live.recharge.view.RechargeFragment;
  * 增加小米钱包支付方式 by rongzhisheng
  * 支持滑动重构 by rongzhisheng 16/7/12
  */
-public class RechargeActivity extends BaseActivity {
+public class RechargeActivity extends BaseSdkActivity {
     public static String TAG = RechargeActivity.class.getSimpleName();
 
     private RechargeFragment mRechargeFragment;

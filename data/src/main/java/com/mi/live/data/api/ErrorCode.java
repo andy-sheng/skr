@@ -112,6 +112,8 @@ public class ErrorCode {
     public static final int CODE_SERVER_RESPONSE_ERROR_CODE_IDCARD_INVALID_ERROR = 7013;                // 身份证号或护照号为空或不合法
     public static final int CODE_SERVER_RESPONSE_ERROR_CODE_REALNAME_VERIFY_FAIL = 7016;                // 姓名和身份证号检验失败
 
+    public static final int CODE_CONTAIN_SENSITIVE = 7021;       // 包含敏感词
+
     /* 关系错误码 */
     public static final int CODE_RELATION_YOURSELF = 7505;
     public static final int CODE_RELATION_BLACK = 7506;     // 黑名单

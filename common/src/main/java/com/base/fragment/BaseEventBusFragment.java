@@ -10,7 +10,7 @@ import org.greenrobot.eventbus.EventBus;
 /**
  * Created by lan on 15-11-4.
  */
-public abstract class BaseEventBusFragment extends MyRxFragment implements FragmentListener {
+public abstract class BaseEventBusFragment extends RxFragment implements FragmentListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         MyLog.d(TAG, "onCreate : register eventbus");

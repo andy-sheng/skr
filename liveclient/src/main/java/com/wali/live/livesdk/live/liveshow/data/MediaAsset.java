@@ -47,8 +47,7 @@ public class MediaAsset {
         try {
             File externalFile = context.getDir(EXTERNAL_MEDIA_DIR, Context.MODE_WORLD_READABLE);
             mExternalPath = externalFile.getAbsolutePath();
-            int version = PreferenceUtils.getSettingInt(context,
-                    PreferenceUtils.PREF_KEY_MEDIA_FILE_VERSION_CODE, 0);
+            int version = PreferenceUtils.getSettingInt(PreferenceUtils.PREF_KEY_MEDIA_FILE_VERSION_CODE, 0);
             if (version < MEDIA_VERSION) {
                 ThreadPool.runOnPool(new Runnable() {
                     @Override

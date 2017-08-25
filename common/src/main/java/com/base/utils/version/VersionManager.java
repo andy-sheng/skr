@@ -49,8 +49,8 @@ public class VersionManager {
 
     private VersionManager() {
         mCurrentVersionCode = getCurrentVersionCode(GlobalData.app());
-        mOldVersionCode = PreferenceUtils.getSettingInt(GlobalData.app(), KEY_VERSION_CODE, 0);
-        PreferenceUtils.setSettingInt(GlobalData.app(), KEY_VERSION_CODE, mCurrentVersionCode);
+        mOldVersionCode = PreferenceUtils.getSettingInt(KEY_VERSION_CODE, 0);
+        PreferenceUtils.setSettingInt(KEY_VERSION_CODE, mCurrentVersionCode);
     }
 
     public static int getCurrentSdkVersion() {

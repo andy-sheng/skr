@@ -42,8 +42,6 @@ public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
 
     protected final AnimationHelper mAnimationHelper = new AnimationHelper();
 
-    private Animation mShowAnimation;
-
     @Override
     protected String getTAG() {
         return "VideoDetailView";
@@ -86,7 +84,8 @@ public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
                 MyLog.e(TAG, "missing R.id.bottom_button_view");
                 return;
             }
-            DetailBottomView view = new DetailBottomView(contentView);
+            boolean enableShare = (mController.mMyRoomData == null) ? false : mController.mMyRoomData.getEnableShare();
+            DetailBottomView view = new DetailBottomView(contentView, enableShare);
             DetailBottomPresenter presenter = new DetailBottomPresenter(mController,
                     mController.mMyRoomData);
             registerComponent(view, presenter);

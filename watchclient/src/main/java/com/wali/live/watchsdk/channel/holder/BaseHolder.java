@@ -18,7 +18,7 @@ public abstract class BaseHolder<VM extends BaseViewModel> extends RecyclerView.
     protected final String TAG = getTAG() + this.hashCode();
 
     // 整体view的两边边距
-    protected static final int SIDE_MARGIN = DisplayUtils.dip2px(10f);
+    protected static final int SIDE_MARGIN = DisplayUtils.dip2px(3.33f);
     // view内的中间边距
     protected static final int MIDDLE_MARGIN = DisplayUtils.dip2px(1.33f);
 

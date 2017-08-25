@@ -55,7 +55,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             mPresenter.rotateScreen();
         } else if (id == R.id.game_btn) {
             mPresenter.showGameDownloadView();
-            // 点击的同时清除动画
+            //点击的同时清除动画
             clearAnimator();
         } else if (id == R.id.share_btn) {
             if (AccountAuthManager.triggerActionNeedAccount(getContext())) {

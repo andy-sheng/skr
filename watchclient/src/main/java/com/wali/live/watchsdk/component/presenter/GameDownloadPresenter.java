@@ -228,7 +228,7 @@ public class GameDownloadPresenter extends BaseSdkRxPresenter<GameDownloadPanel.
     private void getExtraJson() {
         MyLog.w(TAG, "getExtraJson");
         try {
-            long time = PreferenceUtils.getSettingLong(GlobalData.app(), PreferenceKeys.PRE_KEY_GAME_LIST_TIME, 0);
+            long time = PreferenceUtils.getSettingLong(PreferenceKeys.PRE_KEY_GAME_LIST_TIME, 0);
             long current = System.currentTimeMillis();
             if (time == 0 || ((current - time) > ONE_DAY)) {
                 getExtraJsonFromServer();
@@ -257,7 +257,7 @@ public class GameDownloadPresenter extends BaseSdkRxPresenter<GameDownloadPanel.
 
             parseExtraJson(extraJson);
             PreferenceUtils.setSettingString(GlobalData.app(), PreferenceKeys.PRE_KEY_GAME_LIST, extraJson);
-            PreferenceUtils.setSettingLong(GlobalData.app(), PreferenceKeys.PRE_KEY_GAME_LIST_TIME, System.currentTimeMillis());
+            PreferenceUtils.setSettingLong(PreferenceKeys.PRE_KEY_GAME_LIST_TIME, System.currentTimeMillis());
         } catch (Exception e) {
         }
     }

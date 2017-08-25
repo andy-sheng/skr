@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5">
+
+    <com.base.view.BackTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        app:is_profile_mode="true"/>
+
+    <EditText
+        android:id="@+id/name_et"
+        android:layout_width="match_parent"
+        android:layout_height="58.33dp"
+        android:layout_below="@id/title_bar"
+        android:layout_marginTop="13.33dp"
+        android:background="#ffffff"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:paddingLeft="13.33dp"
+        android:textColor="@color/color_black_trans_90"
+        android:textSize="16dp"/>
+
+    <TextView
+        android:id="@+id/name_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name_et"
+        android:layout_marginTop="13.33dp"
+        android:paddingLeft="13.33dp"
+        android:text="@string/input_nickname_hint_text"
+        android:textColor="@color/color_black_trans_60"
+        android:textSize="12.67dp"/>
+</RelativeLayout>

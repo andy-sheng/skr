@@ -275,6 +275,11 @@ public class MyUserInfoManager {
         return UserAccountManager.getInstance().getNickname();
     }
 
+    public void setAvatar(long avatar) {
+        mMyInfo.setAvatar(avatar);
+        EventBus.getDefault().post(new UserInfoEvent());
+    }
+
     public synchronized void setDiamonds(int diamondNum, int virtualGemCnt) {
         MyLog.w(TAG, "diamondNum=" + diamondNum + " virtualDiamondGemCnt" + virtualGemCnt);
         mMyInfo.setDiamondNum(diamondNum);

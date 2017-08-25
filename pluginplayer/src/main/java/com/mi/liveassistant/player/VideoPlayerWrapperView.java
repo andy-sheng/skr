@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.Keep;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
@@ -37,18 +36,27 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         @Override
         public void onPrepared() {
             MyLog.v(TAG, "onPrepared");
+            if (mOuterCallBack != null) {
+                mOuterCallBack.onPrepared();
+            }
         }
 
         @Override
         public void onCompletion() {
             MyLog.v(TAG, "onCompletion");
             mIsCompletion = true;
+            if (mOuterCallBack != null) {
+                mOuterCallBack.onCompletion();
+            }
         }
 
         @Override
         public void onError(int errCode) {
             MyLog.v(TAG, "onError code=" + errCode);
             pause();
+            if (mOuterCallBack != null) {
+                mOuterCallBack.onError();
+            }
         }
 
         @Override
@@ -67,6 +75,9 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
                         mHandler.removeMessages(MSG_RELOAD_VIDEO);
                         mHandler.sendEmptyMessageDelayed(MSG_RELOAD_VIDEO, PLAYER_KADUN_RELOAD_TIME);
                     }
+                    if (mOuterCallBack != null) {
+                        mOuterCallBack.bufferingStart();
+                    }
                     break;
                 case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
                     MyLog.w(TAG, "MEDIA_INFO_BUFFERING_END");
@@ -74,12 +85,17 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
                         mIpSelectionHelper.updateStutterStatus(false);
                         mHandler.removeMessages(MSG_RELOAD_VIDEO);
                     }
+                    if (mOuterCallBack != null) {
+                        mOuterCallBack.bufferingEnd();
+                    }
                     break;
                 default:
                     break;
             }
         }
     };
+
+    private IOuterCallBack mOuterCallBack;
 
     protected String getTAG() {
         return getClass().getSimpleName();
@@ -104,6 +120,10 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         mIpSelectionHelper = new WatchIpSelectionHelper(context, this);
         mVideoPlayerPresenter.setVideoPlayerCallBack(mIPlayerCallBack);
         mVideoPlayerPresenter.setBufferSize(500);
+    }
+
+    public void setOuterCallBack(IOuterCallBack callback) {
+        mOuterCallBack = callback;
     }
 
     public boolean checkLibrary() {
@@ -139,6 +159,13 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
             return mVideoPlayerPresenter.isMute();
         }
         return false;
+    }
+
+    public void notifyOrientation(boolean isLandscape) {
+        MyLog.w(TAG, "notifyOrientation isLandscape=" + isLandscape);
+        if (mVideoPlayerPresenter != null) {
+            mVideoPlayerPresenter.notifyOrientation(isLandscape);
+        }
     }
 
     private void startReconnect() {
@@ -215,7 +242,6 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         }
     }
 
-    @Keep
     public static class LoadLibraryException extends RuntimeException {
         public LoadLibraryException() {
         }
@@ -223,5 +249,17 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         public LoadLibraryException(String detailMessage) {
             super(detailMessage);
         }
+    }
+
+    public interface IOuterCallBack {
+        void bufferingStart();
+
+        void bufferingEnd();
+
+        void onPrepared();
+
+        void onError();
+
+        void onCompletion();
     }
 }

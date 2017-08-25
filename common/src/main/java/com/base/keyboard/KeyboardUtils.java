@@ -120,7 +120,7 @@ public class KeyboardUtils {
             return sDefaultPickerHeight;
         }
 
-        int savedHeight = PreferenceUtils.getSettingInt(activity, PREF_KEY_KEYBOARD_HEIGHT, 0);
+        int savedHeight = PreferenceUtils.getSettingInt(PREF_KEY_KEYBOARD_HEIGHT, 0);
         Rect r = new Rect();
         Window window = activity.getWindow();
         window.getDecorView().getWindowVisibleDisplayFrame(r);
@@ -131,7 +131,7 @@ public class KeyboardUtils {
         // 保存的高度与键盘高度不等，更新保存的值
         if (keyboardHeight != 0) {
             keyboardHeight = Math.max(keyboardHeight, sDefaultPickerHeight);
-            PreferenceUtils.setSettingInt(activity, PREF_KEY_KEYBOARD_HEIGHT, keyboardHeight);
+            PreferenceUtils.setSettingInt(PREF_KEY_KEYBOARD_HEIGHT, keyboardHeight);
             return keyboardHeight;
         }
 

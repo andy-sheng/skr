@@ -139,7 +139,7 @@ public class GetConfigManager {
         whiteListUrlForWebView = new HashSet<>();
         whiteListUrlForWebView.add(".mi.com");
         whiteListUrlForWebView.add(".xiaomi.com");
-        timestamp = PreferenceUtils.getSettingLong(GlobalData.app(), PreferenceKeys.PREFERENCE_KEY_CONFIG_TIMESTAMP, 0);
+        timestamp = PreferenceUtils.getSettingLong(PreferenceKeys.PREFERENCE_KEY_CONFIG_TIMESTAMP, 0);
         mLoopBacksModelList = new ArrayList<>();
 
         mHosts = new HashSet<>(5);
@@ -308,7 +308,7 @@ public class GetConfigManager {
                         MyLog.w(TAG + "getConfig result:" + response.getTimeStamp() + " " + response.getJsonConfig());
                         if (response.getTimeStamp() != 0 && !TextUtils.isEmpty(response.getJsonConfig())) {
                             sInstance.timestamp = System.currentTimeMillis();
-                            PreferenceUtils.setSettingLong(GlobalData.app(), PreferenceKeys.PREFERENCE_KEY_CONFIG_TIMESTAMP, sInstance.timestamp);
+                            PreferenceUtils.setSettingLong(PreferenceKeys.PREFERENCE_KEY_CONFIG_TIMESTAMP, sInstance.timestamp);
                             if (PreferenceUtils.hasKey(GlobalData.app(), PreferenceKeys.PREFERENCE_KEY_CONFIG_JSON) && !response.getJsonConfig().equals(PreferenceUtils.getSettingString(GlobalData.app(), PreferenceKeys.PREFERENCE_KEY_CONFIG_JSON, ""))) {
                                 clearFile();
                             }
@@ -530,7 +530,7 @@ public class GetConfigManager {
                         if (disStr.has(CONFIG_LINE_BITRATE)) {
                             String lineBitrate = disStr.getString(CONFIG_LINE_BITRATE);
                             try {
-                                PreferenceUtils.setSettingInt(GlobalData.app(), PreferenceKeys.PREF_KEY_LINE_BITRATE, Integer.parseInt(lineBitrate));
+                                PreferenceUtils.setSettingInt(PreferenceKeys.PREF_KEY_LINE_BITRATE, Integer.parseInt(lineBitrate));
                             } catch (NumberFormatException e) {
                                 MyLog.e(e);
                             }
@@ -574,19 +574,19 @@ public class GetConfigManager {
                         if (disStr.has(CONFIG_KICK_PERMISSION_ANCHOR)) {
                             String permission = disStr.getString(CONFIG_KICK_PERMISSION_ANCHOR);
                             if (!TextUtils.isEmpty(permission) && TextUtils.isDigitsOnly(permission)) {
-                                PreferenceUtils.setSettingInt(GlobalData.app(), PreferenceKeys.PRE_KIK_PERMISSION_ANCHOR, Integer.valueOf(permission));
+                                PreferenceUtils.setSettingInt(PreferenceKeys.PRE_KIK_PERMISSION_ANCHOR, Integer.valueOf(permission));
                             }
                         }
                         if (disStr.has(CONFIG_KICK_PERMISSION_ADMIN)) {
                             String permission = disStr.getString(CONFIG_KICK_PERMISSION_ADMIN);
                             if (!TextUtils.isEmpty(permission) && TextUtils.isDigitsOnly(permission)) {
-                                PreferenceUtils.setSettingInt(GlobalData.app(), PreferenceKeys.PRE_KIK_PERMISSION_ADMIN, Integer.valueOf(permission));
+                                PreferenceUtils.setSettingInt(PreferenceKeys.PRE_KIK_PERMISSION_ADMIN, Integer.valueOf(permission));
                             }
                         }
                         if (disStr.has(CONFIG_KICK_PERMISSION_TOP1)) {
                             String permission = disStr.getString(CONFIG_KICK_PERMISSION_TOP1);
                             if (!TextUtils.isEmpty(permission) && TextUtils.isDigitsOnly(permission)) {
-                                PreferenceUtils.setSettingInt(GlobalData.app(), PreferenceKeys.PRE_KIK_PERMISSION_TOP1, Integer.valueOf(permission));
+                                PreferenceUtils.setSettingInt(PreferenceKeys.PRE_KIK_PERMISSION_TOP1, Integer.valueOf(permission));
                             }
                         }
                         if (disStr.has(CONFIG_LIVE_SCHEDULE_URL)) {
@@ -598,19 +598,19 @@ public class GetConfigManager {
                         if (disStr.has(CONFIG_FOLLOW_POPUP_USER_NUMBER)) {
                             String userNum = disStr.getString(CONFIG_FOLLOW_POPUP_USER_NUMBER);
                             if (!TextUtils.isEmpty(userNum) && TextUtils.isDigitsOnly(userNum)) {
-                                PreferenceUtils.setSettingInt(GlobalData.app(), PreferenceKeys.PRE_FOLLOW_POPUP_USER_NUMBER, Integer.valueOf(userNum));
+                                PreferenceUtils.setSettingInt(PreferenceKeys.PRE_FOLLOW_POPUP_USER_NUMBER, Integer.valueOf(userNum));
                             }
                         }
                         if (disStr.has(CONFIG_FOLLOW_POPUP_VIEW_TIME)) {
                             String viewTime = disStr.getString(CONFIG_FOLLOW_POPUP_VIEW_TIME);
                             if (!TextUtils.isEmpty(viewTime) && TextUtils.isDigitsOnly(viewTime)) {
-                                PreferenceUtils.setSettingInt(GlobalData.app(), PreferenceKeys.PRE_FOLLOW_POPUP_VIEW_TIME, Integer.valueOf(viewTime));
+                                PreferenceUtils.setSettingInt(PreferenceKeys.PRE_FOLLOW_POPUP_VIEW_TIME, Integer.valueOf(viewTime));
                             }
                         }
                         if (disStr.has(CONFIG_FOLLOW_CANCEL_TIME)) {
                             String cancelTime = disStr.getString(CONFIG_FOLLOW_CANCEL_TIME);
                             if (!TextUtils.isEmpty(cancelTime) && TextUtils.isDigitsOnly(cancelTime)) {
-                                PreferenceUtils.setSettingInt(GlobalData.app(), PreferenceKeys.PRE_FOLLOW_CANCEL_TIME, Integer.valueOf(cancelTime));
+                                PreferenceUtils.setSettingInt(PreferenceKeys.PRE_FOLLOW_CANCEL_TIME, Integer.valueOf(cancelTime));
                             }
                         }
 
@@ -627,7 +627,7 @@ public class GetConfigManager {
                         MyLog.w(TAG,  CONFIG_ROOT_ZHIBO_COMMON + "=" + zhiboCommon.toString());
                         if (zhiboCommon.has(CONFIG_GAME_FOLLOW_TS)) {
                             int gameFollowTs = zhiboCommon.getInt(CONFIG_GAME_FOLLOW_TS);
-                            PreferenceUtils.setSettingInt(GlobalData.app(), PreferenceKeys.PRE_KEY_GAME_FOLLOW_TIME, gameFollowTs);
+                            PreferenceUtils.setSettingInt(PreferenceKeys.PRE_KEY_GAME_FOLLOW_TIME, gameFollowTs);
                         }
                     }
                     if (root.has(CONFIG_ZHIBO_AND_CONFIG)) {

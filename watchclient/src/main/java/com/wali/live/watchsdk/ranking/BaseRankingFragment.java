@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.base.activity.RxActivity;
-import com.base.fragment.MyRxFragment;
+import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -35,7 +35,7 @@ import rx.Subscription;
 /**
  * Created by jiyangli on 16-6-30.
  */
-public abstract class BaseRankingFragment extends MyRxFragment {
+public abstract class BaseRankingFragment extends RxFragment {
     public static final int REQUEST_CODE = GlobalData.getRequestCode();
 
     public static final String EXTRA_TICKET_NUM = "extra_ticket_num";

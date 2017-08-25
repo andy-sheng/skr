@@ -54,6 +54,7 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
+import com.wali.live.watchsdk.editinfo.EditInfoActivity;
 import com.wali.live.watchsdk.eventbus.DismissFloatPersonInfoEvent;
 import com.wali.live.watchsdk.eventbus.FollowStatEvent;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
@@ -112,9 +113,10 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
     //Views begins *********************************************
     private ImageView mCloseBtn;        //顶部的按钮
 
-    private SimpleDraweeView mMainAvatar;      //主头像
-    private ImageView mWeiboVerifyConnerImage;      //微博认证的角标
-    private TextView mRednameTv;              //红名tv
+    private SimpleDraweeView mMainAvatar;       //主头像
+    private ImageView mEditIcon;
+    private ImageView mWeiboVerifyConnerImage;  //微博认证的角标
+    private TextView mRednameTv;                //红名tv
 
     private TextView mNicknameTV;       //昵称
     private TextView mIdTv;     //显示ID
@@ -427,6 +429,20 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
         mMainAvatar.setOnClickListener(this);
         mMainAvatar.setTag(TAG_TOP_MAIN_AVATAR);
         AvatarUtils.loadAvatarByUidTs(mMainAvatar, mUserUuidFromBundle, 0, true);
+
+        mEditIcon = $(R.id.edit_icon);
+        MyLog.d(TAG, "mUserUuidFromBundle=" + mUserUuidFromBundle);
+        if (mUserUuidFromBundle != 0
+                && mUserUuidFromBundle != mOwnerUuidFromBundle
+                && mUserUuidFromBundle == UserAccountManager.getInstance().getUuidAsLong()) {
+            mEditIcon.setVisibility(View.VISIBLE);
+            mEditIcon.setTag(TAG_EDIT_INFO);
+            mEditIcon.setOnClickListener(this);
+        } else {
+            mEditIcon.setVisibility(View.GONE);
+            mEditIcon.setOnClickListener(null);
+        }
+
         mTopOneAvatar = (SimpleDraweeView) mRootView.findViewById(R.id.top_one_avatar);
         mTopOneAvatar.setOnClickListener(this);
         mTopOneAvatar.setTag(TAG_TOP_ONE_AVATAR);
@@ -521,7 +537,6 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
         return REQUEST_CODE;
     }
 
-
     public final int TAG_TOP_MAIN_AVATAR = 1001;
     public final int TAG_TOP_ONE_AVATAR = 1002;
     public final int TAG_OUT_VIEW = 1003;
@@ -533,6 +548,8 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
     public final int TAG_FORBID_SPEAK = 1009;
     public final int TAG_KICK_VIEWER_BTN = 1010;
     public final int TAG_REDNAME_TV = 1011;
+
+    public final int TAG_EDIT_INFO = 1012;
 
     @Override
     public void onClick(View v) {
@@ -586,6 +603,10 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
                 case TAG_REDNAME_TV:
 //                TODO 打开注释
 //                WebViewActivity.openUrlWithBrowserIntent(REDNAME_URL, getActivity());
+                    break;
+                case TAG_EDIT_INFO:
+                    onBackPressed();
+                    EditInfoActivity.open(getActivity());
                     break;
                 default:
                     break;
@@ -767,12 +788,11 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
         onBackPressed();
     }
 
-    /**
-     * 点击排行第一的头像
-     */
     private void onClickMainAvatar() {
         onBackPressed();
-        //打点
+        if (mEditIcon.getVisibility() == View.VISIBLE) {
+            EditInfoActivity.open(getActivity());
+        }
         if (mFloatPersonInfoClickListener != null) {
             mFloatPersonInfoClickListener.onClickMainAvatar(mUser);
         }

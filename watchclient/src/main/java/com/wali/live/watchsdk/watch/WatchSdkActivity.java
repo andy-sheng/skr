@@ -705,8 +705,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                 RoomBaseDataModel roomBaseDataModel = event.source;
                 if (roomBaseDataModel != null && !roomBaseDataModel.isFocused()
                         && (mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME)) {
-                    int guideFollowTs = PreferenceUtils.getSettingInt(GlobalData.app(),
-                            PreferenceKeys.PRE_KEY_GAME_FOLLOW_TIME, 0);
+                    int guideFollowTs = PreferenceUtils.getSettingInt(PreferenceKeys.PRE_KEY_GAME_FOLLOW_TIME, 0);
                     if (guideFollowTs > 0) {
                         mController.postEvent(MSG_FOLLOW_COUNT_DOWN,
                                 new Params().putItem(guideFollowTs));

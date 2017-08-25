@@ -64,6 +64,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeLive"/>
 
+        <activity
+            android:name=".editinfo.EditInfoActivity"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.WhiteBackground"/>
+
         <activity android:name="com.xiaomi.account.openauth.AuthorizeActivity"/>
 
         <activity
@@ -164,5 +171,15 @@
         <service
             android:name=".login.LoginInternalService"
             android:exported="false"/>
+        
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.wali.live.watchsdk.editinfo.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 </manifest>

@@ -129,4 +129,6 @@ public class PreferenceKeys {
     public static final String PRE_KEY_GAME_LIST_TIME = "pre_key_game_list_time";
 
     public static final String PRE_KEY_GAME_FOLLOW_TIME = "pre_key_game_follow_time";
+    public static final String PRE_KEY_EDIT_INFO_TIME = "pre_key_edit_info_time";
+    public static final String PRE_KEY_EDIT_INFO_COUNT = "pre_key_edit_info_count";
 }

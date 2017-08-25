@@ -482,7 +482,7 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
         private PullCommentHelper pullMore(final String feedId, final int limit) {
             Feeds.QueryFeedCommentsResponse rsp = FeedsCommentUtils.fetchFeedsComment(
                     feedId, mCommentTs, limit, false, mIsAsc, PULL_TYPE_ALL_HYBRID, true);
-            if (rsp == null && rsp.getErrCode() != ErrorCode.CODE_SUCCESS) {
+            if (rsp == null || rsp.getErrCode() != ErrorCode.CODE_SUCCESS) {
                 return null;
             }
             mCommentTs = rsp.getLastTs();

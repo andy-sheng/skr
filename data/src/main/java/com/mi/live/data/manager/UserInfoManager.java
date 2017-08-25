@@ -273,67 +273,6 @@ public class UserInfoManager {
     }
 
     /**
-     * MiLinkCommand :zhibo.user.uploaduserpro
-     * 头像，姓名，签名，性别，头像md5
-     * 更新用户信息
-     */
-    public static UserProto.UploadUserPropertiesRsp uploadUserInfoReq(Long avatar, String nickName, String sign, Integer gender, String avatarMd5) {
-        UserProto.UploadUserPropertiesReq.Builder builder = UserProto.UploadUserPropertiesReq.newBuilder();
-        builder.setZuid(UserAccountManager.getInstance().getUuidAsLong());
-        if (avatar != null) {
-            builder.setAvatar(avatar);
-        }
-        if (!TextUtils.isEmpty(nickName)) {
-            builder.setNickname(nickName);
-        }
-        if (!TextUtils.isEmpty(sign)) {
-            builder.setSign(sign);
-        }
-        if (gender != null) {
-            builder.setGender(gender);
-        }
-        if (!TextUtils.isEmpty(avatarMd5)) {
-            builder.setAvatarMd5(avatarMd5);
-        }
-        return UploadUserInfoRspToServer(builder);
-    }
-
-    public static UserProto.UploadUserPropertiesRsp uploadUserInfoReq(Boolean hasAvatar, Boolean hasNickName, Boolean hasGender, String nickName, Integer gender) {
-        UserProto.UploadUserPropertiesReq.Builder builder = UserProto.UploadUserPropertiesReq.newBuilder();
-        builder.setZuid(UserAccountManager.getInstance().getUuidAsLong());
-        if (!hasAvatar) {
-            builder.setAvatar(System.currentTimeMillis());
-        }
-        if (!hasNickName && !TextUtils.isEmpty(nickName)) {
-            builder.setNickname(nickName);
-        }
-        if (!hasGender && (gender != null)) {
-            builder.setGender(gender);
-        }
-        return UploadUserInfoRspToServer(builder);
-    }
-
-    private static UserProto.UploadUserPropertiesRsp UploadUserInfoRspToServer(UserProto.UploadUserPropertiesReq.Builder builder) {
-        PacketData data = new PacketData();
-        data.setCommand(MiLinkCommand.COMMAND_UPLOAD_USER_INFO);
-        data.setData(builder.build().toByteArray());
-        MyLog.w(TAG, "UploadUserInfoRspToServer request : \n" + builder.build().toString());
-
-        PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
-        MyLog.w(TAG, "UploadUserInfoRspToServer rspData =" + rspData);
-        if (rspData != null) {
-            try {
-                UserProto.UploadUserPropertiesRsp rsp = UserProto.UploadUserPropertiesRsp.parseFrom(rspData.getData());
-                MyLog.w(TAG, "UploadUserInfoRspToServer response : \n" + rsp.toString());
-                return rsp;
-            } catch (InvalidProtocolBufferException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    /**
      * 上传推送设置
      */
     public static boolean uploadPushSetting(String key, boolean value) {
@@ -525,7 +464,5 @@ public class UserInfoManager {
             MyLog.e(e);
         }
         return list;
-
     }
-
 }

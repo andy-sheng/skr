@@ -154,6 +154,40 @@
     <plurals name="endlive_next_room_hint">
         <item quantity="other">%1$d秒后自动进入下一场直播...</item>
     </plurals>
-
+    <string name="gender">性别</string>
+    <string name="name">昵称</string>
+    <string name="avatar">头像</string>
+    <string name="signature">签名</string>
+    <string name="pgc_addr">所在地</string>
+    <string name="change_info">编辑资料</string>
+    <string name="gender_man">男</string>
+    <string name="gender_woman">女</string>
+    <string name="input_nickname_hint_text">好名字可以让宝宝们更容易记住你</string>
+    <string name="change_nickname_text">修改昵称</string>
+    <string name="save">保存</string>
+    <string name="name_is_empty">昵称不能为空</string>
+    <string name="input_same_nickname">请输入不同于当前昵称的昵称</string>
+    <string name="nickname_illegal">昵称不合法(20个字之内)</string>
+    <string name="change_name_success">修改昵称成功</string>
+    <string name="change_failed_include_sensitive">修改昵称失败, 包括敏感词</string>
+    <string name="change_name_failed">修改昵称失败</string>
+    <string name="modify_gender">选择性别</string>
+    <string name="change_gender_success">修改性别成功</string>
+    <string name="change_gender_failed">修改性别失败</string>
+    <string name="signature_input_text">这里是签名</string>
+    <string name="change_signature_text">修改签名</string>
+    <string name="signature_is_empty">签名不能为空</string>
+    <string name="input_same_signature">请输入不同于当前签名的签名</string>
+    <string name="character_text">字</string>
+    <string name="change_sign_success">修改签名成功</string>
+    <string name="change_sign_failed">修改签名失败</string>
+    <string name="look_up_bin_avatar">查看头像大图</string>
+    <string name="take_pic">拍照</string>
+    <string name="select_photo_from_phone">从手机相册选择</string>
+    <string name="use">使用</string>
+    <string name="change_avatar_failed">更新头像失败</string>
+    <string name="modify_avatar_tip">正在更换头像，请耐心等待</string>
+    <string name="change_avatar_success">更新头像成功</string>
+    <string name="crop_failed">裁剪失败</string>
     <string name="room_admin">房间管理</string>
 </resources>

@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.base.activity.RxActivity;
-import com.base.fragment.MyRxFragment;
+import com.base.fragment.RxFragment;
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.keyboard.KeyboardUtils;
@@ -602,7 +602,7 @@ public class RecipientsSelectRecyclerAdapter extends RecyclerView.Adapter<Recycl
                         }
                     })
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(((MyRxFragment) mFragment).bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+                    .compose(((RxFragment) mFragment).bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                     .subscribe(new Action1<Object>() {
                         @Override
                         public void call(Object o) {

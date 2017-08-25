@@ -11,8 +11,8 @@ import android.text.TextUtils;
 
 import com.base.activity.BaseActivity;
 import com.base.common.R;
-import com.base.log.MyLog;
 import com.base.fragment.BaseFragment;
+import com.base.log.MyLog;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -311,7 +311,9 @@ public class FragmentNaviUtils {
         return addFragment(fragmentActivity, containerViewId, cls, bundle, addToBackStack, hasAnimation, anim, allowStateLoss);
     }
 
-    /**减少对返回值进行类型转换的操作*/
+    /**
+     * 减少对返回值进行类型转换的操作
+     */
     @CheckResult
     public static <T extends BaseFragment> T addFragmentHandy(FragmentActivity fragmentActivity, int containerViewId, Class<T> cls, Bundle bundle,
                                                               boolean addToBackStack, boolean hasAnimation, boolean allowStateLoss) {
@@ -745,7 +747,9 @@ public class FragmentNaviUtils {
         }
     }
 
-    /** chenyong1 无动画 */
+    /**
+     * chenyong1 无动画
+     */
     public static void popFragmentFromStack(FragmentActivity activity) {
         if (activity == null) {
             return;
@@ -757,7 +761,9 @@ public class FragmentNaviUtils {
         }
     }
 
-    /** chenyong1 有动画 */
+    /**
+     * chenyong1 有动画
+     */
     public static void popFragment(FragmentActivity activity) {
         if (activity == null) {
             return;

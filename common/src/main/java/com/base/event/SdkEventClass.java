@@ -38,7 +38,8 @@ public abstract class SdkEventClass {
      * 页面finish事件
      */
     public static class FinishActivityEvent {
-
+        private FinishActivityEvent() {
+        }
     }
 
     public static class BringFrontEvent {

@@ -62,7 +62,6 @@ public class CommonTabPagerAdapter extends PagerAdapter {
         arg0.removeView(mLayoutList.get(arg1));
     }
 
-
     @Override
     public Object instantiateItem(ViewGroup arg0, int arg1) {
         MyLog.d(TAG, "instantiateItem " + arg1);
@@ -74,6 +73,4 @@ public class CommonTabPagerAdapter extends PagerAdapter {
     public boolean isViewFromObject(View arg0, Object arg1) {
         return arg0 == (arg1);
     }
-
-
 }

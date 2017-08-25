@@ -31,7 +31,7 @@ import com.base.activity.BaseActivity;
 import com.base.activity.BaseRotateSdkActivity;
 import com.base.fragment.BaseFragment;
 import com.base.fragment.FragmentDataListener;
-import com.base.fragment.MyRxFragment;
+import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
@@ -72,7 +72,7 @@ import static com.wali.live.livesdk.live.view.SlidingTabLayout.DISTRIBUTE_MODE_T
  *
  * @module 选图页面
  */
-public class PhotoPickerFragment extends MyRxFragment implements OnClickListener, PhotoPickerRecyclerAdapter.UpdatePhotoListener {
+public class PhotoPickerFragment extends RxFragment implements OnClickListener, PhotoPickerRecyclerAdapter.UpdatePhotoListener {
     private static final String TAG = PhotoPickerFragment.class.getSimpleName();
 
     public static final int REQUEST_CODE = GlobalData.getRequestCode();
@@ -807,16 +807,6 @@ public class PhotoPickerFragment extends MyRxFragment implements OnClickListener
         }
     }
 
-    public static void openFragment(BaseActivity activity, FragmentDataListener listener, Bundle bundle) {
-        if (PermissionUtils.checkSdcardAlertWindow(activity)) {
-            KeyboardUtils.hideKeyboard(activity);
-            BaseFragment fragment = FragmentNaviUtils.addFragment(activity, R.id.main_act_container, PhotoPickerFragment.class, bundle, true, false, true);
-            fragment.initDataResult(REQUEST_SELECT_PHOTO, listener);
-        } else {
-            PermissionUtils.requestPermissionDialog(activity, PermissionUtils.PermissionType.WRITE_EXTERNAL_STORAGE);
-        }
-    }
-
     private void changeLeftBtnStatus(Map selectMap) {
         mTitleBar.getRightTextBtn().setEnabled(!(selectMap == null || selectMap.size() == 0));
     }
@@ -834,5 +824,15 @@ public class PhotoPickerFragment extends MyRxFragment implements OnClickListener
     @Override
     public boolean isOverrideStatusBar() {
         return true;
+    }
+
+    public static void openFragment(BaseActivity activity, FragmentDataListener listener, Bundle bundle) {
+        if (PermissionUtils.checkSdcardAlertWindow(activity)) {
+            KeyboardUtils.hideKeyboard(activity);
+            BaseFragment fragment = FragmentNaviUtils.addFragment(activity, R.id.main_act_container, PhotoPickerFragment.class, bundle, true, false, true);
+            fragment.initDataResult(REQUEST_SELECT_PHOTO, listener);
+        } else {
+            PermissionUtils.requestPermissionDialog(activity, PermissionUtils.PermissionType.WRITE_EXTERNAL_STORAGE);
+        }
     }
 }

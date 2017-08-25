@@ -60,6 +60,8 @@
     <color name="recharge_exchange_btn_color">#f4b718</color>
     <color name="color_line_e5e5e5">#e5e5e5</color>
     <color name="recharge_first_recharge_pay_way_bg_pressed">#e6e6eb</color>
+
+    <color name="common_list_item_pressed_bg">#f2f2f2</color>
     <color name="common_list_item_normal_bg">#ffffff</color>
 
     <!--充值页面所需颜色资源-->
