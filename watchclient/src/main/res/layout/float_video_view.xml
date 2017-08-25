@@ -41,11 +41,4 @@
         android:background="@null"
         android:src="@drawable/video_detail_play_btn"
         android:visibility="gone"/>
-
-    <ProgressBar
-        android:id="@+id/loading_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"/>
 </merge>

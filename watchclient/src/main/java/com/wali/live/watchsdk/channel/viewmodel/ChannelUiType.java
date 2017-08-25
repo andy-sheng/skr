@@ -1,8 +1,5 @@
 package com.wali.live.watchsdk.channel.viewmodel;
 
-import com.wali.live.watchsdk.scheme.SchemeConstants;
-import com.wali.live.watchsdk.scheme.specific.SpecificConstants;
-
 import java.util.Arrays;
 import java.util.HashSet;
 

@@ -42,9 +42,9 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
     private DetailCommentView mCommentView;
     private DetailReplayView mReplayView;
     private DetailIntroduceView mDetailIntroduceView; //详情页
-
     private boolean mIsReplay = true;
     private int mCommentCnt = 0;
+    private int mReplayCnt = 0;
 
     @Override
     protected String getTAG() {
@@ -104,7 +104,7 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
                 mReplayView.setPresenter(mReplayPresenter);
             }
             tabPageList.add(Pair.create(String.format(context.getResources().getString(
-                    R.string.feeds_detail_label_replay), "0"), mReplayView));
+                    R.string.feeds_detail_label_replay), String.valueOf(mReplayCnt)), mReplayView));
         } else {
             if (mDetailIntroduceView == null) {
                 mDetailIntroduceView = new DetailIntroduceView(context);
@@ -135,17 +135,28 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
                 mView.updateCommentTotalCnt(mCommentCnt, mIsReplay);
                 break;
             case MSG_REPLAY_TOTAL_CNT:
-                mView.updateReplayTotalCnt((int) params.getItem(0));
+                if (!mIsReplay) {
+                    return false;
+                }
+                mReplayCnt = (int) params.getItem(0);
+                mView.updateReplayTotalCnt(mReplayCnt);
                 break;
             case MSG_FOLD_INFO_AREA:
                 mView.onFoldInfoArea();
                 break;
             case MSG_PLAYER_FEEDS_DETAIL:
                 DetailInfoPresenter.FeedsInfo feedsInfo = params.getItem(0);
-                if (feedsInfo != null && !feedsInfo.isReplay) {
+                if (feedsInfo == null) {
+                    return false;
+                }
+                if (!feedsInfo.isReplay) {
                     mIsReplay = feedsInfo.isReplay;
                     syncTabPageList(GlobalData.app());
+                    //防止详情评论拉取失败tab上显示回放以及回放的数目
+                    mView.updateCommentTotalCnt(mCommentCnt, mIsReplay);
                     mDetailIntroduceView.setData(feedsInfo.title, feedsInfo.description);
+                } else {
+                    syncTabPageList(GlobalData.app());
                 }
                 break;
             default:

@@ -49,9 +49,6 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
     @Override
     public void setPresenter(@Nullable IPresenter iPresenter) {
         mPresenter = iPresenter;
-        if (mPresenter != null) {
-            mPresenter.syncTabPageList(mRootView.getContext());
-        }
     }
 
     public DetailTabView(@NonNull View rootView) {
@@ -94,6 +91,7 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
             @Override
             public void onTabPageList(List<Pair<String, ? extends View>> tabPageList) {
                 mMessageAdapter.removeAll();
+                mViewPager.removeAllViews();
                 for (Pair<String, ? extends View> elem : tabPageList) {
                     mMessageAdapter.addView(elem.first, elem.second);
                 }

@@ -57,7 +57,6 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
     private WeakReference<VideoDetailView> mDetailViewRef = new WeakReference<>(null);
     private WeakReference<ReplaySdkView> mFullScreenViewRef = new WeakReference<>(null);
     private BaseSdkView mSdkView;
-
     private long mVideoStartTime = -1;
 
     private VideoShowPresenter mVideoShowPresenter;
@@ -108,6 +107,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
         mMyRoomData.setRoomId(mRoomInfo.getLiveId());
         mMyRoomData.setUid(mRoomInfo.getPlayerId());
         mMyRoomData.setLiveType(mRoomInfo.getLiveType());
+        mMyRoomData.setEnableShare(mRoomInfo.isEnableShare());
         if (!TextUtils.isEmpty(mRoomInfo.getVideoUrl())) {
             mMyRoomData.setVideoUrl(mRoomInfo.getVideoUrl());
         } else {
