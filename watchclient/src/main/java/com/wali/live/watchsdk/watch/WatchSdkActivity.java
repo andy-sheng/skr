@@ -191,6 +191,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
         //尝试发送关键数据给服务器,允许即使多次调用，成功后就不再发送。
         if (!isMyRoom() && !check4GNet()) {
+            WatchRoomCharactorManager.getInstance().clear();
             trySendDataWithServerOnce();
         }
     }
@@ -756,7 +757,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
             if (roomInfo != null) {
                 updateVideoUrl(roomInfo.getDownStreamUrl());
             }
-            WatchRoomCharactorManager.getInstance().clear();
+            //TODO 这段代码迁移到了switchRoom
+            //WatchRoomCharactorManager.getInstance().clear();
             syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);
             if (mController != null) {
                 mController.postEvent(MSG_ON_LIVE_SUCCESS);
@@ -1125,6 +1127,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         private void switchRoom() {
             if (!isFinishing()) {
                 MyLog.w(TAG, "switch anchor: leave room user=" + mMyRoomData.getUser());
+                // 清除管理信息
+                WatchRoomCharactorManager.getInstance().clear();
                 // 清除房间消息
                 mRoomChatMsgManager.clear();
 

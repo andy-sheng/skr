@@ -5,18 +5,15 @@ import android.os.SystemClock;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.mvp.BaseRxPresenter;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.relation.RelationApi;
-import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.event.GetUserInfoAndUnpdateConversationEvent;
-import com.mi.live.data.event.LiveRoomManagerEvent;
 import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.user.User;
-import com.thornbirds.component.IParams;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.dao.RelationDaoAdapter;
 import com.wali.live.proto.RankProto;
 import com.wali.live.statistics.StatisticsKey;
@@ -25,8 +22,6 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.eventbus.FollowStatEvent;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -40,7 +35,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by wangmengjie on 17-8-24.
  */
-public class FloatInfoPresenter extends BaseSdkRxPresenter<IFloatInfoView> {
+public class FloatInfoPresenter extends BaseRxPresenter<IFloatInfoView> {
 
     public static final String EXTRA_IN_UUID = "uuid";
     public static final String EXTRA_IN_OWNER_UUID = "owner_uuid";
@@ -68,23 +63,9 @@ public class FloatInfoPresenter extends BaseSdkRxPresenter<IFloatInfoView> {
         return "FloatInfoPresenter";
     }
 
-
     public FloatInfoPresenter(IFloatInfoView view, Bundle bundle) {
-        super(null);
         mView = view;
         initData(bundle);
-    }
-
-    @Override
-    public void startPresenter() {
-        super.startPresenter();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void stopPresenter() {
-        super.stopPresenter();
-        EventBus.getDefault().unregister(this);
     }
 
     public void initData(Bundle bundle) {
@@ -126,6 +107,7 @@ public class FloatInfoPresenter extends BaseSdkRxPresenter<IFloatInfoView> {
                     }
                 })
                 .subscribeOn(Schedulers.io())
+                .compose(mView.<User>bindLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<User>() {
                     @Override
@@ -222,6 +204,7 @@ public class FloatInfoPresenter extends BaseSdkRxPresenter<IFloatInfoView> {
                     }
                 })
                 .subscribeOn(Schedulers.io())
+                .compose(mView.<Boolean>bindLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Boolean>() {
                     @Override
@@ -240,24 +223,5 @@ public class FloatInfoPresenter extends BaseSdkRxPresenter<IFloatInfoView> {
                         MyLog.d(TAG, throwable);
                     }
                 });
-    }
-
-    @Override
-    public boolean onEvent(int event, IParams params) {
-        return false;
-    }
-
-    public void onEvent(FollowOrUnfollowEvent event) {
-        if (event != null && mUser != null) {
-            mUser.setIsBothwayFollowing(event.isBothFollow);
-            mView.refreshUserInfo();
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(LiveRoomManagerEvent event) {
-        if (event != null) {
-            mView.refreshUserInfo();
-        }
     }
 }

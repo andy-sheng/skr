@@ -14,7 +14,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.activity.BaseActivity;
+import com.base.activity.BaseRotateSdkActivity;
 import com.base.dialog.MyAlertDialog;
+import com.base.event.SdkEventClass;
 import com.base.fragment.BaseFragment;
 import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
@@ -25,6 +27,8 @@ import com.base.utils.display.DisplayUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.config.GetConfigManager;
+import com.mi.live.data.event.FollowOrUnfollowEvent;
+import com.mi.live.data.event.LiveRoomManagerEvent;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.user.User;
 import com.wali.live.manager.WatchRoomCharactorManager;
@@ -42,6 +46,8 @@ import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.personinfo.presenter.IFloatInfoView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import rx.Observable;
 
@@ -209,11 +215,17 @@ public class FloatInfoFragment extends RxFragment
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyLog.d(TAG, "onCreate");
+        EventBus.getDefault().register(this);
         setupForbidManagePresenter();
-        KeyboardUtils.hideKeyboardImmediately(getActivity());
     }
 
     @Override
@@ -231,6 +243,7 @@ public class FloatInfoFragment extends RxFragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         MyLog.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
+        KeyboardUtils.hideKeyboardImmediately(getActivity());
         if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             onOrientation(true);
         } else {
@@ -540,16 +553,11 @@ public class FloatInfoFragment extends RxFragment
     }
 
     @Override
-    public void onKickViewerDone(long targetId, int errCode) {}
+    public void onKickViewerDone(long targetId, int errCode) {
+    }
 
     @Override
-    public void onBlockViewer(long targetId, int errCode) {}
-
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        onOrientation(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE);
+    public void onBlockViewer(long targetId, int errCode) {
     }
 
     @Override
@@ -572,6 +580,37 @@ public class FloatInfoFragment extends RxFragment
         RelativeLayout.LayoutParams lpBottom = (RelativeLayout.LayoutParams)
                 mRootView.findViewById(R.id.user_info_zone).getLayoutParams();
         lpBottom.topMargin = DisplayUtils.dip2px(isLandscape ? 95f : 97.3f);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FollowOrUnfollowEvent event) {
+        if (event != null && mUser != null) {
+            mUser.setIsBothwayFollowing(event.isBothFollow);
+            refreshUserInfo();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(LiveRoomManagerEvent event) {
+        MyLog.d(TAG, "receive LiveRoomManagerEvent");
+        if (event != null) {
+            refreshUserInfo();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(SdkEventClass.OrientEvent event) {
+        MyLog.d(TAG, "receive orientation event");
+        if (event.orientation == BaseRotateSdkActivity.ORIENTATION_DEFAULT) {
+            return;
+        } else if (event.orientation == BaseRotateSdkActivity.ORIENTATION_LANDSCAPE_NORMAL ||
+                event.orientation == BaseRotateSdkActivity.ORIENTATION_LANDSCAPE_REVERSED) {
+            onOrientation(true);
+        } else if (event.orientation == BaseRotateSdkActivity.ORIENTATION_PORTRAIT_NORMAL ||
+                event.orientation == BaseRotateSdkActivity.ORIENTATION_PORTRAIT_REVERSED) {
+            onOrientation(false);
+        }
     }
 
     @Override
