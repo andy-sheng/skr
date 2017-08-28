@@ -101,15 +101,17 @@ public class GiftPushMsgProcesser {
      * @param model
      */
     public static void processGiftMsg(GiftRecvModel model, boolean fromEnterRoom, BarrageMsg msg) {
+        if (model == null){
+            return;
+        }
         //验证一下是否重复
         // 根据礼物类型填充消息类型
         int gifType = model.getGifType();
-        if (model.getGifType() == GiftType.PRIVILEGE_GIFT) {
-            BarrageMsg.GiftMsgExt ext = (BarrageMsg.GiftMsgExt) msg.getMsgExt();
-            if (ext.isPrivilegeGift()) {
-                gifType = model.getGiftOriginType();
-            }
+        //特权礼物和米币礼物originType是真是的giftType wiki地址：http://wiki.n.miui.com/pages/viewpage.action?pageId=33083961
+        if (model.getGifType() == GiftType.PRIVILEGE_GIFT || model.getGifType() == GiftType.Mi_COIN_GIFT) {
+            gifType = model.getGiftOriginType();
         }
+        MyLog.w(TAG, "giftType=" + gifType);
         switch (gifType) {
             case GiftType.Mi_COIN_GIFT:
             case GiftType.NORMAL_GIFT: {
@@ -192,12 +194,6 @@ public class GiftPushMsgProcesser {
                         GiftRepository.processGiftMsgByPushWay(barrageMsg, ext, barrageMsg.getRoomId());
                     }
                 }
-            }
-            break;
-            case GiftType.PRIVILEGE_GIFT: {
-                BarrageMsg barrageMsg = GiftRepository.getPrivilegeGiftBarrage(model.getGift(), msg);
-                BarrageMsg.GiftMsgExt ext = (BarrageMsg.GiftMsgExt) barrageMsg.getMsgExt();
-                GiftRepository.processGiftMsgByPushWay(barrageMsg, ext, barrageMsg.getRoomId());
             }
             break;
             default: {

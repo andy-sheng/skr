@@ -9,12 +9,14 @@ import com.base.utils.channel.ReleaseChannelUtils;
  */
 public class Constants {
 
-    public static final String ReleaseChannel = "@SHIP.TO.2A2FE0D7@";
-//    public static final String ReleaseChannel = "TEST";
+//    public static final String ReleaseChannel = "@SHIP.TO.2A2FE0D7@";
+    public static final String ReleaseChannel = "TEST";
 
     public static final boolean isDefaultChanel = ReleaseChannel.contains("2A2FE0D7");
 
     public static final String DEBUG_CHANNEL = "DEBUG";
+
+
     public static final String DB_CHANNEL = "DB";
     public static final String TEST_CHANNEL = "TEST";
     public static final String GOOGLE_PLAY_CHANNEL = "meng_1254_11_android";

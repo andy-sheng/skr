@@ -367,7 +367,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                         }
                         BarrageMsg pushMsg = GiftRepository.createGiftBarrageMessage(buyGift.getGiftId(), buyGift.getName(), buyGift.getCatagory(),
                                 buyGift.getSendDescribe(), mContinueSend.get(requestContinueId[0]), buyGiftRsp.getReceiverTotalTickets(),
-                                buyGiftRsp.getTicketUpdateTime(), requestContinueId[0], mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), buyGiftRsp.getRedPacketId(), "", 0, false);
+                                buyGiftRsp.getTicketUpdateTime(), requestContinueId[0], mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), buyGiftRsp.getRedPacketId(), "", 0);
                         BarrageMessageManager.getInstance().pretendPushBarrage(pushMsg);
                         mContinueSend.add(requestTime[0], requestContinueId[0]);
 

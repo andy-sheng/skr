@@ -56,6 +56,8 @@ public class GiftTypeMapper {
                 gift = new BigPackOfGift();
             }
             break;
+            //特权礼物和米币礼物同样处理，getOriginGiftType是真正的type。
+            case GiftType.Mi_COIN_GIFT:
             case GiftType.PRIVILEGE_GIFT: {
                 switch (baseGift.getOriginGiftType()) {
                     case GiftType.NORMAL_EFFECTS_GIFT: {
@@ -151,6 +153,8 @@ public class GiftTypeMapper {
                 gift = new BigPackOfGift();
             }
             break;
+            //特权礼物和米币礼物同样处理，getOriginGiftType是真正的type。
+            case GiftType.Mi_COIN_GIFT:
             case GiftType.PRIVILEGE_GIFT: {
                 switch (giftInfo.getOriginGiftType()) {
                     case GiftType.NORMAL_EFFECTS_GIFT: {
