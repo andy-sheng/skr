@@ -21,7 +21,7 @@ import com.wali.live.component.BaseSdkView;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
-import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
+import com.wali.live.watchsdk.personinfo.fragment.FloatInfoFragment;
 import com.wali.live.watchsdk.ranking.RankingPagerFragment;
 import com.wali.live.watchsdk.videodetail.ReplaySdkView;
 import com.wali.live.watchsdk.videodetail.VideoDetailController;
@@ -294,7 +294,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
         if (uid <= 0) {
             return;
         }
-        FloatPersonInfoFragment.openFragment(VideoDetailSdkActivity.this,
+        FloatInfoFragment.openFragment(VideoDetailSdkActivity.this,
                 uid, mMyRoomData.getUid(), mMyRoomData.getRoomId(),
                 mMyRoomData.getVideoUrl(), null, mMyRoomData.getEnterRoomTime());
     }

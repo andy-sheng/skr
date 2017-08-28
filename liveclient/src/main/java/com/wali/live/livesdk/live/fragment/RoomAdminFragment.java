@@ -407,7 +407,7 @@ public class RoomAdminFragment extends RxFragment implements FragmentDataListene
     }
 
     @Override
-    public void onkickViewerDone(long targetId, int errCode) {
+    public void onKickViewerDone(long targetId, int errCode) {
         MyLog.w(TAG, "onkickViewerDone targetId=" + targetId + ", errCode=" + errCode);
     }
 
