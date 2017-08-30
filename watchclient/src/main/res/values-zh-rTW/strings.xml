@@ -188,4 +188,6 @@
     <string name="modify_avatar_tip">正在更換頭像，請耐心等待</string>
     <string name="change_avatar_success">更新頭像成功</string>
     <string name="crop_failed">裁剪失敗</string>
+    <string name="edit_info_tip">您還沒有暱稱，%s修改暱稱結識更多的朋友吧~</string>
+    <string name="click_here">點擊這裡</string>
 </resources>
