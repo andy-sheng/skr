@@ -3,6 +3,7 @@ package com.wali.live.watchsdk.statistics;
 import com.base.log.MyLog;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.StatisticsProto;
+import com.wali.live.watchsdk.statistics.item.ChannelStatisticsItem;
 import com.wali.live.watchsdk.statistics.item.MilinkStatisticsItem;
 import com.wali.live.watchsdk.statistics.item.SimpleStatisticsItem;
 import com.wali.live.watchsdk.statistics.request.LiveRecvRequest;
@@ -44,7 +45,7 @@ public class MilinkStatistics {
         long date = System.currentTimeMillis();
         try {
             MilinkStatisticsItem item = new SimpleStatisticsItem(date,
-                    MilinkStatisticsItem.LIVE_SDK_TYPE,
+                    SimpleStatisticsItem.LIVE_SDK_TYPE,
                     SimpleStatisticsItem.GAME_ACTIVE_BIZTYPE,
                     key, time);
             upload(item);
@@ -57,13 +58,29 @@ public class MilinkStatistics {
         long date = System.currentTimeMillis();
         try {
             MilinkStatisticsItem item = new SimpleStatisticsItem(date,
-                    MilinkStatisticsItem.LIVE_SDK_TYPE,
+                    SimpleStatisticsItem.LIVE_SDK_TYPE,
                     SimpleStatisticsItem.MIVIDEO_ACTIVE_BIZTYPE,
                     key, time);
             upload(item);
         } catch (JSONException e) {
             MyLog.e(TAG, e);
         }
+    }
+
+    public void statisticsChannelExposure(String recommend) {
+        long date = System.currentTimeMillis();
+        MilinkStatisticsItem item = new ChannelStatisticsItem(date,
+                ChannelStatisticsItem.CHANNEL_TYPE_EXPOSURE,
+                recommend);
+        uploadDelay(item);
+    }
+
+    public void statisticsChannelClick(String recommend) {
+        long date = System.currentTimeMillis();
+        MilinkStatisticsItem item = new ChannelStatisticsItem(date,
+                ChannelStatisticsItem.CHANNEL_TYPE_CLICK,
+                recommend);
+        upload(item);
     }
 
     private void upload(final MilinkStatisticsItem item) {

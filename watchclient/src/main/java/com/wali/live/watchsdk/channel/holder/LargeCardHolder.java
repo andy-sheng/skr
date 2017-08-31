@@ -68,6 +68,8 @@ public class LargeCardHolder extends FixedHolder {
         if (item == null) {
             return;
         }
+        exposureItem(item);
+
         bindImageWithBorder(mAvatarIv, item.getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_XLARGE), false, 640, 640, ScalingUtils.ScaleType.CENTER_CROP);
         mAvatarIv.setOnClickListener(new View.OnClickListener() {
             @Override

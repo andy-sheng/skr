@@ -18,8 +18,6 @@ import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
  * @description 和LargeCardHolder 类似，顶部title浮在图片上
  */
 public class LargeCardFloatHeaderHolder extends FixedHolder {
-
-
     private BaseImageView mCover;
     private BaseImageView mCoverSecond;
 
@@ -44,6 +42,8 @@ public class LargeCardFloatHeaderHolder extends FixedHolder {
         if (item == null) {
             return;
         }
+        exposureItem(item);
+
         int width = DisplayUtils.getScreenWidth() - SIDE_MARGIN * 2;
         int height = (int) (width * 0.5625f);   // 控件保持16 : 9 的比例
         mCover.getLayoutParams().height = height;

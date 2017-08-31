@@ -36,6 +36,9 @@ public class SchemeConstants {
     public static final String PARAM_PACKAGE_NAME = "package_name";
     public static final String PARAM_CHANNEL_SECRET = "channel_secret";
 
+    // 频道打点标签
+    public final static String PARAM_RECOMMEND_TAG = "recommend";
+
     // 跳转到直播间
     public static final String HOST_ROOM = "room";
     public static final String PATH_JOIN = "/join";

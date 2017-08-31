@@ -156,8 +156,10 @@ public abstract class RepeatHolder extends FixedHolder {
                     }
                 });
                 mTextViews[i].setText(item.getText());
+
+                bindItemOnShowModel(item, i);
+                exposureItem(item);
             }
-            bindItemOnShowModel(item, i);
         }
     }
 
@@ -188,6 +190,7 @@ public abstract class RepeatHolder extends FixedHolder {
                 mTextViews[i].setText(item.getName());
 
                 bindItemOnTwoLineModel(item, i);
+                exposureItem(item);
             }
         }
     }
@@ -231,6 +234,7 @@ public abstract class RepeatHolder extends FixedHolder {
                 }
 
                 bindItemOnUserModel(item, i);
+                exposureItem(item);
             }
         }
     }
@@ -262,6 +266,7 @@ public abstract class RepeatHolder extends FixedHolder {
                 } else if (item instanceof SimpleItem) {
                     bindSimpleItem((SimpleItem) item, i);
                 }
+                exposureItem(item);
             }
         }
     }
@@ -347,6 +352,7 @@ public abstract class RepeatHolder extends FixedHolder {
                 mTextViews[i].setText(item.getText());
 
                 bindItemOnNavigateModel(item, i);
+                exposureItem(item);
             }
         }
     }

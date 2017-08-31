@@ -9,9 +9,12 @@ import org.json.JSONObject;
  * Created by lan on 2017/6/29.
  */
 public class SimpleStatisticsItem extends MilinkStatisticsItem {
+    // 外层应用类型：小助手
+    public static final int LIVE_SDK_TYPE = 200;
+
     // 内层数据类型
-    public static final int GAME_ACTIVE_BIZTYPE = LIVE_SDK_TYPE * 1000 + 1;             // 游戏标签tab日活
-    public static final int MIVIDEO_ACTIVE_BIZTYPE = LIVE_SDK_TYPE * 1000 + 2;          // 小米视频日活
+    public static final int GAME_ACTIVE_BIZTYPE = LIVE_SDK_TYPE * 1000 + 1;            // 游戏标签tab日活
+    public static final int MIVIDEO_ACTIVE_BIZTYPE = GAME_ACTIVE_BIZTYPE + 1;          // 小米视频日活
 
     private static final String PARAM_KEY = "key";
     private static final String PARAM_TIME = "time";

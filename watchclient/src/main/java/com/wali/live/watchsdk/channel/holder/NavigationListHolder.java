@@ -21,7 +21,6 @@ import java.util.List;
  * Created by zhaomin on 16-12-23.
  */
 public class NavigationListHolder extends RepeatHolder {
-
     private int mIconId;
     private int mTextId;
     private int mDividerId;
@@ -109,12 +108,13 @@ public class NavigationListHolder extends RepeatHolder {
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                mJumpListener.jumpScheme(item.getSchemeUri());
+                                jumpItem(item);
                             }
                         });
                 mTextViews[i].setText(item.getText());
 
                 bindItemOnNavigateModel(item, i);
+                exposureItem(item);
             }
         }
     }

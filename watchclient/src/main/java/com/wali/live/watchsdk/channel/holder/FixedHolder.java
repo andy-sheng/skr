@@ -19,6 +19,7 @@ import com.facebook.drawee.drawable.ScalingUtils.ScaleType;
 import com.mi.live.data.config.GetConfigManager;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.channel.helper.HolderHelper;
 import com.wali.live.watchsdk.channel.viewmodel.BaseJumpItem;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelNavigateViewModel;
@@ -61,6 +62,14 @@ public abstract class FixedHolder extends HeadHolder {
             bindNavigateModel((ChannelNavigateViewModel) mViewModel.get());
         } else if (mViewModel instanceof ChannelRankingViewModel) {
             bindRankingModel((ChannelRankingViewModel) mViewModel.get());
+        }
+    }
+
+    protected void exposureItem(BaseJumpItem item) {
+        MyLog.i(TAG, "exposure item=" + item.isExposured());
+        if (!item.isExposured()) {
+            HolderHelper.sendExposureCommand(item);
+            item.setIsExposured(true);
         }
     }
 
@@ -144,6 +153,9 @@ public abstract class FixedHolder extends HeadHolder {
     }
 
     protected void jumpItem(BaseJumpItem item) {
+        // 打点
+        HolderHelper.sendClickCommand(item);
+
         if (item instanceof ChannelLiveViewModel.LiveItem && (((ChannelLiveViewModel.BaseLiveItem) item).isEnterRoom())) {
             int position = ((ChannelLiveViewModel.LiveItem) item).getListPosition();
             if (position != -1) {
