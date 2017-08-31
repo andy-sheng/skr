@@ -32,7 +32,7 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
-import com.wali.live.watchsdk.component.view.VideoDetailPlayerView;
+import com.wali.live.watchsdk.videodetail.view.VideoDetailPlayerView;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;

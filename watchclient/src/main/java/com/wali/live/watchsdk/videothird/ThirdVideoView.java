@@ -13,7 +13,7 @@ import com.base.log.MyLog;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.component.view.VideoDetailPlayerView;
+import com.wali.live.watchsdk.videodetail.view.VideoDetailPlayerView;
 
 import java.lang.ref.WeakReference;
 

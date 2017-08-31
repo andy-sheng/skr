@@ -9,7 +9,7 @@ import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
 import com.wali.live.event.EventClass;
-import com.wali.live.watchsdk.component.view.VideoDetailPlayerView;
+import com.wali.live.watchsdk.videodetail.view.VideoDetailPlayerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

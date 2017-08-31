@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.BaseSdkController;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.component.view.VideoDetailPlayerView;
+import com.wali.live.watchsdk.videodetail.view.VideoDetailPlayerView;
 import com.wali.live.watchsdk.videodetail.presenter.VideoDetailPlayerPresenter;
 
 /**

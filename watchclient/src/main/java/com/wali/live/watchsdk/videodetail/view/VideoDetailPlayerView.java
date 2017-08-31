@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.component.view;
+package com.wali.live.watchsdk.videodetail.view;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,7 +10,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.base.dialog.MyAlertDialog;

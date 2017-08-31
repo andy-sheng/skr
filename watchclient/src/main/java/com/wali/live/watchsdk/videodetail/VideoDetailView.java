@@ -15,7 +15,7 @@ import com.thornbirds.component.IParams;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.view.InputAreaView;
-import com.wali.live.watchsdk.component.view.VideoDetailPlayerView;
+import com.wali.live.watchsdk.videodetail.view.VideoDetailPlayerView;
 import com.wali.live.watchsdk.videodetail.presenter.CommentInputPresenter;
 import com.wali.live.watchsdk.videodetail.presenter.DetailBottomPresenter;
 import com.wali.live.watchsdk.videodetail.presenter.DetailInfoPresenter;
