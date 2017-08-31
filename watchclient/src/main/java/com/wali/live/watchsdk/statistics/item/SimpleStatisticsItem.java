@@ -31,4 +31,16 @@ public class SimpleStatisticsItem extends MilinkStatisticsItem {
                 .setExtStr(extObject.toString())
                 .build();
     }
+
+    @Override
+    public StatisticsProto.LiveRecvFlagItem build() {
+        if (mFlagItem == null) {
+            mFlagItem = StatisticsProto.LiveRecvFlagItem.newBuilder()
+                    .setDate(mDate)
+                    .setType(mType)
+                    .setLog(mCommonLog)
+                    .build();
+        }
+        return mFlagItem;
+    }
 }

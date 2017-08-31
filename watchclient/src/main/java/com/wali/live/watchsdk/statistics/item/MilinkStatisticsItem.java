@@ -13,6 +13,8 @@ public abstract class MilinkStatisticsItem {
     protected String mRecommend;        // 不用，直播频道使用
     protected StatisticsProto.CommonLog mCommonLog;
 
+    protected StatisticsProto.LiveRecvFlagItem mFlagItem;
+
     public MilinkStatisticsItem(long date, int type) {
         mDate = date;
         mType = type;
@@ -29,4 +31,6 @@ public abstract class MilinkStatisticsItem {
     public StatisticsProto.CommonLog getCommonLog() {
         return mCommonLog;
     }
+
+    public abstract StatisticsProto.LiveRecvFlagItem build();
 }
