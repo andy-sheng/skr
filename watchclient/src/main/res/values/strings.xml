@@ -195,4 +195,5 @@
     <string name="crop_failed">crop failed</string>
     <string name="edit_info_tip">You haven\'t set a nickname. %s to set to make more friends.</string>
     <string name="click_here">Tap here</string>
+    <string name="third_video_player_label">小米直播播放器</string>
 </resources>

@@ -95,6 +95,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
     private void initData() {
         Intent data = getIntent();
         if (data == null) {
+            finish();
             return;
         }
         mRoomInfo = (RoomInfo) data.getParcelableExtra(EXTRA_ROOM_INFO);
