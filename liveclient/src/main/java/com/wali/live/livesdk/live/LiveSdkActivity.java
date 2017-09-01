@@ -58,6 +58,7 @@ import com.mi.live.data.repository.datasource.RoomMessageStore;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
 import com.mi.milink.sdk.aidl.PacketData;
+import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.thornbirds.component.IEventObserver;
 import com.thornbirds.component.IParams;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
@@ -81,7 +82,7 @@ import com.wali.live.livesdk.live.fragment.RoomAdminFragment;
 import com.wali.live.livesdk.live.livegame.fragment.PrepareLiveFragment;
 import com.wali.live.livesdk.live.presenter.LiveRoomPresenter;
 import com.wali.live.livesdk.live.receiver.ScreenStateReceiver;
-import com.wali.live.livesdk.live.task.IActionCallBack;
+import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.livesdk.live.view.CountDownView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.proto.LiveCommonProto;
@@ -98,6 +99,7 @@ import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.ranking.RankingPagerFragment;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
+import com.wali.live.watchsdk.task.LiveTask;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomManagerPresenter;
@@ -220,6 +222,12 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private long mNewFollowerCnt;
 
     private MyAlertDialog mTrafficDialog; //流量窗
+
+    protected CustomHandlerThread mHandlerThread = new CustomHandlerThread("LiveSdkActivity") {
+        @Override
+        protected void processMessage(Message message) {
+        }
+    };
 
     @Override
     public boolean isKeyboardResize() {
@@ -1148,6 +1156,14 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         return mForbidManagePresenter;
     }
 
+    private void viewerTopFromServer(RoomBaseDataModel roomData) {
+        if (TextUtils.isEmpty(roomData.getRoomId())) {
+            MyLog.d(TAG, "viewerTop roomId is empty");
+            return;
+        }
+        mHandlerThread.post(LiveTask.viewerTop(roomData, new WeakReference<IActionCallBack>(this)));
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(final LiveEventClass.LiveCoverEvent event) {
         if (event != null && mMaskIv.getVisibility() == View.VISIBLE) {
@@ -1180,6 +1196,10 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 RankingPagerFragment.openFragment(this, ticket, mMyRoomData.getInitTicket(), uid, liveId,
                         mMyRoomData.isTicketing() ? RankingPagerFragment.PARAM_FROM_CURRENT : RankingPagerFragment.PARAM_FROM_TOTAL,
                         true, isDisplayLandscape());
+            }
+            break;
+            case UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER: {
+                viewerTopFromServer((RoomBaseDataModel) event.obj1);
             }
             break;
             case UserActionEvent.EVENT_TYPE_REQUEST_SET_MANAGER: {
