@@ -558,7 +558,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                         mTopAreaView.setVisibility(View.GONE);
                     } else {
                         mTopAreaView.setAlpha(1.0f);
-                        if (mIsLandscape && !mIsGameMode) {
+                        if (!mIsGameMode && mLiveCommentView.getVisibility() != View.VISIBLE) {
                             mLiveCommentView.setVisibility(View.VISIBLE);
                         }
                     }

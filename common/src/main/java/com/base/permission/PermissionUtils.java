@@ -15,7 +15,6 @@ import android.support.v4.content.ContextCompat;
 import com.base.activity.BaseActivity;
 import com.base.common.R;
 import com.base.dialog.DialogUtils;
-import com.base.dialog.MyAlertDialog;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.permission.rxpermission.Permission;
@@ -281,25 +280,13 @@ public class PermissionUtils {
                         cancelCallback);
                 break;
             case WRITE_EXTERNAL_STORAGE:
-                sCheckNecessaryPermissionDialogShow = true;
-                DialogUtils.showGlobalDialog(activity,
+                DialogUtils.showNormalDialog(activity,
                         R.string.title_sdcard_permission,
                         R.string.message_sdcard_permission,
                         R.string.setting_title,
                         R.string.cancel,
                         okCallback,
-                        cancelCallback,
-                        new MyAlertDialog.DismissCallBack() {
-                            @Override
-                            public void beforeDismissCallBack() {
-
-                            }
-
-                            @Override
-                            public void afterDismissCallBack() {
-                                sCheckNecessaryPermissionDialogShow = false;
-                            }
-                        });
+                        cancelCallback);
                 break;
             case ACCESS_COARSE_LOCATION: // fall through
             case ACCESS_FINE_LOCATION:

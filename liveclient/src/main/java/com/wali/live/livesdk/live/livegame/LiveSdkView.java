@@ -212,6 +212,7 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
                 if (mGiftContinueViewGroup != null) {
                     mGiftContinueViewGroup.onShowInputView();
                 }
+                mAnimationHelper.startInputAnimator(true);
                 return true;
             case MSG_INPUT_VIEW_HIDDEN:
                 if (!mIsLandscape) { // 游戏直播横屏不需左右滑
@@ -220,6 +221,7 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
                 if (mGiftContinueViewGroup != null) {
                     mGiftContinueViewGroup.onHideInputView();
                 }
+                mAnimationHelper.startInputAnimator(false);
                 return true;
             case MSG_BACKGROUND_CLICK:
                 if (mController.postEvent(MSG_HIDE_INPUT_VIEW)) {
@@ -272,7 +274,7 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
                         mTopAreaView.setVisibility(View.GONE);
                     } else {
                         mTopAreaView.setAlpha(1.0f);
-                        if (mIsLandscape) {
+                        if (mLiveCommentView.getVisibility() != View.VISIBLE) {
                             mLiveCommentView.setVisibility(View.VISIBLE);
                         }
                     }
