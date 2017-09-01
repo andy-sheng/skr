@@ -16,7 +16,6 @@ public class HolderHelper {
      * 曝光打点统计
      */
     public static void sendExposureCommand(BaseJumpItem item) {
-        MyLog.d(TAG, "exposure command="+item);
         if (item == null) {
             return;
         }
