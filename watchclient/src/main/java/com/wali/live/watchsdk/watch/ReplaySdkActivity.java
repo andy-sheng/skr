@@ -87,7 +87,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements
 
     protected static final int REQUEST_REPLAY = 10000;
     protected static final String EXT_REPLAYED_TIME = "ext_replayed_time";
-
+    
     private static final int MSG_ROOM_INFO = 108;               //主播拉取房间信息
     public static final int MSG_UPDATE_QOS = 200;               //金山云调试信息
 
