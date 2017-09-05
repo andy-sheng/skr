@@ -74,6 +74,8 @@ public abstract class PreferenceUtils {
     public static final String PREF_KEY_LIVE_GAME_TAG = "pref_key_live_game_tag";
     public static final String PREF_KEY_LIVE_GAME_CLARITY = "pref_key_live_game_clarity";
 
+    public static final String PREF_KEY_NEED_SHOW_CTA = "pref_key_need_show_cta";
+
     public interface PrefObserver {
         void notifyPrefChange(final String key, Object value);
     }

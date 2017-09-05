@@ -5,9 +5,11 @@ import android.os.Bundle;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
+import com.base.preference.PreferenceUtils;
 import com.base.utils.callback.ICommonCallBack;
 import com.mi.live.data.location.Location;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
+import com.wali.live.cta.CTANotifyFragment;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
@@ -51,7 +53,23 @@ public class JumpSdkActivity extends BaseSdkActivity {
         setTranslucentStatus(this, true);
         setStatusColor(this, true);
 
-        processIntent();
+        if (PreferenceUtils.getSettingBoolean(this, PreferenceUtils.PREF_KEY_NEED_SHOW_CTA, true)) {
+            CTANotifyFragment.openFragment(this, android.R.id.content, new CTANotifyFragment.CTANotifyButtonClickListener() {
+
+                @Override
+                public void onClickCancelButton() {
+                    finish();
+                }
+
+                @Override
+                public void onClickConfirmButton(boolean neverShow) {
+                    PreferenceUtils.setSettingBoolean(JumpSdkActivity.this, PreferenceUtils.PREF_KEY_NEED_SHOW_CTA, !neverShow);
+                    processIntent();
+                }
+            });
+        } else {
+            processIntent();
+        }
     }
 
     protected void processIntent() {

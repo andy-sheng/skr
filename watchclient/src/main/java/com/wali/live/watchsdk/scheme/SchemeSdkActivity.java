@@ -9,6 +9,8 @@ import android.text.TextUtils;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
+import com.base.preference.PreferenceUtils;
+import com.wali.live.cta.CTANotifyFragment;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.callback.SecureCommonCallBack;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
@@ -41,12 +43,33 @@ public class SchemeSdkActivity extends BaseSdkActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                process();
-            }
-        });
+        if (PreferenceUtils.getSettingBoolean(this, PreferenceUtils.PREF_KEY_NEED_SHOW_CTA, true)) {
+            CTANotifyFragment.openFragment(this, android.R.id.content, new CTANotifyFragment.CTANotifyButtonClickListener() {
+
+                @Override
+                public void onClickCancelButton() {
+                    finish();
+                }
+
+                @Override
+                public void onClickConfirmButton(boolean neverShow) {
+                    PreferenceUtils.setSettingBoolean(SchemeSdkActivity.this, PreferenceUtils.PREF_KEY_NEED_SHOW_CTA, !neverShow);
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            process();
+                        }
+                    });
+                }
+            });
+        } else {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    process();
+                }
+            });
+        }
     }
 
     private void process() {
