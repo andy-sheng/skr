@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
+import com.base.utils.CommonUtils;
 import com.wali.live.cta.CTANotifyFragment;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.R;
@@ -45,7 +46,7 @@ public class SchemeSdkActivity extends BaseSdkActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_bottom_in, 0);
 
-        if (PreferenceUtils.getSettingBoolean(this, PreferenceUtils.PREF_KEY_NEED_SHOW_CTA, true)) {
+        if (CommonUtils.isNeedShowCtaDialog()) {
             CTANotifyFragment.openFragment(this, android.R.id.content, new CTANotifyFragment.CTANotifyButtonClickListener() {
 
                 @Override

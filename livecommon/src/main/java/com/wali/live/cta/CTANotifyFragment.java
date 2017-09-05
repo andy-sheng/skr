@@ -1,6 +1,5 @@
 package com.wali.live.cta;
 
-import android.animation.ObjectAnimator;
 import android.support.annotation.IdRes;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;

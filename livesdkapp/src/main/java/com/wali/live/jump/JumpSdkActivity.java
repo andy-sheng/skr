@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
+import com.base.utils.CommonUtils;
 import com.base.utils.callback.ICommonCallBack;
 import com.mi.live.data.location.Location;
 import com.mi.liveassistant.R;
@@ -55,7 +56,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
         setTranslucentStatus(this, true);
         setStatusColor(this, true);
 
-        if (PreferenceUtils.getSettingBoolean(this, PreferenceUtils.PREF_KEY_NEED_SHOW_CTA, true)) {
+        if (CommonUtils.isNeedShowCtaDialog()) {
             CTANotifyFragment.openFragment(this, android.R.id.content, new CTANotifyFragment.CTANotifyButtonClickListener() {
 
                 @Override
