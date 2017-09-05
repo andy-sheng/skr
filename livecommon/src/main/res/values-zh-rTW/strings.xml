@@ -296,7 +296,7 @@
     </plurals>
     <string name="no_support_magic_gift_tips">主播版本不支援該禮物</string>
     <string name="user_protocal_title">聲明與條款</string>
-    <string name="user_protocal_content">您將使用小米直播提供的視訊直播服務，請閱讀<a href="http://zhibo.mi.com/privacy/xieyi/xieyi.html">使用者協定</a>和<a href="http://zhibo.mi.com/privacy/yinsi/yinsi.html">隱私條款</a>，在使用過程中需要連接網路， 讀取連絡人並使用您的位置，您是否同意？</string>
+    <string name="user_protocal_content">您將使用小米直播助手提供的視訊直播服務，請閱讀<a href="http://zhibo.mi.com/privacy/xieyi/xieyi.html">使用者協定</a>和<a href="http://zhibo.mi.com/privacy/yinsi/yinsi.html">隱私條款</a>，在使用過程中需要連接網路， 讀取連絡人並使用您的位置，您是否同意？</string>
     <string name="never_show">不再顯示</string>
     <string name="agree">同意</string>
 </resources>
