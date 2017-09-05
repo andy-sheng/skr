@@ -101,9 +101,11 @@ public class ExtraContainerView extends RelativeLayout implements IComponentView
             mEditInfoTv.setText(ss);
         }
 
-        LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, DisplayUtils.dip2px(26f));
-        lp.addRule(CENTER_IN_PARENT, TRUE);
-        addView(mEditInfoTv, lp);
+        if (indexOfChild(mEditInfoTv) == -1) {
+            LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, DisplayUtils.dip2px(26f));
+            lp.addRule(CENTER_IN_PARENT, TRUE);
+            addView(mEditInfoTv, lp);
+        }
     }
 
     private void hideEditInfo(boolean useAnimation) {
