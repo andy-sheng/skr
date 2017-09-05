@@ -7,7 +7,6 @@ import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -35,22 +34,6 @@ public class CTANotifyFragment extends BaseFragment implements View.OnClickListe
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
         View rootView = inflater.inflate(R.layout.fragment_cta_notify, container, false);
-
-        rootView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-
-            private int i = 0;
-
-            @Override
-            public boolean onPreDraw() {
-                //动画只加载一次
-                if (i == 0) {
-                    startShowInAnimation();
-                    ++i;
-                }
-                return true;
-            }
-        });
-
         StatisticsAlmightyWorker.getsInstance().recordDelayDefault(StatisticsKey.KEY_FACTORY_FIRSTPAGE_VIEW, 1);
 
         return rootView;
@@ -68,22 +51,6 @@ public class CTANotifyFragment extends BaseFragment implements View.OnClickListe
         mCancelButton.setOnClickListener(this);
         mConfirmButton = (TextView) mRootView.findViewById(R.id.agree_button);
         mConfirmButton.setOnClickListener(this);
-    }
-
-
-    /**
-     * 加载显示动画
-     */
-    public void startShowInAnimation() {
-        if (mRootView == null) {
-            return;
-        }
-
-        float translationY = mRootView.getMeasuredHeight();
-        //从底部弹出
-        ObjectAnimator animator = ObjectAnimator.ofFloat(mRootView, "translationY", translationY, 0);
-        animator.setDuration(700);
-        animator.start();
     }
 
     /**
@@ -121,7 +88,7 @@ public class CTANotifyFragment extends BaseFragment implements View.OnClickListe
     }
 
     public static void openFragment(BaseSdkActivity activity, @IdRes int containerId, CTANotifyButtonClickListener listener) {
-        CTANotifyFragment fragment = (CTANotifyFragment) FragmentNaviUtils.addFragment(activity, CTANotifyFragment.class, containerId);
+        CTANotifyFragment fragment = (CTANotifyFragment) FragmentNaviUtils.addFragment(activity, containerId, CTANotifyFragment.class, null, true, false, true);
         fragment.setCTANotifyButtonClickListener(listener);
     }
 

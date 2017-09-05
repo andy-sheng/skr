@@ -12,6 +12,7 @@ import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.wali.live.cta.CTANotifyFragment;
 import com.wali.live.statistics.StatisticsKey;
+import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.callback.SecureCommonCallBack;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.scheme.processor.SchemeProcessor;
@@ -42,6 +43,7 @@ public class SchemeSdkActivity extends BaseSdkActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_bottom_in, 0);
 
         if (PreferenceUtils.getSettingBoolean(this, PreferenceUtils.PREF_KEY_NEED_SHOW_CTA, true)) {
             CTANotifyFragment.openFragment(this, android.R.id.content, new CTANotifyFragment.CTANotifyButtonClickListener() {
@@ -165,6 +167,18 @@ public class SchemeSdkActivity extends BaseSdkActivity {
         } else {
             finish();
         }
+    }
+
+    @Override
+    public void finish() {
+        MyLog.w(TAG, "finish");
+        super.finish();
+        overridePendingTransition(0, R.anim.slide_bottom_out);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     public static void openActivity(Activity activity, Uri uri) {

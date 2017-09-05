@@ -8,6 +8,7 @@ import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.callback.ICommonCallBack;
 import com.mi.live.data.location.Location;
+import com.mi.liveassistant.R;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.cta.CTANotifyFragment;
 import com.wali.live.livesdk.live.LiveSdkActivity;
@@ -50,6 +51,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_bottom_in, 0);
         setTranslucentStatus(this, true);
         setStatusColor(this, true);
 
@@ -214,5 +216,17 @@ public class JumpSdkActivity extends BaseSdkActivity {
         } catch (Exception e) {
             MyLog.e(TAG, "reportLive e", e);
         }
+    }
+
+    @Override
+    public void finish() {
+        MyLog.w(TAG, "finish");
+        super.finish();
+        overridePendingTransition(0, R.anim.slide_bottom_out);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }
