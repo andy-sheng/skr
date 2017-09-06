@@ -47,20 +47,20 @@ public class MilinkStatistics {
             MilinkStatisticsItem item = new SimpleStatisticsItem(date,
                     SimpleStatisticsItem.LIVE_SDK_TYPE,
                     SimpleStatisticsItem.GAME_ACTIVE_BIZTYPE,
-                    key, time);
+                    key, time, 50010);
             upload(item);
         } catch (JSONException e) {
             MyLog.e(TAG, e);
         }
     }
 
-    public void statisticsMiVideoActive(String key, long time) {
+    public void statisticsOtherActive(String key, long time, int channelId) {
         long date = System.currentTimeMillis();
         try {
             MilinkStatisticsItem item = new SimpleStatisticsItem(date,
                     SimpleStatisticsItem.LIVE_SDK_TYPE,
-                    SimpleStatisticsItem.MIVIDEO_ACTIVE_BIZTYPE,
-                    key, time);
+                    SimpleStatisticsItem.OTHER_ACTIVE_BIZTYPE,
+                    key, time, channelId);
             upload(item);
         } catch (JSONException e) {
             MyLog.e(TAG, e);

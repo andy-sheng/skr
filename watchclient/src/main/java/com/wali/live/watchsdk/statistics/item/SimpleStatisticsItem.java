@@ -13,21 +13,23 @@ public class SimpleStatisticsItem extends MilinkStatisticsItem {
     public static final int LIVE_SDK_TYPE = 200;
 
     // 内层数据类型
-    public static final int GAME_ACTIVE_BIZTYPE = LIVE_SDK_TYPE * 1000 + 1;            // 游戏标签tab日活
-    public static final int MIVIDEO_ACTIVE_BIZTYPE = GAME_ACTIVE_BIZTYPE + 1;          // 小米视频日活
+    public static final int GAME_ACTIVE_BIZTYPE = LIVE_SDK_TYPE * 1000 + 1;             // 游戏标签tab日活
+    public static final int OTHER_ACTIVE_BIZTYPE = GAME_ACTIVE_BIZTYPE + 1;             // 其他app通过scheme调用的日活
 
     private static final String PARAM_KEY = "key";
     private static final String PARAM_TIME = "time";
+    private static final String PARAM_CHANNEL = "channel";
 
-    public SimpleStatisticsItem(long date, int type, int bizType, String key, long time) throws JSONException {
+    public SimpleStatisticsItem(long date, int type, int bizType, String key, long time, int channel) throws JSONException {
         super(date, type);
-        generateData(bizType, key, time);
+        generateData(bizType, key, time, channel);
     }
 
-    private void generateData(int bizType, String key, long time) throws JSONException {
+    private void generateData(int bizType, String key, long time, int channel) throws JSONException {
         JSONObject extObject = new JSONObject();
         extObject.put(PARAM_KEY, key);
         extObject.put(PARAM_TIME, time);
+        extObject.put(PARAM_CHANNEL, channel);
 
         mCommonLog = StatisticsProto.CommonLog.newBuilder()
                 .setBizType(bizType)
