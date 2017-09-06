@@ -44,6 +44,8 @@ public class SchemeSdkActivity extends BaseSdkActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTranslucentStatus(this, true);
+        setStatusColor(this, true);
         overridePendingTransition(R.anim.slide_bottom_in, 0);
 
         if (CommonUtils.isNeedShowCtaDialog()) {
