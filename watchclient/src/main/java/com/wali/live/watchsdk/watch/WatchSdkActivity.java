@@ -232,6 +232,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         if (TextUtils.isEmpty(mMyRoomData.getVideoUrl())) {
             getVideoUrlFromServer();
         } else {
+            MyLog.d(TAG, "trySendDataWithServerOnce startPlayer");
             startPlayer();
         }
     }
@@ -1014,6 +1015,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     public void updateVideoUrl(String videoUrl) {
         if (TextUtils.isEmpty(mMyRoomData.getVideoUrl()) && !TextUtils.isEmpty(videoUrl)) {
             mMyRoomData.setVideoUrl(videoUrl);
+            MyLog.d(TAG, "updateVideoUrl startPlayer");
             startPlayer();
         }
     }
