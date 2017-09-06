@@ -76,7 +76,7 @@ public class NavigateHolder extends RepeatHolder {
         mImageViews[i].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mJumpListener.jumpScheme(item.getSchemeUri());
+                jumpItem(item);
             }
         });
 

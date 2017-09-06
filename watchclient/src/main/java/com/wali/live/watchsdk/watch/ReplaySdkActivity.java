@@ -47,7 +47,7 @@ import com.wali.live.video.widget.player.ReplaySeekBar;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
-import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
+import com.wali.live.watchsdk.personinfo.fragment.FloatInfoFragment;
 import com.wali.live.watchsdk.ranking.RankingPagerFragment;
 import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.watchsdk.task.LiveTask;
@@ -82,7 +82,7 @@ import rx.functions.Action1;
  */
 
 public class ReplaySdkActivity extends BaseComponentSdkActivity implements
-        FloatPersonInfoFragment.FloatPersonInfoClickListener, IActionCallBack, IWatchVideoView {
+        FloatInfoFragment.FloatInfoClickListener, IActionCallBack, IWatchVideoView {
     protected final static String TAG = "ReplaySdkActivity";
 
     protected static final int REQUEST_REPLAY = 10000;
@@ -435,11 +435,9 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements
         if (uid <= 0) {
             return;
         }
-//        TODO 打开注释
-//        clearTop();
         //打点
         StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, StatisticsKey.KEY_USERINFO_CARD_OPEN, 1);
-        FloatPersonInfoFragment.openFragment(this, uid, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this, mMyRoomData.getEnterRoomTime());
+        FloatInfoFragment.openFragment(this, uid, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this, mMyRoomData.getEnterRoomTime());
     }
 
     private void startPlayer() {
@@ -508,22 +506,12 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements
     }
 
     @Override
-    public void onClickHomepage(User user) {
-
-    }
-
-    @Override
     public void onClickTopOne(User user) {
 
     }
 
     @Override
     public void onClickMainAvatar(User user) {
-
-    }
-
-    @Override
-    public void onClickSixin(User user) {
 
     }
 

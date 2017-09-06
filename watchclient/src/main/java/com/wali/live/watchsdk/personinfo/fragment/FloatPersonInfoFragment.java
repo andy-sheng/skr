@@ -71,6 +71,7 @@ import java.util.List;
  *
  * @module 个人资料悬浮框
  */
+@Deprecated
 public class FloatPersonInfoFragment extends BaseFragment implements View.OnClickListener, ForbidManagePresenter.IForbidManageView {
     private static final String TAG = FloatPersonInfoFragment.class.getSimpleName();
 
@@ -1208,7 +1209,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
     }
 
     @Override
-    public void onkickViewerDone(long targetId, int errCode) {
+    public void onKickViewerDone(long targetId, int errCode) {
         if (mUser != null && targetId == mUser.getUid()) {
             if (errCode == ErrorCode.CODE_SUCCESS) {
                 ToastUtils.showToast(R.string.kick_viewer_success);

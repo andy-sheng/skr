@@ -71,7 +71,7 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.component.WatchSdkView;
 import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
-import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
+import com.wali.live.watchsdk.personinfo.fragment.FloatInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.ranking.RankingPagerFragment;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
@@ -119,7 +119,7 @@ import static com.wali.live.component.BaseSdkController.MSG_PAGE_UP;
  * Created by lan on 16/11/25.
  */
 public class WatchSdkActivity extends BaseComponentSdkActivity
-        implements FloatPersonInfoFragment.FloatPersonInfoClickListener,
+        implements FloatInfoFragment.FloatInfoClickListener,
         ForbidManagePresenter.IForbidManageProvider, IActionCallBack, IWatchVideoView {
 
     public static final String EXTRA_ROOM_INFO_LIST = "extra_room_info_list";
@@ -187,6 +187,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
         //尝试发送关键数据给服务器,允许即使多次调用，成功后就不再发送。
         if (!isMyRoom() && !check4GNet()) {
+            WatchRoomCharactorManager.getInstance().clear();
             trySendDataWithServerOnce();
         }
     }
@@ -537,7 +538,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         if (uid <= 0) {
             return;
         }
-        FloatPersonInfoFragment.openFragment(this, uid, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this, mMyRoomData.getEnterRoomTime());
+        FloatInfoFragment.openFragment(this, uid, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this, mMyRoomData.getEnterRoomTime());
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
@@ -575,7 +576,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventClass.FeedsVideoEvent event) {
         switch (event.mType) {
-            // onPrepared触发
             case EventClass.FeedsVideoEvent.TYPE_PLAYING:
                 if (mMaskIv.getVisibility() == View.VISIBLE) {
                     mMaskIv.setVisibility(View.GONE);
@@ -732,7 +732,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
             if (roomInfo != null) {
                 updateVideoUrl(roomInfo.getDownStreamUrl());
             }
-            WatchRoomCharactorManager.getInstance().clear();
+            //TODO 这段代码迁移到了switchRoom
+            //WatchRoomCharactorManager.getInstance().clear();
             syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);
             if (mController != null) {
                 mController.postEvent(MSG_ON_LIVE_SUCCESS);
@@ -740,8 +741,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         }
     };
 
-    @Override
-    public void onClickHomepage(User user) {
+//    @Override
+//    public void onClickHomepage(User user) {
 //        TODO 主页去掉
 //        if (user == null || user.getUid() == MyUserInfoManager.getInstance().getUser().getUid()) {
 //            return;
@@ -760,7 +761,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 //            PersonInfoFragment personInfoFragment = (PersonInfoFragment) mPersonInfoFragment;
 //            personInfoFragment.setPersonInfoClickListener(this);
 //        }
-    }
+//    }
 
     @Override
     public void onClickTopOne(User user) {
@@ -780,12 +781,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     public void onClickMainAvatar(User user) {
         //onClickBigAvatar(user);
         //qw 提的需求 点击头像进入主页而不是看大图
-        onClickHomepage(user);
-    }
-
-    @Override
-    public void onClickSixin(User user) {
-
+        //onClickHomepage(user);
     }
 
     @Override
@@ -1082,6 +1078,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         private void switchRoom() {
             if (!isFinishing()) {
                 MyLog.w(TAG, "switch anchor: leave room user=" + mMyRoomData.getUser());
+                // 清除管理信息
+                WatchRoomCharactorManager.getInstance().clear();
                 // 清除房间消息
                 mRoomChatMsgManager.clear();
 

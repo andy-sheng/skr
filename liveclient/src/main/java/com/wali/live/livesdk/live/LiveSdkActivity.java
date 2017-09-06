@@ -94,7 +94,7 @@ import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AppNetworkUtils;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
-import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
+import com.wali.live.watchsdk.personinfo.fragment.FloatInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.ranking.RankingPagerFragment;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
@@ -137,7 +137,7 @@ import static com.wali.live.statistics.StatisticsKey.TIMES;
  * Created by chenyong on 2017/2/8.
  */
 public class LiveSdkActivity extends BaseComponentSdkActivity implements FragmentDataListener, IActionCallBack,
-        FloatPersonInfoFragment.FloatPersonInfoClickListener, ForbidManagePresenter.IForbidManageProvider {
+        FloatInfoFragment.FloatInfoClickListener, ForbidManagePresenter.IForbidManageProvider {
 
     private static final String EXTRA_IS_GAME_LIVE = "extra_is_game_live";
     private static final String EXTRA_LOCATION = "extra_location";
@@ -481,20 +481,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     @Override
-    public void onClickHomepage(User user) {
-    }
-
-    @Override
     public void onClickTopOne(User user) {
     }
 
     @Override
     public void onClickMainAvatar(User user) {
-    }
-
-    @Override
-    public void onClickSixin(User user) {
-
     }
 
     /**
@@ -505,7 +496,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             return;
         }
         StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, StatisticsKey.KEY_USERINFO_CARD_OPEN, 1);
-        FloatPersonInfoFragment.openFragment(this, uid, mMyRoomData.getUid(),
+//        FloatPersonInfoFragment.openFragment(this, uid, mMyRoomData.getUid(),
+//                mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this);
+            FloatInfoFragment.openFragment(this, uid, mMyRoomData.getUid(),
                 mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this);
     }
 
