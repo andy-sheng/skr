@@ -22,9 +22,11 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.EnvelopePresenter;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
+import com.wali.live.watchsdk.component.presenter.TopAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
+import com.wali.live.watchsdk.component.view.TopAreaView;
 import com.wali.live.watchsdk.component.view.WidgetView;
 
 import java.lang.ref.WeakReference;
@@ -53,7 +55,7 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
     protected final AnimationHelper mAnimationHelper = new AnimationHelper();
 
     @Nullable
-    protected View mTopInfoView;
+    protected TopAreaView mTopAreaView;
     @Nullable
     protected View mLiveCommentView;
     @Nullable
@@ -74,7 +76,18 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
     public void setupView() {
         mContentView = $(mParentView, R.id.main_act_container);
         mGiftContinueViewGroup = $(R.id.gift_continue_vg); // 礼物
-        mTopInfoView = $(R.id.live_top_info_view); // 顶部view
+
+        {
+            mTopAreaView = $(R.id.top_area_view);
+            if (mTopAreaView == null) {
+                return;
+            }
+            mTopAreaView.setVisibility(View.VISIBLE);
+            TopAreaPresenter presenter = new TopAreaPresenter(mController,
+                    mController.mMyRoomData, true);
+            registerComponent(mTopAreaView, presenter);
+        }
+
         // 弹幕区
         {
             LiveCommentView view = $(R.id.live_comment_view);
@@ -142,7 +155,7 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
         }
 
         addViewToSet(new int[]{
-                R.id.live_top_info_view,
+                R.id.top_area_view,
                 R.id.bottom_button_view,
                 R.id.live_comment_view,
                 R.id.gift_animation_player_view,
@@ -241,7 +254,7 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
                     if (mInputShow) {
                         value = 1.0f - value;
                     }
-                    mTopInfoView.setAlpha(value);
+                    mTopAreaView.setAlpha(value);
                 }
             }, new AnimatorListenerAdapter() {
                 @Override
@@ -251,16 +264,16 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
                             mLiveCommentView.setVisibility(View.GONE);
                         }
                     } else {
-                        mTopInfoView.setVisibility(View.VISIBLE);
+                        mTopAreaView.setVisibility(View.VISIBLE);
                     }
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     if (mInputShow) {
-                        mTopInfoView.setVisibility(View.GONE);
+                        mTopAreaView.setVisibility(View.GONE);
                     } else {
-                        mTopInfoView.setAlpha(1.0f);
+                        mTopAreaView.setAlpha(1.0f);
                         if (mLiveCommentView.getVisibility() != View.VISIBLE) {
                             mLiveCommentView.setVisibility(View.VISIBLE);
                         }

@@ -92,7 +92,6 @@ import com.wali.live.watchsdk.watch.presenter.push.RoomSystemMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
 import com.wali.live.watchsdk.watch.view.IWatchVideoView;
-import com.wali.live.watchsdk.watchtop.view.WatchTopInfoSingleView;
 import com.wali.live.watchsdk.webview.HalfWebViewActivity;
 import com.wali.live.watchsdk.webview.WebViewActivity;
 
@@ -128,9 +127,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
     // 播放器
     protected VideoPlayerTextureView mVideoView;
-    // 播放器容器
-    protected WatchTopInfoSingleView mWatchTopInfoSingleView;
-    //    protected LiveCommentView mLiveCommentView; //弹幕区view
+
     protected ImageView mCloseBtn;// 关闭按钮
     protected ImageView mRotateBtn;// 关闭
 
@@ -158,7 +155,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     private RoomStatusPresenter mRoomStatusPresenter;
     private ForbidManagePresenter mForbidManagePresenter;
     protected UserInfoPresenter mUserInfoPresenter;
-//    private GameModePresenter mGameModePresenter;
 
     private PhoneStateReceiver mPhoneStateReceiver;
     private RoomSystemMsgPresenter mRoomSystemMsgPresenter;
@@ -286,11 +282,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     }
 
     private void initView() {
-        // 顶部view
-        mWatchTopInfoSingleView = $(R.id.watch_top_info_view);
-        addBindActivityLifeCycle(mWatchTopInfoSingleView, true);
-        mWatchTopInfoSingleView.setMyRoomDataSet(mMyRoomData);
-        mWatchTopInfoSingleView.initViewUseData();
 
         // 封面模糊图
         mMaskIv = $(R.id.mask_iv);
@@ -299,12 +290,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
             url = AvatarUtils.getAvatarUrlByUidTs(mRoomInfo.getPlayerId(), AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, mRoomInfo.getAvatar());
         }
         AvatarUtils.loadAvatarByUrl(mMaskIv, url, false, true, R.drawable.rect_loading_bg_24292d);
-
-        // 初始化弹幕区
-//        mLiveCommentView = $(R.id.comment_rv);
-//        mLiveCommentView.setSoundEffectsEnabled(false);
-//        addBindActivityLifeCycle(mLiveCommentView, true);
-//        mLiveCommentView.setToken(mRoomChatMsgManager.toString());
 
         mVideoView = $(R.id.video_view);
 
@@ -427,17 +412,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         mUserInfoPresenter = new UserInfoPresenter(this, mMyRoomData);
 
         if (mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME) {
-            // 是游戏直播间
-//            mGameModePresenter = new GameModePresenter(this, mMyRoomData);
-//            mGameModePresenter.setGameBarrageViewStub((ViewStub) findViewById(R.id.game_barrage_viewstub));
-//            mGameModePresenter.setGameBottomViewStub((ViewStub) findViewById(R.id.game_bottom_viewstub));
-//            mGameModePresenter.setCommentView(mLiveCommentView);
-//            mGameModePresenter.setWatchTopView(mWatchTopInfoSingleView);
-//            mGameModePresenter.setCloseBtn(mCloseBtn);
-//            mGameModePresenter.setRotateBtn(mRotateBtn);
-//            mGameModePresenter.setBottomContainerView($(R.id.bottom_button_view));
-//            mGameModePresenter.setmTouchPresenter(mTouchPresenter);
-//            addBindActivityLifeCycle(mGameModePresenter, true);
         }
     }
 
@@ -727,6 +701,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         }
         switch (event.type) {
             case RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE:
+                MyLog.d(TAG, "receive TYPE_CHANGE_USER_INFO_COMPLETE");
                 RoomBaseDataModel roomBaseDataModel = event.source;
                 if (roomBaseDataModel != null && !roomBaseDataModel.isFocused()
                         && (mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME)) {
@@ -913,10 +888,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                 EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST));
                 return;
             }
-//            else if (mGameModePresenter != null && mGameModePresenter.ismInputViewShow()) {
-//                mGameModePresenter.hideInputArea();
-//                return;
-//            }
             super.onBackPressed();
         }
     }
@@ -945,12 +916,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     }
 
     protected void orientLandscape() {
-//        if (mLiveCommentView != null) {
-//            mLiveCommentView.orientComment(true);
-//        }
-        if (mWatchTopInfoSingleView != null) {
-            mWatchTopInfoSingleView.onScreenOrientationChanged(true);
-        }
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(true);
         }
@@ -961,26 +926,12 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     }
 
     protected void orientPortrait() {
-//        if (mLiveCommentView != null) {
-//            mLiveCommentView.orientComment(false);
-//        }
-        if (mWatchTopInfoSingleView != null) {
-            mWatchTopInfoSingleView.onScreenOrientationChanged(false);
-        }
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(false);
         }
         if (mController != null) {
             mController.postEvent(MSG_ON_ORIENT_PORTRAIT);
         }
-//        if (mGameModePresenter != null) {
-//            if (mCloseBtn.getVisibility() != View.VISIBLE) {
-//                mCloseBtn.setVisibility(View.VISIBLE);
-//            }
-//            if (mWatchTopInfoSingleView.getVisibility() != View.VISIBLE) {
-//                mWatchTopInfoSingleView.setVisibility(View.VISIBLE);
-//            }
-//        }
         orientCloseBtn(false);
     }
 
@@ -1145,7 +1096,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                 leaveLiveToServer();
 
                 // 重置对应的view
-                mWatchTopInfoSingleView.resetData();
                 mFlyBarrageViewGroup.reset();
                 mGiftAnimationView.reset();
                 mGiftContinueViewGroup.reset();

@@ -8,13 +8,21 @@
     <View
         android:id="@+id/touch_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
-    <com.wali.live.watchsdk.watchtop.view.WatchTopInfoSingleView
+    <com.wali.live.watchsdk.component.view.TopAreaView
+        android:id="@+id/top_area_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/close_btn"
+        android:layout_marginEnd="@dimen/margin_20"
+        android:layout_marginStart="@dimen/margin_20" />
+
+<!--    <com.wali.live.watchsdk.watchtop.view.WatchTopInfoSingleView
         android:id="@+id/watch_top_info_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true" />-->
 
     <!--评论栏-->
     <com.wali.live.watchsdk.component.view.LiveCommentView
@@ -68,7 +76,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="6.67dp"
-        android:src="@drawable/live_icon_rotate_screen"/>
+        android:src="@drawable/live_icon_rotate_screen" />
 
     <ImageView
         android:id="@+id/close_btn"

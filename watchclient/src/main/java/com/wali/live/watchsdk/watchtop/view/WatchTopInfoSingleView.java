@@ -71,6 +71,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by chengsimin on 16/3/31.
  */
+@Deprecated
 public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
     public static final String TAG = "WatchTopInfoSingleView";
 
@@ -232,10 +233,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
             public void onAnimationStart(Animator animation) {
                 mFollowBtnAnimeStart = true;
                 mFollowBtnTv.setLayerType(LAYER_TYPE_HARDWARE, null);
-
-                if (mOriginFollowBtnWidth == 0) {
-                    mOriginFollowBtnWidth = mFollowBtnTv.getWidth();
-                }
+                mOriginFollowBtnWidth = mFollowBtnTv.getLayoutParams().width;
             }
 
             @Override
@@ -274,10 +272,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
             public void onAnimationStart(Animator animation) {
                 mFollowBtnAnimeStart = true;
                 mFollowBtnTv.setLayerType(LAYER_TYPE_HARDWARE, null);
-
-                if (mOriginFollowBtnWidth == 0) {
-                    mOriginFollowBtnWidth = mFollowBtnTv.getWidth();
-                }
+                mOriginFollowBtnWidth = mFollowBtnTv.getLayoutParams().width;
             }
 
             @Override
@@ -289,7 +284,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
         });
     }
 
-    private void clearFollowAnimator() {
+    public void clearAnimator() {
         if (mFollowBtnAnimeStart) {
             mFollowBtnTv.clearAnimation();
             if (mFollowAnimator != null) {
@@ -316,7 +311,6 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
 
     @Override
     public void onUserInfoComplete() {
-        MyLog.d(TAG, "onUserInfoComplete");
         updateTicketView();
         updateOwnerView();
         updateAnchorNickName();
@@ -343,7 +337,6 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
         mLinkUser = null;
         stopAnimation(mShowAnimation);
         stopAnimation(mHideAnimation);
-        clearFollowAnimator();
         adjustOriginalAlpha(1.0f);
         adjustOriginalVisibility(VISIBLE);
         adjustLinkingVisibility(GONE);

@@ -9,7 +9,11 @@ import android.text.TextUtils;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
+import com.base.preference.PreferenceUtils;
+import com.base.utils.CommonUtils;
+import com.wali.live.cta.CTANotifyFragment;
 import com.wali.live.statistics.StatisticsKey;
+import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.callback.SecureCommonCallBack;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.scheme.processor.SchemeProcessor;
@@ -40,13 +44,35 @@ public class SchemeSdkActivity extends BaseSdkActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_bottom_in, 0);
 
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                process();
-            }
-        });
+        if (CommonUtils.isNeedShowCtaDialog()) {
+            CTANotifyFragment.openFragment(this, android.R.id.content, new CTANotifyFragment.CTANotifyButtonClickListener() {
+
+                @Override
+                public void onClickCancelButton() {
+                    finish();
+                }
+
+                @Override
+                public void onClickConfirmButton(boolean neverShow) {
+                    PreferenceUtils.setSettingBoolean(SchemeSdkActivity.this, PreferenceUtils.PREF_KEY_NEED_SHOW_CTA, !neverShow);
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            process();
+                        }
+                    });
+                }
+            });
+        } else {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    process();
+                }
+            });
+        }
     }
 
     private void process() {
@@ -142,6 +168,18 @@ public class SchemeSdkActivity extends BaseSdkActivity {
         } else {
             finish();
         }
+    }
+
+    @Override
+    public void finish() {
+        MyLog.w(TAG, "finish");
+        super.finish();
+        overridePendingTransition(0, R.anim.slide_bottom_out);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     public static void openActivity(Activity activity, Uri uri) {

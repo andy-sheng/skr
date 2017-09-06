@@ -61,6 +61,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by chengsimin on 16/3/31.
  */
+@Deprecated
 public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBindActivityLIfeCycle {
     public static final String TAG = "WatchTopInfoBaseView";
 

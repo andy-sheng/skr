@@ -53,6 +53,7 @@
         <item quantity="one">Give %1$s coin</item>
         <item quantity="other">Give %1$s coins</item>
     </plurals>
+    <string name="ticket_num">coins</string>
     <string name="btn_share">Share with</string>
     <string name="weixin_friend">WeChat</string>
     <string name="moment">Moments</string>
@@ -195,4 +196,5 @@
     <string name="crop_failed">crop failed</string>
     <string name="edit_info_tip">You haven\'t set a nickname. %s to set to make more friends.</string>
     <string name="click_here">Tap here</string>
+    <string name="room_admin">Manager</string>
 </resources>

@@ -53,19 +53,23 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_HIDE_GAME_BARRAGE = MSG_INPUT_FIRST + 7;   // 隐藏 游戏弹幕
     // 弹出页面相关消息
     private static final int MSG_POPUP_FIRST = 31000;
-    public static final int MSG_SHOW_SETTING_PANEL = MSG_POPUP_FIRST;       // 显示 设置面板
-    public static final int MSG_SHOW_MAGIC_PANEL = MSG_POPUP_FIRST + 1;     // 显示 美妆面板
-    public static final int MSG_SHOW_PLUS_PANEL = MSG_POPUP_FIRST + 2;      // 显示 直播加面板
-    public static final int MSG_SHOW_GIFT_PANEL = MSG_POPUP_FIRST + 3;      // 显示 礼物面板
-    public static final int MSG_HIDE_BOTTOM_PANEL = MSG_POPUP_FIRST + 4;    // 隐藏 底部面板
-    public static final int MSG_SHOW_ATMOSPHERE_VIEW = MSG_POPUP_FIRST + 5; // 显示 氛围面板
-    public static final int MSG_SHOE_GAME_ICON = MSG_POPUP_FIRST + 6;       // 展示 游戏中心Icon
-    public static final int MSG_SHOW_GAME_DOWNLOAD = MSG_POPUP_FIRST + 7;   // 展示 游戏中心下载框
-    public static final int MSG_SHOW_SHARE_PANEL = MSG_POPUP_FIRST + 8;     // 显示 分享面板
-    public static final int MSG_SHOW_PERSONAL_INFO = MSG_POPUP_FIRST + 9;   // 显示 个人信息页
-    public static final int MSG_SHOW_FOLLOW_GUIDE = MSG_POPUP_FIRST + 10;   // 显示 游戏引导页面
-    public static final int MSG_FOLLOW_COUNT_DOWN = MSG_POPUP_FIRST + 11;   // 显示 游戏引导页面之前的倒计时
-    public static final int MSG_SHOW_SEND_ENVELOPE = MSG_POPUP_FIRST + 12;  // 显示 发送红包页面
+    public static final int MSG_SHOW_SETTING_PANEL = MSG_POPUP_FIRST;           // 显示 设置面板
+    public static final int MSG_SHOW_MAGIC_PANEL = MSG_POPUP_FIRST + 1;         // 显示 美妆面板
+    public static final int MSG_SHOW_PLUS_PANEL = MSG_POPUP_FIRST + 2;          // 显示 直播加面板
+    public static final int MSG_SHOW_GIFT_PANEL = MSG_POPUP_FIRST + 3;          // 显示 礼物面板
+    public static final int MSG_HIDE_BOTTOM_PANEL = MSG_POPUP_FIRST + 4;        // 隐藏 底部面板
+    public static final int MSG_SHOW_ATMOSPHERE_VIEW = MSG_POPUP_FIRST + 5;     // 显示 氛围面板
+    public static final int MSG_SHOE_GAME_ICON = MSG_POPUP_FIRST + 6;           // 展示 游戏中心Icon
+    public static final int MSG_SHOW_GAME_DOWNLOAD = MSG_POPUP_FIRST + 7;       // 展示 游戏中心下载框
+    public static final int MSG_SHOW_SHARE_PANEL = MSG_POPUP_FIRST + 8;         // 显示 分享面板
+    public static final int MSG_SHOW_PERSONAL_INFO = MSG_POPUP_FIRST + 9;       // 显示 个人信息页
+    public static final int MSG_SHOW_FOLLOW_GUIDE = MSG_POPUP_FIRST + 10;       // 显示 游戏引导页面
+    public static final int MSG_FOLLOW_COUNT_DOWN = MSG_POPUP_FIRST + 11;       // 显示 游戏引导页面之前的倒计时
+    public static final int MSG_SHOW_SEND_ENVELOPE = MSG_POPUP_FIRST + 12;      // 显示 发送红包页面
+    //连麦相关消息
+    private static final int MSG_TOP_VIEW_FIRST = 32000;
+    public static final int MSG_ON_LINK_MIC_START = MSG_TOP_VIEW_FIRST + 1;      //连麦
+    public static final int MSG_ON_LINK_MIC_STOP = MSG_TOP_VIEW_FIRST + 2;      //隐藏连麦
     // 详情播放相关
     private static final int MSG_DETAIL_VIDEO_FIRST = 40000;
     public static final int MSG_UPDATE_LIKE_STATUS = MSG_DETAIL_VIDEO_FIRST;     // 更新 点赞状态

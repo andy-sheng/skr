@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <!--主播信息-->
+    <RelativeLayout
+        android:id="@+id/anchor_info_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/live_bg_head">
+
+        <com.base.image.fresco.BaseImageView
+            android:id="@+id/anchor_iv"
+            android:layout_width="@dimen/view_dimen_100"
+            android:layout_height="@dimen/view_dimen_100" />
+
+        <ImageView
+            android:id="@+id/user_badge_iv"
+            android:layout_width="@dimen/view_dimen_30"
+            android:layout_height="@dimen/view_dimen_30"
+            android:layout_marginStart="@dimen/margin_66"
+            android:layout_marginTop="@dimen/margin_60"
+            android:scaleType="fitStart" />
+
+        <!--主播连麦中时头像右下方的小图标-->
+        <ImageView
+            android:id="@+id/link_anchor_iv"
+            android:layout_width="@dimen/view_dimen_36"
+            android:layout_height="@dimen/view_dimen_36"
+            android:layout_alignBottom="@id/anchor_iv"
+            android:layout_alignEnd="@id/anchor_iv"
+            android:scaleType="fitCenter"
+            android:src="@drawable/link_anchor_icon_connecting"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:id="@+id/anchor_detail_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/view_dimen_30"
+            android:layout_marginStart="@dimen/view_dimen_20"
+            android:layout_marginTop="@dimen/view_dimen_12"
+            android:layout_toEndOf="@id/anchor_iv">
+
+            <TextView
+                android:id="@+id/name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:maxWidth="@dimen/view_dimen_225"
+                android:minWidth="@dimen/view_dimen_75"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/text_size_34" />
+
+            <ImageView
+                android:id="@+id/viewers_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name_tv"
+                android:layout_marginTop="@dimen/view_dimen_12"
+                android:src="@drawable/live_icon_people" />
+
+            <TextView
+                android:id="@+id/viewers_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name_tv"
+                android:layout_marginStart="@dimen/margin_10"
+                android:layout_marginTop="1dp"
+                android:layout_toEndOf="@id/viewers_iv"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_28" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/follow_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/margin_10"
+            android:layout_marginStart="@dimen/margin_10"
+            android:layout_toEndOf="@id/anchor_detail_area"
+            android:background="@drawable/live_icon_follow_bg"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/margin_24"
+            android:paddingRight="@dimen/margin_24"
+            android:text="@string/follow"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_36" />
+
+        <!--连麦主播嘉宾间的连接符、嘉宾的头像及头像右下小图标-->
+        <RelativeLayout
+            android:id="@+id/link_guest_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/anchor_detail_area"
+            android:visibility="gone">
+
+            <com.base.image.fresco.BaseImageView
+                android:id="@+id/guest_iv"
+                android:layout_width="@dimen/view_dimen_100"
+                android:layout_height="@dimen/view_dimen_100"
+                android:layout_centerVertical="true" />
+
+            <ImageView
+                android:id="@+id/link_guest_icon"
+                android:layout_width="@dimen/view_dimen_36"
+                android:layout_height="@dimen/view_dimen_36"
+                android:layout_alignBottom="@id/guest_iv"
+                android:layout_alignEnd="@id/guest_iv"
+                android:scaleType="fitCenter"
+                android:src="@drawable/link_guest_icon_connecting" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <!--观众-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/avatar_rv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_100"
+        android:layout_alignTop="@id/anchor_info_container"
+        android:layout_marginEnd="@dimen/margin_120"
+        android:layout_marginStart="@dimen/view_dimen_20"
+        android:layout_toEndOf="@id/anchor_info_container"
+        android:fadingEdge="none"
+        android:fadingEdgeLength="0dp"
+        android:overScrollMode="never"
+        android:requiresFadingEdge="none" />
+
+    <!--星票-->
+    <RelativeLayout
+        android:id="@+id/ticket_area"
+        android:layout_width="@dimen/view_dimen_300"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/anchor_info_container"
+        android:layout_below="@id/anchor_info_container"
+        android:layout_marginBottom="@dimen/view_dimen_30"
+        android:layout_marginTop="@dimen/view_dimen_30"
+        android:background="@drawable/live_anchor_star_ticket_bg">
+
+        <TextView
+            android:id="@+id/ticket_str_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/margin_20"
+            android:gravity="center_vertical"
+            android:text="@string/ticket_num"
+            android:textColor="@color/color_fed533"
+            android:textSize="@dimen/text_size_32" />
+
+        <TextView
+            android:id="@+id/ticket_num_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="@dimen/margin_20"
+            android:layout_marginEnd="@dimen/margin_20"
+            android:layout_toEndOf="@id/ticket_str_tv"
+            android:drawableEnd="@drawable/live_icon_more_small"
+            android:drawablePadding="@dimen/view_dimen_16"
+            android:ellipsize="none"
+            android:maxLines="1"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/text_size_32" />
+    </RelativeLayout>
+
+    <!--房间管理-->
+    <RelativeLayout
+        android:id="@+id/manager_area"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_dimen_60"
+        android:layout_below="@id/ticket_area"
+        android:layout_marginBottom="@dimen/view_dimen_32"
+        android:background="@drawable/live_anchor_star_ticket_bg"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/manager_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableEnd="@drawable/live_anchor_star_ticket_more"
+            android:drawablePadding="@dimen/view_dimen_16"
+            android:ellipsize="none"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/view_dimen_30"
+            android:paddingRight="@dimen/view_dimen_30"
+            android:text="@string/room_admin"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/text_size_32" />
+    </RelativeLayout>
+
+</RelativeLayout>

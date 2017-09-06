@@ -54,6 +54,7 @@
     <plurals name="contribute_ticket_num">
         <item quantity="other">貢獻%1$s星票</item>
     </plurals>
+    <string name="ticket_num">星票</string>
     <string name="btn_share">分享到</string>
     <string name="weixin_friend">微信</string>
     <string name="moment">朋友圈</string>
@@ -190,4 +191,5 @@
     <string name="crop_failed">裁剪失敗</string>
     <string name="edit_info_tip">您還沒有暱稱，%s修改暱稱結識更多的朋友吧~</string>
     <string name="click_here">點擊這裡</string>
+    <string name="room_admin">房間管理</string>
 </resources>
