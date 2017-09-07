@@ -11,7 +11,6 @@ import com.base.log.MyLog;
 import com.mi.live.data.api.LiveManager;
 import com.wali.live.event.EventClass;
 import com.wali.live.pay.activity.RechargeActivity;
-import com.wali.live.watchsdk.channel.ChannelSdkActivity;
 import com.wali.live.watchsdk.channel.sublist.activity.SubChannelActivity;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeUtils;
@@ -29,7 +28,7 @@ import org.greenrobot.eventbus.EventBus;
  * @module scheme
  * @description Walilive的Uri的逻辑代码
  */
-public class WaliliveProcessor {
+public class WaliliveProcessor extends CommonProcessor {
     private static final String TAG = SchemeConstants.LOG_PREFIX + WaliliveProcessor.class.getSimpleName();
 
     public static boolean process(@NonNull Uri uri, String host, @NonNull RxActivity activity, boolean finishActivity) {
@@ -80,15 +79,6 @@ public class WaliliveProcessor {
         return true;
     }
 
-    public static boolean isLegalPath(Uri uri, String logKey, @NonNull String comparePath) {
-        MyLog.d(TAG, logKey + " uri=" + uri);
-        if (uri == null) {
-            return false;
-        }
-        String path = uri.getPath();
-        return comparePath.equals(path);
-    }
-
     public static void processHostOpenUrl(Uri uri, @NonNull Activity activity) {
         if (!isLegalPath(uri, "processHostOpenUrl", SchemeConstants.PATH_NEW_WINDOW)) {
             return;
@@ -116,7 +106,10 @@ public class WaliliveProcessor {
         VideoDetailSdkActivity.openActivity(activity, RoomInfo.Builder.newInstance(ownerId, feedId, "").build());
     }
 
-    private static void processHostRoom(Uri uri, Activity activity) {
+    /**
+     * 不使用CommonProcessor，因为walilive的room协议更复杂，这里单独处理
+     */
+    protected static void processHostRoom(Uri uri, Activity activity) {
         if (!isLegalPath(uri, "processHostRoom", SchemeConstants.PATH_JOIN)) {
             return;
         }
@@ -139,33 +132,6 @@ public class WaliliveProcessor {
                 .setLiveType(liveType)
                 .build();
         WatchSdkActivity.openActivity(activity, roomInfo);
-    }
-
-    private static void processHostPlayback(Uri uri, Activity activity) {
-        if (!isLegalPath(uri, "processHostPlayback", SchemeConstants.PATH_JOIN)) {
-            return;
-        }
-
-        long playerId = SchemeUtils.getLong(uri, SchemeConstants.PARAM_PLAYER_ID, 0);
-        String liveId = uri.getQueryParameter(SchemeConstants.PARAM_LIVE_ID);
-        String videoUrl = Uri.decode(uri.getQueryParameter(SchemeConstants.PARAM_VIDEO_URL));
-        int liveType = SchemeUtils.getInt(uri, SchemeConstants.PARAM_TYPE, 0);
-
-        RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
-                .setLiveType(liveType)
-                .build();
-        VideoDetailSdkActivity.openActivity(activity, roomInfo);
-    }
-
-    /**
-     * 跳转到频道页面
-     */
-    public static void processHostChannel(Uri uri, Activity activity) {
-        long channelId = SchemeUtils.getLong(uri, SchemeConstants.PARAM_CHANNEL_ID, 0);
-        MyLog.w(TAG, "channel id=" + channelId);
-        if (channelId != 0) {
-            ChannelSdkActivity.openActivity(activity, channelId);
-        }
     }
 
     /**

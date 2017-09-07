@@ -117,17 +117,14 @@ public class SchemeSdkActivity extends BaseSdkActivity {
             return;
         }
 
-        if (scheme.equals(SchemeConstants.SCHEME_LIVESDK)) {
+        if (scheme.equals(SchemeConstants.SCHEME_LIVESDK)
+                || host.equals(SchemeConstants.HOST_ZHIBO_COM)) {
             final int channelId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_CHANNEL, 0);
             String packageName = uri.getQueryParameter(SchemeConstants.PARAM_PACKAGE_NAME);
             String channelSecret = uri.getQueryParameter(SchemeConstants.PARAM_CHANNEL_SECRET);
             if (channelSecret == null) {
                 channelSecret = "";
             }
-
-//                int channelId = mIntent.getIntExtra(EXTRA_CHANNEL_ID, 0);
-//                String packageName = mIntent.getStringExtra(EXTRA_PACKAGE_NAME);
-//                String channelSecret = mIntent.getStringExtra(EXTRA_CHANNEL_SECRET);
 
             MiLiveSdkBinder.getInstance().secureOperate(channelId, packageName, channelSecret,
                     new SecureCommonCallBack() {
@@ -139,7 +136,7 @@ public class SchemeSdkActivity extends BaseSdkActivity {
                                 String key = String.format(StatisticsKey.KEY_VIEW_COUNT, channelId);
                                 MyLog.d(TAG, "scheme process statistics=" + key);
                                 if (!TextUtils.isEmpty(key)) {
-                                    MilinkStatistics.getInstance().statisticsMiVideoActive(key, 1);
+                                    MilinkStatistics.getInstance().statisticsOtherActive(key, 1, channelId);
                                 }
                             } else {
                                 finish();
