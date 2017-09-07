@@ -20,7 +20,7 @@ import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
 import com.wali.live.livesdk.live.image.ClipImageActivity;
-import com.wali.live.livesdk.live.liveshow.LiveComponentController;
+import com.wali.live.livesdk.live.liveshow.ShowLiveController;
 import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.panel.LiveMagicPresenter;
 import com.wali.live.livesdk.live.liveshow.view.panel.LiveMagicPanel;
@@ -42,7 +42,7 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 public class PrepareLiveFragment extends BasePrepareLiveFragment {
     private static final String TAG = "PrepareShowLiveFragment";
     private StreamerPresenter mStreamerPresenter;
-    private LiveComponentController mLiveComponentController;
+    private ShowLiveController mLiveComponentController;
     private ImageView mTurnOverIv;
     private SelectCoverView mCoverView;
     private ImageView mSoundEffectIv;
@@ -228,7 +228,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         mStreamerPresenter = streamerPresenter;
     }
 
-    public void setLiveComponentController(LiveComponentController liveComponentController) {
+    public void setLiveComponentController(ShowLiveController liveComponentController) {
         mLiveComponentController = liveComponentController;
     }
 
@@ -236,7 +236,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             BaseComponentSdkActivity fragmentActivity,
             int requestCode,
             FragmentDataListener listener,
-            LiveComponentController liveComponentController,
+            ShowLiveController liveComponentController,
             StreamerPresenter streamerPresenter, RoomBaseDataModel roomBaseDataModel) {
         PrepareLiveFragment fragment = (PrepareLiveFragment) FragmentNaviUtils.addFragment(fragmentActivity, R.id.main_act_container,
                 PrepareLiveFragment.class, null, true, false, true);

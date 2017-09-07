@@ -32,8 +32,8 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
  *
  * @module 组件控制器, 游戏直播
  */
-public class LiveComponentController extends BaseLiveController {
-    private static final String TAG = "LiveComponentController";
+public class GameLiveController extends BaseLiveController {
+    private static final String TAG = "GameLiveController";
 
     @NonNull
     protected RoomBaseDataModel mMyRoomData; // 房间数据
@@ -52,7 +52,7 @@ public class LiveComponentController extends BaseLiveController {
         return TAG;
     }
 
-    public LiveComponentController(
+    public GameLiveController(
             @NonNull RoomBaseDataModel myRoomData,
             @NonNull LiveRoomChatMsgManager roomChatMsgManager,
             @NonNull StreamerPresenter streamerPresenter) {
@@ -128,7 +128,7 @@ public class LiveComponentController extends BaseLiveController {
 
     @Override
     public BaseSdkView createSdkView(Activity activity) {
-        return new LiveSdkView(activity, this);
+        return new GameLiveSdkView(activity, this);
     }
 
     @Override

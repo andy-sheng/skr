@@ -79,7 +79,9 @@ import com.wali.live.livesdk.live.fragment.AnchorEndLiveFragment;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
 import com.wali.live.livesdk.live.fragment.RecipientsSelectFragment;
 import com.wali.live.livesdk.live.fragment.RoomAdminFragment;
+import com.wali.live.livesdk.live.livegame.GameLiveController;
 import com.wali.live.livesdk.live.livegame.fragment.PrepareLiveFragment;
+import com.wali.live.livesdk.live.liveshow.ShowLiveController;
 import com.wali.live.livesdk.live.presenter.LiveRoomPresenter;
 import com.wali.live.livesdk.live.receiver.ScreenStateReceiver;
 import com.wali.live.watchsdk.task.IActionCallBack;
@@ -161,7 +163,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private static final int MSG_HEARTBEAT_TIMEOUT = 204;           // 心跳超时
     private static final int MSG_ROOM_NOT_EXIT = 205;               // 房间不存在
 
-    public static boolean sRecording = false; //将其变为静态并暴露给外面，用于各种跳转判定
+    public static boolean sRecording = false; // 将其变为静态并暴露给外面，用于各种跳转判定
 
     public static final int REQUEST_CODE_PICK_MANAGER = 1000;
 
@@ -247,7 +249,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
         initData();
         initRoomData();
-
         setupRequiredComponent();
 
         if (!mIsGameLive) {
@@ -287,17 +288,16 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private void setupRequiredComponent() {
         mStreamerPresenter = new StreamerPresenter(mMyRoomData);
         if (mIsGameLive) {
-            mController = new com.wali.live.livesdk.live.livegame.LiveComponentController(
+            mController = new GameLiveController(
                     mMyRoomData, mRoomChatMsgManager, mStreamerPresenter);
         } else {
-            mController = new com.wali.live.livesdk.live.liveshow.LiveComponentController(
+            mController = new ShowLiveController(
                     mMyRoomData, mRoomChatMsgManager, mStreamerPresenter);
         }
         mStreamerPresenter.setComponentController(mController);
         mSdkView = mController.createSdkView(this);
 
         addPresent(mStreamerPresenter);
-
         mAction.registerAction(); // 注册事件，准备可能需要
     }
 
@@ -721,11 +721,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             } else {
                 orientPortrait();
             }
-
-            if (mStreamerPresenter != null) {
-                if (!mIsGameLive) {
-                    mStreamerPresenter.setAngle(event.orientation);
-                }
+            if (mStreamerPresenter != null && !mIsGameLive) {
+                mStreamerPresenter.setAngle(event.orientation);
             }
         }
     }

@@ -58,7 +58,7 @@ import static com.wali.live.component.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
  *
  * @module 秀场直播页面
  */
-public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
+public class ShowLiveSdkView extends BaseSdkView<View, ShowLiveController> {
 
     private final List<View> mHorizontalMoveSet = new ArrayList<>();
 
@@ -77,12 +77,12 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
 
     @Override
     protected String getTAG() {
-        return "LiveSdkView";
+        return "GameLiveSdkView";
     }
 
-    public LiveSdkView(
+    public ShowLiveSdkView(
             @NonNull Activity activity,
-            @NonNull LiveComponentController controller) {
+            @NonNull ShowLiveController controller) {
         super(activity, (ViewGroup) activity.findViewById(android.R.id.content), controller);
         mContentView = $(mParentView, R.id.main_act_container);
         addMissingView();

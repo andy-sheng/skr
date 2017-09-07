@@ -48,7 +48,7 @@ import static com.wali.live.component.BaseSdkController.MSG_SHOW_BARRAGE_SWITCH;
  *
  * @module 游戏直播页面
  */
-public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
+public class GameLiveSdkView extends BaseSdkView<View, GameLiveController> {
 
     private final List<View> mHorizontalMoveSet = new ArrayList<>();
 
@@ -65,10 +65,10 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
 
     @Override
     protected String getTAG() {
-        return "LiveSdkView";
+        return "GameLiveSdkView";
     }
 
-    public LiveSdkView(@NonNull Activity activity, @NonNull LiveComponentController controller) {
+    public GameLiveSdkView(@NonNull Activity activity, @NonNull GameLiveController controller) {
         super(activity, (ViewGroup) activity.findViewById(android.R.id.content), controller);
     }
 

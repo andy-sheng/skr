@@ -34,8 +34,8 @@ import java.util.Arrays;
  *
  * @module 组件控制器, 游戏直播
  */
-public class LiveComponentController extends BaseLiveController {
-    private static final String TAG = "LiveComponentController";
+public class ShowLiveController extends BaseLiveController {
+    private static final String TAG = "GameLiveController";
 
     public static final int[] VIDEO_RATE_360P = new int[]{400, 600, 800};
 
@@ -52,7 +52,7 @@ public class LiveComponentController extends BaseLiveController {
         return TAG;
     }
 
-    public LiveComponentController(
+    public ShowLiveController(
             @NonNull RoomBaseDataModel myRoomData,
             @NonNull LiveRoomChatMsgManager roomChatMsgManager,
             @NonNull StreamerPresenter streamerPresenter) {
@@ -109,7 +109,7 @@ public class LiveComponentController extends BaseLiveController {
 
     @Override
     public BaseSdkView createSdkView(Activity activity) {
-        return new LiveSdkView(activity, this);
+        return new ShowLiveSdkView(activity, this);
     }
 
     @Override
