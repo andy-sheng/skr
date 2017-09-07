@@ -67,6 +67,8 @@ public class DefaultCardHolder extends FixedHolder {
         if (item == null) {
             return;
         }
+        exposureItem(item);
+
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCoverIv.getLayoutParams();
         if (lp == null) {
             lp = new RelativeLayout.LayoutParams(GlobalData.screenWidth - MARGIN * 2, GlobalData.screenWidth - MARGIN * 2);

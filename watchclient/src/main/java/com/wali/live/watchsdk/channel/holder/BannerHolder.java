@@ -8,8 +8,10 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.channel.helper.HolderHelper;
 import com.wali.live.watchsdk.channel.holder.listener.BannerClickListener;
 import com.wali.live.watchsdk.channel.view.ChannelBannerView;
+import com.wali.live.watchsdk.channel.viewmodel.BaseJumpItem;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelBannerViewModel;
 
 /**
@@ -48,12 +50,28 @@ public class BannerHolder extends BaseHolder<ChannelBannerViewModel> implements 
         } else {
             lp.height = (GlobalData.screenWidth - MARGIN * 2) * 300 / 1080;
         }
+
+        for (BaseJumpItem item : mViewModel.getItemDatas()) {
+            exposureItem(item);
+        }
+    }
+
+    /**
+     * 曝光打点
+     */
+    protected void exposureItem(BaseJumpItem item) {
+        MyLog.d(TAG, "exposureItem=" + item.isExposured());
+        if (!item.isExposured()) {
+            HolderHelper.sendExposureCommand(item);
+            item.setIsExposured(true);
+        }
     }
 
     @Override
     public void clickBanner(ChannelBannerViewModel.Banner banner) {
         String url = banner.getLinkUrl();
         if (!TextUtils.isEmpty(url)) {
+            HolderHelper.sendClickCommand(banner);
             mJumpListener.jumpScheme(banner.getLinkUrl());
         } else {
             MyLog.e(TAG, "clickBanner url is empty");

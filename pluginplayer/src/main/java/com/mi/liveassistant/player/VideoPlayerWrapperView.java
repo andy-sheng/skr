@@ -174,9 +174,7 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
     }
 
     private void reconnect() {
-        long currentPosition = mVideoPlayerPresenter.getCurrentPosition();
-        MyLog.w(TAG, "reconnect, currentPosition= " + currentPosition);
-        mVideoPlayerPresenter.seekTo(currentPosition);
+        mVideoPlayerPresenter.reconnect();
     }
 
     @Override

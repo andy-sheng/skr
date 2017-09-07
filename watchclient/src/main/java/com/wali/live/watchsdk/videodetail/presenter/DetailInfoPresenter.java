@@ -159,8 +159,6 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
                     public FeedsInfo call(Integer integer) {
                         Feeds.GetFeedInfoResponse rsp = FeedsInfoUtils.fetchFeedsInfo(feedId, ownerId, false);
                         if (rsp == null || rsp.getRet() != ErrorCode.CODE_SUCCESS) {
-                            //在刷新底部回放、评论
-                            postEvent(MSG_PLAYER_FEEDS_DETAIL, new Params().putItem(new FeedsInfo()));
                             return null;
                         }
                         FeedsInfo outInfo = new FeedsInfo();
@@ -209,7 +207,7 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
                             mMyRoomData.setLiveTitle(outInfo.title);
                             mMyRoomData.setViewerCnt(outInfo.viewerCnt);
                         } catch (Exception e) {
-                            MyLog.e(TAG, "syncFeedsInfo failed, exception=" + e);
+                            MyLog.e(TAG, "parseFeedsInfo failed, exception=" + e);
                         }
                         return outInfo;
                     }
@@ -237,6 +235,7 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
                         } else {
                             MyLog.d(TAG, "feedsInfo failed");
                             postEvent(MSG_UPDATE_START_TIME, new Params().putItem(0l));
+                            postEvent(MSG_PLAYER_FEEDS_DETAIL, new Params().putItem(new FeedsInfo())); // 在刷新底部回放、评论
                         }
                     }
                 }, new Action1<Throwable>() {

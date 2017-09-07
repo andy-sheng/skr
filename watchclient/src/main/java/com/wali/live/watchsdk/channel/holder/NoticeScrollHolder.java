@@ -11,6 +11,7 @@ import com.base.log.MyLog;
 import com.base.utils.date.DateTimeUtils;
 import com.base.utils.display.DisplayUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.channel.helper.HolderHelper;
 import com.wali.live.watchsdk.channel.view.IScrollListener;
 import com.wali.live.watchsdk.channel.view.RepeatScrollView;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelNoticeViewModel;
@@ -86,6 +87,7 @@ public class NoticeScrollHolder extends FixedHolder {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(viewModel.getAllViewUri())) {
+                    HolderHelper.sendClickCommand(viewModel.getRecommendTag());
                     mJumpListener.jumpScheme(viewModel.getAllViewUri());
                 } else {
                     MyLog.e(TAG, "bindForecastViewModel schemeUrl is empty");

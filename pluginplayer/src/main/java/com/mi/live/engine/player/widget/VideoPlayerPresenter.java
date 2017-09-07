@@ -93,7 +93,7 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     private Surface mSurface;
     private Paint mClearPaint;
     private boolean mIsLandscape = false;
-    private boolean mRealTime = false;
+    private boolean mRealTime = true;
     private long mTransferObserver = 0;
     private PlayerWorkingMode mPlayerMode = PlayerWorkingMode.PlayerWorkingLipSyncMode;
     private boolean mIsReconnectEnable = true;

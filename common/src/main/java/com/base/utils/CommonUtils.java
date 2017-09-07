@@ -1931,4 +1931,13 @@ public abstract class CommonUtils {
         }
     }
 
+    /**
+     * 是否是工信部的包
+     *
+     * @return
+     */
+    public static boolean isNeedShowCtaDialog() {
+        return "5005_1_android".equalsIgnoreCase(Constants.ReleaseChannel)
+                && PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceUtils.PREF_KEY_NEED_SHOW_CTA, true);
+    }
 }

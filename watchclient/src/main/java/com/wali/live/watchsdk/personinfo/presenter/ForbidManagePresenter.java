@@ -156,7 +156,7 @@ public class ForbidManagePresenter implements Presenter {
                     public void call(Integer result) {
                         IForbidManageView kickManageView;
                         if ((kickManageView = mForbidManageViewRef.get()) != null) {
-                            kickManageView.onkickViewerDone(kickedId, result);
+                            kickManageView.onKickViewerDone(kickedId, result);
                         }
                         MyLog.d(TAG, "kickViewer result=" + result);
                     }
@@ -166,7 +166,7 @@ public class ForbidManagePresenter implements Presenter {
                         MyLog.e(TAG, "kickViewer exception=" + throwable);
                         IForbidManageView kickManageView;
                         if ((kickManageView = mForbidManageViewRef.get()) != null) {
-                            kickManageView.onkickViewerDone(kickedId, ERR_CODE_FAILED);
+                            kickManageView.onKickViewerDone(kickedId, ERR_CODE_FAILED);
                         }
                     }
                 });
@@ -237,7 +237,7 @@ public class ForbidManagePresenter implements Presenter {
 
         void onCancelForbidSpeakDone(long targetId, int errCode);
 
-        void onkickViewerDone(long targetId, int errCode);
+        void onKickViewerDone(long targetId, int errCode);
 
         void onBlockViewer(long targetId, int errCode);
     }
