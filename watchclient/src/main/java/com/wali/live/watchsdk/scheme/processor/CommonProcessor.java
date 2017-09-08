@@ -9,7 +9,6 @@ import com.wali.live.watchsdk.channel.ChannelSdkActivity;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeUtils;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
-import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 /**
@@ -28,22 +27,6 @@ public class CommonProcessor {
         }
         String path = uri.getPath();
         return comparePath.equals(path);
-    }
-
-    protected static void processHostRoom(Uri uri, Activity activity) {
-        if (!isLegalPath(uri, "processHostRoom", SchemeConstants.PATH_JOIN)) {
-            return;
-        }
-
-        String liveId = uri.getQueryParameter(SchemeConstants.PARAM_LIVE_ID);
-        long playerId = SchemeUtils.getLong(uri, SchemeConstants.PARAM_PLAYER_ID, 0);
-        String videoUrl = uri.getQueryParameter(SchemeConstants.PARAM_VIDEO_URL);
-        int liveType = SchemeUtils.getInt(uri, SchemeConstants.PARAM_TYPE, 0);
-
-        RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
-                .setLiveType(liveType)
-                .build();
-        WatchSdkActivity.openActivity(activity, roomInfo);
     }
 
     protected static void processHostPlayback(Uri uri, Activity activity) {

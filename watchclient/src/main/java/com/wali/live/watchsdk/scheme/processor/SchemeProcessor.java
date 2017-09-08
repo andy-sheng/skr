@@ -7,7 +7,21 @@ import android.text.TextUtils;
 
 import com.base.activity.RxActivity;
 import com.base.log.MyLog;
+import com.mi.live.data.api.request.RoomInfoRequest;
+import com.mi.live.data.data.LiveShow;
+import com.mi.live.data.manager.UserInfoManager;
+import com.wali.live.proto.LiveProto.RoomInfoRsp;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
+import com.wali.live.watchsdk.scheme.SchemeUtils;
+import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
+import com.wali.live.watchsdk.watch.WatchSdkActivity;
+import com.wali.live.watchsdk.watch.model.RoomInfo;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by lan on 16/10/26.
@@ -30,7 +44,7 @@ public class SchemeProcessor extends CommonProcessor {
         switch (host) {
             case SchemeConstants.HOST_ROOM:
                 processHostRoom(uri, activity);
-                break;
+                return true;
             case SchemeConstants.HOST_PLAYBACK:
                 processHostPlayback(uri, activity);
                 break;
@@ -52,7 +66,7 @@ public class SchemeProcessor extends CommonProcessor {
     /**
      * 使用action模拟正常livesdk的path
      */
-    private static void processHostLivesdk(Uri uri, @NonNull Activity activity) {
+    private static void processHostLivesdk(Uri uri, @NonNull RxActivity activity) {
         String action = uri.getQueryParameter(SchemeConstants.PARAM_ACTION);
         switch (action) {
             case SchemeConstants.HOST_ROOM:
@@ -65,5 +79,99 @@ public class SchemeProcessor extends CommonProcessor {
                 processHostChannel(uri, activity);
                 break;
         }
+    }
+
+    private static void processHostRoom(Uri uri, final RxActivity activity) {
+        if (!isLegalPath(uri, "processHostRoom", SchemeConstants.PATH_JOIN)) {
+            return;
+        }
+
+        final String liveId = uri.getQueryParameter(SchemeConstants.PARAM_LIVE_ID);
+        final long playerId = SchemeUtils.getLong(uri, SchemeConstants.PARAM_PLAYER_ID, 0);
+        String videoUrl = uri.getQueryParameter(SchemeConstants.PARAM_VIDEO_URL);
+        int liveType = SchemeUtils.getInt(uri, SchemeConstants.PARAM_TYPE, 0);
+
+        if (!TextUtils.isEmpty(liveId)) {
+            MyLog.w(TAG, "processHostRoom roomInfoRequest");
+            Observable.just(0)
+                    .map(new Func1<Integer, RoomInfoRsp>() {
+                        @Override
+                        public RoomInfoRsp call(Integer integer) {
+                            return new RoomInfoRequest(playerId, liveId).syncRsp();
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(activity.<RoomInfoRsp>bindUntilEvent())
+                    .subscribe(new Action1<RoomInfoRsp>() {
+                        @Override
+                        public void call(RoomInfoRsp rsp) {
+                            if (rsp != null) {
+                                MyLog.w(TAG, "roomInfoRequest enter");
+                                if (rsp.hasDownStreamUrl() && !TextUtils.isEmpty(rsp.getDownStreamUrl())) {
+                                    MyLog.w(TAG, "roomInfoRequest enterWatch success");
+                                    jumpToWatchActivity(playerId, liveId, rsp.getType(), rsp.getDownStreamUrl(), activity);
+                                } else if (rsp.hasPlaybackUrl() && !TextUtils.isEmpty(rsp.getPlaybackUrl())) {
+                                    MyLog.w(TAG, "roomInfoRequest enterVideoDetail success");
+                                    jumpToVideoDetailActivity(playerId, liveId, rsp.getType(), rsp.getPlaybackUrl(), activity);
+                                }
+                            }
+                            activity.finish();
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            MyLog.e(TAG, "processHostRoom=" + throwable);
+                            activity.finish();
+                        }
+                    });
+        } else {
+            queryRoomInfo(playerId, activity);
+        }
+    }
+
+    private static void queryRoomInfo(final long playerId, @NonNull final RxActivity activity) {
+        MyLog.w(TAG, "processHostRoom queryRoomInfo");
+        Observable.just(0)
+                .map(new Func1<Integer, LiveShow>() {
+                    @Override
+                    public LiveShow call(Integer i) {
+                        return UserInfoManager.getLiveShowByUserId(playerId);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .compose(activity.<LiveShow>bindUntilEvent())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<LiveShow>() {
+                    @Override
+                    public void call(LiveShow liveShow) {
+                        if (liveShow != null && !TextUtils.isEmpty(liveShow.getLiveId())) {
+                            MyLog.w(TAG, "queryRoomInfo success");
+                            jumpToWatchActivity(playerId, liveShow.getLiveId(), liveShow.getLiveType(),
+                                    liveShow.getUrl(), activity);
+                        }
+                        activity.finish();
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, "queryRoomInfo failed=" + throwable);
+                        activity.finish();
+                    }
+                });
+    }
+
+    private static void jumpToWatchActivity(long playerId, String liveId, int liveType, String videoUrl, @NonNull Activity activity) {
+        RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
+                .setLiveType(liveType)
+                .build();
+        WatchSdkActivity.openActivity(activity, roomInfo);
+    }
+
+    protected static void jumpToVideoDetailActivity(long playerId, String liveId, int liveType, String videoUrl, @NonNull Activity activity) {
+        RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
+                .setLiveType(liveType)
+                .build();
+        VideoDetailSdkActivity.openActivity(activity, roomInfo);
     }
 }
