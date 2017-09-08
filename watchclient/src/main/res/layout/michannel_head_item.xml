@@ -2,15 +2,22 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:clickable="true"
-    android:layout_height="@dimen/view_dimen_130">
+    android:layout_height="@dimen/view_dimen_130"
+    android:clickable="true">
+
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/head_iv"
+        android:layout_width="@dimen/margin_66"
+        android:layout_height="@dimen/margin_66"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/channel_side_margin"/>
 
     <TextView
         android:id="@+id/head_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/head_iv"
         android:layout_marginLeft="@dimen/channel_side_margin"
         android:text="123"
         android:textColor="@color/color_black_trans_90"
@@ -24,9 +31,9 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="6.67dp"
         android:layout_marginRight="@dimen/margin_20"
-        android:gravity="right|center_vertical"
         android:layout_toRightOf="@+id/head_tv"
         android:drawableRight="@drawable/more_right_arrow_bg"
+        android:gravity="right|center_vertical"
         android:padding="3.33dp"
         android:text="@string/more"
         android:textColor="@color/color_black_tran_70"

@@ -38,12 +38,18 @@ message UiTemplateUserInfo{
     repeated UserInfoItemData itemDatas     = 1;
     optional string headerName              = 2;//header的名字
     optional string headerViewAllUri        = 3;//查看全部的uri，如果没有这个字段不展示查看全部
-    optional string subHeaderName = 4; //副标题
+    optional uint32 headerUiType            = 4; //header样式,默认0=老样式,1=头条有正副标题样式,2=header name+">"
+    optional string header_icon             = 5; //header图标(字段为空且headerUiType=3时，客户端加本地默认图标)
+    optional string headerViewAllText       = 6; //查看全部uri跳转的文案
+
 }
 
 message UserInfoItemData {
-    optional UserInfo userInfo      = 1; //用户资料
-    optional string jumpSchemeUri   = 2; //跳转的schemeUri
+    optional UserInfo userInfo         = 1; //用户资料
+    optional string jumpSchemeUri      = 2; //跳转的schemeUri
+    optional string desc               = 3; //描述，如世姐赛区
+    optional string desc_bg_color      = 4; //描述底色
+    optional string avatar_layer_color = 5; //头像圆圈颜色
 }
 
 message UserInfo{
@@ -102,6 +108,8 @@ message UiTemplateLiveOrReplayInfo {
     optional string headerViewAllUri    =3;//查看全部的uri，如果没有这个字段不展示查看全部
     optional string subHeaderName       =4;//header副标题
     optional uint32 headerUiType        =5;//header样式,默认0=老样式,1=头条有正副标题样式 2=header嵌在封面左上角
+    optional string header_icon         = 6; //header图标(字段为空且headerUiType=3时，客户端加本地默认图标)
+    optional string headerViewAllText   = 7; //查看全部uri跳转的文案
 }
 
 message LiveOrReplayItemInfo {
@@ -120,6 +128,8 @@ message LiveOrReplayItemInfo {
     optional MiddleInfo middle              = 13;//封面中间文本
     repeated RichText label                 = 14;//标签[目前只有一个，考虑会扩展为多个，定义为repeated]
     optional uint32 distance       = 15;//距离，单位：米[样式7距离>0时，右下角优先展示距离]
+    optional uint32 width          = 16; //图片或者小视频宽度
+    optional uint32 height         = 17; //图片或者小视频高度
 }
 
 //富文本信息
@@ -199,6 +209,9 @@ message VideoInfo {
     required string id          = 1; //小视频id
     optional uint64 view_count  = 2; //小视频观看次数
     optional UserInfo user_info = 3; //用户资料
+    optional uint64 duration    = 4; //视频时长，单位ms
+    optional uint64 like_count  = 5; //点赞数
+    optional bool is_liked      = 6; //是否已经赞过
 }
 
 //type=20, 27, 30（圈子新增）
@@ -240,6 +253,27 @@ message UiTemplateRanking {
 message RankingItemData {
     optional UserInfo userInfo = 1; //用户资料
     optional string jumpSchemeUri = 2; //item跳转schemeUri
+}
+
+/****************************************************************
+  UiTemplatePageHeader
+  type = 39
+****************************************************************/
+message UiTemplatePageHeader {
+    optional string cover_url         = 1; //封面
+    optional string cover_scheme_uri  = 2; //点击封面跳转scheme
+    optional string video_url         = 3; //视频播放地址
+    optional string video_cover_url   = 4; //视频封面地址
+    optional string video_scheme_uri  = 5; //点击视频区域跳转scheme
+    repeated NavigationData navi_data = 6; //导航数据
+}
+
+//uitype=?
+message UiTemplateHeader {
+    optional string title         = 1; //标题
+    optional string subTitle      = 2; //副标题
+    optional string jumpSchemeUri = 3;
+    optional uint32 uiTypeAttach  = 4; //附属的uitype，用于下一个Item内容不识别时，header和Item需同时丢弃
 }
 
 // ======== recommendflag milink 打点 =======

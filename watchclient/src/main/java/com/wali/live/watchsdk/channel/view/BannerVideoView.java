@@ -22,10 +22,6 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel.BaseLiveItem;
 
-import org.greenrobot.eventbus.EventBus;
-
-import butterknife.ButterKnife;
-
 /**
  * Created by lan on 16/9/8.
  *
@@ -45,7 +41,6 @@ public class BannerVideoView extends RelativeLayout implements IPlayerCallBack {
     public <V extends View> V $(int resId) {
         return (V) findViewById(resId);
     }
-
 
     private Runnable mVideoRunnable = new Runnable() {
         @Override
@@ -71,8 +66,7 @@ public class BannerVideoView extends RelativeLayout implements IPlayerCallBack {
 
     public void init() {
         inflate(getContext(), R.layout.video_banner_view, this);
-        ButterKnife.bind(this);
-
+        initView();
         mVideoView.setVideoTransMode(VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE);
     }
 
@@ -113,8 +107,7 @@ public class BannerVideoView extends RelativeLayout implements IPlayerCallBack {
         bindTextView(mTypeTv, item.getUpRightText());
         FrescoWorker.loadImage(mBannerIv,
                 ImageFactory.newHttpImage(item.getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_LARGE))
-                        .build()
-        );
+                        .build());
         postVideoRunnable();
     }
 
@@ -188,21 +181,13 @@ public class BannerVideoView extends RelativeLayout implements IPlayerCallBack {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         MyLog.e(TAG, "onAttachedToWindow");
-        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         MyLog.e(TAG, "onDetachedFromWindow");
-        unregisterEventBus();
         removeVideoRunnable();
-    }
-
-    private void unregisterEventBus() {
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
     }
 
     protected void bindTextView(TextView tv, String text) {

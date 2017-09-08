@@ -287,7 +287,6 @@ public abstract class RepeatHolder extends FixedHolder {
                 jumpItem(item);
             }
         });
-
         boolean hasLabel = bindLabel(item.getLabel(), item.getNameText(), mTextViews[i]);
 
         // 底部有label，label是可以点击的，显示在底部文字开始的地方，那么整个区域就不再响应点击

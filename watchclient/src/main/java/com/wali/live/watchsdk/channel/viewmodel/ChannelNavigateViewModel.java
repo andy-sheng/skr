@@ -15,7 +15,7 @@ import java.util.List;
  * @description 频道一文一图数据模型
  */
 public class ChannelNavigateViewModel extends ChannelViewModel<ChannelItem> {
-    private List<NavigateItem> mItemDatas;
+    protected List<NavigateItem> mItemDatas;
 
     /**
      * 私有构造函数用于构造测试数据
@@ -50,7 +50,7 @@ public class ChannelNavigateViewModel extends ChannelViewModel<ChannelItem> {
         parseItem(protoItem.getItemDatasList());
     }
 
-    private void parseItem(List<CommonChannelProto.NavigationData> protoOneItemList) {
+    protected void parseItem(List<CommonChannelProto.NavigationData> protoOneItemList) {
         if (mItemDatas == null) {
             mItemDatas = new ArrayList();
         }
