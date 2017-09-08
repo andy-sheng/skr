@@ -56,6 +56,14 @@ public class SchemeProcessor extends CommonProcessor {
             case SchemeConstants.HOST_CHANNEL:
                 processHostChannel(uri, activity);
                 break;
+            case SchemeConstants.HOST_RECOMMEND:
+                if (isLegalPath(uri, "processHostSubList", SchemeConstants.PATH_SUB_LIST)) {
+                    processHostSubList(uri, activity);
+                } else {
+                    //小视频二级页暂时不考虑
+                    return false;
+                }
+                break;
             case SchemeConstants.HOST_ZHIBO_COM:
                 processHostLivesdk(uri, activity);
                 break;
@@ -82,6 +90,9 @@ public class SchemeProcessor extends CommonProcessor {
                 break;
             case SchemeConstants.HOST_CHANNEL:
                 processHostChannel(uri, activity);
+                break;
+            case SchemeConstants.HOST_RECOMMEND:
+                processHostSubList(uri, activity);
                 break;
         }
     }

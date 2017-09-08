@@ -321,8 +321,6 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                 "&type=%s",
                         playerId, liveId, url, type);
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                // intent.putExtra("extra_channel_id", 50001);
-                // intent.putExtra("extra_package_name", "com.wali.live.sdk.manager.demo");
                 mActivity.startActivity(intent);
             }
         }));
@@ -332,8 +330,6 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             public void run() {
                 String uri = "livesdk://channel?channel=50001&package_name=com.wali.live.sdk.manager.demo&channel_id=201";
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                // intent.putExtra("extra_channel_id", 50001);
-                // intent.putExtra("extra_package_name", "com.wali.live.sdk.manager.demo");
                 mActivity.startActivity(intent);
             }
         }));
@@ -342,6 +338,42 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             @Override
             public void run() {
                 MiLiveSdkController.getInstance().statistic("sdk_view-50010", 1, null);
+            }
+        }));
+
+        mDataList.add(new Bean("四频道美女(小米视频7193)", new Runnable() {
+            @Override
+            public void run() {
+                String uri = "livesdk://recommend/sublist?channel=50014&package_name=com.miui.video&id=7193&title=%e7%be%8e%e5%a5%b3&channelid=19";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                mActivity.startActivity(intent);
+            }
+        }));
+
+        mDataList.add(new Bean("四频道歌手(小米视频7190)", new Runnable() {
+            @Override
+            public void run() {
+                String uri = "livesdk://recommend/sublist?channel=50014&package_name=com.miui.video&id=7190&title=%e6%ad%8c%e6%89%8b&channelid=19";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                mActivity.startActivity(intent);
+            }
+        }));
+
+        mDataList.add(new Bean("四频道小米视频美女主播(小米视频100228)", new Runnable() {
+            @Override
+            public void run() {
+                String uri = "livesdk://recommend/sublist?channel=50014&package_name=com.miui.video&id=100228&title=%E5%B0%8F%E7%B1%B3%E8%A7%86%E9%A2%91%E7%BE%8E%E5%A5%B3%E4%B8%BB%E6%92%AD&channelid=100228";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                mActivity.startActivity(intent);
+            }
+        }));
+
+        mDataList.add(new Bean("四频道世界小姐(小米视频101015)", new Runnable() {
+            @Override
+            public void run() {
+                String uri = "livesdk://channel?channel=50014&package_name=com.miui.video&title=%e4%b8%96%e7%95%8c%e5%b0%8f%e5%a7%90&channel_id=101015";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                mActivity.startActivity(intent);
             }
         }));
     }

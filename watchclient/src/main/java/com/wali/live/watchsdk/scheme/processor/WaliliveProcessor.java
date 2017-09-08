@@ -11,7 +11,6 @@ import com.base.log.MyLog;
 import com.mi.live.data.api.LiveManager;
 import com.wali.live.event.EventClass;
 import com.wali.live.pay.activity.RechargeActivity;
-import com.wali.live.watchsdk.channel.sublist.activity.SubChannelActivity;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeUtils;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
@@ -132,24 +131,6 @@ public class WaliliveProcessor extends CommonProcessor {
                 .setLiveType(liveType)
                 .build();
         WatchSdkActivity.openActivity(activity, roomInfo);
-    }
-
-    /**
-     * 跳转到频道二级页面
-     */
-    public static void processHostSubList(Uri uri, @NonNull Activity activity) {
-        int id = Integer.valueOf(uri.getQueryParameter(SchemeConstants.PARAM_LIST_ID));
-        String title = Uri.decode(uri.getQueryParameter(SchemeConstants.PARAM_LIST_TITLE));
-        int channelId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_LIST_CHANNEL_ID, 0);
-
-        String key = uri.getQueryParameter(SchemeConstants.PARAM_LIST_KEY);
-
-        int keyId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_LIST_KEY_ID, 0);
-        int animation = SchemeUtils.getInt(uri, SchemeConstants.PARAM_LIST_ANIMATION, 0);
-        int source = SchemeUtils.getInt(uri, SchemeConstants.PARAM_LIST_SOURCE, 0);
-        int select = SchemeUtils.getInt(uri, SchemeConstants.PARAM_SELECT, 0);
-
-        SubChannelActivity.openActivity(activity, id, title, channelId, key, keyId, animation, source, select);
     }
 
     /**

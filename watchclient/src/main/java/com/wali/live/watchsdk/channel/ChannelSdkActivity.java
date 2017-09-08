@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.base.activity.BaseSdkActivity;
@@ -31,15 +32,18 @@ import java.util.List;
  */
 public class ChannelSdkActivity extends BaseSdkActivity implements IChannelView {
     private static final String EXTRA_CHANNEL_ID = "extra_channel_id";
+    private static final String EXTRA_TITLE = "extra_title";
 
     protected BackTitleBar mBackTitleBar;
+
     protected SwipeRefreshLayout mRefreshLayout;
     protected RecyclerView mRecyclerView;
     protected LinearLayoutManager mLayoutManager;
     protected ChannelRecyclerAdapter mRecyclerAdapter;
 
-    protected IChannelPresenter mPresenter;
-    protected long mChannelId = 0;
+    private IChannelPresenter mPresenter;
+    private long mChannelId = 0;
+    private String mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +64,16 @@ public class ChannelSdkActivity extends BaseSdkActivity implements IChannelView 
             return;
         }
         mChannelId = data.getLongExtra(EXTRA_CHANNEL_ID, 0);
+        mTitle = data.getStringExtra(EXTRA_TITLE);
     }
 
     private void initViews() {
         mBackTitleBar = $(R.id.title_bar);
-        mBackTitleBar.setTitle(R.string.michannel_type_live);
+        if (TextUtils.isEmpty(mTitle)) {
+            mBackTitleBar.setTitle(R.string.michannel_type_live);
+        } else {
+            mBackTitleBar.setTitle(mTitle);
+        }
         mBackTitleBar.getBackBtn().setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -72,6 +81,7 @@ public class ChannelSdkActivity extends BaseSdkActivity implements IChannelView 
                         finish();
                     }
                 });
+
         mRefreshLayout = $(R.id.swipe_refresh_layout);
         mRecyclerView = $(R.id.recycler_view);
 
@@ -132,9 +142,10 @@ public class ChannelSdkActivity extends BaseSdkActivity implements IChannelView 
         }
     }
 
-    public static void openActivity(@NonNull Activity activity, long channelId) {
+    public static void openActivity(@NonNull Activity activity, long channelId, String title) {
         Intent intent = new Intent(activity, ChannelSdkActivity.class);
         intent.putExtra(EXTRA_CHANNEL_ID, channelId);
+        intent.putExtra(EXTRA_TITLE, title);
         activity.startActivity(intent);
     }
 }
