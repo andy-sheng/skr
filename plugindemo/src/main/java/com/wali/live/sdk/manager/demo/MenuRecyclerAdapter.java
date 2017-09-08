@@ -298,7 +298,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             @Override
             public void run() {
                 String uri = "livesdk://room/join?channel=50001&package_name=com.wali.live.sdk.manager.demo" +
-                        "&playerid=2320964965&liveid=2320964965_1504851478";
+                        "&playerid=22869193";
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                 // intent.putExtra("extra_channel_id", 50001);
                 // intent.putExtra("extra_package_name", "com.wali.live.sdk.manager.demo");

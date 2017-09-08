@@ -14,7 +14,6 @@ import com.wali.live.proto.LiveProto.RoomInfoRsp;
 public class RoomInfoRequest extends BaseRequest {
     private RoomInfoReq.Builder mBuilder = RoomInfoReq.newBuilder();
 
-
     public RoomInfoRequest(long zuid, String liveId) {
         this(zuid, liveId, false);
     }
