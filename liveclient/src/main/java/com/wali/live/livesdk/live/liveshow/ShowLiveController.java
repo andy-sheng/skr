@@ -1,6 +1,5 @@
 package com.wali.live.livesdk.live.liveshow;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,7 +7,6 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.base.activity.BaseSdkActivity;
-import com.base.fragment.FragmentDataListener;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
@@ -21,11 +19,8 @@ import com.mi.live.engine.streamer.GalileoStreamer;
 import com.mi.live.engine.streamer.IStreamer;
 import com.mi.live.engine.streamer.StreamerConfig;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
-import com.wali.live.component.BaseSdkView;
 import com.wali.live.livesdk.live.component.BaseLiveController;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
-import com.wali.live.livesdk.live.liveshow.fragment.PrepareLiveFragment;
-import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 
 import java.util.Arrays;
 
@@ -67,16 +62,6 @@ public class ShowLiveController extends BaseLiveController {
     }
 
     @Override
-    public void enterPreparePage(
-            @NonNull BaseComponentSdkActivity activity,
-            int requestCode,
-            FragmentDataListener listener) {
-        MyLog.w(TAG, "prepareShowLive");
-        PrepareLiveFragment.openFragment(activity, requestCode, listener, this, mStreamerPresenter, mMyRoomData);
-        mRoomChatMsgManager.setIsGameLiveMode(false);
-    }
-
-    @Override
     public void createStreamer(BaseSdkActivity activity, @NonNull View surfaceView, int clarity, boolean isMute, Intent intent) {
         MyLog.w(TAG, "create streamer");
         StreamerConfig.Builder builder = new StreamerConfig.Builder();
@@ -105,11 +90,6 @@ public class ShowLiveController extends BaseLiveController {
         mStreamerPresenter.setStreamer(streamer);
         mStreamerPresenter.setDisplayPreview(surfaceView);
         MyLog.w(TAG, "create streamer over");
-    }
-
-    @Override
-    public BaseSdkView createSdkView(Activity activity) {
-        return new ShowLiveSdkView(activity, this);
     }
 
     @Override

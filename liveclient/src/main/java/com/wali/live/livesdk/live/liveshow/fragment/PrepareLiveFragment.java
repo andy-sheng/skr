@@ -1,26 +1,31 @@
 package com.wali.live.livesdk.live.liveshow.fragment;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.base.dialog.MyAlertDialog;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
+import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.ComponentController;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
 import com.wali.live.livesdk.live.image.ClipImageActivity;
-import com.wali.live.livesdk.live.liveshow.ShowLiveController;
 import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.panel.LiveMagicPresenter;
 import com.wali.live.livesdk.live.liveshow.view.panel.LiveMagicPanel;
@@ -32,7 +37,6 @@ import com.wali.live.livesdk.live.view.SelectCoverView;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
-import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 
 /**
  * Created by yangli on 2017/3/7.
@@ -42,8 +46,15 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 public class PrepareLiveFragment extends BasePrepareLiveFragment {
     private static final String TAG = "PrepareShowLiveFragment";
     private StreamerPresenter mStreamerPresenter;
-    private ShowLiveController mLiveComponentController;
+    private ComponentController mController;
+
+    private int mQualityIndex = MEDIUM_CLARITY;
+    private CharSequence[] mQualityArray;
+
+    private MagicParamPresenter mMagicParamPresenter;
+
     private ImageView mTurnOverIv;
+    private TextView mClarityTv;
     private SelectCoverView mCoverView;
     private ImageView mSoundEffectIv;
     private ImageView mMagicIv;
@@ -74,6 +85,8 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             StatisticsWorker.getsInstance().sendCommand(
                     StatisticsWorker.AC_APP, StatisticsKey.KEY_PRE_LIVE_CAMERA, 1);
             mStreamerPresenter.switchCamera();
+        } else if (id == R.id.clarity_tv) {
+            showQualityDialog();
         } else if (id == R.id.sound_effect_iv) {
             showEffectPanel(true);
         } else if (id == R.id.magic_iv) {
@@ -91,6 +104,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             }
         });
         mTurnOverIv = $(R.id.turn_over);
+        mClarityTv = $(R.id.clarity_tv);
         mCoverView = $(R.id.cover_layout);
         mCoverView.setFragment(this);
         mBottomContainer = $(R.id.bottom_container);
@@ -98,9 +112,27 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         mMagicIv = $(R.id.magic_iv);
 
         $click(mTurnOverIv, this);
+        $click(mClarityTv, this);
         $click(mCoverView, this);
         $click(mSoundEffectIv, this);
         $click(mMagicIv, this);
+    }
+
+    private void showQualityDialog() {
+        KeyboardUtils.hideKeyboard(getActivity());
+        if (mQualityArray == null) {
+            CharSequence[] qualityArray = getResources().getTextArray(R.array.quality_arrays);
+            mQualityArray = new CharSequence[]{qualityArray[0], qualityArray[1]};
+        }
+        MyAlertDialog.Builder builder = new MyAlertDialog.Builder(getContext());
+        builder.setItems(mQualityArray, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mQualityIndex = which;
+                mClarityTv.setText(mQualityArray[mQualityIndex]);
+            }
+        });
+        builder.show();
     }
 
     private void showEffectPanel(boolean useAnimation) {
@@ -108,7 +140,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         mBottomContainer.setVisibility(View.GONE);
         mCoverView.setVisibility(View.GONE);
         if (mLiveSettingPanel == null && mStreamerPresenter != null) {
-            mLiveSettingPanel = new LiveSettingPanel((RelativeLayout) mRootView, mStreamerPresenter, mLiveComponentController);
+            mLiveSettingPanel = new LiveSettingPanel((RelativeLayout) mRootView, mStreamerPresenter, mController);
             mLiveSettingPanel.setHideCameraContainer(true);
         }
         mLiveSettingPanel.showSelf(useAnimation, false);
@@ -146,7 +178,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     protected void initPresenters() {
         super.initPresenters();
         mRoomPreparePresenter = new RoomPreparePresenter(this, TitleViewModel.SOURCE_NORMAL);
-        new MagicParamPresenter(mLiveComponentController, getActivity());
+        mMagicParamPresenter = new MagicParamPresenter(mController, getActivity());
     }
 
     @Override
@@ -167,19 +199,33 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     }
 
     @Override
-    protected void openLive() {
-        if (PermissionUtils.checkCamera(getContext())) {
-            if (PermissionUtils.checkRecordAudio(getContext())) {
-                if (!AccountAuthManager.triggerActionNeedAccount(getActivity())) {
-                    return;
-                }
-                openPublicLive();
-            } else {
-                PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.RECORD_AUDIO);
-            }
-        } else {
+    protected void performBeginClick() {
+        if (!PermissionUtils.checkCamera(getContext())) {
             PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.CAMERA);
+            return;
         }
+        if (!PermissionUtils.checkRecordAudio(getContext())) {
+            PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.RECORD_AUDIO);
+            return;
+        }
+        if (!AccountAuthManager.triggerActionNeedAccount(getActivity())) {
+            return;
+        }
+        openLive();
+    }
+
+    @Override
+    protected void openLive() {
+        recordShareSelectState();
+        if (mDataListener != null) {
+            Bundle bundle = new Bundle();
+            putCommonData(bundle);
+            bundle.putInt(EXTRA_LIVE_QUALITY, mQualityIndex);
+            bundle.putInt(EXTRA_LIVE_TYPE, LiveManager.TYPE_LIVE_PUBLIC);
+            bundle.putBoolean(EXTRA_ADD_HISTORY, mIsAddHistory);
+            mDataListener.onFragmentResult(mRequestCode, Activity.RESULT_OK, bundle);
+        }
+        finish();
     }
 
     @Override
@@ -218,6 +264,12 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMagicParamPresenter.destroy();
+    }
+
+    @Override
     protected void updateCover() {
         if (TextUtils.isEmpty(mCoverView.getCoverUrl())) {
             mCoverView.setCoverByAvatar();
@@ -228,19 +280,20 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         mStreamerPresenter = streamerPresenter;
     }
 
-    public void setLiveComponentController(ShowLiveController liveComponentController) {
-        mLiveComponentController = liveComponentController;
+    public void setComponentController(ComponentController controller) {
+        mController = controller;
     }
 
     public static void openFragment(
-            BaseComponentSdkActivity fragmentActivity,
+            FragmentActivity fragmentActivity,
             int requestCode,
             FragmentDataListener listener,
-            ShowLiveController liveComponentController,
-            StreamerPresenter streamerPresenter, RoomBaseDataModel roomBaseDataModel) {
+            ComponentController controller,
+            StreamerPresenter streamerPresenter,
+            RoomBaseDataModel roomBaseDataModel) {
         PrepareLiveFragment fragment = (PrepareLiveFragment) FragmentNaviUtils.addFragment(fragmentActivity, R.id.main_act_container,
                 PrepareLiveFragment.class, null, true, false, true);
-        fragment.setLiveComponentController(liveComponentController);
+        fragment.setComponentController(controller);
         fragment.setStreamerPresenter(streamerPresenter);
         fragment.setMyRoomData(roomBaseDataModel);
         if (listener != null) {

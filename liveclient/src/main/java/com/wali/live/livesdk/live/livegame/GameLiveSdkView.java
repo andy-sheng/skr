@@ -6,15 +6,18 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.base.fragment.FragmentDataListener;
 import com.base.log.MyLog;
 import com.thornbirds.component.IParams;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.livesdk.R;
+import com.wali.live.livesdk.live.component.BaseLiveSdkView;
+import com.wali.live.livesdk.live.livegame.fragment.PrepareLiveFragment;
 import com.wali.live.livesdk.live.livegame.presenter.BottomButtonPresenter;
 import com.wali.live.livesdk.live.livegame.presenter.PanelContainerPresenter;
 import com.wali.live.livesdk.live.livegame.view.LiveBottomButton;
@@ -48,7 +51,7 @@ import static com.wali.live.component.BaseSdkController.MSG_SHOW_BARRAGE_SWITCH;
  *
  * @module 游戏直播页面
  */
-public class GameLiveSdkView extends BaseSdkView<View, GameLiveController> {
+public class GameLiveSdkView extends BaseLiveSdkView<View, GameLiveController> {
 
     private final List<View> mHorizontalMoveSet = new ArrayList<>();
 
@@ -69,14 +72,22 @@ public class GameLiveSdkView extends BaseSdkView<View, GameLiveController> {
     }
 
     public GameLiveSdkView(@NonNull Activity activity, @NonNull GameLiveController controller) {
-        super(activity, (ViewGroup) activity.findViewById(android.R.id.content), controller);
+        super(activity, controller);
+        mContentView = $(mParentView, R.id.main_act_container);
+    }
+
+    @Override
+    public void enterPreparePage(@NonNull FragmentActivity activity, int requestCode, FragmentDataListener listener) {
+        MyLog.w(TAG, "prepareShowLive");
+        PrepareLiveFragment.openFragment(activity, requestCode, listener, mController.mMyRoomData,
+                mController.mRoomChatMsgManager);
+        mController.mRoomChatMsgManager.setIsGameLiveMode(true);
     }
 
     @Override
     public void setupView() {
-        mContentView = $(mParentView, R.id.main_act_container);
         mGiftContinueViewGroup = $(R.id.gift_continue_vg); // 礼物
-
+        // 顶部view
         {
             mTopAreaView = $(R.id.top_area_view);
             if (mTopAreaView == null) {
@@ -87,7 +98,6 @@ public class GameLiveSdkView extends BaseSdkView<View, GameLiveController> {
                     mController.mMyRoomData, true);
             registerComponent(mTopAreaView, presenter);
         }
-
         // 弹幕区
         {
             LiveCommentView view = $(R.id.live_comment_view);
@@ -164,7 +174,7 @@ public class GameLiveSdkView extends BaseSdkView<View, GameLiveController> {
                 R.id.widget_view
         }, mHorizontalMoveSet);
         // 滑动
-        {
+//        {
 //            View view = $(R.id.touch_view);
 //            if (view == null) {
 //                return;
@@ -172,7 +182,7 @@ public class GameLiveSdkView extends BaseSdkView<View, GameLiveController> {
 //            TouchPresenter presenter = new TouchPresenter(mController, view);
 //            registerComponent(presenter);
 //            presenter.setViewSet(mHorizontalMoveSet);
-        }
+//        }
     }
 
     @Override

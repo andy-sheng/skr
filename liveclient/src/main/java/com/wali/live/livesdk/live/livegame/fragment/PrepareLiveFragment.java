@@ -12,6 +12,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -38,7 +39,6 @@ import com.wali.live.livesdk.live.livegame.view.panel.GameSettingPanel;
 import com.wali.live.livesdk.live.presenter.RoomPreparePresenter;
 import com.wali.live.livesdk.live.presenter.viewmodel.TitleViewModel;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
-import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -52,13 +52,6 @@ import static android.view.View.VISIBLE;
  */
 public class PrepareLiveFragment extends BasePrepareLiveFragment {
     private static final String TAG = "PrepareGameLiveFragment";
-
-    public static final String EXTRA_GAME_LIVE_QUALITY = "extra_game_live_quality";
-    public static final String EXTRA_GAME_LIVE_MUTE = "extra_game_live_mute";
-
-    public static final int LOW_CLARITY = 0;
-    public static final int MEDIUM_CLARITY = 1;
-    public static final int HIGH_CLARITY = 2;
 
     private int mQualityIndex = MEDIUM_CLARITY;
     private CharSequence[] mQualityArray;
@@ -133,7 +126,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     }
 
     @Override
-    protected void onBeginBtnClick() {
+    protected void performBeginClick() {
         PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.READ_PHONE_STATE, new PermissionUtils.IPermissionCallback() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -175,7 +168,15 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     @Override
     protected void openLive() {
         PreferenceUtils.setSettingInt(PreferenceUtils.PREF_KEY_LIVE_GAME_CLARITY, mQualityIndex);
-        openGameLive();
+        if (mDataListener != null) {
+            Bundle bundle = new Bundle();
+            putCommonData(bundle);
+            bundle.putInt(EXTRA_LIVE_QUALITY, mQualityIndex);
+            bundle.putInt(EXTRA_LIVE_TYPE, LiveManager.TYPE_LIVE_GAME);
+            bundle.putBoolean(EXTRA_GAME_LIVE_MUTE, mIsMute);
+            mDataListener.onFragmentResult(mRequestCode, Activity.RESULT_OK, bundle);
+        }
+        finish();
     }
 
     @Override
@@ -245,18 +246,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         }
     }
 
-    protected void openGameLive() {
-        if (mDataListener != null) {
-            Bundle bundle = new Bundle();
-            putCommonData(bundle);
-            bundle.putInt(EXTRA_GAME_LIVE_QUALITY, mQualityIndex);
-            bundle.putInt(EXTRA_LIVE_TYPE, LiveManager.TYPE_LIVE_GAME);
-            bundle.putBoolean(EXTRA_GAME_LIVE_MUTE, mIsMute);
-            mDataListener.onFragmentResult(mRequestCode, Activity.RESULT_OK, bundle);
-        }
-        finish();
-    }
-
     @Override
     public void setManagerCount(int count) {
         if (count >= 0) {
@@ -272,7 +261,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     public void onEvent(LiveEventClass.HidePrepareGameLiveEvent event) {
         if (event != null) {
             MyLog.w(TAG, "HidePrepareGameLiveEvent");
-            super.onBeginBtnClick();
+            openLive();
         }
     }
 
@@ -292,8 +281,11 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     }
 
     public static void openFragment(
-            BaseComponentSdkActivity activity, int requestCode, FragmentDataListener listener,
-            RoomBaseDataModel roomBaseDataModel, LiveRoomChatMsgManager roomChatMsgManager) {
+            FragmentActivity activity,
+            int requestCode,
+            FragmentDataListener listener,
+            RoomBaseDataModel roomBaseDataModel,
+            LiveRoomChatMsgManager roomChatMsgManager) {
         PrepareLiveFragment fragment = (PrepareLiveFragment) FragmentNaviUtils.addFragment(activity, R.id.main_act_container,
                 PrepareLiveFragment.class, null, true, false, true);
         fragment.setMyRoomData(roomBaseDataModel);

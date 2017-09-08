@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/main_fragment_container"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@color/color_black_trans_40">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_fragment_container"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/color_black_trans_40">
 
     <RelativeLayout
         android:id="@+id/top_container"
@@ -26,7 +26,7 @@
             android:singleLine="true"
             android:text="@string/definition_high"
             android:textColor="@color/color_white_pressed_50"
-            android:textSize="@dimen/text_size_30"/>
+            android:textSize="@dimen/text_size_30" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
             android:singleLine="true"
             android:text="@string/game_live"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/text_size_42"/>
+            android:textSize="@dimen/text_size_42" />
 
         <!--关闭按钮-->
         <ImageView
@@ -44,7 +44,7 @@
             android:layout_width="@dimen/margin_60"
             android:layout_height="@dimen/margin_60"
             android:layout_alignParentRight="true"
-            android:src="@drawable/start_live_icon_close"/>
+            android:src="@drawable/start_live_icon_close" />
     </RelativeLayout>
 
     <!--封面/直播标题等-->
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/begin_live_title"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/text_size_42"/>
+                android:textSize="@dimen/text_size_42" />
 
             <EditText
                 android:id="@+id/live_title_et"
@@ -85,7 +85,7 @@
                 android:textColor="@color/color_white"
                 android:textColorHint="@color/color_white_trans_40"
                 android:textCursorDrawable="@drawable/live_edittext_color_cursor"
-                android:textSize="@dimen/text_size_42"/>
+                android:textSize="@dimen/text_size_42" />
         </LinearLayout>
 
         <LinearLayout
@@ -106,7 +106,7 @@
                 android:paddingRight="@dimen/view_dimen_30"
                 android:text="@string/live_title_change"
                 android:textColor="@color/color_white90_pressed_40"
-                android:textSize="@dimen/text_size_36"/>
+                android:textSize="@dimen/text_size_36" />
 
             <TextView
                 android:id="@+id/clear_title_tv"
@@ -118,7 +118,7 @@
                 android:paddingRight="@dimen/view_dimen_30"
                 android:text="@string/live_title_clear"
                 android:textColor="@color/color_white90_pressed_40"
-                android:textSize="@dimen/text_size_36"/>
+                android:textSize="@dimen/text_size_36" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -144,7 +144,7 @@
                 android:layout_marginLeft="@dimen/view_dimen_64"
                 android:text="@string/block_message"
                 android:textColor="@color/color_white_trans_40"
-                android:textSize="@dimen/margin_40"/>
+                android:textSize="@dimen/margin_40" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -152,7 +152,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/margin_60"
-                android:src="@drawable/start_live_more_right_arrow"/>
+                android:src="@drawable/start_live_more_right_arrow" />
         </RelativeLayout>
 
         <View
@@ -160,7 +160,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_dimen_1"
             android:layout_below="@+id/block_area"
-            android:background="@color/color_white_trans_20"/>
+            android:background="@color/color_white_trans_20" />
 
         <!--是否静音-->
         <RelativeLayout
@@ -178,7 +178,7 @@
                 android:layout_marginLeft="@dimen/margin_64"
                 android:text="@string/mute_yes_or_no"
                 android:textColor="@color/color_white_trans_40"
-                android:textSize="@dimen/margin_40"/>
+                android:textSize="@dimen/margin_40" />
 
             <TextView
                 android:id="@+id/mute_no_tv"
@@ -191,7 +191,7 @@
                 android:padding="@dimen/view_dimen_10"
                 android:text="@string/mute_no"
                 android:textColor="@color/color_white_trans_90"
-                android:textSize="@dimen/margin_36"/>
+                android:textSize="@dimen/margin_36" />
 
             <TextView
                 android:id="@+id/mute_yes_tv"
@@ -204,7 +204,7 @@
                 android:padding="@dimen/view_dimen_10"
                 android:text="@string/mute_yes"
                 android:textColor="@color/color_white_trans_40"
-                android:textSize="@dimen/margin_36"/>
+                android:textSize="@dimen/margin_36" />
         </RelativeLayout>
 
         <View
@@ -213,7 +213,7 @@
             android:layout_height="@dimen/view_dimen_1"
             android:layout_below="@+id/mute_area"
             android:background="@color/color_white_trans_20"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <!--添加管理员-->
         <RelativeLayout
@@ -232,7 +232,7 @@
                 android:layout_marginLeft="@dimen/margin_64"
                 android:text="@string/add_manager"
                 android:textColor="@color/color_white_trans_40"
-                android:textSize="@dimen/margin_40"/>
+                android:textSize="@dimen/margin_40" />
 
             <ImageView
                 android:id="@+id/next_iv"
@@ -241,7 +241,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/margin_60"
-                android:src="@drawable/start_live_more_right_arrow"/>
+                android:src="@drawable/start_live_more_right_arrow" />
 
             <TextView
                 android:id="@+id/admin_count"
@@ -252,7 +252,7 @@
                 android:layout_toLeftOf="@+id/next_iv"
                 android:text="@null"
                 android:textColor="@color/color_white_trans_90"
-                android:textSize="@dimen/margin_36"/>
+                android:textSize="@dimen/margin_36" />
         </RelativeLayout>
 
         <View
@@ -261,7 +261,7 @@
             android:layout_height="@dimen/view_dimen_1"
             android:layout_below="@+id/admin_area"
             android:background="@color/color_white_trans_20"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <!--每日任务-->
         <RelativeLayout
@@ -280,7 +280,7 @@
                 android:layout_marginLeft="@dimen/margin_64"
                 android:text="@string/daily_task_title"
                 android:textColor="@color/color_white_trans_40"
-                android:textSize="@dimen/margin_40"></TextView>
+                android:textSize="@dimen/margin_40" />
 
             <ImageView
                 android:id="@+id/iv_task"
@@ -289,7 +289,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/margin_60"
-                android:src="@drawable/start_live_more_right_arrow"/>
+                android:src="@drawable/start_live_more_right_arrow" />
 
             <TextView
                 android:id="@+id/daily_task_content"
@@ -300,7 +300,7 @@
                 android:layout_toLeftOf="@+id/iv_task"
                 android:text="@string/daily_task_content"
                 android:textColor="@color/color_white_trans_90"
-                android:textSize="@dimen/margin_36"></TextView>
+                android:textSize="@dimen/margin_36" />
         </RelativeLayout>
 
     </RelativeLayout>
@@ -319,7 +319,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="7.67dp"
-            android:src="@drawable/bg_live_share_selector"/>
+            android:src="@drawable/bg_live_share_selector" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -327,7 +327,7 @@
             android:gravity="center"
             android:text="@string/pre_live_share"
             android:textColor="@color/color_white"
-            android:textSize="14dp"/>
+            android:textSize="14dp" />
     </LinearLayout>
 
     <!--开始直播按钮-->
@@ -343,5 +343,5 @@
         android:gravity="center"
         android:text="@string/live_start"
         android:textColor="@color/color_black_trans_80"
-        android:textSize="@dimen/text_size_44"/>
+        android:textSize="@dimen/text_size_44" />
 </RelativeLayout>

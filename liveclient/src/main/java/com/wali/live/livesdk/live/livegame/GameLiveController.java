@@ -1,6 +1,5 @@
 package com.wali.live.livesdk.live.livegame;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,7 +7,6 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.base.activity.BaseSdkActivity;
-import com.base.fragment.FragmentDataListener;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
@@ -19,13 +17,11 @@ import com.mi.live.engine.streamer.GalileoStreamer;
 import com.mi.live.engine.streamer.IStreamer;
 import com.mi.live.engine.streamer.StreamerConfig;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
-import com.wali.live.component.BaseSdkView;
 import com.wali.live.livesdk.live.component.BaseLiveController;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.livegame.fragment.PrepareLiveFragment;
 import com.wali.live.livesdk.live.presenter.GameLivePresenter;
 import com.wali.live.livesdk.live.presenter.RoomInfoPresenter;
-import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 
 /**
  * Created by yangli on 2017/2/18.
@@ -73,16 +69,6 @@ public class GameLiveController extends BaseLiveController {
     }
 
     @Override
-    public void enterPreparePage(
-            @NonNull BaseComponentSdkActivity fragmentActivity,
-            int requestCode,
-            FragmentDataListener listener) {
-        MyLog.w(TAG, "prepareShowLive");
-        PrepareLiveFragment.openFragment(fragmentActivity, requestCode, listener, mMyRoomData, mRoomChatMsgManager);
-        mRoomChatMsgManager.setIsGameLiveMode(true);
-    }
-
-    @Override
     public void createStreamer(BaseSdkActivity activity, View surfaceView, int clarity, boolean isMute, Intent intent) {
         MyLog.w(TAG, "create streamer, clarity=" + clarity + ", isMute=" + isMute);
         StreamerConfig.Builder builder = new StreamerConfig.Builder();
@@ -124,11 +110,6 @@ public class GameLiveController extends BaseLiveController {
         mGameLivePresenter.muteMic(isMute);
         mRoomInfoPresenter = new RoomInfoPresenter(activity, mGameLivePresenter);
         MyLog.w(TAG, "create streamer over");
-    }
-
-    @Override
-    public BaseSdkView createSdkView(Activity activity) {
-        return new GameLiveSdkView(activity, this);
     }
 
     @Override

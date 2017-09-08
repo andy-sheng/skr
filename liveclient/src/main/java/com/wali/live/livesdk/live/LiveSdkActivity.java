@@ -66,25 +66,24 @@ import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.wali.live.component.BaseSdkView;
 import com.wali.live.event.EventClass;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.api.ZuidActiveRequest;
 import com.wali.live.livesdk.live.api.ZuidSleepRequest;
 import com.wali.live.livesdk.live.component.BaseLiveController;
+import com.wali.live.livesdk.live.component.BaseLiveSdkView;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.eventbus.LiveEventClass;
 import com.wali.live.livesdk.live.fragment.AnchorEndLiveFragment;
-import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
 import com.wali.live.livesdk.live.fragment.RecipientsSelectFragment;
 import com.wali.live.livesdk.live.fragment.RoomAdminFragment;
 import com.wali.live.livesdk.live.livegame.GameLiveController;
-import com.wali.live.livesdk.live.livegame.fragment.PrepareLiveFragment;
+import com.wali.live.livesdk.live.livegame.GameLiveSdkView;
 import com.wali.live.livesdk.live.liveshow.ShowLiveController;
+import com.wali.live.livesdk.live.liveshow.ShowLiveSdkView;
 import com.wali.live.livesdk.live.presenter.LiveRoomPresenter;
 import com.wali.live.livesdk.live.receiver.ScreenStateReceiver;
-import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.livesdk.live.view.CountDownView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.proto.LiveCommonProto;
@@ -101,6 +100,7 @@ import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.ranking.RankingPagerFragment;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
+import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.watchsdk.task.LiveTask;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
@@ -131,6 +131,13 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_STREAM_RECONNECT;
 import static com.wali.live.component.BaseSdkController.MSG_ON_STREAM_SUCCESS;
 import static com.wali.live.component.BaseSdkController.MSG_OPEN_CAMERA_FAILED;
 import static com.wali.live.component.BaseSdkController.MSG_OPEN_MIC_FAILED;
+import static com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment.EXTRA_LIVE_COVER_URL;
+import static com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment.EXTRA_LIVE_QUALITY;
+import static com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment.EXTRA_LIVE_TAG_INFO;
+import static com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment.EXTRA_LIVE_TITLE;
+import static com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment.EXTRA_SNS_TYPE;
+import static com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment.MEDIUM_CLARITY;
+import static com.wali.live.livesdk.live.livegame.fragment.PrepareLiveFragment.EXTRA_GAME_LIVE_MUTE;
 import static com.wali.live.statistics.StatisticsKey.AC_APP;
 import static com.wali.live.statistics.StatisticsKey.KEY;
 import static com.wali.live.statistics.StatisticsKey.TIMES;
@@ -198,7 +205,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     protected StreamerPresenter mStreamerPresenter;
     protected BaseLiveController mController;
-    protected BaseSdkView mSdkView;
+    protected BaseLiveSdkView mSdkView;
     protected final Action mAction = new Action();
 
     protected RoomMessagePresenter mPullRoomMessagePresenter;
@@ -254,7 +261,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (!mIsGameLive) {
             mController.createStreamer(this, $(R.id.galileo_surface_view), 0, false, null);
         }
-        mController.enterPreparePage(this, REQUEST_PREPARE_LIVE, this);
+        mSdkView.enterPreparePage(this, REQUEST_PREPARE_LIVE, this);
         openOrientation();
 
         // 封面模糊图
@@ -290,15 +297,16 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (mIsGameLive) {
             mController = new GameLiveController(
                     mMyRoomData, mRoomChatMsgManager, mStreamerPresenter);
+            mSdkView = new GameLiveSdkView(this, (GameLiveController) mController);
         } else {
             mController = new ShowLiveController(
                     mMyRoomData, mRoomChatMsgManager, mStreamerPresenter);
+            mSdkView = new ShowLiveSdkView(this, (ShowLiveController) mController);
         }
         mStreamerPresenter.setComponentController(mController);
-        mSdkView = mController.createSdkView(this);
 
         addPresent(mStreamerPresenter);
-        mAction.registerAction(); // 注册事件，准备可能需要
+        mAction.registerAction(); // 注册事件，准备页可能需要
     }
 
     private void registerScreenStateReceiver() {
@@ -498,7 +506,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, StatisticsKey.KEY_USERINFO_CARD_OPEN, 1);
 //        FloatPersonInfoFragment.openFragment(this, uid, mMyRoomData.getUid(),
 //                mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this);
-            FloatInfoFragment.openFragment(this, uid, mMyRoomData.getUid(),
+        FloatInfoFragment.openFragment(this, uid, mMyRoomData.getUid(),
                 mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this);
     }
 
@@ -577,18 +585,18 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     private void initPrepareData(Bundle bundle) {
-        mLiveTitle = bundle.getString(BasePrepareLiveFragment.EXTRA_LIVE_TITLE);
-        mRoomTag = (RoomTag) bundle.getSerializable(BasePrepareLiveFragment.EXTRA_LIVE_TAG_INFO);
-        mLiveCoverUrl = bundle.getString(BasePrepareLiveFragment.EXTRA_LIVE_COVER_URL, "");
-        mShareSelected = bundle.getBoolean(BasePrepareLiveFragment.EXTRA_SNS_TYPE, false);
+        mLiveTitle = bundle.getString(EXTRA_LIVE_TITLE);
+        mRoomTag = (RoomTag) bundle.getSerializable(EXTRA_LIVE_TAG_INFO);
+        mLiveCoverUrl = bundle.getString(EXTRA_LIVE_COVER_URL, "");
+        mShareSelected = bundle.getBoolean(EXTRA_SNS_TYPE, false);
 
         mMyRoomData.setLiveTitle(mLiveTitle);
         mLiveRoomPresenter = new LiveRoomPresenter(this);
         addPresent(mLiveRoomPresenter);
 
         if (mIsGameLive) {
-            int quality = bundle.getInt(PrepareLiveFragment.EXTRA_GAME_LIVE_QUALITY, PrepareLiveFragment.MEDIUM_CLARITY);
-            boolean isMute = bundle.getBoolean(PrepareLiveFragment.EXTRA_GAME_LIVE_MUTE, false);
+            int quality = bundle.getInt(EXTRA_LIVE_QUALITY, MEDIUM_CLARITY);
+            boolean isMute = bundle.getBoolean(EXTRA_GAME_LIVE_MUTE, false);
             mController.createStreamer(this, null, quality, isMute, mScreenRecordIntent);
         }
     }

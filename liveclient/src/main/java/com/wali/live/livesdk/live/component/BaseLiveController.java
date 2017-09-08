@@ -18,22 +18,9 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 public abstract class BaseLiveController extends BaseSdkController {
 
     /**
-     * 进入准备页
-     */
-    public abstract void enterPreparePage(
-            BaseComponentSdkActivity fragmentActivity,
-            int requestCode,
-            FragmentDataListener listener);
-
-    /**
      * 创建Streamer
      */
     public abstract void createStreamer(BaseSdkActivity activity, View surfaceView, int clarity, boolean isMute, Intent intent);
-
-    /**
-     * 创建SdkView
-     */
-    public abstract BaseSdkView createSdkView(Activity activity);
 
     public void onStartLive() {
     }

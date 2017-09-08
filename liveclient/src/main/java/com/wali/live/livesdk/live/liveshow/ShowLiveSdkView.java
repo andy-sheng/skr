@@ -6,16 +6,20 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.base.activity.BaseActivity;
+import com.base.fragment.FragmentDataListener;
 import com.base.log.MyLog;
 import com.thornbirds.component.IParams;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.livesdk.R;
+import com.wali.live.livesdk.live.component.BaseLiveSdkView;
+import com.wali.live.livesdk.live.liveshow.fragment.PrepareLiveFragment;
 import com.wali.live.livesdk.live.liveshow.presenter.BottomButtonPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.FloatContainerPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.LiveDisplayPresenter;
@@ -58,7 +62,7 @@ import static com.wali.live.component.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
  *
  * @module 秀场直播页面
  */
-public class ShowLiveSdkView extends BaseSdkView<View, ShowLiveController> {
+public class ShowLiveSdkView extends BaseLiveSdkView<View, ShowLiveController> {
 
     private final List<View> mHorizontalMoveSet = new ArrayList<>();
 
@@ -83,9 +87,17 @@ public class ShowLiveSdkView extends BaseSdkView<View, ShowLiveController> {
     public ShowLiveSdkView(
             @NonNull Activity activity,
             @NonNull ShowLiveController controller) {
-        super(activity, (ViewGroup) activity.findViewById(android.R.id.content), controller);
+        super(activity, controller);
         mContentView = $(mParentView, R.id.main_act_container);
         addMissingView();
+    }
+
+    @Override
+    public void enterPreparePage(@NonNull FragmentActivity activity, int requestCode, FragmentDataListener listener) {
+        MyLog.w(TAG, "prepareShowLive");
+        PrepareLiveFragment.openFragment(activity, requestCode, listener, mController,
+                mController.mStreamerPresenter, mController.mMyRoomData);
+        mController.mRoomChatMsgManager.setIsGameLiveMode(false);
     }
 
     private void addMissingView() {
@@ -108,8 +120,7 @@ public class ShowLiveSdkView extends BaseSdkView<View, ShowLiveController> {
     @Override
     public void setupView() {
         mGiftContinueViewGroup = $(R.id.gift_continue_vg); // 礼物
-
-        //顶部view
+        // 顶部view
         {
             mTopAreaView = $(R.id.top_area_view);
             if (mTopAreaView == null) {
@@ -120,7 +131,6 @@ public class ShowLiveSdkView extends BaseSdkView<View, ShowLiveController> {
                     mController.mMyRoomData, true);
             registerComponent(mTopAreaView, presenter);
         }
-
         // 弹幕区
         {
             LiveCommentView view = $(R.id.live_comment_view);
@@ -229,7 +239,7 @@ public class ShowLiveSdkView extends BaseSdkView<View, ShowLiveController> {
                 R.id.widget_view
         }, mHorizontalMoveSet);
         // 滑动
-        {
+//        {
 //            View view = $(R.id.touch_view);
 //            if (view == null) {
 //                return;
@@ -237,7 +247,7 @@ public class ShowLiveSdkView extends BaseSdkView<View, ShowLiveController> {
 //            TouchPresenter presenter = new TouchPresenter(mController, view);
 //            registerComponent(presenter);
 //            presenter.setViewSet(mHorizontalMoveSet);
-        }
+//        }
     }
 
     @Override
