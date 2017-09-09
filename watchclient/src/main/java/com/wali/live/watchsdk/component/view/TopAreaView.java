@@ -417,11 +417,7 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
                     public void onAnimationUpdate(ValueAnimator animation) {
                         int value = (int) animation.getAnimatedValue();
                         ViewGroup.LayoutParams layoutParams = mAnchorInfoContainer.getLayoutParams();
-                        if (mFollowShow) {
-                            layoutParams.width = mParentWidth + value;
-                        } else {
-                            layoutParams.width = mParentWidth + value - mFollowWidth;
-                        }
+                        layoutParams.width = mParentWidth + value - mFollowWidth;
                         mAnchorInfoContainer.setLayoutParams(layoutParams);
                         mFollowTv.setAlpha((float) value / mFollowWidth);
                     }
