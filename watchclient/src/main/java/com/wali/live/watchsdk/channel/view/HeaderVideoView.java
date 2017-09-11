@@ -15,14 +15,13 @@ import android.widget.RelativeLayout;
 
 import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
-import com.base.image.fresco.image.HttpImage;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.engine.player.widget.IPlayerCallBack;
 import com.mi.live.engine.player.widget.VideoPlayerPresenter;
-import com.mi.live.engine.player.widget.VideoPlayerTextureView;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.view.VideoPlayerWrapperView;
 
 /**
  * Created by zyh on 2017/8/29.
@@ -32,7 +31,7 @@ public class HeaderVideoView extends RelativeLayout implements IPlayerCallBack {
     private final static String TAG = "HeaderVideoView";
 
     private static final int ROUND_RADIUS = DisplayUtils.dip2px(6.67f);
-    VideoPlayerTextureView mVideoView;
+    VideoPlayerWrapperView mVideoView;
     BaseImageView mCoverIv;
     protected VideoPlayerPresenter mVideoPresenter;
 
@@ -191,4 +190,5 @@ public class HeaderVideoView extends RelativeLayout implements IPlayerCallBack {
     public void onReleased() {
 
     }
+
 }

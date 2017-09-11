@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <com.mi.live.engine.player.widget.VideoPlayerTextureView
+    <com.wali.live.watchsdk.view.VideoPlayerWrapperView
         android:id="@+id/video_player_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

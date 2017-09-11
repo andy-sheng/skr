@@ -22,7 +22,7 @@ public class FiveCircleWithStrokeHolder extends FiveCircleHolder {
 
     private int[] mCircleIvIds;
     private ImageView[] mCircleIvs;
-    private GradientDrawable mGradientDrawable;//创建drawable
+    private GradientDrawable mGradientDrawable;
 
     public FiveCircleWithStrokeHolder(View itemView) {
         super(itemView);
@@ -68,28 +68,38 @@ public class FiveCircleWithStrokeHolder extends FiveCircleHolder {
                     mGradientDrawable.setStroke(DisplayUtils.dip2px(1), itemView.getResources().getColor(R.color.color_d6b383));
                 }
                 mCircleIvs[i].setImageDrawable(mGradientDrawable);
-
-                ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) mCircleIvs[i].getLayoutParams();
-                lp.width = DisplayUtils.dip2px(52f);
-                lp.height = DisplayUtils.dip2px(52f);
-                mCircleIvs[i].setLayoutParams(lp);
+                bindCircleBackgroundIv(mCircleIvs[i]);
 
                 if (!TextUtils.isEmpty(descColor)) {
+                    if (!avatarColor.startsWith("#"))
+                        descColor = "#" + descColor;
                     mCircleRectangleTvs[i].setRectangleColor(Color.parseColor(descColor));
                 } else {
-                    mCircleRectangleTvs[i].setRectangleColor(itemView.getResources().getColor(R.color.color_d52e71));
+                    mCircleRectangleTvs[i].setRectangleColor(itemView.getResources().getColor(R.color.color_fb98aa));
                 }
             } catch (Exception e) {
                 MyLog.e(TAG, e);
-                mCircleRectangleTvs[i].setRectangleColor(itemView.getResources().getColor(R.color.color_d52e71));
+                mCircleRectangleTvs[i].setRectangleColor(itemView.getResources().getColor(R.color.color_fb98aa));
 
                 mGradientDrawable.setStroke(DisplayUtils.dip2px(1), itemView.getResources().getColor(R.color.color_d6b383));
-                mCircleIvs[i].setImageDrawable(mGradientDrawable);
-                ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) mCircleIvs[i].getLayoutParams();
-                lp.width = DisplayUtils.dip2px(52f);
-                lp.height = DisplayUtils.dip2px(52f);
-                mCircleIvs[i].setLayoutParams(lp);
+                bindCircleBackgroundIv(mCircleIvs[i]);
             }
         }
+    }
+
+    /**
+     * 设置描边图片以及调整宽高
+     *
+     * @param imageView
+     */
+    private void bindCircleBackgroundIv(ImageView imageView) {
+        if (imageView == null) {
+            return;
+        }
+        imageView.setImageDrawable(mGradientDrawable);
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) imageView.getLayoutParams();
+        lp.width = DisplayUtils.dip2px(52f);
+        lp.height = DisplayUtils.dip2px(52f);
+        imageView.setLayoutParams(lp);
     }
 }

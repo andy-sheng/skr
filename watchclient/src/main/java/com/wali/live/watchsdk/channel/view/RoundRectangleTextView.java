@@ -20,7 +20,7 @@ public class RoundRectangleTextView extends AppCompatTextView {
     private int width;
     private int height;
 
-    private int mRectangleColor = getResources().getColor(R.color.color_d52e71);
+    private int mRectangleColor = getResources().getColor(R.color.color_fb98aa);
     private Paint mPaint;
     private RectF mRectF;
 

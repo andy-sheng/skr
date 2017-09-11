@@ -1,6 +1,9 @@
 package com.wali.live.watchsdk.channel.viewmodel;
 
+import android.text.TextUtils;
+
 import com.wali.live.proto.CommonChannelProto;
+
 /**
  * Created by zyh on 2017/8/29.
  *
@@ -35,6 +38,9 @@ public class ChannelPageHeaderViewModel extends ChannelNavigateViewModel {
 
     @Override
     public boolean isNeedRemove() {
+        if (TextUtils.isEmpty(mCoverUrl)) {
+            return true;
+        }
         return false;
     }
 
