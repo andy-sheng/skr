@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -242,6 +243,14 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
         request.setTitle(mGameViewModel.getName());
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
+        String filename = mGameViewModel.getGameId() + "_" + System.currentTimeMillis() + ".apk";
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+
+        // 由于COLUMN_LOCAL_FILENAME废弃，采用提前设置路径的方案
+        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        mDownloadFilename = Uri.withAppendedPath(Uri.fromFile(file), filename).getPath();
+        MyLog.d(TAG, "mDownloadFilename=" + mDownloadFilename);
+
         mDownloadId = mDownloadManager.enqueue(request);
         MyLog.w(TAG, "downloadId=" + mDownloadId);
 
@@ -274,6 +283,9 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
             Intent intent = new Intent(Intent.ACTION_VIEW);
 
             Uri uri = Uri.fromFile(new File(mDownloadFilename));
+
+//            Uri uri = mDownloadManager.getUriForDownloadedFile(mDownloadId);
+//            MyLog.d(TAG, "uri=" + uri);
             intent.setDataAndType(uri, "application/vnd.android.package-archive");
             mParentView.getContext().startActivity(intent);
         }
@@ -379,10 +391,11 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
                                 //下载状态
                                 result[2] = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
 
-                                //下载地址
-                                if (TextUtils.isEmpty(mDownloadFilename)) {
-                                    mDownloadFilename = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME));
-                                }
+                                // 下载地址
+                                // if (TextUtils.isEmpty(mDownloadFilename)) {
+                                //    mDownloadFilename = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME));
+                                //    MyLog.d(TAG, "mDownloadFilename=" + mDownloadFilename);
+                                //}
                             }
                             subscriber.onNext(result);
                         } catch (Exception e) {
