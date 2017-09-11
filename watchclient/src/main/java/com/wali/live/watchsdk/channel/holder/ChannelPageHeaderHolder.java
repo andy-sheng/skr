@@ -133,14 +133,16 @@ public class ChannelPageHeaderHolder extends FixedHolder {
                 if (item == null || TextUtils.isEmpty(item.getImgUrl())) {
                     continue;
                 }
+                exposureItem(item);
+
                 final int pos = i;
                 IFrescoCallBack iFrescoCallBack = new IFrescoCallBack() {
                     @Override
                     public void processWithInfo(ImageInfo info) {
                         MyLog.d(TAG, "image info width: " + info.getWidth() + " height: " + info.getHeight());
                         ViewGroup.LayoutParams params = mBtnIvs[pos].getLayoutParams();
-                        params.width = info.getWidth();//DisplayUtils.dip2px(info.getWidth() / 3);
-                        params.height = info.getHeight();//DisplayUtils.dip2px(info.getHeight() / 3);
+                        params.width = info.getWidth();     //DisplayUtils.dip2px(info.getWidth() / 3);
+                        params.height = info.getHeight();   //DisplayUtils.dip2px(info.getHeight() / 3);
                         mBtnIvs[pos].setLayoutParams(params);
                     }
 
