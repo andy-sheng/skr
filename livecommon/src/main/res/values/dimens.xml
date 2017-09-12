@@ -183,6 +183,8 @@
     <dimen name="view_dimen_260">86.67dp</dimen>
     <dimen name="view_dimen_270">90dp</dimen>
     <dimen name="view_dimen_280">93.33dp</dimen>
+    <dimen name="view_dimen_281">93.67dp</dimen>
+    <dimen name="view_dimen_283">94.33dp</dimen>
     <dimen name="view_dimen_286">95.33dp</dimen>
     <dimen name="view_dimen_288">96dp</dimen>
     <dimen name="view_dimen_290">96.67dp</dimen>
@@ -373,6 +375,7 @@
     <dimen name="margin_87">29dip</dimen>
     <dimen name="margin_86">28.66dip</dimen>
     <dimen name="margin_85">28.33dip</dimen>
+    <dimen name="margin_83">27.67dip</dimen>
     <dimen name="margin_82">27.33dip</dimen>
     <dimen name="margin_80">26.66dip</dimen>
 
