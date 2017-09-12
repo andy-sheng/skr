@@ -100,9 +100,10 @@ public class WaliliveProcessor extends CommonProcessor {
         String feedId = uri.getQueryParameter(SchemeConstants.PARAM_FEED_ID);
         long ownerId = SchemeUtils.getLong(uri, SchemeConstants.PARAM_OWENER_ID, 0);
         int feedsType = SchemeUtils.getInt(uri, SchemeConstants.PARAM_FEEDS_TYPE, 0);
+        String videoUrl = uri.getQueryParameter(SchemeConstants.PARAM_VIDEO_URL);
 
         //这里拿掉区分type的
-        VideoDetailSdkActivity.openActivity(activity, RoomInfo.Builder.newInstance(ownerId, feedId, "").build());
+        VideoDetailSdkActivity.openActivity(activity, RoomInfo.Builder.newInstance(ownerId, feedId, videoUrl).build());
     }
 
     /**

@@ -97,6 +97,8 @@ public class ChannelPageHeaderHolder extends FixedHolder {
             mVideoView.setVisibility(View.GONE);
             mShadowIv.setVisibility(View.GONE);
         } else {
+            mVideoView.setVisibility(View.VISIBLE);
+            mShadowIv.setVisibility(View.VISIBLE);
             ViewGroup.LayoutParams playViewParams = mVideoView.getLayoutParams();
             playViewParams.height = VIDEO_VIEW_HEIGHT;
             mVideoView.setLayoutParams(playViewParams);
@@ -110,7 +112,6 @@ public class ChannelPageHeaderHolder extends FixedHolder {
                 }
             });
         }
-
         FrescoWorker.loadImage(mHeaderIv, ImageFactory.newHttpImage(viewModel.getCoverUrl())
                 .setCallBack(mFrescoCallBack)
                 .setWidth(DisplayUtils.getScreenWidth())

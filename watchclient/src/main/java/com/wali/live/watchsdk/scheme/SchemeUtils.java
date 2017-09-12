@@ -3,6 +3,8 @@ package com.wali.live.watchsdk.scheme;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.base.log.MyLog;
+
 /**
  * Created by lan on 16/10/26.
  *
@@ -35,4 +37,5 @@ public class SchemeUtils {
         Uri uri = Uri.parse(uriStr);
         return uri.getQueryParameter(SchemeConstants.PARAM_RECOMMEND_TAG);
     }
+
 }
