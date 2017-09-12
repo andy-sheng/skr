@@ -486,10 +486,17 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public boolean hasInstallLiveSdk() {
+    public boolean hasInstallLiveSdk(Application application) {
+        if (application == null) {
+            application = GlobalData.app();
+        }
+        if (application == null) {
+            Logger.e(TAG, "hasInstallLiveSdk application is null");
+            return false;
+        }
         PackageInfo pInfo = null;
         try {
-            pInfo = GlobalData.app().getPackageManager().getPackageInfo(
+            pInfo = application.getPackageManager().getPackageInfo(
                     VersionCheckManager.PACKAGE_NAME, PackageManager.GET_META_DATA);
         } catch (PackageManager.NameNotFoundException e) {
             Logger.e(TAG, e.getMessage());
