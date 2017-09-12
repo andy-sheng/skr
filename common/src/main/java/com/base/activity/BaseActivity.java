@@ -250,6 +250,9 @@ public abstract class BaseActivity extends RxActivity implements IStatusBarOpera
      */
     public static boolean setStatusColor(final Activity act, boolean isDark) {
         MyLog.d("BaseActivity", "setStatusColor statusBar isDark=" + isDark);
+        if (setStatusBarAfterM(act, isDark)) {
+            return true;
+        }
         Class<? extends Window> clazz = act.getWindow().getClass();
         try {
             int darkModeFlag = 0;
@@ -288,6 +291,24 @@ public abstract class BaseActivity extends RxActivity implements IStatusBarOpera
             act.getWindow().setAttributes(lp);
             return true;
         } catch (Exception e) {
+        }
+        return false;
+    }
+
+    /**
+     * android 6.0 及以上 设置字体颜色 通用的方法
+     */
+    public static boolean setStatusBarAfterM(Activity activity, boolean isDark) {
+        MyLog.d("BaseActivity", "setStatusBarAfterM  isDark=" + isDark);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Window window = activity.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            if (isDark) {
+                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            } else {
+                activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            }
+            return true;
         }
         return false;
     }

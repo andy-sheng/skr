@@ -82,6 +82,7 @@
 
     <TextView
         android:id="@+id/single_tv"
+        style="@style/michannel_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/cover_img"
@@ -93,7 +94,6 @@
         android:paddingLeft="6.66dp"
         android:paddingRight="6.66dp"
         android:paddingTop="7.66dp"
-        android:textColor="#80000000"
-        android:textSize="13.33dp"/>
+        android:text="阳光小姐"/>
 
 </RelativeLayout>
