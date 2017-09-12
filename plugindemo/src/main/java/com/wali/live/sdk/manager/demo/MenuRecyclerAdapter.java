@@ -376,6 +376,15 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 mActivity.startActivity(intent);
             }
         }));
+
+        mDataList.add(new Bean("频道：关注(小米视频101015)", new Runnable() {
+            @Override
+            public void run() {
+                String uri = "livesdk://channel?channel=50014&package_name=com.miui.video&title=%e5%85%b3%e6%b3%a8&channel_id=18";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                mActivity.startActivity(intent);
+            }
+        }));
     }
 
     public void oauthLogin() {
