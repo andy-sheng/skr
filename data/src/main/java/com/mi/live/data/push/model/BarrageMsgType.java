@@ -68,10 +68,10 @@ public class BarrageMsgType {
     public static final int B_MSG_TYPE_ADD_SHOP = 345;//上下架 购买成功
     public static final int B_MSG_TYPE_ATTACHMENT_COUNTER = 346;//运营位计数
 
+    //    public static final int B_MSG_TYPE_NEW_PK_SYSTEM = 354; // PK信令
+    public static final int B_MSG_TYPE_NEW_PK_SCORE = 355; // PK分数
     public static final int B_MSG_TYPE_NEW_PK_START = 356; // PK开始
     public static final int B_MSG_TYPE_NEW_PK_END = 357; // PK结束
-    public static final int B_MSG_TYPE_NEW_PK_SYSTEM = 354; // PK信令
-    public static final int B_MSG_TYPE_NEW_PK_SCORE = 355; // PK分数
 
     // 记得在这加
     public static int[] types = new int[]{
@@ -89,7 +89,7 @@ public class BarrageMsgType {
             B_MSG_TYPE_GLOBAL_SYS_MSG, B_MSG_TYPE_ROOM_SYS_MSG, B_MSG_TYPE_LIVE_OWNER_MSG,
             B_MSG_TYPE_ADD_SHOP, B_MSG_TYPE_COMMEN_SYS_MSG, B_MSG_TYPE_GLABAL_MSG,
             B_MSG_TYPE_LEVEL_UPGRADE_SYS_MSG, B_MSG_TYPE_ATTACHMENT_COUNTER,
-            B_MSG_TYPE_NEW_PK_START, B_MSG_TYPE_NEW_PK_END, B_MSG_TYPE_NEW_PK_SYSTEM, B_MSG_TYPE_NEW_PK_SCORE
+            B_MSG_TYPE_NEW_PK_START, B_MSG_TYPE_NEW_PK_END, B_MSG_TYPE_NEW_PK_SCORE
     };
 
     static {

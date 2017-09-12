@@ -54,12 +54,6 @@ import com.wali.live.watchsdk.watch.presenter.PanelContainerPresenter;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Action1;
 
 import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
 import static com.wali.live.component.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
@@ -71,8 +65,6 @@ import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.component.BaseSdkController.MSG_ON_PK_START;
-import static com.wali.live.component.BaseSdkController.MSG_ON_PK_STOP;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_FOLLOW_GUIDE;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_INPUT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
@@ -245,7 +237,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
         }
         // 悬浮面板容器，与底部面板类似，但是不会在显示新Panel时，隐藏之前显示的Panel
         {
-            WatchFloatPresenter presenter = new WatchFloatPresenter(mController);
+            WatchFloatPresenter presenter = new WatchFloatPresenter(mController, mController.mMyRoomData);
             registerHybridComponent(presenter, mContentView);
         }
         // 输入框
@@ -374,26 +366,6 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
         registerAction(MSG_SHOW_FOLLOW_GUIDE);
         registerAction(MSG_FOLLOW_COUNT_DOWN);
         registerAction(MSG_SHOW_SEND_ENVELOPE);
-
-        // TEST
-        Observable.interval(2, 60, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .take(15)
-                .subscribe(new Action1<Long>() {
-                    @Override
-                    public void call(Long aLong) {
-                        mController.postEvent(MSG_ON_PK_START);
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                    }
-                }, new Action0() {
-                    @Override
-                    public void call() {
-                        mController.postEvent(MSG_ON_PK_STOP);
-                    }
-                });
     }
 
     @Override

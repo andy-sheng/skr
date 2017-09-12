@@ -12,6 +12,7 @@ import com.mi.live.data.query.model.ViewerModel;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveMallProto;
 import com.wali.live.proto.LiveMessageProto;
+import com.wali.live.proto.LivePKProto;
 import com.wali.live.proto.RedEnvelProto;
 
 import java.io.UnsupportedEncodingException;
@@ -543,6 +544,21 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
                         LiveMessageProto.RedNameStatus redNameStatus = LiveMessageProto.RedNameStatus.parseFrom(data);
                     }
                     break;
+                    case BarrageMsgType.B_MSG_TYPE_NEW_PK_SCORE: {
+                        LivePKProto.PKScoreChangeMsg pkScoreChangeMsg = LivePKProto.PKScoreChangeMsg.parseFrom(data);
+                        msgExt = new PKInfoMessageExt(pkScoreChangeMsg.getPkInfo());
+                    }
+                    break;
+                    case BarrageMsgType.B_MSG_TYPE_NEW_PK_END: {
+                        LivePKProto.PKEndMessage pkEndMessage = LivePKProto.PKEndMessage.parseFrom(data);
+                        msgExt = new PKEndInfoMessageExt(pkEndMessage.getPkInfo(), pkEndMessage.getFromUuid(), pkEndMessage.getType());
+                    }
+                    break;
+                    case BarrageMsgType.B_MSG_TYPE_NEW_PK_START: {
+                        LivePKProto.PKBeginMessage pkBeginMessage = LivePKProto.PKBeginMessage.parseFrom(data);
+                        msgExt = new PKInfoMessageExt(pkBeginMessage.getPkInfo());
+                    }
+                    break;
                 }
             } catch (InvalidProtocolBufferException e) {
                 e.printStackTrace();
@@ -818,7 +834,7 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
          *
          * @param anchorId
          * @param uuid
-         * @param msgType  消息类型，区分禁言和解禁
+         * @param msgType    消息类型，区分禁言和解禁
          * @param senderName 发消息人的名称
          * @return
          */
@@ -826,7 +842,7 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
             String message = "";
             if (TextUtils.isEmpty(banNickname))
                 return message;
-            if(senderName == null || senderName.equals(banNickname) || senderName.equals(com.base.global.GlobalData.app().getString(R.string.sys_msg)))
+            if (senderName == null || senderName.equals(banNickname) || senderName.equals(com.base.global.GlobalData.app().getString(R.string.sys_msg)))
                 senderName = "";
             String operator = "";
             //判断当前用户是否是主播
@@ -951,12 +967,12 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
             this.shop_type = message.getMsgType();
 
             try {
-                switch(shop_type){
+                switch (shop_type) {
                     case 2:
                         this.goodsInfo = LiveMallProto.GoodsInfoList.parseFrom(message.getMsgContent()).getGoodsInfo(0);
                         break;
                     case 3:
-                        this.shop_content  = new String(message.getMsgContent().toByteArray(),"UTF-8");
+                        this.shop_content = new String(message.getMsgContent().toByteArray(), "UTF-8");
                         break;
                     case 4:
                         this.goodsInfo = LiveMallProto.GoodsInfoList.parseFrom(message.getMsgContent()).getGoodsInfo(0);
@@ -1216,6 +1232,7 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
             return null;
         }
     }
+
     public static class RedEnvelopMsgExt implements MsgExt {
         public long userId;// 用户id
         public String roomId;// 房间id
@@ -1270,6 +1287,38 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
                 ext.type = red.getEnvelopLevel();
             }
             return ext;
+        }
+    }
+
+    public static class PKEndInfoMessageExt implements MsgExt {
+
+        public LivePKProto.NewPKInfo info;
+        public long uuid;
+        public int endType;
+
+        public PKEndInfoMessageExt(LivePKProto.NewPKInfo pkInfo, long uuid, int endType) {
+            info = pkInfo;
+            this.uuid = uuid;
+            this.endType = endType;
+        }
+
+        @Override
+        public ByteString toByteString() {
+            return null;
+        }
+    }
+
+    public static class PKInfoMessageExt implements MsgExt {
+
+        public LivePKProto.NewPKInfo info;
+
+        public PKInfoMessageExt(LivePKProto.NewPKInfo pkInfo) {
+            info = pkInfo;
+        }
+
+        @Override
+        public ByteString toByteString() {
+            return null;
         }
     }
 }

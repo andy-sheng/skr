@@ -1,17 +1,16 @@
 package com.wali.live.watchsdk.component.presenter;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
-import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.push.IPushMsgProcessor;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
-import com.thornbirds.component.presenter.ComponentPresenter;
 import com.thornbirds.component.presenter.IEventPresenter;
 import com.thornbirds.component.view.IEventView;
 import com.thornbirds.component.view.IOrientationListener;
@@ -37,7 +36,9 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
 
     private WeakReference<PkInfoPresenter> mPkInfoPresenterRef;
 
-    protected boolean mIsLandscape = false;
+    private RoomBaseDataModel mMyRoomData;
+
+    private boolean mIsLandscape = false;
 
     @Override
     protected String getTAG() {
@@ -57,8 +58,11 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
         presenter.setView(view);
     }
 
-    public WatchFloatPresenter(IEventController controller) {
+    public WatchFloatPresenter(
+            @NonNull IEventController controller,
+            @NonNull RoomBaseDataModel myRoomData) {
         super(controller);
+        mMyRoomData = myRoomData;
     }
 
     @Override
@@ -79,7 +83,7 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
     private void showPkInfoPanel() {
         PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
         if (presenter == null) {
-            presenter = new PkInfoPresenter(mController);
+            presenter = new PkInfoPresenter(mController, mMyRoomData);
             PkInfoPanel panel = new PkInfoPanel(mView);
             setupComponent(panel, presenter);
             presenter.startPresenter();
@@ -131,60 +135,37 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
 
     @Override
     public void process(BarrageMsg msg, RoomBaseDataModel roomBaseDataModel) {
-//        if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_NEW_PK_START || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_NEW_PK_END
-//                || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_NEW_PK_SCORE) {
-//
-//            switch (msg.getMsgType()) {
-//                case BarrageMsgType.B_MSG_TYPE_NEW_PK_START:
-//                    BarrageMsg.PKInfoMessageExt pkInfoMessageExt = (BarrageMsg.PKInfoMessageExt) msg.getMsgExt();
-//                    mUIHandler.post(() ->
-//                            listener.pkStatusChange(MSG_TYPE_START, pkInfoMessageExt.info));
-//                    break;
-//                case BarrageMsgType.B_MSG_TYPE_NEW_PK_END:
-//                    BarrageMsg.PKEndInfoMessageExt pkEndInfoMessageExt = (BarrageMsg.PKEndInfoMessageExt) msg.getMsgExt();
-//                    mUIHandler.post(() ->
-//                            listener.pkEnd(pkEndInfoMessageExt.info,pkEndInfoMessageExt.uuid,pkEndInfoMessageExt.endType));
-//                    break;
-//                case BarrageMsgType.B_MSG_TYPE_NEW_PK_SCORE:
-//                    BarrageMsg.PKInfoMessageExt pkScoreInfo = (BarrageMsg.PKInfoMessageExt) msg.getMsgExt();
-//                    mUIHandler.post(() ->
-//                            listener.pkStatusChange(MSG_TYPE_SCORE, pkScoreInfo.info));
-//                    break;
-//            }
-//        } else if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_NEW_PK_SYSTEM) {
-//            BarrageMsg.PKSysMsg pkSysMsg = (BarrageMsg.PKSysMsg) msg.getMsgExt();
-//
-//            if (pkSysMsg.type == 1) {
-//                try {
-//                    BarrageMsg.PKInviteMsg msgExt = new BarrageMsg.PKInviteMsg(LivePKProto.PKInviteMsg.parseFrom(pkSysMsg.bytes));
-//
-//                    mUIHandler.post(() -> listener.invite(msgExt.uuid, msgExt.roomId, msgExt.pkUid, msgExt.type, msgExt.nickName, msgExt.pkType,msgExt.time));
-//                } catch (InvalidProtocolBufferException e) {
-//                    e.printStackTrace();
-//                }
-//            } else if (pkSysMsg.type == 2) {
-//                try {
-//                    BarrageMsg.PKAcceptMsg msgExt = new BarrageMsg.PKAcceptMsg(LivePKProto.PKAcceptMsg.parseFrom(pkSysMsg.bytes));
-//                    mUIHandler.post(() ->
-//                            listener.accept(msgExt.uuid, msgExt.pkRoomId, msgExt.pkUid));
-//                } catch (InvalidProtocolBufferException e) {
-//                    e.printStackTrace();
-//                }
-//            } else if (pkSysMsg.type == 3) {
-//                mUIHandler.post(() -> listener.reject());
-//            } else if (pkSysMsg.type == 4) {
-//                mUIHandler.post(() -> listener.cancelInvite());
-//            }
-//        }
+        PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
+        if (presenter == null) {
+            return;
+        }
+        switch (msg.getMsgType()) {
+            case BarrageMsgType.B_MSG_TYPE_NEW_PK_START: {
+                BarrageMsg.PKInfoMessageExt pkInfoMessageExt = (BarrageMsg.PKInfoMessageExt) msg.getMsgExt();
+                presenter.onPkStart(pkInfoMessageExt, msg.getSentTime(), mIsLandscape);
+                break;
+            }
+            case BarrageMsgType.B_MSG_TYPE_NEW_PK_END: {
+                BarrageMsg.PKEndInfoMessageExt pkEndInfoMessageExt = (BarrageMsg.PKEndInfoMessageExt) msg.getMsgExt();
+                presenter.onPkEnd(pkEndInfoMessageExt);
+                break;
+            }
+            case BarrageMsgType.B_MSG_TYPE_NEW_PK_SCORE: {
+                BarrageMsg.PKInfoMessageExt pkScoreInfo = (BarrageMsg.PKInfoMessageExt) msg.getMsgExt();
+                presenter.onPkScore(pkScoreInfo);
+                break;
+            }
+            default:
+                break;
+        }
     }
 
     @Override
     public int[] getAcceptMsgType() {
         return new int[]{
-                BarrageMsgType.B_MSG_TYPE_NEW_PK_START
-                , BarrageMsgType.B_MSG_TYPE_NEW_PK_END
-                , BarrageMsgType.B_MSG_TYPE_NEW_PK_SYSTEM
-                , BarrageMsgType.B_MSG_TYPE_NEW_PK_SCORE
+                BarrageMsgType.B_MSG_TYPE_NEW_PK_START,
+                BarrageMsgType.B_MSG_TYPE_NEW_PK_END,
+                BarrageMsgType.B_MSG_TYPE_NEW_PK_SCORE
         };
     }
 }

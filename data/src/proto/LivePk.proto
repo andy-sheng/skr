@@ -1,0 +1,57 @@
+
+package com.wali.live.proto;
+
+option java_package = "com.wali.live.proto";
+option java_outer_classname = "LivePKProto";
+
+message PKSettingContent {
+    optional uint32 id           = 1;
+    optional string name         = 2;
+}
+
+message PKSettingDuration {
+    optional uint32 id           = 1;
+    optional string name         = 2;
+}
+
+message PKSetting {
+    required PKSettingContent content     = 1; //pk内容 1：唱功 2：跳舞 3：乐器
+    required PKSettingDuration duration   = 2; //pk时间 1: 3分钟 2: 10分钟 3:15分钟
+}
+
+message PKSettings {
+    repeated PKSettingContent content     = 1; //pk内容 1：唱功 2：跳舞 3：乐器
+    repeated PKSettingDuration duration   = 2; //pk时间 1: 3分钟 2: 10分钟 3:15分钟
+}
+
+message PKInfoItem {
+    optional uint64 uuid            = 1; //用户id
+    optional string liveid          = 2; //房间号
+    optional uint64 score           = 3; //分数
+}
+
+message NewPKInfo {
+    optional uint32 pk_type         = 1; //0:主播发起 1：场控发起
+    optional PKInfoItem first       = 2; //发起方
+    optional PKInfoItem second      = 3; //被pk方
+    optional uint64 admin_uuid      = 4; //场控id
+    optional uint64 invite_ts       = 5; //邀请时间
+    optional uint64 begin_ts        = 6; //开始时间
+    optional PKSetting setting      = 7; //pk设置
+}
+
+//pk开始消息
+message PKBeginMessage {
+    optional NewPKInfo pk_info = 1;
+}
+
+//pk结束消息
+message PKEndMessage {
+    optional NewPKInfo pk_info  = 1;
+    optional uint64  from_uuid  = 2; //发起用户id
+    optional uint32 type        = 3; //0：正常结束 1：提前结束
+}
+
+message PKScoreChangeMsg {
+    optional NewPKInfo pk_info = 1;
+}

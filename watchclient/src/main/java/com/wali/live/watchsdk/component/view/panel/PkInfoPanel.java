@@ -108,28 +108,28 @@ public class PkInfoPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
             }
 
             @Override
-            public void onAnchorInfo(long anchor1, long anchor2) {
-                AvatarUtils.loadAvatarByUidTs(mAnchorLeft, anchor1, 0, AvatarUtils.SIZE_TYPE_AVATAR_SMALL, true);
-                AvatarUtils.loadAvatarByUidTs(mAnchorRight, anchor2, 0, AvatarUtils.SIZE_TYPE_AVATAR_SMALL, true);
+            public void onPkStart(String pkType, long uuid1, long uuid2) {
+                mPkTypeView.setText(pkType);
+                AvatarUtils.loadAvatarByUidTs(mAnchorLeft, uuid1, 0, AvatarUtils.SIZE_TYPE_AVATAR_SMALL, true);
+                AvatarUtils.loadAvatarByUidTs(mAnchorRight, uuid2, 0, AvatarUtils.SIZE_TYPE_AVATAR_SMALL, true);
             }
 
             @Override
-            public void updateScoreInfo(int ticket1, int ticket2) {
+            public void onUpdateRemainTime(long remainTime) {
+                mTimeAreaView.setText(String.format("%02d:%02d", remainTime / 60, remainTime % 60));
+            }
+
+            @Override
+            public void onUpdateScoreInfo(long ticket1, long ticket2) {
                 mTicketLeft.setText(String.valueOf(ticket1));
                 mTicketRight.setText(String.valueOf(ticket2));
                 mPkScoreView.updateRatio(ticket1, ticket2);
             }
 
             @Override
-            public void updateTimeInfo(int remain) {
-                mTimeAreaView.setText(String.format("%02d:%02d", remain / 60, remain % 60));
-            }
-
-            @Override
-            public void onPkResultInfo(int ticket1, int ticket2) {
-                if (ticket1 == ticket2) {
-                    mMiddleResultView.setVisibility(View.VISIBLE);
-                } else if (ticket1 > ticket2) {
+            public void onPkEnd(boolean ownerWin, long ticket1, long ticket2) {
+                onUpdateScoreInfo(ticket1, ticket2);
+                if (ownerWin) {
                     mLeftResultView.setVisibility(View.VISIBLE);
                     mRightResultView.setVisibility(View.VISIBLE);
                     mLeftResultView.setImageResource(R.drawable.live_img_pk_win);
@@ -139,6 +139,16 @@ public class PkInfoPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
                     mRightResultView.setVisibility(View.VISIBLE);
                     mLeftResultView.setImageResource(R.drawable.live_img_pk_lost);
                     mRightResultView.setImageResource(R.drawable.live_img_pk_win);
+                }
+            }
+
+            @Override
+            public void onPkEnd(long ticket1, long ticket2) {
+                if (ticket1 == ticket2) {
+                    onUpdateScoreInfo(ticket1, ticket2);
+                    mMiddleResultView.setVisibility(View.VISIBLE);
+                } else {
+                    onPkEnd(ticket1 > ticket2, ticket1, ticket2);
                 }
             }
 
@@ -159,12 +169,27 @@ public class PkInfoPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
 
         void hideSelf(boolean useAnimation);
 
-        void onAnchorInfo(long anchor1, long anchor2);
+        void onPkStart(String pkType, long uuid1, long uuid2);
 
-        void updateScoreInfo(int ticket1, int ticket2);
+        void onUpdateRemainTime(long remainTime);
 
-        void updateTimeInfo(int remain);
+        void onUpdateScoreInfo(long ticket1, long ticket2);
 
-        void onPkResultInfo(int ticket1, int ticket2);
+        /**
+         * Pk提前结束
+         *
+         * @param ownerWin 本房主获胜
+         * @param ticket1  本房主得分
+         * @param ticket2  对方得分
+         */
+        void onPkEnd(boolean ownerWin, long ticket1, long ticket2);
+
+        /**
+         * Pk正常结束，此时以分数定输赢
+         *
+         * @param ticket1 本房主得分
+         * @param ticket2 对方得分
+         */
+        void onPkEnd(long ticket1, long ticket2);
     }
 }

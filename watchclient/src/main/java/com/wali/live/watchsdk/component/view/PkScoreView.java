@@ -45,7 +45,7 @@ public class PkScoreView extends View {
         mRightDrawable = new GradientDrawable(RIGHT_LEFT, new int[]{rightFromColor, rightToColor});
     }
 
-    public void updateRatio(int score1, int score2) {
+    public void updateRatio(long score1, long score2) {
         float ratio = score1 == score2 ? 0.5f : (float) score1 / (score1 + score2);
         if (Math.abs(mRatio - ratio) <= 0.001f) {
             return;
