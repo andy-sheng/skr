@@ -101,6 +101,8 @@ public class ChannelPageHeaderHolder extends FixedHolder {
         } else {
             mVideoView.setVisibility(View.VISIBLE);
             mShadowIv.setVisibility(View.VISIBLE);
+            FrescoWorker.loadImage(mShadowIv, ImageFactory.newResImage(R.drawable.home_missworld_back_shadow).build());
+
             ViewGroup.LayoutParams playViewParams = mVideoView.getLayoutParams();
             playViewParams.height = VIDEO_VIEW_HEIGHT;
             playViewParams.width = VIDEO_VIEW_WIDTH;

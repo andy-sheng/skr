@@ -249,10 +249,8 @@ public abstract class BaseActivity extends RxActivity implements IStatusBarOpera
      * 设置状态栏顶部字的颜色
      */
     public static boolean setStatusColor(final Activity act, boolean isDark) {
+        setStatusBarAfterM(act, isDark);
         MyLog.d("BaseActivity", "setStatusColor statusBar isDark=" + isDark);
-        if (setStatusBarAfterM(act, isDark)) {
-            return true;
-        }
         Class<? extends Window> clazz = act.getWindow().getClass();
         try {
             int darkModeFlag = 0;

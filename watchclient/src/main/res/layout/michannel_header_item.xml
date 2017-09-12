@@ -31,10 +31,8 @@
     <LinearLayout
         android:id="@+id/navigation_header_container"
         android:layout_width="match_parent"
-        android:layout_height="71.33dp"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/header_bg_iv"
-        android:paddingLeft="@dimen/margin_54"
-        android:paddingRight="@dimen/margin_54"
         android:visibility="gone">
 
         <include
