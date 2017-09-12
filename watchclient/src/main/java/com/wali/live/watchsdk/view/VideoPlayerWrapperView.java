@@ -220,6 +220,10 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
     }
 
     public interface IOuterCallBack {
+        void onPrepared();
+
+        void onCompletion();
+
         void onBufferingStart();
 
         void onBufferingEnd();

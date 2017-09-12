@@ -27,8 +27,10 @@ import java.util.List;
  */
 public class ChannelPageHeaderHolder extends FixedHolder {
     //视频view高度
-    public static final int VIDEO_VIEW_HEIGHT = (DisplayUtils.getScreenWidth() - DisplayUtils.dip2px(50)) * 9 / 16;
+    public static final int VIDEO_VIEW_HEIGHT = DisplayUtils.getScreenWidth() * 520 / 1080;
+    public static final int VIDEO_VIEW_WIDTH = VIDEO_VIEW_HEIGHT * 16 / 9;
 
+    private static float mBgRatio = 1177 / 1080f;
     private int[] mBtnLayoutIds;
     protected HeaderVideoView mVideoView;
     protected BaseImageView mHeaderIv;
@@ -101,6 +103,7 @@ public class ChannelPageHeaderHolder extends FixedHolder {
             mShadowIv.setVisibility(View.VISIBLE);
             ViewGroup.LayoutParams playViewParams = mVideoView.getLayoutParams();
             playViewParams.height = VIDEO_VIEW_HEIGHT;
+            playViewParams.width = VIDEO_VIEW_WIDTH;
             mVideoView.setLayoutParams(playViewParams);
             mVideoView.setData(viewModel.getVideoUrl(), viewModel.getVideoCoverUrl());
             mVideoView.setOnClickListener(new View.OnClickListener() {
@@ -112,9 +115,13 @@ public class ChannelPageHeaderHolder extends FixedHolder {
                 }
             });
         }
+        if (viewModel.getImageWidth() > 0 && viewModel.getImageHeight() > 0) {
+            mBgRatio = viewModel.getImageHeight() / viewModel.getImageWidth();
+        }
         FrescoWorker.loadImage(mHeaderIv, ImageFactory.newHttpImage(viewModel.getCoverUrl())
                 .setCallBack(mFrescoCallBack)
                 .setWidth(DisplayUtils.getScreenWidth())
+                .setHeight((int) (DisplayUtils.getScreenWidth() * mBgRatio))
                 .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
                 .build());
         mHeaderIv.setOnClickListener(new View.OnClickListener() {
@@ -142,8 +149,8 @@ public class ChannelPageHeaderHolder extends FixedHolder {
                     public void processWithInfo(ImageInfo info) {
                         MyLog.d(TAG, "image info width: " + info.getWidth() + " height: " + info.getHeight());
                         ViewGroup.LayoutParams params = mBtnIvs[pos].getLayoutParams();
-                        params.width = info.getWidth();     //DisplayUtils.dip2px(info.getWidth() / 3);
-                        params.height = info.getHeight();   //DisplayUtils.dip2px(info.getHeight() / 3);
+                        params.width = info.getWidth();
+                        params.height = info.getHeight();
                         mBtnIvs[pos].setLayoutParams(params);
                     }
 

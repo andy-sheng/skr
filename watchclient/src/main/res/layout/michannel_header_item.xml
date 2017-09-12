@@ -23,7 +23,7 @@
     <com.base.image.fresco.BaseImageView
         android:id="@+id/shadow_iv"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/margin_84"
+        android:layout_height="@dimen/margin_34"
         android:layout_above="@+id/navigation_header_container"
         android:layout_marginLeft="@dimen/margin_60"
         android:layout_marginRight="@dimen/margin_60"/>

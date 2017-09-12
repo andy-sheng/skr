@@ -2,12 +2,13 @@ package com.wali.live.watchsdk.channel.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -18,7 +19,6 @@ import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
-import com.mi.live.engine.player.widget.IPlayerCallBack;
 import com.mi.live.engine.player.widget.VideoPlayerPresenter;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.view.VideoPlayerWrapperView;
@@ -27,18 +27,21 @@ import com.wali.live.watchsdk.view.VideoPlayerWrapperView;
  * Created by zyh on 2017/8/29.
  */
 
-public class HeaderVideoView extends RelativeLayout implements IPlayerCallBack {
+public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrapperView.IOuterCallBack {
     private final static String TAG = "HeaderVideoView";
 
     private static final int ROUND_RADIUS = DisplayUtils.dip2px(6.67f);
-    VideoPlayerWrapperView mVideoView;
-    BaseImageView mCoverIv;
+    private VideoPlayerWrapperView mVideoView;
+    private BaseImageView mCoverIv;
     protected VideoPlayerPresenter mVideoPresenter;
 
     private String mVideoUrl;
     private String mCoverUrl;
 
     private Handler mUIHandler = new Handler(Looper.getMainLooper());
+
+    private Path mPath;
+    private RectF mRectF;
 
     protected <T extends View> T $(int resId) {
         return (T) findViewById(resId);
@@ -82,13 +85,15 @@ public class HeaderVideoView extends RelativeLayout implements IPlayerCallBack {
         setWillNotDraw(false);
         mVideoView = $(R.id.video_player_view);
         mCoverIv = $(R.id.player_bg_iv);
+
+        mPath = new Path();
     }
 
     public void startVideo() {
         if (mVideoPresenter == null) {
             mVideoPresenter = mVideoView.getVideoPlayerPresenter();
-            mVideoPresenter.setVideoPlayerCallBack(this);
             mVideoPresenter.setNeedReset(false);
+            mVideoView.setOuterCallBack(this);
         }
         setVideoPath(mVideoUrl);
     }
@@ -120,11 +125,13 @@ public class HeaderVideoView extends RelativeLayout implements IPlayerCallBack {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        if (mRectF == null) {
+            mRectF = new RectF(0, 0, getWidth(), getHeight());
+        }
+        canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
+        mPath.addRoundRect(mRectF, ROUND_RADIUS, ROUND_RADIUS, Path.Direction.CW);
+        canvas.clipPath(mPath);
         super.onDraw(canvas);
-        Path path = new Path();
-        RectF rectF = new RectF(0, 0, getWidth(), getHeight());
-        path.addRoundRect(rectF, ROUND_RADIUS, ROUND_RADIUS, Path.Direction.CW);
-        canvas.clipPath(path);
     }
 
     @Override
@@ -141,13 +148,7 @@ public class HeaderVideoView extends RelativeLayout implements IPlayerCallBack {
     }
 
     @Override
-    public void onLoad() {
-
-    }
-
-    @Override
     public void onPrepared() {
-        mCoverIv.setVisibility(View.GONE);
     }
 
     @Override
@@ -156,39 +157,19 @@ public class HeaderVideoView extends RelativeLayout implements IPlayerCallBack {
     }
 
     @Override
+    public void onBufferingStart() {
+
+    }
+
+    @Override
+    public void onBufferingEnd() {
+        mCoverIv.setVisibility(View.GONE);
+    }
+
+    @Override
     public void onError(int errCode) {
         MyLog.e(TAG, "onError errCode=" + errCode);
         postVideoRunnable();
-    }
-
-    @Override
-    public void onBufferingUpdate(int percent) {
-
-    }
-
-    @Override
-    public void onInfo(int info) {
-
-    }
-
-    @Override
-    public void onInfo(Message msg) {
-
-    }
-
-    @Override
-    public void onSeekComplete() {
-
-    }
-
-    @Override
-    public void requestOrientation(int playMode) {
-
-    }
-
-    @Override
-    public void onReleased() {
-
     }
 
 }
