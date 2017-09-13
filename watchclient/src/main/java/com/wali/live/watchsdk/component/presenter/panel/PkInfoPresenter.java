@@ -1,11 +1,9 @@
 package com.wali.live.watchsdk.component.presenter.panel;
 
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.base.log.MyLog;
-import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
@@ -36,7 +34,6 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
 
     private RoomBaseDataModel mMyRoomData;
 
-    private Handler mUiHandler = new Handler();
     private Subscription mDownTimerSub;
 
     @Override
@@ -58,24 +55,23 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
     }
 
-    public void startPresenter(boolean isLandscape) {
-        MyLog.d(TAG, "startPresenter");
-        startPresenter();
-    }
-
     @Override
     public void stopPresenter() {
         MyLog.d(TAG, "stopPresenter");
         super.stopPresenter();
         unregisterAllAction();
-        mUiHandler.removeCallbacksAndMessages(null);
     }
 
-    private void startDownTimer(int time) {
+    private void startDownTimer(long time) {
+        mView.onUpdateRemainTime(time);
         if (mDownTimerSub != null && !mDownTimerSub.isUnsubscribed()) {
             mDownTimerSub.unsubscribe();
+            mDownTimerSub = null;
         }
-        final int totalTime = time;
+        if (time == 0) {
+            return;
+        }
+        final long totalTime = time;
         mDownTimerSub = Observable.interval(totalTime, TimeUnit.SECONDS)
                 .onBackpressureDrop()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -95,101 +91,50 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
                 });
     }
 
-    private void updateTypeAndTime(int timeType, long startTs, long currServerTs) {
-        int remainTime = 180;
-        switch (timeType) {
-            case 1:
-                remainTime = 180;
-                break;
-            case 2:
-                remainTime = 600;
-                break;
-            case 3:
-                remainTime = 900;
-                break;
-            default:
-                break;
+    public void onPkStart(PkStartInfo info, boolean isLandscape) {
+        if (mView == null || info == null) {
+            return;
         }
-        if (currServerTs > startTs) {
-            remainTime -= remainTime - (int) ((currServerTs - startTs) / 1000);
-        }
-        if (remainTime > 0) {
-            startDownTimer(remainTime);
-            mView.onUpdateRemainTime(remainTime);
+        mView.showSelf(true, isLandscape);
+        startDownTimer(info.remainTime);
+        if (info.uuid1 == mMyRoomData.getUid()) {
+            mView.onPkStart(info.pkType, info.uuid1, info.uuid2);
+            mView.onUpdateScoreInfo(info.score1, info.score2);
         } else {
-            mView.onUpdateRemainTime(0);
+            mView.onPkStart(info.pkType, info.uuid2, info.uuid1);
+            mView.onUpdateScoreInfo(info.score2, info.score1);
         }
     }
 
-    public void onPkStart(final BarrageMsg.PKInfoMessageExt msgExt, final long currServerTs, final boolean isLandscape) {
-        if (msgExt == null || msgExt.info == null) {
+    public void onPkScore(PkScoreInfo info) {
+        if (mView == null || info == null) {
             return;
         }
-        mUiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                mView.showSelf(true, isLandscape);
-                LivePKProto.NewPKInfo info = msgExt.info;
-                updateTypeAndTime(info.getSetting().getDuration().getId(), info.getBeginTs(), currServerTs);
-                LivePKProto.PKInfoItem infoItem1 = msgExt.info.getFirst(),
-                        infoItem2 = msgExt.info.getSecond();
-                String pkType = info.getSetting().getContent().getName();
-                if (infoItem1.getUuid() == mMyRoomData.getUid()) {
-                    mView.onPkStart(pkType, infoItem1.getUuid(), infoItem2.getUuid());
-                    mView.onUpdateScoreInfo(infoItem1.getScore(), infoItem2.getScore());
-                } else {
-                    mView.onPkStart(pkType, infoItem2.getUuid(), infoItem1.getUuid());
-                    mView.onUpdateScoreInfo(infoItem2.getScore(), infoItem1.getScore());
-                }
-            }
-        });
+        if (info.uuid1 == mMyRoomData.getUid()) {
+            mView.onUpdateScoreInfo(info.score1, info.score2);
+        } else {
+            mView.onUpdateScoreInfo(info.score2, info.score1);
+        }
     }
 
-    public void onPkEnd(final BarrageMsg.PKEndInfoMessageExt msgExt) {
-        if (msgExt == null || msgExt.info == null) {
+    public void onPkEnd(PkEndInfo info) {
+        if (mView == null || info == null) {
             return;
         }
-        mUiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mView != null) {
-                    LivePKProto.PKInfoItem infoItem1 = msgExt.info.getFirst(), infoItem2 = msgExt.info.getSecond();
-                    if (msgExt.endType == 1) { // PK 提前结束
-                        boolean ownerWin = mMyRoomData.getUid() != msgExt.uuid; // 不是房主提前结束PK
-                        if (infoItem1.getUuid() == mMyRoomData.getUid()) {
-                            mView.onPkEnd(ownerWin, infoItem1.getScore(), infoItem2.getScore());
-                        } else {
-                            mView.onPkEnd(ownerWin, infoItem1.getScore(), infoItem2.getScore());
-                        }
-                    } else {
-                        if (infoItem1.getUuid() == mMyRoomData.getUid()) {
-                            mView.onPkEnd(infoItem1.getScore(), infoItem2.getScore());
-                        } else {
-                            mView.onPkEnd(infoItem1.getScore(), infoItem2.getScore());
-                        }
-                    }
-                }
+        if (info.quitUuid != 0) { // PK 提前结束
+            boolean ownerWin = mMyRoomData.getUid() != info.quitUuid; // 不是房主提前结束PK
+            if (info.uuid1 == mMyRoomData.getUid()) {
+                mView.onPkEnd(ownerWin, info.score1, info.score2);
+            } else {
+                mView.onPkEnd(ownerWin, info.score2, info.score1);
             }
-        });
-    }
-
-    public void onPkScore(final BarrageMsg.PKInfoMessageExt msgExt) {
-        if (msgExt == null || msgExt.info == null) {
-            return;
+        } else {
+            if (info.uuid1 == mMyRoomData.getUid()) {
+                mView.onPkEnd(info.score1, info.score2);
+            } else {
+                mView.onPkEnd(info.score2, info.score1);
+            }
         }
-        mUiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mView != null) {
-                    LivePKProto.PKInfoItem infoItem1 = msgExt.info.getFirst(), infoItem2 = msgExt.info.getSecond();
-                    if (infoItem1.getUuid() == mMyRoomData.getUid()) {
-                        mView.onUpdateScoreInfo(infoItem1.getScore(), infoItem2.getScore());
-                    } else {
-                        mView.onUpdateScoreInfo(infoItem2.getScore(), infoItem1.getScore());
-                    }
-                }
-            }
-        });
     }
 
     @Override
@@ -209,5 +154,61 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
                 break;
         }
         return false;
+    }
+
+    public static class PkScoreInfo {
+        long uuid1;
+        long uuid2;
+        long score1;
+        long score2;
+
+        public PkScoreInfo(LivePKProto.NewPKInfo info) {
+            LivePKProto.PKInfoItem item1 = info.getFirst(), item2 = info.getSecond();
+            uuid1 = item1.getUuid();
+            score1 = item1.getScore();
+            uuid2 = item2.getUuid();
+            score2 = item2.getScore();
+        }
+    }
+
+    public static class PkStartInfo extends PkScoreInfo {
+        long remainTime;
+        String pkType;
+
+        public PkStartInfo(LivePKProto.NewPKInfo info, long currServerTs) {
+            super(info);
+            pkType = info.getSetting().getContent().getName();
+            parseRemainTime(info.getSetting().getDuration().getId(), info.getBeginTs(), currServerTs);
+        }
+
+        private void parseRemainTime(int timeType, long startTs, long currServerTs) {
+            remainTime = 180;
+            switch (timeType) {
+                case 1:
+                    remainTime = 180;
+                    break;
+                case 2:
+                    remainTime = 600;
+                    break;
+                case 3:
+                    remainTime = 900;
+                    break;
+                default:
+                    break;
+            }
+            if (currServerTs > startTs) {
+                remainTime -= (int) ((currServerTs - startTs) / 1000);
+            }
+            remainTime = Math.max(remainTime, 0);
+        }
+    }
+
+    public static class PkEndInfo extends PkScoreInfo {
+        long quitUuid;
+
+        public PkEndInfo(LivePKProto.NewPKInfo info, long quitUuid) {
+            super(info);
+            this.quitUuid = quitUuid;
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.component.presenter;
 
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -23,7 +24,6 @@ import java.lang.ref.WeakReference;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_ON_PK_START;
-import static com.wali.live.component.BaseSdkController.MSG_ON_PK_STOP;
 
 /**
  * Created by yangli on 2017/9/11.
@@ -35,6 +35,8 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
     private static final String TAG = "WatchFloatPresenter";
 
     private WeakReference<PkInfoPresenter> mPkInfoPresenterRef;
+
+    private Handler mUiHandler = new Handler();
 
     private RoomBaseDataModel mMyRoomData;
 
@@ -71,16 +73,16 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_ON_PK_START);
-        registerAction(MSG_ON_PK_STOP);
     }
 
     @Override
     public void stopPresenter() {
         super.stopPresenter();
         unregisterAllAction();
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 
-    private void showPkInfoPanel() {
+    private void showPkPanel(PkInfoPresenter.PkStartInfo pkStartInfo) {
         PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
         if (presenter == null) {
             presenter = new PkInfoPresenter(mController, mMyRoomData);
@@ -89,14 +91,8 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
             presenter.startPresenter();
             mPkInfoPresenterRef = new WeakReference<>(presenter);
         }
-        presenter.startPresenter(mIsLandscape);
-    }
-
-    private void hidePkInfoPanel() {
-        PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
-        if (presenter != null) {
-            presenter.stopPresenter();
-        }
+        presenter.startPresenter();
+        presenter.onPkStart(pkStartInfo, mIsLandscape);
     }
 
     @Override
@@ -122,10 +118,7 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
                 onOrientation(true);
                 return true;
             case MSG_ON_PK_START:
-                showPkInfoPanel();
-                return true;
-            case MSG_ON_PK_STOP:
-                hidePkInfoPanel();
+                showPkPanel((PkInfoPresenter.PkStartInfo) params.getItem(0));
                 return true;
             default:
                 break;
@@ -134,30 +127,43 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
     }
 
     @Override
-    public void process(BarrageMsg msg, RoomBaseDataModel roomBaseDataModel) {
-        PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
-        if (presenter == null) {
-            return;
-        }
-        switch (msg.getMsgType()) {
-            case BarrageMsgType.B_MSG_TYPE_NEW_PK_START: {
-                BarrageMsg.PKInfoMessageExt pkInfoMessageExt = (BarrageMsg.PKInfoMessageExt) msg.getMsgExt();
-                presenter.onPkStart(pkInfoMessageExt, msg.getSentTime(), mIsLandscape);
-                break;
+    public void process(final BarrageMsg msg, RoomBaseDataModel roomBaseDataModel) {
+        mUiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                int msgType = msg.getMsgType();
+                if (msgType == BarrageMsgType.B_MSG_TYPE_NEW_PK_START) {
+                    BarrageMsg.PKInfoMessageExt msgExt = (BarrageMsg.PKInfoMessageExt) msg.getMsgExt();
+                    if (msgExt.info != null) {
+                        showPkPanel(new PkInfoPresenter.PkStartInfo(msgExt.info, msg.getSentTime()));
+                    }
+                    return;
+                }
+                PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
+                if (presenter == null) {
+                    return;
+                }
+                switch (msg.getMsgType()) {
+                    case BarrageMsgType.B_MSG_TYPE_NEW_PK_SCORE: {
+                        BarrageMsg.PKInfoMessageExt msgExt = (BarrageMsg.PKInfoMessageExt) msg.getMsgExt();
+                        if (msgExt.info != null) {
+                            presenter.onPkScore(new PkInfoPresenter.PkScoreInfo(msgExt.info));
+                        }
+                        break;
+                    }
+                    case BarrageMsgType.B_MSG_TYPE_NEW_PK_END: {
+                        BarrageMsg.PKEndInfoMessageExt msgExt = (BarrageMsg.PKEndInfoMessageExt) msg.getMsgExt();
+                        if (msgExt.info != null) {
+                            // msgExt.endType为1时表示PK提前结束
+                            presenter.onPkEnd(new PkInfoPresenter.PkEndInfo(msgExt.info, msgExt.endType == 1 ? msgExt.uuid : 0));
+                        }
+                        break;
+                    }
+                    default:
+                        break;
+                }
             }
-            case BarrageMsgType.B_MSG_TYPE_NEW_PK_END: {
-                BarrageMsg.PKEndInfoMessageExt pkEndInfoMessageExt = (BarrageMsg.PKEndInfoMessageExt) msg.getMsgExt();
-                presenter.onPkEnd(pkEndInfoMessageExt);
-                break;
-            }
-            case BarrageMsgType.B_MSG_TYPE_NEW_PK_SCORE: {
-                BarrageMsg.PKInfoMessageExt pkScoreInfo = (BarrageMsg.PKInfoMessageExt) msg.getMsgExt();
-                presenter.onPkScore(pkScoreInfo);
-                break;
-            }
-            default:
-                break;
-        }
+        });
     }
 
     @Override

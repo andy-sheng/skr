@@ -6,7 +6,6 @@ import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.query.model.LiveCover;
 import com.mi.live.data.query.model.MessageRule;
 import com.mi.live.data.query.model.MicInfo;
-import com.mi.live.data.query.model.PkInfo;
 import com.mi.live.data.query.model.ViewerModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.proto.CommonProto;
@@ -57,13 +56,10 @@ public class RoomDataMapper {
 
             enterRoomInfo.setShareUrl(rsp.getShareUrl());
 
-
-            LiveCommonProto.PKInfo otherPkInfo = rsp.getOtherPKInfo();
-            if (otherPkInfo != null) {
-                enterRoomInfo.setPkInfo(PkInfo.loadFromPB(otherPkInfo));
+            if (rsp.hasNewPkInfo()) {
+                enterRoomInfo.setPkInfo(rsp.getNewPkInfo());
             }
 
-            enterRoomInfo.setPkInitTicket(rsp.getPkInitTicket());
             enterRoomInfo.setDownStreamUrl(rsp.getDownStreamUrl());
 
             LiveCommonProto.MicInfo micInfo = rsp.getMicInfo();

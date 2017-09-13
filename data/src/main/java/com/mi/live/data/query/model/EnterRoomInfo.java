@@ -1,6 +1,7 @@
 package com.mi.live.data.query.model;
 
 import com.mi.live.data.location.Location;
+import com.wali.live.proto.LivePKProto;
 
 import java.util.List;
 
@@ -17,8 +18,6 @@ public class EnterRoomInfo {
     int type;
     String shareUrl;
 
-    PkInfo pkInfo;
-    int pkInitTicket;
     String downStreamUrl;
 
     MicInfo micInfo;
@@ -96,14 +95,6 @@ public class EnterRoomInfo {
 
     public void setShareUrl(String shareUrl) {
         this.shareUrl = shareUrl;
-    }
-
-    public int getPkInitTicket() {
-        return pkInitTicket;
-    }
-
-    public void setPkInitTicket(int pkInitTicket) {
-        this.pkInitTicket = pkInitTicket;
     }
 
     public String getDownStreamUrl() {
@@ -186,19 +177,21 @@ public class EnterRoomInfo {
         this.hideGift = hideGift;
     }
 
-    public PkInfo getPkInfo() {
-        return pkInfo;
-    }
-
-    public void setPkInfo(PkInfo pkInfo) {
-        this.pkInfo = pkInfo;
-    }
-
     public boolean isSupportMgicFace() {
         return supportMgicFace;
     }
 
     public void setSupportMgicFace(boolean supportMgicFace) {
         this.supportMgicFace = supportMgicFace;
+    }
+
+    private LivePKProto.NewPKInfo pkInfo;
+
+    public void setPkInfo(LivePKProto.NewPKInfo pkInfo) {
+        this.pkInfo = pkInfo;
+    }
+
+    public LivePKProto.NewPKInfo getPkInfo() {
+        return this.pkInfo;
     }
 }

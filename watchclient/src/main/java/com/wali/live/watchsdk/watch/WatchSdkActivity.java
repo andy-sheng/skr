@@ -70,6 +70,7 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.component.WatchSdkView;
+import com.wali.live.watchsdk.component.presenter.panel.PkInfoPresenter;
 import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.watchsdk.personinfo.fragment.FloatInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
@@ -112,6 +113,7 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_LIVE_SUCCESS;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_ON_PK_START;
 import static com.wali.live.component.BaseSdkController.MSG_PAGE_DOWN;
 import static com.wali.live.component.BaseSdkController.MSG_PAGE_UP;
 
@@ -738,6 +740,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
             syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);
             if (mController != null) {
                 mController.postEvent(MSG_ON_LIVE_SUCCESS);
+            }
+            if (roomInfo.getPkInfo() != null && mController != null) {
+                mController.postEvent(MSG_ON_PK_START, new Params().putItem(
+                        new PkInfoPresenter.PkStartInfo(roomInfo.getPkInfo(), roomInfo.getEnterTs())));
             }
         }
     };

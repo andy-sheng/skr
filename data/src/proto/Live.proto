@@ -4,6 +4,7 @@ import "Common.proto";
 import "Account.proto";
 import "LiveCommon.proto";
 import "Live2.proto";
+import "LivePk.proto";
 
 option java_package = "com.wali.live.proto";
 option java_outer_classname = "LiveProto";
@@ -124,6 +125,8 @@ message EnterLiveRsp {
     optional TicketLiveStatus ticketStatus = 24; //用户观看门票直播状态信息
     optional bool supportMagicFace = 26;//支持魔法表情
     optional bool enableViewerMic = 27; //是否允许观众短发起连麦（true:允许）
+    optional bool is_pk_admin      = 28; //是否pk场控
+    optional NewPKInfo new_pk_info = 29; //pk状态传
 }
 
 //上麦开始，主播发起

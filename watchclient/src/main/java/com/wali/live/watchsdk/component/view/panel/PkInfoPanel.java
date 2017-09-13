@@ -3,6 +3,8 @@ package com.wali.live.watchsdk.component.view.panel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -31,6 +33,8 @@ public class PkInfoPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
 
     @Nullable
     protected IPresenter mPresenter;
+
+    private final AnimationHelper mAnimationHelper = new AnimationHelper();
 
     private ImageView mLeftResultView;
     private ImageView mRightResultView;
@@ -112,6 +116,9 @@ public class PkInfoPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
                 mPkTypeView.setText(pkType);
                 AvatarUtils.loadAvatarByUidTs(mAnchorLeft, uuid1, 0, AvatarUtils.SIZE_TYPE_AVATAR_SMALL, true);
                 AvatarUtils.loadAvatarByUidTs(mAnchorRight, uuid2, 0, AvatarUtils.SIZE_TYPE_AVATAR_SMALL, true);
+                mLeftResultView.setVisibility(View.VISIBLE);
+                mRightResultView.setVisibility(View.VISIBLE);
+                mMiddleResultView.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -140,6 +147,8 @@ public class PkInfoPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
                     mLeftResultView.setImageResource(R.drawable.live_img_pk_lost);
                     mRightResultView.setImageResource(R.drawable.live_img_pk_win);
                 }
+                mAnimationHelper.showDefeatAnimation();
+                ;
             }
 
             @Override
@@ -147,6 +156,7 @@ public class PkInfoPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
                 if (ticket1 == ticket2) {
                     onUpdateScoreInfo(ticket1, ticket2);
                     mMiddleResultView.setVisibility(View.VISIBLE);
+                    mAnimationHelper.showTieAnimation();
                 } else {
                     onPkEnd(ticket1 > ticket2, ticket1, ticket2);
                 }
@@ -169,10 +179,28 @@ public class PkInfoPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
 
         void hideSelf(boolean useAnimation);
 
+        /**
+         * Pk开始
+         *
+         * @param pkType PK类型
+         * @param uuid1  本房主ID
+         * @param uuid2  对方ID
+         */
         void onPkStart(String pkType, long uuid1, long uuid2);
 
+        /**
+         * 更新PK倒计时
+         *
+         * @param remainTime PK倒计时，以秒为单位
+         */
         void onUpdateRemainTime(long remainTime);
 
+        /**
+         * 更新分数
+         *
+         * @param ticket1 本房主得分
+         * @param ticket2 对方得分
+         */
         void onUpdateScoreInfo(long ticket1, long ticket2);
 
         /**
@@ -191,5 +219,40 @@ public class PkInfoPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
          * @param ticket2 对方得分
          */
         void onPkEnd(long ticket1, long ticket2);
+    }
+
+    protected class AnimationHelper {
+
+        private Animation mScaleAnimation;
+
+        void setupAnimation() {
+            if (mScaleAnimation == null) {
+                mScaleAnimation = new ScaleAnimation(0, 1, 0, 1);
+                mScaleAnimation.setDuration(400);
+                mScaleAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        hideSelf(true);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
+                });
+            }
+        }
+
+        void showTieAnimation() {
+            mMiddleResultView.startAnimation(mScaleAnimation);
+        }
+
+        void showDefeatAnimation() {
+            mLeftResultView.startAnimation(mScaleAnimation);
+            mRightResultView.startAnimation(mScaleAnimation);
+        }
     }
 }
