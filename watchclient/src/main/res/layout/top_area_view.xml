@@ -7,7 +7,7 @@
     <RelativeLayout
         android:id="@+id/anchor_info_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_dimen_100"
         android:background="@drawable/live_bg_head">
 
         <com.base.image.fresco.BaseImageView
