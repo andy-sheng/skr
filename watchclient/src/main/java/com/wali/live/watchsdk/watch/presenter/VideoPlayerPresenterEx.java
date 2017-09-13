@@ -679,7 +679,6 @@ public class VideoPlayerPresenterEx implements
         }
     }
 
-    //网络变化toast提示
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.NetWorkChangeEvent event) {
         MyLog.w(TAG, "EventClass.NetWorkChangeEvent");
