@@ -182,7 +182,7 @@ public interface IMiLiveSdk {
     /**
      * 判断该手机中是否安装的直播助手
      */
-    boolean hasInstallLiveSdk();
+    boolean hasInstallLiveSdk(Application application);
 
     /**
      * 从上层重新传入channelId，用于测试，上线后删除

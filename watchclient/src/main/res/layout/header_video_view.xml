@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="308dp"
+    android:layout_height="173.33dp">
+
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/player_bg_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.wali.live.watchsdk.view.VideoPlayerWrapperView
+        android:id="@+id/video_player_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        app:layout_collapseMode="parallax"
+        app:layout_scrollFlags="scroll"
+        app:real_time="true"/>
+</merge>

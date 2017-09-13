@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/header_bg_iv"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"/>
+
+    <com.wali.live.watchsdk.channel.view.HeaderVideoView
+        android:id="@+id/video_view"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_above="@+id/shadow_iv"
+        android:layout_marginLeft="@dimen/margin_75"
+        android:layout_marginRight="@dimen/margin_75"/>
+
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/shadow_iv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_34"
+        android:layout_above="@+id/navigation_header_container"
+        android:layout_marginLeft="@dimen/margin_60"
+        android:layout_marginRight="@dimen/margin_60"/>
+
+    <LinearLayout
+        android:id="@+id/navigation_header_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/header_bg_iv"
+        android:visibility="gone">
+
+        <include
+            android:id="@+id/button_layout1"
+            layout="@layout/michannel_page_header_item_button"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@+id/button_layout2"
+            layout="@layout/michannel_page_header_item_button"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@+id/button_layout3"
+            layout="@layout/michannel_page_header_item_button"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@+id/button_layout4"
+            layout="@layout/michannel_page_header_item_button"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@+id/button_layout5"
+            layout="@layout/michannel_page_header_item_button"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+</RelativeLayout>

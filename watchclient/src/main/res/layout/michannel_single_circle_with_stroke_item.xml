@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/single_bg_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"/>
+
+    <com.base.image.fresco.view.TintableImageView
+        android:id="@+id/single_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_8"/>
+
+    <com.wali.live.watchsdk.channel.view.RoundRectangleTextView
+        android:id="@+id/circle_rectangle_tv"
+        android:layout_width="52dp"
+        android:layout_height="@dimen/margin_168"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/margin_26"/>
+
+    <TextView
+        android:id="@+id/single_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/single_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/color_black_trans_50"
+        android:textSize="@dimen/text_size_36"/>
+
+    <ImageView
+        android:id="@+id/badge_iv"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_below="@id/single_iv"
+        android:layout_marginLeft="-10dp"
+        android:layout_marginTop="-10dp"
+        android:layout_toRightOf="@id/single_iv"
+        android:scaleType="fitStart"
+        android:visibility="gone"/>
+</RelativeLayout>
+
+
+

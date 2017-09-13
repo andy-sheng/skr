@@ -40,7 +40,9 @@ public class ChannelUserViewModel extends ChannelViewModel<ChannelItem> {
     private void parseUI(UiTemplateUserInfo protoItem) {
         mHead = protoItem.getHeaderName();
         mHeadUri = protoItem.getHeaderViewAllUri();
-        mSubHead = protoItem.getSubHeaderName();
+        mHeadType = protoItem.getHeaderUiType();
+        mHeadIconUrl = protoItem.getHeaderIcon();
+        mHeadMoreText = protoItem.getHeaderViewAllText();
 
         parseUserItem(protoItem.getItemDatasList());
     }
@@ -67,6 +69,9 @@ public class ChannelUserViewModel extends ChannelViewModel<ChannelItem> {
         private User mUser;
 
         protected boolean mIsFocused;
+        protected String mDescText;
+        protected String mDescTextColor;
+        protected String mAvatarLayerColor;
 
         public UserItemData(UserInfoItemData protoItem) {
             parse(protoItem);
@@ -80,6 +85,9 @@ public class ChannelUserViewModel extends ChannelViewModel<ChannelItem> {
         public void parse(UserInfoItemData protoItem) {
             mUser = new User(protoItem.getUserInfo());
             mSchemeUri = protoItem.getJumpSchemeUri();
+            mDescText = protoItem.getDesc();
+            mDescTextColor = protoItem.getDescBgColor();
+            mAvatarLayerColor = protoItem.getAvatarLayerColor();
         }
 
         public User getUser() {
@@ -92,6 +100,18 @@ public class ChannelUserViewModel extends ChannelViewModel<ChannelItem> {
 
         public void setFocused(boolean focused) {
             mIsFocused = focused;
+        }
+
+        public String getDescText() {
+            return mDescText;
+        }
+
+        public String getDescTextColor() {
+            return mDescTextColor;
+        }
+
+        public String getAvatarLayerColor() {
+            return mAvatarLayerColor;
         }
     }
 }

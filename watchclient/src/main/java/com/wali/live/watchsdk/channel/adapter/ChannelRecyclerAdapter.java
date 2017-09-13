@@ -10,11 +10,13 @@ import com.base.log.MyLog;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.holder.BannerHolder;
 import com.wali.live.watchsdk.channel.holder.BaseHolder;
+import com.wali.live.watchsdk.channel.holder.ChannelPageHeaderHolder;
 import com.wali.live.watchsdk.channel.holder.CommunityRankHolder;
 import com.wali.live.watchsdk.channel.holder.ConcernCardHolder;
 import com.wali.live.watchsdk.channel.holder.DefaultCardHolder;
 import com.wali.live.watchsdk.channel.holder.EffectCardHolder;
 import com.wali.live.watchsdk.channel.holder.FiveCircleHolder;
+import com.wali.live.watchsdk.channel.holder.FiveCircleWithStrokeHolder;
 import com.wali.live.watchsdk.channel.holder.GameCardHolder;
 import com.wali.live.watchsdk.channel.holder.LargeCardFloatHeaderHolder;
 import com.wali.live.watchsdk.channel.holder.LargeCardHeadHolder;
@@ -27,6 +29,7 @@ import com.wali.live.watchsdk.channel.holder.OneCardHolder;
 import com.wali.live.watchsdk.channel.holder.OneListHolder;
 import com.wali.live.watchsdk.channel.holder.OneLiveListHolder;
 import com.wali.live.watchsdk.channel.holder.PlaceHolder;
+
 import com.wali.live.watchsdk.channel.holder.SixMakeupHolder;
 import com.wali.live.watchsdk.channel.holder.SplitLineHolder;
 import com.wali.live.watchsdk.channel.holder.ThreeCardHolder;
@@ -41,6 +44,7 @@ import com.wali.live.watchsdk.channel.holder.ThreePicTwoLineHolder;
 import com.wali.live.watchsdk.channel.holder.TopicGridHolder;
 import com.wali.live.watchsdk.channel.holder.TwoCardHolder;
 import com.wali.live.watchsdk.channel.holder.TwoLayerHolder;
+import com.wali.live.watchsdk.channel.holder.TwoLongCoverHolder;
 import com.wali.live.watchsdk.channel.holder.TwoWideCardHolder;
 import com.wali.live.watchsdk.channel.holder.VariableLengthTagHolder;
 import com.wali.live.watchsdk.channel.holder.VideoBannerHolder;
@@ -116,8 +120,8 @@ public class ChannelRecyclerAdapter extends RecyclerView.Adapter<BaseHolder> {
                 holder = new ThreePicHolder(view);
                 break;
             case ChannelUiType.TYPE_FIVE_CIRCLE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_five_circle_item, parent, false);
-                holder = new FiveCircleHolder(view);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_five_circle_with_stroke_item, parent, false);
+                holder = new FiveCircleWithStrokeHolder(view);
                 break;
             case ChannelUiType.TYPE_TWO_LAYER:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_two_layer_item, parent, false);
@@ -253,6 +257,14 @@ public class ChannelRecyclerAdapter extends RecyclerView.Adapter<BaseHolder> {
             case ChannelUiType.TYPE_VARIABLE_LENGTH_TAG:
                 view = new FoldView(parent.getContext());
                 holder = new VariableLengthTagHolder(view);
+                break;
+            case ChannelUiType.TYPE_TWO_LONG_COVER:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_two_long_cover_item,parent, false);
+                holder = new TwoLongCoverHolder(view);
+                break;
+            case ChannelUiType.TYPE_PAGE_HEADER:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_header_item, parent, false);
+                holder = new ChannelPageHeaderHolder(view);
                 break;
             default:
                 MyLog.d(TAG, "viewType is : " + viewType);

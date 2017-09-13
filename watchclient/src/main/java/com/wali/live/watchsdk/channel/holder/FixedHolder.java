@@ -21,6 +21,7 @@ import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.helper.HolderHelper;
 import com.wali.live.watchsdk.channel.viewmodel.BaseJumpItem;
+import com.wali.live.watchsdk.channel.viewmodel.ChannelPageHeaderViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelNavigateViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelRankingViewModel;
@@ -58,6 +59,8 @@ public abstract class FixedHolder extends HeadHolder {
             bindUserModel((ChannelUserViewModel) mViewModel.get());
         } else if (mViewModel instanceof ChannelLiveViewModel) {
             bindLiveModel((ChannelLiveViewModel) mViewModel.get());
+        } else if (mViewModel instanceof ChannelPageHeaderViewModel) {
+            bindPageHeaderModel((ChannelPageHeaderViewModel) mViewModel.get());
         } else if (mViewModel instanceof ChannelNavigateViewModel) {
             bindNavigateModel((ChannelNavigateViewModel) mViewModel.get());
         } else if (mViewModel instanceof ChannelRankingViewModel) {
@@ -89,6 +92,10 @@ public abstract class FixedHolder extends HeadHolder {
     }
 
     protected void bindNavigateModel(ChannelNavigateViewModel viewModel) {
+    }
+
+    protected void bindPageHeaderModel(ChannelPageHeaderViewModel viewModel) {
+
     }
 
     protected void bindText(TextView tv, String... texts) {

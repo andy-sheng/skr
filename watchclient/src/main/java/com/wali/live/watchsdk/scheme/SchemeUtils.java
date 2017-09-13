@@ -35,4 +35,5 @@ public class SchemeUtils {
         Uri uri = Uri.parse(uriStr);
         return uri.getQueryParameter(SchemeConstants.PARAM_RECOMMEND_TAG);
     }
+
 }

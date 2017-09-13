@@ -142,10 +142,11 @@ public class EnvelopePresenter extends BaseSdkRxPresenter<RelativeLayout>
     @Override
     public void grabEnvelope(EnvelopeInfo envelopeInfo) {
         if (envelopeInfo == null) {
-            MyLog.w(TAG, "removeEnvelope, but grabEnvelope is null");
+            MyLog.w(TAG, "grabEnvelope, but envelopeInfo is null");
             return;
         }
         if (envelopeInfo.state == EnvelopeInfo.STATE_GRABBING) {
+            MyLog.w(TAG, "grabEnvelope, but is under grabbing");
             return;
         } else if (envelopeInfo.state == EnvelopeInfo.STATE_GRAB_SUCCESS) {
             updateEnvelopeView(false);
@@ -155,7 +156,8 @@ public class EnvelopePresenter extends BaseSdkRxPresenter<RelativeLayout>
         doGrabEnvelope(envelopeInfo);
     }
 
-    private void doGrabEnvelope(final EnvelopeInfo envelopeInfo) {
+    private void doGrabEnvelope(@NonNull final EnvelopeInfo envelopeInfo) {
+        MyLog.w(TAG, "doGrabEnvelope envelopeId=" + envelopeInfo.getEnvelopeId());
         final String netTips = GlobalData.app().getString(R.string.net_is_busy_tip);
         Observable.just(envelopeInfo.getEnvelopeId())
                 .flatMap(new Func1<String, Observable<?>>() {
@@ -163,10 +165,10 @@ public class EnvelopePresenter extends BaseSdkRxPresenter<RelativeLayout>
                     public Observable<?> call(String envelopeId) {
                         RedEnvelProto.GrabEnvelopRsp envelopRsp = EnvelopeUtils.grabRedEnvelope(envelopeId);
                         if (envelopRsp == null) {
-                            MyLog.w(TAG, "grabEnvelope failed, rsp is null");
+                            MyLog.w(TAG, "doGrabEnvelope failed, rsp is null");
                             return Observable.error(new RefuseRetryExeption(netTips));
                         } else if (envelopRsp.getRetCode() == GiftErrorCode.REDENVELOP_GAME_BUSY) {
-                            MyLog.w(TAG, "grabEnvelope failed, rsp is null");
+                            MyLog.w(TAG, "doGrabEnvelope failed, rsp is null");
                             return Observable.error(new Exception(netTips));
                         }
                         return Observable.just(envelopRsp);
@@ -188,7 +190,7 @@ public class EnvelopePresenter extends BaseSdkRxPresenter<RelativeLayout>
                             if (!TextUtils.isEmpty(msg)) {
                                 ToastUtils.showToast(msg);
                             }
-                            MyLog.w(TAG, "grabEnvelope failed, error:" + msg);
+                            MyLog.w(TAG, "doGrabEnvelope failed, error:" + msg);
                             processGrabDone(envelopeInfo, null);
                         }
                     }
@@ -196,6 +198,7 @@ public class EnvelopePresenter extends BaseSdkRxPresenter<RelativeLayout>
                     @Override
                     public void onNext(Object rsp) {
                         if (mView != null) {
+                            MyLog.w(TAG, "doGrabEnvelope done");
                             processGrabDone(envelopeInfo, (RedEnvelProto.GrabEnvelopRsp) rsp);
                         }
                     }

@@ -29,12 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="163.3dp"/>
 
-        <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignBottom="@id/cover_iv"-->
-        <!--android:background="@drawable/home_new_human_bg"/>-->
-
         <include
             android:id="@+id/shadow_tv"
             layout="@layout/michannel_shadow_all_view"

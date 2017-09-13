@@ -22,9 +22,9 @@
         android:id="@+id/content_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_30"
         android:layout_marginLeft="@dimen/margin_10"
         android:layout_marginRight="@dimen/margin_10"
+        android:layout_marginTop="@dimen/margin_30"
         android:paddingBottom="@dimen/view_dimen_20">
 
         <com.base.image.fresco.view.TintableImageView
@@ -40,8 +40,6 @@
 
         <TextView
             android:id="@+id/name_tv"
-            android:textColor = "@color/color_black_trans_90"
-            android:textSize = "@dimen/text_size_40"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/avatar_iv"
@@ -49,7 +47,9 @@
             android:layout_marginLeft="@dimen/margin_20"
             android:layout_marginRight="@dimen/margin_20"
             android:layout_marginTop="3.33dp"
-            android:maxLines="2"/>
+            android:maxLines="2"
+            android:textColor="@color/color_black_trans_90"
+            android:textSize="@dimen/text_size_40"/>
 
         <TextView
             android:id="@+id/display_tv"
