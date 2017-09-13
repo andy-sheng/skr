@@ -17,8 +17,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/head_iv"
         android:layout_marginLeft="@dimen/channel_side_margin"
+        android:layout_toRightOf="@+id/head_iv"
         android:text="123"
         android:textColor="@color/color_black_trans_90"
         android:textSize="@dimen/text_size_42"/>

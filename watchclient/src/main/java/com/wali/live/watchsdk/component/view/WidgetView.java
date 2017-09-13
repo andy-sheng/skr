@@ -151,6 +151,7 @@ public class WidgetView extends RelativeLayout
             mRightBottomWiv.setPresenter(mPresenter);
         }
         mRightBottomWiv.showWidgetItem(info, mNeedShow);
+        mRightBottomWiv.setSupportWidgetView(info);
     }
 
     private void adjustWidgetView(boolean needShow) {

@@ -11,16 +11,14 @@ import com.facebook.drawee.drawable.ScalingUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class TwoLongCoverHolder extends RepeatHolder {
-
     private int[] mLeftLabelIds;
     private int[] mNameIds;
     private int[] mLikeCountIds;
     private int[] mLeftLabelIvIds;
+
     private TextView[] mLeftLabelTvs;
     private TextView[] mNameTvs;
     private TextView[] mLikeCountTvs;

@@ -36,7 +36,7 @@ public class FiveCircleWithStrokeHolder extends FiveCircleHolder {
         super.initContentViewId();
         mCircleTvIds = new int[mViewSize];
         mCircleIvIds = new int[mViewSize];
-        mCircleIvs = new ImageView[mViewSize];
+
         Arrays.fill(mCircleTvIds, R.id.circle_rectangle_tv);
         Arrays.fill(mCircleIvIds, R.id.single_bg_iv);
     }
@@ -45,6 +45,7 @@ public class FiveCircleWithStrokeHolder extends FiveCircleHolder {
     protected void initContentView() {
         super.initContentView();
         mCircleRectangleTvs = new RoundRectangleTextView[mViewSize];
+        mCircleIvs = new ImageView[mViewSize];
         for (int i = 0; i < mViewSize; i++) {
             mCircleRectangleTvs[i] = $(mParentViews[i], mCircleTvIds[i]);
             mCircleIvs[i] = $(mParentViews[i], mCircleIvIds[i]);

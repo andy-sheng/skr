@@ -78,6 +78,8 @@ public class WidgetItemView extends LinearLayout {
     private int mImgCounter;
     private int mTxtCounter;
 
+    private SupportWidgetView mSupportWv;
+
     public WidgetItemView(Context context) {
         super(context);
         init(context);
@@ -111,6 +113,8 @@ public class WidgetItemView extends LinearLayout {
         mItemIv = $(R.id.item_iv);
         mItemIv2 = $(R.id.item_iv2);
         mItemTv = $(R.id.item_tv);
+
+        mSupportWv = $(R.id.support_widget_view);
     }
 
     public void setWidgetPos(int posFlag) {
@@ -144,6 +148,26 @@ public class WidgetItemView extends LinearLayout {
         initWidget(info.getDisplayType(), info, mItemIv, mItemTv, mItemIv2, this, mPosFlag);
         if (needShow) {
             show();
+        }
+    }
+
+    public void setSupportWidgetView(LiveCommonProto.NewWidgetItem info) {
+        if (mSupportWv.hasInitial()) {
+            return;
+        }
+        if (info.hasClickItem()) {
+            LiveCommonProto.ClickItem click = info.getClickItem();
+            if (click.hasClickImageUrl()) {
+                mSupportWv.setPic(click.getClickWaitingImageUrl(), click.getClickImageUrl());
+            }
+            if (click.hasClickInterval()) {
+                mSupportWv.setTotalTime(click.getClickInterval());
+            }
+            mSupportWv.showWaiting();
+        } else {
+            mSupportWv.setVisibility(GONE);
+            mSupportWv.stop();
+            mSupportWv.stopAnim();
         }
     }
 
@@ -446,7 +470,7 @@ public class WidgetItemView extends LinearLayout {
 
                 if (infoWidth > 0 && infoHeight > 0 && mIvRef.get() != null) {
                     MyLog.w(TAG, "processWithInfo call internal");
-                    
+
                     int screenWidth = DisplayUtils.getScreenHeight() > DisplayUtils.getScreenWidth() ? DisplayUtils.getScreenWidth() : DisplayUtils.getScreenHeight();
                     int screenHeight = DisplayUtils.getScreenHeight() > DisplayUtils.getScreenWidth() ? DisplayUtils.getScreenHeight() : DisplayUtils.getScreenWidth();
 

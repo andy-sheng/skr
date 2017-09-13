@@ -29,7 +29,6 @@ import com.wali.live.watchsdk.channel.holder.OneCardHolder;
 import com.wali.live.watchsdk.channel.holder.OneListHolder;
 import com.wali.live.watchsdk.channel.holder.OneLiveListHolder;
 import com.wali.live.watchsdk.channel.holder.PlaceHolder;
-
 import com.wali.live.watchsdk.channel.holder.SixMakeupHolder;
 import com.wali.live.watchsdk.channel.holder.SplitLineHolder;
 import com.wali.live.watchsdk.channel.holder.ThreeCardHolder;
@@ -259,11 +258,11 @@ public class ChannelRecyclerAdapter extends RecyclerView.Adapter<BaseHolder> {
                 holder = new VariableLengthTagHolder(view);
                 break;
             case ChannelUiType.TYPE_TWO_LONG_COVER:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_two_long_cover_item,parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_two_long_cover_item, parent, false);
                 holder = new TwoLongCoverHolder(view);
                 break;
             case ChannelUiType.TYPE_PAGE_HEADER:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_header_item, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_page_header_item, parent, false);
                 holder = new ChannelPageHeaderHolder(view);
                 break;
             default:
