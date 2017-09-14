@@ -8,11 +8,13 @@ import android.content.IntentFilter;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,6 +36,7 @@ import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
+import com.wali.live.watchsdk.editinfo.fragment.presenter.EditAvatarPresenter;
 import com.wali.live.watchsdk.log.LogConstants;
 
 import java.io.File;
@@ -295,10 +298,16 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
         if (downloadId == mDownloadId) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
 
-            Uri uri = Uri.fromFile(new File(mDownloadFilename));
+            Uri uri;
+            // 判断版本大于等于7.0
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                uri = FileProvider.getUriForFile(mParentView.getContext(), EditAvatarPresenter.AUTHORITY, new File(mDownloadFilename));
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            } else {
+                uri = Uri.fromFile(new File(mDownloadFilename));
+            }
 
-//            Uri uri = mDownloadManager.getUriForDownloadedFile(mDownloadId);
-//            MyLog.d(TAG, "uri=" + uri);
             intent.setDataAndType(uri, "application/vnd.android.package-archive");
             mParentView.getContext().startActivity(intent);
         }
