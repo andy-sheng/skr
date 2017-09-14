@@ -77,8 +77,8 @@
     <!--左右主播头像，比分进度条等-->
     <RelativeLayout
         android:id="@+id/score_area"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_90"
         android:layout_alignParentBottom="true"
         android:background="@color/color_black_trans_30">
 
@@ -87,7 +87,8 @@
             android:layout_width="@dimen/view_dimen_72"
             android:layout_height="@dimen/view_dimen_72"
             android:layout_centerVertical="true"
-            android:layout_margin="@dimen/margin_18" />
+            android:layout_marginLeft="@dimen/margin_18"
+            android:layout_marginRight="@dimen/margin_18" />
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/anchor_2"
@@ -95,7 +96,8 @@
             android:layout_height="@dimen/view_dimen_72"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_margin="@dimen/margin_18" />
+            android:layout_marginLeft="@dimen/margin_18"
+            android:layout_marginRight="@dimen/margin_18" />
 
         <com.wali.live.watchsdk.component.view.PkScoreView
             android:id="@+id/pk_score_view"
@@ -172,7 +174,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:paddingBottom="@dimen/margin_18"
+        android:paddingBottom="@dimen/margin_8"
         android:src="@drawable/live_img_pk_logo" />
 
 </RelativeLayout>

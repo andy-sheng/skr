@@ -253,7 +253,7 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
                     case BarrageMsgType.B_MSG_TYPE_NEW_PK_END: {
                         MyLog.w(TAG, "B_MSG_TYPE_NEW_PK_END");
                         BarrageMsg.PKEndInfoMessageExt msgExt = (BarrageMsg.PKEndInfoMessageExt) msg.getMsgExt();
-                        if (msgExt.info != null) {
+                        if (msgExt.info != null && presenter != null) {
                             // msgExt.endType为1时表示PK提前结束
                             presenter.onPkEnd(new PkInfoPresenter.PkEndInfo(msgExt.info, msgExt.endType == 1 ? msgExt.uuid : 0));
                         }

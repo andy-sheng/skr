@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.utils.display.DisplayUtils;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IOrientationListener;
@@ -178,12 +179,16 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
 
                 String url1 = AvatarUtils.getAvatarUrlByUidTs(uuid1, 0, AvatarUtils.SIZE_TYPE_AVATAR_SMALL);
                 FrescoWorker.loadImage(mAnchorLeft, ImageFactory.newHttpImage(url1)
+                        .setFailureDrawable(mParentView.getResources().getDrawable(R.drawable.avatar_default_a))
+                        .setFailureScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
                         .setIsCircle(true)
                         .setBorderColor(0xffff6100)
                         .setBorderWidth(DisplayUtils.dip2px(1f))
                         .build());
                 String url2 = AvatarUtils.getAvatarUrlByUidTs(uuid2, 0, AvatarUtils.SIZE_TYPE_AVATAR_SMALL);
                 FrescoWorker.loadImage(mAnchorRight, ImageFactory.newHttpImage(url2)
+                        .setFailureDrawable(mParentView.getResources().getDrawable(R.drawable.avatar_default_a))
+                        .setFailureScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
                         .setIsCircle(true)
                         .setBorderColor(0xff3961f4)
                         .setBorderWidth(DisplayUtils.dip2px(1f))
