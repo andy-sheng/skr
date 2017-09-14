@@ -197,4 +197,7 @@
     <string name="edit_info_tip">You haven\'t set a nickname. %s to set to make more friends.</string>
     <string name="click_here">Tap here</string>
     <string name="room_admin">Manager</string>
+    <string name="can_not_vote_toast">Watch a little longer and vote</string>
+    <string name="vote_finish_toast">Activity ended</string>
+    <string name="vote_max_toast">Voting session ended</string>
 </resources>

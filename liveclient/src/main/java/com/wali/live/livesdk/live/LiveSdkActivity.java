@@ -51,8 +51,10 @@ import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
+import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.presenter.RoomMessagePresenter;
 import com.mi.live.data.query.model.MessageRule;
+import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.repository.RoomMessageRepository;
 import com.mi.live.data.repository.datasource.RoomMessageStore;
 import com.mi.live.data.room.model.RoomBaseDataModel;
@@ -67,6 +69,7 @@ import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.component.BaseSdkView;
+import com.wali.live.dao.Gift;
 import com.wali.live.event.EventClass;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.livesdk.R;
@@ -82,7 +85,6 @@ import com.wali.live.livesdk.live.fragment.RoomAdminFragment;
 import com.wali.live.livesdk.live.livegame.fragment.PrepareLiveFragment;
 import com.wali.live.livesdk.live.presenter.LiveRoomPresenter;
 import com.wali.live.livesdk.live.receiver.ScreenStateReceiver;
-import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.livesdk.live.view.CountDownView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.proto.LiveCommonProto;
@@ -99,6 +101,7 @@ import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.ranking.RankingPagerFragment;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
+import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.watchsdk.task.LiveTask;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
@@ -498,7 +501,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, StatisticsKey.KEY_USERINFO_CARD_OPEN, 1);
 //        FloatPersonInfoFragment.openFragment(this, uid, mMyRoomData.getUid(),
 //                mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this);
-            FloatInfoFragment.openFragment(this, uid, mMyRoomData.getUid(),
+        FloatInfoFragment.openFragment(this, uid, mMyRoomData.getUid(),
                 mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this);
     }
 
@@ -1245,6 +1248,14 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 }
             }
             break;
+            case UserActionEvent.EVENT_TYPE_CLICK_SUPPORT_WIDGET:
+                Gift gift = GiftRepository.findGiftById((int) event.obj1);
+                if (gift != null) {
+                    BarrageMsg pushMsg = GiftRepository.createGiftBarrageMessage(gift.getGiftId(), gift.getName(), gift.getCatagory(),
+                            gift.getSendDescribe(), 1, 0, System.currentTimeMillis(), -1, mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), "", "", 0, false);
+                    BarrageMessageManager.getInstance().pretendPushBarrage(pushMsg);
+                }
+                break;
             default:
                 break;
         }
