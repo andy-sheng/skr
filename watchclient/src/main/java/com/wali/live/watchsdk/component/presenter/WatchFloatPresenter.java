@@ -73,6 +73,14 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_ON_PK_START);
+
+        // TEST PK观众端逻辑暴力测试
+//        mUiHandler.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                startPkTest();
+//            }
+//        });
     }
 
     @Override
@@ -81,6 +89,95 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
         unregisterAllAction();
         mUiHandler.removeCallbacksAndMessages(null);
     }
+
+    // TEST PK观众端逻辑暴力测试
+//    private void startPkTest() {
+//        final Random random = new Random();
+//        Observable.interval(1, 1, TimeUnit.SECONDS)
+//                .onBackpressureBuffer()
+//                .take(960)
+//                .compose(this.<Long>bindUntilEvent(PresenterEvent.STOP))
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<Long>() {
+//                    long uuid1, uuid2;
+//                    long score1, score2;
+//                    int remainTime;
+//                    String pkType;
+//
+//                    @Override
+//                    public void onCompleted() {
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        MyLog.e(TAG, "pkTest failed, exception=" + e);
+//                    }
+//
+//                    @Override
+//                    public void onNext(Long cnt) {
+//                        MyLog.d(TAG, "pkTest cnt=" + cnt);
+//                        if (cnt % 10 == 0) { // 每10秒随机发送一次开始/结束
+//                            // 若当前没有PK，则以50%的概率，否则以20%的概率，决定是否发送开始事件
+//                            if (uuid1 == 0 && random.nextBoolean() || uuid1 != 0 && random.nextInt(100) < 20) { // 开始PK
+//                                pkType = new String[]{"唱歌", "舞蹈", "吹牛逼", "讲段子"}[Math.abs(random.nextInt()) % 4];
+//                                remainTime = new int[]{180, 300, 900}[Math.abs(random.nextInt()) % 3];
+//                                uuid1 = mMyRoomData.getUid();
+//                                uuid2 = (uuid1 != 100067) ? 100067 : 100068;
+//                                if (random.nextBoolean()) { // 进房间之后PK才开始
+//                                    score1 = score2 = 0;
+//                                } else { // // 进房间之前PK已经开始
+//                                    score1 = Math.abs(random.nextInt()) % 1000;
+//                                    score2 = Math.abs(random.nextInt()) % 1000;
+//                                    remainTime = (int) (remainTime * random.nextFloat());
+//                                }
+//                                showPkPanel(new PkInfoPresenter.PkStartInfo(uuid1, uuid2, score1, score2, pkType, remainTime));
+//                                return;
+//                            }
+//                            // 若当前正在PK，则以50%的概率，否则以20%的概率，决定是否发送结束事件
+//                            if (uuid1 != 0 && random.nextBoolean() || uuid1 == 0 && random.nextInt(100) < 20) { // 结束PK
+//                                PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
+//                                if (presenter != null && presenter.isShow()) {
+//                                    if (random.nextBoolean()) { // 提前结束
+//                                        long quitUuid = random.nextBoolean() ? uuid1 : uuid2;
+//                                        presenter.onPkEnd(new PkInfoPresenter.PkEndInfo(uuid1, uuid2, score1, score2, quitUuid));
+//                                    } else {
+//                                        if (random.nextBoolean()) { // 平局
+//                                            score1 = score2 = Math.max(score1, score2);
+//                                        }
+//                                        presenter.onPkEnd(new PkInfoPresenter.PkEndInfo(uuid1, uuid2, score1, score2, 0));
+//                                    }
+//                                }
+//                                uuid1 = uuid2 = 0;
+//                                score1 = score2 = 0;
+//                                remainTime = 0;
+//                                pkType = null;
+//                            }
+//                            return;
+//                        }
+//                        // 每1秒，若当前正在Pk，则以60%的概率，否则以20%的概率，决定是否发送一次比分更新
+//                        if (uuid1 != 0 && random.nextInt(100) <= 60 || uuid1 == 0 && random.nextInt(100) <= 20) {
+//                            if (uuid1 == 0) {
+//                                pkType = new String[]{"唱歌", "舞蹈", "吹牛逼"}[Math.abs(random.nextInt()) % 3];
+//                                remainTime = new int[]{180, 300, 900}[Math.abs(random.nextInt()) % 3];
+//                                uuid1 = mMyRoomData.getUid();
+//                                uuid2 = (uuid1 != 100067) ? 100067 : 100068;
+//                                score1 = Math.abs(random.nextInt()) % 1000;
+//                                score2 = Math.abs(random.nextInt()) % 1000;
+//                                remainTime = (int) (remainTime * random.nextFloat());
+//                            } else {
+//                                score1 += Math.abs(random.nextInt()) % 100;
+//                                score2 += Math.abs(random.nextInt()) % 100;
+//                            }
+//                            PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
+//                            if (presenter != null && presenter.isShow()) {
+//                                presenter.onPkScore(new PkInfoPresenter.PkScoreInfo(uuid1, uuid2, score1, score2));
+//                            } else {
+//                                showPkPanel(new PkInfoPresenter.PkStartInfo(uuid1, uuid2, score1, score2, pkType, remainTime));
+//                            }
+//                        }
+//                    }
+//                });
+//    }
 
     private void showPkPanel(PkInfoPresenter.PkStartInfo pkStartInfo) {
         PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
@@ -131,27 +228,30 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
         mUiHandler.post(new Runnable() {
             @Override
             public void run() {
-                int msgType = msg.getMsgType();
-                if (msgType == BarrageMsgType.B_MSG_TYPE_NEW_PK_START) {
-                    BarrageMsg.PKInfoMessageExt msgExt = (BarrageMsg.PKInfoMessageExt) msg.getMsgExt();
-                    if (msgExt.info != null) {
-                        showPkPanel(new PkInfoPresenter.PkStartInfo(msgExt.info, msg.getSentTime()));
-                    }
-                    return;
-                }
                 PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
-                if (presenter == null) {
-                    return;
-                }
                 switch (msg.getMsgType()) {
-                    case BarrageMsgType.B_MSG_TYPE_NEW_PK_SCORE: {
+                    case BarrageMsgType.B_MSG_TYPE_NEW_PK_START: {
+                        MyLog.w(TAG, "B_MSG_TYPE_NEW_PK_START");
                         BarrageMsg.PKInfoMessageExt msgExt = (BarrageMsg.PKInfoMessageExt) msg.getMsgExt();
                         if (msgExt.info != null) {
-                            presenter.onPkScore(new PkInfoPresenter.PkScoreInfo(msgExt.info));
+                            showPkPanel(new PkInfoPresenter.PkStartInfo(msgExt.info, msg.getSentTime()));
+                        }
+                        break;
+                    }
+                    case BarrageMsgType.B_MSG_TYPE_NEW_PK_SCORE: {
+                        MyLog.d(TAG, "B_MSG_TYPE_NEW_PK_SCORE");
+                        BarrageMsg.PKInfoMessageExt msgExt = (BarrageMsg.PKInfoMessageExt) msg.getMsgExt();
+                        if (msgExt.info != null) {
+                            if (presenter != null && presenter.isShow()) {
+                                presenter.onPkScore(new PkInfoPresenter.PkScoreInfo(msgExt.info));
+                            } else {
+                                showPkPanel(new PkInfoPresenter.PkStartInfo(msgExt.info, msg.getSentTime()));
+                            }
                         }
                         break;
                     }
                     case BarrageMsgType.B_MSG_TYPE_NEW_PK_END: {
+                        MyLog.w(TAG, "B_MSG_TYPE_NEW_PK_END");
                         BarrageMsg.PKEndInfoMessageExt msgExt = (BarrageMsg.PKEndInfoMessageExt) msg.getMsgExt();
                         if (msgExt.info != null) {
                             // msgExt.endType为1时表示PK提前结束

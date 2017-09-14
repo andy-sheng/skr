@@ -239,6 +239,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
         {
             WatchFloatPresenter presenter = new WatchFloatPresenter(mController, mController.mMyRoomData);
             registerHybridComponent(presenter, mContentView);
+            ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
         }
         // 输入框
         {

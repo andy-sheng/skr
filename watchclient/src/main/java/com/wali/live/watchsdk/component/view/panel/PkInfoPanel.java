@@ -1,17 +1,23 @@
 package com.wali.live.watchsdk.component.view.panel;
 
+import android.animation.AnimatorSet;
+import android.animation.ValueAnimator;
+import android.support.annotation.ColorInt;
+import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
+import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.image.fresco.FrescoWorker;
+import com.base.image.fresco.image.ImageFactory;
+import com.base.utils.display.DisplayUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.mi.live.data.account.UserAccountManager;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IOrientationListener;
 import com.thornbirds.component.view.IViewProxy;
@@ -27,18 +33,25 @@ import com.wali.live.watchsdk.component.view.PkScoreView;
  *
  * @module PK信息面板视图
  */
-public class PkInfoPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
+public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
         implements View.OnClickListener, IComponentView<PkInfoPanel.IPresenter, PkInfoPanel.IView> {
     private static final String TAG = "PkInfoPanel";
 
     @Nullable
     protected IPresenter mPresenter;
 
-    private final AnimationHelper mAnimationHelper = new AnimationHelper();
+    @ColorInt
+    private int mBackgroundColor;
 
-    private ImageView mLeftResultView;
-    private ImageView mRightResultView;
+    private View mLeftResultView;
+    private View mLeftBgView;
+    private ImageView mLeftImgView;
+    private View mRightResultView;
+    private View mRightBgView;
+    private ImageView mRightImgView;
     private View mMiddleResultView;
+    private View mMiddleBgView;
+    private ImageView mMiddleImgView;
 
     private TextView mPkTypeView;
     private TextView mTimeAreaView;
@@ -47,6 +60,18 @@ public class PkInfoPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
     private TextView mTicketLeft;
     private TextView mTicketRight;
     private PkScoreView mPkScoreView;
+    private View mScoreAreaView;
+
+    private final AnimationHelper mAnimationHelper = new AnimationHelper();
+
+    private final Runnable mDelayStopTask = new Runnable() {
+        @Override
+        public void run() {
+            if (mPresenter != null) {
+                mPresenter.stopPresenter();
+            }
+        }
+    };
 
     protected final void $click(View view, View.OnClickListener listener) {
         if (view != null) {
@@ -70,14 +95,24 @@ public class PkInfoPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
 
     public PkInfoPanel(@NonNull RelativeLayout parentView) {
         super(parentView);
+        mBackgroundColor = parentView.getResources().getColor(R.color.color_black_trans_30);
     }
 
     @Override
     protected void inflateContentView() {
         super.inflateContentView();
+
         mLeftResultView = $(R.id.left_result);
+        mLeftBgView = $(R.id.left_bg);
+        mLeftImgView = $(R.id.left_view);
+
         mRightResultView = $(R.id.right_result);
+        mRightBgView = $(R.id.right_bg);
+        mRightImgView = $(R.id.right_view);
+
         mMiddleResultView = $(R.id.middle_result);
+        mMiddleBgView = $(R.id.middle_bg);
+        mMiddleImgView = $(R.id.middle_view);
 
         mPkTypeView = $(R.id.pk_type);
         mTimeAreaView = $(R.id.time_area);
@@ -85,12 +120,30 @@ public class PkInfoPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
         mAnchorRight = $(R.id.anchor_2);
         mTicketLeft = $(R.id.ticket_1);
         mTicketRight = $(R.id.ticket_2);
+        mScoreAreaView = $(R.id.score_area);
         mPkScoreView = $(R.id.pk_score_view);
+    }
 
-        AvatarUtils.loadAvatarByUidTs(mAnchorLeft, UserAccountManager.getInstance().getUuidAsLong(),
-                0, AvatarUtils.SIZE_TYPE_AVATAR_SMALL, true);
-        AvatarUtils.loadAvatarByUidTs(mAnchorRight, UserAccountManager.getInstance().getUuidAsLong(),
-                0, AvatarUtils.SIZE_TYPE_AVATAR_SMALL, true);
+    @Override
+    protected void orientSelf() {
+        ViewGroup.MarginLayoutParams layoutParams =
+                (ViewGroup.MarginLayoutParams) mContentView.getLayoutParams();
+        if (mIsLandscape) {
+            layoutParams.width = PANEL_WIDTH_LANDSCAPE;
+            layoutParams.bottomMargin = DisplayUtils.dip2px(53.33f);
+            mScoreAreaView.setBackgroundResource(R.drawable.score_area_bg);
+        } else {
+            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            layoutParams.bottomMargin = DisplayUtils.dip2px(259.33f);
+            mScoreAreaView.setBackgroundColor(mBackgroundColor);
+        }
+        mContentView.setLayoutParams(layoutParams);
+    }
+
+    @Override
+    protected void onAnimationValue(@FloatRange(from = 0.0, to = 1.0) float value) {
+        mContentView.setAlpha(value);
+        mContentView.setTranslationY(mScoreAreaView.getHeight() * (1.0f - value));
     }
 
     @Override
@@ -102,23 +155,43 @@ public class PkInfoPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
             }
 
             @Override
+            public boolean isShow() {
+                return PkInfoPanel.this.isShow();
+            }
+
+            @Override
             public void showSelf(boolean useAnimation, boolean isLandscape) {
+                clearAnimation();
+                PkInfoPanel.this.hideSelf(false);
                 PkInfoPanel.this.showSelf(useAnimation, isLandscape);
             }
 
             @Override
             public void hideSelf(boolean useAnimation) {
                 PkInfoPanel.this.hideSelf(useAnimation);
+                mAnimationHelper.stopAnimation();
             }
 
             @Override
             public void onPkStart(String pkType, long uuid1, long uuid2) {
                 mPkTypeView.setText(pkType);
-                AvatarUtils.loadAvatarByUidTs(mAnchorLeft, uuid1, 0, AvatarUtils.SIZE_TYPE_AVATAR_SMALL, true);
-                AvatarUtils.loadAvatarByUidTs(mAnchorRight, uuid2, 0, AvatarUtils.SIZE_TYPE_AVATAR_SMALL, true);
-                mLeftResultView.setVisibility(View.VISIBLE);
-                mRightResultView.setVisibility(View.VISIBLE);
-                mMiddleResultView.setVisibility(View.VISIBLE);
+
+                String url1 = AvatarUtils.getAvatarUrlByUidTs(uuid1, 0, AvatarUtils.SIZE_TYPE_AVATAR_SMALL);
+                FrescoWorker.loadImage(mAnchorLeft, ImageFactory.newHttpImage(url1)
+                        .setIsCircle(true)
+                        .setBorderColor(0xffff6100)
+                        .setBorderWidth(DisplayUtils.dip2px(1f))
+                        .build());
+                String url2 = AvatarUtils.getAvatarUrlByUidTs(uuid2, 0, AvatarUtils.SIZE_TYPE_AVATAR_SMALL);
+                FrescoWorker.loadImage(mAnchorRight, ImageFactory.newHttpImage(url2)
+                        .setIsCircle(true)
+                        .setBorderColor(0xff3961f4)
+                        .setBorderWidth(DisplayUtils.dip2px(1f))
+                        .build());
+                mLeftResultView.setVisibility(View.GONE);
+                mRightResultView.setVisibility(View.GONE);
+                mMiddleResultView.setVisibility(View.GONE);
+                mAnimationHelper.stopAnimation();
             }
 
             @Override
@@ -137,26 +210,26 @@ public class PkInfoPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
             public void onPkEnd(boolean ownerWin, long ticket1, long ticket2) {
                 onUpdateScoreInfo(ticket1, ticket2);
                 if (ownerWin) {
-                    mLeftResultView.setVisibility(View.VISIBLE);
-                    mRightResultView.setVisibility(View.VISIBLE);
-                    mLeftResultView.setImageResource(R.drawable.live_img_pk_win);
-                    mRightResultView.setImageResource(R.drawable.live_img_pk_lost);
+                    mLeftBgView.setBackgroundResource(R.drawable.live_img_pk_win_shining);
+                    mLeftImgView.setImageResource(R.drawable.live_img_pk_win);
+                    mRightBgView.setBackgroundResource(R.drawable.live_img_pk_lost_shining);
+                    mRightImgView.setImageResource(R.drawable.live_img_pk_lost);
                 } else {
-                    mLeftResultView.setVisibility(View.VISIBLE);
-                    mRightResultView.setVisibility(View.VISIBLE);
-                    mLeftResultView.setImageResource(R.drawable.live_img_pk_lost);
-                    mRightResultView.setImageResource(R.drawable.live_img_pk_win);
+                    mLeftBgView.setBackgroundResource(R.drawable.live_img_pk_lost_shining);
+                    mLeftImgView.setImageResource(R.drawable.live_img_pk_lost);
+                    mRightBgView.setBackgroundResource(R.drawable.live_img_pk_win_shining);
+                    mRightImgView.setImageResource(R.drawable.live_img_pk_win);
                 }
-                mAnimationHelper.showDefeatAnimation();
-                ;
+                mAnimationHelper.startDefeatAnimation();
             }
 
             @Override
             public void onPkEnd(long ticket1, long ticket2) {
                 if (ticket1 == ticket2) {
                     onUpdateScoreInfo(ticket1, ticket2);
-                    mMiddleResultView.setVisibility(View.VISIBLE);
-                    mAnimationHelper.showTieAnimation();
+                    mMiddleBgView.setBackgroundResource(R.drawable.live_img_pk_win_shining);
+                    mMiddleImgView.setImageResource(R.drawable.live_img_pk_draw);
+                    mAnimationHelper.startTieAnimation();
                 } else {
                     onPkEnd(ticket1 > ticket2, ticket1, ticket2);
                 }
@@ -171,9 +244,12 @@ public class PkInfoPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
     }
 
     public interface IPresenter {
+        void stopPresenter();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
+
+        boolean isShow();
 
         void showSelf(boolean useAnimation, boolean isLandscape);
 
@@ -223,36 +299,100 @@ public class PkInfoPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
 
     protected class AnimationHelper {
 
-        private Animation mScaleAnimation;
+        private AnimatorSet mAnimatorSet;
+        private boolean mIsTie = false;
 
-        void setupAnimation() {
-            if (mScaleAnimation == null) {
-                mScaleAnimation = new ScaleAnimation(0, 1, 0, 1);
-                mScaleAnimation.setDuration(400);
-                mScaleAnimation.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-                    }
+        private void setScale(View view, float scale) {
+            view.setScaleX(scale);
+            view.setScaleY(scale);
+        }
 
+        void resetAnimation() {
+            if (mAnimatorSet == null) {
+                ValueAnimator scaleAnimator1 = ValueAnimator.ofFloat(0, 1);
+                scaleAnimator1.setDuration(1000);
+                scaleAnimator1.setInterpolator(new OvershootInterpolator());
+                scaleAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
-                    public void onAnimationEnd(Animation animation) {
-                        hideSelf(true);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        float value = (float) animation.getAnimatedValue();
+                        if (mIsTie) {
+                            setScale(mMiddleImgView, value);
+                        } else {
+                            setScale(mLeftImgView, value);
+                            setScale(mRightImgView, value);
+                        }
                     }
                 });
+                ValueAnimator scaleAnimator2 = ValueAnimator.ofFloat(0, 1);
+                scaleAnimator2.setDuration(500);
+                scaleAnimator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        float value = (float) animation.getAnimatedValue();
+                        if (mIsTie) {
+                            setScale(mMiddleBgView, value);
+                        } else {
+                            setScale(mLeftBgView, value);
+                            setScale(mRightBgView, value);
+                        }
+                    }
+                });
+                ValueAnimator rotateAnimator = ValueAnimator.ofFloat(0f, 720f);
+                rotateAnimator.setDuration(5000);
+                rotateAnimator.setInterpolator(new LinearInterpolator());
+                rotateAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        float value = (float) animation.getAnimatedValue();
+                        if (mIsTie) {
+                            mMiddleBgView.setRotation(value);
+                        } else {
+                            mLeftBgView.setRotation(value);
+                            mRightBgView.setRotation(value);
+                        }
+                    }
+                });
+                mAnimatorSet = new AnimatorSet();
+                mAnimatorSet.play(scaleAnimator1);
+                mAnimatorSet.play(scaleAnimator2).after(500);
+                mAnimatorSet.play(rotateAnimator).after(scaleAnimator2);
+            }
+            if (mAnimatorSet.isStarted() || mAnimatorSet.isRunning()) {
+                mAnimatorSet.cancel();
             }
         }
 
-        void showTieAnimation() {
-            mMiddleResultView.startAnimation(mScaleAnimation);
+        void startTieAnimation() {
+            resetAnimation();
+            mIsTie = true;
+            mMiddleResultView.setVisibility(View.VISIBLE);
+            setScale(mMiddleBgView, 0);
+            setScale(mMiddleImgView, 0);
+            mParentView.removeCallbacks(mDelayStopTask);
+            mParentView.postDelayed(mDelayStopTask, 6400);
+            mAnimatorSet.start();
         }
 
-        void showDefeatAnimation() {
-            mLeftResultView.startAnimation(mScaleAnimation);
-            mRightResultView.startAnimation(mScaleAnimation);
+        void startDefeatAnimation() {
+            resetAnimation();
+            mIsTie = false;
+            mLeftResultView.setVisibility(View.VISIBLE);
+            mRightResultView.setVisibility(View.VISIBLE);
+            setScale(mLeftBgView, 0);
+            setScale(mLeftImgView, 0);
+            setScale(mRightBgView, 0);
+            setScale(mRightImgView, 0);
+            mParentView.removeCallbacks(mDelayStopTask);
+            mParentView.postDelayed(mDelayStopTask, 6400);
+            mAnimatorSet.start();
+        }
+
+        void stopAnimation() {
+            if (mAnimatorSet != null && (mAnimatorSet.isStarted() || mAnimatorSet.isRunning())) {
+                mAnimatorSet.cancel();
+                mParentView.removeCallbacks(mDelayStopTask);
+            }
         }
     }
 }

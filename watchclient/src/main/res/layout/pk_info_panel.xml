@@ -3,19 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
-    android:layout_centerHorizontal="true">
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="259.33dp">
 
     <!--PK结果-->
-    <ImageView
+    <RelativeLayout
         android:id="@+id/left_result"
         android:layout_width="@dimen/view_dimen_283"
         android:layout_height="@dimen/view_dimen_281"
         android:layout_above="@+id/score_area"
         android:layout_marginBottom="@dimen/margin_45"
         android:layout_marginLeft="@dimen/margin_83"
-        android:visibility="gone" />
+        android:visibility="visible">
 
-    <ImageView
+        <View
+            android:id="@+id/left_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/left_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/right_result"
         android:layout_width="@dimen/view_dimen_283"
         android:layout_height="@dimen/view_dimen_281"
@@ -23,17 +37,42 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="@dimen/margin_45"
         android:layout_marginRight="@dimen/margin_83"
-        android:visibility="gone" />
+        android:visibility="visible">
 
-    <ImageView
+        <View
+            android:id="@+id/right_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/right_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/middle_result"
         android:layout_width="@dimen/view_dimen_283"
         android:layout_height="@dimen/view_dimen_281"
         android:layout_above="@+id/score_area"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/margin_45"
-        android:src="@drawable/live_img_pk_logo"
-        android:visibility="gone" />
+        android:visibility="visible">
+
+        <View
+            android:id="@+id/middle_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/middle_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
 
     <!--左右主播头像，比分进度条等-->
     <RelativeLayout
@@ -45,20 +84,18 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/anchor_1"
-            android:layout_width="@dimen/view_dimen_70"
-            android:layout_height="@dimen/view_dimen_70"
+            android:layout_width="@dimen/view_dimen_72"
+            android:layout_height="@dimen/view_dimen_72"
             android:layout_centerVertical="true"
-            android:layout_margin="@dimen/margin_20"
-            android:src="@drawable/ic_launcher" />
+            android:layout_margin="@dimen/margin_18" />
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/anchor_2"
-            android:layout_width="@dimen/view_dimen_70"
-            android:layout_height="@dimen/view_dimen_70"
+            android:layout_width="@dimen/view_dimen_72"
+            android:layout_height="@dimen/view_dimen_72"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_margin="@dimen/margin_20"
-            android:src="@drawable/ic_launcher" />
+            android:layout_margin="@dimen/margin_18" />
 
         <com.wali.live.watchsdk.component.view.PkScoreView
             android:id="@+id/pk_score_view"

@@ -41,6 +41,10 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
         return TAG;
     }
 
+    public boolean isShow() {
+        return mView != null && mView.isShow();
+    }
+
     public PkInfoPresenter(
             @NonNull IEventController controller,
             @NonNull RoomBaseDataModel myRoomData) {
@@ -60,9 +64,12 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
         MyLog.d(TAG, "stopPresenter");
         super.stopPresenter();
         unregisterAllAction();
+        if (mView != null) {
+            mView.hideSelf(true);
+        }
     }
 
-    private void startDownTimer(long time) {
+    private void startDownTimer(int time) {
         mView.onUpdateRemainTime(time);
         if (mDownTimerSub != null && !mDownTimerSub.isUnsubscribed()) {
             mDownTimerSub.unsubscribe();
@@ -71,16 +78,17 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
         if (time == 0) {
             return;
         }
-        final long totalTime = time;
-        mDownTimerSub = Observable.interval(totalTime, TimeUnit.SECONDS)
+        final int totalTime = time;
+        mDownTimerSub = Observable.interval(1, TimeUnit.SECONDS)
                 .onBackpressureDrop()
+                .take(totalTime)
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<Long>bindUntilEvent(PresenterEvent.STOP))
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long cnt) {
                         if (mView != null) {
-                            mView.onUpdateRemainTime(totalTime - cnt);
+                            mView.onUpdateRemainTime(totalTime - cnt - 1);
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -91,10 +99,18 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
                 });
     }
 
+    private void stopDownTimer() {
+        if (mDownTimerSub != null && !mDownTimerSub.isUnsubscribed()) {
+            mDownTimerSub.unsubscribe();
+            mDownTimerSub = null;
+        }
+    }
+
     public void onPkStart(PkStartInfo info, boolean isLandscape) {
         if (mView == null || info == null) {
             return;
         }
+        MyLog.w("onPkStart");
         mView.showSelf(true, isLandscape);
         startDownTimer(info.remainTime);
         if (info.uuid1 == mMyRoomData.getUid()) {
@@ -110,6 +126,7 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
         if (mView == null || info == null) {
             return;
         }
+        MyLog.d("onPkScore");
         if (info.uuid1 == mMyRoomData.getUid()) {
             mView.onUpdateScoreInfo(info.score1, info.score2);
         } else {
@@ -121,6 +138,8 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
         if (mView == null || info == null) {
             return;
         }
+        MyLog.w("onPkEnd");
+        stopDownTimer();
         if (info.quitUuid != 0) { // PK 提前结束
             boolean ownerWin = mMyRoomData.getUid() != info.quitUuid; // 不是房主提前结束PK
             if (info.uuid1 == mMyRoomData.getUid()) {
@@ -134,6 +153,7 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
             } else {
                 mView.onPkEnd(info.score2, info.score1);
             }
+            mView.onUpdateRemainTime(0);
         }
     }
 
@@ -162,6 +182,14 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
         long score1;
         long score2;
 
+        // For Test
+        public PkScoreInfo(long uuid1, long uuid2, long score1, long score2) {
+            this.uuid1 = uuid1;
+            this.uuid2 = uuid2;
+            this.score1 = score1;
+            this.score2 = score2;
+        }
+
         public PkScoreInfo(LivePKProto.NewPKInfo info) {
             LivePKProto.PKInfoItem item1 = info.getFirst(), item2 = info.getSecond();
             uuid1 = item1.getUuid();
@@ -172,8 +200,15 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
     }
 
     public static class PkStartInfo extends PkScoreInfo {
-        long remainTime;
+        int remainTime;
         String pkType;
+
+        // For Test
+        public PkStartInfo(long uuid1, long uuid2, long score1, long score2, String pkType, int remainTime) {
+            super(uuid1, uuid2, score1, score2);
+            this.pkType = pkType;
+            this.remainTime = remainTime;
+        }
 
         public PkStartInfo(LivePKProto.NewPKInfo info, long currServerTs) {
             super(info);
@@ -205,6 +240,12 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
 
     public static class PkEndInfo extends PkScoreInfo {
         long quitUuid;
+
+        // For Test
+        public PkEndInfo(long uuid1, long uuid2, long score1, long score2, long quitUuid) {
+            super(uuid1, uuid2, score1, score2);
+            this.quitUuid = quitUuid;
+        }
 
         public PkEndInfo(LivePKProto.NewPKInfo info, long quitUuid) {
             super(info);
