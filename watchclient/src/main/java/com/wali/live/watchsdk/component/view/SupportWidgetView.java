@@ -1,15 +1,13 @@
 package com.wali.live.watchsdk.component.view;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.MainThread;
+import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,44 +17,48 @@ import com.base.log.MyLog;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 /**
- * Created by jiyangli on 16-11-30.
+ * Created by lan on 16-11-30.
  */
-public class SupportWidgetView extends FrameLayout implements View.OnTouchListener {
+public class SupportWidgetView extends FrameLayout {
     private static final String TAG = "SupportWidgetView";
     private static final int VISIBLE_TIME = 60; // 当剩余时间小于等于该值时，显示本控件，单位：秒
 
-    private Timer timer;
+    private BaseImageView mSupportIv;
+    // 倒计时的图，以及倒计时结束显示的图
+    private String mWaitingPic;
+    private String mSupportPic;
 
-    private BaseImageView imgSupportView;
-    private TimingCircleView timerCircle;
-    private int totalTime;
-    private volatile int currentLeftTime;// 当前剩余时间
-    private String waitingPic;
-    private String supportPic;
-    private TextView txtTime;// 剩余时间
-    private ImageView imgAnim;// 水波纹1
-    private ImageView imgAnim2;// 水波纹2
-    private ImageView imgAnim3;// 水波纹3
-    private boolean isCountDowning = false;// 是否正在倒计时
+    // 倒计时view
+    private TimerCircleView mTimerCircleView;
+    private TextView mTimerTv;
 
-    private Animation mAnimation;
-    private Animation mAnimation2;
-    private Animation mAnimation3;
-    private ValueAnimator mAnimator;
+    private int mTotalTime;
+    private volatile int mCurrentLeftTime;
 
-    private CountDownTimer timerTask = new CountDownTimer();
-    private Subscription subTimer;
-    private boolean isInitial = false;
+    // 倒计时后的波纹效果
+    private ImageView mAnimIv;
+    private ImageView mAnimIv2;
+    private ImageView mAnimIv3;
+
+    private Animator mRippleAnimator;
+    private Animator mRippleAnimator2;
+    private Animator mRippleAnimator3;
+
+    // 是否正在倒计时
+    private boolean mIsCountingDown = false;
+
+    private ValueAnimator mCountDownAnimator;
+    private Subscription mTimerSubscription;
+
+    private boolean mIsInitial = false;
 
     public SupportWidgetView(Context context) {
         super(context);
@@ -76,122 +78,138 @@ public class SupportWidgetView extends FrameLayout implements View.OnTouchListen
     private void init() {
         inflate(getContext(), R.layout.support_widget_view, this);
 
-        imgSupportView = (BaseImageView) findViewById(R.id.support_widget_view_imgSupport);
-        timerCircle = (TimingCircleView) findViewById(R.id.support_widget_view_timer);
-        txtTime = (TextView) findViewById(R.id.support_widget_view_txtWaitingTime);
-        imgAnim = (ImageView) findViewById(R.id.support_widget_view_imgAnim);
-        imgAnim2 = (ImageView) findViewById(R.id.support_widget_view_imgAnim2);
-        imgAnim3 = (ImageView) findViewById(R.id.support_widget_view_imgAnim3);
+        mSupportIv = (BaseImageView) findViewById(R.id.waiting_iv);
 
-        mAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.count_down_press);
-        mAnimation2 = AnimationUtils.loadAnimation(getContext(), R.anim.count_down_press_2);
-        mAnimation3 = AnimationUtils.loadAnimation(getContext(), R.anim.count_down_press_3);
+        mTimerCircleView = (TimerCircleView) findViewById(R.id.timer_circle_view);
+        mTimerTv = (TextView) findViewById(R.id.timer_tv);
+
+        mAnimIv = (ImageView) findViewById(R.id.anim_iv);
+        mAnimIv2 = (ImageView) findViewById(R.id.anim_iv2);
+        mAnimIv3 = (ImageView) findViewById(R.id.anim_iv3);
+
+        mRippleAnimator = loadAnimator(mAnimIv, 0);
+        mRippleAnimator2 = loadAnimator(mAnimIv2, 800);
+        mRippleAnimator3 = loadAnimator(mAnimIv3, 1600);
+    }
+
+    private ObjectAnimator loadAnimator(View view, int startDelay) {
+        PropertyValuesHolder holder1 = PropertyValuesHolder.ofFloat("scaleX", 1f, 1.75f);
+        PropertyValuesHolder holder2 = PropertyValuesHolder.ofFloat("scaleY", 1f, 1.75f);
+        PropertyValuesHolder holder3 = PropertyValuesHolder.ofFloat("alpha", 1f, 0f);
+
+        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, holder1, holder2, holder3);
+        animator.setDuration(2400);
+        animator.setStartDelay(startDelay);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setRepeatMode(ValueAnimator.RESTART);
+        return animator;
     }
 
     public void setTotalTime(int timeSecond) {
-        totalTime = timeSecond;
+        mTotalTime = timeSecond;
     }
 
     public void setPic(String waitingPic, String supportPic) {
-        this.waitingPic = waitingPic;
-        this.supportPic = supportPic;
+        this.mWaitingPic = waitingPic;
+        this.mSupportPic = supportPic;
     }
 
-    @MainThread
     public void showWaiting() {
-        isInitial = true;
-
+        mIsInitial = true;
         setVisibility(GONE);
-        if (imgSupportView != null) {
-            AvatarUtils.loadCoverByUrl(imgSupportView, waitingPic, false, 0, imgSupportView.getWidth(), imgSupportView.getHeight());
-        }
+        bindImage(mSupportIv, mWaitingPic);
+
         start();
-        stopAnim();
+        stopRippleAnimator();
     }
 
     /**
      * 倒计时已完成
      */
     private void showSupport() {
-        txtTime.setVisibility(GONE);
-        if (null == supportPic || supportPic.equals("")) {
+        mTimerTv.setVisibility(GONE);
+        bindImage(mSupportIv, mSupportPic);
+        if (TextUtils.isEmpty(mSupportPic)) {
             MyLog.e(TAG, "supportPic is null");
             return;
         }
-        if (imgSupportView != null) {
-            AvatarUtils.loadCoverByUrl(imgSupportView, supportPic, false, 0, imgSupportView.getWidth(), imgSupportView.getHeight());
+        startRippleAnimator();
+    }
+
+    private void bindImage(BaseImageView iv, String picUrl) {
+        if (iv != null) {
+            if (!TextUtils.isEmpty(picUrl)) {
+                AvatarUtils.loadCoverByUrl(iv, picUrl, false, 0, iv.getWidth(), iv.getHeight());
+                iv.setVisibility(View.VISIBLE);
+            } else {
+                iv.setVisibility(View.GONE);
+            }
         }
-        startAnim();
     }
 
     private void start() {
-        if (totalTime <= 0) {
+        if (mTotalTime <= 0) {
             MyLog.e(TAG, "waiting time is under 0");
             return;
         }
 
-        if (timerCircle == null || txtTime == null) {
+        if (mTimerCircleView == null || mTimerTv == null) {
             return;
         }
-        int smoothness = 360;// 进度变化平滑度，值越大越平滑
-        int visibleInitCountDownSecond = totalTime > VISIBLE_TIME ? VISIBLE_TIME : totalTime;// 当该控件可见时剩余的秒数
-        timerCircle.setMax(smoothness);
-        timerCircle.setProgress(0);
-        txtTime.setText(String.valueOf(visibleInitCountDownSecond));
-        txtTime.setVisibility(VISIBLE);
 
-        if (mAnimator != null) {
-            mAnimator.removeAllUpdateListeners();
-            mAnimator.cancel();
-            mAnimator = null;
+        int smoothness = 360;// 进度变化平滑度，值越大越平滑
+        int countDownSecond = mTotalTime > VISIBLE_TIME ? VISIBLE_TIME : mTotalTime;// 当该控件可见时剩余的秒数
+
+        mTimerCircleView.setMax(smoothness);
+        mTimerCircleView.setProgress(0);
+        mTimerTv.setText(String.valueOf(countDownSecond));
+        mTimerTv.setVisibility(VISIBLE);
+
+        if (mCountDownAnimator != null) {
+            mCountDownAnimator.removeAllUpdateListeners();
+            mCountDownAnimator.cancel();
         }
 
-        //这里用的是nineold的属性动画向下兼容包
-        mAnimator = ValueAnimator.ofInt(0, smoothness);
-        mAnimator.setDuration(visibleInitCountDownSecond * 1000);
-        mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
+        mCountDownAnimator = ValueAnimator.ofInt(0, smoothness);
+        mCountDownAnimator.setDuration(countDownSecond * 1000);
+        mCountDownAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 int animatedValue = (Integer) animation.getAnimatedValue();
-                timerCircle.setProgress(animatedValue);
+                mTimerCircleView.setProgress(animatedValue);
             }
         });
-        //mAnimator.start();
 
-        currentLeftTime = totalTime;
-        isCountDowning = true;
+        mCurrentLeftTime = mTotalTime;
+        mIsCountingDown = true;
 
-        if (subTimer != null && !subTimer.isUnsubscribed()) {
-            subTimer.unsubscribe();
-            subTimer = null;
+        if (mTimerSubscription != null && !mTimerSubscription.isUnsubscribed()) {
+            mTimerSubscription.unsubscribe();
         }
-        subTimer = Observable
+        mTimerSubscription = Observable
                 .interval(1, TimeUnit.SECONDS)
-                .take(currentLeftTime + 1)
+                .take(mCurrentLeftTime + 1)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Long>() {
+                .subscribe(new Action1<Long>() {
                     @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-
-                    @Override
-                    public void onNext(Long l) {
-                        long index = currentLeftTime - l;
+                    public void call(Long l) {
+                        long index = mCurrentLeftTime - l;
                         if (index > 0) {
-                            txtTime.setText(index + "s");
-                            if (index <= VISIBLE_TIME && mAnimator != null && !mAnimator.isStarted()) {
-                                SupportWidgetView.this.setVisibility(VISIBLE);
-                                mAnimator.start();
+                            mTimerTv.setText(index + "s");
+
+                            if (index <= VISIBLE_TIME && mCountDownAnimator != null && !mCountDownAnimator.isStarted()) {
+                                setVisibility(VISIBLE);
+                                mCountDownAnimator.start();
                             }
                         } else {
                             showSupport();
-                            stop();
+                            stopCountdown();
                         }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, throwable);
                     }
                 });
     }
@@ -199,155 +217,79 @@ public class SupportWidgetView extends FrameLayout implements View.OnTouchListen
     /**
      * 停止更新环形进度条和倒计时数字
      */
-    public void stop() {
-        isCountDowning = false;
-        if (timerCircle != null) {
-            timerCircle.setProgress(0);
+    public void stopCountdown() {
+        mIsCountingDown = false;
+        if (mTimerCircleView != null) {
+            mTimerCircleView.setProgress(0);
         }
-        if (timer != null) {
-            timer.cancel();
-            timer.purge();
-            timer = null;
-        }
-        if (timerTask != null) {
-            timerTask.cancel();
-            timerTask = null;
-            timerTask = new CountDownTimer();
-        }
-        if (mAnimator != null) {
-            mAnimator.cancel();
-            mAnimator.removeAllUpdateListeners();
-            mAnimator = null;
-        }
-        if (subTimer != null) {
-            subTimer.unsubscribe();
-            subTimer = null;
-        }
+        stopCountDownAnimator();
+        stopTimerSubscription();
     }
 
-    public boolean isCountDowning() {
-        return isCountDowning;
+    public boolean isCountingDown() {
+        return mIsCountingDown;
     }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                break;
-            case MotionEvent.ACTION_UP:
-                break;
-        }
-        return false;
-    }
-
-    private class CountDownTimer extends TimerTask {
-        @Override
-        public void run() {
-            Message msg = handler.obtainMessage(currentLeftTime);
-            handler.sendMessage(msg);
-            currentLeftTime--;
-            if (currentLeftTime < 0) {
-                stop();
-            }
-        }
-    }
-
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what > 0) {
-                txtTime.setText(msg.what + "s");
-                if (msg.what <= VISIBLE_TIME && mAnimator != null && !mAnimator.isStarted()) {
-                    SupportWidgetView.this.setVisibility(VISIBLE);
-                    mAnimator.start();
-                }
-            } else {
-                showSupport();
-            }
-        }
-    };
 
     /**
      * 显示水波扩散的动画
      */
-    private void startAnim() {
-        imgAnim.setVisibility(VISIBLE);
-        imgAnim2.setVisibility(VISIBLE);
-        imgAnim3.setVisibility(VISIBLE);
+    private void startRippleAnimator() {
+        mAnimIv.setVisibility(VISIBLE);
+        mRippleAnimator.start();
 
-        imgAnim.startAnimation(mAnimation);
-        imgAnim2.postDelayed(runnable1, 800);
-        imgAnim3.postDelayed(runnable2, 1600);
+        mAnimIv2.setVisibility(VISIBLE);
+        mRippleAnimator2.start();
+
+        mAnimIv3.setVisibility(VISIBLE);
+        mRippleAnimator3.start();
     }
 
-    private Runnable runnable1 = new Runnable() {
-        @Override
-        public void run() {
-            if (imgAnim2.getVisibility() == VISIBLE)
-                imgAnim2.startAnimation(mAnimation2);
+
+    public void stopRippleAnimator() {
+        mAnimIv.setVisibility(GONE);
+        mRippleAnimator.cancel();
+
+        mAnimIv2.setVisibility(GONE);
+        mRippleAnimator2.cancel();
+
+        mAnimIv3.setVisibility(GONE);
+        mRippleAnimator3.cancel();
+    }
+
+    private void stopCountDownAnimator() {
+        if (mCountDownAnimator != null) {
+            mCountDownAnimator.removeAllUpdateListeners();
+            mCountDownAnimator.cancel();
+            mCountDownAnimator = null;
         }
-    };
+    }
 
-    private Runnable runnable2 = new Runnable() {
-        @Override
-        public void run() {
-            if (imgAnim3.getVisibility() == VISIBLE)
-                imgAnim3.startAnimation(mAnimation3);
+    private void stopTimerSubscription() {
+        if (mTimerSubscription != null && !mTimerSubscription.isUnsubscribed()) {
+            mTimerSubscription.unsubscribe();
+            mTimerSubscription = null;
         }
-    };
-
-    /**
-     * 停止水波扩散效果
-     */
-    public void stopAnim() {
-        imgAnim.setVisibility(GONE);
-        imgAnim2.setVisibility(GONE);
-        imgAnim3.setVisibility(GONE);
-
-        imgAnim.clearAnimation();
-        imgAnim2.clearAnimation();
-        imgAnim3.clearAnimation();
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        destory();
+        destroy();
     }
 
-    private void destory() {
-        imgAnim2.removeCallbacks(runnable1);
-        imgAnim3.removeCallbacks(runnable2);
-        handler.removeCallbacksAndMessages(null);
-        if (timer != null) {
-            timer.cancel();
-            timer.purge();
-            timer = null;
-        }
-        if (timerTask != null) {
-            timerTask.cancel();
-            timerTask = null;
-        }
+    private void destroy() {
+        stopRippleAnimator();
+        stopCountDownAnimator();
+        stopTimerSubscription();
 
-        if (mAnimator != null) {
-            mAnimator.removeAllUpdateListeners();
-            mAnimator.cancel();
-            mAnimator = null;
-        }
-
-        if (subTimer != null) {
-            subTimer.unsubscribe();
-            subTimer = null;
-        }
-
-        isInitial = false;
+        mIsInitial = false;
     }
 
     public boolean hasInitial() {
-        return isInitial;
+        return mIsInitial;
     }
 
     public void cleanInitial() {
-        isInitial = false;
+        mIsInitial = false;
     }
 }

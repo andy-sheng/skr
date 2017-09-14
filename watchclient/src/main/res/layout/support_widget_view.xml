@@ -5,37 +5,19 @@
              android:layout_centerInParent="true">
 
     <com.base.image.fresco.BaseImageView
-        android:id="@+id/support_widget_view_imgSupport"
+        android:id="@+id/waiting_iv"
         android:layout_width="@dimen/margin_123"
         android:layout_height="@dimen/margin_123"
         android:layout_gravity="center"/>
 
-    <ImageView
-        android:id="@+id/support_widget_view_imgAnim"
-        android:layout_width="@dimen/view_dimen_125"
-        android:layout_height="@dimen/view_dimen_125"
-        android:layout_gravity="center"
-        android:src="@drawable/count_down_anim"
-        android:visibility="gone"/>
-
-    <ImageView
-        android:id="@+id/support_widget_view_imgAnim2"
-        android:layout_width="@dimen/view_dimen_125"
-        android:layout_height="@dimen/view_dimen_125"
-        android:layout_gravity="center"
-        android:src="@drawable/count_down_anim"
-        android:visibility="gone"/>
-
-    <ImageView
-        android:id="@+id/support_widget_view_imgAnim3"
-        android:layout_width="@dimen/view_dimen_125"
-        android:layout_height="@dimen/view_dimen_125"
-        android:layout_gravity="center"
-        android:src="@drawable/count_down_anim"
-        android:visibility="gone"/>
+    <com.wali.live.watchsdk.component.view.TimerCircleView
+        android:id="@+id/timer_circle_view"
+        android:layout_width="@dimen/margin_140"
+        android:layout_height="@dimen/margin_140"
+        android:layout_gravity="center"/>
 
     <TextView
-        android:id="@+id/support_widget_view_txtWaitingTime"
+        android:id="@+id/timer_tv"
         android:layout_width="@dimen/margin_120"
         android:layout_height="@dimen/margin_120"
         android:layout_gravity="center"
@@ -45,9 +27,27 @@
         android:textStyle="bold"
         android:visibility="gone"/>
 
-    <com.wali.live.watchsdk.component.view.TimingCircleView
-        android:id="@+id/support_widget_view_timer"
-        android:layout_width="@dimen/margin_140"
-        android:layout_height="@dimen/margin_140"
-        android:layout_gravity="center"/>
+    <ImageView
+        android:id="@+id/anim_iv"
+        android:layout_width="@dimen/view_dimen_125"
+        android:layout_height="@dimen/view_dimen_125"
+        android:layout_gravity="center"
+        android:src="@drawable/count_down_anim"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/anim_iv2"
+        android:layout_width="@dimen/view_dimen_125"
+        android:layout_height="@dimen/view_dimen_125"
+        android:layout_gravity="center"
+        android:src="@drawable/count_down_anim"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/anim_iv3"
+        android:layout_width="@dimen/view_dimen_125"
+        android:layout_height="@dimen/view_dimen_125"
+        android:layout_gravity="center"
+        android:src="@drawable/count_down_anim"
+        android:visibility="gone"/>
 </FrameLayout>
