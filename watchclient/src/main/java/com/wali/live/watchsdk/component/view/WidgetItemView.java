@@ -516,6 +516,9 @@ public class WidgetItemView extends LinearLayout {
         if (mShowSubscription != null && !mShowSubscription.isUnsubscribed()) {
             mShowSubscription.unsubscribe();
         }
+        if (mSupportWv != null) {
+            mSupportWv.destroy();
+        }
     }
 
     private static class WidgetFrescoCallBack implements IFrescoCallBack {

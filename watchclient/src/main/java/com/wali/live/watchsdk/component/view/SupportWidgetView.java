@@ -115,6 +115,7 @@ public class SupportWidgetView extends FrameLayout {
     }
 
     public void showWaiting() {
+        MyLog.d(TAG, "showWaiting");
         mIsInitial = true;
         setVisibility(GONE);
         bindImage(mSupportIv, mWaitingPic);
@@ -127,6 +128,7 @@ public class SupportWidgetView extends FrameLayout {
      * 倒计时已完成
      */
     private void showSupport() {
+        MyLog.d(TAG, "showSupport");
         mTimerTv.setVisibility(GONE);
         bindImage(mSupportIv, mSupportPic);
         if (TextUtils.isEmpty(mSupportPic)) {
@@ -271,13 +273,8 @@ public class SupportWidgetView extends FrameLayout {
         }
     }
 
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        destroy();
-    }
-
-    private void destroy() {
+    public void destroy() {
+        MyLog.d(TAG, "destroy");
         stopRippleAnimator();
         stopCountDownAnimator();
         stopTimerSubscription();
