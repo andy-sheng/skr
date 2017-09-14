@@ -11,24 +11,24 @@ import android.widget.ProgressBar;
 import com.base.utils.display.DisplayUtils;
 import com.wali.live.watchsdk.R;
 
-public class TimingCircleView extends ProgressBar {
+public class TimerCircleView extends ProgressBar {
     private int mRadius = DisplayUtils.dip2px(20.33f);  //半径
     private int mStrokeWidth = 6;                       //画笔画线的宽度
 
     private Paint mPaint;
     private RectF mRect;
 
-    public TimingCircleView(Context context) {
+    public TimerCircleView(Context context) {
         this(context, null);
         init();
     }
 
-    public TimingCircleView(Context context, AttributeSet attrs) {
+    public TimerCircleView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
         init();
     }
 
-    public TimingCircleView(Context context, AttributeSet attrs, int defStyle) {
+    public TimerCircleView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }

@@ -374,7 +374,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
     }
 
     private boolean stopAnimation(ValueAnimator animation) {
-        MyLog.d(TAG, "stopAnimation");
+        MyLog.d(TAG, "stopRippleAnimator");
         if (animation != null && animation.isStarted()) {
             animation.cancel();
             return true;

@@ -166,8 +166,8 @@ public class WidgetItemView extends LinearLayout {
             mSupportWv.showWaiting();
         } else {
             mSupportWv.setVisibility(GONE);
-            mSupportWv.stop();
-            mSupportWv.stopAnim();
+            mSupportWv.stopCountdown();
+            mSupportWv.stopRippleAnimator();
         }
     }
 
