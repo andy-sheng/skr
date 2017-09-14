@@ -20,10 +20,12 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.activity.BaseActivity;
 import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
+import com.base.permission.PermissionUtils;
 import com.base.utils.system.PackageUtils;
 import com.base.utils.toast.ToastUtils;
 import com.base.view.MyRatingBar;
@@ -209,8 +211,19 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
                             tryLaunchApk(mGameViewModel.getPackageName());
                             return;
                         }
+
                         if (mDownloadId == 0) {
-                            beginDownload();
+                            PermissionUtils.checkPermissionByType(
+                                    (BaseActivity) (mParentView.getContext()),
+                                    PermissionUtils.PermissionType.WRITE_EXTERNAL_STORAGE,
+                                    new PermissionUtils.IPermissionCallback() {
+                                        @Override
+                                        public void okProcess() {
+                                            MyLog.d(TAG, "write permission ok");
+                                            beginDownload();
+                                        }
+                                    }
+                            );
                             return;
                         }
                         if (mDownloadStatus == DownloadManager.STATUS_SUCCESSFUL) {
