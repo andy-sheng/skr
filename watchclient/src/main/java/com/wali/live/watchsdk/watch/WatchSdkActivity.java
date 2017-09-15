@@ -40,6 +40,7 @@ import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
+import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.preference.PreferenceKeys;
@@ -836,8 +837,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                             // 初始新票
                             mMyRoomData.setInitTicket(giftInfoForEnterRoom.getInitStarStickCount());
 
-                            mMyRoomData.setTicket(giftInfoForEnterRoom.getInitStarStickCount());//发送刷新的event
-
+                            //临时加的.roomData里的原user星票数一直是0，在这里重新更新了一下user
+                            mMyRoomData.setUser(UserInfoManager.getUserInfoByUuid(mMyRoomData.getUid(), false));
+                            mMyRoomData.setTicket(giftInfoForEnterRoom.getInitStarStickCount() > mMyRoomData.getTicket() ?
+                            giftInfoForEnterRoom.getInitStarStickCount() : mMyRoomData.getTicket());//发送刷新的event
                             // 这个房间的的礼物橱窗信息交付
 //                            mGiftMallView.setGiftInfoForEnterRoom(giftInfoForEnterRoom.getmGiftInfoForThisRoom());
                             mGiftMallPresenter.setGiftInfoForEnterRoom(giftInfoForEnterRoom.getmGiftInfoForThisRoom());
