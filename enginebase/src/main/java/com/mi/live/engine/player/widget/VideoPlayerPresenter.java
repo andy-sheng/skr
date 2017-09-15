@@ -168,7 +168,13 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         if (null != mPlayer && null != mUri && mIsReconnectEnable) {
             MyLog.w(TAG, "reload uri=" + mUri.toString());
             try {
-                mPlayer.reload(mUri.toString(), mRealTime);
+                if (mRealTime) {
+                    mPlayer.reload(mUri.toString(), mRealTime);
+                } else {
+                    long position = mPlayer.getCurrentPosition();
+                    MyLog.w(TAG, "reconnect, currentPosition= " + position);
+                    seekTo(position);
+                }
             } catch (OutOfMemoryError error) {
                 MyLog.e(TAG, error);
             }

@@ -360,12 +360,6 @@ public class VideoPlayerPresenterEx implements
         EventBus.getDefault().unregister(this);
     }
 
-    private void reconnect() {
-        long currentPosition = mVideoPlayerPresenter.getCurrentPosition();
-        MyLog.w(TAG, "reconnect, currentPosition= " + currentPosition);
-        mVideoPlayerPresenter.seekTo(currentPosition);
-    }
-
     public void enableReconnect(boolean isEnable) {
         MyLog.w(TAG, "enableReconnect, isEnable= " + isEnable);
         mVideoPlayerPresenter.enableReconnect(isEnable);
@@ -595,7 +589,7 @@ public class VideoPlayerPresenterEx implements
             mVideoPlayerPresenter.setVideoPath(mIpSelectionHelper.getStreamUrl(), mIpSelectionHelper.getStreamHost());
             mVideoPlayerPresenter.setIpList(mIpSelectionHelper.getSelectedHttpIpList(), mIpSelectionHelper.getSelectedLocalIpList());
         }
-        reconnect();
+        mVideoPlayerPresenter.reconnect();
     }
 
     //    ----点击事件-----------------------------------------------------------
