@@ -1,4 +1,4 @@
-package com.wali.live.cta;
+package com.wali.live.watchsdk.cta;
 
 import android.support.annotation.IdRes;
 import android.text.method.LinkMovementMethod;
@@ -13,9 +13,11 @@ import com.base.activity.BaseSdkActivity;
 import com.base.fragment.BaseFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
+import com.base.preference.PreferenceUtils;
 import com.live.module.common.R;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.statistics.StatisticsKey;
+import com.wali.live.watchsdk.init.InitManager;
 
 /**
  * Created by yaojian on 16-3-26.
@@ -73,11 +75,13 @@ public class CTANotifyFragment extends BaseFragment implements View.OnClickListe
             StatisticsAlmightyWorker.getsInstance().recordDelayDefault(StatisticsKey.KEY_FACTORY_FIRSTPAGE_CANCEL, 1);
 
         } else if (i == R.id.agree_button) {
+            //TODO: 为了适应 cta 弹窗策略，避免偷跑流量，调整数据初始化，待优化
             if (mButtonClickListener != null) {
-                mButtonClickListener.onClickConfirmButton(mNeverShowCb.isChecked());
+                PreferenceUtils.setSettingBoolean(getActivity(), PreferenceUtils.PREF_KEY_NEED_SHOW_CTA, !mNeverShowCb.isChecked());
+                InitManager.initForCoreProcess(GlobalData.app());
+                mButtonClickListener.onClickConfirmButton();
             }
             StatisticsAlmightyWorker.getsInstance().recordDelayDefault(StatisticsKey.KEY_FACTORY_FIRSTPAGE_AGREE, 1);
-
         }
     }
 
@@ -102,9 +106,7 @@ public class CTANotifyFragment extends BaseFragment implements View.OnClickListe
 
         /**
          * 点击确定按钮
-         *
-         * @param neverShow true只显示一次
          */
-        void onClickConfirmButton(boolean neverShow);
+        void onClickConfirmButton();
     }
 }

@@ -601,13 +601,14 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
     public void secureOperate(final int channelId, final String packageName,
                               final String channelSecret, final ISecureCallBack callback) {
+        if (callback == null) {
+            MyLog.w(TAG, " secureOperate callback is null");
+            return;
+        }
         //场包cta弹窗之前，不能有网络访问。
         if (CommonUtils.isNeedShowCtaDialog()) {
             MyLog.w(TAG, "secureOperate isNeedShowCtaDialog true");
-            return;
-        }
-        if (callback == null) {
-            MyLog.w(TAG, " secureOperate callback is null");
+            callback.processFailure();
             return;
         }
         if (mAuthMap.containsKey(channelId) && mAuthMap.get(channelId).equals(packageName)) {

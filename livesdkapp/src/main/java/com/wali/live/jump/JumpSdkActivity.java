@@ -11,9 +11,9 @@ import com.base.utils.callback.ICommonCallBack;
 import com.mi.live.data.location.Location;
 import com.mi.liveassistant.R;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.wali.live.cta.CTANotifyFragment;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.statistics.StatisticsKey;
+import com.wali.live.watchsdk.cta.CTANotifyFragment;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
@@ -65,8 +65,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                 }
 
                 @Override
-                public void onClickConfirmButton(boolean neverShow) {
-                    PreferenceUtils.setSettingBoolean(JumpSdkActivity.this, PreferenceUtils.PREF_KEY_NEED_SHOW_CTA, !neverShow);
+                public void onClickConfirmButton() {
                     processIntent();
                 }
             });
