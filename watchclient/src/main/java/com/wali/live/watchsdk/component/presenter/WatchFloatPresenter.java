@@ -16,11 +16,19 @@ import com.thornbirds.component.presenter.IEventPresenter;
 import com.thornbirds.component.view.IEventView;
 import com.thornbirds.component.view.IOrientationListener;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
+import com.wali.live.watchsdk.component.presenter.panel.LinkInfoPresenter;
 import com.wali.live.watchsdk.component.presenter.panel.PkInfoPresenter;
+import com.wali.live.watchsdk.component.view.panel.LinkInfoPanel;
 import com.wali.live.watchsdk.component.view.panel.PkInfoPanel;
 
 import java.lang.ref.WeakReference;
+import java.util.concurrent.TimeUnit;
 
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+
+import static com.wali.live.component.BaseSdkController.MSG_ON_LINK_MIC_START;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_ON_PK_START;
@@ -35,6 +43,7 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
     private static final String TAG = "WatchFloatPresenter";
 
     private WeakReference<PkInfoPresenter> mPkInfoPresenterRef;
+    private WeakReference<LinkInfoPresenter> mLinkInfoPresenterRef;
 
     private Handler mUiHandler = new Handler();
 
@@ -72,15 +81,17 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
         super.startPresenter();
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(MSG_ON_LINK_MIC_START);
         registerAction(MSG_ON_PK_START);
 
-        // TEST PK观众端逻辑暴力测试
-//        mUiHandler.post(new Runnable() {
-//            @Override
-//            public void run() {
+        // TEST PK/主播-主播连麦 观众端逻辑暴力测试
+        mUiHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
 //                startPkTest();
-//            }
-//        });
+//                startLinkTest();
+            }
+        }, 1000);
     }
 
     @Override
@@ -179,7 +190,48 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
 //                });
 //    }
 
-    private void showPkPanel(PkInfoPresenter.PkStartInfo pkStartInfo) {
+    // TEST 主播-主播连麦观众端逻辑暴力测试
+    private void startLinkTest() {
+        Observable.interval(1, 1, TimeUnit.SECONDS)
+                .onBackpressureBuffer()
+                .take(600)
+                .compose(this.<Long>bindUntilEvent(PresenterEvent.STOP))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Long>() {
+                    long userId;
+                    String nickName;
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.e(TAG, "linkTest failed, exception=" + e);
+                    }
+
+                    @Override
+                    public void onNext(Long cnt) {
+                        MyLog.d(TAG, "linkTest cnt=" + cnt);
+                        if (cnt % 10 == 0) { // 每10秒发送一次开始/结束
+                            if (userId == 0) {
+                                userId = 100067;
+                                nickName = "游不动的鱼";
+                                showLinkInfoPanel(userId, nickName);
+                            } else {
+                                LinkInfoPresenter presenter = deRef(mLinkInfoPresenterRef);
+                                if (presenter != null && presenter.isShow()) {
+                                    presenter.onLinkStop();
+                                }
+                                userId = 0;
+                                nickName = "";
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void showPkInfoPanel(PkInfoPresenter.PkStartInfo pkStartInfo) {
         PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
         if (presenter == null) {
             presenter = new PkInfoPresenter(mController, mMyRoomData);
@@ -190,6 +242,19 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
         }
         presenter.startPresenter();
         presenter.onPkStart(pkStartInfo, mIsLandscape);
+    }
+
+    private void showLinkInfoPanel(long userId, String userName) {
+        LinkInfoPresenter presenter = deRef(mLinkInfoPresenterRef);
+        if (presenter == null) {
+            presenter = new LinkInfoPresenter(mController);
+            LinkInfoPanel panel = new LinkInfoPanel(mView);
+            panel.setLayoutRatio(LinkInfoPanel.DEFAULT_RATIO);
+            setupComponent(panel, presenter);
+            mLinkInfoPresenterRef = new WeakReference<>(presenter);
+        }
+        presenter.startPresenter();
+        presenter.onLinkStart(userId, userName, mIsLandscape);
     }
 
     @Override
@@ -214,8 +279,11 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
             case MSG_ON_ORIENT_LANDSCAPE:
                 onOrientation(true);
                 return true;
+            case MSG_ON_LINK_MIC_START:
+                showLinkInfoPanel(100067, "游不动的鱼");
+                break;
             case MSG_ON_PK_START:
-                showPkPanel((PkInfoPresenter.PkStartInfo) params.getItem(0));
+                showPkInfoPanel((PkInfoPresenter.PkStartInfo) params.getItem(0));
                 return true;
             default:
                 break;
@@ -228,33 +296,43 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
         mUiHandler.post(new Runnable() {
             @Override
             public void run() {
-                PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
                 switch (msg.getMsgType()) {
+                    case BarrageMsgType.B_MSG_TYPE_LINE_MIC_BEGIN:
+                        showLinkInfoPanel(100067, "xfdfsdfs");
+                        break;
+                    case BarrageMsgType.B_MSG_TYPE_LINE_MIC_END: {
+                        LinkInfoPresenter presenter = deRef(mLinkInfoPresenterRef);
+                        if (presenter != null) {
+                            presenter.onLinkStop();
+                        }
+                        break;
+                    }
                     case BarrageMsgType.B_MSG_TYPE_NEW_PK_START: {
                         MyLog.w(TAG, "B_MSG_TYPE_NEW_PK_START");
-                        BarrageMsg.PKInfoMessageExt msgExt = (BarrageMsg.PKInfoMessageExt) msg.getMsgExt();
+                        BarrageMsg.PKInfoMsgExt msgExt = (BarrageMsg.PKInfoMsgExt) msg.getMsgExt();
                         if (msgExt.info != null) {
-                            showPkPanel(new PkInfoPresenter.PkStartInfo(msgExt.info, msg.getSentTime()));
+                            showPkInfoPanel(new PkInfoPresenter.PkStartInfo(msgExt.info, msg.getSentTime()));
                         }
                         break;
                     }
                     case BarrageMsgType.B_MSG_TYPE_NEW_PK_SCORE: {
                         MyLog.d(TAG, "B_MSG_TYPE_NEW_PK_SCORE");
-                        BarrageMsg.PKInfoMessageExt msgExt = (BarrageMsg.PKInfoMessageExt) msg.getMsgExt();
+                        BarrageMsg.PKInfoMsgExt msgExt = (BarrageMsg.PKInfoMsgExt) msg.getMsgExt();
                         if (msgExt.info != null) {
+                            PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
                             if (presenter != null && presenter.isShow()) {
                                 presenter.onPkScore(new PkInfoPresenter.PkScoreInfo(msgExt.info));
                             } else {
-                                showPkPanel(new PkInfoPresenter.PkStartInfo(msgExt.info, msg.getSentTime()));
+                                showPkInfoPanel(new PkInfoPresenter.PkStartInfo(msgExt.info, msg.getSentTime()));
                             }
                         }
                         break;
                     }
                     case BarrageMsgType.B_MSG_TYPE_NEW_PK_END: {
                         MyLog.w(TAG, "B_MSG_TYPE_NEW_PK_END");
-                        BarrageMsg.PKEndInfoMessageExt msgExt = (BarrageMsg.PKEndInfoMessageExt) msg.getMsgExt();
-                        if (msgExt.info != null && presenter != null) {
-                            // msgExt.endType为1时表示PK提前结束
+                        BarrageMsg.PKEndMsgExt msgExt = (BarrageMsg.PKEndMsgExt) msg.getMsgExt();
+                        PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
+                        if (msgExt.info != null && presenter != null) { // msgExt.endType为1时表示PK提前结束
                             presenter.onPkEnd(new PkInfoPresenter.PkEndInfo(msgExt.info, msgExt.endType == 1 ? msgExt.uuid : 0));
                         }
                         break;
@@ -269,6 +347,8 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
     @Override
     public int[] getAcceptMsgType() {
         return new int[]{
+                BarrageMsgType.B_MSG_TYPE_LINE_MIC_BEGIN,
+                BarrageMsgType.B_MSG_TYPE_LINE_MIC_END,
                 BarrageMsgType.B_MSG_TYPE_NEW_PK_START,
                 BarrageMsgType.B_MSG_TYPE_NEW_PK_END,
                 BarrageMsgType.B_MSG_TYPE_NEW_PK_SCORE

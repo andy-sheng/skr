@@ -197,4 +197,6 @@
     <string name="edit_info_tip">You haven\'t set a nickname. %s to set to make more friends.</string>
     <string name="click_here">Tap here</string>
     <string name="room_admin">Manager</string>
+    <string name="line_my_zone">主场</string>
+    <string name="line_guest_into">进TA房间</string>
 </resources>

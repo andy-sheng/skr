@@ -107,7 +107,7 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
     }
 
     public void onPkStart(PkStartInfo info, boolean isLandscape) {
-        if (mView == null || info == null) {
+        if (info == null) {
             return;
         }
         MyLog.w("onPkStart");
@@ -123,7 +123,7 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
     }
 
     public void onPkScore(PkScoreInfo info) {
-        if (mView == null || info == null) {
+        if (info == null) {
             return;
         }
         MyLog.d("onPkScore");
@@ -135,7 +135,7 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
     }
 
     public void onPkEnd(PkEndInfo info) {
-        if (mView == null || info == null) {
+        if (info == null) {
             return;
         }
         MyLog.w("onPkEnd");

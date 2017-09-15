@@ -2017,6 +2017,49 @@ public final class LiveCommonProto {
      * </pre>
      */
     com.wali.live.proto.LiveCommonProto.MicSubViewPosOrBuilder getSubViewPosOrBuilder();
+
+    /**
+     * <code>optional string mic_liveid = 3;</code>
+     *
+     * <pre>
+     *连麦对方房间号
+     * </pre>
+     */
+    boolean hasMicLiveid();
+    /**
+     * <code>optional string mic_liveid = 3;</code>
+     *
+     * <pre>
+     *连麦对方房间号
+     * </pre>
+     */
+    java.lang.String getMicLiveid();
+    /**
+     * <code>optional string mic_liveid = 3;</code>
+     *
+     * <pre>
+     *连麦对方房间号
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getMicLiveidBytes();
+
+    /**
+     * <code>optional uint32 type = 4;</code>
+     *
+     * <pre>
+     *0:主播与观众连麦 1：主播与主播连麦
+     * </pre>
+     */
+    boolean hasType();
+    /**
+     * <code>optional uint32 type = 4;</code>
+     *
+     * <pre>
+     *0:主播与观众连麦 1：主播与主播连麦
+     * </pre>
+     */
+    int getType();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.MicInfo}
@@ -2086,6 +2129,17 @@ public final class LiveCommonProto {
                 subViewPos_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000002;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              micLiveid_ = bs;
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              type_ = input.readUInt32();
               break;
             }
           }
@@ -2184,9 +2238,88 @@ public final class LiveCommonProto {
       return subViewPos_;
     }
 
+    public static final int MIC_LIVEID_FIELD_NUMBER = 3;
+    private java.lang.Object micLiveid_;
+    /**
+     * <code>optional string mic_liveid = 3;</code>
+     *
+     * <pre>
+     *连麦对方房间号
+     * </pre>
+     */
+    public boolean hasMicLiveid() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string mic_liveid = 3;</code>
+     *
+     * <pre>
+     *连麦对方房间号
+     * </pre>
+     */
+    public java.lang.String getMicLiveid() {
+      java.lang.Object ref = micLiveid_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          micLiveid_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string mic_liveid = 3;</code>
+     *
+     * <pre>
+     *连麦对方房间号
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getMicLiveidBytes() {
+      java.lang.Object ref = micLiveid_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        micLiveid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TYPE_FIELD_NUMBER = 4;
+    private int type_;
+    /**
+     * <code>optional uint32 type = 4;</code>
+     *
+     * <pre>
+     *0:主播与观众连麦 1：主播与主播连麦
+     * </pre>
+     */
+    public boolean hasType() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint32 type = 4;</code>
+     *
+     * <pre>
+     *0:主播与观众连麦 1：主播与主播连麦
+     * </pre>
+     */
+    public int getType() {
+      return type_;
+    }
+
     private void initFields() {
       micuid_ = 0L;
       subViewPos_ = com.wali.live.proto.LiveCommonProto.MicSubViewPos.getDefaultInstance();
+      micLiveid_ = "";
+      type_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -2217,6 +2350,12 @@ public final class LiveCommonProto {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeMessage(2, subViewPos_);
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getMicLiveidBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt32(4, type_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -2233,6 +2372,14 @@ public final class LiveCommonProto {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, subViewPos_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getMicLiveidBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(4, type_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2360,6 +2507,10 @@ public final class LiveCommonProto {
           subViewPosBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000002);
+        micLiveid_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        type_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -2400,6 +2551,14 @@ public final class LiveCommonProto {
         } else {
           result.subViewPos_ = subViewPosBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.micLiveid_ = micLiveid_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.type_ = type_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2421,6 +2580,14 @@ public final class LiveCommonProto {
         }
         if (other.hasSubViewPos()) {
           mergeSubViewPos(other.getSubViewPos());
+        }
+        if (other.hasMicLiveid()) {
+          bitField0_ |= 0x00000004;
+          micLiveid_ = other.micLiveid_;
+          onChanged();
+        }
+        if (other.hasType()) {
+          setType(other.getType());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -2657,6 +2824,154 @@ public final class LiveCommonProto {
           subViewPos_ = null;
         }
         return subViewPosBuilder_;
+      }
+
+      private java.lang.Object micLiveid_ = "";
+      /**
+       * <code>optional string mic_liveid = 3;</code>
+       *
+       * <pre>
+       *连麦对方房间号
+       * </pre>
+       */
+      public boolean hasMicLiveid() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string mic_liveid = 3;</code>
+       *
+       * <pre>
+       *连麦对方房间号
+       * </pre>
+       */
+      public java.lang.String getMicLiveid() {
+        java.lang.Object ref = micLiveid_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            micLiveid_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string mic_liveid = 3;</code>
+       *
+       * <pre>
+       *连麦对方房间号
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getMicLiveidBytes() {
+        java.lang.Object ref = micLiveid_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          micLiveid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string mic_liveid = 3;</code>
+       *
+       * <pre>
+       *连麦对方房间号
+       * </pre>
+       */
+      public Builder setMicLiveid(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        micLiveid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string mic_liveid = 3;</code>
+       *
+       * <pre>
+       *连麦对方房间号
+       * </pre>
+       */
+      public Builder clearMicLiveid() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        micLiveid_ = getDefaultInstance().getMicLiveid();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string mic_liveid = 3;</code>
+       *
+       * <pre>
+       *连麦对方房间号
+       * </pre>
+       */
+      public Builder setMicLiveidBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        micLiveid_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int type_ ;
+      /**
+       * <code>optional uint32 type = 4;</code>
+       *
+       * <pre>
+       *0:主播与观众连麦 1：主播与主播连麦
+       * </pre>
+       */
+      public boolean hasType() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint32 type = 4;</code>
+       *
+       * <pre>
+       *0:主播与观众连麦 1：主播与主播连麦
+       * </pre>
+       */
+      public int getType() {
+        return type_;
+      }
+      /**
+       * <code>optional uint32 type = 4;</code>
+       *
+       * <pre>
+       *0:主播与观众连麦 1：主播与主播连麦
+       * </pre>
+       */
+      public Builder setType(int value) {
+        bitField0_ |= 0x00000008;
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 type = 4;</code>
+       *
+       * <pre>
+       *0:主播与观众连麦 1：主播与主播连麦
+       * </pre>
+       */
+      public Builder clearType() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        type_ = 0;
+        onChanged();
+        return this;
       }
 
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.MicInfo)
@@ -21988,69 +22303,70 @@ public final class LiveCommonProto {
       "\001(\r\"4\n\007MsgRule\022\024\n\014unrepeatable\030\001 \001(\010\022\023\n\013" +
       "speakPeriod\030\002 \001(\r\"^\n\rMicSubViewPos\022\021\n\tto" +
       "pXScale\030\001 \002(\002\022\021\n\ttopYScale\030\002 \002(\002\022\022\n\nwidt" +
-      "hScale\030\003 \002(\002\022\023\n\013heightScale\030\004 \002(\002\"Q\n\007Mic" +
+      "hScale\030\003 \002(\002\022\023\n\013heightScale\030\004 \002(\002\"s\n\007Mic" +
       "Info\022\016\n\006micuid\030\001 \002(\004\0226\n\nsubViewPos\030\002 \001(\013" +
-      "2\".com.wali.live.proto.MicSubViewPos\"\232\001\n" +
-      "\006Viewer\022\014\n\004uuid\030\001 \002(\004\022\r\n\005level\030\002 \001(\r\022\016\n\006" +
-      "avatar\030\003 \001(\004\022\032\n\022certification_type\030\004 \001(\r",
-      "\022\017\n\007redName\030\005 \001(\010\022\021\n\tvip_level\030\006 \001(\r\022\023\n\013" +
-      "vip_disable\030\007 \001(\010\022\016\n\006ticket\030\010 \001(\r\"<\n\006PKI" +
-      "nfo\022\014\n\004uuid\030\001 \001(\004\022\016\n\006liveId\030\002 \001(\t\022\024\n\014pkI" +
-      "nitTicket\030\003 \001(\r\";\n\rViewerInfoReq\022\014\n\004uuid" +
-      "\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\"?\n\014" +
-      "UserRoomInfo\022\014\n\004type\030\001 \001(\r\022\017\n\007appType\030\002 " +
-      "\001(\r\022\020\n\010tvRoomid\030\003 \001(\t\"L\n\nWidgetInfo\022\020\n\010l" +
-      "ink_url\030\001 \002(\t\022\020\n\010position\030\002 \002(\r\022\014\n\004icon\030" +
-      "\003 \001(\t\022\014\n\004text\030\004 \001(\t\"\032\n\013ColorConfig\022\013\n\003rg" +
-      "b\030\001 \002(\r\"\262\001\n\013CounterItem\022\020\n\010imageUrl\030\001 \001(",
-      "\t\022\023\n\013counterText\030\002 \001(\t\0223\n\ttextColor\030\003 \001(" +
-      "\0132 .com.wali.live.proto.ColorConfig\0227\n\rt" +
-      "extEdgeColor\030\004 \001(\0132 .com.wali.live.proto" +
-      ".ColorConfig\022\016\n\006isBold\030\005 \001(\010\"\251\001\n\tClickIt" +
-      "em\022\021\n\tclickType\030\001 \002(\r\022\025\n\rclickImageUrl\030\002" +
-      " \001(\t\022\025\n\rclickInterval\030\003 \001(\r\022\016\n\006giftId\030\004 " +
-      "\001(\r\022\034\n\024clickWaitingImageUrl\030\005 \001(\t\022\023\n\013war" +
-      "ningText\030\006 \001(\t\022\030\n\020pushSendSuccText\030\007 \001(\t" +
-      "\"\370\001\n\rNewWidgetUnit\022\020\n\010link_url\030\001 \001(\t\022\014\n\004" +
-      "icon\030\002 \001(\t\022\014\n\004text\030\003 \001(\t\0223\n\ttextColor\030\004 ",
-      "\001(\0132 .com.wali.live.proto.ColorConfig\022\024\n" +
-      "\014urlNeedParam\030\005 \001(\010\022\024\n\014schemaPrefix\030\006 \001(" +
-      "\t\022\025\n\rschemaPostfix\030\007 \001(\t\022\020\n\010openType\030\010 \001" +
-      "(\r\022/\n\010h5Config\030\t \001(\0132\035.com.wali.live.pro" +
-      "to.H5Config\"\031\n\010H5Config\022\r\n\005h5Url\030\001 \001(\t\"\377" +
-      "\001\n\rNewWidgetItem\022\020\n\010widgetID\030\001 \002(\r\022\020\n\010po" +
-      "sition\030\002 \002(\r\022\023\n\013displayType\030\003 \001(\r\0226\n\nwid" +
-      "getUint\030\004 \003(\0132\".com.wali.live.proto.NewW" +
-      "idgetUnit\022\023\n\013displayTime\030\005 \001(\r\0225\n\013counte" +
-      "rItem\030\006 \001(\0132 .com.wali.live.proto.Counte",
-      "rItem\0221\n\tclickItem\030\007 \001(\0132\036.com.wali.live" +
-      ".proto.ClickItem\"]\n\rNewWidgetInfo\0226\n\nwid" +
-      "getItem\030\001 \003(\0132\".com.wali.live.proto.NewW" +
-      "idgetItem\022\024\n\014pullInterval\030\002 \001(\r\"\'\n\016Shopp" +
-      "ingConfig\022\025\n\tshop_type\030\001 \002(\005:\002-1\"\300\001\n\016Roo" +
-      "mIconConfig\022\r\n\005noMic\030\001 \001(\010\022\r\n\005noPic\030\002 \001(" +
-      "\010\022\017\n\007noVideo\030\003 \001(\010\022\032\n\022noScreenProjection" +
-      "\030\004 \001(\010\022\024\n\014noAtmosphere\030\005 \001(\010\022\017\n\007noMusic\030" +
-      "\006 \001(\010\022\022\n\nnoEmoticon\030\007 \001(\010\022\021\n\tnoHongBao\030\010" +
-      " \001(\010\022\025\n\rnoConsumeTask\030\t \001(\010\";\n\021WidgetCou",
-      "nterPush\022\020\n\010widgetID\030\001 \002(\r\022\024\n\014counterVal" +
-      "ue\030\002 \001(\003\"[\n\nViewerPush\022+\n\006viewer\030\001 \002(\0132\033" +
-      ".com.wali.live.proto.Viewer\022\r\n\005leave\030\002 \001" +
-      "(\010\022\021\n\tviewerCnt\030\003 \001(\r\"(\n\nLevelRange\022\r\n\005s" +
-      "tart\030\001 \001(\r\022\013\n\003end\030\002 \001(\r\"Y\n\027JoinRoomAnima" +
-      "tionConfig\022>\n\020animation_config\030\001 \003(\0132$.c" +
-      "om.wali.live.proto.AnimationConfig\"X\n\026Up" +
-      "gradeAnimationConfig\022>\n\020animation_config" +
-      "\030\001 \003(\0132$.com.wali.live.proto.AnimationCo" +
-      "nfig\"a\n\017AnimationConfig\022\030\n\020animation_eff",
-      "ect\030\001 \001(\r\0224\n\013level_range\030\002 \001(\0132\037.com.wal" +
-      "i.live.proto.LevelRange\"\317\001\n\023RoomAnimatio" +
-      "nConfig\022P\n\032join_room_animation_config\030\001 " +
-      "\001(\0132,.com.wali.live.proto.JoinRoomAnimat" +
-      "ionConfig\022M\n\030upgrade_animation_config\030\002 " +
-      "\001(\0132+.com.wali.live.proto.UpgradeAnimati" +
-      "onConfig\022\027\n\017noJoinAnimation\030\003 \001(\rB&\n\023com" +
-      ".wali.live.protoB\017LiveCommonProto"
+      "2\".com.wali.live.proto.MicSubViewPos\022\022\n\n" +
+      "mic_liveid\030\003 \001(\t\022\014\n\004type\030\004 \001(\r\"\232\001\n\006Viewe" +
+      "r\022\014\n\004uuid\030\001 \002(\004\022\r\n\005level\030\002 \001(\r\022\016\n\006avatar",
+      "\030\003 \001(\004\022\032\n\022certification_type\030\004 \001(\r\022\017\n\007re" +
+      "dName\030\005 \001(\010\022\021\n\tvip_level\030\006 \001(\r\022\023\n\013vip_di" +
+      "sable\030\007 \001(\010\022\016\n\006ticket\030\010 \001(\r\"<\n\006PKInfo\022\014\n" +
+      "\004uuid\030\001 \001(\004\022\016\n\006liveId\030\002 \001(\t\022\024\n\014pkInitTic" +
+      "ket\030\003 \001(\r\";\n\rViewerInfoReq\022\014\n\004uuid\030\001 \002(\004" +
+      "\022\014\n\004zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\"?\n\014UserRo" +
+      "omInfo\022\014\n\004type\030\001 \001(\r\022\017\n\007appType\030\002 \001(\r\022\020\n" +
+      "\010tvRoomid\030\003 \001(\t\"L\n\nWidgetInfo\022\020\n\010link_ur" +
+      "l\030\001 \002(\t\022\020\n\010position\030\002 \002(\r\022\014\n\004icon\030\003 \001(\t\022" +
+      "\014\n\004text\030\004 \001(\t\"\032\n\013ColorConfig\022\013\n\003rgb\030\001 \002(",
+      "\r\"\262\001\n\013CounterItem\022\020\n\010imageUrl\030\001 \001(\t\022\023\n\013c" +
+      "ounterText\030\002 \001(\t\0223\n\ttextColor\030\003 \001(\0132 .co" +
+      "m.wali.live.proto.ColorConfig\0227\n\rtextEdg" +
+      "eColor\030\004 \001(\0132 .com.wali.live.proto.Color" +
+      "Config\022\016\n\006isBold\030\005 \001(\010\"\251\001\n\tClickItem\022\021\n\t" +
+      "clickType\030\001 \002(\r\022\025\n\rclickImageUrl\030\002 \001(\t\022\025" +
+      "\n\rclickInterval\030\003 \001(\r\022\016\n\006giftId\030\004 \001(\r\022\034\n" +
+      "\024clickWaitingImageUrl\030\005 \001(\t\022\023\n\013warningTe" +
+      "xt\030\006 \001(\t\022\030\n\020pushSendSuccText\030\007 \001(\t\"\370\001\n\rN" +
+      "ewWidgetUnit\022\020\n\010link_url\030\001 \001(\t\022\014\n\004icon\030\002",
+      " \001(\t\022\014\n\004text\030\003 \001(\t\0223\n\ttextColor\030\004 \001(\0132 ." +
+      "com.wali.live.proto.ColorConfig\022\024\n\014urlNe" +
+      "edParam\030\005 \001(\010\022\024\n\014schemaPrefix\030\006 \001(\t\022\025\n\rs" +
+      "chemaPostfix\030\007 \001(\t\022\020\n\010openType\030\010 \001(\r\022/\n\010" +
+      "h5Config\030\t \001(\0132\035.com.wali.live.proto.H5C" +
+      "onfig\"\031\n\010H5Config\022\r\n\005h5Url\030\001 \001(\t\"\377\001\n\rNew" +
+      "WidgetItem\022\020\n\010widgetID\030\001 \002(\r\022\020\n\010position" +
+      "\030\002 \002(\r\022\023\n\013displayType\030\003 \001(\r\0226\n\nwidgetUin" +
+      "t\030\004 \003(\0132\".com.wali.live.proto.NewWidgetU" +
+      "nit\022\023\n\013displayTime\030\005 \001(\r\0225\n\013counterItem\030",
+      "\006 \001(\0132 .com.wali.live.proto.CounterItem\022" +
+      "1\n\tclickItem\030\007 \001(\0132\036.com.wali.live.proto" +
+      ".ClickItem\"]\n\rNewWidgetInfo\0226\n\nwidgetIte" +
+      "m\030\001 \003(\0132\".com.wali.live.proto.NewWidgetI" +
+      "tem\022\024\n\014pullInterval\030\002 \001(\r\"\'\n\016ShoppingCon" +
+      "fig\022\025\n\tshop_type\030\001 \002(\005:\002-1\"\300\001\n\016RoomIconC" +
+      "onfig\022\r\n\005noMic\030\001 \001(\010\022\r\n\005noPic\030\002 \001(\010\022\017\n\007n" +
+      "oVideo\030\003 \001(\010\022\032\n\022noScreenProjection\030\004 \001(\010" +
+      "\022\024\n\014noAtmosphere\030\005 \001(\010\022\017\n\007noMusic\030\006 \001(\010\022" +
+      "\022\n\nnoEmoticon\030\007 \001(\010\022\021\n\tnoHongBao\030\010 \001(\010\022\025",
+      "\n\rnoConsumeTask\030\t \001(\010\";\n\021WidgetCounterPu" +
+      "sh\022\020\n\010widgetID\030\001 \002(\r\022\024\n\014counterValue\030\002 \001" +
+      "(\003\"[\n\nViewerPush\022+\n\006viewer\030\001 \002(\0132\033.com.w" +
+      "ali.live.proto.Viewer\022\r\n\005leave\030\002 \001(\010\022\021\n\t" +
+      "viewerCnt\030\003 \001(\r\"(\n\nLevelRange\022\r\n\005start\030\001" +
+      " \001(\r\022\013\n\003end\030\002 \001(\r\"Y\n\027JoinRoomAnimationCo" +
+      "nfig\022>\n\020animation_config\030\001 \003(\0132$.com.wal" +
+      "i.live.proto.AnimationConfig\"X\n\026UpgradeA" +
+      "nimationConfig\022>\n\020animation_config\030\001 \003(\013" +
+      "2$.com.wali.live.proto.AnimationConfig\"a",
+      "\n\017AnimationConfig\022\030\n\020animation_effect\030\001 " +
+      "\001(\r\0224\n\013level_range\030\002 \001(\0132\037.com.wali.live" +
+      ".proto.LevelRange\"\317\001\n\023RoomAnimationConfi" +
+      "g\022P\n\032join_room_animation_config\030\001 \001(\0132,." +
+      "com.wali.live.proto.JoinRoomAnimationCon" +
+      "fig\022M\n\030upgrade_animation_config\030\002 \001(\0132+." +
+      "com.wali.live.proto.UpgradeAnimationConf" +
+      "ig\022\027\n\017noJoinAnimation\030\003 \001(\rB&\n\023com.wali." +
+      "live.protoB\017LiveCommonProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -22087,7 +22403,7 @@ public final class LiveCommonProto {
     internal_static_com_wali_live_proto_MicInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_MicInfo_descriptor,
-        new java.lang.String[] { "Micuid", "SubViewPos", });
+        new java.lang.String[] { "Micuid", "SubViewPos", "MicLiveid", "Type", });
     internal_static_com_wali_live_proto_Viewer_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_com_wali_live_proto_Viewer_fieldAccessorTable = new

@@ -192,4 +192,6 @@
     <string name="edit_info_tip">您还没有昵称，%s修改昵称结识更多的朋友吧~</string>
     <string name="click_here">点击这里</string>
     <string name="room_admin">房间管理</string>
+    <string name="line_my_zone">主场</string>
+    <string name="line_guest_into">进TA房间</string>
 </resources>

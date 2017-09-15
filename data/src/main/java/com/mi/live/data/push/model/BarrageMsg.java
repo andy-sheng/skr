@@ -326,30 +326,6 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
                         msgExt = ext;
                     }
                     break;
-                    case BarrageMsgType.B_MSG_TYPE_LINE_MIC_BEGIN: {
-                        LineMicMessageExt ext = new LineMicMessageExt();
-                        LiveMessageProto.MicBeginMessage mcMsg = LiveMessageProto.MicBeginMessage.parseFrom(data);
-                        ext.roomId = mcMsg.getLiveId();
-                        ext.zuid = mcMsg.getZuid();
-                        ext.micuid = mcMsg.getMicInfo().getMicuid();
-                        if (mcMsg.getMicInfo().hasSubViewPos()) {
-                            ext.scaleX = mcMsg.getMicInfo().getSubViewPos().getTopXScale();
-                            ext.scaleY = mcMsg.getMicInfo().getSubViewPos().getTopYScale();
-                            ext.scaleW = mcMsg.getMicInfo().getSubViewPos().getWidthScale();
-                            ext.scaleH = mcMsg.getMicInfo().getSubViewPos().getHeightScale();
-                        }
-                        msgExt = ext;
-                    }
-                    break;
-                    case BarrageMsgType.B_MSG_TYPE_LINE_MIC_END: {
-                        LineMicMessageExt ext = new LineMicMessageExt();
-                        LiveMessageProto.MicEndMessage mcMsg = LiveMessageProto.MicEndMessage.parseFrom(data);
-                        ext.roomId = mcMsg.getLiveId();
-                        ext.zuid = mcMsg.getZuid();
-                        ext.micuid = mcMsg.getMicInfo().getMicuid();
-                        msgExt = ext;
-                    }
-                    break;
                     case BarrageMsgType.B_MSG_TYPE_JOIN: {
                         JoinRoomMsgExt ext = new JoinRoomMsgExt();
                         LiveMessageProto.JoinRoomMessage join = LiveMessageProto.JoinRoomMessage.parseFrom(data);
@@ -544,21 +520,32 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
                         LiveMessageProto.RedNameStatus redNameStatus = LiveMessageProto.RedNameStatus.parseFrom(data);
                     }
                     break;
+
+                    case BarrageMsgType.B_MSG_TYPE_LINE_MIC_BEGIN: {
+                        LiveMessageProto.MicBeginMessage mcMsg = LiveMessageProto.MicBeginMessage.parseFrom(data);
+                        msgExt = new BarrageMsgExt.MicBeginInfo().parseFromPB(mcMsg);
+                        break;
+                    }
+                    case BarrageMsgType.B_MSG_TYPE_LINE_MIC_END: {
+                        LiveMessageProto.MicEndMessage mcMsg = LiveMessageProto.MicEndMessage.parseFrom(data);
+                        msgExt = new BarrageMsgExt.MicEndInfo().parseFromPB(mcMsg);
+                        break;
+                    }
                     case BarrageMsgType.B_MSG_TYPE_NEW_PK_SCORE: {
                         LivePKProto.PKScoreChangeMsg pkScoreChangeMsg = LivePKProto.PKScoreChangeMsg.parseFrom(data);
-                        msgExt = new PKInfoMessageExt(pkScoreChangeMsg.getPkInfo());
+                        msgExt = new PKInfoMsgExt(pkScoreChangeMsg.getPkInfo());
+                        break;
                     }
-                    break;
                     case BarrageMsgType.B_MSG_TYPE_NEW_PK_END: {
                         LivePKProto.PKEndMessage pkEndMessage = LivePKProto.PKEndMessage.parseFrom(data);
-                        msgExt = new PKEndInfoMessageExt(pkEndMessage.getPkInfo(), pkEndMessage.getFromUuid(), pkEndMessage.getType());
+                        msgExt = new PKEndMsgExt(pkEndMessage.getPkInfo(), pkEndMessage.getFromUuid(), pkEndMessage.getType());
+                        break;
                     }
-                    break;
                     case BarrageMsgType.B_MSG_TYPE_NEW_PK_START: {
                         LivePKProto.PKBeginMessage pkBeginMessage = LivePKProto.PKBeginMessage.parseFrom(data);
-                        msgExt = new PKInfoMessageExt(pkBeginMessage.getPkInfo());
+                        msgExt = new PKInfoMsgExt(pkBeginMessage.getPkInfo());
+                        break;
                     }
-                    break;
                 }
             } catch (InvalidProtocolBufferException e) {
                 e.printStackTrace();
@@ -1049,26 +1036,6 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
         }
     }
 
-    public static class LineMicMessageExt implements MsgExt {
-        public String roomId;   //房间号
-        public long zuid;       //主播用户id
-        public long micuid;     //对应的用户id
-
-        public float scaleX; //子视图左上角X在实际推流视频中的比例
-        public float scaleY; //子视图左上角Y在实际推流视频中的比例
-        public float scaleW; //子视图宽度在实际推流视频中的比例
-        public float scaleH; //子视图高度左上角在推流视频中的比例
-
-        @Override
-        public ByteString toByteString() {
-            return null;
-        }
-
-        public String toString() {
-            return "roomId= " + roomId + " zuid=" + zuid + " micuid=" + micuid + " scaleX=" + scaleX + " scaleY=" + scaleY + " scaleW=" + scaleW + " scaleH=" + scaleH;
-        }
-    }
-
     public static class MsgRuleChangeMessageExt implements MsgExt {
         private MessageRule messageRule;
 
@@ -1290,13 +1257,13 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
         }
     }
 
-    public static class PKEndInfoMessageExt implements MsgExt {
+    public static class PKEndMsgExt implements MsgExt {
 
         public LivePKProto.NewPKInfo info;
         public long uuid;
         public int endType;
 
-        public PKEndInfoMessageExt(LivePKProto.NewPKInfo pkInfo, long uuid, int endType) {
+        public PKEndMsgExt(LivePKProto.NewPKInfo pkInfo, long uuid, int endType) {
             info = pkInfo;
             this.uuid = uuid;
             this.endType = endType;
@@ -1308,11 +1275,11 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
         }
     }
 
-    public static class PKInfoMessageExt implements MsgExt {
+    public static class PKInfoMsgExt implements MsgExt {
 
         public LivePKProto.NewPKInfo info;
 
-        public PKInfoMessageExt(LivePKProto.NewPKInfo pkInfo) {
+        public PKInfoMsgExt(LivePKProto.NewPKInfo pkInfo) {
             info = pkInfo;
         }
 

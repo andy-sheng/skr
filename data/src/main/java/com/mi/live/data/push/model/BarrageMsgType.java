@@ -41,8 +41,10 @@ public class BarrageMsgType {
 
     public static final int B_MSG_TYPE_LIVE_START = 330; //开始直播消息
     public static final int B_MSG_TYPE_LIVE_END = 331; //结束直播消息
+
     public static final int B_MSG_TYPE_PK_BEGIN = 332; // PK开始消息
     public static final int B_MSG_TYPE_PK_END = 333; // PK结束消息
+
     public static final int B_MSG_TYPE_LINE_MIC_BEGIN = 335; // 连麦开始消息
     public static final int B_MSG_TYPE_LINE_MIC_END = 336; // 连麦结束消息
     public static final int B_MSG_TYPE_LINE_VIEWER_BACK = 337; // 连麦嘉宾回来消息

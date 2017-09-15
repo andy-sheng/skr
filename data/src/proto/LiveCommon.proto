@@ -25,6 +25,8 @@ message MicSubViewPos {
 message MicInfo {
     required uint64 micuid = 1; //连麦的观众id
     optional MicSubViewPos subViewPos = 2; //子视图的比例位置
+    optional string mic_liveid = 3; //连麦对方房间号
+    optional uint32 type       = 4; //0:主播与观众连麦 1：主播与主播连麦
 }
 
 message Viewer {

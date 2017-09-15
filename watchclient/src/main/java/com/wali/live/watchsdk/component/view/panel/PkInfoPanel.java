@@ -63,7 +63,7 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
     private PkScoreView mPkScoreView;
     private View mScoreAreaView;
 
-    private final AnimationHelper mAnimationHelper = new AnimationHelper();
+    private final EndAnimationHelper mEndAnimationHelper = new EndAnimationHelper();
 
     private final Runnable mDelayStopTask = new Runnable() {
         @Override
@@ -156,6 +156,11 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
             }
 
             @Override
+            public void onOrientation(boolean isLandscape) {
+                PkInfoPanel.this.onOrientation(isLandscape);
+            }
+
+            @Override
             public boolean isShow() {
                 return PkInfoPanel.this.isShow();
             }
@@ -170,7 +175,7 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
             @Override
             public void hideSelf(boolean useAnimation) {
                 PkInfoPanel.this.hideSelf(useAnimation);
-                mAnimationHelper.stopAnimation();
+                mEndAnimationHelper.stopAnimation();
             }
 
             @Override
@@ -196,7 +201,7 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
                 mLeftResultView.setVisibility(View.GONE);
                 mRightResultView.setVisibility(View.GONE);
                 mMiddleResultView.setVisibility(View.GONE);
-                mAnimationHelper.stopAnimation();
+                mEndAnimationHelper.stopAnimation();
             }
 
             @Override
@@ -225,7 +230,7 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
                     mRightBgView.setBackgroundResource(R.drawable.live_img_pk_win_shining);
                     mRightImgView.setImageResource(R.drawable.live_img_pk_win);
                 }
-                mAnimationHelper.startDefeatAnimation();
+                mEndAnimationHelper.startDefeatAnimation();
             }
 
             @Override
@@ -234,15 +239,10 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
                     onUpdateScoreInfo(ticket1, ticket2);
                     mMiddleBgView.setBackgroundResource(R.drawable.live_img_pk_win_shining);
                     mMiddleImgView.setImageResource(R.drawable.live_img_pk_draw);
-                    mAnimationHelper.startTieAnimation();
+                    mEndAnimationHelper.startTieAnimation();
                 } else {
                     onPkEnd(ticket1 > ticket2, ticket1, ticket2);
                 }
-            }
-
-            @Override
-            public void onOrientation(boolean isLandscape) {
-                PkInfoPanel.this.onOrientation(isLandscape);
             }
         }
         return new ComponentView();
@@ -302,7 +302,7 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
         void onPkEnd(long ticket1, long ticket2);
     }
 
-    protected class AnimationHelper {
+    protected class EndAnimationHelper {
 
         private AnimatorSet mAnimatorSet;
         private boolean mIsTie = false;

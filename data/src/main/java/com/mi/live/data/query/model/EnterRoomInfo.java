@@ -1,6 +1,7 @@
 package com.mi.live.data.query.model;
 
 import com.mi.live.data.location.Location;
+import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LivePKProto;
 
 import java.util.List;
@@ -20,9 +21,6 @@ public class EnterRoomInfo {
 
     String downStreamUrl;
 
-    MicInfo micInfo;
-    int micUidStatus;
-
     long enterTs;
 
     LiveCover liveCover;
@@ -32,6 +30,9 @@ public class EnterRoomInfo {
     boolean isShop;
     boolean hideGift;
     boolean supportMgicFace;
+
+    LiveCommonProto.MicInfo micInfo;
+    LivePKProto.NewPKInfo pkInfo;
 
     public int getRetCode() {
         return retCode;
@@ -105,22 +106,6 @@ public class EnterRoomInfo {
         this.downStreamUrl = downStreamUrl;
     }
 
-    public MicInfo getMicInfo() {
-        return micInfo;
-    }
-
-    public void setMicInfo(MicInfo micInfo) {
-        this.micInfo = micInfo;
-    }
-
-    public int getMicUidStatus() {
-        return micUidStatus;
-    }
-
-    public void setMicUidStatus(int micUidStatus) {
-        this.micUidStatus = micUidStatus;
-    }
-
     public long getEnterTs() {
         return enterTs;
     }
@@ -185,7 +170,13 @@ public class EnterRoomInfo {
         this.supportMgicFace = supportMgicFace;
     }
 
-    private LivePKProto.NewPKInfo pkInfo;
+    public void setMicInfo(LiveCommonProto.MicInfo micInfo) {
+        this.micInfo = micInfo;
+    }
+
+    public LiveCommonProto.MicInfo getMicInfo() {
+        return micInfo;
+    }
 
     public void setPkInfo(LivePKProto.NewPKInfo pkInfo) {
         this.pkInfo = pkInfo;

@@ -5,7 +5,6 @@ import com.mi.live.data.location.Location;
 import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.query.model.LiveCover;
 import com.mi.live.data.query.model.MessageRule;
-import com.mi.live.data.query.model.MicInfo;
 import com.mi.live.data.query.model.ViewerModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.proto.CommonProto;
@@ -60,13 +59,12 @@ public class RoomDataMapper {
                 enterRoomInfo.setPkInfo(rsp.getNewPkInfo());
             }
 
+            if (rsp.hasMicInfo()) {
+                enterRoomInfo.setMicInfo(rsp.getMicInfo());
+            }
+
             enterRoomInfo.setDownStreamUrl(rsp.getDownStreamUrl());
 
-            LiveCommonProto.MicInfo micInfo = rsp.getMicInfo();
-            if (micInfo != null) {
-                enterRoomInfo.setMicInfo(MicInfo.loadFromPb(micInfo));
-            }
-            enterRoomInfo.setMicUidStatus(rsp.getMicuidStatus());
             enterRoomInfo.setEnterTs(rsp.getTimestamp());
             Live2Proto.LiveCover lc = rsp.getLiveCover();
             if (lc != null) {

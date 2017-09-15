@@ -31,7 +31,7 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
     @NonNull
     protected CONTENT mContentView;
     @NonNull
-    protected AnimationHelper mAnimationHelper;
+    private AnimationHelper mAnimationHelper;
 
     protected boolean mIsLandscape = false;
     protected boolean mHasFirstOriented = false;
@@ -171,8 +171,7 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
         }
     }
 
-    protected void onAnimationValue(
-            @FloatRange(from = 0.0, to = 1.0) float value) {
+    protected void onAnimationValue(@FloatRange(from = 0.0, to = 1.0) float value) {
         mContentView.setAlpha(value);
         if (mIsLandscape) {
             mContentView.setTranslationX(mContentView.getWidth() * (1.0f - value));

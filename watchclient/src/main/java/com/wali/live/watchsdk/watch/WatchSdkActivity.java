@@ -43,6 +43,7 @@ import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.preference.PreferenceKeys;
+import com.mi.live.data.push.model.BarrageMsgExt;
 import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.room.model.RoomBaseDataModel;
@@ -110,6 +111,7 @@ import rx.functions.Action1;
 
 import static com.wali.live.component.BaseSdkController.MSG_FOLLOW_COUNT_DOWN;
 import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_LINK_MIC_START;
 import static com.wali.live.component.BaseSdkController.MSG_ON_LIVE_SUCCESS;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
@@ -740,10 +742,18 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
             syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);
             if (mController != null) {
                 mController.postEvent(MSG_ON_LIVE_SUCCESS);
-            }
-            if (roomInfo.getPkInfo() != null && mController != null) {
-                mController.postEvent(MSG_ON_PK_START, new Params().putItem(
-                        new PkInfoPresenter.PkStartInfo(roomInfo.getPkInfo(), roomInfo.getEnterTs())));
+
+                if (roomInfo.getMicInfo() != null) {
+                    BarrageMsgExt.MicBeginInfo micBeginInfo = new BarrageMsgExt.MicBeginInfo().parseFromPB(roomInfo.getMicInfo());
+                    if (micBeginInfo != null) {
+                        mController.postEvent(MSG_ON_LINK_MIC_START, new Params().putItem(micBeginInfo));
+                    }
+                }
+
+                if (roomInfo.getPkInfo() != null) {
+                    mController.postEvent(MSG_ON_PK_START, new Params().putItem(
+                            new PkInfoPresenter.PkStartInfo(roomInfo.getPkInfo(), roomInfo.getEnterTs())));
+                }
             }
         }
     };

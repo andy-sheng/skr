@@ -250,12 +250,12 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
             }
 
             @Override
-            public void onLinkMicStarted(final long uid, long avatar) {
+            public void onLinkMicStarted(final long uid, long avatarTs) {
                 if (uid == 0 || mIsLinking) {
                     return;
                 }
                 mIsLinking = true;
-                AvatarUtils.loadAvatarByUidTs(mGuestIv, uid, avatar, true);
+                AvatarUtils.loadAvatarByUidTs(mGuestIv, uid, avatarTs, true);
                 $click(mGuestIv, new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -369,7 +369,7 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
         /**
          * 连麦
          */
-        void onLinkMicStarted(long uid, long avatar);
+        void onLinkMicStarted(long uid, long avatarTs);
 
         /**
          * 连麦结束
