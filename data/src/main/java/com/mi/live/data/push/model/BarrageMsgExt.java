@@ -13,16 +13,30 @@ public class BarrageMsgExt {
         EXT parseFromPB(PROTO msg);
     }
 
-    /**
-     * 连麦开始信息
-     */
-    public static class MicBeginInfo implements IProtoBarrage<MicBeginInfo,
-            LiveMessageProto.MicBeginMessage> {
+    public static abstract class MicInfo {
+        protected static final int MIC_TYPE_NORMAL = 0;
+        protected static final int MIC_TYPE_ANCHOR = 1;
+
         public String roomId; // 房间号
         public long zuid;     // 主播用户id
         public long micuid;   // 对应的用户id
         public int lineType;  // 0:主播与观众连麦 1：主播与主播连麦
+        public String micLiveId; // 主播-主播连麦时，对方的房间ID
 
+        public boolean isMicAnchor() {
+            return lineType == MIC_TYPE_ANCHOR;
+        }
+
+        public boolean isMicNormal() {
+            return lineType == MIC_TYPE_NORMAL;
+        }
+    }
+
+    /**
+     * 连麦开始信息
+     */
+    public static class MicBeginInfo extends MicInfo implements IProtoBarrage<MicBeginInfo,
+            LiveMessageProto.MicBeginMessage> {
         public float scaleX; // 子视图左上角X在实际推流视频中的比例
         public float scaleY; // 子视图左上角Y在实际推流视频中的比例
         public float scaleW; // 子视图宽度在实际推流视频中的比例
@@ -40,6 +54,7 @@ public class BarrageMsgExt {
             zuid = msg.getZuid();
             micuid = msg.getMicInfo().getMicuid();
             lineType = msg.getType();
+            micLiveId = msg.getMicInfo().getMicLiveid();
             if (msg.getMicInfo().hasSubViewPos()) {
                 scaleX = msg.getMicInfo().getSubViewPos().getTopXScale();
                 scaleY = msg.getMicInfo().getSubViewPos().getTopYScale();
@@ -55,6 +70,7 @@ public class BarrageMsgExt {
             }
             micuid = micInfo.getMicuid();
             lineType = micInfo.getType();
+            micLiveId = micInfo.getMicLiveid();
             if (micInfo.hasSubViewPos()) {
                 scaleX = micInfo.getSubViewPos().getTopXScale();
                 scaleY = micInfo.getSubViewPos().getTopYScale();
@@ -73,12 +89,8 @@ public class BarrageMsgExt {
     /**
      * 连麦结束信息
      */
-    public static class MicEndInfo implements IProtoBarrage<MicEndInfo,
+    public static class MicEndInfo extends MicInfo implements IProtoBarrage<MicEndInfo,
             LiveMessageProto.MicEndMessage> {
-        public String roomId; // 房间号
-        public long zuid;     // 主播用户id
-        public long micuid;   // 对应的用户id
-        public int lineType;  // 0:主播与观众连麦 1：主播与主播连麦
 
         public MicEndInfo() {
         }
@@ -92,6 +104,7 @@ public class BarrageMsgExt {
             zuid = msg.getZuid();
             micuid = msg.getMicInfo().getMicuid();
             lineType = msg.getType();
+            micLiveId = msg.getMicInfo().getMicLiveid();
             return this;
         }
 

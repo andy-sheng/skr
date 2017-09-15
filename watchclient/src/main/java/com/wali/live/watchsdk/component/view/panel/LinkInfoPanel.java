@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.component.view.panel;
 
+import android.content.Context;
 import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -50,11 +51,14 @@ public class LinkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayou
 
     @Override
     public void onClick(View view) {
+        if (mPresenter == null) {
+            return;
+        }
         int i = view.getId();
         if (i == R.id.follow_btn) {
-            // TODO 关注
+            mPresenter.follow();
         } else if (i == R.id.enter_room_view) {
-            // TODO 进入房间
+            mPresenter.enterRoom(mContentView.getContext());
         }
     }
 
@@ -154,14 +158,28 @@ public class LinkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayou
             }
 
             @Override
-            public void updateLinkUserInfo(long userId, String nickName) {
-                mGuestNameView.setText(nickName);
+            public void updateLinkUserName(String userName) {
+                mGuestNameView.setText(userName);
+            }
+
+            @Override
+            public void updateFellow(boolean isFollowed) {
+                mFollowBtn.setVisibility(isFollowed ? View.GONE : View.VISIBLE);
             }
         }
         return new ComponentView();
     }
 
     public interface IPresenter {
+        /**
+         * 关注对方主播
+         */
+        void follow();
+
+        /**
+         * 进入对方主播房间
+         */
+        void enterRoom(Context context);
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
@@ -172,6 +190,14 @@ public class LinkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayou
 
         void hideSelf(boolean useAnimation);
 
-        void updateLinkUserInfo(long userId, String nickName);
+        /**
+         * 更新对方主播昵称
+         */
+        void updateLinkUserName(String userName);
+
+        /**
+         * 更新对对方主播的关注状态
+         */
+        void updateFellow(boolean isFollowed);
     }
 }

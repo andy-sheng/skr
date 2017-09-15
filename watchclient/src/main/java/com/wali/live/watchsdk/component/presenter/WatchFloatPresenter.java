@@ -8,10 +8,12 @@ import android.widget.RelativeLayout;
 import com.base.log.MyLog;
 import com.mi.live.data.push.IPushMsgProcessor;
 import com.mi.live.data.push.model.BarrageMsg;
+import com.mi.live.data.push.model.BarrageMsgExt;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
+import com.thornbirds.component.Params;
 import com.thornbirds.component.presenter.IEventPresenter;
 import com.thornbirds.component.view.IEventView;
 import com.thornbirds.component.view.IOrientationListener;
@@ -22,13 +24,9 @@ import com.wali.live.watchsdk.component.view.panel.LinkInfoPanel;
 import com.wali.live.watchsdk.component.view.panel.PkInfoPanel;
 
 import java.lang.ref.WeakReference;
-import java.util.concurrent.TimeUnit;
-
-import rx.Observable;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
 
 import static com.wali.live.component.BaseSdkController.MSG_ON_LINK_MIC_START;
+import static com.wali.live.component.BaseSdkController.MSG_ON_LINK_MIC_STOP;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_ON_PK_START;
@@ -82,16 +80,17 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_ON_LINK_MIC_START);
+        registerAction(MSG_ON_LINK_MIC_STOP);
         registerAction(MSG_ON_PK_START);
 
         // TEST PK/主播-主播连麦 观众端逻辑暴力测试
-        mUiHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+//        mUiHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
 //                startPkTest();
 //                startLinkTest();
-            }
-        }, 1000);
+//            }
+//        }, 1000);
     }
 
     @Override
@@ -191,45 +190,42 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
 //    }
 
     // TEST 主播-主播连麦观众端逻辑暴力测试
-    private void startLinkTest() {
-        Observable.interval(1, 1, TimeUnit.SECONDS)
-                .onBackpressureBuffer()
-                .take(600)
-                .compose(this.<Long>bindUntilEvent(PresenterEvent.STOP))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Long>() {
-                    long userId;
-                    String nickName;
-
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        MyLog.e(TAG, "linkTest failed, exception=" + e);
-                    }
-
-                    @Override
-                    public void onNext(Long cnt) {
-                        MyLog.d(TAG, "linkTest cnt=" + cnt);
-                        if (cnt % 10 == 0) { // 每10秒发送一次开始/结束
-                            if (userId == 0) {
-                                userId = 100067;
-                                nickName = "游不动的鱼";
-                                showLinkInfoPanel(userId, nickName);
-                            } else {
-                                LinkInfoPresenter presenter = deRef(mLinkInfoPresenterRef);
-                                if (presenter != null && presenter.isShow()) {
-                                    presenter.onLinkStop();
-                                }
-                                userId = 0;
-                                nickName = "";
-                            }
-                        }
-                    }
-                });
-    }
+//    private void startLinkTest() {
+//        Observable.interval(1, 1, TimeUnit.SECONDS)
+//                .onBackpressureBuffer()
+//                .take(600)
+//                .compose(this.<Long>bindUntilEvent(PresenterEvent.STOP))
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<Long>() {
+//                    long userId;
+//
+//                    @Override
+//                    public void onCompleted() {
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        MyLog.e(TAG, "linkTest failed, exception=" + e);
+//                    }
+//
+//                    @Override
+//                    public void onNext(Long cnt) {
+//                        MyLog.d(TAG, "linkTest cnt=" + cnt);
+//                        if (cnt % 10 == 0) { // 每10秒发送一次开始/结束
+//                            if (userId == 0) {
+//                                userId = 100067;
+//                                showLinkInfoPanel(userId);
+//                            } else {
+//                                LinkInfoPresenter presenter = deRef(mLinkInfoPresenterRef);
+//                                if (presenter != null && presenter.isShow()) {
+//                                    presenter.onLinkStop();
+//                                }
+//                                userId = 0;
+//                            }
+//                        }
+//                    }
+//                });
+//    }
 
     private void showPkInfoPanel(PkInfoPresenter.PkStartInfo pkStartInfo) {
         PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
@@ -244,17 +240,17 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
         presenter.onPkStart(pkStartInfo, mIsLandscape);
     }
 
-    private void showLinkInfoPanel(long userId, String userName) {
+    private void showLinkInfoPanel(long userId, String userRoomId) {
         LinkInfoPresenter presenter = deRef(mLinkInfoPresenterRef);
         if (presenter == null) {
-            presenter = new LinkInfoPresenter(mController);
+            presenter = new LinkInfoPresenter(mController, mMyRoomData);
             LinkInfoPanel panel = new LinkInfoPanel(mView);
             panel.setLayoutRatio(LinkInfoPanel.DEFAULT_RATIO);
             setupComponent(panel, presenter);
             mLinkInfoPresenterRef = new WeakReference<>(presenter);
         }
         presenter.startPresenter();
-        presenter.onLinkStart(userId, userName, mIsLandscape);
+        presenter.onLinkStart(userId, userRoomId, mIsLandscape);
     }
 
     @Override
@@ -279,9 +275,22 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
             case MSG_ON_ORIENT_LANDSCAPE:
                 onOrientation(true);
                 return true;
-            case MSG_ON_LINK_MIC_START:
-                showLinkInfoPanel(100067, "游不动的鱼");
+            case MSG_ON_LINK_MIC_START: {
+                BarrageMsgExt.MicBeginInfo micBeginInfo = params.getItem(0);
+                if (micBeginInfo != null && micBeginInfo.isMicAnchor()) {
+                    showLinkInfoPanel(micBeginInfo.micuid, micBeginInfo.micLiveId);
+                }
                 break;
+            }
+            case MSG_ON_LINK_MIC_STOP: {
+                BarrageMsgExt.MicEndInfo micEndInfo = params.getItem(0);
+                LinkInfoPresenter presenter = deRef(mLinkInfoPresenterRef);
+                if (presenter != null && micEndInfo != null && micEndInfo.isMicAnchor() && presenter.isShow()) {
+                    presenter.onLinkStop();
+                    presenter.stopPresenter();
+                }
+                break;
+            }
             case MSG_ON_PK_START:
                 showPkInfoPanel((PkInfoPresenter.PkStartInfo) params.getItem(0));
                 return true;
@@ -297,13 +306,17 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
             @Override
             public void run() {
                 switch (msg.getMsgType()) {
-                    case BarrageMsgType.B_MSG_TYPE_LINE_MIC_BEGIN:
-                        showLinkInfoPanel(100067, "xfdfsdfs");
+                    case BarrageMsgType.B_MSG_TYPE_LINE_MIC_BEGIN: {
+                        BarrageMsgExt.MicBeginInfo micBeginInfo = (BarrageMsgExt.MicBeginInfo) msg.getMsgExt();
+                        if (micBeginInfo != null) {
+                            mController.postEvent(MSG_ON_LINK_MIC_START, new Params().putItem(micBeginInfo));
+                        }
                         break;
+                    }
                     case BarrageMsgType.B_MSG_TYPE_LINE_MIC_END: {
-                        LinkInfoPresenter presenter = deRef(mLinkInfoPresenterRef);
-                        if (presenter != null) {
-                            presenter.onLinkStop();
+                        BarrageMsgExt.MicEndInfo micEndInfo = (BarrageMsgExt.MicEndInfo) msg.getMsgExt();
+                        if (micEndInfo != null) {
+                            mController.postEvent(MSG_ON_LINK_MIC_STOP, new Params().putItem(micEndInfo));
                         }
                         break;
                     }

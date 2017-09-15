@@ -8,6 +8,7 @@ import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.relation.RelationApi;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
+import com.mi.live.data.push.model.BarrageMsgExt;
 import com.mi.live.data.query.model.ViewerModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.room.model.RoomDataChangeEvent;
@@ -297,13 +298,17 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
         }
         switch (event) {
             case MSG_ON_LINK_MIC_START: {
-                if (params != null) {
-                    mView.onLinkMicStarted((long) params.getItem(0), (long) params.getItem(1));
+                BarrageMsgExt.MicBeginInfo micBeginInfo = params.getItem(0);
+                if (micBeginInfo != null && micBeginInfo.isMicNormal()) {
+                    mView.onLinkMicStarted(micBeginInfo.micuid, 0);
                 }
                 break;
             }
             case MSG_ON_LINK_MIC_STOP: {
-                mView.onLinkMicStopped();
+                BarrageMsgExt.MicEndInfo micEndInfo = params.getItem(0);
+                if (micEndInfo != null && micEndInfo.isMicNormal()) {
+                    mView.onLinkMicStopped();
+                }
                 break;
             }
             default:
