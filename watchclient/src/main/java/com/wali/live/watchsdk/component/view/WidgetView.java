@@ -213,8 +213,13 @@ public class WidgetView extends RelativeLayout
     private void onOrientation(boolean isLandscape) {
         if (isLandscape) {
             setPadding(PADDING, PADDING >> 1, PADDING_LANDSCAPE_RIGHT, PADDING >> 1);
+            LayoutParams lp = (LayoutParams) getLayoutParams();
+            lp.addRule(RelativeLayout.ABOVE, R.id.input_area_view);
         } else {
             setPadding(PADDING, PADDING >> 1, PADDING, PADDING >> 1);
+
+            LayoutParams lp = (LayoutParams) getLayoutParams();
+            lp.addRule(RelativeLayout.ABOVE, R.id.live_comment_view);
         }
     }
 
