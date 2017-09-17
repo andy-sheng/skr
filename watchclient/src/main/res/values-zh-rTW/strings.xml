@@ -192,6 +192,8 @@
     <string name="edit_info_tip">您還沒有暱稱，%s修改暱稱結識更多的朋友吧~</string>
     <string name="click_here">點擊這裡</string>
     <string name="room_admin">房間管理</string>
-    <string name="line_my_zone">主场</string>
-    <string name="line_guest_into">进TA房间</string>
+    <string name="line_my_zone">主場</string>
+    <string name="line_guest_into">進TA房間</string>
+    <string name="pk_prepare_user">%ds後PK正式開始，快來送禮物支持主播吧</string>
+    <string name="pk_end_run">%1$s提前逃跑咯，這局%2$s是贏家</string>
 </resources>

@@ -31,6 +31,7 @@ public class EnterRoomInfo {
     boolean hideGift;
     boolean supportMgicFace;
 
+    long serverTs;
     LiveCommonProto.MicInfo micInfo;
     LivePKProto.NewPKInfo pkInfo;
 
@@ -168,6 +169,14 @@ public class EnterRoomInfo {
 
     public void setSupportMgicFace(boolean supportMgicFace) {
         this.supportMgicFace = supportMgicFace;
+    }
+
+    public void setServerTs(long serverTs) {
+        this.serverTs = serverTs;
+    }
+
+    public long getServerTs() {
+        return this.serverTs;
     }
 
     public void setMicInfo(LiveCommonProto.MicInfo micInfo) {

@@ -752,7 +752,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
                 if (roomInfo.getPkInfo() != null) {
                     mController.postEvent(MSG_ON_PK_START, new Params().putItem(
-                            new PkInfoPresenter.PkStartInfo(roomInfo.getPkInfo(), roomInfo.getEnterTs())));
+                            new PkInfoPresenter.PkStartInfo(roomInfo.getPkInfo(), roomInfo.getServerTs())));
                 }
             }
         }

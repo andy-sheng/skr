@@ -69,6 +69,10 @@ public class LinkInfoPresenter extends BaseSdkRxPresenter<LinkInfoPanel.IView>
         return mView != null && mView.isShow();
     }
 
+    public User getLinkUser() {
+        return mLinkUser;
+    }
+
     public LinkInfoPresenter(
             @NonNull IEventController controller,
             @NonNull RoomBaseDataModel myRoomData) {

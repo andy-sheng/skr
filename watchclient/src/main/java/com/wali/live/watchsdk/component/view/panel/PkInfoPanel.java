@@ -54,8 +54,10 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
     private View mMiddleBgView;
     private ImageView mMiddleImgView;
 
+    private TextView mStartTimerView;
+    private View mProgressAreaView;
     private TextView mPkTypeView;
-    private TextView mTimeAreaView;
+    private TextView mProgressTimerView;
     private SimpleDraweeView mAnchorLeft;
     private SimpleDraweeView mAnchorRight;
     private TextView mTicketLeft;
@@ -115,8 +117,10 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
         mMiddleBgView = $(R.id.middle_bg);
         mMiddleImgView = $(R.id.middle_view);
 
+        mStartTimerView = $(R.id.start_timer);
+        mProgressAreaView = $(R.id.progress_area);
         mPkTypeView = $(R.id.pk_type);
-        mTimeAreaView = $(R.id.time_area);
+        mProgressTimerView = $(R.id.progress_timer);
         mAnchorLeft = $(R.id.anchor_1);
         mAnchorRight = $(R.id.anchor_2);
         mTicketLeft = $(R.id.ticket_1);
@@ -135,7 +139,7 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
             mScoreAreaView.setBackgroundResource(R.drawable.score_area_bg);
         } else {
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            layoutParams.bottomMargin = DisplayUtils.dip2px(259.33f);
+            layoutParams.bottomMargin = DisplayUtils.dip2px(240f);
             mScoreAreaView.setBackgroundColor(mBackgroundColor);
         }
         mContentView.setLayoutParams(layoutParams);
@@ -163,6 +167,11 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
             @Override
             public boolean isShow() {
                 return PkInfoPanel.this.isShow();
+            }
+
+            @Override
+            public boolean isResulting() {
+                return mEndAnimationHelper.isRunning();
             }
 
             @Override
@@ -205,8 +214,24 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
             }
 
             @Override
-            public void onUpdateRemainTime(long remainTime) {
-                mTimeAreaView.setText(String.format("%02d:%02d", remainTime / 60, remainTime % 60));
+            public void showStartTimer(boolean isShow) {
+                if (isShow) {
+                    mStartTimerView.setVisibility(View.VISIBLE);
+                    mProgressAreaView.setVisibility(View.GONE);
+                } else {
+                    mStartTimerView.setVisibility(View.GONE);
+                    mProgressAreaView.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onUpdateStartTimer(int remainTime) {
+                mStartTimerView.setText(mParentView.getResources().getString(R.string.pk_prepare_user, remainTime));
+            }
+
+            @Override
+            public void onUpdateProgressTimer(int remainTime) {
+                mProgressTimerView.setText(String.format("%02d:%02d", remainTime / 60, remainTime % 60));
             }
 
             @Override
@@ -256,6 +281,8 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
 
         boolean isShow();
 
+        boolean isResulting();
+
         void showSelf(boolean useAnimation, boolean isLandscape);
 
         void hideSelf(boolean useAnimation);
@@ -270,11 +297,23 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
         void onPkStart(String pkType, long uuid1, long uuid2);
 
         /**
-         * 更新PK倒计时
-         *
-         * @param remainTime PK倒计时，以秒为单位
+         * 是否显示开始前倒计时
          */
-        void onUpdateRemainTime(long remainTime);
+        void showStartTimer(boolean isShow);
+
+        /**
+         * 更新PK开始倒计时
+         *
+         * @param remainTime PK开始倒计时，以秒为单位
+         */
+        void onUpdateStartTimer(int remainTime);
+
+        /**
+         * 更新PK进度倒计时
+         *
+         * @param remainTime PK进行倒计时，以秒为单位
+         */
+        void onUpdateProgressTimer(int remainTime);
 
         /**
          * 更新分数
@@ -391,6 +430,10 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
             mParentView.removeCallbacks(mDelayStopTask);
             mParentView.postDelayed(mDelayStopTask, 6400);
             mAnimatorSet.start();
+        }
+
+        public boolean isRunning() {
+            return mAnimatorSet != null && (mAnimatorSet.isStarted() || mAnimatorSet.isRunning());
         }
 
         void stopAnimation() {

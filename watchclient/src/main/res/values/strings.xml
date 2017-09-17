@@ -199,4 +199,6 @@
     <string name="room_admin">Manager</string>
     <string name="line_my_zone">主场</string>
     <string name="line_guest_into">进TA房间</string>
+    <string name="pk_prepare_user">%ds后PK正式开始，快来送礼物支持主播吧</string>
+    <string name="pk_end_run">%1$s提前逃跑咯，这局%2$s是赢家</string>
 </resources>

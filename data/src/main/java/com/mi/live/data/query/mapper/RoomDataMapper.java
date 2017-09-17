@@ -55,12 +55,14 @@ public class RoomDataMapper {
 
             enterRoomInfo.setShareUrl(rsp.getShareUrl());
 
-            if (rsp.hasNewPkInfo()) {
-                enterRoomInfo.setPkInfo(rsp.getNewPkInfo());
-            }
+            enterRoomInfo.setServerTs(rsp.getTimestamp());
 
             if (rsp.hasMicInfo()) {
                 enterRoomInfo.setMicInfo(rsp.getMicInfo());
+            }
+
+            if (rsp.hasNewPkInfo()) {
+                enterRoomInfo.setPkInfo(rsp.getNewPkInfo());
             }
 
             enterRoomInfo.setDownStreamUrl(rsp.getDownStreamUrl());

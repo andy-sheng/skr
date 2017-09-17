@@ -49,6 +49,16 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
 
     private boolean mIsLandscape = false;
 
+    private Runnable mEndPkDelayTask = new Runnable() {
+        @Override
+        public void run() {
+            PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
+            if (presenter != null && presenter.isShow() && !presenter.isResulting()) {
+                presenter.stopPresenter();
+            }
+        }
+    };
+
     @Override
     protected String getTAG() {
         return TAG;
@@ -227,19 +237,6 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
 //                });
 //    }
 
-    private void showPkInfoPanel(PkInfoPresenter.PkStartInfo pkStartInfo) {
-        PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
-        if (presenter == null) {
-            presenter = new PkInfoPresenter(mController, mMyRoomData);
-            PkInfoPanel panel = new PkInfoPanel(mView);
-            setupComponent(panel, presenter);
-            presenter.startPresenter();
-            mPkInfoPresenterRef = new WeakReference<>(presenter);
-        }
-        presenter.startPresenter();
-        presenter.onPkStart(pkStartInfo, mIsLandscape);
-    }
-
     private void showLinkInfoPanel(long userId, String userRoomId) {
         LinkInfoPresenter presenter = deRef(mLinkInfoPresenterRef);
         if (presenter == null) {
@@ -251,6 +248,19 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
         }
         presenter.startPresenter();
         presenter.onLinkStart(userId, userRoomId, mIsLandscape);
+    }
+
+    private void showPkInfoPanel(PkInfoPresenter.PkStartInfo pkStartInfo) {
+        PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
+        if (presenter == null) {
+            presenter = new PkInfoPresenter(mController, mMyRoomData);
+            PkInfoPanel panel = new PkInfoPanel(mView);
+            setupComponent(panel, presenter);
+            presenter.startPresenter();
+            mPkInfoPresenterRef = new WeakReference<>(presenter);
+        }
+        presenter.startPresenter();
+        presenter.onPkStart(pkStartInfo, mIsLandscape);
     }
 
     @Override
@@ -288,10 +298,17 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
                 if (presenter != null && micEndInfo != null && micEndInfo.isMicAnchor() && presenter.isShow()) {
                     presenter.onLinkStop();
                     presenter.stopPresenter();
+                    // 连麦结束时，确保PK也被关闭
+                    PkInfoPresenter presenter1 = deRef(mPkInfoPresenterRef);
+                    if (presenter1 != null && presenter1.isShow() && !presenter1.isResulting()) {
+                        mUiHandler.removeCallbacks(mEndPkDelayTask);
+                        mUiHandler.postDelayed(mEndPkDelayTask, 5000);
+                    }
                 }
                 break;
             }
             case MSG_ON_PK_START:
+                mUiHandler.removeCallbacks(mEndPkDelayTask);
                 showPkInfoPanel((PkInfoPresenter.PkStartInfo) params.getItem(0));
                 return true;
             default:
@@ -346,7 +363,14 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
                         BarrageMsg.PKEndMsgExt msgExt = (BarrageMsg.PKEndMsgExt) msg.getMsgExt();
                         PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
                         if (msgExt.info != null && presenter != null) { // msgExt.endType为1时表示PK提前结束
-                            presenter.onPkEnd(new PkInfoPresenter.PkEndInfo(msgExt.info, msgExt.endType == 1 ? msgExt.uuid : 0));
+                            PkInfoPresenter.PkEndInfo pkEndInfo = new PkInfoPresenter.PkEndInfo(
+                                    msgExt.info, msgExt.endType == 1 ? msgExt.uuid : 0);
+                            LinkInfoPresenter linkInfoPresenter = deRef(mLinkInfoPresenterRef);
+                            if (linkInfoPresenter != null && linkInfoPresenter.getLinkUser() != null) {
+                                pkEndInfo.setNickName(linkInfoPresenter.getLinkUser());
+                            }
+                            pkEndInfo.setNickName(mMyRoomData.getUser());
+                            presenter.onPkEnd(pkEndInfo);
                         }
                         break;
                     }

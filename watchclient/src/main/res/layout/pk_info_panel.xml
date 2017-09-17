@@ -133,8 +133,24 @@
 
     </RelativeLayout>
 
-    <!--倒计时-->
+    <!--PK开始前倒计时-->
+    <TextView
+        android:id="@+id/start_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/score_area"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_120"
+        android:background="@drawable/score_area_bg"
+        android:gravity="center"
+        android:padding="@dimen/margin_40"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_32"
+        android:visibility="visible" />
+
+    <!--PK进行时倒计时-->
     <LinearLayout
+        android:id="@+id/progress_area"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/score_area"
@@ -146,7 +162,8 @@
         android:paddingBottom="@dimen/margin_9"
         android:paddingLeft="@dimen/margin_16"
         android:paddingRight="@dimen/margin_16"
-        android:paddingTop="@dimen/margin_9">
+        android:paddingTop="@dimen/margin_9"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/pk_type"
@@ -158,7 +175,7 @@
             android:textSize="@dimen/text_size_30" />
 
         <TextView
-            android:id="@+id/time_area"
+            android:id="@+id/progress_timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_4"
