@@ -91,22 +91,31 @@ public class ChannelPageHeaderHolder extends FixedHolder {
         for (int i = 0; i < size; i++) {
             mBtnIvs[i] = $(mParentLayout[i], R.id.btn_iv);
         }
+        adjustBtnContainer();
+        adjustVideoView();
+    }
+
+    private void adjustVideoView() {
+        ViewGroup.MarginLayoutParams playViewParams = (ViewGroup.MarginLayoutParams) mVideoView.getLayoutParams();
+        playViewParams.height = VIDEO_VIEW_HEIGHT;
+        playViewParams.width = VIDEO_VIEW_WIDTH;
+        playViewParams.bottomMargin = VIDEO_VIEW_BOTTOM_MARGIN;
+    }
+
+    private void adjustBtnContainer() {
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mNavigateContainer.getLayoutParams();
+        lp.leftMargin = BTN_MARGIN;
+        lp.rightMargin = BTN_MARGIN;
+        lp.height = BTN_HEIGHT;
     }
 
     @Override
     protected void bindPageHeaderModel(final ChannelPageHeaderViewModel viewModel) {
         super.bindPageHeaderModel(viewModel);
-        if (TextUtils.isEmpty(viewModel.getVideoCoverUrl())
-                || TextUtils.isEmpty(viewModel.getVideoUrl())) {
+        if (TextUtils.isEmpty(viewModel.getVideoCoverUrl())) {
             mVideoView.setVisibility(View.GONE);
         } else {
             mVideoView.setVisibility(View.VISIBLE);
-
-            ViewGroup.MarginLayoutParams playViewParams = (ViewGroup.MarginLayoutParams) mVideoView.getLayoutParams();
-            playViewParams.height = VIDEO_VIEW_HEIGHT;
-            playViewParams.width = VIDEO_VIEW_WIDTH;
-            playViewParams.bottomMargin = VIDEO_VIEW_BOTTOM_MARGIN;
-            mVideoView.setLayoutParams(playViewParams);
             mVideoView.setData(viewModel.getVideoUrl(), viewModel.getVideoCoverUrl());
             mVideoView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -138,11 +147,6 @@ public class ChannelPageHeaderHolder extends FixedHolder {
             mNavigateContainer.setVisibility(View.GONE);
         } else {
             mNavigateContainer.setVisibility(View.VISIBLE);
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mNavigateContainer.getLayoutParams();
-            lp.leftMargin = BTN_MARGIN;
-            lp.rightMargin = BTN_MARGIN;
-            lp.height = BTN_HEIGHT;
-            mNavigateContainer.setLayoutParams(lp);
             for (int i = 0; i < list.size(); i++) {
                 final NavigateItem item = list.get(i);
                 if (item == null || TextUtils.isEmpty(item.getImgUrl())) {

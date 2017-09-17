@@ -70,7 +70,7 @@ public abstract class BaseActivity extends RxActivity implements IStatusBarOpera
 
     private HashSet<IBindActivityLIfeCycle> mBindActivityLifeCycleSet = new HashSet<>();
 
-    protected void addPresent(Presenter presenter) {
+    public void addPresent(Presenter presenter) {
         if (presenter != null) {
             mPresenterSet.add(presenter);
         }
