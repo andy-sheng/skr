@@ -1,8 +1,7 @@
 package com.mi.live.data.query.model;
 
 import com.mi.live.data.location.Location;
-import com.wali.live.proto.LiveCommonProto;
-import com.wali.live.proto.LivePKProto;
+import com.mi.live.data.push.model.BarrageMsgExt;
 
 import java.util.List;
 
@@ -31,9 +30,8 @@ public class EnterRoomInfo {
     boolean hideGift;
     boolean supportMgicFace;
 
-    long serverTs;
-    LiveCommonProto.MicInfo micInfo;
-    LivePKProto.NewPKInfo pkInfo;
+    BarrageMsgExt.MicBeginInfo micInfo;
+    BarrageMsgExt.PkStartInfo pkInfo;
 
     public int getRetCode() {
         return retCode;
@@ -171,27 +169,19 @@ public class EnterRoomInfo {
         this.supportMgicFace = supportMgicFace;
     }
 
-    public void setServerTs(long serverTs) {
-        this.serverTs = serverTs;
+    public void setMicBeginInfo(BarrageMsgExt.MicBeginInfo micBeginInfo) {
+        this.micInfo = micBeginInfo;
     }
 
-    public long getServerTs() {
-        return this.serverTs;
-    }
-
-    public void setMicInfo(LiveCommonProto.MicInfo micInfo) {
-        this.micInfo = micInfo;
-    }
-
-    public LiveCommonProto.MicInfo getMicInfo() {
+    public BarrageMsgExt.MicBeginInfo getMicBeginInfo() {
         return micInfo;
     }
 
-    public void setPkInfo(LivePKProto.NewPKInfo pkInfo) {
-        this.pkInfo = pkInfo;
+    public void setPkStartInfo(BarrageMsgExt.PkStartInfo pkStartInfo) {
+        this.pkInfo = pkStartInfo;
     }
 
-    public LivePKProto.NewPKInfo getPkInfo() {
+    public BarrageMsgExt.PkStartInfo getPkStartInfo() {
         return this.pkInfo;
     }
 }

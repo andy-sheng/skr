@@ -2,17 +2,15 @@ package com.wali.live.watchsdk.component.presenter.panel;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.push.model.BarrageMsgExt;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.mi.live.data.user.User;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
-import com.wali.live.proto.LivePKProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.view.panel.PkInfoPanel;
 
@@ -142,7 +140,7 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
         mDownTimerSub.add(pkTimer);
     }
 
-    public void onPkStart(PkStartInfo info, boolean isLandscape) {
+    public void onPkStart(BarrageMsgExt.PkStartInfo info, boolean isLandscape) {
         if (info == null) {
             return;
         }
@@ -158,7 +156,7 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
         }
     }
 
-    public void onPkScore(PkScoreInfo info) {
+    public void onPkScore(BarrageMsgExt.PkScoreInfo info) {
         if (info == null) {
             return;
         }
@@ -170,7 +168,7 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
         }
     }
 
-    public void onPkEnd(PkEndInfo info) {
+    public void onPkEnd(BarrageMsgExt.PkEndInfo info) {
         if (info == null) {
             return;
         }
@@ -215,104 +213,5 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
                 break;
         }
         return false;
-    }
-
-    public static class PkScoreInfo {
-        long uuid1;
-        long uuid2;
-        long score1;
-        long score2;
-
-        // For Test
-        public PkScoreInfo(long uuid1, long uuid2, long score1, long score2) {
-            this.uuid1 = uuid1;
-            this.uuid2 = uuid2;
-            this.score1 = score1;
-            this.score2 = score2;
-        }
-
-        public PkScoreInfo(LivePKProto.NewPKInfo info) {
-            LivePKProto.PKInfoItem item1 = info.getFirst(), item2 = info.getSecond();
-            uuid1 = item1.getUuid();
-            score1 = item1.getScore();
-            uuid2 = item2.getUuid();
-            score2 = item2.getScore();
-        }
-    }
-
-    public static class PkStartInfo extends PkScoreInfo {
-        int startRemainTime;
-        int pkRemainTime;
-        String pkType;
-
-        // For Test
-        public PkStartInfo(long uuid1, long uuid2, long score1, long score2, String pkType, int remainTime) {
-            super(uuid1, uuid2, score1, score2);
-            this.pkType = pkType;
-            this.pkRemainTime = remainTime;
-        }
-
-        public PkStartInfo(LivePKProto.NewPKInfo info, long currServerTs) {
-            super(info);
-            pkType = info.getSetting().getContent().getName();
-            parseRemainTime(info.getSetting().getDuration().getId(), info.getBeginTs(), currServerTs);
-        }
-
-        private void parseRemainTime(int timeType, long startTs, long currServerTs) {
-            pkRemainTime = 180;
-            switch (timeType) {
-                case 1:
-                    pkRemainTime = 180;
-                    break;
-                case 2:
-                    pkRemainTime = 600;
-                    break;
-                case 3:
-                    pkRemainTime = 900;
-                    break;
-                default:
-                    break;
-            }
-            if (currServerTs == 0) {
-                startRemainTime = 10;
-            } else if (currServerTs < startTs + 10000) { // 10s开始倒计时还未结束
-                startRemainTime = (int) (10000 - currServerTs + startTs) / 1000;
-            } else { // 10s开始倒计时已结束，计算PK进度剩余时间
-                startRemainTime = 0;
-                pkRemainTime -= (int) (currServerTs - startTs - 10000) / 1000;
-                pkRemainTime = Math.max(pkRemainTime, 0);
-            }
-        }
-    }
-
-    public static class PkEndInfo extends PkScoreInfo {
-        long quitUuid;
-        String nickName1;
-        String nickName2;
-
-        // For Test
-        public PkEndInfo(long uuid1, long uuid2, long score1, long score2, long quitUuid) {
-            super(uuid1, uuid2, score1, score2);
-            this.quitUuid = quitUuid;
-            this.nickName1 = String.valueOf(uuid1);
-            this.nickName2 = String.valueOf(uuid2);
-        }
-
-        public PkEndInfo(LivePKProto.NewPKInfo info, long quitUuid) {
-            super(info);
-            this.quitUuid = quitUuid;
-        }
-
-        public void setNickName(User user) {
-            if (user == null || TextUtils.isEmpty(user.getNickname())) {
-                return;
-            }
-            long uuid = user.getUid();
-            if (uuid1 == uuid) {
-                nickName1 = user.getNickname();
-            } else if (uuid2 == uuid) {
-                nickName2 = user.getNickname();
-            }
-        }
     }
 }

@@ -2,6 +2,7 @@ package com.mi.live.data.query.mapper;
 
 import com.base.log.MyLog;
 import com.mi.live.data.location.Location;
+import com.mi.live.data.push.model.BarrageMsgExt;
 import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.query.model.LiveCover;
 import com.mi.live.data.query.model.MessageRule;
@@ -55,14 +56,13 @@ public class RoomDataMapper {
 
             enterRoomInfo.setShareUrl(rsp.getShareUrl());
 
-            enterRoomInfo.setServerTs(rsp.getTimestamp());
-
             if (rsp.hasMicInfo()) {
-                enterRoomInfo.setMicInfo(rsp.getMicInfo());
+                enterRoomInfo.setMicBeginInfo(new BarrageMsgExt.MicBeginInfo()
+                        .parseFromPB(rsp.getMicInfo()));
             }
-
             if (rsp.hasNewPkInfo()) {
-                enterRoomInfo.setPkInfo(rsp.getNewPkInfo());
+                enterRoomInfo.setPkStartInfo(new BarrageMsgExt.PkStartInfo()
+                        .parseFromInfo(rsp.getNewPkInfo(), rsp.getTimestamp()));
             }
 
             enterRoomInfo.setDownStreamUrl(rsp.getDownStreamUrl());

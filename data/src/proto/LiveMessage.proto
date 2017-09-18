@@ -223,24 +223,6 @@ message PKEndMessage {
     optional PKInfo otherPKInfo = 2; //对应pk的房间信息
 }
 
-//mic开始消息
-message MicBeginMessage {
-    required uint64 zuid          = 1; //主播用户id
-    required string liveId        = 2; //房间号
-    required MicInfo micInfo      = 3; //连麦的信息
-    optional bool enableViewerMic = 4; //是否允许观众端发起连麦（true：允许）
-    optional uint32 type          = 5; //0:主播与观众连麦 1：主播与主播连麦
-}
-
-//mic结束消息
-message MicEndMessage {
-    required uint64 zuid          = 1; //主播用户id
-    required string liveId        = 2; //房间号
-    required MicInfo micInfo      = 3; //连麦的信息
-    optional bool enableViewerMic = 4; //是否允许观众端发起连麦（true：允许）
-    optional uint32 type          = 5; //0:主播与观众连麦 1：主播与主播连麦
-}
-
 // 修改房间信息消息
 message LiveInfoChangeMsg {
     optional uint64 mod_flag = 1; //修改标记位（按位表示，从最低位起） 1-观众端发起连麦开关

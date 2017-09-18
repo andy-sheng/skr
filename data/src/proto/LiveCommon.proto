@@ -15,20 +15,6 @@ message MsgRule {
     optional uint32 speakPeriod = 2; //发言频率周期,单位s,不设置或者0代表没有限制
 }
 
-message MicSubViewPos {
-    required float topXScale = 1; //子视图左上角X在实际推流视频中的比例
-    required float topYScale = 2; //子视图左上角Y在实际推流视频中的比例
-    required float widthScale = 3; //子视图宽度在实际推流视频中的比例
-    required float heightScale = 4; //子视图高度左上角在推流视频中的比例
-}
-
-message MicInfo {
-    required uint64 micuid = 1; //连麦的观众id
-    optional MicSubViewPos subViewPos = 2; //子视图的比例位置
-    optional string mic_liveid = 3; //连麦对方房间号
-    optional uint32 type       = 4; //0:主播与观众连麦 1：主播与主播连麦
-}
-
 message Viewer {
     required uint64 uuid = 1; //用户id
     optional uint32 level = 2; //等级

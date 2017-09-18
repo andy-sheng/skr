@@ -12,6 +12,7 @@ import com.mi.live.data.query.model.MessageRule;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveManagerProto;
+import com.wali.live.proto.LiveMicProto;
 import com.wali.live.proto.LiveProto;
 import com.wali.live.proto.LiveProto.HistoryDeleteReq;
 import com.wali.live.proto.LiveProto.HistoryDeleteRsp;
@@ -235,8 +236,8 @@ public class LiveManager {
     public static boolean beginLineMic(long zuid, String liveId, long micuid, float scaleX, float scaleY, float scaleW, float scaleH) {
         LiveProto.MicBeginReq.Builder builder = LiveProto.MicBeginReq.newBuilder()
                 .setZuid(zuid).setLiveId(liveId).setMicInfo(
-                        LiveCommonProto.MicInfo.newBuilder().setMicuid(micuid).setSubViewPos(
-                                LiveCommonProto.MicSubViewPos.newBuilder().setTopXScale(scaleX).setTopYScale(scaleY).setWidthScale(scaleW).setHeightScale(scaleH)));
+                        LiveMicProto.MicInfo.newBuilder().setMicuid(micuid).setSubViewPos(
+                                LiveMicProto.MicSubViewPos.newBuilder().setTopXScale(scaleX).setTopYScale(scaleY).setWidthScale(scaleW).setHeightScale(scaleH)));
         LiveProto.MicBeginReq req = builder.build();
         PacketData data = new PacketData();
         data.setCommand(MiLinkCommand.COMMAND_LIVE_MIC_BEGIN);

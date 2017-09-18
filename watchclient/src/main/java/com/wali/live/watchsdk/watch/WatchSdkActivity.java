@@ -44,7 +44,6 @@ import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.preference.PreferenceKeys;
-import com.mi.live.data.push.model.BarrageMsgExt;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.repository.GiftRepository;
@@ -75,7 +74,6 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.component.WatchSdkView;
-import com.wali.live.watchsdk.component.presenter.panel.PkInfoPresenter;
 import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.watchsdk.personinfo.fragment.FloatInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
@@ -754,17 +752,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
             syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);
             if (mController != null) {
                 mController.postEvent(MSG_ON_LIVE_SUCCESS);
-
-                if (roomInfo.getMicInfo() != null) {
-                    BarrageMsgExt.MicBeginInfo micBeginInfo = new BarrageMsgExt.MicBeginInfo().parseFromPB(roomInfo.getMicInfo());
-                    if (micBeginInfo != null) {
-                        mController.postEvent(MSG_ON_LINK_MIC_START, new Params().putItem(micBeginInfo));
-                    }
+                if (roomInfo.getMicBeginInfo() != null) {
+                    mController.postEvent(MSG_ON_LINK_MIC_START, new Params().putItem(roomInfo.getMicBeginInfo()));
                 }
-
-                if (roomInfo.getPkInfo() != null) {
-                    mController.postEvent(MSG_ON_PK_START, new Params().putItem(
-                            new PkInfoPresenter.PkStartInfo(roomInfo.getPkInfo(), roomInfo.getServerTs())));
+                if (roomInfo.getPkStartInfo() != null) {
+                    mController.postEvent(MSG_ON_PK_START, new Params().putItem(roomInfo.getPkStartInfo()));
                 }
             }
         }
@@ -856,7 +848,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                             //临时加的.roomData里的原user星票数一直是0，在这里重新更新了一下user
                             mMyRoomData.setUser(UserInfoManager.getUserInfoByUuid(mMyRoomData.getUid(), false));
                             mMyRoomData.setTicket(giftInfoForEnterRoom.getInitStarStickCount() > mMyRoomData.getTicket() ?
-                            giftInfoForEnterRoom.getInitStarStickCount() : mMyRoomData.getTicket());//发送刷新的event
+                                    giftInfoForEnterRoom.getInitStarStickCount() : mMyRoomData.getTicket());//发送刷新的event
                             // 这个房间的的礼物橱窗信息交付
 //                            mGiftMallView.setGiftInfoForEnterRoom(giftInfoForEnterRoom.getmGiftInfoForThisRoom());
                             mGiftMallPresenter.setGiftInfoForEnterRoom(giftInfoForEnterRoom.getmGiftInfoForThisRoom());

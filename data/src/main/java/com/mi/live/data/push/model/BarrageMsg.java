@@ -12,6 +12,7 @@ import com.mi.live.data.query.model.ViewerModel;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveMallProto;
 import com.wali.live.proto.LiveMessageProto;
+import com.wali.live.proto.LiveMicProto;
 import com.wali.live.proto.LivePKProto;
 import com.wali.live.proto.RedEnvelProto;
 
@@ -522,28 +523,28 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
                     break;
 
                     case BarrageMsgType.B_MSG_TYPE_LINE_MIC_BEGIN: {
-                        LiveMessageProto.MicBeginMessage mcMsg = LiveMessageProto.MicBeginMessage.parseFrom(data);
-                        msgExt = new BarrageMsgExt.MicBeginInfo().parseFromPB(mcMsg);
+                        LiveMicProto.MicBeginMessage micMsg = LiveMicProto.MicBeginMessage.parseFrom(data);
+                        msgExt = new BarrageMsgExt.MicBeginInfo().parseFromPB(micMsg);
                         break;
                     }
                     case BarrageMsgType.B_MSG_TYPE_LINE_MIC_END: {
-                        LiveMessageProto.MicEndMessage mcMsg = LiveMessageProto.MicEndMessage.parseFrom(data);
-                        msgExt = new BarrageMsgExt.MicEndInfo().parseFromPB(mcMsg);
+                        LiveMicProto.MicEndMessage micMsg = LiveMicProto.MicEndMessage.parseFrom(data);
+                        msgExt = new BarrageMsgExt.MicEndInfo().parseFromPB(micMsg);
                         break;
                     }
                     case BarrageMsgType.B_MSG_TYPE_NEW_PK_SCORE: {
-                        LivePKProto.PKScoreChangeMsg pkScoreChangeMsg = LivePKProto.PKScoreChangeMsg.parseFrom(data);
-                        msgExt = new PKInfoMsgExt(pkScoreChangeMsg.getPkInfo());
-                        break;
-                    }
-                    case BarrageMsgType.B_MSG_TYPE_NEW_PK_END: {
-                        LivePKProto.PKEndMessage pkEndMessage = LivePKProto.PKEndMessage.parseFrom(data);
-                        msgExt = new PKEndMsgExt(pkEndMessage.getPkInfo(), pkEndMessage.getFromUuid(), pkEndMessage.getType());
+                        LivePKProto.PKScoreChangeMsg pkMsg = LivePKProto.PKScoreChangeMsg.parseFrom(data);
+                        msgExt = new BarrageMsgExt.PkScoreInfo().parseFromPB(pkMsg);
                         break;
                     }
                     case BarrageMsgType.B_MSG_TYPE_NEW_PK_START: {
-                        LivePKProto.PKBeginMessage pkBeginMessage = LivePKProto.PKBeginMessage.parseFrom(data);
-                        msgExt = new PKInfoMsgExt(pkBeginMessage.getPkInfo());
+                        LivePKProto.PKBeginMessage pkMsg = LivePKProto.PKBeginMessage.parseFrom(data);
+                        msgExt = new BarrageMsgExt.PkStartInfo().parseFromPB(pkMsg, getSentTime());
+                        break;
+                    }
+                    case BarrageMsgType.B_MSG_TYPE_NEW_PK_END: {
+                        LivePKProto.PKEndMessage pkMsg = LivePKProto.PKEndMessage.parseFrom(data);
+                        msgExt = new BarrageMsgExt.PkEndInfo().parseFromPB(pkMsg);
                         break;
                     }
                 }
