@@ -147,6 +147,8 @@ public class UserInfoPresenter {
                             mMyRoomData.getUser().setAvatar(user.getAvatar());
                             mMyRoomData.setTicket(user.getLiveTicketNum());
                             mMyRoomData.getUser().setSign(user.getSign());
+                            mMyRoomData.getUser().setLevel(user.getLevel());
+                            mMyRoomData.getUser().setCertificationType(user.getCertificationType());
 
                             EventBus.getDefault().post(new RoomDataChangeEvent(mMyRoomData, RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE));
                         }

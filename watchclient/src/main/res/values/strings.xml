@@ -201,4 +201,7 @@
     <string name="line_guest_into">进TA房间</string>
     <string name="pk_prepare_user">%ds后PK正式开始，快来送礼物支持主播吧</string>
     <string name="pk_end_run">%1$s提前逃跑咯，这局%2$s是赢家</string>
+    <string name="can_not_vote_toast">Watch a little longer and vote</string>
+    <string name="vote_finish_toast">Activity ended</string>
+    <string name="vote_max_toast">Voting session ended</string>
 </resources>

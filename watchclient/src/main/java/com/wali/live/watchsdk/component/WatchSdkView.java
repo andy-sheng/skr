@@ -101,6 +101,8 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
     protected GameInputPresenter mGameInputPresenter;
     protected GameDownloadPresenter mGameDownloadPresenter;
 
+    protected WidgetPresenter mWidgetPresenter;
+
     protected ImagePagerView mPagerView;
 
     protected boolean mIsGameMode = false;
@@ -296,9 +298,9 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                 MyLog.e(TAG, "missing R.id.widget_view");
                 return;
             }
-            WidgetPresenter presenter = new WidgetPresenter(mController, mController.mMyRoomData, false);
-            registerComponent(view, presenter);
-            ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
+            mWidgetPresenter = new WidgetPresenter(mController, mController.mMyRoomData, false);
+            registerComponent(view, mWidgetPresenter);
+            ((BaseComponentSdkActivity) mActivity).addPushProcessor(mWidgetPresenter);
         }
 
         if (mController.mRoomInfoList != null && mController.mRoomInfoList.size() > 1) {
@@ -393,6 +395,9 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
         }
         if (mGameDownloadPresenter != null) {
             mGameDownloadPresenter.reset();
+        }
+        if (mWidgetPresenter != null) {
+            mWidgetPresenter.reset();
         }
         mLiveCommentView.reset();
         mWatchBottomButton.reset();

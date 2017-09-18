@@ -51,8 +51,10 @@ import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
+import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.presenter.RoomMessagePresenter;
 import com.mi.live.data.query.model.MessageRule;
+import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.repository.RoomMessageRepository;
 import com.mi.live.data.repository.datasource.RoomMessageStore;
 import com.mi.live.data.room.model.RoomBaseDataModel;
@@ -66,6 +68,8 @@ import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
+import com.wali.live.component.BaseSdkView;
+import com.wali.live.dao.Gift;
 import com.wali.live.event.EventClass;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.livesdk.R;
@@ -1250,6 +1254,14 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 }
             }
             break;
+            case UserActionEvent.EVENT_TYPE_CLICK_SUPPORT_WIDGET:
+                Gift gift = GiftRepository.findGiftById((int) event.obj1);
+                if (gift != null) {
+                    BarrageMsg pushMsg = GiftRepository.createGiftBarrageMessage(gift.getGiftId(), gift.getName(), gift.getCatagory(),
+                            gift.getSendDescribe(), 1, 0, System.currentTimeMillis(), -1, mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), "", "", 0, false);
+                    BarrageMessageManager.getInstance().pretendPushBarrage(pushMsg);
+                }
+                break;
             default:
                 break;
         }

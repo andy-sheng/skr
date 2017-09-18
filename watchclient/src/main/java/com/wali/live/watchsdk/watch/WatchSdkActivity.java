@@ -40,10 +40,12 @@ import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
+import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.push.model.BarrageMsgExt;
+import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.room.model.RoomBaseDataModel;
@@ -55,10 +57,12 @@ import com.thornbirds.component.IEventObserver;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.Params;
 import com.trello.rxlifecycle.ActivityEvent;
+import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
+import com.wali.live.dao.Gift;
 import com.wali.live.event.EventClass;
 import com.wali.live.event.EventEmitter;
 import com.wali.live.event.UserActionEvent;
@@ -680,6 +684,14 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                 }
             }
             break;
+            case UserActionEvent.EVENT_TYPE_CLICK_SUPPORT_WIDGET:
+                Gift gift = GiftRepository.findGiftById((int) event.obj1);
+                if (gift != null) {
+                    BarrageMsg pushMsg = GiftRepository.createGiftBarrageMessage(gift.getGiftId(), gift.getName(), gift.getCatagory(),
+                            gift.getSendDescribe(), 1, 0, System.currentTimeMillis(), -1, mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), "", "", 0, false);
+                    BarrageMessageManager.getInstance().pretendPushBarrage(pushMsg);
+                }
+                break;
         }
     }
 
@@ -841,8 +853,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                             // 初始新票
                             mMyRoomData.setInitTicket(giftInfoForEnterRoom.getInitStarStickCount());
 
-                            mMyRoomData.setTicket(giftInfoForEnterRoom.getInitStarStickCount());//发送刷新的event
-
+                            //临时加的.roomData里的原user星票数一直是0，在这里重新更新了一下user
+                            mMyRoomData.setUser(UserInfoManager.getUserInfoByUuid(mMyRoomData.getUid(), false));
+                            mMyRoomData.setTicket(giftInfoForEnterRoom.getInitStarStickCount() > mMyRoomData.getTicket() ?
+                            giftInfoForEnterRoom.getInitStarStickCount() : mMyRoomData.getTicket());//发送刷新的event
                             // 这个房间的的礼物橱窗信息交付
 //                            mGiftMallView.setGiftInfoForEnterRoom(giftInfoForEnterRoom.getmGiftInfoForThisRoom());
                             mGiftMallPresenter.setGiftInfoForEnterRoom(giftInfoForEnterRoom.getmGiftInfoForThisRoom());

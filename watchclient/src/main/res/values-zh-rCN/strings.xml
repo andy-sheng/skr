@@ -196,4 +196,7 @@
     <string name="line_guest_into">进TA房间</string>
     <string name="pk_prepare_user">%ds后PK正式开始，快来送礼物支持主播吧</string>
     <string name="pk_end_run">%1$s提前逃跑咯，这局%2$s是赢家</string>
+    <string name="can_not_vote_toast">再陪主播一会儿才可以投票喔</string>
+    <string name="vote_finish_toast">活动已结束，欢迎下次参与喔</string>
+    <string name="vote_max_toast">已达上限，期待下次参与喔</string>
 </resources>

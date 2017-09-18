@@ -334,7 +334,7 @@ public class VideoPlayerPresenterEx implements
 
     //停止播放
     public void stop() {
-        MyLog.w(TAG, "stop");
+        MyLog.w(TAG, "stopCountdown");
         mVideoPlayerPresenter.release();
         if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);

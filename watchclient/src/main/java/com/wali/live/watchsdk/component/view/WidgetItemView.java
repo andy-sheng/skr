@@ -21,6 +21,8 @@ import com.base.image.fresco.IFrescoCallBack;
 import com.base.log.MyLog;
 import com.base.thread.ThreadPool;
 import com.base.utils.display.DisplayUtils;
+import com.base.utils.network.Network;
+import com.base.utils.toast.ToastUtils;
 import com.base.utils.ui.ColorFormatter;
 import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.datasource.DataSource;
@@ -32,9 +34,11 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.event.GiftEventClass;
+import com.mi.live.data.repository.GiftRepository;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.proto.LiveCommonProto;
+import com.wali.live.proto.LiveProto;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
@@ -78,6 +82,9 @@ public class WidgetItemView extends LinearLayout {
     private int mImgCounter;
     private int mTxtCounter;
 
+    private SupportWidgetView mSupportWv;
+    private boolean mIsCanClick = true;
+
     public WidgetItemView(Context context) {
         super(context);
         init(context);
@@ -111,6 +118,8 @@ public class WidgetItemView extends LinearLayout {
         mItemIv = $(R.id.item_iv);
         mItemIv2 = $(R.id.item_iv2);
         mItemTv = $(R.id.item_tv);
+
+        mSupportWv = $(R.id.support_widget_view);
     }
 
     public void setWidgetPos(int posFlag) {
@@ -145,6 +154,91 @@ public class WidgetItemView extends LinearLayout {
         if (needShow) {
             show();
         }
+    }
+
+    public void setSupportWidgetView(LiveCommonProto.NewWidgetItem info) {
+        if (mSupportWv.hasInitial()) {
+            return;
+        }
+        if (info.hasClickItem()) {
+            LiveCommonProto.ClickItem click = info.getClickItem();
+            if (click.hasClickImageUrl()) {
+                mSupportWv.setPic(click.getClickWaitingImageUrl(), click.getClickImageUrl());
+            }
+            if (click.hasClickInterval()) {
+                mSupportWv.setTotalTime(click.getClickInterval());
+            }
+            setClick(info, mSupportWv, mItemTv, click.getWarningText(), click.getPushSendSuccText());
+            mSupportWv.showWaiting();
+        } else {
+            mSupportWv.setVisibility(GONE);
+            mSupportWv.stopCountdown();
+            mSupportWv.stopRippleAnimator();
+        }
+    }
+
+    private void setClick(final LiveCommonProto.NewWidgetItem info, final View clickView, final TextView counterTv, final String waringTxt, final String succText) {
+        RxView.clicks(clickView)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        if (!mSupportWv.isCountingDown() && mIsCanClick) {
+                            if (!Network.hasNetwork(getContext())) {
+                                ToastUtils.showToast(R.string.no_net);
+                                return;
+                            }
+
+                            mIsCanClick = false;
+                            GiftRepository.clickCounter(info.getWidgetID(), mPresenter.getUid(), mPresenter.getRoomId())
+                                    .throttleFirst(3000, TimeUnit.MILLISECONDS)
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new Action1<LiveProto.WidgetClickRsp>() {
+                                        @Override
+                                        public void call(LiveProto.WidgetClickRsp rsp) {
+                                            mIsCanClick = true;
+                                            if (rsp.getRetCode() == 0) {
+                                                if (counterTv != null) {
+                                                    counterTv.setText(rsp.getCounterText());
+                                                }
+
+                                                mSupportWv.stopRippleAnimator();
+                                                if (!TextUtils.isEmpty(succText)) {
+                                                    ToastUtils.showToast(succText);
+                                                }
+                                                sendClick(info.getWidgetID(), "buttonClick");
+
+                                                mSupportWv.showWaiting();
+                                                if (info.getClickItem().hasGiftId()) {
+                                                    UserActionEvent.post(UserActionEvent.EVENT_TYPE_CLICK_SUPPORT_WIDGET, rsp.getGiftId(), null);
+                                                }
+
+                                                setClick(info, clickView, counterTv, waringTxt, succText);
+                                            } else if (rsp.getRetCode() == 21702) {
+                                                ToastUtils.showToast(R.string.vote_finish_toast);
+                                            } else if (rsp.getRetCode() == 21703) {
+                                                ToastUtils.showToast(R.string.vote_max_toast);
+                                            } else {
+                                                ToastUtils.showToast(R.string.no_net);
+                                            }
+                                        }
+                                    }, new Action1<Throwable>() {
+                                        @Override
+                                        public void call(Throwable throwable) {
+                                            MyLog.e(TAG, throwable);
+                                            mIsCanClick = true;
+                                        }
+                                    });
+                        } else {
+                            //xx时间后才可以点击
+                            if (TextUtils.isEmpty(waringTxt)) {
+                                ToastUtils.showToast(R.string.can_not_vote_toast);
+                            } else {
+                                ToastUtils.showToast(waringTxt);
+                            }
+                        }
+                    }
+                });
     }
 
     public void updateDisplayItemTv(int widgetID, String counter, boolean needShow) {
@@ -422,6 +516,9 @@ public class WidgetItemView extends LinearLayout {
         if (mShowSubscription != null && !mShowSubscription.isUnsubscribed()) {
             mShowSubscription.unsubscribe();
         }
+        if (mSupportWv != null) {
+            mSupportWv.destroy();
+        }
     }
 
     private static class WidgetFrescoCallBack implements IFrescoCallBack {
@@ -446,7 +543,7 @@ public class WidgetItemView extends LinearLayout {
 
                 if (infoWidth > 0 && infoHeight > 0 && mIvRef.get() != null) {
                     MyLog.w(TAG, "processWithInfo call internal");
-                    
+
                     int screenWidth = DisplayUtils.getScreenHeight() > DisplayUtils.getScreenWidth() ? DisplayUtils.getScreenWidth() : DisplayUtils.getScreenHeight();
                     int screenHeight = DisplayUtils.getScreenHeight() > DisplayUtils.getScreenWidth() ? DisplayUtils.getScreenHeight() : DisplayUtils.getScreenWidth();
 

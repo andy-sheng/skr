@@ -41,6 +41,7 @@ import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.dao.RelationDaoAdapter;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.proto.LiveCommonProto;
+import com.wali.live.proto.LiveProto;
 import com.wali.live.proto.RelationProto;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
@@ -374,7 +375,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
     }
 
     private boolean stopAnimation(ValueAnimator animation) {
-        MyLog.d(TAG, "stopAnimation");
+        MyLog.d(TAG, "stopRippleAnimator");
         if (animation != null && animation.isStarted()) {
             animation.cancel();
             return true;
@@ -655,7 +656,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
                                     public void call(Void aVoid) {
                                         GiftRepository.clickCounter(info.getWidgetID(), currentZuid, currentRoomid)
                                                 .observeOn(AndroidSchedulers.mainThread())
-                                                .subscribe(new Observer<String>() {
+                                                .subscribe(new Observer<LiveProto.WidgetClickRsp>() {
                                                     @Override
                                                     public void onCompleted() {
 
@@ -666,9 +667,11 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
                                                     }
 
                                                     @Override
-                                                    public void onNext(String rsp) {
-                                                        if (txtCounter != null) {
-                                                            txtCounter.setText(rsp);
+                                                    public void onNext(LiveProto.WidgetClickRsp rsp) {
+                                                        if (rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
+                                                            if (txtCounter != null) {
+                                                                txtCounter.setText(rsp.getCounterText());
+                                                            }
                                                         }
                                                     }
                                                 });

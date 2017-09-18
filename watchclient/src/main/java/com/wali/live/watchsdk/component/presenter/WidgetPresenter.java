@@ -104,6 +104,15 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
         }
     }
 
+    public void reset() {
+        mView.hideWidgetView();
+        // 这里可以直接调用destroyView，因为切换房间，所有挂件信息会重新拉取
+        mView.destroyView();
+        if (mUIHandler != null) {
+            mUIHandler.removeCallbacksAndMessages(null);
+        }
+    }
+
     /**
      * 设置运营位数据
      */

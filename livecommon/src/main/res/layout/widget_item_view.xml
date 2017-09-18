@@ -29,4 +29,10 @@
         android:layout_width="100dp"
         android:layout_height="20dp"
         android:scaleType="centerInside"/>
+
+    <com.wali.live.watchsdk.component.view.SupportWidgetView
+        android:id="@+id/support_widget_view"
+        android:layout_width="@dimen/view_dimen_230"
+        android:layout_height="@dimen/view_dimen_230"
+        android:visibility="gone"/>
 </merge>
