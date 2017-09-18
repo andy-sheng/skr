@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
@@ -27,15 +28,17 @@ import java.util.List;
  */
 public class ChannelPageHeaderHolder extends FixedHolder {
     //视频view高度
-    public static final int VIDEO_VIEW_HEIGHT = DisplayUtils.getScreenWidth() * 520 / 1080;
-    public static final int VIDEO_VIEW_WIDTH = VIDEO_VIEW_HEIGHT * 16 / 9;
+    private static final int VIDEO_VIEW_WIDTH = DisplayUtils.getScreenWidth() * 926 / 1080;
+    private static final int VIDEO_VIEW_HEIGHT = VIDEO_VIEW_WIDTH * 9 / 16;
+    private static final int VIDEO_VIEW_BOTTOM_MARGIN = DisplayUtils.getScreenWidth() * 70 / 1080;
+    private static final int BTN_HEIGHT = DisplayUtils.getScreenWidth() * 260 / 1080;
+    private static final int BTN_MARGIN = DisplayUtils.getScreenWidth() * 48 / 1080;
 
-    private static float mBgRatio = 1177 / 1080f;
+    private static float mBgRatio = 1280 / 1080f;
     private int[] mBtnLayoutIds;
     protected HeaderVideoView mVideoView;
     protected BaseImageView mHeaderIv;
     protected LinearLayout mNavigateContainer;
-    private BaseImageView mShadowIv;
     private BaseImageView[] mBtnIvs;
     private ViewGroup[] mParentLayout;
 
@@ -75,7 +78,6 @@ public class ChannelPageHeaderHolder extends FixedHolder {
                 R.id.button_layout5
         };
         mVideoView = $(R.id.video_view);
-        mShadowIv = $(R.id.shadow_iv);
         mHeaderIv = $(R.id.header_bg_iv);
         mNavigateContainer = $(R.id.navigation_header_container);
 
@@ -97,15 +99,13 @@ public class ChannelPageHeaderHolder extends FixedHolder {
         if (TextUtils.isEmpty(viewModel.getVideoCoverUrl())
                 || TextUtils.isEmpty(viewModel.getVideoUrl())) {
             mVideoView.setVisibility(View.GONE);
-            mShadowIv.setVisibility(View.GONE);
         } else {
             mVideoView.setVisibility(View.VISIBLE);
-            mShadowIv.setVisibility(View.VISIBLE);
-            FrescoWorker.loadImage(mShadowIv, ImageFactory.newResImage(R.drawable.home_missworld_back_shadow).build());
 
-            ViewGroup.LayoutParams playViewParams = mVideoView.getLayoutParams();
+            ViewGroup.MarginLayoutParams playViewParams = (ViewGroup.MarginLayoutParams) mVideoView.getLayoutParams();
             playViewParams.height = VIDEO_VIEW_HEIGHT;
             playViewParams.width = VIDEO_VIEW_WIDTH;
+            playViewParams.bottomMargin = VIDEO_VIEW_BOTTOM_MARGIN;
             mVideoView.setLayoutParams(playViewParams);
             mVideoView.setData(viewModel.getVideoUrl(), viewModel.getVideoCoverUrl());
             mVideoView.setOnClickListener(new View.OnClickListener() {
@@ -138,6 +138,11 @@ public class ChannelPageHeaderHolder extends FixedHolder {
             mNavigateContainer.setVisibility(View.GONE);
         } else {
             mNavigateContainer.setVisibility(View.VISIBLE);
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mNavigateContainer.getLayoutParams();
+            lp.leftMargin = BTN_MARGIN;
+            lp.rightMargin = BTN_MARGIN;
+            lp.height = BTN_HEIGHT;
+            mNavigateContainer.setLayoutParams(lp);
             for (int i = 0; i < list.size(); i++) {
                 final NavigateItem item = list.get(i);
                 if (item == null || TextUtils.isEmpty(item.getImgUrl())) {
@@ -166,8 +171,8 @@ public class ChannelPageHeaderHolder extends FixedHolder {
 
                     }
                 };
-
                 FrescoWorker.loadImage(mBtnIvs[i], ImageFactory.newHttpImage(item.getImgUrl())
+                        .setHeight(BTN_HEIGHT)
                         .setCallBack(iFrescoCallBack)
                         .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
                         .build());

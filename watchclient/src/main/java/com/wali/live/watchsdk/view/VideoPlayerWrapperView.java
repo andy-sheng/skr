@@ -131,6 +131,17 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         }
     }
 
+    public void mute(boolean isMute) {
+        if (mVideoPlayerPresenter != null) {
+            MyLog.w(TAG, "mute=" + isMute);
+            if (isMute) {
+                mVideoPlayerPresenter.setVolume(0, 0);
+            } else {
+                mVideoPlayerPresenter.setVolume(1, 1);
+            }
+        }
+    }
+
     public void notifyOrientation(boolean isLandscape) {
         MyLog.w(TAG, "notifyOrientation isLandscape=" + isLandscape);
         if (mVideoPlayerPresenter != null) {

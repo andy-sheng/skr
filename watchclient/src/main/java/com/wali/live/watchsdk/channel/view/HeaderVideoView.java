@@ -12,6 +12,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.base.image.fresco.BaseImageView;
@@ -19,6 +20,7 @@ import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
+import com.base.utils.network.NetworkUtils;
 import com.mi.live.engine.player.widget.VideoPlayerPresenter;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.view.VideoPlayerWrapperView;
@@ -26,14 +28,13 @@ import com.wali.live.watchsdk.view.VideoPlayerWrapperView;
 /**
  * Created by zyh on 2017/8/29.
  */
-
 public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrapperView.IOuterCallBack {
     private final static String TAG = "HeaderVideoView";
 
-    private static final int ROUND_RADIUS = DisplayUtils.dip2px(6.67f);
+    private static final int ROUND_RADIUS = DisplayUtils.dip2px(3.33f);
     private VideoPlayerWrapperView mVideoView;
     private BaseImageView mCoverIv;
-    protected VideoPlayerPresenter mVideoPresenter;
+    private ImageView mVolumeIv;
 
     private String mVideoUrl;
     private String mCoverUrl;
@@ -46,7 +47,6 @@ public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrappe
     protected <T extends View> T $(int resId) {
         return (T) findViewById(resId);
     }
-
 
     private Runnable mVideoRunnable = new Runnable() {
         @Override
@@ -63,7 +63,10 @@ public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrappe
         }
         FrescoWorker.loadImage(mCoverIv,
                 ImageFactory.newHttpImage(mCoverUrl).setWidth(getWidth()).build());
-        postVideoRunnable();
+        //wifi play. others (no network or 4g,2g,3g) not play. show cover.
+        if (NetworkUtils.isWifi(getContext())) {
+            postVideoRunnable();
+        }
     }
 
     public HeaderVideoView(Context context) {
@@ -84,17 +87,21 @@ public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrappe
         //view group's onDraw does not execute.
         setWillNotDraw(false);
         mVideoView = $(R.id.video_player_view);
+        mVideoView.setOuterCallBack(this);
         mCoverIv = $(R.id.player_bg_iv);
-
+        mVolumeIv = $(R.id.volume_iv);
+        mVolumeIv.setSelected(false);
+        mVolumeIv.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mVolumeIv.setSelected(!mVolumeIv.isSelected());
+                mVideoView.mute(!mVolumeIv.isSelected());
+            }
+        });
         mPath = new Path();
     }
 
     public void startVideo() {
-        if (mVideoPresenter == null) {
-            mVideoPresenter = mVideoView.getVideoPlayerPresenter();
-            mVideoPresenter.setNeedReset(false);
-            mVideoView.setOuterCallBack(this);
-        }
         setVideoPath(mVideoUrl);
     }
 
@@ -102,20 +109,18 @@ public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrappe
         if (TextUtils.isEmpty(videoUrl)) {
             return;
         }
-        mVideoPresenter.setVideoPath(videoUrl, Uri.parse(videoUrl).getHost());
-        mVideoPresenter.setVolume(0, 0);
+        mVideoView.play(videoUrl);
+        mVideoView.mute(true);
     }
 
     public void stopVideo() {
         MyLog.v(TAG, "stopVideo");
-        if (mVideoPresenter != null) {
-            mVideoPresenter.release();
-        }
+        mVideoView.release();
     }
 
     public void postVideoRunnable() {
         mUIHandler.removeCallbacks(mVideoRunnable);
-        mUIHandler.postDelayed(mVideoRunnable, 2000);
+        mUIHandler.postDelayed(mVideoRunnable, 1000);
     }
 
     public void removeVideoRunnable() {
@@ -171,5 +176,4 @@ public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrappe
         MyLog.e(TAG, "onError errCode=" + errCode);
         postVideoRunnable();
     }
-
 }
