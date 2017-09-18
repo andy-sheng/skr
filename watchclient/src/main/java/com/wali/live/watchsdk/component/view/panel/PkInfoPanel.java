@@ -140,7 +140,7 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
             mScoreAreaView.setBackgroundResource(R.drawable.score_area_bg);
         } else {
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            layoutParams.bottomMargin = DisplayUtils.dip2px(240f);
+            layoutParams.bottomMargin = DisplayUtils.dip2px(220f);
             mScoreAreaView.setBackgroundColor(mBackgroundColor);
         }
         mContentView.setLayoutParams(layoutParams);

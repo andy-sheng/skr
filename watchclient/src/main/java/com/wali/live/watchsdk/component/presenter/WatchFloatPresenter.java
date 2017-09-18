@@ -55,6 +55,7 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
         public void run() {
             PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
             if (presenter != null && presenter.isShow() && !presenter.isResulting()) {
+                mController.postEvent(MSG_ON_PK_STOP);
                 presenter.stopPresenter();
             }
         }
@@ -179,6 +180,9 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
                 return true;
             }
             case MSG_ON_PK_STOP: {
+                if (params == null) {
+                    break;
+                }
                 BarrageMsgExt.PkEndInfo pkEndInfo = params.getItem(0);
                 PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
                 if (pkEndInfo != null && presenter != null) {
