@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/close_btn"
         android:layout_marginEnd="@dimen/margin_20"
-        android:layout_marginStart="@dimen/margin_20" />
+        android:layout_marginStart="@dimen/margin_20"/>
 
     <!--评论栏-->
     <com.wali.live.watchsdk.component.view.LiveCommentView
@@ -48,8 +48,8 @@
         android:id="@+id/widget_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/live_comment_view"
-        android:layout_below="@id/top_area_view" />
+        android:layout_above="@+id/input_area_view"
+        android:layout_below="@id/top_area_view"/>
 
     <!--游戏模式 输入框与弹幕 改为在代码中动态添加，见WatchSdkView-->
     <ViewStub

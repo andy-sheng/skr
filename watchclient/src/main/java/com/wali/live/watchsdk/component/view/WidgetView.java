@@ -31,6 +31,7 @@ public class WidgetView extends RelativeLayout
 
     private static final int PADDING = DisplayUtils.dip2px(10f);
     private static final int PADDING_LANDSCAPE_RIGHT = DisplayUtils.dip2px(46.67f);
+    private static final int PADDING_PORTRAIT_BOTTOM = DisplayUtils.dip2px(100f);
 
     @Nullable
     protected IPresenter mPresenter;
@@ -81,7 +82,7 @@ public class WidgetView extends RelativeLayout
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.widget_view, this);
-        setPadding(PADDING, PADDING >> 1, PADDING, PADDING >> 1);
+        setPadding(PADDING, PADDING >> 1, PADDING, PADDING_PORTRAIT_BOTTOM);
     }
 
     private void showWidgetView(@NonNull List<LiveCommonProto.NewWidgetItem> list) {
@@ -213,13 +214,8 @@ public class WidgetView extends RelativeLayout
     private void onOrientation(boolean isLandscape) {
         if (isLandscape) {
             setPadding(PADDING, PADDING >> 1, PADDING_LANDSCAPE_RIGHT, PADDING >> 1);
-            LayoutParams lp = (LayoutParams) getLayoutParams();
-            lp.addRule(RelativeLayout.ABOVE, R.id.input_area_view);
         } else {
-            setPadding(PADDING, PADDING >> 1, PADDING, PADDING >> 1);
-
-            LayoutParams lp = (LayoutParams) getLayoutParams();
-            lp.addRule(RelativeLayout.ABOVE, R.id.live_comment_view);
+            setPadding(PADDING, PADDING >> 1, PADDING, PADDING_PORTRAIT_BOTTOM);
         }
     }
 
