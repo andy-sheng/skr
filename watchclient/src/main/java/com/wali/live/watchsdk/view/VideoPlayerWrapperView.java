@@ -43,6 +43,9 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         public void onCompletion() {
             MyLog.v(TAG, "onCompletion");
             mIsCompletion = true;
+            if (mOuterCallBack != null) {
+                mOuterCallBack.onCompletion();
+            }
         }
 
         @Override
