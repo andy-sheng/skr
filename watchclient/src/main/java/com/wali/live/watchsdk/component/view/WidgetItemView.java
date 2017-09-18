@@ -162,6 +162,9 @@ public class WidgetItemView extends LinearLayout {
         }
         if (info.hasClickItem()) {
             LiveCommonProto.ClickItem click = info.getClickItem();
+            if (click.hasClickImageUrl()) {
+                mSupportWv.setPic(click.getClickWaitingImageUrl(), click.getClickImageUrl());
+            }
             if (click.hasPkInterval()) {
                 mSupportWv.setTotalTime(click.getPkInterval());
             } else if (click.hasClickInterval()) {
