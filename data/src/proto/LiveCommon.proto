@@ -87,6 +87,7 @@ message ClickItem {
     optional string clickWaitingImageUrl = 5; //点击按钮等待背景图
     optional string warningText = 6; //未到时间点击显示的提示文本
     optional string pushSendSuccText = 7;//成功发出后显示的提示文本
+    optional uint32 pkInterval = 8; //pk间隔,单位:秒, 默认30s
 }
 
 message NewWidgetUnit {

@@ -9426,6 +9426,23 @@ public final class LiveCommonProto {
      */
     com.google.protobuf.ByteString
         getPushSendSuccTextBytes();
+
+    /**
+     * <code>optional uint32 pkInterval = 8;</code>
+     *
+     * <pre>
+     *pk间隔,单位:秒, 默认30s
+     * </pre>
+     */
+    boolean hasPkInterval();
+    /**
+     * <code>optional uint32 pkInterval = 8;</code>
+     *
+     * <pre>
+     *pk间隔,单位:秒, 默认30s
+     * </pre>
+     */
+    int getPkInterval();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.ClickItem}
@@ -9516,6 +9533,11 @@ public final class LiveCommonProto {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
               pushSendSuccText_ = bs;
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000080;
+              pkInterval_ = input.readUInt32();
               break;
             }
           }
@@ -9843,6 +9865,29 @@ public final class LiveCommonProto {
       }
     }
 
+    public static final int PKINTERVAL_FIELD_NUMBER = 8;
+    private int pkInterval_;
+    /**
+     * <code>optional uint32 pkInterval = 8;</code>
+     *
+     * <pre>
+     *pk间隔,单位:秒, 默认30s
+     * </pre>
+     */
+    public boolean hasPkInterval() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional uint32 pkInterval = 8;</code>
+     *
+     * <pre>
+     *pk间隔,单位:秒, 默认30s
+     * </pre>
+     */
+    public int getPkInterval() {
+      return pkInterval_;
+    }
+
     private void initFields() {
       clickType_ = 0;
       clickImageUrl_ = "";
@@ -9851,6 +9896,7 @@ public final class LiveCommonProto {
       clickWaitingImageUrl_ = "";
       warningText_ = "";
       pushSendSuccText_ = "";
+      pkInterval_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -9890,6 +9936,9 @@ public final class LiveCommonProto {
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeBytes(7, getPushSendSuccTextBytes());
       }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeUInt32(8, pkInterval_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -9926,6 +9975,10 @@ public final class LiveCommonProto {
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(7, getPushSendSuccTextBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(8, pkInterval_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -10058,6 +10111,8 @@ public final class LiveCommonProto {
         bitField0_ = (bitField0_ & ~0x00000020);
         pushSendSuccText_ = "";
         bitField0_ = (bitField0_ & ~0x00000040);
+        pkInterval_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -10114,6 +10169,10 @@ public final class LiveCommonProto {
           to_bitField0_ |= 0x00000040;
         }
         result.pushSendSuccText_ = pushSendSuccText_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.pkInterval_ = pkInterval_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -10158,6 +10217,9 @@ public final class LiveCommonProto {
           bitField0_ |= 0x00000040;
           pushSendSuccText_ = other.pushSendSuccText_;
           onChanged();
+        }
+        if (other.hasPkInterval()) {
+          setPkInterval(other.getPkInterval());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -10730,6 +10792,54 @@ public final class LiveCommonProto {
   }
   bitField0_ |= 0x00000040;
         pushSendSuccText_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int pkInterval_ ;
+      /**
+       * <code>optional uint32 pkInterval = 8;</code>
+       *
+       * <pre>
+       *pk间隔,单位:秒, 默认30s
+       * </pre>
+       */
+      public boolean hasPkInterval() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional uint32 pkInterval = 8;</code>
+       *
+       * <pre>
+       *pk间隔,单位:秒, 默认30s
+       * </pre>
+       */
+      public int getPkInterval() {
+        return pkInterval_;
+      }
+      /**
+       * <code>optional uint32 pkInterval = 8;</code>
+       *
+       * <pre>
+       *pk间隔,单位:秒, 默认30s
+       * </pre>
+       */
+      public Builder setPkInterval(int value) {
+        bitField0_ |= 0x00000080;
+        pkInterval_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 pkInterval = 8;</code>
+       *
+       * <pre>
+       *pk间隔,单位:秒, 默认30s
+       * </pre>
+       */
+      public Builder clearPkInterval() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        pkInterval_ = 0;
         onChanged();
         return this;
       }
@@ -22322,51 +22432,52 @@ public final class LiveCommonProto {
       "ounterText\030\002 \001(\t\0223\n\ttextColor\030\003 \001(\0132 .co" +
       "m.wali.live.proto.ColorConfig\0227\n\rtextEdg" +
       "eColor\030\004 \001(\0132 .com.wali.live.proto.Color" +
-      "Config\022\016\n\006isBold\030\005 \001(\010\"\251\001\n\tClickItem\022\021\n\t" +
+      "Config\022\016\n\006isBold\030\005 \001(\010\"\275\001\n\tClickItem\022\021\n\t" +
       "clickType\030\001 \002(\r\022\025\n\rclickImageUrl\030\002 \001(\t\022\025" +
       "\n\rclickInterval\030\003 \001(\r\022\016\n\006giftId\030\004 \001(\r\022\034\n" +
       "\024clickWaitingImageUrl\030\005 \001(\t\022\023\n\013warningTe" +
-      "xt\030\006 \001(\t\022\030\n\020pushSendSuccText\030\007 \001(\t\"\370\001\n\rN" +
-      "ewWidgetUnit\022\020\n\010link_url\030\001 \001(\t\022\014\n\004icon\030\002",
-      " \001(\t\022\014\n\004text\030\003 \001(\t\0223\n\ttextColor\030\004 \001(\0132 ." +
-      "com.wali.live.proto.ColorConfig\022\024\n\014urlNe" +
-      "edParam\030\005 \001(\010\022\024\n\014schemaPrefix\030\006 \001(\t\022\025\n\rs" +
-      "chemaPostfix\030\007 \001(\t\022\020\n\010openType\030\010 \001(\r\022/\n\010" +
-      "h5Config\030\t \001(\0132\035.com.wali.live.proto.H5C" +
-      "onfig\"\031\n\010H5Config\022\r\n\005h5Url\030\001 \001(\t\"\377\001\n\rNew" +
-      "WidgetItem\022\020\n\010widgetID\030\001 \002(\r\022\020\n\010position" +
-      "\030\002 \002(\r\022\023\n\013displayType\030\003 \001(\r\0226\n\nwidgetUin" +
-      "t\030\004 \003(\0132\".com.wali.live.proto.NewWidgetU" +
-      "nit\022\023\n\013displayTime\030\005 \001(\r\0225\n\013counterItem\030",
-      "\006 \001(\0132 .com.wali.live.proto.CounterItem\022" +
-      "1\n\tclickItem\030\007 \001(\0132\036.com.wali.live.proto" +
-      ".ClickItem\"]\n\rNewWidgetInfo\0226\n\nwidgetIte" +
-      "m\030\001 \003(\0132\".com.wali.live.proto.NewWidgetI" +
-      "tem\022\024\n\014pullInterval\030\002 \001(\r\"\'\n\016ShoppingCon" +
-      "fig\022\025\n\tshop_type\030\001 \002(\005:\002-1\"\300\001\n\016RoomIconC" +
-      "onfig\022\r\n\005noMic\030\001 \001(\010\022\r\n\005noPic\030\002 \001(\010\022\017\n\007n" +
-      "oVideo\030\003 \001(\010\022\032\n\022noScreenProjection\030\004 \001(\010" +
-      "\022\024\n\014noAtmosphere\030\005 \001(\010\022\017\n\007noMusic\030\006 \001(\010\022" +
-      "\022\n\nnoEmoticon\030\007 \001(\010\022\021\n\tnoHongBao\030\010 \001(\010\022\025",
-      "\n\rnoConsumeTask\030\t \001(\010\";\n\021WidgetCounterPu" +
-      "sh\022\020\n\010widgetID\030\001 \002(\r\022\024\n\014counterValue\030\002 \001" +
-      "(\003\"[\n\nViewerPush\022+\n\006viewer\030\001 \002(\0132\033.com.w" +
-      "ali.live.proto.Viewer\022\r\n\005leave\030\002 \001(\010\022\021\n\t" +
-      "viewerCnt\030\003 \001(\r\"(\n\nLevelRange\022\r\n\005start\030\001" +
-      " \001(\r\022\013\n\003end\030\002 \001(\r\"Y\n\027JoinRoomAnimationCo" +
-      "nfig\022>\n\020animation_config\030\001 \003(\0132$.com.wal" +
-      "i.live.proto.AnimationConfig\"X\n\026UpgradeA" +
-      "nimationConfig\022>\n\020animation_config\030\001 \003(\013" +
-      "2$.com.wali.live.proto.AnimationConfig\"a",
-      "\n\017AnimationConfig\022\030\n\020animation_effect\030\001 " +
-      "\001(\r\0224\n\013level_range\030\002 \001(\0132\037.com.wali.live" +
-      ".proto.LevelRange\"\317\001\n\023RoomAnimationConfi" +
-      "g\022P\n\032join_room_animation_config\030\001 \001(\0132,." +
-      "com.wali.live.proto.JoinRoomAnimationCon" +
-      "fig\022M\n\030upgrade_animation_config\030\002 \001(\0132+." +
-      "com.wali.live.proto.UpgradeAnimationConf" +
-      "ig\022\027\n\017noJoinAnimation\030\003 \001(\rB&\n\023com.wali." +
-      "live.protoB\017LiveCommonProto"
+      "xt\030\006 \001(\t\022\030\n\020pushSendSuccText\030\007 \001(\t\022\022\n\npk" +
+      "Interval\030\010 \001(\r\"\370\001\n\rNewWidgetUnit\022\020\n\010link",
+      "_url\030\001 \001(\t\022\014\n\004icon\030\002 \001(\t\022\014\n\004text\030\003 \001(\t\0223" +
+      "\n\ttextColor\030\004 \001(\0132 .com.wali.live.proto." +
+      "ColorConfig\022\024\n\014urlNeedParam\030\005 \001(\010\022\024\n\014sch" +
+      "emaPrefix\030\006 \001(\t\022\025\n\rschemaPostfix\030\007 \001(\t\022\020" +
+      "\n\010openType\030\010 \001(\r\022/\n\010h5Config\030\t \001(\0132\035.com" +
+      ".wali.live.proto.H5Config\"\031\n\010H5Config\022\r\n" +
+      "\005h5Url\030\001 \001(\t\"\377\001\n\rNewWidgetItem\022\020\n\010widget" +
+      "ID\030\001 \002(\r\022\020\n\010position\030\002 \002(\r\022\023\n\013displayTyp" +
+      "e\030\003 \001(\r\0226\n\nwidgetUint\030\004 \003(\0132\".com.wali.l" +
+      "ive.proto.NewWidgetUnit\022\023\n\013displayTime\030\005",
+      " \001(\r\0225\n\013counterItem\030\006 \001(\0132 .com.wali.liv" +
+      "e.proto.CounterItem\0221\n\tclickItem\030\007 \001(\0132\036" +
+      ".com.wali.live.proto.ClickItem\"]\n\rNewWid" +
+      "getInfo\0226\n\nwidgetItem\030\001 \003(\0132\".com.wali.l" +
+      "ive.proto.NewWidgetItem\022\024\n\014pullInterval\030" +
+      "\002 \001(\r\"\'\n\016ShoppingConfig\022\025\n\tshop_type\030\001 \002" +
+      "(\005:\002-1\"\300\001\n\016RoomIconConfig\022\r\n\005noMic\030\001 \001(\010" +
+      "\022\r\n\005noPic\030\002 \001(\010\022\017\n\007noVideo\030\003 \001(\010\022\032\n\022noSc" +
+      "reenProjection\030\004 \001(\010\022\024\n\014noAtmosphere\030\005 \001" +
+      "(\010\022\017\n\007noMusic\030\006 \001(\010\022\022\n\nnoEmoticon\030\007 \001(\010\022",
+      "\021\n\tnoHongBao\030\010 \001(\010\022\025\n\rnoConsumeTask\030\t \001(" +
+      "\010\";\n\021WidgetCounterPush\022\020\n\010widgetID\030\001 \002(\r" +
+      "\022\024\n\014counterValue\030\002 \001(\003\"[\n\nViewerPush\022+\n\006" +
+      "viewer\030\001 \002(\0132\033.com.wali.live.proto.Viewe" +
+      "r\022\r\n\005leave\030\002 \001(\010\022\021\n\tviewerCnt\030\003 \001(\r\"(\n\nL" +
+      "evelRange\022\r\n\005start\030\001 \001(\r\022\013\n\003end\030\002 \001(\r\"Y\n" +
+      "\027JoinRoomAnimationConfig\022>\n\020animation_co" +
+      "nfig\030\001 \003(\0132$.com.wali.live.proto.Animati" +
+      "onConfig\"X\n\026UpgradeAnimationConfig\022>\n\020an" +
+      "imation_config\030\001 \003(\0132$.com.wali.live.pro",
+      "to.AnimationConfig\"a\n\017AnimationConfig\022\030\n" +
+      "\020animation_effect\030\001 \001(\r\0224\n\013level_range\030\002" +
+      " \001(\0132\037.com.wali.live.proto.LevelRange\"\317\001" +
+      "\n\023RoomAnimationConfig\022P\n\032join_room_anima" +
+      "tion_config\030\001 \001(\0132,.com.wali.live.proto." +
+      "JoinRoomAnimationConfig\022M\n\030upgrade_anima" +
+      "tion_config\030\002 \001(\0132+.com.wali.live.proto." +
+      "UpgradeAnimationConfig\022\027\n\017noJoinAnimatio" +
+      "n\030\003 \001(\rB&\n\023com.wali.live.protoB\017LiveComm" +
+      "onProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -22451,7 +22562,7 @@ public final class LiveCommonProto {
     internal_static_com_wali_live_proto_ClickItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ClickItem_descriptor,
-        new java.lang.String[] { "ClickType", "ClickImageUrl", "ClickInterval", "GiftId", "ClickWaitingImageUrl", "WarningText", "PushSendSuccText", });
+        new java.lang.String[] { "ClickType", "ClickImageUrl", "ClickInterval", "GiftId", "ClickWaitingImageUrl", "WarningText", "PushSendSuccText", "PkInterval", });
     internal_static_com_wali_live_proto_NewWidgetUnit_descriptor =
       getDescriptor().getMessageTypes().get(12);
     internal_static_com_wali_live_proto_NewWidgetUnit_fieldAccessorTable = new
