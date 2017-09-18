@@ -121,6 +121,7 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
         mProgressAreaView = $(R.id.progress_area);
         mPkTypeView = $(R.id.pk_type);
         mProgressTimerView = $(R.id.progress_timer);
+        
         mAnchorLeft = $(R.id.anchor_1);
         mAnchorRight = $(R.id.anchor_2);
         mTicketLeft = $(R.id.ticket_1);
