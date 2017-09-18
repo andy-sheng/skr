@@ -44,8 +44,8 @@ public class RoundRectangleTextView extends AppCompatTextView {
 
         mPaint = new Paint();
         mPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-        mRectF = new RectF(DisplayUtils.dip2px(-19.66f), DisplayUtils.dip2px(40),
-                DisplayUtils.dip2px(19.66f), DisplayUtils.dip2px(54.66f));
+        mRectF = new RectF(DisplayUtils.dip2px(-23f), DisplayUtils.dip2px(1),
+                DisplayUtils.dip2px(23f), DisplayUtils.dip2px(15.66f));
     }
 
     public void setRectangleColor(int color) {
@@ -62,16 +62,17 @@ public class RoundRectangleTextView extends AppCompatTextView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.translate(width / 2.0f, 0);
+        canvas.translate(width / 2.0f, 3);
         mPaint.setColor(mRectangleColor);
         mPaint.setStyle(Paint.Style.FILL);
         canvas.drawRoundRect(mRectF, 100, 100, mPaint);
 
         mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setStrokeWidth(3f);
         mPaint.setColor(Color.WHITE);
         canvas.drawRoundRect(mRectF, 100, 100, mPaint);
 
-        canvas.translate(-width / 2.0f, 0);
+        canvas.translate(-width / 2.0f, 3);
         super.onDraw(canvas);
     }
 }

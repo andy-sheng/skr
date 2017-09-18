@@ -11,10 +11,10 @@ import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.CommonUtils;
-import com.wali.live.cta.CTANotifyFragment;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.callback.SecureCommonCallBack;
+import com.wali.live.watchsdk.cta.CTANotifyFragment;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.scheme.processor.SchemeProcessor;
 import com.wali.live.watchsdk.scheme.processor.WaliliveProcessor;
@@ -57,8 +57,7 @@ public class SchemeSdkActivity extends BaseSdkActivity {
                 }
 
                 @Override
-                public void onClickConfirmButton(boolean neverShow) {
-                    PreferenceUtils.setSettingBoolean(SchemeSdkActivity.this, PreferenceUtils.PREF_KEY_NEED_SHOW_CTA, !neverShow);
+                public void onClickConfirmButton() {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {

@@ -8,7 +8,9 @@ import android.support.annotation.NonNull;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.thread.ThreadPool;
+import com.base.utils.CommonUtils;
 import com.base.utils.Constants;
+import com.base.utils.channel.ReleaseChannelUtils;
 import com.base.utils.language.LocaleUtil;
 import com.base.utils.sdcard.SDCardUtils;
 import com.base.utils.version.VersionManager;
@@ -28,6 +30,7 @@ import com.wali.live.utils.ReplayBarrageMessageManager;
 import com.wali.live.watchsdk.fresco.FrescoManager;
 import com.wali.live.watchsdk.log.LogHandler;
 import com.wali.live.watchsdk.service.PacketProcessService;
+import com.xsj.crasheye.Crasheye;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -39,13 +42,14 @@ import java.util.List;
 public class InitManager {
     private static final String TAG = InitManager.class.getSimpleName();
 
+    private static boolean sHasInitForCoreProces = false;
+
     private static String sPackageName;
     private static String sRemoteProcessName;
     private static String LOGTAG = "WatchSdk";
 
     public static void init(@NonNull Application application, RefWatcher refWatcher) {
         GlobalData.setApplication(application, refWatcher);
-
         sPackageName = application.getPackageName();
         sRemoteProcessName = sPackageName + ":remote";
 
@@ -68,11 +72,16 @@ public class InitManager {
                 }
             }
         }
-
         MyLog.d(TAG, "onCreate isRemoteProcess=" + isRemoteProcess);
         Global.init(application, getClientAppInfo());
-
         if (isCoreProcess) {
+            initForCoreProcess(application);
+        }
+    }
+
+
+    public static void initForCoreProcess(Application application) {
+        if (!sHasInitForCoreProces && !CommonUtils.isNeedShowCtaDialog()) {
             LOGTAG = "WatchSdk_" + sPackageName;
             MyLog.d(TAG, "onCreate coreProcess: " + sPackageName);
             FrescoManager.initFresco(application);
@@ -84,6 +93,7 @@ public class InitManager {
             initLibrary();
             initMiLinkPacketHandler();
             registerAllEventBus();
+            initCrasheye();
             ThreadPool.runOnWorker(new Runnable() {
                 @Override
                 public void run() {
@@ -91,6 +101,7 @@ public class InitManager {
                     SDCardUtils.generateDirectory();
                 }
             });
+            sHasInitForCoreProces = true;
         }
     }
 
@@ -172,5 +183,12 @@ public class InitManager {
         }
 
         MiLinkClientAdapter.getsInstance().setMilinkLogLevel(logLevel);
+    }
+
+    private static void initCrasheye() {
+        Crasheye.init(GlobalData.app(), Constants.CRASHEYE_APPID);
+        Crasheye.setChannelID(ReleaseChannelUtils.getReleaseChannel());
+        // 这里还没有登录，在UserAccountManager登录后初始化
+        // Crasheye.setUserIdentifier(UserAccountManager.getInstance().getUuid());
     }
 }
