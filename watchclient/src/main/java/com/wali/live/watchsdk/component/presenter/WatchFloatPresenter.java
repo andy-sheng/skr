@@ -93,6 +93,7 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
         registerAction(MSG_ON_LINK_MIC_START);
         registerAction(MSG_ON_LINK_MIC_STOP);
         registerAction(MSG_ON_PK_START);
+        registerAction(MSG_ON_PK_STOP);
     }
 
     @Override
