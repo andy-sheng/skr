@@ -175,7 +175,7 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
         if (mRoomPreparePresenter != null) {
             mRoomPreparePresenter.loadManager();
             mRoomPreparePresenter.loadTitle();
-            mRoomPreparePresenter.loadDailyTask();
+            mRoomPreparePresenter.loadDailyTask(mMyRoomData.getLiveType());
         }
     }
 
