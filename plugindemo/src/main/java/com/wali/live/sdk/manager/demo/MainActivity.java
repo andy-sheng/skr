@@ -23,6 +23,7 @@ import com.wali.live.sdk.manager.demo.global.GlobalData;
 import com.wali.live.sdk.manager.demo.notification.NotificationManger;
 import com.wali.live.sdk.manager.demo.utils.StringUtils;
 import com.wali.live.sdk.manager.demo.utils.ToastUtils;
+import com.wali.live.sdk.manager.global.SdkGlobalData;
 import com.wali.live.watchsdk.ipc.service.ShareInfo;
 
 public class MainActivity extends AppCompatActivity {
@@ -107,8 +108,9 @@ public class MainActivity extends AppCompatActivity {
         mMenuRecyclerAdapter = new MenuRecyclerAdapter(this, mSdkUpdateHelper);
         mRecyclerView.setAdapter(mMenuRecyclerAdapter);
         GlobalData.setApplication(this.getApplication());
+        SdkGlobalData.setApplication(this.getApplication());
         //建议在 application里初始化这个
-        MiLiveSdkController.getInstance().init(this.getApplication(), CHANNEL_ID, "TEST SECRET", new IMiLiveSdk.CallbackWrapper() {
+        MiLiveSdkController.getInstance().init(CHANNEL_ID, "TEST SECRET", new IMiLiveSdk.CallbackWrapper() {
             @Override
             public void notifyServiceNull(int aidlFlag) {
                 ToastUtils.showToast("notifyServiceNull aidlFlag=" + aidlFlag);

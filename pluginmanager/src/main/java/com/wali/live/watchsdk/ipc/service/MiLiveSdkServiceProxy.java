@@ -11,7 +11,7 @@ import android.text.TextUtils;
 
 import com.wali.live.sdk.manager.IMiLiveSdk;
 import com.wali.live.sdk.manager.MiLiveSdkController;
-import com.wali.live.sdk.manager.global.GlobalData;
+import com.wali.live.sdk.manager.global.SdkGlobalData;
 import com.wali.live.sdk.manager.log.Logger;
 import com.wali.live.sdk.manager.version.VersionCheckManager;
 
@@ -139,11 +139,11 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
     private void bindService() {
         Logger.w(TAG, "bindService " + mIntent);
-        GlobalData.app().bindService(mIntent, this, Context.BIND_AUTO_CREATE);
+        SdkGlobalData.app().bindService(mIntent, this, Context.BIND_AUTO_CREATE);
     }
 
     private void stopService() {
-        GlobalData.app().stopService(mIntent);
+        SdkGlobalData.app().stopService(mIntent);
         mRemoteService = null;
     }
 
@@ -159,7 +159,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             if (!TextUtils.isEmpty(mServiceToken)) {
                 mRemoteService.loginByMiAccountSso(
                         MiLiveSdkController.getInstance().getChannelId(),
-                        GlobalData.app().getPackageName(),
+                        SdkGlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret(),
                         mMiId, mServiceToken);
                 mServiceToken = "";
@@ -167,7 +167,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             if (!TextUtils.isEmpty(mAuthCode)) {
                 mRemoteService.loginByMiAccountOAuth(
                         MiLiveSdkController.getInstance().getChannelId(),
-                        GlobalData.app().getPackageName(),
+                        SdkGlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret(),
                         mAuthCode);
                 mAuthCode = "";
@@ -175,12 +175,12 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             if (mClearAccountFlag) {
                 mRemoteService.clearAccount(
                         MiLiveSdkController.getInstance().getChannelId(),
-                        GlobalData.app().getPackageName(),
+                        SdkGlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret());
                 mClearAccountFlag = false;
             }
             if (mThirdPartLoginData != null) {
-                mRemoteService.thirdPartLogin(GlobalData.app().getPackageName(), MiLiveSdkController.getInstance().getChannelSecret(), mThirdPartLoginData);
+                mRemoteService.thirdPartLogin(SdkGlobalData.app().getPackageName(), MiLiveSdkController.getInstance().getChannelSecret(), mThirdPartLoginData);
                 mThirdPartLoginData = null;
             }
             if (mStatisticsKey != null) {
@@ -217,7 +217,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             try {
                 mRemoteService.loginByMiAccountOAuth(
                         MiLiveSdkController.getInstance().getChannelId(),
-                        GlobalData.app().getPackageName(),
+                        SdkGlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret(),
                         authCode);
             } catch (RemoteException e) {
@@ -237,7 +237,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             try {
                 mRemoteService.loginByMiAccountSso(
                         MiLiveSdkController.getInstance().getChannelId(),
-                        GlobalData.app().getPackageName(),
+                        SdkGlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret(),
                         miid, serviceToken);
             } catch (RemoteException e) {
@@ -256,7 +256,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             resolveNullService(IMiLiveSdk.ICallback.THIRD_PART_LOGIN);
         } else {
             try {
-                mRemoteService.thirdPartLogin(GlobalData.app().getPackageName(), MiLiveSdkController.getInstance().getChannelSecret(), data);
+                mRemoteService.thirdPartLogin(SdkGlobalData.app().getPackageName(), MiLiveSdkController.getInstance().getChannelSecret(), data);
             } catch (RemoteException e) {
                 mThirdPartLoginData = data;
                 resolveException(e, IMiLiveSdk.ICallback.LOGIN_SSO_AIDL);
@@ -275,7 +275,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             resolveNullService(IMiLiveSdk.ICallback.GET_CHANNEL_LIVES);
         } else {
             try {
-                mRemoteService.getChannelLives(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
+                mRemoteService.getChannelLives(MiLiveSdkController.getInstance().getChannelId(), SdkGlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret());
             } catch (RemoteException e) {
                 resolveException(e, IMiLiveSdk.ICallback.GET_CHANNEL_LIVES);
@@ -294,7 +294,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             resolveNullService(IMiLiveSdk.ICallback.GET_FOLLOWING_USERS);
         } else {
             try {
-                mRemoteService.getFollowingUserList(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
+                mRemoteService.getFollowingUserList(MiLiveSdkController.getInstance().getChannelId(), SdkGlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret(), isBothWay, timeStamp);
             } catch (RemoteException e) {
                 resolveException(e, IMiLiveSdk.ICallback.GET_FOLLOWING_USERS);
@@ -313,7 +313,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             resolveNullService(IMiLiveSdk.ICallback.GET_FOLLOWING_LIVES);
         } else {
             try {
-                mRemoteService.getFollowingLiveList(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
+                mRemoteService.getFollowingLiveList(MiLiveSdkController.getInstance().getChannelId(), SdkGlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret());
             } catch (RemoteException e) {
                 resolveException(e, IMiLiveSdk.ICallback.GET_FOLLOWING_LIVES);
@@ -327,7 +327,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             resolveNullService(IMiLiveSdk.ICallback.NOTIFY_SHARE_AIDL);
         } else {
             try {
-                mRemoteService.notifyShare(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
+                mRemoteService.notifyShare(MiLiveSdkController.getInstance().getChannelId(), SdkGlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret(), success, type);
             } catch (RemoteException e) {
                 resolveException(e, IMiLiveSdk.ICallback.NOTIFY_SHARE_AIDL);
@@ -345,7 +345,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             try {
                 mRemoteService.clearAccount(
                         MiLiveSdkController.getInstance().getChannelId(),
-                        GlobalData.app().getPackageName(),
+                        SdkGlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret());
             } catch (RemoteException e) {
                 mClearAccountFlag = true;
