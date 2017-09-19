@@ -6,22 +6,23 @@ import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.base.activity.BaseSdkActivity;
 import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
+import com.base.presenter.RxLifeCyclePresenter;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.network.NetworkUtils;
-import com.mi.live.engine.player.widget.VideoPlayerPresenter;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.view.VideoPlayerWrapperView;
 
@@ -38,8 +39,11 @@ public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrappe
 
     private String mVideoUrl;
     private String mCoverUrl;
+    private long mCurTs = 0l;        //标记播放到的时间戳
+    private boolean mIsSilent = true;    // true : 静音  false:有声音
 
     private Handler mUIHandler = new Handler(Looper.getMainLooper());
+    private HeaderVideoPresenter mHeaderVideoPresenter;
 
     private Path mPath;
     private RectF mRectF;
@@ -56,15 +60,14 @@ public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrappe
     };
 
     public void setData(String videoUrl, String coverUrl) {
+        MyLog.w(TAG, "setData videoUrl=" + videoUrl + " coverUrl=" + coverUrl);
         mCoverUrl = coverUrl;
         mVideoUrl = videoUrl;
-        if (TextUtils.isEmpty(mVideoUrl) || TextUtils.isEmpty(mCoverUrl)) {
-            return;
-        }
+        mCoverIv.setVisibility(View.VISIBLE);
         FrescoWorker.loadImage(mCoverIv,
                 ImageFactory.newHttpImage(mCoverUrl).setWidth(getWidth()).build());
         //wifi play. others (no network or 4g,2g,3g) not play. show cover.
-        if (NetworkUtils.isWifi(getContext())) {
+        if (NetworkUtils.isWifi(getContext()) && !TextUtils.isEmpty(mVideoUrl)) {
             postVideoRunnable();
         }
     }
@@ -80,6 +83,7 @@ public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrappe
     public HeaderVideoView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context);
+        initData(context);
     }
 
     private void initView(Context context) {
@@ -90,15 +94,25 @@ public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrappe
         mVideoView.setOuterCallBack(this);
         mCoverIv = $(R.id.player_bg_iv);
         mVolumeIv = $(R.id.volume_iv);
-        mVolumeIv.setSelected(false);
         mVolumeIv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mVolumeIv.setSelected(!mVolumeIv.isSelected());
-                mVideoView.mute(!mVolumeIv.isSelected());
+                mIsSilent = !mVolumeIv.isSelected();
+                mVolumeIv.setSelected(mIsSilent);
+                mVideoView.mute(mIsSilent);
+
             }
         });
+    }
+
+    private void initData(Context context) {
         mPath = new Path();
+        mCurTs = 0l;
+        mIsSilent = true;
+        mHeaderVideoPresenter = new HeaderVideoPresenter(mVideoView);
+        if (context instanceof BaseSdkActivity) {
+            ((BaseSdkActivity) context).addPresent(mHeaderVideoPresenter);
+        }
     }
 
     public void startVideo() {
@@ -109,8 +123,23 @@ public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrappe
         if (TextUtils.isEmpty(videoUrl)) {
             return;
         }
-        mVideoView.play(videoUrl);
-        mVideoView.mute(true);
+        if (mCurTs > 0) {
+            resumeVideo();
+            mCoverIv.setVisibility(View.GONE);
+            mCurTs = 0;
+        } else {
+            mVideoView.play(videoUrl);
+        }
+        mVideoView.mute(mIsSilent);
+        mVolumeIv.setSelected(mIsSilent);
+    }
+
+    public void resumeVideo() {
+        mVideoView.resume();
+    }
+
+    public void pauseVideo() {
+        mVideoView.pause();
     }
 
     public void stopVideo() {
@@ -125,7 +154,7 @@ public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrappe
 
     public void removeVideoRunnable() {
         mUIHandler.removeCallbacks(mVideoRunnable);
-        stopVideo();
+        pauseVideo();
     }
 
     @Override
@@ -142,13 +171,12 @@ public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrappe
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        MyLog.e(TAG, "onAttachedToWindow");
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        MyLog.e(TAG, "onDetachedFromWindow");
+        mCurTs = mVideoView.getCurrentPosition();
         removeVideoRunnable();
     }
 
@@ -176,4 +204,24 @@ public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrappe
         MyLog.e(TAG, "onError errCode=" + errCode);
         postVideoRunnable();
     }
+
+    public static class HeaderVideoPresenter extends RxLifeCyclePresenter {
+        private static String TAG = "HeaderVideoPresenter";
+        @NonNull
+        private VideoPlayerWrapperView mVideoView;
+
+        public HeaderVideoPresenter(@NonNull VideoPlayerWrapperView videoView) {
+            mVideoView = videoView;
+        }
+
+        @Override
+        public void destroy() {
+            super.destroy();
+            if (mVideoView != null) {
+                MyLog.w(TAG, "destroy");
+                mVideoView.release();
+            }
+        }
+    }
+
 }

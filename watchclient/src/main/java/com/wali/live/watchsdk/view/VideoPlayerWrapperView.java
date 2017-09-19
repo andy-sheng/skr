@@ -34,6 +34,9 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         @Override
         public void onPrepared() {
             MyLog.v(TAG, "onPrepared");
+            if (mOuterCallBack != null) {
+                mOuterCallBack.onPrepared();
+            }
         }
 
         @Override
@@ -196,6 +199,14 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         }
     }
 
+    public long getCurrentPosition() {
+        return mVideoPlayerPresenter.getCurrentPosition();
+    }
+
+    public void seekTo(long ts) {
+        mVideoPlayerPresenter.seekTo(ts);
+    }
+
     private static class MyUIHandler extends Handler {
         private final WeakReference<VideoPlayerWrapperView> mWrapperViewWeakRef;
 
@@ -220,6 +231,7 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
             }
         }
     }
+
 
     public static class LoadLibraryException extends RuntimeException {
         public LoadLibraryException() {

@@ -16,13 +16,14 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/margin_8"/>
-    <!--@dimen/margin_168-->
-    <com.wali.live.watchsdk.channel.view.RoundRectangleTextView
+
+    <TextView
         android:id="@+id/circle_rectangle_tv"
-        android:layout_width="53dp"
-        android:layout_height="@dimen/margin_48"
+        android:layout_width="46dp"
+        android:layout_height="@dimen/margin_50"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_dimen_120"
+        android:gravity="center"
         android:textColor="@color/white"
         android:textSize="@dimen/margin_26"/>
 
