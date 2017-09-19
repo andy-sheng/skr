@@ -208,6 +208,7 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
             public void run() {
                 switch (msg.getMsgType()) {
                     case BarrageMsgType.B_MSG_TYPE_LINE_MIC_BEGIN: {
+                        MyLog.w(TAG, "B_MSG_TYPE_LINE_MIC_BEGIN");
                         BarrageMsgExt.MicBeginInfo micBeginInfo = (BarrageMsgExt.MicBeginInfo) msg.getMsgExt();
                         if (micBeginInfo != null) {
                             mController.postEvent(MSG_ON_LINK_MIC_START, new Params().putItem(micBeginInfo));
@@ -215,6 +216,7 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
                         break;
                     }
                     case BarrageMsgType.B_MSG_TYPE_LINE_MIC_END: {
+                        MyLog.w(TAG, "B_MSG_TYPE_LINE_MIC_END");
                         BarrageMsgExt.MicEndInfo micEndInfo = (BarrageMsgExt.MicEndInfo) msg.getMsgExt();
                         if (micEndInfo != null) {
                             mController.postEvent(MSG_ON_LINK_MIC_STOP, new Params().putItem(micEndInfo));
