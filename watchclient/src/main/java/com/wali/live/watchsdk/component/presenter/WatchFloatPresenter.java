@@ -239,7 +239,7 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
                         MyLog.w(TAG, "B_MSG_TYPE_NEW_PK_START");
                         BarrageMsgExt.PkStartInfo pkStartInfo = (BarrageMsgExt.PkStartInfo) msg.getMsgExt();
                         if (pkStartInfo != null) {
-                            showPkInfoPanel(pkStartInfo);
+                            mController.postEvent(MSG_ON_PK_START, new Params().putItem(pkStartInfo));
                         }
                         break;
                     }
