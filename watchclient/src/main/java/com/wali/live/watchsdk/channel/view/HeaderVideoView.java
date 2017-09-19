@@ -132,7 +132,7 @@ public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrappe
 
     private void startVideo() {
         mUIHandler.removeCallbacks(mVideoRunnable);
-        mUIHandler.postDelayed(mVideoRunnable, 1000);
+        mUIHandler.postDelayed(mVideoRunnable, 200);
     }
 
     private void resumeVideo() {
@@ -223,8 +223,8 @@ public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrappe
         @Override
         public void pause() {
             super.pause();
+            mUIHandler.removeCallbacks(mVideoRunnable);
             if (mPlayerState == PLAYER_PLAYING) {
-                mUIHandler.removeCallbacks(mVideoRunnable);
                 pauseVideo();
             }
         }
