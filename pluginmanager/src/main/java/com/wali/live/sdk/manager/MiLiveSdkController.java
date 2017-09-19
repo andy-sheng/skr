@@ -120,7 +120,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
         return sSdkController;
     }
 
-    public void init(Application app, int channelId, String channelSecret, ICallback callback) {
+    public void init(Application app, int channelId, String channelSecret, boolean isCta, ICallback callback) {
         GlobalData.setApplication(app);
         Logger.d(TAG, "init channelId=" + channelId);
         mChannelId = channelId;
@@ -128,7 +128,10 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mCallback = callback;
 
         getApkVersion();
-        checkForceUpdate();
+        // 如果网络通过，就检查升级
+        if (isCta) {
+            checkForceUpdate();
+        }
 
         MiLiveSdkServiceProxy.getInstance().setCallback(mCallback);
         checkHasInit();
