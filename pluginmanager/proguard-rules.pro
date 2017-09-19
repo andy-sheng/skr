@@ -49,7 +49,3 @@
 -keep class com.wali.live.sdk.manager.MiLiveSdkController{
     public *;
 }
-
--keep class com.wali.live.sdk.manager.global.SdkGlobalData{
-    public *;
-}

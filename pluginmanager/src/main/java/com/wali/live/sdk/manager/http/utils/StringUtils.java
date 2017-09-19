@@ -10,7 +10,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 
-import com.wali.live.sdk.manager.global.SdkGlobalData;
+import com.wali.live.sdk.manager.global.GlobalData;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -465,7 +465,7 @@ public class StringUtils {
     }
 
     public static String getString(int resId, String param) {
-        return SdkGlobalData.app().getApplicationContext().getString(resId, param);
+        return GlobalData.app().getApplicationContext().getString(resId, param);
     }
 
     // 当字符串为null时，处理成空串

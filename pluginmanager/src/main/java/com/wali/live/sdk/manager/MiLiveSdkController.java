@@ -1,6 +1,7 @@
 package com.wali.live.sdk.manager;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +12,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.mi.live.data.location.Location;
-import com.wali.live.sdk.manager.global.SdkGlobalData;
+import com.wali.live.sdk.manager.global.GlobalData;
 import com.wali.live.sdk.manager.http.HttpUtils;
 import com.wali.live.sdk.manager.http.SimpleRequest;
 import com.wali.live.sdk.manager.log.Logger;
@@ -119,7 +120,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
         return sSdkController;
     }
 
-    public void init(int channelId, String channelSecret, ICallback callback) {
+    public void init(Application app, int channelId, String channelSecret, ICallback callback) {
+        GlobalData.setApplication(app);
         Logger.d(TAG, "init channelId=" + channelId);
         mChannelId = channelId;
         mChannelSecret = channelSecret;
@@ -207,7 +209,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     private void saveForceCheckTime() {
-        SharedPreferences pref = SdkGlobalData.app().getApplicationContext()
+        SharedPreferences pref = GlobalData.app().getApplicationContext()
                 .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = pref.edit();
         ed.putLong(PREF_FORCE_CHECK_TIME, System.currentTimeMillis());
@@ -215,14 +217,14 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     private long getForceCheckTime() {
-        SharedPreferences pref = SdkGlobalData.app().getApplicationContext()
+        SharedPreferences pref = GlobalData.app().getApplicationContext()
                 .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         return pref.getLong(PREF_FORCE_CHECK_TIME, 0);
     }
 
     private void getApkVersion() {
         try {
-            PackageInfo packageInfo = SdkGlobalData.app().getPackageManager().getPackageInfo(
+            PackageInfo packageInfo = GlobalData.app().getPackageManager().getPackageInfo(
                     VersionCheckManager.PACKAGE_NAME, PackageManager.GET_META_DATA);
             mApkVersion = packageInfo.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
@@ -484,14 +486,17 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public boolean hasInstallLiveSdk() {
-        if (SdkGlobalData.app() == null) {
+    public boolean hasInstallLiveSdk(Application application) {
+        if (application == null) {
+            application = GlobalData.app();
+        }
+        if (application == null) {
             Logger.e(TAG, "hasInstallLiveSdk application is null");
             return false;
         }
         PackageInfo pInfo = null;
         try {
-            pInfo = SdkGlobalData.app().getPackageManager().getPackageInfo(
+            pInfo = application.getPackageManager().getPackageInfo(
                     VersionCheckManager.PACKAGE_NAME, PackageManager.GET_META_DATA);
         } catch (PackageManager.NameNotFoundException e) {
             Logger.e(TAG, e.getMessage());
@@ -524,7 +529,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private Bundle getBasicBundle() {
         Bundle bundle = new Bundle();
         bundle.putInt(EXTRA_CHANNEL_ID, mChannelId);
-        bundle.putString(EXTRA_PACKAGE_NAME, SdkGlobalData.app().getPackageName());
+        bundle.putString(EXTRA_PACKAGE_NAME, GlobalData.app().getPackageName());
         bundle.putString(EXTRA_CHANNEL_SECRET, mChannelSecret);
         if (mEnableShare) {
             bundle.putBoolean(EXTRA_ENABLE_SHARE, mEnableShare);
@@ -534,7 +539,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
     private boolean startActivity(Activity activity, Intent intent) {
         Logger.d(TAG, "start activity action=" + intent.getAction());
-        if (intent.resolveActivity(SdkGlobalData.app().getPackageManager()) != null) {
+        if (intent.resolveActivity(GlobalData.app().getPackageManager()) != null) {
             try {
                 activity.startActivity(intent);
                 return true;

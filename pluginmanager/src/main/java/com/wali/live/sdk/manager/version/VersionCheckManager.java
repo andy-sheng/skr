@@ -13,7 +13,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 
 import com.wali.live.sdk.manager.IMiLiveSdk;
-import com.wali.live.sdk.manager.global.SdkGlobalData;
+import com.wali.live.sdk.manager.global.GlobalData;
 import com.wali.live.sdk.manager.http.HttpUtils;
 import com.wali.live.sdk.manager.http.SimpleRequest;
 import com.wali.live.sdk.manager.http.bean.BasicNameValuePair;
@@ -121,7 +121,7 @@ public class VersionCheckManager {
         postBody.add(new BasicNameValuePair("channel", "DEFAULT")); // 渠道号
         postBody.add(new BasicNameValuePair("device", Build.MODEL));
 
-        int version = getCurrentVersion(SdkGlobalData.app().getApplicationContext());
+        int version = getCurrentVersion(GlobalData.app().getApplicationContext());
         version = (version == 0 ? 1 : version);
         postBody.add(new BasicNameValuePair("currentVersion", String.valueOf(version)));
         postBody.add(new BasicNameValuePair("language", "zh_CN"));
@@ -129,8 +129,8 @@ public class VersionCheckManager {
         postBody.add(new BasicNameValuePair("unique", miId));
 
         // 发送当前包的hash值
-        String packagePath = getPackagePath(SdkGlobalData.app().getApplicationContext());
-        String packageHash = getPackageHash(SdkGlobalData.app().getApplicationContext(), packagePath);
+        String packagePath = getPackagePath(GlobalData.app().getApplicationContext());
+        String packageHash = getPackageHash(GlobalData.app().getApplicationContext(), packagePath);
         if (!TextUtils.isEmpty(packageHash)) {
             postBody.add(new BasicNameValuePair("hash", packageHash));
         } else {
@@ -240,7 +240,7 @@ public class VersionCheckManager {
     }
 
     public void saveRemoteVersion() {
-        SharedPreferences pref = SdkGlobalData.app().getApplicationContext()
+        SharedPreferences pref = GlobalData.app().getApplicationContext()
                 .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         Editor ed = pref.edit();
         ed.putInt(PREF_REMOTE_VERSION, mRemoteAppVersion);
@@ -248,7 +248,7 @@ public class VersionCheckManager {
     }
 
     public int getRemoteVersion() {
-        SharedPreferences pref = SdkGlobalData.app().getApplicationContext()
+        SharedPreferences pref = GlobalData.app().getApplicationContext()
                 .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         return pref.getInt(PREF_REMOTE_VERSION, -1);
     }
@@ -326,7 +326,7 @@ public class VersionCheckManager {
             newFile.delete();
         }
         f.renameTo(newFile);
-        PackageInfo packageInfo = SdkGlobalData.app().getApplicationContext().getPackageManager()
+        PackageInfo packageInfo = GlobalData.app().getApplicationContext().getPackageManager()
                 .getPackageArchiveInfo(newFile.getAbsolutePath(), PackageManager.GET_ACTIVITIES);
         if (null != packageInfo) {
             Logger.w("VersionCheckManager", "the apk file packageName is " + packageInfo.packageName);
@@ -335,7 +335,7 @@ public class VersionCheckManager {
             intent.setDataAndType(Uri.fromFile(newFile),
                     "application/vnd.android.package-archive");
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            SdkGlobalData.app().getApplicationContext().startActivity(intent);
+            GlobalData.app().getApplicationContext().startActivity(intent);
             return true;
         }
         Logger.w("VersionCheckManager", "the apk file packageName is not com.wali.live");
@@ -352,21 +352,21 @@ public class VersionCheckManager {
     }
 
     public void setShowUpgradeDialog(boolean shown) {
-        SharedPreferences pref = SdkGlobalData.app().getApplicationContext().getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences pref = GlobalData.app().getApplicationContext().getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         Editor ed = pref.edit();
         ed.putBoolean(PREF_SHOW_UPGRADE_DIALOG, shown);
         ed.apply();
     }
 
     public boolean getShowUpgradeDialog() {
-        SharedPreferences pref = SdkGlobalData.app().getApplicationContext()
+        SharedPreferences pref = GlobalData.app().getApplicationContext()
                 .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         return pref.getBoolean(PREF_SHOW_UPGRADE_DIALOG, false);
     }
 
     // 记录检查更新成功的时间
     public void setCheckTime() {
-        SharedPreferences pref = SdkGlobalData.app().getApplicationContext()
+        SharedPreferences pref = GlobalData.app().getApplicationContext()
                 .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         Editor ed = pref.edit();
         ed.putLong(PREF_LAST_CHECK, System.currentTimeMillis());
@@ -375,7 +375,7 @@ public class VersionCheckManager {
 
     // 看与上次成功检查时间间隔是否大于半小时
     public boolean canAutoCheck() {
-        SharedPreferences pref = SdkGlobalData.app().getApplicationContext()
+        SharedPreferences pref = GlobalData.app().getApplicationContext()
                 .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         long last = pref.getLong(PREF_LAST_CHECK, 0);
         Logger.d(TAG, "canAutoCheck last == " + last);
@@ -383,7 +383,7 @@ public class VersionCheckManager {
     }
 
     public void setForceToVersion(boolean needForceUpdate) {
-        SharedPreferences pref = SdkGlobalData.app().getApplicationContext()
+        SharedPreferences pref = GlobalData.app().getApplicationContext()
                 .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         Editor ed = pref.edit();
         ed.putBoolean(PREF_FORCE_TO, needForceUpdate);
@@ -392,7 +392,7 @@ public class VersionCheckManager {
 
     // 看当前版本是否低于要求的最低版本
     public boolean needForceCheck() {
-        SharedPreferences pref = SdkGlobalData.app().getApplicationContext()
+        SharedPreferences pref = GlobalData.app().getApplicationContext()
                 .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         boolean needForceUpdate = pref.getBoolean(PREF_FORCE_TO, false);
         Logger.d(TAG, "need_force_to_version == " + needForceUpdate);
