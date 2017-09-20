@@ -3,7 +3,6 @@ package com.wali.live.livesdk.live.window.presenter;
 import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
-import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.dao.Gift;
@@ -31,10 +30,9 @@ public class GameFloatIconPresenter extends BaseSdkRxPresenter<IGameFloatIcon> {
     private Subscription giftSubscription;
     private LinkedList<Gift> mGiftQueue = new LinkedList<>();
 
-    public GameFloatIconPresenter(IGameFloatIcon view, IEventController controller) {
-        super(controller);
+    public GameFloatIconPresenter(IGameFloatIcon view) {
+        super(null);
         mView = view;
-        startPresenter();
     }
 
     @Override
@@ -91,7 +89,7 @@ public class GameFloatIconPresenter extends BaseSdkRxPresenter<IGameFloatIcon> {
             giftSubscription.unsubscribe();
         }
         giftSubscription = Observable.timer(delayTime, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-                .compose(GameFloatIconPresenter.this.<Long>bindUntilEvent(PresenterEvent.DESTROY))
+                .compose(GameFloatIconPresenter.this.<Long>bindUntilEvent(PresenterEvent.STOP))
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long aLong) {

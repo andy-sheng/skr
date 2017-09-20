@@ -131,7 +131,8 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
             public void onClick(View v) {
             }
         });
-        mPresenter = new GameFloatIconPresenter(this, null);
+        mPresenter = new GameFloatIconPresenter(this);
+        mPresenter.startPresenter();
     }
 
     public void updateStutterStatus(boolean isStuttering) {
