@@ -47,6 +47,7 @@ public class SchemeConstants {
     public static final String PARAM_VIDEO_URL = "videourl";
     public static final String PARAM_TYPE = "type";
     public static final String PARAM_TYPE_LIVE_END = "after_live_end"; // 0: live 1:playback 2:person info fragment
+
     public static final int TYPE_LIVE = 0;
     public static final int TYPE_PLAYBACK = 1;
     public static final int TYPE_PERSON_INFO = 2;
@@ -157,6 +158,8 @@ public class SchemeConstants {
     public static final String PARAM_FEEDS_TYPE = "feed_type";
     public static final String PARAM_EXT_TYPE = "ext_type";
     public static final String PARAM_OPEN_FROM = "feeds_open_from";
+
+    public static final int EXT_TYPE_LONG_TEXT = 3;
 
     public static final String HOST_LIVE_MI = "live.mi.com";
     public static final String HOST_ACTIVITY_ZB_MI = "activity.zb.mi.com";
