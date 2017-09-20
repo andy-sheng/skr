@@ -2,6 +2,7 @@ package com.wali.live.livesdk.live.window;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -27,8 +28,6 @@ import com.base.utils.display.DisplayUtils;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.window.presenter.GameFloatIconPresenter;
 import com.wali.live.livesdk.live.window.presenter.IGameFloatIcon;
-
-import rx.Observable;
 
 /**
  * Created by yangli on 16-11-29.
@@ -72,7 +71,7 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
     ImageView mMainBtn;
     ImageView mStatusIcon;
     BaseImageView mGiftBiv;
-    BaseImageView mGiftBiv2;
+    BaseImageView mGiftBiv2;//每次礼物过来，用mGiftBiv2显示。动画完成后和mGiftBiv交换，下次就可以继续用了。
 
     void onMainBtnClick() {
         switch (mMode) {
@@ -132,7 +131,7 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
             public void onClick(View v) {
             }
         });
-        mPresenter = new GameFloatIconPresenter(this);
+        mPresenter = new GameFloatIconPresenter(this, null);
     }
 
     public void updateStutterStatus(boolean isStuttering) {
@@ -269,11 +268,6 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
     }
 
     @Override
-    public <T> Observable.Transformer<T, T> bindLifecycle() {
-        return null;
-    }
-
-    @Override
     public void startGiftAnimator(boolean mainShow, BaseImage image) {
         if (image != null) {
             FrescoWorker.loadImage(mGiftBiv2, image);
@@ -286,16 +280,9 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
 
     public void destroy() {
         if (mPresenter != null) {
-            mPresenter.unregister();
+            mPresenter.stopPresenter();
         }
         mAnimationHelper.stopAnimation();
-    }
-
-    public void forbidReceiveGift(boolean needForbid) {
-        if (needForbid) {
-            mAnimationHelper.stopAnimation();
-        }
-        mPresenter.setReceiveGift(!needForbid);
     }
 
     // 面板动画辅助类
@@ -303,34 +290,34 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
         private int fromX;
         private int toX;
         private ValueAnimator moveAnimator;
-        private ValueAnimator showAnimator;
-        private ValueAnimator hideAnimator;
+        private ValueAnimator showGiftAnimator;
+        private ValueAnimator hideGiftAnimator;
+        private AnimatorSet giftAnimatorSet;
         private boolean mMainBtnShow = false;
 
         private boolean animIsRunning() {
-            return (showAnimator != null && showAnimator.isRunning()) ||
-                    (hideAnimator != null && hideAnimator.isRunning()) ||
+            return (giftAnimatorSet != null && giftAnimatorSet.isRunning()) ||
                     (moveAnimator != null && moveAnimator.isRunning());
         }
 
         private void startGiftAnimator() {
             setupGiftAnimator();
-            if (showAnimator.isRunning() || hideAnimator.isRunning()) {
+            if (giftAnimatorSet != null && giftAnimatorSet.isRunning()) {
                 return;
             }
             if (!mMainBtnShow) {
-                showAnimator.setInterpolator(new OvershootInterpolator(1.5f));
+                showGiftAnimator.setInterpolator(new OvershootInterpolator(1.5f));
             } else {
-                showAnimator.setInterpolator(new LinearInterpolator());
+                showGiftAnimator.setInterpolator(new LinearInterpolator());
             }
-            hideAnimator.start();
+            giftAnimatorSet.start();
         }
 
         private void setupGiftAnimator() {
-            if (showAnimator == null) {
-                showAnimator = ValueAnimator.ofFloat(0f, 1f);
-                showAnimator.setDuration(300);
-                showAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            if (showGiftAnimator == null) {
+                showGiftAnimator = ValueAnimator.ofFloat(0f, 1f);
+                showGiftAnimator.setDuration(300);
+                showGiftAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         float tempScale = (float) animation.getAnimatedValue();
@@ -344,7 +331,7 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
 
                     }
                 });
-                showAnimator.addListener(new AnimatorListenerAdapter() {
+                showGiftAnimator.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationCancel(Animator animation) {
                         super.onAnimationCancel(animation);
@@ -380,10 +367,10 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
                     }
                 });
             }
-            if (hideAnimator == null) {
-                hideAnimator = ValueAnimator.ofFloat(1f, 0f);
-                hideAnimator.setDuration(100);
-                hideAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            if (hideGiftAnimator == null) {
+                hideGiftAnimator = ValueAnimator.ofFloat(1f, 0f);
+                hideGiftAnimator.setDuration(100);
+                hideGiftAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         float tempScale = (float) animation.getAnimatedValue();
@@ -396,7 +383,7 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
                         }
                     }
                 });
-                hideAnimator.addListener(new AnimatorListenerAdapter() {
+                hideGiftAnimator.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationCancel(Animator animation) {
                         super.onAnimationCancel(animation);
@@ -410,9 +397,12 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
                         if (mMainBtn.getVisibility() == View.VISIBLE) {
                             mMainBtn.setVisibility(View.INVISIBLE);
                         }
-                        showAnimator.start();
                     }
                 });
+            }
+            if (giftAnimatorSet == null) {
+                giftAnimatorSet = new AnimatorSet();
+                giftAnimatorSet.playSequentially(hideGiftAnimator, showGiftAnimator);
             }
         }
 
@@ -457,11 +447,8 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
             if (moveAnimator != null && moveAnimator.isStarted()) {
                 moveAnimator.cancel();
             }
-            if (showAnimator != null && showAnimator.isStarted()) {
-                showAnimator.cancel();
-            }
-            if (hideAnimator != null && hideAnimator.isStarted()) {
-                hideAnimator.cancel();
+            if (giftAnimatorSet != null && giftAnimatorSet.isStarted()) {
+                giftAnimatorSet.cancel();
             }
             resetViewState();
         }

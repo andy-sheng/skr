@@ -51,6 +51,7 @@ public class GameRepeatScrollView extends RelativeLayout {
 
     private boolean mIsChatRoomMode = true;
     private boolean mIsHideTitleView = false;
+    private boolean mForbidReceiveComment = false;
 
     TextView mTitleTv;
     TextView mTitleInfo;
@@ -189,6 +190,9 @@ public class GameRepeatScrollView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.RefreshGameLiveCommentEvent event) {
+        if (mForbidReceiveComment) {
+            return;
+        }
         if (event != null && event.token.equals(mToken) && mIsChatRoomMode) {
             boolean isAdd = false;
             if (event.barrageMsg != null) {
@@ -292,5 +296,9 @@ public class GameRepeatScrollView extends RelativeLayout {
                 mCommentContent.setVisibility(GONE);
             }
         }
+    }
+
+    public void forbidReceiveComment(boolean isForbid) {
+        mForbidReceiveComment = isForbid;
     }
 }
