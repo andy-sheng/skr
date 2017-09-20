@@ -14,19 +14,28 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.base.image.fresco.BaseImageView;
+import com.base.image.fresco.FrescoWorker;
+import com.base.image.fresco.image.BaseImage;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.wali.live.livesdk.R;
+import com.wali.live.livesdk.live.window.presenter.GameFloatIconPresenter;
+import com.wali.live.livesdk.live.window.presenter.IGameFloatIcon;
+
+import rx.Observable;
 
 /**
  * Created by yangli on 16-11-29.
  *
  * @module 悬浮窗
  */
-public class GameFloatIcon extends RelativeLayout {
+public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
     private static final String TAG = "GameFloatIcon";
 
     public final static int WINDOW_PADDING = DisplayUtils.dip2px(6.67f);
@@ -40,6 +49,8 @@ public class GameFloatIcon extends RelativeLayout {
     public final static int MODE_HALF_HIDDEN = 1; // 半隐藏
     public final static int MODE_DRAGGING = 2; // 正在拖动
     public final static int MODE_MOVING = 3; // 正在移动(拖动之后自动恢复位置)
+
+    private GameFloatIconPresenter mPresenter;
 
     private final int mParentWidth;
     private final int mParentHeight;
@@ -60,6 +71,8 @@ public class GameFloatIcon extends RelativeLayout {
 
     ImageView mMainBtn;
     ImageView mStatusIcon;
+    BaseImageView mGiftBiv;
+    BaseImageView mGiftBiv2;
 
     void onMainBtnClick() {
         switch (mMode) {
@@ -95,6 +108,8 @@ public class GameFloatIcon extends RelativeLayout {
 
         mMainBtn = $(R.id.main_btn);
         mStatusIcon = $(R.id.status_icon);
+        mGiftBiv = $(R.id.gift_biv);
+        mGiftBiv2 = $(R.id.gift_biv2);
 
         mParentWidth = parentWidth;
         mParentHeight = parentHeight;
@@ -117,6 +132,7 @@ public class GameFloatIcon extends RelativeLayout {
             public void onClick(View v) {
             }
         });
+        mPresenter = new GameFloatIconPresenter(this);
     }
 
     public void updateStutterStatus(boolean isStuttering) {
@@ -233,7 +249,7 @@ public class GameFloatIcon extends RelativeLayout {
         MyLog.w(TAG, "onEnterMoveMode isAlignLeft=" + isAlignLeft);
         mMode = MODE_MOVING;
         mAlignLeft = isAlignLeft;
-        mAnimationHelper.startAnimation();
+        mAnimationHelper.startMoveAnimation();
     }
 
     public void onExitMoveMode() {
@@ -252,11 +268,153 @@ public class GameFloatIcon extends RelativeLayout {
         }
     }
 
+    @Override
+    public <T> Observable.Transformer<T, T> bindLifecycle() {
+        return null;
+    }
+
+    @Override
+    public void startGiftAnimator(boolean mainShow, BaseImage image) {
+        if (image != null) {
+            FrescoWorker.loadImage(mGiftBiv2, image);
+        }
+        mAnimationHelper.mMainBtnShow = mainShow;
+        if (image != null || mainShow) {
+            mAnimationHelper.startGiftAnimator();
+        }
+    }
+
+    public void destroy() {
+        if (mPresenter != null) {
+            mPresenter.unregister();
+        }
+        mAnimationHelper.stopAnimation();
+    }
+
+    public void forbidReceiveGift(boolean needForbid) {
+        if (needForbid) {
+            mAnimationHelper.stopAnimation();
+        }
+        mPresenter.setReceiveGift(!needForbid);
+    }
+
     // 面板动画辅助类
     protected class AnimationHelper {
         private int fromX;
         private int toX;
         private ValueAnimator moveAnimator;
+        private ValueAnimator showAnimator;
+        private ValueAnimator hideAnimator;
+        private boolean mMainBtnShow = false;
+
+        private boolean animIsRunning() {
+            return (showAnimator != null && showAnimator.isRunning()) ||
+                    (hideAnimator != null && hideAnimator.isRunning()) ||
+                    (moveAnimator != null && moveAnimator.isRunning());
+        }
+
+        private void startGiftAnimator() {
+            setupGiftAnimator();
+            if (showAnimator.isRunning() || hideAnimator.isRunning()) {
+                return;
+            }
+            if (!mMainBtnShow) {
+                showAnimator.setInterpolator(new OvershootInterpolator(1.5f));
+            } else {
+                showAnimator.setInterpolator(new LinearInterpolator());
+            }
+            hideAnimator.start();
+        }
+
+        private void setupGiftAnimator() {
+            if (showAnimator == null) {
+                showAnimator = ValueAnimator.ofFloat(0f, 1f);
+                showAnimator.setDuration(300);
+                showAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        float tempScale = (float) animation.getAnimatedValue();
+                        if (!mMainBtnShow) {
+                            mGiftBiv2.setScaleX(tempScale);
+                            mGiftBiv2.setScaleY(tempScale);
+                        } else {
+                            mMainBtn.setScaleX(tempScale);
+                            mMainBtn.setScaleY(tempScale);
+                        }
+
+                    }
+                });
+                showAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        super.onAnimationCancel(animation);
+                        mGiftBiv.setVisibility(View.GONE);
+                        mGiftBiv2.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        if (!mMainBtnShow) {
+                            BaseImageView giftView = mGiftBiv;
+                            mGiftBiv = mGiftBiv2;
+                            mGiftBiv2 = giftView;
+                            mGiftBiv.setVisibility(View.VISIBLE);
+                            mPresenter.giftShowTimer(4500);
+                        } else {
+                            mMainBtnShow = false;
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        super.onAnimationStart(animation);
+                        if (!mMainBtnShow) {
+                            mGiftBiv.setVisibility(View.INVISIBLE);
+                            mGiftBiv2.setVisibility(View.VISIBLE);
+                            mGiftBiv2.bringToFront();
+                        } else {
+                            mMainBtn.setVisibility(View.VISIBLE);
+                            mMainBtn.bringToFront();
+                        }
+                    }
+                });
+            }
+            if (hideAnimator == null) {
+                hideAnimator = ValueAnimator.ofFloat(1f, 0f);
+                hideAnimator.setDuration(100);
+                hideAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        float tempScale = (float) animation.getAnimatedValue();
+                        if (mMainBtn.getVisibility() == View.VISIBLE) {
+                            mMainBtn.setScaleX(tempScale);
+                            mMainBtn.setScaleY(tempScale);
+                        } else {
+                            mGiftBiv.setScaleX(tempScale);
+                            mGiftBiv.setScaleY(tempScale);
+                        }
+                    }
+                });
+                hideAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        super.onAnimationCancel(animation);
+                        mGiftBiv.setVisibility(View.GONE);
+                        mGiftBiv2.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        if (mMainBtn.getVisibility() == View.VISIBLE) {
+                            mMainBtn.setVisibility(View.INVISIBLE);
+                        }
+                        showAnimator.start();
+                    }
+                });
+            }
+        }
 
         private void calcMoveParam() {
             fromX = mFloatLayoutParams.x;
@@ -264,7 +422,7 @@ public class GameFloatIcon extends RelativeLayout {
             MyLog.w(TAG, "calcMoveParam fromX=" + fromX + ", toX=" + toX);
         }
 
-        private void setupAnimation() {
+        private void setupMoveAnimation() {
             if (moveAnimator == null) {
                 moveAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
                 moveAnimator.setDuration(300);
@@ -287,18 +445,33 @@ public class GameFloatIcon extends RelativeLayout {
             }
         }
 
-        public void startAnimation() {
-            setupAnimation();
+        private void startMoveAnimation() {
+            setupMoveAnimation();
             if (!moveAnimator.isRunning()) {
                 calcMoveParam();
                 moveAnimator.start();
             }
         }
 
-        public void stopAnimation() {
+        private void stopAnimation() {
             if (moveAnimator != null && moveAnimator.isStarted()) {
                 moveAnimator.cancel();
             }
+            if (showAnimator != null && showAnimator.isStarted()) {
+                showAnimator.cancel();
+            }
+            if (hideAnimator != null && hideAnimator.isStarted()) {
+                hideAnimator.cancel();
+            }
+            resetViewState();
+        }
+
+        private void resetViewState() {
+            mGiftBiv.setVisibility(View.GONE);
+            mGiftBiv2.setVisibility(View.GONE);
+            mMainBtn.setVisibility(View.VISIBLE);
+            mMainBtn.setScaleX(1f);
+            mMainBtn.setScaleY(1f);
         }
     }
 

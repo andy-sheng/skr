@@ -21,12 +21,13 @@ import com.wali.live.common.model.CommentModel;
 import com.wali.live.dao.Gift;
 import com.wali.live.event.EventClass;
 import com.wali.live.livesdk.R;
+import com.wali.live.livesdk.live.window.event.FloatGiftEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
@@ -44,7 +45,7 @@ public class GameRepeatScrollView extends RelativeLayout {
     private static final String TAG = GameRepeatScrollView.class.getSimpleName();
 
     private String mToken;
-    private ConcurrentLinkedQueue<CommentModel> mBarrageMsgQueue = new ConcurrentLinkedQueue<>();
+    private LinkedList<CommentModel> mBarrageMsgQueue = new LinkedList<>();
 
     private Subscription mClearSubscription;
 
@@ -218,6 +219,9 @@ public class GameRepeatScrollView extends RelativeLayout {
 
         // 高价值礼物 停留时间长
         Gift gift = GiftRepository.findGiftById((int) commentModel.getGiftId());
+        if (gift != null) {
+            EventBus.getDefault().post(new FloatGiftEvent(gift));
+        }
         if ((commentModel.getMsgType() == BarrageMsgType.B_MSG_TYPE_GIFT
                 && gift != null && gift.getCatagory() == GiftType.HIGH_VALUE_GIFT)
                 || commentModel.getMsgType() == BarrageMsgType.B_MSG_TYPE_GLABAL_MSG) {

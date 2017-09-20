@@ -30,6 +30,8 @@ public class GameFloatWindow implements IGameFloatPresenter {
 
     public static final int MSG_TAKE_SCREEN_SHOT_DONE = 1000;
     public static final int MSG_HALF_HIDE_FLOAT_BALL = 1001;
+    public static final int MSG_FORBID_RECEIVE_GIFT = 1002;
+    public static final int MSG_ALLOW_RECEIVE_GIFT = 1003;
 
     public static final int DIALOG_PADDING = DisplayUtils.dip2px(6.67f);
 
@@ -122,6 +124,9 @@ public class GameFloatWindow implements IGameFloatPresenter {
         if (mGameFloatView != null) {
             mGameFloatView.unregister();
         }
+        if (mGameMainIcon != null) {
+            mGameMainIcon.destroy();
+        }
     }
 
     @Override
@@ -203,6 +208,12 @@ public class GameFloatWindow implements IGameFloatPresenter {
                     break;
                 case MSG_HALF_HIDE_FLOAT_BALL:
                     gameFloatWindow.mGameMainIcon.setMode(GameFloatIcon.MODE_HALF_HIDDEN);
+                    break;
+                case MSG_FORBID_RECEIVE_GIFT:
+                    gameFloatWindow.mGameMainIcon.forbidReceiveGift(true);
+                    break;
+                case MSG_ALLOW_RECEIVE_GIFT:
+                    gameFloatWindow.mGameMainIcon.forbidReceiveGift(false);
                     break;
                 default:
                     break;
