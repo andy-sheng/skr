@@ -38,8 +38,9 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_ENABLE_MOVE_VIEW = MSG_TOUCH_FIRST;      // 开启滑动
     public static final int MSG_DISABLE_MOVE_VIEW = MSG_TOUCH_FIRST + 1; // 禁止滑动
     public static final int MSG_BACKGROUND_CLICK = MSG_TOUCH_FIRST + 2;  // 背景点击
-    public static final int MSG_PAGE_DOWN = MSG_TOUCH_FIRST + 3;
-    public static final int MSG_PAGE_UP = MSG_TOUCH_FIRST + 4;
+    public static final int MSG_PAGE_DOWN = MSG_TOUCH_FIRST + 3;         // 下滑点击
+    public static final int MSG_PAGE_UP = MSG_TOUCH_FIRST + 4;           // 上滑点击
+    public static final int MSG_SWITCH_ROOM = MSG_TOUCH_FIRST + 5;       // 切换房间
 
     // 输入框相关消息
     private static final int MSG_INPUT_FIRST = 30000;

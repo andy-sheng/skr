@@ -202,7 +202,6 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
     public void setupView() {
         mContentView = $(mParentView, R.id.main_act_container);
         mGiftContinueViewGroup = $(R.id.gift_continue_vg);  // 礼物
-
         //顶部view
         {
             mTopAreaView = $(R.id.top_area_view);
@@ -213,7 +212,6 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                     mController.mMyRoomData, false);
             registerComponent(mTopAreaView, mTopAreaPresenter);
         }
-
         // 弹幕区
         {
             LiveCommentView view = $(R.id.live_comment_view);
@@ -239,8 +237,13 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
         }
         // 悬浮面板容器，与底部面板类似，但是不会在显示新Panel时，隐藏之前显示的Panel
         {
+            RelativeLayout relativeLayout = $(R.id.float_panel_view);
+            if (relativeLayout == null) {
+                MyLog.e(TAG, "missing R.id.float_panel_view");
+                return;
+            }
             WatchFloatPresenter presenter = new WatchFloatPresenter(mController, mController.mMyRoomData);
-            registerHybridComponent(presenter, mContentView);
+            registerHybridComponent(presenter, relativeLayout);
             ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
         }
         // 输入框
@@ -338,6 +341,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                 R.id.rotate_btn,
                 R.id.close_btn,
                 R.id.extra_container,
+                R.id.float_panel_view
         }, mVerticalMoveSet);
 
         // 滑动

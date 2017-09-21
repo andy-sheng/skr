@@ -98,6 +98,9 @@ public class LinkInfoPresenter extends BaseSdkRxPresenter<LinkInfoPanel.IView>
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        if (mView != null) {
+            mView.hideSelf(true);
+        }
     }
 
     private void syncUserInfo(long userId) {

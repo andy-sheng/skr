@@ -134,6 +134,13 @@
         android:layout_marginBottom="@dimen/margin_20"
         android:layout_marginStart="@dimen/margin_20"/>
 
+    <!--浮动控件容器-->
+    <RelativeLayout
+        android:id="@+id/float_panel_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"/>
+
     <!--底部按钮(供BaseBottomButton使用)-->
     <RelativeLayout
         android:id="@+id/bottom_button_view"
