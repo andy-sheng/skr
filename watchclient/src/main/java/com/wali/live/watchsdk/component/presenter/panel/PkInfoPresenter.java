@@ -73,6 +73,7 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
         MyLog.d(TAG, "stopPresenter");
         super.stopPresenter();
         unregisterAllAction();
+        mDownTimerSub.clear();
         if (mView != null) {
             mView.hideSelf(true);
         }
@@ -88,7 +89,7 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
             mView.onUpdateStartTimer(totalStartTime);
             Subscription startTimer = Observable.interval(1, TimeUnit.SECONDS)
                     .onBackpressureDrop()
-                    .take(totalStartTime)
+                    .take(totalStartTime+1)
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(this.<Long>bindUntilEvent(PresenterEvent.STOP))
                     .subscribe(new Subscriber<Long>() {
@@ -138,6 +139,23 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
                     }
                 });
         mDownTimerSub.add(pkTimer);
+        Subscription endTimer = Observable.timer(totalStartTime + totalPkTime + 15, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Long>bindUntilEvent(PresenterEvent.STOP))
+                .subscribe(new Action1<Long>() {
+                    @Override
+                    public void call(Long cnt) {
+                        if (isShow()) {
+                            stopPresenter();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, "endTimer failed, exception=" + throwable);
+                    }
+                });
+        mDownTimerSub.add(endTimer);
     }
 
     public void onPkStart(BarrageMsgExt.PkStartInfo info, boolean isLandscape) {

@@ -31,6 +31,7 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_ON_PK_START;
 import static com.wali.live.component.BaseSdkController.MSG_ON_PK_STOP;
+import static com.wali.live.component.BaseSdkController.MSG_SWITCH_ROOM;
 
 /**
  * Created by yangli on 2017/9/11.
@@ -95,7 +96,22 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
         registerAction(MSG_ON_LINK_MIC_STOP);
         registerAction(MSG_ON_PK_START);
         registerAction(MSG_ON_PK_STOP);
+        registerAction(MSG_SWITCH_ROOM);
+//        startPkTest();
     }
+
+//    private void startPkTest() {
+//        Observable.timer(5, TimeUnit.SECONDS)
+//                .compose(this.<Long>bindUntilEvent(PresenterEvent.STOP))
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Action1<Long>() {
+//                    @Override
+//                    public void call(Long cnt) {
+//                        BarrageMsgExt.PkStartInfo pkStartInfo = BarrageMsgExt.PkStartInfo.newTestCase();
+//                        mController.postEvent(MSG_ON_PK_START, new Params().putItem(pkStartInfo));
+//                    }
+//                });
+//    }
 
     @Override
     public void stopPresenter() {
@@ -192,6 +208,17 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
                     }
                     pkEndInfo.setNickName(mMyRoomData.getUser());
                     presenter.onPkEnd(pkEndInfo);
+                }
+                break;
+            }
+            case MSG_SWITCH_ROOM: {
+                LinkInfoPresenter presenter1 = deRef(mLinkInfoPresenterRef);
+                if (presenter1 != null && presenter1.isShow()) {
+                    presenter1.stopPresenter();
+                }
+                PkInfoPresenter presenter2 = deRef(mPkInfoPresenterRef);
+                if (presenter2 != null && presenter2.isShow()) {
+                    presenter2.stopPresenter();
                 }
                 break;
             }
