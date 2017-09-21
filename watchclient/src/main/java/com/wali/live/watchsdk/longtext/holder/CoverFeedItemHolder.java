@@ -30,7 +30,7 @@ public class CoverFeedItemHolder extends BaseFeedItemHolder<CoverFeedItemModel> 
 
     private void adjustSize() {
         int width = GlobalData.screenWidth;
-        int height = (int) ((float) width * 3.0 / 4.0);
+        int height = GlobalData.screenWidth * 3 / 4;
 
         ViewGroup.LayoutParams lp = mCoverIv.getLayoutParams();
         if (lp == null) {

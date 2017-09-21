@@ -202,4 +202,5 @@
     <string name="feeds_not_exist">該動態已經被刪除</string>
     <string name="feeds_getinfo_failed">取得詳情失敗, 請稍後重試</string>
     <string name="like_count_text">%d人讚</string>
+    <string name="detail_text">詳細資料</string>
 </resources>

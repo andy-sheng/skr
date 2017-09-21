@@ -202,4 +202,5 @@
     <string name="feeds_not_exist">该动态已经被删除</string>
     <string name="feeds_getinfo_failed">获取详情失败, 请稍后重试</string>
     <string name="like_count_text">%d人赞</string>
+    <string name="detail_text">详情</string>
 </resources>
