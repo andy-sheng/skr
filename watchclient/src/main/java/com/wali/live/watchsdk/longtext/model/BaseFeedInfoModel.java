@@ -2,11 +2,13 @@ package com.wali.live.watchsdk.longtext.model;
 
 import com.base.log.MyLog;
 import com.mi.live.data.user.User;
+import com.wali.live.proto.Feeds;
 import com.wali.live.proto.Feeds.FeedContent;
 import com.wali.live.proto.Feeds.FeedInfo;
 import com.wali.live.proto.Feeds.UGCFeed;
 import com.wali.live.proto.LiveShowProto;
 import com.wali.live.watchsdk.lit.recycler.viewmodel.BaseViewModel;
+import com.wali.live.watchsdk.longtext.model.interior.FeedLikeModel;
 import com.wali.live.watchsdk.longtext.model.interior.UgcFeedModel;
 
 /**
@@ -22,6 +24,8 @@ public abstract class BaseFeedInfoModel<UFM extends UgcFeedModel> extends BaseVi
     protected int mFeedType;
     protected UFM mUgcFeedModel;
 
+    protected FeedLikeModel mLikeModel;
+
     protected User mOwner;
 
     public BaseFeedInfoModel(FeedInfo protoInfo) {
@@ -34,6 +38,7 @@ public abstract class BaseFeedInfoModel<UFM extends UgcFeedModel> extends BaseVi
         mOwnerId = protoInfo.getUserId();
 
         parseFeedContent(protoInfo.getFeedContent());
+        parseFeedLike(protoInfo.getFeedLikeContent());
         parseUser(protoInfo.getUserShow());
     }
 
@@ -48,11 +53,22 @@ public abstract class BaseFeedInfoModel<UFM extends UgcFeedModel> extends BaseVi
 
     protected abstract void parseUgcFeed(UGCFeed protoUgcFeed);
 
+    private void parseFeedLike(Feeds.FeedLikeContent protoLike) {
+        if (protoLike == null) {
+            MyLog.e(TAG, "parseFeedContent protoLike is null");
+            return;
+        }
+        mLikeModel = new FeedLikeModel(protoLike);
+    }
+
     private void parseUser(LiveShowProto.UserShow userShow) {
         if (userShow == null) {
             MyLog.e(TAG, "parseUser userShow is null");
             return;
         }
         mOwner = new User(userShow.getUId(), userShow.getAvatar(), userShow.getNickname());
+        mOwner.setGender(userShow.getGender());
+        mOwner.setLevel(userShow.getLevel());
+        mOwner.setCertificationType(userShow.getCertType());
     }
 }

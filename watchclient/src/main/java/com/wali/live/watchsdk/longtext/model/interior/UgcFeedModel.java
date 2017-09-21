@@ -30,6 +30,8 @@ public abstract class UgcFeedModel extends BaseViewModel {
     protected int mWidth;
     protected int mHeight;
 
+    protected int mViewerCount;
+
     protected int mExtType;
 
     protected UgcFeedModel(UGCFeed protoUgcFeed) throws Exception {
@@ -57,11 +59,17 @@ public abstract class UgcFeedModel extends BaseViewModel {
         mWidth = protoUgcFeed.getWidth();
         mHeight = protoUgcFeed.getHeight();
 
+        mViewerCount = protoUgcFeed.getViewCount();
+
         mExtType = protoUgcFeed.getExtType();
         parseExtData(protoUgcFeed.getExtData());
     }
 
     protected abstract void parseExtData(ByteString extData) throws Exception;
+
+    public int getViewerCount() {
+        return mViewerCount;
+    }
 
     public String toPrint() {
         return String.valueOf(mExtType);

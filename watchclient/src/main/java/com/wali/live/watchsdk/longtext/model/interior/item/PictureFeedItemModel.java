@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk.longtext.model.interior.item;
 
 import com.wali.live.proto.Feeds;
+import com.wali.live.watchsdk.longtext.adapter.FeedItemUiType;
 
 /**
  * Created by lan on 2017/9/20.
@@ -11,8 +12,7 @@ public class PictureFeedItemModel extends BaseFeedItemModel {
     private int mHeight;
     private String mDesc;
 
-    public PictureFeedItemModel(int mediaType, Feeds.Picture protoPicture) {
-        super(mediaType);
+    public PictureFeedItemModel(Feeds.Picture protoPicture) {
         parse(protoPicture);
     }
 
@@ -37,5 +37,10 @@ public class PictureFeedItemModel extends BaseFeedItemModel {
 
     public String getDesc() {
         return mDesc;
+    }
+
+    @Override
+    public int getUiType() {
+        return FeedItemUiType.UI_TYPE_PIC;
     }
 }

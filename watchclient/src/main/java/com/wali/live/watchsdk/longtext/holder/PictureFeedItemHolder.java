@@ -39,14 +39,14 @@ public class PictureFeedItemHolder extends BaseFeedItemHolder<PictureFeedItemMod
             height = DisplayUtils.getScreenWidth() >> 1;
         }
 
-        ViewGroup.LayoutParams params = mItemIv.getLayoutParams();
-        if (params == null) {
-            params = new ViewGroup.LayoutParams(width, height);
+        ViewGroup.LayoutParams lp = mItemIv.getLayoutParams();
+        if (lp == null) {
+            lp = new ViewGroup.LayoutParams(width, height);
         } else {
-            params.width = width;
-            params.height = height;
+            lp.width = width;
+            lp.height = height;
         }
-        mItemIv.setLayoutParams(params);
+        mItemIv.setLayoutParams(lp);
 
         FrescoWorker.loadImage(mItemIv,
                 ImageFactory.newHttpImage(mViewModel.getUrl())

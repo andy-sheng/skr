@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk.longtext.model.interior.item;
 
 import com.wali.live.proto.Feeds;
+import com.wali.live.watchsdk.longtext.adapter.FeedItemUiType;
 
 /**
  * Created by lan on 2017/9/20.
@@ -13,8 +14,7 @@ public class TextFeedItemModel extends BaseFeedItemModel {
     private String mContent;
     private boolean mIsInner;
 
-    public TextFeedItemModel(int mediaType, Feeds.Text protoText) {
-        super(mediaType);
+    public TextFeedItemModel(Feeds.Text protoText) {
         parse(protoText);
     }
 
@@ -34,5 +34,10 @@ public class TextFeedItemModel extends BaseFeedItemModel {
 
     public boolean isInner() {
         return mIsInner;
+    }
+
+    @Override
+    public int getUiType() {
+        return FeedItemUiType.UI_TYPE_TEXT;
     }
 }

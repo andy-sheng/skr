@@ -9,7 +9,7 @@
     <com.base.view.BackTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
-        android:layout_height="65dp"/>
+        android:layout_height="wrap_content"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/content_rv"

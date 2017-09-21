@@ -8,14 +8,19 @@ import com.wali.live.proto.Feeds.BlogFeed;
 import com.wali.live.proto.Feeds.MultiMedia;
 import com.wali.live.proto.Feeds.UGCFeed;
 import com.wali.live.watchsdk.longtext.model.interior.item.BaseFeedItemModel;
+import com.wali.live.watchsdk.longtext.model.interior.item.CoverFeedItemModel;
 import com.wali.live.watchsdk.longtext.model.interior.item.PictureFeedItemModel;
 import com.wali.live.watchsdk.longtext.model.interior.item.TextFeedItemModel;
+import com.wali.live.watchsdk.longtext.model.interior.item.TitleFeedItemModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BlogFeedModel extends UgcFeedModel {
     private List<BaseFeedItemModel> mItemList;
+
+    private CoverFeedItemModel mCoverItem;
+    private TitleFeedItemModel mTitleItem;
 
     public BlogFeedModel(UGCFeed protoUgcFeed) throws Exception {
         super(protoUgcFeed);
@@ -49,14 +54,26 @@ public class BlogFeedModel extends UgcFeedModel {
     private BaseFeedItemModel parseBlogFeedItem(MultiMedia protoMultiMedia) throws InvalidProtocolBufferException {
         switch (protoMultiMedia.getMediaType()) {
             case BaseFeedItemModel.FEEDS_MULTI_MEDIA_TYPE_PIC:
-                return new PictureFeedItemModel(BaseFeedItemModel.FEEDS_MULTI_MEDIA_TYPE_PIC,
-                        Feeds.Picture.parseFrom(protoMultiMedia.getMediaData()));
+                return new PictureFeedItemModel(Feeds.Picture.parseFrom(protoMultiMedia.getMediaData()));
             case BaseFeedItemModel.FEEDS_MULTI_MEDIA_TYPE_TEXT:
-                return new TextFeedItemModel(BaseFeedItemModel.FEEDS_MULTI_MEDIA_TYPE_TEXT,
-                        Feeds.Text.parseFrom(protoMultiMedia.getMediaData()));
+                return new TextFeedItemModel(Feeds.Text.parseFrom(protoMultiMedia.getMediaData()));
             default:
                 return null;
         }
+    }
+
+    public CoverFeedItemModel getCoverItem() {
+        if (mCoverItem == null) {
+            mCoverItem = new CoverFeedItemModel(mCoverUrl);
+        }
+        return mCoverItem;
+    }
+
+    public TitleFeedItemModel getTitleItem() {
+        if (mTitleItem == null) {
+            mTitleItem = new TitleFeedItemModel(mTitle);
+        }
+        return mTitleItem;
     }
 
     public List<BaseFeedItemModel> getItemList() {
