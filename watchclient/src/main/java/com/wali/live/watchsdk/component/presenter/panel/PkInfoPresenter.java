@@ -25,6 +25,7 @@ import rx.subscriptions.CompositeSubscription;
 
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_ON_PK_STOP;
 
 /**
  * Created by yangli on 2017/09/11.
@@ -89,7 +90,7 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
             mView.onUpdateStartTimer(totalStartTime);
             Subscription startTimer = Observable.interval(1, TimeUnit.SECONDS)
                     .onBackpressureDrop()
-                    .take(totalStartTime+1)
+                    .take(totalStartTime + 1)
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(this.<Long>bindUntilEvent(PresenterEvent.STOP))
                     .subscribe(new Subscriber<Long>() {
@@ -145,7 +146,8 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long cnt) {
-                        if (isShow()) {
+                        if (isShow() && !isResulting()) {
+                            mController.postEvent(MSG_ON_PK_STOP);
                             stopPresenter();
                         }
                     }
