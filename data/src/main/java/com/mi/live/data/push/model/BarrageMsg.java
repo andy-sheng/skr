@@ -12,6 +12,8 @@ import com.mi.live.data.query.model.ViewerModel;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveMallProto;
 import com.wali.live.proto.LiveMessageProto;
+import com.wali.live.proto.LiveMicProto;
+import com.wali.live.proto.LivePKProto;
 import com.wali.live.proto.RedEnvelProto;
 
 import java.io.UnsupportedEncodingException;
@@ -325,30 +327,6 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
                         msgExt = ext;
                     }
                     break;
-                    case BarrageMsgType.B_MSG_TYPE_LINE_MIC_BEGIN: {
-                        LineMicMessageExt ext = new LineMicMessageExt();
-                        LiveMessageProto.MicBeginMessage mcMsg = LiveMessageProto.MicBeginMessage.parseFrom(data);
-                        ext.roomId = mcMsg.getLiveId();
-                        ext.zuid = mcMsg.getZuid();
-                        ext.micuid = mcMsg.getMicInfo().getMicuid();
-                        if (mcMsg.getMicInfo().hasSubViewPos()) {
-                            ext.scaleX = mcMsg.getMicInfo().getSubViewPos().getTopXScale();
-                            ext.scaleY = mcMsg.getMicInfo().getSubViewPos().getTopYScale();
-                            ext.scaleW = mcMsg.getMicInfo().getSubViewPos().getWidthScale();
-                            ext.scaleH = mcMsg.getMicInfo().getSubViewPos().getHeightScale();
-                        }
-                        msgExt = ext;
-                    }
-                    break;
-                    case BarrageMsgType.B_MSG_TYPE_LINE_MIC_END: {
-                        LineMicMessageExt ext = new LineMicMessageExt();
-                        LiveMessageProto.MicEndMessage mcMsg = LiveMessageProto.MicEndMessage.parseFrom(data);
-                        ext.roomId = mcMsg.getLiveId();
-                        ext.zuid = mcMsg.getZuid();
-                        ext.micuid = mcMsg.getMicInfo().getMicuid();
-                        msgExt = ext;
-                    }
-                    break;
                     case BarrageMsgType.B_MSG_TYPE_JOIN: {
                         JoinRoomMsgExt ext = new JoinRoomMsgExt();
                         LiveMessageProto.JoinRoomMessage join = LiveMessageProto.JoinRoomMessage.parseFrom(data);
@@ -543,6 +521,32 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
                         LiveMessageProto.RedNameStatus redNameStatus = LiveMessageProto.RedNameStatus.parseFrom(data);
                     }
                     break;
+
+                    case BarrageMsgType.B_MSG_TYPE_LINE_MIC_BEGIN: {
+                        LiveMicProto.MicBeginMessage micMsg = LiveMicProto.MicBeginMessage.parseFrom(data);
+                        msgExt = new BarrageMsgExt.MicBeginInfo().parseFromPB(micMsg);
+                        break;
+                    }
+                    case BarrageMsgType.B_MSG_TYPE_LINE_MIC_END: {
+                        LiveMicProto.MicEndMessage micMsg = LiveMicProto.MicEndMessage.parseFrom(data);
+                        msgExt = new BarrageMsgExt.MicEndInfo().parseFromPB(micMsg);
+                        break;
+                    }
+                    case BarrageMsgType.B_MSG_TYPE_NEW_PK_SCORE: {
+                        LivePKProto.PKScoreChangeMsg pkMsg = LivePKProto.PKScoreChangeMsg.parseFrom(data);
+                        msgExt = new BarrageMsgExt.PkScoreInfo().parseFromPB(pkMsg);
+                        break;
+                    }
+                    case BarrageMsgType.B_MSG_TYPE_NEW_PK_START: {
+                        LivePKProto.PKBeginMessage pkMsg = LivePKProto.PKBeginMessage.parseFrom(data);
+                        msgExt = new BarrageMsgExt.PkStartInfo().parseFromPB(pkMsg, getSentTime());
+                        break;
+                    }
+                    case BarrageMsgType.B_MSG_TYPE_NEW_PK_END: {
+                        LivePKProto.PKEndMessage pkMsg = LivePKProto.PKEndMessage.parseFrom(data);
+                        msgExt = new BarrageMsgExt.PkEndInfo().parseFromPB(pkMsg);
+                        break;
+                    }
                 }
             } catch (InvalidProtocolBufferException e) {
                 e.printStackTrace();
@@ -807,7 +811,7 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
          *
          * @param anchorId
          * @param uuid
-         * @param msgType  消息类型，区分禁言和解禁
+         * @param msgType    消息类型，区分禁言和解禁
          * @param senderName 发消息人的名称
          * @return
          */
@@ -815,7 +819,7 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
             String message = "";
             if (TextUtils.isEmpty(banNickname))
                 return message;
-            if(senderName == null || senderName.equals(banNickname) || senderName.equals(com.base.global.GlobalData.app().getString(R.string.sys_msg)))
+            if (senderName == null || senderName.equals(banNickname) || senderName.equals(com.base.global.GlobalData.app().getString(R.string.sys_msg)))
                 senderName = "";
             String operator = "";
             //判断当前用户是否是主播
@@ -940,12 +944,12 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
             this.shop_type = message.getMsgType();
 
             try {
-                switch(shop_type){
+                switch (shop_type) {
                     case 2:
                         this.goodsInfo = LiveMallProto.GoodsInfoList.parseFrom(message.getMsgContent()).getGoodsInfo(0);
                         break;
                     case 3:
-                        this.shop_content  = new String(message.getMsgContent().toByteArray(),"UTF-8");
+                        this.shop_content = new String(message.getMsgContent().toByteArray(), "UTF-8");
                         break;
                     case 4:
                         this.goodsInfo = LiveMallProto.GoodsInfoList.parseFrom(message.getMsgContent()).getGoodsInfo(0);
@@ -1019,26 +1023,6 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
         @Override
         public ByteString toByteString() {
             return null;
-        }
-    }
-
-    public static class LineMicMessageExt implements MsgExt {
-        public String roomId;   //房间号
-        public long zuid;       //主播用户id
-        public long micuid;     //对应的用户id
-
-        public float scaleX; //子视图左上角X在实际推流视频中的比例
-        public float scaleY; //子视图左上角Y在实际推流视频中的比例
-        public float scaleW; //子视图宽度在实际推流视频中的比例
-        public float scaleH; //子视图高度左上角在推流视频中的比例
-
-        @Override
-        public ByteString toByteString() {
-            return null;
-        }
-
-        public String toString() {
-            return "roomId= " + roomId + " zuid=" + zuid + " micuid=" + micuid + " scaleX=" + scaleX + " scaleY=" + scaleY + " scaleW=" + scaleW + " scaleH=" + scaleH;
         }
     }
 
@@ -1205,6 +1189,7 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
             return null;
         }
     }
+
     public static class RedEnvelopMsgExt implements MsgExt {
         public long userId;// 用户id
         public String roomId;// 房间id
@@ -1259,6 +1244,38 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
                 ext.type = red.getEnvelopLevel();
             }
             return ext;
+        }
+    }
+
+    public static class PKEndMsgExt implements MsgExt {
+
+        public LivePKProto.NewPKInfo info;
+        public long uuid;
+        public int endType;
+
+        public PKEndMsgExt(LivePKProto.NewPKInfo pkInfo, long uuid, int endType) {
+            info = pkInfo;
+            this.uuid = uuid;
+            this.endType = endType;
+        }
+
+        @Override
+        public ByteString toByteString() {
+            return null;
+        }
+    }
+
+    public static class PKInfoMsgExt implements MsgExt {
+
+        public LivePKProto.NewPKInfo info;
+
+        public PKInfoMsgExt(LivePKProto.NewPKInfo pkInfo) {
+            info = pkInfo;
+        }
+
+        @Override
+        public ByteString toByteString() {
+            return null;
         }
     }
 }

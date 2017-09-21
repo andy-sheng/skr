@@ -5,6 +5,7 @@ import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 
 import com.base.log.MyLog;
+import com.base.utils.CommonUtils;
 import com.base.utils.callback.ICommonCallBack;
 import com.google.protobuf.ByteString;
 import com.mi.live.data.account.UserAccountManager;
@@ -271,6 +272,11 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     @Override
     public void statistic(String key, long time) throws RemoteException {
         MyLog.w(TAG, "statistic key" + key);
+        //场包cta弹窗之前，不能有网络访问。
+        if (CommonUtils.isNeedShowCtaDialog()) {
+            MyLog.w(TAG, "statistic isNeedShowCtaDialog true");
+            return;
+        }
         StatisticsAlmightyWorker.getsInstance().recordImmediatelyDefault(key, time);
         MilinkStatistics.getInstance().statisticsGameActive(key, time);
     }
@@ -351,6 +357,11 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     private void reportLoginEntrance(int channelId, long miid) {
+        //场包cta弹窗之前，不能有网络访问。
+        if (CommonUtils.isNeedShowCtaDialog()) {
+            MyLog.w(TAG, "reportLoginEntrance isNeedShowCtaDialog true");
+            return;
+        }
         try {
             String key = String.format(StatisticsKey.KEY_SDK_LOGIN_ENTRANCE, channelId, miid);
             MyLog.w(TAG, "reportLoginEntrance key=" + key);
@@ -373,7 +384,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     @Override
     public void loginByMiAccountOAuth(final int channelId, String packageName, String channelSecret, final String code) throws RemoteException {
         MyLog.w(TAG, "loginByMiAccountOAuth channelId=" + channelId);
-
         secureOperate(channelId, packageName, channelSecret, new SecureLoginCallback() {
             @Override
             public void postSuccess() {
@@ -595,6 +605,12 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             MyLog.w(TAG, " secureOperate callback is null");
             return;
         }
+        //场包cta弹窗之前，不能有网络访问。
+        if (CommonUtils.isNeedShowCtaDialog()) {
+            MyLog.w(TAG, "secureOperate isNeedShowCtaDialog true");
+            callback.processFailure();
+            return;
+        }
         if (mAuthMap.containsKey(channelId) && mAuthMap.get(channelId).equals(packageName)) {
             callback.process(channelId, packageName);
             return;
@@ -807,9 +823,11 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
     @Override
     public void thirdPartLogin(String packageName, String channelSecret, final ThirdPartLoginData loginData) throws RemoteException {
-        if (loginData != null) {
-            MyLog.w(TAG, "thirdPartLogin channelId=" + loginData.getChannelId());
+        if (loginData == null) {
+            MyLog.w(TAG, "thirdPartLogin loginData is null");
+            return;
         }
+        MyLog.w(TAG, "thirdPartLogin channelId=" + loginData.getChannelId());
         final int channelId = loginData.getChannelId();
         secureOperate(loginData.getChannelId(), packageName, channelSecret, new SecureLoginCallback() {
             @Override

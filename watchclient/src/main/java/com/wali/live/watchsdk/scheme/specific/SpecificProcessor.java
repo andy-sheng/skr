@@ -11,6 +11,7 @@ import com.mi.live.data.account.MyUserInfoManager;
 import com.wali.live.watchsdk.channel.util.BannerManger;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeUtils;
+import com.wali.live.watchsdk.scheme.processor.CommonProcessor;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
@@ -20,9 +21,9 @@ import com.wali.live.watchsdk.webview.WebViewActivity;
  * Created by lan on 16/10/27.
  *
  * @module scheme
- * @description 非Walilive的Uri的逻辑代码
+ * @description 非Walilive/livesdk的Uri的逻辑代码
  */
-public class SpecificProcessor {
+public class SpecificProcessor extends CommonProcessor {
     private static final String TAG = SchemeConstants.LOG_PREFIX + SpecificProcessor.class.getSimpleName();
 
     public static boolean process(@NonNull Uri uri, String scheme, @NonNull Activity activity) {
@@ -48,19 +49,7 @@ public class SpecificProcessor {
         return true;
     }
 
-    public static boolean isLegalPath(Uri uri, String logKey, @NonNull String comparePath) {
-        MyLog.d(TAG, logKey + " uri=" + uri);
-        if (uri == null) {
-            return false;
-        }
-        String path = uri.getPath();
-        return comparePath.equals(path);
-    }
-
-    /**
-     * 跳转到WebView
-     */
-    public static void processSchemeHttp(Uri uri, @NonNull Activity activity) {
+    protected static void processSchemeHttp(Uri uri, @NonNull Activity activity) {
         Intent intent = new Intent(activity, WebViewActivity.class);
         intent.putExtra(WebViewActivity.EXTRA_URL, uri.toString());
         intent.putExtra(WebViewActivity.EXTRA_UID, MyUserInfoManager.getInstance().getUuid());
@@ -72,7 +61,7 @@ public class SpecificProcessor {
         activity.startActivity(intent);
     }
 
-    public static void processSchemeGameCenter(Uri uri, @NonNull Activity activity) {
+    private static void processSchemeGameCenter(Uri uri, @NonNull Activity activity) {
         String host = uri.getHost();
         if (SpecificConstants.HOST_OPEN_LIVE.equals(host)) {
             processHostOpenLive(uri, activity);

@@ -1,6 +1,5 @@
 package com.wali.live.livesdk.live.liveshow;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,7 +7,6 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.base.activity.BaseSdkActivity;
-import com.base.fragment.FragmentDataListener;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
@@ -21,11 +19,8 @@ import com.mi.live.engine.streamer.GalileoStreamer;
 import com.mi.live.engine.streamer.IStreamer;
 import com.mi.live.engine.streamer.StreamerConfig;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
-import com.wali.live.component.BaseSdkView;
 import com.wali.live.livesdk.live.component.BaseLiveController;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
-import com.wali.live.livesdk.live.liveshow.fragment.PrepareLiveFragment;
-import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 
 import java.util.Arrays;
 
@@ -34,8 +29,8 @@ import java.util.Arrays;
  *
  * @module 组件控制器, 游戏直播
  */
-public class LiveComponentController extends BaseLiveController {
-    private static final String TAG = "LiveComponentController";
+public class ShowLiveController extends BaseLiveController {
+    private static final String TAG = "GameLiveController";
 
     public static final int[] VIDEO_RATE_360P = new int[]{400, 600, 800};
 
@@ -52,7 +47,7 @@ public class LiveComponentController extends BaseLiveController {
         return TAG;
     }
 
-    public LiveComponentController(
+    public ShowLiveController(
             @NonNull RoomBaseDataModel myRoomData,
             @NonNull LiveRoomChatMsgManager roomChatMsgManager,
             @NonNull StreamerPresenter streamerPresenter) {
@@ -64,16 +59,6 @@ public class LiveComponentController extends BaseLiveController {
     @Override
     public void release() {
         super.release();
-    }
-
-    @Override
-    public void enterPreparePage(
-            @NonNull BaseComponentSdkActivity activity,
-            int requestCode,
-            FragmentDataListener listener) {
-        MyLog.w(TAG, "prepareShowLive");
-        PrepareLiveFragment.openFragment(activity, requestCode, listener, this, mStreamerPresenter, mMyRoomData);
-        mRoomChatMsgManager.setIsGameLiveMode(false);
     }
 
     @Override
@@ -105,11 +90,6 @@ public class LiveComponentController extends BaseLiveController {
         mStreamerPresenter.setStreamer(streamer);
         mStreamerPresenter.setDisplayPreview(surfaceView);
         MyLog.w(TAG, "create streamer over");
-    }
-
-    @Override
-    public BaseSdkView createSdkView(Activity activity) {
-        return new LiveSdkView(activity, this);
     }
 
     @Override

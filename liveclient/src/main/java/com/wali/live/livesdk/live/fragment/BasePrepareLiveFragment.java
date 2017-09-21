@@ -32,7 +32,6 @@ import com.base.preference.PreferenceUtils;
 import com.base.utils.network.Network;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.LiveRoomManagerEvent;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.manager.model.LiveRoomManagerModel;
@@ -69,6 +68,12 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
     public static final String EXTRA_LIVE_TITLE = "extra_live_title";
     public static final String EXTRA_LIVE_COVER_URL = "extra_live_cover_url";
     public static final String EXTRA_LIVE_TAG_INFO = "extra_live_tag_info";
+    public static final String EXTRA_LIVE_QUALITY = "extra_game_live_quality";
+    public static final String EXTRA_GAME_LIVE_MUTE = "extra_game_live_mute";
+
+    public static final int LOW_CLARITY = 0;
+    public static final int MEDIUM_CLARITY = 1;
+    public static final int HIGH_CLARITY = 2;
 
     // 直播话题get的方式：从TopicRecommendActivity获取topic为1；当前页面自定义为0
     public final static int TOPIC_FROM_TMATY = 1;
@@ -102,6 +107,50 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
     protected ViewGroup mTitleContainer;
     protected ViewGroup mMiddleContainer;
 
+    @Override
+    public int getRequestCode() {
+        return REQUEST_CODE;
+    }
+
+    @CallSuper
+    @Override
+    public void onClick(View v) {
+        KeyboardUtils.hideKeyboardImmediately(getActivity());
+        int i = v.getId();
+        if (i == R.id.begin_btn) {
+            if (!Network.hasNetwork((GlobalData.app()))) { // 网络判断
+                ToastUtils.showToast(GlobalData.app(), R.string.network_unavailable);
+                return;
+            }
+            performBeginClick();
+        } else if (i == R.id.close_btn) {
+            KeyboardUtils.hideKeyboard(getActivity());
+            getActivity().finish();
+        } else if (i == R.id.share_container) {
+            mShareSelectedIv.setSelected(!mShareSelectedIv.isSelected());
+        } else if (i == R.id.daily_task_area) {
+            UserActionEvent.post(UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT,
+                    mWidgetUnit.getLinkUrl(), mWidgetUnit.getUrlNeedParam(), mWidgetUnit.getOpenType(),
+                    UserAccountManager.getInstance().getUuidAsLong());
+        } else if (i == R.id.admin_area) {
+            openAdminFragment();
+        } else if (i == R.id.change_title_tv) {
+            mRoomPreparePresenter.changeTitle();
+        } else if (i == R.id.clear_title_tv) {
+            mLiveTitleEt.setText("");
+        } else if (i == R.id.main_fragment_container) {
+            hideBottomPanel(true);
+        }
+    }
+
+    protected abstract void updateCover();
+
+    protected abstract int getLayoutResId();
+
+    protected abstract void openLive();
+
+    protected abstract void performBeginClick();
+
     public void setMyRoomData(@NonNull RoomBaseDataModel myRoomData) {
         mMyRoomData = myRoomData;
         tryHideShareBtnView();
@@ -126,65 +175,8 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
         if (mRoomPreparePresenter != null) {
             mRoomPreparePresenter.loadManager();
             mRoomPreparePresenter.loadTitle();
-            mRoomPreparePresenter.loadDailyTask();
+            mRoomPreparePresenter.loadDailyTask(mMyRoomData.getLiveType());
         }
-    }
-
-    @CallSuper
-    @Override
-    public void onClick(View v) {
-        KeyboardUtils.hideKeyboardImmediately(getActivity());
-        int i = v.getId();
-        if (i == R.id.begin_btn) {
-            onBeginBtnClick();
-        } else if (i == R.id.close_btn) {
-            onCloseBtnClick();
-        } else if (i == R.id.share_container) {
-            onShareBtnClick();
-        } else if (i == R.id.daily_task_area) {
-            showDailyTask();
-        } else if (i == R.id.admin_area) {
-            openAdminFragment();
-        } else if (i == R.id.change_title_tv) {
-            changeTitle();
-        } else if (i == R.id.clear_title_tv) {
-            clearTitle();
-        } else if (i == R.id.main_fragment_container) {
-            hideBottomPanel(true);
-        }
-    }
-
-    protected abstract void updateCover();
-
-    protected abstract int getLayoutResId();
-
-    @Override
-    public int getRequestCode() {
-        return REQUEST_CODE;
-    }
-
-    protected void onBeginBtnClick() {
-        //网络判断
-        if (!Network.hasNetwork((GlobalData.app()))) {
-            ToastUtils.showToast(GlobalData.app(), R.string.network_unavailable);
-            return;
-        }
-        openLive();
-        recordShareSelectState();
-    }
-
-    private void onCloseBtnClick() {
-        KeyboardUtils.hideKeyboard(getActivity());
-        getActivity().finish();
-    }
-
-    private void onShareBtnClick() {
-        mShareSelectedIv.setSelected(!mShareSelectedIv.isSelected());
-    }
-
-    private void showDailyTask() {
-        UserActionEvent.post(UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT,
-                mWidgetUnit.getLinkUrl(), mWidgetUnit.getUrlNeedParam(), mWidgetUnit.getOpenType(), UserAccountManager.getInstance().getUuidAsLong());
     }
 
     private void openAdminFragment() {
@@ -284,14 +276,6 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
         mLiveTitleEt.addTextChangedListener(mTitleTextWatcher);
     }
 
-    private void changeTitle() {
-        mRoomPreparePresenter.changeTitle();
-    }
-
-    private void clearTitle() {
-        mLiveTitleEt.setText("");
-    }
-
     @Override
     protected void bindView() {
         MyLog.w(TAG, "bindView");
@@ -299,11 +283,6 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
         initTitleView();
         initPresenters();
         getDailyTaskFromServer();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     @Override
@@ -321,19 +300,6 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
     protected void finish() {
         MyLog.w(TAG, "finish");
         FragmentNaviUtils.popFragmentFromStack(getActivity());
-    }
-
-    protected abstract void openLive();
-
-    protected void openPublicLive() {
-        if (mDataListener != null) {
-            Bundle bundle = new Bundle();
-            putCommonData(bundle);
-            bundle.putInt(EXTRA_LIVE_TYPE, LiveManager.TYPE_LIVE_PUBLIC);
-            bundle.putBoolean(EXTRA_ADD_HISTORY, mIsAddHistory);
-            mDataListener.onFragmentResult(mRequestCode, Activity.RESULT_OK, bundle);
-        }
-        finish();
     }
 
     protected void putCommonData(Bundle bundle) {

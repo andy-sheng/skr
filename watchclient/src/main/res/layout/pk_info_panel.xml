@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="220dp">
+
+    <!--PK结果-->
+    <RelativeLayout
+        android:id="@+id/left_result"
+        android:layout_width="@dimen/view_dimen_283"
+        android:layout_height="@dimen/view_dimen_281"
+        android:layout_above="@+id/score_area"
+        android:layout_marginBottom="@dimen/margin_45"
+        android:layout_marginLeft="@dimen/margin_83"
+        android:visibility="visible">
+
+        <View
+            android:id="@+id/left_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/left_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/right_result"
+        android:layout_width="@dimen/view_dimen_283"
+        android:layout_height="@dimen/view_dimen_281"
+        android:layout_above="@+id/score_area"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/margin_45"
+        android:layout_marginRight="@dimen/margin_83"
+        android:visibility="visible">
+
+        <View
+            android:id="@+id/right_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/right_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/middle_result"
+        android:layout_width="@dimen/view_dimen_283"
+        android:layout_height="@dimen/view_dimen_281"
+        android:layout_above="@+id/score_area"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_45"
+        android:visibility="visible">
+
+        <View
+            android:id="@+id/middle_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/middle_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+    <!--左右主播头像，比分进度条等-->
+    <RelativeLayout
+        android:id="@+id/score_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_90"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_black_trans_30">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/anchor_1"
+            android:layout_width="@dimen/view_dimen_72"
+            android:layout_height="@dimen/view_dimen_72"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_18"
+            android:layout_marginRight="@dimen/margin_18" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/anchor_2"
+            android:layout_width="@dimen/view_dimen_72"
+            android:layout_height="@dimen/view_dimen_72"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_18"
+            android:layout_marginRight="@dimen/margin_18" />
+
+        <com.wali.live.watchsdk.component.view.PkScoreView
+            android:id="@+id/pk_score_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_50"
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@id/anchor_2"
+            android:layout_toRightOf="@id/anchor_1" />
+
+        <TextView
+            android:id="@+id/ticket_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/pk_score_view"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_13"
+            android:gravity="center_vertical|left"
+            android:text="0"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/text_size_28" />
+
+        <TextView
+            android:id="@+id/ticket_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/pk_score_view"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_13"
+            android:gravity="center_vertical|right"
+            android:text="0"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/text_size_28" />
+
+    </RelativeLayout>
+
+    <!--PK开始前倒计时-->
+    <TextView
+        android:id="@+id/start_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/score_area"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_120"
+        android:background="@drawable/score_area_bg"
+        android:gravity="center"
+        android:padding="@dimen/margin_40"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_32"
+        android:visibility="visible" />
+
+    <!--PK进行时倒计时-->
+    <LinearLayout
+        android:id="@+id/progress_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/score_area"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_66"
+        android:background="@drawable/live_bg_ticket_pressed"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/margin_9"
+        android:paddingLeft="@dimen/margin_16"
+        android:paddingRight="@dimen/margin_16"
+        android:paddingTop="@dimen/margin_9"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/pk_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="PK"
+            android:textColor="@color/color_white_trans_90"
+            android:textSize="@dimen/text_size_30" />
+
+        <TextView
+            android:id="@+id/progress_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_4"
+            android:gravity="center"
+            android:text="00:00"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/text_size_30" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="@dimen/margin_8"
+        android:src="@drawable/live_img_pk_logo" />
+
+</RelativeLayout>

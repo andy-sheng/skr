@@ -43,6 +43,11 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import static com.wali.live.common.gift.exception.GiftErrorCode.FAIL;
+import static com.wali.live.common.gift.exception.GiftErrorCode.REDENVELOP_EXPIRED;
+import static com.wali.live.common.gift.exception.GiftErrorCode.REDENVELOP_GAME_OVER;
+import static com.wali.live.common.gift.exception.GiftErrorCode.REDENVELOP_HAS_DONE;
+import static com.wali.live.common.gift.exception.GiftErrorCode.SUCC;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 
@@ -142,10 +147,11 @@ public class EnvelopePresenter extends BaseSdkRxPresenter<RelativeLayout>
     @Override
     public void grabEnvelope(EnvelopeInfo envelopeInfo) {
         if (envelopeInfo == null) {
-            MyLog.w(TAG, "removeEnvelope, but grabEnvelope is null");
+            MyLog.w(TAG, "grabEnvelope, but envelopeInfo is null");
             return;
         }
         if (envelopeInfo.state == EnvelopeInfo.STATE_GRABBING) {
+            MyLog.w(TAG, "grabEnvelope, but is under grabbing");
             return;
         } else if (envelopeInfo.state == EnvelopeInfo.STATE_GRAB_SUCCESS) {
             updateEnvelopeView(false);
@@ -155,7 +161,8 @@ public class EnvelopePresenter extends BaseSdkRxPresenter<RelativeLayout>
         doGrabEnvelope(envelopeInfo);
     }
 
-    private void doGrabEnvelope(final EnvelopeInfo envelopeInfo) {
+    private void doGrabEnvelope(@NonNull final EnvelopeInfo envelopeInfo) {
+        MyLog.w(TAG, "doGrabEnvelope envelopeId=" + envelopeInfo.getEnvelopeId());
         final String netTips = GlobalData.app().getString(R.string.net_is_busy_tip);
         Observable.just(envelopeInfo.getEnvelopeId())
                 .flatMap(new Func1<String, Observable<?>>() {
@@ -163,10 +170,10 @@ public class EnvelopePresenter extends BaseSdkRxPresenter<RelativeLayout>
                     public Observable<?> call(String envelopeId) {
                         RedEnvelProto.GrabEnvelopRsp envelopRsp = EnvelopeUtils.grabRedEnvelope(envelopeId);
                         if (envelopRsp == null) {
-                            MyLog.w(TAG, "grabEnvelope failed, rsp is null");
+                            MyLog.w(TAG, "doGrabEnvelope failed, rsp is null");
                             return Observable.error(new RefuseRetryExeption(netTips));
                         } else if (envelopRsp.getRetCode() == GiftErrorCode.REDENVELOP_GAME_BUSY) {
-                            MyLog.w(TAG, "grabEnvelope failed, rsp is null");
+                            MyLog.w(TAG, "doGrabEnvelope failed, rsp is busy");
                             return Observable.error(new Exception(netTips));
                         }
                         return Observable.just(envelopRsp);
@@ -188,7 +195,7 @@ public class EnvelopePresenter extends BaseSdkRxPresenter<RelativeLayout>
                             if (!TextUtils.isEmpty(msg)) {
                                 ToastUtils.showToast(msg);
                             }
-                            MyLog.w(TAG, "grabEnvelope failed, error:" + msg);
+                            MyLog.w(TAG, "doGrabEnvelope failed, error:" + msg);
                             processGrabDone(envelopeInfo, null);
                         }
                     }
@@ -196,6 +203,7 @@ public class EnvelopePresenter extends BaseSdkRxPresenter<RelativeLayout>
                     @Override
                     public void onNext(Object rsp) {
                         if (mView != null) {
+                            MyLog.w(TAG, "doGrabEnvelope done");
                             processGrabDone(envelopeInfo, (RedEnvelProto.GrabEnvelopRsp) rsp);
                         }
                     }
@@ -205,14 +213,17 @@ public class EnvelopePresenter extends BaseSdkRxPresenter<RelativeLayout>
     private void processGrabDone(
             @NonNull EnvelopeInfo envelopeInfo,
             @Nullable RedEnvelProto.GrabEnvelopRsp grabEnvelopRsp) {
-        if (grabEnvelopRsp == null || (grabEnvelopRsp.getRetCode() != ErrorCode.CODE_SUCCESS
-                && grabEnvelopRsp.getRetCode() != GiftErrorCode.REDENVELOP_HAS_DONE)) { // 加入这个判断，防止SDK与直播同一账号抢红包
-            envelopeInfo.state = EnvelopeInfo.STATE_GRAB_FAILED;
-        } else {
+        int errCode = grabEnvelopRsp != null ? grabEnvelopRsp.getRetCode() : FAIL;
+        if (errCode == SUCC || errCode == REDENVELOP_HAS_DONE) {
             MyUserInfoManager.getInstance().setDiamonds(grabEnvelopRsp.getAndUsableGemCnt(),
                     grabEnvelopRsp.getUsableVirtualGemCnt());
             envelopeInfo.state = EnvelopeInfo.STATE_GRAB_SUCCESS;
             envelopeInfo.grabCnt = grabEnvelopRsp.getGain();
+        } else if (errCode == REDENVELOP_EXPIRED || errCode == REDENVELOP_GAME_OVER) {
+            envelopeInfo.state = EnvelopeInfo.STATE_GRAB_SUCCESS;
+            envelopeInfo.grabCnt = 0;
+        } else {
+            envelopeInfo.state = EnvelopeInfo.STATE_GRAB_FAILED;
         }
         updateEnvelopeView(false);
     }

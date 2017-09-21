@@ -5,10 +5,15 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.image.fresco.BaseImageView;
+import com.base.image.fresco.FrescoWorker;
+import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelViewModel;
+
+import static android.view.View.GONE;
 
 /**
  * Created by lan on 16/6/28.
@@ -19,8 +24,10 @@ import com.wali.live.watchsdk.channel.viewmodel.ChannelViewModel;
 public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
 
     public final int HEAD_TYPE_LEFT = 2; // title样式 ,表示标题和箭头在左上角
+    public final int HEAD_TYPE_HEAD_ICON = 3; // title样式 ,header icon
 
     protected View mHeadArea;
+    protected BaseImageView mHeadIv;
     protected TextView mHeadTv;
     protected TextView mSubHeadTv;
     protected TextView mMoreTv;
@@ -49,6 +56,7 @@ public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
         }
 
         mHeadTv = $(R.id.head_tv);
+        mHeadIv = $(R.id.head_iv);
         mSubHeadTv = $(R.id.sub_head_tv);
         mMoreTv = $(R.id.more_tv);
         mSplitLine = $(R.id.split_line);
@@ -76,9 +84,11 @@ public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
         if (mHeadArea == null) {
             return;
         }
+
         if (mViewModel.hasHead()) {
             mHeadArea.setVisibility(View.VISIBLE);
             mHeadTv.setText(mViewModel.getHead());
+            mHeadIv.setVisibility(View.GONE);
 
             if (mViewModel.hasSubHead()) {
                 mSubHeadTv.setVisibility(View.VISIBLE);
@@ -96,7 +106,6 @@ public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
                         }
                     });
                     mMoreTv.setVisibility(View.GONE);
-
                     mHeadTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.home_more, 0);
                     mHeadTv.setCompoundDrawablePadding(DisplayUtils.dip2px(3.33f));
                 } else if (mViewModel.getHeadType() == HEAD_TYPE_LEFT) {
@@ -113,6 +122,9 @@ public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
                 } else {
                     mHeadTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     itemView.setOnClickListener(null);
+                    if (!TextUtils.isEmpty(mViewModel.getHeadMoreText())) {
+                        mMoreTv.setText(mViewModel.getHeadMoreText());
+                    }
                     mMoreTv.setVisibility(View.VISIBLE);
                     mMoreTv.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -124,10 +136,8 @@ public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
             } else {
                 mMoreTv.setVisibility(View.GONE);
                 itemView.setOnClickListener(null);
-
                 mHeadTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }
-
             // 调整位置
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mHeadTv.getLayoutParams();
             if (mViewModel.hasSubHead()) {
@@ -139,6 +149,25 @@ public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
                 lp.topMargin = DisplayUtils.dip2px(15f);
 
                 mHeadArea.getLayoutParams().height = DisplayUtils.dip2px(66.67f);
+            } else if (mViewModel.getHeadType() == HEAD_TYPE_HEAD_ICON && !TextUtils.isEmpty(mViewModel.getHeadIconUrl())) {
+                //调整位置
+                lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 0);
+
+                RelativeLayout.LayoutParams lp1 = (RelativeLayout.LayoutParams) mHeadIv.getLayoutParams();
+                lp1.leftMargin = DisplayUtils.dip2px(6.66f);
+                lp1.width = DisplayUtils.dip2px(22);
+                lp1.height = DisplayUtils.dip2px(22);
+                FrescoWorker.loadImage(mHeadIv,
+                        ImageFactory.newHttpImage(mViewModel.getHeadIconUrl())
+                                .build());
+                mHeadIv.setLayoutParams(lp1);
+                mHeadIv.setVisibility(View.VISIBLE);
+
+                lp.addRule(RelativeLayout.RIGHT_OF, R.id.head_iv);
+                lp.leftMargin = DisplayUtils.dip2px(3.33f);
+                mHeadTv.setLayoutParams(lp);
+
+                mHeadArea.getLayoutParams().height = DisplayUtils.dip2px(43.33f);
             } else {
                 lp.addRule(RelativeLayout.CENTER_HORIZONTAL, 0);
                 lp.topMargin = 0;

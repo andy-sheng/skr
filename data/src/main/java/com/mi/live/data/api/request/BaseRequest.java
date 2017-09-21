@@ -58,6 +58,11 @@ public abstract class BaseRequest {
         if (!TextUtils.isEmpty(mChannelId)) {
             reqData.setChannelId(mChannelId);
         }
+        try {
+            MyLog.d(TAG, mAction + " request : \n" + mRequest);
+        } catch (Exception e) {
+            // mRequest.toString()会有字符串异常，捕获下
+        }
         return reqData;
     }
 
@@ -73,7 +78,8 @@ public abstract class BaseRequest {
         if (rspData != null) {
             try {
                 mResponse = parse(rspData.getData());
-            } catch (InvalidProtocolBufferException e) {
+                MyLog.d(TAG, mAction + " response : \n" + mResponse);
+            } catch (Exception e) {
                 MyLog.e(TAG, e);
             }
         } else {

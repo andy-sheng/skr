@@ -41,7 +41,7 @@ public class ChannelUiType {
     public static final int TYPE_TOPIC_GRID = 27;           // 27.广场标签，话题结构
     public static final int TYPE_GAME_CARD = 28;            // 28.游戏频道，内嵌头像样式
 
-    public static final int TYPE_PLACEHOLDER_RANK = 29;//顶部 视图样式 （社区主播势力日榜）
+    public static final int TYPE_PLACEHOLDER_RANK = 29;     //顶部 视图样式 （社区主播势力日榜）
     public static final int TYPE_FOUR_LINE_NAVIGATION = 30; // 30.圈子新增 标签类型 多行四列，icon 和 文本
     public static final int TYPE_THREE_CARD_LEFT_BIG = 31;  // 31.三个元素组成，左大图，右两小图
     public static final int TYPE_THREE_CARD_RIGHT_BIG = 32; // 32.三个元素组成，左两小图，右大图
@@ -49,7 +49,10 @@ public class ChannelUiType {
     public static final int TYPE_HEAD_LARGE_CARD = 34;      // 34. 二级页顶部的一张大图，中间有两行文字
     public static final int TYPE_VARIABLE_LENGTH_TAG = 35;  // 35.标签 长度随内容变化， 可以折叠
 
-    public static final int TYPE_PLACEHOLDER = 36;
+    public static final int TYPE_TWO_LONG_COVER = 38;        // 38.一行两列，4比3比例的视频封面图
+    public static final int TYPE_PAGE_HEADER = 39;           // 39.频道页头图
+
+    public static final int TYPE_PLACEHOLDER = 42;
 
     public static final HashSet<Integer> ALL_CHANNEL_UI_TYPE =
             new HashSet<>(Arrays.asList(
@@ -88,6 +91,8 @@ public class ChannelUiType {
                     TYPE_FLOAT_HEADER,
                     TYPE_HEAD_LARGE_CARD,
                     TYPE_VARIABLE_LENGTH_TAG,
+                    TYPE_TWO_LONG_COVER,
+                    TYPE_PAGE_HEADER,
                     TYPE_PLACEHOLDER
             ));
 }

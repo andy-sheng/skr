@@ -8,10 +8,13 @@ import android.content.IntentFilter;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,10 +22,12 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.activity.BaseActivity;
 import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
+import com.base.permission.PermissionUtils;
 import com.base.utils.system.PackageUtils;
 import com.base.utils.toast.ToastUtils;
 import com.base.view.MyRatingBar;
@@ -31,6 +36,7 @@ import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
+import com.wali.live.watchsdk.editinfo.fragment.presenter.EditAvatarPresenter;
 import com.wali.live.watchsdk.log.LogConstants;
 
 import java.io.File;
@@ -208,8 +214,19 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
                             tryLaunchApk(mGameViewModel.getPackageName());
                             return;
                         }
+
                         if (mDownloadId == 0) {
-                            beginDownload();
+                            PermissionUtils.checkPermissionByType(
+                                    (BaseActivity) (mParentView.getContext()),
+                                    PermissionUtils.PermissionType.WRITE_EXTERNAL_STORAGE,
+                                    new PermissionUtils.IPermissionCallback() {
+                                        @Override
+                                        public void okProcess() {
+                                            MyLog.d(TAG, "write permission ok");
+                                            beginDownload();
+                                        }
+                                    }
+                            );
                             return;
                         }
                         if (mDownloadStatus == DownloadManager.STATUS_SUCCESSFUL) {
@@ -242,6 +259,14 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
         request.setTitle(mGameViewModel.getName());
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
+        String filename = mGameViewModel.getGameId() + "_" + System.currentTimeMillis() + ".apk";
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+
+        // 由于COLUMN_LOCAL_FILENAME废弃，采用提前设置路径的方案
+        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        mDownloadFilename = Uri.withAppendedPath(Uri.fromFile(file), filename).getPath();
+        MyLog.d(TAG, "mDownloadFilename=" + mDownloadFilename);
+
         mDownloadId = mDownloadManager.enqueue(request);
         MyLog.w(TAG, "downloadId=" + mDownloadId);
 
@@ -273,7 +298,16 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
         if (downloadId == mDownloadId) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
 
-            Uri uri = Uri.fromFile(new File(mDownloadFilename));
+            Uri uri;
+            // 判断版本大于等于7.0
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                uri = FileProvider.getUriForFile(mParentView.getContext(), EditAvatarPresenter.AUTHORITY, new File(mDownloadFilename));
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            } else {
+                uri = Uri.fromFile(new File(mDownloadFilename));
+            }
+
             intent.setDataAndType(uri, "application/vnd.android.package-archive");
             mParentView.getContext().startActivity(intent);
         }
@@ -379,10 +413,11 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
                                 //下载状态
                                 result[2] = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
 
-                                //下载地址
-                                if (TextUtils.isEmpty(mDownloadFilename)) {
-                                    mDownloadFilename = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME));
-                                }
+                                // 下载地址
+                                // if (TextUtils.isEmpty(mDownloadFilename)) {
+                                //    mDownloadFilename = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME));
+                                //    MyLog.d(TAG, "mDownloadFilename=" + mDownloadFilename);
+                                //}
                             }
                             subscriber.onNext(result);
                         } catch (Exception e) {

@@ -30,7 +30,6 @@ public class LiveSdkApplication extends Application {
         super.onCreate();
         initializeLeakDetection();
         InitManager.init(this, sRefWatcher);
-        initCrasheye();
     }
 
     protected void attachBaseContext(Context base) {
@@ -50,12 +49,5 @@ public class LiveSdkApplication extends Application {
 
     public static RefWatcher getRefWatcher() {
         return sRefWatcher;
-    }
-
-    private static void initCrasheye() {
-        Crasheye.init(GlobalData.app(), Constants.CRASHEYE_APPID);
-        Crasheye.setChannelID(ReleaseChannelUtils.getReleaseChannel());
-        // 这里还没有登录，在UserAccountManager登录后初始化
-        // Crasheye.setUserIdentifier(UserAccountManager.getInstance().getUuid());
     }
 }

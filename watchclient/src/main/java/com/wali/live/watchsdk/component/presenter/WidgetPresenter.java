@@ -40,6 +40,8 @@ import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_LIVE_SUCCESS;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_ON_PK_START;
+import static com.wali.live.component.BaseSdkController.MSG_ON_PK_STOP;
 
 /**
  * Created by chenyong on 2017/03/24.
@@ -86,6 +88,8 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
         registerAction(MSG_ON_LIVE_SUCCESS);
         registerAction(MSG_INPUT_VIEW_SHOWED);
         registerAction(MSG_INPUT_VIEW_HIDDEN);
+        registerAction(MSG_ON_PK_START);
+        registerAction(MSG_ON_PK_STOP);
     }
 
     @Override
@@ -101,6 +105,15 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
         if (mUIHandler != null) {
             mUIHandler.removeCallbacksAndMessages(null);
             mUIHandler = null;
+        }
+    }
+
+    public void reset() {
+        mView.hideWidgetView();
+        // 这里可以直接调用destroyView，因为切换房间，所有挂件信息会重新拉取
+        mView.destroyView();
+        if (mUIHandler != null) {
+            mUIHandler.removeCallbacksAndMessages(null);
         }
     }
 
@@ -305,11 +318,14 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
                 mView.onOrientation(true);
                 return true;
             case MSG_ON_LIVE_SUCCESS:
+            case MSG_ON_PK_START:
+            case MSG_ON_PK_STOP:
                 if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
                     int liveType = mMyRoomData.getLiveType();
                     MyLog.w(TAG, "live type=" + liveType);
                     if (liveType != LiveManager.TYPE_LIVE_PRIVATE && liveType != LiveManager.TYPE_LIVE_TOKEN) {
-                        getRoomAttachment(mMyRoomData.getRoomId(), mMyRoomData.getUid(), mMyRoomData.getLiveType()).compose(WidgetPresenter.this.bindUntilEvent(PresenterEvent.DESTROY))
+                        getRoomAttachment(mMyRoomData.getRoomId(), mMyRoomData.getUid(), mMyRoomData.getLiveType())
+                                .compose(bindUntilEvent(PresenterEvent.DESTROY))
                                 .retryWhen(new RxRetryAssist(3, 5, true)) // 重试3次，间隔5秒
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())

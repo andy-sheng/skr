@@ -40,9 +40,11 @@ import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
+import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.preference.PreferenceKeys;
+import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.room.model.RoomBaseDataModel;
@@ -54,10 +56,12 @@ import com.thornbirds.component.IEventObserver;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.Params;
 import com.trello.rxlifecycle.ActivityEvent;
+import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
+import com.wali.live.dao.Gift;
 import com.wali.live.event.EventClass;
 import com.wali.live.event.EventEmitter;
 import com.wali.live.event.UserActionEvent;
@@ -71,7 +75,7 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.component.WatchSdkView;
 import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
-import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
+import com.wali.live.watchsdk.personinfo.fragment.FloatInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.ranking.RankingPagerFragment;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
@@ -92,7 +96,6 @@ import com.wali.live.watchsdk.watch.presenter.push.RoomSystemMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
 import com.wali.live.watchsdk.watch.view.IWatchVideoView;
-import com.wali.live.watchsdk.watchtop.view.WatchTopInfoSingleView;
 import com.wali.live.watchsdk.webview.HalfWebViewActivity;
 import com.wali.live.watchsdk.webview.WebViewActivity;
 
@@ -110,9 +113,11 @@ import rx.functions.Action1;
 
 import static com.wali.live.component.BaseSdkController.MSG_FOLLOW_COUNT_DOWN;
 import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_LINK_MIC_START;
 import static com.wali.live.component.BaseSdkController.MSG_ON_LIVE_SUCCESS;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_ON_PK_START;
 import static com.wali.live.component.BaseSdkController.MSG_PAGE_DOWN;
 import static com.wali.live.component.BaseSdkController.MSG_PAGE_UP;
 
@@ -120,7 +125,7 @@ import static com.wali.live.component.BaseSdkController.MSG_PAGE_UP;
  * Created by lan on 16/11/25.
  */
 public class WatchSdkActivity extends BaseComponentSdkActivity
-        implements FloatPersonInfoFragment.FloatPersonInfoClickListener,
+        implements FloatInfoFragment.FloatInfoClickListener,
         ForbidManagePresenter.IForbidManageProvider, IActionCallBack, IWatchVideoView {
 
     public static final String EXTRA_ROOM_INFO_LIST = "extra_room_info_list";
@@ -128,9 +133,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
     // 播放器
     protected VideoPlayerTextureView mVideoView;
-    // 播放器容器
-    protected WatchTopInfoSingleView mWatchTopInfoSingleView;
-    //    protected LiveCommentView mLiveCommentView; //弹幕区view
+
     protected ImageView mCloseBtn;// 关闭按钮
     protected ImageView mRotateBtn;// 关闭
 
@@ -158,7 +161,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     private RoomStatusPresenter mRoomStatusPresenter;
     private ForbidManagePresenter mForbidManagePresenter;
     protected UserInfoPresenter mUserInfoPresenter;
-//    private GameModePresenter mGameModePresenter;
 
     private PhoneStateReceiver mPhoneStateReceiver;
     private RoomSystemMsgPresenter mRoomSystemMsgPresenter;
@@ -191,6 +193,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
         //尝试发送关键数据给服务器,允许即使多次调用，成功后就不再发送。
         if (!isMyRoom() && !check4GNet()) {
+            WatchRoomCharactorManager.getInstance().clear();
             trySendDataWithServerOnce();
         }
     }
@@ -235,6 +238,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         if (TextUtils.isEmpty(mMyRoomData.getVideoUrl())) {
             getVideoUrlFromServer();
         } else {
+            MyLog.d(TAG, "trySendDataWithServerOnce startPlayer");
             startPlayer();
         }
     }
@@ -285,11 +289,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     }
 
     private void initView() {
-        // 顶部view
-        mWatchTopInfoSingleView = $(R.id.watch_top_info_view);
-        addBindActivityLifeCycle(mWatchTopInfoSingleView, true);
-        mWatchTopInfoSingleView.setMyRoomDataSet(mMyRoomData);
-        mWatchTopInfoSingleView.initViewUseData();
 
         // 封面模糊图
         mMaskIv = $(R.id.mask_iv);
@@ -298,12 +297,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
             url = AvatarUtils.getAvatarUrlByUidTs(mRoomInfo.getPlayerId(), AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, mRoomInfo.getAvatar());
         }
         AvatarUtils.loadAvatarByUrl(mMaskIv, url, false, true, R.drawable.rect_loading_bg_24292d);
-
-        // 初始化弹幕区
-//        mLiveCommentView = $(R.id.comment_rv);
-//        mLiveCommentView.setSoundEffectsEnabled(false);
-//        addBindActivityLifeCycle(mLiveCommentView, true);
-//        mLiveCommentView.setToken(mRoomChatMsgManager.toString());
 
         mVideoView = $(R.id.video_view);
 
@@ -426,17 +419,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         mUserInfoPresenter = new UserInfoPresenter(this, mMyRoomData);
 
         if (mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME) {
-            // 是游戏直播间
-//            mGameModePresenter = new GameModePresenter(this, mMyRoomData);
-//            mGameModePresenter.setGameBarrageViewStub((ViewStub) findViewById(R.id.game_barrage_viewstub));
-//            mGameModePresenter.setGameBottomViewStub((ViewStub) findViewById(R.id.game_bottom_viewstub));
-//            mGameModePresenter.setCommentView(mLiveCommentView);
-//            mGameModePresenter.setWatchTopView(mWatchTopInfoSingleView);
-//            mGameModePresenter.setCloseBtn(mCloseBtn);
-//            mGameModePresenter.setRotateBtn(mRotateBtn);
-//            mGameModePresenter.setBottomContainerView($(R.id.bottom_button_view));
-//            mGameModePresenter.setmTouchPresenter(mTouchPresenter);
-//            addBindActivityLifeCycle(mGameModePresenter, true);
         }
     }
 
@@ -563,7 +545,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         if (uid <= 0) {
             return;
         }
-        FloatPersonInfoFragment.openFragment(this, uid, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this, mMyRoomData.getEnterRoomTime());
+        FloatInfoFragment.openFragment(this, uid, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this, mMyRoomData.getEnterRoomTime());
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
@@ -601,7 +583,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventClass.FeedsVideoEvent event) {
         switch (event.mType) {
-            // onPrepared触发
             case EventClass.FeedsVideoEvent.TYPE_PLAYING:
                 if (mMaskIv.getVisibility() == View.VISIBLE) {
                     mMaskIv.setVisibility(View.GONE);
@@ -701,6 +682,14 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                 }
             }
             break;
+            case UserActionEvent.EVENT_TYPE_CLICK_SUPPORT_WIDGET:
+                Gift gift = GiftRepository.findGiftById((int) event.obj1);
+                if (gift != null) {
+                    BarrageMsg pushMsg = GiftRepository.createGiftBarrageMessage(gift.getGiftId(), gift.getName(), gift.getCatagory(),
+                            gift.getSendDescribe(), 1, 0, System.currentTimeMillis(), -1, mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), "", "", 0);
+                    BarrageMessageManager.getInstance().pretendPushBarrage(pushMsg);
+                }
+                break;
         }
     }
 
@@ -727,6 +716,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         }
         switch (event.type) {
             case RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE:
+                MyLog.d(TAG, "receive TYPE_CHANGE_USER_INFO_COMPLETE");
                 RoomBaseDataModel roomBaseDataModel = event.source;
                 if (roomBaseDataModel != null && !roomBaseDataModel.isFocused()
                         && (mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME)) {
@@ -757,16 +747,23 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
             if (roomInfo != null) {
                 updateVideoUrl(roomInfo.getDownStreamUrl());
             }
-            WatchRoomCharactorManager.getInstance().clear();
+            //TODO 这段代码迁移到了switchRoom
+            //WatchRoomCharactorManager.getInstance().clear();
             syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);
             if (mController != null) {
                 mController.postEvent(MSG_ON_LIVE_SUCCESS);
+                if (roomInfo.getMicBeginInfo() != null) {
+                    mController.postEvent(MSG_ON_LINK_MIC_START, new Params().putItem(roomInfo.getMicBeginInfo()));
+                }
+                if (roomInfo.getPkStartInfo() != null) {
+                    mController.postEvent(MSG_ON_PK_START, new Params().putItem(roomInfo.getPkStartInfo()));
+                }
             }
         }
     };
 
-    @Override
-    public void onClickHomepage(User user) {
+//    @Override
+//    public void onClickHomepage(User user) {
 //        TODO 主页去掉
 //        if (user == null || user.getUid() == MyUserInfoManager.getInstance().getUser().getUid()) {
 //            return;
@@ -785,7 +782,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 //            PersonInfoFragment personInfoFragment = (PersonInfoFragment) mPersonInfoFragment;
 //            personInfoFragment.setPersonInfoClickListener(this);
 //        }
-    }
+//    }
 
     @Override
     public void onClickTopOne(User user) {
@@ -805,12 +802,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     public void onClickMainAvatar(User user) {
         //onClickBigAvatar(user);
         //qw 提的需求 点击头像进入主页而不是看大图
-        onClickHomepage(user);
-    }
-
-    @Override
-    public void onClickSixin(User user) {
-
+        //onClickHomepage(user);
     }
 
     @Override
@@ -853,8 +845,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                             // 初始新票
                             mMyRoomData.setInitTicket(giftInfoForEnterRoom.getInitStarStickCount());
 
-                            mMyRoomData.setTicket(giftInfoForEnterRoom.getInitStarStickCount());//发送刷新的event
-
+                            //临时加的.roomData里的原user星票数一直是0，在这里重新更新了一下user
+                            mMyRoomData.setUser(UserInfoManager.getUserInfoByUuid(mMyRoomData.getUid(), false));
+                            mMyRoomData.setTicket(giftInfoForEnterRoom.getInitStarStickCount() > mMyRoomData.getTicket() ?
+                                    giftInfoForEnterRoom.getInitStarStickCount() : mMyRoomData.getTicket());//发送刷新的event
                             // 这个房间的的礼物橱窗信息交付
 //                            mGiftMallView.setGiftInfoForEnterRoom(giftInfoForEnterRoom.getmGiftInfoForThisRoom());
                             mGiftMallPresenter.setGiftInfoForEnterRoom(giftInfoForEnterRoom.getmGiftInfoForThisRoom());
@@ -917,10 +911,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                 EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST));
                 return;
             }
-//            else if (mGameModePresenter != null && mGameModePresenter.ismInputViewShow()) {
-//                mGameModePresenter.hideInputArea();
-//                return;
-//            }
             super.onBackPressed();
         }
     }
@@ -949,12 +939,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     }
 
     protected void orientLandscape() {
-//        if (mLiveCommentView != null) {
-//            mLiveCommentView.orientComment(true);
-//        }
-        if (mWatchTopInfoSingleView != null) {
-            mWatchTopInfoSingleView.onScreenOrientationChanged(true);
-        }
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(true);
         }
@@ -965,26 +949,12 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     }
 
     protected void orientPortrait() {
-//        if (mLiveCommentView != null) {
-//            mLiveCommentView.orientComment(false);
-//        }
-        if (mWatchTopInfoSingleView != null) {
-            mWatchTopInfoSingleView.onScreenOrientationChanged(false);
-        }
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(false);
         }
         if (mController != null) {
             mController.postEvent(MSG_ON_ORIENT_PORTRAIT);
         }
-//        if (mGameModePresenter != null) {
-//            if (mCloseBtn.getVisibility() != View.VISIBLE) {
-//                mCloseBtn.setVisibility(View.VISIBLE);
-//            }
-//            if (mWatchTopInfoSingleView.getVisibility() != View.VISIBLE) {
-//                mWatchTopInfoSingleView.setVisibility(View.VISIBLE);
-//            }
-//        }
         orientCloseBtn(false);
     }
 
@@ -1067,6 +1037,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     public void updateVideoUrl(String videoUrl) {
         if (TextUtils.isEmpty(mMyRoomData.getVideoUrl()) && !TextUtils.isEmpty(videoUrl)) {
             mMyRoomData.setVideoUrl(videoUrl);
+            MyLog.d(TAG, "updateVideoUrl startPlayer");
             startPlayer();
         }
     }
@@ -1131,6 +1102,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         private void switchRoom() {
             if (!isFinishing()) {
                 MyLog.w(TAG, "switch anchor: leave room user=" + mMyRoomData.getUser());
+                // 清除管理信息
+                WatchRoomCharactorManager.getInstance().clear();
                 // 清除房间消息
                 mRoomChatMsgManager.clear();
 
@@ -1147,7 +1120,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                 leaveLiveToServer();
 
                 // 重置对应的view
-                mWatchTopInfoSingleView.resetData();
                 mFlyBarrageViewGroup.reset();
                 mGiftAnimationView.reset();
                 mGiftContinueViewGroup.reset();

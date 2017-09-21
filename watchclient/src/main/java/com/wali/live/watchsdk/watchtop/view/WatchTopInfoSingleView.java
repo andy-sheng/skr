@@ -41,6 +41,7 @@ import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.dao.RelationDaoAdapter;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.proto.LiveCommonProto;
+import com.wali.live.proto.LiveProto;
 import com.wali.live.proto.RelationProto;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
@@ -71,6 +72,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by chengsimin on 16/3/31.
  */
+@Deprecated
 public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
     public static final String TAG = "WatchTopInfoSingleView";
 
@@ -232,10 +234,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
             public void onAnimationStart(Animator animation) {
                 mFollowBtnAnimeStart = true;
                 mFollowBtnTv.setLayerType(LAYER_TYPE_HARDWARE, null);
-
-                if (mOriginFollowBtnWidth == 0) {
-                    mOriginFollowBtnWidth = mFollowBtnTv.getWidth();
-                }
+                mOriginFollowBtnWidth = mFollowBtnTv.getLayoutParams().width;
             }
 
             @Override
@@ -274,10 +273,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
             public void onAnimationStart(Animator animation) {
                 mFollowBtnAnimeStart = true;
                 mFollowBtnTv.setLayerType(LAYER_TYPE_HARDWARE, null);
-
-                if (mOriginFollowBtnWidth == 0) {
-                    mOriginFollowBtnWidth = mFollowBtnTv.getWidth();
-                }
+                mOriginFollowBtnWidth = mFollowBtnTv.getLayoutParams().width;
             }
 
             @Override
@@ -289,7 +285,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
         });
     }
 
-    private void clearFollowAnimator() {
+    public void clearAnimator() {
         if (mFollowBtnAnimeStart) {
             mFollowBtnTv.clearAnimation();
             if (mFollowAnimator != null) {
@@ -316,7 +312,6 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
 
     @Override
     public void onUserInfoComplete() {
-        MyLog.d(TAG, "onUserInfoComplete");
         updateTicketView();
         updateOwnerView();
         updateAnchorNickName();
@@ -343,7 +338,6 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
         mLinkUser = null;
         stopAnimation(mShowAnimation);
         stopAnimation(mHideAnimation);
-        clearFollowAnimator();
         adjustOriginalAlpha(1.0f);
         adjustOriginalVisibility(VISIBLE);
         adjustLinkingVisibility(GONE);
@@ -381,7 +375,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
     }
 
     private boolean stopAnimation(ValueAnimator animation) {
-        MyLog.d(TAG, "stopAnimation");
+        MyLog.d(TAG, "stopRippleAnimator");
         if (animation != null && animation.isStarted()) {
             animation.cancel();
             return true;
@@ -662,7 +656,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
                                     public void call(Void aVoid) {
                                         GiftRepository.clickCounter(info.getWidgetID(), currentZuid, currentRoomid)
                                                 .observeOn(AndroidSchedulers.mainThread())
-                                                .subscribe(new Observer<String>() {
+                                                .subscribe(new Observer<LiveProto.WidgetClickRsp>() {
                                                     @Override
                                                     public void onCompleted() {
 
@@ -673,9 +667,11 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
                                                     }
 
                                                     @Override
-                                                    public void onNext(String rsp) {
-                                                        if (txtCounter != null) {
-                                                            txtCounter.setText(rsp);
+                                                    public void onNext(LiveProto.WidgetClickRsp rsp) {
+                                                        if (rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
+                                                            if (txtCounter != null) {
+                                                                txtCounter.setText(rsp.getCounterText());
+                                                            }
                                                         }
                                                     }
                                                 });

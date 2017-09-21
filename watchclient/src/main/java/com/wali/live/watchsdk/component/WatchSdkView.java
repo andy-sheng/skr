@@ -32,7 +32,9 @@ import com.wali.live.watchsdk.component.presenter.GameInputPresenter;
 import com.wali.live.watchsdk.component.presenter.ImagePagerPresenter;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
+import com.wali.live.watchsdk.component.presenter.TopAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
+import com.wali.live.watchsdk.component.presenter.WatchFloatPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.BarrageBtnView;
 import com.wali.live.watchsdk.component.view.ExtraContainerView;
@@ -42,6 +44,7 @@ import com.wali.live.watchsdk.component.view.GameInputView;
 import com.wali.live.watchsdk.component.view.ImagePagerView;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
+import com.wali.live.watchsdk.component.view.TopAreaView;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.view.WidgetView;
 import com.wali.live.watchsdk.component.view.panel.GameDownloadPanel;
@@ -79,8 +82,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
 
     protected final AnimationHelper mAnimationHelper = new AnimationHelper();
 
-    @Nullable
-    protected View mTopInfoView;
+    protected TopAreaView mTopAreaView;
     @Nullable
     protected LiveCommentView mLiveCommentView;
     protected View mBarrageBtnView;
@@ -98,6 +100,8 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
     protected GameBarragePresenter mGameBarragePresenter;
     protected GameInputPresenter mGameInputPresenter;
     protected GameDownloadPresenter mGameDownloadPresenter;
+
+    protected WidgetPresenter mWidgetPresenter;
 
     protected ImagePagerView mPagerView;
 
@@ -171,7 +175,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
 
         if (mGameHideSet.size() == 0) {
             addViewToSet(new int[]{
-                    R.id.watch_top_info_view,
+                    R.id.top_area_view,
                     R.id.bottom_button_view,
                     R.id.game_barrage_view,
                     R.id.game_input_view,
@@ -198,7 +202,18 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
     public void setupView() {
         mContentView = $(mParentView, R.id.main_act_container);
         mGiftContinueViewGroup = $(R.id.gift_continue_vg);  // 礼物
-        mTopInfoView = $(R.id.watch_top_info_view);         // 顶部view
+
+        //顶部view
+        {
+            mTopAreaView = $(R.id.top_area_view);
+            if (mTopAreaView == null) {
+                return;
+            }
+            TopAreaPresenter mTopAreaPresenter = new TopAreaPresenter(mController,
+                    mController.mMyRoomData, false);
+            registerComponent(mTopAreaView, mTopAreaPresenter);
+        }
+
         // 弹幕区
         {
             LiveCommentView view = $(R.id.live_comment_view);
@@ -221,6 +236,12 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
             PanelContainerPresenter presenter = new PanelContainerPresenter(mController,
                     mController.mMyRoomData);
             registerHybridComponent(presenter, relativeLayout);
+        }
+        // 悬浮面板容器，与底部面板类似，但是不会在显示新Panel时，隐藏之前显示的Panel
+        {
+            WatchFloatPresenter presenter = new WatchFloatPresenter(mController, mController.mMyRoomData);
+            registerHybridComponent(presenter, mContentView);
+            ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
         }
         // 输入框
         {
@@ -277,9 +298,9 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                 MyLog.e(TAG, "missing R.id.widget_view");
                 return;
             }
-            WidgetPresenter presenter = new WidgetPresenter(mController, mController.mMyRoomData, false);
-            registerComponent(view, presenter);
-            ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
+            mWidgetPresenter = new WidgetPresenter(mController, mController.mMyRoomData, false);
+            registerComponent(view, mWidgetPresenter);
+            ((BaseComponentSdkActivity) mActivity).addPushProcessor(mWidgetPresenter);
         }
 
         if (mController.mRoomInfoList != null && mController.mRoomInfoList.size() > 1) {
@@ -295,7 +316,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
         }
 
         addViewToSet(new int[]{
-                R.id.watch_top_info_view,
+                R.id.top_area_view,
                 R.id.bottom_button_view,
                 R.id.live_comment_view,
                 R.id.gift_animation_player_view,
@@ -305,7 +326,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                 R.id.barrage_btn_view
         }, mHorizontalMoveSet);
         addViewToSet(new int[]{
-                R.id.watch_top_info_view,
+                R.id.top_area_view,
                 R.id.bottom_button_view,
                 R.id.live_comment_view,
                 R.id.gift_animation_player_view,
@@ -318,6 +339,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                 R.id.close_btn,
                 R.id.extra_container,
         }, mVerticalMoveSet);
+
         // 滑动
         {
             View view = $(R.id.touch_view);
@@ -374,8 +396,12 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
         if (mGameDownloadPresenter != null) {
             mGameDownloadPresenter.reset();
         }
+        if (mWidgetPresenter != null) {
+            mWidgetPresenter.reset();
+        }
         mLiveCommentView.reset();
         mWatchBottomButton.reset();
+        mTopAreaView.reset();
     }
 
     public void postSwitch(boolean isGameMode) {
@@ -524,7 +550,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                     if (mInputShow) {
                         value = 1.0f - value;
                     }
-                    mTopInfoView.setAlpha(value);
+                    mTopAreaView.setAlpha(value);
                 }
             }, new AnimatorListenerAdapter() {
                 @Override
@@ -534,16 +560,16 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                             mLiveCommentView.setVisibility(View.GONE);
                         }
                     } else {
-                        mTopInfoView.setVisibility(View.VISIBLE);
+                        mTopAreaView.setVisibility(View.VISIBLE);
                     }
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     if (mInputShow) {
-                        mTopInfoView.setVisibility(View.GONE);
+                        mTopAreaView.setVisibility(View.GONE);
                     } else {
-                        mTopInfoView.setAlpha(1.0f);
+                        mTopAreaView.setAlpha(1.0f);
                         if (!mIsGameMode && mLiveCommentView.getVisibility() != View.VISIBLE) {
                             mLiveCommentView.setVisibility(View.VISIBLE);
                         }

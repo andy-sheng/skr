@@ -2,11 +2,10 @@ package com.mi.live.data.query.mapper;
 
 import com.base.log.MyLog;
 import com.mi.live.data.location.Location;
+import com.mi.live.data.push.model.BarrageMsgExt;
 import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.query.model.LiveCover;
 import com.mi.live.data.query.model.MessageRule;
-import com.mi.live.data.query.model.MicInfo;
-import com.mi.live.data.query.model.PkInfo;
 import com.mi.live.data.query.model.ViewerModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.proto.CommonProto;
@@ -57,20 +56,17 @@ public class RoomDataMapper {
 
             enterRoomInfo.setShareUrl(rsp.getShareUrl());
 
-
-            LiveCommonProto.PKInfo otherPkInfo = rsp.getOtherPKInfo();
-            if (otherPkInfo != null) {
-                enterRoomInfo.setPkInfo(PkInfo.loadFromPB(otherPkInfo));
+            if (rsp.hasMicInfo()) {
+                enterRoomInfo.setMicBeginInfo(new BarrageMsgExt.MicBeginInfo()
+                        .parseFromPB(rsp.getMicInfo()));
+            }
+            if (rsp.hasNewPkInfo()) {
+                enterRoomInfo.setPkStartInfo(new BarrageMsgExt.PkStartInfo()
+                        .parseFromInfo(rsp.getNewPkInfo(), rsp.getTimestamp()));
             }
 
-            enterRoomInfo.setPkInitTicket(rsp.getPkInitTicket());
             enterRoomInfo.setDownStreamUrl(rsp.getDownStreamUrl());
 
-            LiveCommonProto.MicInfo micInfo = rsp.getMicInfo();
-            if (micInfo != null) {
-                enterRoomInfo.setMicInfo(MicInfo.loadFromPb(micInfo));
-            }
-            enterRoomInfo.setMicUidStatus(rsp.getMicuidStatus());
             enterRoomInfo.setEnterTs(rsp.getTimestamp());
             Live2Proto.LiveCover lc = rsp.getLiveCover();
             if (lc != null) {

@@ -27,32 +27,20 @@ public class MainActivity extends AppCompatActivity {
         mPlayerWrapperView.setOuterCallBack(new VideoPlayerWrapperView.IOuterCallBack() {
             @Override
             //缓冲开始
-            public void bufferingStart() {
-                Log.d(TAG, "bufferingStart");
+            public void onBufferingStart() {
+                Log.d(TAG, "onBufferingStart");
             }
 
             @Override
             //缓冲结束
-            public void bufferingEnd() {
-                Log.d(TAG, "bufferingEnd");
+            public void onBufferingEnd() {
+                Log.d(TAG, "onBufferingEnd");
             }
 
             @Override
-            //解析地址成功，拉流准备
-            public void onPrepared() {
-                Log.d(TAG, "onPrepared");
-            }
-
-            @Override
-            //正常错误
-            public void onError() {
+            //错误回调
+            public void onError(int errCode) {
                 Log.d(TAG, "onError");
-            }
-
-            @Override
-            //正常结束
-            public void onCompletion() {
-                Log.d(TAG, "onCompletion");
             }
         });
         mPlayBtn = (TextView) findViewById(R.id.play_btn);
@@ -60,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    mPlayerWrapperView.play("http://v2.zb.mi.com/live/34167171_1502867226.flv?playui=0");
+                    mPlayerWrapperView.play("http://v2.zb.mi.com/live/30971062_1504695646.flv?playui=0");
                 } catch (LoadLibraryException e) {
                     Log.d(TAG, "load library=" + mPlayerWrapperView.checkLibrary());
                 }

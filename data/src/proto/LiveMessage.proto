@@ -1,0 +1,733 @@
+import "LiveCommon.proto";
+package com.wali.live.proto;
+
+option java_package = "com.wali.live.proto";
+option java_outer_classname = "LiveMessageProto";
+//wiki地址：http://wiki.n.miui.com/pages/viewpage.action?pageId=18997331
+/* 发送消息请求：包括私信，礼物消息，赞消息，聊天室消息等
+           消息类型：
+                  100 私信
+                  200 设置管理员消息
+                  201 取消管理员消息
+                  205 消息频率控制等消息
+
+                  302 房间礼物消息
+                  303 房间文本消息
+                  304 房间禁言消息
+                  307 房间取消禁言消息
+                  305 房间点赞消息
+                  306 房间收费弹幕消息
+
+                  311 房间观众变化消息
+
+                  320 加入房间消息
+                  321 离开房间消息
+
+                  322 主播离开房间
+                  323 主播回到房间
+
+                  330 开始直播消息
+                  331 结束直播消息
+
+                  400 全局通知消息
+                  401 房间通知消息
+                  402 主播通知消息
+                  ...
+ */
+/* 私信请求 */
+message ChatMessageRequest {
+    required uint64 from_user = 1; // 消息发送者
+    optional uint64 to_user = 2; // 消息接收者
+    optional uint64 cid = 3; // 客户端消息ID，客户端去重使用
+    optional uint32 msg_type = 4; // 根据msg_type扩展msg_ext字段结构
+    optional string msg_body = 5; // 文本消息的消息体
+    optional bytes msg_ext = 6; // 消息扩展pb，跟msg_type对应
+}
+
+/* 发送消息响应 */
+message ChatMessageResponse {
+    required uint32 ret = 1; // 消息返回码
+    optional string error_msg = 2; // 错误信息
+    optional uint32 msg_seq = 3; // 私信消息seq，用来sync消息使用
+    optional uint64 timestamp = 4; // 时间戳，客户端排序使用
+    optional uint64 cid = 5;
+}
+//zhibo.send.roommsg
+message RoomMessageRequest {
+    required uint64 from_user = 1; // 弹幕消息发送者
+    optional string room_id = 2; // 房间ID
+    optional uint64 cid = 3; // 客户端消息ID
+    optional uint32 msg_type = 4; // 根据msg_type扩展msg_ext字段结构
+    optional string msg_body = 5; // 文本消息
+    optional bytes msg_ext = 6; // 扩展消息pb，与msg_type对应
+    optional uint64 anchor_id = 7; // 主播ID
+    optional string support_txt = 8; // 版本兼容文案
+    optional uint32 room_type = 9; //房间类型,0代表正常房间 1代表PK房间
+    optional PKRoomInfo pk_room_info = 10; //PK房间信息,房间发送弹幕使用
+    optional MultiLanguage multi_language = 11; // 多语言文案
+    optional uint64 request_ts = 12; // 进出房间时间戳支持
+    optional GlobalRoomMessageExt  global_room_msg_ext = 13; // 所有类型弹幕扩展字段(针对多种类型的弹幕)
+    optional string union_room_id = 14; // 工会房间ID
+}
+
+message RoomTxtMessageExt{
+    optional uint32 type = 1; // type =1: @消息;type=2:智能弹幕;type=3:管理员飘屏;type=4:大喇叭飘屏
+    optional bytes ext = 2;
+}
+
+message PKRoomInfo {
+    optional string pk_room_id = 1;
+    optional uint64 pk_zuid = 2;
+}
+/* 发送消息响应 */
+message RoomMessageResponse {
+    required uint32 ret = 1; // 返回码
+    optional string error_msg = 2; //
+    optional uint64 timestamp = 3; // 客户端排序使用
+    optional uint64 cid = 4;
+    optional uint32 fltbr_cnt = 5;//飘屏弹幕当前计数
+    optional uint32 admin_br_cnt = 6;//管理员飘屏弹幕当前计数
+    optional uint32 vip_br_cnt = 7;//VIP用户飘屏弹幕当前计数
+    optional uint32 guard_br_cnt = 8;//守护团用户飘屏弹幕当前计数
+}
+
+message ChatMessageReadRequest {
+    optional uint64 from_user = 1; // 发送者
+    optional uint64 to_user = 2; // 原始消息发送者
+    optional uint64 read_msg_seq = 3; //已读消息的序列号
+    optional uint64 cid = 4; // 客户端消息ID
+    optional uint32 follow_type = 5; // 1:未关注 0:已关注
+}
+//已读消息响应
+message ChatMessageReadResponse {
+    optional uint32 ret = 1; //用于response、request匹配
+    optional string error_msg = 2; //错误原因
+    optional uint64 cid = 3;
+}
+
+/* 设置管理员消息 */
+message AdminMessage {
+    optional uint64 admin_user = 1; // 设置／取消管理员的用户
+    optional string admin_nick_name = 2; // 设置／取消管理员的昵称
+}
+// 直播开始消息
+message LiveStartMessage {
+
+}
+// 直播结束消息
+message LiveEndMessage {
+    optional uint32 hisViewerCnt = 1; //历史房间观众数
+       optional uint64 hisBeginLiveCnt = 2;//历史开播次数
+       optional uint64 duration      = 3;//开播时长（ms）
+       optional uint64 newFollowerCnt  = 4;//新增关注数
+}
+
+// 后台运营设置系统弹幕消息请求接口
+message SystemMessageRequest {
+    required uint64 from_user = 1;
+    optional string room_id = 2;
+    optional uint32 cid = 3;
+    optional Message content = 4;
+}
+message SystemMessageResponse {
+    optional uint32 ret = 1;
+    optional string error_msg = 2;
+    optional uint32 cid = 3;
+    optional Message content = 4;
+}
+/* 系统消息存储 */
+message SystemMessage {
+    optional uint64 from_user = 1;
+    optional string content = 2;
+    optional uint64 start_time = 3;
+    optional uint64 end_time = 4;
+}
+/* 全局系统消息 key: "global_sys_msg" */
+message GlobalSystemMessage {
+    optional string channel = 1;
+    repeated SystemMessage system_message = 2;
+}
+message GlobalSystemMessageBox {
+    repeated GlobalSystemMessage global_system_message = 1;
+}
+
+/* 房间系统消息 key: "${room_id}_sys_msg" */
+message RoomSystemMessage {
+    repeated SystemMessage system_message = 1;
+}
+
+/* 主播消息 */
+message AnchorMessage {
+    optional string content = 1;
+}
+
+/* 禁言消息 */
+message ForbiddenMessage {
+    optional uint64 userId = 1;
+    optional uint32 op_type = 2; //操作人类型: 0:管理员, 1:巡查员, 2:榜一,3:房主,4:运营后台
+    optional string ban_nickname = 3; //被禁言用户昵称
+}
+
+/* 赞消息 */
+message LikeMessage {
+    optional uint32 id = 1;
+}
+
+/* 礼物消息 */
+message GiftMessage {
+    optional uint32 giftId = 1; // 礼物id
+    optional string gift_name = 2; // 礼物名称
+    optional uint32 gift_count = 3; // 礼物个数
+    optional uint32 zhubo_asset = 4; // 主播当前的收益资产
+    optional uint64 zhubo_asset_timestamp = 5; // 主播当前资产时间戳
+    optional uint32 gift_value = 6; // 礼物价值(钻石数)
+    optional uint64 avatar_timestamp = 7; // 购买礼物者头像时间戳
+    optional string ip = 8; // 购买礼物者IP
+    optional uint64 continueId = 9; // 标记此次送礼的属于哪一次连送，一组连送的continueId相同，一般为X1时的时间戳
+    optional uint32 gift_type = 10; // 礼物类型，1=普通礼物，2=弹幕礼物，3=红包礼物
+    optional string msg_body = 11; // 弹幕礼物的文字内容
+    optional string red_envelop_id = 12; // 红包id
+    optional string order_id = 13; // 订单号，retcode非0时必有
+    optional string live_stream_url = 14; // 全局礼物的直播流地址
+    optional uint32 batch_count = 15;// 批量购买个数，对应于客户端的gift_count，由于此处第三个字段已经使用，故改名
+}
+
+/* 回放直播消息请求 */
+message ReplayMessageRequest {
+    required uint64 from_user = 1; // 消息发送者
+    optional string room_id = 2; // 房间ID
+    optional string page_id = 3; // 分页拉取ID，第一次传""
+    optional uint32 limit = 4; // 拉取消息条数
+    optional uint64 cid = 5; //
+    optional uint64 timestamp = 6; // 拖动时间戳
+}
+
+/* 回放直播消息响应 */
+message ReplayMessageResponse {
+    required uint32 ret = 1; // 返回码
+    optional string error_msg = 2; // 错误信息
+    repeated Message replay_message = 3; // 消息
+    optional uint64 cid = 4;
+    optional string page_id = 5; // 分页拉取使用的ID
+}
+
+//pk开始消息
+message PKBeginMessage {
+    optional PKInfo thisPKInfo = 1; //所在用户房间信息
+    optional PKInfo otherPKInfo = 2; //对应pk的房间信息
+}
+
+//pk结束消息
+message PKEndMessage {
+    optional PKInfo thisPKInfo = 1; //所在用户房间信息
+    optional PKInfo otherPKInfo = 2; //对应pk的房间信息
+}
+
+// 修改房间信息消息
+message LiveInfoChangeMsg {
+    optional uint64 mod_flag = 1; //修改标记位（按位表示，从最低位起） 1-观众端发起连麦开关
+    optional uint64 zuid = 2; //主播id
+    optional string live_id = 3; //房间号
+    optional bool enable_viewer_mic = 4; //是否允许观众端发起连麦（true：允许）
+}
+
+/* 消息存储以及push消息结构 */
+message Message {
+    required uint64 from_user = 1; // 消息发送者
+    optional uint64 to_user = 2; // 消息接收者
+    optional string room_id = 3; // 房间ID
+    optional uint64 cid = 4; // 客户端消息ID
+    optional uint32 msg_seq = 5; // 服务器生成的消息seq
+    optional uint64 timestamp = 6; // 消息的时间戳
+    optional uint32 msg_type = 7; // 消息类型
+    optional string msg_body = 8; // 文本消息体
+    optional uint32 msg_status = 9; // 消息状态，比如删除，备用
+    optional bytes msg_ext = 10; //扩展pb
+    optional string from_user_nick_name = 11; // 消息发送者的昵称
+    optional uint32 from_user_level = 12; // 消息发送者的级别
+    optional uint32 from_user_gender = 13; // 消息发送者性别
+    optional string certification = 14; //认证信息
+    optional uint32 certification_type = 15; //认证类型
+    optional string support_txt = 16; // 版本兼容文案
+    optional uint32 room_type = 17; //房间类型 0正常 1是PK
+    optional string origin_room_id = 18; //原始房间  PK情况下代表，消息的来源方
+    optional uint32 msg_catetory = 19; // 1:普通私信消息 目前只提供私信使用
+    optional MultiLanguage multi_language = 20; // 多语言文案
+    optional string from_user_show_name = 21; // 兼容老版本，展示用户名字
+    optional bool is_from_user_redname = 22  ; //发送方是否红名
+    optional GlobalRoomMessageExt  global_room_msg_ext = 23; // 所有类型弹幕扩展字段(针对多种类型的弹幕)
+    optional uint32 vip_level = 24; //财富等级
+    optional bool vip_disable = 25; //财富等级是否被冻结
+    optional bool vip_hidden = 26; //是否VIP隐身
+}
+
+
+message Language {
+    optional uint32 language_code = 1; // 语言代号客户端的语言，0:中文简体，1:英文
+    optional string text = 2; // 对应文案
+}
+
+message MultiLanguage {
+    repeated Language language = 1;
+}
+
+// 客户端sync系统消息
+message SyncSysMsgRequest {
+    required uint64 from_user = 1;
+    optional string room_id = 2;
+    optional uint64 cid = 3;
+}
+
+message SyncSysMsgResponse {
+    optional uint32 ret = 1;
+    optional string error_msg = 2;
+    optional uint64 cid = 3;
+    optional uint64 timestamp = 4;
+    repeated Message message = 5;
+}
+/* 拉取未读消息请求 */
+message SyncUnreadRequest {
+    optional uint64 from_user = 1; // 拉取未读消息的发送者
+    optional uint64 cid = 2; // 客户端消息ID
+    optional string page_id = 3; // 第一次传"",上一次拉取unread的sync_id
+    optional uint32 limit = 4; // 拉取数量
+    optional uint32 follow_type = 5; // 1:未关注 0:已关注
+}
+
+/* 拉取未读消息响应 */
+message SyncUnreadResponse {
+    optional uint32 ret = 1; //  返回码
+    optional string error_msg = 2; // 错误信息
+    repeated Unread unread = 3; // 所有未读消息
+    optional uint32 total_unread_count = 4; // 总共未读数
+    optional uint64 cid = 5;
+    optional string page_id = 6;
+}
+
+/* 未读消息存储结构 */
+message Unread {
+    optional uint32 unread_count = 1; //未读消息总条数
+    optional uint32 max_unread_seq = 2; // 当前未读消息中最的seq
+    repeated Message msg = 3; //未读消息内容,server需要排序
+    optional uint64 user = 4;
+}
+
+/*拉去某个用户的历史消息，目前只支持999号客服，最多100条*/
+message SyncHistoryMessageReuqest {
+    optional uint64 from_user = 1; // 当前用户的id
+    optional uint64 sync_user = 2; // 目前只支持999号客服
+}
+
+message SyncHistoryMessageResponse {
+    optional uint32 ret = 1;
+    optional string error_msg = 2;
+    optional Unread unread = 3;
+}
+
+/* 加入房间 */
+message JoinRoomMessage {
+    optional uint32 viewer_count = 1;
+    repeated Viewer viewers = 2; //观众
+    optional uint32 type         = 3; //0：默认 1：通过附近频道进入
+    optional bool   showSpecialEffect = 4; //进场特效 true:显示
+}
+
+/* 离开房间 */
+message LeaveRoomMessage {
+    optional uint32 viewer_count = 1;
+    repeated Viewer viewers      = 2; //观众
+}
+
+/* 观众变化的push */
+message ViewerMessage {
+    optional uint32 viewer_count = 1;
+    repeated Viewer viewers = 2; //观众
+}
+
+/* 主播回到房间 */
+message AnchorJoinRoomMessage {
+}
+/* 主播离开房间 */
+message AnchorLeaveRoomMessage {
+}
+
+/* push消息结构 */
+message PushMessage {
+    repeated Message message = 1;
+}
+
+/* 私信通知消息 */
+message ChatNotifyMessage {
+    optional uint32 follow_type = 1;
+}
+
+
+message ImageBodyExt {
+    required string mimeType = 1; // 强调一下 如果图片是 jpeg ,则使用 "image/jpeg"
+    required string url = 2;
+    required uint32 width = 3;
+    required uint32 height = 4;
+    required uint32 size = 5; // 文件大小，单位  byte
+    optional bool is_original = 6; //是否是原图
+    optional string md5 = 7; //图片md5
+}
+
+/**探测网络业务**/
+message ProbeArgs {
+    optional string domain_name = 1;
+}
+
+/* feed直播消息请求 */
+/** cmd : zhibo.feed.roommsg **/
+message FeedMessageRequest {
+    required uint64 from_user = 1; // 消息发送者
+    optional string room_id = 2; // 房间ID
+    optional string page_id = 3; // 分页拉取ID，第一次传""
+    optional uint32 limit = 4; // 拉取消息条数
+    optional uint64 cid = 5; //
+    optional uint64 timestamp = 6; // 拖动时间戳
+}
+
+/* feed直播消息响应 */
+message FeedMessageResponse {
+    required uint32 ret = 1; // 返回码
+    optional string error_msg = 2; // 错误信息
+    repeated Message feed_message = 3; // 消息
+    optional uint64 cid = 4;
+    optional string page_id = 5; // 分页拉取使用的ID
+}
+
+message SyncRoomMessageRequest {
+    required uint64 from_user = 1;
+    required string room_id = 2;
+
+    optional uint64 last_sync_important_ts = 3; // 第一次 传 0，以后使用rsp中的时间戳
+    optional uint64 last_sync_normal_ts = 4; // 第一次 传 0，以后使用rsp中的时间戳
+}
+
+message SyncRoomMessageResponse {
+    required uint32 ret = 1;
+    optional string error_msg = 2;
+
+    repeated Message important_room_msg = 3; // 消息
+    repeated Message normal_room_msg = 4; // 消息
+
+    optional uint64 current_sync_important_ts = 5; // 下一次带上这个时间戳
+    optional uint64 current_sync_normal_ts = 6; // 下一次带上这个时间戳
+
+    optional uint32 sync_interval = 7; // 下一次拉取的间隔（秒）
+}
+
+/* 房间内规则变化push内容 */
+message MsgRuleChangeMessage {
+    optional MsgRule msgRule = 1; //房间的发消息的规则 ，如果没有设置表示清空（恢复初始值）
+}
+
+//踢人消息
+message KickMessage {
+    optional uint64 zuid = 1; // 主播id
+    optional string liveid = 2; // 直播id
+    optional uint64 op_id = 3; //操作人id
+    optional uint32 op_type = 4; //操作人类型: 0:主播, 1:管理员, 2:榜一
+    optional uint64 kicked_id = 5; //被踢用户id
+    optional uint32 operation_type = 6; //操作类型: 0:本场拉黑，1:永久拉黑
+    optional string kicked_nickname = 7; //被踢用户昵称
+}
+//主播开启购物直播消息 341
+message TapToSellPushMsgExt {
+    optional bool isShop = 1; //是否是商铺房间，默认是false
+    optional bool hideGift = 2; //是否是隐藏商品，默认是false
+}
+//运营位推送消息格式
+//展示类型为0,1时，后端发送RoomMessageRequest给所有人，主播端判断展示类型为1时忽略该消息
+//展示类型为2时，后端发送PushMessageRequest给主播
+message WidgetMessage {
+    required uint64 zuid = 1; //主播id
+    repeated WidgetMessageItem msgItem = 2; //push消息内容
+    repeated NewWidgetMessageItem newWidgetItem = 3; //新版运营位push内容
+}
+message WidgetMessageItem {
+    required string link_url = 1; //跳转地址
+    required uint32 position = 2; //坐标：0:左上角，1:右上角，2:左下角，3：右下角
+    optional string icon = 3; //图标地址
+    optional string text = 4; //文字内容
+    optional uint32 showType = 5; //展示的类型。0：主播和观众都展示，1主播不展示观众展示，2:主播展示观众不展示
+}
+message NewWidgetMessageItem {
+    required NewWidgetItem newWidgetItem = 1; //新版运营位push内容
+    optional bool isDelete = 2; //是否为不显示该运营位
+    optional uint32 showType = 3; //展示的类型 0：都展示，1 观众展示，2 主播展示
+}
+
+message RoomAnimationMessage {
+    optional uint32 animation_effect = 1; // 动画效果 （与 animation_type对应效果）
+    optional string animationContent = 2; // 动画展现的内容文案
+    optional uint32 animation_type = 3; // 动画类型（1 升级 2进房间）
+}
+
+message ShoppingInfo {
+
+    required string name = 1; //商品名字
+    required double price = 2; //商品价格
+    required int64 product_id = 3; //商品id
+    optional string img_url = 4;
+}
+
+message PushShoppingInfoMsgExt {
+    repeated ShoppingInfo shopping_info = 1;
+}
+
+message UpgradeMessage {
+    optional uint32 user_level = 1; //用户的当前等级
+}
+
+// 新版运营位点击push消息
+message WidgetClickMessage {
+    required uint32 widgetID = 1; //运营位ID
+    optional string counterValue = 2; //当前计数数值计数文本,包含数字
+}
+
+message RedNameStatus {
+    optional bool isRedname = 1; //是否红名
+}
+
+
+/*邀请入群消息协议*/
+message InviteGroupExt{
+    optional uint64 inviter = 1; // 邀请人id
+    optional string inviter_nickname = 2; // 邀请人昵称
+    optional uint64 fans_group_id = 3; //邀请的群id
+    optional string fans_group_icon = 4; //邀请的群头像
+    optional string fans_group_name = 5; //被邀请的群名称
+    optional uint64 to_friend = 6; // 被邀请人id
+    optional string to_friend_nickname = 7; // 被邀请人昵称
+}
+
+message GlobalRoomMessageExt {
+    repeated InnerGlobalRoomMessageExt inner_global_room_msg_ext = 1;
+}
+message InnerGlobalRoomMessageExt {
+    optional uint32 type = 1; // 100:勋章配置消息 101:弹幕文案scheme消息, 400:分享进入房间文案消息
+    optional bytes ext = 2;
+}
+
+// 400
+message ShareJoinRoomMessage {
+    optional string content = 1;
+}
+
+message MedalConfigMessage {
+
+    repeated InnerMedalConfig before_nickname_config = 1;
+    repeated InnerMedalConfig after_nickname_config = 2;
+    repeated InnerMedalConfig before_content_config = 3;
+    repeated InnerMedalConfig after_content_config = 4;
+}
+message InnerMedalConfig {
+    optional string pic_id = 1;
+}
+message TxtSchemeMessage {
+    optional string scheme_url = 1;
+}
+
+//关注频道拉取开播提醒计数
+message GetLiveNotifyMsgCountReq {
+    optional uint64 uid = 1;
+}
+
+message GetLiveNotifyMsgCountRsp {
+    optional uint32 ret = 1;
+    optional string error_msg = 2;
+    optional uint32 count = 3;
+}
+//清除开播提醒计数
+message ClearLiveNotifyMsgCountReq {
+    optional uint64 uid = 1;
+}
+
+message ClearLiveNotifyMsgCountRsp {
+    optional uint32 ret = 1;
+    optional string error_msg = 2;
+}
+
+
+//////  新增通知相关 ///////
+// 同步通知
+message UnreadNotification {
+    optional uint32 unread_count   = 1; //未读消息总条数
+    optional uint32 max_idx = 2; // 当前未读消息中最的idx
+    repeated Message msg = 3; //未读消息内容,server需要排序
+    optional uint64 sys_user = 4;
+}
+
+message SyncSystemNotificationRequest {
+    optional uint64 from = 1;
+    optional uint64 cid = 2;
+}
+
+message SyncSystemNotificationResponse {
+    optional uint32 ret = 1;
+    optional string err_msg = 2;
+    repeated UnreadNotification sys_notification = 3;
+    optional uint64 cid = 4;
+}
+
+message GetHistorySystemNotificationRequest {
+    optional uint64 from = 1;
+    optional uint32 idx = 2;
+    optional uint32 limit = 3;
+    optional uint64 cid = 4;
+}
+
+message GetHistorySystemNotificationResponse {
+    optional uint32 ret = 1;
+    optional string err_msg = 2;
+    repeated Message sys_notification = 3;
+    optional uint64 cid = 4;
+}
+
+message AckSystemNotificationRequest {
+    optional uint64 from = 1;
+    optional uint64 to = 2;
+    optional uint32 idx = 3;
+    optional uint64 cid = 4;
+}
+
+message AckSystemNotificationResponse {
+    optional uint32 ret = 1;
+    optional string err_msg = 2;
+}
+
+message SyncFollowNotificationRequest {
+    optional uint64 from = 1;
+    optional uint32 last_idx = 2;
+    optional uint32 limit = 3;
+    optional uint64 cid = 4;
+}
+
+message SyncFollowNotificationResponse {
+    optional uint32 ret = 1;
+    optional string err_msg = 2;
+    repeated FollowNotification follow_notification = 3;
+    optional uint64 cid = 4;
+}
+
+message AckFollowNotificationRequest {
+    optional uint64 from = 1;
+    optional uint64 cid = 2;
+}
+
+message AckFollowNotificationResponse {
+    optional uint32 ret = 1;
+    optional string err_msg = 2;
+}
+
+// msg_type 105  系统推送的图文消息
+message RichText {
+    optional string brief = 1; // 摘要
+    optional string poster = 2; // 图片
+    optional string detail_url = 3; // 详情
+    optional string title = 4; // 标题
+}
+
+message FollowNotification {
+    optional uint64 uid = 1;
+    optional string nickname = 2;
+    optional uint64 avatar = 3;
+    optional uint64 ts = 4;
+    optional uint32 gender=5;//性别
+    optional uint32 level=6;//等级
+    optional bool is_bothway = 7;
+    optional uint32 idx = 8;
+}
+
+enum NotificationType {
+    SYSTEM = 1;
+    FOLLOW = 2;
+}
+
+message NotificationNotifyMessage {
+    optional NotificationType type = 1;
+    optional bytes notification = 2;
+}
+
+message SendSystemNotificationRequest {
+    optional uint64 from = 1;
+    optional uint64 to = 2; // 全局通知 to不要填；给某个人发添接收者ID
+    optional uint32 msg_type = 3;
+    optional string msg_body = 4;
+    optional bytes msg_ext = 5;
+    optional uint64 cid = 6;
+}
+
+message SendSystemNotificationResponse {
+    optional uint32 ret = 1;
+    optional string err_msg = 2;
+    optional uint64 cid = 3;
+}
+
+enum BarMessageType {
+    OP = 1; // 运营
+    SYS = 2; // 系统
+    NTF = 3; // 即时
+}
+message BarMessage {
+    optional BarMessageType bmt = 1;
+    optional string content = 2;
+    optional string schema = 3;
+    optional uint64 start = 4;
+    optional uint64 end = 5;
+}
+message GetBarMessageRequest {
+    optional uint64 from = 1;
+}
+message GetBarMessageResponse {
+    optional uint32 ret = 1;
+    optional string err_msg = 2;
+    repeated BarMessage bar_msg = 3;
+}
+
+enum VipCustomerServiceTabType {
+    VCSTT_NORMAL = 1; // NormalTab
+    VCSTT_LIST = 2; // ListTab
+}
+message NormalTab {
+    optional string url = 1;
+}
+message ListTabItem {
+    optional string item_name = 1;
+    optional string item_url = 2;
+}
+message ListTab {
+    optional string list_name = 1;
+    repeated ListTabItem item = 2;
+}
+message VipCustomerServiceTab {
+    optional string title = 1;
+    optional VipCustomerServiceTabType type = 2;
+    optional bytes tab = 3;
+}
+message VipCustomerServiceBar {
+    repeated VipCustomerServiceTab tab = 1;
+}
+message GetVipCustomerServiceBarRequest {
+    optional uint64 from = 1;
+}
+message GetVipCustomerServiceBarResponse {
+    optional uint32 ret = 1;
+    optional string err_msg = 2;
+    optional VipCustomerServiceBar bar = 3;
+}
+
+message AtMessage {
+    optional uint64 at_user = 1;
+}
+
+//600 宠爱团简要信息
+message VFansMemberBriefInfo {
+    optional int32 pet_level = 1; // 宠爱等级
+    optional string medal_value = 2; // 宠爱等级对应的勋章
+    optional bool is_use_medal = 3; // 是否佩戴勋章
+    optional bool is_vip_expire = 4; // 宠爱团会员过期时间 默认0,绝对时间戳
+    optional string barrage_color = 5; //彩色弹幕
+}

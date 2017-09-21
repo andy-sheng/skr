@@ -26,12 +26,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"/>
-        
+
         <RelativeLayout
             android:layout_width="116dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginLeft="3.33dp">
+            android:layout_marginLeft="3.33dp"
+            android:orientation="vertical">
 
             <include
                 android:id="@+id/single_card_2"

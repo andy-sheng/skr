@@ -1,11 +1,11 @@
 package com.wali.live.watchsdk.channel.viewmodel;
 
-import android.net.Uri;
 import android.text.TextUtils;
 
 import com.wali.live.proto.CommonChannelProto.ChannelItem;
 import com.wali.live.proto.CommonChannelProto.NoticeData;
 import com.wali.live.proto.CommonChannelProto.UiTemplateNotice;
+import com.wali.live.watchsdk.scheme.SchemeUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -68,7 +68,7 @@ public class ChannelNoticeViewModel extends ChannelViewModel<ChannelItem> {
 
     public String getRecommendTag() {
         if (mRecommendTag == null) {
-            return getRecommendTagFromUri();
+            mRecommendTag = SchemeUtils.getRecommendTag(mAllViewUri);
         }
         return mRecommendTag;
     }
@@ -79,14 +79,6 @@ public class ChannelNoticeViewModel extends ChannelViewModel<ChannelItem> {
 
     public void setIsExposured(boolean mIsExposured) {
         this.mIsExposured = mIsExposured;
-    }
-
-    public String getRecommendTagFromUri() {   // 打點傳的recommend tag
-        if (!TextUtils.isEmpty(mAllViewUri)) {
-            Uri uri = Uri.parse(mAllViewUri);
-            return uri.getQueryParameter("recommend");
-        }
-        return null;
     }
 
     public boolean hasHead() {

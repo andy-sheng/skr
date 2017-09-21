@@ -28,8 +28,8 @@
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@id/my_nick" />
+            android:layout_marginStart="4dp"
+            android:layout_toEndOf="@id/my_nick" />
 
         <!-- 显示等级-->
         <TextView
@@ -37,13 +37,12 @@
             android:layout_width="@dimen/lvl_tv_width"
             android:layout_height="@dimen/lvl_tv_height"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="6.67dp"
-            android:layout_toRightOf="@id/gender_iv"
+            android:layout_marginEnd="6.67dp"
+            android:layout_marginStart="2dp"
+            android:layout_toEndOf="@id/gender_iv"
             android:drawablePadding="@dimen/lvl_drawable_padding"
             android:gravity="center"
-            android:paddingLeft="@dimen/lvl_left_padding"
-            android:paddingRight="@dimen/lvl_right_padding"
+            android:paddingEnd="@dimen/lvl_right_padding"
             android:textColor="@color/lvl_txt_color"
             android:textSize="@dimen/lvl_text_size" />
 
@@ -92,9 +91,9 @@
     </RelativeLayout>
 
     <!-- 显示个人签名 -->
-    <TextView
+    <com.base.view.AlwaysMarqueeTextView
         android:id="@+id/my_singature_tv"
-        android:layout_width="260dp"
+        android:layout_width="@dimen/view_dimen_705"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:ellipsize="marquee"
@@ -102,36 +101,20 @@
         android:focusableInTouchMode="true"
         android:gravity="center"
         android:marqueeRepeatLimit="marquee_forever"
-        android:maxLines="1"
-        android:scrollHorizontally="true"
         android:singleLine="true"
+        android:scrollHorizontally="true"
         android:textColor="@color/color_black_trans_60"
         android:textSize="@dimen/text_size_34" />
 
     <!-- 显示送出的钻石数量-->
-    <RelativeLayout
+
+    <TextView
+        android:id="@+id/hint_sent_count_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
-
-        <TextView
-            android:id="@+id/hint_sent_count_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/margin_10"
-            android:textColor="@color/color_black_trans_60"
-            android:textSize="@dimen/text_size_38" />
-
-        <!--TextView
-            android:id="@+id/hint_sent_virtual_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/hint_sent_count_tv"
-            android:drawablePadding="@dimen/margin_10"
-            android:layout_marginLeft="@dimen/margin_46"
-            android:drawableRight="@drawable/me_argentum_diamond"
-            android:textColor="@color/color_black_trans_60"
-            android:textSize="@dimen/text_size_38" /-->
-    </RelativeLayout>
+        android:drawablePadding="@dimen/margin_10"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/color_black_trans_60"
+        android:textSize="@dimen/text_size_38" />
 
 </LinearLayout>

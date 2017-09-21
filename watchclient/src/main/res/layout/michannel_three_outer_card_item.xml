@@ -49,6 +49,7 @@
             android:layout_marginLeft="@dimen/channel_middle_margin_three"
             android:layout_weight="1"/>
     </LinearLayout>
+
     <View
         android:id="@+id/margin_area"
         android:layout_width="match_parent"

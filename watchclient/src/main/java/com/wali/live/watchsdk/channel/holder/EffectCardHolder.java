@@ -90,6 +90,8 @@ public class EffectCardHolder extends FixedHolder implements IEffectScrollHolder
         if (item == null) {
             return;
         }
+        exposureItem(item);
+        
         bindImageWithCallback(mCoverIv, item.getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_XLARGE), false, 640, 640, ScalingUtils.ScaleType.CENTER_CROP,
                 new FrescoCallBackWrapper() {
                     @Override

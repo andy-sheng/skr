@@ -36,18 +36,12 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         @Override
         public void onPrepared() {
             MyLog.v(TAG, "onPrepared");
-            if (mOuterCallBack != null) {
-                mOuterCallBack.onPrepared();
-            }
         }
 
         @Override
         public void onCompletion() {
             MyLog.v(TAG, "onCompletion");
             mIsCompletion = true;
-            if (mOuterCallBack != null) {
-                mOuterCallBack.onCompletion();
-            }
         }
 
         @Override
@@ -55,7 +49,7 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
             MyLog.v(TAG, "onError code=" + errCode);
             pause();
             if (mOuterCallBack != null) {
-                mOuterCallBack.onError();
+                mOuterCallBack.onError(errCode);
             }
         }
 
@@ -76,7 +70,7 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
                         mHandler.sendEmptyMessageDelayed(MSG_RELOAD_VIDEO, PLAYER_KADUN_RELOAD_TIME);
                     }
                     if (mOuterCallBack != null) {
-                        mOuterCallBack.bufferingStart();
+                        mOuterCallBack.onBufferingStart();
                     }
                     break;
                 case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
@@ -86,7 +80,7 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
                         mHandler.removeMessages(MSG_RELOAD_VIDEO);
                     }
                     if (mOuterCallBack != null) {
-                        mOuterCallBack.bufferingEnd();
+                        mOuterCallBack.onBufferingEnd();
                     }
                     break;
                 default:
@@ -180,9 +174,7 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
     }
 
     private void reconnect() {
-        long currentPosition = mVideoPlayerPresenter.getCurrentPosition();
-        MyLog.w(TAG, "reconnect, currentPosition= " + currentPosition);
-        mVideoPlayerPresenter.seekTo(currentPosition);
+        mVideoPlayerPresenter.reconnect();
     }
 
     @Override
@@ -252,14 +244,10 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
     }
 
     public interface IOuterCallBack {
-        void bufferingStart();
+        void onBufferingStart();
 
-        void bufferingEnd();
+        void onBufferingEnd();
 
-        void onPrepared();
-
-        void onError();
-
-        void onCompletion();
+        void onError(int errCode);
     }
 }

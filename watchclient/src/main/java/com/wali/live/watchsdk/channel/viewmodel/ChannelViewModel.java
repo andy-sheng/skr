@@ -20,6 +20,8 @@ public abstract class ChannelViewModel<GM extends GeneratedMessage> extends Base
     protected String mHeadUri;
     protected String mSubHead;
     protected int mHeadType;
+    protected String mHeadIconUrl;     //head左部配图
+    protected String mHeadMoreText;    //更多的文案可配
 
     protected int mGroupPosition;
     protected boolean mIsLast;
@@ -122,6 +124,22 @@ public abstract class ChannelViewModel<GM extends GeneratedMessage> extends Base
 
     public int getFrameHeight() {
         return mFrameHeight;
+    }
+
+    public String getHeadIconUrl() {
+        return mHeadIconUrl;
+    }
+
+    public String getHeadMoreText() {
+        return mHeadMoreText;
+    }
+
+    public int getImageWidth() {
+        return mImageWidth;
+    }
+
+    public int getImageHeight() {
+        return mImageHeight;
     }
 
     public abstract boolean isNeedRemove();

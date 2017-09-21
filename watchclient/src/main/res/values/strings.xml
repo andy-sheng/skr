@@ -53,6 +53,7 @@
         <item quantity="one">Give %1$s coin</item>
         <item quantity="other">Give %1$s coins</item>
     </plurals>
+    <string name="ticket_num">coins</string>
     <string name="btn_share">Share with</string>
     <string name="weixin_friend">WeChat</string>
     <string name="moment">Moments</string>
@@ -193,6 +194,14 @@
     <string name="modify_avatar_tip">Updating profile photo, just a sec…</string>
     <string name="change_avatar_success">Profile photo changed successfully</string>
     <string name="crop_failed">crop failed</string>
-    <string name="edit_info_tip">您还没有昵称，%s修改昵称结识更多的朋友吧~</string>
-    <string name="click_here">点击这里</string>
+    <string name="edit_info_tip">You haven\'t set a nickname. %s to set to make more friends.</string>
+    <string name="click_here">Tap here</string>
+    <string name="room_admin">Manager</string>
+    <string name="line_my_zone">主场</string>
+    <string name="line_guest_into">进TA房间</string>
+    <string name="pk_prepare_user">%ds后PK正式开始，快来送礼物支持主播吧</string>
+    <string name="pk_end_run">%1$s提前逃跑咯，这局%2$s是赢家</string>
+    <string name="can_not_vote_toast">Watch a little longer and vote</string>
+    <string name="vote_finish_toast">Activity ended</string>
+    <string name="vote_max_toast">Voting session ended</string>
 </resources>

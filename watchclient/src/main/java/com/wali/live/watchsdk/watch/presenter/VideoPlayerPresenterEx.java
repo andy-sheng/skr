@@ -334,7 +334,7 @@ public class VideoPlayerPresenterEx implements
 
     //停止播放
     public void stop() {
-        MyLog.w(TAG, "stop");
+        MyLog.w(TAG, "stopCountdown");
         mVideoPlayerPresenter.release();
         if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);
@@ -358,12 +358,6 @@ public class VideoPlayerPresenterEx implements
         MyLog.w(TAG, "destroy");
         onDestroy();
         EventBus.getDefault().unregister(this);
-    }
-
-    private void reconnect() {
-        long currentPosition = mVideoPlayerPresenter.getCurrentPosition();
-        MyLog.w(TAG, "reconnect, currentPosition= " + currentPosition);
-        mVideoPlayerPresenter.seekTo(currentPosition);
     }
 
     public void enableReconnect(boolean isEnable) {
@@ -595,7 +589,7 @@ public class VideoPlayerPresenterEx implements
             mVideoPlayerPresenter.setVideoPath(mIpSelectionHelper.getStreamUrl(), mIpSelectionHelper.getStreamHost());
             mVideoPlayerPresenter.setIpList(mIpSelectionHelper.getSelectedHttpIpList(), mIpSelectionHelper.getSelectedLocalIpList());
         }
-        reconnect();
+        mVideoPlayerPresenter.reconnect();
     }
 
     //    ----点击事件-----------------------------------------------------------
@@ -685,7 +679,6 @@ public class VideoPlayerPresenterEx implements
         }
     }
 
-    //网络变化toast提示
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.NetWorkChangeEvent event) {
         MyLog.w(TAG, "EventClass.NetWorkChangeEvent");

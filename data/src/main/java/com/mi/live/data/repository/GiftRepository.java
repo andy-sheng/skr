@@ -257,11 +257,11 @@ public class GiftRepository {
     /**
      * 点击运营位计数
      */
-    public static Observable<String> clickCounter(final int attachementId, final long zuid, final String roomId) {
+    public static Observable<LiveProto.WidgetClickRsp> clickCounter(final int attachementId, final long zuid, final String roomId) {
         return Observable.create(
-                new Observable.OnSubscribe<String>() {
+                new Observable.OnSubscribe<LiveProto.WidgetClickRsp>() {
                     @Override
-                    public void call(Subscriber<? super String> subscriber) {
+                    public void call(Subscriber<? super LiveProto.WidgetClickRsp> subscriber) {
                         LiveProto.WidgetClickReq req = LiveProto.WidgetClickReq
                                 .newBuilder().setWidgetID(attachementId).setZuid(zuid).setLiveid(roomId)
                                 .build();
@@ -274,19 +274,19 @@ public class GiftRepository {
                             PacketData response = MiLinkClientAdapter.getsInstance().sendSync(data, 10 * 1000);
                             LiveProto.WidgetClickRsp rsp = LiveProto.WidgetClickRsp.parseFrom(response.getData());
                             MyLog.w(TAG, "clickCounter response:" + rsp);
-                            if (rsp != null && rsp.getRetCode() == 0) {
-                                subscriber.onNext(rsp.getCounterText());
+                            if (rsp != null) {
+                                subscriber.onNext(rsp);
                                 subscriber.onCompleted();
                             } else {
-                                subscriber.onError(new Throwable("clickCounter retCode != 0"));
+                                subscriber.onError(new Throwable("clickCounter rsp is null"));
                             }
+
                         } catch (Exception e) {
                             subscriber.onError(e);
                         }
                     }
                 }).subscribeOn(Schedulers.io());
     }
-
 
     /**
      * 同步购买礼物

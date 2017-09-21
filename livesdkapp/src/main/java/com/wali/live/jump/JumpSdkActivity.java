@@ -5,11 +5,15 @@ import android.os.Bundle;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
+import com.base.preference.PreferenceUtils;
+import com.base.utils.CommonUtils;
 import com.base.utils.callback.ICommonCallBack;
 import com.mi.live.data.location.Location;
+import com.mi.liveassistant.R;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.statistics.StatisticsKey;
+import com.wali.live.watchsdk.cta.CTANotifyFragment;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
@@ -48,10 +52,26 @@ public class JumpSdkActivity extends BaseSdkActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_bottom_in, 0);
         setTranslucentStatus(this, true);
         setStatusColor(this, true);
 
-        processIntent();
+        if (CommonUtils.isNeedShowCtaDialog()) {
+            CTANotifyFragment.openFragment(this, android.R.id.content, new CTANotifyFragment.CTANotifyButtonClickListener() {
+
+                @Override
+                public void onClickCancelButton() {
+                    finish();
+                }
+
+                @Override
+                public void onClickConfirmButton() {
+                    processIntent();
+                }
+            });
+        } else {
+            processIntent();
+        }
     }
 
     protected void processIntent() {
@@ -196,5 +216,17 @@ public class JumpSdkActivity extends BaseSdkActivity {
         } catch (Exception e) {
             MyLog.e(TAG, "reportLive e", e);
         }
+    }
+
+    @Override
+    public void finish() {
+        MyLog.w(TAG, "finish");
+        super.finish();
+        overridePendingTransition(0, R.anim.slide_bottom_out);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

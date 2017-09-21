@@ -6,15 +6,18 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.base.fragment.FragmentDataListener;
 import com.base.log.MyLog;
 import com.thornbirds.component.IParams;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.livesdk.R;
+import com.wali.live.livesdk.live.component.BaseLiveSdkView;
+import com.wali.live.livesdk.live.livegame.fragment.PrepareLiveFragment;
 import com.wali.live.livesdk.live.livegame.presenter.BottomButtonPresenter;
 import com.wali.live.livesdk.live.livegame.presenter.PanelContainerPresenter;
 import com.wali.live.livesdk.live.livegame.view.LiveBottomButton;
@@ -22,9 +25,11 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.EnvelopePresenter;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
+import com.wali.live.watchsdk.component.presenter.TopAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
+import com.wali.live.watchsdk.component.view.TopAreaView;
 import com.wali.live.watchsdk.component.view.WidgetView;
 
 import java.lang.ref.WeakReference;
@@ -46,14 +51,14 @@ import static com.wali.live.component.BaseSdkController.MSG_SHOW_BARRAGE_SWITCH;
  *
  * @module 游戏直播页面
  */
-public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
+public class GameLiveSdkView extends BaseLiveSdkView<View, GameLiveController> {
 
     private final List<View> mHorizontalMoveSet = new ArrayList<>();
 
     protected final AnimationHelper mAnimationHelper = new AnimationHelper();
 
     @Nullable
-    protected View mTopInfoView;
+    protected TopAreaView mTopAreaView;
     @Nullable
     protected View mLiveCommentView;
     @Nullable
@@ -63,18 +68,36 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
 
     @Override
     protected String getTAG() {
-        return "LiveSdkView";
+        return "GameLiveSdkView";
     }
 
-    public LiveSdkView(@NonNull Activity activity, @NonNull LiveComponentController controller) {
-        super(activity, (ViewGroup) activity.findViewById(android.R.id.content), controller);
+    public GameLiveSdkView(@NonNull Activity activity, @NonNull GameLiveController controller) {
+        super(activity, controller);
+        mContentView = $(mParentView, R.id.main_act_container);
+    }
+
+    @Override
+    public void enterPreparePage(@NonNull FragmentActivity activity, int requestCode, FragmentDataListener listener) {
+        MyLog.w(TAG, "prepareShowLive");
+        PrepareLiveFragment.openFragment(activity, requestCode, listener, mController.mMyRoomData,
+                mController.mRoomChatMsgManager);
+        mController.mRoomChatMsgManager.setIsGameLiveMode(true);
     }
 
     @Override
     public void setupView() {
-        mContentView = $(mParentView, R.id.main_act_container);
         mGiftContinueViewGroup = $(R.id.gift_continue_vg); // 礼物
-        mTopInfoView = $(R.id.live_top_info_view); // 顶部view
+        // 顶部view
+        {
+            mTopAreaView = $(R.id.top_area_view);
+            if (mTopAreaView == null) {
+                return;
+            }
+            mTopAreaView.setVisibility(View.VISIBLE);
+            TopAreaPresenter presenter = new TopAreaPresenter(mController,
+                    mController.mMyRoomData, true);
+            registerComponent(mTopAreaView, presenter);
+        }
         // 弹幕区
         {
             LiveCommentView view = $(R.id.live_comment_view);
@@ -142,7 +165,7 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
         }
 
         addViewToSet(new int[]{
-                R.id.live_top_info_view,
+                R.id.top_area_view,
                 R.id.bottom_button_view,
                 R.id.live_comment_view,
                 R.id.gift_animation_player_view,
@@ -151,7 +174,7 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
                 R.id.widget_view
         }, mHorizontalMoveSet);
         // 滑动
-        {
+//        {
 //            View view = $(R.id.touch_view);
 //            if (view == null) {
 //                return;
@@ -159,7 +182,7 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
 //            TouchPresenter presenter = new TouchPresenter(mController, view);
 //            registerComponent(presenter);
 //            presenter.setViewSet(mHorizontalMoveSet);
-        }
+//        }
     }
 
     @Override
@@ -241,7 +264,7 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
                     if (mInputShow) {
                         value = 1.0f - value;
                     }
-                    mTopInfoView.setAlpha(value);
+                    mTopAreaView.setAlpha(value);
                 }
             }, new AnimatorListenerAdapter() {
                 @Override
@@ -251,16 +274,16 @@ public class LiveSdkView extends BaseSdkView<View, LiveComponentController> {
                             mLiveCommentView.setVisibility(View.GONE);
                         }
                     } else {
-                        mTopInfoView.setVisibility(View.VISIBLE);
+                        mTopAreaView.setVisibility(View.VISIBLE);
                     }
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     if (mInputShow) {
-                        mTopInfoView.setVisibility(View.GONE);
+                        mTopAreaView.setVisibility(View.GONE);
                     } else {
-                        mTopInfoView.setAlpha(1.0f);
+                        mTopAreaView.setAlpha(1.0f);
                         if (mLiveCommentView.getVisibility() != View.VISIBLE) {
                             mLiveCommentView.setVisibility(View.VISIBLE);
                         }

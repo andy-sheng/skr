@@ -99,7 +99,21 @@ public class ToastUtils {
                 }
             });
         }
+    }
 
+    public static void showLongToast(final Context activity, final String string) {
+        if (null != activity) {
+            sMainHanlder.post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Toast.makeText(activity, string, Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
     /**

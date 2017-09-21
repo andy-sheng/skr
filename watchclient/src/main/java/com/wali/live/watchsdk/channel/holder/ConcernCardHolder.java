@@ -65,6 +65,8 @@ public class ConcernCardHolder extends FixedHolder {
         if (item == null) {
             return;
         }
+        exposureItem(item);
+
         AvatarUtils.loadAvatarByUidTs(mAvatarIv,
                 item.getUser().getUid(),
                 item.getUser().getAvatar(),

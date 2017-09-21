@@ -22,7 +22,6 @@ public class ChannelRankingViewModel extends ChannelViewModel<ChannelItem> {
     private String schemeUri;
     private String title;
 
-
     protected ChannelRankingViewModel(ChannelItem protoItem) throws Exception {
         super(protoItem);
     }
@@ -54,11 +53,11 @@ public class ChannelRankingViewModel extends ChannelViewModel<ChannelItem> {
 
         title = protoItem.getText1();
 
-        if(TextUtils.isEmpty(schemeUri)){
+        if (TextUtils.isEmpty(schemeUri)) {
             schemeUri = "";
         }
 
-        if(TextUtils.isEmpty(title)){
+        if (TextUtils.isEmpty(title)) {
             title = GlobalData.app().getString(R.string.anchor_rank);
         }
     }

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <View
+        android:id="@+id/out_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/live_card_bg">
+
+        <!-- 关闭按钮　-->
+        <ImageView
+            android:id="@+id/close_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/margin_40"
+            android:scaleType="center"
+            android:src="@drawable/live_card_close" />
+
+        <!-- 顶部的头像-->
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/top_main_avatar"
+            android:layout_width="68.67dp"
+            android:layout_height="68.67dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin_40"
+            app:placeholderImage="@drawable/live_show_avatar_loading"
+            app:roundAsCircle="true" />
+
+        <ImageView
+            android:id="@+id/edit_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/top_main_avatar"
+            android:layout_alignEnd="@id/top_main_avatar"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="4dp"
+            android:src="@drawable/edit_info_icon_bg"
+            android:visibility="gone" />
+
+        <!-- 微博认证角标-->
+        <ImageView
+            android:id="@+id/weibo_verify_conner"
+            android:layout_width="25.6dp"
+            android:layout_height="18.4dp"
+            android:layout_below="@id/top_main_avatar"
+            android:layout_marginStart="-16.67dp"
+            android:layout_marginTop="-14dp"
+            android:layout_toEndOf="@id/top_main_avatar"
+            android:scaleType="fitStart"
+            android:visibility="gone" />
+
+
+        <!-- 贡献排名第一和本人的联系角标-->
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/top_one_relation_avatar"
+            android:layout_width="13.33dp"
+            android:layout_height="13.33dp"
+            android:layout_marginEnd="4.67dp"
+            android:layout_marginTop="62.67dp"
+            android:layout_toStartOf="@id/top_main_avatar"
+            android:visibility="gone"
+            app:placeholderImage="@drawable/live_card_relation"
+            app:roundAsCircle="true" />
+
+        <!-- 贡献排名第一的人的头像-->
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/top_one_avatar"
+            android:layout_width="33.33dp"
+            android:layout_height="33.33dp"
+            android:layout_marginEnd="5.33dp"
+            android:layout_marginTop="62.67dp"
+            android:layout_toStartOf="@id/top_one_relation_avatar"
+            android:visibility="gone"
+            app:placeholderImage="@drawable/live_show_avatar_loading" />
+
+        <!-- 贡献排名第一的人的角标-->
+        <ImageView
+            android:id="@+id/top_one_conner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/top_one_avatar"
+            android:layout_alignEnd="@id/top_one_avatar"
+            android:background="@drawable/live_card_star_first"
+            android:visibility="gone" />
+
+        <!--用户资料-->
+        <include
+            android:id="@+id/user_info_zone"
+            layout="@layout/layout_include_person_info_float"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_dimen_292" />
+
+        <!--星票、关注、粉丝文字-->
+        <LinearLayout
+            android:id="@+id/count_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_info_zone"
+            android:orientation="horizontal">
+            <!-- 显示星票文字-->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/live_ticket"
+                android:textColor="@color/color_black_trans_80"
+                android:textSize="@dimen/text_size_36" />
+
+            <!-- 显示关注文字-->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/my_attention"
+                android:textColor="@color/color_black_trans_80"
+                android:textSize="@dimen/text_size_36" />
+
+            <!--显示粉丝文字-->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/fans"
+                android:textColor="@color/color_black_trans_80"
+                android:textSize="@dimen/text_size_36" />
+        </LinearLayout>
+
+        <!-- 星票, 关注, 粉丝数量-->
+        <LinearLayout
+            android:id="@+id/count_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/count_hint"
+            android:layout_marginTop="5dip"
+            android:orientation="horizontal">
+
+            <!-- 显示星票数量-->
+            <TextView
+                android:id="@+id/live_ticket_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/color_black_trans_40"
+                android:textSize="@dimen/text_size_42" />
+
+            <!--　显示关注人数-->
+            <TextView
+                android:id="@+id/follow_count_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/color_black_trans_40"
+                android:textSize="@dimen/text_size_42" />
+
+            <!--　显示粉丝人数-->
+            <TextView
+                android:id="@+id/fans_count_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/color_black_trans_40"
+                android:textSize="@dimen/text_size_42" />
+        </LinearLayout>
+
+        <!--关注禁言按钮-->
+        <LinearLayout
+            android:id="@+id/admin_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/count_num"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/follow_button"
+                android:layout_width="@dimen/view_dimen_700"
+                android:layout_height="33.33dp"
+                android:background="@drawable/float_info_not_follow_bg">
+
+                <TextView
+                    android:id="@+id/follow_button_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33.33dp"
+                    android:layout_centerHorizontal="true"
+                    android:drawablePadding="3dp"
+                    android:gravity="center|center_vertical"
+                    android:textColor="@color/color_float_person_info_follow_btn"
+                    android:textSize="@dimen/text_size_36" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/forbid_speak"
+                android:layout_width="@dimen/view_dimen_340"
+                android:layout_height="33.33dp"
+                android:layout_marginStart="6.66dp"
+                android:background="@drawable/float_info_not_follow_bg"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/forbid_speak_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33.33dp"
+                    android:layout_centerHorizontal="true"
+                    android:drawablePadding="3dp"
+                    android:drawableStart="@drawable/live_forbid_speak"
+                    android:gravity="start|center_vertical"
+                    android:text="@string/forbid_speak"
+                    android:textColor="@color/color_float_person_info_follow_btn"
+                    android:textSize="@dimen/text_size_36" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <!--分割线-->
+        <View
+            android:id="@+id/splite_line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/admin_area"
+            android:layout_marginTop="14.67dp"
+            android:background="@color/color_black_trans_10" />
+    </RelativeLayout>
+</RelativeLayout>

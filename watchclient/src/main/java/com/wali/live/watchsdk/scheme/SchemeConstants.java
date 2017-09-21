@@ -36,6 +36,9 @@ public class SchemeConstants {
     public static final String PARAM_PACKAGE_NAME = "package_name";
     public static final String PARAM_CHANNEL_SECRET = "channel_secret";
 
+    // 频道打点标签
+    public final static String PARAM_RECOMMEND_TAG = "recommend";
+
     // 跳转到直播间
     public static final String HOST_ROOM = "room";
     public static final String PATH_JOIN = "/join";
@@ -175,6 +178,11 @@ public class SchemeConstants {
      */
     public static final String HOST_UNLOGIN_H5 = "unloginHtml5";
 
+    /**
+     * "http://zhibo.mi.com & https://zhibo.mi.com"
+     */
+    public static final String HOST_ZHIBO_COM = "zhibo.mi.com";
+    public static final String PARAM_ACTION = "action";
 
     /**
      *SchemeConstants 和 SpecificConstants 添加的scheme和host都要在這裡添加一下。否則会被过滤掉导致ui上不被显示。

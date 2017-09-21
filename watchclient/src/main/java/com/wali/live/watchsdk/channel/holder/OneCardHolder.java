@@ -67,6 +67,7 @@ public class OneCardHolder extends FixedHolder {
         if (item == null) {
             return;
         }
+        exposureItem(item);
 
         MyLog.d(TAG, "bindLiveModel imageUrl : " + item.getImageUrl());
         if (mViewModel.isFullColumn()) {

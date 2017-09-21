@@ -66,6 +66,13 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_SHOW_FOLLOW_GUIDE = MSG_POPUP_FIRST + 10;   // 显示 游戏引导页面
     public static final int MSG_FOLLOW_COUNT_DOWN = MSG_POPUP_FIRST + 11;   // 显示 游戏引导页面之前的倒计时
     public static final int MSG_SHOW_SEND_ENVELOPE = MSG_POPUP_FIRST + 12;  // 显示 发送红包页面
+    //连麦/PK相关消息
+    private static final int MSG_TOP_VIEW_FIRST = 32000;
+    public static final int MSG_ON_LINK_MIC_START = MSG_TOP_VIEW_FIRST + 1; // 连麦 开始
+    public static final int MSG_ON_LINK_MIC_STOP = MSG_TOP_VIEW_FIRST + 2;  // 连麦 结束
+    public static final int MSG_ON_PK_START = MSG_TOP_VIEW_FIRST + 3;       // PK 开始
+    public static final int MSG_ON_PK_STOP = MSG_TOP_VIEW_FIRST + 4;        // PK 结束
+
     // 详情播放相关
     private static final int MSG_DETAIL_VIDEO_FIRST = 40000;
     public static final int MSG_UPDATE_LIKE_STATUS = MSG_DETAIL_VIDEO_FIRST;     // 更新 点赞状态

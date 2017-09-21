@@ -697,7 +697,7 @@ public class NetworkUtils {
 
     public static int getActiveNetworkType(Context context) {
         int defaultValue = -1;
-        if(context==null){
+        if (context == null) {
             return defaultValue;
         }
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
