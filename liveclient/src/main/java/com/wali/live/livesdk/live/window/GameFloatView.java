@@ -109,6 +109,7 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
 
     private void enableCommentArea(boolean enable) {
         if (mMode == MODE_NORMAL && enable) {
+            mGameRepeatScrollView.forbidReceiveComment(false);
             mMode = MODE_MESSAGE;
             showCommentTitle(true);
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
@@ -116,6 +117,7 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
                             HostChannelManager.getInstance().getChannelId()),
                     TIMES, "1");
         } else if (mMode == MODE_MESSAGE && !enable) {
+            mGameRepeatScrollView.forbidReceiveComment(true);
             mMode = MODE_NORMAL;
             showCommentList(false);
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,

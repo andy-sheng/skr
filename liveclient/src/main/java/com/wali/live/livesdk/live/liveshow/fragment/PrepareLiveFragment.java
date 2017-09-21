@@ -105,6 +105,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         });
         mTurnOverIv = $(R.id.turn_over);
         mClarityTv = $(R.id.clarity_tv);
+        mClarityTv.setVisibility(View.GONE);
         mCoverView = $(R.id.cover_layout);
         mCoverView.setFragment(this);
         mBottomContainer = $(R.id.bottom_container);

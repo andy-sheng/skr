@@ -122,6 +122,9 @@ public class GameFloatWindow implements IGameFloatPresenter {
         if (mGameFloatView != null) {
             mGameFloatView.unregister();
         }
+        if (mGameMainIcon != null) {
+            mGameMainIcon.destroy();
+        }
     }
 
     @Override
