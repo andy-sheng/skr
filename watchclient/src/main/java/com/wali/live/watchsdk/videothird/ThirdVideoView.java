@@ -3,6 +3,7 @@ package com.wali.live.watchsdk.videothird;
 import android.app.Activity;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
@@ -13,7 +14,6 @@ import com.base.log.MyLog;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.videodetail.view.VideoDetailPlayerView;
 
 import java.lang.ref.WeakReference;
 
@@ -50,16 +50,26 @@ public class ThirdVideoView extends BaseSdkView<View, ThirdVideoController> {
             mAnimationHelper.startShowAnimation();
         }
         // 添加播放器View
-        VideoDetailPlayerView view = mController.mPlayerView;
+        SurfaceView view = mController.mPlayerView;
         if (view == null) {
             MyLog.e(TAG, "missing mController.mPlayerView");
             return;
         }
-        view.switchToFullScreen(true);
-        view.showOrHideFullScreenBtn(false);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addViewUnderAnchor(view, layoutParams, null);
+
+        // 添加播放器View
+//        VideoDetailPlayerView view = mController.mPlayerView;
+//        if (view == null) {
+//            MyLog.e(TAG, "missing mController.mPlayerView");
+//            return;
+//        }
+//        view.switchToFullScreen(true);
+//        view.showOrHideFullScreenBtn(false);
+//        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+//                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//        addViewUnderAnchor(view, layoutParams, null);
     }
 
     @Override
@@ -67,12 +77,13 @@ public class ThirdVideoView extends BaseSdkView<View, ThirdVideoController> {
         super.stopView();
         mAnimationHelper.clearAnimation();
         mParentView.removeView(mContentView);
-        // 将播放器View从其父View移出
-        ViewGroup parentView = mController.mPlayerView != null ?
-                (ViewGroup) mController.mPlayerView.getParent() : null;
-        if (parentView != null && parentView.indexOfChild(mController.mPlayerView) != -1) {
-            parentView.removeView(mController.mPlayerView);
-        }
+
+//        // 将播放器View从其父View移出
+//        ViewGroup parentView = mController.mPlayerView != null ?
+//                (ViewGroup) mController.mPlayerView.getParent() : null;
+//        if (parentView != null && parentView.indexOfChild(mController.mPlayerView) != -1) {
+//            parentView.removeView(mController.mPlayerView);
+//        }
     }
 
     @Override

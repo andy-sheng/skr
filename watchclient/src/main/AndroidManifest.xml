@@ -62,7 +62,6 @@
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
             android:exported="true"
             android:label="@string/third_video_player_label"
-            android:icon="@drawable/all_man"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeLive">

@@ -186,8 +186,9 @@ public class GalileoPlayer implements IPlayer {
         ThreadPool.runOnEngine(new Runnable() {
             @Override
             public void run() {
-                mPlayer = new Player();
+                GalileoDeviceManager.INSTANCE.init(context);
                 final String tag = TextUtils.isEmpty(clientIp) ? "" : userId + ":" + clientIp;
+                mPlayer = new Player();
                 mPlayer.constructPlayer(tag, mInternalCallback, mPlayerMode, mTransferObserver);
                 final int screenWidth = GlobalData.screenWidth, screenHeight = GlobalData.screenHeight;
                 mPlayer.setGravity(SurfaceGravityResizeAspectFit, screenWidth, screenHeight);

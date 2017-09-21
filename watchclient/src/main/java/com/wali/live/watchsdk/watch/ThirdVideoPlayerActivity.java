@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.watch;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -73,7 +74,8 @@ public class ThirdVideoPlayerActivity extends BaseComponentSdkActivity {
             MyLog.e(TAG, "parseVideoInfo, but intent not found");
             return false;
         }
-        String videoPath = parseVideoPath(this, intent.getData());
+//        String videoPath = parseVideoPath(this, intent.getData());
+        String videoPath = "http://v2.zb.mi.com/live/7346059_1505996736.flv?playui=0";
         if (TextUtils.isEmpty(videoPath)) {
             MyLog.e(TAG, "parseVideoInfo, but video path not found");
             return false;
@@ -180,5 +182,10 @@ public class ThirdVideoPlayerActivity extends BaseComponentSdkActivity {
             return;
         }
         super.onBackPressed();
+    }
+
+    public static void openActivity(@NonNull Activity activity) {
+        Intent intent = new Intent(activity, ThirdVideoPlayerActivity.class);
+        activity.startActivity(intent);
     }
 }
