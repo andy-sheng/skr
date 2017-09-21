@@ -1,7 +1,5 @@
 package com.wali.live.watchsdk.videothird.data;
 
-import android.view.SurfaceView;
-
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.wali.live.dns.IDnsStatusListener;
@@ -41,10 +39,6 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
 
     public void setOriginalStreamUrl(String originalStreamUrl) {
         mIpSelectionHelper.setOriginalStreamUrl(originalStreamUrl);
-    }
-
-    public void setSurfaceView(SurfaceView surfaceView) {
-        mStreamer.setDisplay(surfaceView != null ? surfaceView.getHolder() : null);
     }
 
     // 拉流开始

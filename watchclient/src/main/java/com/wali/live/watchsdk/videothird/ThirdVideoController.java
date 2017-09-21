@@ -25,10 +25,6 @@ public class ThirdVideoController extends BaseSdkController {
     protected PullStreamerPresenter mStreamerPresenter;
     protected SurfaceView mPlayerView;
 
-
-//    protected VideoDetailPlayerView mPlayerView;
-//    protected VideoDetailPlayerPresenter mPlayerPresenter;
-
     @Override
     protected String getTAG() {
         return TAG;
@@ -39,16 +35,6 @@ public class ThirdVideoController extends BaseSdkController {
     }
 
     public void setupController(Context context) {
-//        if (mPlayerView == null) {
-//            mPlayerView = new VideoDetailPlayerView(context);
-//            mPlayerView.setId(R.id.video_view);
-//            mPlayerView.setMyRoomData(mMyRoomData);
-//            mPlayerPresenter = new VideoDetailPlayerPresenter(this, mMyRoomData, (Activity) context);
-//            mPlayerPresenter.setView(mPlayerView.getViewProxy());
-//            mPlayerView.setPresenter(mPlayerPresenter);
-//        }
-//        mPlayerPresenter.startPresenter();
-
         if (mPlayerView == null) {
             mPlayerView = new SurfaceView(context);
             mPlayerView.setId(R.id.video_view);
@@ -65,9 +51,6 @@ public class ThirdVideoController extends BaseSdkController {
     @Override
     public void release() {
         super.release();
-//        mPlayerPresenter.stopPresenter();
-//        mPlayerPresenter.destroy();
-
         mStreamerPresenter.stopWatch();
         mStreamerPresenter.destroy();
     }
