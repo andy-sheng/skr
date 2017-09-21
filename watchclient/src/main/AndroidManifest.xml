@@ -76,7 +76,7 @@
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.WhiteBackground"/>
+            android:theme="@style/AppThemeLive"/>
 
         <activity android:name="com.xiaomi.account.openauth.AuthorizeActivity"/>
 

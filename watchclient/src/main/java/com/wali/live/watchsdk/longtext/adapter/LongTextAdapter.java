@@ -14,6 +14,7 @@ import com.wali.live.watchsdk.longtext.holder.OwnerFeedItemHolder;
 import com.wali.live.watchsdk.longtext.holder.PictureFeedItemHolder;
 import com.wali.live.watchsdk.longtext.holder.TextFeedItemHolder;
 import com.wali.live.watchsdk.longtext.holder.TitleFeedItemHolder;
+import com.wali.live.watchsdk.longtext.holder.VideoFeedItemHolder;
 import com.wali.live.watchsdk.longtext.holder.ViewerFeedItemHolder;
 import com.wali.live.watchsdk.longtext.model.interior.item.BaseFeedItemModel;
 
@@ -68,6 +69,10 @@ public class LongTextAdapter extends EmptyRecyclerAdapter {
             case FeedItemUiType.UI_TYPE_PIC:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_feed_picture, parent, false);
                 holder = new PictureFeedItemHolder(view);
+                break;
+            case FeedItemUiType.UI_TYPE_VIDEO:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_feed_video, parent, false);
+                holder = new VideoFeedItemHolder(view);
                 break;
             case FeedItemUiType.UI_TYPE_TEXT:
                 view = LayoutInflater.from(GlobalData.app()).inflate(R.layout.recycler_item_feed_text, parent, false);

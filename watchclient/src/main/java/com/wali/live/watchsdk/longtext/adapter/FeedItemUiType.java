@@ -10,5 +10,6 @@ public class FeedItemUiType {
     public static final int UI_TYPE_VIEWER = 104;
 
     public static final int UI_TYPE_PIC = 201;
+    public static final int UI_TYPE_VIDEO = 202;
     public static final int UI_TYPE_TEXT = 203;
 }
