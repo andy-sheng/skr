@@ -8,8 +8,6 @@ import com.mi.live.data.user.User;
 import com.wali.live.proto.LiveMicProto;
 import com.wali.live.proto.LivePKProto;
 
-import java.util.Random;
-
 /**
  * Created by yangli on 2017/9/15.
  */
@@ -163,21 +161,6 @@ public class BarrageMsgExt {
     public static class PkStartInfo extends PkScoreInfo {
         public int startRemainTime;
         public int pkRemainTime;
-
-        public static PkStartInfo newTestCase() {
-            final Random random = new Random();
-            PkStartInfo pkStartInfo = new PkStartInfo();
-            pkStartInfo.uuid1 = 100067;
-            pkStartInfo.uuid2 = 100415;
-            pkStartInfo.score1 = random.nextInt(1000);
-            pkStartInfo.score2 = random.nextInt(1000);
-            pkStartInfo.pkType = "测试";
-            pkStartInfo.timeType = random.nextInt(3) + 1;
-            pkStartInfo.beginTs = System.currentTimeMillis();
-            pkStartInfo.startRemainTime = random.nextInt(11);
-            pkStartInfo.pkRemainTime = random.nextInt(31);
-            return pkStartInfo;
-        }
 
         public PkStartInfo parseFromScoreInfo(@NonNull PkScoreInfo pkScoreInfo, long currServerTs) {
             uuid1 = pkScoreInfo.uuid1;

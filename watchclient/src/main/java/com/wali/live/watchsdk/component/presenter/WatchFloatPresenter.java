@@ -97,21 +97,7 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
         registerAction(MSG_ON_PK_START);
         registerAction(MSG_ON_PK_STOP);
         registerAction(MSG_SWITCH_ROOM);
-//        startPkTest();
     }
-
-//    private void startPkTest() {
-//        Observable.timer(5, TimeUnit.SECONDS)
-//                .compose(this.<Long>bindUntilEvent(PresenterEvent.STOP))
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Action1<Long>() {
-//                    @Override
-//                    public void call(Long cnt) {
-//                        BarrageMsgExt.PkStartInfo pkStartInfo = BarrageMsgExt.PkStartInfo.newTestCase();
-//                        mController.postEvent(MSG_ON_PK_START, new Params().putItem(pkStartInfo));
-//                    }
-//                });
-//    }
 
     @Override
     public void stopPresenter() {
