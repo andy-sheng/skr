@@ -75,7 +75,7 @@ public class ThirdVideoPlayerActivity extends BaseComponentSdkActivity {
             return false;
         }
 //        String videoPath = parseVideoPath(this, intent.getData());
-        String videoPath = "http://v2.zb.mi.com/live/27808973_1506063082.flv?playui=0";
+        String videoPath = "http://v2.zb.mi.com/live/2845403_1506079221.flv?playui=0";
         if (TextUtils.isEmpty(videoPath)) {
             MyLog.e(TAG, "parseVideoInfo, but video path not found");
             return false;

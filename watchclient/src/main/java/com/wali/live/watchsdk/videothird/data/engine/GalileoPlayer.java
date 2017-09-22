@@ -398,13 +398,13 @@ public class GalileoPlayer implements IPlayer {
             @Override
             public void run() {
                 MyLog.w(TAG, "release");
-                GalileoDeviceManager.INSTANCE.destroy();
                 stayAwake(false);
                 updateSurfaceScreenOn();
                 mVideoWidth = mVideoHeight = 0;
                 mPlayer.setVideoSurface(null);
                 mPlayer.stop();
                 mPlayer.destructPlayer();
+                GalileoDeviceManager.INSTANCE.destroy();
             }
         }, "release");
     }

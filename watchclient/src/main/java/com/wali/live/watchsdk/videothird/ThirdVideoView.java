@@ -58,7 +58,8 @@ public class ThirdVideoView extends BaseSdkView<View, ThirdVideoController> {
                 MyLog.e(TAG, "missing missing R.id.video_control_view");
                 return;
             }
-            VideoControlPresenter presenter = new VideoControlPresenter(mController);
+            VideoControlPresenter presenter = new VideoControlPresenter(mController,
+                    mController.mStreamerPresenter);
             registerComponent(view, presenter);
         }
         // 添加播放器View

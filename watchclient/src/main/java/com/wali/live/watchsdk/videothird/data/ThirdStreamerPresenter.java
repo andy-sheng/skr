@@ -11,8 +11,6 @@ import com.wali.live.ipselect.FeedsIpSelectionHelper;
 public class ThirdStreamerPresenter extends PullStreamerPresenter {
     private static final String TAG = "ThirdStreamerPresenter";
 
-    private boolean mPaused = true;
-
     @Override
     protected String getTAG() {
         return TAG;
@@ -26,23 +24,5 @@ public class ThirdStreamerPresenter extends PullStreamerPresenter {
 
     public void setOriginalStreamUrl(String originalStreamUrl) {
         mIpSelectionHelper.setOriginalStreamUrl(originalStreamUrl);
-    }
-
-    // 恢复播放
-    public void resumeWatch() {
-        if (mStreamer == null || !mStarted || mPaused) {
-            return;
-        }
-        mPaused = false;
-        mStreamer.start();
-    }
-
-    // 结束播放
-    public void pauseWatch() {
-        if (mStreamer == null || !mStarted || !mPaused) {
-            return;
-        }
-        mPaused = true;
-        mStreamer.pause();
     }
 }

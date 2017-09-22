@@ -16,10 +16,15 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
     private static final String TAG = "PullStreamerPresenter";
 
     private boolean mIsRealTime = true;
+    private boolean mPaused = true;
 
     @Override
     protected String getTAG() {
         return TAG;
+    }
+
+    public boolean isStarted() {
+        return mStarted;
     }
 
     public PullStreamerPresenter() {
@@ -47,7 +52,26 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
             return;
         }
         mStarted = true;
+        mPaused = false;
         mReconnectHelper.startStream();
+    }
+
+    // 恢复播放
+    public void resumeWatch() {
+        if (mStreamer == null || !mStarted || !mPaused) {
+            return;
+        }
+        mPaused = false;
+        mStreamer.start();
+    }
+
+    // 结束播放
+    public void pauseWatch() {
+        if (mStreamer == null || !mStarted || mPaused) {
+            return;
+        }
+        mPaused = true;
+        mStreamer.pause();
     }
 
     // 拉流结束
@@ -56,6 +80,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
             return;
         }
         mStarted = false;
+        mPaused = false;
         mReconnectHelper.stopStream();
     }
 

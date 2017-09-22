@@ -5,12 +5,14 @@ import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.base.view.RotatedSeekBar;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
-import com.wali.live.video.widget.player.ReplaySeekBar;
+import com.wali.live.video.widget.player.HotSpotSeekBar;
 import com.wali.live.watchsdk.R;
 
 /**
@@ -18,15 +20,18 @@ import com.wali.live.watchsdk.R;
  *
  * @module 播放控制视图
  */
-public class VideoControlView extends RelativeLayout
-        implements IComponentView<VideoControlView.IPresenter, VideoControlView.IView> {
+public class VideoControlView extends RelativeLayout implements View.OnClickListener,
+        IComponentView<VideoControlView.IPresenter, VideoControlView.IView> {
     private static final String TAG = "VideoControlView";
 
     @Nullable
     protected IPresenter mPresenter;
 
-    private ReplaySeekBar mSeekBar;
-    private ImageButton mPlayBtn;
+    private ImageView mPlayBtn;
+    private TextView mCurrTimeView;
+    private TextView mTotalTimeView;
+    private View mFullScreenBtn;
+    private HotSpotSeekBar mSeekBar;
 
     protected final <T extends View> T $(@IdRes int resId) {
         return (T) findViewById(resId);
@@ -35,6 +40,25 @@ public class VideoControlView extends RelativeLayout
     protected final void $click(View view, View.OnClickListener listener) {
         if (view != null) {
             view.setOnClickListener(listener);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (mPresenter == null) {
+            return;
+        }
+        int i = v.getId();
+        if (i == R.id.play_btn) {
+            boolean selected = !v.isSelected();
+            v.setSelected(selected);
+            if (selected) {
+                mPresenter.pausePlay();
+            } else {
+                mPresenter.startPlay();
+            }
+        } else if (i == R.id.full_screen_btn) {
+            mPresenter.switchToFullScreen();
         }
     }
 
@@ -56,10 +80,30 @@ public class VideoControlView extends RelativeLayout
         init(context, attrs, defStyleAttr);
     }
 
-    public void init(Context context, AttributeSet attrs, int defStyleAttr) {
+    private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.video_control_view, this);
-        mSeekBar = $(R.id.video_seek_bar);
-        mPlayBtn = $(R.id.play_button);
+        mPlayBtn = $(R.id.play_btn);
+        mCurrTimeView = $(R.id.curr_time_view);
+        mTotalTimeView = $(R.id.total_time_view);
+        mFullScreenBtn = $(R.id.full_screen_btn);
+        mSeekBar = $(R.id.seek_bar);
+
+        $click(mPlayBtn, this);
+        $click(mFullScreenBtn, this);
+
+        mSeekBar.setOnRotatedSeekBarChangeListener(new RotatedSeekBar.OnRotatedSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(RotatedSeekBar rotatedSeekBar, float percent, boolean fromUser) {
+            }
+
+            @Override
+            public void onStartTrackingTouch(RotatedSeekBar rotatedSeekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(RotatedSeekBar rotatedSeekBar) {
+            }
+        });
     }
 
     @Override
@@ -74,6 +118,20 @@ public class VideoControlView extends RelativeLayout
     }
 
     public interface IPresenter {
+        /**
+         * 恢复播放
+         */
+        void startPlay();
+
+        /**
+         * 暂停播放
+         */
+        void pausePlay();
+
+        /**
+         * 切换到全屏
+         */
+        void switchToFullScreen();
     }
 
     public interface IView extends IViewProxy {
