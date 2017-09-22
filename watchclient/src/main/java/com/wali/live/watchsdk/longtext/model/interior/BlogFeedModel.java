@@ -12,6 +12,7 @@ import com.wali.live.watchsdk.longtext.model.interior.item.CoverFeedItemModel;
 import com.wali.live.watchsdk.longtext.model.interior.item.PictureFeedItemModel;
 import com.wali.live.watchsdk.longtext.model.interior.item.TextFeedItemModel;
 import com.wali.live.watchsdk.longtext.model.interior.item.TitleFeedItemModel;
+import com.wali.live.watchsdk.longtext.model.interior.item.VideoFeedItemModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,8 @@ public class BlogFeedModel extends UgcFeedModel {
         switch (protoMultiMedia.getMediaType()) {
             case BaseFeedItemModel.FEEDS_MULTI_MEDIA_TYPE_PIC:
                 return new PictureFeedItemModel(Feeds.Picture.parseFrom(protoMultiMedia.getMediaData()));
+            case BaseFeedItemModel.FEEDS_MULTI_MEDIA_TYPE_VIDEO:
+                return new VideoFeedItemModel(Feeds.Video.parseFrom(protoMultiMedia.getMediaData()));
             case BaseFeedItemModel.FEEDS_MULTI_MEDIA_TYPE_TEXT:
                 return new TextFeedItemModel(Feeds.Text.parseFrom(protoMultiMedia.getMediaData()));
             default:
