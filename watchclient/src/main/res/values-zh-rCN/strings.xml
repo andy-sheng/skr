@@ -199,4 +199,8 @@
     <string name="can_not_vote_toast">再陪主播一会儿才可以投票喔</string>
     <string name="vote_finish_toast">活动已结束，欢迎下次参与喔</string>
     <string name="vote_max_toast">已达上限，期待下次参与喔</string>
+    <string name="feeds_not_exist">该动态已经被删除</string>
+    <string name="feeds_getinfo_failed">获取详情失败, 请稍后重试</string>
+    <string name="like_count_text">%d人赞</string>
+    <string name="detail_text">详情</string>
 </resources>

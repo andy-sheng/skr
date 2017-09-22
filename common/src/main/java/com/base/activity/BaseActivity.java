@@ -296,7 +296,7 @@ public abstract class BaseActivity extends RxActivity implements IStatusBarOpera
     /**
      * android 6.0 及以上 设置字体颜色 通用的方法
      */
-    public static boolean setStatusBarAfterM(Activity activity, boolean isDark) {
+    private static boolean setStatusBarAfterM(Activity activity, boolean isDark) {
         MyLog.d("BaseActivity", "setStatusBarAfterM  isDark=" + isDark);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Window window = activity.getWindow();

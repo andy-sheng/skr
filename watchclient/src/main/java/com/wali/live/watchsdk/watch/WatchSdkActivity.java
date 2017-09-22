@@ -120,6 +120,7 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_ON_PK_START;
 import static com.wali.live.component.BaseSdkController.MSG_PAGE_DOWN;
 import static com.wali.live.component.BaseSdkController.MSG_PAGE_UP;
+import static com.wali.live.component.BaseSdkController.MSG_SWITCH_ROOM;
 
 /**
  * Created by lan on 16/11/25.
@@ -1125,6 +1126,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                 mGiftContinueViewGroup.reset();
                 mGiftRoomEffectView.reset();
                 mSdkView.reset();
+                mController.postEvent(MSG_SWITCH_ROOM);
 
                 // 切换房间后，进入当前房间
                 mController.switchRoom();

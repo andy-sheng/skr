@@ -83,6 +83,7 @@ public class WidgetItemView extends LinearLayout {
     private int mTxtCounter;
 
     private SupportWidgetView mSupportWv;
+    private int mLastWidgetID;
     private boolean mIsCanClick = true;
 
     public WidgetItemView(Context context) {
@@ -157,10 +158,17 @@ public class WidgetItemView extends LinearLayout {
     }
 
     public void setSupportWidgetView(LiveCommonProto.NewWidgetItem info) {
-        if (mSupportWv.hasInitial()) {
-            return;
-        }
         if (info.hasClickItem()) {
+            MyLog.w(TAG, "set support info is equal=" + info.getWidgetID() + ":" + mLastWidgetID);
+            if (mSupportWv.hasInitial() && info.getWidgetID() == mLastWidgetID) {
+                return;
+            }
+            mLastWidgetID = info.getWidgetID();
+            if (mSupportWv.hasInitial()) {
+                mSupportWv.destroy();
+            }
+
+            MyLog.w(TAG, "set support show view");
             LiveCommonProto.ClickItem click = info.getClickItem();
             if (click.hasClickImageUrl()) {
                 mSupportWv.setPic(click.getClickWaitingImageUrl(), click.getClickImageUrl());
@@ -174,8 +182,9 @@ public class WidgetItemView extends LinearLayout {
             mSupportWv.showWaiting();
         } else {
             mSupportWv.setVisibility(GONE);
-            mSupportWv.stopCountdown();
-            mSupportWv.stopRippleAnimator();
+            if (mSupportWv.hasInitial()) {
+                mSupportWv.destroy();
+            }
         }
     }
 

@@ -117,4 +117,6 @@ public class ErrorCode {
     /* 关系错误码 */
     public static final int CODE_RELATION_YOURSELF = 7505;
     public static final int CODE_RELATION_BLACK = 7506;     // 黑名单
+
+    public static final int CODE_FEEDS_DELETED = 17601;     // feeds被删除
 }

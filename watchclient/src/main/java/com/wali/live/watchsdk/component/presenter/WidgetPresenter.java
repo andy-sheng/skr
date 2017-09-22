@@ -122,20 +122,16 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
      */
     @MainThread
     public void setWidgetList(List<LiveCommonProto.NewWidgetItem> list) {
-        if (list.size() <= 0) {
-            return;
-        }
         if (mWidgetList.containsAll(list) && mWidgetList.size() == list.size()) {
             return;
         }
-
         if (mWidgetList.size() > 0) {
             mWidgetList.clear();
         }
         mWidgetList.addAll(list);
 
         mView.hideWidgetView();
-        if (mWidgetList != null && mWidgetList.size() > 0) {
+        if (mWidgetList.size() > 0) {
             mView.showWidgetView(mWidgetList);
         }
     }
@@ -322,7 +318,7 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
             case MSG_ON_PK_STOP:
                 if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
                     int liveType = mMyRoomData.getLiveType();
-                    MyLog.w(TAG, "live type=" + liveType);
+                    MyLog.w(TAG, "live type=" + liveType + " event=" + event);
                     if (liveType != LiveManager.TYPE_LIVE_PRIVATE && liveType != LiveManager.TYPE_LIVE_TOKEN) {
                         getRoomAttachment(mMyRoomData.getRoomId(), mMyRoomData.getUid(), mMyRoomData.getLiveType())
                                 .compose(bindUntilEvent(PresenterEvent.DESTROY))

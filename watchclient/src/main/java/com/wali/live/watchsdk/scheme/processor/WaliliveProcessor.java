@@ -11,6 +11,7 @@ import com.base.log.MyLog;
 import com.mi.live.data.api.LiveManager;
 import com.wali.live.event.EventClass;
 import com.wali.live.pay.activity.RechargeActivity;
+import com.wali.live.watchsdk.longtext.LongTextActivity;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeUtils;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
@@ -101,9 +102,14 @@ public class WaliliveProcessor extends CommonProcessor {
         long ownerId = SchemeUtils.getLong(uri, SchemeConstants.PARAM_OWENER_ID, 0);
         int feedsType = SchemeUtils.getInt(uri, SchemeConstants.PARAM_FEEDS_TYPE, 0);
         String videoUrl = uri.getQueryParameter(SchemeConstants.PARAM_VIDEO_URL);
+        int extType = SchemeUtils.getInt(uri, SchemeConstants.PARAM_EXT_TYPE, 0);
 
-        //这里拿掉区分type的
-        VideoDetailSdkActivity.openActivity(activity, RoomInfo.Builder.newInstance(ownerId, feedId, videoUrl).build());
+        if (extType == SchemeConstants.EXT_TYPE_LONG_TEXT) {
+            LongTextActivity.open(activity, feedId, ownerId);
+        } else {
+            //这里拿掉区分type的
+            VideoDetailSdkActivity.openActivity(activity, RoomInfo.Builder.newInstance(ownerId, feedId, videoUrl).build());
+        }
     }
 
     /**

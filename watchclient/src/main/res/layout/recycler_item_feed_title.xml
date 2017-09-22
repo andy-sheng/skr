@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <com.wali.live.watchsdk.view.AlignTextView
+        android:id="@+id/title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="13.33dp"
+        android:layout_marginRight="13.33dp"
+        android:layout_marginTop="@dimen/margin_30"
+        android:lineSpacingExtra="@dimen/margin_10"
+        android:lineSpacingMultiplier="1"
+        android:textColor="@color/color_black_trans_80"
+        android:textSize="@dimen/text_size_50"
+        android:textStyle="bold"/>
+
+</LinearLayout>
