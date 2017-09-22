@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/video_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_40"
+        android:layout_marginRight="@dimen/margin_40"
+        android:layout_marginTop="@dimen/margin_40"
+        android:background="@color/color_black">
+
+        <com.wali.live.watchsdk.longtext.view.HolderVideoView
+            android:id="@+id/video_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.base.image.fresco.BaseImageView
+            android:id="@+id/cover_iv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ImageView
+            android:id="@+id/play_btn"
+            android:layout_width="@dimen/view_dimen_140"
+            android:layout_height="@dimen/view_dimen_140"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/feeds_play_button"/>
+    </RelativeLayout>
+
+    <com.wali.live.watchsdk.view.AlignTextView
+        android:id="@+id/desc_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_40"
+        android:layout_marginRight="@dimen/margin_40"
+        android:layout_marginTop="@dimen/view_dimen_22"
+        android:lineSpacingExtra="@dimen/margin_4"
+        android:lineSpacingMultiplier="1"
+        android:textColor="@color/color_black_trans_50"
+        android:textSize="13.33dp"/>
+</LinearLayout>

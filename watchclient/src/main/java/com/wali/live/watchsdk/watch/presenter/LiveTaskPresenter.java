@@ -136,6 +136,7 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
                 .compose(mRxActivity.<EnterRoomInfo>bindUntilEvent())
                 .retryWhen(new RxRetryAssist())
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<EnterRoomInfo>() {
                     @Override
                     public void onCompleted() {

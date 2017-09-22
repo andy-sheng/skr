@@ -173,8 +173,8 @@ public class RoomPreparePresenter extends BaseRxPresenter<IRoomPrepareView> {
         mView.fillTitle(mCacheModel.nextTitle());
     }
 
-    public void loadDailyTask() {
-        WidgetPresenter.getRoomAttachment("", UserAccountManager.getInstance().getUuidAsLong(), 0)
+    public void loadDailyTask(int roomType) {
+        WidgetPresenter.getRoomAttachment("", UserAccountManager.getInstance().getUuidAsLong(), roomType)
                 .compose(mView.<LiveProto.GetRoomAttachmentRsp>bindLifecycle())
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(new RxRetryAssist(3, 5, true)) // 重试3次，间隔5秒

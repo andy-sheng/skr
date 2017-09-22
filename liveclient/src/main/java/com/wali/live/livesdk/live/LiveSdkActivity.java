@@ -51,13 +51,16 @@ import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
+import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.presenter.RoomMessagePresenter;
 import com.mi.live.data.query.model.MessageRule;
+import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.repository.RoomMessageRepository;
 import com.mi.live.data.repository.datasource.RoomMessageStore;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
 import com.mi.milink.sdk.aidl.PacketData;
+import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.thornbirds.component.IEventObserver;
 import com.thornbirds.component.IParams;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
@@ -66,24 +69,26 @@ import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.component.BaseSdkView;
+import com.wali.live.dao.Gift;
 import com.wali.live.event.EventClass;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.api.ZuidActiveRequest;
 import com.wali.live.livesdk.live.api.ZuidSleepRequest;
 import com.wali.live.livesdk.live.component.BaseLiveController;
+import com.wali.live.livesdk.live.component.BaseLiveSdkView;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.eventbus.LiveEventClass;
 import com.wali.live.livesdk.live.fragment.AnchorEndLiveFragment;
-import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
 import com.wali.live.livesdk.live.fragment.RecipientsSelectFragment;
 import com.wali.live.livesdk.live.fragment.RoomAdminFragment;
-import com.wali.live.livesdk.live.livegame.fragment.PrepareLiveFragment;
+import com.wali.live.livesdk.live.livegame.GameLiveController;
+import com.wali.live.livesdk.live.livegame.GameLiveSdkView;
+import com.wali.live.livesdk.live.liveshow.ShowLiveController;
+import com.wali.live.livesdk.live.liveshow.ShowLiveSdkView;
 import com.wali.live.livesdk.live.presenter.LiveRoomPresenter;
 import com.wali.live.livesdk.live.receiver.ScreenStateReceiver;
-import com.wali.live.livesdk.live.task.IActionCallBack;
 import com.wali.live.livesdk.live.view.CountDownView;
-import com.wali.live.livesdk.live.view.topinfo.LiveTopInfoSingleView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveMessageProto;
@@ -94,11 +99,13 @@ import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AppNetworkUtils;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
-import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
+import com.wali.live.watchsdk.personinfo.fragment.FloatInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.ranking.RankingPagerFragment;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
+import com.wali.live.watchsdk.task.IActionCallBack;
+import com.wali.live.watchsdk.task.LiveTask;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomManagerPresenter;
@@ -128,6 +135,13 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_STREAM_RECONNECT;
 import static com.wali.live.component.BaseSdkController.MSG_ON_STREAM_SUCCESS;
 import static com.wali.live.component.BaseSdkController.MSG_OPEN_CAMERA_FAILED;
 import static com.wali.live.component.BaseSdkController.MSG_OPEN_MIC_FAILED;
+import static com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment.EXTRA_LIVE_COVER_URL;
+import static com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment.EXTRA_LIVE_QUALITY;
+import static com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment.EXTRA_LIVE_TAG_INFO;
+import static com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment.EXTRA_LIVE_TITLE;
+import static com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment.EXTRA_SNS_TYPE;
+import static com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment.MEDIUM_CLARITY;
+import static com.wali.live.livesdk.live.livegame.fragment.PrepareLiveFragment.EXTRA_GAME_LIVE_MUTE;
 import static com.wali.live.statistics.StatisticsKey.AC_APP;
 import static com.wali.live.statistics.StatisticsKey.KEY;
 import static com.wali.live.statistics.StatisticsKey.TIMES;
@@ -136,7 +150,7 @@ import static com.wali.live.statistics.StatisticsKey.TIMES;
  * Created by chenyong on 2017/2/8.
  */
 public class LiveSdkActivity extends BaseComponentSdkActivity implements FragmentDataListener, IActionCallBack,
-        FloatPersonInfoFragment.FloatPersonInfoClickListener, ForbidManagePresenter.IForbidManageProvider {
+        FloatInfoFragment.FloatInfoClickListener, ForbidManagePresenter.IForbidManageProvider {
 
     private static final String EXTRA_IS_GAME_LIVE = "extra_is_game_live";
     private static final String EXTRA_LOCATION = "extra_location";
@@ -160,7 +174,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private static final int MSG_HEARTBEAT_TIMEOUT = 204;           // 心跳超时
     private static final int MSG_ROOM_NOT_EXIT = 205;               // 房间不存在
 
-    public static boolean sRecording = false; //将其变为静态并暴露给外面，用于各种跳转判定
+    public static boolean sRecording = false; // 将其变为静态并暴露给外面，用于各种跳转判定
 
     public static final int REQUEST_CODE_PICK_MANAGER = 1000;
 
@@ -189,15 +203,13 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     protected BaseImageView mMaskIv; // 高斯蒙层
     protected ImageView mCloseBtn; // 关闭按钮
 
-    protected LiveTopInfoSingleView mTopInfoSingleView;
-
     protected FlyBarrageViewGroup mFlyBarrageViewGroup;
 
     protected TextView mTipsTv;
 
     protected StreamerPresenter mStreamerPresenter;
     protected BaseLiveController mController;
-    protected BaseSdkView mSdkView;
+    protected BaseLiveSdkView mSdkView;
     protected final Action mAction = new Action();
 
     protected RoomMessagePresenter mPullRoomMessagePresenter;
@@ -224,6 +236,12 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     private MyAlertDialog mTrafficDialog; //流量窗
 
+    protected CustomHandlerThread mHandlerThread = new CustomHandlerThread("LiveSdkActivity") {
+        @Override
+        protected void processMessage(Message message) {
+        }
+    };
+
     @Override
     public boolean isKeyboardResize() {
         return false;
@@ -242,13 +260,12 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
         initData();
         initRoomData();
-
         setupRequiredComponent();
 
         if (!mIsGameLive) {
             mController.createStreamer(this, $(R.id.galileo_surface_view), 0, false, null);
         }
-        mController.enterPreparePage(this, REQUEST_PREPARE_LIVE, this);
+        mSdkView.enterPreparePage(this, REQUEST_PREPARE_LIVE, this);
         openOrientation();
 
         // 封面模糊图
@@ -282,18 +299,18 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private void setupRequiredComponent() {
         mStreamerPresenter = new StreamerPresenter(mMyRoomData);
         if (mIsGameLive) {
-            mController = new com.wali.live.livesdk.live.livegame.LiveComponentController(
+            mController = new GameLiveController(
                     mMyRoomData, mRoomChatMsgManager, mStreamerPresenter);
+            mSdkView = new GameLiveSdkView(this, (GameLiveController) mController);
         } else {
-            mController = new com.wali.live.livesdk.live.liveshow.LiveComponentController(
+            mController = new ShowLiveController(
                     mMyRoomData, mRoomChatMsgManager, mStreamerPresenter);
+            mSdkView = new ShowLiveSdkView(this, (ShowLiveController) mController);
         }
         mStreamerPresenter.setComponentController(mController);
-        mSdkView = mController.createSdkView(this);
 
         addPresent(mStreamerPresenter);
-
-        mAction.registerAction(); // 注册事件，准备可能需要
+        mAction.registerAction(); // 注册事件，准备页可能需要
     }
 
     private void registerScreenStateReceiver() {
@@ -456,9 +473,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     protected void orientLandscape() {
-        if (mTopInfoSingleView != null) {
-            mTopInfoSingleView.onScreenOrientationChanged(true);
-        }
         if (mController != null) {
             mController.postEvent(MSG_ON_ORIENT_LANDSCAPE);
         }
@@ -469,9 +483,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     protected void orientPortrait() {
-        if (mTopInfoSingleView != null) {
-            mTopInfoSingleView.onScreenOrientationChanged(false);
-        }
         if (mController != null) {
             mController.postEvent(MSG_ON_ORIENT_PORTRAIT);
         }
@@ -482,20 +493,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     @Override
-    public void onClickHomepage(User user) {
-    }
-
-    @Override
     public void onClickTopOne(User user) {
     }
 
     @Override
     public void onClickMainAvatar(User user) {
-    }
-
-    @Override
-    public void onClickSixin(User user) {
-
     }
 
     /**
@@ -506,7 +508,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             return;
         }
         StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, StatisticsKey.KEY_USERINFO_CARD_OPEN, 1);
-        FloatPersonInfoFragment.openFragment(this, uid, mMyRoomData.getUid(),
+//        FloatPersonInfoFragment.openFragment(this, uid, mMyRoomData.getUid(),
+//                mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this);
+        FloatInfoFragment.openFragment(this, uid, mMyRoomData.getUid(),
                 mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this);
     }
 
@@ -585,18 +589,18 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     private void initPrepareData(Bundle bundle) {
-        mLiveTitle = bundle.getString(BasePrepareLiveFragment.EXTRA_LIVE_TITLE);
-        mRoomTag = (RoomTag) bundle.getSerializable(BasePrepareLiveFragment.EXTRA_LIVE_TAG_INFO);
-        mLiveCoverUrl = bundle.getString(BasePrepareLiveFragment.EXTRA_LIVE_COVER_URL, "");
-        mShareSelected = bundle.getBoolean(BasePrepareLiveFragment.EXTRA_SNS_TYPE, false);
+        mLiveTitle = bundle.getString(EXTRA_LIVE_TITLE);
+        mRoomTag = (RoomTag) bundle.getSerializable(EXTRA_LIVE_TAG_INFO);
+        mLiveCoverUrl = bundle.getString(EXTRA_LIVE_COVER_URL, "");
+        mShareSelected = bundle.getBoolean(EXTRA_SNS_TYPE, false);
 
         mMyRoomData.setLiveTitle(mLiveTitle);
         mLiveRoomPresenter = new LiveRoomPresenter(this);
         addPresent(mLiveRoomPresenter);
 
         if (mIsGameLive) {
-            int quality = bundle.getInt(PrepareLiveFragment.EXTRA_GAME_LIVE_QUALITY, PrepareLiveFragment.MEDIUM_CLARITY);
-            boolean isMute = bundle.getBoolean(PrepareLiveFragment.EXTRA_GAME_LIVE_MUTE, false);
+            int quality = bundle.getInt(EXTRA_LIVE_QUALITY, MEDIUM_CLARITY);
+            boolean isMute = bundle.getBoolean(EXTRA_GAME_LIVE_MUTE, false);
             mController.createStreamer(this, null, quality, isMute, mScreenRecordIntent);
         }
     }
@@ -618,12 +622,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 MyUserInfoManager.getInstance().syncSelfDetailInfo();
             }
         }
-        // 顶部view
-        mTopInfoSingleView = $(R.id.live_top_info_view);
-        addBindActivityLifeCycle(mTopInfoSingleView, true);
-        mTopInfoSingleView.setMyRoomDataSet(mMyRoomData);
-        mTopInfoSingleView.initViewUseData();
-        mTopInfoSingleView.setVisibility(View.VISIBLE);
 
         // 礼物
         mGiftContinueViewGroup = $(R.id.gift_continue_vg);
@@ -735,11 +733,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             } else {
                 orientPortrait();
             }
-
-            if (mStreamerPresenter != null) {
-                if (!mIsGameLive) {
-                    mStreamerPresenter.setAngle(event.orientation);
-                }
+            if (mStreamerPresenter != null && !mIsGameLive) {
+                mStreamerPresenter.setAngle(event.orientation);
             }
         }
     }
@@ -1163,6 +1158,14 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         return mForbidManagePresenter;
     }
 
+    private void viewerTopFromServer(RoomBaseDataModel roomData) {
+        if (TextUtils.isEmpty(roomData.getRoomId())) {
+            MyLog.d(TAG, "viewerTop roomId is empty");
+            return;
+        }
+        mHandlerThread.post(LiveTask.viewerTop(roomData, new WeakReference<IActionCallBack>(this)));
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(final LiveEventClass.LiveCoverEvent event) {
         if (event != null && mMaskIv.getVisibility() == View.VISIBLE) {
@@ -1195,6 +1198,10 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 RankingPagerFragment.openFragment(this, ticket, mMyRoomData.getInitTicket(), uid, liveId,
                         mMyRoomData.isTicketing() ? RankingPagerFragment.PARAM_FROM_CURRENT : RankingPagerFragment.PARAM_FROM_TOTAL,
                         true, isDisplayLandscape());
+            }
+            break;
+            case UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER: {
+                viewerTopFromServer((RoomBaseDataModel) event.obj1);
             }
             break;
             case UserActionEvent.EVENT_TYPE_REQUEST_SET_MANAGER: {
@@ -1247,6 +1254,14 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 }
             }
             break;
+            case UserActionEvent.EVENT_TYPE_CLICK_SUPPORT_WIDGET:
+                Gift gift = GiftRepository.findGiftById((int) event.obj1);
+                if (gift != null) {
+                    BarrageMsg pushMsg = GiftRepository.createGiftBarrageMessage(gift.getGiftId(), gift.getName(), gift.getCatagory(),
+                            gift.getSendDescribe(), 1, 0, System.currentTimeMillis(), -1, mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), "", "", 0, false);
+                    BarrageMessageManager.getInstance().pretendPushBarrage(pushMsg);
+                }
+                break;
             default:
                 break;
         }

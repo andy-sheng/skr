@@ -30,14 +30,15 @@ import com.wali.live.utils.ReplayBarrageMessageManager;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
+import com.wali.live.watchsdk.component.presenter.TopAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
-import com.wali.live.watchsdk.videodetail.view.VideoDetailPlayerView;
+import com.wali.live.watchsdk.component.view.TopAreaView;
+import com.wali.live.watchsdk.component.view.VideoDetailPlayerView;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
-import com.wali.live.watchsdk.watchtop.view.WatchTopInfoSingleView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -78,7 +79,8 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
     protected RoomStatusPresenter mRoomStatusPresenter;
 
     @Nullable
-    protected WatchTopInfoSingleView mTopInfoView;
+    protected TopAreaView mTopAreaView;
+    //protected WatchTopInfoSingleView mTopInfoView;
     @Nullable
     protected View mLiveCommentView;
     @Nullable
@@ -130,15 +132,14 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
 
         // 顶部面板
         {
-            WatchTopInfoSingleView view = $(mContentView, R.id.watch_top_info_view);
-            if (view == null) {
-                MyLog.e(TAG, "missing R.id.watch_top_info_view");
+            mTopAreaView = $(R.id.top_area_view);
+            if (mTopAreaView == null) {
+                MyLog.e(TAG, "missing R.id.top_area_view");
                 return;
             }
-            view.setMyRoomDataSet(mController.mMyRoomData);
-            view.initViewUseData();
-            mTopInfoView = view;
-            mTopInfoView.onActivityCreate();
+            TopAreaPresenter topAreaPresenter = new TopAreaPresenter(mController,
+                    mController.mMyRoomData, false);
+            registerComponent(mTopAreaView, topAreaPresenter);
         }
         // 大礼物动画
         {
@@ -200,7 +201,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
 
         mVerticalMoveSet.add($(R.id.close_btn));
         addViewToSet(new int[]{
-                R.id.watch_top_info_view,
+                R.id.top_area_view,
                 R.id.bottom_button_view,
                 R.id.live_comment_view,
                 R.id.gift_animation_player_view,
@@ -210,7 +211,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
         }, mHorizontalMoveSet, mVerticalMoveSet);
         if (mIsGameMode) {
             addViewToSet(new int[]{
-                    R.id.watch_top_info_view,
+                    R.id.top_area_view,
                     R.id.bottom_button_view,
                     R.id.game_barrage_view,
                     R.id.game_input_view,
@@ -261,7 +262,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
         view.showOrHideFullScreenBtn(false);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        addViewUnderAnchor(view, layoutParams, $(R.id.watch_top_info_view));
+        addViewUnderAnchor(view, layoutParams, $(R.id.top_area_view));
 
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
@@ -303,7 +304,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
         mRoomViewerPresenter.destroy();
         mRoomStatusPresenter.destroy();
 
-        mTopInfoView.onActivityDestroy();
+        //mTopInfoView.onActivityDestroy();
         mGiftAnimationView.onActivityDestroy();
         mGiftRoomEffectView.onActivityDestroy();
         mGiftContinueViewGroup.onActivityDestroy();
@@ -365,7 +366,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                 mIsLandscape = false;
                 mAnimationHelper.stopAllAnimator();
                 orientCloseBtn(false);
-                mTopInfoView.onScreenOrientationChanged(mIsLandscape);
                 if (mIsGameMode) {
                     mController.postEvent(MSG_ENABLE_MOVE_VIEW);
                     if (mAnimationHelper.mGameHide) { // 横屏转竖屏，恢复被隐藏的View，竖屏转横屏的逻辑在TouchPresenter中处理
@@ -384,7 +384,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                 mIsLandscape = true;
                 mAnimationHelper.stopAllAnimator();
                 orientCloseBtn(true);
-                mTopInfoView.onScreenOrientationChanged(mIsLandscape);
                 if (mIsGameMode) { // 游戏直播横屏不需左右滑
                     mController.postEvent(MSG_DISABLE_MOVE_VIEW);
                     mLiveCommentView.setVisibility(View.INVISIBLE);
@@ -447,7 +446,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                     if (mInputShow) {
                         value = 1.0f - value;
                     }
-                    mTopInfoView.setAlpha(value);
+                    mTopAreaView.setAlpha(value);
                 }
             }, new AnimatorListenerAdapter() {
                 @Override
@@ -457,16 +456,16 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                             mLiveCommentView.setVisibility(View.GONE);
                         }
                     } else {
-                        mTopInfoView.setVisibility(View.VISIBLE);
+                        mTopAreaView.setVisibility(View.VISIBLE);
                     }
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     if (mInputShow) {
-                        mTopInfoView.setVisibility(View.GONE);
+                        mTopAreaView.setVisibility(View.GONE);
                     } else {
-                        mTopInfoView.setAlpha(1.0f);
+                        mTopAreaView.setAlpha(1.0f);
                         if (mIsLandscape && !mIsGameMode) {
                             mLiveCommentView.setVisibility(View.VISIBLE);
                         }
@@ -553,5 +552,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
             mInputAnimatorRef = null;
             mGameAnimatorRef = null;
         }
+
     }
 }

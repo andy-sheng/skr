@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="vertical">
 
     <View
         android:id="@+id/split_area"
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:background="@color/color_f2f2f2" />
+        android:background="@color/color_f2f2f2"/>
 
     <include
         android:id="@+id/title_area"
         layout="@layout/michannel_head_item"
         android:layout_width="match_parent"
         android:layout_height="37.33dp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:id="@+id/content_area"
@@ -32,7 +32,7 @@
             android:layout_width="@dimen/view_dimen_304"
             android:layout_height="@dimen/height_228"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"/>
 
         <TextView
             android:id="@+id/type_tv"
@@ -51,7 +51,7 @@
             android:text="直播"
             android:textColor="@color/color_white"
             android:textSize="12dp"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/single_tv"
@@ -63,7 +63,7 @@
             android:lines="2"
             android:text="323423323423323423323423323423323423323423323423323423323423"
             android:textColor="@color/color_black_trans_90"
-            android:textSize="@dimen/text_size_42" />
+            android:textSize="@dimen/text_size_42"/>
 
         <!--<TextView-->
         <!--android:id="@+id/count_tv"-->
@@ -85,10 +85,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:text="2342"
             android:layout_marginBottom="@dimen/margin_10"
+            android:text="2342"
             android:textColor="@color/color_black_trans_50"
-            android:textSize="@dimen/text_size_36" />
+            android:textSize="@dimen/text_size_36"/>
 
         <!--<TextView-->
         <!--android:id="@+id/time_tv"-->
@@ -106,8 +106,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/margin_30"
             android:layout_marginBottom="@dimen/margin_10"
+            android:layout_marginLeft="@dimen/margin_30"
             android:layout_toRightOf="@id/single_iv"
             android:orientation="horizontal">
 
@@ -115,7 +115,7 @@
                 android:id="@+id/avatar_iv"
                 android:layout_width="@dimen/view_dimen_45"
                 android:layout_height="@dimen/view_dimen_45"
-                android:layout_gravity="center_vertical" />
+                android:layout_gravity="center_vertical"/>
 
             <TextView
                 android:id="@+id/name_tv"
@@ -127,7 +127,7 @@
                 android:layout_toRightOf="@id/avatar_iv"
                 android:text="name"
                 android:textColor="@color/color_black_trans_50"
-                android:textSize="@dimen/text_size_36" />
+                android:textSize="@dimen/text_size_36"/>
         </LinearLayout>
     </RelativeLayout>
 
@@ -138,7 +138,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="@dimen/margin_30"
         android:layout_marginRight="@dimen/margin_30"
-        android:background="@color/color_black_trans_10" />
+        android:background="@color/color_black_trans_10"/>
 </LinearLayout>
 
 

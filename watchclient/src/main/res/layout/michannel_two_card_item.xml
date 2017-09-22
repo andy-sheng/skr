@@ -12,15 +12,14 @@
         android:background="@color/color_f2f2f2"/>
 
     <View
-        android:layout_marginLeft="@dimen/margin_20"
-        android:layout_marginRight="@dimen/margin_20"
         android:id="@+id/margin_area"
         android:layout_width="match_parent"
-        android:layout_height="8.33dp"/>
-
-    <include
+        android:layout_height="8.33dp"
         android:layout_marginLeft="@dimen/margin_20"
         android:layout_marginRight="@dimen/margin_20"
+        android:visibility="gone"/>
+
+    <include
         android:id="@+id/title_area"
         layout="@layout/michannel_head_item"
         android:layout_width="match_parent"
@@ -29,10 +28,10 @@
 
     <LinearLayout
         android:id="@+id/array_area"
-        android:layout_marginLeft="@dimen/margin_30"
-        android:layout_marginRight="@dimen/margin_30"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginRight="@dimen/margin_30"
         android:orientation="horizontal">
 
         <include

@@ -1,6 +1,7 @@
 package com.mi.live.data.query.model;
 
 import com.mi.live.data.location.Location;
+import com.mi.live.data.push.model.BarrageMsgExt;
 
 import java.util.List;
 
@@ -17,12 +18,7 @@ public class EnterRoomInfo {
     int type;
     String shareUrl;
 
-    PkInfo pkInfo;
-    int pkInitTicket;
     String downStreamUrl;
-
-    MicInfo micInfo;
-    int micUidStatus;
 
     long enterTs;
 
@@ -33,6 +29,9 @@ public class EnterRoomInfo {
     boolean isShop;
     boolean hideGift;
     boolean supportMgicFace;
+
+    BarrageMsgExt.MicBeginInfo micInfo;
+    BarrageMsgExt.PkStartInfo pkInfo;
 
     public int getRetCode() {
         return retCode;
@@ -98,36 +97,12 @@ public class EnterRoomInfo {
         this.shareUrl = shareUrl;
     }
 
-    public int getPkInitTicket() {
-        return pkInitTicket;
-    }
-
-    public void setPkInitTicket(int pkInitTicket) {
-        this.pkInitTicket = pkInitTicket;
-    }
-
     public String getDownStreamUrl() {
         return downStreamUrl;
     }
 
     public void setDownStreamUrl(String downStreamUrl) {
         this.downStreamUrl = downStreamUrl;
-    }
-
-    public MicInfo getMicInfo() {
-        return micInfo;
-    }
-
-    public void setMicInfo(MicInfo micInfo) {
-        this.micInfo = micInfo;
-    }
-
-    public int getMicUidStatus() {
-        return micUidStatus;
-    }
-
-    public void setMicUidStatus(int micUidStatus) {
-        this.micUidStatus = micUidStatus;
     }
 
     public long getEnterTs() {
@@ -186,19 +161,27 @@ public class EnterRoomInfo {
         this.hideGift = hideGift;
     }
 
-    public PkInfo getPkInfo() {
-        return pkInfo;
-    }
-
-    public void setPkInfo(PkInfo pkInfo) {
-        this.pkInfo = pkInfo;
-    }
-
     public boolean isSupportMgicFace() {
         return supportMgicFace;
     }
 
     public void setSupportMgicFace(boolean supportMgicFace) {
         this.supportMgicFace = supportMgicFace;
+    }
+
+    public void setMicBeginInfo(BarrageMsgExt.MicBeginInfo micBeginInfo) {
+        this.micInfo = micBeginInfo;
+    }
+
+    public BarrageMsgExt.MicBeginInfo getMicBeginInfo() {
+        return micInfo;
+    }
+
+    public void setPkStartInfo(BarrageMsgExt.PkStartInfo pkStartInfo) {
+        this.pkInfo = pkStartInfo;
+    }
+
+    public BarrageMsgExt.PkStartInfo getPkStartInfo() {
+        return this.pkInfo;
     }
 }

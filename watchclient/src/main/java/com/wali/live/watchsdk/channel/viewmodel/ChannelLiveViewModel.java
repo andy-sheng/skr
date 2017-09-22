@@ -69,6 +69,9 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         mHeadType = protoItem.getHeaderUiType();
         mSubHead = protoItem.getSubHeaderName();
 
+        mHeadIconUrl = protoItem.getHeaderIcon();
+        mHeadMoreText = protoItem.getHeaderViewAllText();
+
         parseLive(protoItem.getItemsList());
     }
 
@@ -160,6 +163,9 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         protected User mUser;
         protected boolean mIsFocused;
 
+        //图片或者小视频的宽高度
+        protected int mWidth;
+        protected int mHeight;
         private BannerManger.BannerItem mBannerItem;
 
         protected BaseItem() {
@@ -181,6 +187,10 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             mImgUrl2 = protoItem.getImgUrl2();
             mPublishTime = protoItem.getPublishTime();
             mUpLeftText = protoItem.getUpLeftText();
+
+            mWidth = protoItem.getWidth();
+            mHeight = protoItem.getHeight();
+
             if (protoItem.hasWidget()) {
                 mWidgetInfo = protoItem.getWidget();
             }
@@ -382,6 +392,14 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             } else {
                 return mTitle;
             }
+        }
+
+        public int getWidth() {
+            return mWidth;
+        }
+
+        public int getHeight() {
+            return mHeight;
         }
 
         @Override
@@ -623,8 +641,10 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
     public static class VideoItem extends BaseItem {
         private String mId;
         private long mViewCount;
-
+        private long mLikeCount;
+        private long mDuration;
         private String mCountString;
+        private boolean mIsLiked;
 
         private VideoItem() {
             super();
@@ -638,9 +658,11 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         public void parse(VideoInfo protoItem) {
             mId = protoItem.getId();
             mViewCount = protoItem.getViewCount();
+            mLikeCount = protoItem.getLikeCount();
+            mDuration = protoItem.getDuration();
             mUser = new User(protoItem.getUserInfo());
-
             mCountString = parseCountString(false, (int) mViewCount);
+            mIsLiked = protoItem.getIsLiked();
         }
 
         @Override
@@ -677,6 +699,18 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
 
         public String getCountString() {
             return mCountString;
+        }
+
+        public long getLikeCount() {
+            return mLikeCount;
+        }
+
+        public long getDuration() {
+            return mDuration;
+        }
+
+        public boolean isLiked() {
+            return mIsLiked;
         }
 
         public static VideoItem newTestInstance() {

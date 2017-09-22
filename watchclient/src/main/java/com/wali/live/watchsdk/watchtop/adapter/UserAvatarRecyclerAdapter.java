@@ -71,7 +71,9 @@ public class UserAvatarRecyclerAdapter extends RecyclerView.Adapter<UserAvatarRe
 
     public void setViewerList(List<ViewerModel> dataList, boolean force) {
         mViewerList.clear();
-        mViewerList.addAll(dataList);
+        if (dataList != null) {
+            mViewerList.addAll(dataList);
+        }
         notifyDataSetChanged();
     }
 

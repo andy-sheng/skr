@@ -15,18 +15,6 @@ message MsgRule {
     optional uint32 speakPeriod = 2; //发言频率周期,单位s,不设置或者0代表没有限制
 }
 
-message MicSubViewPos {
-    required float topXScale = 1; //子视图左上角X在实际推流视频中的比例
-    required float topYScale = 2; //子视图左上角Y在实际推流视频中的比例
-    required float widthScale = 3; //子视图宽度在实际推流视频中的比例
-    required float heightScale = 4; //子视图高度左上角在推流视频中的比例
-}
-
-message MicInfo {
-    required uint64 micuid = 1; //连麦的观众id
-    optional MicSubViewPos subViewPos = 2; //子视图的比例位置
-}
-
 message Viewer {
     required uint64 uuid = 1; //用户id
     optional uint32 level = 2; //等级
@@ -85,6 +73,7 @@ message ClickItem {
     optional string clickWaitingImageUrl = 5; //点击按钮等待背景图
     optional string warningText = 6; //未到时间点击显示的提示文本
     optional string pushSendSuccText = 7;//成功发出后显示的提示文本
+    optional uint32 pkInterval = 8; //pk间隔,单位:秒, 默认30s
 }
 
 message NewWidgetUnit {

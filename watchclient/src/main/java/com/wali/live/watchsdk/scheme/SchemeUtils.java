@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk.scheme;
 
 import android.net.Uri;
+import android.text.TextUtils;
 
 /**
  * Created by lan on 16/10/26.
@@ -26,4 +27,13 @@ public class SchemeUtils {
         }
         return defaultValue;
     }
+
+    public static String getRecommendTag(String uriStr) {
+        if (TextUtils.isEmpty(uriStr)) {
+            return "";
+        }
+        Uri uri = Uri.parse(uriStr);
+        return uri.getQueryParameter(SchemeConstants.PARAM_RECOMMEND_TAG);
+    }
+
 }

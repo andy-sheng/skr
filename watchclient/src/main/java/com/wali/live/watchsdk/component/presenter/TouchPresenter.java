@@ -319,14 +319,12 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
 
     private void onFlingUp() {
         MyLog.d(TAG, "onFlingUp");
-        mAnimationHelper.startSwitchAnimator(mTranslation, -GlobalData.screenHeight,
-                MSG_PAGE_UP);
+        mAnimationHelper.startSwitchAnimator(mTranslation, -GlobalData.screenHeight, MSG_PAGE_UP);
     }
 
     private void onFlingDown() {
         MyLog.d(TAG, "onFlingDown");
-        mAnimationHelper.startSwitchAnimator(mTranslation, GlobalData.screenHeight,
-                MSG_PAGE_DOWN);
+        mAnimationHelper.startSwitchAnimator(mTranslation, GlobalData.screenHeight, MSG_PAGE_DOWN);
     }
 
     private void onCancelMoveVertical() {

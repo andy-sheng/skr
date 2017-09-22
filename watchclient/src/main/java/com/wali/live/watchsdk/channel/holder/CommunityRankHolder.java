@@ -26,7 +26,6 @@ public class CommunityRankHolder extends FixedHolder {
     private BaseImageView mAvatarThird;
     private BaseImageView[] avatars = new BaseImageView[]{mAvatarFirst, mAvatarSecond, mAvatarThird};
 
-
     public CommunityRankHolder(View view) {
         super(view);
         mRootView = view;
@@ -34,7 +33,6 @@ public class CommunityRankHolder extends FixedHolder {
 
     @Override
     protected void initView() {
-
         mAvatarFirst = $(R.id.user_avatar_iv_first);
         mAvatarSecond = $(R.id.user_avatar_iv_second);
         mAvatarThird = $(R.id.user_avatar_iv_third);
@@ -75,6 +73,5 @@ public class CommunityRankHolder extends FixedHolder {
 
     @Override
     protected void bindRankingModel(ChannelRankingViewModel viewModel) {
-
     }
 }

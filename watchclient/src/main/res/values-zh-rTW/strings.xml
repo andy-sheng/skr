@@ -54,6 +54,7 @@
     <plurals name="contribute_ticket_num">
         <item quantity="other">貢獻%1$s星票</item>
     </plurals>
+    <string name="ticket_num">星票</string>
     <string name="btn_share">分享到</string>
     <string name="weixin_friend">微信</string>
     <string name="moment">朋友圈</string>
@@ -190,4 +191,16 @@
     <string name="crop_failed">裁剪失敗</string>
     <string name="edit_info_tip">您還沒有暱稱，%s修改暱稱結識更多的朋友吧~</string>
     <string name="click_here">點擊這裡</string>
+    <string name="room_admin">房間管理</string>
+    <string name="line_my_zone">主場</string>
+    <string name="line_guest_into">進TA房間</string>
+    <string name="pk_prepare_user">%ds後PK正式開始，快來送禮物支持主播吧</string>
+    <string name="pk_end_run">%1$s提前逃跑咯，這局%2$s是贏家</string>
+    <string name="can_not_vote_toast">再陪主播一會兒才可以投票喔</string>
+    <string name="vote_finish_toast">活動已結束，歡迎下次參與喔</string>
+    <string name="vote_max_toast">已達上限，期待下次參與喔</string>
+    <string name="feeds_not_exist">該動態已經被刪除</string>
+    <string name="feeds_getinfo_failed">取得詳情失敗, 請稍後重試</string>
+    <string name="like_count_text">%d人讚</string>
+    <string name="detail_text">詳細資料</string>
 </resources>

@@ -14,7 +14,8 @@
     <View
         android:id="@+id/margin_area"
         android:layout_width="match_parent"
-        android:layout_height="8.33dp"/>
+        android:layout_height="8.33dp"
+        android:visibility="gone"/>
 
     <include
         android:id="@+id/title_area"

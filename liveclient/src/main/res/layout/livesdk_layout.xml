@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_act_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_black"
-    android:soundEffectsEnabled="false">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/main_act_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_black"
+                android:soundEffectsEnabled="false">
 
     <com.base.image.fresco.BaseImageView
         android:id="@+id/mask_iv"
@@ -13,11 +12,13 @@
         android:layout_height="match_parent"/>
 
     <!--顶部信息区域-->
-    <com.wali.live.livesdk.live.view.topinfo.LiveTopInfoSingleView
-        android:id="@+id/live_top_info_view"
-        android:layout_width="match_parent"
+    <com.wali.live.watchsdk.component.view.TopAreaView
+        android:id="@+id/top_area_view"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/close_btn"
+        android:layout_marginEnd="@dimen/margin_20"
+        android:layout_marginStart="@dimen/margin_20"
         android:visibility="gone"/>
 
     <!--加入该view，否则Fragment退出时状态栏会变透明-->
@@ -59,8 +60,8 @@
         android:id="@+id/widget_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/live_comment_view"
-        android:layout_below="@id/live_top_info_view"/>
+        android:layout_above="@+id/input_area_view"
+        android:layout_below="@id/top_area_view"/>
 
     <TextView
         android:id="@+id/tips_tv"
@@ -145,6 +146,6 @@
         android:id="@+id/envelope_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
 </RelativeLayout>

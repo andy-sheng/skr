@@ -12,10 +12,10 @@ import java.util.List;
 
 /**
  * Created by zhaomin on 17-3-10.
+ *
  * @module 长度随内容变化的tag，有各种颜色，可以折叠
  */
 public class VariableLengthTagHolder extends FixedHolder {
-
     FoldView mFoldView;
     MultiLineTagLayout mMultiLineTagLayout;
 
@@ -40,6 +40,7 @@ public class VariableLengthTagHolder extends FixedHolder {
         for (int i = 0; i < itemDatas.size(); i++) {
             ChannelNavigateViewModel.NavigateItem item = itemDatas.get(i);
             richTexts.add(new ChannelLiveViewModel.RichText(item.getText(), item.getSchemeUri(), 0));
+            exposureItem(item);
         }
         mFoldView.bindData(richTexts);
         mMultiLineTagLayout.setItemClickListener(new MultiLineTagLayout.OnItemClickListener() {

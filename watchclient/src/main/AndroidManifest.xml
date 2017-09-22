@@ -89,6 +89,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.WhiteBackground"/>
 
+        <activity
+            android:name=".longtext.LongTextActivity"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeLive"/>
+
         <activity android:name="com.xiaomi.account.openauth.AuthorizeActivity"/>
 
         <activity
@@ -127,11 +134,17 @@
                 <data android:scheme="livesdk"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="walilivesdk.view"/>
+                <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data android:scheme="livesdk"/>
+                <data
+                    android:host="zhibo.mi.com"
+                    android:scheme="http"/>
+                <data
+                    android:host="zhibo.mi.com"
+                    android:scheme="https"/>
             </intent-filter>
         </activity>
 
@@ -189,7 +202,7 @@
         <service
             android:name=".login.LoginInternalService"
             android:exported="false"/>
-        
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.wali.live.watchsdk.editinfo.fileprovider"
@@ -197,7 +210,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths" />
+                android:resource="@xml/provider_paths"/>
         </provider>
     </application>
 </manifest>

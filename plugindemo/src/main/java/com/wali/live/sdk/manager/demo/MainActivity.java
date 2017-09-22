@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mMenuRecyclerAdapter);
         GlobalData.setApplication(this.getApplication());
         //建议在 application里初始化这个
-        MiLiveSdkController.getInstance().init(this.getApplication(), CHANNEL_ID, "TEST SECRET", new IMiLiveSdk.CallbackWrapper() {
+        MiLiveSdkController.getInstance().init(this.getApplication(), CHANNEL_ID, "TEST SECRET", true, new IMiLiveSdk.CallbackWrapper() {
             @Override
             public void notifyServiceNull(int aidlFlag) {
                 ToastUtils.showToast("notifyServiceNull aidlFlag=" + aidlFlag);

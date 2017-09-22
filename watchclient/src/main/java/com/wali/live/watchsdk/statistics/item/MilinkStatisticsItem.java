@@ -4,14 +4,13 @@ import com.google.protobuf.ByteString;
 import com.wali.live.proto.StatisticsProto;
 
 public abstract class MilinkStatisticsItem {
-    // 外层应用类型
-    public static final int LIVE_SDK_TYPE = 200;
-
     protected long mDate;
     protected int mType;
     protected ByteString mExtBytes;     // 不用，直播频道使用
     protected String mRecommend;        // 不用，直播频道使用
     protected StatisticsProto.CommonLog mCommonLog;
+
+    protected StatisticsProto.LiveRecvFlagItem mFlagItem;
 
     public MilinkStatisticsItem(long date, int type) {
         mDate = date;
@@ -29,4 +28,6 @@ public abstract class MilinkStatisticsItem {
     public StatisticsProto.CommonLog getCommonLog() {
         return mCommonLog;
     }
+
+    public abstract StatisticsProto.LiveRecvFlagItem build();
 }

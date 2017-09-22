@@ -12064,7 +12064,7 @@ public final class LiveProto {
      *连麦的信息，如果在连麦，则有此信息
      * </pre>
      */
-    com.wali.live.proto.LiveCommonProto.MicInfo getMicInfo();
+    com.wali.live.proto.LiveMicProto.MicInfo getMicInfo();
     /**
      * <code>optional .com.wali.live.proto.MicInfo micInfo = 14;</code>
      *
@@ -12072,7 +12072,7 @@ public final class LiveProto {
      *连麦的信息，如果在连麦，则有此信息
      * </pre>
      */
-    com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder getMicInfoOrBuilder();
+    com.wali.live.proto.LiveMicProto.MicInfoOrBuilder getMicInfoOrBuilder();
 
     /**
      * <code>optional uint32 micuidStatus = 15;</code>
@@ -12310,6 +12310,48 @@ public final class LiveProto {
      * </pre>
      */
     boolean getEnableViewerMic();
+
+    /**
+     * <code>optional bool is_pk_admin = 28;</code>
+     *
+     * <pre>
+     *是否pk场控
+     * </pre>
+     */
+    boolean hasIsPkAdmin();
+    /**
+     * <code>optional bool is_pk_admin = 28;</code>
+     *
+     * <pre>
+     *是否pk场控
+     * </pre>
+     */
+    boolean getIsPkAdmin();
+
+    /**
+     * <code>optional .com.wali.live.proto.NewPKInfo new_pk_info = 29;</code>
+     *
+     * <pre>
+     *pk状态传
+     * </pre>
+     */
+    boolean hasNewPkInfo();
+    /**
+     * <code>optional .com.wali.live.proto.NewPKInfo new_pk_info = 29;</code>
+     *
+     * <pre>
+     *pk状态传
+     * </pre>
+     */
+    com.wali.live.proto.LivePKProto.NewPKInfo getNewPkInfo();
+    /**
+     * <code>optional .com.wali.live.proto.NewPKInfo new_pk_info = 29;</code>
+     *
+     * <pre>
+     *pk状态传
+     * </pre>
+     */
+    com.wali.live.proto.LivePKProto.NewPKInfoOrBuilder getNewPkInfoOrBuilder();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.EnterLiveRsp}
@@ -12440,11 +12482,11 @@ public final class LiveProto {
               break;
             }
             case 114: {
-              com.wali.live.proto.LiveCommonProto.MicInfo.Builder subBuilder = null;
+              com.wali.live.proto.LiveMicProto.MicInfo.Builder subBuilder = null;
               if (((bitField0_ & 0x00000400) == 0x00000400)) {
                 subBuilder = micInfo_.toBuilder();
               }
-              micInfo_ = input.readMessage(com.wali.live.proto.LiveCommonProto.MicInfo.PARSER, extensionRegistry);
+              micInfo_ = input.readMessage(com.wali.live.proto.LiveMicProto.MicInfo.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(micInfo_);
                 micInfo_ = subBuilder.buildPartial();
@@ -12535,6 +12577,24 @@ public final class LiveProto {
             case 216: {
               bitField0_ |= 0x00400000;
               enableViewerMic_ = input.readBool();
+              break;
+            }
+            case 224: {
+              bitField0_ |= 0x00800000;
+              isPkAdmin_ = input.readBool();
+              break;
+            }
+            case 234: {
+              com.wali.live.proto.LivePKProto.NewPKInfo.Builder subBuilder = null;
+              if (((bitField0_ & 0x01000000) == 0x01000000)) {
+                subBuilder = newPkInfo_.toBuilder();
+              }
+              newPkInfo_ = input.readMessage(com.wali.live.proto.LivePKProto.NewPKInfo.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(newPkInfo_);
+                newPkInfo_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x01000000;
               break;
             }
           }
@@ -12948,7 +13008,7 @@ public final class LiveProto {
     }
 
     public static final int MICINFO_FIELD_NUMBER = 14;
-    private com.wali.live.proto.LiveCommonProto.MicInfo micInfo_;
+    private com.wali.live.proto.LiveMicProto.MicInfo micInfo_;
     /**
      * <code>optional .com.wali.live.proto.MicInfo micInfo = 14;</code>
      *
@@ -12966,7 +13026,7 @@ public final class LiveProto {
      *连麦的信息，如果在连麦，则有此信息
      * </pre>
      */
-    public com.wali.live.proto.LiveCommonProto.MicInfo getMicInfo() {
+    public com.wali.live.proto.LiveMicProto.MicInfo getMicInfo() {
       return micInfo_;
     }
     /**
@@ -12976,7 +13036,7 @@ public final class LiveProto {
      *连麦的信息，如果在连麦，则有此信息
      * </pre>
      */
-    public com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder getMicInfoOrBuilder() {
+    public com.wali.live.proto.LiveMicProto.MicInfoOrBuilder getMicInfoOrBuilder() {
       return micInfo_;
     }
 
@@ -13317,6 +13377,62 @@ public final class LiveProto {
       return enableViewerMic_;
     }
 
+    public static final int IS_PK_ADMIN_FIELD_NUMBER = 28;
+    private boolean isPkAdmin_;
+    /**
+     * <code>optional bool is_pk_admin = 28;</code>
+     *
+     * <pre>
+     *是否pk场控
+     * </pre>
+     */
+    public boolean hasIsPkAdmin() {
+      return ((bitField0_ & 0x00800000) == 0x00800000);
+    }
+    /**
+     * <code>optional bool is_pk_admin = 28;</code>
+     *
+     * <pre>
+     *是否pk场控
+     * </pre>
+     */
+    public boolean getIsPkAdmin() {
+      return isPkAdmin_;
+    }
+
+    public static final int NEW_PK_INFO_FIELD_NUMBER = 29;
+    private com.wali.live.proto.LivePKProto.NewPKInfo newPkInfo_;
+    /**
+     * <code>optional .com.wali.live.proto.NewPKInfo new_pk_info = 29;</code>
+     *
+     * <pre>
+     *pk状态传
+     * </pre>
+     */
+    public boolean hasNewPkInfo() {
+      return ((bitField0_ & 0x01000000) == 0x01000000);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.NewPKInfo new_pk_info = 29;</code>
+     *
+     * <pre>
+     *pk状态传
+     * </pre>
+     */
+    public com.wali.live.proto.LivePKProto.NewPKInfo getNewPkInfo() {
+      return newPkInfo_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.NewPKInfo new_pk_info = 29;</code>
+     *
+     * <pre>
+     *pk状态传
+     * </pre>
+     */
+    public com.wali.live.proto.LivePKProto.NewPKInfoOrBuilder getNewPkInfoOrBuilder() {
+      return newPkInfo_;
+    }
+
     private void initFields() {
       retCode_ = 0;
       viewerCnt_ = 0;
@@ -13329,7 +13445,7 @@ public final class LiveProto {
       otherPKInfo_ = com.wali.live.proto.LiveCommonProto.PKInfo.getDefaultInstance();
       pkInitTicket_ = 0;
       downStreamUrl_ = "";
-      micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
+      micInfo_ = com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance();
       micuidStatus_ = 0;
       timestamp_ = 0L;
       liveCover_ = com.wali.live.proto.Live2Proto.LiveCover.getDefaultInstance();
@@ -13342,6 +13458,8 @@ public final class LiveProto {
       ticketStatus_ = com.wali.live.proto.Live2Proto.TicketLiveStatus.getDefaultInstance();
       supportMagicFace_ = false;
       enableViewerMic_ = false;
+      isPkAdmin_ = false;
+      newPkInfo_ = com.wali.live.proto.LivePKProto.NewPKInfo.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -13361,6 +13479,12 @@ public final class LiveProto {
       }
       if (hasMicInfo()) {
         if (!getMicInfo().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasNewPkInfo()) {
+        if (!getNewPkInfo().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -13443,6 +13567,12 @@ public final class LiveProto {
       }
       if (((bitField0_ & 0x00400000) == 0x00400000)) {
         output.writeBool(27, enableViewerMic_);
+      }
+      if (((bitField0_ & 0x00800000) == 0x00800000)) {
+        output.writeBool(28, isPkAdmin_);
+      }
+      if (((bitField0_ & 0x01000000) == 0x01000000)) {
+        output.writeMessage(29, newPkInfo_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -13548,6 +13678,14 @@ public final class LiveProto {
       if (((bitField0_ & 0x00400000) == 0x00400000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(27, enableViewerMic_);
+      }
+      if (((bitField0_ & 0x00800000) == 0x00800000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(28, isPkAdmin_);
+      }
+      if (((bitField0_ & 0x01000000) == 0x01000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(29, newPkInfo_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -13665,6 +13803,7 @@ public final class LiveProto {
           getLiveCoverFieldBuilder();
           getMsgRuleFieldBuilder();
           getTicketStatusFieldBuilder();
+          getNewPkInfoFieldBuilder();
         }
       }
       private static Builder create() {
@@ -13708,7 +13847,7 @@ public final class LiveProto {
         downStreamUrl_ = "";
         bitField0_ = (bitField0_ & ~0x00000400);
         if (micInfoBuilder_ == null) {
-          micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
+          micInfo_ = com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance();
         } else {
           micInfoBuilder_.clear();
         }
@@ -13749,6 +13888,14 @@ public final class LiveProto {
         bitField0_ = (bitField0_ & ~0x00400000);
         enableViewerMic_ = false;
         bitField0_ = (bitField0_ & ~0x00800000);
+        isPkAdmin_ = false;
+        bitField0_ = (bitField0_ & ~0x01000000);
+        if (newPkInfoBuilder_ == null) {
+          newPkInfo_ = com.wali.live.proto.LivePKProto.NewPKInfo.getDefaultInstance();
+        } else {
+          newPkInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x02000000);
         return this;
       }
 
@@ -13902,6 +14049,18 @@ public final class LiveProto {
           to_bitField0_ |= 0x00400000;
         }
         result.enableViewerMic_ = enableViewerMic_;
+        if (((from_bitField0_ & 0x01000000) == 0x01000000)) {
+          to_bitField0_ |= 0x00800000;
+        }
+        result.isPkAdmin_ = isPkAdmin_;
+        if (((from_bitField0_ & 0x02000000) == 0x02000000)) {
+          to_bitField0_ |= 0x01000000;
+        }
+        if (newPkInfoBuilder_ == null) {
+          result.newPkInfo_ = newPkInfo_;
+        } else {
+          result.newPkInfo_ = newPkInfoBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -14019,6 +14178,12 @@ public final class LiveProto {
         if (other.hasEnableViewerMic()) {
           setEnableViewerMic(other.getEnableViewerMic());
         }
+        if (other.hasIsPkAdmin()) {
+          setIsPkAdmin(other.getIsPkAdmin());
+        }
+        if (other.hasNewPkInfo()) {
+          mergeNewPkInfo(other.getNewPkInfo());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -14036,6 +14201,12 @@ public final class LiveProto {
         }
         if (hasMicInfo()) {
           if (!getMicInfo().isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasNewPkInfo()) {
+          if (!getNewPkInfo().isInitialized()) {
             
             return false;
           }
@@ -15166,9 +15337,9 @@ public final class LiveProto {
         return this;
       }
 
-      private com.wali.live.proto.LiveCommonProto.MicInfo micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
+      private com.wali.live.proto.LiveMicProto.MicInfo micInfo_ = com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          com.wali.live.proto.LiveCommonProto.MicInfo, com.wali.live.proto.LiveCommonProto.MicInfo.Builder, com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder> micInfoBuilder_;
+          com.wali.live.proto.LiveMicProto.MicInfo, com.wali.live.proto.LiveMicProto.MicInfo.Builder, com.wali.live.proto.LiveMicProto.MicInfoOrBuilder> micInfoBuilder_;
       /**
        * <code>optional .com.wali.live.proto.MicInfo micInfo = 14;</code>
        *
@@ -15186,7 +15357,7 @@ public final class LiveProto {
        *连麦的信息，如果在连麦，则有此信息
        * </pre>
        */
-      public com.wali.live.proto.LiveCommonProto.MicInfo getMicInfo() {
+      public com.wali.live.proto.LiveMicProto.MicInfo getMicInfo() {
         if (micInfoBuilder_ == null) {
           return micInfo_;
         } else {
@@ -15200,7 +15371,7 @@ public final class LiveProto {
        *连麦的信息，如果在连麦，则有此信息
        * </pre>
        */
-      public Builder setMicInfo(com.wali.live.proto.LiveCommonProto.MicInfo value) {
+      public Builder setMicInfo(com.wali.live.proto.LiveMicProto.MicInfo value) {
         if (micInfoBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -15221,7 +15392,7 @@ public final class LiveProto {
        * </pre>
        */
       public Builder setMicInfo(
-          com.wali.live.proto.LiveCommonProto.MicInfo.Builder builderForValue) {
+          com.wali.live.proto.LiveMicProto.MicInfo.Builder builderForValue) {
         if (micInfoBuilder_ == null) {
           micInfo_ = builderForValue.build();
           onChanged();
@@ -15238,12 +15409,12 @@ public final class LiveProto {
        *连麦的信息，如果在连麦，则有此信息
        * </pre>
        */
-      public Builder mergeMicInfo(com.wali.live.proto.LiveCommonProto.MicInfo value) {
+      public Builder mergeMicInfo(com.wali.live.proto.LiveMicProto.MicInfo value) {
         if (micInfoBuilder_ == null) {
           if (((bitField0_ & 0x00000800) == 0x00000800) &&
-              micInfo_ != com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance()) {
+              micInfo_ != com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance()) {
             micInfo_ =
-              com.wali.live.proto.LiveCommonProto.MicInfo.newBuilder(micInfo_).mergeFrom(value).buildPartial();
+              com.wali.live.proto.LiveMicProto.MicInfo.newBuilder(micInfo_).mergeFrom(value).buildPartial();
           } else {
             micInfo_ = value;
           }
@@ -15263,7 +15434,7 @@ public final class LiveProto {
        */
       public Builder clearMicInfo() {
         if (micInfoBuilder_ == null) {
-          micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
+          micInfo_ = com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance();
           onChanged();
         } else {
           micInfoBuilder_.clear();
@@ -15278,7 +15449,7 @@ public final class LiveProto {
        *连麦的信息，如果在连麦，则有此信息
        * </pre>
        */
-      public com.wali.live.proto.LiveCommonProto.MicInfo.Builder getMicInfoBuilder() {
+      public com.wali.live.proto.LiveMicProto.MicInfo.Builder getMicInfoBuilder() {
         bitField0_ |= 0x00000800;
         onChanged();
         return getMicInfoFieldBuilder().getBuilder();
@@ -15290,7 +15461,7 @@ public final class LiveProto {
        *连麦的信息，如果在连麦，则有此信息
        * </pre>
        */
-      public com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder getMicInfoOrBuilder() {
+      public com.wali.live.proto.LiveMicProto.MicInfoOrBuilder getMicInfoOrBuilder() {
         if (micInfoBuilder_ != null) {
           return micInfoBuilder_.getMessageOrBuilder();
         } else {
@@ -15305,11 +15476,11 @@ public final class LiveProto {
        * </pre>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.wali.live.proto.LiveCommonProto.MicInfo, com.wali.live.proto.LiveCommonProto.MicInfo.Builder, com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder> 
+          com.wali.live.proto.LiveMicProto.MicInfo, com.wali.live.proto.LiveMicProto.MicInfo.Builder, com.wali.live.proto.LiveMicProto.MicInfoOrBuilder> 
           getMicInfoFieldBuilder() {
         if (micInfoBuilder_ == null) {
           micInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.wali.live.proto.LiveCommonProto.MicInfo, com.wali.live.proto.LiveCommonProto.MicInfo.Builder, com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder>(
+              com.wali.live.proto.LiveMicProto.MicInfo, com.wali.live.proto.LiveMicProto.MicInfo.Builder, com.wali.live.proto.LiveMicProto.MicInfoOrBuilder>(
                   getMicInfo(),
                   getParentForChildren(),
                   isClean());
@@ -16258,6 +16429,206 @@ public final class LiveProto {
         return this;
       }
 
+      private boolean isPkAdmin_ ;
+      /**
+       * <code>optional bool is_pk_admin = 28;</code>
+       *
+       * <pre>
+       *是否pk场控
+       * </pre>
+       */
+      public boolean hasIsPkAdmin() {
+        return ((bitField0_ & 0x01000000) == 0x01000000);
+      }
+      /**
+       * <code>optional bool is_pk_admin = 28;</code>
+       *
+       * <pre>
+       *是否pk场控
+       * </pre>
+       */
+      public boolean getIsPkAdmin() {
+        return isPkAdmin_;
+      }
+      /**
+       * <code>optional bool is_pk_admin = 28;</code>
+       *
+       * <pre>
+       *是否pk场控
+       * </pre>
+       */
+      public Builder setIsPkAdmin(boolean value) {
+        bitField0_ |= 0x01000000;
+        isPkAdmin_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool is_pk_admin = 28;</code>
+       *
+       * <pre>
+       *是否pk场控
+       * </pre>
+       */
+      public Builder clearIsPkAdmin() {
+        bitField0_ = (bitField0_ & ~0x01000000);
+        isPkAdmin_ = false;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.LivePKProto.NewPKInfo newPkInfo_ = com.wali.live.proto.LivePKProto.NewPKInfo.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LivePKProto.NewPKInfo, com.wali.live.proto.LivePKProto.NewPKInfo.Builder, com.wali.live.proto.LivePKProto.NewPKInfoOrBuilder> newPkInfoBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.NewPKInfo new_pk_info = 29;</code>
+       *
+       * <pre>
+       *pk状态传
+       * </pre>
+       */
+      public boolean hasNewPkInfo() {
+        return ((bitField0_ & 0x02000000) == 0x02000000);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.NewPKInfo new_pk_info = 29;</code>
+       *
+       * <pre>
+       *pk状态传
+       * </pre>
+       */
+      public com.wali.live.proto.LivePKProto.NewPKInfo getNewPkInfo() {
+        if (newPkInfoBuilder_ == null) {
+          return newPkInfo_;
+        } else {
+          return newPkInfoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.NewPKInfo new_pk_info = 29;</code>
+       *
+       * <pre>
+       *pk状态传
+       * </pre>
+       */
+      public Builder setNewPkInfo(com.wali.live.proto.LivePKProto.NewPKInfo value) {
+        if (newPkInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          newPkInfo_ = value;
+          onChanged();
+        } else {
+          newPkInfoBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x02000000;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.NewPKInfo new_pk_info = 29;</code>
+       *
+       * <pre>
+       *pk状态传
+       * </pre>
+       */
+      public Builder setNewPkInfo(
+          com.wali.live.proto.LivePKProto.NewPKInfo.Builder builderForValue) {
+        if (newPkInfoBuilder_ == null) {
+          newPkInfo_ = builderForValue.build();
+          onChanged();
+        } else {
+          newPkInfoBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x02000000;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.NewPKInfo new_pk_info = 29;</code>
+       *
+       * <pre>
+       *pk状态传
+       * </pre>
+       */
+      public Builder mergeNewPkInfo(com.wali.live.proto.LivePKProto.NewPKInfo value) {
+        if (newPkInfoBuilder_ == null) {
+          if (((bitField0_ & 0x02000000) == 0x02000000) &&
+              newPkInfo_ != com.wali.live.proto.LivePKProto.NewPKInfo.getDefaultInstance()) {
+            newPkInfo_ =
+              com.wali.live.proto.LivePKProto.NewPKInfo.newBuilder(newPkInfo_).mergeFrom(value).buildPartial();
+          } else {
+            newPkInfo_ = value;
+          }
+          onChanged();
+        } else {
+          newPkInfoBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x02000000;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.NewPKInfo new_pk_info = 29;</code>
+       *
+       * <pre>
+       *pk状态传
+       * </pre>
+       */
+      public Builder clearNewPkInfo() {
+        if (newPkInfoBuilder_ == null) {
+          newPkInfo_ = com.wali.live.proto.LivePKProto.NewPKInfo.getDefaultInstance();
+          onChanged();
+        } else {
+          newPkInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x02000000);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.NewPKInfo new_pk_info = 29;</code>
+       *
+       * <pre>
+       *pk状态传
+       * </pre>
+       */
+      public com.wali.live.proto.LivePKProto.NewPKInfo.Builder getNewPkInfoBuilder() {
+        bitField0_ |= 0x02000000;
+        onChanged();
+        return getNewPkInfoFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.NewPKInfo new_pk_info = 29;</code>
+       *
+       * <pre>
+       *pk状态传
+       * </pre>
+       */
+      public com.wali.live.proto.LivePKProto.NewPKInfoOrBuilder getNewPkInfoOrBuilder() {
+        if (newPkInfoBuilder_ != null) {
+          return newPkInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return newPkInfo_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.NewPKInfo new_pk_info = 29;</code>
+       *
+       * <pre>
+       *pk状态传
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LivePKProto.NewPKInfo, com.wali.live.proto.LivePKProto.NewPKInfo.Builder, com.wali.live.proto.LivePKProto.NewPKInfoOrBuilder> 
+          getNewPkInfoFieldBuilder() {
+        if (newPkInfoBuilder_ == null) {
+          newPkInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.LivePKProto.NewPKInfo, com.wali.live.proto.LivePKProto.NewPKInfo.Builder, com.wali.live.proto.LivePKProto.NewPKInfoOrBuilder>(
+                  getNewPkInfo(),
+                  getParentForChildren(),
+                  isClean());
+          newPkInfo_ = null;
+        }
+        return newPkInfoBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.EnterLiveRsp)
     }
 
@@ -16331,7 +16702,7 @@ public final class LiveProto {
      *连麦的信息
      * </pre>
      */
-    com.wali.live.proto.LiveCommonProto.MicInfo getMicInfo();
+    com.wali.live.proto.LiveMicProto.MicInfo getMicInfo();
     /**
      * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
      *
@@ -16339,7 +16710,7 @@ public final class LiveProto {
      *连麦的信息
      * </pre>
      */
-    com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder getMicInfoOrBuilder();
+    com.wali.live.proto.LiveMicProto.MicInfoOrBuilder getMicInfoOrBuilder();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.MicBeginReq}
@@ -16410,11 +16781,11 @@ public final class LiveProto {
               break;
             }
             case 26: {
-              com.wali.live.proto.LiveCommonProto.MicInfo.Builder subBuilder = null;
+              com.wali.live.proto.LiveMicProto.MicInfo.Builder subBuilder = null;
               if (((bitField0_ & 0x00000004) == 0x00000004)) {
                 subBuilder = micInfo_.toBuilder();
               }
-              micInfo_ = input.readMessage(com.wali.live.proto.LiveCommonProto.MicInfo.PARSER, extensionRegistry);
+              micInfo_ = input.readMessage(com.wali.live.proto.LiveMicProto.MicInfo.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(micInfo_);
                 micInfo_ = subBuilder.buildPartial();
@@ -16540,7 +16911,7 @@ public final class LiveProto {
     }
 
     public static final int MICINFO_FIELD_NUMBER = 3;
-    private com.wali.live.proto.LiveCommonProto.MicInfo micInfo_;
+    private com.wali.live.proto.LiveMicProto.MicInfo micInfo_;
     /**
      * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
      *
@@ -16558,7 +16929,7 @@ public final class LiveProto {
      *连麦的信息
      * </pre>
      */
-    public com.wali.live.proto.LiveCommonProto.MicInfo getMicInfo() {
+    public com.wali.live.proto.LiveMicProto.MicInfo getMicInfo() {
       return micInfo_;
     }
     /**
@@ -16568,14 +16939,14 @@ public final class LiveProto {
      *连麦的信息
      * </pre>
      */
-    public com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder getMicInfoOrBuilder() {
+    public com.wali.live.proto.LiveMicProto.MicInfoOrBuilder getMicInfoOrBuilder() {
       return micInfo_;
     }
 
     private void initFields() {
       zuid_ = 0L;
       liveId_ = "";
-      micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
+      micInfo_ = com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -16764,7 +17135,7 @@ public final class LiveProto {
         liveId_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
         if (micInfoBuilder_ == null) {
-          micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
+          micInfo_ = com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance();
         } else {
           micInfoBuilder_.clear();
         }
@@ -17031,9 +17402,9 @@ public final class LiveProto {
         return this;
       }
 
-      private com.wali.live.proto.LiveCommonProto.MicInfo micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
+      private com.wali.live.proto.LiveMicProto.MicInfo micInfo_ = com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          com.wali.live.proto.LiveCommonProto.MicInfo, com.wali.live.proto.LiveCommonProto.MicInfo.Builder, com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder> micInfoBuilder_;
+          com.wali.live.proto.LiveMicProto.MicInfo, com.wali.live.proto.LiveMicProto.MicInfo.Builder, com.wali.live.proto.LiveMicProto.MicInfoOrBuilder> micInfoBuilder_;
       /**
        * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
        *
@@ -17051,7 +17422,7 @@ public final class LiveProto {
        *连麦的信息
        * </pre>
        */
-      public com.wali.live.proto.LiveCommonProto.MicInfo getMicInfo() {
+      public com.wali.live.proto.LiveMicProto.MicInfo getMicInfo() {
         if (micInfoBuilder_ == null) {
           return micInfo_;
         } else {
@@ -17065,7 +17436,7 @@ public final class LiveProto {
        *连麦的信息
        * </pre>
        */
-      public Builder setMicInfo(com.wali.live.proto.LiveCommonProto.MicInfo value) {
+      public Builder setMicInfo(com.wali.live.proto.LiveMicProto.MicInfo value) {
         if (micInfoBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -17086,7 +17457,7 @@ public final class LiveProto {
        * </pre>
        */
       public Builder setMicInfo(
-          com.wali.live.proto.LiveCommonProto.MicInfo.Builder builderForValue) {
+          com.wali.live.proto.LiveMicProto.MicInfo.Builder builderForValue) {
         if (micInfoBuilder_ == null) {
           micInfo_ = builderForValue.build();
           onChanged();
@@ -17103,12 +17474,12 @@ public final class LiveProto {
        *连麦的信息
        * </pre>
        */
-      public Builder mergeMicInfo(com.wali.live.proto.LiveCommonProto.MicInfo value) {
+      public Builder mergeMicInfo(com.wali.live.proto.LiveMicProto.MicInfo value) {
         if (micInfoBuilder_ == null) {
           if (((bitField0_ & 0x00000004) == 0x00000004) &&
-              micInfo_ != com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance()) {
+              micInfo_ != com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance()) {
             micInfo_ =
-              com.wali.live.proto.LiveCommonProto.MicInfo.newBuilder(micInfo_).mergeFrom(value).buildPartial();
+              com.wali.live.proto.LiveMicProto.MicInfo.newBuilder(micInfo_).mergeFrom(value).buildPartial();
           } else {
             micInfo_ = value;
           }
@@ -17128,7 +17499,7 @@ public final class LiveProto {
        */
       public Builder clearMicInfo() {
         if (micInfoBuilder_ == null) {
-          micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
+          micInfo_ = com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance();
           onChanged();
         } else {
           micInfoBuilder_.clear();
@@ -17143,7 +17514,7 @@ public final class LiveProto {
        *连麦的信息
        * </pre>
        */
-      public com.wali.live.proto.LiveCommonProto.MicInfo.Builder getMicInfoBuilder() {
+      public com.wali.live.proto.LiveMicProto.MicInfo.Builder getMicInfoBuilder() {
         bitField0_ |= 0x00000004;
         onChanged();
         return getMicInfoFieldBuilder().getBuilder();
@@ -17155,7 +17526,7 @@ public final class LiveProto {
        *连麦的信息
        * </pre>
        */
-      public com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder getMicInfoOrBuilder() {
+      public com.wali.live.proto.LiveMicProto.MicInfoOrBuilder getMicInfoOrBuilder() {
         if (micInfoBuilder_ != null) {
           return micInfoBuilder_.getMessageOrBuilder();
         } else {
@@ -17170,11 +17541,11 @@ public final class LiveProto {
        * </pre>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.wali.live.proto.LiveCommonProto.MicInfo, com.wali.live.proto.LiveCommonProto.MicInfo.Builder, com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder> 
+          com.wali.live.proto.LiveMicProto.MicInfo, com.wali.live.proto.LiveMicProto.MicInfo.Builder, com.wali.live.proto.LiveMicProto.MicInfoOrBuilder> 
           getMicInfoFieldBuilder() {
         if (micInfoBuilder_ == null) {
           micInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.wali.live.proto.LiveCommonProto.MicInfo, com.wali.live.proto.LiveCommonProto.MicInfo.Builder, com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder>(
+              com.wali.live.proto.LiveMicProto.MicInfo, com.wali.live.proto.LiveMicProto.MicInfo.Builder, com.wali.live.proto.LiveMicProto.MicInfoOrBuilder>(
                   getMicInfo(),
                   getParentForChildren(),
                   isClean());
@@ -74065,207 +74436,209 @@ public final class LiveProto {
     java.lang.String[] descriptorData = {
       "\n\nLive.proto\022\023com.wali.live.proto\032\014Commo" +
       "n.proto\032\rAccount.proto\032\020LiveCommon.proto" +
-      "\032\013Live2.proto\"w\n\014GetRoomIdReq\022\014\n\004uuid\030\001 " +
-      "\002(\004\022\017\n\007appType\030\002 \001(\r\022\031\n\007appInfo\030\003 \001(\0132\010." +
-      "AppInfo\022\014\n\004type\030\004 \001(\r\022\017\n\007guildId\030\005 \001(\004\022\016" +
-      "\n\006source\030\006 \001(\r\"\274\001\n\014GetRoomIdRsp\022\017\n\007retCo" +
-      "de\030\001 \002(\r\022\016\n\006liveId\030\002 \001(\t\022\020\n\010shareUrl\030\003 \001" +
-      "(\t\022\023\n\013upStreamUrl\030\004 \001(\t\022\022\n\nbeginLevel\030\005 " +
-      "\001(\r\022\026\n\016udpUpstreamUrl\030\006 \001(\t\0228\n\016newUpStre" +
-      "amUrl\030\007 \003(\0132 .com.wali.live.proto.UpStre",
-      "amUrl\"\377\002\n\014BeginLiveReq\022\014\n\004uuid\030\001 \002(\004\022/\n\010" +
-      "location\030\002 \001(\0132\035.com.wali.live.proto.Loc" +
-      "ation\022\014\n\004type\030\003 \001(\r\022\017\n\007invitee\030\004 \003(\004\022\022\n\n" +
-      "addHistory\030\005 \001(\010\022\021\n\tliveTitle\030\006 \001(\t\022\020\n\010p" +
-      "assword\030\007 \001(\t\022\035\n\tliveCover\030\010 \001(\0132\n.LiveC" +
-      "over\022\016\n\006liveId\030\t \001(\t\022\017\n\007appType\030\n \001(\r\022\031\n" +
-      "\007appInfo\030\013 \001(\0132\010.AppInfo\022\016\n\006playUI\030\014 \001(\r" +
-      "\022\'\n\016ticketLiveInfo\030\r \001(\0132\017.TicketLiveInf" +
-      "o\022\032\n\010tagInfos\030\016 \003(\0132\010.TagInfo\022\030\n\020support" +
-      "MagicFace\030\020 \001(\010\022\016\n\006source\030\021 \001(\r\"\346\001\n\014Begi",
-      "nLiveRsp\022\017\n\007retCode\030\001 \002(\r\022\016\n\006liveId\030\002 \001(" +
-      "\t\022\022\n\ncreateTime\030\003 \001(\004\022\020\n\010shareUrl\030\004 \001(\t\022" +
-      "\023\n\013upStreamUrl\030\005 \001(\t\022\022\n\nbeginLevel\030\006 \001(\r" +
-      "\022\024\n\014showIconCtrl\030\007 \001(\r\022\026\n\016udpUpstreamUrl" +
-      "\030\010 \001(\t\0228\n\016newUpStreamUrl\030\t \003(\0132 .com.wal" +
-      "i.live.proto.UpStreamUrl\"g\n\nEndLiveReq\022\014" +
-      "\n\004uuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022\017\n\007appType\030" +
-      "\003 \001(\r\022\031\n\007appInfo\030\004 \001(\0132\010.AppInfo\022\017\n\007guil" +
-      "dId\030\005 \001(\004\"\311\001\n\nEndLiveRsp\022\017\n\007retCode\030\001 \002(" +
-      "\r\022\024\n\014hisViewerCnt\030\002 \001(\r\022\033\n\023generateHisto",
-      "rySucc\030\003 \001(\010\022\032\n\022generateHistoryMsg\030\004 \001(\t" +
-      "\022\030\n\020ticketBuyerCount\030\005 \001(\r\022\027\n\017hisBeginLi" +
-      "veCnt\030\006 \001(\004\022\020\n\010duration\030\007 \001(\004\022\026\n\016newFoll" +
-      "owerCnt\030\010 \001(\004\"u\n\014EnterLiveReq\022\014\n\004uuid\030\001 " +
-      "\002(\004\022\014\n\004zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\022\020\n\010pas" +
-      "sword\030\004 \001(\t\022\014\n\004type\030\005 \001(\r\022\031\n\021showSpecial" +
-      "Effect\030\006 \001(\010\"\222\005\n\014EnterLiveRsp\022\017\n\007retCode" +
-      "\030\001 \002(\r\022\021\n\tviewerCnt\030\002 \001(\r\022+\n\006viewer\030\004 \003(" +
-      "\0132\033.com.wali.live.proto.Viewer\022\021\n\tisMana" +
-      "ger\030\006 \001(\010\022\020\n\010banSpeak\030\007 \001(\010\022/\n\010location\030",
-      "\010 \001(\0132\035.com.wali.live.proto.Location\022\014\n\004" +
-      "type\030\t \001(\r\022\020\n\010shareUrl\030\n \001(\t\0220\n\013otherPKI" +
-      "nfo\030\013 \001(\0132\033.com.wali.live.proto.PKInfo\022\024" +
-      "\n\014pkInitTicket\030\014 \001(\r\022\025\n\rdownStreamUrl\030\r " +
-      "\001(\t\022-\n\007micInfo\030\016 \001(\0132\034.com.wali.live.pro" +
-      "to.MicInfo\022\024\n\014micuidStatus\030\017 \001(\r\022\021\n\ttime" +
-      "stamp\030\020 \001(\004\022\035\n\tliveCover\030\021 \001(\0132\n.LiveCov" +
-      "er\022\021\n\tliveTitle\030\022 \001(\t\022\023\n\013messageMode\030\023 \001" +
-      "(\005\022-\n\007msgRule\030\024 \001(\0132\034.com.wali.live.prot" +
-      "o.MsgRule\022\016\n\006isShop\030\025 \001(\010\022\020\n\010hideGift\030\026 ",
-      "\001(\010\022\020\n\010hideIcon\030\027 \001(\005\022\'\n\014ticketStatus\030\030 " +
-      "\001(\0132\021.TicketLiveStatus\022\030\n\020supportMagicFa" +
-      "ce\030\032 \001(\010\022\027\n\017enableViewerMic\030\033 \001(\010\"Z\n\013Mic" +
-      "BeginReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022-" +
-      "\n\007micInfo\030\003 \002(\0132\034.com.wali.live.proto.Mi" +
-      "cInfo\"\036\n\013MicBeginRsp\022\017\n\007retCode\030\001 \002(\r\"9\n" +
-      "\tMicEndReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t" +
-      "\022\016\n\006micuid\030\003 \002(\004\"\034\n\tMicEndRsp\022\017\n\007retCode" +
-      "\030\001 \002(\r\":\n\014ViewerTopReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004" +
-      "zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\"L\n\014ViewerTopR",
-      "sp\022\017\n\007retCode\030\001 \002(\r\022+\n\006viewer\030\002 \003(\0132\033.co" +
-      "m.wali.live.proto.Viewer\"{\n\013RoomInfoReq\022" +
-      "\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\022\016\n\006liveId\030\003 " +
-      "\002(\t\022\020\n\010password\030\004 \001(\t\022\025\n\rgetLatestLive\030\005" +
-      " \001(\010\022\027\n\017getGameInfoOnly\030\006 \001(\010\"\360\001\n\013RoomIn" +
-      "foRsp\022\017\n\007retCode\030\001 \002(\r\022\025\n\rdownStreamUrl\030" +
-      "\002 \001(\t\022\023\n\013playbackUrl\030\003 \001(\t\022\020\n\010shareUrl\030\004" +
-      " \001(\t\022\021\n\tbeginTime\030\005 \001(\004\022\016\n\006liveid\030\006 \001(\t\022" +
-      "\014\n\004type\030\007 \001(\r\022\'\n\014ticketStatus\030\010 \001(\0132\021.Ti" +
-      "cketLiveStatus\0228\n\rgamepack_info\030\t \001(\0132!.",
-      "com.wali.live.proto.GamePackInfo\"\257\002\n\014Gam" +
-      "ePackInfo\022\014\n\004zuid\030\001 \001(\004\022\016\n\006roomId\030\002 \001(\t\022" +
-      "\021\n\tcdnDomain\030\003 \001(\t\022\023\n\013displayName\030\004 \001(\t\022" +
-      "\016\n\006gameId\030\005 \001(\r\022\023\n\013pacakgeName\030\006 \001(\t\022\014\n\004" +
-      "icon\030\007 \001(\t\022\022\n\ngameApkSs1\030\010 \001(\t\022\017\n\007gameAp" +
-      "k\030\t \001(\t\022\021\n\tshortName\030\n \001(\t\0226\n\006level1\030\013 \001" +
-      "(\0132&.com.wali.live.proto.GameTagInfoDeta" +
-      "il\0226\n\006level2\030\014 \001(\0132&.com.wali.live.proto" +
-      ".GameTagInfoDetail\"-\n\021GameTagInfoDetail\022" +
-      "\n\n\002id\030\001 \001(\r\022\014\n\004name\030\002 \001(\t\"O\n\014LeaveLiveRe",
-      "q\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\022\016\n\006liveId\030" +
-      "\003 \002(\t\022\023\n\013messageMode\030\004 \001(\005\"\037\n\014LeaveLiveR" +
-      "sp\022\017\n\007retCode\030\001 \002(\r\"0\n\020HistoryDeleteReq\022" +
-      "\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\"#\n\020History" +
-      "DeleteRsp\022\017\n\007retCode\030\001 \002(\r\"u\n\014HeartBeatR" +
-      "eq\022\016\n\006liveId\030\001 \002(\t\022\r\n\005pkuid\030\002 \001(\004\022\020\n\010pkL" +
-      "iveId\030\003 \001(\t\022\016\n\006status\030\004 \001(\005\022\016\n\006micuid\030\005 " +
-      "\001(\004\022\024\n\014micuidStatus\030\006 \001(\005\"\037\n\014HeartBeatRs" +
-      "p\022\017\n\007retCode\030\001 \002(\r\"n\n\nPKBeginReq\022\014\n\004uuid" +
-      "\030\001 \002(\004\022\r\n\005pkuid\030\002 \002(\004\022\020\n\010pkLiveId\030\003 \001(\t\022",
-      "\026\n\016myPkInitTicket\030\004 \001(\r\022\031\n\021otherPkInitTi" +
-      "cket\030\005 \001(\r\"P\n\nPKBeginRsp\022\017\n\007retCode\030\001 \002(" +
-      "\r\022\026\n\016myPkInitTicket\030\002 \001(\r\022\031\n\021otherPkInit" +
-      "Ticket\030\003 \001(\r\"9\n\010PKEndReq\022\014\n\004uuid\030\001 \002(\004\022\r" +
-      "\n\005pkuid\030\002 \002(\004\022\020\n\010pkLiveId\030\003 \001(\t\"\033\n\010PKEnd" +
-      "Rsp\022\017\n\007retCode\030\001 \002(\r\"\034\n\014GetPKInfoReq\022\014\n\004" +
-      "zuid\030\001 \002(\004\"\202\001\n\014GetPKInfoRsp\022\017\n\007retCode\030\001" +
-      " \002(\r\022/\n\nthisPKInfo\030\002 \001(\0132\033.com.wali.live" +
-      ".proto.PKInfo\0220\n\013otherPKInfo\030\003 \001(\0132\033.com" +
-      ".wali.live.proto.PKInfo\"\036\n\014ZuidSleepReq\022",
-      "\016\n\006liveId\030\001 \002(\t\"\037\n\014ZuidSleepRsp\022\017\n\007retCo" +
-      "de\030\001 \002(\r\"\037\n\rZuidActiveReq\022\016\n\006liveId\030\001 \002(" +
-      "\t\" \n\rZuidActiveRsp\022\017\n\007retCode\030\001 \002(\r\"F\n\017A" +
-      "dminSettingReq\022\020\n\010adminUid\030\001 \002(\004\022\021\n\toper" +
-      "ation\030\002 \002(\r\022\016\n\006liveId\030\003 \001(\t\"\"\n\017AdminSett" +
-      "ingRsp\022\017\n\007retCode\030\001 \002(\r\"\036\n\014AdminListReq\022" +
-      "\016\n\006liveId\030\001 \002(\t\"9\n\014AdminListRsp\022\017\n\007retCo" +
-      "de\030\001 \002(\r\022\030\n\005users\030\002 \003(\0132\t.UserInfo\"R\n\020Se" +
-      "tBanSpeakerReq\022\016\n\006liveId\030\001 \002(\t\022\014\n\004zuid\030\002" +
-      " \002(\004\022\014\n\004uuid\030\003 \002(\004\022\022\n\nbanSpeaker\030\004 \003(\004\"#",
-      "\n\020SetBanSpeakerRsp\022\017\n\007retCode\030\001 \002(\r\"G\n\023C" +
-      "ancelBanSpeakerReq\022\016\n\006liveId\030\001 \002(\t\022\014\n\004zu" +
-      "id\030\002 \002(\004\022\022\n\nbanSpeaker\030\003 \003(\004\"&\n\023CancelBa" +
-      "nSpeakerRsp\022\017\n\007retCode\030\001 \002(\r\"E\n\027GetLiveK" +
-      "eyPersonInfoReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 " +
-      "\002(\004\022\016\n\006liveId\030\003 \002(\t\">\n\027GetLiveKeyPersonI" +
-      "nfoRsp\022\017\n\007retCode\030\001 \002(\r\022\022\n\nbanSpeaker\030\002 " +
-      "\003(\004\",\n\016HistoryLiveReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004z" +
-      "uid\030\002 \002(\004\"s\n\016HistoryLiveRsp\022\017\n\007retCode\030\001" +
-      " \002(\r\022\031\n\007hisLive\030\002 \003(\0132\010.HisLive\022\014\n\004type\030",
-      "\003 \001(\r\022\'\n\014ticketStatus\030\004 \001(\0132\021.TicketLive" +
-      "Status\"\353\001\n\rViewerInfoRsp\022\017\n\007retCode\030\001 \002(" +
-      "\r\022\021\n\tviewerCnt\030\002 \001(\r\022+\n\006viewer\030\003 \003(\0132\033.c" +
-      "om.wali.live.proto.Viewer\022/\n\010location\030\004 " +
+      "\032\013Live2.proto\032\rLiveMic.proto\032\014LivePk.pro" +
+      "to\"w\n\014GetRoomIdReq\022\014\n\004uuid\030\001 \002(\004\022\017\n\007appT" +
+      "ype\030\002 \001(\r\022\031\n\007appInfo\030\003 \001(\0132\010.AppInfo\022\014\n\004" +
+      "type\030\004 \001(\r\022\017\n\007guildId\030\005 \001(\004\022\016\n\006source\030\006 " +
+      "\001(\r\"\274\001\n\014GetRoomIdRsp\022\017\n\007retCode\030\001 \002(\r\022\016\n" +
+      "\006liveId\030\002 \001(\t\022\020\n\010shareUrl\030\003 \001(\t\022\023\n\013upStr" +
+      "eamUrl\030\004 \001(\t\022\022\n\nbeginLevel\030\005 \001(\r\022\026\n\016udpU" +
+      "pstreamUrl\030\006 \001(\t\0228\n\016newUpStreamUrl\030\007 \003(\013",
+      "2 .com.wali.live.proto.UpStreamUrl\"\377\002\n\014B" +
+      "eginLiveReq\022\014\n\004uuid\030\001 \002(\004\022/\n\010location\030\002 " +
       "\001(\0132\035.com.wali.live.proto.Location\022\014\n\004ty" +
-      "pe\030\005 \001(\r\022\020\n\010shareUrl\030\006 \001(\t\022\022\n\nbanSpeaker" +
-      "\030\007 \003(\004\022\021\n\tadminUuid\030\010 \003(\004\022\021\n\ttimestamp\030\t" +
-      " \001(\004\"\031\n\tMyRoomReq\022\014\n\004uuid\030\001 \002(\004\"\314\002\n\tMyRo" +
-      "omRsp\022\017\n\007retCode\030\001 \002(\r\022\016\n\006liveId\030\002 \001(\t\022\020" +
-      "\n\010shareUrl\030\003 \001(\t\022\023\n\013upStreamUrl\030\004 \001(\t\022\014\n",
-      "\004type\030\005 \001(\r\022\020\n\010password\030\006 \001(\t\022\017\n\007appType" +
-      "\030\007 \001(\r\022-\n\007msgRule\030\010 \001(\0132\034.com.wali.live." +
-      "proto.MsgRule\022\017\n\007invitee\030\t \003(\004\022\025\n\rdownSt" +
-      "reamUrl\030\n \001(\t\022\035\n\tliveCover\030\013 \001(\0132\n.LiveC" +
-      "over\022\026\n\016udpUpstreamUrl\030\014 \001(\t\0228\n\016newUpStr" +
-      "eamUrl\030\r \003(\0132 .com.wali.live.proto.UpStr" +
-      "eamUrl\"=\n\013IsInRoomReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006l" +
-      "iveId\030\002 \002(\t\022\020\n\010viewerId\030\003 \003(\004\"0\n\013IsInRoo" +
-      "mRsp\022\017\n\007retCode\030\001 \002(\r\022\020\n\010viewerId\030\002 \003(\004\"" +
-      "?\n\017MicuidActiveReq\022\016\n\006liveId\030\001 \002(\t\022\016\n\006mi",
-      "cuid\030\002 \002(\004\022\014\n\004zuid\030\003 \002(\004\"\"\n\017MicuidActive" +
-      "Rsp\022\017\n\007retCode\030\001 \002(\r\">\n\016MicuidSleepReq\022\016" +
-      "\n\006liveId\030\001 \002(\t\022\016\n\006micuid\030\002 \002(\004\022\014\n\004zuid\030\003" +
-      " \002(\004\"!\n\016MicuidSleepRsp\022\017\n\007retCode\030\001 \002(\r\"" +
-      "_\n\020UpdateMsgRuleReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liv" +
-      "eId\030\002 \002(\t\022-\n\007msgRule\030\003 \002(\0132\034.com.wali.li" +
-      "ve.proto.MsgRule\"#\n\020UpdateMsgRuleRsp\022\017\n\007" +
-      "retCode\030\001 \002(\r\"B\n\021RoomAddInviteeReq\022\014\n\004zu" +
-      "id\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022\017\n\007invitee\030\003 \003(" +
-      "\004\"$\n\021RoomAddInviteeRsp\022\017\n\007retCode\030\001 \002(\r\"",
-      "E\n\024RoomDeleteInviteeReq\022\014\n\004zuid\030\001 \002(\004\022\016\n" +
-      "\006liveId\030\002 \002(\t\022\017\n\007invitee\030\003 \003(\004\"\'\n\024RoomDe" +
-      "leteInviteeRsp\022\017\n\007retCode\030\001 \002(\r\"\277\001\n\024GetR" +
-      "oomAttachmentReq\022\014\n\004zuid\030\001 \002(\004\022\023\n\013isGetW" +
-      "idget\030\002 \001(\010\022\016\n\006liveid\030\003 \002(\t\022\026\n\016isGetAnim" +
-      "ation\030\004 \001(\010\022\025\n\risGetShopType\030\005 \001(\010\022\020\n\010ro" +
-      "omType\030\006 \001(\r\022\027\n\017isGetIconConfig\030\007 \001(\010\022\032\n" +
-      "\022isGetRoomExtraCtrl\030\010 \001(\010\"\343\004\n\024GetRoomAtt" +
-      "achmentRsp\022\017\n\007retCode\030\001 \002(\r\0223\n\nwidgetInf" +
-      "o\030\002 \003(\0132\037.com.wali.live.proto.WidgetInfo",
-      "\022A\n\017animationConfig\030\003 \001(\0132(.com.wali.liv" +
-      "e.proto.RoomAnimationConfig\022;\n\016shoppingC" +
-      "onfig\030\004 \001(\0132#.com.wali.live.proto.Shoppi" +
-      "ngConfig\0229\n\rnewWidgetInfo\030\005 \001(\0132\".com.wa" +
-      "li.live.proto.NewWidgetInfo\0227\n\niconConfi" +
-      "g\030\006 \001(\0132#.com.wali.live.proto.RoomIconCo" +
-      "nfig\022/\n\010ctrlInfo\030\007 \001(\0132\035.com.wali.live.p" +
-      "roto.CtrlInfo\0221\n\007counter\030\010 \001(\0132 .com.wal" +
-      "i.live.proto.LimitedInfo\0224\n\nvipCounter\030\t" +
-      " \001(\0132 .com.wali.live.proto.LimitedInfo\0226",
-      "\n\014guardCounter\030\n \001(\0132 .com.wali.live.pro" +
-      "to.LimitedInfo\022?\n\020speedyGiftConfig\030\013 \001(\013" +
-      "2%.com.wali.live.proto.SpeedyGiftConfig\"" +
-      "\"\n\020SpeedyGiftConfig\022\016\n\006giftId\030\001 \001(\r\"]\n\033S" +
-      "martBarrageCtrlPullRequest\022\014\n\004uuid\030\001 \002(\004" +
-      "\022\014\n\004zuid\030\002 \001(\004\022\017\n\007room_id\030\003 \001(\t\022\021\n\troom_" +
-      "type\030\004 \001(\r\"y\n\034SmartBarrageCtrlPullRespon" +
-      "se\022\013\n\003ret\030\001 \002(\r\022\017\n\007err_msg\030\002 \001(\t\022;\n\010ctrl" +
-      "_msg\030\003 \003(\0132).com.wali.live.proto.RoomExt" +
-      "raCtrlMessage\"D\n\010CtrlInfo\022\032\n\022room_switch",
-      "_status\030\001 \001(\010\022\034\n\024global_switch_status\030\002 " +
-      "\001(\010\"+\n\013LimitedInfo\022\017\n\007counter\030\001 \001(\r\022\013\n\003m" +
-      "ax\030\002 \001(\r\"<\n\024RoomExtraCtrlMessage\022\021\n\ttype" +
-      "_info\030\001 \002(\r\022\021\n\tctrl_info\030\002 \001(\014\"B\n\020GetRoo" +
-      "mWidgetReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveid\030\002 \002(\t" +
-      "\022\020\n\010roomType\030\003 \001(\r\"\262\001\n\020GetRoomWidgetRsp\022" +
-      "\017\n\007retCode\030\001 \002(\r\0229\n\rnewWidgetInfo\030\002 \001(\0132" +
-      "\".com.wali.live.proto.NewWidgetInfo\022\021\n\tt" +
-      "imestamp\030\003 \001(\004\022?\n\020speedyGiftConfig\030\004 \001(\013" +
-      "2%.com.wali.live.proto.SpeedyGiftConfig\"",
-      "@\n\016WidgetClickReq\022\020\n\010widgetID\030\001 \002(\r\022\014\n\004z" +
-      "uid\030\002 \001(\004\022\016\n\006liveid\030\003 \001(\t\"Y\n\016WidgetClick" +
-      "Rsp\022\017\n\007retCode\030\001 \002(\r\022\023\n\013counterText\030\002 \001(" +
-      "\t\022\021\n\ttimestamp\030\003 \001(\004\022\016\n\006giftId\030\004 \001(\r\"/\n\017" +
-      "GetTitleListReq\022\014\n\004uuid\030\001 \001(\004\022\016\n\006source\030" +
-      "\002 \003(\r\"V\n\017GetTitleListRsp\022\017\n\007retCode\030\001 \002(" +
-      "\r\0222\n\ntitle_info\030\002 \003(\0132\036.com.wali.live.pr" +
-      "oto.TitleInfo\"/\n\tTitleInfo\022\016\n\006source\030\001 \001" +
-      "(\r\022\022\n\ntitle_list\030\002 \003(\t\"G\n\030CheckMicQualif" +
-      "icationReq\022\014\n\004uuid\030\001 \002(\004\022\017\n\007live_id\030\002 \002(",
-      "\t\022\014\n\004zuid\030\003 \002(\004\",\n\030CheckMicQualification" +
-      "Rsp\022\020\n\010ret_code\030\001 \002(\rB \n\023com.wali.live.p" +
-      "rotoB\tLiveProto"
+      "pe\030\003 \001(\r\022\017\n\007invitee\030\004 \003(\004\022\022\n\naddHistory\030" +
+      "\005 \001(\010\022\021\n\tliveTitle\030\006 \001(\t\022\020\n\010password\030\007 \001" +
+      "(\t\022\035\n\tliveCover\030\010 \001(\0132\n.LiveCover\022\016\n\006liv" +
+      "eId\030\t \001(\t\022\017\n\007appType\030\n \001(\r\022\031\n\007appInfo\030\013 " +
+      "\001(\0132\010.AppInfo\022\016\n\006playUI\030\014 \001(\r\022\'\n\016ticketL" +
+      "iveInfo\030\r \001(\0132\017.TicketLiveInfo\022\032\n\010tagInf" +
+      "os\030\016 \003(\0132\010.TagInfo\022\030\n\020supportMagicFace\030\020",
+      " \001(\010\022\016\n\006source\030\021 \001(\r\"\346\001\n\014BeginLiveRsp\022\017\n" +
+      "\007retCode\030\001 \002(\r\022\016\n\006liveId\030\002 \001(\t\022\022\n\ncreate" +
+      "Time\030\003 \001(\004\022\020\n\010shareUrl\030\004 \001(\t\022\023\n\013upStream" +
+      "Url\030\005 \001(\t\022\022\n\nbeginLevel\030\006 \001(\r\022\024\n\014showIco" +
+      "nCtrl\030\007 \001(\r\022\026\n\016udpUpstreamUrl\030\010 \001(\t\0228\n\016n" +
+      "ewUpStreamUrl\030\t \003(\0132 .com.wali.live.prot" +
+      "o.UpStreamUrl\"g\n\nEndLiveReq\022\014\n\004uuid\030\001 \002(" +
+      "\004\022\016\n\006liveId\030\002 \002(\t\022\017\n\007appType\030\003 \001(\r\022\031\n\007ap" +
+      "pInfo\030\004 \001(\0132\010.AppInfo\022\017\n\007guildId\030\005 \001(\004\"\311" +
+      "\001\n\nEndLiveRsp\022\017\n\007retCode\030\001 \002(\r\022\024\n\014hisVie",
+      "werCnt\030\002 \001(\r\022\033\n\023generateHistorySucc\030\003 \001(" +
+      "\010\022\032\n\022generateHistoryMsg\030\004 \001(\t\022\030\n\020ticketB" +
+      "uyerCount\030\005 \001(\r\022\027\n\017hisBeginLiveCnt\030\006 \001(\004" +
+      "\022\020\n\010duration\030\007 \001(\004\022\026\n\016newFollowerCnt\030\010 \001" +
+      "(\004\"u\n\014EnterLiveReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid" +
+      "\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\022\020\n\010password\030\004 \001(\t" +
+      "\022\014\n\004type\030\005 \001(\r\022\031\n\021showSpecialEffect\030\006 \001(" +
+      "\010\"\334\005\n\014EnterLiveRsp\022\017\n\007retCode\030\001 \002(\r\022\021\n\tv" +
+      "iewerCnt\030\002 \001(\r\022+\n\006viewer\030\004 \003(\0132\033.com.wal" +
+      "i.live.proto.Viewer\022\021\n\tisManager\030\006 \001(\010\022\020",
+      "\n\010banSpeak\030\007 \001(\010\022/\n\010location\030\010 \001(\0132\035.com" +
+      ".wali.live.proto.Location\022\014\n\004type\030\t \001(\r\022" +
+      "\020\n\010shareUrl\030\n \001(\t\0220\n\013otherPKInfo\030\013 \001(\0132\033" +
+      ".com.wali.live.proto.PKInfo\022\024\n\014pkInitTic" +
+      "ket\030\014 \001(\r\022\025\n\rdownStreamUrl\030\r \001(\t\022-\n\007micI" +
+      "nfo\030\016 \001(\0132\034.com.wali.live.proto.MicInfo\022" +
+      "\024\n\014micuidStatus\030\017 \001(\r\022\021\n\ttimestamp\030\020 \001(\004" +
+      "\022\035\n\tliveCover\030\021 \001(\0132\n.LiveCover\022\021\n\tliveT" +
+      "itle\030\022 \001(\t\022\023\n\013messageMode\030\023 \001(\005\022-\n\007msgRu" +
+      "le\030\024 \001(\0132\034.com.wali.live.proto.MsgRule\022\016",
+      "\n\006isShop\030\025 \001(\010\022\020\n\010hideGift\030\026 \001(\010\022\020\n\010hide" +
+      "Icon\030\027 \001(\005\022\'\n\014ticketStatus\030\030 \001(\0132\021.Ticke" +
+      "tLiveStatus\022\030\n\020supportMagicFace\030\032 \001(\010\022\027\n" +
+      "\017enableViewerMic\030\033 \001(\010\022\023\n\013is_pk_admin\030\034 " +
+      "\001(\010\0223\n\013new_pk_info\030\035 \001(\0132\036.com.wali.live" +
+      ".proto.NewPKInfo\"Z\n\013MicBeginReq\022\014\n\004zuid\030" +
+      "\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022-\n\007micInfo\030\003 \002(\0132\034" +
+      ".com.wali.live.proto.MicInfo\"\036\n\013MicBegin" +
+      "Rsp\022\017\n\007retCode\030\001 \002(\r\"9\n\tMicEndReq\022\014\n\004zui" +
+      "d\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022\016\n\006micuid\030\003 \002(\004\"",
+      "\034\n\tMicEndRsp\022\017\n\007retCode\030\001 \002(\r\":\n\014ViewerT" +
+      "opReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\022\016\n\006liv" +
+      "eId\030\003 \002(\t\"L\n\014ViewerTopRsp\022\017\n\007retCode\030\001 \002" +
+      "(\r\022+\n\006viewer\030\002 \003(\0132\033.com.wali.live.proto" +
+      ".Viewer\"{\n\013RoomInfoReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004" +
+      "zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\022\020\n\010password\030\004" +
+      " \001(\t\022\025\n\rgetLatestLive\030\005 \001(\010\022\027\n\017getGameIn" +
+      "foOnly\030\006 \001(\010\"\360\001\n\013RoomInfoRsp\022\017\n\007retCode\030" +
+      "\001 \002(\r\022\025\n\rdownStreamUrl\030\002 \001(\t\022\023\n\013playback" +
+      "Url\030\003 \001(\t\022\020\n\010shareUrl\030\004 \001(\t\022\021\n\tbeginTime",
+      "\030\005 \001(\004\022\016\n\006liveid\030\006 \001(\t\022\014\n\004type\030\007 \001(\r\022\'\n\014" +
+      "ticketStatus\030\010 \001(\0132\021.TicketLiveStatus\0228\n" +
+      "\rgamepack_info\030\t \001(\0132!.com.wali.live.pro" +
+      "to.GamePackInfo\"\257\002\n\014GamePackInfo\022\014\n\004zuid" +
+      "\030\001 \001(\004\022\016\n\006roomId\030\002 \001(\t\022\021\n\tcdnDomain\030\003 \001(" +
+      "\t\022\023\n\013displayName\030\004 \001(\t\022\016\n\006gameId\030\005 \001(\r\022\023" +
+      "\n\013pacakgeName\030\006 \001(\t\022\014\n\004icon\030\007 \001(\t\022\022\n\ngam" +
+      "eApkSs1\030\010 \001(\t\022\017\n\007gameApk\030\t \001(\t\022\021\n\tshortN" +
+      "ame\030\n \001(\t\0226\n\006level1\030\013 \001(\0132&.com.wali.liv" +
+      "e.proto.GameTagInfoDetail\0226\n\006level2\030\014 \001(",
+      "\0132&.com.wali.live.proto.GameTagInfoDetai" +
+      "l\"-\n\021GameTagInfoDetail\022\n\n\002id\030\001 \001(\r\022\014\n\004na" +
+      "me\030\002 \001(\t\"O\n\014LeaveLiveReq\022\014\n\004uuid\030\001 \002(\004\022\014" +
+      "\n\004zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\022\023\n\013messageM" +
+      "ode\030\004 \001(\005\"\037\n\014LeaveLiveRsp\022\017\n\007retCode\030\001 \002" +
+      "(\r\"0\n\020HistoryDeleteReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006" +
+      "liveId\030\002 \002(\t\"#\n\020HistoryDeleteRsp\022\017\n\007retC" +
+      "ode\030\001 \002(\r\"u\n\014HeartBeatReq\022\016\n\006liveId\030\001 \002(" +
+      "\t\022\r\n\005pkuid\030\002 \001(\004\022\020\n\010pkLiveId\030\003 \001(\t\022\016\n\006st" +
+      "atus\030\004 \001(\005\022\016\n\006micuid\030\005 \001(\004\022\024\n\014micuidStat",
+      "us\030\006 \001(\005\"\037\n\014HeartBeatRsp\022\017\n\007retCode\030\001 \002(" +
+      "\r\"n\n\nPKBeginReq\022\014\n\004uuid\030\001 \002(\004\022\r\n\005pkuid\030\002" +
+      " \002(\004\022\020\n\010pkLiveId\030\003 \001(\t\022\026\n\016myPkInitTicket" +
+      "\030\004 \001(\r\022\031\n\021otherPkInitTicket\030\005 \001(\r\"P\n\nPKB" +
+      "eginRsp\022\017\n\007retCode\030\001 \002(\r\022\026\n\016myPkInitTick" +
+      "et\030\002 \001(\r\022\031\n\021otherPkInitTicket\030\003 \001(\r\"9\n\010P" +
+      "KEndReq\022\014\n\004uuid\030\001 \002(\004\022\r\n\005pkuid\030\002 \002(\004\022\020\n\010" +
+      "pkLiveId\030\003 \001(\t\"\033\n\010PKEndRsp\022\017\n\007retCode\030\001 " +
+      "\002(\r\"\034\n\014GetPKInfoReq\022\014\n\004zuid\030\001 \002(\004\"\202\001\n\014Ge" +
+      "tPKInfoRsp\022\017\n\007retCode\030\001 \002(\r\022/\n\nthisPKInf",
+      "o\030\002 \001(\0132\033.com.wali.live.proto.PKInfo\0220\n\013" +
+      "otherPKInfo\030\003 \001(\0132\033.com.wali.live.proto." +
+      "PKInfo\"\036\n\014ZuidSleepReq\022\016\n\006liveId\030\001 \002(\t\"\037" +
+      "\n\014ZuidSleepRsp\022\017\n\007retCode\030\001 \002(\r\"\037\n\rZuidA" +
+      "ctiveReq\022\016\n\006liveId\030\001 \002(\t\" \n\rZuidActiveRs" +
+      "p\022\017\n\007retCode\030\001 \002(\r\"F\n\017AdminSettingReq\022\020\n" +
+      "\010adminUid\030\001 \002(\004\022\021\n\toperation\030\002 \002(\r\022\016\n\006li" +
+      "veId\030\003 \001(\t\"\"\n\017AdminSettingRsp\022\017\n\007retCode" +
+      "\030\001 \002(\r\"\036\n\014AdminListReq\022\016\n\006liveId\030\001 \002(\t\"9" +
+      "\n\014AdminListRsp\022\017\n\007retCode\030\001 \002(\r\022\030\n\005users",
+      "\030\002 \003(\0132\t.UserInfo\"R\n\020SetBanSpeakerReq\022\016\n" +
+      "\006liveId\030\001 \002(\t\022\014\n\004zuid\030\002 \002(\004\022\014\n\004uuid\030\003 \002(" +
+      "\004\022\022\n\nbanSpeaker\030\004 \003(\004\"#\n\020SetBanSpeakerRs" +
+      "p\022\017\n\007retCode\030\001 \002(\r\"G\n\023CancelBanSpeakerRe" +
+      "q\022\016\n\006liveId\030\001 \002(\t\022\014\n\004zuid\030\002 \002(\004\022\022\n\nbanSp" +
+      "eaker\030\003 \003(\004\"&\n\023CancelBanSpeakerRsp\022\017\n\007re" +
+      "tCode\030\001 \002(\r\"E\n\027GetLiveKeyPersonInfoReq\022\014" +
+      "\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002" +
+      "(\t\">\n\027GetLiveKeyPersonInfoRsp\022\017\n\007retCode" +
+      "\030\001 \002(\r\022\022\n\nbanSpeaker\030\002 \003(\004\",\n\016HistoryLiv",
+      "eReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\"s\n\016Hist" +
+      "oryLiveRsp\022\017\n\007retCode\030\001 \002(\r\022\031\n\007hisLive\030\002" +
+      " \003(\0132\010.HisLive\022\014\n\004type\030\003 \001(\r\022\'\n\014ticketSt" +
+      "atus\030\004 \001(\0132\021.TicketLiveStatus\"\353\001\n\rViewer" +
+      "InfoRsp\022\017\n\007retCode\030\001 \002(\r\022\021\n\tviewerCnt\030\002 " +
+      "\001(\r\022+\n\006viewer\030\003 \003(\0132\033.com.wali.live.prot" +
+      "o.Viewer\022/\n\010location\030\004 \001(\0132\035.com.wali.li" +
+      "ve.proto.Location\022\014\n\004type\030\005 \001(\r\022\020\n\010share" +
+      "Url\030\006 \001(\t\022\022\n\nbanSpeaker\030\007 \003(\004\022\021\n\tadminUu" +
+      "id\030\010 \003(\004\022\021\n\ttimestamp\030\t \001(\004\"\031\n\tMyRoomReq",
+      "\022\014\n\004uuid\030\001 \002(\004\"\314\002\n\tMyRoomRsp\022\017\n\007retCode\030" +
+      "\001 \002(\r\022\016\n\006liveId\030\002 \001(\t\022\020\n\010shareUrl\030\003 \001(\t\022" +
+      "\023\n\013upStreamUrl\030\004 \001(\t\022\014\n\004type\030\005 \001(\r\022\020\n\010pa" +
+      "ssword\030\006 \001(\t\022\017\n\007appType\030\007 \001(\r\022-\n\007msgRule" +
+      "\030\010 \001(\0132\034.com.wali.live.proto.MsgRule\022\017\n\007" +
+      "invitee\030\t \003(\004\022\025\n\rdownStreamUrl\030\n \001(\t\022\035\n\t" +
+      "liveCover\030\013 \001(\0132\n.LiveCover\022\026\n\016udpUpstre" +
+      "amUrl\030\014 \001(\t\0228\n\016newUpStreamUrl\030\r \003(\0132 .co" +
+      "m.wali.live.proto.UpStreamUrl\"=\n\013IsInRoo" +
+      "mReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022\020\n\010vi",
+      "ewerId\030\003 \003(\004\"0\n\013IsInRoomRsp\022\017\n\007retCode\030\001" +
+      " \002(\r\022\020\n\010viewerId\030\002 \003(\004\"?\n\017MicuidActiveRe" +
+      "q\022\016\n\006liveId\030\001 \002(\t\022\016\n\006micuid\030\002 \002(\004\022\014\n\004zui" +
+      "d\030\003 \002(\004\"\"\n\017MicuidActiveRsp\022\017\n\007retCode\030\001 " +
+      "\002(\r\">\n\016MicuidSleepReq\022\016\n\006liveId\030\001 \002(\t\022\016\n" +
+      "\006micuid\030\002 \002(\004\022\014\n\004zuid\030\003 \002(\004\"!\n\016MicuidSle" +
+      "epRsp\022\017\n\007retCode\030\001 \002(\r\"_\n\020UpdateMsgRuleR" +
+      "eq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022-\n\007msgR" +
+      "ule\030\003 \002(\0132\034.com.wali.live.proto.MsgRule\"" +
+      "#\n\020UpdateMsgRuleRsp\022\017\n\007retCode\030\001 \002(\r\"B\n\021",
+      "RoomAddInviteeReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveI" +
+      "d\030\002 \002(\t\022\017\n\007invitee\030\003 \003(\004\"$\n\021RoomAddInvit" +
+      "eeRsp\022\017\n\007retCode\030\001 \002(\r\"E\n\024RoomDeleteInvi" +
+      "teeReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022\017\n\007" +
+      "invitee\030\003 \003(\004\"\'\n\024RoomDeleteInviteeRsp\022\017\n" +
+      "\007retCode\030\001 \002(\r\"\277\001\n\024GetRoomAttachmentReq\022" +
+      "\014\n\004zuid\030\001 \002(\004\022\023\n\013isGetWidget\030\002 \001(\010\022\016\n\006li" +
+      "veid\030\003 \002(\t\022\026\n\016isGetAnimation\030\004 \001(\010\022\025\n\ris" +
+      "GetShopType\030\005 \001(\010\022\020\n\010roomType\030\006 \001(\r\022\027\n\017i" +
+      "sGetIconConfig\030\007 \001(\010\022\032\n\022isGetRoomExtraCt",
+      "rl\030\010 \001(\010\"\343\004\n\024GetRoomAttachmentRsp\022\017\n\007ret" +
+      "Code\030\001 \002(\r\0223\n\nwidgetInfo\030\002 \003(\0132\037.com.wal" +
+      "i.live.proto.WidgetInfo\022A\n\017animationConf" +
+      "ig\030\003 \001(\0132(.com.wali.live.proto.RoomAnima" +
+      "tionConfig\022;\n\016shoppingConfig\030\004 \001(\0132#.com" +
+      ".wali.live.proto.ShoppingConfig\0229\n\rnewWi" +
+      "dgetInfo\030\005 \001(\0132\".com.wali.live.proto.New" +
+      "WidgetInfo\0227\n\niconConfig\030\006 \001(\0132#.com.wal" +
+      "i.live.proto.RoomIconConfig\022/\n\010ctrlInfo\030" +
+      "\007 \001(\0132\035.com.wali.live.proto.CtrlInfo\0221\n\007",
+      "counter\030\010 \001(\0132 .com.wali.live.proto.Limi" +
+      "tedInfo\0224\n\nvipCounter\030\t \001(\0132 .com.wali.l" +
+      "ive.proto.LimitedInfo\0226\n\014guardCounter\030\n " +
+      "\001(\0132 .com.wali.live.proto.LimitedInfo\022?\n" +
+      "\020speedyGiftConfig\030\013 \001(\0132%.com.wali.live." +
+      "proto.SpeedyGiftConfig\"\"\n\020SpeedyGiftConf" +
+      "ig\022\016\n\006giftId\030\001 \001(\r\"]\n\033SmartBarrageCtrlPu" +
+      "llRequest\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \001(\004\022\017\n" +
+      "\007room_id\030\003 \001(\t\022\021\n\troom_type\030\004 \001(\r\"y\n\034Sma" +
+      "rtBarrageCtrlPullResponse\022\013\n\003ret\030\001 \002(\r\022\017",
+      "\n\007err_msg\030\002 \001(\t\022;\n\010ctrl_msg\030\003 \003(\0132).com." +
+      "wali.live.proto.RoomExtraCtrlMessage\"D\n\010" +
+      "CtrlInfo\022\032\n\022room_switch_status\030\001 \001(\010\022\034\n\024" +
+      "global_switch_status\030\002 \001(\010\"+\n\013LimitedInf" +
+      "o\022\017\n\007counter\030\001 \001(\r\022\013\n\003max\030\002 \001(\r\"<\n\024RoomE" +
+      "xtraCtrlMessage\022\021\n\ttype_info\030\001 \002(\r\022\021\n\tct" +
+      "rl_info\030\002 \001(\014\"B\n\020GetRoomWidgetReq\022\014\n\004zui" +
+      "d\030\001 \002(\004\022\016\n\006liveid\030\002 \002(\t\022\020\n\010roomType\030\003 \001(" +
+      "\r\"\262\001\n\020GetRoomWidgetRsp\022\017\n\007retCode\030\001 \002(\r\022" +
+      "9\n\rnewWidgetInfo\030\002 \001(\0132\".com.wali.live.p",
+      "roto.NewWidgetInfo\022\021\n\ttimestamp\030\003 \001(\004\022?\n" +
+      "\020speedyGiftConfig\030\004 \001(\0132%.com.wali.live." +
+      "proto.SpeedyGiftConfig\"@\n\016WidgetClickReq" +
+      "\022\020\n\010widgetID\030\001 \002(\r\022\014\n\004zuid\030\002 \001(\004\022\016\n\006live" +
+      "id\030\003 \001(\t\"Y\n\016WidgetClickRsp\022\017\n\007retCode\030\001 " +
+      "\002(\r\022\023\n\013counterText\030\002 \001(\t\022\021\n\ttimestamp\030\003 " +
+      "\001(\004\022\016\n\006giftId\030\004 \001(\r\"/\n\017GetTitleListReq\022\014" +
+      "\n\004uuid\030\001 \001(\004\022\016\n\006source\030\002 \003(\r\"V\n\017GetTitle" +
+      "ListRsp\022\017\n\007retCode\030\001 \002(\r\0222\n\ntitle_info\030\002" +
+      " \003(\0132\036.com.wali.live.proto.TitleInfo\"/\n\t",
+      "TitleInfo\022\016\n\006source\030\001 \001(\r\022\022\n\ntitle_list\030" +
+      "\002 \003(\t\"G\n\030CheckMicQualificationReq\022\014\n\004uui" +
+      "d\030\001 \002(\004\022\017\n\007live_id\030\002 \002(\t\022\014\n\004zuid\030\003 \002(\004\"," +
+      "\n\030CheckMicQualificationRsp\022\020\n\010ret_code\030\001" +
+      " \002(\rB \n\023com.wali.live.protoB\tLiveProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -74282,6 +74655,8 @@ public final class LiveProto {
           com.wali.live.proto.AccountProto.getDescriptor(),
           com.wali.live.proto.LiveCommonProto.getDescriptor(),
           com.wali.live.proto.Live2Proto.getDescriptor(),
+          com.wali.live.proto.LiveMicProto.getDescriptor(),
+          com.wali.live.proto.LivePKProto.getDescriptor(),
         }, assigner);
     internal_static_com_wali_live_proto_GetRoomIdReq_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -74330,7 +74705,7 @@ public final class LiveProto {
     internal_static_com_wali_live_proto_EnterLiveRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_EnterLiveRsp_descriptor,
-        new java.lang.String[] { "RetCode", "ViewerCnt", "Viewer", "IsManager", "BanSpeak", "Location", "Type", "ShareUrl", "OtherPKInfo", "PkInitTicket", "DownStreamUrl", "MicInfo", "MicuidStatus", "Timestamp", "LiveCover", "LiveTitle", "MessageMode", "MsgRule", "IsShop", "HideGift", "HideIcon", "TicketStatus", "SupportMagicFace", "EnableViewerMic", });
+        new java.lang.String[] { "RetCode", "ViewerCnt", "Viewer", "IsManager", "BanSpeak", "Location", "Type", "ShareUrl", "OtherPKInfo", "PkInitTicket", "DownStreamUrl", "MicInfo", "MicuidStatus", "Timestamp", "LiveCover", "LiveTitle", "MessageMode", "MsgRule", "IsShop", "HideGift", "HideIcon", "TicketStatus", "SupportMagicFace", "EnableViewerMic", "IsPkAdmin", "NewPkInfo", });
     internal_static_com_wali_live_proto_MicBeginReq_descriptor =
       getDescriptor().getMessageTypes().get(8);
     internal_static_com_wali_live_proto_MicBeginReq_fieldAccessorTable = new
@@ -74755,6 +75130,8 @@ public final class LiveProto {
     com.wali.live.proto.AccountProto.getDescriptor();
     com.wali.live.proto.LiveCommonProto.getDescriptor();
     com.wali.live.proto.Live2Proto.getDescriptor();
+    com.wali.live.proto.LiveMicProto.getDescriptor();
+    com.wali.live.proto.LivePKProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

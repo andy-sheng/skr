@@ -12,7 +12,6 @@ import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.view.panel.BaseBottomPanel;
-import com.wali.live.livesdk.live.livegame.LiveComponentController;
 import com.wali.live.livesdk.live.livegame.view.panel.GameSettingPanel;
 import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
@@ -51,12 +50,12 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
         super(controller);
         mLiveRoomChatMsgManager = liveRoomChatMsgManager;
         mMyRoomData = myRoomData;
-        registerAction(LiveComponentController.MSG_ON_ORIENT_PORTRAIT);
-        registerAction(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
-        registerAction(LiveComponentController.MSG_ON_BACK_PRESSED);
-        registerAction(LiveComponentController.MSG_SHOW_SETTING_PANEL);
-        registerAction(LiveComponentController.MSG_SHOW_SHARE_PANEL);
-        registerAction(LiveComponentController.MSG_HIDE_BOTTOM_PANEL);
+        registerAction(MSG_ON_ORIENT_PORTRAIT);
+        registerAction(MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(MSG_ON_BACK_PRESSED);
+        registerAction(MSG_SHOW_SETTING_PANEL);
+        registerAction(MSG_SHOW_SHARE_PANEL);
+        registerAction(MSG_HIDE_BOTTOM_PANEL);
     }
 
     @Override

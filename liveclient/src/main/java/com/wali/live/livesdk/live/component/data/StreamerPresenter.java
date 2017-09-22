@@ -268,6 +268,7 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
     // 直播开始
     public void startLive() {
         if (mStreamer == null || mLiveStarted) {
+            MyLog.w(TAG, "startLive ignored, mLiveStarted=" + mLiveStarted);
             return;
         }
         mLiveStarted = true;
@@ -300,6 +301,7 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
     // 直播恢复
     public void startPreview() {
         if (mStreamer == null) {
+            MyLog.w(TAG, "startPreview ignored, streamer is null");
             return;
         }
         mStreamer.resume();

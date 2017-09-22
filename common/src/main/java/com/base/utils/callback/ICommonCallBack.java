@@ -3,7 +3,7 @@ package com.base.utils.callback;
 /**
  * Created by lan on 15-12-9.
  */
-public interface ICommonCallBack {
+public interface ICommonCallBack<T> {
     // 正常处理返回值
-    void process(Object objects);
+    void process(T t);
 }

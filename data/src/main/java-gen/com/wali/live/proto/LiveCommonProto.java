@@ -1181,1495 +1181,6 @@ public final class LiveCommonProto {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.MsgRule)
   }
 
-  public interface MicSubViewPosOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.MicSubViewPos)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required float topXScale = 1;</code>
-     *
-     * <pre>
-     *子视图左上角X在实际推流视频中的比例
-     * </pre>
-     */
-    boolean hasTopXScale();
-    /**
-     * <code>required float topXScale = 1;</code>
-     *
-     * <pre>
-     *子视图左上角X在实际推流视频中的比例
-     * </pre>
-     */
-    float getTopXScale();
-
-    /**
-     * <code>required float topYScale = 2;</code>
-     *
-     * <pre>
-     *子视图左上角Y在实际推流视频中的比例
-     * </pre>
-     */
-    boolean hasTopYScale();
-    /**
-     * <code>required float topYScale = 2;</code>
-     *
-     * <pre>
-     *子视图左上角Y在实际推流视频中的比例
-     * </pre>
-     */
-    float getTopYScale();
-
-    /**
-     * <code>required float widthScale = 3;</code>
-     *
-     * <pre>
-     *子视图宽度在实际推流视频中的比例
-     * </pre>
-     */
-    boolean hasWidthScale();
-    /**
-     * <code>required float widthScale = 3;</code>
-     *
-     * <pre>
-     *子视图宽度在实际推流视频中的比例
-     * </pre>
-     */
-    float getWidthScale();
-
-    /**
-     * <code>required float heightScale = 4;</code>
-     *
-     * <pre>
-     *子视图高度左上角在推流视频中的比例
-     * </pre>
-     */
-    boolean hasHeightScale();
-    /**
-     * <code>required float heightScale = 4;</code>
-     *
-     * <pre>
-     *子视图高度左上角在推流视频中的比例
-     * </pre>
-     */
-    float getHeightScale();
-  }
-  /**
-   * Protobuf type {@code com.wali.live.proto.MicSubViewPos}
-   */
-  public static final class MicSubViewPos extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.MicSubViewPos)
-      MicSubViewPosOrBuilder {
-    // Use MicSubViewPos.newBuilder() to construct.
-    private MicSubViewPos(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private MicSubViewPos(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final MicSubViewPos defaultInstance;
-    public static MicSubViewPos getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public MicSubViewPos getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private MicSubViewPos(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 13: {
-              bitField0_ |= 0x00000001;
-              topXScale_ = input.readFloat();
-              break;
-            }
-            case 21: {
-              bitField0_ |= 0x00000002;
-              topYScale_ = input.readFloat();
-              break;
-            }
-            case 29: {
-              bitField0_ |= 0x00000004;
-              widthScale_ = input.readFloat();
-              break;
-            }
-            case 37: {
-              bitField0_ |= 0x00000008;
-              heightScale_ = input.readFloat();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicSubViewPos_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicSubViewPos_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.LiveCommonProto.MicSubViewPos.class, com.wali.live.proto.LiveCommonProto.MicSubViewPos.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<MicSubViewPos> PARSER =
-        new com.google.protobuf.AbstractParser<MicSubViewPos>() {
-      public MicSubViewPos parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new MicSubViewPos(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<MicSubViewPos> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int TOPXSCALE_FIELD_NUMBER = 1;
-    private float topXScale_;
-    /**
-     * <code>required float topXScale = 1;</code>
-     *
-     * <pre>
-     *子视图左上角X在实际推流视频中的比例
-     * </pre>
-     */
-    public boolean hasTopXScale() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required float topXScale = 1;</code>
-     *
-     * <pre>
-     *子视图左上角X在实际推流视频中的比例
-     * </pre>
-     */
-    public float getTopXScale() {
-      return topXScale_;
-    }
-
-    public static final int TOPYSCALE_FIELD_NUMBER = 2;
-    private float topYScale_;
-    /**
-     * <code>required float topYScale = 2;</code>
-     *
-     * <pre>
-     *子视图左上角Y在实际推流视频中的比例
-     * </pre>
-     */
-    public boolean hasTopYScale() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>required float topYScale = 2;</code>
-     *
-     * <pre>
-     *子视图左上角Y在实际推流视频中的比例
-     * </pre>
-     */
-    public float getTopYScale() {
-      return topYScale_;
-    }
-
-    public static final int WIDTHSCALE_FIELD_NUMBER = 3;
-    private float widthScale_;
-    /**
-     * <code>required float widthScale = 3;</code>
-     *
-     * <pre>
-     *子视图宽度在实际推流视频中的比例
-     * </pre>
-     */
-    public boolean hasWidthScale() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>required float widthScale = 3;</code>
-     *
-     * <pre>
-     *子视图宽度在实际推流视频中的比例
-     * </pre>
-     */
-    public float getWidthScale() {
-      return widthScale_;
-    }
-
-    public static final int HEIGHTSCALE_FIELD_NUMBER = 4;
-    private float heightScale_;
-    /**
-     * <code>required float heightScale = 4;</code>
-     *
-     * <pre>
-     *子视图高度左上角在推流视频中的比例
-     * </pre>
-     */
-    public boolean hasHeightScale() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>required float heightScale = 4;</code>
-     *
-     * <pre>
-     *子视图高度左上角在推流视频中的比例
-     * </pre>
-     */
-    public float getHeightScale() {
-      return heightScale_;
-    }
-
-    private void initFields() {
-      topXScale_ = 0F;
-      topYScale_ = 0F;
-      widthScale_ = 0F;
-      heightScale_ = 0F;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasTopXScale()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasTopYScale()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasWidthScale()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasHeightScale()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeFloat(1, topXScale_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeFloat(2, topYScale_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeFloat(3, widthScale_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeFloat(4, heightScale_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFloatSize(1, topXScale_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFloatSize(2, topYScale_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFloatSize(3, widthScale_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFloatSize(4, heightScale_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.LiveCommonProto.MicSubViewPos prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.wali.live.proto.MicSubViewPos}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.MicSubViewPos)
-        com.wali.live.proto.LiveCommonProto.MicSubViewPosOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicSubViewPos_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicSubViewPos_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.LiveCommonProto.MicSubViewPos.class, com.wali.live.proto.LiveCommonProto.MicSubViewPos.Builder.class);
-      }
-
-      // Construct using com.wali.live.proto.LiveCommonProto.MicSubViewPos.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        topXScale_ = 0F;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        topYScale_ = 0F;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        widthScale_ = 0F;
-        bitField0_ = (bitField0_ & ~0x00000004);
-        heightScale_ = 0F;
-        bitField0_ = (bitField0_ & ~0x00000008);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicSubViewPos_descriptor;
-      }
-
-      public com.wali.live.proto.LiveCommonProto.MicSubViewPos getDefaultInstanceForType() {
-        return com.wali.live.proto.LiveCommonProto.MicSubViewPos.getDefaultInstance();
-      }
-
-      public com.wali.live.proto.LiveCommonProto.MicSubViewPos build() {
-        com.wali.live.proto.LiveCommonProto.MicSubViewPos result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.wali.live.proto.LiveCommonProto.MicSubViewPos buildPartial() {
-        com.wali.live.proto.LiveCommonProto.MicSubViewPos result = new com.wali.live.proto.LiveCommonProto.MicSubViewPos(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.topXScale_ = topXScale_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.topYScale_ = topYScale_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.widthScale_ = widthScale_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.heightScale_ = heightScale_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.LiveCommonProto.MicSubViewPos) {
-          return mergeFrom((com.wali.live.proto.LiveCommonProto.MicSubViewPos)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.wali.live.proto.LiveCommonProto.MicSubViewPos other) {
-        if (other == com.wali.live.proto.LiveCommonProto.MicSubViewPos.getDefaultInstance()) return this;
-        if (other.hasTopXScale()) {
-          setTopXScale(other.getTopXScale());
-        }
-        if (other.hasTopYScale()) {
-          setTopYScale(other.getTopYScale());
-        }
-        if (other.hasWidthScale()) {
-          setWidthScale(other.getWidthScale());
-        }
-        if (other.hasHeightScale()) {
-          setHeightScale(other.getHeightScale());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (!hasTopXScale()) {
-          
-          return false;
-        }
-        if (!hasTopYScale()) {
-          
-          return false;
-        }
-        if (!hasWidthScale()) {
-          
-          return false;
-        }
-        if (!hasHeightScale()) {
-          
-          return false;
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.wali.live.proto.LiveCommonProto.MicSubViewPos parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.LiveCommonProto.MicSubViewPos) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private float topXScale_ ;
-      /**
-       * <code>required float topXScale = 1;</code>
-       *
-       * <pre>
-       *子视图左上角X在实际推流视频中的比例
-       * </pre>
-       */
-      public boolean hasTopXScale() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required float topXScale = 1;</code>
-       *
-       * <pre>
-       *子视图左上角X在实际推流视频中的比例
-       * </pre>
-       */
-      public float getTopXScale() {
-        return topXScale_;
-      }
-      /**
-       * <code>required float topXScale = 1;</code>
-       *
-       * <pre>
-       *子视图左上角X在实际推流视频中的比例
-       * </pre>
-       */
-      public Builder setTopXScale(float value) {
-        bitField0_ |= 0x00000001;
-        topXScale_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required float topXScale = 1;</code>
-       *
-       * <pre>
-       *子视图左上角X在实际推流视频中的比例
-       * </pre>
-       */
-      public Builder clearTopXScale() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        topXScale_ = 0F;
-        onChanged();
-        return this;
-      }
-
-      private float topYScale_ ;
-      /**
-       * <code>required float topYScale = 2;</code>
-       *
-       * <pre>
-       *子视图左上角Y在实际推流视频中的比例
-       * </pre>
-       */
-      public boolean hasTopYScale() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>required float topYScale = 2;</code>
-       *
-       * <pre>
-       *子视图左上角Y在实际推流视频中的比例
-       * </pre>
-       */
-      public float getTopYScale() {
-        return topYScale_;
-      }
-      /**
-       * <code>required float topYScale = 2;</code>
-       *
-       * <pre>
-       *子视图左上角Y在实际推流视频中的比例
-       * </pre>
-       */
-      public Builder setTopYScale(float value) {
-        bitField0_ |= 0x00000002;
-        topYScale_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required float topYScale = 2;</code>
-       *
-       * <pre>
-       *子视图左上角Y在实际推流视频中的比例
-       * </pre>
-       */
-      public Builder clearTopYScale() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        topYScale_ = 0F;
-        onChanged();
-        return this;
-      }
-
-      private float widthScale_ ;
-      /**
-       * <code>required float widthScale = 3;</code>
-       *
-       * <pre>
-       *子视图宽度在实际推流视频中的比例
-       * </pre>
-       */
-      public boolean hasWidthScale() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>required float widthScale = 3;</code>
-       *
-       * <pre>
-       *子视图宽度在实际推流视频中的比例
-       * </pre>
-       */
-      public float getWidthScale() {
-        return widthScale_;
-      }
-      /**
-       * <code>required float widthScale = 3;</code>
-       *
-       * <pre>
-       *子视图宽度在实际推流视频中的比例
-       * </pre>
-       */
-      public Builder setWidthScale(float value) {
-        bitField0_ |= 0x00000004;
-        widthScale_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required float widthScale = 3;</code>
-       *
-       * <pre>
-       *子视图宽度在实际推流视频中的比例
-       * </pre>
-       */
-      public Builder clearWidthScale() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        widthScale_ = 0F;
-        onChanged();
-        return this;
-      }
-
-      private float heightScale_ ;
-      /**
-       * <code>required float heightScale = 4;</code>
-       *
-       * <pre>
-       *子视图高度左上角在推流视频中的比例
-       * </pre>
-       */
-      public boolean hasHeightScale() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>required float heightScale = 4;</code>
-       *
-       * <pre>
-       *子视图高度左上角在推流视频中的比例
-       * </pre>
-       */
-      public float getHeightScale() {
-        return heightScale_;
-      }
-      /**
-       * <code>required float heightScale = 4;</code>
-       *
-       * <pre>
-       *子视图高度左上角在推流视频中的比例
-       * </pre>
-       */
-      public Builder setHeightScale(float value) {
-        bitField0_ |= 0x00000008;
-        heightScale_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required float heightScale = 4;</code>
-       *
-       * <pre>
-       *子视图高度左上角在推流视频中的比例
-       * </pre>
-       */
-      public Builder clearHeightScale() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        heightScale_ = 0F;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.MicSubViewPos)
-    }
-
-    static {
-      defaultInstance = new MicSubViewPos(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.MicSubViewPos)
-  }
-
-  public interface MicInfoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.MicInfo)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required uint64 micuid = 1;</code>
-     *
-     * <pre>
-     *连麦的观众id
-     * </pre>
-     */
-    boolean hasMicuid();
-    /**
-     * <code>required uint64 micuid = 1;</code>
-     *
-     * <pre>
-     *连麦的观众id
-     * </pre>
-     */
-    long getMicuid();
-
-    /**
-     * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
-     *
-     * <pre>
-     *子视图的比例位置
-     * </pre>
-     */
-    boolean hasSubViewPos();
-    /**
-     * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
-     *
-     * <pre>
-     *子视图的比例位置
-     * </pre>
-     */
-    com.wali.live.proto.LiveCommonProto.MicSubViewPos getSubViewPos();
-    /**
-     * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
-     *
-     * <pre>
-     *子视图的比例位置
-     * </pre>
-     */
-    com.wali.live.proto.LiveCommonProto.MicSubViewPosOrBuilder getSubViewPosOrBuilder();
-  }
-  /**
-   * Protobuf type {@code com.wali.live.proto.MicInfo}
-   */
-  public static final class MicInfo extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.MicInfo)
-      MicInfoOrBuilder {
-    // Use MicInfo.newBuilder() to construct.
-    private MicInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private MicInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final MicInfo defaultInstance;
-    public static MicInfo getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public MicInfo getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private MicInfo(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              micuid_ = input.readUInt64();
-              break;
-            }
-            case 18: {
-              com.wali.live.proto.LiveCommonProto.MicSubViewPos.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                subBuilder = subViewPos_.toBuilder();
-              }
-              subViewPos_ = input.readMessage(com.wali.live.proto.LiveCommonProto.MicSubViewPos.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(subViewPos_);
-                subViewPos_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000002;
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicInfo_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicInfo_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.LiveCommonProto.MicInfo.class, com.wali.live.proto.LiveCommonProto.MicInfo.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<MicInfo> PARSER =
-        new com.google.protobuf.AbstractParser<MicInfo>() {
-      public MicInfo parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new MicInfo(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<MicInfo> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int MICUID_FIELD_NUMBER = 1;
-    private long micuid_;
-    /**
-     * <code>required uint64 micuid = 1;</code>
-     *
-     * <pre>
-     *连麦的观众id
-     * </pre>
-     */
-    public boolean hasMicuid() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required uint64 micuid = 1;</code>
-     *
-     * <pre>
-     *连麦的观众id
-     * </pre>
-     */
-    public long getMicuid() {
-      return micuid_;
-    }
-
-    public static final int SUBVIEWPOS_FIELD_NUMBER = 2;
-    private com.wali.live.proto.LiveCommonProto.MicSubViewPos subViewPos_;
-    /**
-     * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
-     *
-     * <pre>
-     *子视图的比例位置
-     * </pre>
-     */
-    public boolean hasSubViewPos() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
-     *
-     * <pre>
-     *子视图的比例位置
-     * </pre>
-     */
-    public com.wali.live.proto.LiveCommonProto.MicSubViewPos getSubViewPos() {
-      return subViewPos_;
-    }
-    /**
-     * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
-     *
-     * <pre>
-     *子视图的比例位置
-     * </pre>
-     */
-    public com.wali.live.proto.LiveCommonProto.MicSubViewPosOrBuilder getSubViewPosOrBuilder() {
-      return subViewPos_;
-    }
-
-    private void initFields() {
-      micuid_ = 0L;
-      subViewPos_ = com.wali.live.proto.LiveCommonProto.MicSubViewPos.getDefaultInstance();
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasMicuid()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (hasSubViewPos()) {
-        if (!getSubViewPos().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeUInt64(1, micuid_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeMessage(2, subViewPos_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, micuid_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, subViewPos_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.wali.live.proto.LiveCommonProto.MicInfo parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.wali.live.proto.LiveCommonProto.MicInfo parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.wali.live.proto.LiveCommonProto.MicInfo parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.wali.live.proto.LiveCommonProto.MicInfo parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.wali.live.proto.LiveCommonProto.MicInfo parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.wali.live.proto.LiveCommonProto.MicInfo parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.wali.live.proto.LiveCommonProto.MicInfo parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.wali.live.proto.LiveCommonProto.MicInfo parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.wali.live.proto.LiveCommonProto.MicInfo parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.wali.live.proto.LiveCommonProto.MicInfo parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.LiveCommonProto.MicInfo prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.wali.live.proto.MicInfo}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.MicInfo)
-        com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicInfo_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicInfo_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.LiveCommonProto.MicInfo.class, com.wali.live.proto.LiveCommonProto.MicInfo.Builder.class);
-      }
-
-      // Construct using com.wali.live.proto.LiveCommonProto.MicInfo.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getSubViewPosFieldBuilder();
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        micuid_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (subViewPosBuilder_ == null) {
-          subViewPos_ = com.wali.live.proto.LiveCommonProto.MicSubViewPos.getDefaultInstance();
-        } else {
-          subViewPosBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicInfo_descriptor;
-      }
-
-      public com.wali.live.proto.LiveCommonProto.MicInfo getDefaultInstanceForType() {
-        return com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
-      }
-
-      public com.wali.live.proto.LiveCommonProto.MicInfo build() {
-        com.wali.live.proto.LiveCommonProto.MicInfo result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.wali.live.proto.LiveCommonProto.MicInfo buildPartial() {
-        com.wali.live.proto.LiveCommonProto.MicInfo result = new com.wali.live.proto.LiveCommonProto.MicInfo(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.micuid_ = micuid_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        if (subViewPosBuilder_ == null) {
-          result.subViewPos_ = subViewPos_;
-        } else {
-          result.subViewPos_ = subViewPosBuilder_.build();
-        }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.LiveCommonProto.MicInfo) {
-          return mergeFrom((com.wali.live.proto.LiveCommonProto.MicInfo)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.wali.live.proto.LiveCommonProto.MicInfo other) {
-        if (other == com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance()) return this;
-        if (other.hasMicuid()) {
-          setMicuid(other.getMicuid());
-        }
-        if (other.hasSubViewPos()) {
-          mergeSubViewPos(other.getSubViewPos());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (!hasMicuid()) {
-          
-          return false;
-        }
-        if (hasSubViewPos()) {
-          if (!getSubViewPos().isInitialized()) {
-            
-            return false;
-          }
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.wali.live.proto.LiveCommonProto.MicInfo parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.LiveCommonProto.MicInfo) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private long micuid_ ;
-      /**
-       * <code>required uint64 micuid = 1;</code>
-       *
-       * <pre>
-       *连麦的观众id
-       * </pre>
-       */
-      public boolean hasMicuid() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required uint64 micuid = 1;</code>
-       *
-       * <pre>
-       *连麦的观众id
-       * </pre>
-       */
-      public long getMicuid() {
-        return micuid_;
-      }
-      /**
-       * <code>required uint64 micuid = 1;</code>
-       *
-       * <pre>
-       *连麦的观众id
-       * </pre>
-       */
-      public Builder setMicuid(long value) {
-        bitField0_ |= 0x00000001;
-        micuid_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required uint64 micuid = 1;</code>
-       *
-       * <pre>
-       *连麦的观众id
-       * </pre>
-       */
-      public Builder clearMicuid() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        micuid_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private com.wali.live.proto.LiveCommonProto.MicSubViewPos subViewPos_ = com.wali.live.proto.LiveCommonProto.MicSubViewPos.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          com.wali.live.proto.LiveCommonProto.MicSubViewPos, com.wali.live.proto.LiveCommonProto.MicSubViewPos.Builder, com.wali.live.proto.LiveCommonProto.MicSubViewPosOrBuilder> subViewPosBuilder_;
-      /**
-       * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
-       *
-       * <pre>
-       *子视图的比例位置
-       * </pre>
-       */
-      public boolean hasSubViewPos() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
-       *
-       * <pre>
-       *子视图的比例位置
-       * </pre>
-       */
-      public com.wali.live.proto.LiveCommonProto.MicSubViewPos getSubViewPos() {
-        if (subViewPosBuilder_ == null) {
-          return subViewPos_;
-        } else {
-          return subViewPosBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
-       *
-       * <pre>
-       *子视图的比例位置
-       * </pre>
-       */
-      public Builder setSubViewPos(com.wali.live.proto.LiveCommonProto.MicSubViewPos value) {
-        if (subViewPosBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          subViewPos_ = value;
-          onChanged();
-        } else {
-          subViewPosBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000002;
-        return this;
-      }
-      /**
-       * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
-       *
-       * <pre>
-       *子视图的比例位置
-       * </pre>
-       */
-      public Builder setSubViewPos(
-          com.wali.live.proto.LiveCommonProto.MicSubViewPos.Builder builderForValue) {
-        if (subViewPosBuilder_ == null) {
-          subViewPos_ = builderForValue.build();
-          onChanged();
-        } else {
-          subViewPosBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000002;
-        return this;
-      }
-      /**
-       * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
-       *
-       * <pre>
-       *子视图的比例位置
-       * </pre>
-       */
-      public Builder mergeSubViewPos(com.wali.live.proto.LiveCommonProto.MicSubViewPos value) {
-        if (subViewPosBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) == 0x00000002) &&
-              subViewPos_ != com.wali.live.proto.LiveCommonProto.MicSubViewPos.getDefaultInstance()) {
-            subViewPos_ =
-              com.wali.live.proto.LiveCommonProto.MicSubViewPos.newBuilder(subViewPos_).mergeFrom(value).buildPartial();
-          } else {
-            subViewPos_ = value;
-          }
-          onChanged();
-        } else {
-          subViewPosBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000002;
-        return this;
-      }
-      /**
-       * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
-       *
-       * <pre>
-       *子视图的比例位置
-       * </pre>
-       */
-      public Builder clearSubViewPos() {
-        if (subViewPosBuilder_ == null) {
-          subViewPos_ = com.wali.live.proto.LiveCommonProto.MicSubViewPos.getDefaultInstance();
-          onChanged();
-        } else {
-          subViewPosBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-      /**
-       * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
-       *
-       * <pre>
-       *子视图的比例位置
-       * </pre>
-       */
-      public com.wali.live.proto.LiveCommonProto.MicSubViewPos.Builder getSubViewPosBuilder() {
-        bitField0_ |= 0x00000002;
-        onChanged();
-        return getSubViewPosFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
-       *
-       * <pre>
-       *子视图的比例位置
-       * </pre>
-       */
-      public com.wali.live.proto.LiveCommonProto.MicSubViewPosOrBuilder getSubViewPosOrBuilder() {
-        if (subViewPosBuilder_ != null) {
-          return subViewPosBuilder_.getMessageOrBuilder();
-        } else {
-          return subViewPos_;
-        }
-      }
-      /**
-       * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
-       *
-       * <pre>
-       *子视图的比例位置
-       * </pre>
-       */
-      private com.google.protobuf.SingleFieldBuilder<
-          com.wali.live.proto.LiveCommonProto.MicSubViewPos, com.wali.live.proto.LiveCommonProto.MicSubViewPos.Builder, com.wali.live.proto.LiveCommonProto.MicSubViewPosOrBuilder> 
-          getSubViewPosFieldBuilder() {
-        if (subViewPosBuilder_ == null) {
-          subViewPosBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.wali.live.proto.LiveCommonProto.MicSubViewPos, com.wali.live.proto.LiveCommonProto.MicSubViewPos.Builder, com.wali.live.proto.LiveCommonProto.MicSubViewPosOrBuilder>(
-                  getSubViewPos(),
-                  getParentForChildren(),
-                  isClean());
-          subViewPos_ = null;
-        }
-        return subViewPosBuilder_;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.MicInfo)
-    }
-
-    static {
-      defaultInstance = new MicInfo(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.MicInfo)
-  }
-
   public interface ViewerOrBuilder extends
       // @@protoc_insertion_point(interface_extends:com.wali.live.proto.Viewer)
       com.google.protobuf.MessageOrBuilder {
@@ -9111,6 +7622,23 @@ public final class LiveCommonProto {
      */
     com.google.protobuf.ByteString
         getPushSendSuccTextBytes();
+
+    /**
+     * <code>optional uint32 pkInterval = 8;</code>
+     *
+     * <pre>
+     *pk间隔,单位:秒, 默认30s
+     * </pre>
+     */
+    boolean hasPkInterval();
+    /**
+     * <code>optional uint32 pkInterval = 8;</code>
+     *
+     * <pre>
+     *pk间隔,单位:秒, 默认30s
+     * </pre>
+     */
+    int getPkInterval();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.ClickItem}
@@ -9201,6 +7729,11 @@ public final class LiveCommonProto {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
               pushSendSuccText_ = bs;
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000080;
+              pkInterval_ = input.readUInt32();
               break;
             }
           }
@@ -9528,6 +8061,29 @@ public final class LiveCommonProto {
       }
     }
 
+    public static final int PKINTERVAL_FIELD_NUMBER = 8;
+    private int pkInterval_;
+    /**
+     * <code>optional uint32 pkInterval = 8;</code>
+     *
+     * <pre>
+     *pk间隔,单位:秒, 默认30s
+     * </pre>
+     */
+    public boolean hasPkInterval() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional uint32 pkInterval = 8;</code>
+     *
+     * <pre>
+     *pk间隔,单位:秒, 默认30s
+     * </pre>
+     */
+    public int getPkInterval() {
+      return pkInterval_;
+    }
+
     private void initFields() {
       clickType_ = 0;
       clickImageUrl_ = "";
@@ -9536,6 +8092,7 @@ public final class LiveCommonProto {
       clickWaitingImageUrl_ = "";
       warningText_ = "";
       pushSendSuccText_ = "";
+      pkInterval_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -9575,6 +8132,9 @@ public final class LiveCommonProto {
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeBytes(7, getPushSendSuccTextBytes());
       }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeUInt32(8, pkInterval_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -9611,6 +8171,10 @@ public final class LiveCommonProto {
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(7, getPushSendSuccTextBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(8, pkInterval_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -9743,6 +8307,8 @@ public final class LiveCommonProto {
         bitField0_ = (bitField0_ & ~0x00000020);
         pushSendSuccText_ = "";
         bitField0_ = (bitField0_ & ~0x00000040);
+        pkInterval_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -9799,6 +8365,10 @@ public final class LiveCommonProto {
           to_bitField0_ |= 0x00000040;
         }
         result.pushSendSuccText_ = pushSendSuccText_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.pkInterval_ = pkInterval_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -9843,6 +8413,9 @@ public final class LiveCommonProto {
           bitField0_ |= 0x00000040;
           pushSendSuccText_ = other.pushSendSuccText_;
           onChanged();
+        }
+        if (other.hasPkInterval()) {
+          setPkInterval(other.getPkInterval());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -10415,6 +8988,54 @@ public final class LiveCommonProto {
   }
   bitField0_ |= 0x00000040;
         pushSendSuccText_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int pkInterval_ ;
+      /**
+       * <code>optional uint32 pkInterval = 8;</code>
+       *
+       * <pre>
+       *pk间隔,单位:秒, 默认30s
+       * </pre>
+       */
+      public boolean hasPkInterval() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional uint32 pkInterval = 8;</code>
+       *
+       * <pre>
+       *pk间隔,单位:秒, 默认30s
+       * </pre>
+       */
+      public int getPkInterval() {
+        return pkInterval_;
+      }
+      /**
+       * <code>optional uint32 pkInterval = 8;</code>
+       *
+       * <pre>
+       *pk间隔,单位:秒, 默认30s
+       * </pre>
+       */
+      public Builder setPkInterval(int value) {
+        bitField0_ |= 0x00000080;
+        pkInterval_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 pkInterval = 8;</code>
+       *
+       * <pre>
+       *pk间隔,单位:秒, 默认30s
+       * </pre>
+       */
+      public Builder clearPkInterval() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        pkInterval_ = 0;
         onChanged();
         return this;
       }
@@ -21860,16 +20481,6 @@ public final class LiveCommonProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_MsgRule_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_MicSubViewPos_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_MicSubViewPos_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_MicInfo_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_MicInfo_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_Viewer_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -21986,71 +20597,67 @@ public final class LiveCommonProto {
       "\n\020LiveCommon.proto\022\023com.wali.live.proto\"" +
       "*\n\013UpStreamUrl\022\013\n\003url\030\001 \001(\t\022\016\n\006weight\030\002 " +
       "\001(\r\"4\n\007MsgRule\022\024\n\014unrepeatable\030\001 \001(\010\022\023\n\013" +
-      "speakPeriod\030\002 \001(\r\"^\n\rMicSubViewPos\022\021\n\tto" +
-      "pXScale\030\001 \002(\002\022\021\n\ttopYScale\030\002 \002(\002\022\022\n\nwidt" +
-      "hScale\030\003 \002(\002\022\023\n\013heightScale\030\004 \002(\002\"Q\n\007Mic" +
-      "Info\022\016\n\006micuid\030\001 \002(\004\0226\n\nsubViewPos\030\002 \001(\013" +
-      "2\".com.wali.live.proto.MicSubViewPos\"\232\001\n" +
-      "\006Viewer\022\014\n\004uuid\030\001 \002(\004\022\r\n\005level\030\002 \001(\r\022\016\n\006" +
-      "avatar\030\003 \001(\004\022\032\n\022certification_type\030\004 \001(\r",
-      "\022\017\n\007redName\030\005 \001(\010\022\021\n\tvip_level\030\006 \001(\r\022\023\n\013" +
-      "vip_disable\030\007 \001(\010\022\016\n\006ticket\030\010 \001(\r\"<\n\006PKI" +
-      "nfo\022\014\n\004uuid\030\001 \001(\004\022\016\n\006liveId\030\002 \001(\t\022\024\n\014pkI" +
-      "nitTicket\030\003 \001(\r\";\n\rViewerInfoReq\022\014\n\004uuid" +
-      "\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\"?\n\014" +
-      "UserRoomInfo\022\014\n\004type\030\001 \001(\r\022\017\n\007appType\030\002 " +
-      "\001(\r\022\020\n\010tvRoomid\030\003 \001(\t\"L\n\nWidgetInfo\022\020\n\010l" +
-      "ink_url\030\001 \002(\t\022\020\n\010position\030\002 \002(\r\022\014\n\004icon\030" +
-      "\003 \001(\t\022\014\n\004text\030\004 \001(\t\"\032\n\013ColorConfig\022\013\n\003rg" +
-      "b\030\001 \002(\r\"\262\001\n\013CounterItem\022\020\n\010imageUrl\030\001 \001(",
-      "\t\022\023\n\013counterText\030\002 \001(\t\0223\n\ttextColor\030\003 \001(" +
-      "\0132 .com.wali.live.proto.ColorConfig\0227\n\rt" +
-      "extEdgeColor\030\004 \001(\0132 .com.wali.live.proto" +
-      ".ColorConfig\022\016\n\006isBold\030\005 \001(\010\"\251\001\n\tClickIt" +
-      "em\022\021\n\tclickType\030\001 \002(\r\022\025\n\rclickImageUrl\030\002" +
-      " \001(\t\022\025\n\rclickInterval\030\003 \001(\r\022\016\n\006giftId\030\004 " +
-      "\001(\r\022\034\n\024clickWaitingImageUrl\030\005 \001(\t\022\023\n\013war" +
-      "ningText\030\006 \001(\t\022\030\n\020pushSendSuccText\030\007 \001(\t" +
-      "\"\370\001\n\rNewWidgetUnit\022\020\n\010link_url\030\001 \001(\t\022\014\n\004" +
-      "icon\030\002 \001(\t\022\014\n\004text\030\003 \001(\t\0223\n\ttextColor\030\004 ",
-      "\001(\0132 .com.wali.live.proto.ColorConfig\022\024\n" +
-      "\014urlNeedParam\030\005 \001(\010\022\024\n\014schemaPrefix\030\006 \001(" +
-      "\t\022\025\n\rschemaPostfix\030\007 \001(\t\022\020\n\010openType\030\010 \001" +
-      "(\r\022/\n\010h5Config\030\t \001(\0132\035.com.wali.live.pro" +
-      "to.H5Config\"\031\n\010H5Config\022\r\n\005h5Url\030\001 \001(\t\"\377" +
-      "\001\n\rNewWidgetItem\022\020\n\010widgetID\030\001 \002(\r\022\020\n\010po" +
-      "sition\030\002 \002(\r\022\023\n\013displayType\030\003 \001(\r\0226\n\nwid" +
-      "getUint\030\004 \003(\0132\".com.wali.live.proto.NewW" +
-      "idgetUnit\022\023\n\013displayTime\030\005 \001(\r\0225\n\013counte" +
-      "rItem\030\006 \001(\0132 .com.wali.live.proto.Counte",
-      "rItem\0221\n\tclickItem\030\007 \001(\0132\036.com.wali.live" +
-      ".proto.ClickItem\"]\n\rNewWidgetInfo\0226\n\nwid" +
-      "getItem\030\001 \003(\0132\".com.wali.live.proto.NewW" +
-      "idgetItem\022\024\n\014pullInterval\030\002 \001(\r\"\'\n\016Shopp" +
-      "ingConfig\022\025\n\tshop_type\030\001 \002(\005:\002-1\"\300\001\n\016Roo" +
-      "mIconConfig\022\r\n\005noMic\030\001 \001(\010\022\r\n\005noPic\030\002 \001(" +
-      "\010\022\017\n\007noVideo\030\003 \001(\010\022\032\n\022noScreenProjection" +
-      "\030\004 \001(\010\022\024\n\014noAtmosphere\030\005 \001(\010\022\017\n\007noMusic\030" +
-      "\006 \001(\010\022\022\n\nnoEmoticon\030\007 \001(\010\022\021\n\tnoHongBao\030\010" +
-      " \001(\010\022\025\n\rnoConsumeTask\030\t \001(\010\";\n\021WidgetCou",
-      "nterPush\022\020\n\010widgetID\030\001 \002(\r\022\024\n\014counterVal" +
-      "ue\030\002 \001(\003\"[\n\nViewerPush\022+\n\006viewer\030\001 \002(\0132\033" +
-      ".com.wali.live.proto.Viewer\022\r\n\005leave\030\002 \001" +
-      "(\010\022\021\n\tviewerCnt\030\003 \001(\r\"(\n\nLevelRange\022\r\n\005s" +
-      "tart\030\001 \001(\r\022\013\n\003end\030\002 \001(\r\"Y\n\027JoinRoomAnima" +
-      "tionConfig\022>\n\020animation_config\030\001 \003(\0132$.c" +
-      "om.wali.live.proto.AnimationConfig\"X\n\026Up" +
-      "gradeAnimationConfig\022>\n\020animation_config" +
-      "\030\001 \003(\0132$.com.wali.live.proto.AnimationCo" +
-      "nfig\"a\n\017AnimationConfig\022\030\n\020animation_eff",
-      "ect\030\001 \001(\r\0224\n\013level_range\030\002 \001(\0132\037.com.wal" +
-      "i.live.proto.LevelRange\"\317\001\n\023RoomAnimatio" +
-      "nConfig\022P\n\032join_room_animation_config\030\001 " +
-      "\001(\0132,.com.wali.live.proto.JoinRoomAnimat" +
-      "ionConfig\022M\n\030upgrade_animation_config\030\002 " +
-      "\001(\0132+.com.wali.live.proto.UpgradeAnimati" +
-      "onConfig\022\027\n\017noJoinAnimation\030\003 \001(\rB&\n\023com" +
-      ".wali.live.protoB\017LiveCommonProto"
+      "speakPeriod\030\002 \001(\r\"\232\001\n\006Viewer\022\014\n\004uuid\030\001 \002" +
+      "(\004\022\r\n\005level\030\002 \001(\r\022\016\n\006avatar\030\003 \001(\004\022\032\n\022cer" +
+      "tification_type\030\004 \001(\r\022\017\n\007redName\030\005 \001(\010\022\021" +
+      "\n\tvip_level\030\006 \001(\r\022\023\n\013vip_disable\030\007 \001(\010\022\016" +
+      "\n\006ticket\030\010 \001(\r\"<\n\006PKInfo\022\014\n\004uuid\030\001 \001(\004\022\016" +
+      "\n\006liveId\030\002 \001(\t\022\024\n\014pkInitTicket\030\003 \001(\r\";\n\r" +
+      "ViewerInfoReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \002(",
+      "\004\022\016\n\006liveId\030\003 \002(\t\"?\n\014UserRoomInfo\022\014\n\004typ" +
+      "e\030\001 \001(\r\022\017\n\007appType\030\002 \001(\r\022\020\n\010tvRoomid\030\003 \001" +
+      "(\t\"L\n\nWidgetInfo\022\020\n\010link_url\030\001 \002(\t\022\020\n\010po" +
+      "sition\030\002 \002(\r\022\014\n\004icon\030\003 \001(\t\022\014\n\004text\030\004 \001(\t" +
+      "\"\032\n\013ColorConfig\022\013\n\003rgb\030\001 \002(\r\"\262\001\n\013Counter" +
+      "Item\022\020\n\010imageUrl\030\001 \001(\t\022\023\n\013counterText\030\002 " +
+      "\001(\t\0223\n\ttextColor\030\003 \001(\0132 .com.wali.live.p" +
+      "roto.ColorConfig\0227\n\rtextEdgeColor\030\004 \001(\0132" +
+      " .com.wali.live.proto.ColorConfig\022\016\n\006isB" +
+      "old\030\005 \001(\010\"\275\001\n\tClickItem\022\021\n\tclickType\030\001 \002",
+      "(\r\022\025\n\rclickImageUrl\030\002 \001(\t\022\025\n\rclickInterv" +
+      "al\030\003 \001(\r\022\016\n\006giftId\030\004 \001(\r\022\034\n\024clickWaiting" +
+      "ImageUrl\030\005 \001(\t\022\023\n\013warningText\030\006 \001(\t\022\030\n\020p" +
+      "ushSendSuccText\030\007 \001(\t\022\022\n\npkInterval\030\010 \001(" +
+      "\r\"\370\001\n\rNewWidgetUnit\022\020\n\010link_url\030\001 \001(\t\022\014\n" +
+      "\004icon\030\002 \001(\t\022\014\n\004text\030\003 \001(\t\0223\n\ttextColor\030\004" +
+      " \001(\0132 .com.wali.live.proto.ColorConfig\022\024" +
+      "\n\014urlNeedParam\030\005 \001(\010\022\024\n\014schemaPrefix\030\006 \001" +
+      "(\t\022\025\n\rschemaPostfix\030\007 \001(\t\022\020\n\010openType\030\010 " +
+      "\001(\r\022/\n\010h5Config\030\t \001(\0132\035.com.wali.live.pr",
+      "oto.H5Config\"\031\n\010H5Config\022\r\n\005h5Url\030\001 \001(\t\"" +
+      "\377\001\n\rNewWidgetItem\022\020\n\010widgetID\030\001 \002(\r\022\020\n\010p" +
+      "osition\030\002 \002(\r\022\023\n\013displayType\030\003 \001(\r\0226\n\nwi" +
+      "dgetUint\030\004 \003(\0132\".com.wali.live.proto.New" +
+      "WidgetUnit\022\023\n\013displayTime\030\005 \001(\r\0225\n\013count" +
+      "erItem\030\006 \001(\0132 .com.wali.live.proto.Count" +
+      "erItem\0221\n\tclickItem\030\007 \001(\0132\036.com.wali.liv" +
+      "e.proto.ClickItem\"]\n\rNewWidgetInfo\0226\n\nwi" +
+      "dgetItem\030\001 \003(\0132\".com.wali.live.proto.New" +
+      "WidgetItem\022\024\n\014pullInterval\030\002 \001(\r\"\'\n\016Shop",
+      "pingConfig\022\025\n\tshop_type\030\001 \002(\005:\002-1\"\300\001\n\016Ro" +
+      "omIconConfig\022\r\n\005noMic\030\001 \001(\010\022\r\n\005noPic\030\002 \001" +
+      "(\010\022\017\n\007noVideo\030\003 \001(\010\022\032\n\022noScreenProjectio" +
+      "n\030\004 \001(\010\022\024\n\014noAtmosphere\030\005 \001(\010\022\017\n\007noMusic" +
+      "\030\006 \001(\010\022\022\n\nnoEmoticon\030\007 \001(\010\022\021\n\tnoHongBao\030" +
+      "\010 \001(\010\022\025\n\rnoConsumeTask\030\t \001(\010\";\n\021WidgetCo" +
+      "unterPush\022\020\n\010widgetID\030\001 \002(\r\022\024\n\014counterVa" +
+      "lue\030\002 \001(\003\"[\n\nViewerPush\022+\n\006viewer\030\001 \002(\0132" +
+      "\033.com.wali.live.proto.Viewer\022\r\n\005leave\030\002 " +
+      "\001(\010\022\021\n\tviewerCnt\030\003 \001(\r\"(\n\nLevelRange\022\r\n\005",
+      "start\030\001 \001(\r\022\013\n\003end\030\002 \001(\r\"Y\n\027JoinRoomAnim" +
+      "ationConfig\022>\n\020animation_config\030\001 \003(\0132$." +
+      "com.wali.live.proto.AnimationConfig\"X\n\026U" +
+      "pgradeAnimationConfig\022>\n\020animation_confi" +
+      "g\030\001 \003(\0132$.com.wali.live.proto.AnimationC" +
+      "onfig\"a\n\017AnimationConfig\022\030\n\020animation_ef" +
+      "fect\030\001 \001(\r\0224\n\013level_range\030\002 \001(\0132\037.com.wa" +
+      "li.live.proto.LevelRange\"\317\001\n\023RoomAnimati" +
+      "onConfig\022P\n\032join_room_animation_config\030\001" +
+      " \001(\0132,.com.wali.live.proto.JoinRoomAnima",
+      "tionConfig\022M\n\030upgrade_animation_config\030\002" +
+      " \001(\0132+.com.wali.live.proto.UpgradeAnimat" +
+      "ionConfig\022\027\n\017noJoinAnimation\030\003 \001(\rB&\n\023co" +
+      "m.wali.live.protoB\017LiveCommonProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -22076,140 +20683,128 @@ public final class LiveCommonProto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_MsgRule_descriptor,
         new java.lang.String[] { "Unrepeatable", "SpeakPeriod", });
-    internal_static_com_wali_live_proto_MicSubViewPos_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_com_wali_live_proto_MicSubViewPos_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_MicSubViewPos_descriptor,
-        new java.lang.String[] { "TopXScale", "TopYScale", "WidthScale", "HeightScale", });
-    internal_static_com_wali_live_proto_MicInfo_descriptor =
-      getDescriptor().getMessageTypes().get(3);
-    internal_static_com_wali_live_proto_MicInfo_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_MicInfo_descriptor,
-        new java.lang.String[] { "Micuid", "SubViewPos", });
     internal_static_com_wali_live_proto_Viewer_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_com_wali_live_proto_Viewer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_Viewer_descriptor,
         new java.lang.String[] { "Uuid", "Level", "Avatar", "CertificationType", "RedName", "VipLevel", "VipDisable", "Ticket", });
     internal_static_com_wali_live_proto_PKInfo_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_com_wali_live_proto_PKInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_PKInfo_descriptor,
         new java.lang.String[] { "Uuid", "LiveId", "PkInitTicket", });
     internal_static_com_wali_live_proto_ViewerInfoReq_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_com_wali_live_proto_ViewerInfoReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ViewerInfoReq_descriptor,
         new java.lang.String[] { "Uuid", "Zuid", "LiveId", });
     internal_static_com_wali_live_proto_UserRoomInfo_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_com_wali_live_proto_UserRoomInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UserRoomInfo_descriptor,
         new java.lang.String[] { "Type", "AppType", "TvRoomid", });
     internal_static_com_wali_live_proto_WidgetInfo_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_com_wali_live_proto_WidgetInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_WidgetInfo_descriptor,
         new java.lang.String[] { "LinkUrl", "Position", "Icon", "Text", });
     internal_static_com_wali_live_proto_ColorConfig_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_com_wali_live_proto_ColorConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ColorConfig_descriptor,
         new java.lang.String[] { "Rgb", });
     internal_static_com_wali_live_proto_CounterItem_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_com_wali_live_proto_CounterItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_CounterItem_descriptor,
         new java.lang.String[] { "ImageUrl", "CounterText", "TextColor", "TextEdgeColor", "IsBold", });
     internal_static_com_wali_live_proto_ClickItem_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_com_wali_live_proto_ClickItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ClickItem_descriptor,
-        new java.lang.String[] { "ClickType", "ClickImageUrl", "ClickInterval", "GiftId", "ClickWaitingImageUrl", "WarningText", "PushSendSuccText", });
+        new java.lang.String[] { "ClickType", "ClickImageUrl", "ClickInterval", "GiftId", "ClickWaitingImageUrl", "WarningText", "PushSendSuccText", "PkInterval", });
     internal_static_com_wali_live_proto_NewWidgetUnit_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_com_wali_live_proto_NewWidgetUnit_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_NewWidgetUnit_descriptor,
         new java.lang.String[] { "LinkUrl", "Icon", "Text", "TextColor", "UrlNeedParam", "SchemaPrefix", "SchemaPostfix", "OpenType", "H5Config", });
     internal_static_com_wali_live_proto_H5Config_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_com_wali_live_proto_H5Config_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_H5Config_descriptor,
         new java.lang.String[] { "H5Url", });
     internal_static_com_wali_live_proto_NewWidgetItem_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_com_wali_live_proto_NewWidgetItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_NewWidgetItem_descriptor,
         new java.lang.String[] { "WidgetID", "Position", "DisplayType", "WidgetUint", "DisplayTime", "CounterItem", "ClickItem", });
     internal_static_com_wali_live_proto_NewWidgetInfo_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_com_wali_live_proto_NewWidgetInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_NewWidgetInfo_descriptor,
         new java.lang.String[] { "WidgetItem", "PullInterval", });
     internal_static_com_wali_live_proto_ShoppingConfig_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_com_wali_live_proto_ShoppingConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ShoppingConfig_descriptor,
         new java.lang.String[] { "ShopType", });
     internal_static_com_wali_live_proto_RoomIconConfig_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_com_wali_live_proto_RoomIconConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_RoomIconConfig_descriptor,
         new java.lang.String[] { "NoMic", "NoPic", "NoVideo", "NoScreenProjection", "NoAtmosphere", "NoMusic", "NoEmoticon", "NoHongBao", "NoConsumeTask", });
     internal_static_com_wali_live_proto_WidgetCounterPush_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_com_wali_live_proto_WidgetCounterPush_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_WidgetCounterPush_descriptor,
         new java.lang.String[] { "WidgetID", "CounterValue", });
     internal_static_com_wali_live_proto_ViewerPush_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_com_wali_live_proto_ViewerPush_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ViewerPush_descriptor,
         new java.lang.String[] { "Viewer", "Leave", "ViewerCnt", });
     internal_static_com_wali_live_proto_LevelRange_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_com_wali_live_proto_LevelRange_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_LevelRange_descriptor,
         new java.lang.String[] { "Start", "End", });
     internal_static_com_wali_live_proto_JoinRoomAnimationConfig_descriptor =
-      getDescriptor().getMessageTypes().get(21);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_com_wali_live_proto_JoinRoomAnimationConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_JoinRoomAnimationConfig_descriptor,
         new java.lang.String[] { "AnimationConfig", });
     internal_static_com_wali_live_proto_UpgradeAnimationConfig_descriptor =
-      getDescriptor().getMessageTypes().get(22);
+      getDescriptor().getMessageTypes().get(20);
     internal_static_com_wali_live_proto_UpgradeAnimationConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UpgradeAnimationConfig_descriptor,
         new java.lang.String[] { "AnimationConfig", });
     internal_static_com_wali_live_proto_AnimationConfig_descriptor =
-      getDescriptor().getMessageTypes().get(23);
+      getDescriptor().getMessageTypes().get(21);
     internal_static_com_wali_live_proto_AnimationConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AnimationConfig_descriptor,
         new java.lang.String[] { "AnimationEffect", "LevelRange", });
     internal_static_com_wali_live_proto_RoomAnimationConfig_descriptor =
-      getDescriptor().getMessageTypes().get(24);
+      getDescriptor().getMessageTypes().get(22);
     internal_static_com_wali_live_proto_RoomAnimationConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_RoomAnimationConfig_descriptor,

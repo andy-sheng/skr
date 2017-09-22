@@ -15,7 +15,6 @@ import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
  * @module 二级页顶部大图， 中间有文字，下方两行文字
  */
 public class LargeCardHeadHolder extends FixedHolder {
-
     private BaseImageView mAvatarIv;
     private TextView mCenterTextUp;
     private TextView mCenterTextDown;
@@ -41,6 +40,8 @@ public class LargeCardHeadHolder extends FixedHolder {
         if (item == null) {
             return;
         }
+        exposureItem(item);
+        
         bindImageWithBorder(mAvatarIv, item.getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_XLARGE), false, 640, 640, ScalingUtils.ScaleType.CENTER_CROP);
         mAvatarIv.setOnClickListener(new View.OnClickListener() {
             @Override

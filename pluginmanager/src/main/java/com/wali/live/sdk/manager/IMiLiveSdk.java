@@ -25,7 +25,7 @@ public interface IMiLiveSdk {
     /**
      * 初始化操作，建议在Application.onCreate()初始化
      */
-    void init(Application application, int channelId, String channelSecret, ICallback callback);
+    void init(Application application, int channelId, String channelSecret, boolean isCta, ICallback callback);
 
     /**
      * 设置plugin日志是否开启，默认false
@@ -182,7 +182,7 @@ public interface IMiLiveSdk {
     /**
      * 判断该手机中是否安装的直播助手
      */
-    boolean hasInstallLiveSdk();
+    boolean hasInstallLiveSdk(Application application);
 
     /**
      * 从上层重新传入channelId，用于测试，上线后删除

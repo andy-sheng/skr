@@ -38,7 +38,8 @@ import rx.schedulers.Schedulers;
  * @module 编辑头像表现
  */
 public class EditAvatarPresenter extends BaseRxPresenter<IEditAvatarView> {
-    private static final String AUTHORITY = "com.wali.live.watchsdk.editinfo.fileprovider";
+    public static final String AUTHORITY = "com.wali.live.watchsdk.editinfo.fileprovider";
+
     private static final String PATH = Environment.getExternalStorageDirectory() + SDCardUtils.IMAGE_DIR_PATH + "/";
 
     private Uri mTakePicUri;
