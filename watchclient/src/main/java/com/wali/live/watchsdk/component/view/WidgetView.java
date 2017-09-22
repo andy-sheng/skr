@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.RelativeLayout;
 
+import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
@@ -152,7 +153,11 @@ public class WidgetView extends RelativeLayout
             mRightBottomWiv.setPresenter(mPresenter);
         }
         mRightBottomWiv.showWidgetItem(info, mNeedShow);
-        mRightBottomWiv.setSupportWidgetView(info);
+        try {
+            mRightBottomWiv.setSupportWidgetView(info);
+        } catch (Exception e) {
+            MyLog.e(TAG, e);
+        }
     }
 
     private void adjustWidgetView(boolean needShow) {
