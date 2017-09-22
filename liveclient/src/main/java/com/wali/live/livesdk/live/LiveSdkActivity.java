@@ -1258,7 +1258,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 Gift gift = GiftRepository.findGiftById((int) event.obj1);
                 if (gift != null) {
                     BarrageMsg pushMsg = GiftRepository.createGiftBarrageMessage(gift.getGiftId(), gift.getName(), gift.getCatagory(),
-                            gift.getSendDescribe(), 1, 0, System.currentTimeMillis(), -1, mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), "", "", 0, false);
+                            gift.getSendDescribe(), 1, 0, System.currentTimeMillis(), -1, mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), "", "", 0);
                     BarrageMessageManager.getInstance().pretendPushBarrage(pushMsg);
                 }
                 break;
