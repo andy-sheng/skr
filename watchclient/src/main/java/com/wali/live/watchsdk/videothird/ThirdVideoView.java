@@ -14,6 +14,8 @@ import com.base.log.MyLog;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.videothird.presenter.VideoControlPresenter;
+import com.wali.live.watchsdk.videothird.view.VideoControlView;
 
 import java.lang.ref.WeakReference;
 
@@ -49,15 +51,27 @@ public class ThirdVideoView extends BaseSdkView<View, ThirdVideoController> {
             mParentView.addView(mContentView);
             mAnimationHelper.startShowAnimation();
         }
-        // 添加播放器View
-        SurfaceView view = mController.mPlayerView;
-        if (view == null) {
-            MyLog.e(TAG, "missing mController.mPlayerView");
-            return;
+        // 播放控制View
+        {
+            VideoControlView view = $(R.id.video_control_view);
+            if (view == null) {
+                MyLog.e(TAG, "missing missing R.id.video_control_view");
+                return;
+            }
+            VideoControlPresenter presenter = new VideoControlPresenter(mController);
+            registerComponent(view, presenter);
         }
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        addViewUnderAnchor(view, layoutParams, null);
+        // 添加播放器View
+        {
+            SurfaceView view = mController.mPlayerView;
+            if (view == null) {
+                MyLog.e(TAG, "missing mController.mPlayerView");
+                return;
+            }
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            addViewUnderAnchor(view, layoutParams, null);
+        }
     }
 
     @Override

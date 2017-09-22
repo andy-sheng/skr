@@ -5,4 +5,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.wali.live.watchsdk.videothird.view.VideoControlView
+        android:id="@+id/video_control_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </RelativeLayout>
