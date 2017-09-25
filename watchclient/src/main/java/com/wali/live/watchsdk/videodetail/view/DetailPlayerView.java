@@ -29,6 +29,10 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
     @Nullable
     protected IPresenter mPresenter;
 
+    private int mProgress;
+    private int mDuration;
+    private boolean mSeekTouching = false;
+
     private SurfaceView mSurfaceView;
 
     private ImageView mPlayBtn;
@@ -106,14 +110,19 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
         mSeekBar.setOnRotatedSeekBarChangeListener(new RotatedSeekBar.OnRotatedSeekBarChangeListener() {
             @Override
             public void onProgressChanged(RotatedSeekBar rotatedSeekBar, float percent, boolean fromUser) {
+                mProgress = (int) (mDuration * percent);
+                mCurrTimeView.setText(String.format("%02d:%02d", mProgress / 60, mProgress % 60));
             }
 
             @Override
             public void onStartTrackingTouch(RotatedSeekBar rotatedSeekBar) {
+                mSeekTouching = true;
             }
 
             @Override
             public void onStopTrackingTouch(RotatedSeekBar rotatedSeekBar) {
+                mPresenter.seekTo(mDuration * rotatedSeekBar.getPercent());
+                mSeekTouching = false;
             }
         });
     }
@@ -124,6 +133,25 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
             @Override
             public <T extends View> T getRealView() {
                 return (T) DetailPlayerView.this;
+            }
+
+            @Override
+            public void onUpdateDuration(int duration) {
+                mDuration = duration;
+                mTotalTimeView.setText(String.format("%02d:%02d", duration / 60, duration % 60));
+                mSeekBar.setEnabled(mDuration > 0);
+            }
+
+            @Override
+            public void onUpdateProgress(int progress) {
+                if (mSeekTouching) {
+                    return;
+                }
+                mProgress = progress;
+                mCurrTimeView.setText(String.format("%02d:%02d", progress / 60, progress % 60));
+                if (mDuration != 0) {
+                    mSeekBar.setPercent((float) mProgress / mDuration);
+                }
             }
         }
         return new ComponentView();
@@ -149,8 +177,23 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
          * 切换到半屏
          */
         void switchToDetailMode();
+
+        /**
+         * 快进
+         */
+        void seekTo(float progress);
     }
 
     public interface IView extends IViewProxy {
+        /**
+         * 更新视频时长
+         */
+        void onUpdateDuration(int duration);
+
+        /**
+         * 更新当前播放进度
+         */
+        void onUpdateProgress(int progress);
+
     }
 }

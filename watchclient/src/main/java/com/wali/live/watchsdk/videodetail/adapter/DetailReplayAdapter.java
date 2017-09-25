@@ -24,6 +24,7 @@ import com.wali.live.watchsdk.component.adapter.ClickItemAdapter;
 public class DetailReplayAdapter extends ClickItemAdapter<DetailReplayAdapter.ReplayInfoItem,
         DetailReplayAdapter.ReplayHolder, DetailReplayAdapter.IReplayClickListener> {
     private static final String TAG = "DetailReplayAdapter";
+
     private static final int CORNER_RADIUS = 8;
     private RoomBaseDataModel mMyRoomData;
 

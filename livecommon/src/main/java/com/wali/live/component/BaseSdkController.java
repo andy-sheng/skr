@@ -94,8 +94,10 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_PLAYER_PREPARED = MSG_PLAYER_FIRST + 2;      // 播放器开始渲染画面
     public static final int MSG_PLAYER_COMPLETED = MSG_PLAYER_FIRST + 3;     // 播放完成
     public static final int MSG_SEEK_COMPLETED = MSG_PLAYER_FIRST + 4;       // 快进完成
-    public static final int MSG_PLAYER_START = MSG_PLAYER_FIRST + 5;
-    public static final int MSG_PLAYER_PAUSE = MSG_PLAYER_FIRST + 6;
+    public static final int MSG_UPDATE_PLAY_PROGRESS = MSG_PLAYER_FIRST + 5; // 更新播放进度
+
+    public static final int MSG_PLAYER_START = MSG_PLAYER_FIRST + 6;
+    public static final int MSG_PLAYER_PAUSE = MSG_PLAYER_FIRST + 7;
 
     private static final int MSG_MORE_FIRST = 90000;
     public static final int MSG_FORCE_ROTATE_SCREEN = MSG_MORE_FIRST + 1; // 强制旋转UI

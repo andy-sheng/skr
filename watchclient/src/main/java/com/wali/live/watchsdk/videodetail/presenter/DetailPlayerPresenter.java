@@ -17,7 +17,9 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_DETAIL_SCREEN;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_FULL_SCREEN;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PREPARED;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
+import static com.wali.live.component.BaseSdkController.MSG_UPDATE_PLAY_PROGRESS;
 
 /**
  * Created by yangli on 2017/09/25.
@@ -31,10 +33,12 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
     private PullStreamerPresenter mStreamerPresenter;
     private RoomBaseDataModel mMyRoomData;
 
-    private boolean mIsLandscape = false;
-
+    private int mVideoWidth;
+    private int mVideoHeight;
     private int mSurfaceWidth;
     private int mSurfaceHeight;
+
+    private boolean mIsLandscape = false;
 
     @Override
     protected String getTAG() {
@@ -57,6 +61,8 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_PLAYER_START);
         registerAction(MSG_NEW_DETAIL_REPLAY);
+        registerAction(MSG_PLAYER_PREPARED);
+        registerAction(MSG_UPDATE_PLAY_PROGRESS);
     }
 
     @Override
@@ -87,6 +93,11 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
     @Override
     public void switchToDetailMode() {
         postEvent(MSG_PLAYER_DETAIL_SCREEN);
+    }
+
+    @Override
+    public void seekTo(float progress) {
+        mStreamerPresenter.seekTo((long) (progress * 1000));
     }
 
     @Override
@@ -133,12 +144,18 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
             case MSG_ON_ORIENT_LANDSCAPE:
                 onOrientation(true);
                 return true;
+            case MSG_UPDATE_PLAY_PROGRESS:
+                mView.onUpdateProgress((int) (mStreamerPresenter.getCurrentPosition() / 1000));
+                return true;
+            case MSG_PLAYER_PREPARED:
+                mView.onUpdateDuration((int) (mStreamerPresenter.getDuration() / 1000));
+                return true;
             case MSG_PLAYER_START:
             case MSG_NEW_DETAIL_REPLAY:
                 mStreamerPresenter.stopWatch();
                 mStreamerPresenter.setOriginalStreamUrl(mMyRoomData.getVideoUrl());
                 startPlay();
-                break;
+                return true;
             default:
                 break;
         }

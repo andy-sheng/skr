@@ -19,6 +19,7 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_STREAM_SUCCESS;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_COMPLETED;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PREPARED;
 import static com.wali.live.component.BaseSdkController.MSG_SEEK_COMPLETED;
+import static com.wali.live.component.BaseSdkController.MSG_UPDATE_PLAY_PROGRESS;
 
 /**
  * Created by yangli on 17-5-3.
@@ -42,15 +43,19 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         return TAG;
     }
 
-    public boolean isStarted() {
+    public final boolean isStarted() {
         return mStarted;
     }
 
-    public long getCurrentPosition() {
+    public final long getCurrentPosition() {
         return mStreamer != null ? mStreamer.getCurrentPosition() : 0;
     }
 
-    public PlayerCallback<? extends IPlayer> getPlayerCallback() {
+    public final long getDuration() {
+        return mStreamer != null ? mStreamer.getDuration() : 0;
+    }
+
+    public final PlayerCallback<? extends IPlayer> getPlayerCallback() {
         return mPlayerCallback;
     }
 
@@ -70,7 +75,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         mUIHandler.removeCallbacksAndMessages(null);
     }
 
-    public void setIsRealTime(boolean isRealTime) {
+    public final void setIsRealTime(boolean isRealTime) {
         mIsRealTime = isRealTime;
     }
 
@@ -78,21 +83,27 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         mIpSelectionHelper.setOriginalStreamUrl(originalStreamUrl);
     }
 
-    public void setDisplay(SurfaceHolder holder) {
+    public final void setDisplay(SurfaceHolder holder) {
         if (mStreamer != null) {
             mStreamer.setDisplay(holder);
         }
     }
 
-    public void setGravity(Player.SurfaceGravity gravity, int width, int height) {
+    public final void setGravity(Player.SurfaceGravity gravity, int width, int height) {
         if (mStreamer != null) {
             mStreamer.setGravity(gravity, width, height);
         }
     }
 
-    public void shiftUp(float ratio) {
+    public final void shiftUp(float ratio) {
         if (mStreamer != null) {
             mStreamer.shiftUp(ratio);
+        }
+    }
+
+    public final void seekTo(long msec) {
+        if (mStreamer != null && !mIsRealTime) {
+            mStreamer.seekTo(msec);
         }
     }
 
@@ -104,6 +115,10 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         mStarted = true;
         mPaused = false;
         mReconnectHelper.startStream();
+        if (!mIsRealTime) {
+            mUIHandler.removeMessages(MSG_UPDATE_PLAY_PROGRESS);
+            mUIHandler.sendEmptyMessageDelayed(MSG_UPDATE_PLAY_PROGRESS, 1000);
+        }
     }
 
     // 恢复播放
@@ -113,6 +128,10 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         }
         mPaused = false;
         mStreamer.start();
+        if (!mIsRealTime) {
+            mUIHandler.removeMessages(MSG_UPDATE_PLAY_PROGRESS);
+            mUIHandler.sendEmptyMessageDelayed(MSG_UPDATE_PLAY_PROGRESS, 1000);
+        }
     }
 
     // 结束播放
@@ -122,6 +141,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         }
         mPaused = true;
         mStreamer.pause();
+        mUIHandler.removeMessages(MSG_UPDATE_PLAY_PROGRESS);
     }
 
     // 拉流结束
@@ -132,6 +152,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         mStarted = false;
         mPaused = false;
         mReconnectHelper.stopStream();
+        mUIHandler.removeMessages(MSG_UPDATE_PLAY_PROGRESS);
     }
 
     // 播放器回调
@@ -167,6 +188,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
             mUIHandler.post(new Runnable() {
                 @Override
                 public void run() {
+                    pauseWatch();
                 }
             });
         }
@@ -215,8 +237,16 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
                     MyLog.w(TAG, "MSG_RECONNECT_STREAM");
                     presenter.mReconnectHelper.startReconnect(0);
                     break;
-                case MSG_PLAYER_PREPARED: // fall through
+                case MSG_UPDATE_PLAY_PROGRESS: // fall through
+                    if (!presenter.mIsRealTime) {
+                        removeMessages(MSG_UPDATE_PLAY_PROGRESS);
+                        sendEmptyMessageDelayed(MSG_UPDATE_PLAY_PROGRESS, 1000);
+                    }
+                    presenter.mController.postEvent(msg.what); // 转发事件
+                    break;
                 case MSG_PLAYER_COMPLETED:
+                    removeMessages(MSG_UPDATE_PLAY_PROGRESS);
+                case MSG_PLAYER_PREPARED:
                 case MSG_SEEK_COMPLETED:
                     presenter.mController.postEvent(msg.what); // 转发事件
                     break;
