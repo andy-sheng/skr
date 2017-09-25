@@ -2,8 +2,6 @@ package com.wali.live;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,13 +11,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
-import com.base.utils.display.DisplayUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.milink.event.MiLinkEvent;
@@ -34,7 +29,6 @@ import com.wali.live.watchsdk.channel.presenter.IChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelView;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
 import com.wali.live.watchsdk.login.LoginPresenter;
-import com.wali.live.watchsdk.watch.ThirdVideoPlayerActivity;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
@@ -104,14 +98,12 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
         ($(R.id.replay_tv)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                RoomInfo roomInfo = RoomInfo.Builder.newInstance(101743, "101743_1471260348",
-//                        "http://playback.ks.zb.mi.com/record/live/101743_1471260348/hls/101743_1471260348.m3u8?playui=1")
-//                        .setLiveType(6)
-//                        .setEnableShare(true)
-//                        .build();
-//                VideoDetailSdkActivity.openActivity(MainActivity.this, roomInfo);
-
-                ThirdVideoPlayerActivity.openActivity(MainActivity.this);
+                RoomInfo roomInfo = RoomInfo.Builder.newInstance(101743, "101743_1471260348",
+                        "http://playback.ks.zb.mi.com/record/live/101743_1471260348/hls/101743_1471260348.m3u8?playui=1")
+                        .setLiveType(6)
+                        .setEnableShare(true)
+                        .build();
+                VideoDetailSdkActivity.openActivity(MainActivity.this, roomInfo);
             }
         });
 

@@ -37,7 +37,6 @@ public class GalileoPlayer implements IPlayer {
 
     private static final String DEFAULT_PORT = "80";
 
-    private Context mContext;
     private IPlayerCallback<GalileoPlayer> mCallback;
 
     private SurfaceHolder mSurfaceHolder;
@@ -182,7 +181,6 @@ public class GalileoPlayer implements IPlayer {
     }
 
     public GalileoPlayer(final Context context, final String userId, final String clientIp) {
-        mContext = context;
         ThreadPool.runOnEngine(new Runnable() {
             @Override
             public void run() {

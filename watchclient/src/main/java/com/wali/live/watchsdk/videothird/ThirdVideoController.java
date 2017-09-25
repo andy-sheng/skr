@@ -10,7 +10,7 @@ import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.BaseSdkController;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.videothird.data.PullStreamerPresenter;
+import com.wali.live.watchsdk.videothird.data.ThirdStreamerPresenter;
 import com.wali.live.watchsdk.videothird.data.engine.GalileoPlayer;
 import com.wali.live.watchsdk.videothird.data.engine.IPlayer;
 
@@ -22,7 +22,7 @@ public class ThirdVideoController extends BaseSdkController {
 
     protected RoomBaseDataModel mMyRoomData;
 
-    protected PullStreamerPresenter mStreamerPresenter;
+    protected ThirdStreamerPresenter mStreamerPresenter;
     protected SurfaceView mPlayerView;
 
     @Override
@@ -39,7 +39,7 @@ public class ThirdVideoController extends BaseSdkController {
             mPlayerView = new SurfaceView(context);
             mPlayerView.setId(R.id.video_view);
         }
-        mStreamerPresenter = new PullStreamerPresenter();
+        mStreamerPresenter = new ThirdStreamerPresenter();
         IPlayer player = new GalileoPlayer(GlobalData.app(), UserAccountManager.getInstance().getUuid(),
                 MiLinkClientAdapter.getsInstance().getClientIp());
         player.setDisplay(mPlayerView.getHolder());
