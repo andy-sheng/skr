@@ -1,6 +1,9 @@
 package com.wali.live.watchsdk.videothird.data;
 
+import android.support.annotation.NonNull;
+
 import com.base.global.GlobalData;
+import com.thornbirds.component.IEventController;
 import com.wali.live.ipselect.FeedsIpSelectionHelper;
 
 /**
@@ -16,7 +19,8 @@ public class ThirdStreamerPresenter extends PullStreamerPresenter {
         return TAG;
     }
 
-    public ThirdStreamerPresenter() {
+    public ThirdStreamerPresenter(@NonNull IEventController controller) {
+        super(controller);
         mUIHandler = new MyUIHandler(this);
         mReconnectHelper = new ReconnectHelper();
         mIpSelectionHelper = new FeedsIpSelectionHelper(GlobalData.app(), mReconnectHelper);

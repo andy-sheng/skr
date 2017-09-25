@@ -33,6 +33,7 @@ import com.wali.live.watchsdk.watch.presenter.VideoPlayerPresenterEx;
  *
  * @module 详情页播放器view
  */
+@Deprecated
 public class VideoDetailPlayerView extends RelativeLayout
         implements IComponentView<VideoDetailPlayerView.IPresenter, VideoDetailPlayerView.IView>,
         View.OnClickListener {

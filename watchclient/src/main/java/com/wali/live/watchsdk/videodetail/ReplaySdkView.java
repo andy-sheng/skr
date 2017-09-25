@@ -34,7 +34,7 @@ import com.wali.live.watchsdk.component.presenter.TopAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.component.view.TopAreaView;
-import com.wali.live.watchsdk.videodetail.view.VideoDetailPlayerView;
+import com.wali.live.watchsdk.videodetail.view.DetailPlayerView;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
@@ -253,13 +253,13 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
         sdkActivity.addPushProcessor(mRoomStatusPresenter);
 
         // 添加播放器View
-        VideoDetailPlayerView view = mController.mPlayerView;
+        DetailPlayerView view = mController.mPlayerView;
         if (view == null) {
             MyLog.e(TAG, "missing mController.mPlayerView");
             return;
         }
-        view.switchToFullScreen(true);
-        view.showOrHideFullScreenBtn(false);
+//        view.switchToFullScreen(true);
+//        view.showOrHideFullScreenBtn(false);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addViewUnderAnchor(view, layoutParams, $(R.id.top_area_view));
@@ -324,7 +324,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                     }
                     ReplayBarrageMessageManager.getInstance().getBarrageMessageByReplayTime(
                             mController.mMyRoomData.getRoomId(),
-                            mVideoStartTime + mController.mPlayerPresenter.getCurrentPosition(),
+                            mVideoStartTime + mController.mStreamerPresenter.getCurrentPosition(),
                             false);
                 }
             }, 0, 1000);
@@ -412,9 +412,9 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                 if (mController.postEvent(MSG_HIDE_INPUT_VIEW)) {
                     return true;
                 }
-                if (mController.mPlayerView != null) {
-                    mController.mPlayerView.onSeekBarContainerClick();
-                }
+//                if (mController.mPlayerView != null) {
+//                    mController.mPlayerView.onSeekBarContainerClick();
+//                }
                 if (mIsGameMode && mIsLandscape) {
                     mAnimationHelper.startGameAnimator();
                     return true;

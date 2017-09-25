@@ -26,6 +26,7 @@ import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
  *
  * @module 回放详情页的播放view的presenter
  */
+@Deprecated
 public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPlayerView.IView>
         implements VideoDetailPlayerView.IPresenter {
     private static final String TAG = "VideoDetailPlayerPresenter";

@@ -86,13 +86,16 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_COMPLETE_USER_INFO = MSG_DETAIL_VIDEO_FIRST + 7; // 点击回放每一条
     public static final int MSG_UPDATE_START_TIME = MSG_DETAIL_VIDEO_FIRST + 8;  // 更新 回放的录制时间(用于拉取房间消息/弹幕)
     public static final int MSG_PLAYER_ROTATE_ORIENTATION = MSG_DETAIL_VIDEO_FIRST + 9; // 方向变换事件
-    public static final int MSG_PLAYER_FEEDS_DETAIL = MSG_DETAIL_VIDEO_FIRST + 10;
+    public static final int MSG_PLAYER_FEEDS_DETAIL = MSG_DETAIL_VIDEO_FIRST + 10; // 更新 TAB类型
     // 播放器相关消息
     private static final int MSG_PLAYER_FIRST = 41000;
-    public static final int MSG_PLAYER_FULL_SCREEN = MSG_PLAYER_FIRST;
-    public static final int MSG_PLAYER_DETAIL_SCREEN = MSG_PLAYER_FIRST + 1;
-    public static final int MSG_PLAYER_START = MSG_PLAYER_FIRST + 2;
-    public static final int MSG_PLAYER_PAUSE = MSG_PLAYER_FIRST + 3;
+    public static final int MSG_PLAYER_FULL_SCREEN = MSG_PLAYER_FIRST;       // 切换到全屏播放
+    public static final int MSG_PLAYER_DETAIL_SCREEN = MSG_PLAYER_FIRST + 1; // 切换到半屏播放
+    public static final int MSG_PLAYER_PREPARED = MSG_PLAYER_FIRST + 2;      // 播放器开始渲染画面
+    public static final int MSG_PLAYER_COMPLETED = MSG_PLAYER_FIRST + 3;     // 播放完成
+    public static final int MSG_SEEK_COMPLETED = MSG_PLAYER_FIRST + 4;       // 快进完成
+    public static final int MSG_PLAYER_START = MSG_PLAYER_FIRST + 5;
+    public static final int MSG_PLAYER_PAUSE = MSG_PLAYER_FIRST + 6;
 
     private static final int MSG_MORE_FIRST = 90000;
     public static final int MSG_FORCE_ROTATE_SCREEN = MSG_MORE_FIRST + 1; // 强制旋转UI

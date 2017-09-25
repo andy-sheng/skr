@@ -196,6 +196,10 @@ public class GalileoPlayer implements IPlayer {
         }, "GalileoPlayer()");
     }
 
+    public void setCallback(IPlayerCallback<? extends IPlayer> callback) {
+        mCallback = (IPlayerCallback<GalileoPlayer>) callback;
+    }
+
     @Override
     public int getVideoWidth() {
         return mVideoWidth;

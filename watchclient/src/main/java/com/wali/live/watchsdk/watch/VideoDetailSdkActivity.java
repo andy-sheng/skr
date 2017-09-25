@@ -81,7 +81,6 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
 
     @Override
     protected void trySendDataWithServerOnce() {
-
     }
 
     @Override

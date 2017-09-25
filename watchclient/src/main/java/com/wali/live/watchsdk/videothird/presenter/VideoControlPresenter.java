@@ -1,8 +1,8 @@
 package com.wali.live.watchsdk.videothird.presenter;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
+import com.base.log.MyLog;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
@@ -54,7 +54,7 @@ public class VideoControlPresenter extends ComponentPresenter<VideoControlView.I
     @Override
     public boolean onEvent(int event, IParams params) {
         if (mView == null) {
-            Log.e(TAG, "onAction but mView is null, event=" + event);
+            MyLog.e(TAG, "onAction but mView is null, event=" + event);
             return false;
         }
         switch (event) {

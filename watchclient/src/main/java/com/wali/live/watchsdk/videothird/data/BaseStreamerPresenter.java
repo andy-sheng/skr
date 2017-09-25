@@ -18,6 +18,8 @@ public abstract class BaseStreamerPresenter<R extends BaseStreamerPresenter.Reco
     protected static final int MSG_START_STREAM_TIMEOUT = 1002; // 推/拉流超时
     protected static final int MSG_START_STREAM_FAILED = 1003;  // 推/拉流失败
 
+    protected static final int MSG_RECONNECT_STREAM = 1004;     // 推/拉流重连
+
     protected MyUIHandler mUIHandler;
     protected R mReconnectHelper;
     protected IP mIpSelectionHelper;
