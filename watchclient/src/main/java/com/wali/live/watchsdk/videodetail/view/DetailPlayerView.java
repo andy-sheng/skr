@@ -39,7 +39,7 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
     private TextView mCurrTimeView;
     private TextView mTotalTimeView;
     private View mFullScreenBtn;
-    private HotSpotSeekBar mSeekBar;
+    private RotatedSeekBar mSeekBar;
 
     protected final <T extends View> T $(@IdRes int resId) {
         return (T) findViewById(resId);
@@ -66,7 +66,7 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
                 mPresenter.startPlay();
             }
         } else if (i == R.id.full_screen_btn) {
-            mPresenter.switchToReplayMode();
+            mPresenter.switchToFullScreen();
         }
     }
 
@@ -74,10 +74,6 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
     public void setPresenter(@Nullable IPresenter iPresenter) {
         mPresenter = iPresenter;
         mSurfaceView.getHolder().addCallback(mPresenter);
-    }
-
-    public SurfaceHolder getVideoDisplay() {
-        return mSurfaceView != null ? mSurfaceView.getHolder() : null;
     }
 
     public DetailPlayerView(Context context) {
@@ -106,6 +102,7 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
 
         $click(mPlayBtn, this);
         $click(mFullScreenBtn, this);
+        setOnClickListener(this);
 
         mSeekBar.setOnRotatedSeekBarChangeListener(new RotatedSeekBar.OnRotatedSeekBarChangeListener() {
             @Override
@@ -125,6 +122,14 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
                 mSeekTouching = false;
             }
         });
+    }
+
+    public void switchToReplayMode() {
+        mFullScreenBtn.setVisibility(View.GONE);
+    }
+
+    public void switchToDetailMode() {
+        mFullScreenBtn.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -171,12 +176,7 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
         /**
          * 切换到全屏
          */
-        void switchToReplayMode();
-
-        /**
-         * 切换到半屏
-         */
-        void switchToDetailMode();
+        void switchToFullScreen();
 
         /**
          * 快进

@@ -129,8 +129,7 @@ public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
             MyLog.e(TAG, "missing mController.mPlayerView");
             return;
         }
-//        view.switchToFullScreen(false);
-//        view.showOrHideFullScreenBtn(true);
+        view.switchToDetailMode();
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.height = (int) mActivity.getResources().getDimension(R.dimen.view_dimen_608);

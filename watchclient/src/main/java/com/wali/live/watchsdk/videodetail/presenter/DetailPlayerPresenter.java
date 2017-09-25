@@ -15,7 +15,6 @@ import com.xiaomi.player.Player;
 import static com.wali.live.component.BaseSdkController.MSG_NEW_DETAIL_REPLAY;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_DETAIL_SCREEN;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_FULL_SCREEN;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PREPARED;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
@@ -86,13 +85,8 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
     }
 
     @Override
-    public void switchToReplayMode() {
+    public void switchToFullScreen() {
         postEvent(MSG_PLAYER_FULL_SCREEN);
-    }
-
-    @Override
-    public void switchToDetailMode() {
-        postEvent(MSG_PLAYER_DETAIL_SCREEN);
     }
 
     @Override

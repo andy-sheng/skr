@@ -80,7 +80,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
 
     @Nullable
     protected TopAreaView mTopAreaView;
-    //protected WatchTopInfoSingleView mTopInfoView;
     @Nullable
     protected View mLiveCommentView;
     @Nullable
@@ -258,8 +257,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
             MyLog.e(TAG, "missing mController.mPlayerView");
             return;
         }
-//        view.switchToFullScreen(true);
-//        view.showOrHideFullScreenBtn(false);
+        view.switchToReplayMode();
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addViewUnderAnchor(view, layoutParams, $(R.id.top_area_view));
@@ -304,7 +302,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
         mRoomViewerPresenter.destroy();
         mRoomStatusPresenter.destroy();
 
-        //mTopInfoView.onActivityDestroy();
         mGiftAnimationView.onActivityDestroy();
         mGiftRoomEffectView.onActivityDestroy();
         mGiftContinueViewGroup.onActivityDestroy();
@@ -412,9 +409,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                 if (mController.postEvent(MSG_HIDE_INPUT_VIEW)) {
                     return true;
                 }
-//                if (mController.mPlayerView != null) {
-//                    mController.mPlayerView.onSeekBarContainerClick();
-//                }
                 if (mIsGameMode && mIsLandscape) {
                     mAnimationHelper.startGameAnimator();
                     return true;

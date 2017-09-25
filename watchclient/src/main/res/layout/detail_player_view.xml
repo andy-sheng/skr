@@ -13,19 +13,20 @@
     <RelativeLayout
         android:id="@+id/video_ctrl_area"
         android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:layout_height="@dimen/view_dimen_125"
         android:layout_alignParentBottom="true"
         android:background="@drawable/jianbian_bottom"
-        android:paddingLeft="@dimen/margin_30"
-        android:paddingRight="@dimen/margin_30">
+        android:paddingLeft="@dimen/margin_15"
+        android:paddingRight="@dimen/margin_15">
 
         <ImageView
             android:id="@+id/play_btn"
-            android:layout_width="15.33dp"
-            android:layout_height="15.33dp"
+            android:layout_width="@dimen/view_dimen_80"
+            android:layout_height="@dimen/view_dimen_80"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/margin_30"
-            android:background="@drawable/feeds_video_play_btn" />
+            android:padding="@dimen/margin_15"
+            android:scaleType="fitXY"
+            android:src="@drawable/feeds_video_play_btn" />
 
         <TextView
             android:id="@+id/curr_time_view"
@@ -33,13 +34,14 @@
             android:layout_height="wrap_content"
             android:layout_alignWithParentIfMissing="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_15"
             android:layout_marginRight="@dimen/margin_10"
             android:layout_toRightOf="@id/play_btn"
             android:text="00:00"
             android:textColor="@color/color_white"
             android:textSize="@dimen/text_size_30" />
 
-        <com.wali.live.video.widget.player.HotSpotSeekBar
+        <com.base.view.RotatedSeekBar
             android:id="@+id/seek_bar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_dimen_120"
@@ -65,6 +67,7 @@
             android:layout_alignWithParentIfMissing="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_15"
             android:layout_toLeftOf="@+id/full_screen_btn"
             android:text="00:00"
             android:textColor="@color/color_white"
@@ -72,12 +75,13 @@
 
         <ImageView
             android:id="@id/full_screen_btn"
-            android:layout_width="15.33dp"
-            android:layout_height="15.33dp"
+            android:layout_width="@dimen/view_dimen_80"
+            android:layout_height="@dimen/view_dimen_80"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margin_30"
-            android:background="@drawable/video_fullscreen_icon" />
+            android:padding="@dimen/margin_15"
+            android:scaleType="fitXY"
+            android:src="@drawable/video_fullscreen_icon" />
 
     </RelativeLayout>
 
