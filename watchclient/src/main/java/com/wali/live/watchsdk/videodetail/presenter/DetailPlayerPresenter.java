@@ -10,7 +10,9 @@ import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.videodetail.view.DetailPlayerView;
 import com.wali.live.watchsdk.videothird.data.PullStreamerPresenter;
+import com.xiaomi.player.Player;
 
+import static com.wali.live.component.BaseSdkController.MSG_NEW_DETAIL_REPLAY;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_DETAIL_SCREEN;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_FULL_SCREEN;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
@@ -45,6 +47,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
     public void startPresenter() {
         super.startPresenter();
         registerAction(MSG_PLAYER_START);
+        registerAction(MSG_NEW_DETAIL_REPLAY);
     }
 
     @Override
@@ -87,6 +90,8 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         MyLog.d(TAG, "surfaceChanged width=" + width + ", height=" + width);
         mStreamerPresenter.setDisplay(holder);
+        mStreamerPresenter.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFit, width, height);
+        mStreamerPresenter.shiftUp(0.2f);
     }
 
     @Override
@@ -103,6 +108,8 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         }
         switch (event) {
             case MSG_PLAYER_START:
+            case MSG_NEW_DETAIL_REPLAY:
+                mStreamerPresenter.stopWatch();
                 mStreamerPresenter.setOriginalStreamUrl(mMyRoomData.getVideoUrl());
                 startPlay();
                 break;

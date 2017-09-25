@@ -48,6 +48,7 @@ public class VideoDetailController extends BaseSdkController {
         mPlayerView.setId(R.id.video_view);
 
         mStreamerPresenter = new PullStreamerPresenter(this);
+        mStreamerPresenter.setIsRealTime(false);
         GalileoPlayer player = new GalileoPlayer(GlobalData.app(), UserAccountManager.getInstance().getUuid(),
                 MiLinkClientAdapter.getsInstance().getClientIp());
         player.setCallback(mStreamerPresenter.getPlayerCallback());

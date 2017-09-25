@@ -12,6 +12,7 @@ import com.wali.live.dns.IDnsStatusListener;
 import com.wali.live.ipselect.WatchIpSelectionHelper;
 import com.wali.live.watchsdk.videothird.data.engine.IPlayer;
 import com.wali.live.watchsdk.videothird.data.engine.IPlayerCallback;
+import com.xiaomi.player.Player;
 
 import static com.wali.live.component.BaseSdkController.MSG_ON_STREAM_RECONNECT;
 import static com.wali.live.component.BaseSdkController.MSG_ON_STREAM_SUCCESS;
@@ -69,14 +70,30 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         mUIHandler.removeCallbacksAndMessages(null);
     }
 
+    public void setIsRealTime(boolean isRealTime) {
+        mIsRealTime = isRealTime;
+    }
+
+    public void setOriginalStreamUrl(String originalStreamUrl) {
+        mIpSelectionHelper.setOriginalStreamUrl(originalStreamUrl);
+    }
+
     public void setDisplay(SurfaceHolder holder) {
         if (mStreamer != null) {
             mStreamer.setDisplay(holder);
         }
     }
 
-    public void setOriginalStreamUrl(String originalStreamUrl) {
-        mIpSelectionHelper.setOriginalStreamUrl(originalStreamUrl);
+    public void setGravity(Player.SurfaceGravity gravity, int width, int height) {
+        if (mStreamer != null) {
+            mStreamer.setGravity(gravity, width, height);
+        }
+    }
+
+    public void shiftUp(float ratio) {
+        if (mStreamer != null) {
+            mStreamer.shiftUp(ratio);
+        }
     }
 
     // 拉流开始
