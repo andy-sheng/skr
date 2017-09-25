@@ -13,6 +13,8 @@ import com.wali.live.watchsdk.videothird.data.PullStreamerPresenter;
 import com.xiaomi.player.Player;
 
 import static com.wali.live.component.BaseSdkController.MSG_NEW_DETAIL_REPLAY;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_DETAIL_SCREEN;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_FULL_SCREEN;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
@@ -28,6 +30,11 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
 
     private PullStreamerPresenter mStreamerPresenter;
     private RoomBaseDataModel mMyRoomData;
+
+    private boolean mIsLandscape = false;
+
+    private int mSurfaceWidth;
+    private int mSurfaceHeight;
 
     @Override
     protected String getTAG() {
@@ -46,6 +53,8 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
     @Override
     public void startPresenter() {
         super.startPresenter();
+        registerAction(MSG_ON_ORIENT_PORTRAIT);
+        registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_PLAYER_START);
         registerAction(MSG_NEW_DETAIL_REPLAY);
     }
@@ -88,16 +97,27 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        MyLog.d(TAG, "surfaceChanged width=" + width + ", height=" + width);
-        mStreamerPresenter.setDisplay(holder);
-        mStreamerPresenter.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFit, width, height);
-        mStreamerPresenter.shiftUp(0.2f);
+        if (mSurfaceWidth != width || mSurfaceHeight != height) {
+            MyLog.d(TAG, "surfaceChanged width=" + width + ", height=" + width);
+            mSurfaceWidth = width;
+            mSurfaceHeight = height;
+            mStreamerPresenter.setDisplay(holder);
+            mStreamerPresenter.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFit, width, height);
+            mStreamerPresenter.shiftUp(0.2f);
+        }
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         MyLog.d(TAG, "surfaceDestroyed");
         mStreamerPresenter.setDisplay(null);
+    }
+
+    private void onOrientation(boolean isLandscape) {
+        if (mIsLandscape == isLandscape) {
+            return;
+        }
+        mIsLandscape = isLandscape;
     }
 
     @Override
@@ -107,6 +127,12 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
             return false;
         }
         switch (event) {
+            case MSG_ON_ORIENT_PORTRAIT:
+                onOrientation(false);
+                return true;
+            case MSG_ON_ORIENT_LANDSCAPE:
+                onOrientation(true);
+                return true;
             case MSG_PLAYER_START:
             case MSG_NEW_DETAIL_REPLAY:
                 mStreamerPresenter.stopWatch();

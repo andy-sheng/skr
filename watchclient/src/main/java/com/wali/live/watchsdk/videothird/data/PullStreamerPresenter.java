@@ -153,10 +153,11 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         }
 
         @Override
-        public void onVideoSizeChanged(PLAYER player, int width, int height) {
+        public void onVideoSizeChanged(PLAYER player, final int width, final int height) {
             mUIHandler.post(new Runnable() {
                 @Override
                 public void run() {
+                    MyLog.w(TAG, "onVideoSizeChanged width=" + width + " height=" + height);
                 }
             });
         }
