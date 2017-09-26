@@ -4,6 +4,7 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.text.TextUtils;
 
+import com.base.log.MyLog;
 import com.base.utils.Constants;
 import com.base.utils.IOUtils;
 
@@ -153,14 +154,24 @@ public class SDCardUtils {
      * 没有检测到SD卡
      */
     public static boolean isSDCardUnavailable() {
-        return Environment.getExternalStorageState().equals(Environment.MEDIA_REMOVED);
+        try {
+            return Environment.getExternalStorageState().equals(Environment.MEDIA_REMOVED);
+        } catch (Exception e) {
+            MyLog.e(e);
+        }
+        return true;
     }
 
     /**
      * @return true 如果SD卡处于不可读写的状态
      */
     public static boolean isSDCardBusy() {
-        return !Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+        try {
+            return !Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+        } catch (Exception e) {
+            MyLog.e(e);
+        }
+        return true;
     }
 
     /**
