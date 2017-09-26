@@ -100,6 +100,7 @@ public class FloatInfoPresenter extends BaseRxPresenter<IFloatInfoView> {
                                     mUser.getCertificationType(),
                                     mUser.getNickname()));
                             subscriber.onNext(mUser);
+                            subscriber.onCompleted();
                         } else {
                             subscriber.onError(new Throwable("user == null"));
                         }
@@ -122,8 +123,7 @@ public class FloatInfoPresenter extends BaseRxPresenter<IFloatInfoView> {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        MyLog.d(TAG, "onError");
-                        MyLog.w(TAG, throwable);
+                        MyLog.e(TAG, throwable);
                     }
                 });
     }
@@ -139,6 +139,9 @@ public class FloatInfoPresenter extends BaseRxPresenter<IFloatInfoView> {
     public void handleFollow() {
         if (mUserUid == mOwnerUid && mOwnerUid != UserAccountManager.getInstance().getUuidAsLong()) {
             EventBus.getDefault().post(new FollowStatEvent(StatisticsKey.KEY_FLOATING_NAME_FOLLOW));
+        }
+        if (mUser == null) {
+            return;
         }
         if (!mUser.isFocused()) {
             followOrUnFollow();
@@ -220,7 +223,7 @@ public class FloatInfoPresenter extends BaseRxPresenter<IFloatInfoView> {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        MyLog.d(TAG, throwable);
+                        MyLog.e(TAG, throwable);
                     }
                 });
     }
