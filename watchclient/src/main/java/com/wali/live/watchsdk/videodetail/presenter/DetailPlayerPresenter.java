@@ -122,6 +122,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
         MyLog.w(TAG, "onSurfaceTextureDestroyed");
         if (mSurface != null) {
+            mSurfaceWidth = mSurfaceHeight = 0;
             mSurface.release();
             mSurface = null;
         }
