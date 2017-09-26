@@ -78,7 +78,7 @@
             android:layout_height="@dimen/view_dimen_80"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:padding="@dimen/margin_15"
+            android:padding="@dimen/margin_16"
             android:scaleType="fitXY"
             android:src="@drawable/video_fullscreen_icon" />
 
