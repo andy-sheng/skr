@@ -33,6 +33,7 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
 
     private TextureView mTextureView;
 
+    private View mLoadingView;
     private ImageView mPlayBtn;
     private TextView mCurrTimeView;
     private TextView mTotalTimeView;
@@ -92,6 +93,7 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
 
         mTextureView = $(R.id.video_texture_view);
 
+        mLoadingView = $(R.id.loading_view);
         mPlayBtn = $(R.id.play_btn);
         mCurrTimeView = $(R.id.curr_time_view);
         mTotalTimeView = $(R.id.total_time_view);
@@ -140,6 +142,11 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
             }
 
             @Override
+            public void showLoading(boolean isShow) {
+                mLoadingView.setVisibility(isShow ? View.VISIBLE : View.GONE);
+            }
+
+            @Override
             public void onUpdateDuration(int duration) {
                 mDuration = duration;
                 mTotalTimeView.setText(String.format("%02d:%02d", duration / 60, duration % 60));
@@ -156,6 +163,13 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
                 if (mDuration != 0) {
                     mSeekBar.setPercent((float) mProgress / mDuration);
                 }
+            }
+
+            @Override
+            public void reset() {
+                mSeekBar.setPercent(0);
+                mPlayBtn.setSelected(true);
+                showLoading(false);
             }
         }
         return new ComponentView();
@@ -185,6 +199,11 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
 
     public interface IView extends IViewProxy {
         /**
+         * 显示加载等待图标
+         */
+        void showLoading(boolean isShow);
+
+        /**
          * 更新视频时长
          */
         void onUpdateDuration(int duration);
@@ -194,5 +213,9 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
          */
         void onUpdateProgress(int progress);
 
+        /**
+         * 重置View的状态
+         */
+        void reset();
     }
 }

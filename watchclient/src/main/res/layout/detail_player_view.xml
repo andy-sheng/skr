@@ -93,4 +93,12 @@
         android:src="@drawable/video_detail_play_btn"
         android:visibility="gone" />
 
+    <ProgressBar
+        android:id="@+id/loading_view"
+        style="@style/progressLoading"
+        android:layout_width="@dimen/view_dimen_120"
+        android:layout_height="@dimen/view_dimen_120"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
 </merge>

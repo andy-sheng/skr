@@ -416,7 +416,7 @@ public class GalileoPlayer implements IPlayer {
             @Override
             public void run() {
                 MyLog.w(TAG, "seekTo msec=" + msec);
-                mPlayer.seekTo(msec, true);
+                mPlayer.seekTo(msec, false); // 设置false，不启用精准Seek
             }
         }, "seekTo");
     }
@@ -430,7 +430,7 @@ public class GalileoPlayer implements IPlayer {
                 if (mIsRealTime) {
                     mPlayer.reload(mVideoUrl, true);
                 } else {
-                    mPlayer.seekTo(mPlayer.currentPlaybackTime(), true);
+                    mPlayer.seekTo(mPlayer.currentPlaybackTime(), false);
                 }
             }
         }, "reload");

@@ -3,7 +3,6 @@ package com.wali.live.watchsdk.videothird.data;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.view.Surface;
-import android.view.SurfaceHolder;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -18,6 +17,7 @@ import com.xiaomi.player.Player;
 import static com.wali.live.component.BaseSdkController.MSG_ON_STREAM_RECONNECT;
 import static com.wali.live.component.BaseSdkController.MSG_ON_STREAM_SUCCESS;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_COMPLETED;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_ERROR;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PREPARED;
 import static com.wali.live.component.BaseSdkController.MSG_SEEK_COMPLETED;
 import static com.wali.live.component.BaseSdkController.MSG_UPDATE_PLAY_PROGRESS;
@@ -34,8 +34,10 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
     @NonNull
     private IEventController mController;
 
-    private boolean mIsRealTime = true;
+    protected boolean mStarted = false;
     private boolean mPaused = true;
+
+    private boolean mIsRealTime = true;
 
     private final PlayerCallback<? extends IPlayer> mPlayerCallback = new PlayerCallback<>();
 
@@ -104,6 +106,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
 
     public final void seekTo(long msec) {
         if (mStreamer != null && !mIsRealTime) {
+            mIpSelectionHelper.updateStutterStatus(false);
             mStreamer.seekTo(msec);
         }
     }
@@ -113,6 +116,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         if (mStreamer == null || mStarted || !mIpSelectionHelper.hasStreamUrl()) {
             return;
         }
+        MyLog.w(TAG, "startWatch");
         mStarted = true;
         mPaused = false;
         mReconnectHelper.startStream();
@@ -127,6 +131,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         if (mStreamer == null || !mStarted || !mPaused) {
             return;
         }
+        MyLog.w(TAG, "resumeWatch");
         mPaused = false;
         mStreamer.start();
         if (!mIsRealTime) {
@@ -138,10 +143,13 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
     // 结束播放
     public void pauseWatch() {
         if (mStreamer == null || !mStarted || mPaused) {
+            MyLog.w(TAG, "pauseWatch failed, mStreamer=" + mStreamer);
             return;
         }
+        MyLog.w(TAG, "pauseWatch");
         mPaused = true;
         mStreamer.pause();
+        mIpSelectionHelper.updateStutterStatus(false);
         mUIHandler.removeMessages(MSG_UPDATE_PLAY_PROGRESS);
     }
 
@@ -150,6 +158,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         if (mStreamer == null || !mStarted) {
             return;
         }
+        MyLog.w(TAG, "stopWatch");
         mStarted = false;
         mPaused = false;
         mReconnectHelper.stopStream();
@@ -189,7 +198,8 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
             mUIHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    pauseWatch();
+                    stopWatch();
+                    mController.postEvent(MSG_PLAYER_ERROR);
                 }
             });
         }
@@ -239,13 +249,14 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
                     presenter.mReconnectHelper.startReconnect(0);
                     break;
                 case MSG_UPDATE_PLAY_PROGRESS: // fall through
-                    if (!presenter.mIsRealTime) {
+                    if (!presenter.mIsRealTime && !presenter.mPaused) {
                         removeMessages(MSG_UPDATE_PLAY_PROGRESS);
                         sendEmptyMessageDelayed(MSG_UPDATE_PLAY_PROGRESS, 1000);
+                        presenter.mController.postEvent(msg.what); // 转发事件
                     }
-                    presenter.mController.postEvent(msg.what); // 转发事件
                     break;
                 case MSG_PLAYER_COMPLETED:
+                    presenter.pauseWatch();
                     removeMessages(MSG_UPDATE_PLAY_PROGRESS);
                 case MSG_PLAYER_PREPARED:
                 case MSG_SEEK_COMPLETED:
@@ -263,40 +274,30 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         @Override
         public void onDnsReady() {
             MyLog.w(TAG, "onDnsReady");
-            if (mStarted && mIpSelectionHelper.isStuttering()) {
+            if (mIpSelectionHelper.isStuttering()) {
                 startReconnect(0);
             }
         }
 
         @Override
         protected void startStream() {
-            if (!mStreamStarted) {
-                MyLog.w(TAG, "startStream");
-                mStreamStarted = true;
-                mIpSelectionHelper.ipSelect();
-                mStreamer.setVideoPath(mIpSelectionHelper.getStreamUrl(), mIpSelectionHelper.getStreamHost());
-                mStreamer.setIpList(mIpSelectionHelper.getSelectedHttpIpList(), mIpSelectionHelper.getSelectedLocalIpList());
-                mStreamer.prepare(mIsRealTime);
-                mStreamer.start();
-            } else {
-                MyLog.w(TAG, "startStream is ignored, mStreamStarted=" + mStreamStarted);
-            }
+            MyLog.w(TAG, "startStream");
+            mIpSelectionHelper.ipSelect();
+            mStreamer.setVideoPath(mIpSelectionHelper.getStreamUrl(), mIpSelectionHelper.getStreamHost());
+            mStreamer.setIpList(mIpSelectionHelper.getSelectedHttpIpList(), mIpSelectionHelper.getSelectedLocalIpList());
+            mStreamer.prepare(mIsRealTime);
+            mStreamer.start();
         }
 
         @Override
         protected void stopStream() {
-            if (mStreamStarted) {
-                MyLog.w(TAG, "stopStream");
-                mStreamStarted = false;
-                mStreamer.stop();
-            } else {
-                MyLog.w(TAG, "stopStream is ignored, mStreamStarted=" + mStreamStarted);
-            }
+            MyLog.w(TAG, "stopStream");
+            mStreamer.stop();
         }
 
         @Override
         protected void startReconnect(int code) {
-            if (mStreamer != null && mStreamStarted) {
+            if (mStarted && !mPaused) {
                 MyLog.w(TAG, "startReconnect, code = " + code);
                 if (!mIpSelectionHelper.isStuttering()) {
                     mIpSelectionHelper.updateStutterStatus(true);
@@ -307,7 +308,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
                 mStreamer.setIpList(mIpSelectionHelper.getSelectedHttpIpList(), mIpSelectionHelper.getSelectedLocalIpList());
                 mStreamer.reconnect();
             } else {
-                MyLog.w(TAG, "startReconnect is ignored, mStreamStarted=" + mStreamStarted);
+                MyLog.w(TAG, "startReconnect is ignored, but is paused or not started");
             }
         }
     }

@@ -16,6 +16,10 @@ import com.xiaomi.player.Player;
 import static com.wali.live.component.BaseSdkController.MSG_NEW_DETAIL_REPLAY;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_ON_STREAM_RECONNECT;
+import static com.wali.live.component.BaseSdkController.MSG_ON_STREAM_SUCCESS;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_COMPLETED;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_ERROR;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_FULL_SCREEN;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PREPARED;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
@@ -60,10 +64,16 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         super.startPresenter();
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
+
         registerAction(MSG_PLAYER_START);
         registerAction(MSG_NEW_DETAIL_REPLAY);
         registerAction(MSG_PLAYER_PREPARED);
+        registerAction(MSG_PLAYER_ERROR);
+        registerAction(MSG_PLAYER_COMPLETED);
         registerAction(MSG_UPDATE_PLAY_PROGRESS);
+
+        registerAction(MSG_ON_STREAM_RECONNECT);
+        registerAction(MSG_ON_STREAM_SUCCESS);
     }
 
     @Override
@@ -83,6 +93,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
 
     @Override
     public void pausePlay() {
+        mView.showLoading(false);
         mStreamerPresenter.pauseWatch();
     }
 
@@ -93,6 +104,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
 
     @Override
     public void seekTo(float progress) {
+        mView.showLoading(false);
         mStreamerPresenter.seekTo((long) (progress * 1000));
     }
 
@@ -133,30 +145,6 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
     }
 
-//    @Override
-//    public void surfaceCreated(SurfaceHolder holder) {
-//        MyLog.w(TAG, "surfaceCreated");
-//        mStreamerPresenter.setDisplay(holder);
-//    }
-//
-//    @Override
-//    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-//        if (mSurfaceWidth != width || mSurfaceHeight != height) {
-//            MyLog.w(TAG, "surfaceChanged width=" + width + ", height=" + width);
-//            mSurfaceWidth = width;
-//            mSurfaceHeight = height;
-//            mStreamerPresenter.setDisplay(holder);
-//            mStreamerPresenter.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFit, width, height);
-//            mStreamerPresenter.shiftUp(0.2f);
-//        }
-//    }
-//
-//    @Override
-//    public void surfaceDestroyed(SurfaceHolder holder) {
-//        MyLog.w(TAG, "surfaceDestroyed");
-//        mStreamerPresenter.setDisplay(null);
-//    }
-
     private void onOrientation(boolean isLandscape) {
         if (mIsLandscape == isLandscape) {
             return;
@@ -180,8 +168,18 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
             case MSG_UPDATE_PLAY_PROGRESS:
                 mView.onUpdateProgress((int) (mStreamerPresenter.getCurrentPosition() / 1000));
                 return true;
+            case MSG_ON_STREAM_RECONNECT:
+                mView.showLoading(true);
+                return true;
+            case MSG_ON_STREAM_SUCCESS:
+                mView.showLoading(false);
+                return true;
             case MSG_PLAYER_PREPARED:
                 mView.onUpdateDuration((int) (mStreamerPresenter.getDuration() / 1000));
+                return true;
+            case MSG_PLAYER_ERROR:
+            case MSG_PLAYER_COMPLETED:
+                mView.reset();
                 return true;
             case MSG_PLAYER_START:
             case MSG_NEW_DETAIL_REPLAY:
