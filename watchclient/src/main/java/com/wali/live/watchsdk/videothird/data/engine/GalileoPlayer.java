@@ -308,7 +308,6 @@ public class GalileoPlayer implements IPlayer {
         }, "setSurface");
     }
 
-    @Override
     public void setDisplay(final SurfaceHolder holder) {
         ThreadPool.runOnEngine(new Runnable() {
             @Override

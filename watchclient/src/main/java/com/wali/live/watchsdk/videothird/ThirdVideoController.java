@@ -42,7 +42,6 @@ public class ThirdVideoController extends BaseSdkController {
         mStreamerPresenter = new ThirdStreamerPresenter(this);
         IPlayer player = new GalileoPlayer(GlobalData.app(), UserAccountManager.getInstance().getUuid(),
                 MiLinkClientAdapter.getsInstance().getClientIp());
-        player.setDisplay(mPlayerView.getHolder());
         mStreamerPresenter.setStreamer(player);
         mStreamerPresenter.setOriginalStreamUrl(mMyRoomData.getVideoUrl());
         mStreamerPresenter.startWatch();

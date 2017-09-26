@@ -4,8 +4,7 @@ import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import com.base.view.RotatedSeekBar;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
-import com.wali.live.video.widget.player.HotSpotSeekBar;
 import com.wali.live.watchsdk.R;
 
 /**
@@ -33,7 +31,7 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
     private int mDuration;
     private boolean mSeekTouching = false;
 
-    private SurfaceView mSurfaceView;
+    private TextureView mTextureView;
 
     private ImageView mPlayBtn;
     private TextView mCurrTimeView;
@@ -73,7 +71,7 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
     @Override
     public void setPresenter(@Nullable IPresenter iPresenter) {
         mPresenter = iPresenter;
-        mSurfaceView.getHolder().addCallback(mPresenter);
+        mTextureView.setSurfaceTextureListener(mPresenter);
     }
 
     public DetailPlayerView(Context context) {
@@ -92,7 +90,7 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.detail_player_view, this);
 
-        mSurfaceView = $(R.id.video_surface_view);
+        mTextureView = $(R.id.video_texture_view);
 
         mPlayBtn = $(R.id.play_btn);
         mCurrTimeView = $(R.id.curr_time_view);
@@ -102,7 +100,8 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
 
         $click(mPlayBtn, this);
         $click(mFullScreenBtn, this);
-        setOnClickListener(this);
+        $click(mSeekBar, this);
+        $click($(R.id.video_ctrl_area), this);
 
         mSeekBar.setOnRotatedSeekBarChangeListener(new RotatedSeekBar.OnRotatedSeekBarChangeListener() {
             @Override
@@ -162,7 +161,7 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
         return new ComponentView();
     }
 
-    public interface IPresenter extends SurfaceHolder.Callback {
+    public interface IPresenter extends TextureView.SurfaceTextureListener {
         /**
          * 恢复播放
          */

@@ -289,7 +289,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
         // 将播放器View从其父View移出
         ViewGroup parentView = mController.mPlayerView != null ?
                 (ViewGroup) mController.mPlayerView.getParent() : null;
-        if (parentView != null && parentView.indexOfChild(mController.mPlayerView) != -1) {
+        if (parentView != null) {
             parentView.removeView(mController.mPlayerView);
         }
     }

@@ -1,7 +1,8 @@
 package com.wali.live.watchsdk.videodetail.presenter;
 
+import android.graphics.SurfaceTexture;
 import android.support.annotation.NonNull;
-import android.view.SurfaceHolder;
+import android.view.Surface;
 
 import com.base.log.MyLog;
 import com.mi.live.data.room.model.RoomBaseDataModel;
@@ -36,6 +37,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
     private int mVideoHeight;
     private int mSurfaceWidth;
     private int mSurfaceHeight;
+    private Surface mSurface;
 
     private boolean mIsLandscape = false;
 
@@ -95,28 +97,64 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
     }
 
     @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        MyLog.d(TAG, "surfaceCreated");
-        mStreamerPresenter.setDisplay(holder);
+    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+        MyLog.w(TAG, "onSurfaceTextureAvailable");
+        if (mSurface == null) {
+            mSurface = new Surface(surface);
+        }
+        onSurfaceTextureSizeChanged(surface, width, height);
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+        MyLog.w(TAG, "onSurfaceTextureSizeChanged");
         if (mSurfaceWidth != width || mSurfaceHeight != height) {
-            MyLog.d(TAG, "surfaceChanged width=" + width + ", height=" + width);
+            MyLog.w(TAG, "onSurfaceTextureSizeChanged width=" + width + ", height=" + width);
             mSurfaceWidth = width;
             mSurfaceHeight = height;
-            mStreamerPresenter.setDisplay(holder);
+            mStreamerPresenter.setSurface(mSurface);
             mStreamerPresenter.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFit, width, height);
             mStreamerPresenter.shiftUp(0.2f);
         }
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        MyLog.d(TAG, "surfaceDestroyed");
-        mStreamerPresenter.setDisplay(null);
+    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+        MyLog.w(TAG, "onSurfaceTextureDestroyed");
+        if (mSurface != null) {
+            mSurface.release();
+            mSurface = null;
+        }
+        return true;
     }
+
+    @Override
+    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+    }
+
+//    @Override
+//    public void surfaceCreated(SurfaceHolder holder) {
+//        MyLog.w(TAG, "surfaceCreated");
+//        mStreamerPresenter.setDisplay(holder);
+//    }
+//
+//    @Override
+//    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+//        if (mSurfaceWidth != width || mSurfaceHeight != height) {
+//            MyLog.w(TAG, "surfaceChanged width=" + width + ", height=" + width);
+//            mSurfaceWidth = width;
+//            mSurfaceHeight = height;
+//            mStreamerPresenter.setDisplay(holder);
+//            mStreamerPresenter.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFit, width, height);
+//            mStreamerPresenter.shiftUp(0.2f);
+//        }
+//    }
+//
+//    @Override
+//    public void surfaceDestroyed(SurfaceHolder holder) {
+//        MyLog.w(TAG, "surfaceDestroyed");
+//        mStreamerPresenter.setDisplay(null);
+//    }
 
     private void onOrientation(boolean isLandscape) {
         if (mIsLandscape == isLandscape) {

@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.videothird.data;
 
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 
 import com.base.global.GlobalData;
@@ -83,9 +84,9 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         mIpSelectionHelper.setOriginalStreamUrl(originalStreamUrl);
     }
 
-    public final void setDisplay(SurfaceHolder holder) {
+    public final void setSurface(Surface surface) {
         if (mStreamer != null) {
-            mStreamer.setDisplay(holder);
+            mStreamer.setSurface(surface);
         }
     }
 
