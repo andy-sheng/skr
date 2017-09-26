@@ -256,6 +256,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
                     }
                     break;
                 case MSG_PLAYER_COMPLETED:
+                    presenter.seekTo(0);
                     presenter.pauseWatch();
                     removeMessages(MSG_UPDATE_PLAY_PROGRESS);
                 case MSG_PLAYER_PREPARED:
