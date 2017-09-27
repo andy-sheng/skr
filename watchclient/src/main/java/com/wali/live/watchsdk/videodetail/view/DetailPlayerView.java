@@ -181,6 +181,15 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
             }
 
             @Override
+            public void pause() {
+                mPlayBtn.setSelected(true);
+                if (!mIsShow) {
+                    mIsShow = true;
+                    mVideoCtrlArea.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
             public void stop() {
                 removeCallbacks(mHideRunnable);
             }
@@ -252,6 +261,11 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
          * 开始View
          */
         void start();
+
+        /**
+         * 暂停View
+         */
+        void pause();
 
         /**
          * 结束View

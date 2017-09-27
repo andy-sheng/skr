@@ -20,6 +20,7 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_COMPLETED;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_ERROR;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_HIDE_LOADING;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_READY;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SHOW_LOADING;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
@@ -67,6 +68,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_BACKGROUND_CLICK);
+        registerAction(MSG_PLAYER_PAUSE);
         registerAction(MSG_UPDATE_PLAY_PROGRESS);
         registerAction(MSG_PLAYER_SHOW_LOADING);
         registerAction(MSG_PLAYER_HIDE_LOADING);
@@ -177,6 +179,10 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
                 return true;
             case MSG_BACKGROUND_CLICK:
                 mView.onChangeVisibility();
+                return true;
+            case MSG_PLAYER_PAUSE:
+                pausePlay();
+                mView.pause();
                 return true;
             case MSG_UPDATE_PLAY_PROGRESS:
                 mView.onUpdateProgress((int) (mStreamerPresenter.getCurrentPosition() / 1000));
