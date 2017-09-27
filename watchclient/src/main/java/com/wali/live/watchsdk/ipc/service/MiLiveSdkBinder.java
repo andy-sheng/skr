@@ -46,6 +46,7 @@ import rx.schedulers.Schedulers;
  */
 public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     public final static String TAG = MiLiveSdkBinder.class.getSimpleName();
+
     private static MiLiveSdkBinder sInstance;
 
     private final HashMap<Integer, String> mAuthMap;
@@ -90,8 +91,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void postSuccess() {
                 ChannelLiveCaller.getChannelLive(channelId)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<ListProto.GetChannelLiveDetailRsp>() {
                             @Override
                             public void onCompleted() {
@@ -153,8 +152,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void postSuccess() {
                 RelationCaller.getFollowingList(UserAccountManager.getInstance().getUuidAsLong(), isBothWay, timeStamp)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<RelationProto.FollowingListResponse>() {
                             @Override
                             public void onCompleted() {
@@ -205,8 +202,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void postSuccess() {
                 ChannelLiveCaller.getFollowingLives()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<ListProto.GetFollowLiveRsp>() {
                             @Override
                             public void onCompleted() {
@@ -286,13 +281,13 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                                     final long miid, final String serviceToken) throws RemoteException {
         MyLog.w(TAG, "loginByMiAccountSso channelId=" + channelId);
         reportLoginEntrance(channelId, miid);
+
         secureOperate(channelId, packageName, channelSecret, new SecureLoginCallback(miid) {
             @Override
             public void postSuccess() {
                 MyLog.w(TAG, "loginByMiAccountSso success callback");
 
                 AccountCaller.miSsoLogin(miid, serviceToken, channelId)
-                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<AccountProto.MiSsoLoginRsp>() {
                             @Override
                             public void onCompleted() {
@@ -390,8 +385,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 MyLog.w(TAG, "loginByMiAccountOAuth success callback");
 
                 AccountCaller.login(channelId, LoginType.LOGIN_XIAOMI, code, null, null, null, null)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<AccountProto.LoginRsp>() {
                             @Override
                             public void onCompleted() {
@@ -628,8 +621,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                         return rsp.getRetCode();
                     }
                 })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Integer>() {
                     @Override
                     public void onCompleted() {
