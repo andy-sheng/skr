@@ -30,15 +30,27 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
     private int mProgress;
     private int mDuration;
     private boolean mSeekTouching = false;
+    private boolean mIsShow = true;
 
     private TextureView mTextureView;
 
     private View mLoadingView;
+    private View mVideoCtrlArea;
     private ImageView mPlayBtn;
     private TextView mCurrTimeView;
     private TextView mTotalTimeView;
     private View mFullScreenBtn;
     private RotatedSeekBar mSeekBar;
+
+    private Runnable mHideRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (mIsShow) {
+                mIsShow = false;
+                mVideoCtrlArea.setVisibility(View.GONE);
+            }
+        }
+    };
 
     protected final <T extends View> T $(@IdRes int resId) {
         return (T) findViewById(resId);
@@ -56,7 +68,10 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
             return;
         }
         int i = v.getId();
-        if (i == R.id.play_btn) {
+        if (i == R.id.video_texture_view) {
+            changeViewVisibility();
+            return;
+        } else if (i == R.id.play_btn) {
             boolean selected = !v.isSelected();
             v.setSelected(selected);
             if (selected) {
@@ -67,6 +82,8 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
         } else if (i == R.id.full_screen_btn) {
             mPresenter.switchToFullScreen();
         }
+        removeCallbacks(mHideRunnable);
+        postDelayed(mHideRunnable, 5000);
     }
 
     @Override
@@ -94,6 +111,7 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
         mTextureView = $(R.id.video_texture_view);
 
         mLoadingView = $(R.id.loading_view);
+        mVideoCtrlArea = $(R.id.video_ctrl_area);
         mPlayBtn = $(R.id.play_btn);
         mCurrTimeView = $(R.id.curr_time_view);
         mTotalTimeView = $(R.id.total_time_view);
@@ -103,7 +121,8 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
         $click(mPlayBtn, this);
         $click(mFullScreenBtn, this);
         $click(mSeekBar, this);
-        $click($(R.id.video_ctrl_area), this);
+        $click(mVideoCtrlArea, this);
+        $click(mTextureView, this);
 
         mSeekBar.setOnRotatedSeekBarChangeListener(new RotatedSeekBar.OnRotatedSeekBarChangeListener() {
             @Override
@@ -115,22 +134,37 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
             @Override
             public void onStartTrackingTouch(RotatedSeekBar rotatedSeekBar) {
                 mSeekTouching = true;
+                removeCallbacks(mHideRunnable);
             }
 
             @Override
             public void onStopTrackingTouch(RotatedSeekBar rotatedSeekBar) {
                 mPresenter.seekTo(mDuration * rotatedSeekBar.getPercent());
                 mSeekTouching = false;
+                postDelayed(mHideRunnable, 5000);
             }
         });
     }
 
+    private void changeViewVisibility() {
+        mIsShow = !mIsShow;
+        if (mIsShow) {
+            mVideoCtrlArea.setVisibility(View.VISIBLE);
+            removeCallbacks(mHideRunnable);
+            postDelayed(mHideRunnable, 5000);
+        } else {
+            mVideoCtrlArea.setVisibility(View.GONE);
+        }
+    }
+
     public void switchToReplayMode() {
         mFullScreenBtn.setVisibility(View.GONE);
+        mTextureView.setClickable(false);
     }
 
     public void switchToDetailMode() {
         mFullScreenBtn.setVisibility(View.VISIBLE);
+        mTextureView.setClickable(true);
     }
 
     @Override
@@ -163,6 +197,11 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
                 if (mDuration != 0) {
                     mSeekBar.setPercent((float) mProgress / mDuration);
                 }
+            }
+
+            @Override
+            public void onChangeVisibility() {
+                changeViewVisibility();
             }
 
             @Override
@@ -212,6 +251,11 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
          * 更新当前播放进度
          */
         void onUpdateProgress(int progress);
+
+        /**
+         * 更新控制界面可见行
+         */
+        void onChangeVisibility();
 
         /**
          * 重置View的状态

@@ -13,6 +13,7 @@ import com.wali.live.watchsdk.videodetail.view.DetailPlayerView;
 import com.wali.live.watchsdk.videothird.data.PullStreamerPresenter;
 import com.xiaomi.player.Player;
 
+import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
 import static com.wali.live.component.BaseSdkController.MSG_NEW_DETAIL_REPLAY;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
@@ -64,6 +65,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         super.startPresenter();
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(MSG_BACKGROUND_CLICK);
 
         registerAction(MSG_PLAYER_START);
         registerAction(MSG_NEW_DETAIL_REPLAY);
@@ -167,6 +169,9 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
                 return true;
             case MSG_UPDATE_PLAY_PROGRESS:
                 mView.onUpdateProgress((int) (mStreamerPresenter.getCurrentPosition() / 1000));
+                return true;
+            case MSG_BACKGROUND_CLICK:
+                mView.onChangeVisibility();
                 return true;
             case MSG_ON_STREAM_RECONNECT:
                 mView.showLoading(true);
