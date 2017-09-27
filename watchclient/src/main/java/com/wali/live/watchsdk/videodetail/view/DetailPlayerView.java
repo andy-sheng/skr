@@ -139,6 +139,7 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
 
             @Override
             public void onStopTrackingTouch(RotatedSeekBar rotatedSeekBar) {
+                mPresenter.startPlay();
                 mPresenter.seekTo(mDuration * rotatedSeekBar.getPercent());
                 mSeekTouching = false;
                 postDelayed(mHideRunnable, 5000);

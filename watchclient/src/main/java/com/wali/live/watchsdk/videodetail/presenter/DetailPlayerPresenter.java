@@ -105,7 +105,6 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
 
     @Override
     public void pausePlay() {
-        mView.showLoading(false);
         mStreamerPresenter.pauseWatch();
     }
 
@@ -116,7 +115,6 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
 
     @Override
     public void seekTo(float progress) {
-        mView.showLoading(true);
         mStreamerPresenter.seekTo((long) (progress * 1000));
     }
 
