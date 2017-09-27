@@ -139,6 +139,9 @@ public class WidgetView extends RelativeLayout
             mLeftBottomWiv = $$(R.id.left_bottom_vs);
             mLeftBottomWiv.setWidgetPos(WidgetItemView.POS_LEFT_BOTTOM);
             mLeftBottomWiv.setPresenter(mPresenter);
+
+            LayoutParams lp = (LayoutParams) mLeftBottomWiv.getLayoutParams();
+            lp.bottomMargin = DisplayUtils.dip2px(70);
         }
         mLeftBottomWiv.showWidgetItem(info, mNeedShow);
     }
