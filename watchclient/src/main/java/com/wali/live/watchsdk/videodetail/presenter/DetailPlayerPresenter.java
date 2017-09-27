@@ -27,6 +27,7 @@ import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
 import static com.wali.live.component.BaseSdkController.MSG_SEEK_COMPLETED;
 import static com.wali.live.component.BaseSdkController.MSG_SWITCH_TO_REPLAY_MODE;
 import static com.wali.live.component.BaseSdkController.MSG_UPDATE_PLAY_PROGRESS;
+import static com.wali.live.component.BaseSdkController.MSG_VIDEO_SIZE_CHANGED;
 
 /**
  * Created by yangli on 2017/09/25.
@@ -47,10 +48,15 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
     private Surface mSurface;
 
     private boolean mIsLandscape = false;
+    private boolean mIsDetailMode = true;
 
     @Override
     protected String getTAG() {
         return TAG;
+    }
+
+    public void setIsDetailMode(boolean isDetailMode) {
+        mIsDetailMode = isDetailMode;
     }
 
     public DetailPlayerPresenter(
@@ -78,6 +84,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         registerAction(MSG_PLAYER_ERROR);
         registerAction(MSG_SEEK_COMPLETED);
         registerAction(MSG_PLAYER_COMPLETED);
+        registerAction(MSG_VIDEO_SIZE_CHANGED);
         if (mView != null) {
             mView.start();
             mView.showLoading(true);
@@ -135,8 +142,9 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
             mSurfaceWidth = width;
             mSurfaceHeight = height;
             mStreamerPresenter.setSurface(mSurface);
-            mStreamerPresenter.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFit, width, height);
-            mStreamerPresenter.shiftUp(0.2f);
+            mStreamerPresenter.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFit,
+                    mSurfaceWidth, mSurfaceHeight);
+            updateShiftUp();
         }
     }
 
@@ -155,11 +163,37 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
     }
 
+    private void updateShiftUp() {
+        if (mIsDetailMode || mIsLandscape) {
+            mStreamerPresenter.shiftUp(0);
+            return;
+        }
+        if (mSurfaceWidth == 0 || mSurfaceHeight == 0) {
+            mStreamerPresenter.shiftUp(0);
+        } else if (mVideoWidth == 0 || mVideoHeight == 0) {
+            mStreamerPresenter.shiftUp(0);
+        } else if (mVideoWidth * 16 > mVideoHeight * 9) {
+            float ratio = (mSurfaceHeight - mSurfaceWidth * 9 / 16) * 0.25f / mSurfaceHeight;
+            mStreamerPresenter.shiftUp(ratio);
+        } else {
+            mStreamerPresenter.shiftUp(0);
+        }
+    }
+
+    private void onVideoSizeChange(int width, int height) {
+        if (mVideoWidth != width || mVideoHeight != height) {
+            mVideoWidth = width;
+            mVideoHeight = height;
+            updateShiftUp();
+        }
+    }
+
     private void onOrientation(boolean isLandscape) {
         if (mIsLandscape == isLandscape) {
             return;
         }
         mIsLandscape = isLandscape;
+        updateShiftUp();
     }
 
     @Override
@@ -202,8 +236,11 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
                 mView.onUpdateDuration((int) (mStreamerPresenter.getDuration() / 1000));
                 return true;
             case MSG_PLAYER_ERROR:
-            case MSG_PLAYER_COMPLETED:
+            case MSG_PLAYER_COMPLETED: // fall through
                 mView.reset();
+                return true;
+            case MSG_VIDEO_SIZE_CHANGED:
+                onVideoSizeChange((int) params.getItem(0), (int) params.getItem(1));
                 return true;
             default:
                 break;

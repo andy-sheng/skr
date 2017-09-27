@@ -258,6 +258,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
             return;
         }
         view.switchToReplayMode();
+        mController.mPlayerPresenter.setIsDetailMode(false);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addViewUnderAnchor(view, layoutParams, $(R.id.top_area_view));

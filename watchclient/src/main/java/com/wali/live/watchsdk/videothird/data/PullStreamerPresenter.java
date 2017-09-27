@@ -8,6 +8,7 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.engine.media.player.IMediaPlayer;
 import com.thornbirds.component.IEventController;
+import com.thornbirds.component.Params;
 import com.wali.live.dns.IDnsStatusListener;
 import com.wali.live.ipselect.WatchIpSelectionHelper;
 import com.wali.live.watchsdk.videothird.data.engine.IPlayer;
@@ -21,6 +22,7 @@ import static com.wali.live.component.BaseSdkController.MSG_PLAYER_READY;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SHOW_LOADING;
 import static com.wali.live.component.BaseSdkController.MSG_SEEK_COMPLETED;
 import static com.wali.live.component.BaseSdkController.MSG_UPDATE_PLAY_PROGRESS;
+import static com.wali.live.component.BaseSdkController.MSG_VIDEO_SIZE_CHANGED;
 
 /**
  * Created by yangli on 17-5-3.
@@ -147,7 +149,6 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
             mUIHandler.removeMessages(_MSG_PLAYER_PROGRESS);
             mUIHandler.sendEmptyMessageDelayed(_MSG_PLAYER_PROGRESS, _UPDATE_PROGRESS_TIMEOUT);
         }
-//        mUIHandler.sendEmptyMessageDelayed(_MSG_RECONNECT_STREAM, RECONNECT_TIMEOUT);
     }
 
     // 结束播放
@@ -162,8 +163,6 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         if (!mIsRealTime) {
             mUIHandler.removeMessages(_MSG_PLAYER_PROGRESS);
         }
-//        mIpSelectionHelper.updateStutterStatus(false);
-//        mUIHandler.removeMessages(_MSG_RECONNECT_STREAM);
     }
 
     // 拉流结束
@@ -205,6 +204,8 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
                 @Override
                 public void run() {
                     MyLog.w(TAG, "onVideoSizeChanged width=" + width + " height=" + height);
+                    mController.postEvent(MSG_VIDEO_SIZE_CHANGED, new Params().putItem(width)
+                            .putItem(height));
                 }
             });
         }

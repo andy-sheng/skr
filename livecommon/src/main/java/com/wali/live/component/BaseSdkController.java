@@ -91,16 +91,17 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_PLAYER_FEEDS_DETAIL = MSG_DETAIL_VIDEO_FIRST + 12;  // 更新 TAB类型
     // 播放器相关消息
     private static final int MSG_PLAYER_FIRST = 41000;
-    public static final int MSG_PLAYER_READY = MSG_PLAYER_FIRST;             // 播放器开始渲染画面
-    public static final int MSG_PLAYER_ERROR = MSG_PLAYER_FIRST + 1;         // 播放器出错
-    public static final int MSG_PLAYER_COMPLETED = MSG_PLAYER_FIRST + 2;     // 播放完成
-    public static final int MSG_SEEK_COMPLETED = MSG_PLAYER_FIRST + 3;       // Seek完成
-    public static final int MSG_UPDATE_PLAY_PROGRESS = MSG_PLAYER_FIRST + 4; // 更新播放进度
-    public static final int MSG_PLAYER_SHOW_LOADING = MSG_PLAYER_FIRST + 5;  // 显示 加载图标
-    public static final int MSG_PLAYER_HIDE_LOADING = MSG_PLAYER_FIRST + 6;  // 隐藏 加载图标
+    public static final int MSG_VIDEO_SIZE_CHANGED = MSG_PLAYER_FIRST;       // 视频尺寸更新
+    public static final int MSG_PLAYER_READY = MSG_PLAYER_FIRST + 1;         // 播放器开始渲染画面
+    public static final int MSG_PLAYER_ERROR = MSG_PLAYER_FIRST + 2;         // 播放器出错
+    public static final int MSG_PLAYER_COMPLETED = MSG_PLAYER_FIRST + 3;     // 播放完成
+    public static final int MSG_SEEK_COMPLETED = MSG_PLAYER_FIRST + 4;       // Seek完成
+    public static final int MSG_UPDATE_PLAY_PROGRESS = MSG_PLAYER_FIRST + 5; // 更新播放进度
+    public static final int MSG_PLAYER_SHOW_LOADING = MSG_PLAYER_FIRST + 6;  // 显示 加载图标
+    public static final int MSG_PLAYER_HIDE_LOADING = MSG_PLAYER_FIRST + 7;  // 隐藏 加载图标
 
-    public static final int MSG_PLAYER_START = MSG_PLAYER_FIRST + 7;
-    public static final int MSG_PLAYER_PAUSE = MSG_PLAYER_FIRST + 8;
+    public static final int MSG_PLAYER_START = MSG_PLAYER_FIRST + 8;
+    public static final int MSG_PLAYER_PAUSE = MSG_PLAYER_FIRST + 9;
 
     private static final int MSG_MORE_FIRST = 90000;
     public static final int MSG_FORCE_ROTATE_SCREEN = MSG_MORE_FIRST + 1; // 强制旋转UI

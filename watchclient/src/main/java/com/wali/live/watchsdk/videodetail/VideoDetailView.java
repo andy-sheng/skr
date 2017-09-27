@@ -130,6 +130,7 @@ public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
             return;
         }
         view.switchToDetailMode();
+        mController.mPlayerPresenter.setIsDetailMode(true);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.height = (int) mActivity.getResources().getDimension(R.dimen.view_dimen_608);
