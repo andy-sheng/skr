@@ -17,13 +17,14 @@ import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
 import static com.wali.live.component.BaseSdkController.MSG_NEW_DETAIL_REPLAY;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.component.BaseSdkController.MSG_ON_STREAM_RECONNECT;
-import static com.wali.live.component.BaseSdkController.MSG_ON_STREAM_SUCCESS;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_COMPLETED;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_ERROR;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_FULL_SCREEN;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PREPARED;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_HIDE_LOADING;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_READY;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SHOW_LOADING;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
+import static com.wali.live.component.BaseSdkController.MSG_SEEK_COMPLETED;
+import static com.wali.live.component.BaseSdkController.MSG_SWITCH_TO_REPLAY_MODE;
 import static com.wali.live.component.BaseSdkController.MSG_UPDATE_PLAY_PROGRESS;
 
 /**
@@ -66,26 +67,33 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_BACKGROUND_CLICK);
-
+        registerAction(MSG_UPDATE_PLAY_PROGRESS);
+        registerAction(MSG_PLAYER_SHOW_LOADING);
+        registerAction(MSG_PLAYER_HIDE_LOADING);
         registerAction(MSG_PLAYER_START);
         registerAction(MSG_NEW_DETAIL_REPLAY);
-        registerAction(MSG_PLAYER_PREPARED);
+        registerAction(MSG_PLAYER_READY);
         registerAction(MSG_PLAYER_ERROR);
+        registerAction(MSG_SEEK_COMPLETED);
         registerAction(MSG_PLAYER_COMPLETED);
-        registerAction(MSG_UPDATE_PLAY_PROGRESS);
-
-        registerAction(MSG_ON_STREAM_RECONNECT);
-        registerAction(MSG_ON_STREAM_SUCCESS);
+        if (mView != null) {
+            mView.start();
+            mView.showLoading(true);
+        }
     }
 
     @Override
     public void stopPresenter() {
         super.stopPresenter();
         unregisterAllAction();
+        if (mView != null) {
+            mView.stop();
+        }
     }
 
     @Override
     public void startPlay() {
+        mView.showLoading(true);
         if (mStreamerPresenter.isStarted()) {
             mStreamerPresenter.resumeWatch();
         } else {
@@ -101,12 +109,12 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
 
     @Override
     public void switchToFullScreen() {
-        postEvent(MSG_PLAYER_FULL_SCREEN);
+        postEvent(MSG_SWITCH_TO_REPLAY_MODE);
     }
 
     @Override
     public void seekTo(float progress) {
-        mView.showLoading(false);
+        mView.showLoading(true);
         mStreamerPresenter.seekTo((long) (progress * 1000));
     }
 
@@ -167,30 +175,31 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
             case MSG_ON_ORIENT_LANDSCAPE:
                 onOrientation(true);
                 return true;
-            case MSG_UPDATE_PLAY_PROGRESS:
-                mView.onUpdateProgress((int) (mStreamerPresenter.getCurrentPosition() / 1000));
-                return true;
             case MSG_BACKGROUND_CLICK:
                 mView.onChangeVisibility();
                 return true;
-            case MSG_ON_STREAM_RECONNECT:
-                mView.showLoading(true);
+            case MSG_UPDATE_PLAY_PROGRESS:
+                mView.onUpdateProgress((int) (mStreamerPresenter.getCurrentPosition() / 1000));
                 return true;
-            case MSG_ON_STREAM_SUCCESS:
+            case MSG_PLAYER_HIDE_LOADING:
+            case MSG_SEEK_COMPLETED: // fall through
                 mView.showLoading(false);
                 return true;
-            case MSG_PLAYER_PREPARED:
+            case MSG_PLAYER_SHOW_LOADING:
+                mView.showLoading(true);
+                return true;
+            case MSG_PLAYER_START:
+            case MSG_NEW_DETAIL_REPLAY: // fall through
+                mStreamerPresenter.stopWatch();
+                mStreamerPresenter.setOriginalStreamUrl(mMyRoomData.getVideoUrl());
+                startPlay();
+                return true;
+            case MSG_PLAYER_READY:
                 mView.onUpdateDuration((int) (mStreamerPresenter.getDuration() / 1000));
                 return true;
             case MSG_PLAYER_ERROR:
             case MSG_PLAYER_COMPLETED:
                 mView.reset();
-                return true;
-            case MSG_PLAYER_START:
-            case MSG_NEW_DETAIL_REPLAY:
-                mStreamerPresenter.stopWatch();
-                mStreamerPresenter.setOriginalStreamUrl(mMyRoomData.getVideoUrl());
-                startPlay();
                 return true;
             default:
                 break;

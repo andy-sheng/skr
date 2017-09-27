@@ -56,6 +56,9 @@ public class GalileoPlayer implements IPlayer {
     private Player mPlayer;
 
     private final PlayerCallback mInternalCallback = new PlayerCallback() {
+        private boolean mNeedSynthesize = false;
+        private boolean mIsBuffering = false;
+
         @Override
         public void onAudioRenderingStart() {
             MyLog.w(TAG, "onAudioRenderingStart");
@@ -72,6 +75,7 @@ public class GalileoPlayer implements IPlayer {
         @Override
         public void onStartBuffering() {
             MyLog.w(TAG, "onStartBuffering");
+            mIsBuffering = true;
             if (mCallback != null) {
                 mCallback.onInfo(GalileoPlayer.this, MEDIA_INFO_BUFFERING_START, 0);
             }
@@ -80,6 +84,7 @@ public class GalileoPlayer implements IPlayer {
         @Override
         public void onStartPlaying() {
             MyLog.w(TAG, "onStartPlaying");
+            mIsBuffering = false;
             if (mCallback != null) {
                 mCallback.onInfo(GalileoPlayer.this, MEDIA_INFO_BUFFERING_END, 0);
             }
@@ -98,11 +103,17 @@ public class GalileoPlayer implements IPlayer {
         @Override
         public void onPlayerPaused() {
             MyLog.w(TAG, "onPlayerPaused");
+            mNeedSynthesize = true;
         }
 
         @Override
         public void onPlayerResumed() {
             MyLog.w(TAG, "onPlayerResumed");
+            if (mCallback != null && mNeedSynthesize) {
+                mNeedSynthesize = false;
+                mCallback.onInfo(GalileoPlayer.this, mIsBuffering ?
+                        MEDIA_INFO_BUFFERING_START : MEDIA_INFO_BUFFERING_END, 0);
+            }
         }
 
         @Override

@@ -14,11 +14,11 @@ import com.wali.live.watchsdk.videothird.data.engine.IPlayer;
 import com.wali.live.watchsdk.videothird.data.engine.IPlayerCallback;
 import com.xiaomi.player.Player;
 
-import static com.wali.live.component.BaseSdkController.MSG_ON_STREAM_RECONNECT;
-import static com.wali.live.component.BaseSdkController.MSG_ON_STREAM_SUCCESS;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_COMPLETED;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_ERROR;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PREPARED;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_HIDE_LOADING;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_READY;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SHOW_LOADING;
 import static com.wali.live.component.BaseSdkController.MSG_SEEK_COMPLETED;
 import static com.wali.live.component.BaseSdkController.MSG_UPDATE_PLAY_PROGRESS;
 
@@ -31,13 +31,22 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         WatchIpSelectionHelper, IPlayer> {
     private static final String TAG = "PullStreamerPresenter";
 
+    protected static final int _UPDATE_PROGRESS_TIMEOUT = 1000; // 刷新播放进度间隔
+
+    protected static final int _MSG_RECONNECT_STREAM = 1004;  // 推/拉流重连
+
+    protected static final int _MSG_PLAYER_PREPARED = 2000;  // 播放器开始渲染画面
+    protected static final int _MSG_PLAYER_COMPLETED = 2001; // 播放完成
+    protected static final int _MSG_SEEK_COMPLETED = 2002;   // Seek完成
+    protected static final int _MSG_PLAYER_PROGRESS = 2003;  // 进度刷新
+
     @NonNull
     private IEventController mController;
 
     protected boolean mStarted = false;
-    private boolean mPaused = true;
+    protected boolean mPaused = true;
 
-    private boolean mIsRealTime = true;
+    protected boolean mIsRealTime = true;
 
     private final PlayerCallback<? extends IPlayer> mPlayerCallback = new PlayerCallback<>();
 
@@ -82,10 +91,6 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         mIsRealTime = isRealTime;
     }
 
-    public void setOriginalStreamUrl(String originalStreamUrl) {
-        mIpSelectionHelper.setOriginalStreamUrl(originalStreamUrl);
-    }
-
     public final void setSurface(Surface surface) {
         if (mStreamer != null) {
             mStreamer.setSurface(surface);
@@ -111,6 +116,10 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         }
     }
 
+    public void setOriginalStreamUrl(String originalStreamUrl) {
+        mIpSelectionHelper.setOriginalStreamUrl(originalStreamUrl);
+    }
+
     // 拉流开始
     public void startWatch() {
         if (mStreamer == null || mStarted || !mIpSelectionHelper.hasStreamUrl()) {
@@ -121,8 +130,8 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         mPaused = false;
         mReconnectHelper.startStream();
         if (!mIsRealTime) {
-            mUIHandler.removeMessages(MSG_UPDATE_PLAY_PROGRESS);
-            mUIHandler.sendEmptyMessageDelayed(MSG_UPDATE_PLAY_PROGRESS, 1000);
+            mUIHandler.removeMessages(_MSG_PLAYER_PROGRESS);
+            mUIHandler.sendEmptyMessageDelayed(_MSG_PLAYER_PROGRESS, _UPDATE_PROGRESS_TIMEOUT);
         }
     }
 
@@ -135,9 +144,10 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         mPaused = false;
         mStreamer.start();
         if (!mIsRealTime) {
-            mUIHandler.removeMessages(MSG_UPDATE_PLAY_PROGRESS);
-            mUIHandler.sendEmptyMessageDelayed(MSG_UPDATE_PLAY_PROGRESS, 1000);
+            mUIHandler.removeMessages(_MSG_PLAYER_PROGRESS);
+            mUIHandler.sendEmptyMessageDelayed(_MSG_PLAYER_PROGRESS, _UPDATE_PROGRESS_TIMEOUT);
         }
+//        mUIHandler.sendEmptyMessageDelayed(_MSG_RECONNECT_STREAM, RECONNECT_TIMEOUT);
     }
 
     // 结束播放
@@ -149,8 +159,11 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         MyLog.w(TAG, "pauseWatch");
         mPaused = true;
         mStreamer.pause();
-        mIpSelectionHelper.updateStutterStatus(false);
-        mUIHandler.removeMessages(MSG_UPDATE_PLAY_PROGRESS);
+        if (!mIsRealTime) {
+            mUIHandler.removeMessages(_MSG_PLAYER_PROGRESS);
+        }
+//        mIpSelectionHelper.updateStutterStatus(false);
+//        mUIHandler.removeMessages(_MSG_RECONNECT_STREAM);
     }
 
     // 拉流结束
@@ -160,9 +173,12 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         }
         MyLog.w(TAG, "stopWatch");
         mStarted = false;
-        mPaused = false;
+        mPaused = true;
         mReconnectHelper.stopStream();
-        mUIHandler.removeMessages(MSG_UPDATE_PLAY_PROGRESS);
+        mIpSelectionHelper.updateStutterStatus(false);
+        if (!mIsRealTime) {
+            mUIHandler.removeMessages(_MSG_PLAYER_PROGRESS);
+        }
     }
 
     // 播放器回调
@@ -170,17 +186,17 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
 
         @Override
         public void onPrepared(PLAYER player) {
-            mUIHandler.sendEmptyMessage(MSG_PLAYER_PREPARED);
+            mUIHandler.sendEmptyMessage(_MSG_PLAYER_PREPARED);
         }
 
         @Override
         public void onCompletion(PLAYER player) {
-            mUIHandler.sendEmptyMessage(MSG_PLAYER_COMPLETED);
+            mUIHandler.sendEmptyMessage(_MSG_PLAYER_COMPLETED);
         }
 
         @Override
         public void onSeekComplete(PLAYER player) {
-            mUIHandler.sendEmptyMessage(MSG_SEEK_COMPLETED);
+            mUIHandler.sendEmptyMessage(_MSG_SEEK_COMPLETED);
         }
 
         @Override
@@ -212,16 +228,17 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
                     switch (what) {
                         case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
                             MyLog.w(TAG, "MEDIA_INFO_BUFFERING_START");
-                            mUIHandler.removeMessages(MSG_RECONNECT_STREAM);
-                            mUIHandler.sendEmptyMessageDelayed(MSG_RECONNECT_STREAM, RECONNECT_TIMEOUT);
+                            mUIHandler.removeMessages(_MSG_RECONNECT_STREAM);
+                            mUIHandler.sendEmptyMessageDelayed(_MSG_RECONNECT_STREAM, RECONNECT_TIMEOUT);
+                            mController.postEvent(MSG_PLAYER_SHOW_LOADING);
                             break;
                         case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
                             MyLog.w(TAG, "MEDIA_INFO_BUFFERING_END");
                             if (mIpSelectionHelper.isStuttering()) {
                                 mIpSelectionHelper.updateStutterStatus(false);
-                                mController.postEvent(MSG_ON_STREAM_SUCCESS);
                             }
-                            mUIHandler.removeMessages(MSG_RECONNECT_STREAM);
+                            mUIHandler.removeMessages(_MSG_RECONNECT_STREAM);
+                            mController.postEvent(MSG_PLAYER_HIDE_LOADING);
                             break;
                         default:
                             break;
@@ -244,24 +261,27 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
                 return;
             }
             switch (msg.what) {
-                case MSG_RECONNECT_STREAM:
+                case _MSG_RECONNECT_STREAM:
                     MyLog.w(TAG, "MSG_RECONNECT_STREAM");
                     presenter.mReconnectHelper.startReconnect(0);
                     break;
-                case MSG_UPDATE_PLAY_PROGRESS: // fall through
+                case _MSG_PLAYER_PROGRESS: // fall through
                     if (!presenter.mIsRealTime && !presenter.mPaused) {
-                        removeMessages(MSG_UPDATE_PLAY_PROGRESS);
-                        sendEmptyMessageDelayed(MSG_UPDATE_PLAY_PROGRESS, 1000);
-                        presenter.mController.postEvent(msg.what); // 转发事件
+                        removeMessages(_MSG_PLAYER_PROGRESS);
+                        sendEmptyMessageDelayed(_MSG_PLAYER_PROGRESS, _UPDATE_PROGRESS_TIMEOUT);
+                        presenter.mController.postEvent(MSG_UPDATE_PLAY_PROGRESS);
                     }
                     break;
-                case MSG_PLAYER_COMPLETED:
+                case _MSG_PLAYER_PREPARED:
+                    presenter.mController.postEvent(MSG_PLAYER_READY);
+                    break;
+                case _MSG_PLAYER_COMPLETED:
                     presenter.seekTo(0);
                     presenter.pauseWatch();
-                    removeMessages(MSG_UPDATE_PLAY_PROGRESS);
-                case MSG_PLAYER_PREPARED:
-                case MSG_SEEK_COMPLETED:
-                    presenter.mController.postEvent(msg.what); // 转发事件
+                    presenter.mController.postEvent(MSG_PLAYER_COMPLETED);
+                    break;
+                case _MSG_SEEK_COMPLETED:
+                    presenter.mController.postEvent(MSG_SEEK_COMPLETED);
                     break;
                 default:
                     break;
@@ -302,7 +322,6 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
                 MyLog.w(TAG, "startReconnect, code = " + code);
                 if (!mIpSelectionHelper.isStuttering()) {
                     mIpSelectionHelper.updateStutterStatus(true);
-                    mController.postEvent(MSG_ON_STREAM_RECONNECT);
                 }
                 mIpSelectionHelper.ipSelect();
                 mStreamer.setVideoPath(mIpSelectionHelper.getStreamUrl(), mIpSelectionHelper.getStreamHost());

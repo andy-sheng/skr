@@ -39,8 +39,8 @@ import java.lang.ref.WeakReference;
 import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_DETAIL_SCREEN;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_FULL_SCREEN;
+import static com.wali.live.component.BaseSdkController.MSG_SWITCH_TO_DETAIL_MODE;
+import static com.wali.live.component.BaseSdkController.MSG_SWITCH_TO_REPLAY_MODE;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_ROTATE_ORIENTATION;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
@@ -328,10 +328,10 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
     private class Action implements IEventObserver {
 
         private void registerAction() {
-            mController.registerObserverForEvent(MSG_PLAYER_FULL_SCREEN, this);
+            mController.registerObserverForEvent(MSG_SWITCH_TO_REPLAY_MODE, this);
             mController.registerObserverForEvent(MSG_SHOW_PERSONAL_INFO, this);
             mController.registerObserverForEvent(MSG_UPDATE_START_TIME, this);
-            mController.registerObserverForEvent(MSG_PLAYER_DETAIL_SCREEN, this);
+            mController.registerObserverForEvent(MSG_SWITCH_TO_DETAIL_MODE, this);
             mController.registerObserverForEvent(MSG_PLAYER_ROTATE_ORIENTATION, this);
         }
 
@@ -347,12 +347,12 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
                 case MSG_SHOW_PERSONAL_INFO:
                     startShowFloatPersonInfo((long) params.getItem(0));
                     return true;
-                case MSG_PLAYER_FULL_SCREEN:
+                case MSG_SWITCH_TO_REPLAY_MODE:
                     if (mVideoStartTime >= 0) {
                         switchToReplayMode();
                     }
                     break;
-                case MSG_PLAYER_DETAIL_SCREEN:
+                case MSG_SWITCH_TO_DETAIL_MODE:
                     if (mVideoStartTime >= 0) {
                         switchToDetailMode();
                     }

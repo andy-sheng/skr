@@ -55,7 +55,7 @@ import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_DETAIL_SCREEN;
+import static com.wali.live.component.BaseSdkController.MSG_SWITCH_TO_DETAIL_MODE;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_ROTATE_ORIENTATION;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_INPUT;
 
@@ -106,7 +106,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.close_btn) {
-            mController.postEvent(MSG_PLAYER_DETAIL_SCREEN);
+            mController.postEvent(MSG_SWITCH_TO_DETAIL_MODE);
         } else if (i == R.id.rotate_btn) {
             mController.postEvent(MSG_PLAYER_ROTATE_ORIENTATION);
         }

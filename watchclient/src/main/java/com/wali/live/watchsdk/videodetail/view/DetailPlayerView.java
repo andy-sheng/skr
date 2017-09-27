@@ -45,7 +45,7 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
     private Runnable mHideRunnable = new Runnable() {
         @Override
         public void run() {
-            if (mIsShow) {
+            if (mIsShow && !mPlayBtn.isSelected()) {
                 mIsShow = false;
                 mVideoCtrlArea.setVisibility(View.GONE);
             }
@@ -176,6 +176,24 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
             }
 
             @Override
+            public void start() {
+                postDelayed(mHideRunnable, 5000);
+            }
+
+            @Override
+            public void stop() {
+                removeCallbacks(mHideRunnable);
+            }
+
+            @Override
+            public void reset() {
+                mSeekBar.setPercent(0);
+                mPlayBtn.setSelected(true);
+                removeCallbacks(mHideRunnable);
+                showLoading(false);
+            }
+
+            @Override
             public void showLoading(boolean isShow) {
                 mLoadingView.setVisibility(isShow ? View.VISIBLE : View.GONE);
             }
@@ -202,13 +220,6 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
             @Override
             public void onChangeVisibility() {
                 changeViewVisibility();
-            }
-
-            @Override
-            public void reset() {
-                mSeekBar.setPercent(0);
-                mPlayBtn.setSelected(true);
-                showLoading(false);
             }
         }
         return new ComponentView();
@@ -238,6 +249,21 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
 
     public interface IView extends IViewProxy {
         /**
+         * 开始View
+         */
+        void start();
+
+        /**
+         * 结束View
+         */
+        void stop();
+
+        /**
+         * 重置View的状态
+         */
+        void reset();
+
+        /**
          * 显示加载等待图标
          */
         void showLoading(boolean isShow);
@@ -256,10 +282,5 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
          * 更新控制界面可见行
          */
         void onChangeVisibility();
-
-        /**
-         * 重置View的状态
-         */
-        void reset();
     }
 }

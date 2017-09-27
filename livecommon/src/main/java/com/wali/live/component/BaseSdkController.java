@@ -76,26 +76,28 @@ public abstract class BaseSdkController extends ComponentController {
 
     // 详情播放相关
     private static final int MSG_DETAIL_VIDEO_FIRST = 40000;
-    public static final int MSG_UPDATE_LIKE_STATUS = MSG_DETAIL_VIDEO_FIRST;     // 更新 点赞状态
-    public static final int MSG_COMMENT_TOTAL_CNT = MSG_DETAIL_VIDEO_FIRST + 1;  // 更新 评论总数
-    public static final int MSG_REPLAY_TOTAL_CNT = MSG_DETAIL_VIDEO_FIRST + 2;   // 更新 回放总数
-    public static final int MSG_SHOW_COMMENT_INPUT = MSG_DETAIL_VIDEO_FIRST + 3; // 回复 评论
-    public static final int MSG_SEND_COMMENT = MSG_DETAIL_VIDEO_FIRST + 4;       // 发送 评论
-    public static final int MSG_FOLD_INFO_AREA = MSG_DETAIL_VIDEO_FIRST + 5;     // 收起 信息区
-    public static final int MSG_NEW_DETAIL_REPLAY = MSG_DETAIL_VIDEO_FIRST + 6;  // 点击回放每一条
-    public static final int MSG_COMPLETE_USER_INFO = MSG_DETAIL_VIDEO_FIRST + 7; // 点击回放每一条
-    public static final int MSG_UPDATE_START_TIME = MSG_DETAIL_VIDEO_FIRST + 8;  // 更新 回放的录制时间(用于拉取房间消息/弹幕)
-    public static final int MSG_PLAYER_ROTATE_ORIENTATION = MSG_DETAIL_VIDEO_FIRST + 9; // 方向变换事件
-    public static final int MSG_PLAYER_FEEDS_DETAIL = MSG_DETAIL_VIDEO_FIRST + 10; // 更新 TAB类型
+    public static final int MSG_SWITCH_TO_REPLAY_MODE = MSG_DETAIL_VIDEO_FIRST;     // 切换到回放模式(全屏播放)
+    public static final int MSG_SWITCH_TO_DETAIL_MODE = MSG_DETAIL_VIDEO_FIRST + 1; // 切换到详情模式(半屏播放)
+    public static final int MSG_UPDATE_LIKE_STATUS = MSG_DETAIL_VIDEO_FIRST + 2;    // 更新 点赞状态
+    public static final int MSG_COMMENT_TOTAL_CNT = MSG_DETAIL_VIDEO_FIRST + 3;     // 更新 评论总数
+    public static final int MSG_REPLAY_TOTAL_CNT = MSG_DETAIL_VIDEO_FIRST + 4;      // 更新 回放总数
+    public static final int MSG_SHOW_COMMENT_INPUT = MSG_DETAIL_VIDEO_FIRST + 5;    // 回复 评论
+    public static final int MSG_SEND_COMMENT = MSG_DETAIL_VIDEO_FIRST + 6;          // 发送 评论
+    public static final int MSG_FOLD_INFO_AREA = MSG_DETAIL_VIDEO_FIRST + 7;        // 收起 信息区
+    public static final int MSG_NEW_DETAIL_REPLAY = MSG_DETAIL_VIDEO_FIRST + 8;     // 点击回放每一条
+    public static final int MSG_COMPLETE_USER_INFO = MSG_DETAIL_VIDEO_FIRST + 9;    // 点击回放每一条
+    public static final int MSG_UPDATE_START_TIME = MSG_DETAIL_VIDEO_FIRST + 10;    // 更新 回放的录制时间(用于拉取房间消息/弹幕)
+    public static final int MSG_PLAYER_ROTATE_ORIENTATION = MSG_DETAIL_VIDEO_FIRST + 11; // 方向变换事件
+    public static final int MSG_PLAYER_FEEDS_DETAIL = MSG_DETAIL_VIDEO_FIRST + 12;  // 更新 TAB类型
     // 播放器相关消息
     private static final int MSG_PLAYER_FIRST = 41000;
-    public static final int MSG_PLAYER_FULL_SCREEN = MSG_PLAYER_FIRST;       // 切换到全屏播放
-    public static final int MSG_PLAYER_DETAIL_SCREEN = MSG_PLAYER_FIRST + 1; // 切换到半屏播放
-    public static final int MSG_PLAYER_PREPARED = MSG_PLAYER_FIRST + 2;      // 播放器开始渲染画面
-    public static final int MSG_PLAYER_ERROR = MSG_PLAYER_FIRST + 3;         // 播放器出错
-    public static final int MSG_PLAYER_COMPLETED = MSG_PLAYER_FIRST + 4;     // 播放完成
-    public static final int MSG_SEEK_COMPLETED = MSG_PLAYER_FIRST + 5;       // 快进完成
-    public static final int MSG_UPDATE_PLAY_PROGRESS = MSG_PLAYER_FIRST + 6; // 更新播放进度
+    public static final int MSG_PLAYER_READY = MSG_PLAYER_FIRST;             // 播放器开始渲染画面
+    public static final int MSG_PLAYER_ERROR = MSG_PLAYER_FIRST + 1;         // 播放器出错
+    public static final int MSG_PLAYER_COMPLETED = MSG_PLAYER_FIRST + 2;     // 播放完成
+    public static final int MSG_SEEK_COMPLETED = MSG_PLAYER_FIRST + 3;       // Seek完成
+    public static final int MSG_UPDATE_PLAY_PROGRESS = MSG_PLAYER_FIRST + 4; // 更新播放进度
+    public static final int MSG_PLAYER_SHOW_LOADING = MSG_PLAYER_FIRST + 5;  // 显示 加载图标
+    public static final int MSG_PLAYER_HIDE_LOADING = MSG_PLAYER_FIRST + 6;  // 隐藏 加载图标
 
     public static final int MSG_PLAYER_START = MSG_PLAYER_FIRST + 7;
     public static final int MSG_PLAYER_PAUSE = MSG_PLAYER_FIRST + 8;

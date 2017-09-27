@@ -16,8 +16,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import static com.wali.live.component.BaseSdkController.MSG_NEW_DETAIL_REPLAY;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_DETAIL_SCREEN;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_FULL_SCREEN;
+import static com.wali.live.component.BaseSdkController.MSG_SWITCH_TO_DETAIL_MODE;
+import static com.wali.live.component.BaseSdkController.MSG_SWITCH_TO_REPLAY_MODE;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
 
@@ -110,10 +110,10 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
             case EventClass.FeedsVideoEvent.TYPE_ON_CLOSE_ENDLIVE:
                 break;
             case EventClass.FeedsVideoEvent.TYPE_SMALL_TO_FULLSCREEN:
-                postEvent(MSG_PLAYER_FULL_SCREEN);
+                postEvent(MSG_SWITCH_TO_REPLAY_MODE);
                 break;
             case EventClass.FeedsVideoEvent.TYPE_FULLSCREEN_TO_SMALL:
-                postEvent(MSG_PLAYER_DETAIL_SCREEN);
+                postEvent(MSG_SWITCH_TO_DETAIL_MODE);
                 break;
             case EventClass.FeedsVideoEvent.TYPE_PLAYING:
                 mView.onPlaying();
