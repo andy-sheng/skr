@@ -13,6 +13,7 @@ import com.base.event.SdkEventClass;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.wali.live.livesdk.live.presenter.GameLivePresenter;
+import com.wali.live.livesdk.live.view.camera.GameCameraView;
 import com.wali.live.livesdk.live.window.dialog.GameConfirmDialog;
 
 import java.lang.ref.WeakReference;
@@ -46,6 +47,8 @@ public class GameFloatWindow implements IGameFloatPresenter {
     private final int mParentHeight;
     private GameFloatIcon mGameMainIcon;
     private GameFloatView mGameFloatView;
+
+    private GameCameraView mGameCameraView;
 
     // 弹窗
     private GameConfirmDialog mGameConfirmDialog;
@@ -99,8 +102,13 @@ public class GameFloatWindow implements IGameFloatPresenter {
                     mParentWidth,
                     mParentHeight);
         }
+        if (mGameCameraView == null) {
+            mGameCameraView = new GameCameraView(mContext, mWindowManager);
+        }
+
         mGameFloatView.showWindow();
         mGameMainIcon.showWindow();
+        mGameCameraView.showWindow();
     }
 
     public void removeWindow() {
@@ -109,6 +117,9 @@ public class GameFloatWindow implements IGameFloatPresenter {
         }
         if (mGameMainIcon != null) {
             mGameMainIcon.removeWindow();
+        }
+        if (mGameCameraView != null) {
+            mGameCameraView.removeWindow();
         }
     }
 
