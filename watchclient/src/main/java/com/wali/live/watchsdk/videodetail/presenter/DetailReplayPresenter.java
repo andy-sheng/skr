@@ -31,6 +31,8 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.BaseSdkController.MSG_COMPLETE_USER_INFO;
+import static com.wali.live.component.BaseSdkController.MSG_NEW_FEED_ID;
+import static com.wali.live.component.BaseSdkController.MSG_NEW_FEED_URL;
 
 /**
  * Created by zyh on 2017/06/06.
@@ -134,9 +136,10 @@ public class DetailReplayPresenter extends BaseSdkRxPresenter<DetailReplayView.I
             ToastUtils.showToast(GlobalData.app(), R.string.open_same_video_hint);
             return;
         }
-        mMyRoomData.setVideoUrl(replayInfoItem.mUrl);
         mMyRoomData.setRoomId(replayInfoItem.mLiveId);
-        postEvent(VideoDetailController.MSG_NEW_DETAIL_REPLAY);
+        mMyRoomData.setVideoUrl(replayInfoItem.mUrl);
+        postEvent(MSG_NEW_FEED_ID, new Params().putItem(mMyRoomData.getRoomId()).putItem(mMyRoomData.getUid()));
+        postEvent(MSG_NEW_FEED_URL, new Params().putItem(replayInfoItem.mUrl));
     }
 
     @Override

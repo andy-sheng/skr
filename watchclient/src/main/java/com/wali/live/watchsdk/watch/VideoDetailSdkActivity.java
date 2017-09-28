@@ -17,6 +17,7 @@ import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.thornbirds.component.IEventObserver;
 import com.thornbirds.component.IParams;
+import com.thornbirds.component.Params;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.watchsdk.R;
@@ -36,15 +37,16 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 
+import static com.wali.live.component.BaseSdkController.MSG_FORCE_ROTATE_SCREEN;
+import static com.wali.live.component.BaseSdkController.MSG_NEW_FEED_ID;
+import static com.wali.live.component.BaseSdkController.MSG_NEW_FEED_URL;
 import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_PERSONAL_INFO;
 import static com.wali.live.component.BaseSdkController.MSG_SWITCH_TO_DETAIL_MODE;
 import static com.wali.live.component.BaseSdkController.MSG_SWITCH_TO_REPLAY_MODE;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_ROTATE_ORIENTATION;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
-import static com.wali.live.component.BaseSdkController.MSG_SHOW_PERSONAL_INFO;
 import static com.wali.live.component.BaseSdkController.MSG_UPDATE_START_TIME;
 
 /**
@@ -97,7 +99,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
             finish();
             return;
         }
-        mRoomInfo = (RoomInfo) data.getParcelableExtra(EXTRA_ROOM_INFO);
+        mRoomInfo = data.getParcelableExtra(EXTRA_ROOM_INFO);
         if (mRoomInfo == null) {
             MyLog.e(TAG, "mRoomInfo is null");
             finish();
@@ -119,6 +121,12 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
         mController = new VideoDetailController(mMyRoomData, mRoomChatMsgManager);
         mController.setupController(this);
         switchToDetailMode();
+        // 默认自动开始播放
+        mController.postEvent(MSG_NEW_FEED_ID, new Params().putItem(mMyRoomData.getRoomId())
+                .putItem(mMyRoomData.getUid()));
+        if (!TextUtils.isEmpty(mMyRoomData.getVideoUrl())) {
+            mController.postEvent(MSG_NEW_FEED_URL, new Params().putItem(mMyRoomData.getVideoUrl()));
+        }
     }
 
     @Override
@@ -276,7 +284,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
         if (TextUtils.isEmpty(mMyRoomData.getVideoUrl())
                 && !TextUtils.isEmpty(videoUrl)) {
             mMyRoomData.setVideoUrl(videoUrl);
-            mController.postEvent(MSG_PLAYER_START);
+            mController.postEvent(MSG_NEW_FEED_URL, new Params().putItem(videoUrl));
         }
     }
 
@@ -332,7 +340,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
             mController.registerObserverForEvent(MSG_SHOW_PERSONAL_INFO, this);
             mController.registerObserverForEvent(MSG_UPDATE_START_TIME, this);
             mController.registerObserverForEvent(MSG_SWITCH_TO_DETAIL_MODE, this);
-            mController.registerObserverForEvent(MSG_PLAYER_ROTATE_ORIENTATION, this);
+            mController.registerObserverForEvent(MSG_FORCE_ROTATE_SCREEN, this);
         }
 
         private void unregisterAction() {
@@ -360,7 +368,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
                 case MSG_UPDATE_START_TIME:
                     mVideoStartTime = params.getItem(0);
                     break;
-                case MSG_PLAYER_ROTATE_ORIENTATION:
+                case MSG_FORCE_ROTATE_SCREEN:
                     if (mLandscape) {
                         tempForcePortrait();
                     } else {

@@ -68,11 +68,8 @@ public class DetailCommentView extends RelativeLayout
     }
 
     @Override
-    public void setPresenter(@Nullable IPresenter iPresenter) {
+    public final void setPresenter(@Nullable IPresenter iPresenter) {
         mPresenter = iPresenter;
-        if (mPresenter != null) {
-            mPresenter.pullNewerComments();
-        }
     }
 
     public DetailCommentView(Context context) {
@@ -151,11 +148,6 @@ public class DetailCommentView extends RelativeLayout
             }
 
             @Override
-            public void onShowEmptyView(boolean isShow) {
-                mEmptyView.setVisibility(isShow ? View.VISIBLE : ViewGroup.GONE);
-            }
-
-            @Override
             public void setReverseLayout(boolean reverseLayout) {
                 mLayoutManager.setReverseLayout(reverseLayout);
                 mLayoutManager.setStackFromEnd(reverseLayout);
@@ -185,19 +177,9 @@ public class DetailCommentView extends RelativeLayout
         void pullOlderComments();
 
         /**
-         * 重新拉取评论
-         */
-        void reloadComments();
-
-        /**
          * 回复评论
          */
         void showCommentInput(DetailCommentAdapter.CommentItem commentItem);
-
-        /**
-         * 发送评论
-         */
-        void sendComment(String feedId, DetailCommentAdapter.CommentItem commentItem);
 
         /**
          * 收起信息区
@@ -233,11 +215,6 @@ public class DetailCommentView extends RelativeLayout
          * 显示加载图标
          */
         void onShowLoadingView(boolean isShow);
-
-        /**
-         * 显示/隐藏空页面
-         */
-        void onShowEmptyView(boolean isShow);
 
         /**
          * 更改列表方向

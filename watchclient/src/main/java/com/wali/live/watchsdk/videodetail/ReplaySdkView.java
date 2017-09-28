@@ -49,15 +49,15 @@ import java.util.TimerTask;
 import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
 import static com.wali.live.component.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_ENABLE_MOVE_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_FORCE_ROTATE_SCREEN;
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_GAME_INPUT;
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_INPUT_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.component.BaseSdkController.MSG_SWITCH_TO_DETAIL_MODE;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_ROTATE_ORIENTATION;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_INPUT;
+import static com.wali.live.component.BaseSdkController.MSG_SWITCH_TO_DETAIL_MODE;
 
 /**
  * Created by yangli on 2017/6/19.
@@ -108,7 +108,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
         if (i == R.id.close_btn) {
             mController.postEvent(MSG_SWITCH_TO_DETAIL_MODE);
         } else if (i == R.id.rotate_btn) {
-            mController.postEvent(MSG_PLAYER_ROTATE_ORIENTATION);
+            mController.postEvent(MSG_FORCE_ROTATE_SCREEN);
         }
     }
 

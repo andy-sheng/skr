@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.view.Surface;
 
 import com.base.log.MyLog;
-import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
@@ -14,7 +13,7 @@ import com.wali.live.watchsdk.videothird.data.PullStreamerPresenter;
 import com.xiaomi.player.Player;
 
 import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
-import static com.wali.live.component.BaseSdkController.MSG_NEW_DETAIL_REPLAY;
+import static com.wali.live.component.BaseSdkController.MSG_NEW_FEED_URL;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_COMPLETED;
@@ -23,7 +22,6 @@ import static com.wali.live.component.BaseSdkController.MSG_PLAYER_HIDE_LOADING;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_READY;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SHOW_LOADING;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
 import static com.wali.live.component.BaseSdkController.MSG_SEEK_COMPLETED;
 import static com.wali.live.component.BaseSdkController.MSG_SWITCH_TO_REPLAY_MODE;
 import static com.wali.live.component.BaseSdkController.MSG_UPDATE_PLAY_PROGRESS;
@@ -39,7 +37,6 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
     private static final String TAG = "DetailPlayerPresenter";
 
     private PullStreamerPresenter mStreamerPresenter;
-    private RoomBaseDataModel mMyRoomData;
 
     private int mVideoWidth;
     private int mVideoHeight;
@@ -61,11 +58,9 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
 
     public DetailPlayerPresenter(
             @NonNull IEventController controller,
-            @NonNull PullStreamerPresenter streamerPresenter,
-            @NonNull RoomBaseDataModel myRoomData) {
+            @NonNull PullStreamerPresenter streamerPresenter) {
         super(controller);
         mStreamerPresenter = streamerPresenter;
-        mMyRoomData = myRoomData;
     }
 
     @Override
@@ -74,12 +69,13 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_BACKGROUND_CLICK);
+
+        registerAction(MSG_NEW_FEED_URL);
+
         registerAction(MSG_PLAYER_PAUSE);
         registerAction(MSG_UPDATE_PLAY_PROGRESS);
         registerAction(MSG_PLAYER_SHOW_LOADING);
         registerAction(MSG_PLAYER_HIDE_LOADING);
-        registerAction(MSG_PLAYER_START);
-        registerAction(MSG_NEW_DETAIL_REPLAY);
         registerAction(MSG_PLAYER_READY);
         registerAction(MSG_PLAYER_ERROR);
         registerAction(MSG_SEEK_COMPLETED);
@@ -216,6 +212,11 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
                 pausePlay();
                 mView.pause();
                 return true;
+            case MSG_NEW_FEED_URL:
+                mStreamerPresenter.stopWatch();
+                mStreamerPresenter.setOriginalStreamUrl((String) params.getItem(0));
+                startPlay();
+                return true;
             case MSG_UPDATE_PLAY_PROGRESS:
                 mView.onUpdateProgress((int) (mStreamerPresenter.getCurrentPosition() / 1000));
                 return true;
@@ -225,12 +226,6 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
                 return true;
             case MSG_PLAYER_SHOW_LOADING:
                 mView.showLoading(true);
-                return true;
-            case MSG_PLAYER_START:
-            case MSG_NEW_DETAIL_REPLAY: // fall through
-                mStreamerPresenter.stopWatch();
-                mStreamerPresenter.setOriginalStreamUrl(mMyRoomData.getVideoUrl());
-                startPlay();
                 return true;
             case MSG_PLAYER_READY:
                 mView.onUpdateDuration((int) (mStreamerPresenter.getDuration() / 1000));

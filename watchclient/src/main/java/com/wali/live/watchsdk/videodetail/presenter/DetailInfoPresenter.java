@@ -37,12 +37,12 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.mi.live.data.event.FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW;
-import static com.wali.live.component.BaseSdkController.MSG_NEW_DETAIL_REPLAY;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_FEEDS_DETAIL;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
+import static com.wali.live.component.BaseSdkController.MSG_NEW_FEED_ID;
+import static com.wali.live.component.BaseSdkController.MSG_NEW_FEED_URL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_PERSONAL_INFO;
 import static com.wali.live.component.BaseSdkController.MSG_UPDATE_LIKE_STATUS;
 import static com.wali.live.component.BaseSdkController.MSG_UPDATE_START_TIME;
+import static com.wali.live.component.BaseSdkController.MSG_UPDATE_TAB_TYPE;
 
 /**
  * Created by yangli on 2017/06/01.
@@ -54,6 +54,9 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
     private static final String TAG = "DetailInfoPresenter";
 
     private RoomBaseDataModel mMyRoomData;
+
+    private String mFeedId;
+    private long mOwnerId;
 
     private Subscription mFeedsSubscription;
 
@@ -72,11 +75,10 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
     @Override
     public void startPresenter() {
         super.startPresenter();
-        registerAction(MSG_NEW_DETAIL_REPLAY);
+        registerAction(MSG_NEW_FEED_ID);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        syncUserInfo();
     }
 
     @Override
@@ -106,9 +108,8 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
         }
     }
 
-    @Override
-    public void syncUserInfo() {
-        final long userId = mMyRoomData.getUid();
+    private void syncUserInfo() {
+        final long userId = mOwnerId;
         MyLog.w(TAG, "syncUserInfo userId=" + userId);
         Observable.just(userId)
                 .map(new Func1<Long, User>() {
@@ -145,13 +146,13 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
                 });
     }
 
-    @Override
-    public void syncFeedsInfo() {
+    private void syncFeedsInfo() {
         if (mFeedsSubscription != null && !mFeedsSubscription.isUnsubscribed()) {
             mFeedsSubscription.unsubscribe();
+            mFeedsSubscription = null;
         }
-        final String feedId = mMyRoomData.getRoomId();
-        final long ownerId = mMyRoomData.getUid();
+        final String feedId = mFeedId;
+        final long ownerId = mOwnerId;
         MyLog.w(TAG, "syncFeedsInfo feedId=" + feedId + ", ownerId=" + ownerId);
         mFeedsSubscription = Observable.just(0)
                 .map(new Func1<Integer, FeedsInfo>() {
@@ -167,8 +168,7 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
                             Feeds.FeedInfo feedInfo = rsp.getFeedInfo();
                             outInfo.timestamp = feedInfo.getFeedCteateTime();
                             outInfo.mySelfLike = feedInfo.getFeedLikeContent().getMyselfLike();
-                            //feedContent的feedType://Feed的Type类型.0 直播，1 图片，2. 小视频， 3 回放视频,
-                            // 4, 直播结束，等待回放, 5,聚合回放, 6 作品
+                            // Feed的Type类型: 0-直播, 1-图片, 2-小视频, 3-回放视频, 4-直播结束 等待回放, 5-聚合回放, 6-作品
                             Feeds.FeedContent content = feedInfo.getFeedContent();
                             switch (content.getFeedType()) {
                                 case FeedsInfo.TYPE_LIVE:
@@ -201,7 +201,7 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
                                     }
                                     break;
                             }
-                            //分享相关需要的信息
+                            // 分享相关需要的信息
                             mMyRoomData.setShareUrl(outInfo.shareUrl);
                             mMyRoomData.setCoverUrl(outInfo.coverUrl);
                             mMyRoomData.setLiveTitle(outInfo.title);
@@ -222,20 +222,20 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
                             return;
                         }
                         if (outInfo != null) {
+                            mView.onFeedsInfo(ownerId, outInfo.title, outInfo.timestamp,
+                                    outInfo.viewerCnt, outInfo.coverUrl);
                             //詳情頁需要再刷一下ui
-                            postEvent(MSG_PLAYER_FEEDS_DETAIL, new Params().putItem(outInfo));
                             postEvent(MSG_UPDATE_LIKE_STATUS, new Params().putItem(outInfo.mySelfLike));
                             postEvent(MSG_UPDATE_START_TIME, new Params().putItem(outInfo.timestamp));
+                            postEvent(MSG_UPDATE_TAB_TYPE, new Params().putItem(outInfo));
                             if (TextUtils.isEmpty(mMyRoomData.getVideoUrl()) && !TextUtils.isEmpty(outInfo.url)) {
                                 mMyRoomData.setVideoUrl(outInfo.url);
-                                postEvent(MSG_PLAYER_START);
+                                postEvent(MSG_NEW_FEED_URL, new Params().putItem(outInfo.url));
                             }
-                            mView.onFeedsInfo(mMyRoomData.getUid(), outInfo.title, outInfo.timestamp,
-                                    outInfo.viewerCnt, outInfo.coverUrl);
                         } else {
                             MyLog.d(TAG, "feedsInfo failed");
                             postEvent(MSG_UPDATE_START_TIME, new Params().putItem(0l));
-                            postEvent(MSG_PLAYER_FEEDS_DETAIL, new Params().putItem(new FeedsInfo())); // 在刷新底部回放、评论
+                            postEvent(MSG_UPDATE_TAB_TYPE, new Params().putItem(new FeedsInfo()));
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -247,7 +247,7 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
     }
 
     @Override
-    public void showPersonalInfo() {
+    public final void showPersonalInfo() {
         long uid = mMyRoomData.getUid();
         if (uid > 0) {
             postEvent(MSG_SHOW_PERSONAL_INFO, new Params().putItem(uid));
@@ -284,6 +284,15 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
                 });
     }
 
+    private void onNewFeedId(final String feedId, final long ownerId) {
+        if (mOwnerId != ownerId) {
+            mOwnerId = ownerId;
+            syncUserInfo();
+        }
+        mFeedId = feedId;
+        syncFeedsInfo();
+    }
+
     @Override
     public boolean onEvent(int event, IParams params) {
         if (mView == null) {
@@ -291,8 +300,8 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
             return false;
         }
         switch (event) {
-            case MSG_NEW_DETAIL_REPLAY:
-                syncFeedsInfo();
+            case MSG_NEW_FEED_ID:
+                onNewFeedId((String) params.getItem(0), (long) params.getItem(1));
                 break;
             default:
                 break;
@@ -302,10 +311,10 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
 
     public static class FeedsInfo {
         //Feed的Type类型.0 直播，1 图片，2. 小视频， 3 回放视频, 4, 直播结束，等待回放, 5,聚合回放, 6 作品
-        public static final int TYPE_LIVE = 0;
-        public static final int TYPE_IMG = 1;
-        public static final int TYPE_VIDEO = 2;
-        public static final int TYPE_BACK = 3;
+        private static final int TYPE_LIVE = 0;
+        private static final int TYPE_IMG = 1;
+        private static final int TYPE_VIDEO = 2;
+        private static final int TYPE_BACK = 3;
         boolean isReplay = true;
         String title = "";
         String description = "";

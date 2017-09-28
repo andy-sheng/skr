@@ -52,6 +52,11 @@ public class DetailReplayView extends RelativeLayout
         }
     }
 
+    @Override
+    public final void setPresenter(@Nullable IPresenter iPresenter) {
+        mPresenter = iPresenter;
+    }
+
     public DetailReplayView(Context context) {
         this(context, null, 0);
     }
@@ -82,14 +87,6 @@ public class DetailReplayView extends RelativeLayout
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false));
-    }
-
-    @Override
-    public void setPresenter(@Nullable IPresenter iPresenter) {
-        mPresenter = iPresenter;
-        if (mPresenter != null) {
-            mPresenter.pullReplayList();
-        }
     }
 
     @Override

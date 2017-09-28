@@ -9,6 +9,7 @@ import com.base.global.GlobalData;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.thornbirds.component.Params;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.BaseSdkController;
 import com.wali.live.watchsdk.R;
@@ -54,14 +55,14 @@ public class VideoDetailController extends BaseSdkController {
         player.setCallback(mStreamerPresenter.getPlayerCallback());
         mStreamerPresenter.setStreamer(player);
 
-        mPlayerPresenter = new DetailPlayerPresenter(this, mStreamerPresenter, mMyRoomData);
+        mPlayerPresenter = new DetailPlayerPresenter(this, mStreamerPresenter);
         mPlayerPresenter.setView(mPlayerView.getViewProxy());
         mPlayerView.setPresenter(mPlayerPresenter);
         mPlayerPresenter.startPresenter();
 
         // 发送事件，通知可以播放
         if (!TextUtils.isEmpty(mMyRoomData.getVideoUrl())) {
-            postEvent(MSG_PLAYER_START);
+            postEvent(MSG_NEW_FEED_URL, new Params().putItem(mMyRoomData.getVideoUrl()));
         }
     }
 

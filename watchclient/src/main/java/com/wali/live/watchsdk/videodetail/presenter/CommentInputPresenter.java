@@ -121,17 +121,17 @@ public class CommentInputPresenter extends BaseSdkRxPresenter<InputAreaView.IVie
     }
 
     @Override
-    public void notifyInputViewShowed() {
+    public final void notifyInputViewShowed() {
         postEvent(MSG_INPUT_VIEW_SHOWED);
     }
 
     @Override
-    public void notifyInputViewHidden() {
+    public final void notifyInputViewHidden() {
         postEvent(MSG_INPUT_VIEW_HIDDEN);
     }
 
     @Override
-    public int getMinHeightLand() {
+    public final int getMinHeightLand() {
         //这个界面不会发生横竖屏切换，所以不会调用这个方法。
         return 0;
     }
