@@ -103,7 +103,11 @@ public class GameFloatWindow implements IGameFloatPresenter {
                     mParentHeight);
         }
         if (mGameCameraView == null) {
-            mGameCameraView = new GameCameraView(mContext, mWindowManager);
+            mGameCameraView = new GameCameraView(
+                    mContext,
+                    mWindowManager,
+                    mParentWidth,
+                    mParentHeight);
         }
 
         mGameFloatView.showWindow();
@@ -136,6 +140,9 @@ public class GameFloatWindow implements IGameFloatPresenter {
         if (mGameMainIcon != null) {
             mGameMainIcon.destroy();
         }
+        if (mGameCameraView != null) {
+            mGameCameraView.destroy();
+        }
     }
 
     @Override
@@ -148,6 +155,7 @@ public class GameFloatWindow implements IGameFloatPresenter {
         mGameLivePresenter.screenshot();
         mGameFloatView.setVisibility(View.GONE);
         mGameMainIcon.setVisibility(View.GONE);
+        mGameCameraView.setVisibility(View.GONE);
         mUiHandler.removeMessages(MSG_TAKE_SCREEN_SHOT_DONE);
         mUiHandler.sendEmptyMessageDelayed(MSG_TAKE_SCREEN_SHOT_DONE, TIME_TAKE_SCREEN_SHOT_DONE);
     }
@@ -214,6 +222,7 @@ public class GameFloatWindow implements IGameFloatPresenter {
                 case MSG_TAKE_SCREEN_SHOT_DONE:
                     gameFloatWindow.mGameFloatView.setVisibility(View.VISIBLE);
                     gameFloatWindow.mGameMainIcon.setVisibility(View.VISIBLE);
+                    gameFloatWindow.mGameCameraView.setVisibility(View.VISIBLE);
                     break;
                 case MSG_HALF_HIDE_FLOAT_BALL:
                     gameFloatWindow.mGameMainIcon.setMode(GameFloatIcon.MODE_HALF_HIDDEN);

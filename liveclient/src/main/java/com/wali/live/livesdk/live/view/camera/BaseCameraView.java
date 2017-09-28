@@ -9,7 +9,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.base.log.MyLog;
-import com.base.utils.display.DisplayUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,7 +16,7 @@ import java.util.List;
 /**
  * Created by lan on 2017/9/28.
  */
-public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callback {
+public abstract class BaseCameraView extends SurfaceView implements SurfaceHolder.Callback {
     protected final String TAG = getTAG();
 
     /*分辨率的误差*/
@@ -25,6 +24,8 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
     protected SurfaceHolder mSurfaceHolder;
     protected Camera mCamera;
+
+    protected boolean mIsStartCamera;
 
     public BaseCameraView(Context context) {
         this(context, null);
@@ -49,12 +50,17 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
         mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
 
-    protected void startRecord() {
+    protected void startCamera() {
         mCamera = openFrontFacingCamera();
+        if (mCamera == null) {
+            MyLog.e(TAG, "openCamera is null");
+            return;
+        }
+        mIsStartCamera = true;
 
         Camera.Parameters parameters = mCamera.getParameters();
         List<Camera.Size> supportedPreviewSizes = parameters.getSupportedPreviewSizes();
-        Camera.Size optimalSize = getOptimalPreviewSize(supportedPreviewSizes, DisplayUtils.dip2px(80f), DisplayUtils.dip2px(80f));
+        Camera.Size optimalSize = getOptimalPreviewSize(supportedPreviewSizes, getViewWidth(), getViewHeight());
 
         CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
         profile.videoFrameWidth = optimalSize.width;
@@ -63,36 +69,67 @@ public class BaseCameraView extends SurfaceView implements SurfaceHolder.Callbac
 
         mCamera.setParameters(parameters);
         mCamera.setDisplayOrientation(90);
-        try {
-            mCamera.setPreviewDisplay(mSurfaceHolder);
-        } catch (IOException e) {
-            MyLog.e(TAG, "setPreviewDisplay", e);
-            return;
+
+        startPreview();
+    }
+
+    protected abstract int getViewWidth();
+
+    protected abstract int getViewHeight();
+
+    protected void startPreview() {
+        if (mCamera != null) {
+            try {
+                mCamera.setPreviewDisplay(mSurfaceHolder);
+            } catch (IOException e) {
+                MyLog.e(TAG, "setPreviewDisplay", e);
+                return;
+            }
+            mCamera.startPreview();
         }
-        mCamera.startPreview();
+    }
+
+    protected void stopPreview() {
+        if (mCamera != null) {
+            mCamera.stopPreview();
+        }
+    }
+
+    protected void stopCamera() {
+        mIsStartCamera = false;
+        if (mCamera != null) {
+            try {
+                mCamera.stopPreview();
+            } catch (Exception e) {
+                MyLog.e(TAG, e);
+            }
+            mCamera.release();
+            mCamera = null;
+        }
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        MyLog.v(TAG, "surfaceCreated");
+        MyLog.v(TAG, "surfaceCreated=" + holder.hashCode());
         mSurfaceHolder = holder;
-        startRecord();
+        if (mIsStartCamera) {
+            startPreview();
+        } else {
+            startCamera();
+        }
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        MyLog.v(TAG, "surfaceChanged");
+        MyLog.v(TAG, "surfaceChanged=" + holder.hashCode());
         mSurfaceHolder = holder;
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        MyLog.v(TAG, "surfaceDestroyed");
+        MyLog.v(TAG, "surfaceDestroyed=" + holder.hashCode());
         mSurfaceHolder = null;
-
-        if (mCamera != null) {
-            mCamera.stopPreview();
-        }
+        stopPreview();
     }
 
     protected Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
