@@ -46,7 +46,6 @@ public class AccountLoginManager {
                 e.printStackTrace();
             }
         }
-
         return null;
     }
 
@@ -151,7 +150,7 @@ public class AccountLoginManager {
      * @param sign
      * @return
      */
-    public static AccountProto.ThirdPartSignLoginRsp thridPartLogin(int channelId,String xuid, int sex, String nickName, String headUrl, String sign){
+    public static AccountProto.ThirdPartSignLoginRsp thridPartLogin(int channelId, String xuid, int sex, String nickName, String headUrl, String sign) {
         AccountProto.ThirdPartSignLoginReq.Builder builder = AccountProto.ThirdPartSignLoginReq.newBuilder();
         builder.setNickname(nickName);
         builder.setChannelId(String.valueOf(channelId));

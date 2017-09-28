@@ -4,7 +4,9 @@ import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.permission.PermissionUtils;
 import com.base.thread.ThreadPool;
 import com.base.utils.CommonUtils;
 import com.mi.live.data.account.MyUserInfoManager;
@@ -56,7 +58,8 @@ public class UploadRunnable implements Runnable {
             }
         }
         MyLog.w(TAG, "uploadUserInfo start,UploadUserInfo:" + mUploadInfo.toString());
-        if (!mUploadInfo.hasInnerAvatar && !TextUtils.isEmpty(mUploadInfo.avatar)) {
+        if (!mUploadInfo.hasInnerAvatar && !TextUtils.isEmpty(mUploadInfo.avatar)
+                && PermissionUtils.checkReadPhoneState(GlobalData.app())) {
             String localImgUrl = mUploadInfo.avatar;
             if (mUploadInfo.avatarNeedDownload) {
                 localImgUrl = CommonUtils.downloadImg(mUploadInfo.avatar);
@@ -111,8 +114,6 @@ public class UploadRunnable implements Runnable {
                                         upload();
                                     }
                                 });
-
-
                     }
                 }
         );
