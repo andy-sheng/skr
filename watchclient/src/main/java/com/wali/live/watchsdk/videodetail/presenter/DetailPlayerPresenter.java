@@ -1,6 +1,8 @@
 package com.wali.live.watchsdk.videodetail.presenter;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.SurfaceTexture;
 import android.support.annotation.NonNull;
 import android.view.Surface;
@@ -59,10 +61,12 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
 
     private boolean mIsLandscape = false;
     private boolean mIsDetailMode = true;
+    private boolean mHasNetwork = true;
     private boolean mNeedShowTraffic = false;
     private long mSavedPosition;
 
     private WeakReference<MyAlertDialog> mTrafficDialogRef;
+    private WeakReference<MyAlertDialog> mNetworkDialogRef;
 
     @Override
     protected final String getTAG() {
@@ -96,6 +100,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         registerAction(MSG_SEEK_COMPLETED);
         registerAction(MSG_PLAYER_COMPLETED);
         registerAction(MSG_VIDEO_SIZE_CHANGED);
+        mHasNetwork = NetworkUtils.hasNetwork(GlobalData.app());
         mNeedShowTraffic = !NetworkUtils.isWifi(GlobalData.app());
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -126,6 +131,10 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
 
     @Override
     public final void resumePlay() {
+        if (!mHasNetwork) {
+            showNetworkDialog();
+            return;
+        }
         if (!mStreamerPresenter.isStarted() && mNeedShowTraffic) {
             showTrafficDialog();
         } else {
@@ -241,7 +250,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
                             doResumePlay();
                             dialog.dismiss();
                         }
-                    }).setNegativeButton(R.string.live_traffic_negative, new DialogInterface.OnClickListener() {
+                    }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -254,6 +263,34 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         }
     }
 
+    private void showNetworkDialog() {
+        MyAlertDialog networkDialog = mNetworkDialogRef != null ? mNetworkDialogRef.get() : null;
+        if (networkDialog == null) {
+            networkDialog = new MyAlertDialog.Builder(mView.getRealView().getContext())
+                    .setMessage(R.string.live_offline_no_network)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Context context = mView.getRealView().getContext();
+                            if (android.os.Build.VERSION.SDK_INT > 10) {
+                                context.startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
+                            } else {
+                                context.startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+                            }
+                        }
+                    }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setCancelable(false).create();
+            mNetworkDialogRef = new WeakReference<>(networkDialog);
+        }
+        if (!networkDialog.isShowing()) {
+            networkDialog.show();
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.NetWorkChangeEvent event) {
         MyLog.w(TAG, "EventClass.NetWorkChangeEvent");
@@ -262,6 +299,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         }
         NetworkReceiver.NetState netCode = event.getNetState();
         if (netCode != NetworkReceiver.NetState.NET_NO) { // 优先处理错误情况
+            mHasNetwork = true;
             boolean needShowTraffic = netCode == NetworkReceiver.NetState.NET_2G ||
                     netCode == NetworkReceiver.NetState.NET_3G ||
                     netCode == NetworkReceiver.NetState.NET_4G;
@@ -277,7 +315,9 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
                 stopPlay();
             }
         } else {
-            // TODO 加入断网处理 YangLi
+            mHasNetwork = false;
+            mNeedShowTraffic = false;
+            showNetworkDialog();
         }
     }
 
@@ -286,10 +326,10 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         mView.reset();
         mSavedPosition = 0;
         mStreamerPresenter.setOriginalStreamUrl(videoUrl);
-        if (NetworkUtils.hasNetwork(GlobalData.app())) {
-            resumePlay();
+        if (!mHasNetwork) {
+            showNetworkDialog();
         } else {
-            // TODO 加入无网处理 YangLi
+            resumePlay();
         }
     }
 

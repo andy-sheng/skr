@@ -203,4 +203,5 @@
     <string name="feeds_getinfo_failed">取得詳情失敗, 請稍後重試</string>
     <string name="like_count_text">%d人讚</string>
     <string name="detail_text">詳細資料</string>
+    <string name="live_offline_no_network">系統網路已斷開，請打開你的網路連接</string>
 </resources>
