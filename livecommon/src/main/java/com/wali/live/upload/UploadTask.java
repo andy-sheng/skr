@@ -68,7 +68,6 @@ public class UploadTask {
                             callBack.process(true);
                             callBack.processWithMore(true, att.getUrl());
                         }
-
                     }
 
                     @Override

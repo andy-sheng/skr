@@ -2,8 +2,6 @@ package com.wali.live;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,13 +11,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
-import com.base.utils.display.DisplayUtils;
+import com.base.utils.CommonUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.milink.event.MiLinkEvent;
@@ -179,10 +175,14 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
                     ToastUtils.showToast("主播id不能为空");
                     return;
                 }
-                RoomInfo roomInfo = RoomInfo.Builder.newInstance(Long.parseLong(input), null, null)
-                        .setLiveType(0)
-                        .build();
-                WatchSdkActivity.openActivity(MainActivity.this, roomInfo);
+                if (CommonUtils.isNumeric(input)) {
+                    RoomInfo roomInfo = RoomInfo.Builder.newInstance(Long.parseLong(input), null, null)
+                            .setLiveType(0)
+                            .build();
+                    WatchSdkActivity.openActivity(MainActivity.this, roomInfo);
+                } else {
+                    ToastUtils.showToast("主播id不是数字");
+                }
             }
         });
     }
