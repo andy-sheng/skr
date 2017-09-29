@@ -80,7 +80,7 @@ import rx.functions.Action1;
 /**
  * Created by yurui on 2016/12/13.
  */
-
+@Deprecated
 public class ReplaySdkActivity extends BaseComponentSdkActivity implements
         FloatInfoFragment.FloatInfoClickListener, IActionCallBack, IWatchVideoView {
     protected final static String TAG = "ReplaySdkActivity";

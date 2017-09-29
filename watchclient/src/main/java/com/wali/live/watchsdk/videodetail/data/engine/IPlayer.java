@@ -1,7 +1,6 @@
-package com.wali.live.watchsdk.videothird.data.engine;
+package com.wali.live.watchsdk.videodetail.data.engine;
 
 import android.view.Surface;
-import android.view.SurfaceHolder;
 
 import com.xiaomi.player.Player;
 

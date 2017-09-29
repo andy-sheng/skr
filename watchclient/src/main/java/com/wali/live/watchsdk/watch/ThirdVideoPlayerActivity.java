@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import com.base.event.SdkEventClass;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.log.MyLog;
+import com.thornbirds.component.Params;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
@@ -25,6 +26,7 @@ import com.wali.live.watchsdk.videothird.ThirdVideoView;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import static com.wali.live.component.BaseSdkController.MSG_NEW_FEED_URL;
 import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
@@ -100,6 +102,8 @@ public class ThirdVideoPlayerActivity extends BaseComponentSdkActivity {
         compoundView.setupView();
         compoundView.startView();
         mSdkView = compoundView;
+        // 通知播放器开始播放
+        mController.postEvent(MSG_NEW_FEED_URL, new Params().putItem(mMyRoomData.getVideoUrl()));
         openOrientation();
     }
 

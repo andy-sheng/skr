@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.videothird.data;
+package com.wali.live.watchsdk.videodetail.data;
 
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -11,8 +11,8 @@ import com.thornbirds.component.IEventController;
 import com.thornbirds.component.Params;
 import com.wali.live.dns.IDnsStatusListener;
 import com.wali.live.ipselect.WatchIpSelectionHelper;
-import com.wali.live.watchsdk.videothird.data.engine.IPlayer;
-import com.wali.live.watchsdk.videothird.data.engine.IPlayerCallback;
+import com.wali.live.watchsdk.videodetail.data.engine.IPlayer;
+import com.wali.live.watchsdk.videodetail.data.engine.IPlayerCallback;
 import com.xiaomi.player.Player;
 
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_COMPLETED;
@@ -43,7 +43,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
     protected static final int _MSG_PLAYER_PROGRESS = 2003;  // 进度刷新
 
     @NonNull
-    private IEventController mController;
+    protected IEventController mController;
 
     protected boolean mStarted = false;
     protected boolean mPaused = true;
@@ -75,6 +75,9 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
 
     public final PlayerCallback<? extends IPlayer> getPlayerCallback() {
         return mPlayerCallback;
+    }
+
+    protected PullStreamerPresenter() {
     }
 
     public PullStreamerPresenter(@NonNull IEventController controller) {
@@ -296,6 +299,9 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
 
     // 域名解析、重连相关
     protected class ReconnectHelper extends BaseStreamerPresenter.ReconnectHelper implements IDnsStatusListener {
+
+        public ReconnectHelper() {
+        }
 
         @Override
         public void onDnsReady() {

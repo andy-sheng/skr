@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.base.global.GlobalData;
 import com.thornbirds.component.IEventController;
 import com.wali.live.ipselect.FeedsIpSelectionHelper;
+import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
 
 /**
  * Created by yangli on 2017/08/31.
@@ -20,7 +21,7 @@ public class ThirdStreamerPresenter extends PullStreamerPresenter {
     }
 
     public ThirdStreamerPresenter(@NonNull IEventController controller) {
-        super(controller);
+        mController = controller;
         mUIHandler = new MyUIHandler(this);
         mReconnectHelper = new ReconnectHelper();
         mIpSelectionHelper = new FeedsIpSelectionHelper(GlobalData.app(), mReconnectHelper);

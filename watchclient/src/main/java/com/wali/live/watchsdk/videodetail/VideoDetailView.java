@@ -122,7 +122,6 @@ public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
             mParentView.addView(mContentView);
             mAnimationHelper.startShowAnimation();
         }
-
         // 添加播放器View
         DetailPlayerView view = mController.mPlayerView;
         if (view == null) {
@@ -146,7 +145,6 @@ public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
         super.stopView();
         mAnimationHelper.clearAnimation();
         mParentView.removeView(mContentView);
-
         // 将播放器View从其父View移出
         ViewGroup parentView = mController.mPlayerView != null ?
                 (ViewGroup) mController.mPlayerView.getParent() : null;

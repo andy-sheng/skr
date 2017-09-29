@@ -3,20 +3,18 @@ package com.wali.live.watchsdk.videodetail;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.base.global.GlobalData;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.thornbirds.component.Params;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.BaseSdkController;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.videodetail.presenter.DetailPlayerPresenter;
 import com.wali.live.watchsdk.videodetail.view.DetailPlayerView;
-import com.wali.live.watchsdk.videothird.data.PullStreamerPresenter;
-import com.wali.live.watchsdk.videothird.data.engine.GalileoPlayer;
+import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
+import com.wali.live.watchsdk.videodetail.data.engine.GalileoPlayer;
 
 /**
  * Created by yangli on 2017/5/26.

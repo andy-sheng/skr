@@ -3,7 +3,6 @@ package com.wali.live.watchsdk.videothird;
 import android.app.Activity;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
@@ -14,8 +13,7 @@ import com.base.log.MyLog;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.videothird.presenter.VideoControlPresenter;
-import com.wali.live.watchsdk.videothird.view.VideoControlView;
+import com.wali.live.watchsdk.videodetail.view.DetailPlayerView;
 
 import java.lang.ref.WeakReference;
 
@@ -51,28 +49,17 @@ public class ThirdVideoView extends BaseSdkView<View, ThirdVideoController> {
             mParentView.addView(mContentView);
             mAnimationHelper.startShowAnimation();
         }
-        // 播放控制View
-        {
-            VideoControlView view = $(R.id.video_control_view);
-            if (view == null) {
-                MyLog.e(TAG, "missing missing R.id.video_control_view");
-                return;
-            }
-            VideoControlPresenter presenter = new VideoControlPresenter(mController,
-                    mController.mStreamerPresenter);
-            registerComponent(view, presenter);
-        }
         // 添加播放器View
-        {
-            SurfaceView view = mController.mPlayerView;
-            if (view == null) {
-                MyLog.e(TAG, "missing mController.mPlayerView");
-                return;
-            }
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            addViewUnderAnchor(view, layoutParams, null);
+        DetailPlayerView view = mController.mPlayerView;
+        if (view == null) {
+            MyLog.e(TAG, "missing mController.mPlayerView");
+            return;
         }
+        view.switchToThirdMode();
+        mController.mPlayerPresenter.setIsDetailMode(false); //  允许上移
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        addViewUnderAnchor(view, layoutParams, null);
     }
 
     @Override
@@ -83,7 +70,7 @@ public class ThirdVideoView extends BaseSdkView<View, ThirdVideoController> {
         // 将播放器View从其父View移出
         ViewGroup parentView = mController.mPlayerView != null ?
                 (ViewGroup) mController.mPlayerView.getParent() : null;
-        if (parentView != null && parentView.indexOfChild(mController.mPlayerView) != -1) {
+        if (parentView != null) {
             parentView.removeView(mController.mPlayerView);
         }
     }

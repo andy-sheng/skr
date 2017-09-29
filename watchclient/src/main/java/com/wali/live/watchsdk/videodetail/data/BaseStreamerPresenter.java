@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.videothird.data;
+package com.wali.live.watchsdk.videodetail.data;
 
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -50,6 +50,9 @@ public abstract class BaseStreamerPresenter<R extends BaseStreamerPresenter.Reco
          * 开始重连
          */
         protected abstract void startReconnect(int code);
+
+        public ReconnectHelper() {
+        }
     }
 
     /**

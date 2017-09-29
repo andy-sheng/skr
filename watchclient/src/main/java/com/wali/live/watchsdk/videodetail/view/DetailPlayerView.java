@@ -170,6 +170,11 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
         mTextureView.setClickable(true);
     }
 
+    public void switchToThirdMode() {
+        mFullScreenBtn.setVisibility(View.GONE);
+        mTextureView.setClickable(true);
+    }
+
     @Override
     public IView getViewProxy() {
         class ComponentView implements IView {
@@ -182,7 +187,6 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
             public void onPlayResumed() {
                 postDelayed(mHideRunnable, 5000);
                 mPlayBtn.setSelected(false);
-                showLoading(true);
             }
 
             @Override

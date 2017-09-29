@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.videothird.data.engine;
+package com.wali.live.watchsdk.videodetail.data.engine;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

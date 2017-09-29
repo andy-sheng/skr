@@ -2,7 +2,6 @@ package com.wali.live.watchsdk.videothird;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.view.SurfaceView;
 
 import com.base.global.GlobalData;
 import com.mi.live.data.account.UserAccountManager;
@@ -10,9 +9,10 @@ import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.BaseSdkController;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.videodetail.data.engine.GalileoPlayer;
+import com.wali.live.watchsdk.videodetail.presenter.DetailPlayerPresenter;
+import com.wali.live.watchsdk.videodetail.view.DetailPlayerView;
 import com.wali.live.watchsdk.videothird.data.ThirdStreamerPresenter;
-import com.wali.live.watchsdk.videothird.data.engine.GalileoPlayer;
-import com.wali.live.watchsdk.videothird.data.engine.IPlayer;
 
 /**
  * Created by yangli on 2017/8/28.
@@ -23,7 +23,8 @@ public class ThirdVideoController extends BaseSdkController {
     protected RoomBaseDataModel mMyRoomData;
 
     protected ThirdStreamerPresenter mStreamerPresenter;
-    protected SurfaceView mPlayerView;
+    protected DetailPlayerPresenter mPlayerPresenter;
+    protected DetailPlayerView mPlayerView;
 
     @Override
     protected String getTAG() {
@@ -35,21 +36,28 @@ public class ThirdVideoController extends BaseSdkController {
     }
 
     public void setupController(Context context) {
-        if (mPlayerView == null) {
-            mPlayerView = new SurfaceView(context);
-            mPlayerView.setId(R.id.video_view);
-        }
+        mPlayerView = new DetailPlayerView(context);
+        mPlayerView.setId(R.id.video_view);
+
         mStreamerPresenter = new ThirdStreamerPresenter(this);
-        IPlayer player = new GalileoPlayer(GlobalData.app(), UserAccountManager.getInstance().getUuid(),
+        mStreamerPresenter.setIsRealTime(false);
+        GalileoPlayer player = new GalileoPlayer(GlobalData.app(), UserAccountManager.getInstance().getUuid(),
                 MiLinkClientAdapter.getsInstance().getClientIp());
+        player.setCallback(mStreamerPresenter.getPlayerCallback());
         mStreamerPresenter.setStreamer(player);
-        mStreamerPresenter.setOriginalStreamUrl(mMyRoomData.getVideoUrl());
-        mStreamerPresenter.startWatch();
+
+        mPlayerPresenter = new DetailPlayerPresenter(this, mStreamerPresenter);
+        mPlayerPresenter.setView(mPlayerView.getViewProxy());
+        mPlayerView.setPresenter(mPlayerPresenter);
+        mPlayerPresenter.startPresenter();
     }
 
     @Override
     public void release() {
         super.release();
+        mPlayerPresenter.stopPresenter();
+        mPlayerPresenter.destroy();
+
         mStreamerPresenter.stopWatch();
         mStreamerPresenter.destroy();
     }

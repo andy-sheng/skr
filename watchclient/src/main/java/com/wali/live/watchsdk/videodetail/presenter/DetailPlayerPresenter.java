@@ -17,8 +17,8 @@ import com.thornbirds.component.presenter.ComponentPresenter;
 import com.wali.live.event.EventClass;
 import com.wali.live.receiver.NetworkReceiver;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
 import com.wali.live.watchsdk.videodetail.view.DetailPlayerView;
-import com.wali.live.watchsdk.videothird.data.PullStreamerPresenter;
 import com.xiaomi.player.Player;
 
 import org.greenrobot.eventbus.EventBus;
@@ -69,7 +69,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
     private WeakReference<MyAlertDialog> mNetworkDialogRef;
 
     @Override
-    protected final String getTAG() {
+    protected String getTAG() {
         return TAG;
     }
 
