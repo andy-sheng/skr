@@ -16,6 +16,7 @@ import com.mi.live.engine.media.player.IjkMediaPlayer;
 import com.xiaomi.player.Player;
 import com.xiaomi.player.callback.PlayerCallback;
 import com.xiaomi.player.datastruct.VideoSize;
+import com.xiaomi.player.enums.PlayerSeekingMode;
 import com.xiaomi.player.enums.PlayerWorkingMode;
 
 import java.util.ArrayList;
@@ -427,7 +428,7 @@ public class GalileoPlayer implements IPlayer {
             @Override
             public void run() {
                 MyLog.w(TAG, "seekTo msec=" + msec);
-                mPlayer.seekTo(msec, false); // 设置false，不启用精准Seek
+                mPlayer.seekTo(msec, PlayerSeekingMode.PlayerSeekingFastMode);
             }
         }, "seekTo");
     }
@@ -441,7 +442,7 @@ public class GalileoPlayer implements IPlayer {
                 if (mIsRealTime) {
                     mPlayer.reload(mVideoUrl, true);
                 } else {
-                    mPlayer.seekTo(mPlayer.currentPlaybackTime(), false);
+                    mPlayer.seekTo(mPlayer.currentPlaybackTime(), PlayerSeekingMode.PlayerSeekingFastMode);
                 }
             }
         }, "reconnect");
