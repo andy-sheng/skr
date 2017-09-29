@@ -101,7 +101,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         registerAction(MSG_PLAYER_COMPLETED);
         registerAction(MSG_VIDEO_SIZE_CHANGED);
         mHasNetwork = NetworkUtils.hasNetwork(GlobalData.app());
-        mNeedShowTraffic = !NetworkUtils.isWifi(GlobalData.app());
+        mNeedShowTraffic = mHasNetwork && !NetworkUtils.isWifi(GlobalData.app());
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -133,7 +133,6 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
     public final void resumePlay() {
         if (!mHasNetwork) {
             showNetworkDialog();
-            return;
         }
         if (!mStreamerPresenter.isStarted() && mNeedShowTraffic) {
             showTrafficDialog();
@@ -328,9 +327,8 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         mStreamerPresenter.setOriginalStreamUrl(videoUrl);
         if (!mHasNetwork) {
             showNetworkDialog();
-        } else {
-            resumePlay();
         }
+        resumePlay();
     }
 
     @Override
