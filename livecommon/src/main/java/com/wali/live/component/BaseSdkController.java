@@ -93,24 +93,22 @@ public abstract class BaseSdkController extends ComponentController {
 
     // 详情播放相关
     private static final int MSG_DETAIL_VIDEO_FIRST = 30000;
+    public static final int MSG_NEW_FEED_ID = MSG_DETAIL_VIDEO_FIRST;               // 新的Feed ID
+    public static final int MSG_NEW_FEED_URL = MSG_DETAIL_VIDEO_FIRST + 1;          // 获取到URL, 可以开始播放
+    public static final int MSG_SWITCH_TO_REPLAY_MODE = MSG_DETAIL_VIDEO_FIRST + 2; // 切换到回放模式(全屏播放)
+    public static final int MSG_SWITCH_TO_DETAIL_MODE = MSG_DETAIL_VIDEO_FIRST + 3; // 切换到详情模式(半屏播放)
+    public static final int MSG_UPDATE_LIKE_STATUS = MSG_DETAIL_VIDEO_FIRST + 4;    // 更新 点赞状态
+    public static final int MSG_UPDATE_COMMENT_CNT = MSG_DETAIL_VIDEO_FIRST + 5;    // 更新 评论总数
+    public static final int MSG_REPLAY_TOTAL_CNT = MSG_DETAIL_VIDEO_FIRST + 6;      // 更新 回放总数
+    public static final int MSG_SHOW_COMMENT_INPUT = MSG_DETAIL_VIDEO_FIRST + 7;    // 回复 评论
+    public static final int MSG_SEND_COMMENT = MSG_DETAIL_VIDEO_FIRST + 8;          // 发送 评论
+    public static final int MSG_FOLD_INFO_AREA = MSG_DETAIL_VIDEO_FIRST + 9;        // 收起 信息区
+    public static final int MSG_COMPLETE_USER_INFO = MSG_DETAIL_VIDEO_FIRST + 10;   // 点击回放每一条
+    public static final int MSG_UPDATE_START_TIME = MSG_DETAIL_VIDEO_FIRST + 11;    // 更新 回放的录制时间(用于拉取房间消息/弹幕)
+    public static final int MSG_UPDATE_TAB_TYPE = MSG_DETAIL_VIDEO_FIRST + 12;      // 更新 TAB数据(回放显示"评论"和"回放"，详情显示"详情"和评论)
 
-    public static final int MSG_SWITCH_TO_REPLAY_MODE = MSG_DETAIL_VIDEO_FIRST + 1; // 切换到回放模式(全屏播放)
-    public static final int MSG_SWITCH_TO_DETAIL_MODE = MSG_DETAIL_VIDEO_FIRST + 2; // 切换到详情模式(半屏播放)
-    public static final int MSG_UPDATE_LIKE_STATUS = MSG_DETAIL_VIDEO_FIRST + 3;    // 更新 点赞状态
-    public static final int MSG_UPDATE_COMMENT_CNT = MSG_DETAIL_VIDEO_FIRST + 4;    // 更新 评论总数
-    public static final int MSG_REPLAY_TOTAL_CNT = MSG_DETAIL_VIDEO_FIRST + 5;      // 更新 回放总数
-    public static final int MSG_SHOW_COMMENT_INPUT = MSG_DETAIL_VIDEO_FIRST + 6;    // 回复 评论
-    public static final int MSG_SEND_COMMENT = MSG_DETAIL_VIDEO_FIRST + 7;          // 发送 评论
-    public static final int MSG_FOLD_INFO_AREA = MSG_DETAIL_VIDEO_FIRST + 8;        // 收起 信息区
-    public static final int MSG_COMPLETE_USER_INFO = MSG_DETAIL_VIDEO_FIRST + 9;    // 点击回放每一条
-    public static final int MSG_UPDATE_START_TIME = MSG_DETAIL_VIDEO_FIRST + 10;    // 更新 回放的录制时间(用于拉取房间消息/弹幕)
-    public static final int MSG_UPDATE_TAB_TYPE = MSG_DETAIL_VIDEO_FIRST + 11;      // 更新 TAB数据(回放显示"评论"和"回放"，详情显示"详情"和评论)
-
-    public static final int MSG_NEW_FEED_ID = MSG_DETAIL_VIDEO_FIRST + 12;          // 新的Feed ID
-    public static final int MSG_NEW_FEED_URL = MSG_DETAIL_VIDEO_FIRST + 13;         // 获取到URL, 可以开始播放
-
-    public static final int MSG_NEW_DETAIL_REPLAY = MSG_DETAIL_VIDEO_FIRST + 14;
-    public static final int MSG_PLAYER_START = MSG_DETAIL_VIDEO_FIRST + 15;
+    public static final int MSG_NEW_DETAIL_REPLAY = MSG_DETAIL_VIDEO_FIRST + 13;
+    public static final int MSG_PLAYER_START = MSG_DETAIL_VIDEO_FIRST + 14;
 
     // 其他
     private static final int MSG_MORE_FIRST = 90000;

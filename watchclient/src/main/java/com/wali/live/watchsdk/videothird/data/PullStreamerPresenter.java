@@ -61,6 +61,10 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         return mStarted;
     }
 
+    public final boolean isPaused() {
+        return mPaused;
+    }
+
     public final long getCurrentPosition() {
         return mStreamer != null ? mStreamer.getCurrentPosition() : 0;
     }

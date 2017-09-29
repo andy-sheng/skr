@@ -340,7 +340,7 @@ public class GalileoPlayer implements IPlayer {
                 mVideoUrl = path;
                 mVideoHost = TextUtils.isEmpty(host) ? "" : host;
             }
-        }, "setDataSource");
+        }, "setVideoPath");
     }
 
     @Override
@@ -353,7 +353,7 @@ public class GalileoPlayer implements IPlayer {
                 mPlayer.start(mVideoUrl, mVideoHost, mIsRealTime);
                 mPlayer.setSpeaker(true);
             }
-        }, "prepareAsync");
+        }, "prepare");
     }
 
     @Override
@@ -437,14 +437,14 @@ public class GalileoPlayer implements IPlayer {
         ThreadPool.runOnEngine(new Runnable() {
             @Override
             public void run() {
-                MyLog.w(TAG, "reconnect");
+                MyLog.w(TAG, "reconnect isRealTime=" + mIsRealTime);
                 if (mIsRealTime) {
                     mPlayer.reload(mVideoUrl, true);
                 } else {
                     mPlayer.seekTo(mPlayer.currentPlaybackTime(), false);
                 }
             }
-        }, "reload");
+        }, "reconnect");
     }
 
     private String getDefaultPortForUrl() {

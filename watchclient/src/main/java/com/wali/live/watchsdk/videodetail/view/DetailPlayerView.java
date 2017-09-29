@@ -72,13 +72,7 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
             changeViewVisibility();
             return;
         } else if (i == R.id.play_btn) {
-            boolean selected = !v.isSelected();
-            v.setSelected(selected);
-            if (selected) {
-                mPresenter.pausePlay();
-            } else {
-                mPresenter.startPlay();
-            }
+            onPlayBtnClick(v.isSelected());
         } else if (i == R.id.full_screen_btn) {
             mPresenter.switchToFullScreen();
         }
@@ -123,6 +117,7 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
         $click(mSeekBar, this);
         $click(mVideoCtrlArea, this);
         $click(mTextureView, this);
+        mPlayBtn.setSelected(true);
 
         mSeekBar.setOnRotatedSeekBarChangeListener(new RotatedSeekBar.OnRotatedSeekBarChangeListener() {
             @Override
@@ -139,7 +134,6 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
 
             @Override
             public void onStopTrackingTouch(RotatedSeekBar rotatedSeekBar) {
-                mPresenter.startPlay();
                 mPresenter.seekTo(mDuration * rotatedSeekBar.getPercent());
                 mSeekTouching = false;
                 postDelayed(mHideRunnable, 5000);
@@ -155,6 +149,14 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
             postDelayed(mHideRunnable, 5000);
         } else {
             mVideoCtrlArea.setVisibility(View.GONE);
+        }
+    }
+
+    private void onPlayBtnClick(boolean isResume) {
+        if (isResume) {
+            mPresenter.resumePlay();
+        } else {
+            mPresenter.pausePlay();
         }
     }
 
@@ -177,34 +179,32 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
             }
 
             @Override
-            public void start() {
+            public void onPlayResumed() {
                 postDelayed(mHideRunnable, 5000);
+                mPlayBtn.setSelected(false);
+                showLoading(true);
             }
 
             @Override
-            public void pause() {
+            public void onPlayPaused() {
                 mPlayBtn.setSelected(true);
                 if (!mIsShow) {
                     mIsShow = true;
                     mVideoCtrlArea.setVisibility(View.VISIBLE);
+                } else {
+                    removeCallbacks(mHideRunnable);
                 }
-            }
-
-            @Override
-            public void stop() {
-                removeCallbacks(mHideRunnable);
+                showLoading(false);
             }
 
             @Override
             public void reset() {
                 mSeekBar.setPercent(0);
-                mPlayBtn.setSelected(true);
-                removeCallbacks(mHideRunnable);
-                showLoading(false);
+                onPlayPaused();
             }
 
             @Override
-            public void showLoading(boolean isShow) {
+            public final void showLoading(boolean isShow) {
                 mLoadingView.setVisibility(isShow ? View.VISIBLE : View.GONE);
             }
 
@@ -239,7 +239,7 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
         /**
          * 恢复播放
          */
-        void startPlay();
+        void resumePlay();
 
         /**
          * 暂停播放
@@ -247,31 +247,26 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
         void pausePlay();
 
         /**
-         * 切换到全屏
-         */
-        void switchToFullScreen();
-
-        /**
          * 快进
          */
         void seekTo(float progress);
+
+        /**
+         * 切换到全屏
+         */
+        void switchToFullScreen();
     }
 
     public interface IView extends IViewProxy {
         /**
-         * 开始View
+         * 播放开始
          */
-        void start();
+        void onPlayResumed();
 
         /**
-         * 暂停View
+         * 播放暂停
          */
-        void pause();
-
-        /**
-         * 结束View
-         */
-        void stop();
+        void onPlayPaused();
 
         /**
          * 重置View的状态

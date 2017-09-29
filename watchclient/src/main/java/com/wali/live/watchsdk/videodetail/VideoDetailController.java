@@ -59,11 +59,6 @@ public class VideoDetailController extends BaseSdkController {
         mPlayerPresenter.setView(mPlayerView.getViewProxy());
         mPlayerView.setPresenter(mPlayerPresenter);
         mPlayerPresenter.startPresenter();
-
-        // 发送事件，通知可以播放
-        if (!TextUtils.isEmpty(mMyRoomData.getVideoUrl())) {
-            postEvent(MSG_NEW_FEED_URL, new Params().putItem(mMyRoomData.getVideoUrl()));
-        }
     }
 
     @Override
