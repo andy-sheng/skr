@@ -125,7 +125,7 @@ public class BarrageMsgExt {
         public long score1;
         public long score2;
         public String pkType;
-        protected long timeType;
+        protected String timeName;
         protected long beginTs;
 
         protected final PkScoreInfo parseFromInfo(@NonNull LivePKProto.NewPKInfo msg) {
@@ -136,7 +136,7 @@ public class BarrageMsgExt {
             score2 = item2.getScore();
             final LivePKProto.PKSetting setting = msg.getSetting();
             pkType = setting.getContent().getName();
-            timeType = setting.getDuration().getId();
+            timeName = setting.getDuration().getName();
             beginTs = msg.getBeginTs();
             return this;
         }
@@ -168,7 +168,7 @@ public class BarrageMsgExt {
             uuid2 = pkScoreInfo.uuid2;
             score2 = pkScoreInfo.score2;
             pkType = pkScoreInfo.pkType;
-            timeType = pkScoreInfo.timeType;
+            timeName = pkScoreInfo.timeName;
             beginTs = pkScoreInfo.beginTs;
             calcRemainTime(currServerTs);
             return this;
@@ -194,10 +194,19 @@ public class BarrageMsgExt {
 
         private void calcRemainTime(long currServerTs) {
             pkRemainTime = 180;
-            if (timeType == 2) {
-                pkRemainTime = 600;
-            } else if (timeType == 3) {
-                pkRemainTime = 900;
+            if (!TextUtils.isEmpty(timeName)) {
+                int pkTime = 0;
+                // 从timeName开始的数字中提取时常
+                for (int i = 0, size = timeName.length(); i < size; ++i) {
+                    char c = timeName.charAt(i);
+                    if (c < '0' || c > '9') {
+                        break;
+                    }
+                    pkTime = 10 * pkTime + (c - '0');
+                }
+                if (pkTime > 0) {
+                    pkRemainTime = pkTime * 60;
+                }
             }
             if (currServerTs == 0) {
                 startRemainTime = 10;
