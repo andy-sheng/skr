@@ -15,9 +15,16 @@ import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
 public class ThirdStreamerPresenter extends PullStreamerPresenter {
     private static final String TAG = "ThirdStreamerPresenter";
 
+    private boolean mIsLocalVideo = false;
+
     @Override
     protected String getTAG() {
         return TAG;
+    }
+
+    @Override
+    public boolean isLocalVideo() {
+        return mIsLocalVideo;
     }
 
     public ThirdStreamerPresenter(@NonNull IEventController controller) {
@@ -29,5 +36,9 @@ public class ThirdStreamerPresenter extends PullStreamerPresenter {
 
     public void setOriginalStreamUrl(String originalStreamUrl) {
         mIpSelectionHelper.setOriginalStreamUrl(originalStreamUrl);
+        mIsLocalVideo = originalStreamUrl == null ||
+                originalStreamUrl.startsWith("file://") ||
+                originalStreamUrl.startsWith("content://") ||
+                originalStreamUrl.startsWith("/");
     }
 }

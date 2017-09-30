@@ -7,8 +7,6 @@ import com.wali.live.watchsdk.videodetail.view.DetailPlayerView;
 
 /**
  * Created by yangli on 2017/08/31.
- * <p>
- * Generated using create_view_with_presenter.py
  *
  * @module 第三方播放器视图
  */

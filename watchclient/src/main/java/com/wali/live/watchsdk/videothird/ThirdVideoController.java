@@ -10,9 +10,9 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.BaseSdkController;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.videodetail.data.engine.GalileoPlayer;
-import com.wali.live.watchsdk.videodetail.presenter.DetailPlayerPresenter;
-import com.wali.live.watchsdk.videodetail.view.DetailPlayerView;
 import com.wali.live.watchsdk.videothird.data.ThirdStreamerPresenter;
+import com.wali.live.watchsdk.videothird.presenter.ThirdPlayerPresenter;
+import com.wali.live.watchsdk.videothird.view.ThirdPlayerView;
 
 /**
  * Created by yangli on 2017/8/28.
@@ -23,8 +23,8 @@ public class ThirdVideoController extends BaseSdkController {
     protected RoomBaseDataModel mMyRoomData;
 
     protected ThirdStreamerPresenter mStreamerPresenter;
-    protected DetailPlayerPresenter mPlayerPresenter;
-    protected DetailPlayerView mPlayerView;
+    protected ThirdPlayerPresenter mPlayerPresenter;
+    protected ThirdPlayerView mPlayerView;
 
     @Override
     protected String getTAG() {
@@ -36,7 +36,7 @@ public class ThirdVideoController extends BaseSdkController {
     }
 
     public void setupController(Context context) {
-        mPlayerView = new DetailPlayerView(context);
+        mPlayerView = new ThirdPlayerView(context);
         mPlayerView.setId(R.id.video_view);
 
         mStreamerPresenter = new ThirdStreamerPresenter(this);
@@ -46,7 +46,7 @@ public class ThirdVideoController extends BaseSdkController {
         player.setCallback(mStreamerPresenter.getPlayerCallback());
         mStreamerPresenter.setStreamer(player);
 
-        mPlayerPresenter = new DetailPlayerPresenter(this, mStreamerPresenter);
+        mPlayerPresenter = new ThirdPlayerPresenter(this, mStreamerPresenter);
         mPlayerPresenter.setView(mPlayerView.getViewProxy());
         mPlayerView.setPresenter(mPlayerPresenter);
         mPlayerPresenter.startPresenter();

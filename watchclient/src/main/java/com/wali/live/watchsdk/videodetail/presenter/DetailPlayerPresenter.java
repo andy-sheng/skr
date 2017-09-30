@@ -131,7 +131,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
 
     @Override
     public final void resumePlay() {
-        if (!mHasNetwork) {
+        if (!mHasNetwork && mStreamerPresenter.isLocalVideo()) {
             showNetworkDialog();
         }
         if (!mStreamerPresenter.isStarted() && mNeedShowTraffic) {
@@ -316,7 +316,9 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         } else {
             mHasNetwork = false;
             mNeedShowTraffic = false;
-            showNetworkDialog();
+            if (mStreamerPresenter.isLocalVideo()) {
+                showNetworkDialog();
+            }
         }
     }
 
@@ -325,7 +327,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         mView.reset();
         mSavedPosition = 0;
         mStreamerPresenter.setOriginalStreamUrl(videoUrl);
-        if (!mHasNetwork) {
+        if (!mHasNetwork && !mStreamerPresenter.isLocalVideo()) {
             showNetworkDialog();
         }
         resumePlay();

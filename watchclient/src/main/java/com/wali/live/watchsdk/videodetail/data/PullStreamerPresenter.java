@@ -77,6 +77,10 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         return mPlayerCallback;
     }
 
+    public boolean isLocalVideo() {
+        return false;
+    }
+
     protected PullStreamerPresenter() {
     }
 
