@@ -17,7 +17,6 @@ import org.greenrobot.eventbus.Subscribe;
 /**
  * Created by chengsimin on 2016/12/16.
  */
-
 public class TouchPresenter implements IBindActivityLIfeCycle {
     public final static String TAG = TouchPresenter.class.getSimpleName();
 
