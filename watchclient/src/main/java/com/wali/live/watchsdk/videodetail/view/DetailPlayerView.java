@@ -45,7 +45,7 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
     private Runnable mHideRunnable = new Runnable() {
         @Override
         public void run() {
-            if (mIsShow && !mPlayBtn.isSelected()) {
+            if (mIsShow && mPlayBtn.isSelected()) {
                 mIsShow = false;
                 mVideoCtrlArea.setVisibility(View.GONE);
             }
@@ -72,7 +72,7 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
             changeViewVisibility();
             return;
         } else if (i == R.id.play_btn) {
-            onPlayBtnClick(v.isSelected());
+            onPlayBtnClick(!v.isSelected());
         } else if (i == R.id.full_screen_btn) {
             mPresenter.switchToFullScreen();
         }
@@ -117,7 +117,6 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
         $click(mSeekBar, this);
         $click(mVideoCtrlArea, this);
         $click(mTextureView, this);
-        mPlayBtn.setSelected(true);
 
         mSeekBar.setOnRotatedSeekBarChangeListener(new RotatedSeekBar.OnRotatedSeekBarChangeListener() {
             @Override
@@ -186,12 +185,12 @@ public class DetailPlayerView extends RelativeLayout implements View.OnClickList
             @Override
             public void onPlayResumed() {
                 postDelayed(mHideRunnable, 5000);
-                mPlayBtn.setSelected(false);
+                mPlayBtn.setSelected(true);
             }
 
             @Override
             public void onPlayPaused() {
-                mPlayBtn.setSelected(true);
+                mPlayBtn.setSelected(false);
                 if (!mIsShow) {
                     mIsShow = true;
                     mVideoCtrlArea.setVisibility(View.VISIBLE);
