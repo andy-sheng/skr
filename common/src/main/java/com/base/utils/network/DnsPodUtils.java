@@ -42,8 +42,9 @@ public class DnsPodUtils {
             byte[] decryptedString = cipher.doFinal(hexString2Bytes(result));
             MyLog.w(LogTag + " decryptedString=" + new String(decryptedString, "utf-8"));
             return new String(decryptedString, "utf-8");
-        } catch (Exception e) {
-            MyLog.e(LogTag, e);
+        } catch (Throwable e) {
+            //注：这里会抛出一个NoSuchMethodError， exception catch不住
+            MyLog.e(LogTag, "getAddressByHostDnsPod failed: " + e);
         }
         return "";
     }

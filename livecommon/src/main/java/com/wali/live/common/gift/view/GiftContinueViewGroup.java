@@ -151,6 +151,11 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
                             process(model, mRightQueue, mFeedGiftContinueRightViews);
                         }
                     }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, "GiftEventClass.GiftAttrMessage.Normal failed: " + throwable);
+                    }
                 });
     }
 
@@ -184,9 +189,18 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
                         }
                         subscriber.onCompleted();
                     }
-                })
-                        .subscribeOn(Schedulers.from(singleThreadForBuyGift))
-                        .subscribe();
+                }).subscribeOn(Schedulers.from(singleThreadForBuyGift))
+                        .subscribe(new Action1<Object>() {
+                            @Override
+                            public void call(Object o) {
+
+                            }
+                        }, new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                MyLog.e(TAG, "GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_PLAY_COMPLETE failed: " + throwable);
+                            }
+                        });
             }
             break;
             case GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_PLAY_BREAK: {
@@ -202,9 +216,18 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
                         }
                         subscriber.onCompleted();
                     }
-                })
-                        .subscribeOn(Schedulers.from(singleThreadForBuyGift))
-                        .subscribe();
+                }).subscribeOn(Schedulers.from(singleThreadForBuyGift))
+                        .subscribe(new Action1<Object>() {
+                            @Override
+                            public void call(Object o) {
+
+                            }
+                        }, new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                MyLog.e(TAG, "GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_PLAY_BREAK failed: " + throwable);
+                            }
+                        });
             }
             break;
         }

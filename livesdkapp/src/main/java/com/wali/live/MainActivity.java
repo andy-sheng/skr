@@ -15,6 +15,7 @@ import android.widget.EditText;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
+import com.base.utils.CommonUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.milink.event.MiLinkEvent;
@@ -174,10 +175,14 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
                     ToastUtils.showToast("主播id不能为空");
                     return;
                 }
-                RoomInfo roomInfo = RoomInfo.Builder.newInstance(Long.parseLong(input), null, null)
-                        .setLiveType(0)
-                        .build();
-                WatchSdkActivity.openActivity(MainActivity.this, roomInfo);
+                if (CommonUtils.isNumeric(input)) {
+                    RoomInfo roomInfo = RoomInfo.Builder.newInstance(Long.parseLong(input), null, null)
+                            .setLiveType(0)
+                            .build();
+                    WatchSdkActivity.openActivity(MainActivity.this, roomInfo);
+                } else {
+                    ToastUtils.showToast("主播id不是数字");
+                }
             }
         });
     }

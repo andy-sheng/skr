@@ -80,17 +80,17 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
         }
     }
 
-    private void startDownTimer(final int totalStartTime, final int totalPkTime) {
+    private void startDownTimer(final int startRemainTime, final int pkRemainTime) {
         mDownTimerSub.clear();
-        if (totalPkTime == 0) {
+        if (pkRemainTime == 0) {
             return;
         }
-        if (totalStartTime > 0) {
+        if (startRemainTime > 0) {
             mView.showStartTimer(true);
-            mView.onUpdateStartTimer(totalStartTime);
+            mView.onUpdateStartTimer(startRemainTime);
             Subscription startTimer = Observable.interval(1, TimeUnit.SECONDS)
                     .onBackpressureDrop()
-                    .take(totalStartTime + 1)
+                    .take(startRemainTime + 1)
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(this.<Long>bindUntilEvent(PresenterEvent.STOP))
                     .subscribe(new Subscriber<Long>() {
@@ -112,7 +112,7 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
                         @Override
                         public void onNext(Long cnt) {
                             if (mView != null) {
-                                mView.onUpdateStartTimer((int) (totalStartTime - cnt - 1));
+                                mView.onUpdateStartTimer((int) (startRemainTime - cnt - 1));
                             }
                         }
                     });
@@ -120,17 +120,17 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
         } else {
             mView.showStartTimer(false);
         }
-        mView.onUpdateProgressTimer(totalPkTime);
-        Subscription pkTimer = Observable.interval(totalStartTime, 1, TimeUnit.SECONDS)
+        mView.onUpdateProgressTimer(pkRemainTime);
+        Subscription pkTimer = Observable.interval(startRemainTime, 1, TimeUnit.SECONDS)
                 .onBackpressureDrop()
-                .take(totalPkTime)
+                .take(pkRemainTime + 1)
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<Long>bindUntilEvent(PresenterEvent.STOP))
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long cnt) {
                         if (mView != null) {
-                            mView.onUpdateProgressTimer((int) (totalPkTime - cnt - 1));
+                            mView.onUpdateProgressTimer((int) (pkRemainTime - cnt));
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -140,7 +140,7 @@ public class PkInfoPresenter extends BaseSdkRxPresenter<PkInfoPanel.IView>
                     }
                 });
         mDownTimerSub.add(pkTimer);
-        Subscription endTimer = Observable.timer(totalStartTime + totalPkTime + 15, TimeUnit.SECONDS)
+        Subscription endTimer = Observable.timer(startRemainTime + pkRemainTime + 15, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<Long>bindUntilEvent(PresenterEvent.STOP))
                 .subscribe(new Action1<Long>() {
