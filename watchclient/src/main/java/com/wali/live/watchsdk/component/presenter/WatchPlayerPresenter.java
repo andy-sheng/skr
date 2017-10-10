@@ -88,7 +88,7 @@ public class WatchPlayerPresenter extends ComponentPresenter<TextureView>
         registerAction(MSG_PLAYER_COMPLETED);
         registerAction(MSG_VIDEO_SIZE_CHANGED);
         mHasNetwork = NetworkUtils.hasNetwork(GlobalData.app());
-        mNeedShowTraffic = mHasNetwork && !NetworkUtils.isWifi(GlobalData.app());
+        mNeedShowTraffic = false; // mHasNetwork && !NetworkUtils.isWifi(GlobalData.app());
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
