@@ -25,6 +25,7 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_ON_STREAM_SUCCESS = MSG_STREAM_FIRST + 4;    // 推/拉流成功
     public static final int MSG_ON_STREAM_RECONNECT = MSG_STREAM_FIRST + 5;  // 开始重连
     public static final int MSG_ON_LIVE_SUCCESS = MSG_STREAM_FIRST + 6;      // 开房间/进房间成功
+    public static final int MSG_NEW_VIDEO_URL = MSG_STREAM_FIRST + 7;        // 获取到拉流URL, 可以开始观看了
 
     // 播放器相关消息
     private static final int MSG_PLAYER_FIRST = 12000;

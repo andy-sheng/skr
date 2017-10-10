@@ -1,13 +1,19 @@
 package com.wali.live.watchsdk.component;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.BaseSdkController;
+import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
+import com.wali.live.watchsdk.videodetail.data.engine.GalileoPlayer;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
@@ -22,17 +28,19 @@ public class WatchComponentController extends BaseSdkController {
     private static final String TAG = "WatchComponentController";
 
     @NonNull
-    RoomBaseDataModel mMyRoomData;
+    protected RoomBaseDataModel mMyRoomData;
 
-    ArrayList<RoomInfo> mRoomInfoList;
-    int mRoomInfoPosition;
+    protected ArrayList<RoomInfo> mRoomInfoList;
+    protected int mRoomInfoPosition;
 
     /**
      * 房间弹幕管理
      */
-    LiveRoomChatMsgManager mRoomChatMsgManager;
+    protected LiveRoomChatMsgManager mRoomChatMsgManager;
 
     private boolean mSwitchNext;
+
+    protected PullStreamerPresenter mStreamerPresenter;
 
     @Nullable
     @Override
@@ -45,6 +53,22 @@ public class WatchComponentController extends BaseSdkController {
             @NonNull LiveRoomChatMsgManager roomChatMsgManager) {
         mMyRoomData = myRoomData;
         mRoomChatMsgManager = roomChatMsgManager;
+    }
+
+    public void setupController(Context context) {
+        mStreamerPresenter = new PullStreamerPresenter(this);
+        mStreamerPresenter.setIsRealTime(true);
+        GalileoPlayer player = new GalileoPlayer(GlobalData.app(), UserAccountManager.getInstance().getUuid(),
+                MiLinkClientAdapter.getsInstance().getClientIp());
+        player.setCallback(mStreamerPresenter.getPlayerCallback());
+        mStreamerPresenter.setStreamer(player);
+    }
+
+    @Override
+    public void release() {
+        super.release();
+        mStreamerPresenter.stopWatch();
+        mStreamerPresenter.destroy();
     }
 
     public void setVerticalList(ArrayList<RoomInfo> list, int position) {

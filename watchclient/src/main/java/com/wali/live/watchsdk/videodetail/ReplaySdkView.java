@@ -206,7 +206,9 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                 R.id.gift_animation_player_view,
                 R.id.gift_continue_vg,
                 R.id.gift_room_effect_view,
-                R.id.widget_view
+                R.id.widget_view,
+                R.id.close_btn,
+                R.id.rotate_btn,
         }, mHorizontalMoveSet, mVerticalMoveSet);
         if (mIsGameMode) {
             addViewToSet(new int[]{
@@ -215,6 +217,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                     R.id.game_barrage_view,
                     R.id.game_input_view,
                     R.id.close_btn,
+                    R.id.rotate_btn,
                     R.id.widget_view
             }, mGameHideSet);
         }
