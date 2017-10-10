@@ -46,7 +46,7 @@ import java.lang.ref.WeakReference;
 /**
  * Created by chengsimin on 2016/12/23.
  */
-
+@Deprecated
 public class VideoPlayerPresenterEx implements
         IStreamReconnect, View.OnClickListener {
     protected static final String TAG = "VideoPlayerPresenterEx";

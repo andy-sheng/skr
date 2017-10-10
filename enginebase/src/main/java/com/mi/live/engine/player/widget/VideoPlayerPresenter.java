@@ -29,6 +29,7 @@ import java.util.List;
  *
  * @module 播放器模块，所有播放器统一使用的控制器
  */
+@Deprecated
 public class VideoPlayerPresenter implements IPlayerPresenter {
     public static final String TAG = VideoPlayerPresenter.class.getSimpleName();
 
