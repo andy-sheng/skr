@@ -31,6 +31,7 @@ import com.base.log.MyLog;
 import com.xiaomi.player.Player;
 import com.xiaomi.player.callback.PlayerCallback;
 import com.xiaomi.player.datastruct.VideoSize;
+import com.xiaomi.player.enums.PlayerSeekingMode;
 import com.xiaomi.player.enums.PlayerWorkingMode;
 
 import java.io.IOException;
@@ -402,7 +403,7 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
     @Override
     public void seekTo(long msec) throws IllegalStateException {
         MyLog.w(TAG, "seekTo: msec=" + msec);
-        m_player.seekTo(msec, true);
+        m_player.seekTo(msec, PlayerSeekingMode.PlayerSeekingFastMode);
     }
 
     @Override

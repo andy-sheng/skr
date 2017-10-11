@@ -292,6 +292,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 MyLog.w(TAG, "loginByMiAccountSso success callback");
 
                 AccountCaller.miSsoLogin(miid, serviceToken, channelId)
+                        .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<AccountProto.MiSsoLoginRsp>() {
                             @Override

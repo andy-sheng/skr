@@ -607,8 +607,6 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
         public String redEnvelopeId; // 红包id
         public String orderId;
         public String liveStreamUrl; //全局大礼物推流地址
-        public boolean isPrivilegeGift;
-
 
         public String getGiftName() {
             return giftName;
@@ -682,14 +680,6 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
             this.avatarTimestamp = avatarTimestamp;
         }
 
-        public boolean isPrivilegeGift() {
-            return isPrivilegeGift;
-        }
-
-        public void setPrivilegeGift(boolean privilegeGift) {
-            isPrivilegeGift = privilegeGift;
-        }
-
         @Override
         public ByteString toByteString() {
             LiveMessageProto.GiftMessage.Builder builder = LiveMessageProto.GiftMessage.newBuilder();
@@ -713,7 +703,6 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
                     ", zhuboAsset=" + zhuboAsset +
                     ", zhuboAssetTs=" + zhuboAssetTs +
                     ", continueId=" + continueId +
-                    ", isPrivilegeGift" + isPrivilegeGift +
                     '}';
         }
 

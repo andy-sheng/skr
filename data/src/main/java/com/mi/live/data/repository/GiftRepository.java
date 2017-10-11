@@ -738,7 +738,7 @@ public class GiftRepository {
 
     public static BarrageMsg createGiftBarrageMessage(int giftId, String giftName, int giftType, String content, int count,
                                                       int zhuboAsset, long zhuboAssetTs, long continueId, String roomId, String ownerId,
-                                                      String redEnvelopeId, String giftSenderName, long senderAvatarTimestamp, boolean isPrivilegeGift) {
+                                                      String redEnvelopeId, String giftSenderName, long senderAvatarTimestamp/*, boolean isPrivilegeGift*/) {
         // 直接丢到队列
         BarrageMsg msg = new BarrageMsg();
         msg.setRoomId(roomId);
@@ -806,7 +806,6 @@ public class GiftRepository {
         ext.zhuboAssetTs = zhuboAssetTs;
         ext.continueId = continueId;
         ext.msgBody = content;
-        ext.isPrivilegeGift = isPrivilegeGift;
         if (senderAvatarTimestamp > 0) {
             ext.avatarTimestamp = senderAvatarTimestamp;
         } else {
@@ -850,7 +849,7 @@ public class GiftRepository {
             for (int continueSednNum = 0; continueSednNum < continueNum; continueSednNum++) {
                 BarrageMsg pushMsg = createGiftBarrageMessage(gift.getGiftId(), gift.getName(), gift.getCatagory(),
                         gift.getSendDescribe(), continueSednNum + 1, msgExt.getZhuboAsset(), msgExt.getZhuboAssetTs(), continueId,
-                        msg.getRoomId(), String.valueOf(msg.getSender()), msgExt.getRedEnvelopeId(), senderName, senderAvatarTimestamp, false);
+                        msg.getRoomId(), String.valueOf(msg.getSender()), msgExt.getRedEnvelopeId(), senderName, senderAvatarTimestamp);
                 pushMsgList.add(pushMsg);
             }
         }
@@ -863,7 +862,7 @@ public class GiftRepository {
 
         BarrageMsg barrageMsg = createGiftBarrageMessage(gift.getGiftId(), gift.getName(), gift.getOriginGiftType(), gift.getSendDescribe(),
                 msgExt.giftCount, msgExt.getZhuboAsset(), msgExt.getZhuboAssetTs(), msgExt.getContinueId(), msg.getRoomId(),
-                String.valueOf(msg.getSender()), msgExt.getRedEnvelopeId(), msg.getSenderName(), msgExt.getAvatarTimestamp(), true);
+                String.valueOf(msg.getSender()), msgExt.getRedEnvelopeId(), msg.getSenderName(), msgExt.getAvatarTimestamp());
         return barrageMsg;
     }
 
