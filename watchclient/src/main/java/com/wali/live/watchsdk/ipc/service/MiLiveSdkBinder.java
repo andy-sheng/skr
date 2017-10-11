@@ -37,7 +37,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by chengsimin on 2016/12/26.
@@ -290,6 +292,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 MyLog.w(TAG, "loginByMiAccountSso success callback");
 
                 AccountCaller.miSsoLogin(miid, serviceToken, channelId)
+                        .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<AccountProto.MiSsoLoginRsp>() {
                             @Override
@@ -831,6 +834,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void postSuccess() {
                 AccountCaller.login(loginData.getChannelId(), loginData.getXuid(), loginData.getSex(), loginData.getNickname(), loginData.getHeadUrl(), loginData.getSign())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<AccountProto.ThirdPartSignLoginRsp>() {
                             @Override
                             public void onCompleted() {
