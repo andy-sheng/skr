@@ -46,6 +46,7 @@ public class GameLivePresenter implements Presenter {
     private boolean mIsLandscape;
     private String mToken;
     private boolean mIsMuteMic;
+    private boolean mIsShowFace;
 
     private final GameFloatWindow mGameFloatWindow;
     private Intent mGameLiveServiceIntent;
@@ -83,9 +84,9 @@ public class GameLivePresenter implements Presenter {
             KeepActiveProcessor.stopActive();
             mIsStarted = false;
             if (mGameFloatWindow.isWindowShow()) {
-                if(wasKicked){
+                if (wasKicked) {
                     mGameFloatWindow.removeWindowUnexpected();
-                }else {
+                } else {
                     ToastUtils.showToast(R.string.game_live_unexpected_end_toast);
                     mGameFloatWindow.removeWindow();
                 }
@@ -108,6 +109,14 @@ public class GameLivePresenter implements Presenter {
 
     public boolean isMuteMic() {
         return mIsMuteMic;
+    }
+
+    public void showFace(boolean isShow) {
+        mIsShowFace = isShow;
+    }
+
+    public boolean isShowFace() {
+        return mIsShowFace;
     }
 
     public void screenshot() {

@@ -112,7 +112,10 @@ public class GameFloatWindow implements IGameFloatPresenter {
 
         mGameFloatView.showWindow();
         mGameMainIcon.showWindow();
-        mGameCameraView.showWindow();
+
+        if (isShowFace()) {
+            mGameCameraView.showWindow();
+        }
     }
 
     public void removeWindow() {
@@ -166,8 +169,27 @@ public class GameFloatWindow implements IGameFloatPresenter {
     }
 
     @Override
+    public void showFace(boolean isShow) {
+        MyLog.d(TAG, "face show=" + isShow);
+        // 将值进行保存
+        mGameLivePresenter.showFace(isShow);
+        if (mGameCameraView != null) {
+            if (!isShow) {
+                mGameCameraView.removeWindow();
+            } else {
+                mGameCameraView.showWindow();
+            }
+        }
+    }
+
+    @Override
     public boolean isMuteMic() {
         return mGameLivePresenter.isMuteMic();
+    }
+
+    @Override
+    public boolean isShowFace() {
+        return mGameLivePresenter.isShowFace();
     }
 
     @Override

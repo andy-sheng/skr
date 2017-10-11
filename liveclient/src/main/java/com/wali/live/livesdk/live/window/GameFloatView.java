@@ -67,6 +67,7 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
 
     LinearLayout mBtnArea;
     View mMuteBtn;
+    View mFaceBtn;
     ViewGroup mCommentTitle;
     ViewGroup mListArea;
     LiveCommentView mCommentView;
@@ -91,6 +92,9 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
             view.setSelected(!view.isSelected()); // 禁音/取消禁音
             mGamePresenter.muteMic(view.isSelected());
             keyType = StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_SILENT;
+        } else if (i == R.id.face_btn) {
+            view.setSelected(!view.isSelected()); // 露脸/取消露脸
+            mGamePresenter.showFace(view.isSelected());
         } else if (i == R.id.comment_btn) {
             enableCommentArea(view.isSelected());  // 聊天
             view.setSelected(!view.isSelected());
@@ -199,6 +203,7 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
 
         mBtnArea = $(R.id.btn_area);
         mMuteBtn = $(R.id.mute_btn);
+        mFaceBtn = $(R.id.face_btn);
         mCommentTitle = $(R.id.comment_title);
         mListArea = $(R.id.comment_list_area);
         mCommentView = $(R.id.comment_view);
@@ -216,6 +221,7 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
         $click(R.id.title_fold_left, this);
         $click(R.id.title_fold_right, this);
         $click(R.id.send_btn, this);
+        $click(R.id.face_btn, this);
 
         mParentWidth = parentWidth;
         mParentHeight = parentHeight;
@@ -286,6 +292,7 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
         mIsWindowShow = true;
         mWindowManager.addView(this, mFloatLayoutParams);
         mMuteBtn.setSelected(mGamePresenter.isMuteMic());
+        mFaceBtn.setSelected(mGamePresenter.isShowFace());
     }
 
     public void removeWindow() {

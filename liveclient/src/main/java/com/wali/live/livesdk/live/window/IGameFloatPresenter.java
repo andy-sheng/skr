@@ -14,7 +14,11 @@ public interface IGameFloatPresenter {
 
     void muteMic(boolean isMute);
 
+    void showFace(boolean isShow);
+
     boolean isMuteMic();
+
+    boolean isShowFace();
 
     void backToApp();
 
