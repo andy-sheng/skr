@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.component.presenter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -222,9 +223,10 @@ public class WatchPlayerPresenter extends ComponentPresenter<TextureView>
                             doStartWatch();
                             dialog.dismiss();
                         }
-                    }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    }).setNegativeButton(R.string.live_traffic_negative, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            ((Activity) mView.getContext()).finish();
                             dialog.dismiss();
                         }
                     }).setCancelable(false).create();
