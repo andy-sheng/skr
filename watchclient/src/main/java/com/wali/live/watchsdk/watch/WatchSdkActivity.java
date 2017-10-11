@@ -606,7 +606,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventEmitter.EnterRoomList event) {
-        if (event != null) {
+        if (event != null && mMyRoomData.isForeground()) { // 只有APP在前台才进行自动切换到下一个房间
             MyLog.d(TAG, "enterRoomList");
             mController.enterRoomList(this);
             finish();
