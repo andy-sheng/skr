@@ -1,12 +1,13 @@
 package com.wali.live.livesdk.live.view.camera;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
+import android.hardware.SensorManager;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
@@ -37,6 +38,9 @@ public class GameCameraView extends BaseCameraView {
 
     private boolean mIsLandscape;
     private boolean mIsWindowShow;
+
+    private OrientationEventListener mOrientationEventListener;
+    private int mDisplayRotation = -1;
 
     public GameCameraView(Context context, WindowManager windowManager, int parentWidth, int parentHeight) {
         super(context);
@@ -95,13 +99,52 @@ public class GameCameraView extends BaseCameraView {
         mLayoutParams.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING;
     }
 
-    @Override
-    protected void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        onOrientation(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE);
+    private void initOrientationEventListener() {
+        if (mOrientationEventListener == null) {
+            mOrientationEventListener = new OrientationEventListener(getContext(), SensorManager.SENSOR_DELAY_NORMAL) {
+                @Override
+                public void onOrientationChanged(int orientation) {
+                    onDisplayRotation();
+                }
+            };
+        }
     }
 
-    public void onOrientation(boolean isLandscape) {
+    public void onDisplayRotation() {
+        Display display = mWindowManager.getDefaultDisplay();
+        int rotation = display.getRotation();
+        if (mDisplayRotation == rotation) {
+            return;
+        }
+        MyLog.d(TAG, "onOrientation displayRotation=" + rotation);
+        mDisplayRotation = rotation;
+
+        boolean isLandscape;
+        switch (display.getRotation()) {
+            case Surface.ROTATION_0:
+                mCamera.setDisplayOrientation(90);
+                isLandscape = false;
+                break;
+            case Surface.ROTATION_90:
+                mCamera.setDisplayOrientation(0);
+                isLandscape = true;
+                break;
+            case Surface.ROTATION_180:
+                mCamera.setDisplayOrientation(270);
+                isLandscape = false;
+                break;
+            case Surface.ROTATION_270:
+                mCamera.setDisplayOrientation(180);
+                isLandscape = true;
+                break;
+            default:
+                MyLog.e(TAG, "error happen");
+                return;
+        }
+        onOrientation(isLandscape);
+    }
+
+    private void onOrientation(boolean isLandscape) {
         MyLog.w(TAG, "onOrientation isLandscape=" + isLandscape);
         if (mIsLandscape == isLandscape) {
             return;
@@ -109,30 +152,11 @@ public class GameCameraView extends BaseCameraView {
         mIsLandscape = isLandscape;
         if (mIsLandscape) {
             mBoundRect.set(0, 0, mParentHeight, mParentWidth);
-            mLayoutParams.x = mBoundRect.right - mViewWidth - 20;
-            mLayoutParams.y = mBoundRect.top + 20 + BaseActivity.getStatusBarHeight();
-
-            Display display = mWindowManager.getDefaultDisplay();
-            MyLog.d(TAG, "onOrientation displayRotation=" + display.getRotation());
-            switch (display.getRotation()) {
-                case Surface.ROTATION_90:
-                    mCamera.setDisplayOrientation(0);
-                    break;
-                case Surface.ROTATION_270:
-                    mCamera.setDisplayOrientation(180);
-                    break;
-                default:
-                    mCamera.setDisplayOrientation(180);
-                    break;
-            }
-
         } else {
             mBoundRect.set(0, 0, mParentWidth, mParentHeight);
-            mLayoutParams.x = mBoundRect.right - mViewWidth - 20;
-            mLayoutParams.y = mBoundRect.top + 20 + BaseActivity.getStatusBarHeight();
-
-            mCamera.setDisplayOrientation(90);
         }
+        mLayoutParams.x = mBoundRect.right - mViewWidth - 20;
+        mLayoutParams.y = mBoundRect.top + 20 + BaseActivity.getStatusBarHeight();
         mWindowManager.updateViewLayout(this, mLayoutParams);
     }
 
@@ -149,7 +173,9 @@ public class GameCameraView extends BaseCameraView {
         }
         mIsWindowShow = true;
         mWindowManager.addView(this, mLayoutParams);
-        onOrientation(false);
+
+        initOrientationEventListener();
+        enableOrientationEventListener();
     }
 
     public void removeWindow() {
@@ -159,6 +185,20 @@ public class GameCameraView extends BaseCameraView {
         }
         mIsWindowShow = false;
         mWindowManager.removeViewImmediate(this);
+
+        disableOrientationEventListener();
+    }
+
+    private void enableOrientationEventListener() {
+        if (mOrientationEventListener != null) {
+            mOrientationEventListener.enable();
+        }
+    }
+
+    private void disableOrientationEventListener() {
+        if (mOrientationEventListener != null) {
+            mOrientationEventListener.disable();
+        }
     }
 
     public void destroy() {
