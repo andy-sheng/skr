@@ -123,6 +123,7 @@ public class GameFloatWindow implements IGameFloatPresenter {
 
     public void destroyWindow() {
         removeWindow();
+        mUiHandler.removeCallbacksAndMessages(null);
         if (mGameFloatView != null) {
             mGameFloatView.unregister();
         }
@@ -174,6 +175,7 @@ public class GameFloatWindow implements IGameFloatPresenter {
                     mContext,
                     mWindowManager,
                     this);
+            mGameConfirmDialogRef = new WeakReference<>(gameConfirmDialog);
         }
         gameConfirmDialog.showDialog();
     }
