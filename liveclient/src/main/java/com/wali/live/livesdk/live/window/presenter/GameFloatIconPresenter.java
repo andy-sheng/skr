@@ -52,7 +52,7 @@ public class GameFloatIconPresenter extends BaseSdkRxPresenter<IGameFloatIcon> {
     @Override
     public void stopPresenter() {
         super.stopPresenter();
-        if (!EventBus.getDefault().isRegistered(this)) {
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
         if (giftSubscription != null && !giftSubscription.isUnsubscribed()) {
