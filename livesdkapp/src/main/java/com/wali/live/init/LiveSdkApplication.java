@@ -4,15 +4,12 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-import com.base.common.BuildConfig;
-import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.Constants;
-import com.base.utils.channel.ReleaseChannelUtils;
+import com.mi.liveassistant.BuildConfig;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.wali.live.watchsdk.init.InitManager;
-import com.xsj.crasheye.Crasheye;
 
 /**
  * Created by lan on 16/7/20.

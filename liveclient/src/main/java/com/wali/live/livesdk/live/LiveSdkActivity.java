@@ -68,7 +68,6 @@ import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.wali.live.component.BaseSdkView;
 import com.wali.live.dao.Gift;
 import com.wali.live.event.EventClass;
 import com.wali.live.event.UserActionEvent;
