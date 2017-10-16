@@ -113,12 +113,12 @@ public class EditSignFragment extends RxFragment implements View.OnClickListener
     private void updateCountHint() {
         String sign = mSignEt.getText().toString();
         if (TextUtils.isEmpty(sign)) {
-            mCountHintTv.setText(String.valueOf(mSignMaxCount) + getString(R.string.character_text));
+            mCountHintTv.setText(String.valueOf(mSignMaxCount) + GlobalData.app().getString(R.string.character_text));
             return;
         }
 
         int length = sign.length();
-        mCountHintTv.setText(String.valueOf(mSignMaxCount - length) + getString(R.string.character_text));
+        mCountHintTv.setText(String.valueOf(mSignMaxCount - length) + GlobalData.app().getString(R.string.character_text));
     }
 
     private void initPresenter() {
