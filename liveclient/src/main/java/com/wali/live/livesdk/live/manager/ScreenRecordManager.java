@@ -408,8 +408,13 @@ public class ScreenRecordManager implements SurfaceTexture.OnFrameAvailableListe
             mStreamer.removeExternalAudioStream(streamID);
         }
 
-        record.stop();
-        record.release();
+        try {
+            record.stop();
+            record.release();
+            record = null;
+        } catch (Exception e) {
+            MyLog.e(TAG, "startRecord failed e=" + e);
+        }
     }
 
     private static class ImageData {
