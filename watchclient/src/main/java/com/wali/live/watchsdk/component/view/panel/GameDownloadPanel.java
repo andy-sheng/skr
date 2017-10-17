@@ -223,7 +223,11 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
                                         @Override
                                         public void okProcess() {
                                             MyLog.d(TAG, "write permission ok");
-                                            beginDownload();
+                                            try {
+                                                beginDownload();
+                                            } catch (Exception e) {
+                                                MyLog.e(TAG, e);
+                                            }
                                         }
                                     }
                             );
