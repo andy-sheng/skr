@@ -22,6 +22,23 @@ def dispatch_engine(path, target_path, target_items):
         if not os.path.exists(src_file):
             print "warning: missing " + src_file
             continue
+        src_size = os.path.getsize(src_file)
+        dst_file = os.path.join(target_path, fileItem)
+        if os.path.exists(dst_file):
+            dst_size = os.path.getsize(dst_file)
+            change = src_size - dst_size
+            if change >= 1024 * 1024: # bigger than 1M
+                print "【####### size expand waring #######】new " + fileItem + " is " + str(change) + "b bigger than old one, this is extremely bad!!!"
+            elif change >= 1024: # bigger than 1K
+                print "【####### size expand info #######】new " + fileItem + " is " + str(change) + "b bigger than old one, this is bad!!!"
+            elif change <= -1024: # smaller than 1K
+                print "【####### size shrink info #######】new " + fileItem + " is " + str(-change) + "b smaller than old one, this is good!!!"
+        else:
+            change = src_size
+            if change >= 1024 * 1024: # bigger than 1M
+                print "【####### size expand waring #######】new " + fileItem + " with " + str(change) + "b is added, this is extremely bad!!!"
+            elif change >= 1024: # bigger than 1K
+                print "【####### size expand info #######】new " + fileItem + " with " + str(change) + "b is added, this is bad!!!"
         shutil.copy(src_file, target_path)
         print "copy " + fileItem + " to " + target_path
 

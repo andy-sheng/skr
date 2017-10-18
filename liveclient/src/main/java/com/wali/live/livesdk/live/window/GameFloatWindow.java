@@ -51,7 +51,11 @@ public class GameFloatWindow implements IGameFloatPresenter {
     private GameCameraView mGameCameraView;
 
     // 弹窗
-    private GameConfirmDialog mGameConfirmDialog;
+    private WeakReference<GameConfirmDialog> mGameConfirmDialogRef;
+
+    private static <T> T deRef(WeakReference<T> reference) {
+        return reference != null ? reference.get() : null;
+    }
 
     public GameFloatWindow(
             @NonNull Context context,
@@ -137,6 +141,7 @@ public class GameFloatWindow implements IGameFloatPresenter {
 
     public void destroyWindow() {
         removeWindow();
+        mUiHandler.removeCallbacksAndMessages(null);
         if (mGameFloatView != null) {
             mGameFloatView.unregister();
         }
@@ -205,13 +210,15 @@ public class GameFloatWindow implements IGameFloatPresenter {
 
     @Override
     public void showConfirmDialog() {
-        if (mGameConfirmDialog == null) {
-            mGameConfirmDialog = new GameConfirmDialog(
+        GameConfirmDialog gameConfirmDialog = deRef(mGameConfirmDialogRef);
+        if (gameConfirmDialog == null) {
+            gameConfirmDialog = new GameConfirmDialog(
                     mContext,
                     mWindowManager,
                     this);
+            mGameConfirmDialogRef = new WeakReference<>(gameConfirmDialog);
         }
-        mGameConfirmDialog.showDialog();
+        gameConfirmDialog.showDialog();
     }
 
     @Override
