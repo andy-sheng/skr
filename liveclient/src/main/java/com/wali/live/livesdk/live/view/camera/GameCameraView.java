@@ -67,6 +67,25 @@ public class GameCameraView extends BaseCameraView {
     }
 
     @Override
+    protected void adjustLayoutParam(int width, int height) {
+        if (height == 0) {
+            return;
+        }
+        mViewHeight = mViewWidth * width / height;
+
+        if (mViewWidth != mViewHeight) {
+            if (mIsLandscape) {
+                mLayoutParams.width = mViewHeight;
+                mLayoutParams.height = mViewWidth;
+            } else {
+                mLayoutParams.width = mViewWidth;
+                mLayoutParams.height = mViewHeight;
+            }
+            mWindowManager.updateViewLayout(this, mLayoutParams);
+        }
+    }
+
+    @Override
     protected int getViewWidth() {
         return mViewWidth;
     }
@@ -154,6 +173,15 @@ public class GameCameraView extends BaseCameraView {
             mBoundRect.set(0, 0, mParentHeight, mParentWidth);
         } else {
             mBoundRect.set(0, 0, mParentWidth, mParentHeight);
+        }
+        if (mViewWidth != mViewHeight) {
+            if (mIsLandscape) {
+                mLayoutParams.width = mViewHeight;
+                mLayoutParams.height = mViewWidth;
+            } else {
+                mLayoutParams.width = mViewWidth;
+                mLayoutParams.height = mViewHeight;
+            }
         }
         mLayoutParams.x = mBoundRect.right - mViewWidth - 20;
         mLayoutParams.y = mBoundRect.top + 20 + BaseActivity.getStatusBarHeight();

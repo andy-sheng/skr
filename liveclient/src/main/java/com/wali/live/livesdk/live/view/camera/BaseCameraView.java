@@ -62,6 +62,7 @@ public abstract class BaseCameraView extends SurfaceView implements SurfaceHolde
         List<Camera.Size> supportedPreviewSizes = parameters.getSupportedPreviewSizes();
         Camera.Size optimalSize = getOptimalPreviewSize(supportedPreviewSizes, getViewWidth(), getViewHeight());
 
+        MyLog.d(TAG, "startCamera=" + optimalSize.width + ":" + optimalSize.height);
         CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
         profile.videoFrameWidth = optimalSize.width;
         profile.videoFrameHeight = optimalSize.height;
@@ -70,8 +71,12 @@ public abstract class BaseCameraView extends SurfaceView implements SurfaceHolde
         mCamera.setParameters(parameters);
         mCamera.setDisplayOrientation(90);
 
+        adjustLayoutParam(optimalSize.width, optimalSize.height);
+
         startPreview();
     }
+
+    protected abstract void adjustLayoutParam(int width, int height);
 
     protected abstract int getViewWidth();
 
@@ -169,10 +174,10 @@ public abstract class BaseCameraView extends SurfaceView implements SurfaceHolde
     }
 
     protected Camera openDefaultCamera(int position) {
-        int mNumberOfCameras = Camera.getNumberOfCameras();
+        int numberOfCameras = Camera.getNumberOfCameras();
 
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-        for (int i = 0; i < mNumberOfCameras; i++) {
+        for (int i = 0; i < numberOfCameras; i++) {
             Camera.getCameraInfo(i, cameraInfo);
             if (cameraInfo.facing == position) {
                 return Camera.open(i);
