@@ -69,12 +69,14 @@ public abstract class BaseCameraView extends SurfaceView implements SurfaceHolde
         parameters.setPreviewSize(profile.videoFrameWidth, profile.videoFrameHeight);
 
         mCamera.setParameters(parameters);
-        mCamera.setDisplayOrientation(90);
 
+        adjustCameraOrientation();
         adjustLayoutParam(optimalSize.width, optimalSize.height);
 
         startPreview();
     }
+
+    protected abstract void adjustCameraOrientation();
 
     protected abstract void adjustLayoutParam(int width, int height);
 

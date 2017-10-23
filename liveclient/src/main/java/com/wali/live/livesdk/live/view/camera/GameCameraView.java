@@ -67,6 +67,34 @@ public class GameCameraView extends BaseCameraView {
     }
 
     @Override
+    protected void adjustCameraOrientation() {
+        if (mCamera == null) {
+            return;
+        }
+        if (mDisplayRotation == -1) {
+            mCamera.setDisplayOrientation(90);
+            return;
+        }
+        switch (mDisplayRotation) {
+            case Surface.ROTATION_0:
+                mCamera.setDisplayOrientation(90);
+                break;
+            case Surface.ROTATION_90:
+                mCamera.setDisplayOrientation(0);
+                break;
+            case Surface.ROTATION_180:
+                mCamera.setDisplayOrientation(270);
+                break;
+            case Surface.ROTATION_270:
+                mCamera.setDisplayOrientation(180);
+                break;
+            default:
+                MyLog.e(TAG, "cameraOrientation error happen");
+                return;
+        }
+    }
+
+    @Override
     protected void adjustLayoutParam(int width, int height) {
         if (height == 0) {
             return;
@@ -138,26 +166,24 @@ public class GameCameraView extends BaseCameraView {
         MyLog.d(TAG, "onOrientation displayRotation=" + rotation);
         mDisplayRotation = rotation;
 
+        adjustCameraOrientation();
+
         boolean isLandscape;
-        switch (display.getRotation()) {
+        switch (mDisplayRotation) {
             case Surface.ROTATION_0:
-                mCamera.setDisplayOrientation(90);
                 isLandscape = false;
                 break;
             case Surface.ROTATION_90:
-                mCamera.setDisplayOrientation(0);
                 isLandscape = true;
                 break;
             case Surface.ROTATION_180:
-                mCamera.setDisplayOrientation(270);
                 isLandscape = false;
                 break;
             case Surface.ROTATION_270:
-                mCamera.setDisplayOrientation(180);
                 isLandscape = true;
                 break;
             default:
-                MyLog.e(TAG, "error happen");
+                MyLog.e(TAG, "displayRotation error happen");
                 return;
         }
         onOrientation(isLandscape);
@@ -183,7 +209,11 @@ public class GameCameraView extends BaseCameraView {
                 mLayoutParams.height = mViewHeight;
             }
         }
-        mLayoutParams.x = mBoundRect.right - mViewWidth - 20;
+        if (mIsLandscape) {
+            mLayoutParams.x = mBoundRect.right - mViewHeight - 20;
+        } else {
+            mLayoutParams.x = mBoundRect.right - mViewWidth - 20;
+        }
         mLayoutParams.y = mBoundRect.top + 20 + BaseActivity.getStatusBarHeight();
         mWindowManager.updateViewLayout(this, mLayoutParams);
     }
