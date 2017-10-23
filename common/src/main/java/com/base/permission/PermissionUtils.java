@@ -199,7 +199,7 @@ public class PermissionUtils {
     public static void requestPermissionDialog(final Activity activity, final PermissionType type, final IPermissionCallback grantCallback, final DialogUtils.IDialogCallback okCallback, final DialogUtils.IDialogCallback cancelCallback) {
         String permission = "android.permission." + type;
         if (!PermissionUtils.checkPermissionWithType(activity, type)) {
-            MyLog.d(TAG, "requestPermissionDialog permission: " + permission);
+            MyLog.w(TAG, "requestPermissionDialog permission: " + permission);
             RxPermissions.getInstance(GlobalData.app()).clearSubjects();
             RxPermissions.getInstance(GlobalData.app())
                     .requestEach(permission)
