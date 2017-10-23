@@ -20,7 +20,6 @@ import com.base.utils.display.DisplayUtils;
  * Created by lan on 16/1/17.
  */
 public class GameCameraView extends BaseCameraView {
-    // 默认一样，否则转屏需要调整尺寸，比较麻烦，先简单处理，采用正方形
     public static final int VIEW_WIDTH = DisplayUtils.dip2px(80f);
     public static final int VIEW_HEIGHT = VIEW_WIDTH;
 
