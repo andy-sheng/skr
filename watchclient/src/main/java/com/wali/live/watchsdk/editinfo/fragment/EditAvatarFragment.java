@@ -261,9 +261,11 @@ public class EditAvatarFragment extends RxFragment implements View.OnClickListen
 
     @Override
     public void hideProgressDialog() {
-        if (!getActivity().isFinishing() && mUploadAvatarPd != null && mUploadAvatarPd.isShowing()) {
-            mUploadAvatarPd.dismiss();
+        if (getActivity() == null || getActivity().isFinishing()
+                || mUploadAvatarPd == null || !mUploadAvatarPd.isShowing()) {
+            return;
         }
+        mUploadAvatarPd.dismiss();
     }
 
     @Override
@@ -280,8 +282,8 @@ public class EditAvatarFragment extends RxFragment implements View.OnClickListen
     }
 
     @Override
-    public void editFailure(int code) {
-        MyLog.w(TAG, "editFailure code=" + code);
+    public void editFailure() {
+        MyLog.d(TAG, "editFailure");
         ToastUtils.showToast(R.string.change_avatar_failed);
     }
 
@@ -302,6 +304,12 @@ public class EditAvatarFragment extends RxFragment implements View.OnClickListen
 
     private void finish() {
         FragmentNaviUtils.popFragmentFromStack(getActivity());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.destroy();
     }
 
     @Override

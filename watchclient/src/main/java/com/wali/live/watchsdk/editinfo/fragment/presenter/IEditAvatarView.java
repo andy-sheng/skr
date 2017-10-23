@@ -16,5 +16,5 @@ public interface IEditAvatarView extends IRxView {
 
     void editSuccess(long avatar);
 
-    void editFailure(int code);
+    void editFailure();
 }

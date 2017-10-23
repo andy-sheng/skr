@@ -29,6 +29,7 @@ import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.CommonUtils;
 import com.base.utils.rx.RxRetryAssist;
+import com.base.utils.toast.ToastUtils;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
@@ -183,7 +184,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.watchsdk_layout);
         openOrientation();
-        initData();
+
+        if (!initData()) {
+            finish();
+            return;
+        }
 
         initView();
         initPresenter();
@@ -259,10 +264,12 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         return "WatchSdkActivity";
     }
 
-    private void initData() {
+    private boolean initData() {
         Intent data = getIntent();
         if (data == null) {
-            return;
+            ToastUtils.showToast("missing Intent");
+            MyLog.e(TAG, "Intent is null");
+            return false;
         }
 
         mRoomInfo = data.getParcelableExtra(EXTRA_ROOM_INFO);
@@ -272,9 +279,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
             mRoomInfo = mRoomInfoList.get(mRoomInfoPosition);
         }
         if (mRoomInfo == null) {
+            ToastUtils.showToast("missing RoomInfo");
             MyLog.e(TAG, "mRoomInfo is null");
-            finish();
-            return;
+            return false;
         }
 
         // 填充 MyRoomData
@@ -284,6 +291,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         mMyRoomData.setLiveType(mRoomInfo.getLiveType());
         mMyRoomData.setGameId(mRoomInfo.getGameId());
         mMyRoomData.setEnableShare(mRoomInfo.isEnableShare());
+        return true;
     }
 
     private void initView() {

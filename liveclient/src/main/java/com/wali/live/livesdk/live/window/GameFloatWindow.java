@@ -13,6 +13,7 @@ import com.base.event.SdkEventClass;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.wali.live.livesdk.live.presenter.GameLivePresenter;
+import com.wali.live.livesdk.live.view.camera.GameCameraView;
 import com.wali.live.livesdk.live.window.dialog.GameConfirmDialog;
 
 import java.lang.ref.WeakReference;
@@ -47,8 +48,14 @@ public class GameFloatWindow implements IGameFloatPresenter {
     private GameFloatIcon mGameMainIcon;
     private GameFloatView mGameFloatView;
 
+    private GameCameraView mGameCameraView;
+
     // 弹窗
-    private GameConfirmDialog mGameConfirmDialog;
+    private WeakReference<GameConfirmDialog> mGameConfirmDialogRef;
+
+    private static <T> T deRef(WeakReference<T> reference) {
+        return reference != null ? reference.get() : null;
+    }
 
     public GameFloatWindow(
             @NonNull Context context,
@@ -99,8 +106,20 @@ public class GameFloatWindow implements IGameFloatPresenter {
                     mParentWidth,
                     mParentHeight);
         }
+        if (mGameCameraView == null) {
+            mGameCameraView = new GameCameraView(
+                    mContext,
+                    mWindowManager,
+                    mParentWidth,
+                    mParentHeight);
+        }
+
         mGameFloatView.showWindow();
         mGameMainIcon.showWindow();
+
+        if (isShowFace()) {
+            mGameCameraView.showWindow();
+        }
     }
 
     public void removeWindow() {
@@ -109,6 +128,9 @@ public class GameFloatWindow implements IGameFloatPresenter {
         }
         if (mGameMainIcon != null) {
             mGameMainIcon.removeWindow();
+        }
+        if (mGameCameraView != null) {
+            mGameCameraView.removeWindow();
         }
     }
 
@@ -119,11 +141,15 @@ public class GameFloatWindow implements IGameFloatPresenter {
 
     public void destroyWindow() {
         removeWindow();
+        mUiHandler.removeCallbacksAndMessages(null);
         if (mGameFloatView != null) {
             mGameFloatView.unregister();
         }
         if (mGameMainIcon != null) {
             mGameMainIcon.destroy();
+        }
+        if (mGameCameraView != null) {
+            mGameCameraView.destroy();
         }
     }
 
@@ -137,6 +163,7 @@ public class GameFloatWindow implements IGameFloatPresenter {
         mGameLivePresenter.screenshot();
         mGameFloatView.setVisibility(View.GONE);
         mGameMainIcon.setVisibility(View.GONE);
+        mGameCameraView.setVisibility(View.GONE);
         mUiHandler.removeMessages(MSG_TAKE_SCREEN_SHOT_DONE);
         mUiHandler.sendEmptyMessageDelayed(MSG_TAKE_SCREEN_SHOT_DONE, TIME_TAKE_SCREEN_SHOT_DONE);
     }
@@ -147,8 +174,27 @@ public class GameFloatWindow implements IGameFloatPresenter {
     }
 
     @Override
+    public void showFace(boolean isShow) {
+        MyLog.d(TAG, "face show=" + isShow);
+        // 将值进行保存
+        mGameLivePresenter.showFace(isShow);
+        if (mGameCameraView != null) {
+            if (!isShow) {
+                mGameCameraView.removeWindow();
+            } else {
+                mGameCameraView.showWindow();
+            }
+        }
+    }
+
+    @Override
     public boolean isMuteMic() {
         return mGameLivePresenter.isMuteMic();
+    }
+
+    @Override
+    public boolean isShowFace() {
+        return mGameLivePresenter.isShowFace();
     }
 
     @Override
@@ -164,13 +210,15 @@ public class GameFloatWindow implements IGameFloatPresenter {
 
     @Override
     public void showConfirmDialog() {
-        if (mGameConfirmDialog == null) {
-            mGameConfirmDialog = new GameConfirmDialog(
+        GameConfirmDialog gameConfirmDialog = deRef(mGameConfirmDialogRef);
+        if (gameConfirmDialog == null) {
+            gameConfirmDialog = new GameConfirmDialog(
                     mContext,
                     mWindowManager,
                     this);
+            mGameConfirmDialogRef = new WeakReference<>(gameConfirmDialog);
         }
-        mGameConfirmDialog.showDialog();
+        gameConfirmDialog.showDialog();
     }
 
     @Override
@@ -203,6 +251,7 @@ public class GameFloatWindow implements IGameFloatPresenter {
                 case MSG_TAKE_SCREEN_SHOT_DONE:
                     gameFloatWindow.mGameFloatView.setVisibility(View.VISIBLE);
                     gameFloatWindow.mGameMainIcon.setVisibility(View.VISIBLE);
+                    gameFloatWindow.mGameCameraView.setVisibility(View.VISIBLE);
                     break;
                 case MSG_HALF_HIDE_FLOAT_BALL:
                     gameFloatWindow.mGameMainIcon.setMode(GameFloatIcon.MODE_HALF_HIDDEN);

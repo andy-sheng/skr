@@ -170,23 +170,27 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
                         }
                     }
                 }
-                mUIHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        setWidgetList(widgetList);
-                    }
-                });
+                if (mUIHandler != null) {
+                    mUIHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            setWidgetList(widgetList);
+                        }
+                    });
+                }
             }
         } else if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_ATTACHMENT_COUNTER) {
             final BarrageMsg.WidgetClickMessage msgExt = (BarrageMsg.WidgetClickMessage) msg.getMsgExt();
             MyLog.w("WidgetCounterPresenter", "BarrageMsgType.B_MSG_TYPE_ATTACHMENT_COUNTER  msgExt.widgetID="
                     + msgExt.widgetID + " msgExt.counter=" + msgExt.counter);
-            mUIHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    updateWidgetList(msgExt);
-                }
-            });
+            if (mUIHandler != null) {
+                mUIHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateWidgetList(msgExt);
+                    }
+                });
+            }
         }
     }
 

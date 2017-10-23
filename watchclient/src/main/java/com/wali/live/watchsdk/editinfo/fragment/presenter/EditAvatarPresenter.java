@@ -30,6 +30,7 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -131,14 +132,12 @@ public class EditAvatarPresenter extends BaseRxPresenter<IEditAvatarView> {
     private class UploadAvatarTaskCallback extends TaskCallBackWrapper {
         private Attachment mAvatarAtt;
 
-
         public UploadAvatarTaskCallback(Attachment avatarAtt) {
             mAvatarAtt = avatarAtt;
         }
 
         @Override
         public void process(Object object) {
-            mView.hideProgressDialog();
             if (object instanceof Boolean) {
                 boolean result = (boolean) object;
                 MyLog.d(TAG, "result = " + result);
@@ -148,7 +147,10 @@ public class EditAvatarPresenter extends BaseRxPresenter<IEditAvatarView> {
                     String avatarMd5 = mAvatarAtt.getMd5();
                     uploadAvatarTimestamp(now, avatarMd5);
                 } else {
-                    ToastUtils.showToast(R.string.change_avatar_failed);
+                    if (mView != null) {
+                        mView.hideProgressDialog();
+                        ToastUtils.showToast(R.string.change_avatar_failed);
+                    }
                 }
             }
         }
@@ -160,33 +162,38 @@ public class EditAvatarPresenter extends BaseRxPresenter<IEditAvatarView> {
         if (mEditSubscription != null && !mEditSubscription.isUnsubscribed()) {
             mEditSubscription.unsubscribe();
         }
-        mEditSubscription = Observable
-                .create(new Observable.OnSubscribe<UserProto.UploadUserPropertiesRsp>() {
+        mEditSubscription = Observable.just(0)
+                .map(new Func1<Integer, UserProto.UploadUserPropertiesRsp>() {
                     @Override
-                    public void call(Subscriber<? super UserProto.UploadUserPropertiesRsp> subscriber) {
-                        UserProto.UploadUserPropertiesRsp rsp =
-                                new UploadInfoRequest().uploadAvatar(now, avatarMd5).syncRsp();
-                        if (rsp == null) {
-                            subscriber.onError(new Exception("UploadUserPropertiesRsp is null"));
-                        } else {
-                            subscriber.onNext(rsp);
-                        }
+                    public UserProto.UploadUserPropertiesRsp call(Integer integer) {
+                        return new UploadInfoRequest().uploadAvatar(now, avatarMd5).syncRsp();
                     }
-                })
-                .subscribeOn(Schedulers.io())
+                }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(mView.<UserProto.UploadUserPropertiesRsp>bindLifecycle())
                 .subscribe(new Action1<UserProto.UploadUserPropertiesRsp>() {
                     @Override
                     public void call(UserProto.UploadUserPropertiesRsp rsp) {
                         MyLog.d(TAG, "uploadAvatar onNext");
-                        if (rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
+                        if (mView == null) {
+                            return;
+                        }
+                        mView.hideProgressDialog();
+                        if (rsp != null && rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
                             mView.editSuccess(now);
                         } else {
-                            mView.editFailure(rsp.getRetCode());
+                            mView.editFailure();
                         }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, "uploadAvatarTimestamp failed=" + throwable);
                     }
                 });
     }
 
+    public void destroy() {
+        //因为uploadTask耗时操作，防止内存泄露，这里view置空
+        mView = null;
+    }
 }

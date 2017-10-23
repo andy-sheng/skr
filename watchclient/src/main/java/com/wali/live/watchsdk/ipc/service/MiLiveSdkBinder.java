@@ -1,6 +1,8 @@
 package com.wali.live.watchsdk.ipc.service;
 
 import android.app.Activity;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 
@@ -37,23 +39,29 @@ import java.util.HashMap;
 import java.util.List;
 
 import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by chengsimin on 2016/12/26.
  */
 public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     public final static String TAG = MiLiveSdkBinder.class.getSimpleName();
-
     private static MiLiveSdkBinder sInstance;
 
     private final HashMap<Integer, String> mAuthMap;
     private final HashMap<Integer, RemoteCallbackList<IMiLiveSdkEventCallback>> mEventCallBackListMap;
     private AarCallback mAARCallback;
+    private Handler mHandler;
+    private HandlerThread mHandlerThread;
 
     private MiLiveSdkBinder() {
         mAuthMap = new HashMap();
         mEventCallBackListMap = new HashMap();
+        mHandlerThread = new HandlerThread("MiLiveSdkBinder");
+        mHandlerThread.start();
+        mHandler = new Handler(mHandlerThread.getLooper());
     }
 
     public static synchronized MiLiveSdkBinder getInstance() {
@@ -89,6 +97,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void postSuccess() {
                 ChannelLiveCaller.getChannelLive(channelId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<ListProto.GetChannelLiveDetailRsp>() {
                             @Override
                             public void onCompleted() {
@@ -150,6 +160,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void postSuccess() {
                 RelationCaller.getFollowingList(UserAccountManager.getInstance().getUuidAsLong(), isBothWay, timeStamp)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<RelationProto.FollowingListResponse>() {
                             @Override
                             public void onCompleted() {
@@ -200,6 +212,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void postSuccess() {
                 ChannelLiveCaller.getFollowingLives()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<ListProto.GetFollowLiveRsp>() {
                             @Override
                             public void onCompleted() {
@@ -279,13 +293,14 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                                     final long miid, final String serviceToken) throws RemoteException {
         MyLog.w(TAG, "loginByMiAccountSso channelId=" + channelId);
         reportLoginEntrance(channelId, miid);
-
         secureOperate(channelId, packageName, channelSecret, new SecureLoginCallback(miid) {
             @Override
             public void postSuccess() {
                 MyLog.w(TAG, "loginByMiAccountSso success callback");
 
                 AccountCaller.miSsoLogin(miid, serviceToken, channelId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<AccountProto.MiSsoLoginRsp>() {
                             @Override
                             public void onCompleted() {
@@ -383,6 +398,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 MyLog.w(TAG, "loginByMiAccountOAuth success callback");
 
                 AccountCaller.login(channelId, LoginType.LOGIN_XIAOMI, code, null, null, null, null)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<AccountProto.LoginRsp>() {
                             @Override
                             public void onCompleted() {
@@ -618,7 +635,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                         MyLog.e(TAG, "errMsg=" + rsp.getErrMsg() + " errCode=" + rsp.getRetCode());
                         return rsp.getRetCode();
                     }
-                })
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Integer>() {
                     @Override
                     public void onCompleted() {
@@ -648,166 +666,191 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     /**
      * 登出的结果
      */
-    private void onEventLogoff(int channelId, int code) {
+    private void onEventLogoff(final int channelId, final int code) {
         if (mAARCallback != null) {
             mAARCallback.notifyLogoff(code);
             return;
         }
         MyLog.d(TAG, "onEventLogoff channelId=" + channelId);
-        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
-        boolean aidlSuccess = false;
-        RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
-        if (callbackList != null) {
-            MyLog.w(TAG, "mEventCallBackList==null");
-            int n = callbackList.beginBroadcast();
-            for (int i = 0; i < n; i++) {
-                IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
-                try {
-                    callback.onEventLogoff(code);
-                    aidlSuccess = true;
-                } catch (Exception e) {
-                    MyLog.v(TAG, "dead callback.");
-                    deadCallback.add(callback);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
+                boolean aidlSuccess = false;
+                RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
+                if (callbackList != null) {
+                    MyLog.w(TAG, "CallBackList!=null");
+                    int n = callbackList.beginBroadcast();
+                    for (int i = 0; i < n; i++) {
+                        IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
+                        try {
+                            callback.onEventLogoff(code);
+                            aidlSuccess = true;
+                        } catch (Exception e) {
+                            MyLog.v(TAG, "dead callback.");
+                            deadCallback.add(callback);
+                        }
+                    }
+                    callbackList.finishBroadcast();
+                    for (IMiLiveSdkEventCallback callback : deadCallback) {
+                        MyLog.v(TAG, "unregister event callback.");
+                        callbackList.unregister(callback);
+                    }
                 }
+                MyLog.d(TAG, "onEventLogoff aidl success=" + aidlSuccess);
             }
-            callbackList.finishBroadcast();
-            for (IMiLiveSdkEventCallback callback : deadCallback) {
-                MyLog.v(TAG, "unregister event callback.");
-                callbackList.unregister(callback);
-            }
-        }
-        MyLog.d(TAG, "onEventLogoff aidl success=" + aidlSuccess);
+        });
     }
 
     /**
      * 登录的结果
      */
-    public void onEventLogin(int channelId, int code) {
+    public void onEventLogin(final int channelId, final int code) {
         if (mAARCallback != null) {
             mAARCallback.notifyLogin(code);
             return;
         }
         MyLog.w(TAG, "onEventLogin channelId=" + channelId);
-        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
-        boolean aidlSuccess = false;
-        RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
-        if (callbackList != null) {
-            MyLog.w(TAG, "callbackList != null");
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
+                boolean aidlSuccess = false;
+                RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
+                if (callbackList != null) {
+                    MyLog.w(TAG, "callbackList != null");
 
-            int n = callbackList.beginBroadcast();
-            for (int i = 0; i < n; i++) {
-                IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
-                try {
-                    callback.onEventLogin(code);
-                    aidlSuccess = true;
-                } catch (Exception e) {
-                    MyLog.v(TAG, "dead callback.");
-                    deadCallback.add(callback);
+                    int n = callbackList.beginBroadcast();
+                    for (int i = 0; i < n; i++) {
+                        IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
+                        try {
+                            callback.onEventLogin(code);
+                            aidlSuccess = true;
+                        } catch (Exception e) {
+                            MyLog.v(TAG, "dead callback.");
+                            deadCallback.add(callback);
+                        }
+                    }
+                    callbackList.finishBroadcast();
+                    for (IMiLiveSdkEventCallback callback : deadCallback) {
+                        MyLog.v(TAG, "unregister event callback.");
+                        callbackList.unregister(callback);
+                    }
                 }
+                MyLog.w(TAG, "onEventLogin aidl success=" + aidlSuccess);
             }
-            callbackList.finishBroadcast();
-            for (IMiLiveSdkEventCallback callback : deadCallback) {
-                MyLog.v(TAG, "unregister event callback.");
-                callbackList.unregister(callback);
-            }
-        }
-        MyLog.w(TAG, "onEventLogin aidl success=" + aidlSuccess);
+        });
     }
 
     /**
      * 用户请求登录，要考虑宿主死亡的情况，看需要不需要通过广播通知
      */
-    public void onEventWantLogin(int channelId) {
+    public void onEventWantLogin(final int channelId) {
         if (mAARCallback != null) {
             mAARCallback.notifyWantLogin();
             return;
         }
         MyLog.w(TAG, "onEventWantLogin channelId=" + channelId);
-        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
-        boolean aidlSuccess = false;
-        RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
-        if (callbackList != null) {
-            MyLog.w(TAG, "callbackList != null");
-            int n = callbackList.beginBroadcast();
-            for (int i = 0; i < n; i++) {
-                IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
-                try {
-                    callback.onEventWantLogin();
-                    aidlSuccess = true;
-                } catch (Exception e) {
-                    MyLog.v(TAG, "dead callback.");
-                    deadCallback.add(callback);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
+                boolean aidlSuccess = false;
+                RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
+                if (callbackList != null) {
+                    MyLog.w(TAG, "callbackList != null");
+                    int n = callbackList.beginBroadcast();
+                    for (int i = 0; i < n; i++) {
+                        IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
+                        try {
+                            callback.onEventWantLogin();
+                            aidlSuccess = true;
+                        } catch (Exception e) {
+                            MyLog.v(TAG, "dead callback.");
+                            deadCallback.add(callback);
+                        }
+                    }
+                    callbackList.finishBroadcast();
+                    for (IMiLiveSdkEventCallback callback : deadCallback) {
+                        MyLog.v(TAG, "unregister event callback.");
+                        callbackList.unregister(callback);
+                    }
                 }
+                MyLog.w(TAG, "onEventWantLogin aidl success=" + aidlSuccess);
             }
-            callbackList.finishBroadcast();
-            for (IMiLiveSdkEventCallback callback : deadCallback) {
-                MyLog.v(TAG, "unregister event callback.");
-                callbackList.unregister(callback);
-            }
-        }
-        MyLog.w(TAG, "onEventWantLogin aidl success=" + aidlSuccess);
+        });
     }
 
-    public void onEventVerifyFailure(int channelId, int code) {
+    public void onEventVerifyFailure(final int channelId, final int code) {
         if (mAARCallback != null) {
             mAARCallback.notifyVerifyFailure(code);
             return;
         }
         MyLog.w(TAG, "onEventVerifyFailure channelId=" + channelId);
-        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
-        boolean aidlSuccess = false;
-        RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
-        if (callbackList != null) {
-            MyLog.w(TAG, "callbackList != null");
-            int n = callbackList.beginBroadcast();
-            for (int i = 0; i < n; i++) {
-                IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
-                try {
-                    callback.onEventVerifyFailure(code);
-                    aidlSuccess = true;
-                } catch (Exception e) {
-                    MyLog.v(TAG, "dead callback.");
-                    deadCallback.add(callback);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
+                boolean aidlSuccess = false;
+                RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
+                if (callbackList != null) {
+                    MyLog.w(TAG, "callbackList != null");
+                    int n = callbackList.beginBroadcast();
+                    for (int i = 0; i < n; i++) {
+                        IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
+                        try {
+                            callback.onEventVerifyFailure(code);
+                            aidlSuccess = true;
+                        } catch (Exception e) {
+                            MyLog.v(TAG, "dead callback.");
+                            deadCallback.add(callback);
+                        }
+                    }
+                    callbackList.finishBroadcast();
+                    for (IMiLiveSdkEventCallback callback : deadCallback) {
+                        MyLog.v(TAG, "unregister event callback.");
+                        callbackList.unregister(callback);
+                    }
                 }
+                MyLog.w(TAG, "onEventVerifyFailure aidl success=" + aidlSuccess);
             }
-            callbackList.finishBroadcast();
-            for (IMiLiveSdkEventCallback callback : deadCallback) {
-                MyLog.v(TAG, "unregister event callback.");
-                callbackList.unregister(callback);
-            }
-        }
-        MyLog.w(TAG, "onEventVerifyFailure aidl success=" + aidlSuccess);
+        });
     }
 
-    public void onEventOtherAppActive(int channelId) {
+    public void onEventOtherAppActive(final int channelId) {
         if (mAARCallback != null) {
             mAARCallback.notifyOtherAppActive();
             return;
         }
         MyLog.w(TAG, "onEventOtherApp channelId=" + channelId);
-        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
-        boolean aidlSuccess = false;
-        RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
-        if (callbackList != null) {
-            MyLog.w(TAG, "callbackList != null");
-            int n = callbackList.beginBroadcast();
-            for (int i = 0; i < n; i++) {
-                IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
-                try {
-                    callback.onEventOtherAppActive();
-                    aidlSuccess = true;
-                } catch (Exception e) {
-                    MyLog.v(TAG, "dead callback.");
-                    deadCallback.add(callback);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
+                boolean aidlSuccess = false;
+                RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
+                if (callbackList != null) {
+                    MyLog.w(TAG, "callbackList != null");
+                    int n = callbackList.beginBroadcast();
+                    for (int i = 0; i < n; i++) {
+                        IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
+                        try {
+                            callback.onEventOtherAppActive();
+                            aidlSuccess = true;
+                        } catch (Exception e) {
+                            MyLog.v(TAG, "dead callback.");
+                            deadCallback.add(callback);
+                        }
+                    }
+                    callbackList.finishBroadcast();
+                    for (IMiLiveSdkEventCallback callback : deadCallback) {
+                        MyLog.v(TAG, "unregister event callback.");
+                        callbackList.unregister(callback);
+                    }
                 }
+                MyLog.w(TAG, "onEventOtherApp aidl success=" + aidlSuccess);
             }
-            callbackList.finishBroadcast();
-            for (IMiLiveSdkEventCallback callback : deadCallback) {
-                MyLog.v(TAG, "unregister event callback.");
-                callbackList.unregister(callback);
-            }
-        }
-        MyLog.w(TAG, "onEventOtherApp aidl success=" + aidlSuccess);
+        });
     }
 
     @Override
@@ -822,6 +865,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void postSuccess() {
                 AccountCaller.login(loginData.getChannelId(), loginData.getXuid(), loginData.getSex(), loginData.getNickname(), loginData.getHeadUrl(), loginData.getSign())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<AccountProto.ThirdPartSignLoginRsp>() {
                             @Override
                             public void onCompleted() {
@@ -870,130 +915,158 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         });
     }
 
-    public void onEventGetRecommendLives(int channelId, int errCode, List<LiveInfo> liveInfos) {
+    public void onEventGetRecommendLives(final int channelId, final int errCode, final List<LiveInfo> liveInfos) {
         MyLog.w(TAG, "onEventGetRecommendLives errCode" + errCode);
         if (mAARCallback != null) {
             mAARCallback.notifyGetChannelLives(errCode, liveInfos);
             return;
         }
-        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
-        boolean aidlSuccess = false;
-        RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
-        if (callbackList != null) {
-            MyLog.w(TAG, "callbackList != null");
-            int n = callbackList.beginBroadcast();
-            for (int i = 0; i < n; i++) {
-                IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
-                try {
-                    callback.onEventGetRecommendLives(errCode, liveInfos);
-                    aidlSuccess = true;
-                } catch (Exception e) {
-                    MyLog.v(TAG, "dead callback.");
-                    deadCallback.add(callback);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
+                boolean aidlSuccess = false;
+                RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
+                if (callbackList != null) {
+                    MyLog.w(TAG, "callbackList != null");
+                    int n = callbackList.beginBroadcast();
+                    for (int i = 0; i < n; i++) {
+                        IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
+                        try {
+                            callback.onEventGetRecommendLives(errCode, liveInfos);
+                            aidlSuccess = true;
+                        } catch (Exception e) {
+                            MyLog.v(TAG, "dead callback.");
+                            deadCallback.add(callback);
+                        }
+                    }
+                    callbackList.finishBroadcast();
+                    for (IMiLiveSdkEventCallback callback : deadCallback) {
+                        MyLog.v(TAG, "unregister event callback.");
+                        callbackList.unregister(callback);
+                    }
                 }
+                MyLog.w(TAG, "onEventGetRecommendLives aidl success=" + aidlSuccess);
             }
-            callbackList.finishBroadcast();
-            for (IMiLiveSdkEventCallback callback : deadCallback) {
-                MyLog.v(TAG, "unregister event callback.");
-                callbackList.unregister(callback);
-            }
-        }
-        MyLog.w(TAG, "onEventGetRecommendLives aidl success=" + aidlSuccess);
+        });
     }
 
 
-    public void onEventGetFollowingUserList(int channelId, int errCode, List<UserInfo> userInfos, int total, long timeStamp) {
+    public void onEventGetFollowingUserList(final int channelId, final int errCode, final List<UserInfo> userInfos, final int total, final long timeStamp) {
         MyLog.w(TAG, "onEventGetFollowingUserList channelId=" + channelId);
         if (mAARCallback != null) {
             mAARCallback.notifyGetFollowingUserList(errCode, userInfos, total, timeStamp);
             return;
         }
-        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
-        boolean aidlSuccess = false;
-        RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
-        if (callbackList != null) {
-            MyLog.w(TAG, "callbackList != null");
-            int n = callbackList.beginBroadcast();
-            for (int i = 0; i < n; i++) {
-                IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
-                try {
-                    callback.onEventGetFollowingUserList(errCode, userInfos, total, timeStamp);
-                    aidlSuccess = true;
-                } catch (Exception e) {
-                    MyLog.v(TAG, "dead callback.");
-                    deadCallback.add(callback);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
+                boolean aidlSuccess = false;
+                RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
+                if (callbackList != null) {
+                    MyLog.w(TAG, "callbackList != null");
+                    int n = callbackList.beginBroadcast();
+                    for (int i = 0; i < n; i++) {
+                        IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
+                        try {
+                            callback.onEventGetFollowingUserList(errCode, userInfos, total, timeStamp);
+                            aidlSuccess = true;
+                        } catch (Exception e) {
+                            MyLog.v(TAG, "dead callback.");
+                            deadCallback.add(callback);
+                        }
+                    }
+                    callbackList.finishBroadcast();
+                    for (IMiLiveSdkEventCallback callback : deadCallback) {
+                        MyLog.v(TAG, "unregister event callback.");
+                        callbackList.unregister(callback);
+                    }
                 }
+                MyLog.w(TAG, "onEventGetFollowingUserList aidl success=" + aidlSuccess);
             }
-            callbackList.finishBroadcast();
-            for (IMiLiveSdkEventCallback callback : deadCallback) {
-                MyLog.v(TAG, "unregister event callback.");
-                callbackList.unregister(callback);
-            }
-        }
-        MyLog.w(TAG, "onEventGetFollowingUserList aidl success=" + aidlSuccess);
+        });
     }
 
-    public void onEventGetFollowingLiveList(int channelId, int errCode, List<LiveInfo> liveInfos) {
+    public void onEventGetFollowingLiveList(final int channelId, final int errCode, final List<LiveInfo> liveInfos) {
         MyLog.w(TAG, "onEventGetFollowingLiveList errCode" + errCode);
         if (mAARCallback != null) {
             mAARCallback.notifyGetFollowingLiveList(errCode, liveInfos);
             return;
         }
-        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
-        boolean aidlSuccess = false;
-        RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
-        if (callbackList != null) {
-            MyLog.w(TAG, "callbackList != null");
-            int n = callbackList.beginBroadcast();
-            for (int i = 0; i < n; i++) {
-                IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
-                try {
-                    callback.onEventGetFollowingLiveList(errCode, liveInfos);
-                    aidlSuccess = true;
-                } catch (Exception e) {
-                    MyLog.v(TAG, "dead callback.");
-                    deadCallback.add(callback);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
+                boolean aidlSuccess = false;
+                RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
+                if (callbackList != null) {
+                    MyLog.w(TAG, "callbackList != null");
+                    int n = callbackList.beginBroadcast();
+                    for (int i = 0; i < n; i++) {
+                        IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
+                        try {
+                            callback.onEventGetFollowingLiveList(errCode, liveInfos);
+                            aidlSuccess = true;
+                        } catch (Exception e) {
+                            MyLog.v(TAG, "dead callback.");
+                            deadCallback.add(callback);
+                        }
+                    }
+                    callbackList.finishBroadcast();
+                    for (IMiLiveSdkEventCallback callback : deadCallback) {
+                        MyLog.v(TAG, "unregister event callback.");
+                        callbackList.unregister(callback);
+                    }
                 }
+                MyLog.w(TAG, "onEventGetFollowingLiveList aidl success=" + aidlSuccess);
             }
-            callbackList.finishBroadcast();
-            for (IMiLiveSdkEventCallback callback : deadCallback) {
-                MyLog.v(TAG, "unregister event callback.");
-                callbackList.unregister(callback);
-            }
-        }
-        MyLog.w(TAG, "onEventGetFollowingLiveList aidl success=" + aidlSuccess);
+        });
     }
 
 
-    public void onEventShare(int channelId, ShareInfo shareInfo) {
+    public void onEventShare(final int channelId, final ShareInfo shareInfo) {
         MyLog.w(TAG, "onEventShare");
         if (mAARCallback != null) {
             mAARCallback.notifyWantShare(shareInfo);
             return;
         }
-        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList<>(1);
-        boolean aidlSuccess = false;
-        RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
-        if (callbackList != null) {
-            MyLog.w(TAG, "callbackList != null");
-            int n = callbackList.beginBroadcast();
-            for (int i = 0; i < n; i++) {
-                IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
-                try {
-                    MyLog.w(TAG, "onEventShare sub for i=" + i);
-                    callback.onEventShare(shareInfo);
-                    aidlSuccess = true;
-                } catch (Exception e) {
-                    MyLog.v(TAG, "dead callback.");
-                    deadCallback.add(callback);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                List<IMiLiveSdkEventCallback> deadCallback = new ArrayList<>(1);
+                boolean aidlSuccess = false;
+                RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
+                if (callbackList != null) {
+                    MyLog.w(TAG, "callbackList != null");
+                    int n = callbackList.beginBroadcast();
+                    for (int i = 0; i < n; i++) {
+                        IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
+                        try {
+                            MyLog.w(TAG, "onEventShare sub for i=" + i);
+                            callback.onEventShare(shareInfo);
+                            aidlSuccess = true;
+                        } catch (Exception e) {
+                            MyLog.v(TAG, "dead callback.");
+                            deadCallback.add(callback);
+                        }
+                    }
+                    callbackList.finishBroadcast();
+                    for (IMiLiveSdkEventCallback callback : deadCallback) {
+                        MyLog.v(TAG, "unregister event callback.");
+                        callbackList.unregister(callback);
+                    }
                 }
+                MyLog.w(TAG, "onEventShare aidl success=" + aidlSuccess);
             }
-            callbackList.finishBroadcast();
-            for (IMiLiveSdkEventCallback callback : deadCallback) {
-                MyLog.v(TAG, "unregister event callback.");
-                callbackList.unregister(callback);
-            }
+        });
+    }
+
+    public void destroy() {
+        mHandler.removeCallbacksAndMessages(null);
+        if (mHandlerThread != null) {
+            mHandlerThread.quitSafely();
+            mHandlerThread = null;
         }
-        MyLog.w(TAG, "onEventShare aidl success=" + aidlSuccess);
     }
 }

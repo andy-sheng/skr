@@ -41,6 +41,15 @@
             android:src="@drawable/game_live_icon_mute_btn"/>
 
         <ImageView
+            android:id="@+id/face_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:padding="3dp"
+            android:src="@drawable/game_live_icon_face_btn"/>
+
+        <ImageView
             android:id="@+id/comment_btn"
             android:layout_width="40dp"
             android:layout_height="40dp"

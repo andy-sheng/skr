@@ -103,8 +103,9 @@ public class ExtraContainerPresenter extends ComponentPresenter<ExtraContainerVi
 
     private void showEditInfo() {
         // 横屏不要出现，因为会挡住视频
+        final String nickName = MyUserInfoManager.getInstance().getNickname();
         if (!mIsLandscape && UserAccountManager.getInstance().hasAccount()
-                && TextUtils.isDigitsOnly(MyUserInfoManager.getInstance().getNickname())) {
+                && !TextUtils.isEmpty(nickName) && TextUtils.isDigitsOnly(nickName)) {
             MyLog.d(TAG, "runnable showEditInfo");
             mView.showEditInfo();
             long currentTime = System.currentTimeMillis();
