@@ -49,6 +49,8 @@ public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrappe
 
     private Path mPath;
     private RectF mRectF;
+    private final PaintFlagsDrawFilter mPaintFlagsDrawFilter
+            = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
 
     protected <T extends View> T $(int resId) {
         return (T) findViewById(resId);
@@ -154,9 +156,9 @@ public class HeaderVideoView extends RelativeLayout implements VideoPlayerWrappe
     protected void onDraw(Canvas canvas) {
         if (mRectF == null) {
             mRectF = new RectF(0, 0, getWidth(), getHeight());
+            mPath.addRoundRect(mRectF, ROUND_RADIUS, ROUND_RADIUS, Path.Direction.CW);
         }
-        canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
-        mPath.addRoundRect(mRectF, ROUND_RADIUS, ROUND_RADIUS, Path.Direction.CW);
+        canvas.setDrawFilter(mPaintFlagsDrawFilter);
         canvas.clipPath(mPath);
         super.onDraw(canvas);
     }
