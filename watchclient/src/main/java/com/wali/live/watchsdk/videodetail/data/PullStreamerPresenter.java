@@ -129,6 +129,12 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         }
     }
 
+    public final void mute(boolean mute) {
+        if (mStreamer != null) {
+            mStreamer.setMuteAudio(mute);
+        }
+    }
+
     public void setOriginalStreamUrl(String originalStreamUrl) {
         mIpSelectionHelper.setOriginalStreamUrl(originalStreamUrl);
     }
