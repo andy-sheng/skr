@@ -22,6 +22,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.log.MyLog;
+import com.base.permission.PermissionUtils;
+import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.channel.HostChannelManager;
 import com.wali.live.common.barrage.view.LiveCommentView;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
@@ -93,6 +95,13 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
             mGamePresenter.muteMic(view.isSelected());
             keyType = StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_SILENT;
         } else if (i == R.id.face_btn) {
+            if (!view.isSelected()) {
+                boolean hasCameraPermission = PermissionUtils.checkCamera(getContext());
+                if (!hasCameraPermission) {
+                    ToastUtils.showToast(R.string.check_camera_video_message);
+                    return;
+                }
+            }
             view.setSelected(!view.isSelected()); // 露脸/取消露脸
             mGamePresenter.showFace(view.isSelected());
         } else if (i == R.id.comment_btn) {
