@@ -97,7 +97,7 @@ public class HeaderVideoView extends RelativeLayout implements IEventObserver {
     }
 
     private void initPresenter(Context context) {
-        mPresenter = new HeaderVideoPresenter(mController);
+        mPresenter = new HeaderVideoPresenter(mController, false);
         mPresenter.setView(mVideoView);
 
         if (context instanceof BaseSdkActivity) {
