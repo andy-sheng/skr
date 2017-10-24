@@ -76,13 +76,6 @@
         </activity>
 
         <activity
-            android:name="com.wali.live.watchsdk.watch.ReplaySdkActivity"
-            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeLive"/>
-
-        <activity
             android:name=".editinfo.EditInfoActivity"
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
             android:hardwareAccelerated="true"
