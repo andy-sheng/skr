@@ -60,8 +60,9 @@ public class HeaderVideoPresenter extends ComponentPresenter<TextureView>
         mStreamerPresenter.resumeWatch();
     }
 
-    public void stopVideo() {
+    public void destroyVideo() {
         mStreamerPresenter.stopWatch();
+        mStreamerPresenter.destroy();
     }
 
     public void mute(boolean mute) {

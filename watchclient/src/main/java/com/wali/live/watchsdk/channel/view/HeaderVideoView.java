@@ -32,10 +32,9 @@ import com.wali.live.watchsdk.channel.view.presenter.HeaderVideoPresenter;
 /**
  * Created by zyh on 2017/8/29.
  */
-public class HeaderVideoView extends RelativeLayout {
+public class HeaderVideoView extends RelativeLayout implements IEventObserver {
     private final static String TAG = "HeaderVideoView";
 
-    private Action mAction = new Action();
     private final static int PLAYER_INIT = 0;
     private final static int PLAYER_PLAYING = 1;
     private final static int PLAYER_PAUSE = 2;
@@ -162,7 +161,7 @@ public class HeaderVideoView extends RelativeLayout {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         MyLog.v(TAG, "onAttachedToWindow mPlayerState=" + mPlayerState);
-        mAction.registerAction();
+        registerAction();
         openVideo();
     }
 
@@ -170,12 +169,50 @@ public class HeaderVideoView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         MyLog.v(TAG, "onDetachedFromWindow mPlayerState=" + mPlayerState);
-        mAction.unregisterAction();
+        unregisterAction();
         mUIHandler.removeCallbacks(mVideoRunnable);
         if (mPlayerState == PLAYER_PLAYING) {
             mPresenter.pauseVideo();
             mPlayerState = PLAYER_PAUSE;
         }
+    }
+
+    private void registerAction() {
+        mController.registerObserverForEvent(BaseSdkController.MSG_PLAYER_COMPLETED, this); //completed
+        mController.registerObserverForEvent(BaseSdkController.MSG_PLAYER_ERROR, this); //error
+        mController.registerObserverForEvent(BaseSdkController.MSG_PLAYER_HIDE_LOADING, this); //buffer_end
+        mController.registerObserverForEvent(BaseSdkController.MSG_PLAYER_READY, this); //prepared
+    }
+
+    private void unregisterAction() {
+        if (mController != null) {
+            mController.unregisterObserver(this);
+        }
+    }
+
+    @Override
+    public boolean onEvent(int event, IParams params) {
+        switch (event) {
+            case BaseSdkController.MSG_PLAYER_READY:
+                //注：这里是因为首次openVideo之后立马detachWindow，执行pause但是没有pause住流。
+                // 所以在prepare回调里面跟距mPlayerState状态在执行一次pause.
+                if (mPlayerState == PLAYER_PAUSE) {
+                    mPresenter.pauseVideo();
+                }
+                break;
+            case BaseSdkController.MSG_PLAYER_HIDE_LOADING:
+                mCoverIv.setVisibility(View.GONE);
+                break;
+            case BaseSdkController.MSG_PLAYER_ERROR:
+                openVideo();
+                break;
+            case BaseSdkController.MSG_PLAYER_COMPLETED:
+                startVideo();
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 
     public class HeaderVideoInnerPresenter extends RxLifeCyclePresenter {
@@ -202,48 +239,7 @@ public class HeaderVideoView extends RelativeLayout {
         public void destroy() {
             MyLog.w(TAG, "destroy");
             super.destroy();
-            mPresenter.stopVideo();
-        }
-    }
-
-    private class Action implements IEventObserver {
-
-        private void registerAction() {
-            mController.registerObserverForEvent(BaseSdkController.MSG_PLAYER_COMPLETED, this); //completed
-            mController.registerObserverForEvent(BaseSdkController.MSG_PLAYER_ERROR, this); //error
-            mController.registerObserverForEvent(BaseSdkController.MSG_PLAYER_HIDE_LOADING, this); //buffer_end
-            mController.registerObserverForEvent(BaseSdkController.MSG_PLAYER_READY, this); //prepared
-        }
-
-        private void unregisterAction() {
-            if (mController != null) {
-                mController.unregisterObserver(this);
-            }
-        }
-
-        @Override
-        public boolean onEvent(int event, IParams params) {
-            switch (event) {
-                case BaseSdkController.MSG_PLAYER_READY:
-                    //注：这里是因为首次openVideo之后立马detachWindow，执行pause但是没有pause住流。
-                    // 所以在prepare回调里面跟距mPlayerState状态在执行一次pause.
-                    if (mPlayerState == PLAYER_PAUSE) {
-                        mPresenter.pauseVideo();
-                    }
-                    break;
-                case BaseSdkController.MSG_PLAYER_HIDE_LOADING:
-                    mCoverIv.setVisibility(View.GONE);
-                    break;
-                case BaseSdkController.MSG_PLAYER_ERROR:
-                    openVideo();
-                    break;
-                case BaseSdkController.MSG_PLAYER_COMPLETED:
-                    startVideo();
-                    break;
-                default:
-                    break;
-            }
-            return false;
+            mPresenter.destroyVideo();
         }
     }
 
