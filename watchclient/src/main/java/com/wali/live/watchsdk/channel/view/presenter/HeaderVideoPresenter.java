@@ -33,10 +33,10 @@ public class HeaderVideoPresenter extends ComponentPresenter<TextureView>
         mView.setSurfaceTextureListener(this);
     }
 
-    public HeaderVideoPresenter(@NonNull IEventController controller) {
+    public HeaderVideoPresenter(@NonNull IEventController controller, boolean isRealTime) {
         super(controller);
         mStreamerPresenter = new PullStreamerPresenter(controller);
-        mStreamerPresenter.setIsRealTime(false);
+        mStreamerPresenter.setIsRealTime(isRealTime);
 
         GalileoPlayer player = new GalileoPlayer(GlobalData.app(), UserAccountManager.getInstance().getUuid(),
                 MiLinkClientAdapter.getsInstance().getClientIp());
