@@ -478,10 +478,8 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
                     MyLog.i(TAG, "onTouchEvent ACTION_DOWN");
                     xInView = event.getX();
                     yInView = event.getY();
-                    xDownInScreen = event.getRawX();
-                    yDownInScreen = event.getRawY();
-                    xInScreen = event.getRawX();
-                    yInScreen = event.getRawY();
+                    xInScreen = xDownInScreen = event.getRawX();
+                    yInScreen = yDownInScreen = event.getRawY();
                     break;
                 case MotionEvent.ACTION_MOVE:
                     MyLog.i(TAG, "onTouchEvent ACTION_MOVE");
@@ -493,7 +491,7 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
                     } else if (mMode == MODE_NORMAL) {
                         xInScreen = event.getRawX();
                         yInScreen = event.getRawY();
-                        if (Math.abs(xDownInScreen - xInScreen) > MOVE_THRESHOLD &&
+                        if (Math.abs(xDownInScreen - xInScreen) > MOVE_THRESHOLD ||
                                 Math.abs(yDownInScreen - yInScreen) > MOVE_THRESHOLD) {
                             onEnterDragMode();
                         }

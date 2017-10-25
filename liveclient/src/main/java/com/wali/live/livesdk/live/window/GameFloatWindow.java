@@ -14,7 +14,6 @@ import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
 import com.base.utils.display.DisplayUtils;
 import com.wali.live.livesdk.live.presenter.GameLivePresenter;
-import com.wali.live.livesdk.live.view.camera.GameCameraView;
 import com.wali.live.livesdk.live.window.dialog.GameConfirmDialog;
 
 import java.lang.ref.WeakReference;
@@ -49,7 +48,7 @@ public class GameFloatWindow implements IGameFloatPresenter {
     private GameFloatIcon mGameMainIcon;
     private GameFloatView mGameFloatView;
 
-    private GameCameraView mGameCameraView;
+    private GameFloatCameraView mGameCameraView;
 
     // 弹窗
     private WeakReference<GameConfirmDialog> mGameConfirmDialogRef;
@@ -65,7 +64,9 @@ public class GameFloatWindow implements IGameFloatPresenter {
         mGameLivePresenter = gameLivePresenter;
         mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         mUiHandler = new MyUiHandler(this);
-        DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        mWindowManager.getDefaultDisplay().getRealMetrics(displayMetrics);
         mParentWidth = Math.min(displayMetrics.widthPixels, displayMetrics.heightPixels);
         mParentHeight = Math.max(displayMetrics.widthPixels, displayMetrics.heightPixels);
     }
@@ -113,9 +114,10 @@ public class GameFloatWindow implements IGameFloatPresenter {
             mGameCameraView = null;
         }
         if (hasCameraPermission && mGameCameraView == null) {
-            mGameCameraView = new GameCameraView(
+            mGameCameraView = new GameFloatCameraView(
                     mContext,
                     mWindowManager,
+                    mGameLivePresenter,
                     mParentWidth,
                     mParentHeight);
         }
@@ -154,9 +156,6 @@ public class GameFloatWindow implements IGameFloatPresenter {
         if (mGameMainIcon != null) {
             mGameMainIcon.destroy();
         }
-        if (mGameCameraView != null) {
-            mGameCameraView.destroy();
-        }
     }
 
     @Override
@@ -192,9 +191,10 @@ public class GameFloatWindow implements IGameFloatPresenter {
             mGameCameraView = null;
         }
         if (hasCameraPermission && mGameCameraView == null) {
-            mGameCameraView = new GameCameraView(
+            mGameCameraView = new GameFloatCameraView(
                     mContext,
                     mWindowManager,
+                    mGameLivePresenter,
                     mParentWidth,
                     mParentHeight);
         }

@@ -21,6 +21,7 @@ import com.wali.live.livesdk.live.service.GameLiveService;
 import com.wali.live.livesdk.live.utils.ImageUtils;
 import com.wali.live.livesdk.live.window.GameFloatWindow;
 import com.wali.live.watchsdk.active.KeepActiveProcessor;
+import com.xiaomi.rendermanager.videoRender.VideoStreamsView;
 
 import java.io.File;
 
@@ -221,7 +222,6 @@ public class GameLivePresenter implements Presenter {
 
     @Override
     public void start() {
-
     }
 
     @Override
@@ -236,7 +236,6 @@ public class GameLivePresenter implements Presenter {
 
     @Override
     public void pause() {
-
     }
 
     @Override
@@ -273,5 +272,38 @@ public class GameLivePresenter implements Presenter {
 
     public void updateStutterStatus(boolean isStuttering) {
         mGameFloatWindow.updateStutterStatus(isStuttering);
+    }
+
+    public void startCameraPreview(VideoStreamsView streamsView) {
+        if (mStreamer != null) {
+            mStreamer.setDisplayPreview(streamsView);
+            mStreamer.startCamera();
+        }
+    }
+
+    public void stopCameraPreview() {
+        if (mStreamer != null) {
+            mStreamer.stopCamera();
+        }
+    }
+
+    public void startMergeCameraPreview(
+            float leftX, float leftY, float scaleWidth, float scaleHeight) {
+        if (mStreamer != null) {
+            mStreamer.startAddExtra(0, leftX, leftY, scaleWidth, scaleHeight, scaleWidth, scaleHeight, 2);
+        }
+    }
+
+    public void stopMergeCameraPreview() {
+        if (mStreamer != null) {
+            mStreamer.startAddExtra(0, 2f, 2f, 0.1f, 0.1f, 0.1f, 0.1f, 2);
+            mStreamer.stopAddExtra(0);
+        }
+    }
+
+    public void setDisplayOrientation(int degrees) {
+        if (mStreamer != null) {
+            mStreamer.setAngle(degrees, 0);
+        }
     }
 }

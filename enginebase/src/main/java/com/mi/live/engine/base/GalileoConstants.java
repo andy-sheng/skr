@@ -39,10 +39,15 @@ public class GalileoConstants {
 
     public static final int GAME_HIGH_RESOLUTION_WIDTH = 720;
     public static final int GAME_HIGH_RESOLUTION_HEIGHT = 1280;
-    public static final int GAME_MEDIUM_RESOLUTION_WIDTH = 480;
-    public static final int GAME_MEDIUM_RESOLUTION_HEIGHT = 864;
+//    public static final int GAME_MEDIUM_RESOLUTION_WIDTH = 480;
+//    public static final int GAME_MEDIUM_RESOLUTION_HEIGHT = 864;
+//    public static final int GAME_LOW_RESOLUTION_WIDTH = 368;
+//    public static final int GAME_LOW_RESOLUTION_HEIGHT = 640;
+    public static final int GAME_MEDIUM_RESOLUTION_WIDTH = 468;
+    public static final int GAME_MEDIUM_RESOLUTION_HEIGHT = 832;
     public static final int GAME_LOW_RESOLUTION_WIDTH = 368;
     public static final int GAME_LOW_RESOLUTION_HEIGHT = 640;
+
     public static final int LIVE_LOW_RESOLUTION_WIDTH = 360;
     public static final int LIVE_LOW_RESOLUTION_HEIGHT = 640;
 }
