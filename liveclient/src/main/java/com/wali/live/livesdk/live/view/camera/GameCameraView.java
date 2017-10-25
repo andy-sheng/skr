@@ -21,7 +21,7 @@ import com.base.utils.display.DisplayUtils;
  */
 public class GameCameraView extends BaseCameraView {
     public static final int VIEW_WIDTH = DisplayUtils.dip2px(80f);
-    public static final int VIEW_HEIGHT = VIEW_WIDTH;
+    public static final int VIEW_HEIGHT = VIEW_WIDTH * 4 / 3;
 
     private final WindowManager mWindowManager;
     private final WindowManager.LayoutParams mLayoutParams;
@@ -199,18 +199,15 @@ public class GameCameraView extends BaseCameraView {
         } else {
             mBoundRect.set(0, 0, mParentWidth, mParentHeight);
         }
-        if (mViewWidth != mViewHeight) {
-            if (mIsLandscape) {
-                mLayoutParams.width = mViewHeight;
-                mLayoutParams.height = mViewWidth;
-            } else {
-                mLayoutParams.width = mViewWidth;
-                mLayoutParams.height = mViewHeight;
-            }
-        }
         if (mIsLandscape) {
+            mLayoutParams.width = mViewHeight;
+            mLayoutParams.height = mViewWidth;
+
             mLayoutParams.x = mBoundRect.right - mViewHeight - 20;
         } else {
+            mLayoutParams.width = mViewWidth;
+            mLayoutParams.height = mViewHeight;
+
             mLayoutParams.x = mBoundRect.right - mViewWidth - 20;
         }
         mLayoutParams.y = mBoundRect.top + 20 + BaseActivity.getStatusBarHeight();
