@@ -113,6 +113,7 @@ public class GalileoStreamer implements IStreamer {
         public void onStartCamera() {
             MyLog.w(TAG, "onStartCamera");
             bindLocalRender();
+            EventBus.getDefault().post(new EngineEventClass.CameraStartedEvent());
         }
 
         @Override

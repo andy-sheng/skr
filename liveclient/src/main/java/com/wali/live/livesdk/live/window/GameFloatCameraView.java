@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.OrientationEventListener;
 import android.view.Surface;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
@@ -238,8 +239,8 @@ public class GameFloatCameraView extends FrameLayout {
         mWindowManager.addView(this, mLayoutParams);
         EventBus.getDefault().register(this);
         mOrientationEventListener.enable();
+        setVisibility(View.GONE);
         mGameLivePresenter.startCameraPreview(mVideoStreamsView);
-        mGameLivePresenter.startMergeCameraPreview(mLeftX, mLeftY, mScaleWidth, mScaleHeight);
         onDisplayRotation();
     }
 
@@ -276,10 +277,11 @@ public class GameFloatCameraView extends FrameLayout {
     }
 
     @Subscribe(threadMode = MAIN)
-    public void onEvent(EngineEventClass.LocalBindEvent event) {
+    public void onEvent(EngineEventClass.CameraStartedEvent event) {
         if (event == null) {
             return;
         }
+        setVisibility(View.VISIBLE);
         mGameLivePresenter.startMergeCameraPreview(mLeftX, mLeftY, mScaleWidth, mScaleHeight);
     }
 

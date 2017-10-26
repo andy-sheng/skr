@@ -31,6 +31,10 @@ public class EngineEventClass {
 
     }
 
+    public static class CameraStartedEvent {
+
+    }
+
     public static class ConferenceCallBackEvent {
         public int type;
         public Object retObj;
