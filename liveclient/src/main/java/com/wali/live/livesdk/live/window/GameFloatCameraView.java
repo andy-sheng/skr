@@ -40,7 +40,7 @@ public class GameFloatCameraView extends FrameLayout {
     private static final String TAG = "GameFloatCameraView";
 
     public static final int VIEW_MARGIN = DisplayUtils.dip2px(6.67f);
-    public static final int VIEW_WIDTH = DisplayUtils.dip2px(60f);
+    public static final int VIEW_WIDTH = DisplayUtils.dip2px(90f);
     public static final int VIEW_HEIGHT = VIEW_WIDTH * 16 / 9;
     public static final int VIEWER_EXTRA_WIDTH = 0; // DisplayUtils.dip2px(6.67f);
     public static final int VIEWER_EXTRA_HEIGHT = 0; // VIEWER_EXTRA_WIDTH * 16 / 9;
