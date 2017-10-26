@@ -79,6 +79,7 @@ import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.watchsdk.personinfo.fragment.FloatInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.ranking.RankingPagerFragment;
+import com.wali.live.watchsdk.receiver.ScreenStateReceiver;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 import com.wali.live.watchsdk.task.IActionCallBack;
@@ -133,6 +134,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     public static final String EXTRA_ROOM_INFO_LIST = "extra_room_info_list";
     public static final String EXTRA_ROOM_INFO_POSITION = "extra_room_info_position";
 
+    private static final int FLAG_PHONE_STATE = 0x1 << 0;
+    private static final int FLAG_SCREEN_STATE = 0x1 << 1;
+
+    private int mFlagState = 0;
+
     // 播放器
     protected VideoPlayerTextureView mVideoView;
 
@@ -165,6 +171,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     protected UserInfoPresenter mUserInfoPresenter;
 
     private PhoneStateReceiver mPhoneStateReceiver;
+    private ScreenStateReceiver mScreenStateReceiver;
+
     private RoomSystemMsgPresenter mRoomSystemMsgPresenter;
     private VideoShowPresenter mVideoShowPresenter;
 
@@ -433,6 +441,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
     private void initReceiver() {
         mPhoneStateReceiver = PhoneStateReceiver.registerReceiver(this);
+        mScreenStateReceiver = ScreenStateReceiver.registerReceiver(this);
     }
 
     protected void leaveLiveToServer() {
@@ -511,6 +520,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
     private void unregisterReceiver() {
         PhoneStateReceiver.unregisterReceiver(this, mPhoneStateReceiver);
+        ScreenStateReceiver.unregisterReceiver(this, mScreenStateReceiver);
     }
 
     // 直播结束
@@ -611,14 +621,41 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         }
         switch (event.type) {
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_IDLE:
-                mVideoPlayerPresenterEx.enableReconnect(true);
-                mVideoPlayerPresenterEx.resume();
+                mFlagState &= ~FLAG_PHONE_STATE;
+                if (mFlagState == 0) {
+                    mVideoPlayerPresenterEx.enableReconnect(true);
+                    mVideoPlayerPresenterEx.resume();
+                }
                 break;
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_RING:
+                mFlagState |= FLAG_PHONE_STATE;
                 mVideoPlayerPresenterEx.enableReconnect(false);
                 mVideoPlayerPresenterEx.pause();
                 break;
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_OFFHOOK:
+                mFlagState |= FLAG_PHONE_STATE;
+                mVideoPlayerPresenterEx.enableReconnect(false);
+                mVideoPlayerPresenterEx.pause();
+                break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(SdkEventClass.ScreenStateEvent event) {
+        if (mVideoPlayerPresenterEx == null) {
+            MyLog.d(TAG, "mVideoPlayerPresenterEx is null");
+            return;
+        }
+        switch (event.screenState) {
+            case SdkEventClass.ScreenStateEvent.ACTION_SCREEN_ON:
+                mFlagState &= ~FLAG_SCREEN_STATE;
+                if (mFlagState == 0) {
+                    mVideoPlayerPresenterEx.enableReconnect(true);
+                    mVideoPlayerPresenterEx.resume();
+                }
+                break;
+            case SdkEventClass.ScreenStateEvent.ACTION_SCREEN_OFF:
+                mFlagState |= FLAG_SCREEN_STATE;
                 mVideoPlayerPresenterEx.enableReconnect(false);
                 mVideoPlayerPresenterEx.pause();
                 break;

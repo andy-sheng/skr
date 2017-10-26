@@ -51,4 +51,21 @@ public abstract class SdkEventClass {
         BringFrontEvent event = new BringFrontEvent();
         EventBus.getDefault().postSticky(event);
     }
+
+    public static class ScreenStateEvent {
+        public static final int ACTION_SCREEN_OFF = 1;          //屏幕熄灭
+        public static final int ACTION_SCREEN_ON = 2;           //屏幕点亮
+        public static final int ACTION_USER_PRESENT = 3;        //屏幕解锁
+
+        public int screenState;
+
+        private ScreenStateEvent(int screenState) {
+            this.screenState = screenState;
+        }
+    }
+
+    public static void postScreenState(int screenState) {
+        ScreenStateEvent event = new ScreenStateEvent(screenState);
+        EventBus.getDefault().postSticky(event);
+    }
 }

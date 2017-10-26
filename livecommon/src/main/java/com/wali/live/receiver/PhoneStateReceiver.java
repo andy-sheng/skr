@@ -68,7 +68,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
     }
 
     public static void unregisterReceiver(Activity activity, PhoneStateReceiver receiver) {
-        if (receiver != null) {
+        if (activity != null && receiver != null) {
             activity.unregisterReceiver(receiver);
         }
     }
