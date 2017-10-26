@@ -9,18 +9,6 @@ import com.mi.live.data.query.model.MessageRule;
  */
 
 public class LiveEventClass {
-    public static class ScreenStateEvent {
-        public static final int ACTION_SCREEN_OFF = 1;          //屏幕熄灭
-        public static final int ACTION_SCREEN_ON = 2;           //屏幕点亮
-        public static final int ACTION_USER_PRESENT = 3;        //屏幕解锁
-
-        public int screenState;
-
-        public ScreenStateEvent(int screenState) {
-            this.screenState = screenState;
-        }
-    }
-
     public static class HidePrepareGameLiveEvent {
     }
 

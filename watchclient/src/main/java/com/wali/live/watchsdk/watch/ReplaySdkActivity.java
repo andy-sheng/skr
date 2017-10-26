@@ -49,6 +49,7 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.watchsdk.personinfo.fragment.FloatInfoFragment;
 import com.wali.live.watchsdk.ranking.RankingPagerFragment;
+import com.wali.live.watchsdk.receiver.ScreenStateReceiver;
 import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.watchsdk.task.LiveTask;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
@@ -80,16 +81,21 @@ import rx.functions.Action1;
 /**
  * Created by yurui on 2016/12/13.
  */
-
+@Deprecated
 public class ReplaySdkActivity extends BaseComponentSdkActivity implements
         FloatInfoFragment.FloatInfoClickListener, IActionCallBack, IWatchVideoView {
     protected final static String TAG = "ReplaySdkActivity";
 
     protected static final int REQUEST_REPLAY = 10000;
     protected static final String EXT_REPLAYED_TIME = "ext_replayed_time";
-    
+
     private static final int MSG_ROOM_INFO = 108;               //主播拉取房间信息
     public static final int MSG_UPDATE_QOS = 200;               //金山云调试信息
+
+    private static final int FLAG_PHONE_STATE = 0x1 << 0;
+    private static final int FLAG_SCREEN_STATE = 0x1 << 1;
+
+    private int mFlagState = 0;
 
     /**
      * data放在这里，不要乱放-
@@ -138,6 +144,8 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements
     protected ReplaySeekBar mReplaySeekBar;
 
     private PhoneStateReceiver mPhoneStateReceiver;
+    private ScreenStateReceiver mScreenStateReceiver;
+
     protected VideoShowPresenter mVideoShowPresenter;
 
     @Override
@@ -283,6 +291,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements
 
     private void unregisterReceiver() {
         PhoneStateReceiver.unregisterReceiver(this, mPhoneStateReceiver);
+        ScreenStateReceiver.unregisterReceiver(this, mScreenStateReceiver);
     }
 
     /**
@@ -344,6 +353,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements
 
     private void initReceiver() {
         mPhoneStateReceiver = PhoneStateReceiver.registerReceiver(this);
+        mScreenStateReceiver = ScreenStateReceiver.registerReceiver(this);
     }
 
     private void initData() {
@@ -523,14 +533,41 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements
         }
         switch (event.type) {
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_IDLE:
-                mReplayVideoPresenter.enableReconnect(true);
-                mReplayVideoPresenter.resume();
+                mFlagState &= ~FLAG_PHONE_STATE;
+                if (mFlagState == 0) {
+                    mReplayVideoPresenter.enableReconnect(true);
+                    mReplayVideoPresenter.resume();
+                }
                 break;
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_RING:
+                mFlagState |= FLAG_PHONE_STATE;
                 mReplayVideoPresenter.enableReconnect(false);
                 mReplayVideoPresenter.pause();
                 break;
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_OFFHOOK:
+                mFlagState |= FLAG_PHONE_STATE;
+                mReplayVideoPresenter.enableReconnect(false);
+                mReplayVideoPresenter.pause();
+                break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(SdkEventClass.ScreenStateEvent event) {
+        if (mReplayVideoPresenter == null) {
+            MyLog.d(TAG, "mReplayVideoPresenter is null");
+            return;
+        }
+        switch (event.screenState) {
+            case SdkEventClass.ScreenStateEvent.ACTION_SCREEN_ON:
+                mFlagState &= ~FLAG_SCREEN_STATE;
+                if (mFlagState == 0) {
+                    mReplayVideoPresenter.enableReconnect(true);
+                    mReplayVideoPresenter.resume();
+                }
+                break;
+            case SdkEventClass.ScreenStateEvent.ACTION_SCREEN_OFF:
+                mFlagState |= FLAG_SCREEN_STATE;
                 mReplayVideoPresenter.enableReconnect(false);
                 mReplayVideoPresenter.pause();
                 break;
@@ -654,15 +691,16 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements
         }
     }
 
+    @Override
+    public void onKickEvent(String msg) {
+        stopPlayer();
+    }
+
+    @Deprecated
     public static void openActivity(@NonNull Activity activity, RoomInfo roomInfo, long playedTime) {
         Intent intent = new Intent(activity, ReplaySdkActivity.class);
         intent.putExtra(EXTRA_ROOM_INFO, roomInfo);
         intent.putExtra(EXT_REPLAYED_TIME, playedTime);
         activity.startActivityForResult(intent, REQUEST_REPLAY);
-    }
-
-    @Override
-    public void onKickEvent(String msg) {
-        stopPlayer();
     }
 }
