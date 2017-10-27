@@ -4,6 +4,7 @@ import com.base.global.GlobalData;
 import com.base.utils.date.DateTimeUtils;
 import com.mi.live.data.user.User;
 import com.wali.live.dao.SixinMessage;
+import com.wali.live.watchsdk.lit.recycler.viewmodel.BaseViewModel;
 
 
 /**
@@ -11,7 +12,7 @@ import com.wali.live.dao.SixinMessage;
  * <p>
  * Todo: 先实现最小的文本功能
  */
-public class SixinMessageItem implements Comparable<SixinMessageItem> {
+public class SixinMessageItem extends BaseViewModel implements Comparable<SixinMessageItem> {
     private static final String TAG = SixinMessageItem.class.getSimpleName();
 
     private long msgId;
@@ -41,8 +42,8 @@ public class SixinMessageItem implements Comparable<SixinMessageItem> {
         User sender = new User();
         sender.setUid(sixinMessage.getTarget());
         sender.setNickname(sixinMessage.getTargetName());
-
         setSender(sender);
+
         setMsgType(sixinMessage.getMsgTyppe());
         setMsgStatus(sixinMessage.getMsgStatus());
         setOutboundStatus(sixinMessage.getOutboundStatus());
