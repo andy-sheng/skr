@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import com.base.log.MyLog;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.presenter.ComponentPresenter;
+import com.thornbirds.component.presenter.IEventPresenter;
+import com.thornbirds.component.view.IEventView;
 import com.thornbirds.component.view.IOrientationListener;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 
@@ -28,8 +30,17 @@ public abstract class BaseContainerPresenter<VIEW_GROUP extends ViewGroup>
     protected BaseBottomPanel<? extends View, VIEW_GROUP> mCurrPanel;
 
     @CheckResult
-    protected final <T> T deRef(WeakReference<T> reference) {
+    protected final static <T> T deRef(WeakReference<T> reference) {
         return reference != null ? reference.get() : null;
+    }
+
+    protected final static void setupComponent(IEventView view, IEventPresenter presenter) {
+        presenter.setView(view.getViewProxy());
+        view.setPresenter(presenter);
+    }
+
+    protected final static void setupHybridComponent(IEventPresenter presenter, View view) {
+        presenter.setView(view);
     }
 
     public BaseContainerPresenter(@NonNull IEventController controller) {

@@ -63,11 +63,11 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_SHOE_GAME_ICON = MSG_POPUP_FIRST + 6;       // 展示 游戏中心Icon
     public static final int MSG_SHOW_GAME_DOWNLOAD = MSG_POPUP_FIRST + 7;   // 展示 游戏中心下载框
     public static final int MSG_SHOW_SHARE_PANEL = MSG_POPUP_FIRST + 8;     // 显示 分享面板
-    public static final int MSG_SHOW_MESSAGE_PANEL = MSG_POPUP_FIRST + 8;   // 显示 私信面板
     public static final int MSG_SHOW_PERSONAL_INFO = MSG_POPUP_FIRST + 9;   // 显示 个人信息页
     public static final int MSG_SHOW_FOLLOW_GUIDE = MSG_POPUP_FIRST + 10;   // 显示 游戏引导页面
     public static final int MSG_FOLLOW_COUNT_DOWN = MSG_POPUP_FIRST + 11;   // 显示 游戏引导页面之前的倒计时
     public static final int MSG_SHOW_SEND_ENVELOPE = MSG_POPUP_FIRST + 12;  // 显示 发送红包页面
+    public static final int MSG_SHOW_MESSAGE_PANEL = MSG_POPUP_FIRST + 13;  // 显示 私信面板
     //连麦/PK相关消息
     private static final int MSG_TOP_VIEW_FIRST = 32000;
     public static final int MSG_ON_LINK_MIC_START = MSG_TOP_VIEW_FIRST + 1; // 连麦 开始
