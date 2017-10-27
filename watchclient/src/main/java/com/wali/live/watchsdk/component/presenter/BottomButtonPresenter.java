@@ -22,6 +22,7 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOE_GAME_ICON;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_DOWNLOAD;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_INPUT_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_MESSAGE_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SHARE_PANEL;
 
 /**
@@ -91,6 +92,11 @@ public class BottomButtonPresenter extends ComponentPresenter<WatchBottomButton.
     @Override
     public void showShareView() {
         postEvent(MSG_SHOW_SHARE_PANEL);
+    }
+
+    @Override
+    public void showMsgCtrlView() {
+        postEvent(MSG_SHOW_MESSAGE_PANEL);
     }
 
     @Override

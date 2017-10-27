@@ -12,6 +12,7 @@ import com.wali.live.livesdk.live.liveshow.view.LiveBottomButton;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_MAGIC_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_MESSAGE_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_PLUS_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SETTING_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SHARE_PANEL;
@@ -70,6 +71,11 @@ public class BottomButtonPresenter extends ComponentPresenter<LiveBottomButton.I
     @Override
     public void showShareView() {
         postEvent(MSG_SHOW_SHARE_PANEL);
+    }
+
+    @Override
+    public void showMsgCtrlView() {
+        postEvent(MSG_SHOW_MESSAGE_PANEL);
     }
 
     @Override

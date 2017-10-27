@@ -10,6 +10,7 @@ import de.greenrobot.dao.identityscope.IdentityScopeType;
 import de.greenrobot.dao.internal.DaoConfig;
 
 import com.wali.live.dao.UserAccount;
+import com.wali.live.dao.Conversation;
 import com.wali.live.dao.OwnUserInfo;
 import com.wali.live.dao.Gift;
 import com.wali.live.dao.Relation;
@@ -19,6 +20,7 @@ import com.wali.live.dao.RegionTw;
 import com.wali.live.dao.LoadingBanner;
 
 import com.wali.live.dao.UserAccountDao;
+import com.wali.live.dao.ConversationDao;
 import com.wali.live.dao.OwnUserInfoDao;
 import com.wali.live.dao.GiftDao;
 import com.wali.live.dao.RelationDao;
@@ -37,6 +39,7 @@ import com.wali.live.dao.LoadingBannerDao;
 public class DaoSession extends AbstractDaoSession {
 
     private final DaoConfig userAccountDaoConfig;
+    private final DaoConfig conversationDaoConfig;
     private final DaoConfig ownUserInfoDaoConfig;
     private final DaoConfig giftDaoConfig;
     private final DaoConfig relationDaoConfig;
@@ -46,6 +49,7 @@ public class DaoSession extends AbstractDaoSession {
     private final DaoConfig loadingBannerDaoConfig;
 
     private final UserAccountDao userAccountDao;
+    private final ConversationDao conversationDao;
     private final OwnUserInfoDao ownUserInfoDao;
     private final GiftDao giftDao;
     private final RelationDao relationDao;
@@ -60,6 +64,9 @@ public class DaoSession extends AbstractDaoSession {
 
         userAccountDaoConfig = daoConfigMap.get(UserAccountDao.class).clone();
         userAccountDaoConfig.initIdentityScope(type);
+
+        conversationDaoConfig = daoConfigMap.get(ConversationDao.class).clone();
+        conversationDaoConfig.initIdentityScope(type);
 
         ownUserInfoDaoConfig = daoConfigMap.get(OwnUserInfoDao.class).clone();
         ownUserInfoDaoConfig.initIdentityScope(type);
@@ -83,6 +90,7 @@ public class DaoSession extends AbstractDaoSession {
         loadingBannerDaoConfig.initIdentityScope(type);
 
         userAccountDao = new UserAccountDao(userAccountDaoConfig, this);
+        conversationDao = new ConversationDao(conversationDaoConfig, this);
         ownUserInfoDao = new OwnUserInfoDao(ownUserInfoDaoConfig, this);
         giftDao = new GiftDao(giftDaoConfig, this);
         relationDao = new RelationDao(relationDaoConfig, this);
@@ -92,6 +100,7 @@ public class DaoSession extends AbstractDaoSession {
         loadingBannerDao = new LoadingBannerDao(loadingBannerDaoConfig, this);
 
         registerDao(UserAccount.class, userAccountDao);
+        registerDao(Conversation.class, conversationDao);
         registerDao(OwnUserInfo.class, ownUserInfoDao);
         registerDao(Gift.class, giftDao);
         registerDao(Relation.class, relationDao);
@@ -103,6 +112,7 @@ public class DaoSession extends AbstractDaoSession {
     
     public void clear() {
         userAccountDaoConfig.getIdentityScope().clear();
+        conversationDaoConfig.getIdentityScope().clear();
         ownUserInfoDaoConfig.getIdentityScope().clear();
         giftDaoConfig.getIdentityScope().clear();
         relationDaoConfig.getIdentityScope().clear();
@@ -114,6 +124,10 @@ public class DaoSession extends AbstractDaoSession {
 
     public UserAccountDao getUserAccountDao() {
         return userAccountDao;
+    }
+
+    public ConversationDao getConversationDao() {
+        return conversationDao;
     }
 
     public OwnUserInfoDao getOwnUserInfoDao() {

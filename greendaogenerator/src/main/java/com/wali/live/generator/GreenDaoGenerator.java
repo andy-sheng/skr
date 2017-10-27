@@ -5,6 +5,7 @@ import de.greenrobot.daogenerator.Entity;
 import de.greenrobot.daogenerator.Schema;
 
 public class GreenDaoGenerator {
+    //更新私信Conversation  57变为58
     //account 添加 miid字段 版本号+1 56变为57
     //礼物添加buyType 版本变为56
     //特权礼物改版,版本好修改为55
@@ -21,7 +22,7 @@ public class GreenDaoGenerator {
     //新增虚拟钻，版本号变为43
     //新增红名，版本号变为42
     //新增聊天模块用户微博认证，版本号变为40
-    public static final int DB_VERSION = 57;
+    public static final int DB_VERSION = 58;
 
     public static final String PACKAGE_DAO_NAME = "com.wali.live.dao";
 
@@ -43,6 +44,9 @@ public class GreenDaoGenerator {
 
         // 账号信息
         addAccount(schema);
+
+        //　私信对话列表
+        addConversation(schema);
 
         // 个人资料
         addOwnUserInfo(schema);
@@ -145,6 +149,9 @@ public class GreenDaoGenerator {
         conversationEntity.addBooleanProperty("isNotFocus").index().notNull();
         conversationEntity.addStringProperty("ext");
         conversationEntity.addIntProperty("certificationType"); // 用来标识用户头像右下角的角标
+        conversationEntity.addIntProperty("targetType").index().notNull(); //用来表示是私信还是群聊 0 或者null代表单聊，1代表群聊
+        conversationEntity.addStringProperty("icon"); //目前只是给群用，因为单聊用的icon 是target 的头像
+        conversationEntity.addIntProperty("inputMode");// 保存用户最后一次使用的输入模式，是语音还是输入框
     }
 
 

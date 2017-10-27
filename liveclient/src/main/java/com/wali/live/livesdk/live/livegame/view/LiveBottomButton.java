@@ -14,6 +14,7 @@ import com.wali.live.component.view.BaseBottomButton;
 import com.wali.live.livesdk.R;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
+import com.wali.live.watchsdk.view.MsgCtrlBtnView;
 
 import static com.wali.live.statistics.StatisticsKey.AC_APP;
 import static com.wali.live.statistics.StatisticsKey.KEY;
@@ -27,10 +28,11 @@ import static com.wali.live.statistics.StatisticsKey.TIMES;
 public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresenter, LiveBottomButton.IView> {
     private static final String TAG = "LiveBottomButton";
 
-    protected View mCommentBtn;
-    protected View mSettingBtn;
-    protected View mMuteBtn;
-    protected View mShareBtn;
+    private View mCommentBtn;
+    private View mSettingBtn;
+    private View mMuteBtn;
+    private View mShareBtn;
+    private MsgCtrlBtnView mMsgCntBtn;
 
     private boolean mEnableShare;
 
@@ -55,10 +57,14 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         mMuteBtn = createImageView(R.drawable.live_icon_mute_btn);
         addCreatedView(mMuteBtn, R.id.mute_btn);
 
+        mMsgCntBtn = new MsgCtrlBtnView(getContext());
+        addCreatedView(mMsgCntBtn, R.id.msg_ctrl_btn);
+
         // 横竖屏时按钮排列顺序
         mRightBtnSetPort.add(mMuteBtn);
         mRightBtnSetPort.add(mSettingBtn);
         mRightBtnSetPort.add(mCommentBtn);
+        mRightBtnSetPort.add(mMsgCntBtn);
 
         addShareBtn();
 
@@ -105,6 +111,9 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
             if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.showShareView();
             }
+        } else if (id == R.id.msg_ctrl_btn) {
+            mMsgCntBtn.setMsgUnreadCnt(0);
+            mPresenter.showMsgCtrlView();
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
@@ -163,6 +172,11 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
          * 获取share状态
          */
         boolean isEnableShare();
+
+        /**
+         * 显示私信面板
+         */
+        void showMsgCtrlView();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {

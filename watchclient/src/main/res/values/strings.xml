@@ -208,4 +208,8 @@
     <string name="feeds_getinfo_failed">Couldn\'t get info, try again later</string>
     <string name="like_count_text">%d likes</string>
     <string name="detail_text">Details</string>
+
+    <string name="currently_none_message">No new messages</string>
+
+    <string name="message_interact_notify">Notifications</string>
 </resources>

@@ -4,6 +4,7 @@
     <item type="id" name="gift_btn"/>
     <item type="id" name="game_btn"/>
     <item type="id" name="share_btn"/>
+    <item type="id" name="msg_ctrl_btn"/>
     <!--游戏直播输入相关-->
     <item type="id" name="game_input_view"/>
     <item type="id" name="game_barrage_view"/>

@@ -15,6 +15,7 @@ import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.liveshow.view.button.MagicControlBtnView;
 import com.wali.live.livesdk.live.liveshow.view.button.PlusControlBtnView;
 import com.wali.live.statistics.StatisticsKey;
+import com.wali.live.watchsdk.view.MsgCtrlBtnView;
 
 import static com.wali.live.statistics.StatisticsKey.AC_APP;
 import static com.wali.live.statistics.StatisticsKey.KEY;
@@ -32,6 +33,7 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     protected View mMagicBtn;
     protected View mSettingBtn;
     protected View mShareBtn;
+    private MsgCtrlBtnView mMsgCntBtn;
 
     private boolean mEnableShare;
 
@@ -40,8 +42,7 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         return TAG;
     }
 
-    public LiveBottomButton(@NonNull RelativeLayout contentContainer,
-                            boolean enableShare) {
+    public LiveBottomButton(@NonNull RelativeLayout contentContainer, boolean enableShare) {
         super(contentContainer);
         mEnableShare = enableShare;
         initView();
@@ -57,14 +58,19 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         mSettingBtn = createImageView(R.drawable.live_icon_set_btn);
         addCreatedView(mSettingBtn, R.id.setting_btn);
 
+        mMsgCntBtn = new MsgCtrlBtnView(getContext());
+        addCreatedView(mMsgCntBtn, R.id.msg_ctrl_btn);
+
         // 横竖屏时按钮排列顺序
         mLeftBtnSetPort.add(mPlusBtn);
         mRightBtnSetPort.add(mSettingBtn);
         mRightBtnSetPort.add(mMagicBtn);
+        mRightBtnSetPort.add(mMsgCntBtn);
 
         mBottomBtnSetLand.add(mPlusBtn);
         mBottomBtnSetLand.add(mSettingBtn);
         mBottomBtnSetLand.add(mMagicBtn);
+        mBottomBtnSetLand.add(mMsgCntBtn);
 
         addShareBtn();
 
@@ -99,6 +105,9 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
             // TODO 增加打点
         } else if (id == R.id.share_btn) {
             mPresenter.showShareView();
+        } else if (id == R.id.msg_ctrl_btn) {
+            mMsgCntBtn.setMsgUnreadCnt(0);
+            mPresenter.showMsgCtrlView();
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
@@ -147,6 +156,11 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
          * 显示分享面板
          */
         void showShareView();
+
+        /**
+         * 显示私信面板
+         */
+        void showMsgCtrlView();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {

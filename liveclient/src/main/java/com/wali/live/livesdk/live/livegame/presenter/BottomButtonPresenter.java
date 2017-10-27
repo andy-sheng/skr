@@ -15,6 +15,7 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ACTIVITY_RESUMED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_INPUT_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_MESSAGE_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SETTING_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SHARE_PANEL;
 
@@ -84,6 +85,11 @@ public class BottomButtonPresenter extends ComponentPresenter<LiveBottomButton.I
     @Override
     public boolean isEnableShare() {
         return mMyRoomData != null ? mMyRoomData.getEnableShare() : false;
+    }
+
+    @Override
+    public void showMsgCtrlView() {
+        postEvent(MSG_SHOW_MESSAGE_PANEL);
     }
 
     @Override

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 
-import com.base.activity.BaseActivity;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.ImageFactory;
@@ -19,7 +18,7 @@ import com.wali.live.component.view.BaseBottomButton;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
-import com.wali.live.watchsdk.sixin.PopComposeMessageFragment;
+import com.wali.live.watchsdk.view.MsgCtrlBtnView;
 
 /**
  * Created by yangli on 16-8-29.
@@ -29,10 +28,11 @@ import com.wali.live.watchsdk.sixin.PopComposeMessageFragment;
 public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPresenter, WatchBottomButton.IView> {
     private static final String TAG = "WatchBottomButton";
 
-    protected View mGiftBtn;
+    private View mGiftBtn;
     //    protected View mRotateBtn;
-    protected View mGameBtn;
-    protected View mShareBtn;
+    private View mGameBtn;
+    private View mShareBtn;
+    private MsgCtrlBtnView mMsgCntBtn;
 
     private boolean mIsGameMode = false;
     private boolean mEnableShare;
@@ -56,14 +56,16 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         } else if (id == R.id.rotate_btn) {
             mPresenter.rotateScreen();
         } else if (id == R.id.game_btn) {
-//            mPresenter.showGameDownloadView();
+            mPresenter.showGameDownloadView();
             //点击的同时清除动画
-//            clearAnimator();
-            PopComposeMessageFragment.open((BaseActivity) getContext(), true);
+            clearAnimator();
         } else if (id == R.id.share_btn) {
             if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.showShareView();
             }
+        } else if (id == R.id.msg_ctrl_btn) {
+            mMsgCntBtn.setMsgUnreadCnt(0);
+            mPresenter.showMsgCtrlView();
         }
     }
 
@@ -80,13 +82,18 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         mGiftBtn = createImageView(R.drawable.live_icon_gift_btn);
         addCreatedView(mGiftBtn, R.id.gift_btn);
 
+        mMsgCntBtn = new MsgCtrlBtnView(getContext());
+        addCreatedView(mMsgCntBtn, R.id.msg_ctrl_btn);
+
 //        mRotateBtn = createImageView(R.drawable.live_icon_rotate_screen);
 //        addCreatedView(mGiftBtn, R.id.rotate_btn);
 
         // 横竖屏时按钮排列顺序
         mRightBtnSetPort.add(mGiftBtn);
+        mRightBtnSetPort.add(mMsgCntBtn);
 
         mBottomBtnSetLand.add(mGiftBtn);
+        mBottomBtnSetLand.add(mMsgCntBtn);
 
         //mBottomBtnSetLand.add(mRotateBtn);
 
@@ -249,6 +256,11 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
          * 显示分享界面
          */
         void showShareView();
+
+        /**
+         * 显示私信面板
+         */
+        void showMsgCtrlView();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
