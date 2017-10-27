@@ -4,6 +4,7 @@ package com.wali.live.dao;
 
 // KEEP INCLUDES - put your custom includes here
 // KEEP INCLUDES END
+
 /**
  * Entity mapped to table SIXIN_MESSAGE.
  */
@@ -27,6 +28,43 @@ public class SixinMessage {
     private Integer certificationType;
 
     // KEEP FIELDS - put your custom fields here
+    // Todo 这里的类型暂时和安平保持一致
+    public static final int S_MSG_TYPE_DRAFT = -10;             // 草稿类消息,在输入框编辑完之后保存的草稿
+    public static final int S_MSG_TYPE_TEXT = 100;
+    public static final int S_MSG_TYPE_PIC = 102;
+    public static final int S_MSG_TYPE_VOICE = 103;
+    public static final int S_MSG_TYPE_INVITE_INTO_GROUP = 104; // 邀请入群
+    public static final int S_MSG_TYPE_POSTER = 105;            // 图文信息，只能系统推送
+    public static final int S_MSG_TYPE_AT = 106;                // at 消息
+    public static final int S_MSG_TYPE_TEXT_LINK = 107;         // 系统推送的文字+链接
+    public static final int S_MSG_TYPE_LIST = 108;              // VIP客服发送的List消息类型，108是本地定义的，注意服务器应避免使用该msg_type
+    public static final int S_MSG_TYPE_NOTIFY = 200;            // 群通知
+    public static final int S_MSG_TYPE_ENTER_GROUP = 201;       // 加群通知
+    public static final int S_MSG_TYPE_LEAVE_GROUP = 202;       // 踢出群通知
+    public static final int S_MSG_TYPE_QUIT_GROUP = 203;        // 退出群
+    public static final int S_MSG_CUSTOME_TYPE_LOADING_FOOT = -101; // 客户端自己的messageType,用来显示loading fotter;
+    public static final int S_MSG_TYPE_CANCEL_FOUCS = 204;      // 取消关注
+
+    public static final int STATUS_NOT_INBOUND = 0; // 自己发出的消息
+    public static final int STATUS_IS_INBOUND = 1; // 收到的消息
+
+    public static final int OUTBOUND_STATUS_NOT_SET = 0; // 对于收到的消息，设置这个
+    public static final int OUTBOUND_STATUS_UNSENT = 1; // 未发送的消息，但是富媒体已经上传成功
+    public static final int OUTBOUND_STATUS_SENT = 2; // 发送成功
+    public static final int OUTBOUND_STATUS_RECEIVED = 3;
+    public static final int OUTBOUND_STATUS_READ = 4; // 发出消息的内容已经被对方消费。比如文字消息已经被读，语音文字已经被播放等
+
+    public static final int INBOUND_STATUS_READ = 5; //接收的消息还是已读
+    public static final int INBOUND_STATUS_UNREAD = 6; //接收的消息是未读
+    public static final int SERVER_STORE_STATUS_DELETE = 7; //解散的消息是删除状态
+
+    public static final int MSG_STATUS_ONLY_ME_FOUCS = 0; // 关注了对方
+    public static final int MSG_STATUS_UNFOUCS = 1; // 未关注对方
+    public static final int MSG_STATUE_BOTHFOUCS = 2; //　双向关注
+
+    public static final int TARGET_TYPE_VFANS = 2; // 消息是宠爱团的，宠爱团消息不在私信列表展示
+    public static final int TARGET_TYPE_GROUP = 1; //消息是发自群的
+    public static final int TARGET_TYPE_USER = 0; // 消息的发自单人的
     // KEEP FIELDS END
 
     public SixinMessage() {
