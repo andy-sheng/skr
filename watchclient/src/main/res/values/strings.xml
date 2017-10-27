@@ -212,4 +212,9 @@
     <string name="currently_none_message">No new messages</string>
 
     <string name="message_interact_notify">Notifications</string>
+    <string name="msg_send_failed_not_follow_each_other">Couldn\'t send, follow each other to send private messages</string>
+    <string name="msg_send_failed_not_text_too_larger">Couldn\'t send, message is too long</string>
+    <string name="msg_send_failed_blocked">Can\'t send private messages to this person</string>
+    <string name="msg_send_failed_illege_text">Couldn\'t send, message contains unsupported characters</string>
+    <string name="sixin_say_hello_result_code_failed_duplicated">Message sent, waiting for reply</string>
 </resources>

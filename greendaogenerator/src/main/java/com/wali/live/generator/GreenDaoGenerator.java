@@ -62,6 +62,8 @@ public class GreenDaoGenerator {
         addCountryEN(schema);
         addCountryTW(schema);
         addLoadingBanner(schema);
+        addChatMessage(schema);
+
         new DaoGenerator().generateAll(schema, "data/src/main/java-gen");
     }
 
@@ -173,6 +175,11 @@ public class GreenDaoGenerator {
         chatMessageEntity.addStringProperty("ext");
         chatMessageEntity.addLongProperty("locaLUserId").index().notNull();
         chatMessageEntity.addIntProperty("certificationType"); // 用来标识用户头像右下角的角标
+        chatMessageEntity.addIntProperty("targetType").index().notNull(); //用来表示是私信还是群聊 0 或者null代表单聊，1代表群聊
+        chatMessageEntity.addIntProperty("serverStoreStatus").index().notNull();// 消息在服务器的存储状态
+        chatMessageEntity.addIntProperty("groupLevel").notNull();//用户群等级
+        chatMessageEntity.addStringProperty("groupHonor"); //用户头衔
+        chatMessageEntity.addIntProperty("groupMedalId").notNull(); //用户勋章id
     }
 
     public static void addGift(final Schema schema) {
