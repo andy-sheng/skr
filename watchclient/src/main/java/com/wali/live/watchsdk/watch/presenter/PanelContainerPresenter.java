@@ -89,8 +89,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
                 presenter = new MessagePresenter(mController);
                 mMessagePresenterRef = new WeakReference<>(presenter);
             }
-            presenter.setView(panel.getViewProxy());
-            panel.setPresenter(presenter);
+            setupComponent(panel, presenter);
         }
         showPanel(panel, true);
     }

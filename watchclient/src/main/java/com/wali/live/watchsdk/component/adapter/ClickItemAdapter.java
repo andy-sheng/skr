@@ -24,7 +24,7 @@ public abstract class ClickItemAdapter<ITEM extends ClickItemAdapter.BaseItem,
     public ClickItemAdapter() {
     }
 
-    public abstract HOLDER newViewHolder(int viewType);
+    public abstract HOLDER newViewHolder(ViewGroup parent, int viewType);
 
     @Override
     public int getItemCount() {
@@ -36,7 +36,7 @@ public abstract class ClickItemAdapter<ITEM extends ClickItemAdapter.BaseItem,
         if (mInflater == null) {
             mInflater = LayoutInflater.from(parent.getContext());
         }
-        return newViewHolder(viewType);
+        return newViewHolder(parent, viewType);
     }
 
     @Override

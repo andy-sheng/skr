@@ -212,4 +212,10 @@
     <string name="msg_send_failed_blocked">由于对方设置，你不能给他发私信</string>
     <string name="msg_send_failed_illege_text">发送失败,请不要发送非法字符</string>
     <string name="sixin_say_hello_result_code_failed_duplicated">你已经给对方打过招呼了，等待对方回复</string>
+    <string name="sixin_model_message">消息</string>
+    <string name="user_name_999">小米直播客服</string>
+    <string name="user_name_888">小米直播签约</string>
+    <string name="user_name_100000">小米直播官方</string>
+    <string name="draft">[草稿]</string>
+    <string name="someone_at_you">[有人@我]</string>
 </resources>

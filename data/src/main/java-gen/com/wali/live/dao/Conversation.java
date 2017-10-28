@@ -4,6 +4,13 @@ package com.wali.live.dao;
 
 // KEEP INCLUDES - put your custom includes here
 // KEEP INCLUDES END
+
+import android.text.TextUtils;
+
+import com.base.log.MyLog;
+
+import org.json.JSONObject;
+
 /**
  * Entity mapped to table CONVERSATION.
  */
@@ -222,6 +229,79 @@ public class Conversation {
     }
 
     // KEEP METHODS - put your custom methods here
+    public boolean isNotFocusConversation() {
+        return target == UNFOCUS_CONVERSATION_TARGET;
+    }
+
+    public boolean isBlock() {
+        if (TextUtils.isEmpty(ext)) {
+            return false;
+        }
+        try {
+            JSONObject jsonObject = new JSONObject(ext);
+            return jsonObject.optBoolean(EXT_IS_BLOCK, false);
+        } catch (Exception e) {
+            MyLog.e(e);
+            return false;
+        }
+    }
+
+    public void updateOrInsertExt(String key, Object value) {
+        try {
+            JSONObject jsonObject = null;
+            if (TextUtils.isEmpty(ext)) {
+                jsonObject = new JSONObject();
+            } else {
+                jsonObject = new JSONObject(ext);
+            }
+            jsonObject.put(key, value);
+            ext = jsonObject.toString();
+        } catch (Exception e) {
+            MyLog.e(e);
+        }
+    }
+
+
+    public int getFocusStatue() {
+        int statue = SixinMessage.MSG_STATUS_UNFOUCS;
+        if (TextUtils.isEmpty(ext)) {
+            return statue;
+        }
+        try {
+            JSONObject jsonObject = new JSONObject(ext);
+            statue = jsonObject.optInt(EXT_FOCUS_STATE, SixinMessage.MSG_STATUS_UNFOUCS);
+        } catch (Exception e) {
+            MyLog.e(e);
+        }
+        return statue;
+
+    }
+
+
+    public boolean hasSomeOneAtMe(){
+        try {
+            if(!TextUtils.isEmpty(ext)) {
+                JSONObject jsonObject = new JSONObject(ext);
+                return jsonObject.optBoolean(EXT_HAS_SOME_BODY_AT_ME, false);
+            }
+        } catch (Exception e) {
+            MyLog.e(e);
+        }
+        return false;
+    }
+
+    public boolean hasFocusKey() {
+        if (TextUtils.isEmpty(ext)) {
+            return false;
+        }
+        try {
+            JSONObject jsonObject = new JSONObject(ext);
+            return jsonObject.has(EXT_FOCUS_STATE);
+        } catch (Exception e) {
+            MyLog.e(e);
+        }
+        return false;
+    }
     // KEEP METHODS END
 
 }

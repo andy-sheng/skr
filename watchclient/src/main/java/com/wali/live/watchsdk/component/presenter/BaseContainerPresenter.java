@@ -15,7 +15,7 @@ import com.thornbirds.component.view.IEventView;
 import com.thornbirds.component.view.IOrientationListener;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 
-import java.lang.ref.WeakReference;
+import java.lang.ref.Reference;
 
 /**
  * Created by yangli on 2017/03/13.
@@ -30,7 +30,7 @@ public abstract class BaseContainerPresenter<VIEW_GROUP extends ViewGroup>
     protected BaseBottomPanel<? extends View, VIEW_GROUP> mCurrPanel;
 
     @CheckResult
-    protected final static <T> T deRef(WeakReference<T> reference) {
+    protected final static <T> T deRef(Reference<T> reference) {
         return reference != null ? reference.get() : null;
     }
 
