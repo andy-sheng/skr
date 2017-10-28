@@ -25,7 +25,7 @@ import java.util.List;
  * @module 私信面板视图
  */
 public class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
-        implements View.OnClickListener, IComponentView<MessagePanel.IPresenter, MessagePanel.IView> {
+        implements IComponentView<MessagePanel.IPresenter, MessagePanel.IView> {
     private static final String TAG = "MessagePanel";
 
     @Nullable
@@ -35,14 +35,17 @@ public class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
 
     private BackTitleBar mTitleBar;
 
+    private final ConversationAdapter.IConversationClickListener mConversationClickListener =
+            new ConversationAdapter.IConversationClickListener() {
+                @Override
+                public void onItemClick(ConversationAdapter.ConversationItem item) {
+                }
+            };
+
     protected final void $click(View view, View.OnClickListener listener) {
         if (view != null) {
             view.setOnClickListener(listener);
         }
-    }
-
-    @Override
-    public void onClick(View v) {
     }
 
     @Override
@@ -57,6 +60,7 @@ public class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
 
     public MessagePanel(@NonNull RelativeLayout parentView) {
         super(parentView);
+        mAdapter.setClickListener(mConversationClickListener);
     }
 
     @Override
@@ -120,6 +124,15 @@ public class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
             public void onNewConversationList(List<ConversationAdapter.ConversationItem> list) {
                 mAdapter.setItemData(list);
             }
+
+            @Override
+            public void onNewConversationUpdate(int index, ConversationAdapter.ConversationItem item) {
+                if (item == null) {
+                    mAdapter.notifyItemChanged(index);
+                } else {
+                    mAdapter.insertItemData(index, item);
+                }
+            }
         }
         return new ComponentView();
     }
@@ -147,5 +160,9 @@ public class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
          */
         void onNewConversationList(List<ConversationAdapter.ConversationItem> list);
 
+        /**
+         * 更新单个会话
+         */
+        void onNewConversationUpdate(int index, ConversationAdapter.ConversationItem item);
     }
 }

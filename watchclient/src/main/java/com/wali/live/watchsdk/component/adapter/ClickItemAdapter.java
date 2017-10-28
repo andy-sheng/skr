@@ -44,6 +44,11 @@ public abstract class ClickItemAdapter<ITEM extends ClickItemAdapter.BaseItem,
         holder.bindView(mItems.get(position), mListener);
     }
 
+    public void insertItemData(int index, ITEM item) {
+        mItems.add(index, item);
+        notifyItemInserted(index);
+    }
+
     public void setItemData(List<? extends ITEM> items) {
         mItems.clear();
         if (items != null) {

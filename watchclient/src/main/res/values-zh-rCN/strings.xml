@@ -218,4 +218,5 @@
     <string name="user_name_100000">小米直播官方</string>
     <string name="draft">[草稿]</string>
     <string name="someone_at_you">[有人@我]</string>
+    <string name="vip_customer_question_text">热点问题答复</string>
 </resources>

@@ -223,4 +223,5 @@
     <string name="user_name_100000">Mi Live official account</string>
     <string name="draft">[Draft]</string>
     <string name="someone_at_you">[Someone @ me]</string>
+    <string name="vip_customer_question_text">FAQ</string>
 </resources>

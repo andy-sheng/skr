@@ -116,6 +116,7 @@ public class InitManager {
     }
 
     public static void registerAllEventBus() {
+        EventBus.getDefault().register(SixinMessageManager.getInstance());
         EventBus.getDefault().register(PreDnsManager.INSTANCE);
         EventBus.getDefault().register(EventBusDelegate.getInstance());
     }

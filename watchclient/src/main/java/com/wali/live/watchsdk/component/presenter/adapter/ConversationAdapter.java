@@ -54,6 +54,8 @@ public class ConversationAdapter extends ClickItemAdapter<ConversationAdapter.Co
     protected class ConversationHolder extends ClickItemAdapter.BaseHolder<ConversationItem, Object>
             implements View.OnClickListener {
 
+        private ConversationItem dataItem;
+
         private SimpleDraweeView avatarIv;
         private ImageView certificationType; // 头像右下角的验证角标
         private MLTextView fromTv;
@@ -75,14 +77,19 @@ public class ConversationAdapter extends ClickItemAdapter<ConversationAdapter.Co
             date = $(R.id.date);
             checkbox = $(R.id.conversation_checkbox);
             alertIv = $(R.id.new_msg_alert);
+            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
+            if (mListener != null && dataItem != null) {
+                mListener.onItemClick(dataItem);
+            }
         }
 
         @Override
         public void bindView(final ConversationItem item, Object listener) {
+            dataItem = item;
             final Context context = GlobalData.app();
             // 绑定头像
             if (item.localAvatarResId > 0) {
@@ -187,7 +194,8 @@ public class ConversationAdapter extends ClickItemAdapter<ConversationAdapter.Co
     }
 
     public static class ConversationItem extends ClickItemAdapter.BaseItem {
-        private long uid;
+        public long id;
+        public long uid;
         private User user;
 
         // 对话列表图标，若localAvatarResId > 0,则使用localAvatarResId，否则使用icon
@@ -197,14 +205,22 @@ public class ConversationAdapter extends ClickItemAdapter<ConversationAdapter.Co
         private int msgType; // 消息类型
         private CharSequence spannableSubject;
         private CharSequence spannableName;
-        private long receivedTime = 0L;
+        public long receivedTime = 0L;
         private int ignoreStatus;
         private int unreadCount = 0;
         private boolean hasSomeOneAtMe; // 是否有人At我
         private String ext;  //extra信息
 
+        public ConversationItem() {
+        }
+
         public ConversationItem(Conversation conversation, int avatarResId) {
             localAvatarResId = avatarResId;
+            updateFrom(conversation);
+        }
+
+        public void updateFrom(Conversation conversation) {
+            id = conversation.getId();
             msgType = conversation.getMsgType();
             uid = conversation.getTarget();
             user = new User();
@@ -237,6 +253,14 @@ public class ConversationAdapter extends ClickItemAdapter<ConversationAdapter.Co
             return spannableName;
         }
 
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof ConversationItem) {
+                return this == obj || id == ((ConversationItem) obj).id;
+            } else {
+                return super.equals(obj);
+            }
+        }
     }
 
     public interface IConversationClickListener {

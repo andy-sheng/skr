@@ -12,13 +12,19 @@ import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.live.data.preference.MLPreferenceUtils;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.mi.milink.sdk.base.CustomHandlerThread;
+import com.wali.live.dao.Conversation;
 import com.wali.live.dao.SixinMessage;
 import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.statistics.StatisticUtils;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
 import com.wali.live.watchsdk.sixin.data.SixinMessageCloudStore;
 import com.wali.live.watchsdk.sixin.data.SixinMessageLocalStore;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -289,6 +295,37 @@ public class SixinMessageManager implements MiLinkPacketDispatcher.PacketDataHan
                 mSixinMessageCloudStore.sendSyncUnreadMessage(chatNotifyMessage.getFollowType());
             } catch (Exception e) {
                 MyLog.e(e);
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(SixinMessageLocalStore.SixinMessageBulkInsertEvent event) {
+        if (event != null) {
+            List<SixinMessage> sixinMessages = event.sixinMessages;
+            if (sixinMessages != null && sixinMessages.size() > 0) {
+                for (SixinMessage sixinMessage : sixinMessages) {
+                    ConversationLocalStore.insertOrUpdateConversationByMessage(sixinMessage, event.hasNewMessage);
+//                    notifySixinMessage(sixinMessage);
+                }
+            }
+            if (event.hasNewMessage) {
+                long unreadCount = ConversationLocalStore.getAllConversationUnReadCount();
+                EventBus.getDefault().post(new ConversationLocalStore.NotifyUnreadCountChangeEvent(unreadCount));
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(SixinMessageLocalStore.SixinMessageUpdateEvent event) {
+        if (event != null) {
+            SixinMessage sixinMessage = event.sixinMessage;
+            if (sixinMessage != null) {
+                Conversation conversation = ConversationLocalStore.getConversationByTarget(sixinMessage.getTarget(), sixinMessage.getTargetType());
+                if (conversation != null && (conversation.getMsgId().equals(sixinMessage.getId()) || sixinMessage.getMsgTyppe() == SixinMessage.S_MSG_TYPE_DRAFT)) {
+                    ConversationLocalStore.updateConversationBySixinMessage(conversation, sixinMessage);
+                    ConversationLocalStore.updateConversation(conversation);
+                }
             }
         }
     }

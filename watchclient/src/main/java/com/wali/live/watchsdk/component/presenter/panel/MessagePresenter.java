@@ -2,18 +2,26 @@ package com.wali.live.watchsdk.component.presenter.panel;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.util.Pair;
 
 import com.base.log.MyLog;
+import com.base.utils.CommonUtils;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
-import com.thornbirds.component.presenter.ComponentPresenter;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.dao.Conversation;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.presenter.adapter.ConversationAdapter;
 import com.wali.live.watchsdk.component.view.panel.MessagePanel;
 import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import rx.Observable;
@@ -34,7 +42,7 @@ import static com.wali.live.dao.Conversation.VFANS_NOTIFY_CONVERSATION_TARGET;
  *
  * @module 私信面板表现
  */
-public class MessagePresenter extends ComponentPresenter<MessagePanel.IView>
+public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
         implements MessagePanel.IPresenter {
     private static final String TAG = "MessagePresenter";
 
@@ -47,6 +55,44 @@ public class MessagePresenter extends ComponentPresenter<MessagePanel.IView>
     public static final int TARGET_OFFICIAL = TARGET_OFFICIAL_DEFAULT; // 小米直播官方
 
     private Subscription mSyncSubscription;
+
+    private final ArrayList<ConversationAdapter.ConversationItem> mItemCacheLock = new ArrayList<>();
+
+    private boolean isChineseLocal = CommonUtils.isChinese(); // 标记是否是中国区域
+    /**
+     * 对私信列表进行排序,要求规则是中文版本 999置顶显示, 英文版本777 置顶显示
+     * 互动通知126置顶,其余的是小米直播客服、VIP优先排列在顶部
+     */
+    private final Comparator<ConversationAdapter.ConversationItem> mConversationComparator =
+            new Comparator<ConversationAdapter.ConversationItem>() {
+                @Override
+                public int compare(ConversationAdapter.ConversationItem t0, ConversationAdapter.ConversationItem t1) {
+                    if (t0.uid == TARGET_126) {
+                        return -1;
+                    } else if (t1.uid == TARGET_126) {
+                        return 1;
+                    }
+                    if (isChineseLocal) {
+                        if (t0.uid == TARGET_999) {
+                            return -1;
+                        } else if (t1.uid == TARGET_999) {
+                            return 1;
+                        }
+                    } else {
+                        if (t0.uid == TARGET_777) {
+                            return -1;
+                        } else if (t1.uid == TARGET_777) {
+                            return 1;
+                        }
+                    }
+                    if (t0.uid == TARGET_666) {
+                        return -1;
+                    } else if (t1.uid == TARGET_666) {
+                        return 1;
+                    }
+                    return t0.receivedTime >= t1.receivedTime ? -1 : 1;
+                }
+            };
 
     private final List<Integer> mNeedLocalAvatarItemId = new ArrayList<>();
     private final List<Integer> mLocalAvatarResId = new ArrayList<>();
@@ -79,6 +125,18 @@ public class MessagePresenter extends ComponentPresenter<MessagePanel.IView>
     }
 
     @Override
+    public void startPresenter() {
+        super.startPresenter();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public void onBackBtnClick() {
         mController.postEvent(MSG_HIDE_BOTTOM_PANEL);
     }
@@ -98,14 +156,23 @@ public class MessagePresenter extends ComponentPresenter<MessagePanel.IView>
                 }).map(new Func1<List<Conversation>, List<ConversationAdapter.ConversationItem>>() {
                     @Override
                     public List<ConversationAdapter.ConversationItem> call(List<Conversation> conversations) {
-                        ArrayList<ConversationAdapter.ConversationItem> itemList = new ArrayList<>();
-                        itemList.ensureCapacity(conversations.size());
-                        for (Conversation elem : conversations) {
-                            int index = mNeedLocalAvatarItemId.indexOf((int) elem.getTarget());
-                            int localAvatarResId = index != -1 ? mLocalAvatarResId.get(index) : 0;
-                            itemList.add(new ConversationAdapter.ConversationItem(elem, localAvatarResId));
+                        final ConversationAdapter.ConversationItem guard = new ConversationAdapter.ConversationItem();
+                        synchronized (mItemCacheLock) {
+                            mItemCacheLock.ensureCapacity(mItemCacheLock.size() + conversations.size());
+                            for (Conversation elem : conversations) {
+                                guard.id = elem.getId();
+                                int elemIndex = mItemCacheLock.indexOf(guard);
+                                if (elemIndex != -1) {
+                                    mItemCacheLock.get(elemIndex).updateFrom(elem);
+                                    continue;
+                                }
+                                int index = mNeedLocalAvatarItemId.indexOf((int) elem.getTarget());
+                                int localAvatarResId = index != -1 ? mLocalAvatarResId.get(index) : 0;
+                                mItemCacheLock.add(new ConversationAdapter.ConversationItem(elem, localAvatarResId));
+                            }
+                            Collections.sort(mItemCacheLock, mConversationComparator);
+                            return (ArrayList) mItemCacheLock.clone();
                         }
-                        return itemList;
                     }
                 }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -122,6 +189,74 @@ public class MessagePresenter extends ComponentPresenter<MessagePanel.IView>
                     @Override
                     public void call(Throwable throwable) {
                         MyLog.e(TAG, "syncAllConversions failed, exception=" + throwable);
+                    }
+                });
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(final ConversationLocalStore.ConversationInsertEvent event) {
+        if (event == null || event.conversation == null) {
+            return;
+        }
+        onAddOrUpdateItem(event.conversation);
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(ConversationLocalStore.ConversationUpdateEvent event) {
+        onAddOrUpdateItem(event.conversation);
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(ConversationLocalStore.NotifyUnreadCountChangeEvent event) {
+//        onAddOrUpdateItem(event.conversation);
+    }
+
+    private void onAddOrUpdateItem(final Conversation conversation) {
+        MyLog.d(TAG, "onAddOrUpdateItem");
+        Observable.just(0)
+                .map(new Func1<Integer, Pair<Integer, ConversationAdapter.ConversationItem>>() {
+                    @Override
+                    public Pair<Integer, ConversationAdapter.ConversationItem> call(Integer i) {
+                        final ConversationAdapter.ConversationItem guard = new ConversationAdapter.ConversationItem();
+                        guard.id = conversation.getId();
+                        synchronized (mItemCacheLock) {
+                            int elemIndex = mItemCacheLock.indexOf(guard);
+                            if (elemIndex != -1) {
+                                mItemCacheLock.get(elemIndex).updateFrom(conversation);
+                                return Pair.create(elemIndex, null);
+                            } else {
+                                int index = mNeedLocalAvatarItemId.indexOf((int) conversation.getTarget());
+                                int localAvatarResId = index != -1 ? mLocalAvatarResId.get(index) : 0;
+                                ConversationAdapter.ConversationItem newItem =
+                                        new ConversationAdapter.ConversationItem(conversation, localAvatarResId);
+                                elemIndex = 0;
+                                for (ConversationAdapter.ConversationItem elem : mItemCacheLock) {
+                                    if (mConversationComparator.compare(newItem, elem) != -1) {
+                                        break;
+                                    }
+                                    ++elemIndex;
+                                }
+                                mItemCacheLock.add(elemIndex, newItem);
+                                return Pair.create(elemIndex, newItem);
+                            }
+                        }
+                    }
+                }).subscribeOn(Schedulers.io())
+                .compose(this.<Pair<Integer, ConversationAdapter.ConversationItem>>bindUntilEvent(PresenterEvent.DESTROY))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Pair<Integer, ConversationAdapter.ConversationItem>>() {
+                    @Override
+                    public void call(Pair<Integer, ConversationAdapter.ConversationItem> result) {
+                        if (mView == null) {
+                            return;
+                        }
+                        MyLog.d(TAG, "onAddOrUpdateItem done");
+                        mView.onNewConversationUpdate(result.first, result.second);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, "onAddOrUpdateItem failed, exception=" + throwable);
                     }
                 });
     }
