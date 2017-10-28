@@ -18,7 +18,7 @@ import com.wali.live.statistics.StatisticUtils;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.sixin.data.SixinMessageCloudStore;
-import com.wali.live.watchsdk.sixin.data.SixinMessageLocalStrore;
+import com.wali.live.watchsdk.sixin.data.SixinMessageLocalStore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +54,7 @@ public class SixinMessageManager implements MiLinkPacketDispatcher.PacketDataHan
                     int needNotify = msg.arg1;
                     boolean needsNotifyDBInsertEvent = needNotify == 1;
                     List<SixinMessage> sixinMessages = (List<SixinMessage>) msg.obj;
-                    SixinMessageLocalStrore.insertSixinMessages(sixinMessages, needsNotifyDBInsertEvent);
+                    SixinMessageLocalStore.insertSixinMessages(sixinMessages, needsNotifyDBInsertEvent);
                     for (SixinMessage sixinMessage : sixinMessages) {
                         if (!sixinMessage.getIsInbound() && MiLinkClientAdapter.getsInstance().isMiLinkLogined()) {
 //                            SendingMessageCache.put(sixinMessage.getId(), System.currentTimeMillis());
@@ -213,7 +213,7 @@ public class SixinMessageManager implements MiLinkPacketDispatcher.PacketDataHan
                             }
                         }
                         if (sixinMessages.size() > 0) {
-                            inserMessageInDB(sixinMessages);
+                            insertMessageToDB(sixinMessages);
                         }
                         isSyncToEnd = false;
                     }
@@ -246,7 +246,7 @@ public class SixinMessageManager implements MiLinkPacketDispatcher.PacketDataHan
                             //由于服务器需要客户端收到消息就发read,所以没办法
                             mSixinMessageCloudStore.sendReadAck(sixinMessage.getTarget(), sixinMessage.getSenderMsgId(), sixinMessage.getMsgSeq(), sixinMessage.getMsgStatus());
                         }
-                        inserMessageInDB(sixinMessages);
+                        insertMessageToDB(sixinMessages);
                     }
                 }
             } catch (Exception e) {
@@ -255,7 +255,7 @@ public class SixinMessageManager implements MiLinkPacketDispatcher.PacketDataHan
         }
     }
 
-    public static void inserMessageInDB(List<SixinMessage> sixinMessage) {
+    public static void insertMessageToDB(List<SixinMessage> sixinMessage) {
         Message message = Message.obtain();
         message.what = MESSAGE_SIXIN_MESSAGE_INSERT_DB;
         message.obj = sixinMessage;
@@ -269,7 +269,7 @@ public class SixinMessageManager implements MiLinkPacketDispatcher.PacketDataHan
      * @param sixinMessage
      * @param needsNotifyDBUpdate
      */
-    private void inserMessageInDB(List<SixinMessage> sixinMessage, boolean needsNotifyDBUpdate) {
+    private void insertMessageToDB(List<SixinMessage> sixinMessage, boolean needsNotifyDBUpdate) {
         Message message = Message.obtain();
         message.what = MESSAGE_SIXIN_MESSAGE_INSERT_DB;
         message.obj = sixinMessage;

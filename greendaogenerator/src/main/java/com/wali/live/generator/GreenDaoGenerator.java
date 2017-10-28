@@ -5,6 +5,7 @@ import de.greenrobot.daogenerator.Entity;
 import de.greenrobot.daogenerator.Schema;
 
 public class GreenDaoGenerator {
+    //添加sixinMessage    58变为59
     //更新私信Conversation  57变为58
     //account 添加 miid字段 版本号+1 56变为57
     //礼物添加buyType 版本变为56
@@ -22,7 +23,7 @@ public class GreenDaoGenerator {
     //新增虚拟钻，版本号变为43
     //新增红名，版本号变为42
     //新增聊天模块用户微博认证，版本号变为40
-    public static final int DB_VERSION = 58;
+    public static final int DB_VERSION = 59;
 
     public static final String PACKAGE_DAO_NAME = "com.wali.live.dao";
 

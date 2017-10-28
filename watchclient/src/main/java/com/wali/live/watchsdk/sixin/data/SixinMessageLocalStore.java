@@ -3,7 +3,7 @@ package com.wali.live.watchsdk.sixin.data;
 import android.text.TextUtils;
 
 import com.base.global.GlobalData;
-import com.google.gson.Gson;
+import com.base.log.MyLog;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.assist.Attachment;
@@ -19,15 +19,18 @@ import java.util.List;
 import de.greenrobot.dao.query.QueryBuilder;
 import de.greenrobot.dao.query.WhereCondition;
 
+import static com.mi.live.data.greendao.GreenDaoManager.getDaoSession;
+
 /**
  * Created by anping on 16-10-10.
  */
-public class SixinMessageLocalStrore {
+public class SixinMessageLocalStore {
+    private static String STAG = "SixinMessageLocalStore";
 
     //通过用户id 来获取所有的私信消息
     public static List<SixinMessage> getAllSixinMessageByUUid(long uuid, int targetType) {
         long userId = UserAccountManager.getInstance().getUuidAsLong();
-        SixinMessageDao sixinMessageDao = GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao();
+        SixinMessageDao sixinMessageDao = getDaoSession(GlobalData.app()).getSixinMessageDao();
         QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
         queryBuilder.where(SixinMessageDao.Properties.LocaLUserId.eq(userId), SixinMessageDao.Properties.Target.eq(uuid), SixinMessageDao.Properties.TargetType.eq(targetType)
                 , SixinMessageDao.Properties.ServerStoreStatus.notEq(SixinMessage.SERVER_STORE_STATUS_DELETE)
@@ -44,7 +47,7 @@ public class SixinMessageLocalStrore {
     //当发现sendTime为Long.maxValue时,则则timeOrId应该设置为 messageId.
     public static List<SixinMessage> getSixinMessagesByUUid(long uuid, int limit, long timeOrId, boolean compareByTime, int targetType) {
         long userId = UserAccountManager.getInstance().getUuidAsLong();
-        SixinMessageDao sixinMessageDao = GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao();
+        SixinMessageDao sixinMessageDao = getDaoSession(GlobalData.app()).getSixinMessageDao();
         QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
         WhereCondition whereCondition = null;
         if (compareByTime) {
@@ -110,7 +113,7 @@ public class SixinMessageLocalStrore {
 
     public static List<SixinMessage> getNotifyMessageByTime(long uuid, int limit, long maxTime, long minTime, int targetType, List<Long> excludeIds) {
         long userId = UserAccountManager.getInstance().getUuidAsLong();
-        SixinMessageDao sixinMessageDao = GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao();
+        SixinMessageDao sixinMessageDao = getDaoSession(GlobalData.app()).getSixinMessageDao();
         QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
         WhereCondition whereCondition = null;
         if (excludeIds != null && excludeIds.size() > 0) {
@@ -128,7 +131,7 @@ public class SixinMessageLocalStrore {
     }
 
     public static SixinMessage getSixinMessageBySenderMsgid(long cid) {
-        SixinMessageDao sixinMessageDao = GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao();
+        SixinMessageDao sixinMessageDao = getDaoSession(GlobalData.app()).getSixinMessageDao();
         QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
         queryBuilder.where(SixinMessageDao.Properties.SenderMsgId.eq(cid)).build();
         List<SixinMessage> sixinMessages = queryBuilder.list();
@@ -139,7 +142,7 @@ public class SixinMessageLocalStrore {
     }
 
     public static SixinMessage getSixinMessageByMsgId(long cid) {
-        SixinMessageDao sixinMessageDao = GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao();
+        SixinMessageDao sixinMessageDao = getDaoSession(GlobalData.app()).getSixinMessageDao();
         QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
         queryBuilder.where(SixinMessageDao.Properties.Id.eq(cid)).build();
         List<SixinMessage> sixinMessages = queryBuilder.list();
@@ -163,7 +166,7 @@ public class SixinMessageLocalStrore {
     private static SixinMessage getSixinMessageInDb(SixinMessage sixinMessage) {
         long userId = UserAccountManager.getInstance().getUuidAsLong();
         if (sixinMessage != null && sixinMessage.getMsgSeq() != null && sixinMessage.getSenderMsgId() != null) {
-            SixinMessageDao sixinMessageDao = GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao();
+            SixinMessageDao sixinMessageDao = getDaoSession(GlobalData.app()).getSixinMessageDao();
             QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
 
             //非通知消息的seq消息相等
@@ -211,7 +214,7 @@ public class SixinMessageLocalStrore {
             } else {
                 insertSixinList.add(sixinMessage);
             }
-            GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao().insertInTx(insertSixinList);
+            getDaoSession(GlobalData.app()).getSixinMessageDao().insertInTx(insertSixinList);
             EventBus.getDefault().post(new SixinMessageBulkInsertEvent(insertSixinList, false, true));
         }
     }
@@ -228,6 +231,7 @@ public class SixinMessageLocalStrore {
             List<SixinMessage> insertSixinList = new ArrayList<>();
 
             for (SixinMessage sixinMessage : sixinMessages) {
+                MyLog.v(STAG, "sixinMessage=" + sixinMessage);
                 SixinMessage sixinMessageInDb = getSixinMessageInDb(sixinMessage);
                 if (sixinMessageInDb != null) {
                     sixinMessageInDb.updateSixinMessage(sixinMessage);
@@ -242,8 +246,7 @@ public class SixinMessageLocalStrore {
                     }
                 }
             }
-            GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao().insertInTx(insertSixinList);
-
+            getDaoSession(GlobalData.app()).getSixinMessageDao().insertInTx(insertSixinList);
             EventBus.getDefault().post(new SixinMessageBulkInsertEvent(insertSixinList, hasNewMessage, needsNotifyDBInsertEvent));
 
         }
@@ -255,7 +258,7 @@ public class SixinMessageLocalStrore {
 
     public static void updateSixinMessage(SixinMessage sixinMessage, boolean needNotify) {
         if (sixinMessage != null) {
-            GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao().update(sixinMessage);
+            getDaoSession(GlobalData.app()).getSixinMessageDao().update(sixinMessage);
             if (needNotify) {
                 EventBus.getDefault().post(new SixinMessageUpdateEvent(sixinMessage));
             }
@@ -264,14 +267,14 @@ public class SixinMessageLocalStrore {
 
     public static void batchDeleteSixInMessage(List<Long> ids, long target, int targetType) {
         if (ids != null && ids.size() > 0) {
-            GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao().deleteByKeyInTx(ids);
+            getDaoSession(GlobalData.app()).getSixinMessageDao().deleteByKeyInTx(ids);
             EventBus.getDefault().post(new SixInMessageBulkDeleteEvent(ids, target, targetType));
         }
     }
 
     public static SixinMessage getLastSixInMessageByTarget(long target, int targetType, boolean includeDelete) {
         long userId = UserAccountManager.getInstance().getUuidAsLong();
-        SixinMessageDao sixinMessageDao = GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao();
+        SixinMessageDao sixinMessageDao = getDaoSession(GlobalData.app()).getSixinMessageDao();
         QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
         if (includeDelete) {
             queryBuilder.where(SixinMessageDao.Properties.LocaLUserId.eq(userId), SixinMessageDao.Properties.Target.eq(target), SixinMessageDao.Properties.TargetType.eq(targetType)
@@ -292,7 +295,7 @@ public class SixinMessageLocalStrore {
 
     public static SixinMessage getSixinMessageBySeqAndTarget(long target, int targetType, long seq) {
         long userId = UserAccountManager.getInstance().getUuidAsLong();
-        SixinMessageDao sixinMessageDao = GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao();
+        SixinMessageDao sixinMessageDao = getDaoSession(GlobalData.app()).getSixinMessageDao();
         QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
         queryBuilder.where(SixinMessageDao.Properties.LocaLUserId.eq(userId), SixinMessageDao.Properties.Target.eq(target), SixinMessageDao.Properties.TargetType.eq(targetType), SixinMessageDao.Properties.MsgSeq.eq(seq)).build();
         List<SixinMessage> sixinMessages = queryBuilder.list();
@@ -305,7 +308,7 @@ public class SixinMessageLocalStrore {
 
     public static List<SixinMessage> getSixinMessagesBetweenSeq(long target, int targetType, long minSeq, long maxSeq, List<Long> excludeIds) {
         long userId = UserAccountManager.getInstance().getUuidAsLong();
-        SixinMessageDao sixinMessageDao = GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao();
+        SixinMessageDao sixinMessageDao = getDaoSession(GlobalData.app()).getSixinMessageDao();
         QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
         if (excludeIds != null && excludeIds.size() > 0) {
             queryBuilder.where(SixinMessageDao.Properties.Id.notIn(excludeIds), SixinMessageDao.Properties.LocaLUserId.eq(userId), SixinMessageDao.Properties.Target.eq(target), SixinMessageDao.Properties.MsgSeq.between(minSeq, maxSeq), SixinMessageDao.Properties.ServerStoreStatus.notEq(SixinMessage.SERVER_STORE_STATUS_DELETE)
@@ -323,12 +326,12 @@ public class SixinMessageLocalStrore {
     }
 
     public static void deleteAll() {
-        GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao().deleteAll();
+        getDaoSession(GlobalData.app()).getSixinMessageDao().deleteAll();
     }
 
     public static void deleteMessageByRcvConversationEvent(List<Long> targets) {
         long userId = UserAccountManager.getInstance().getUuidAsLong();
-        SixinMessageDao sixinMessageDao = GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao();
+        SixinMessageDao sixinMessageDao = getDaoSession(GlobalData.app()).getSixinMessageDao();
         QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
         queryBuilder.where(SixinMessageDao.Properties.LocaLUserId.eq(userId));
         if (targets.size() == 1) {
@@ -353,7 +356,7 @@ public class SixinMessageLocalStrore {
      * @return
      */
     public static List<SixinMessage> getImageMessagesByTime(long time, long target, int targetType, int limit, boolean isLt) {
-        SixinMessageDao sixinMessageDao = GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao();
+        SixinMessageDao sixinMessageDao = getDaoSession(GlobalData.app()).getSixinMessageDao();
         QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
         WhereCondition timeCondition = isLt ? SixinMessageDao.Properties.ReceivedTime.le(time) : SixinMessageDao.Properties.ReceivedTime.ge(time);
         queryBuilder.where(SixinMessageDao.Properties.Target.eq(target), SixinMessageDao.Properties.TargetType.eq(targetType), timeCondition, SixinMessageDao.Properties.MsgTyppe.eq(SixinMessage.S_MSG_TYPE_PIC), SixinMessageDao.Properties.ServerStoreStatus.notEq(SixinMessage.SERVER_STORE_STATUS_DELETE)
@@ -557,7 +560,7 @@ public class SixinMessageLocalStrore {
      * 修改消息的状态未已读
      */
     public static void markSixinMessageAsRead(long msgId) {
-        SixinMessageDao sixinMessageDao = GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao();
+        SixinMessageDao sixinMessageDao = getDaoSession(GlobalData.app()).getSixinMessageDao();
         long userId = UserAccountManager.getInstance().getUuidAsLong();
         QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
         queryBuilder.where(SixinMessageDao.Properties.LocaLUserId.eq(userId), SixinMessageDao.Properties.Id.eq(msgId));
@@ -579,7 +582,7 @@ public class SixinMessageLocalStrore {
      * @return
      */
     public static SixinMessage getDraftSixinMessage(long target, int type) {
-        SixinMessageDao sixinMessageDao = GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao();
+        SixinMessageDao sixinMessageDao = getDaoSession(GlobalData.app()).getSixinMessageDao();
         long userId = UserAccountManager.getInstance().getUuidAsLong();
         QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
         queryBuilder.where(SixinMessageDao.Properties.LocaLUserId.eq(userId), SixinMessageDao.Properties.Target.eq(target)
@@ -595,7 +598,7 @@ public class SixinMessageLocalStrore {
      * 删除草稿消息
      */
     public static void deleteDraftSixinMessage(long target, int type) {
-        SixinMessageDao sixinMessageDao = GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao();
+        SixinMessageDao sixinMessageDao = getDaoSession(GlobalData.app()).getSixinMessageDao();
         long userId = UserAccountManager.getInstance().getUuidAsLong();
         QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
         queryBuilder.where(SixinMessageDao.Properties.LocaLUserId.eq(userId), SixinMessageDao.Properties.Target.eq(target)
