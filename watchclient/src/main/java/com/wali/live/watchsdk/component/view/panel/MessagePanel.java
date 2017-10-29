@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.base.activity.BaseActivity;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.BackTitleBar;
 import com.thornbirds.component.view.IComponentView;
@@ -16,6 +17,7 @@ import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.presenter.adapter.ConversationAdapter;
+import com.wali.live.watchsdk.sixin.PopComposeMessageFragment;
 
 import java.util.List;
 
@@ -39,6 +41,7 @@ public class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
             new ConversationAdapter.IConversationClickListener() {
                 @Override
                 public void onItemClick(ConversationAdapter.ConversationItem item) {
+                    PopComposeMessageFragment.open((BaseActivity) mParentView.getContext(), item.getUser(), true);
                 }
             };
 

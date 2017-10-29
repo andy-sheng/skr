@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/msg_list_item"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="@dimen/text_size_50"
+              android:clickable="false"
+              android:orientation="vertical">
+
+    <com.base.view.MLTextView
+        android:id="@+id/timestamp_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/margin_30"
+        android:layout_marginTop="@dimen/margin_40"
+        android:textColor="@color/color_black_trans_40"
+        android:textSize="@dimen/text_size_32"
+        android:visibility="gone"/>
+
+</LinearLayout>

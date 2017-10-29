@@ -20,7 +20,7 @@ public class EditNamePresenter extends BaseRxPresenter<IEditNameView> {
     private Subscription mEditSubscription;
 
     public EditNamePresenter(IEditNameView view) {
-        mView = view;
+        super(view);
     }
 
     public void uploadName(final String name) {

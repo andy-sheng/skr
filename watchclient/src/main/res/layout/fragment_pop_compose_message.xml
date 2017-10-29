@@ -24,10 +24,16 @@
             android:layout_height="wrap_content"
             app:is_profile_mode="false"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/message_rv"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_weight="1.0"/>
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/message_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 </LinearLayout>

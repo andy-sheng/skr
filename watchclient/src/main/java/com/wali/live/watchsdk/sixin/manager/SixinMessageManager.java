@@ -193,6 +193,7 @@ public class SixinMessageManager implements MiLinkPacketDispatcher.PacketDataHan
         boolean isSyncToEnd = true;
         if (packetData != null) {
             try {
+                MyLog.w(TAG, "processSyncUnreadResponse receive");
                 LiveMessageProto.SyncUnreadResponse syncUnreadResponse = LiveMessageProto.SyncUnreadResponse.parseFrom(packetData.getData());
                 if (syncUnreadResponse != null) {
                     List<LiveMessageProto.Unread> unreadList = syncUnreadResponse.getUnreadList();
@@ -240,6 +241,7 @@ public class SixinMessageManager implements MiLinkPacketDispatcher.PacketDataHan
     public void processPushChatMessage(PacketData packetData) {
         if (packetData != null) {
             try {
+                MyLog.w(TAG, "processPushChatMessage");
                 LiveMessageProto.PushMessage pushMessage = LiveMessageProto.PushMessage.parseFrom(packetData.getData());
                 if (pushMessage != null) {
                     List<LiveMessageProto.Message> messageList = pushMessage.getMessageList();
@@ -319,8 +321,10 @@ public class SixinMessageManager implements MiLinkPacketDispatcher.PacketDataHan
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(SixinMessageLocalStore.SixinMessageUpdateEvent event) {
         if (event != null) {
+            MyLog.w(TAG, "event is not null");
             SixinMessage sixinMessage = event.sixinMessage;
             if (sixinMessage != null) {
+                MyLog.w(TAG, "sixinMessage is not null");
                 Conversation conversation = ConversationLocalStore.getConversationByTarget(sixinMessage.getTarget(), sixinMessage.getTargetType());
                 if (conversation != null && (conversation.getMsgId().equals(sixinMessage.getId()) || sixinMessage.getMsgTyppe() == SixinMessage.S_MSG_TYPE_DRAFT)) {
                     ConversationLocalStore.updateConversationBySixinMessage(conversation, sixinMessage);

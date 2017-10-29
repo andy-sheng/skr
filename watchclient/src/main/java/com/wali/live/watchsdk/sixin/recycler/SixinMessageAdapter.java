@@ -5,11 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.base.global.GlobalData;
 import com.wali.live.dao.SixinMessage;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.lit.recycler.holder.BaseHolder;
-import com.wali.live.watchsdk.sixin.message.SixinMessageItem;
+import com.wali.live.watchsdk.sixin.message.SixinMessageModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +25,9 @@ public class SixinMessageAdapter extends RecyclerView.Adapter<BaseHolder> {
     private static final int TYPE_TEXT_LINK = 6;        // 系统推送的文字+链接消息
     private static final int TYPE_LIST = 7;             // VIP客服问题列表
 
-    public List<SixinMessageItem> mDataList = new ArrayList<>();
+    public List<SixinMessageModel> mDataList = new ArrayList<>();
 
-    public void setDataList(List<SixinMessageItem> dataList) {
+    public void setDataList(List<SixinMessageModel> dataList) {
         mDataList.clear();
         mDataList.addAll(dataList);
         notifyDataSetChanged();
@@ -36,7 +35,7 @@ public class SixinMessageAdapter extends RecyclerView.Adapter<BaseHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        SixinMessageItem messageItem = mDataList.get(position);
+        SixinMessageModel messageItem = mDataList.get(position);
 
         switch (messageItem.getMsgType()) {
             case SixinMessage.S_MSG_CUSTOME_TYPE_LOADING_FOOT: {
@@ -71,16 +70,20 @@ public class SixinMessageAdapter extends RecyclerView.Adapter<BaseHolder> {
 
     @Override
     public BaseHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        SixinMessageHolder holder = null;
+        BaseHolder holder;
         View view;
         switch (viewType) {
             case TYPE_LEFT_ITEM:
-                view = LayoutInflater.from(GlobalData.app()).inflate(R.layout.sixin_message_left_item, parent, false);
-                holder = new SixinMessageHolder(view);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sixin_message_left_item, parent, false);
+                holder = new SixinMessageHolder(view, this);
                 break;
             case TYPE_RIGHT_ITEM:
-                view = LayoutInflater.from(GlobalData.app()).inflate(R.layout.sixin_message_right_item, parent, false);
-                holder = new SixinMessageHolder(view);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sixin_message_right_item, parent, false);
+                holder = new SixinMessageHolder(view, this);
+                break;
+            default:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sixin_message_default_item, parent, false);
+                holder = new SixinMessageDefaultHolder(view);
                 break;
         }
         return holder;
@@ -88,7 +91,7 @@ public class SixinMessageAdapter extends RecyclerView.Adapter<BaseHolder> {
 
     @Override
     public void onBindViewHolder(BaseHolder holder, int position) {
-        holder.bindModel(mDataList.get(position));
+        holder.bindModel(mDataList.get(position), position);
     }
 
     @Override
@@ -96,7 +99,14 @@ public class SixinMessageAdapter extends RecyclerView.Adapter<BaseHolder> {
         return mDataList == null ? 0 : mDataList.size();
     }
 
-    private boolean isShowLeft(SixinMessageItem messageItem) {
+    public SixinMessageModel getItem(int position) {
+        if (position < 0 || position >= getItemCount()) {
+            return null;
+        }
+        return mDataList.get(position);
+    }
+
+    private boolean isShowLeft(SixinMessageModel messageItem) {
         return messageItem.isInbound();
     }
 }

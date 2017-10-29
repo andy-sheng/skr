@@ -64,7 +64,7 @@ public class FloatInfoPresenter extends BaseRxPresenter<IFloatInfoView> {
     }
 
     public FloatInfoPresenter(IFloatInfoView view, Bundle bundle) {
-        mView = view;
+        super(view);
         initData(bundle);
     }
 

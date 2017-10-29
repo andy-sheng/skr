@@ -219,6 +219,10 @@ public class ConversationAdapter extends ClickItemAdapter<ConversationAdapter.Co
             updateFrom(conversation);
         }
 
+        public User getUser() {
+            return user;
+        }
+
         public void updateFrom(Conversation conversation) {
             id = conversation.getId();
             msgType = conversation.getMsgType();

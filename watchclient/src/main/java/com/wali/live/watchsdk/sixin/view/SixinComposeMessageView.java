@@ -16,6 +16,7 @@ import com.wali.live.watchsdk.sixin.recycler.SixinMessageAdapter;
 /**
  * Created by lan on 16-2-23.
  */
+@Deprecated
 public class SixinComposeMessageView extends RelativeLayout {
     public final static int PAGE_MESSAGE_COUNT = 10; //分页加载十个消息
 

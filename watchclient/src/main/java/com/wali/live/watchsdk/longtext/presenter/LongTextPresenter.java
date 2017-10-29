@@ -24,7 +24,7 @@ public class LongTextPresenter extends BaseRxPresenter<ILongTextView> {
     private Subscription mSubscription;
 
     public LongTextPresenter(ILongTextView view) {
-        mView = view;
+        super(view);
     }
 
     public void getFeedsInfo(String feedId, long ownerId) {

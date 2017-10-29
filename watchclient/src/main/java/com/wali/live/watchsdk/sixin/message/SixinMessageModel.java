@@ -12,9 +12,7 @@ import com.wali.live.watchsdk.lit.recycler.viewmodel.BaseViewModel;
  * <p>
  * Todo: 先实现最小的文本功能
  */
-public class SixinMessageItem extends BaseViewModel implements Comparable<SixinMessageItem> {
-    private static final String TAG = SixinMessageItem.class.getSimpleName();
-
+public class SixinMessageModel extends BaseViewModel implements Comparable<SixinMessageModel> {
     private long msgId;
     private long sentTime = 0;
     private boolean isInbound = false;
@@ -31,10 +29,7 @@ public class SixinMessageItem extends BaseViewModel implements Comparable<SixinM
     private int serverStoreStatus;  //服务器的状态，已读未读删除
     private long msgSeq;
 
-    public SixinMessageItem() {
-    }
-
-    public SixinMessageItem(SixinMessage sixinMessage) {
+    public SixinMessageModel(SixinMessage sixinMessage) {
         setMsgId(sixinMessage.getId());
         setSentTime(sixinMessage.getSentTime());
         setIsInbound(sixinMessage.getIsInbound());
@@ -50,6 +45,12 @@ public class SixinMessageItem extends BaseViewModel implements Comparable<SixinM
         setFormatSentTime(DateTimeUtils.formatTimeStringForCompose(GlobalData.app(), sixinMessage.getReceivedTime()));
         setTargetId(sixinMessage.getTarget());
         setReceiveTime(sixinMessage.getReceivedTime());
+
+        setBody(sixinMessage.getBody());
+        setCertificationType(sixinMessage.getCertificationType());
+        setTargetType(sixinMessage.getTargetType());
+        setServerStoreStatus(sixinMessage.getServerStoreStatus());
+        setMsgSeq(sixinMessage.getMsgSeq() == null ? 0 : sixinMessage.getMsgSeq());
     }
 
     public long getMsgId() {
@@ -173,7 +174,7 @@ public class SixinMessageItem extends BaseViewModel implements Comparable<SixinM
     }
 
     @Override
-    public int compareTo(SixinMessageItem another) {
+    public int compareTo(SixinMessageModel another) {
         //先按照发送的时间排序，在按照id 排序
         if (another == null) {
             return 1;
