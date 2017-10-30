@@ -1,5 +1,5 @@
 
-package com.wali.live.livesdk.live.view;
+package com.wali.live.watchsdk.recipient.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -126,7 +126,7 @@ public class IndexableRecyclerView extends RecyclerView {
     }
 
     @Override
-    public void setAdapter(Adapter adapter) {
+    public void setAdapter(RecyclerView.Adapter adapter) {
         super.setAdapter(adapter);
         if (mScroller != null) {
             mScroller.setAdapter(adapter);

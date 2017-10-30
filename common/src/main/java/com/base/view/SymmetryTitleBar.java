@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.view;
+package com.base.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,8 +7,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.base.activity.BaseSdkActivity;
-import com.wali.live.livesdk.R;
+import com.base.common.R;
 
 /**
  * Created by lan on 15-11-4.

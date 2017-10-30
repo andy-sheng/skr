@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.adapter;
+package com.wali.live.watchsdk.recipient.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -34,18 +34,17 @@ import com.mi.live.data.user.User;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.FragmentEvent;
 import com.wali.live.dao.Relation;
-
 import com.wali.live.dao.RelationDaoAdapter;
 import com.wali.live.event.EventClass;
-import com.wali.live.livesdk.R;
-import com.wali.live.livesdk.live.fragment.RecipientsSelectFragment;
-import com.wali.live.livesdk.live.view.IndexableRecyclerView;
-import com.wali.live.livesdk.live.view.UserSectionIndexer;
 import com.wali.live.proto.RelationProto;
 import com.wali.live.utils.AsyncTaskUtils;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.utils.relation.RelationUtils;
+import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.recipient.RecipientsSelectFragment;
+import com.wali.live.watchsdk.recipient.view.IndexableRecyclerView;
+import com.wali.live.watchsdk.recipient.view.UserSectionIndexer;
 
 import org.greenrobot.eventbus.EventBus;
 

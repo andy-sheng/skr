@@ -1,9 +1,7 @@
-package com.wali.live.livesdk.live.fragment;
+package com.wali.live.watchsdk.recipient;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -14,10 +12,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.base.activity.BaseActivity;
 import com.base.event.KeyboardEvent;
 import com.base.fragment.BaseEventBusFragment;
-import com.base.fragment.BaseFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
@@ -26,17 +22,15 @@ import com.base.view.BackTitleBar;
 import com.mi.live.data.data.UserListData;
 import com.mi.live.data.user.User;
 import com.wali.live.event.EventClass;
-import com.wali.live.livesdk.R;
-import com.wali.live.livesdk.live.adapter.RecipientsSelectRecyclerAdapter;
-import com.wali.live.livesdk.live.view.IndexableRecyclerView;
+import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.recipient.adapter.RecipientsSelectRecyclerAdapter;
+import com.wali.live.watchsdk.recipient.view.IndexableRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.Serializable;
-
-import butterknife.Bind;
 
 /**
  * Created by yurui on 3/24/16.
@@ -101,7 +95,6 @@ public class RecipientsSelectFragment extends BaseEventBusFragment implements Vi
     IndexableRecyclerView mRecyclerView;
 
     TextView mHintTitle;
-
     EditText mSearch;
 
     View mSearchBar;
