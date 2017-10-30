@@ -83,7 +83,7 @@ public class SixinMessageAdapter extends RecyclerView.Adapter<BaseHolder> {
                 break;
             default:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sixin_message_default_item, parent, false);
-                holder = new SixinMessageDefaultHolder(view);
+                holder = new SixinMessageDefaultHolder(view, this);
                 break;
         }
         return holder;

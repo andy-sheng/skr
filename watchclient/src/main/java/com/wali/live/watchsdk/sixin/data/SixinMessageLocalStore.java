@@ -7,7 +7,6 @@ import com.base.log.MyLog;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.assist.Attachment;
-import com.mi.live.data.greendao.GreenDaoManager;
 import com.wali.live.dao.SixinMessage;
 import com.wali.live.dao.SixinMessageDao;
 

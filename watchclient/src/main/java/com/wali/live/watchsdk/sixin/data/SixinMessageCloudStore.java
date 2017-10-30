@@ -20,7 +20,6 @@ import rx.Subscriber;
  * 操作私信云端增删改查
  */
 public class SixinMessageCloudStore {
-
     private final static String TAG = SixinMessageCloudStore.class.getSimpleName();
 
     private static final int TIME_OUT = 30 * 1000;
@@ -63,7 +62,6 @@ public class SixinMessageCloudStore {
             }
         });
     }
-
 
     /**
      * 发送一条ack消息

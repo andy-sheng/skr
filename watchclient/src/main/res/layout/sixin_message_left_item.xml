@@ -45,7 +45,7 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/message_content"
+            android:id="@+id/message_area"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_15"
@@ -53,17 +53,6 @@
             android:layout_toRightOf="@+id/user_area"
             android:gravity="left"
             android:orientation="horizontal">
-
-            <com.base.view.MLTextView
-                android:id="@+id/send_msg_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingRight="@dimen/margin_20"
-                android:text="送达"
-                android:textColor="@color/color_black_trans_40"
-                android:textSize="@dimen/text_size_30"
-                android:visibility="gone"/>
 
             <FrameLayout
                 android:id="@+id/bubble_area"

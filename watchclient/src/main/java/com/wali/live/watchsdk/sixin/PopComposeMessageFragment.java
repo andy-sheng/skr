@@ -10,20 +10,29 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.base.activity.BaseActivity;
+import com.base.event.KeyboardEvent;
 import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.log.MyLog;
 import com.base.view.BackTitleBar;
-import com.mi.live.data.user.User;
-import com.wali.live.dao.SixinMessage;
+import com.wali.live.common.smiley.SmileyParser;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.sixin.constant.SixinConstants;
+import com.wali.live.watchsdk.sixin.data.SixinMessageLocalStore;
 import com.wali.live.watchsdk.sixin.message.SixinMessageModel;
+import com.wali.live.watchsdk.sixin.pojo.SixinTarget;
 import com.wali.live.watchsdk.sixin.presenter.ISixinMessageView;
 import com.wali.live.watchsdk.sixin.presenter.SixinMessagePresenter;
 import com.wali.live.watchsdk.sixin.recycler.SixinMessageAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -33,7 +42,7 @@ import rx.Observable;
  * Created by lan on 2017/10/27.
  */
 public class PopComposeMessageFragment extends RxFragment implements View.OnClickListener, ISixinMessageView {
-    private static final String EXTRA_USER = "extra_user";
+    private static final String EXTRA_SIXIN_TARGET = "extra_sixin_target";
 
     private View mBgView;
 
@@ -45,7 +54,12 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
     private LinearLayoutManager mLayoutManager;
     private SixinMessageAdapter mMessageAdapter;
 
-    private User mTarget;
+    private EditText mInputEt;
+    private TextView mSendBtn;
+
+    private View mPlaceholderView;
+
+    private SixinTarget mSixinTarget;
     private SixinMessagePresenter mMessagePresenter;
 
     private boolean mIsScrollToLast;
@@ -70,15 +84,18 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
         if (bundle == null) {
             finish();
         }
-        mTarget = (User) bundle.getSerializable(EXTRA_USER);
-        if (mTarget == null) {
+        mSixinTarget = (SixinTarget) bundle.getSerializable(EXTRA_SIXIN_TARGET);
+        if (mSixinTarget == null) {
             finish();
         }
-        MyLog.d(TAG, "user id=" + mTarget.getUid());
+        MyLog.d(TAG, "user id=" + mSixinTarget.getUid());
     }
 
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         return inflater.inflate(R.layout.fragment_pop_compose_message, container, false);
     }
 
@@ -89,10 +106,10 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
 
         mTitleBar = $(R.id.title_bar);
         $click(mTitleBar.getBackBtn(), this);
-        if (!TextUtils.isEmpty(mTarget.getNickname())) {
-            mTitleBar.setTitle(mTarget.getNickname());
+        if (!TextUtils.isEmpty(mSixinTarget.getNickname())) {
+            mTitleBar.setTitle(mSixinTarget.getNickname());
         } else {
-            mTitleBar.setTitle(String.valueOf(mTarget.getUid()));
+            mTitleBar.setTitle(String.valueOf(mSixinTarget.getUid()));
         }
 
         mRefreshLayout = $(R.id.swipe_refresh_layout);
@@ -113,12 +130,18 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
         mMessageRv.setLayoutManager(mLayoutManager);
         mMessageRv.setHasFixedSize(true);
 
+        mInputEt = $(R.id.input_et);
+        mSendBtn = $(R.id.send_btn);
+        $click(mSendBtn, this);
+
+        mPlaceholderView = $(R.id.placeholder_view);
+
         initPresenter();
     }
 
     private void initPresenter() {
-        mMessagePresenter = new SixinMessagePresenter(this);
-        mMessagePresenter.firstLoadDataFromDB(mTarget.getUid(), SixinMessage.TARGET_TYPE_USER);
+        mMessagePresenter = new SixinMessagePresenter(this, mSixinTarget);
+        mMessagePresenter.firstLoadDataFromDB();
     }
 
     @Override
@@ -140,6 +163,46 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
         mIsScrollToLast = true;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(KeyboardEvent event) {
+        switch (event.eventType) {
+            case KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN:
+                if (mPlaceholderView != null) {
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mPlaceholderView.getLayoutParams();
+                    layoutParams.height = 0;
+                    mPlaceholderView.setLayoutParams(layoutParams);
+                }
+                break;
+            case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE:
+                if (mPlaceholderView != null) {
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mPlaceholderView.getLayoutParams();
+                    layoutParams.height = (int) event.obj1;
+                    mPlaceholderView.setLayoutParams(layoutParams);
+                }
+                break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(final SixinMessageLocalStore.SixinMessageBulkInsertEvent event) {
+        MyLog.d(TAG, "SixinMessageBulkInsertEvent");
+        if (event == null || !event.needsUpdateUi) {
+            return;
+        }
+        if (event.sixinMessages == null || event.sixinMessages.size() == 0) {
+            return;
+        }
+        mMessagePresenter.notifyMessage(event.sixinMessages);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
     @Override
     public boolean onBackPressed() {
         if (getActivity() == null) {
@@ -154,16 +217,31 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
         int id = v.getId();
         if (id == R.id.bg_view || id == R.id.back_iv) {
             finish();
+        } else if (id == R.id.send_btn) {
+            sendText();
         }
+    }
+
+    private void sendText() {
+        String input = mInputEt.getText().toString();
+        if (TextUtils.isEmpty(input)) {
+            return;
+        }
+
+        String message = SmileyParser.getInstance().convertString(input, SmileyParser.TYPE_LOCAL_TO_GLOBAL).toString();
+        MyLog.d(TAG, "sendText=" + message);
+
+        mMessagePresenter.send(message);
+        mInputEt.setText("");
     }
 
     private void finish() {
         FragmentNaviUtils.popFragment(getActivity());
     }
 
-    public static void open(BaseActivity activity, User target, boolean isNeedSaveToStack) {
+    public static void open(BaseActivity activity, SixinTarget sixinTarget, boolean isNeedSaveToStack) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(EXTRA_USER, target);
+        bundle.putSerializable(EXTRA_SIXIN_TARGET, sixinTarget);
         if (isNeedSaveToStack) {
             FragmentNaviUtils.addFragmentToBackStack(activity, R.id.main_act_container, PopComposeMessageFragment.class, bundle, false, 0, 0);
         } else {

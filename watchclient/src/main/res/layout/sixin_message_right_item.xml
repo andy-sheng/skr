@@ -23,12 +23,12 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/message_content"
+            android:id="@+id/message_area"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_15"
             android:layout_marginRight="@dimen/margin_15"
-            android:layout_toLeftOf="@+id/avatar_root"
+            android:layout_toLeftOf="@+id/user_area"
             android:gravity="right"
             android:orientation="horizontal">
 

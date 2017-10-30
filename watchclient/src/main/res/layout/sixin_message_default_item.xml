@@ -15,7 +15,6 @@
         android:layout_marginBottom="@dimen/margin_30"
         android:layout_marginTop="@dimen/margin_40"
         android:textColor="@color/color_black_trans_40"
-        android:textSize="@dimen/text_size_32"
-        android:visibility="gone"/>
+        android:textSize="@dimen/text_size_32"/>
 
 </LinearLayout>

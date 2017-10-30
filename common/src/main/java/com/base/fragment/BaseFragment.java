@@ -163,51 +163,8 @@ public abstract class BaseFragment extends Fragment implements FragmentListener,
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        if (TAG != null) {
-//            MyLog.d(TAG, "onCreate");
-        }
         super.onCreate(savedInstanceState);
         addSelfToStatusList();
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        if (TAG != null) {
-//            MyLog.d(TAG, "onActivityCreated");
-        }
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onStart() {
-        if (TAG != null) {
-//            MyLog.d(TAG, "onStart");
-        }
-        super.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        if (TAG != null) {
-//            MyLog.d(TAG, "onResume");
-        }
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        if (TAG != null) {
-//            MyLog.d(TAG, "onPause");
-        }
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        if (TAG != null) {
-//            MyLog.d(TAG, "onStop");
-        }
-        super.onStop();
     }
 
     @Override

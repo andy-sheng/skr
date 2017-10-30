@@ -100,7 +100,7 @@ public class ConversationLocalStore {
             updateConversationBySixinMessage(conversation, sixinMessage);
 //            if (TextUtils.isEmpty(conversation.getTargetName()) && (sixinMessage.getTargetType() == SixinMessage.TARGET_TYPE_GROUP || sixinMessage.getTargetType() == SixinMessage.TARGET_TYPE_VFANS)) {
 //                conversation.setTargetName("");
-//                SixinGroup sixinGroup = new GroupManagerLocalStore().getSixinGroupBeanInDB(sixinMessage.getTarget());
+//                SixinGroup sixinGroup = new GroupManagerLocalStore().getSixinGroupBeanInDB(sixinMessage.getTargetUser());
 //                if (sixinGroup != null) {
 //                    conversation.setTargetName(sixinGroup.getName());
 //                    String icon = TextUtils.isEmpty(sixinGroup.getAvatar()) ? "" + sixinGroup.getOwnerId() : sixinGroup.getAvatar();
@@ -119,7 +119,7 @@ public class ConversationLocalStore {
         } else {
 //            if (TextUtils.isEmpty(conversation.getTargetName()) && (sixinMessage.getTargetType() == SixinMessage.TARGET_TYPE_GROUP || sixinMessage.getTargetType() == SixinMessage.TARGET_TYPE_VFANS)) {
 //                conversation.setTargetName("");
-//                SixinGroup sixinGroup = new GroupManagerLocalStore().getSixinGroupBeanInDB(sixinMessage.getTarget());
+//                SixinGroup sixinGroup = new GroupManagerLocalStore().getSixinGroupBeanInDB(sixinMessage.getTargetUser());
 //                if (sixinGroup != null) {
 //                    conversation.setTargetName(sixinGroup.getName());
 //                    String icon = TextUtils.isEmpty(sixinGroup.getAvatar()) ? "" + sixinGroup.getOwnerId() : sixinGroup.getAvatar();
@@ -225,7 +225,7 @@ public class ConversationLocalStore {
 
             if (!isInWhiteList) {
                 if (isNewConversation) {
-//                    Relation relation = RelationLocalStore.getRelationByUUid(conversation.getTarget());//关系已经是老的了
+//                    Relation relation = RelationLocalStore.getRelationByUUid(conversation.getTargetUser());//关系已经是老的了
 //                    if (relation == null) {
                     conversation.setIsNotFocus(sixinMessage.getMsgStatus() == SixinMessage.MSG_STATUS_UNFOUCS);
                     conversation.updateOrInsertExt(Conversation.EXT_FOCUS_STATE, sixinMessage.getMsgStatus());

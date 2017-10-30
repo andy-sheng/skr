@@ -41,7 +41,7 @@ public class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
             new ConversationAdapter.IConversationClickListener() {
                 @Override
                 public void onItemClick(ConversationAdapter.ConversationItem item) {
-                    PopComposeMessageFragment.open((BaseActivity) mParentView.getContext(), item.getUser(), true);
+                    PopComposeMessageFragment.open((BaseActivity) mParentView.getContext(), item.getSixinTarget(), true);
                 }
             };
 

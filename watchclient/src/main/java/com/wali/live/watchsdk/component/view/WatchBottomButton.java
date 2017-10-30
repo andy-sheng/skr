@@ -7,20 +7,17 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 
-import com.base.activity.BaseActivity;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.mi.live.data.user.User;
 import com.thornbirds.component.view.IOrientationListener;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.component.view.BaseBottomButton;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
-import com.wali.live.watchsdk.sixin.PopComposeMessageFragment;
 import com.wali.live.watchsdk.view.MsgCtrlBtnView;
 
 /**
@@ -59,10 +56,9 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         } else if (id == R.id.rotate_btn) {
             mPresenter.rotateScreen();
         } else if (id == R.id.game_btn) {
-//            mPresenter.showGameDownloadView();
-//            //点击的同时清除动画
-//            clearAnimator();
-            PopComposeMessageFragment.open((BaseActivity) getContext(), new User(100161, 0, "Test"), true);
+            mPresenter.showGameDownloadView();
+            //点击的同时清除动画
+            clearAnimator();
         } else if (id == R.id.share_btn) {
             if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.showShareView();

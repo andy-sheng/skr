@@ -28,6 +28,7 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.adapter.ClickItemAdapter;
+import com.wali.live.watchsdk.sixin.pojo.SixinTarget;
 
 import org.json.JSONObject;
 
@@ -201,15 +202,21 @@ public class ConversationAdapter extends ClickItemAdapter<ConversationAdapter.Co
         // 对话列表图标，若localAvatarResId > 0,则使用localAvatarResId，否则使用icon
         private int localAvatarResId = 0;
         private int targetType;
+        private int focusState;
         private int certificationType; // 用来标识用户头像右下角的角标
         private int msgType; // 消息类型
+
         private CharSequence spannableSubject;
         private CharSequence spannableName;
+
         public long receivedTime = 0L;
         private int ignoreStatus;
         private int unreadCount = 0;
         private boolean hasSomeOneAtMe; // 是否有人At我
         private String ext;  //extra信息
+
+        // 进入对话详情需要
+        private SixinTarget mSixinTarget;
 
         public ConversationItem() {
         }
@@ -219,17 +226,18 @@ public class ConversationAdapter extends ClickItemAdapter<ConversationAdapter.Co
             updateFrom(conversation);
         }
 
-        public User getUser() {
-            return user;
+        public SixinTarget getSixinTarget() {
+            if (mSixinTarget == null) {
+                mSixinTarget = new SixinTarget(user, focusState, targetType);
+            }
+            return mSixinTarget;
         }
 
         public void updateFrom(Conversation conversation) {
             id = conversation.getId();
             msgType = conversation.getMsgType();
             uid = conversation.getTarget();
-            user = new User();
-            user.setUid(uid);
-            user.setNickname(conversation.getTargetName());
+
             if (conversation.getUnreadCount() != null) {
                 unreadCount = conversation.getUnreadCount();
             }
@@ -244,10 +252,17 @@ public class ConversationAdapter extends ClickItemAdapter<ConversationAdapter.Co
             ignoreStatus = conversation.getIgnoreStatus() != null ?
                     conversation.getIgnoreStatus() : Conversation.NOT_IGNORE;
             ext = conversation.getExt();
+
             certificationType = conversation.getCertificationType() != null ?
                     conversation.getCertificationType() : 0;
             targetType = conversation.getTargetType();
+            focusState = conversation.getFocusStatue();
             hasSomeOneAtMe = conversation.hasSomeOneAtMe();
+
+            user = new User();
+            user.setUid(uid);
+            user.setNickname(conversation.getTargetName());
+            user.setCertificationType(certificationType);
         }
 
         public CharSequence getSpannableName() {
