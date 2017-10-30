@@ -219,4 +219,9 @@
     <string name="draft">[草稿]</string>
     <string name="someone_at_you">[有人@我]</string>
     <string name="vip_customer_question_text">热点问题答复</string>
+    <string name="match_ok_btn">确定(%1$d/%2$d)</string>
+    <string name="sel_count_hint">最多选择%d人</string>
+    <string name="search_txt">搜索</string>
+    <string name="match_hint">只有选中的好友会看到直播</string>
+    <string name="unblock">移出</string>
 </resources>

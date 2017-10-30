@@ -49,7 +49,7 @@ import com.wali.live.livesdk.live.image.adapter.FilePickerRecyclerAdapter;
 import com.wali.live.livesdk.live.image.adapter.PhotoPickerRecyclerAdapter;
 import com.wali.live.livesdk.live.utils.ImageUtils;
 import com.wali.live.livesdk.live.view.SlidingTabLayout;
-import com.wali.live.livesdk.live.view.SymmetryTitleBar;
+import com.base.view.SymmetryTitleBar;
 import com.wali.live.livesdk.live.viewmodel.PhotoItem;
 import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
 

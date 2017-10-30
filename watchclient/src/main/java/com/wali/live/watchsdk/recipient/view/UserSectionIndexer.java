@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.view;
+package com.wali.live.watchsdk.recipient.view;
 
 import android.widget.SectionIndexer;
 
