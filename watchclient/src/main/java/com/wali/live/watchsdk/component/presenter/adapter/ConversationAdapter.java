@@ -211,7 +211,7 @@ public class ConversationAdapter extends ClickItemAdapter<ConversationAdapter.Co
 
         public long receivedTime = 0L;
         private int ignoreStatus;
-        private int unreadCount = 0;
+        public int unreadCount = 0;
         private boolean hasSomeOneAtMe; // 是否有人At我
         private String ext;  //extra信息
 

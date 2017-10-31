@@ -168,7 +168,7 @@ public class ConversationLocalStore {
     public static void insertOrUpdateUnFoucsRobotConversation(Conversation conversation, int unreadCountInConversation, boolean needUpdateUnReadCount) {
         if (conversation != null && conversation.getIsNotFocus()) {
 //            boolean isInTrashbin = TrashBinStore.isInTrashBin(conversation.getTarget());
-            boolean isInTrashbin = false; // TODO-YangLi 加入垃圾箱逻辑
+            boolean isInTrashbin = false; // TODO-YangLi 后续加入垃圾箱逻辑
             Conversation robot = getConversationByTarget(Conversation.UNFOCUS_CONVERSATION_TARGET, SixinMessage.TARGET_TYPE_USER);
             if (robot == null) {
                 long userId = UserAccountManager.getInstance().getUuidAsLong();

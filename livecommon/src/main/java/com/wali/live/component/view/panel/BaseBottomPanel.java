@@ -64,7 +64,7 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
     }
 
     private boolean containsInParent() {
-        return mParentView.indexOfChild(mContentView) != -1;
+        return mContentView != null && mParentView.indexOfChild(mContentView) != -1;
     }
 
     @CallSuper

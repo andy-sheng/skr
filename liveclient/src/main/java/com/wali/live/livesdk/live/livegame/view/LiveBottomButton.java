@@ -1,7 +1,6 @@
 package com.wali.live.livesdk.live.livegame.view;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -112,8 +111,9 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
                 mPresenter.showShareView();
             }
         } else if (id == R.id.msg_ctrl_btn) {
-            mMsgCntBtn.setMsgUnreadCnt(0);
-            mPresenter.showMsgCtrlView();
+            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                mPresenter.showMsgCtrlView();
+            }
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
@@ -129,19 +129,23 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
          */
         class ComponentView implements IView {
             @Override
-            public void onOrientation(boolean isLandscape) {
-                LiveBottomButton.this.onOrientation(isLandscape);
-            }
-
-            @Nullable
-            @Override
             public <T extends View> T getRealView() {
                 return (T) mContentContainer;
             }
 
             @Override
+            public void onOrientation(boolean isLandscape) {
+                LiveBottomButton.this.onOrientation(isLandscape);
+            }
+
+            @Override
             public void updateMuteBtn(boolean isMute) {
                 mMuteBtn.setSelected(isMute);
+            }
+
+            @Override
+            public void onUpdateUnreadCount(int unreadCount) {
+                mMsgCntBtn.setMsgUnreadCnt(unreadCount);
             }
         }
         return new ComponentView();
@@ -185,5 +189,9 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
          */
         void updateMuteBtn(boolean isMute);
 
+        /**
+         * 更新私信未读数
+         */
+        void onUpdateUnreadCount(int unreadCount);
     }
 }

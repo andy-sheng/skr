@@ -15,6 +15,7 @@ import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.liveshow.view.button.MagicControlBtnView;
 import com.wali.live.livesdk.live.liveshow.view.button.PlusControlBtnView;
 import com.wali.live.statistics.StatisticsKey;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.view.MsgCtrlBtnView;
 
 import static com.wali.live.statistics.StatisticsKey.AC_APP;
@@ -95,19 +96,18 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         int id = view.getId();
         String msgType = "";
         if (id == R.id.plus_btn) {
-            mPresenter.showPlusPanel();
-            // TODO 增加打点
+            mPresenter.showPlusPanel(); // TODO 增加打点
         } else if (id == R.id.setting_btn) {
             mPresenter.showSettingPanel();
             msgType = StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_SET;
         } else if (id == R.id.magic_btn) {
-            mPresenter.showMagicPanel();
-            // TODO 增加打点
+            mPresenter.showMagicPanel(); // TODO 增加打点
         } else if (id == R.id.share_btn) {
             mPresenter.showShareView();
         } else if (id == R.id.msg_ctrl_btn) {
-            mMsgCntBtn.setMsgUnreadCnt(0);
-            mPresenter.showMsgCtrlView();
+            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                mPresenter.showMsgCtrlView();
+            }
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
@@ -123,14 +123,18 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
          */
         class ComponentView implements IView {
             @Override
+            public <T extends View> T getRealView() {
+                return (T) mContentContainer;
+            }
+
+            @Override
             public void onOrientation(boolean isLandscape) {
                 LiveBottomButton.this.onOrientation(isLandscape);
             }
 
-            @Nullable
             @Override
-            public <T extends View> T getRealView() {
-                return (T) mContentContainer;
+            public void onUpdateUnreadCount(int unreadCount) {
+                mMsgCntBtn.setMsgUnreadCnt(unreadCount);
             }
         }
         return new ComponentView();
@@ -164,5 +168,9 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
+        /**
+         * 更新私信未读数
+         */
+        void onUpdateUnreadCount(int unreadCount);
     }
 }

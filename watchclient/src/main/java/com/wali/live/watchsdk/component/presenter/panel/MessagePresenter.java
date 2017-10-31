@@ -14,6 +14,7 @@ import com.base.activity.BaseActivity;
 import com.base.fragment.BaseFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.log.MyLog;
+import com.base.thread.ThreadPool;
 import com.base.utils.CommonUtils;
 import com.mi.live.data.user.User;
 import com.thornbirds.component.IEventController;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Subscription;
@@ -189,10 +191,23 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
         }
     }
 
+    private void markAsReadAsync(final long target) {
+        ThreadPool.runOnPool(new Runnable() {
+            @Override
+            public void run() {
+                ConversationLocalStore.markConversationAsRead(target, SixinMessage.TARGET_TYPE_USER);
+            }
+        });
+    }
+
     @Override
     public void onConversationClick(
             @NonNull Context context, @NonNull ConversationAdapter.ConversationItem item) {
         if (item.uid == Conversation.UNFOCUS_CONVERSATION_TARGET) {
+            if (item.unreadCount > 0) {
+                item.unreadCount = 0;
+                markAsReadAsync(item.uid);
+            }
             switchToUnFocusMode();
         } else {
             PopComposeMessageFragment.open((BaseActivity) context, item.getSixinTarget(), true);
@@ -283,11 +298,6 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(ConversationLocalStore.NotifyUnreadCountChangeEvent event) {
-//        onAddOrUpdateItem(event.conversation);
-    }
-
     @Override
     public boolean onEvent(int event, IParams
             params) {
@@ -340,6 +350,7 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
             MyLog.d(TAG, "syncAllConversions");
             final boolean needSyncAll = mNeedSyncAll;
             mSyncSubscription = Observable.just(0)
+                    .delay(100, TimeUnit.MILLISECONDS)
                     .map(new Func1<Integer, List<Conversation>>() {
                         @Override
                         public List<Conversation> call(Integer integer) {

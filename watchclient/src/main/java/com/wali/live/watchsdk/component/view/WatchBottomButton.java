@@ -2,7 +2,6 @@ package com.wali.live.watchsdk.component.view;
 
 import android.animation.ValueAnimator;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
@@ -41,7 +40,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     private ValueAnimator mShakeAnimator;
 
     @Override
-    protected String getTAG() {
+    protected final String getTAG() {
         return TAG;
     }
 
@@ -57,15 +56,15 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             mPresenter.rotateScreen();
         } else if (id == R.id.game_btn) {
             mPresenter.showGameDownloadView();
-            //点击的同时清除动画
-            clearAnimator();
+            clearAnimator(); // 点击的同时清除动画
         } else if (id == R.id.share_btn) {
             if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.showShareView();
             }
         } else if (id == R.id.msg_ctrl_btn) {
-            mMsgCntBtn.setMsgUnreadCnt(0);
-            mPresenter.showMsgCtrlView();
+            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                mPresenter.showMsgCtrlView();
+            }
         }
     }
 
@@ -175,7 +174,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         mShakeAnimator.start();
     }
 
-    private void destroyView() {
+    private final void destroyView() {
         clearAnimator();
     }
 
@@ -197,7 +196,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         }
     }
 
-    public void postSwitch(boolean isGameMode) {
+    public final void postSwitch(boolean isGameMode) {
         mIsGameMode = isGameMode;
     }
 
@@ -208,14 +207,13 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
          */
         class ComponentView implements IView {
             @Override
-            public void onOrientation(boolean isLandscape) {
-                WatchBottomButton.this.onOrientation(isLandscape);
-            }
-
-            @Nullable
-            @Override
             public <T extends View> T getRealView() {
                 return (T) mContentContainer;
+            }
+
+            @Override
+            public void onOrientation(boolean isLandscape) {
+                WatchBottomButton.this.onOrientation(isLandscape);
             }
 
             @Override
@@ -226,6 +224,11 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             @Override
             public void destroyView() {
                 WatchBottomButton.this.destroyView();
+            }
+
+            @Override
+            public void onUpdateUnreadCount(int unreadCount) {
+                mMsgCntBtn.setMsgUnreadCnt(unreadCount);
             }
         }
         return new ComponentView();
@@ -267,5 +270,10 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         void showGameIcon(GameViewModel gameModel);
 
         void destroyView();
+
+        /**
+         * 更新私信未读数
+         */
+        void onUpdateUnreadCount(int unreadCount);
     }
 }
