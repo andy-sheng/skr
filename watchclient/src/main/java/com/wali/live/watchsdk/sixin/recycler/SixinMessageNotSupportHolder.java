@@ -11,12 +11,12 @@ import com.wali.live.watchsdk.sixin.message.SixinMessageModel;
 /**
  * Created by lan on 16-5-20.
  */
-public class SixinMessageDefaultHolder extends BaseHolder<SixinMessageModel> {
+public class SixinMessageNotSupportHolder extends BaseHolder<SixinMessageModel> {
     private MLTextView mTimestampTv;
 
     private SixinMessageAdapter mAdapter;
 
-    public SixinMessageDefaultHolder(View itemView, SixinMessageAdapter adapter) {
+    public SixinMessageNotSupportHolder(View itemView, SixinMessageAdapter adapter) {
         super(itemView);
         mAdapter = adapter;
     }
