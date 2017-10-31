@@ -29,6 +29,27 @@ public abstract class BaseContainerPresenter<VIEW_GROUP extends ViewGroup>
 
     protected BaseBottomPanel<? extends View, VIEW_GROUP> mCurrPanel;
 
+    @CheckResult
+    protected final static <T> T deRef(Reference<T> reference) {
+        return reference != null ? reference.get() : null;
+    }
+
+    protected final static void destroyRef(Reference<? extends IEventPresenter> reference) {
+        IEventPresenter presenter = deRef(reference);
+        if (presenter != null) {
+            presenter.destroy();
+        }
+    }
+
+    protected final static void setupComponent(IEventView view, IEventPresenter presenter) {
+        presenter.setView(view.getViewProxy());
+        view.setPresenter(presenter);
+    }
+
+    protected final static void setupHybridComponent(IEventPresenter presenter, View view) {
+        presenter.setView(view);
+    }
+
     public BaseContainerPresenter(@NonNull IEventController controller) {
         super(controller);
     }
@@ -67,27 +88,6 @@ public abstract class BaseContainerPresenter<VIEW_GROUP extends ViewGroup>
         if (mCurrPanel != null) {
             mCurrPanel.onOrientation(mIsLandscape);
         }
-    }
-
-    @CheckResult
-    protected final static <T> T deRef(Reference<T> reference) {
-        return reference != null ? reference.get() : null;
-    }
-
-//    protected final static void destroyRef(Reference<? extends IEventPresenter> reference) {
-//        IEventPresenter presenter = deRef(reference);
-//        if (presenter != null) {
-//            presenter.destroy();
-//        }
-//    }
-
-    protected final static void setupComponent(IEventView view, IEventPresenter presenter) {
-        presenter.setView(view.getViewProxy());
-        view.setPresenter(presenter);
-    }
-
-    protected final static void setupHybridComponent(IEventPresenter presenter, View view) {
-        presenter.setView(view);
     }
 
 }

@@ -11,6 +11,8 @@ import com.wali.live.livesdk.live.liveshow.view.LiveBottomButton;
 import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import rx.Observable;
 import rx.Subscription;
@@ -64,6 +66,18 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<LiveBottomButton.I
         super.stopPresenter();
         unregisterAllAction();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ConversationLocalStore.NotifyUnreadCountChangeEvent event) {
+        if (event == null || mView == null) {
+            return;
+        }
+        mView.onUpdateUnreadCount((int) event.unreadCount);
+        if (mSubscription != null) {
+            mSubscription.unsubscribe();
+            mSubscription = null;
+        }
     }
 
     // TODO-YangLi 相同代码，可以考虑抽取基类

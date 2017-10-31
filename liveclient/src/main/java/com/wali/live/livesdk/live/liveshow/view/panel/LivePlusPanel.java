@@ -22,8 +22,6 @@ import java.util.List;
 
 /**
  * Created by yangli on 2017/03/09.
- * <p>
- * Generated using create_bottom_panel.py
  *
  * @module 秀场直播加面板视图
  */
