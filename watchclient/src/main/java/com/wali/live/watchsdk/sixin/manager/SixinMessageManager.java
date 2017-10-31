@@ -1,10 +1,14 @@
 package com.wali.live.watchsdk.sixin.manager;
 
 import android.os.Message;
+import android.util.LongSparseArray;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.config.GetConfigManager;
+import com.mi.live.data.event.DatabaseChangedEvent;
+import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.callback.MiLinkPacketDispatcher;
 import com.mi.live.data.milink.command.MiLinkCommand;
@@ -13,6 +17,7 @@ import com.mi.live.data.preference.MLPreferenceUtils;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.wali.live.dao.Conversation;
+import com.wali.live.dao.Relation;
 import com.wali.live.dao.SixinMessage;
 import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.statistics.StatisticUtils;
@@ -329,6 +334,61 @@ public class SixinMessageManager implements MiLinkPacketDispatcher.PacketDataHan
                 if (conversation != null && (conversation.getMsgId().equals(sixinMessage.getId()) || sixinMessage.getMsgTyppe() == SixinMessage.S_MSG_TYPE_DRAFT)) {
                     ConversationLocalStore.updateConversationBySixinMessage(conversation, sixinMessage);
                     ConversationLocalStore.updateConversation(conversation);
+                }
+            }
+        }
+    }
+
+    /**
+     * 接收　关系的变动 并修改对话的信息
+     */
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(DatabaseChangedEvent event) {
+        if (event != null && event.type == DatabaseChangedEvent.TYPE_DB_RELATION && event.action != DatabaseChangedEvent.ACTION_REMOVE) {
+            List<Relation> relationList = (List<Relation>) event.data;
+            if (relationList != null) {
+                LongSparseArray<Relation> datas = new LongSparseArray<>();
+                ArrayList targetIdList = new ArrayList(relationList.size());
+                for (Relation item : relationList) {
+                    if (item != null) {
+                        datas.put(item.getUserId(), item);
+                        targetIdList.add(item.getUserId());
+                    }
+                }
+                if (datas.size() > 0) {
+                    List<Long> whiteList = GetConfigManager.getInstance().getSixinSystemServiceNumWhiteList();
+                    List<Conversation> conversations = ConversationLocalStore.getConversationByTargets(targetIdList);
+                    List<Conversation> needUpdateCertificationTypeConversations = new ArrayList<>();
+                    if (conversations != null && conversations.size() > 0) {
+                        for (Conversation conversation : conversations) {
+                            // 检测是否有conversation的certificationType需要更新
+                            Relation relation = datas.get(conversation.getId());
+                            if (relation != null && (!relation.getCertificationType().equals(conversation.getCertificationType()))) {
+                                conversation.setCertificationType(relation.getCertificationType());
+                                needUpdateCertificationTypeConversations.add(conversation);
+                            }
+
+                            if (relation != null && (!relation.getUserNickname().equals(conversation.getTargetName()))) {
+                                conversation.setTargetName(relation.getUserNickname());
+                                needUpdateCertificationTypeConversations.add(conversation);
+                            }
+
+                            if (whiteList != null && whiteList.contains(conversation.getTarget())) {
+                                continue;
+                            }
+                            if (!conversation.hasFocusKey() || conversation.getFocusStatue() != datas.get(conversation.getTarget()).getFocusStatue()) {
+                                Message message = Message.obtain();
+                                message.what = MESSAGE_CONVERSATION_CHANGE_FOUCES_STATUS_NOT_BY_ME;
+                                message.arg1 = datas.get(conversation.getTarget()).getIsFollowing() ? FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW : FollowOrUnfollowEvent.EVENT_TYPE_UNFOLLOW;
+                                message.arg2 = datas.get(conversation.getTarget()).getIsBothway() ? 1 : 0;
+                                message.obj = conversation.getTarget();
+                                mCustomHandlerThread.sendMessage(message);
+                            }
+                        }
+                    }
+                    if (needUpdateCertificationTypeConversations.size() > 0) {
+                        ConversationLocalStore.updateConversations(needUpdateCertificationTypeConversations);
+                    }
                 }
             }
         }

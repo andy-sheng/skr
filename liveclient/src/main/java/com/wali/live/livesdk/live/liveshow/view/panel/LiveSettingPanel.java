@@ -99,12 +99,6 @@ public class LiveSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
                 }
             });
 
-    protected final void $click(View view, View.OnClickListener listener) {
-        if (view != null) {
-            view.setOnClickListener(listener);
-        }
-    }
-
     @Override
     public void onClick(View v) {
         if (mPresenter == null) {

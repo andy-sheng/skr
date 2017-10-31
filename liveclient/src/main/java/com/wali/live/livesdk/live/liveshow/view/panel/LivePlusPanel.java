@@ -38,12 +38,6 @@ public class LivePlusPanel extends BaseBottomPanel<RecyclerView, RelativeLayout>
 
     private PlusItemAdapter mAdapter;
 
-    protected final void $click(View view, View.OnClickListener listener) {
-        if (view != null) {
-            view.setOnClickListener(listener);
-        }
-    }
-
     @Override
     public void onClick(View v) {
         if (mPresenter == null) {
@@ -60,12 +54,12 @@ public class LivePlusPanel extends BaseBottomPanel<RecyclerView, RelativeLayout>
     }
 
     @Override
-    protected int getLayoutResId() {
+    protected final int getLayoutResId() {
         return R.layout.plus_control_panel;
     }
 
     @Override
-    public void setPresenter(@Nullable IPresenter iPresenter) {
+    public final void setPresenter(@Nullable IPresenter iPresenter) {
         mPresenter = iPresenter;
     }
 

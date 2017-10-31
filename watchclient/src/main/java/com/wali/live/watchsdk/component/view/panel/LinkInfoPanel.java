@@ -42,13 +42,6 @@ public class LinkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayou
     private View mFollowBtn;
     private View mEnterRoomView;
 
-
-    protected final void $click(View view, View.OnClickListener listener) {
-        if (view != null) {
-            view.setOnClickListener(listener);
-        }
-    }
-
     @Override
     public void onClick(View view) {
         if (mPresenter == null) {
@@ -63,12 +56,12 @@ public class LinkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayou
     }
 
     @Override
-    protected int getLayoutResId() {
+    protected final int getLayoutResId() {
         return R.layout.link_info_panel;
     }
 
     @Override
-    public void setPresenter(@Nullable IPresenter iPresenter) {
+    public final void setPresenter(@Nullable IPresenter iPresenter) {
         mPresenter = iPresenter;
     }
 

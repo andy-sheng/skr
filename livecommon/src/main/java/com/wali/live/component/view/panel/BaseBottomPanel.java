@@ -41,12 +41,18 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
     @LayoutRes
     protected abstract int getLayoutResId();
 
-    protected <T> T $(int id) {
+    protected final <T> T $(int id) {
         return (T) mContentView.findViewById(id);
     }
 
-    protected void $click(int id, View.OnClickListener listener) {
+    protected final void $click(int id, View.OnClickListener listener) {
         mContentView.findViewById(id).setOnClickListener(listener);
+    }
+
+    protected final void $click(View view, View.OnClickListener listener) {
+        if (view != null) {
+            view.setOnClickListener(listener);
+        }
     }
 
     protected String getTAG() {

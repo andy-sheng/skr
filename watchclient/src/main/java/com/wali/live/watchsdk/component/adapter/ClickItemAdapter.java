@@ -57,6 +57,11 @@ public abstract class ClickItemAdapter<ITEM extends ClickItemAdapter.BaseItem,
         notifyDataSetChanged();
     }
 
+    public void clearData() {
+        mItems.clear();
+        notifyDataSetChanged();
+    }
+
     public void setClickListener(LISTENER listener) {
         mListener = listener;
     }

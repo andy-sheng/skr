@@ -218,6 +218,7 @@
     <string name="msg_send_failed_illege_text">Couldn\'t send, message contains unsupported characters</string>
     <string name="sixin_say_hello_result_code_failed_duplicated">Message sent, waiting for reply</string>
     <string name="sixin_model_message">Messages</string>
+    <string name="sixin_model_unattention">New messages</string>
     <string name="user_name_999">Mi Live customer service</string>
     <string name="user_name_888">Mi Live partnership</string>
     <string name="user_name_100000">Mi Live official account</string>

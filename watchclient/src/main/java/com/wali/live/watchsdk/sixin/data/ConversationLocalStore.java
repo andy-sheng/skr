@@ -17,6 +17,7 @@ import com.wali.live.dao.SixinMessage;
 import com.wali.live.watchsdk.R;
 
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class ConversationLocalStore {
         if (conversations == null) {
             conversations = new ArrayList<>();
         }
-        addPermanentConversationIfNeed(conversations);
+//        addPermanentConversationIfNeed(conversations);
         return conversations;
     }
 
@@ -161,7 +162,124 @@ public class ConversationLocalStore {
 
             updateConversation(conversation);
         }
-//        insertOrUpdateUnFoucsRobotConversation(conversation, 1, needUpdateUnreadCount);
+        insertOrUpdateUnFoucsRobotConversation(conversation, 1, needUpdateUnreadCount);
+    }
+
+    public static void insertOrUpdateUnFoucsRobotConversation(Conversation conversation, int unreadCountInConversation, boolean needUpdateUnReadCount) {
+        if (conversation != null && conversation.getIsNotFocus()) {
+//            boolean isInTrashbin = TrashBinStore.isInTrashBin(conversation.getTarget());
+            boolean isInTrashbin = false; // TODO-YangLi 加入垃圾箱逻辑
+            Conversation robot = getConversationByTarget(Conversation.UNFOCUS_CONVERSATION_TARGET, SixinMessage.TARGET_TYPE_USER);
+            if (robot == null) {
+                long userId = UserAccountManager.getInstance().getUuidAsLong();
+                robot = new Conversation();
+                robot.setTarget(Conversation.UNFOCUS_CONVERSATION_TARGET);
+                robot.setLocaLUserId(userId);
+                if (needUpdateUnReadCount && !isInTrashbin) {
+                    robot.setUnreadCount(unreadCountInConversation);
+                } else {
+                    robot.setUnreadCount(0);
+                }
+                robot.setIsNotFocus(false);
+                robot.setTargetName(GlobalData.app().getString(com.mi.live.data.R.string.unfocus_robot_name));
+                robot.setIgnoreStatus(Conversation.IGNOE_BUT_SHOW_UNREAD);
+                if (isInTrashbin) {
+                    robot.setReceivedTime(0l);
+                    robot.setSendTime(0l);
+                } else {
+                    robot.setReceivedTime(conversation.getReceivedTime());
+                    robot.setSendTime(conversation.getSendTime());
+                }
+
+                robot.setLastMsgSeq(conversation.getLastMsgSeq());
+                robot.setMsgId(conversation.getMsgId());
+                robot.setTargetType(SixinMessage.TARGET_TYPE_USER);
+                if (!isInTrashbin) {
+                    robot.setContent(conversation.getContent());
+                    robot.setMsgType(conversation.getMsgType());
+                    robot.setSendTime(conversation.getSendTime());
+                    robot.setReceivedTime(conversation.getReceivedTime());
+                } else {
+                    robot.setContent("");
+                    robot.setMsgType(SixinMessage.S_MSG_TYPE_TEXT);
+                    robot.setReceivedTime(0l);
+                    robot.setSendTime(0l);
+                }
+                if (!TextUtils.isEmpty(conversation.getExt())) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(conversation.getExt());
+                        long sender = jsonObject.optLong(Conversation.EXT_SENDER);
+                        if (!isInTrashbin) {
+                            if (sender == MyUserInfoManager.getInstance().getUuid()) {
+                                String me = GlobalData.app().getString(com.mi.live.data.R.string.me);
+                                robot.setContent(me + ": " + conversation.getContent());
+                            } else {
+                                robot.setContent(conversation.getTargetName() + ": " + conversation.getContent());
+                            }
+                        }
+                        if (needUpdateUnReadCount && conversation.getIsNotFocus() && isInTrashbin) {
+                            //如果是在垃圾箱中，则需要更新下 垃圾箱未读数
+                            jsonObject.put(Conversation.EXT_RUBBISH_UNREAD_COUNT, conversation.getUnreadCount());
+//                            EventBus.getDefault().post(new NotifyTrashBinCountEvent(conversation.getUnreadCount())); TODO-YangLi 加入垃圾箱逻辑
+                        }
+                        robot.setExt(jsonObject.toString());
+                    } catch (Exception e) {
+                        MyLog.e(e);
+                    }
+                }
+                long cid = GreenDaoManager.getDaoSession(GlobalData.app()).getConversationDao().insert(robot);
+                robot.setId(cid);
+                EventBus.getDefault().post(new ConversationInsertEvent(robot));
+            } else {
+                if (!isInTrashbin && conversation.getReceivedTime() > robot.getReceivedTime() || (conversation.getSendTime().equals(robot.getSendTime()) && conversation.getMsgId() >= robot.getMsgId())) {
+                    robot.setSendTime(conversation.getSendTime());
+                    robot.setReceivedTime(conversation.getReceivedTime());
+                    robot.setContent(conversation.getContent());
+                    robot.setLastMsgSeq(conversation.getLastMsgSeq());
+                    robot.setMsgType(conversation.getMsgType());
+                    robot.setMsgId(conversation.getMsgId());
+                    if (!TextUtils.isEmpty(conversation.getExt())) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(conversation.getExt());
+                            long sender = jsonObject.optLong(Conversation.EXT_SENDER);
+                            if (sender == MyUserInfoManager.getInstance().getUuid()) {
+                                String me = GlobalData.app().getString(com.mi.live.data.R.string.me);
+                                robot.setContent(me + ": " + conversation.getContent());
+                            } else {
+                                robot.setContent(conversation.getTargetName() + ": " + conversation.getContent());
+                            }
+                            if (TextUtils.isEmpty(conversation.getContent())) {
+                                robot.setContent("");
+                            }
+                            robot.setExt(jsonObject.toString());
+                        } catch (Exception e) {
+                            MyLog.e(e);
+                        }
+                    }
+                }
+
+                if (needUpdateUnReadCount && conversation.getIsNotFocus() && isInTrashbin) {
+                    //如果是在垃圾箱中，则需要更新下 垃圾箱未读数
+                    try {
+                        JSONObject jsonObject1 = new JSONObject(robot.getExt());
+                        int unreadCount = jsonObject1.optInt(Conversation.EXT_RUBBISH_UNREAD_COUNT, 0);
+                        jsonObject1.put(Conversation.EXT_RUBBISH_UNREAD_COUNT, unreadCountInConversation + unreadCount);
+                        robot.setExt(jsonObject1.toString());
+                        MyLog.v("testData NotifyTrashBinCountEvent post" + unreadCount + unreadCountInConversation);
+//                        EventBus.getDefault().post(new NotifyTrashBinCountEvent(unreadCount + unreadCountInConversation)); TODO-YangLi 加入垃圾箱逻辑
+                    } catch (Exception e) {
+                        MyLog.e(e);
+                    }
+                }
+
+                if (!isInTrashbin && needUpdateUnReadCount && conversation.getUnreadCount() != null && conversation.getUnreadCount() > 0) {
+                    int count = robot.getUnreadCount() == null ? conversation.getUnreadCount() : robot.getUnreadCount() + unreadCountInConversation;
+                    robot.setUnreadCount(count);
+                }
+
+                updateConversation(robot);
+            }
+        }
     }
 
     public static void updateConversation(Conversation conversation) {
@@ -344,6 +462,33 @@ public class ConversationLocalStore {
         return count;
     }
 
+    public static List<Conversation> getConversationByTargets(List<Long> targets) {
+        if (targets != null && targets.size() > 0) {
+            List<Long> targetsCopy = new ArrayList<>(targets);
+            int location = 0;
+            List<Conversation> conversations = new ArrayList<>();
+            while (location < targetsCopy.size()) {
+                List<Long> ranges = targetsCopy.subList(location, (location + MAX_QUERY_NUM_COUNT) > targetsCopy.size() ? targetsCopy.size() : location + MAX_QUERY_NUM_COUNT);
+                ConversationDao dao = GreenDaoManager.getDaoSession(GlobalData.app()).getConversationDao();
+                QueryBuilder queryBuilder = dao.queryBuilder();
+                queryBuilder.where(ConversationDao.Properties.Target.in(ranges));
+                queryBuilder.build();
+                conversations.addAll(queryBuilder.list());
+                location = ranges.size() + location;
+            }
+            if (conversations != null && conversations.size() > 0) {
+                MyLog.v("SixinMessageManage load by targets:" + conversations.size());
+                return conversations;
+            }
+        }
+        return null;
+    }
+
+    public static void updateConversations(List<Conversation> conversations) {
+        GreenDaoManager.getDaoSession(GlobalData.app()).getConversationDao().updateInTx(conversations);
+        EventBus.getDefault().post(new ConversationListUpdateEvent(conversations));
+    }
+
     public static class ConversationInsertEvent {
         public Conversation conversation;
 
@@ -357,6 +502,14 @@ public class ConversationLocalStore {
 
         public ConversationUpdateEvent(Conversation conversation) {
             this.conversation = conversation;
+        }
+    }
+
+    public static class ConversationListUpdateEvent {
+        public List<Conversation> conversations;
+
+        public ConversationListUpdateEvent(List<Conversation> conversations) {
+            this.conversations = conversations;
         }
     }
 

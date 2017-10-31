@@ -124,6 +124,20 @@ public class Relation implements java.io.Serializable {
     }
 
     // KEEP METHODS - put your custom methods here
+    /**
+     * 获取　对应私信的　关注状态
+     *
+     * @return
+     */
+    public int getFocusStatue() {
+        int focusStatue = SixinMessage.MSG_STATUS_UNFOUCS;
+        if (getIsBothway() != null && getIsBothway()) {
+            focusStatue = SixinMessage.MSG_STATUE_BOTHFOUCS;
+        } else if (getIsFollowing() != null && getIsFollowing()) {
+            focusStatue = SixinMessage.MSG_STATUS_ONLY_ME_FOUCS;
+        }
+        return focusStatue;
+    }
     // KEEP METHODS END
 
 }
