@@ -21,14 +21,16 @@ import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.log.MyLog;
 import com.base.view.BackTitleBar;
 import com.wali.live.common.smiley.SmileyParser;
+import com.wali.live.dao.SixinMessage;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.sixin.cache.SendingMessageCache;
 import com.wali.live.watchsdk.sixin.constant.SixinConstants;
 import com.wali.live.watchsdk.sixin.data.SixinMessageLocalStore;
 import com.wali.live.watchsdk.sixin.message.SixinMessageModel;
 import com.wali.live.watchsdk.sixin.pojo.SixinTarget;
 import com.wali.live.watchsdk.sixin.presenter.ISixinMessageView;
 import com.wali.live.watchsdk.sixin.presenter.SixinMessagePresenter;
-import com.wali.live.watchsdk.sixin.recycler.SixinMessageAdapter;
+import com.wali.live.watchsdk.sixin.recycler.adapter.SixinMessageAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -185,6 +187,13 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
         }
     }
 
+    private void updateData(SixinMessageModel messageModel) {
+        MyLog.d(TAG, "updateData");
+        if (messageModel != null) {
+            mMessageAdapter.updateData(messageModel);
+        }
+    }
+
     @Override
     public void stopRefreshing() {
         mRefreshLayout.setRefreshing(false);
@@ -215,9 +224,9 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(final SixinMessageLocalStore.SixinMessageBulkInsertEvent event) {
-        MyLog.d(TAG, "SixinMessageBulkInsertEvent");
+        MyLog.d(TAG, "sixin message bulk insert");
         if (event == null || !event.needsUpdateUi) {
             return;
         }
@@ -225,6 +234,23 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
             return;
         }
         mMessagePresenter.notifyMessage(event.sixinMessages);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(SixinMessageLocalStore.SixinMessageUpdateEvent event) {
+        MyLog.d(TAG, "sixin message update");
+        if (event == null) {
+            return;
+        }
+        SixinMessage sixinMessage = event.sixinMessage;
+        if (sixinMessage == null || sixinMessage.getTarget() != mSixinTarget.getUid()) {
+            return;
+        }
+
+        if (!sixinMessage.getIsInbound() && sixinMessage.getOutboundStatus() == SixinMessage.OUTBOUND_STATUS_RECEIVED) {
+            SendingMessageCache.remove(sixinMessage.getId());
+        }
+        updateData(new SixinMessageModel(sixinMessage));
     }
 
     @Override

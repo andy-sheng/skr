@@ -2,8 +2,10 @@ package com.wali.live.watchsdk.sixin.presenter;
 
 import com.base.log.MyLog;
 import com.base.mvp.BaseRxPresenter;
+import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.wali.live.dao.Conversation;
 import com.wali.live.dao.SixinMessage;
+import com.wali.live.watchsdk.sixin.cache.SendingMessageCache;
 import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
 import com.wali.live.watchsdk.sixin.data.SixinMessageCloudStore;
 import com.wali.live.watchsdk.sixin.data.SixinMessageLocalStore;
@@ -84,6 +86,11 @@ public class SixinMessagePresenter extends BaseRxPresenter<ISixinMessageView> {
                         SixinMessage sixinMessage = SixinMessageLocalStore.getTextSixinMessageAndNotInsertToDB(mSixinTarget.getNickname(), mSixinTarget.getUid(), mSixinTarget.getTargetType(), message,
                                 mSixinTarget.getFocusState(), mSixinTarget.getCertificationType());
                         SixinMessageLocalStore.insertSixinMessage(sixinMessage);
+
+                        if (!sixinMessage.getIsInbound() && MiLinkClientAdapter.getsInstance().isMiLinkLogined()) {
+                            SendingMessageCache.put(sixinMessage.getId(), System.currentTimeMillis());
+                        }
+
                         mSixinMessageCloudStore.send(sixinMessage);
                     }
                 }, new Action1<Throwable>() {

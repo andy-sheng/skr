@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.sixin.recycler;
+package com.wali.live.watchsdk.sixin.recycler.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import com.wali.live.dao.SixinMessage;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.lit.recycler.holder.BaseHolder;
 import com.wali.live.watchsdk.sixin.message.SixinMessageModel;
+import com.wali.live.watchsdk.sixin.recycler.SixinMessageHolder;
+import com.wali.live.watchsdk.sixin.recycler.SixinMessageNotSupportHolder;
+import com.wali.live.watchsdk.sixin.recycler.SixinMessageRightHolder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,6 +53,14 @@ public class SixinMessageAdapter extends RecyclerView.Adapter<BaseHolder> {
         }
         Collections.sort(mDataList);
         notifyDataSetChanged();
+    }
+
+    public void updateData(SixinMessageModel messageModel) {
+        SixinMessageModel originModel = isContain(messageModel);
+        if (originModel != null) {
+            originModel.updateModel(messageModel);
+            notifyItemChanged(mDataList.indexOf(originModel));
+        }
     }
 
     private SixinMessageModel isContain(SixinMessageModel paramModel) {
@@ -116,7 +127,7 @@ public class SixinMessageAdapter extends RecyclerView.Adapter<BaseHolder> {
                 break;
             case TYPE_RIGHT_ITEM:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sixin_message_right_item, parent, false);
-                holder = new SixinMessageHolder(view, this);
+                holder = new SixinMessageRightHolder(view, this);
                 break;
             default:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sixin_message_default_item, parent, false);

@@ -24,6 +24,7 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.lit.recycler.holder.BaseHolder;
 import com.wali.live.watchsdk.sixin.constant.SixinConstants;
 import com.wali.live.watchsdk.sixin.message.SixinMessageModel;
+import com.wali.live.watchsdk.sixin.recycler.adapter.SixinMessageAdapter;
 
 /**
  * Created by lan on 16-5-20.
@@ -36,7 +37,7 @@ public class SixinMessageHolder extends BaseHolder<SixinMessageModel> {
 
     private ViewGroup mBubbleArea;
 
-    private SixinMessageAdapter mAdapter;
+    protected SixinMessageAdapter mAdapter;
 
     public SixinMessageHolder(View itemView, SixinMessageAdapter adapter) {
         super(itemView);
@@ -63,7 +64,7 @@ public class SixinMessageHolder extends BaseHolder<SixinMessageModel> {
         setBubbleOnType();
     }
 
-    private boolean setTimestamp() {
+    protected boolean setTimestamp() {
         if (mPosition - 1 >= 0) {
             SixinMessageModel lastModel = mAdapter.getItem(mPosition - 1);
             if (lastModel != null) {
@@ -105,13 +106,15 @@ public class SixinMessageHolder extends BaseHolder<SixinMessageModel> {
         }
     }
 
-    public void setBubbleOnType() {
+    protected void setBubbleOnType() {
         if (mViewModel.getMsgType() == SixinMessage.S_MSG_TYPE_TEXT) {
-            bindTextMessage();
+            bindTextMessage(mViewModel.getBody());
+        } else {
+            bindTextMessage(itemView.getResources().getString(R.string.message_not_supported));
         }
     }
 
-    public void bindTextMessage() {
+    protected void bindTextMessage(String body) {
         if (mBubbleArea.getTag() != null && mBubbleArea.getTag().equals(String.valueOf(mViewModel.getMsgId()))) {
             return;
         } else {
@@ -120,9 +123,9 @@ public class SixinMessageHolder extends BaseHolder<SixinMessageModel> {
         ViewGroup bubbleArea = addBubbleView(R.layout.message_bubble_text, mBubbleArea);
         TextView bodyTextView = $(mBubbleArea, R.id.text_view);
 
-        if (!TextUtils.isEmpty(mViewModel.getBody())) {
+        if (!TextUtils.isEmpty(body)) {
             CharSequence charSequence = SmileyParser.getInstance().addSmileySpans(GlobalData.app(),
-                    mViewModel.getBody(), DisplayUtils.dip2px(16.0f), true, false, true);
+                    body, DisplayUtils.dip2px(16.0f), true, false, true);
             SpannableStringBuilder ssb = (SpannableStringBuilder) charSequence;
             bodyTextView.setText(ssb);
         } else {
@@ -143,7 +146,7 @@ public class SixinMessageHolder extends BaseHolder<SixinMessageModel> {
         setPaddingByInbound(mViewModel.isInbound(), R.id.text_view, bubbleArea);
     }
 
-    private ViewGroup addBubbleView(int layoutId, ViewGroup bubbleArea) {
+    protected ViewGroup addBubbleView(int layoutId, ViewGroup bubbleArea) {
         View bubbleView = null;
         if (bubbleArea != null) {
             int count = bubbleArea.getChildCount();
@@ -168,7 +171,7 @@ public class SixinMessageHolder extends BaseHolder<SixinMessageModel> {
         return bubbleArea;
     }
 
-    private void setPaddingByInbound(final boolean isInbound, final int backgroudResId, final ViewGroup viewGroup) {
+    protected void setPaddingByInbound(final boolean isInbound, final int backgroudResId, final ViewGroup viewGroup) {
         final View backgroundContainer = viewGroup.findViewById(backgroudResId);
         final int bottom = backgroundContainer.getPaddingBottom();
         final int top = backgroundContainer.getPaddingTop();

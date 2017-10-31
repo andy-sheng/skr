@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.mi.live.data.user.User;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.sixin.recycler.SixinMessageAdapter;
+import com.wali.live.watchsdk.sixin.recycler.adapter.SixinMessageAdapter;
 
 /**
  * Created by lan on 16-2-23.
