@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
     <View
         android:id="@+id/out_view"
         android:layout_width="match_parent"
@@ -24,7 +25,7 @@
             android:layout_centerVertical="true"
             android:padding="@dimen/margin_40"
             android:scaleType="center"
-            android:src="@drawable/live_card_close" />
+            android:src="@drawable/live_card_close"/>
 
         <!-- 顶部的头像-->
         <com.facebook.drawee.view.SimpleDraweeView
@@ -35,7 +36,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin_40"
             app:placeholderImage="@drawable/live_show_avatar_loading"
-            app:roundAsCircle="true" />
+            app:roundAsCircle="true"/>
 
         <ImageView
             android:id="@+id/edit_icon"
@@ -46,7 +47,7 @@
             android:layout_marginBottom="4dp"
             android:layout_marginEnd="4dp"
             android:src="@drawable/edit_info_icon_bg"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <!-- 微博认证角标-->
         <ImageView
@@ -58,7 +59,7 @@
             android:layout_marginTop="-14dp"
             android:layout_toEndOf="@id/top_main_avatar"
             android:scaleType="fitStart"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
 
         <!-- 贡献排名第一和本人的联系角标-->
@@ -71,7 +72,7 @@
             android:layout_toStartOf="@id/top_main_avatar"
             android:visibility="gone"
             app:placeholderImage="@drawable/live_card_relation"
-            app:roundAsCircle="true" />
+            app:roundAsCircle="true"/>
 
         <!-- 贡献排名第一的人的头像-->
         <com.facebook.drawee.view.SimpleDraweeView
@@ -82,7 +83,7 @@
             android:layout_marginTop="62.67dp"
             android:layout_toStartOf="@id/top_one_relation_avatar"
             android:visibility="gone"
-            app:placeholderImage="@drawable/live_show_avatar_loading" />
+            app:placeholderImage="@drawable/live_show_avatar_loading"/>
 
         <!-- 贡献排名第一的人的角标-->
         <ImageView
@@ -92,7 +93,7 @@
             android:layout_alignBottom="@id/top_one_avatar"
             android:layout_alignEnd="@id/top_one_avatar"
             android:background="@drawable/live_card_star_first"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <!--用户资料-->
         <include
@@ -100,7 +101,7 @@
             layout="@layout/layout_include_person_info_float"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/view_dimen_292" />
+            android:layout_marginTop="@dimen/view_dimen_292"/>
 
         <!--星票、关注、粉丝文字-->
         <LinearLayout
@@ -117,7 +118,7 @@
                 android:gravity="center"
                 android:text="@string/live_ticket"
                 android:textColor="@color/color_black_trans_80"
-                android:textSize="@dimen/text_size_36" />
+                android:textSize="@dimen/text_size_36"/>
 
             <!-- 显示关注文字-->
             <TextView
@@ -127,7 +128,7 @@
                 android:gravity="center"
                 android:text="@string/my_attention"
                 android:textColor="@color/color_black_trans_80"
-                android:textSize="@dimen/text_size_36" />
+                android:textSize="@dimen/text_size_36"/>
 
             <!--显示粉丝文字-->
             <TextView
@@ -137,7 +138,7 @@
                 android:gravity="center"
                 android:text="@string/fans"
                 android:textColor="@color/color_black_trans_80"
-                android:textSize="@dimen/text_size_36" />
+                android:textSize="@dimen/text_size_36"/>
         </LinearLayout>
 
         <!-- 星票, 关注, 粉丝数量-->
@@ -157,7 +158,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="@color/color_black_trans_40"
-                android:textSize="@dimen/text_size_42" />
+                android:textSize="@dimen/text_size_42"/>
 
             <!--　显示关注人数-->
             <TextView
@@ -167,7 +168,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="@color/color_black_trans_40"
-                android:textSize="@dimen/text_size_42" />
+                android:textSize="@dimen/text_size_42"/>
 
             <!--　显示粉丝人数-->
             <TextView
@@ -177,7 +178,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="@color/color_black_trans_40"
-                android:textSize="@dimen/text_size_42" />
+                android:textSize="@dimen/text_size_42"/>
         </LinearLayout>
 
         <!--关注禁言按钮-->
@@ -187,28 +188,51 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/count_num"
             android:layout_centerHorizontal="true"
+            android:layout_marginLeft="6.66dp"
+            android:layout_marginRight="6.66dp"
             android:layout_marginTop="14dp"
             android:orientation="horizontal">
 
             <RelativeLayout
-                android:id="@+id/follow_button"
-                android:layout_width="@dimen/view_dimen_700"
+                android:id="@+id/follow_container"
+                android:layout_width="@dimen/view_dimen_340"
                 android:layout_height="33.33dp"
                 android:background="@drawable/float_info_not_follow_bg">
 
                 <TextView
-                    android:id="@+id/follow_button_tv"
+                    android:id="@+id/follow_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="33.33dp"
                     android:layout_centerHorizontal="true"
                     android:drawablePadding="3dp"
                     android:gravity="center|center_vertical"
+                    android:text="@string/follow"
                     android:textColor="@color/color_float_person_info_follow_btn"
-                    android:textSize="@dimen/text_size_36" />
+                    android:textSize="@dimen/text_size_36"/>
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/forbid_speak"
+                android:id="@+id/message_container"
+                android:layout_width="@dimen/view_dimen_340"
+                android:layout_height="33.33dp"
+                android:layout_marginStart="6.66dp"
+                android:background="@drawable/float_info_not_follow_bg">
+
+                <TextView
+                    android:id="@+id/message_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33.33dp"
+                    android:layout_centerHorizontal="true"
+                    android:drawablePadding="3dp"
+                    android:drawableStart="@drawable/live_private_message"
+                    android:gravity="start|center_vertical"
+                    android:text="@string/private_message"
+                    android:textColor="@color/color_float_person_info_follow_btn"
+                    android:textSize="@dimen/text_size_36"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/forbid_container"
                 android:layout_width="@dimen/view_dimen_340"
                 android:layout_height="33.33dp"
                 android:layout_marginStart="6.66dp"
@@ -216,7 +240,7 @@
                 android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/forbid_speak_tv"
+                    android:id="@+id/forbid_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="33.33dp"
                     android:layout_centerHorizontal="true"
@@ -225,7 +249,7 @@
                     android:gravity="start|center_vertical"
                     android:text="@string/forbid_speak"
                     android:textColor="@color/color_float_person_info_follow_btn"
-                    android:textSize="@dimen/text_size_36" />
+                    android:textSize="@dimen/text_size_36"/>
             </RelativeLayout>
         </LinearLayout>
 
@@ -236,6 +260,6 @@
             android:layout_height="1px"
             android:layout_below="@id/admin_area"
             android:layout_marginTop="14.67dp"
-            android:background="@color/color_black_trans_10" />
+            android:background="@color/color_black_trans_10"/>
     </RelativeLayout>
 </RelativeLayout>

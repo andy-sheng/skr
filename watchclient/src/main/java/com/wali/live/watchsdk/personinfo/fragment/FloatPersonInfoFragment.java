@@ -465,7 +465,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
         mFollowCountTv = (TextView) mRootView.findViewById(R.id.follow_count_tv);
         mFansCountTv = (TextView) mRootView.findViewById(R.id.fans_count_tv);
 
-        mFollowButton = (RelativeLayout) mRootView.findViewById(R.id.follow_button);
+        mFollowButton = (RelativeLayout) mRootView.findViewById(R.id.follow_container);
         mFollowButton.setOnClickListener(this);
         mFollowButton.setTag(TAG_FOLLOW_BUTTON);
 
