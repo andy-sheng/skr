@@ -9,7 +9,6 @@ import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.config.GetConfigManager;
 import com.mi.live.data.event.DatabaseChangedEvent;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
-import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.callback.MiLinkPacketDispatcher;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
@@ -66,10 +65,28 @@ public class SixinMessageManager implements MiLinkPacketDispatcher.PacketDataHan
                     boolean needsNotifyDBInsertEvent = needNotify == 1;
                     List<SixinMessage> sixinMessages = (List<SixinMessage>) msg.obj;
                     SixinMessageLocalStore.insertSixinMessages(sixinMessages, needsNotifyDBInsertEvent);
-                    for (SixinMessage sixinMessage : sixinMessages) {
-                        if (!sixinMessage.getIsInbound() && MiLinkClientAdapter.getsInstance().isMiLinkLogined()) {
-//                            SendingMessageCache.put(sixinMessage.getId(), System.currentTimeMillis());
+                }
+                break;
+                case MESSAGE_SIXIN_HANDLE_ACK: {
+                    LiveMessageProto.ChatMessageResponse chatMessageResponse = (LiveMessageProto.ChatMessageResponse) msg.obj;
+                    if (chatMessageResponse != null) {
+                        long seq = (long) chatMessageResponse.getMsgSeq();
+                        long cid = chatMessageResponse.getCid();
+                        long time = (chatMessageResponse.getTimestamp() == 0 || chatMessageResponse.getTimestamp() == Long.MAX_VALUE) ? System.currentTimeMillis() : chatMessageResponse.getTimestamp();
+                        SixinMessage sixinMessage = SixinMessageLocalStore.getSixinMessageBySenderMsgid(cid);
+                        if (sixinMessage == null) {
+                            return;
                         }
+                        SixinMessageLocalStore.updateSixinMessageStatusAndSeq(SixinMessage.OUTBOUND_STATUS_RECEIVED, seq, cid, time);
+                    }
+                }
+                break;
+                case MESSAGE_SIXIN_UPDATE_SEND_FAILED_STATUS: {
+                    long cid = (long) msg.obj;
+                    SixinMessage sixinMessage = SixinMessageLocalStore.getSixinMessageBySenderMsgid(cid);
+                    if (sixinMessage != null) {
+                        sixinMessage.setOutboundStatus(SixinMessage.OUTBOUND_STATUS_UNSENT);
+                        SixinMessageLocalStore.updateSixinMessage(sixinMessage);
                     }
                 }
                 break;
@@ -173,18 +190,6 @@ public class SixinMessageManager implements MiLinkPacketDispatcher.PacketDataHan
             } catch (Exception e) {
                 MyLog.e(e);
             }
-        }
-    }
-
-    /**
-     * 处理聊天历史记录同步的数据包
-     * 目前只支持999号客服
-     *
-     * @param packetData
-     * @return
-     */
-    public void processSyncChatHistoryResponse(PacketData packetData) {
-        if (packetData != null) {
         }
     }
 

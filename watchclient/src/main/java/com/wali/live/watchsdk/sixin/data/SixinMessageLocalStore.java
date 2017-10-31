@@ -7,6 +7,7 @@ import com.base.log.MyLog;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.assist.Attachment;
+import com.wali.live.dao.Conversation;
 import com.wali.live.dao.SixinMessage;
 import com.wali.live.dao.SixinMessageDao;
 
@@ -61,54 +62,6 @@ public class SixinMessageLocalStore {
         }
         return sixinMessages;
     }
-
-
-//    /**
-//     * 现查询出seq不是0 的，0表示通知，查询完之后在拿出通知的最后再做merge
-//     *
-//     * @param uuid
-//     * @param limit
-//     * @param seq
-//     * @param targetType
-//     * @param excludeIds
-//     * @return
-//     */
-//    public static List<SixinMessage> getSixinMessagesByUUidSortBySeq(long uuid, int limit, long seq, int targetType, List<Long> excludeIds) {
-//        long userId = UserAccountManager.getInstance().getUuidAsLong();
-//        SixinMessageDao sixinMessageDao = GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao();
-//        QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
-//        WhereCondition whereCondition = null;
-//        if (excludeIds != null && excludeIds.size() > 0) {
-//            whereCondition = queryBuilder.and(SixinMessageDao.Properties.Id.notIn(excludeIds), SixinMessageDao.Properties.LocaLUserId.eq(userId), SixinMessageDao.Properties.Target.eq(uuid), SixinMessageDao.Properties.TargetType.eq(targetType), SixinMessageDao.Properties.MsgSeq.le(seq));
-//        } else {
-//            whereCondition = queryBuilder.and(SixinMessageDao.Properties.LocaLUserId.eq(userId), SixinMessageDao.Properties.Target.eq(uuid), SixinMessageDao.Properties.TargetType.eq(targetType), SixinMessageDao.Properties.MsgSeq.le(seq));
-//        }
-//        queryBuilder.where(whereCondition, SixinMessageDao.Properties.ServerStoreStatus.notEq(SixinMessage.SERVER_STORE_STATUS_DELETE), SixinMessageDao.Properties.MsgTyppe.notEq(SixinMessage.S_MSG_TYPE_DRAFT), SixinMessageDao.Properties.MsgSeq.notEq(0)).
-//                limit(limit).orderDesc(SixinMessageDao.Properties.MsgSeq).orderDesc(SixinMessageDao.Properties.Id).build();
-//        List<SixinMessage> sixinMessages = queryBuilder.list();
-//
-//        List<SixinMessage> notifyMessages = null;
-//        if (sixinMessages == null || sixinMessages.size() <= 0) {
-//            if (seq == Long.MAX_VALUE) {
-//                notifyMessages = getNotifyMessageByTime(uuid, limit, Long.MAX_VALUE, 0, targetType, excludeIds);
-//            }
-//        } else {
-//            long minTime = sixinMessages.get(sixinMessages.size() - 1).getReceivedTime();
-//            if (seq == Long.MAX_VALUE && sixinMessages.get(sixinMessages.size() - 1).getMsgSeq() <= 1) {
-//                minTime = 0;
-//            }
-//            notifyMessages = getNotifyMessageByTime(uuid, limit, seq == Long.MAX_VALUE ? seq : sixinMessages.get(0).getReceivedTime(), minTime, targetType, excludeIds);
-//        }
-//
-//        sixinMessages = mergeGroupMessage(sixinMessages, notifyMessages);
-//        if (sixinMessages == null || sixinMessages.size() <= 0) {
-//            return null;
-//        }
-//        if (sixinMessages.size() > limit) {
-//            sixinMessages = sixinMessages.subList(0, limit);
-//        }
-//        return sixinMessages;
-//    }
 
     public static List<SixinMessage> getNotifyMessageByTime(long uuid, int limit, long maxTime, long minTime, int targetType, List<Long> excludeIds) {
         long userId = UserAccountManager.getInstance().getUuidAsLong();
@@ -264,10 +217,26 @@ public class SixinMessageLocalStore {
         }
     }
 
-    public static void batchDeleteSixInMessage(List<Long> ids, long target, int targetType) {
-        if (ids != null && ids.size() > 0) {
-            getDaoSession(GlobalData.app()).getSixinMessageDao().deleteByKeyInTx(ids);
-            EventBus.getDefault().post(new SixInMessageBulkDeleteEvent(ids, target, targetType));
+    public static void updateSixinMessageStatusAndSeq(int status, long seq, long cid, long timestamp) {
+        SixinMessage sixinMessage = getSixinMessageBySenderMsgid(cid);
+        if (sixinMessage == null) {
+            return;
+        }
+        sixinMessage.setOutboundStatus(status);
+        sixinMessage.setMsgSeq(seq);
+        sixinMessage.setSentTime(timestamp);
+        if (Math.abs(timestamp - System.currentTimeMillis()) > 2 * 60 * 1000) { //客户端（ˇˍˇ）　想～要的效果是消息显示在发送的地方和ack无关，但是客户端时间可能和网络时间严重不一致，有严重不一致则按照ack更新下
+            sixinMessage.setReceivedTime(timestamp);
+        }
+        sixinMessage.setSenderMsgId(cid);
+        updateSixinMessage(sixinMessage);
+        if (sixinMessage.getMsgStatus().equals(SixinMessage.MSG_STATUS_UNFOUCS)) {//如果是未关注的消息需要更新对话列表
+            Conversation robotConversation = ConversationLocalStore.getConversationByTarget(Conversation.UNFOCUS_CONVERSATION_TARGET, SixinMessage.TARGET_TYPE_USER);
+            if (robotConversation != null && robotConversation.getMsgId().equals(sixinMessage.getId())) {
+                robotConversation.setReceivedTime(sixinMessage.getReceivedTime());
+                robotConversation.setSendTime(sixinMessage.getSentTime());
+                ConversationLocalStore.updateConversation(robotConversation);
+            }
         }
     }
 
@@ -324,104 +293,6 @@ public class SixinMessageLocalStore {
         return sixinMessages;
     }
 
-    public static void deleteAll() {
-        getDaoSession(GlobalData.app()).getSixinMessageDao().deleteAll();
-    }
-
-    public static void deleteMessageByRcvConversationEvent(List<Long> targets) {
-        long userId = UserAccountManager.getInstance().getUuidAsLong();
-        SixinMessageDao sixinMessageDao = getDaoSession(GlobalData.app()).getSixinMessageDao();
-        QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
-        queryBuilder.where(SixinMessageDao.Properties.LocaLUserId.eq(userId));
-        if (targets.size() == 1) {
-            queryBuilder.where(SixinMessageDao.Properties.Target.eq(targets.get(0)));
-        } else if (targets.size() == 2) {
-            queryBuilder.whereOr(SixinMessageDao.Properties.Target.eq(targets.get(0)), SixinMessageDao.Properties.Target.eq(targets.get(1)));
-        } else {
-            WhereCondition[] whereConditions = new WhereCondition[targets.size() - 2];
-            for (int i = 2; i < targets.size(); i++) {
-                whereConditions[i - 2] = SixinMessageDao.Properties.Target.eq(targets.get(i));
-            }
-            queryBuilder.whereOr(SixinMessageDao.Properties.Target.eq(targets.get(0)), SixinMessageDao.Properties.Target.eq(targets.get(1)), whereConditions);
-        }
-        queryBuilder.buildDelete().executeDeleteWithoutDetachingEntities();
-    }
-
-    /**
-     * @param time
-     * @param target
-     * @param limit
-     * @param isLt   是否是小于，不是小于则表示是大于
-     * @return
-     */
-    public static List<SixinMessage> getImageMessagesByTime(long time, long target, int targetType, int limit, boolean isLt) {
-        SixinMessageDao sixinMessageDao = getDaoSession(GlobalData.app()).getSixinMessageDao();
-        QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
-        WhereCondition timeCondition = isLt ? SixinMessageDao.Properties.ReceivedTime.le(time) : SixinMessageDao.Properties.ReceivedTime.ge(time);
-        queryBuilder.where(SixinMessageDao.Properties.Target.eq(target), SixinMessageDao.Properties.TargetType.eq(targetType), timeCondition, SixinMessageDao.Properties.MsgTyppe.eq(SixinMessage.S_MSG_TYPE_PIC), SixinMessageDao.Properties.ServerStoreStatus.notEq(SixinMessage.SERVER_STORE_STATUS_DELETE)
-                , SixinMessageDao.Properties.MsgTyppe.notEq(SixinMessage.S_MSG_TYPE_DRAFT)).limit(limit);
-        if (!isLt) {
-            queryBuilder.orderAsc(SixinMessageDao.Properties.ReceivedTime).build();
-        } else {
-            queryBuilder.orderDesc(SixinMessageDao.Properties.ReceivedTime).build();
-        }
-        List<SixinMessage> sixinMessages = queryBuilder.list();
-        if (sixinMessages != null && sixinMessages.size() > 0) {
-            return sixinMessages;
-        }
-        return null;
-    }
-
-    public static void updateSixMessageLocalPath(long msgId, String localPath) {
-        if (!TextUtils.isEmpty(localPath)) {
-            SixinMessage sixinMessage = getSixinMessageByMsgId(msgId);
-            if (sixinMessage != null) {
-                Attachment att = sixinMessage.getAtt();
-                if (att != null) {
-                    att.setLocalPath(localPath);
-                    sixinMessage.setExt(att.toJSONString());
-                    updateSixinMessage(sixinMessage);
-                }
-            }
-        }
-    }
-
-
-    public static SixinMessage getDraftSixinMessageAndNotInsertToDB(String targetName, long target, int targetType, String message
-            /*, AtMessage atMessage*/) {
-        int msgType = SixinMessage.S_MSG_TYPE_DRAFT;
-        long mySelfId = UserAccountManager.getInstance().getUuidAsLong();
-        long cid = System.currentTimeMillis() + Attachment.generateAttachmentId();
-        SixinMessage sixinMessage = new SixinMessage();
-        sixinMessage.setBody(message);
-        sixinMessage.setSentTime(Long.MAX_VALUE);
-        sixinMessage.setReceivedTime(System.currentTimeMillis());
-        sixinMessage.setIsInbound(false);
-        sixinMessage.setMsgStatus(0);
-        sixinMessage.setOutboundStatus(SixinMessage.OUTBOUND_STATUS_RECEIVED);
-        sixinMessage.setTarget(target);
-        if (targetType == SixinMessage.TARGET_TYPE_USER) {
-            sixinMessage.setTargetName(targetName);
-        } else if (targetType == SixinMessage.TARGET_TYPE_GROUP || targetType == SixinMessage.TARGET_TYPE_VFANS) {
-            sixinMessage.setTargetName(MyUserInfoManager.getInstance().getNickname());
-        }
-        sixinMessage.setSender(mySelfId);
-        sixinMessage.setMsgTyppe(msgType);
-        sixinMessage.setLocaLUserId(mySelfId);
-        sixinMessage.setSenderMsgId(cid);
-        sixinMessage.setCertificationType(0);
-        sixinMessage.setTargetType(targetType);
-        sixinMessage.setMsgSeq(Long.MAX_VALUE);
-        //TODO 群聊相关，拿掉
-//        if (atMessage != null) {
-//            Attachment attachment = new Attachment();
-//            attachment.setObjectKey(new Gson().toJson(atMessage));
-//            sixinMessage.setExt(attachment.toJSONString());
-//        }
-        return sixinMessage;
-    }
-
-
     public static SixinMessage getTextSixinMessageAndNotInsertToDB(String targetName, long target, int targetType, String message, int foucsStatus, int certificationType) {
         int msgType = SixinMessage.S_MSG_TYPE_TEXT;
         long mySelfId = UserAccountManager.getInstance().getUuidAsLong();
@@ -449,112 +320,6 @@ public class SixinMessageLocalStore {
         return sixinMessage;
     }
 
-    public static SixinMessage getAtSixinMessageAndNotInsertToDB(String targetName, long target,
-                                                                 int targetType, String message,
-                                                                 int foucsStatus,
-                                                                 int certificationType
-                                                                 /*,AtMessage atMessage*/) {
-        int msgType = SixinMessage.S_MSG_TYPE_AT;
-        long mySelfId = UserAccountManager.getInstance().getUuidAsLong();
-        long cid = System.currentTimeMillis() + Attachment.generateAttachmentId();
-        SixinMessage sixinMessage = new SixinMessage();
-        sixinMessage.setBody(message);
-        sixinMessage.setSentTime(Long.MAX_VALUE);
-        sixinMessage.setReceivedTime(System.currentTimeMillis());
-        sixinMessage.setIsInbound(false);
-        sixinMessage.setMsgStatus(foucsStatus);
-        sixinMessage.setOutboundStatus(SixinMessage.OUTBOUND_STATUS_UNSENT);
-        sixinMessage.setTarget(target);
-        if (targetType == SixinMessage.TARGET_TYPE_USER) {
-            sixinMessage.setTargetName(targetName);
-        } else if (targetType == SixinMessage.TARGET_TYPE_GROUP || targetType == SixinMessage.TARGET_TYPE_VFANS) {
-            sixinMessage.setTargetName(MyUserInfoManager.getInstance().getNickname());
-        }
-        sixinMessage.setSender(mySelfId);
-        sixinMessage.setMsgTyppe(msgType);
-        sixinMessage.setLocaLUserId(mySelfId);
-        sixinMessage.setSenderMsgId(cid);
-        sixinMessage.setCertificationType(certificationType);
-        sixinMessage.setTargetType(targetType);
-        sixinMessage.setMsgSeq(Long.MAX_VALUE);
-//        Attachment attachment = new Attachment();
-//        attachment.setObjectKey(new Gson().toJson(atMessage));
-//        sixinMessage.setExt(attachment.toJSONString());
-        return sixinMessage;
-    }
-
-    public static List<SixinMessage> getSixInMessagesByType(List<Attachment> atts, String targetName, long target, int targetType, int foucsStatus, int certificationType, int msgType, int level) {
-        if (target < 0 || atts == null || atts.size() == 0) {
-            return null;
-        }
-        List<SixinMessage> sixinMessages = new ArrayList<>();
-        int i = 0;
-        for (Attachment att : atts) {
-            i++;
-            if (att == null) {
-                continue;
-            }
-            long mySelfId = UserAccountManager.getInstance().getUuidAsLong();
-            long cid = System.currentTimeMillis() + Attachment.generateAttachmentId();
-            SixinMessage sixinMessage = new SixinMessage();
-//TODO 文案暂时没拷贝需要该类时在拷贝
-//            switch (msgType) {
-//                case SixinMessage.S_MSG_TYPE_NOTIFY: {
-//                    if (targetType == SixinMessage.TARGET_TYPE_USER) {
-//                        sixinMessage.setBody(GlobalData.app().getString(com.mi.live.data.R.string.six_in_send_default_text));
-//                    } else {
-//                        sixinMessage.setBody("[" + GlobalData.app().getString(com.mi.live.data.R.string.group_notify_body) + "]");
-//                    }
-//                }
-//                break;
-//                case SixinMessage.S_MSG_TYPE_PIC: {
-//                    if (targetType == SixinMessage.TARGET_TYPE_USER) {
-//                        sixinMessage.setBody(GlobalData.app().getString(com.mi.live.data.R.string.six_in_send_pic_default_text));
-//                    } else {
-//                        sixinMessage.setBody("[" + com.base.global.GlobalData.app().getResources().getString(com.mi.live.data.R.string.sixin_conversation_photo) + "]");
-//                    }
-//                }
-//                break;
-//                case SixinMessage.S_MSG_TYPE_VOICE: {
-//                    if (targetType == SixinMessage.TARGET_TYPE_USER) {
-//                        sixinMessage.setBody(GlobalData.app().getString(com.mi.live.data.R.string.six_in_send_audio_default_text));
-//                    } else {
-//                        sixinMessage.setBody("[" + com.base.global.GlobalData.app().getResources().getString(com.mi.live.data.R.string.sixin_conversation_audio) + "]");
-//                    }
-//                }
-//                break;
-//                default:
-//                    sixinMessage.setBody(GlobalData.app().getString(com.mi.live.data.R.string.six_in_send_audio_default_text));
-//            }
-
-            sixinMessage.setSentTime(Long.MAX_VALUE);
-            sixinMessage.setReceivedTime(System.currentTimeMillis() + i);
-            sixinMessage.setIsInbound(false);
-            sixinMessage.setMsgStatus(foucsStatus);
-            sixinMessage.setOutboundStatus(SixinMessage.OUTBOUND_STATUS_UNSENT);
-            sixinMessage.setTarget(target);
-            if (targetType == SixinMessage.TARGET_TYPE_USER) {
-                sixinMessage.setTargetName(targetName);
-            } else if (targetType == SixinMessage.TARGET_TYPE_GROUP || targetType == SixinMessage.TARGET_TYPE_VFANS) {
-                sixinMessage.setTargetName(MyUserInfoManager.getInstance().getNickname());
-            }
-            sixinMessage.setSender(mySelfId);
-            sixinMessage.setMsgTyppe(msgType);
-            sixinMessage.setLocaLUserId(mySelfId);
-            sixinMessage.setSenderMsgId(cid);
-            sixinMessage.setExt(att.toJSONString());
-            sixinMessage.setCertificationType(certificationType);
-            sixinMessage.setTargetType(targetType);
-            sixinMessage.setMsgSeq(Long.MAX_VALUE);
-            if (targetType == SixinMessage.TARGET_TYPE_GROUP) {
-                sixinMessage.setGroupLevel(level);
-            }
-            sixinMessages.add(sixinMessage);
-        }
-        insertSixinMessages(sixinMessages);
-        return sixinMessages;
-    }
-
     /**
      * 修改消息的状态未已读
      */
@@ -570,46 +335,6 @@ public class SixinMessageLocalStore {
                 firstMsg.setServerStoreStatus(SixinMessage.INBOUND_STATUS_READ);
                 updateSixinMessage(firstMsg);
             }
-        }
-    }
-
-    /**
-     * 获取草稿消息
-     *
-     * @param target
-     * @param type
-     * @return
-     */
-    public static SixinMessage getDraftSixinMessage(long target, int type) {
-        SixinMessageDao sixinMessageDao = getDaoSession(GlobalData.app()).getSixinMessageDao();
-        long userId = UserAccountManager.getInstance().getUuidAsLong();
-        QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
-        queryBuilder.where(SixinMessageDao.Properties.LocaLUserId.eq(userId), SixinMessageDao.Properties.Target.eq(target)
-                , SixinMessageDao.Properties.TargetType.eq(type), SixinMessageDao.Properties.MsgTyppe.eq(SixinMessage.S_MSG_TYPE_DRAFT));
-        List<SixinMessage> sixinMessages = queryBuilder.list();
-        if (sixinMessages != null && sixinMessages.size() > 0) {
-            return sixinMessages.get(0);
-        }
-        return null;
-    }
-
-    /**
-     * 删除草稿消息
-     */
-    public static void deleteDraftSixinMessage(long target, int type) {
-        SixinMessageDao sixinMessageDao = getDaoSession(GlobalData.app()).getSixinMessageDao();
-        long userId = UserAccountManager.getInstance().getUuidAsLong();
-        QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
-        queryBuilder.where(SixinMessageDao.Properties.LocaLUserId.eq(userId), SixinMessageDao.Properties.Target.eq(target)
-                , SixinMessageDao.Properties.TargetType.eq(type), SixinMessageDao.Properties.MsgTyppe.eq(SixinMessage.S_MSG_TYPE_DRAFT));
-        List<SixinMessage> sixinMessages = queryBuilder.list();
-        if (sixinMessages != null && sixinMessages.size() > 0) {
-            List<Long> msgIds = new ArrayList<>();
-            for (SixinMessage item : sixinMessages) {
-                msgIds.add(item.getId());
-            }
-            sixinMessageDao.deleteInTx(sixinMessages);
-            EventBus.getDefault().post(new SixInMessageBulkDeleteEvent(msgIds, target, type));
         }
     }
 
@@ -634,27 +359,4 @@ public class SixinMessageLocalStore {
             this.sixinMessage = sixinMessage;
         }
     }
-
-    public static class SixInMessageBulkDeleteEvent {
-        public List<Long> msgIds;
-        public long target;
-        public int targetType;
-
-        public SixInMessageBulkDeleteEvent(List<Long> ids, long target, int targetType) {
-            this.msgIds = ids;
-            this.target = target;
-            this.targetType = targetType;
-        }
-    }
-
-
-    public static class CleanGroupAllMessageEvent {
-        public long groupId;
-
-        CleanGroupAllMessageEvent(long groupId) {
-            this.groupId = groupId;
-        }
-    }
-
-
 }
