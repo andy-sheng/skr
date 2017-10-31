@@ -224,4 +224,5 @@
     <string name="search_txt">搜尋</string>
     <string name="match_hint">只有選中的好友能看到直播</string>
     <string name="unblock">移出</string>
+    <string name="choose_talk_title">選擇好友</string>
 </resources>

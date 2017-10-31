@@ -1,19 +1,31 @@
 package com.wali.live.watchsdk.component.presenter.panel;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.Pair;
 
+import com.base.activity.BaseActivity;
+import com.base.fragment.BaseFragment;
+import com.base.fragment.utils.FragmentNaviUtils;
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
+import com.mi.live.data.user.User;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.dao.Conversation;
+import com.wali.live.dao.SixinMessage;
+import com.wali.live.event.EventClass;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.presenter.adapter.ConversationAdapter;
 import com.wali.live.watchsdk.component.view.panel.MessagePanel;
+import com.wali.live.watchsdk.recipient.RecipientsSelectFragment;
+import com.wali.live.watchsdk.sixin.PopComposeMessageFragment;
 import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
+import com.wali.live.watchsdk.sixin.pojo.SixinTarget;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -142,6 +154,23 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
     }
 
     @Override
+    public void onRecipientSelect() {
+        if (mView != null && mView.getRealView() != null && (mView.getRealView().getContext()) instanceof BaseActivity) {
+            Bundle bundle = new Bundle();
+            bundle.putString(RecipientsSelectFragment.SELECT_TITLE, GlobalData.app().getResources()
+                    .getString(R.string.choose_talk_title));
+            bundle.putInt(RecipientsSelectFragment.SELECT_MODE,
+                    RecipientsSelectFragment.SELECT_MODE_SINGLE_CLICK);
+            bundle.putBoolean(RecipientsSelectFragment.INTENT_SHOW_LEVEL_SEX, false);
+            bundle.putBoolean(RecipientsSelectFragment.INTENT_SHOW_BOTH_WAY, false);
+            bundle.putInt(RecipientsSelectFragment.KEY_REQUEST_CODE, RecipientsSelectFragment.REQUEST_CODE_PICK_USER);
+            bundle.putBoolean(BaseFragment.PARAM_FORCE_PORTRAIT, true);
+            FragmentNaviUtils.addFragmentAndResetArgumentToBackStack((BaseActivity) mView.getRealView().getContext(),
+                    R.id.main_act_container, RecipientsSelectFragment.class, bundle, true, R.anim.slide_right_in, 0);
+        }
+    }
+
+    @Override
     public void syncAllConversions() {
         if (mSyncSubscription != null && !mSyncSubscription.isUnsubscribed()) {
             mSyncSubscription.unsubscribe();
@@ -211,6 +240,23 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
 //        onAddOrUpdateItem(event.conversation);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventClass.OnActivityResultEvent event) {
+        switch (event.requestCode) {
+            case RecipientsSelectFragment.REQUEST_CODE_PICK_USER:
+                Intent intent = event.data;
+                if (intent != null && mView != null && mView.getRealView() != null
+                        && (mView.getRealView().getContext()) instanceof BaseActivity) {
+                    User user = (User) intent.getSerializableExtra(RecipientsSelectFragment.RESULT_SINGLE_OBJECT);
+                    PopComposeMessageFragment.open((BaseActivity) mView.getRealView().getContext(),
+                            new SixinTarget(user, SixinMessage.MSG_STATUE_BOTHFOUCS, 0), true);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
     private void onAddOrUpdateItem(final Conversation conversation) {
         MyLog.d(TAG, "onAddOrUpdateItem");
         Observable.just(0)
@@ -262,7 +308,8 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
     }
 
     @Override
-    public boolean onEvent(int event, IParams params) {
+    public boolean onEvent(int event, IParams
+            params) {
         if (mView == null) {
             Log.e(TAG, "onAction but mView is null, event=" + event);
             return false;
