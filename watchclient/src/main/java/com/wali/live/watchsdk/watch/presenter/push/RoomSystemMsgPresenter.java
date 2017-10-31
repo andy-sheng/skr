@@ -135,7 +135,7 @@ public class RoomSystemMsgPresenter implements IPushMsgProcessor {
                 }
             }
         } catch (Exception e) {
-            MyLog.e("send room message rule error", e);
+            MyLog.e("sendMessage room message rule error", e);
         }
     }
 

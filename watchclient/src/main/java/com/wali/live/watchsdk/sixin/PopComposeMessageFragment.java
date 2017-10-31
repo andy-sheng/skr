@@ -113,7 +113,17 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
         }
 
         mRefreshLayout = $(R.id.swipe_refresh_layout);
-        mRefreshLayout.setEnabled(false);
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                SixinMessageModel model = mMessageAdapter.getItem(0);
+                if (model == null) {
+                    mMessagePresenter.firstLoadDataFromDB();
+                } else {
+                    mMessagePresenter.pullOldMessage(model);
+                }
+            }
+        });
 
         mMessageRv = $(R.id.message_rv);
 
@@ -152,19 +162,32 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
 
     @Override
     public void loadData(List<SixinMessageModel> messageModelList) {
-        MyLog.d(TAG, "messageList size=" + messageModelList.size());
+        MyLog.d(TAG, "loadData messageList size=" + messageModelList.size());
         if (messageModelList.size() > 0) {
             mMessageAdapter.setDataList(messageModelList);
             scrollToLastItem();
         }
     }
 
+    @Override
     public void addData(List<SixinMessageModel> messageModelList) {
-        MyLog.d(TAG, "messageList size=" + messageModelList.size());
+        MyLog.d(TAG, "addData messageList size=" + messageModelList.size());
         if (messageModelList.size() > 0) {
             mMessageAdapter.addDataList(messageModelList);
             scrollToLastItem();
         }
+    }
+
+    public void addOldData(List<SixinMessageModel> messageModelList) {
+        MyLog.d(TAG, "loadOldData messageList size=" + messageModelList.size());
+        if (messageModelList.size() > 0) {
+            mMessageAdapter.addOldDataList(messageModelList);
+        }
+    }
+
+    @Override
+    public void stopRefreshing() {
+        mRefreshLayout.setRefreshing(false);
     }
 
     private void scrollToLastItem() {
@@ -240,7 +263,7 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
         String message = SmileyParser.getInstance().convertString(input, SmileyParser.TYPE_LOCAL_TO_GLOBAL).toString();
         MyLog.d(TAG, "sendText=" + message);
 
-        mMessagePresenter.send(message);
+        mMessagePresenter.sendMessage(message);
         mInputEt.setText("");
     }
 

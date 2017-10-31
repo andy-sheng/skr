@@ -53,6 +53,27 @@ public class SixinMessageModel extends BaseViewModel implements Comparable<Sixin
         setMsgSeq(sixinMessage.getMsgSeq() == null ? 0 : sixinMessage.getMsgSeq());
     }
 
+    public void updateModel(SixinMessageModel model) {
+        setMsgId(model.getMsgId());
+        setSentTime(model.getSentTime());
+        setIsInbound(model.isInbound());
+
+        setSender(model.getSender());
+
+        setMsgType(model.getMsgType());
+        setMsgStatus(model.getMsgStatus());
+        setOutboundStatus(model.getOutboundStatus());
+        setFormatSentTime(model.getFormatSentTime());
+        setTargetId(model.getTargetId());
+        setReceiveTime(model.getReceiveTime());
+
+        setBody(model.getBody());
+        setCertificationType(model.getCertificationType());
+        setTargetType(model.getTargetType());
+        setServerStoreStatus(model.getServerStoreStatus());
+        setMsgSeq(model.getMsgSeq());
+    }
+
     public long getMsgId() {
         return msgId;
     }

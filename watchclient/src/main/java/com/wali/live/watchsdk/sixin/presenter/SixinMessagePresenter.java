@@ -74,7 +74,7 @@ public class SixinMessagePresenter extends BaseRxPresenter<ISixinMessageView> {
                 });
     }
 
-    public void send(final String message) {
+    public void sendMessage(final String message) {
         Observable
                 .just(message)
                 .observeOn(Schedulers.io())
@@ -129,6 +129,47 @@ public class SixinMessagePresenter extends BaseRxPresenter<ISixinMessageView> {
                         if (messageModelList != null) {
                             mView.addData(messageModelList);
                         }
+                    }
+                });
+    }
+
+    public void pullOldMessage(final SixinMessageModel firstMessageModel) {
+        Observable
+                .create(new Observable.OnSubscribe<List<SixinMessageModel>>() {
+                    @Override
+                    public void call(Subscriber<? super List<SixinMessageModel>> subscriber) {
+                        List<SixinMessage> messageList = SixinMessageLocalStore.getSixinMessagesByUUid(mSixinTarget.getUid(), PAGE_MESSAGE_COUNT,
+                                firstMessageModel.getReceiveTime(), true, mSixinTarget.getTargetType());
+                        if (messageList == null) {
+                            subscriber.onError(new Exception("pullOldMessage messageList is null"));
+                        }
+                        MyLog.d(TAG, "pullOldMessage messageList size=" + messageList);
+                        List<SixinMessageModel> messageModelList = new ArrayList<>();
+                        for (SixinMessage sixinMessage : messageList) {
+                            SixinMessageModel item = new SixinMessageModel(sixinMessage);
+                            messageModelList.add(item);
+                        }
+                        subscriber.onNext(messageModelList);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(mView.<List<SixinMessageModel>>bindLifecycle())
+                .subscribe(new Action1<List<SixinMessageModel>>() {
+                    @Override
+                    public void call(List<SixinMessageModel> messageModelList) {
+                        MyLog.d(TAG, "pullOldMessage size=" + messageModelList.size());
+                        mView.stopRefreshing();
+                        if (messageModelList != null) {
+                            mView.addOldData(messageModelList);
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.d(TAG, throwable);
+                        mView.stopRefreshing();
                     }
                 });
     }

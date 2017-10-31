@@ -111,14 +111,14 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
             if (mMyRoomData.getMsgRule() != null && lastBarrage != null) {
                 if (mMyRoomData.getMsgRule().isUnrepeatable() && lastBarrage.getLastSendContent() != null
                         && msg.trim().equals(lastBarrage.getLastSendContent())) {
-                    MyLog.w(TAG, "send barrage repeated,last content:" + lastBarrage.getLastSendContent() + " body:" + msg.trim());
+                    MyLog.w(TAG, "sendMessage barrage repeated,last content:" + lastBarrage.getLastSendContent() + " body:" + msg.trim());
                     ToastUtils.showToast(GlobalData.app().getApplicationContext(), R.string.send_barrage_repeated);
                     return;
                 }
                 if (mMyRoomData.getMsgRule().getSpeakPeriod() != 0 && lastBarrage.getLastSendTime() > 0) {
                     if ((sendTime - lastBarrage.getLastSendTime()) < mMyRoomData.getMsgRule().getSpeakPeriod() * 1000) {
-                        MyLog.w(TAG, "send barrage too frequent,interval:" + mMyRoomData.getMsgRule().getSpeakPeriod() +
-                                "s senTime:" + sendTime + " last send time:" + lastBarrage.getLastSendTime());
+                        MyLog.w(TAG, "sendMessage barrage too frequent,interval:" + mMyRoomData.getMsgRule().getSpeakPeriod() +
+                                "s senTime:" + sendTime + " last sendMessage time:" + lastBarrage.getLastSendTime());
                         return;
                     }
                 }

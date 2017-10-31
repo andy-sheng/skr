@@ -82,11 +82,11 @@ public class SixinMessageCloudStore {
         LiveMessageProto.ChatMessageReadRequest chatMessageReadRequest = LiveMessageProto.ChatMessageReadRequest.newBuilder().
                 setToUser(target).setFromUser(mySelfId).setReadMsgSeq(msgSeq).setFollowType(followerType).setCid(cid).build();
         if (chatMessageReadRequest == null) {
-            MyLog.w(TAG + "send chaMessageReadRequest is null,so cancel");
+            MyLog.w(TAG + "sendMessage chaMessageReadRequest is null,so cancel");
             return;
         }
         if (chatMessageReadRequest.getFromUser() < 0 || chatMessageReadRequest.getToUser() < 0 || chatMessageReadRequest.getCid() <= 0) {
-            MyLog.w(TAG + "send chaMessageReadRequest from or to or cid is null,so cancel");
+            MyLog.w(TAG + "sendMessage chaMessageReadRequest from or to or cid is null,so cancel");
             return;
         }
         PacketData packetData = new PacketData();
@@ -165,11 +165,11 @@ public class SixinMessageCloudStore {
 
         LiveMessageProto.ChatMessageRequest chatMessageReadRequest = chatMessageRequest.build();
         if (chatMessageReadRequest == null) {
-            MyLog.w(TAG + "send chaMessageReadRequest is null,so cancel");
+            MyLog.w(TAG + "sendMessage chaMessageReadRequest is null,so cancel");
             return null;
         }
         if (chatMessageReadRequest.getFromUser() < 0 || chatMessageReadRequest.getToUser() < 0 || chatMessageReadRequest.getCid() <= 0) {
-            MyLog.w(TAG + "send chaMessageReadRequest from or to or cid is null,so cancel");
+            MyLog.w(TAG + "sendMessage chaMessageReadRequest from or to or cid is null,so cancel");
             return null;
         }
         PacketData packetData = new PacketData();
@@ -180,11 +180,11 @@ public class SixinMessageCloudStore {
 
     private void sendSyncUnreadRequest(LiveMessageProto.SyncUnreadRequest syncUnreadRequest) {
         if (syncUnreadRequest == null) {
-            MyLog.w(TAG + "send chaMessageReadRequest is null,so cancel");
+            MyLog.w(TAG + "sendMessage chaMessageReadRequest is null,so cancel");
             return;
         }
         if (syncUnreadRequest.getFromUser() <= 0 || syncUnreadRequest.getCid() <= 0) {
-            MyLog.w(TAG + "send chaMessageReadRequest from or to or cid is null,so cancel");
+            MyLog.w(TAG + "sendMessage chaMessageReadRequest from or to or cid is null,so cancel");
             return;
         }
         PacketData packetData = new PacketData();

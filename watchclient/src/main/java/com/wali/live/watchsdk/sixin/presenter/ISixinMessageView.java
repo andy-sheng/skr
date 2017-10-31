@@ -12,4 +12,8 @@ public interface ISixinMessageView extends IRxView {
     void loadData(List<SixinMessageModel> messageModelList);
 
     void addData(List<SixinMessageModel> messageModelList);
+
+    void addOldData(List<SixinMessageModel> messageModelList);
+
+    void stopRefreshing();
 }

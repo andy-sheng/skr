@@ -11,6 +11,7 @@ import com.wali.live.watchsdk.lit.recycler.holder.BaseHolder;
 import com.wali.live.watchsdk.sixin.message.SixinMessageModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,6 +37,37 @@ public class SixinMessageAdapter extends RecyclerView.Adapter<BaseHolder> {
     public void addDataList(List<SixinMessageModel> dataList) {
         mDataList.addAll(dataList);
         notifyDataSetChanged();
+    }
+
+    public void addOldDataList(List<SixinMessageModel> oldDataList) {
+        for (SixinMessageModel messageModel : oldDataList) {
+            SixinMessageModel originModel = isContain(messageModel);
+            if (originModel == null) {
+                mDataList.add(messageModel);
+            } else {
+                originModel.updateModel(messageModel);
+            }
+        }
+        Collections.sort(mDataList);
+        notifyDataSetChanged();
+    }
+
+    private SixinMessageModel isContain(SixinMessageModel paramModel) {
+        SixinMessageModel result = null;
+        for (SixinMessageModel messageModel : mDataList) {
+            if (messageModel.getMsgId() == paramModel.getMsgId()) {
+                result = messageModel;
+                break;
+            } else if (messageModel.getMsgSeq() > 0 && messageModel.getMsgSeq() < Long.MAX_VALUE && messageModel.getMsgSeq() == paramModel.getMsgSeq()) {
+                result = messageModel;
+                break;
+            } else if (paramModel.isInbound() && messageModel.getMsgSeq() == paramModel.getMsgSeq() && (paramModel.getMsgSeq() == 0 || paramModel.getMsgSeq() == Long.MAX_VALUE)
+                    && (messageModel.getReceiveTime() == paramModel.getReceiveTime()) && messageModel.getBody().equals(paramModel.getBody())) {
+                result = messageModel;
+                break;
+            }
+        }
+        return result;
     }
 
     @Override
