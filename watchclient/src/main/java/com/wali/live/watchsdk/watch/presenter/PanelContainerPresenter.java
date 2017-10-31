@@ -1,7 +1,6 @@
 package com.wali.live.watchsdk.watch.presenter;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -36,8 +35,19 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     private WeakReference<MessagePresenter> mMessagePresenterRef;
 
     @Override
-    protected String getTAG() {
+    protected final String getTAG() {
         return TAG;
+    }
+
+    @Override
+    public void setView(@NonNull RelativeLayout relativeLayout) {
+        super.setView(relativeLayout);
+        relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hidePanel(true);
+            }
+        });
     }
 
     public PanelContainerPresenter(
@@ -62,17 +72,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     public void stopPresenter() {
         super.stopPresenter();
         unregisterAllAction();
-    }
-
-    @Override
-    public void setView(@Nullable RelativeLayout relativeLayout) {
-        super.setView(relativeLayout);
-        relativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hidePanel(true);
-            }
-        });
+        hidePanel(false);
     }
 
     private void showSharePanel() {

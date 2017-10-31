@@ -1,19 +1,16 @@
 package com.wali.live.watchsdk.component.view.panel;
 
-import android.os.Bundle;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.base.activity.BaseActivity;
-import com.base.fragment.BaseFragment;
-import com.base.fragment.utils.FragmentNaviUtils;
-import com.base.global.GlobalData;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.SymmetryTitleBar;
 import com.thornbirds.component.view.IComponentView;
@@ -21,8 +18,6 @@ import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.presenter.adapter.ConversationAdapter;
-import com.wali.live.watchsdk.recipient.RecipientsSelectFragment;
-import com.wali.live.watchsdk.sixin.PopComposeMessageFragment;
 
 import java.util.List;
 
@@ -31,7 +26,7 @@ import java.util.List;
  *
  * @module 私信面板视图
  */
-public class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
+public final class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
         implements IComponentView<MessagePanel.IPresenter, MessagePanel.IView> {
     private static final String TAG = "MessagePanel";
 
@@ -41,28 +36,26 @@ public class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
     private final ConversationAdapter mAdapter = new ConversationAdapter();
 
     private SymmetryTitleBar mTitleBar;
+    private View mLeftTitleBtn;
+    private ImageView mRightTitleBtn;
 
     private final ConversationAdapter.IConversationClickListener mConversationClickListener =
             new ConversationAdapter.IConversationClickListener() {
                 @Override
                 public void onItemClick(ConversationAdapter.ConversationItem item) {
-                    PopComposeMessageFragment.open((BaseActivity) mParentView.getContext(), item.getSixinTarget(), true);
+                    if (mPresenter != null) {
+                        mPresenter.onConversationClick(mParentView.getContext(), item);
+                    }
                 }
             };
 
-    protected final void $click(View view, View.OnClickListener listener) {
-        if (view != null) {
-            view.setOnClickListener(listener);
-        }
-    }
-
     @Override
-    protected int getLayoutResId() {
+    protected final int getLayoutResId() {
         return R.layout.message_panel;
     }
 
     @Override
-    public void setPresenter(@Nullable IPresenter iPresenter) {
+    public final void setPresenter(@Nullable IPresenter iPresenter) {
         mPresenter = iPresenter;
     }
 
@@ -77,7 +70,9 @@ public class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
         mTitleBar = $(R.id.title_bar);
         mTitleBar.hideBottomLine();
         mTitleBar.setTitle(R.string.sixin_model_message);
-        mTitleBar.getLeftImageBtn().setOnClickListener(new View.OnClickListener() {
+        mLeftTitleBtn = mTitleBar.getLeftImageBtn();
+        mLeftTitleBtn.setVisibility(View.GONE);
+        mLeftTitleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mPresenter != null) {
@@ -85,18 +80,16 @@ public class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
                 }
             }
         });
-
-        mTitleBar.getRightImageBtn().setVisibility(View.VISIBLE);
-        mTitleBar.getRightImageBtn().setImageResource(R.drawable.dynamic_message_icon_black);
-        mTitleBar.getRightImageBtn().setOnClickListener(new View.OnClickListener() {
+        mRightTitleBtn = mTitleBar.getRightImageBtn();
+        mRightTitleBtn.setImageResource(R.drawable.dynamic_message_icon);
+        mRightTitleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mPresenter != null) {
-                    mPresenter.onRecipientSelect();
+                    mPresenter.onRightBtnClick(mParentView.getContext());
                 }
             }
         });
-
         RecyclerView recyclerView = $(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(mParentView.getContext(),
                 LinearLayoutManager.VERTICAL, false));
@@ -105,19 +98,20 @@ public class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
 
     @Override
     public void showSelf(boolean useAnimation, boolean isLandscape) {
-        if (!mIsShow && mPresenter != null) {
-            mPresenter.startPresenter();
-            mPresenter.syncAllConversions();
-        }
+        boolean needStart = !mIsShow;
         super.showSelf(useAnimation, isLandscape);
+        if (needStart) {
+            mPresenter.startPresenter();
+        }
     }
 
     @Override
     public void hideSelf(boolean useAnimation) {
-        if (mIsShow && mPresenter != null) {
+        boolean needStop = mIsShow;
+        super.hideSelf(useAnimation);
+        if (needStop) {
             mPresenter.stopPresenter();
         }
-        super.hideSelf(useAnimation);
     }
 
     @Override
@@ -139,6 +133,24 @@ public class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
             @Override
             public <T extends View> T getRealView() {
                 return (T) mContentView;
+            }
+
+            @Override
+            public void onEnterFocusMode() {
+                mAdapter.clearData();
+                mTitleBar.setTitle(R.string.sixin_model_message);
+                mLeftTitleBtn.setVisibility(View.GONE);
+                mRightTitleBtn.setVisibility(View.VISIBLE);
+                mRightTitleBtn.setImageResource(R.drawable.dynamic_message_icon);
+            }
+
+            @Override
+            public void onEnterUnFocusMode() {
+                mAdapter.clearData();
+                mTitleBar.setTitle(R.string.sixin_model_unattention);
+                mLeftTitleBtn.setVisibility(View.VISIBLE);
+                mRightTitleBtn.setVisibility(View.GONE);
+                mRightTitleBtn.setImageResource(0);
             }
 
             @Override
@@ -170,17 +182,27 @@ public class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
         void onBackBtnClick();
 
         /**
-         * 选则私信对象
+         * 点击右侧按钮
          */
-        void onRecipientSelect();
+        void onRightBtnClick(Context context);
 
         /**
-         * 获取关注模式下的全部会话列表
+         * 点击会话列表项
          */
-        void syncAllConversions();
+        void onConversationClick(@NonNull Context context, @NonNull ConversationAdapter.ConversationItem item);
     }
 
     public interface IView extends IViewProxy {
+        /**
+         * 进入关注模式
+         */
+        void onEnterFocusMode();
+
+        /**
+         * 进入未关注模式
+         */
+        void onEnterUnFocusMode();
+
         /**
          * 更新整个会话列表
          */

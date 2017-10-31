@@ -265,7 +265,7 @@ public class ConversationAdapter extends ClickItemAdapter<ConversationAdapter.Co
             user.setCertificationType(certificationType);
         }
 
-        public CharSequence getSpannableName() {
+        public final CharSequence getSpannableName() {
             if (uid == Conversation.UNFOCUS_CONVERSATION_TARGET) {
                 return GlobalData.app().getResources().getString(R.string.unfocus_robot_name);
             }
