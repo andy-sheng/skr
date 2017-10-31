@@ -33,6 +33,11 @@ public class SixinMessageAdapter extends RecyclerView.Adapter<BaseHolder> {
         notifyDataSetChanged();
     }
 
+    public void addDataList(List<SixinMessageModel> dataList) {
+        mDataList.addAll(dataList);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemViewType(int position) {
         SixinMessageModel messageItem = mDataList.get(position);

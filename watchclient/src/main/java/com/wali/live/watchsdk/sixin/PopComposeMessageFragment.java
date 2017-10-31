@@ -142,6 +142,7 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
     private void initPresenter() {
         mMessagePresenter = new SixinMessagePresenter(this, mSixinTarget);
         mMessagePresenter.firstLoadDataFromDB();
+        mMessagePresenter.markConversationAsRead();
     }
 
     @Override
@@ -150,10 +151,18 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
     }
 
     @Override
-    public void loadDataSuccess(List<SixinMessageModel> messageModelList) {
+    public void loadData(List<SixinMessageModel> messageModelList) {
         MyLog.d(TAG, "messageList size=" + messageModelList.size());
         if (messageModelList.size() > 0) {
             mMessageAdapter.setDataList(messageModelList);
+            scrollToLastItem();
+        }
+    }
+
+    public void addData(List<SixinMessageModel> messageModelList) {
+        MyLog.d(TAG, "messageList size=" + messageModelList.size());
+        if (messageModelList.size() > 0) {
+            mMessageAdapter.addDataList(messageModelList);
             scrollToLastItem();
         }
     }

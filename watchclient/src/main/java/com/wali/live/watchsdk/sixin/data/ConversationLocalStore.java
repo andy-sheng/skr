@@ -169,6 +169,17 @@ public class ConversationLocalStore {
         EventBus.getDefault().post(new ConversationUpdateEvent(conversation));
     }
 
+    public static void markConversationAsRead(long target, int targetType) {
+        Conversation conversation = getConversationByTarget(target, targetType);
+        if (conversation != null && conversation.getUnreadCount() != null && conversation.getUnreadCount() > 0) {
+            conversation.setUnreadCount(0);
+            conversation.updateOrInsertExt(Conversation.EXT_HAS_SOME_BODY_AT_ME, false);
+            updateConversation(conversation);
+            long unreadCount = getAllConversationUnReadCount();
+            EventBus.getDefault().post(new NotifyUnreadCountChangeEvent(unreadCount));
+        }
+    }
+
     public static Conversation getConversationByTarget(long target, int targetType) {
         long userId = UserAccountManager.getInstance().getUuidAsLong();
         ConversationDao conversationDao = GreenDaoManager.getDaoSession(GlobalData.app()).getConversationDao();

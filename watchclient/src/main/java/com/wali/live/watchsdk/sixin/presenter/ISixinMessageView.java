@@ -9,5 +9,7 @@ import java.util.List;
  * Created by lan on 2017/10/29.
  */
 public interface ISixinMessageView extends IRxView {
-    void loadDataSuccess(List<SixinMessageModel> messageList);
+    void loadData(List<SixinMessageModel> messageModelList);
+
+    void addData(List<SixinMessageModel> messageModelList);
 }

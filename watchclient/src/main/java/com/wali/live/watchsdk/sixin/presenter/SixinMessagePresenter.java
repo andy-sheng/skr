@@ -2,7 +2,9 @@ package com.wali.live.watchsdk.sixin.presenter;
 
 import com.base.log.MyLog;
 import com.base.mvp.BaseRxPresenter;
+import com.wali.live.dao.Conversation;
 import com.wali.live.dao.SixinMessage;
+import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
 import com.wali.live.watchsdk.sixin.data.SixinMessageCloudStore;
 import com.wali.live.watchsdk.sixin.data.SixinMessageLocalStore;
 import com.wali.live.watchsdk.sixin.message.SixinMessageModel;
@@ -42,7 +44,7 @@ public class SixinMessagePresenter extends BaseRxPresenter<ISixinMessageView> {
                         if (messageList == null) {
                             subscriber.onError(new Exception("messageList is null"));
                         }
-                        MyLog.d(TAG, "mesageList size=" + messageList);
+                        MyLog.d(TAG, "messageList size=" + messageList);
                         List<SixinMessageModel> messageModelList = new ArrayList<>();
                         for (SixinMessage sixinMessage : messageList) {
                             SixinMessageModel item = new SixinMessageModel(sixinMessage);
@@ -61,7 +63,7 @@ public class SixinMessagePresenter extends BaseRxPresenter<ISixinMessageView> {
                     @Override
                     public void call(List<SixinMessageModel> messageModelList) {
                         if (messageModelList != null) {
-                            mView.loadDataSuccess(messageModelList);
+                            mView.loadData(messageModelList);
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -113,7 +115,7 @@ public class SixinMessagePresenter extends BaseRxPresenter<ISixinMessageView> {
                 .subscribe(new Subscriber<List<SixinMessageModel>>() {
                     @Override
                     public void onCompleted() {
-//                        markConversationAsRead();
+                        markConversationAsRead();
                     }
 
                     @Override
@@ -124,9 +126,32 @@ public class SixinMessagePresenter extends BaseRxPresenter<ISixinMessageView> {
                     @Override
                     public void onNext(List<SixinMessageModel> messageModelList) {
                         MyLog.d(TAG, "notifyMessage size=" + messageModelList.size());
-//                        if (messageModelList != null) {
-//                            mView.loadDataSuccess(messageModelList);
-//                        }
+                        if (messageModelList != null) {
+                            mView.addData(messageModelList);
+                        }
+                    }
+                });
+    }
+
+    public void markConversationAsRead() {
+        Observable
+                .just(mSixinTarget.getUid())
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<Long>() {
+                    @Override
+                    public void call(Long aLong) {
+                        Conversation conversation = ConversationLocalStore.getConversationByTarget(mSixinTarget.getUid(), mSixinTarget.getTargetType());
+                        if (conversation == null) {
+                            return;
+                        }
+
+                        ConversationLocalStore.markConversationAsRead(mSixinTarget.getUid(), mSixinTarget.getTargetType());
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(throwable);
                     }
                 });
     }
