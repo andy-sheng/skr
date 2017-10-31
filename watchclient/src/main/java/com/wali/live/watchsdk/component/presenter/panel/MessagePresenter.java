@@ -36,6 +36,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -75,8 +76,8 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
     private static final int MODE_FOCUS = 0;
     private static final int MODE_UN_FOCUS = 1;
 
-    private ConversationPuller mFocusPuller;
-    private ConversationPuller mUnFocusPuller;
+    private volatile ConversationPuller mFocusPuller;
+    private volatile ConversationPuller mUnFocusPuller;
     private int mMode = MODE_NONE;
 
     private final boolean isChineseLocal = CommonUtils.isChinese(); // 标记是否是中国区域
@@ -245,7 +246,7 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
         if (event == null || event.conversation == null) {
             return;
         }
-        addOrUpdateItem(event.conversation);
+        updateFromSingleItem(event.conversation);
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
@@ -253,18 +254,23 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
         if (event == null || event.conversation == null) {
             return;
         }
-        addOrUpdateItem(event.conversation);
+        updateFromSingleItem(event.conversation);
     }
 
-    private void addOrUpdateItem(@NonNull Conversation conversation) {
-        if (conversation.getIsNotFocus()) {
-            if (mUnFocusPuller != null) {
-                mUnFocusPuller.addOrUpdateItem(conversation);
-            }
-        } else {
-            if (mFocusPuller != null) {
-                mFocusPuller.addOrUpdateItem(conversation);
-            }
+    @AnyThread
+    private final void updateFromSingleItem(@NonNull final Conversation conversation) {
+        updateFromList(Arrays.asList(conversation));
+    }
+
+    @AnyThread
+    private void updateFromList(@NonNull final List<Conversation> conversations) {
+        final ConversationPuller unFocusPuller = mUnFocusPuller;
+        if (unFocusPuller != null) {
+            unFocusPuller.updateFromList(conversations);
+        }
+        final ConversationPuller focusPuller = mFocusPuller;
+        if (focusPuller != null) {
+            focusPuller.updateFromList(conversations);
         }
     }
 
@@ -273,11 +279,21 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
         if (event == null || event.conversations == null || event.conversations.isEmpty()) {
             return;
         }
-        if (mUnFocusPuller != null) {
-            mUnFocusPuller.updateFromList(event.conversations);
+        updateFromList(event.conversations);
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(ConversationLocalStore.ConversationBulkDeleteByTargetEvent event) {
+        if (event == null || event.mTargets == null || event.mTargets.isEmpty()) {
+            return;
         }
-        if (mFocusPuller != null) {
-            mFocusPuller.updateFromList(event.conversations);
+        final ConversationPuller focusPuller = mFocusPuller;
+        if (focusPuller != null) {
+            focusPuller.deleteFromTargetIdList(event.mTargets);
+        }
+        final ConversationPuller unFocusPuller = mUnFocusPuller;
+        if (unFocusPuller != null) {
+            unFocusPuller.deleteFromTargetIdList(event.mTargets);
         }
     }
 
@@ -366,7 +382,7 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
                                     if (conversation.getTarget() == TARGET_126) { // 不显示互动通知  TODO-YangLi 后续需要时再加
                                         continue;
                                     }
-                                    guard.id = conversation.getId();
+                                    guard.uid = conversation.getTarget();
                                     int elemIndex = mConversationCacheLock.indexOf(guard);
                                     if (elemIndex != -1) {
                                         mConversationCacheLock.get(elemIndex).updateFrom(conversation);
@@ -440,7 +456,7 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
                         @Override
                         public Pair<Integer, ConversationAdapter.ConversationItem> call(Integer i) {
                             final ConversationAdapter.ConversationItem guard = new ConversationAdapter.ConversationItem();
-                            guard.id = conversation.getId();
+                            guard.uid = conversation.getTarget();
                             synchronized (mConversationCacheLock) {
                                 int elemIndex = mConversationCacheLock.indexOf(guard);
                                 if (elemIndex != -1) {
@@ -489,7 +505,7 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
                             boolean needUpdate = false;
                             synchronized (mConversationCacheLock) {
                                 for (Conversation conversation : conversations) {
-                                    guard.id = conversation.getId();
+                                    guard.uid = conversation.getTarget();
                                     int elemIndex = mConversationCacheLock.indexOf(guard);
                                     if (elemIndex != -1) {
                                         // Cache中有，若类型与Cache类型不冲突，则更新，否则从Cache中移除此元素
@@ -522,6 +538,45 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
                         @Override
                         public void call(Throwable throwable) {
                             MyLog.e(TAG, "updateFromList failed, exception=" + throwable);
+                        }
+                    });
+        }
+
+        @AnyThread
+        public final void deleteFromTargetIdList(@NonNull final List<Long> targetIds) {
+            MyLog.d(TAG, "deleteFromIdList");
+            Observable.just(0)
+                    .map(new Func1<Integer, List<ConversationAdapter.ConversationItem>>() {
+                        @Override
+                        public List<ConversationAdapter.ConversationItem> call(Integer i) {
+                            final ConversationAdapter.ConversationItem guard = new ConversationAdapter.ConversationItem();
+                            boolean needUpdate = false;
+                            synchronized (mConversationCacheLock) {
+                                for (Long uid : targetIds) {
+                                    guard.uid = uid;
+                                    int elemIndex = mConversationCacheLock.indexOf(guard);
+                                    if (elemIndex != -1) {
+                                        // Cache中有，则从Cache中移除此元素
+                                        mConversationCacheLock.remove(elemIndex);
+                                        needUpdate = true;
+                                    }
+                                }
+                                return needUpdate ? (List) mConversationCacheLock.clone() : null;
+                            }
+                        }
+                    }).subscribeOn(Schedulers.io())
+                    .compose(MessagePresenter.this.<List<ConversationAdapter.ConversationItem>>bindUntilEvent(PresenterEvent.STOP))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<List<ConversationAdapter.ConversationItem>>() {
+                        @Override
+                        public void call(List<ConversationAdapter.ConversationItem> conversationList) {
+                            MyLog.d(TAG, "deleteFromIdList done");
+                            onUpdateFromListDone(conversationList);
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            MyLog.e(TAG, "deleteFromIdList failed, exception=" + throwable);
                         }
                     });
         }

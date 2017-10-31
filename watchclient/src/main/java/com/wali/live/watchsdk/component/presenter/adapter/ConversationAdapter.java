@@ -275,7 +275,7 @@ public class ConversationAdapter extends ClickItemAdapter<ConversationAdapter.Co
         @Override
         public boolean equals(Object obj) {
             if (obj instanceof ConversationItem) {
-                return this == obj || id == ((ConversationItem) obj).id;
+                return this == obj || uid == ((ConversationItem) obj).uid;
             } else {
                 return super.equals(obj);
             }

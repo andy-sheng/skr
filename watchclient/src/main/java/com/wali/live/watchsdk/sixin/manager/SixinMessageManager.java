@@ -17,6 +17,7 @@ import com.mi.milink.sdk.aidl.PacketData;
 import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.wali.live.dao.Conversation;
 import com.wali.live.dao.Relation;
+import com.wali.live.dao.RelationDaoAdapter;
 import com.wali.live.dao.SixinMessage;
 import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.statistics.StatisticUtils;
@@ -90,7 +91,78 @@ public class SixinMessageManager implements MiLinkPacketDispatcher.PacketDataHan
                     }
                 }
                 break;
+                case MESSAGE_CONVERSATION_CHANGE_FOUCES_STATUS_BY_ME: {
+                    processFocusChangeStatusMsg(msg);
+                }
+                break;
+                case MESSAGE_CONVERSATION_CHANGE_FOUCES_STATUS_NOT_BY_ME: {
+                    processFocusChangeStatusMsg(msg);
+                }
+                break;
             }
+        }
+
+        private void processFocusChangeStatusMsg(Message msg) {
+            long uuid = (long) msg.obj;
+            int eventType = msg.arg1;
+            int bothWay = msg.arg2;
+            int foucsStatue = SixinMessage.MSG_STATUS_UNFOUCS;
+            if (eventType == FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW) {
+                if (bothWay == 1) {
+                    foucsStatue = SixinMessage.MSG_STATUE_BOTHFOUCS;
+                } else {
+                    foucsStatue = SixinMessage.MSG_STATUS_ONLY_ME_FOUCS;
+                }
+            } else {
+                foucsStatue = SixinMessage.MSG_STATUS_UNFOUCS;
+            }
+
+            if (bothWay == 1) {
+                foucsStatue = SixinMessage.MSG_STATUE_BOTHFOUCS;
+            }
+
+            Conversation cv = ConversationLocalStore.getConversationByTarget(uuid, SixinMessage.TARGET_TYPE_USER);
+            boolean needInsertBothFoucsMessage = (cv != null && cv.hasFocusKey() && foucsStatue == SixinMessage.MSG_STATUE_BOTHFOUCS);
+            if (cv != null && (!cv.hasFocusKey() || cv.getFocusStatue() != foucsStatue)) {
+                cv.setIsNotFocus(foucsStatue == SixinMessage.MSG_STATUS_UNFOUCS);
+                cv.updateOrInsertExt(Conversation.EXT_FOCUS_STATE, foucsStatue);
+                ConversationLocalStore.updateConversation(cv);
+                if (cv.getIsNotFocus()) {
+                    int unreadCount = cv.getUnreadCount() == null ? 0 : cv.getUnreadCount();
+                    ConversationLocalStore.insertOrUpdateUnFoucsRobotConversation(cv, unreadCount, true);
+                } else { // 删除或者是跟新robot
+                    long id = ConversationLocalStore.updateUnFoucsRobotConversationWhenSomeConversationDelete();
+                    List<Long> ids = new ArrayList<>();
+                    List<Long> targets = new ArrayList<>();
+                    if (id > 0) {
+                        ids.add(id);
+                        targets.add((long) Conversation.UNFOCUS_CONVERSATION_TARGET);
+                        EventBus.getDefault().post(new ConversationLocalStore.ConversationBulkDeleteEvent(ids));
+                        EventBus.getDefault().post(new ConversationLocalStore.ConversationBulkDeleteByTargetEvent(targets));
+                    }
+                }
+
+                long unreadCount = ConversationLocalStore.getAllConversationUnReadCount();
+                EventBus.getDefault().post(new ConversationLocalStore.NotifyUnreadCountChangeEvent(unreadCount));
+            }
+            /**
+             * 历史原因，暂时注释不要了
+             if (needInsertBothFoucsMessage && msg.what == MESSAGE_CONVERSATION_CHANGE_FOUCES_STATUS_BY_ME) {
+             SmsUtils.insertBothFollowMessage(cv.getTargetName(), uuid, GlobalData.app().getString(R.string.sixin_both_focus_please_go_to_talk), false);
+             } else if (needInsertBothFoucsMessage && msg.what == MESSAGE_CONVERSATION_CHANGE_FOUCES_STATUS_NOT_BY_ME) {
+             //                这套逻辑服务做
+             SixinMessage sixinMessage = SmsUtils.insertBothFollowMessage(cv.getTargetName(), uuid, GlobalData.app().getString(R.string.sixin_both_focus_please_go_to_talk_from_he), true);
+             notifySixinMessage(sixinMessage);
+             }
+             **/
+
+            Relation relation = RelationDaoAdapter.getInstance().getRelationByUUid(uuid);
+            if (relation != null) {
+                relation.setIsBothway(bothWay == 1);
+                relation.setIsFollowing(foucsStatue != FollowOrUnfollowEvent.EVENT_TYPE_UNFOLLOW);
+                RelationDaoAdapter.getInstance().updateRelationAndNotNotify(relation);
+            }
+
         }
     };
 
@@ -395,6 +467,47 @@ public class SixinMessageManager implements MiLinkPacketDispatcher.PacketDataHan
                         ConversationLocalStore.updateConversations(needUpdateCertificationTypeConversations);
                     }
                 }
+            }
+        }
+    }
+
+    //接收私信关系的变化 ,除了更新列表，还用更新未关注机器人 ,如果在取关的人的群中，则调用退群的接口
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(FollowOrUnfollowEvent event) {
+        if (event != null && mCustomHandlerThread != null) {
+
+//            if (event.eventType == FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW || event.isBothFollow) {
+//                processFoucsEventWhereIsInTrashBin(event.uuid);
+//            }
+
+            List<Long> whiteList = GetConfigManager.getInstance().getSixinSystemServiceNumWhiteList();
+            if (whiteList != null && whiteList.contains(event.uuid)) {
+                return;
+            }
+            Message message = Message.obtain();
+            message.what = MESSAGE_CONVERSATION_CHANGE_FOUCES_STATUS_BY_ME;
+            message.arg1 = event.eventType;
+            message.arg2 = event.isBothFollow ? 1 : 0;
+            message.obj = event.uuid;
+            mCustomHandlerThread.sendMessage(message);
+
+//            if (event.eventType == FollowOrUnfollowEvent.EVENT_TYPE_UNFOLLOW) {
+//                mCustomHandlerThread.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        checkIsInSomeOnGroupThenQuit(event.uuid);
+//                    }
+//                });
+//            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onEventAsync(ConversationLocalStore.ConversationBulkDeleteByTargetEvent event) {
+        if (event != null) {
+            List<Long> targets = event.mTargets;
+            if (targets != null && targets.size() > 0) {
+                SixinMessageLocalStore.deleteMessageByRcvConversationEvent(targets);
             }
         }
     }

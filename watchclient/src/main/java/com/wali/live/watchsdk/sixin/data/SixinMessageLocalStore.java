@@ -7,6 +7,7 @@ import com.base.log.MyLog;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.assist.Attachment;
+import com.mi.live.data.greendao.GreenDaoManager;
 import com.wali.live.dao.Conversation;
 import com.wali.live.dao.SixinMessage;
 import com.wali.live.dao.SixinMessageDao;
@@ -336,6 +337,25 @@ public class SixinMessageLocalStore {
                 updateSixinMessage(firstMsg);
             }
         }
+    }
+
+    public static void deleteMessageByRcvConversationEvent(List<Long> targets) {
+        long userId = UserAccountManager.getInstance().getUuidAsLong();
+        SixinMessageDao sixinMessageDao = GreenDaoManager.getDaoSession(GlobalData.app()).getSixinMessageDao();
+        QueryBuilder queryBuilder = sixinMessageDao.queryBuilder();
+        queryBuilder.where(SixinMessageDao.Properties.LocaLUserId.eq(userId));
+        if (targets.size() == 1) {
+            queryBuilder.where(SixinMessageDao.Properties.Target.eq(targets.get(0)));
+        } else if (targets.size() == 2) {
+            queryBuilder.whereOr(SixinMessageDao.Properties.Target.eq(targets.get(0)), SixinMessageDao.Properties.Target.eq(targets.get(1)));
+        } else {
+            WhereCondition[] whereConditions = new WhereCondition[targets.size() - 2];
+            for (int i = 2; i < targets.size(); i++) {
+                whereConditions[i - 2] = SixinMessageDao.Properties.Target.eq(targets.get(i));
+            }
+            queryBuilder.whereOr(SixinMessageDao.Properties.Target.eq(targets.get(0)), SixinMessageDao.Properties.Target.eq(targets.get(1)), whereConditions);
+        }
+        queryBuilder.buildDelete().executeDeleteWithoutDetachingEntities();
     }
 
     public static class SixinMessageBulkInsertEvent {

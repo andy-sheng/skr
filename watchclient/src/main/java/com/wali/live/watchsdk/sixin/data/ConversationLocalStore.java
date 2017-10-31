@@ -489,6 +489,115 @@ public class ConversationLocalStore {
         EventBus.getDefault().post(new ConversationListUpdateEvent(conversations));
     }
 
+    /**
+     * 如果没有未关注的人的对话则删除，否则选择最新的
+     *
+     * @return
+     */
+    public static long updateUnFoucsRobotConversationWhenSomeConversationDelete() {
+        Conversation robot = getConversationByTarget(Conversation.UNFOCUS_CONVERSATION_TARGET, SixinMessage.TARGET_TYPE_USER);
+        if (robot != null) {
+//            List<TrashBinStore.TrashBin> trashBins = TrashBinStore.getTrashBinFromPf();
+            List<Long> trashBinTargetIds = new ArrayList<>();
+//            if (trashBins != null && trashBins.size() > 0) {
+//                for (TrashBinStore.TrashBin item : trashBins) {
+//                    trashBinTargetIds.add(item.uuid);
+//                }
+//            }
+
+            ConversationDao conversationDao = GreenDaoManager.getDaoSession(GlobalData.app()).getConversationDao();
+            QueryBuilder queryBuilder = conversationDao.queryBuilder();
+            long uuid = MyUserInfoManager.getInstance().getUuid();
+            if (uuid == 0) {
+                uuid = UserAccountManager.getInstance().getUuidAsLong();
+            }
+
+            if (trashBinTargetIds.size() == 0) {
+                queryBuilder.where(ConversationDao.Properties.LocaLUserId.eq(uuid), ConversationDao.Properties.IsNotFocus.eq(true));
+            } else {
+                queryBuilder.where(ConversationDao.Properties.LocaLUserId.eq(uuid), ConversationDao.Properties.IsNotFocus.eq(true), ConversationDao.Properties
+                        .Target.notIn(trashBinTargetIds));
+            }
+            queryBuilder.orderDesc(ConversationDao.Properties.ReceivedTime).limit(1);
+            List<Conversation> conversations = queryBuilder.list();
+
+            //如果还有除垃圾箱用户之外的未关注对话列表,则更新robot
+            if (conversations != null && conversations.size() > 0) {
+                Conversation lastConversation = conversations.get(0);
+                robot.setSendTime(lastConversation.getSendTime());
+                robot.setReceivedTime(lastConversation.getReceivedTime());
+                robot.setContent(lastConversation.getContent());
+                robot.setLastMsgSeq(lastConversation.getLastMsgSeq());
+                robot.setMsgType(lastConversation.getMsgType());
+                robot.setMsgId(lastConversation.getMsgId());
+                if (!TextUtils.isEmpty(lastConversation.getExt())) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(lastConversation.getExt());
+                        long sender = jsonObject.optLong(Conversation.EXT_SENDER);
+
+                        if (sender == MyUserInfoManager.getInstance().getUuid()) {
+                            String me = GlobalData.app().getString(com.mi.live.data.R.string.me);
+                            robot.setContent(me + ": " + lastConversation.getContent());
+                        } else {
+                            robot.setContent(lastConversation.getTargetName() + ": " + lastConversation.getContent());
+                        }
+                    } catch (Exception e) {
+                        MyLog.e(e);
+                    }
+                }
+                robot.setUnreadCount((int) getAllUnFocusConversationUnReadCount());
+                conversationDao.update(robot);
+                EventBus.getDefault().post(new ConversationUpdateEvent(robot));
+                return -2;
+            }
+
+            //如果没有未关注的列表，但是有垃圾箱用户，则更新为null
+            QueryBuilder queryBuilder1 = conversationDao.queryBuilder();
+            queryBuilder1.where(ConversationDao.Properties.LocaLUserId.eq(uuid), ConversationDao.Properties.IsNotFocus.eq(true), ConversationDao.Properties
+                    .Target.in(trashBinTargetIds)).limit(1);
+            List<Conversation> conversations1 = queryBuilder1.list();
+            if (conversations1 != null && conversations1.size() > 0) {
+                robot.setContent("");
+                robot.setMsgType(SixinMessage.S_MSG_TYPE_TEXT);
+                robot.setUnreadCount(0);
+                robot.setReceivedTime(0l);
+                robot.setSendTime(0l);
+                conversationDao.update(robot);
+                EventBus.getDefault().post(new ConversationUpdateEvent(robot));
+                return -2;
+            } else {
+                conversationDao.delete(robot);
+                return robot.getId();
+            }
+        }
+        return -1;
+    }
+
+    public static long getAllUnFocusConversationUnReadCount() {
+        long uuid = MyUserInfoManager.getInstance().getUuid();
+        if (uuid == 0) {
+            uuid = UserAccountManager.getInstance().getUuidAsLong();
+        }
+        String sql = "select sum(" + ConversationDao.Properties.UnreadCount.columnName + ")  from " + ConversationDao.TABLENAME + "  where " + ConversationDao.Properties.LocaLUserId.columnName + "=" + uuid + " and " + ConversationDao.Properties.Target.columnName + " <> " + Conversation.UNFOCUS_CONVERSATION_TARGET + " and " + ConversationDao.Properties.IsNotFocus.columnName + " = 1"
+                + " and " + ConversationDao.Properties.IgnoreStatus.columnName + " = " + Conversation.NOT_IGNORE;
+        ConversationDao conversationDao = GreenDaoManager.getDaoSession(GlobalData.app()).getConversationDao();
+        Cursor c = null;
+        long count = 0;
+        try {
+            c = conversationDao.getDatabase().rawQuery(sql, null);
+            if (c != null && c.moveToFirst()) {
+                count = c.getLong(0);
+            }
+        } catch (Exception e) {
+            MyLog.e(e);
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+        return count;
+    }
+
     public static class ConversationInsertEvent {
         public Conversation conversation;
 
@@ -510,6 +619,22 @@ public class ConversationLocalStore {
 
         public ConversationListUpdateEvent(List<Conversation> conversations) {
             this.conversations = conversations;
+        }
+    }
+
+    public static class ConversationBulkDeleteEvent {
+        public List<Long> mConversationIds;
+
+        public ConversationBulkDeleteEvent(List<Long> conversationIds) {
+            this.mConversationIds = conversationIds;
+        }
+    }
+
+    public static class ConversationBulkDeleteByTargetEvent {
+        public List<Long> mTargets;
+
+        public ConversationBulkDeleteByTargetEvent(List<Long> targets) {
+            this.mTargets = targets;
         }
     }
 
