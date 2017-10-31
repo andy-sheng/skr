@@ -83,6 +83,8 @@ public class RecipientsSelectFragment extends BaseEventBusFragment implements Vi
     public static final int SELECT_MODE_SINGLE_CLICK = 0;
     public static final int SELECT_MODE_MULTI = 1;
     public static final int SELECT_MODE_SINGLE_SELECT = 2;
+    //requestCode
+    public static final int REQUEST_CODE_PICK_USER = 200;
 
     public int requestCode;
 
@@ -121,15 +123,15 @@ public class RecipientsSelectFragment extends BaseEventBusFragment implements Vi
 
     @Override
     protected void bindView() {
-        mTitleBar = (BackTitleBar)mRootView.findViewById(R.id.title_bar);
+        mTitleBar = (BackTitleBar) mRootView.findViewById(R.id.title_bar);
         mPrivateLiveInviteePanel = (View) mRootView.findViewById(R.id.invite_bottom);
-        mBottomList = (RecyclerView)mRootView.findViewById(R.id.invite_list_bottom);
-        mRecyclerView = (IndexableRecyclerView)mRootView.findViewById(R.id.recycler_view);
-        mHintTitle = (TextView)mRootView.findViewById(R.id.hint_title);
-        mSearch = (EditText)mRootView.findViewById(R.id.search_input_edit_text);
+        mBottomList = (RecyclerView) mRootView.findViewById(R.id.invite_list_bottom);
+        mRecyclerView = (IndexableRecyclerView) mRootView.findViewById(R.id.recycler_view);
+        mHintTitle = (TextView) mRootView.findViewById(R.id.hint_title);
+        mSearch = (EditText) mRootView.findViewById(R.id.search_input_edit_text);
         mSearchBar = mRootView.findViewById(R.id.search_bar);
         mDeleteBtn = mRootView.findViewById(R.id.delete_btn);
-        confirmBtn = (TextView)mRootView.findViewById(R.id.private_confirm);
+        confirmBtn = (TextView) mRootView.findViewById(R.id.private_confirm);
         roomId = getArguments().getString(RecipientsSelectFragment.INTENT_LIVE_ROOM_ID);
         dataType = getArguments().getInt(RecipientsSelectFragment.DATA_TYPE, RecipientsSelectRecyclerAdapter.ITEM_TYPE_FOLLOWING);
         requestCode = getArguments().getInt(KEY_REQUEST_CODE);

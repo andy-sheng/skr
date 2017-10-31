@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.component.view.panel;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,13 +11,17 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.base.activity.BaseActivity;
+import com.base.fragment.BaseFragment;
+import com.base.fragment.utils.FragmentNaviUtils;
+import com.base.global.GlobalData;
 import com.base.utils.display.DisplayUtils;
-import com.base.view.BackTitleBar;
+import com.base.view.SymmetryTitleBar;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.presenter.adapter.ConversationAdapter;
+import com.wali.live.watchsdk.recipient.RecipientsSelectFragment;
 import com.wali.live.watchsdk.sixin.PopComposeMessageFragment;
 
 import java.util.List;
@@ -35,7 +40,7 @@ public class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
 
     private final ConversationAdapter mAdapter = new ConversationAdapter();
 
-    private BackTitleBar mTitleBar;
+    private SymmetryTitleBar mTitleBar;
 
     private final ConversationAdapter.IConversationClickListener mConversationClickListener =
             new ConversationAdapter.IConversationClickListener() {
@@ -70,8 +75,9 @@ public class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
     protected void inflateContentView() {
         super.inflateContentView();
         mTitleBar = $(R.id.title_bar);
+        mTitleBar.hideBottomLine();
         mTitleBar.setTitle(R.string.sixin_model_message);
-        mTitleBar.getBackBtn().setOnClickListener(new View.OnClickListener() {
+        mTitleBar.getLeftImageBtn().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mPresenter != null) {
@@ -79,6 +85,18 @@ public class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
                 }
             }
         });
+
+        mTitleBar.getRightImageBtn().setVisibility(View.VISIBLE);
+        mTitleBar.getRightImageBtn().setImageResource(R.drawable.dynamic_message_icon_black);
+        mTitleBar.getRightImageBtn().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mPresenter != null) {
+                    mPresenter.onRecipientSelect();
+                }
+            }
+        });
+
         RecyclerView recyclerView = $(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(mParentView.getContext(),
                 LinearLayoutManager.VERTICAL, false));
@@ -150,6 +168,11 @@ public class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
          * 点击返回按钮
          */
         void onBackBtnClick();
+
+        /**
+         * 选则私信对象
+         */
+        void onRecipientSelect();
 
         /**
          * 获取关注模式下的全部会话列表

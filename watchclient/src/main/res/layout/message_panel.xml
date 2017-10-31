@@ -6,7 +6,7 @@
     android:layout_alignParentRight="true"
     android:orientation="vertical">
 
-    <com.base.view.BackTitleBar
+    <com.base.view.SymmetryTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

@@ -229,4 +229,5 @@
     <string name="search_txt">Search</string>
     <string name="match_hint">Only chosen people can view live stream</string>
     <string name="unblock">Remove</string>
+    <string name="choose_talk_title">Select friends</string>
 </resources>

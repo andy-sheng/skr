@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.base.activity.RxActivity;
 import com.base.fragment.RxFragment;
+import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.keyboard.KeyboardUtils;
@@ -62,6 +63,7 @@ import rx.schedulers.Schedulers;
 
 /**
  * Created by yurui on 3/7/16.
+ *
  * @module 选人
  */
 public class RecipientsSelectRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -445,6 +447,7 @@ public class RecipientsSelectRecyclerAdapter extends RecyclerView.Adapter<Recycl
                             if (editText != null) {
                                 KeyboardUtils.hideKeyboard(mFragment.getActivity(), editText);
                             }
+                            mFragment.onBackPressed();
                             EventBus.getDefault().post(new EventClass.OnActivityResultEvent(mFragment.requestCode, Activity.RESULT_OK, intent));
                         }
                     });
@@ -550,15 +553,15 @@ public class RecipientsSelectRecyclerAdapter extends RecyclerView.Adapter<Recycl
             if (mFooter == view) {
                 return;
             }
-            avatarIv = (BaseImageView)view.findViewById(R.id.user_list_avatar);
-            userNameTv = (TextView)view.findViewById(R.id.txt_username);
-            signTv = (TextView)view.findViewById(R.id.txt_tip);
-            levelTv = (TextView)view.findViewById(R.id.level_tv);
-            checkbox = (CheckBox)view.findViewById(R.id.checkbox);
-            stateBtn = (ImageView)view.findViewById(R.id.img_follow_state);
-            badgeIv = (ImageView)view.findViewById(R.id.img_badge);
-            badgeVipIv = (ImageView)view.findViewById(R.id.img_badge_vip);
-            imgGenderIv = (ImageView)view.findViewById(R.id.img_gender);
+            avatarIv = (BaseImageView) view.findViewById(R.id.user_list_avatar);
+            userNameTv = (TextView) view.findViewById(R.id.txt_username);
+            signTv = (TextView) view.findViewById(R.id.txt_tip);
+            levelTv = (TextView) view.findViewById(R.id.level_tv);
+            checkbox = (CheckBox) view.findViewById(R.id.checkbox);
+            stateBtn = (ImageView) view.findViewById(R.id.img_follow_state);
+            badgeIv = (ImageView) view.findViewById(R.id.img_badge);
+            badgeVipIv = (ImageView) view.findViewById(R.id.img_badge_vip);
+            imgGenderIv = (ImageView) view.findViewById(R.id.img_gender);
             clickArea = view.findViewById(R.id.btn_area);
         }
     }
@@ -612,7 +615,7 @@ public class RecipientsSelectRecyclerAdapter extends RecyclerView.Adapter<Recycl
 
                             if (o != null) {
                                 //hasMoreItem = offset + pageCount < total && itemNormalType != ITEM_TYPE_MANAGER;
-                                List<Object> dataList = (List<Object>)o;
+                                List<Object> dataList = (List<Object>) o;
                                 hasMoreItem = dataList.size() < total;
                                 mOffset = dataList.size();
 
@@ -687,7 +690,7 @@ public class RecipientsSelectRecyclerAdapter extends RecyclerView.Adapter<Recycl
                                 if (mNeedSearch) {
                                     doSearch();
                                 } else {
-                                    mDataListSearch = (List<Object>)o;
+                                    mDataListSearch = (List<Object>) o;
                                     notifyDataSetChanged();
                                 }
                             }
