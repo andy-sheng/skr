@@ -197,10 +197,10 @@
     <string name="edit_info_tip">You haven\'t set a nickname. %s to set to make more friends.</string>
     <string name="click_here">Tap here</string>
     <string name="room_admin">Manager</string>
-    <string name="line_my_zone">主场</string>
-    <string name="line_guest_into">进TA房间</string>
-    <string name="pk_prepare_user">%ds后PK正式开始，快来送礼物支持主播吧</string>
-    <string name="pk_end_run">%1$s提前逃跑咯，这局%2$s是赢家</string>
+    <string name="line_my_zone">Home field</string>
+    <string name="line_guest_into">Enter room</string>
+    <string name="pk_prepare_user">PK is about to start in %ds, send gifts to support the host</string>
+    <string name="pk_end_run">%1$s quit this session, so %2$s is the winner</string>
     <string name="can_not_vote_toast">Watch a little longer and vote</string>
     <string name="vote_finish_toast">Activity ended</string>
     <string name="vote_max_toast">Voting session ended</string>
@@ -231,5 +231,5 @@
     <string name="match_hint">Only chosen people can view live stream</string>
     <string name="unblock">Remove</string>
     <string name="choose_talk_title">Select friends</string>
-    <string name="message_not_supported">[this message not supported]</string>
+    <string name="message_not_supported">[This message type isn\'t supported]</string>
 </resources>
