@@ -157,15 +157,6 @@ public final class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLa
             public void onNewConversationList(List<ConversationAdapter.ConversationItem> list) {
                 mAdapter.setItemData(list);
             }
-
-            @Override
-            public void onNewConversationUpdate(int index, ConversationAdapter.ConversationItem item) {
-                if (item == null) {
-                    mAdapter.notifyItemChanged(index);
-                } else {
-                    mAdapter.insertItemData(index, item);
-                }
-            }
         }
         return new ComponentView();
     }
@@ -207,10 +198,5 @@ public final class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLa
          * 更新整个会话列表
          */
         void onNewConversationList(List<ConversationAdapter.ConversationItem> list);
-
-        /**
-         * 更新单个会话
-         */
-        void onNewConversationUpdate(int index, ConversationAdapter.ConversationItem item);
     }
 }

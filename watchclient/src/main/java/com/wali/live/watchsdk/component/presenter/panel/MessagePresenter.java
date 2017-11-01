@@ -8,7 +8,6 @@ import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.util.Pair;
 
 import com.base.activity.BaseActivity;
 import com.base.fragment.BaseFragment;
@@ -370,7 +369,14 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
                     .map(new Func1<Integer, List<Conversation>>() {
                         @Override
                         public List<Conversation> call(Integer integer) {
-                            return needSyncAll ? onQueryFromLocalStore() : new ArrayList<Conversation>();
+                            if (needSyncAll) {
+                                synchronized (mConversationCacheLock) {
+                                    mConversationCacheLock.clear();
+                                }
+                                return onQueryFromLocalStore();
+                            } else {
+                                return new ArrayList<>();
+                            }
                         }
                     }).map(new Func1<List<Conversation>, List<ConversationAdapter.ConversationItem>>() {
                         @Override
@@ -415,8 +421,7 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
                     });
         }
 
-        private final Pair<Integer, ConversationAdapter.ConversationItem> insertNewItem(
-                @NonNull Conversation conversation) {
+        private void insertNewItemLocked(@NonNull Conversation conversation) {
             int index = mNeedLocalAvatarItemId.indexOf((int) conversation.getTarget());
             int localAvatarResId = index != -1 ? mLocalAvatarResId.get(index) : 0;
             ConversationAdapter.ConversationItem newItem =
@@ -429,59 +434,6 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
                 ++elemIndex;
             }
             mConversationCacheLock.add(elemIndex, newItem);
-            return Pair.create(elemIndex, newItem);
-        }
-
-        /**
-         * 添加或移除回话项成功
-         * 若item为null，表示更新了index处的数据
-         * 否则，表示item被插入到了mConversationCacheLock的index处
-         */
-        protected final void onAddOrUpdateItemDone(
-                int index, @Nullable ConversationAdapter.ConversationItem item) {
-            if (mView == null || mActiveMode != mMode) {
-                return;
-            }
-            mView.onNewConversationUpdate(index, item);
-        }
-
-        @AnyThread
-        public final void addOrUpdateItem(final Conversation conversation) {
-            if (conversation.getTarget() == TARGET_126) { // 不显示互动通知 TODO-YangLi 后续需要时再加
-                return;
-            }
-            MyLog.d(TAG, "addOrUpdateItem");
-            Observable.just(0)
-                    .map(new Func1<Integer, Pair<Integer, ConversationAdapter.ConversationItem>>() {
-                        @Override
-                        public Pair<Integer, ConversationAdapter.ConversationItem> call(Integer i) {
-                            final ConversationAdapter.ConversationItem guard = new ConversationAdapter.ConversationItem();
-                            guard.uid = conversation.getTarget();
-                            synchronized (mConversationCacheLock) {
-                                int elemIndex = mConversationCacheLock.indexOf(guard);
-                                if (elemIndex != -1) {
-                                    mConversationCacheLock.get(elemIndex).updateFrom(conversation);
-                                    return Pair.create(elemIndex, null);
-                                } else {
-                                    return insertNewItem(conversation);
-                                }
-                            }
-                        }
-                    }).subscribeOn(Schedulers.io())
-                    .compose(MessagePresenter.this.<Pair<Integer, ConversationAdapter.ConversationItem>>bindUntilEvent(PresenterEvent.STOP))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<Pair<Integer, ConversationAdapter.ConversationItem>>() {
-                        @Override
-                        public void call(Pair<Integer, ConversationAdapter.ConversationItem> result) {
-                            MyLog.d(TAG, "addOrUpdateItem done");
-                            onAddOrUpdateItemDone(result.first, result.second);
-                        }
-                    }, new Action1<Throwable>() {
-                        @Override
-                        public void call(Throwable throwable) {
-                            MyLog.e(TAG, "addOrUpdateItem failed, exception=" + throwable);
-                        }
-                    });
         }
 
         protected abstract boolean canBelongToThisCache(@NonNull Conversation conversation);
@@ -505,20 +457,25 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
                             boolean needUpdate = false;
                             synchronized (mConversationCacheLock) {
                                 for (Conversation conversation : conversations) {
+                                    if (conversation.getTarget() == TARGET_126) { // 不显示互动通知  TODO-YangLi 后续需要时再加
+                                        continue;
+                                    }
                                     guard.uid = conversation.getTarget();
                                     int elemIndex = mConversationCacheLock.indexOf(guard);
+                                    final boolean belongToThisCache = canBelongToThisCache(conversation);
+                                    MyLog.d(TAG, "updateFromList uid=" + guard.uid + ", belongToThisCache=" + belongToThisCache);
                                     if (elemIndex != -1) {
                                         // Cache中有，若类型与Cache类型不冲突，则更新，否则从Cache中移除此元素
                                         // 关注状态的变化，会导致一个回话在关注列表和未关注列表之间转移
-                                        if (canBelongToThisCache(conversation)) {
+                                        if (belongToThisCache) {
                                             mConversationCacheLock.get(elemIndex).updateFrom(conversation);
                                         } else {
                                             mConversationCacheLock.remove(elemIndex);
                                         }
                                         needUpdate = true;
-                                    } else if (canBelongToThisCache(conversation)) {
+                                    } else if (belongToThisCache) {
                                         // Cache中没有，且类型与Cache类型不冲突，则加入此元素
-                                        insertNewItem(conversation);
+                                        insertNewItemLocked(conversation);
                                         needUpdate = true;
                                     }
                                 }
