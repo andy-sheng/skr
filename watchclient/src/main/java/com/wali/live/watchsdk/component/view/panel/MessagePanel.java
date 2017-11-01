@@ -68,8 +68,8 @@ public final class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLa
     protected void inflateContentView() {
         super.inflateContentView();
         mTitleBar = $(R.id.title_bar);
-        mTitleBar.hideBottomLine();
         mTitleBar.setTitle(R.string.sixin_model_message);
+
         mLeftTitleBtn = mTitleBar.getLeftImageBtn();
         mLeftTitleBtn.setVisibility(View.GONE);
         mLeftTitleBtn.setOnClickListener(new View.OnClickListener() {
