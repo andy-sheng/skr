@@ -197,7 +197,8 @@
                 android:id="@+id/follow_container"
                 android:layout_width="@dimen/view_dimen_340"
                 android:layout_height="33.33dp"
-                android:background="@drawable/float_info_not_follow_bg">
+                android:background="@drawable/float_info_not_follow_bg"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/follow_tv"
@@ -216,7 +217,8 @@
                 android:layout_width="@dimen/view_dimen_340"
                 android:layout_height="33.33dp"
                 android:layout_marginStart="6.66dp"
-                android:background="@drawable/float_info_not_follow_bg">
+                android:background="@drawable/float_info_not_follow_bg"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/message_tv"

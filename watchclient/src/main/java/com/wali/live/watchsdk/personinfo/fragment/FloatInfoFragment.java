@@ -17,6 +17,7 @@ import com.base.activity.BaseActivity;
 import com.base.activity.BaseRotateSdkActivity;
 import com.base.dialog.MyAlertDialog;
 import com.base.event.SdkEventClass;
+import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.BaseFragment;
 import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
@@ -56,7 +57,7 @@ import rx.Observable;
 /**
  * Created by wangmengjie on 17-8-23.
  */
-public class FloatInfoFragment extends RxFragment
+public class FloatInfoFragment extends BaseEventBusFragment
         implements View.OnClickListener, ForbidManagePresenter.IForbidManageView, IFloatInfoView {
 
     private FloatInfoPresenter mPresenter;
@@ -195,6 +196,7 @@ public class FloatInfoFragment extends RxFragment
             mMessageContainer.setVisibility(View.GONE);
         } else {
             mFollowContainer.setVisibility(View.VISIBLE);
+            mMessageContainer.setVisibility(View.VISIBLE);
             if (getActivity() instanceof ForbidManagePresenter.IForbidManageProvider) {
                 //判断是否有禁言权限和踢人权限
                 if (ownerUid == UserAccountManager.getInstance().getUuidAsLong()) {
@@ -234,16 +236,9 @@ public class FloatInfoFragment extends RxFragment
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyLog.d(TAG, "onCreate");
-        EventBus.getDefault().register(this);
         setupForbidManagePresenter();
     }
 
