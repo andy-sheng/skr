@@ -856,9 +856,9 @@ public abstract class MLPreferenceUtils extends PreferenceUtils {
 
     }
 
-    public static int getKeyboardHeight(boolean isisPortrait) {
+    public static int getKeyboardHeight(boolean isPortrait) {
 
-        if (isisPortrait) { //认为是竖屏，返回竖屏的值
+        if (isPortrait) { //认为是竖屏，返回竖屏的值
             return MLPreferenceUtils.getSettingInt(PREF_KEY_KEBOARD_HEIGHT, GlobalData.app().getResources().getDimensionPixelSize(R.dimen.keyboard_default_height));
         } else { //认为是横屏,返回横屏的值
             return MLPreferenceUtils.getSettingInt(PREF_KEY_CROSS_KEBOARD_HEIGHT, GlobalData.app().getResources().getDimensionPixelSize(R.dimen.keyboard_default_cross_height));

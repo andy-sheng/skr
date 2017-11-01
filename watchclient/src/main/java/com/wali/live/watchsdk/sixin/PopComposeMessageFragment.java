@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.base.activity.BaseActivity;
@@ -21,7 +21,9 @@ import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.view.BackTitleBar;
+import com.mi.live.data.preference.MLPreferenceUtils;
 import com.wali.live.common.smiley.SmileyParser;
+import com.wali.live.common.smiley.SmileyPicker;
 import com.wali.live.dao.SixinMessage;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.sixin.cache.SendingMessageCache;
@@ -58,14 +60,21 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
     private SixinMessageAdapter mMessageAdapter;
 
     private EditText mInputEt;
+    private ImageView mSmileyBtn;
     private TextView mSendBtn;
 
     private View mPlaceholderView;
+
+    private View mPickerArea;
+    private SmileyPicker mSmileyPicker;
 
     private SixinTarget mSixinTarget;
     private SixinMessagePresenter mMessagePresenter;
 
     private boolean mIsScrollToLast;
+
+    private int mKeyboardHeight;
+    private boolean mIsSmileyShown = false;
 
     @Override
     public int getRequestCode() {
@@ -144,10 +153,18 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
         mMessageRv.setHasFixedSize(true);
 
         mInputEt = $(R.id.input_et);
+        mSmileyBtn = $(R.id.smiley_btn);
+        $click(mSmileyBtn, this);
         mSendBtn = $(R.id.send_btn);
         $click(mSendBtn, this);
 
         mPlaceholderView = $(R.id.placeholder_view);
+
+        mPickerArea = $(R.id.picker_area);
+        mSmileyPicker = $(R.id.smiley_picker);
+        mSmileyPicker.setEditText(mInputEt);
+
+        mKeyboardHeight = MLPreferenceUtils.getKeyboardHeight(true);
 
         initPresenter();
     }
@@ -210,16 +227,19 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
         switch (event.eventType) {
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN:
                 if (mPlaceholderView != null) {
-                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mPlaceholderView.getLayoutParams();
+                    ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) mPlaceholderView.getLayoutParams();
                     layoutParams.height = 0;
                     mPlaceholderView.setLayoutParams(layoutParams);
                 }
                 break;
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE:
                 if (mPlaceholderView != null) {
-                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mPlaceholderView.getLayoutParams();
-                    layoutParams.height = (int) event.obj1;
+                    ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) mPlaceholderView.getLayoutParams();
+                    layoutParams.height = mKeyboardHeight = (int) event.obj1;
                     mPlaceholderView.setLayoutParams(layoutParams);
+                }
+                if (mSmileyPicker != null) {
+                    updateSmileyPicker(false);
                 }
                 break;
         }
@@ -267,6 +287,10 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
         if (getActivity() == null) {
             return false;
         }
+        if (mIsSmileyShown) {
+            updateSmileyPicker(false);
+            return true;
+        }
         finish();
         return true;
     }
@@ -278,6 +302,27 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
             finish();
         } else if (id == R.id.send_btn) {
             sendText();
+        } else if (id == R.id.smiley_btn) {
+            updateSmileyPicker(!mIsSmileyShown);
+        }
+    }
+
+    private void updateSmileyPicker(boolean showSmiley) {
+        if (mIsSmileyShown != showSmiley) {
+            mIsSmileyShown = showSmiley;
+            if (mIsSmileyShown) {
+                ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) mPickerArea.getLayoutParams();
+                layoutParams.height = mKeyboardHeight;
+                mPickerArea.setLayoutParams(layoutParams);
+
+                mSmileyPicker.show(mKeyboardHeight);
+            } else {
+                ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) mPickerArea.getLayoutParams();
+                layoutParams.height = 0;
+                mPickerArea.setLayoutParams(layoutParams);
+
+                mSmileyPicker.hide();
+            }
         }
     }
 

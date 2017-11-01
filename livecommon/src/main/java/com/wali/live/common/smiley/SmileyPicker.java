@@ -1,6 +1,5 @@
 package com.wali.live.common.smiley;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -147,19 +146,20 @@ public class SmileyPicker extends LinearLayout implements ViewPager.OnPageChange
         return mEditText;
     }
 
-
-    public void show(final Activity activity, final int packageId, int maxHeight, Animation.AnimationListener listener) {
+    /**
+     * 优先使用accurateHeight，没有使用读取Preference
+     */
+    public void show(int accurateHeight, int maxHeight, Animation.AnimationListener listener) {
         if (this.getVisibility() == View.VISIBLE) {
             return;
         }
         mIsPickerShowed = true;
 
-        mPickerHeight = MLPreferenceUtils.getKeyboardHeight();
-//        MyLog.d(TAG, " mPickerHeight = " + mPickerHeight + " maxHeight = " + maxHeight);
+        mPickerHeight = accurateHeight > 0 ? accurateHeight : MLPreferenceUtils.getKeyboardHeight();
         if (maxHeight <= 0) {
-            SmileyPicker.this.getLayoutParams().height = mPickerHeight;
+            getLayoutParams().height = mPickerHeight;
         } else {
-            SmileyPicker.this.getLayoutParams().height = Math.min(mPickerHeight, maxHeight);
+            getLayoutParams().height = Math.min(mPickerHeight, maxHeight);
         }
 
         KeyboardUtils.hideKeyboard(getContext(), mEditText);
@@ -176,8 +176,12 @@ public class SmileyPicker extends LinearLayout implements ViewPager.OnPageChange
         }
     }
 
-    public void show(final Activity activity) {
-        show(activity, -1, 0, null);
+    public void show(int accurateHeight) {
+        show(accurateHeight, 0, null);
+    }
+
+    public void show() {
+        show(0, 0, null);
     }
 
     public void hide(Animation.AnimationListener listener) {
