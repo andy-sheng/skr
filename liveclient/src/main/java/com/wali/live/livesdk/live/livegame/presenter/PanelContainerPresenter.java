@@ -119,8 +119,8 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
 
     @Override
     public boolean onEvent(int event, IParams params) {
-        if (mView == null || CommonUtils.isFastDoubleClick()) {
-            MyLog.e(TAG, "onAction but mView is null, event=" + event + " or CommonUtils.isFastDoubleClick() is true");
+        if (mView == null) {
+            MyLog.e(TAG, "onAction but mView is null, event=" + event);
             return false;
         }
         switch (event) {
@@ -130,6 +130,12 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
             case MSG_ON_ORIENT_LANDSCAPE:
                 onOrientation(true);
                 return true;
+        }
+        if (CommonUtils.isFastDoubleClick()) {
+            MyLog.w(TAG, "onAction but isFastDoubleClick, event=" + event);
+            return false;
+        }
+        switch (event) {
             case MSG_SHOW_SETTING_PANEL:
                 showSettingPanel();
                 return true;

@@ -50,6 +50,11 @@ public final class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLa
             };
 
     @Override
+    protected final String getTAG() {
+        return TAG;
+    }
+
+    @Override
     protected final int getLayoutResId() {
         return R.layout.message_panel;
     }
