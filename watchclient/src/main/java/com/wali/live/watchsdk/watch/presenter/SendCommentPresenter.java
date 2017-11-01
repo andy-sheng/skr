@@ -277,7 +277,7 @@ public class SendCommentPresenter implements IBindActivityLIfeCycle {
         mIsShowSmilyPicker = true;
         KeyboardUtils.hideKeyboardImmediately(mActivity);
         if (mSmileyPicker != null) {
-            mSmileyPicker.show(mActivity, -1, 0, null);
+            mSmileyPicker.show();
             ViewGroup.LayoutParams lp = mSmileyPicker.getLayoutParams();
             lp.height = mSoftKeyboardHeight;
             mSmileyPicker.setLayoutParams(lp);
