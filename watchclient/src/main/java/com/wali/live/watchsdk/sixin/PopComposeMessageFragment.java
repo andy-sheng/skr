@@ -18,6 +18,7 @@ import com.base.activity.BaseActivity;
 import com.base.event.KeyboardEvent;
 import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
+import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.view.BackTitleBar;
 import com.wali.live.common.smiley.SmileyParser;
@@ -294,6 +295,7 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
     }
 
     private void finish() {
+        KeyboardUtils.hideKeyboardImmediately(getActivity());
         FragmentNaviUtils.popFragment(getActivity());
     }
 
