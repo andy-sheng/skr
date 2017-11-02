@@ -10,6 +10,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -254,6 +256,7 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
         if (event.sixinMessages == null || event.sixinMessages.size() == 0) {
             return;
         }
+
         mMessagePresenter.notifyMessage(event.sixinMessages);
     }
 
@@ -342,6 +345,27 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
     private void finish() {
         KeyboardUtils.hideKeyboardImmediately(getActivity());
         FragmentNaviUtils.popFragment(getActivity());
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        if (enter) {
+            Animation animation = null;
+            try {
+                animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_half_bottom_in);
+            } catch (Exception e) {
+                MyLog.e(e);
+            }
+            return animation;
+        } else {
+            Animation animation = null;
+            try {
+                animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_half_bottom_out);
+            } catch (Exception e) {
+                MyLog.e(e);
+            }
+            return animation;
+        }
     }
 
     public static void open(BaseActivity activity, SixinTarget sixinTarget, boolean isNeedSaveToStack) {
