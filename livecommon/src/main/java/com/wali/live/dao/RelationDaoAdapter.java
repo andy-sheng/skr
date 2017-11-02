@@ -269,6 +269,11 @@ public class RelationDaoAdapter {
     }
 
     public Relation getRelationByUUid(long uuid) {
-        return mRelationDao.queryBuilder().where(RelationDao.Properties.UserId.eq(uuid)).unique();
+        try {
+            return mRelationDao.queryBuilder().where(RelationDao.Properties.UserId.eq(uuid)).unique();
+        } catch (Exception e){
+            MyLog.e(TAG ,"getRelationByUUid failed e=" + e);
+        }
+        return null;
     }
 }

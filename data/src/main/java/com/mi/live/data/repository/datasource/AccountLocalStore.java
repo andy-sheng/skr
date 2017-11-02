@@ -1,6 +1,7 @@
 package com.mi.live.data.repository.datasource;
 
 import com.base.global.GlobalData;
+import com.base.log.MyLog;
 import com.mi.live.data.greendao.GreenDaoManager;
 import com.wali.live.dao.UserAccount;
 import com.wali.live.dao.UserAccountDao;
@@ -14,7 +15,7 @@ public class AccountLocalStore {
     public final static String TAG = AccountLocalStore.class.getSimpleName();
 
     private static AccountLocalStore sInstance;
-    
+
     private UserAccountDao mUserAccountDao;
 
     private AccountLocalStore() {
@@ -60,16 +61,19 @@ public class AccountLocalStore {
                 account.getUuid(),
                 UserAccountDao.Properties.Channelid.columnName,
                 account.getChannelid()
-                );
+        );
         mUserAccountDao.getDatabase().execSQL(sql);
     }
 
     public UserAccount getAccount(int channelId) {
-        List list = mUserAccountDao.queryBuilder().where(UserAccountDao.Properties.Channelid.eq(channelId)).list();
-        if (list.isEmpty()) {
-            return null;
-        } else {
-            return (UserAccount) list.get(0);
+        try {
+            List list = mUserAccountDao.queryBuilder().where(UserAccountDao.Properties.Channelid.eq(channelId)).list();
+            if (!list.isEmpty()) {
+                return (UserAccount) list.get(0);
+            }
+        } catch (Exception e) {
+            MyLog.e(TAG, "getAccount failed e=" + e);
         }
+        return null;
     }
 }

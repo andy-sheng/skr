@@ -61,6 +61,11 @@ public class MyUserInfoManager {
                             syncSelfDetailInfo();
                         }
                     }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.w(TAG, "init failed e=" + throwable);
+                    }
                 });
     }
 
@@ -211,10 +216,14 @@ public class MyUserInfoManager {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        MyLog.e(TAG, throwable);
-                        User user = readFromDB(channelId);
-                        if (user != null && user.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
-                            mMyInfo = user;
+                        MyLog.e(TAG, "syncSelfDetailInfo failed throwable=" + throwable);
+                        try {
+                            User user = readFromDB(channelId);
+                            if (user != null && user.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
+                                mMyInfo = user;
+                            }
+                        } catch (Exception e) {
+                            MyLog.w(TAG, "syncSelfDetailInfo failed e=" + e);
                         }
                     }
                 });
@@ -238,6 +247,11 @@ public class MyUserInfoManager {
                             if (userInfo != null && userInfo.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
                                 mMyInfo = userInfo;
                             }
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            MyLog.e(TAG, "getUser failed e=" + throwable);
                         }
                     });
         }

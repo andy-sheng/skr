@@ -1,6 +1,7 @@
 package com.mi.live.data.repository.datasource;
 
 import com.base.global.GlobalData;
+import com.base.log.MyLog;
 import com.mi.live.data.greendao.GreenDaoManager;
 import com.wali.live.dao.OwnUserInfo;
 import com.wali.live.dao.OwnUserInfoDao;
@@ -47,17 +48,20 @@ public class MyUserInfoLocalStore {
         mOwnUserInfoDao.getDatabase().execSQL(sql);
     }
 
-    public void replaceAccount(OwnUserInfo account,int channelId) {
+    public void replaceAccount(OwnUserInfo account, int channelId) {
         deleteAccount(channelId);
         mOwnUserInfoDao.insertOrReplaceInTx(account);
     }
 
     public OwnUserInfo getAccount(int channelId) {
-        List list = mOwnUserInfoDao.queryBuilder().where(OwnUserInfoDao.Properties.Channelid.eq(channelId)).list();
-        if(list.isEmpty()){
-            return null;
-        }else{
-            return (OwnUserInfo) list.get(0);
+        try {
+            List list = mOwnUserInfoDao.queryBuilder().where(OwnUserInfoDao.Properties.Channelid.eq(channelId)).list();
+            if (!list.isEmpty()) {
+                return (OwnUserInfo) list.get(0);
+            }
+        } catch (Exception e) {
+            MyLog.e(TAG, "getAccount failed e=" + e);
         }
+        return null;
     }
 }
