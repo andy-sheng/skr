@@ -11,7 +11,7 @@ public class SixinTarget implements Serializable {
     private User mTargetUser;
 
     private int mFocusState;
-    private int mTargetType;
+    private int mTargetType;  //0：单聊 1：群聊  2：宠爱团
 
     public SixinTarget(User target) {
         mTargetUser = target;

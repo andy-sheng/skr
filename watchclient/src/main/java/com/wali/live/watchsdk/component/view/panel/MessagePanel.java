@@ -50,6 +50,11 @@ public final class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLa
             };
 
     @Override
+    protected final String getTAG() {
+        return TAG;
+    }
+
+    @Override
     protected final int getLayoutResId() {
         return R.layout.message_panel;
     }
@@ -81,7 +86,7 @@ public final class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLa
             }
         });
         mRightTitleBtn = mTitleBar.getRightImageBtn();
-        mRightTitleBtn.setImageResource(R.drawable.dynamic_message_icon);
+        mRightTitleBtn.setImageResource(R.drawable.dynamic_message_icon_black);
         mRightTitleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,7 +146,7 @@ public final class MessagePanel extends BaseBottomPanel<LinearLayout, RelativeLa
                 mTitleBar.setTitle(R.string.sixin_model_message);
                 mLeftTitleBtn.setVisibility(View.GONE);
                 mRightTitleBtn.setVisibility(View.VISIBLE);
-                mRightTitleBtn.setImageResource(R.drawable.dynamic_message_icon);
+                mRightTitleBtn.setImageResource(R.drawable.dynamic_message_icon_black);
             }
 
             @Override

@@ -17,8 +17,8 @@ import com.base.activity.BaseActivity;
 import com.base.activity.BaseRotateSdkActivity;
 import com.base.dialog.MyAlertDialog;
 import com.base.event.SdkEventClass;
+import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.BaseFragment;
-import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
@@ -31,6 +31,7 @@ import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.event.LiveRoomManagerEvent;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.user.User;
+import com.wali.live.dao.SixinMessage;
 import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.proto.RankProto;
 import com.wali.live.statistics.StatisticsKey;
@@ -40,14 +41,12 @@ import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.editinfo.EditInfoActivity;
-import com.wali.live.watchsdk.eventbus.DismissFloatPersonInfoEvent;
 import com.wali.live.watchsdk.personinfo.presenter.FloatInfoPresenter;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.personinfo.presenter.IFloatInfoView;
 import com.wali.live.watchsdk.sixin.PopComposeMessageFragment;
 import com.wali.live.watchsdk.sixin.pojo.SixinTarget;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -56,7 +55,7 @@ import rx.Observable;
 /**
  * Created by wangmengjie on 17-8-23.
  */
-public class FloatInfoFragment extends RxFragment
+public class FloatInfoFragment extends BaseEventBusFragment
         implements View.OnClickListener, ForbidManagePresenter.IForbidManageView, IFloatInfoView {
 
     private FloatInfoPresenter mPresenter;
@@ -195,6 +194,7 @@ public class FloatInfoFragment extends RxFragment
             mMessageContainer.setVisibility(View.GONE);
         } else {
             mFollowContainer.setVisibility(View.VISIBLE);
+            mMessageContainer.setVisibility(View.VISIBLE);
             if (getActivity() instanceof ForbidManagePresenter.IForbidManageProvider) {
                 //判断是否有禁言权限和踢人权限
                 if (ownerUid == UserAccountManager.getInstance().getUuidAsLong()) {
@@ -234,16 +234,9 @@ public class FloatInfoFragment extends RxFragment
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyLog.d(TAG, "onCreate");
-        EventBus.getDefault().register(this);
         setupForbidManagePresenter();
     }
 
@@ -506,7 +499,13 @@ public class FloatInfoFragment extends RxFragment
 
     private void onClickMessage() {
         onBackPressed();
-        PopComposeMessageFragment.open((BaseActivity) getActivity(), new SixinTarget(mUser), true);
+        int focusState = SixinMessage.MSG_STATUS_UNFOUCS;
+        if (mUser.isBothwayFollowing()) {
+            focusState = SixinMessage.MSG_STATUE_BOTHFOUCS;
+        } else if (mUser.isFocused()) {
+            focusState = SixinMessage.MSG_STATUS_ONLY_ME_FOUCS;
+        }
+        PopComposeMessageFragment.open((BaseActivity) getActivity(), new SixinTarget(mUser, focusState, 0), true);
     }
 
     private void onClickMainAvatar() {

@@ -7,7 +7,6 @@ import android.support.annotation.AnyThread;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.base.activity.BaseActivity;
 import com.base.fragment.BaseFragment;
@@ -61,7 +60,7 @@ import static com.wali.live.dao.Conversation.VFANS_NOTIFY_CONVERSATION_TARGET;
  */
 public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
         implements MessagePanel.IPresenter {
-    private static final String TAG = "MessagePresenter";
+    private static final String TAG = "MessagePanelPresenter";
 
     public static final int TARGET_666 = 666; // VIP客服
     public static final int TARGET_777 = 777;
@@ -314,16 +313,7 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
     }
 
     @Override
-    public boolean onEvent(int event, IParams
-            params) {
-        if (mView == null) {
-            Log.e(TAG, "onAction but mView is null, event=" + event);
-            return false;
-        }
-        switch (event) {
-            default:
-                break;
-        }
+    public final boolean onEvent(int event, IParams params) {
         return false;
     }
 
