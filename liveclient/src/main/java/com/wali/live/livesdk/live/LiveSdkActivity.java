@@ -1061,13 +1061,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     @Override
     public void onBackPressed() {
-        if (mController != null && mController.postEvent(MSG_ON_BACK_PRESSED)) {
-            return;
-        }
-        processBack(true);
-    }
-
-    private void processBack(boolean isBackPressed) {
         FragmentManager fm = getSupportFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
             //退出栈弹出
@@ -1087,9 +1080,10 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 }
             }
         } else {
-            if (isBackPressed) {
-                showStopDialog();
+            if (mController != null && mController.postEvent(MSG_ON_BACK_PRESSED)) {
+                return;
             }
+            showStopDialog();
         }
     }
 
