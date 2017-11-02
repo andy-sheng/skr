@@ -83,7 +83,8 @@ public class SixinMessagePresenter extends BaseRxPresenter<ISixinMessageView> {
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String s) {
-                        SixinMessage sixinMessage = SixinMessageLocalStore.getTextSixinMessageAndNotInsertToDB(mSixinTarget.getNickname(), mSixinTarget.getUid(), mSixinTarget.getTargetType(), message,
+                        SixinMessage sixinMessage = SixinMessageLocalStore.getTextSixinMessageAndNotInsertToDB(
+                                mSixinTarget.getNickname(), mSixinTarget.getUid(), mSixinTarget.getTargetType(), message,
                                 mSixinTarget.getFocusState(), mSixinTarget.getCertificationType());
                         SixinMessageLocalStore.insertSixinMessage(sixinMessage);
 
