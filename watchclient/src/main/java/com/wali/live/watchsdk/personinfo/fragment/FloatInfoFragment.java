@@ -19,7 +19,6 @@ import com.base.dialog.MyAlertDialog;
 import com.base.event.SdkEventClass;
 import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.BaseFragment;
-import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
@@ -32,6 +31,7 @@ import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.event.LiveRoomManagerEvent;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.user.User;
+import com.wali.live.dao.SixinMessage;
 import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.proto.RankProto;
 import com.wali.live.statistics.StatisticsKey;
@@ -41,14 +41,12 @@ import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.editinfo.EditInfoActivity;
-import com.wali.live.watchsdk.eventbus.DismissFloatPersonInfoEvent;
 import com.wali.live.watchsdk.personinfo.presenter.FloatInfoPresenter;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.personinfo.presenter.IFloatInfoView;
 import com.wali.live.watchsdk.sixin.PopComposeMessageFragment;
 import com.wali.live.watchsdk.sixin.pojo.SixinTarget;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -501,7 +499,13 @@ public class FloatInfoFragment extends BaseEventBusFragment
 
     private void onClickMessage() {
         onBackPressed();
-        PopComposeMessageFragment.open((BaseActivity) getActivity(), new SixinTarget(mUser), true);
+        int focusState = SixinMessage.MSG_STATUS_UNFOUCS;
+        if (mUser.isBothwayFollowing()) {
+            focusState = SixinMessage.MSG_STATUE_BOTHFOUCS;
+        } else if (mUser.isFocused()) {
+            focusState = SixinMessage.MSG_STATUS_ONLY_ME_FOUCS;
+        }
+        PopComposeMessageFragment.open((BaseActivity) getActivity(), new SixinTarget(mUser, focusState, 0), true);
     }
 
     private void onClickMainAvatar() {
