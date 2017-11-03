@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
-import com.base.presenter.Presenter;
 import com.base.utils.CommonUtils;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
@@ -18,6 +17,8 @@ import com.wali.live.livesdk.live.liveshow.view.panel.LiveMagicPanel;
 import com.wali.live.livesdk.live.liveshow.view.panel.LivePlusPanel;
 import com.wali.live.livesdk.live.liveshow.view.panel.LiveSettingPanel;
 import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
+import com.wali.live.watchsdk.component.presenter.panel.MessagePresenter;
+import com.wali.live.watchsdk.component.view.panel.MessagePanel;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 
 import java.lang.ref.WeakReference;
@@ -27,6 +28,7 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_MAGIC_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_MESSAGE_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_PLUS_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SETTING_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SHARE_PANEL;
@@ -43,15 +45,30 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     private StreamerPresenter mStreamerPresenter;
 
     private WeakReference<LiveSettingPanel> mSettingPanelRef;
-    private WeakReference<LiveMagicPanel> mMagicPanelRef;
-    private WeakReference<LivePlusPanel> mPlusPanelRef;
 
+    private WeakReference<LivePlusPanel> mPlusPanelRef;
     private WeakReference<LivePlusPresenter> mPlusPresenterRef;
+
+    private WeakReference<LiveMagicPanel> mMagicPanelRef;
     private WeakReference<LiveMagicPresenter> mMagicPresenterRef;
 
+    private WeakReference<MessagePanel> mMessagePanelRef;
+    private WeakReference<MessagePresenter> mMessagePresenterRef;
+
     @Override
-    protected String getTAG() {
+    protected final String getTAG() {
         return TAG;
+    }
+
+    @Override
+    public void setView(@Nullable RelativeLayout relativeLayout) {
+        super.setView(relativeLayout);
+        relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hidePanel(true);
+            }
+        });
     }
 
     public PanelContainerPresenter(
@@ -72,41 +89,23 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
         registerAction(MSG_SHOW_SETTING_PANEL);
         registerAction(MSG_SHOW_PLUS_PANEL);
         registerAction(MSG_SHOW_MAGIC_PANEL);
-        registerAction(MSG_HIDE_BOTTOM_PANEL);
         registerAction(MSG_SHOW_SHARE_PANEL);
+        registerAction(MSG_SHOW_MESSAGE_PANEL);
+        registerAction(MSG_HIDE_BOTTOM_PANEL);
     }
 
     @Override
-    public void setView(@Nullable RelativeLayout relativeLayout) {
-        super.setView(relativeLayout);
-        relativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hidePanel(true);
-            }
-        });
+    public void stopPresenter() {
+        super.stopPresenter();
+        unregisterAllAction();
+        hidePanel(false);
     }
 
     @Override
     public void destroy() {
         super.destroy();
-
-        mSettingPanelRef = null;
-
-        Presenter plusPresenter = deRef(mPlusPresenterRef);
-        if (plusPresenter != null) {
-            plusPresenter.destroy();
-        }
-        mPlusPresenterRef = null;
-        mPlusPanelRef = null;
-
-        Presenter magicPresenter = deRef(mMagicPresenterRef);
-        if (magicPresenter != null) {
-            magicPresenter.destroy();
-        }
-        mMagicPresenterRef = null;
-        mMagicPanelRef = null;
-
+        destroyRef(mPlusPresenterRef);
+        destroyRef(mMagicPresenterRef);
     }
 
     private void showSettingPanel() {
@@ -128,8 +127,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
                 presenter = new LivePlusPresenter(mController);
                 mPlusPresenterRef = new WeakReference<>(presenter);
             }
-            presenter.setView(panel.getViewProxy());
-            panel.setPresenter(presenter);
+            setupComponent(panel, presenter);
         }
         showPanel(panel, true);
     }
@@ -144,8 +142,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
                 presenter = new LiveMagicPresenter();
                 mMagicPresenterRef = new WeakReference<>(presenter);
             }
-            presenter.setView(panel.getViewProxy());
-            panel.setPresenter(presenter);
+            setupComponent(panel, presenter);
         }
         showPanel(panel, true);
     }
@@ -155,10 +152,25 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
         SnsShareHelper.getInstance().shareToSns(-1, mMyRoomData);
     }
 
+    private void showMessagePanel() {
+        MessagePanel panel = deRef(mMessagePanelRef);
+        if (panel == null) {
+            panel = new MessagePanel(mView);
+            mMessagePanelRef = new WeakReference<>(panel);
+            MessagePresenter presenter = deRef(mMessagePresenterRef);
+            if (presenter == null) {
+                presenter = new MessagePresenter(mController);
+                mMessagePresenterRef = new WeakReference<>(presenter);
+            }
+            setupComponent(panel, presenter);
+        }
+        showPanel(panel, true);
+    }
+
     @Override
     public boolean onEvent(int event, IParams params) {
-        if (mView == null || CommonUtils.isFastDoubleClick()) {
-            MyLog.e(TAG, "onAction but mView is null, event=" + event + " or CommonUtils.isFastDoubleClick() is true");
+        if (mView == null) {
+            MyLog.e(TAG, "onAction but mView is null, event=" + event);
             return false;
         }
         switch (event) {
@@ -168,6 +180,12 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
             case MSG_ON_ORIENT_LANDSCAPE:
                 onOrientation(true);
                 return true;
+        }
+        if (CommonUtils.isFastDoubleClick()) {
+            MyLog.w(TAG, "onAction but isFastDoubleClick, event=" + event);
+            return false;
+        }
+        switch (event) {
             case MSG_SHOW_SETTING_PANEL:
                 showSettingPanel();
                 return true;
@@ -179,6 +197,9 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
                 return true;
             case MSG_SHOW_SHARE_PANEL:
                 showShareControlPanel();
+                return true;
+            case MSG_SHOW_MESSAGE_PANEL:
+                showMessagePanel();
                 return true;
             case MSG_HIDE_BOTTOM_PANEL:
             case MSG_ON_BACK_PRESSED:

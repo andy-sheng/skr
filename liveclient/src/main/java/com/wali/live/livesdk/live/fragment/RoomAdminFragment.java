@@ -35,7 +35,6 @@ import com.mi.live.data.user.User;
 import com.trello.rxlifecycle.FragmentEvent;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.LiveSdkActivity;
-import com.wali.live.livesdk.live.adapter.RecipientsSelectRecyclerAdapter;
 import com.wali.live.livesdk.live.adapter.RoomAdminItemRecyclerAdapter;
 import com.wali.live.livesdk.live.api.GetRankListRequest;
 import com.wali.live.livesdk.live.view.RoomSettingView;
@@ -45,6 +44,8 @@ import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
+import com.wali.live.watchsdk.recipient.RecipientsSelectFragment;
+import com.wali.live.watchsdk.recipient.adapter.RecipientsSelectRecyclerAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

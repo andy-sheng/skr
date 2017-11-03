@@ -197,10 +197,10 @@
     <string name="edit_info_tip">You haven\'t set a nickname. %s to set to make more friends.</string>
     <string name="click_here">Tap here</string>
     <string name="room_admin">Manager</string>
-    <string name="line_my_zone">主场</string>
-    <string name="line_guest_into">进TA房间</string>
-    <string name="pk_prepare_user">%ds后PK正式开始，快来送礼物支持主播吧</string>
-    <string name="pk_end_run">%1$s提前逃跑咯，这局%2$s是赢家</string>
+    <string name="line_my_zone">Home field</string>
+    <string name="line_guest_into">Enter room</string>
+    <string name="pk_prepare_user">PK is about to start in %ds, send gifts to support the host</string>
+    <string name="pk_end_run">%1$s quit this session, so %2$s is the winner</string>
     <string name="can_not_vote_toast">Watch a little longer and vote</string>
     <string name="vote_finish_toast">Activity ended</string>
     <string name="vote_max_toast">Voting session ended</string>
@@ -208,6 +208,30 @@
     <string name="feeds_getinfo_failed">Couldn\'t get info, try again later</string>
     <string name="like_count_text">%d likes</string>
     <string name="detail_text">Details</string>
+
+    <string name="currently_none_message">No new messages</string>
+    <string name="message_interact_notify">Notifications</string>
+    <string name="msg_send_failed_not_follow_each_other">Couldn\'t send, follow each other to send private messages</string>
+    <string name="msg_send_failed_not_text_too_larger">Couldn\'t send, message is too long</string>
+    <string name="msg_send_failed_blocked">Can\'t send private messages to this person</string>
+    <string name="msg_send_failed_illege_text">Couldn\'t send, message contains unsupported characters</string>
+    <string name="sixin_say_hello_result_code_failed_duplicated">Message sent, waiting for reply</string>
+    <string name="sixin_model_message">Messages</string>
+    <string name="sixin_model_unattention">New messages</string>
+    <string name="user_name_999">Mi Live customer service</string>
+    <string name="user_name_888">Mi Live partnership</string>
+    <string name="user_name_100000">Mi Live official account</string>
+    <string name="draft">[Draft]</string>
+    <string name="someone_at_you">[Someone @ me]</string>
+    <string name="vip_customer_question_text">FAQ</string>
+    <string name="match_ok_btn">OK (%1$d/%2$d)</string>
+    <string name="sel_count_hint">Can select up to %d people</string>
+    <string name="search_txt">Search</string>
+    <string name="match_hint">Only chosen people can view live stream</string>
+    <string name="unblock">Remove</string>
+    <string name="choose_talk_title">Select friends</string>
+    <string name="message_not_supported">[This message type isn\'t supported]</string>
+
     <string name="third_video_player_label">小米直播播放器</string>
     <string name="live_offline_no_network">Can\'t connect to the network</string>
 </resources>

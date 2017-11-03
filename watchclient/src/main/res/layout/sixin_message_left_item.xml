@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/msg_list_item"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="@dimen/text_size_50"
+              android:clickable="false"
+              android:orientation="vertical">
+
+    <com.base.view.MLTextView
+        android:id="@+id/timestamp_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/margin_30"
+        android:layout_marginTop="@dimen/margin_40"
+        android:textColor="@color/color_black_trans_40"
+        android:textSize="@dimen/text_size_32"/>
+
+    <RelativeLayout
+        android:id="@+id/content_area"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/user_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/margin_30">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/avatar_dv"
+                android:layout_width="@dimen/view_dimen_100"
+                android:layout_height="@dimen/view_dimen_100"/>
+
+            <ImageView
+                android:id="@+id/certification_iv"
+                android:layout_width="@dimen/view_dimen_45"
+                android:layout_height="@dimen/view_dimen_45"
+                android:layout_marginLeft="@dimen/margin_70"
+                android:layout_marginTop="@dimen/margin_70"
+                android:scaleType="fitStart"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/message_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_15"
+            android:layout_marginRight="@dimen/margin_15"
+            android:layout_toRightOf="@+id/user_area"
+            android:gravity="left"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/bubble_area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

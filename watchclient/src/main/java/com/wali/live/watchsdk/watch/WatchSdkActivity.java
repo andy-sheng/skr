@@ -78,6 +78,7 @@ import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.watchsdk.personinfo.fragment.FloatInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.ranking.RankingPagerFragment;
+import com.wali.live.watchsdk.receiver.ScreenStateReceiver;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 import com.wali.live.watchsdk.task.IActionCallBack;
@@ -162,6 +163,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     protected UserInfoPresenter mUserInfoPresenter;
 
     private PhoneStateReceiver mPhoneStateReceiver;
+    private ScreenStateReceiver mScreenStateReceiver;
+
     private RoomSystemMsgPresenter mRoomSystemMsgPresenter;
     private VideoShowPresenter mVideoShowPresenter;
 
@@ -374,6 +377,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
     private void initReceiver() {
         mPhoneStateReceiver = PhoneStateReceiver.registerReceiver(this);
+        mScreenStateReceiver = ScreenStateReceiver.registerReceiver(this);
     }
 
     protected void leaveLiveToServer() {
@@ -451,6 +455,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
     private void unregisterReceiver() {
         PhoneStateReceiver.unregisterReceiver(this, mPhoneStateReceiver);
+        ScreenStateReceiver.unregisterReceiver(this, mScreenStateReceiver);
     }
 
     // 直播结束

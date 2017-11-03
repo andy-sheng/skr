@@ -20,7 +20,7 @@ public class EditSignPresenter extends BaseRxPresenter<IEditSignView> {
     private Subscription mEditSubscription;
 
     public EditSignPresenter(IEditSignView view) {
-        mView = view;
+        super(view);
     }
 
     public void uploadSign(final String sign) {

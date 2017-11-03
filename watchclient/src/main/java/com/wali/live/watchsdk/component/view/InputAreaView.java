@@ -294,7 +294,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
         mIsShowSmileyPicker = true;
         KeyboardUtils.hideKeyboard((Activity) getContext());
         mShowSmileyBtn.setImageResource(R.drawable.chat_bottom_enter_expression_keyboard_btn);
-        mSmileyPicker.show((Activity) getContext(), -1, 0, null);
+        mSmileyPicker.show();
     }
 
     private void hideSmileyPicker() {

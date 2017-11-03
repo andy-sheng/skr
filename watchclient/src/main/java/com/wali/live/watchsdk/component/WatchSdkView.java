@@ -173,7 +173,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                     ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            addViewAboveAnchor(view, layoutParams, $(R.id.input_area_view));
+            addViewUnderAnchor(view, layoutParams, $(R.id.bottom_panel_view));
         } else {
             mGameInputPresenter.startPresenter();
         }

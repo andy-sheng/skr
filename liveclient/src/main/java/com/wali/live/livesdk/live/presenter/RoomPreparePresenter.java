@@ -41,11 +41,11 @@ public class RoomPreparePresenter extends BaseRxPresenter<IRoomPrepareView> {
     private Subscription mTitleSubscription;
 
     public RoomPreparePresenter(IRoomPrepareView view) {
-        mView = view;
+        super(view);
     }
 
     public RoomPreparePresenter(IRoomPrepareView view, int source) {
-        mView = view;
+        super(view);
         mSource = source;
     }
 

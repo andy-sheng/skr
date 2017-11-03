@@ -42,6 +42,10 @@ public interface IStreamer {
 
     void pause();
 
+    void startCamera();
+
+    void stopCamera();
+
     void pauseImmediately();
 
     void destroy();

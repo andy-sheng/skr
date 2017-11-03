@@ -38,6 +38,9 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
         public final static Property IsNotFocus = new Property(12, boolean.class, "isNotFocus", false, "IS_NOT_FOCUS");
         public final static Property Ext = new Property(13, String.class, "ext", false, "EXT");
         public final static Property CertificationType = new Property(14, Integer.class, "certificationType", false, "CERTIFICATION_TYPE");
+        public final static Property TargetType = new Property(15, int.class, "targetType", false, "TARGET_TYPE");
+        public final static Property Icon = new Property(16, String.class, "icon", false, "ICON");
+        public final static Property InputMode = new Property(17, Integer.class, "inputMode", false, "INPUT_MODE");
     };
 
 
@@ -67,7 +70,10 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
                 "'LOCA_LUSER_ID' INTEGER NOT NULL ," + // 11: locaLUserId
                 "'IS_NOT_FOCUS' INTEGER NOT NULL ," + // 12: isNotFocus
                 "'EXT' TEXT," + // 13: ext
-                "'CERTIFICATION_TYPE' INTEGER);"); // 14: certificationType
+                "'CERTIFICATION_TYPE' INTEGER," + // 14: certificationType
+                "'TARGET_TYPE' INTEGER NOT NULL ," + // 15: targetType
+                "'ICON' TEXT," + // 16: icon
+                "'INPUT_MODE' INTEGER);"); // 17: inputMode
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_CONVERSATION_TARGET ON CONVERSATION" +
                 " (TARGET);");
@@ -75,6 +81,8 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
                 " (LOCA_LUSER_ID);");
         db.execSQL("CREATE INDEX " + constraint + "IDX_CONVERSATION_IS_NOT_FOCUS ON CONVERSATION" +
                 " (IS_NOT_FOCUS);");
+        db.execSQL("CREATE INDEX " + constraint + "IDX_CONVERSATION_TARGET_TYPE ON CONVERSATION" +
+                " (TARGET_TYPE);");
     }
 
     /** Drops the underlying database table. */
@@ -150,6 +158,17 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
         if (certificationType != null) {
             stmt.bindLong(15, certificationType);
         }
+        stmt.bindLong(16, entity.getTargetType());
+ 
+        String icon = entity.getIcon();
+        if (icon != null) {
+            stmt.bindString(17, icon);
+        }
+ 
+        Integer inputMode = entity.getInputMode();
+        if (inputMode != null) {
+            stmt.bindLong(18, inputMode);
+        }
     }
 
     /** @inheritdoc */
@@ -176,7 +195,10 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
             cursor.getLong(offset + 11), // locaLUserId
             cursor.getShort(offset + 12) != 0, // isNotFocus
             cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // ext
-            cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14) // certificationType
+            cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14), // certificationType
+            cursor.getInt(offset + 15), // targetType
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // icon
+            cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17) // inputMode
         );
         return entity;
     }
@@ -199,6 +221,9 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
         entity.setIsNotFocus(cursor.getShort(offset + 12) != 0);
         entity.setExt(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
         entity.setCertificationType(cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14));
+        entity.setTargetType(cursor.getInt(offset + 15));
+        entity.setIcon(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setInputMode(cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17));
      }
     
     /** @inheritdoc */

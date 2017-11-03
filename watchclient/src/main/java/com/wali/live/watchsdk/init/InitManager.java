@@ -29,6 +29,7 @@ import com.wali.live.pay.handler.PayPacketHandler;
 import com.wali.live.utils.ReplayBarrageMessageManager;
 import com.wali.live.watchsdk.fresco.FrescoManager;
 import com.wali.live.watchsdk.log.LogHandler;
+import com.wali.live.watchsdk.sixin.manager.SixinMessageManager;
 import com.wali.live.watchsdk.service.PacketProcessService;
 import com.xsj.crasheye.Crasheye;
 
@@ -106,6 +107,7 @@ public class InitManager {
     }
 
     private static void initMiLinkPacketHandler() {
+        MiLinkClientAdapter.getsInstance().addPacketDataHandler(SixinMessageManager.getInstance());
         MiLinkClientAdapter.getsInstance().addPacketDataHandler(BarrageMessageManager.getInstance());
         MiLinkClientAdapter.getsInstance().addPacketDataHandler(new GiftPacketHandler());
         MiLinkClientAdapter.getsInstance().addPacketDataHandler(ReplayBarrageMessageManager.getInstance());
@@ -114,6 +116,7 @@ public class InitManager {
     }
 
     public static void registerAllEventBus() {
+        EventBus.getDefault().register(SixinMessageManager.getInstance());
         EventBus.getDefault().register(PreDnsManager.INSTANCE);
         EventBus.getDefault().register(EventBusDelegate.getInstance());
     }

@@ -11,6 +11,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.LeadingMarginSpan;
 import android.view.ContextMenu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.base.global.GlobalData;
@@ -91,7 +92,7 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
     }
 
     @Override
-    public ClickItemAdapter.BaseHolder newViewHolder(int viewType) {
+    public ClickItemAdapter.BaseHolder newViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case ITEM_TYPE_HOT_LABEL:
             case ITEM_TYPE_ALL_LABEL: { // fall through

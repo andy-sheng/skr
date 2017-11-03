@@ -24,7 +24,7 @@ public abstract class ClickItemAdapter<ITEM extends ClickItemAdapter.BaseItem,
     public ClickItemAdapter() {
     }
 
-    public abstract HOLDER newViewHolder(int viewType);
+    public abstract HOLDER newViewHolder(ViewGroup parent, int viewType);
 
     @Override
     public int getItemCount() {
@@ -36,7 +36,7 @@ public abstract class ClickItemAdapter<ITEM extends ClickItemAdapter.BaseItem,
         if (mInflater == null) {
             mInflater = LayoutInflater.from(parent.getContext());
         }
-        return newViewHolder(viewType);
+        return newViewHolder(parent, viewType);
     }
 
     @Override
@@ -44,11 +44,21 @@ public abstract class ClickItemAdapter<ITEM extends ClickItemAdapter.BaseItem,
         holder.bindView(mItems.get(position), mListener);
     }
 
+    public void insertItemData(int index, ITEM item) {
+        mItems.add(index, item);
+        notifyItemInserted(index);
+    }
+
     public void setItemData(List<? extends ITEM> items) {
         mItems.clear();
         if (items != null) {
             mItems.addAll(items);
         }
+        notifyDataSetChanged();
+    }
+
+    public void clearData() {
+        mItems.clear();
         notifyDataSetChanged();
     }
 

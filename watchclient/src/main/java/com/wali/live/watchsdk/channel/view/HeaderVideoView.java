@@ -55,6 +55,7 @@ public class HeaderVideoView extends RelativeLayout implements IEventObserver {
     private String mCoverUrl;
 
     private Handler mUIHandler = new Handler(Looper.getMainLooper());
+
     private HeaderVideoPresenter mPresenter;
     private BaseSdkController mController = new BaseSdkController() {
         @Override

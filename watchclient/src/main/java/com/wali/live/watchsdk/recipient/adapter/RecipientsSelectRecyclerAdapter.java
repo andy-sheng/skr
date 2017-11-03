@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.adapter;
+package com.wali.live.watchsdk.recipient.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.base.activity.RxActivity;
 import com.base.fragment.RxFragment;
+import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.keyboard.KeyboardUtils;
@@ -34,18 +35,17 @@ import com.mi.live.data.user.User;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.FragmentEvent;
 import com.wali.live.dao.Relation;
-
 import com.wali.live.dao.RelationDaoAdapter;
 import com.wali.live.event.EventClass;
-import com.wali.live.livesdk.R;
-import com.wali.live.livesdk.live.fragment.RecipientsSelectFragment;
-import com.wali.live.livesdk.live.view.IndexableRecyclerView;
-import com.wali.live.livesdk.live.view.UserSectionIndexer;
 import com.wali.live.proto.RelationProto;
 import com.wali.live.utils.AsyncTaskUtils;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.utils.relation.RelationUtils;
+import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.recipient.RecipientsSelectFragment;
+import com.wali.live.watchsdk.recipient.view.IndexableRecyclerView;
+import com.wali.live.watchsdk.recipient.view.UserSectionIndexer;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -63,6 +63,7 @@ import rx.schedulers.Schedulers;
 
 /**
  * Created by yurui on 3/7/16.
+ *
  * @module 选人
  */
 public class RecipientsSelectRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -446,6 +447,7 @@ public class RecipientsSelectRecyclerAdapter extends RecyclerView.Adapter<Recycl
                             if (editText != null) {
                                 KeyboardUtils.hideKeyboard(mFragment.getActivity(), editText);
                             }
+                            mFragment.onBackPressed();
                             EventBus.getDefault().post(new EventClass.OnActivityResultEvent(mFragment.requestCode, Activity.RESULT_OK, intent));
                         }
                     });
@@ -551,15 +553,15 @@ public class RecipientsSelectRecyclerAdapter extends RecyclerView.Adapter<Recycl
             if (mFooter == view) {
                 return;
             }
-            avatarIv = (BaseImageView)view.findViewById(R.id.user_list_avatar);
-            userNameTv = (TextView)view.findViewById(R.id.txt_username);
-            signTv = (TextView)view.findViewById(R.id.txt_tip);
-            levelTv = (TextView)view.findViewById(R.id.level_tv);
-            checkbox = (CheckBox)view.findViewById(R.id.checkbox);
-            stateBtn = (ImageView)view.findViewById(R.id.img_follow_state);
-            badgeIv = (ImageView)view.findViewById(R.id.img_badge);
-            badgeVipIv = (ImageView)view.findViewById(R.id.img_badge_vip);
-            imgGenderIv = (ImageView)view.findViewById(R.id.img_gender);
+            avatarIv = (BaseImageView) view.findViewById(R.id.user_list_avatar);
+            userNameTv = (TextView) view.findViewById(R.id.txt_username);
+            signTv = (TextView) view.findViewById(R.id.txt_tip);
+            levelTv = (TextView) view.findViewById(R.id.level_tv);
+            checkbox = (CheckBox) view.findViewById(R.id.checkbox);
+            stateBtn = (ImageView) view.findViewById(R.id.img_follow_state);
+            badgeIv = (ImageView) view.findViewById(R.id.img_badge);
+            badgeVipIv = (ImageView) view.findViewById(R.id.img_badge_vip);
+            imgGenderIv = (ImageView) view.findViewById(R.id.img_gender);
             clickArea = view.findViewById(R.id.btn_area);
         }
     }
@@ -613,7 +615,7 @@ public class RecipientsSelectRecyclerAdapter extends RecyclerView.Adapter<Recycl
 
                             if (o != null) {
                                 //hasMoreItem = offset + pageCount < total && itemNormalType != ITEM_TYPE_MANAGER;
-                                List<Object> dataList = (List<Object>)o;
+                                List<Object> dataList = (List<Object>) o;
                                 hasMoreItem = dataList.size() < total;
                                 mOffset = dataList.size();
 
@@ -688,7 +690,7 @@ public class RecipientsSelectRecyclerAdapter extends RecyclerView.Adapter<Recycl
                                 if (mNeedSearch) {
                                     doSearch();
                                 } else {
-                                    mDataListSearch = (List<Object>)o;
+                                    mDataListSearch = (List<Object>) o;
                                     notifyDataSetChanged();
                                 }
                             }

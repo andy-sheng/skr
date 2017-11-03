@@ -2,7 +2,6 @@ package com.wali.live.livesdk.live.view.camera;
 
 import android.content.Context;
 import android.hardware.Camera;
-import android.media.CamcorderProfile;
 import android.support.annotation.CallSuper;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
@@ -63,18 +62,16 @@ public abstract class BaseCameraView extends SurfaceView implements SurfaceHolde
         Camera.Size optimalSize = getOptimalPreviewSize(supportedPreviewSizes, getViewWidth(), getViewHeight());
 
         MyLog.d(TAG, "startCamera=" + optimalSize.width + ":" + optimalSize.height);
-        CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
-        profile.videoFrameWidth = optimalSize.width;
-        profile.videoFrameHeight = optimalSize.height;
-        parameters.setPreviewSize(profile.videoFrameWidth, profile.videoFrameHeight);
-
+        parameters.setPreviewSize(optimalSize.width, optimalSize.height);
         mCamera.setParameters(parameters);
-        mCamera.setDisplayOrientation(90);
 
+        adjustCameraOrientation();
         adjustLayoutParam(optimalSize.width, optimalSize.height);
 
         startPreview();
     }
+
+    protected abstract void adjustCameraOrientation();
 
     protected abstract void adjustLayoutParam(int width, int height);
 

@@ -95,7 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <com.wali.live.livesdk.live.view.IndexableRecyclerView
+            <com.wali.live.watchsdk.recipient.view.IndexableRecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

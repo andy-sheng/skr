@@ -4,7 +4,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.base.log.MyLog;
+import com.wali.live.dao.Conversation;
+import com.wali.live.dao.ConversationDao;
 import com.wali.live.dao.DaoMaster;
+import com.wali.live.dao.SixinMessageDao;
 import com.wali.live.dao.UserAccountDao;
 
 
@@ -31,6 +34,14 @@ public class GreenOpenHelper extends DaoMaster.OpenHelper {
         try {
             if (oldVersion < 57 && newVersion >= 57) {
                 upgradeAccountFrom56To57(db);
+            }
+            if (oldVersion < 58 && newVersion >= 58) {
+                ConversationDao.dropTable(db, true);
+                ConversationDao.createTable(db, false);
+            }
+            if (oldVersion < 59 && newVersion >= 59) {
+                SixinMessageDao.dropTable(db, true);
+                SixinMessageDao.createTable(db, false);
             }
         } catch (Exception e) {
             MyLog.e(TAG, e);

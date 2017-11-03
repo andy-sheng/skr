@@ -16,6 +16,7 @@ import java.util.List;
  * @module 礼物
  */
 public class GiftLocalStore {
+    private final String TAG = "GiftLocalStore";
     private static GiftLocalStore sInstance;
 
     private GiftDao mGiftDao;
@@ -57,7 +58,7 @@ public class GiftLocalStore {
                     resultList.add(GiftTypeMapper.loadExactGift(gift));
                 }
             } catch (IllegalStateException e) {
-                MyLog.e(e);
+                MyLog.e(TAG, "getGiftList failed e=" + e);
             }
         }
         return resultList;

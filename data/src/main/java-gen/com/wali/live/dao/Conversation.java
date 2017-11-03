@@ -4,6 +4,13 @@ package com.wali.live.dao;
 
 // KEEP INCLUDES - put your custom includes here
 // KEEP INCLUDES END
+
+import android.text.TextUtils;
+
+import com.base.log.MyLog;
+
+import org.json.JSONObject;
+
 /**
  * Entity mapped to table CONVERSATION.
  */
@@ -24,8 +31,29 @@ public class Conversation {
     private boolean isNotFocus;
     private String ext;
     private Integer certificationType;
+    private int targetType;
+    private String icon;
+    private Integer inputMode;
 
     // KEEP FIELDS - put your custom fields here
+    public static final int NO_SET_VALUE = -1;
+    public static final int NOT_IGNORE = 0; //不忽略该对话
+    public static final int IGNOE_UNSHOW_UNREAD = 1; //忽略对话(不计入总未读数)但是对话列表显示红点,不显示未读
+    public static final int IGNOE_BUT_SHOW_UNREAD = 2; //忽略对话(不计入总未读数)但是对话列表显示灰色未读
+
+    public static final int UNFOCUS_CONVERSATION_TARGET = 123;//未关注列表target
+    public static final int GROUP_NOTIFY_CONVERSATION_TARGET = 125;// 群通知的target
+    public static final int INTERACT_CONVERSATION_TARGET=126;   //互动通知的target
+    public static final int VFANS_NOTIFY_CONVERSATION_TARGET = 127;// vfans通知的target
+
+    public static final String EXT_SENDER = "EXT_SENDER"; //最后一条消息发送的人
+    public static final String EXT_TARGET = "EXT_TARGET"; //机器人最后一条消息的发送者
+    public static final String EXT_IS_BLOCK = "EXT_IS_BLOCK"; //是否把这个人加入了黑名单
+    public static final String EXT_ATT_ID = "EXT_ATT_ID"; //att　id
+    public static final String EXT_FOCUS_STATE = "EXT_FOCUS_STATUE";// 关注的状态
+    public static final String EXT_RUBBISH_UNREAD_COUNT = "EXT_RUBBISH_UNREAD_COUNT"; //垃圾箱未读数
+    public static final String EXT_HAS_SOME_BODY_AT_ME = "EXT_SOME_BODY_AT_ME"; //最后一个at me的消息seq
+    public static final String EXT_IS_FOLLOW_MSG = "EXT_IS_FOLLOW_MSG"; //给ext设置的，是标记是不是关注的消息
     // KEEP FIELDS END
 
     public Conversation() {
@@ -35,7 +63,7 @@ public class Conversation {
         this.id = id;
     }
 
-    public Conversation(Long id, long target, Integer unreadCount, Long sendTime, Long receivedTime, String content, Long lastMsgSeq, String targetName, Long msgId, Integer msgType, Integer ignoreStatus, long locaLUserId, boolean isNotFocus, String ext, Integer certificationType) {
+    public Conversation(Long id, long target, Integer unreadCount, Long sendTime, Long receivedTime, String content, Long lastMsgSeq, String targetName, Long msgId, Integer msgType, Integer ignoreStatus, long locaLUserId, boolean isNotFocus, String ext, Integer certificationType, int targetType, String icon, Integer inputMode) {
         this.id = id;
         this.target = target;
         this.unreadCount = unreadCount;
@@ -51,6 +79,9 @@ public class Conversation {
         this.isNotFocus = isNotFocus;
         this.ext = ext;
         this.certificationType = certificationType;
+        this.targetType = targetType;
+        this.icon = icon;
+        this.inputMode = inputMode;
     }
 
     public Long getId() {
@@ -173,7 +204,104 @@ public class Conversation {
         this.certificationType = certificationType;
     }
 
+    public int getTargetType() {
+        return targetType;
+    }
+
+    public void setTargetType(int targetType) {
+        this.targetType = targetType;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public Integer getInputMode() {
+        return inputMode;
+    }
+
+    public void setInputMode(Integer inputMode) {
+        this.inputMode = inputMode;
+    }
+
     // KEEP METHODS - put your custom methods here
+    public boolean isNotFocusConversation() {
+        return target == UNFOCUS_CONVERSATION_TARGET;
+    }
+
+    public boolean isBlock() {
+        if (TextUtils.isEmpty(ext)) {
+            return false;
+        }
+        try {
+            JSONObject jsonObject = new JSONObject(ext);
+            return jsonObject.optBoolean(EXT_IS_BLOCK, false);
+        } catch (Exception e) {
+            MyLog.e(e);
+            return false;
+        }
+    }
+
+    public void updateOrInsertExt(String key, Object value) {
+        try {
+            JSONObject jsonObject = null;
+            if (TextUtils.isEmpty(ext)) {
+                jsonObject = new JSONObject();
+            } else {
+                jsonObject = new JSONObject(ext);
+            }
+            jsonObject.put(key, value);
+            ext = jsonObject.toString();
+        } catch (Exception e) {
+            MyLog.e(e);
+        }
+    }
+
+
+    public int getFocusStatue() {
+        int statue = SixinMessage.MSG_STATUS_UNFOUCS;
+        if (TextUtils.isEmpty(ext)) {
+            return statue;
+        }
+        try {
+            JSONObject jsonObject = new JSONObject(ext);
+            statue = jsonObject.optInt(EXT_FOCUS_STATE, SixinMessage.MSG_STATUS_UNFOUCS);
+        } catch (Exception e) {
+            MyLog.e(e);
+        }
+        return statue;
+
+    }
+
+
+    public boolean hasSomeOneAtMe(){
+        try {
+            if(!TextUtils.isEmpty(ext)) {
+                JSONObject jsonObject = new JSONObject(ext);
+                return jsonObject.optBoolean(EXT_HAS_SOME_BODY_AT_ME, false);
+            }
+        } catch (Exception e) {
+            MyLog.e(e);
+        }
+        return false;
+    }
+
+    public boolean hasFocusKey() {
+        if (TextUtils.isEmpty(ext)) {
+            return false;
+        }
+        try {
+            JSONObject jsonObject = new JSONObject(ext);
+            return jsonObject.has(EXT_FOCUS_STATE);
+        } catch (Exception e) {
+            MyLog.e(e);
+        }
+        return false;
+    }
     // KEEP METHODS END
 
 }

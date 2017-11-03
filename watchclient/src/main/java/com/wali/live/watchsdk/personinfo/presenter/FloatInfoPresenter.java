@@ -36,7 +36,6 @@ import rx.schedulers.Schedulers;
  * Created by wangmengjie on 17-8-24.
  */
 public class FloatInfoPresenter extends BaseRxPresenter<IFloatInfoView> {
-
     public static final String EXTRA_IN_UUID = "uuid";
     public static final String EXTRA_IN_OWNER_UUID = "owner_uuid";
     public static final String EXTRA_IN_LIVE_ENTER_TIME = "live_enter_time";
@@ -50,8 +49,6 @@ public class FloatInfoPresenter extends BaseRxPresenter<IFloatInfoView> {
     private String mRoomId;
     private String mLiveUrl;
 
-    private IFloatInfoView mView;
-
     private User mUser;
     private RankProto.RankUser mTopOneUser;
 
@@ -64,7 +61,7 @@ public class FloatInfoPresenter extends BaseRxPresenter<IFloatInfoView> {
     }
 
     public FloatInfoPresenter(IFloatInfoView view, Bundle bundle) {
-        mView = view;
+        super(view);
         initData(bundle);
     }
 

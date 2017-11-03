@@ -1,7 +1,6 @@
 package com.wali.live.livesdk.live.livegame.view;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -14,6 +13,7 @@ import com.wali.live.component.view.BaseBottomButton;
 import com.wali.live.livesdk.R;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
+import com.wali.live.watchsdk.view.MsgCtrlBtnView;
 
 import static com.wali.live.statistics.StatisticsKey.AC_APP;
 import static com.wali.live.statistics.StatisticsKey.KEY;
@@ -27,10 +27,11 @@ import static com.wali.live.statistics.StatisticsKey.TIMES;
 public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresenter, LiveBottomButton.IView> {
     private static final String TAG = "LiveBottomButton";
 
-    protected View mCommentBtn;
-    protected View mSettingBtn;
-    protected View mMuteBtn;
-    protected View mShareBtn;
+    private View mCommentBtn;
+    private View mSettingBtn;
+    private View mMuteBtn;
+    private View mShareBtn;
+    private MsgCtrlBtnView mMsgCntBtn;
 
     private boolean mEnableShare;
 
@@ -55,10 +56,14 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         mMuteBtn = createImageView(R.drawable.live_icon_mute_btn);
         addCreatedView(mMuteBtn, R.id.mute_btn);
 
+        mMsgCntBtn = new MsgCtrlBtnView(getContext());
+        addCreatedView(mMsgCntBtn, R.id.msg_ctrl_btn);
+
         // 横竖屏时按钮排列顺序
         mRightBtnSetPort.add(mMuteBtn);
         mRightBtnSetPort.add(mSettingBtn);
         mRightBtnSetPort.add(mCommentBtn);
+        mRightBtnSetPort.add(mMsgCntBtn);
 
         addShareBtn();
 
@@ -105,6 +110,10 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
             if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.showShareView();
             }
+        } else if (id == R.id.msg_ctrl_btn) {
+            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                mPresenter.showMsgCtrlView();
+            }
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
@@ -120,19 +129,23 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
          */
         class ComponentView implements IView {
             @Override
-            public void onOrientation(boolean isLandscape) {
-                LiveBottomButton.this.onOrientation(isLandscape);
-            }
-
-            @Nullable
-            @Override
             public <T extends View> T getRealView() {
                 return (T) mContentContainer;
             }
 
             @Override
+            public void onOrientation(boolean isLandscape) {
+                LiveBottomButton.this.onOrientation(isLandscape);
+            }
+
+            @Override
             public void updateMuteBtn(boolean isMute) {
                 mMuteBtn.setSelected(isMute);
+            }
+
+            @Override
+            public void onUpdateUnreadCount(int unreadCount) {
+                mMsgCntBtn.setMsgUnreadCnt(unreadCount);
             }
         }
         return new ComponentView();
@@ -163,6 +176,11 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
          * 获取share状态
          */
         boolean isEnableShare();
+
+        /**
+         * 显示私信面板
+         */
+        void showMsgCtrlView();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
@@ -171,5 +189,9 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
          */
         void updateMuteBtn(boolean isMute);
 
+        /**
+         * 更新私信未读数
+         */
+        void onUpdateUnreadCount(int unreadCount);
     }
 }

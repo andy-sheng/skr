@@ -45,6 +45,8 @@ public class WidgetView extends RelativeLayout
     private boolean mNeedShow = true;
     private Map<Integer, Integer> mWidgetIDs = new HashMap<>();
 
+    private boolean mIsLandscape = false;
+
     protected final <T extends View> T $(@IdRes int resId) {
         return (T) findViewById(resId);
     }
@@ -140,8 +142,13 @@ public class WidgetView extends RelativeLayout
             mLeftBottomWiv.setWidgetPos(WidgetItemView.POS_LEFT_BOTTOM);
             mLeftBottomWiv.setPresenter(mPresenter);
 
-            LayoutParams lp = (LayoutParams) mLeftBottomWiv.getLayoutParams();
-            lp.bottomMargin = DisplayUtils.dip2px(70);
+            if (mIsLandscape) {
+                LayoutParams lp = (LayoutParams) mLeftBottomWiv.getLayoutParams();
+                lp.bottomMargin = DisplayUtils.dip2px(50f);
+            } else {
+                LayoutParams lp = (LayoutParams) mLeftBottomWiv.getLayoutParams();
+                lp.bottomMargin = DisplayUtils.dip2px(70f);
+            }
         }
         mLeftBottomWiv.showWidgetItem(info, mNeedShow);
     }
@@ -220,10 +227,21 @@ public class WidgetView extends RelativeLayout
     }
 
     private void onOrientation(boolean isLandscape) {
-        if (isLandscape) {
+        mIsLandscape = isLandscape;
+        if (mIsLandscape) {
             setPadding(PADDING, PADDING >> 1, PADDING_LANDSCAPE_RIGHT, PADDING >> 1);
+
+            if (mLeftBottomWiv != null) {
+                LayoutParams lp = (LayoutParams) mLeftBottomWiv.getLayoutParams();
+                lp.bottomMargin = DisplayUtils.dip2px(50f);
+            }
         } else {
             setPadding(PADDING, PADDING >> 1, PADDING, PADDING_PORTRAIT_BOTTOM);
+
+            if (mLeftBottomWiv != null) {
+                LayoutParams lp = (LayoutParams) mLeftBottomWiv.getLayoutParams();
+                lp.bottomMargin = DisplayUtils.dip2px(70f);
+            }
         }
     }
 

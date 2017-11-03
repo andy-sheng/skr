@@ -203,5 +203,29 @@
     <string name="feeds_getinfo_failed">取得詳情失敗, 請稍後重試</string>
     <string name="like_count_text">%d人讚</string>
     <string name="detail_text">詳細資料</string>
+
+    <string name="currently_none_message">暫無新的消息</string>
+    <string name="message_interact_notify">互動通知</string>
+    <string name="msg_send_failed_not_follow_each_other">發送失敗，需要雙方關注才能發送私信</string>
+    <string name="msg_send_failed_not_text_too_larger">發送失敗，文字太多了</string>
+    <string name="msg_send_failed_blocked">由於對方設置，你不能給他發私信</string>
+    <string name="msg_send_failed_illege_text">發送失敗,請不要輸入非法字元</string>
+    <string name="sixin_say_hello_result_code_failed_duplicated">你已經給對方打過招呼了，等待對方回復</string>
+    <string name="sixin_model_message">消息</string>
+    <string name="sixin_model_unattention">來自Ta的消息</string>
+    <string name="user_name_999">小米直播客服</string>
+    <string name="user_name_888">小米直播簽約</string>
+    <string name="user_name_100000">小米直播官方</string>
+    <string name="draft">[草稿]</string>
+    <string name="someone_at_you">[有人@我]</string>
+    <string name="vip_customer_question_text">熱點問題答覆</string>
+    <string name="match_ok_btn">確定(%1$d/%2$d)</string>
+    <string name="sel_count_hint">最多選擇%d人</string>
+    <string name="search_txt">搜尋</string>
+    <string name="match_hint">只有選中的好友能看到直播</string>
+    <string name="unblock">移出</string>
+    <string name="choose_talk_title">選擇好友</string>
+    <string name="message_not_supported">[該條消息類型不支持]</string>
+
     <string name="live_offline_no_network">系統網路已斷開，請打開你的網路連接</string>
 </resources>

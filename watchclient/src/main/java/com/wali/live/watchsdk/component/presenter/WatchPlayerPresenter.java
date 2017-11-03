@@ -10,6 +10,7 @@ import android.view.Surface;
 import android.view.TextureView;
 
 import com.base.dialog.MyAlertDialog;
+import com.base.event.SdkEventClass;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.network.NetworkUtils;
@@ -43,6 +44,12 @@ public class WatchPlayerPresenter extends ComponentPresenter<TextureView>
         implements TextureView.SurfaceTextureListener {
     private static final String TAG = "WatchPlayerPresenter";
 
+    private static final int FLAG_PHONE_STATE = 0x1 << 0;
+    private static final int FLAG_SCREEN_STATE = 0x1 << 1;
+
+    private int mForcePauseFlag = 0;
+    private boolean mNewVideoDuringForcePause = false; // 强制暂停时有新的播放请求(系统通话 或 熄屏)
+
     private PullStreamerPresenter mStreamerPresenter;
 
     private int mVideoWidth;
@@ -54,8 +61,6 @@ public class WatchPlayerPresenter extends ComponentPresenter<TextureView>
     private boolean mIsLandscape = false;
     private boolean mHasNetwork = true;
     private boolean mNeedShowTraffic = false;
-    private boolean mIsInCall = false; // 正在进行系统通话
-    private boolean mNewVideoDuringCall = false; // 系统通话时有新的播放请求
 
     private WeakReference<MyAlertDialog> mTrafficDialogRef;
     private WeakReference<MyAlertDialog> mNetworkDialogRef;
@@ -137,7 +142,7 @@ public class WatchPlayerPresenter extends ComponentPresenter<TextureView>
     }
 
     private final void stopWatch() {
-        mNewVideoDuringCall = false;
+        mNewVideoDuringForcePause = false;
         mStreamerPresenter.stopWatch();
     }
 
@@ -296,25 +301,49 @@ public class WatchPlayerPresenter extends ComponentPresenter<TextureView>
         }
     }
 
+    private void updateForcePauseFlag(int newFlag) {
+        if (mForcePauseFlag != 0 && newFlag == 0) {
+            if (mNewVideoDuringForcePause) {
+                mNewVideoDuringForcePause = false;
+                startWatch();
+            } else {
+                resumeWatch();
+            }
+        } else if (mForcePauseFlag == 0 && newFlag != 0) {
+            pauseWatch();
+        }
+        mForcePauseFlag = newFlag;
+    }
+
+    private void addForcePauseFlag(int flag) {
+        updateForcePauseFlag(mForcePauseFlag | flag);
+    }
+
+    private void removeForcePauseFlag(int flag) {
+        updateForcePauseFlag(mForcePauseFlag & ~flag);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.PhoneStateEvent event) {
         switch (event.type) {
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_IDLE:
-                mIsInCall = false;
-                if (mNewVideoDuringCall) {
-                    mNewVideoDuringCall = false;
-                    startWatch();
-                } else {
-                    resumeWatch();
-                }
+                addForcePauseFlag(FLAG_PHONE_STATE);
                 break;
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_RING:
-                mIsInCall = true;
-                pauseWatch();
+            case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_OFFHOOK: // fall through
+                removeForcePauseFlag(FLAG_PHONE_STATE);
                 break;
-            case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_OFFHOOK:
-                mIsInCall = true;
-                pauseWatch();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(SdkEventClass.ScreenStateEvent event) {
+        switch (event.screenState) {
+            case SdkEventClass.ScreenStateEvent.ACTION_SCREEN_ON:
+                addForcePauseFlag(FLAG_SCREEN_STATE);
+                break;
+            case SdkEventClass.ScreenStateEvent.ACTION_SCREEN_OFF:
+                removeForcePauseFlag(FLAG_SCREEN_STATE);
                 break;
         }
     }
@@ -325,8 +354,8 @@ public class WatchPlayerPresenter extends ComponentPresenter<TextureView>
         if (!mHasNetwork && !mStreamerPresenter.isLocalVideo()) {
             showNetworkDialog();
         }
-        if (mIsInCall) {
-            mNewVideoDuringCall = true;
+        if (mForcePauseFlag != 0) {
+            mNewVideoDuringForcePause = true;
         } else {
             startWatch();
         }

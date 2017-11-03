@@ -79,14 +79,12 @@ import com.wali.live.livesdk.live.component.BaseLiveSdkView;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.eventbus.LiveEventClass;
 import com.wali.live.livesdk.live.fragment.AnchorEndLiveFragment;
-import com.wali.live.livesdk.live.fragment.RecipientsSelectFragment;
 import com.wali.live.livesdk.live.fragment.RoomAdminFragment;
 import com.wali.live.livesdk.live.livegame.GameLiveController;
 import com.wali.live.livesdk.live.livegame.GameLiveSdkView;
 import com.wali.live.livesdk.live.liveshow.ShowLiveController;
 import com.wali.live.livesdk.live.liveshow.ShowLiveSdkView;
 import com.wali.live.livesdk.live.presenter.LiveRoomPresenter;
-import com.wali.live.livesdk.live.receiver.ScreenStateReceiver;
 import com.wali.live.livesdk.live.view.CountDownView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.proto.LiveCommonProto;
@@ -101,6 +99,8 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.personinfo.fragment.FloatInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.ranking.RankingPagerFragment;
+import com.wali.live.watchsdk.receiver.ScreenStateReceiver;
+import com.wali.live.watchsdk.recipient.RecipientsSelectFragment;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 import com.wali.live.watchsdk.task.IActionCallBack;
@@ -707,14 +707,14 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(LiveEventClass.ScreenStateEvent event) {
+    public void onEvent(SdkEventClass.ScreenStateEvent event) {
         if (event != null && mController != null) {
             MyLog.w(TAG, "onEvent ScreenStateEvent state=" + event.screenState);
             switch (event.screenState) {
-                case LiveEventClass.ScreenStateEvent.ACTION_SCREEN_OFF:
+                case SdkEventClass.ScreenStateEvent.ACTION_SCREEN_OFF:
                     pauseStream();
                     break;
-                case LiveEventClass.ScreenStateEvent.ACTION_SCREEN_ON:
+                case SdkEventClass.ScreenStateEvent.ACTION_SCREEN_ON:
                     resumeStream();
                     break;
                 default:
@@ -1061,13 +1061,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     @Override
     public void onBackPressed() {
-        if (mController != null && mController.postEvent(MSG_ON_BACK_PRESSED)) {
-            return;
-        }
-        processBack(true);
-    }
-
-    private void processBack(boolean isBackPressed) {
         FragmentManager fm = getSupportFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
             //退出栈弹出
@@ -1087,9 +1080,10 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 }
             }
         } else {
-            if (isBackPressed) {
-                showStopDialog();
+            if (mController != null && mController.postEvent(MSG_ON_BACK_PRESSED)) {
+                return;
             }
+            showStopDialog();
         }
     }
 

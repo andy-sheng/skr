@@ -41,7 +41,7 @@ public class GameSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
     }
 
     @Override
-    protected int getLayoutResId() {
+    protected final int getLayoutResId() {
         return R.layout.game_setting_control_panel;
     }
 

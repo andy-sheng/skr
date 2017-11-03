@@ -35,7 +35,7 @@ import com.wali.live.watchsdk.component.view.PkScoreView;
  * @module PK信息面板视图
  */
 public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
-        implements View.OnClickListener, IComponentView<PkInfoPanel.IPresenter, PkInfoPanel.IView> {
+        implements IComponentView<PkInfoPanel.IPresenter, PkInfoPanel.IView> {
     private static final String TAG = "PkInfoPanel";
 
     @Nullable
@@ -76,23 +76,13 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
         }
     };
 
-    protected final void $click(View view, View.OnClickListener listener) {
-        if (view != null) {
-            view.setOnClickListener(listener);
-        }
-    }
-
     @Override
-    public void onClick(View v) {
-    }
-
-    @Override
-    protected int getLayoutResId() {
+    protected final int getLayoutResId() {
         return R.layout.pk_info_panel;
     }
 
     @Override
-    public void setPresenter(@Nullable IPresenter iPresenter) {
+    public final void setPresenter(@Nullable IPresenter iPresenter) {
         mPresenter = iPresenter;
     }
 
@@ -121,7 +111,7 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
         mProgressAreaView = $(R.id.progress_area);
         mPkTypeView = $(R.id.pk_type);
         mProgressTimerView = $(R.id.progress_timer);
-        
+
         mAnchorLeft = $(R.id.anchor_1);
         mAnchorRight = $(R.id.anchor_2);
         mTicketLeft = $(R.id.ticket_1);
@@ -161,7 +151,7 @@ public class PkInfoPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
             }
 
             @Override
-            public void onOrientation(boolean isLandscape) {
+            public final void onOrientation(boolean isLandscape) {
                 PkInfoPanel.this.onOrientation(isLandscape);
             }
 

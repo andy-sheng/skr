@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/normal_message_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/rich_message_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/live_icon_dian_letter_btn"
+        android:gravity="center"
+        android:text="@string/private_message"
+        android:textColor="@color/bottom_panel_btn_txt_color"
+        android:textSize="@dimen/control_panel_text_size"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/alert_red_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:background="@drawable/little_red_dot"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/message_unread_num_icon"
+        android:layout_width="@dimen/height_45"
+        android:layout_height="@dimen/height_45"
+        android:layout_gravity="top|right"
+        android:background="@drawable/little_red_dot_number"
+        android:gravity="center"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/margin_30"
+        android:visibility="gone" />
+
+</merge>

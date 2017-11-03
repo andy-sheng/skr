@@ -113,6 +113,7 @@ public class GalileoStreamer implements IStreamer {
         public void onStartCamera() {
             MyLog.w(TAG, "onStartCamera");
             bindLocalRender();
+            EventBus.getDefault().post(new EngineEventClass.CameraStartedEvent());
         }
 
         @Override
@@ -380,6 +381,34 @@ public class GalileoStreamer implements IStreamer {
                 }
             }
         }, "pause");
+    }
+
+    @Override
+    public void startCamera() {
+        MyLog.w(TAG, "startCamera");
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                if (!mIsPreviewStarted && mDeviceManager != null) {
+                    mDeviceManager.startCamera();
+                    mIsPreviewStarted = true;
+                }
+            }
+        }, "startCamera");
+    }
+
+    @Override
+    public void stopCamera() {
+        MyLog.w(TAG, "stopCamera");
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                if (mIsPreviewStarted && mDeviceManager != null) {
+                    mDeviceManager.stopCamera();
+                    mIsPreviewStarted = false;
+                }
+            }
+        }, "stopCamera");
     }
 
     @Override
@@ -898,7 +927,7 @@ public class GalileoStreamer implements IStreamer {
     @Override
     public void startAddExtra(final long streamId, final float leftX, final float leftY, final float scaleWidth, final float scaleHeight, final float displayWidth, final float displayHeight, final int layer) {
         MyLog.w(TAG, "startAddExtra, streamId=" + streamId + ", leftX=" + leftX + ", leftY=" + leftY + ", scaleWidth=" + scaleWidth + ", scaleHeight=" + scaleHeight
-                + ", displayWidth" + displayWidth + ", displayHeight" + displayHeight + ", layer" + layer);
+                + ", displayWidth=" + displayWidth + ", displayHeight=" + displayHeight + ", layer=" + layer);
         ThreadPool.runOnEngine(new Runnable() {
             @Override
             public void run() {
@@ -920,7 +949,9 @@ public class GalileoStreamer implements IStreamer {
             @Override
             public void run() {
                 if (mBroadCaster != null) {
-                    mBroadCaster.addExternalVideoStream(0, 0, 0, 1, 1, 1, 1, 0);
+                    if (streamId != 0) {
+                        mBroadCaster.addExternalVideoStream(0, 0, 0, 1, 1, 1, 1, 0);
+                    }
                     mBroadCaster.removeExternalVideoStream(streamId);
                 }
             }

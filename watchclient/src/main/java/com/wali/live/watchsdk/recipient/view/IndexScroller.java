@@ -1,5 +1,5 @@
 
-package com.wali.live.livesdk.live.view;
+package com.wali.live.watchsdk.recipient.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -11,6 +11,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.widget.SectionIndexer;
+
+import com.wali.live.watchsdk.recipient.view.IndexableRecyclerView;
 
 
 public class IndexScroller {

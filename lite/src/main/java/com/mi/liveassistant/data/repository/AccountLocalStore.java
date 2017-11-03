@@ -2,6 +2,7 @@ package com.mi.liveassistant.data.repository;
 
 
 import com.mi.liveassistant.common.global.GlobalData;
+import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.dao.UserAccount;
 import com.mi.liveassistant.dao.UserAccountDao;
 import com.mi.liveassistant.greendao.GreenDaoManager;
@@ -51,20 +52,26 @@ public class AccountLocalStore {
     }
 
     public UserAccount getAccount(String uuid) {
-        List list = mUserAccountDao.queryBuilder().where(UserAccountDao.Properties.Uuid.eq(uuid)).list();
-        if (list.isEmpty()) {
-            return null;
-        } else {
-            return (UserAccount) list.get(0);
+        try {
+            List list = mUserAccountDao.queryBuilder().where(UserAccountDao.Properties.Uuid.eq(uuid)).list();
+            if (!list.isEmpty()) {
+                return (UserAccount) list.get(0);
+            }
+        } catch (Exception e) {
+            MyLog.e(TAG, "getAccount failed e=" + e);
         }
+        return null;
     }
 
     public UserAccount getAccount() {
-        List list = mUserAccountDao.queryBuilder().list();
-        if (list.isEmpty()) {
-            return null;
-        } else {
-            return (UserAccount) list.get(0);
+        try {
+            List list = mUserAccountDao.queryBuilder().list();
+            if (!list.isEmpty()) {
+                return (UserAccount) list.get(0);
+            }
+        } catch (Exception e) {
+            MyLog.e(TAG, "getAccount failed e=" + e);
         }
+        return null;
     }
 }

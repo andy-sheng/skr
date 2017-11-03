@@ -20,7 +20,7 @@ public class EditGenderPresenter extends BaseRxPresenter<IEditGenderView> {
     private Subscription mEditSubscription;
 
     public EditGenderPresenter(IEditGenderView view) {
-        mView = view;
+        super(view);
     }
 
     public void uploadGender(final int gender) {

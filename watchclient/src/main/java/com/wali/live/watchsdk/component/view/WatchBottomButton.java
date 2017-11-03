@@ -2,7 +2,6 @@ package com.wali.live.watchsdk.component.view;
 
 import android.animation.ValueAnimator;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
@@ -18,6 +17,7 @@ import com.wali.live.component.view.BaseBottomButton;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
+import com.wali.live.watchsdk.view.MsgCtrlBtnView;
 
 /**
  * Created by yangli on 16-8-29.
@@ -27,10 +27,11 @@ import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
 public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPresenter, WatchBottomButton.IView> {
     private static final String TAG = "WatchBottomButton";
 
-    protected View mGiftBtn;
+    private View mGiftBtn;
     //    protected View mRotateBtn;
-    protected View mGameBtn;
-    protected View mShareBtn;
+    private View mGameBtn;
+    private View mShareBtn;
+    private MsgCtrlBtnView mMsgCntBtn;
 
     private boolean mIsGameMode = false;
     private boolean mEnableShare;
@@ -39,7 +40,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     private ValueAnimator mShakeAnimator;
 
     @Override
-    protected String getTAG() {
+    protected final String getTAG() {
         return TAG;
     }
 
@@ -55,11 +56,14 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             mPresenter.rotateScreen();
         } else if (id == R.id.game_btn) {
             mPresenter.showGameDownloadView();
-            //点击的同时清除动画
-            clearAnimator();
+            clearAnimator(); // 点击的同时清除动画
         } else if (id == R.id.share_btn) {
             if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.showShareView();
+            }
+        } else if (id == R.id.msg_ctrl_btn) {
+            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                mPresenter.showMsgCtrlView();
             }
         }
     }
@@ -77,13 +81,18 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         mGiftBtn = createImageView(R.drawable.live_icon_gift_btn);
         addCreatedView(mGiftBtn, R.id.gift_btn);
 
+        mMsgCntBtn = new MsgCtrlBtnView(getContext());
+        addCreatedView(mMsgCntBtn, R.id.msg_ctrl_btn);
+
 //        mRotateBtn = createImageView(R.drawable.live_icon_rotate_screen);
 //        addCreatedView(mGiftBtn, R.id.rotate_btn);
 
         // 横竖屏时按钮排列顺序
         mRightBtnSetPort.add(mGiftBtn);
+        mRightBtnSetPort.add(mMsgCntBtn);
 
         mBottomBtnSetLand.add(mGiftBtn);
+        mBottomBtnSetLand.add(mMsgCntBtn);
 
         //mBottomBtnSetLand.add(mRotateBtn);
 
@@ -165,7 +174,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         mShakeAnimator.start();
     }
 
-    private void destroyView() {
+    private final void destroyView() {
         clearAnimator();
     }
 
@@ -187,7 +196,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         }
     }
 
-    public void postSwitch(boolean isGameMode) {
+    public final void postSwitch(boolean isGameMode) {
         mIsGameMode = isGameMode;
     }
 
@@ -198,14 +207,13 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
          */
         class ComponentView implements IView {
             @Override
-            public void onOrientation(boolean isLandscape) {
-                WatchBottomButton.this.onOrientation(isLandscape);
-            }
-
-            @Nullable
-            @Override
             public <T extends View> T getRealView() {
                 return (T) mContentContainer;
+            }
+
+            @Override
+            public void onOrientation(boolean isLandscape) {
+                WatchBottomButton.this.onOrientation(isLandscape);
             }
 
             @Override
@@ -216,6 +224,11 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             @Override
             public void destroyView() {
                 WatchBottomButton.this.destroyView();
+            }
+
+            @Override
+            public void onUpdateUnreadCount(int unreadCount) {
+                mMsgCntBtn.setMsgUnreadCnt(unreadCount);
             }
         }
         return new ComponentView();
@@ -246,11 +259,21 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
          * 显示分享界面
          */
         void showShareView();
+
+        /**
+         * 显示私信面板
+         */
+        void showMsgCtrlView();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
         void showGameIcon(GameViewModel gameModel);
 
         void destroyView();
+
+        /**
+         * 更新私信未读数
+         */
+        void onUpdateUnreadCount(int unreadCount);
     }
 }

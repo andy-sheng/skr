@@ -39,6 +39,11 @@ public class SixinMessageDao extends AbstractDao<SixinMessage, Long> {
         public final static Property Ext = new Property(13, String.class, "ext", false, "EXT");
         public final static Property LocaLUserId = new Property(14, long.class, "locaLUserId", false, "LOCA_LUSER_ID");
         public final static Property CertificationType = new Property(15, Integer.class, "certificationType", false, "CERTIFICATION_TYPE");
+        public final static Property TargetType = new Property(16, int.class, "targetType", false, "TARGET_TYPE");
+        public final static Property ServerStoreStatus = new Property(17, int.class, "serverStoreStatus", false, "SERVER_STORE_STATUS");
+        public final static Property GroupLevel = new Property(18, int.class, "groupLevel", false, "GROUP_LEVEL");
+        public final static Property GroupHonor = new Property(19, String.class, "groupHonor", false, "GROUP_HONOR");
+        public final static Property GroupMedalId = new Property(20, int.class, "groupMedalId", false, "GROUP_MEDAL_ID");
     };
 
 
@@ -69,12 +74,21 @@ public class SixinMessageDao extends AbstractDao<SixinMessage, Long> {
                 "'BODY' TEXT," + // 12: body
                 "'EXT' TEXT," + // 13: ext
                 "'LOCA_LUSER_ID' INTEGER NOT NULL ," + // 14: locaLUserId
-                "'CERTIFICATION_TYPE' INTEGER);"); // 15: certificationType
+                "'CERTIFICATION_TYPE' INTEGER," + // 15: certificationType
+                "'TARGET_TYPE' INTEGER NOT NULL ," + // 16: targetType
+                "'SERVER_STORE_STATUS' INTEGER NOT NULL ," + // 17: serverStoreStatus
+                "'GROUP_LEVEL' INTEGER NOT NULL ," + // 18: groupLevel
+                "'GROUP_HONOR' TEXT," + // 19: groupHonor
+                "'GROUP_MEDAL_ID' INTEGER NOT NULL );"); // 20: groupMedalId
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_SIXIN_MESSAGE_TARGET ON SIXIN_MESSAGE" +
                 " (TARGET);");
         db.execSQL("CREATE INDEX " + constraint + "IDX_SIXIN_MESSAGE_LOCA_LUSER_ID ON SIXIN_MESSAGE" +
                 " (LOCA_LUSER_ID);");
+        db.execSQL("CREATE INDEX " + constraint + "IDX_SIXIN_MESSAGE_TARGET_TYPE ON SIXIN_MESSAGE" +
+                " (TARGET_TYPE);");
+        db.execSQL("CREATE INDEX " + constraint + "IDX_SIXIN_MESSAGE_SERVER_STORE_STATUS ON SIXIN_MESSAGE" +
+                " (SERVER_STORE_STATUS);");
     }
 
     /** Drops the underlying database table. */
@@ -159,6 +173,15 @@ public class SixinMessageDao extends AbstractDao<SixinMessage, Long> {
         if (certificationType != null) {
             stmt.bindLong(16, certificationType);
         }
+        stmt.bindLong(17, entity.getTargetType());
+        stmt.bindLong(18, entity.getServerStoreStatus());
+        stmt.bindLong(19, entity.getGroupLevel());
+ 
+        String groupHonor = entity.getGroupHonor();
+        if (groupHonor != null) {
+            stmt.bindString(20, groupHonor);
+        }
+        stmt.bindLong(21, entity.getGroupMedalId());
     }
 
     /** @inheritdoc */
@@ -186,7 +209,12 @@ public class SixinMessageDao extends AbstractDao<SixinMessage, Long> {
             cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // body
             cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // ext
             cursor.getLong(offset + 14), // locaLUserId
-            cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15) // certificationType
+            cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15), // certificationType
+            cursor.getInt(offset + 16), // targetType
+            cursor.getInt(offset + 17), // serverStoreStatus
+            cursor.getInt(offset + 18), // groupLevel
+            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // groupHonor
+            cursor.getInt(offset + 20) // groupMedalId
         );
         return entity;
     }
@@ -210,6 +238,11 @@ public class SixinMessageDao extends AbstractDao<SixinMessage, Long> {
         entity.setExt(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
         entity.setLocaLUserId(cursor.getLong(offset + 14));
         entity.setCertificationType(cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15));
+        entity.setTargetType(cursor.getInt(offset + 16));
+        entity.setServerStoreStatus(cursor.getInt(offset + 17));
+        entity.setGroupLevel(cursor.getInt(offset + 18));
+        entity.setGroupHonor(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
+        entity.setGroupMedalId(cursor.getInt(offset + 20));
      }
     
     /** @inheritdoc */

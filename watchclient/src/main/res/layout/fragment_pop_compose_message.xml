@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
+
+    <View
+        android:id="@+id/bg_view"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:background="@color/color_background"
+        android:orientation="vertical">
+
+        <com.base.view.BackTitleBar
+            android:id="@+id/title_bar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            app:is_profile_mode="false"/>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/message_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <RelativeLayout
+            android:id="@+id/bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <EditText
+                android:id="@+id/input_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/margin_24"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_24"
+                android:layout_toLeftOf="@+id/send_btn"
+                android:background="@drawable/live_input_field_bg_3"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:hint="@string/type_to_compose_text_enter_to_send"
+                android:imeOptions="flagNoExtractUi"
+                android:includeFontPadding="true"
+                android:inputType="text|textAutoCorrect|textCapSentences|textMultiLine"
+                android:lineSpacingExtra="0dp"
+                android:maxLength="1500"
+                android:maxLines="5"
+                android:minHeight="30dp"
+                android:paddingBottom="@dimen/margin_20"
+                android:paddingLeft="@dimen/margin_24"
+                android:paddingRight="@dimen/margin_80"
+                android:paddingTop="@dimen/margin_20"
+                android:textColor="@color/color_black_trans_90"
+                android:textColorHint="@color/color_black_trans_30"
+                android:textCursorDrawable="@drawable/edittext_color_cursor"
+                android:textSize="@dimen/text_size_40"/>
+
+            <ImageView
+                android:id="@+id/smiley_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignRight="@id/input_et"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:scaleType="center"
+                android:src="@drawable/chat_bottom_enter_expression_btn_2"/>
+
+            <com.base.view.MLTextView
+                android:id="@+id/send_btn"
+                android:layout_width="@dimen/view_dimen_130"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_marginRight="@dimen/margin_20"
+                android:background="@drawable/input_send_round_bg"
+                android:gravity="center"
+                android:text="@string/send"
+                android:textColor="@color/color_white"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/placeholder_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/color_white"/>
+
+        <LinearLayout
+            android:id="@+id/picker_area"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <com.wali.live.common.smiley.SmileyPicker
+                android:id="@+id/smiley_picker"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/list_item_first_bg_normal_light"
+                android:orientation="vertical"
+                android:visibility="gone"/>
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

@@ -7,14 +7,27 @@ import com.base.log.MyLog;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
-import com.thornbirds.component.presenter.ComponentPresenter;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.livesdk.live.livegame.view.LiveBottomButton;
 import com.wali.live.livesdk.live.presenter.GameLivePresenter;
+import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.BaseSdkController.MSG_ON_ACTIVITY_RESUMED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_INPUT_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_MESSAGE_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SETTING_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SHARE_PANEL;
 
@@ -23,7 +36,7 @@ import static com.wali.live.component.BaseSdkController.MSG_SHOW_SHARE_PANEL;
  *
  * @module 底部按钮表现, 游戏直播
  */
-public class BottomButtonPresenter extends ComponentPresenter<LiveBottomButton.IView>
+public class BottomButtonPresenter extends BaseSdkRxPresenter<LiveBottomButton.IView>
         implements LiveBottomButton.IPresenter {
     private static final String TAG = "BottomButtonPresenter";
 
@@ -51,12 +64,15 @@ public class BottomButtonPresenter extends ComponentPresenter<LiveBottomButton.I
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_ON_ACTIVITY_RESUMED);
+        EventBus.getDefault().register(this);
+        syncUnreadCount();
     }
 
     @Override
     public void stopPresenter() {
         super.stopPresenter();
         unregisterAllAction();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -84,6 +100,53 @@ public class BottomButtonPresenter extends ComponentPresenter<LiveBottomButton.I
     @Override
     public boolean isEnableShare() {
         return mMyRoomData != null ? mMyRoomData.getEnableShare() : false;
+    }
+
+    @Override
+    public void showMsgCtrlView() {
+        postEvent(MSG_SHOW_MESSAGE_PANEL);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ConversationLocalStore.NotifyUnreadCountChangeEvent event) {
+        if (event == null || mView == null) {
+            return;
+        }
+        mView.onUpdateUnreadCount((int) event.unreadCount);
+        if (mSubscription != null) {
+            mSubscription.unsubscribe();
+            mSubscription = null;
+        }
+    }
+
+    // TODO-YangLi 相同代码，可以考虑抽取基类
+    private Subscription mSubscription;
+
+    private void syncUnreadCount() {
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            return;
+        }
+        mSubscription = Observable.just(0)
+                .map(new Func1<Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer i) {
+                        return (int) ConversationLocalStore.getAllConversationUnReadCount();
+                    }
+                }).subscribeOn(Schedulers.io())
+                .compose(this.<Integer>bindUntilEvent(BaseSdkRxPresenter.PresenterEvent.STOP))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer unreadCount) {
+                        if (mView != null) {
+                            mView.onUpdateUnreadCount(unreadCount);
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                    }
+                });
     }
 
     @Override

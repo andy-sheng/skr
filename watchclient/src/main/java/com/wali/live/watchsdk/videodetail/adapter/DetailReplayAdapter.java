@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.videodetail.adapter;
 
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.base.global.GlobalData;
@@ -33,7 +34,7 @@ public class DetailReplayAdapter extends ClickItemAdapter<DetailReplayAdapter.Re
     }
 
     @Override
-    public ReplayHolder newViewHolder(int viewType) {
+    public ReplayHolder newViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.detail_replay_item, null);
         return new ReplayHolder(view);
     }

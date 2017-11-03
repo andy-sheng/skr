@@ -5,7 +5,9 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.support.annotation.NonNull;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
@@ -45,6 +47,8 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     public static final int FLING_THRESHOLD_NORMAL = 300;
     public static final int FLING_THRESHOLD_LARGE = (GlobalData.screenHeight / 3);
 
+    public static final int FLING_VELOCITY_THRESHOLD = 5000;
+
     public static final float SLOW_SPEED = 0.6f;
 
     @NonNull
@@ -70,6 +74,9 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     private int mFlingThreshold = FLING_THRESHOLD_NORMAL;
 
     private final AnimationHelper mAnimationHelper = new AnimationHelper();
+
+    private VelocityTracker mVelocityTracker;
+    private int mMaxVelocity;
 
     public void setViewSet(@NonNull List<View> horizontalSet) {
         mHorizontalSet = horizontalSet;
@@ -108,6 +115,8 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                 onBackgroundClick();
             }
         });
+
+        mMaxVelocity = ViewConfiguration.get(GlobalData.app()).getScaledMaximumFlingVelocity();
     }
 
     @Override
@@ -136,6 +145,12 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         if (mAnimationHelper.isInAnimation()) {
             return false;
         }
+
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain();
+        }
+        mVelocityTracker.addMovement(event);
+
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 mTouchCanceled = false;
@@ -170,7 +185,16 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                     } else if (mTranslation >= FLING_THRESHOLD_LARGE) {
                         onFlingDown();
                     } else {
-                        onCancelMoveVertical();
+                        mVelocityTracker.computeCurrentVelocity(1000, mMaxVelocity);
+                        float velocityY = mVelocityTracker.getYVelocity();
+
+                        if (velocityY <= -FLING_VELOCITY_THRESHOLD) {
+                            onFlingUp();
+                        } else if (velocityY >= FLING_VELOCITY_THRESHOLD) {
+                            onFlingDown();
+                        } else {
+                            onCancelMoveVertical();
+                        }
                     }
                 } else if (mMode == MODE_HORIZONTAL) {
                     calcMoveHorizontal(event.getX());
@@ -183,11 +207,23 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                     }
                 }
                 mCurrX = mCurrY = mDownY = mDownX = -1;
+
+                releaseVelocityTracker();
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                releaseVelocityTracker();
                 break;
             default:
                 break;
         }
         return false;
+    }
+
+    private void releaseVelocityTracker() {
+        if (mVelocityTracker != null) {
+            mVelocityTracker.recycle();
+            mVelocityTracker = null;
+        }
     }
 
     private void calcDirection(float currX, float currY) {

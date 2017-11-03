@@ -26,7 +26,6 @@ import com.wali.live.watchsdk.editinfo.fragment.request.UploadInfoRequest;
 import java.io.File;
 
 import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -48,7 +47,7 @@ public class EditAvatarPresenter extends BaseRxPresenter<IEditAvatarView> {
     private Uri mCropPicUri;
 
     public EditAvatarPresenter(IEditAvatarView view) {
-        mView = view;
+        super(view);
     }
 
     public void setSelectPicUri(Uri selectPicUri) {
