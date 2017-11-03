@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import com.base.log.MyLog;
 import com.base.utils.Constants;
 import com.base.utils.rx.RxRetryAssist;
+import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
@@ -33,6 +34,7 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
@@ -237,56 +239,48 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
         if (mWidgetSubscription != null) {
             mWidgetSubscription.unsubscribe();
         }
-        mWidgetSubscription = Observable.timer(time, TimeUnit.SECONDS).compose(this.bindUntilEvent(PresenterEvent.DESTROY))
-                .subscribe(new Action1<Object>() {
+        mWidgetSubscription = Observable.timer(time, TimeUnit.SECONDS)
+                .map(new Func1<Long, LiveProto.GetRoomWidgetRsp>() {
                     @Override
-                    public void call(Object o) {
-                        Observable.create((new Observable.OnSubscribe<Object>() {
-                            @Override
-                            public void call(Subscriber<? super Object> subscriber) {
-                                LiveProto.GetRoomWidgetReq req = LiveProto.GetRoomWidgetReq
-                                        .newBuilder()
-                                        .setLiveid(mMyRoomData.getRoomId())
-                                        .setZuid(mMyRoomData.getUid())
-                                        .setRoomType(mMyRoomData.getLiveType())
-                                        .build();
-                                PacketData data = new PacketData();
-                                data.setCommand(MiLinkCommand.COMMAND_ROOM_WIDGET);
-                                data.setData(req.toByteArray());
-                                data.setNeedCached(true);
-                                MyLog.w(TAG, "getRoomWidget request:" + req.toString());
-                                try {
-                                    PacketData response = MiLinkClientAdapter.getsInstance().sendSync(data, 10 * 1000);
-                                    LiveProto.GetRoomWidgetRsp rsp = LiveProto.GetRoomWidgetRsp.parseFrom(response.getData());
-                                    MyLog.w(TAG, "getRoomWidget response:" + rsp);
-                                    if (rsp != null && rsp.getRetCode() == 0) {
-                                        subscriber.onNext(rsp);
-                                        subscriber.onCompleted();
-                                    } else {
-                                        subscriber.onError(new Throwable("getRoomWidget retCode != 0"));
-                                    }
-                                } catch (Exception e) {
-                                    subscriber.onError(e);
-                                }
+                    public LiveProto.GetRoomWidgetRsp call(Long value) {
+                        LiveProto.GetRoomWidgetReq req = LiveProto.GetRoomWidgetReq
+                                .newBuilder()
+                                .setLiveid(mMyRoomData.getRoomId())
+                                .setZuid(mMyRoomData.getUid())
+                                .setRoomType(mMyRoomData.getLiveType())
+                                .build();
+                        PacketData data = new PacketData();
+                        data.setCommand(MiLinkCommand.COMMAND_ROOM_WIDGET);
+                        data.setData(req.toByteArray());
+                        data.setNeedCached(true);
+                        MyLog.w(TAG, "getRoomWidget request:" + req.toString());
+                        PacketData response = MiLinkClientAdapter.getsInstance().sendSync(data, 10 * 1000);
+                        LiveProto.GetRoomWidgetRsp rsp = null;
+                        try {
+                            rsp = LiveProto.GetRoomWidgetRsp.parseFrom(response.getData());
+                            MyLog.w(TAG, "getRoomWidget response:" + rsp);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return rsp;
+                    }
+                }).compose(this.<LiveProto.GetRoomWidgetRsp>bindUntilEvent(PresenterEvent.DESTROY))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<LiveProto.GetRoomWidgetRsp>() {
+                    @Override
+                    public void call(LiveProto.GetRoomWidgetRsp rsp) {
+                        if (rsp == null || rsp.getRetCode() != ErrorCode.CODE_SUCCESS) {
+                            MyLog.w(TAG, "getRoomWidget failed, errCode=" +
+                                    (rsp != null ? rsp.getRetCode() : "null"));
+                            return;
+                        }
+                        if (rsp.getNewWidgetInfo().hasPullInterval() && rsp.getNewWidgetInfo().getPullInterval() > 0) {
+                            if (mAttachmentStamp < rsp.getTimestamp()) {
+                                mAttachmentStamp = rsp.getTimestamp();
+                                setWidgetList(rsp.getNewWidgetInfo().getWidgetItemList());
+                                getAttachmentDelay(rsp.getNewWidgetInfo().getPullInterval());
                             }
-                        })).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Object>() {
-                            @Override
-                            public void call(Object o) {
-                                LiveProto.GetRoomWidgetRsp rsp = (LiveProto.GetRoomWidgetRsp) o;
-                                if (rsp.getNewWidgetInfo().hasPullInterval() && rsp.getNewWidgetInfo().getPullInterval() > 0) {
-                                    if (mAttachmentStamp < rsp.getTimestamp()) {
-                                        mAttachmentStamp = rsp.getTimestamp();
-                                        setWidgetList(rsp.getNewWidgetInfo().getWidgetItemList());
-                                        getAttachmentDelay(rsp.getNewWidgetInfo().getPullInterval());
-                                    }
-                                }
-                            }
-                        }, new Action1<Throwable>() {
-                            @Override
-                            public void call(Throwable throwable) {
-                                MyLog.e(TAG, throwable);
-                            }
-                        });
+                        }
                     }
                 }, new Action1<Throwable>() {
                     @Override
