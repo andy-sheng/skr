@@ -11,8 +11,8 @@ import com.thornbirds.component.IEventController;
 import com.thornbirds.component.Params;
 import com.wali.live.dns.IDnsStatusListener;
 import com.wali.live.ipselect.WatchIpSelectionHelper;
-import com.wali.live.watchsdk.videodetail.data.engine.IPlayer;
-import com.wali.live.watchsdk.videodetail.data.engine.IPlayerCallback;
+import com.mi.live.engine.player.engine.IPlayer;
+import com.mi.live.engine.player.engine.IPlayerCallback;
 import com.xiaomi.player.Player;
 
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_COMPLETED;

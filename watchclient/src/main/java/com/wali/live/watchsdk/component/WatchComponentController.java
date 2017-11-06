@@ -13,7 +13,7 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.BaseSdkController;
 import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
-import com.wali.live.watchsdk.videodetail.data.engine.GalileoPlayer;
+import com.mi.live.engine.player.engine.GalileoPlayer;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 

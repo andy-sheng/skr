@@ -9,7 +9,7 @@ import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.BaseSdkController;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.videodetail.data.engine.GalileoPlayer;
+import com.mi.live.engine.player.engine.GalileoPlayer;
 import com.wali.live.watchsdk.videothird.data.ThirdStreamerPresenter;
 import com.wali.live.watchsdk.videothird.presenter.ThirdPlayerPresenter;
 import com.wali.live.watchsdk.videothird.view.ThirdPlayerView;

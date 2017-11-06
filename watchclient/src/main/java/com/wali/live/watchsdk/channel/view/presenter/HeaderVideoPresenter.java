@@ -13,7 +13,7 @@ import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
-import com.wali.live.watchsdk.videodetail.data.engine.GalileoPlayer;
+import com.mi.live.engine.player.engine.GalileoPlayer;
 import com.xiaomi.player.Player;
 
 /**

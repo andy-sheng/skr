@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.videodetail.data.engine;
+package com.mi.live.engine.player.engine;
 
 /**
  * Created by yangli on 2017/9/21.

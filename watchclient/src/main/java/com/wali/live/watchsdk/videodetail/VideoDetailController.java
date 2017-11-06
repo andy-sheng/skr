@@ -14,7 +14,7 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.videodetail.presenter.DetailPlayerPresenter;
 import com.wali.live.watchsdk.videodetail.view.DetailPlayerView;
 import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
-import com.wali.live.watchsdk.videodetail.data.engine.GalileoPlayer;
+import com.mi.live.engine.player.engine.GalileoPlayer;
 
 /**
  * Created by yangli on 2017/5/26.
