@@ -319,8 +319,8 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
                     MyLog.w(TAG, "live type=" + liveType + " event=" + event);
                     if (liveType != LiveManager.TYPE_LIVE_PRIVATE && liveType != LiveManager.TYPE_LIVE_TOKEN) {
                         getRoomAttachment(mMyRoomData.getRoomId(), mMyRoomData.getUid(), mMyRoomData.getLiveType())
-                                .compose(bindUntilEvent(PresenterEvent.DESTROY))
                                 .retryWhen(new RxRetryAssist(3, 5, true)) // 重试3次，间隔5秒
+                                .compose(bindUntilEvent(PresenterEvent.DESTROY))
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new Action1<Object>() {
