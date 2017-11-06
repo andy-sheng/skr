@@ -156,7 +156,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             layoutParams.rightMargin = DisplayUtils.dip2px(56f);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            addViewAboveAnchor(view, layoutParams, $(R.id.comment_rv));
+            addViewAboveAnchor(view, layoutParams, $(R.id.live_comment_view));
         } else {
             mGameBarragePresenter.startPresenter();
         }

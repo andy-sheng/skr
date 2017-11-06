@@ -20,6 +20,7 @@ import com.xiaomi.player.Player;
  * </p>
  * 记得同步修改VideoPlayerView，以后统一
  */
+@Deprecated
 public class VideoPlayerTextureView extends TextureView implements SurfaceTextureListener, IVideoView, IPlayerTextureView {
     protected final String TAG = getTAG();
 

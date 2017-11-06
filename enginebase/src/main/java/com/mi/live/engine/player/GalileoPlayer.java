@@ -24,6 +24,7 @@ import java.util.List;
  *
  * @module 拉流模块，实现引擎拉流功能
  */
+@Deprecated
 public class GalileoPlayer implements IPlayer {
     private static final String DEFAULT_PORT = "80";
 

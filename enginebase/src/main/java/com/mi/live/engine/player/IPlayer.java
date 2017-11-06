@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * Created by chenyong on 16/7/11.
  */
+@Deprecated
 public interface IPlayer {
 
     void setBufferTimeMax(float timeSecond);

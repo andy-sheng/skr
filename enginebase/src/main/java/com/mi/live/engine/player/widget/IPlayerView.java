@@ -5,7 +5,6 @@ import android.view.View;
 /**
  * Created by chenyong on 2016/10/11.
  */
-
 public interface IPlayerView {
 
     void setVisibility(int visibility);
