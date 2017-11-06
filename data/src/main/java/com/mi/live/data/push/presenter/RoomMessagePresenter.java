@@ -3,6 +3,7 @@ package com.mi.live.data.push.presenter;
 import com.base.activity.RxActivity;
 import com.base.log.MyLog;
 import com.base.presenter.Presenter;
+import com.base.thread.ThreadPool;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.push.event.BarrageMsgEvent;
 import com.mi.live.data.push.model.BarrageMsg;
@@ -215,7 +216,8 @@ public class RoomMessagePresenter implements Presenter {
         mRenderQueue.clear();
     }
 
-    private ExecutorService singleThread = Executors.newSingleThreadExecutor(); // 送礼的线程池
+    private ExecutorService singleThread = Executors.newSingleThreadExecutor(
+            new ThreadPool.NamedThreadFactory("RoomMessagePresenter")); // 送礼的线程池
 
     private Subscription mDelayPullSubscriber;
 

@@ -33,6 +33,7 @@ import com.base.image.fresco.image.ImageFactory;
 import com.base.image.fresco.processor.BlurPostprocessor;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
+import com.base.thread.ThreadPool;
 import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.network.Network;
@@ -967,7 +968,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (!sRecording) {
             sRecording = true;
             if (mHeartbeatService == null) {
-                mHeartbeatService = Executors.newSingleThreadExecutor();
+                mHeartbeatService = Executors.newSingleThreadExecutor(
+                        new ThreadPool.NamedThreadFactory("HeartbeatService"));
             }
             mUIHandler.sendEmptyMessage(MSG_HEARTBEAT);
             mUIHandler.sendEmptyMessageDelayed(MSG_HEARTBEAT_TIMEOUT, HEARTBEAT_TIMEOUT);

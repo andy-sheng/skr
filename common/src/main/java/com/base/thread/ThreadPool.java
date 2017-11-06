@@ -3,6 +3,7 @@ package com.base.thread;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 
 import com.base.log.MyLog;
 
@@ -75,10 +76,10 @@ public class ThreadPool {
                 @Override
                 public void run() {
                     long begin = System.currentTimeMillis();
-                    MyLog.d("ThreadForEngine","exec "+from+" begin");
+                    MyLog.d("ThreadForEngine", "exec " + from + " begin");
                     r.run();
                     long end = System.currentTimeMillis();
-                    MyLog.d("ThreadForEngine","exec "+from+",time:"+(end-begin));
+                    MyLog.d("ThreadForEngine", "exec " + from + ",time:" + (end - begin));
                 }
             });
         }
@@ -116,7 +117,7 @@ public class ThreadPool {
         return sEngineService;
     }
 
-    public static ExecutorService getUserInfoExecutor(){
+    public static ExecutorService getUserInfoExecutor() {
         return sUserInfoExecutor;
     }
 
@@ -165,6 +166,19 @@ public class ThreadPool {
 
     public static Handler getUiHandler() {
         return sUiHandler;
+    }
+
+    public static class NamedThreadFactory implements ThreadFactory {
+        protected final String threadName;
+
+        public NamedThreadFactory(@NonNull String threadName) {
+            this.threadName = threadName;
+        }
+
+        @Override
+        public Thread newThread(@NonNull Runnable r) {
+            return new Thread(r, threadName);
+        }
     }
 
 

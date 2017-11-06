@@ -4,6 +4,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 
 import com.base.log.MyLog;
+import com.base.thread.ThreadPool;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -34,7 +35,8 @@ public enum KeyFlowReportManager {
     private static final String LOG_FILE_DIR = "KeyFlowReport";
     private static final String SPLITTER = " ";
 
-    private ExecutorService mExecutor = Executors.newSingleThreadExecutor();
+    private final ExecutorService mExecutor = Executors.newSingleThreadExecutor(
+            new ThreadPool.NamedThreadFactory("KeyFlowReportManager"));
 
     private String mLogFilePath;
     private String mStorageKey = "";

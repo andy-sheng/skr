@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.base.activity.RxActivity;
 import com.base.log.MyLog;
 import com.base.presenter.Presenter;
+import com.base.thread.ThreadPool;
 import com.mi.live.data.api.BanSpeakerUtils;
 import com.mi.live.data.api.relation.RelationApi;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
@@ -33,7 +34,8 @@ public class ForbidManagePresenter implements Presenter {
 
     private RxActivity mRxActivity;
     private WeakReference<IForbidManageView> mForbidManageViewRef;
-    private ExecutorService mExecutor = Executors.newSingleThreadExecutor();
+    private final ExecutorService mExecutor = Executors.newSingleThreadExecutor(
+            new ThreadPool.NamedThreadFactory("ForbidManagePresenter"));
 
     public ForbidManagePresenter(@NonNull RxActivity rxActivity) {
         MyLog.w(TAG, "ForbidManagePresenter()");

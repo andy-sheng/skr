@@ -3,6 +3,7 @@ package com.wali.live.watchsdk.active;
 import android.os.Process;
 
 import com.base.log.MyLog;
+import com.base.thread.ThreadPool;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.ExecutorService;
@@ -19,7 +20,8 @@ public class KeepActiveProcessor {
     private static final int STATUS_RUNNING = 1;
     private static final int STATUS_STOP = 2;
 
-    private static ExecutorService sExecutorService = (ExecutorService) Executors.newSingleThreadExecutor();
+    private static ExecutorService sExecutorService = Executors.newSingleThreadExecutor(
+            new ThreadPool.NamedThreadFactory("KeepActiveProcessor"));
 
     public static void keepActive() {
         sExecutorService.submit(new Runnable() {

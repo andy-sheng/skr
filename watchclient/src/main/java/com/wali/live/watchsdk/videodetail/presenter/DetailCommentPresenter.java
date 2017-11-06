@@ -8,6 +8,7 @@ import android.util.SparseArray;
 
 import com.base.dialog.MyAlertDialog;
 import com.base.log.MyLog;
+import com.base.thread.ThreadPool;
 import com.base.utils.rx.RxRetryAssist;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.MyUserInfoManager;
@@ -62,7 +63,8 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
     private int mTotalCnt = 0;
     private volatile boolean mIsReverse = false;
 
-    private final ExecutorService mExecutor = Executors.newSingleThreadExecutor();
+    private final ExecutorService mExecutor = Executors.newSingleThreadExecutor(
+            new ThreadPool.NamedThreadFactory("DetailCommentPresenter"));
     private final PullCommentHelper mNewerPuller = new PullCommentHelper(true);
     private final PullCommentHelper mOlderPuller = new PullCommentHelper(false);
 

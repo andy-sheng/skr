@@ -10,6 +10,7 @@ import com.base.activity.BaseRotateSdkActivity;
 import com.base.activity.assist.IBindActivityLIfeCycle;
 import com.base.event.SdkEventClass;
 import com.base.log.MyLog;
+import com.base.thread.ThreadPool;
 import com.base.utils.display.DisplayUtils;
 import com.live.module.common.R;
 import com.mi.live.data.event.GiftEventClass;
@@ -124,7 +125,8 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
         }
     }
 
-    private ExecutorService singleThreadForBuyGift = Executors.newSingleThreadExecutor();
+    private final ExecutorService singleThreadForBuyGift = Executors.newSingleThreadExecutor(
+            new ThreadPool.NamedThreadFactory("GiftContinueViewGroup"));
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(GiftEventClass.GiftAttrMessage.Normal event) {
