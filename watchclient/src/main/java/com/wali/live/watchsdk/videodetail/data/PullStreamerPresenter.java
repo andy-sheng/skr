@@ -6,12 +6,14 @@ import android.view.Surface;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
-import com.mi.live.engine.media.player.IMediaPlayer;
 import com.mi.live.engine.player.engine.IPlayer;
 import com.mi.live.engine.player.engine.IPlayerCallback;
 import com.wali.live.dns.IDnsStatusListener;
 import com.wali.live.ipselect.WatchIpSelectionHelper;
 import com.xiaomi.player.Player;
+
+import static com.mi.live.engine.player.engine.IPlayer.MEDIA_INFO_BUFFERING_END;
+import static com.mi.live.engine.player.engine.IPlayer.MEDIA_INFO_BUFFERING_START;
 
 /**
  * Created by yangli on 17-5-3.
@@ -234,13 +236,13 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
                 @Override
                 public void run() {
                     switch (what) {
-                        case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
+                        case MEDIA_INFO_BUFFERING_START:
                             MyLog.w(TAG, "MEDIA_INFO_BUFFERING_START");
                             mUIHandler.removeMessages(_MSG_RECONNECT_STREAM);
                             mUIHandler.sendEmptyMessageDelayed(_MSG_RECONNECT_STREAM, RECONNECT_TIMEOUT);
                             mOuterCallback.onShowLoading();
                             break;
-                        case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
+                        case MEDIA_INFO_BUFFERING_END:
                             MyLog.w(TAG, "MEDIA_INFO_BUFFERING_END");
                             if (mIpSelectionHelper.isStuttering()) {
                                 mIpSelectionHelper.updateStutterStatus(false);

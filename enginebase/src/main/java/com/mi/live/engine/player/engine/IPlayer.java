@@ -11,6 +11,12 @@ import java.util.List;
  */
 public interface IPlayer {
 
+    int MEDIA_INFO_UNKNOWN = 1;
+    int MEDIA_INFO_BUFFERING_START = 1000;
+    int MEDIA_INFO_BUFFERING_END = 1001;
+
+    int MEDIA_ERROR_CONNECT_SERVER_FAILED = -2000;
+
     int getVideoWidth();
 
     int getVideoHeight();

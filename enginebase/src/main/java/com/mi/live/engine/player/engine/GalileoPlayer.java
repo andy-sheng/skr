@@ -12,7 +12,6 @@ import com.base.log.MyLog;
 import com.base.thread.ThreadPool;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.engine.base.GalileoDeviceManager;
-import com.mi.live.engine.media.player.IjkMediaPlayer;
 import com.xiaomi.player.Player;
 import com.xiaomi.player.callback.PlayerCallback;
 import com.xiaomi.player.datastruct.VideoSize;
@@ -23,9 +22,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import static com.mi.live.engine.media.player.IMediaPlayer.MEDIA_ERROR_CONNECT_SERVER_FAILED;
-import static com.mi.live.engine.media.player.IMediaPlayer.MEDIA_INFO_BUFFERING_END;
-import static com.mi.live.engine.media.player.IMediaPlayer.MEDIA_INFO_BUFFERING_START;
 import static com.xiaomi.player.Player.SurfaceGravity.SurfaceGravityResizeAspectFit;
 
 /**
@@ -162,7 +158,7 @@ public class GalileoPlayer implements IPlayer {
         PowerManager pm = (PowerManager) context
                 .getSystemService(Context.POWER_SERVICE);
         mWakeLock = pm.newWakeLock(mode | PowerManager.ON_AFTER_RELEASE,
-                IjkMediaPlayer.class.getName());
+                GalileoPlayer.class.getName());
         mWakeLock.setReferenceCounted(false);
         if (wasHeld) {
             mWakeLock.acquire();

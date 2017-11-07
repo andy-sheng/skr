@@ -17,7 +17,6 @@ import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
 /**
  * Created by zyh on 2017/10/23.
  */
-
 public class HeaderVideoPresenter extends BasePlayerPresenter<TextureView, PullStreamerPresenter>
         implements TextureView.SurfaceTextureListener {
 
