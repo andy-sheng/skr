@@ -1,31 +1,22 @@
 package com.wali.live.watchsdk.videodetail.presenter;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.SurfaceTexture;
 import android.support.annotation.NonNull;
-import android.view.Surface;
 
-import com.base.dialog.MyAlertDialog;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.network.NetworkUtils;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
-import com.thornbirds.component.presenter.ComponentPresenter;
 import com.wali.live.event.EventClass;
 import com.wali.live.receiver.NetworkReceiver;
-import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.component.presenter.BasePlayerPresenter;
 import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
 import com.wali.live.watchsdk.videodetail.view.DetailPlayerView;
-import com.xiaomi.player.Player;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.lang.ref.WeakReference;
 
 import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
 import static com.wali.live.component.BaseSdkController.MSG_NEW_FEED_URL;
@@ -47,30 +38,23 @@ import static com.wali.live.component.BaseSdkController.MSG_VIDEO_SIZE_CHANGED;
  *
  * @module 详情-播放控制表现
  */
-public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.IView>
+public class DetailPlayerPresenter extends BasePlayerPresenter<DetailPlayerView.IView, PullStreamerPresenter>
         implements DetailPlayerView.IPresenter {
     private static final String TAG = "DetailPlayerPresenter";
 
-    private PullStreamerPresenter mStreamerPresenter;
-
-    private int mVideoWidth;
-    private int mVideoHeight;
-    private int mSurfaceWidth;
-    private int mSurfaceHeight;
-    private Surface mSurface;
-
-    private boolean mIsLandscape = false;
     private boolean mIsDetailMode = true;
     private boolean mHasNetwork = true;
     private boolean mNeedShowTraffic = false;
     private long mSavedPosition;
 
-    private WeakReference<MyAlertDialog> mTrafficDialogRef;
-    private WeakReference<MyAlertDialog> mNetworkDialogRef;
-
     @Override
     protected String getTAG() {
         return TAG;
+    }
+
+    @Override
+    protected final Context getContext() {
+        return mView.getRealView().getContext();
     }
 
     public final void setIsDetailMode(boolean isDetailMode) {
@@ -116,7 +100,8 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         }
     }
 
-    protected final void doResumePlay() {
+    @Override
+    protected final void doStartPlay() {
         if (mStreamerPresenter.isStarted()) {
             mStreamerPresenter.resumeWatch();
         } else {
@@ -137,7 +122,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         if (!mStreamerPresenter.isStarted() && mNeedShowTraffic) {
             showTrafficDialog();
         } else {
-            doResumePlay();
+            doStartPlay();
         }
     }
 
@@ -147,7 +132,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         mView.onPlayPaused();
     }
 
-    private void stopPlay() {
+    protected void stopPlay() {
         mStreamerPresenter.stopWatch();
         mView.onPlayPaused();
     }
@@ -158,7 +143,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
         if (!mStreamerPresenter.isStarted() && mNeedShowTraffic) {
             showTrafficDialog();
         } else {
-            doResumePlay();
+            doStartPlay();
         }
     }
 
@@ -168,125 +153,11 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
     }
 
     @Override
-    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        MyLog.w(TAG, "onSurfaceTextureAvailable");
-        if (mSurface == null) {
-            mSurface = new Surface(surface);
-        }
-        onSurfaceTextureSizeChanged(surface, width, height);
-    }
-
-    @Override
-    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-        MyLog.w(TAG, "onSurfaceTextureSizeChanged");
-        if (mSurfaceWidth != width || mSurfaceHeight != height) {
-            MyLog.w(TAG, "onSurfaceTextureSizeChanged width=" + width + ", height=" + height);
-            mSurfaceWidth = width;
-            mSurfaceHeight = height;
-            mStreamerPresenter.setSurface(mSurface);
-            mStreamerPresenter.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFit,
-                    mSurfaceWidth, mSurfaceHeight);
-            updateShiftUp();
-        }
-    }
-
-    @Override
-    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-        MyLog.w(TAG, "onSurfaceTextureDestroyed");
-        if (mSurface != null) {
-            mSurfaceWidth = mSurfaceHeight = 0;
-            mSurface.release();
-            mSurface = null;
-        }
-        return true;
-    }
-
-    @Override
-    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-    }
-
-    private void updateShiftUp() {
-        if (mIsDetailMode || mIsLandscape) {
+    protected void updateShiftUp() {
+        if (mIsDetailMode) {
             mStreamerPresenter.shiftUp(0);
-            return;
-        }
-        if (mSurfaceWidth == 0 || mSurfaceHeight == 0) {
-            mStreamerPresenter.shiftUp(0);
-        } else if (mVideoWidth == 0 || mVideoHeight == 0) {
-            mStreamerPresenter.shiftUp(0);
-        } else if (mVideoWidth * 16 > mVideoHeight * 9) {
-            float ratio = (mSurfaceHeight - mSurfaceWidth * 9 / 16) * 0.25f / mSurfaceHeight;
-            mStreamerPresenter.shiftUp(ratio);
         } else {
-            mStreamerPresenter.shiftUp(0);
-        }
-    }
-
-    private void onVideoSizeChange(int width, int height) {
-        if (mVideoWidth != width || mVideoHeight != height) {
-            mVideoWidth = width;
-            mVideoHeight = height;
-            updateShiftUp();
-        }
-    }
-
-    private void onOrientation(boolean isLandscape) {
-        if (mIsLandscape == isLandscape) {
-            return;
-        }
-        mIsLandscape = isLandscape;
-        updateShiftUp();
-    }
-
-    private void showTrafficDialog() {
-        MyAlertDialog trafficDialog = mTrafficDialogRef != null ? mTrafficDialogRef.get() : null;
-        if (trafficDialog == null) {
-            trafficDialog = new MyAlertDialog.Builder(mView.getRealView().getContext())
-                    .setMessage(R.string.live_traffic_tip)
-                    .setPositiveButton(R.string.live_traffic_positive, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            doResumePlay();
-                            dialog.dismiss();
-                        }
-                    }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).setCancelable(false).create();
-            mTrafficDialogRef = new WeakReference<>(trafficDialog);
-        }
-        if (!trafficDialog.isShowing()) {
-            trafficDialog.show();
-        }
-    }
-
-    private void showNetworkDialog() {
-        MyAlertDialog networkDialog = mNetworkDialogRef != null ? mNetworkDialogRef.get() : null;
-        if (networkDialog == null) {
-            networkDialog = new MyAlertDialog.Builder(mView.getRealView().getContext())
-                    .setMessage(R.string.live_offline_no_network)
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Context context = mView.getRealView().getContext();
-                            if (android.os.Build.VERSION.SDK_INT > 10) {
-                                context.startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
-                            } else {
-                                context.startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
-                            }
-                        }
-                    }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).setCancelable(false).create();
-            mNetworkDialogRef = new WeakReference<>(networkDialog);
-        }
-        if (!networkDialog.isShowing()) {
-            networkDialog.show();
+            super.updateShiftUp();
         }
     }
 
