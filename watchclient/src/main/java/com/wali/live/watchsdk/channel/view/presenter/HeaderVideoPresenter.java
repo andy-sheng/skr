@@ -79,6 +79,11 @@ public class HeaderVideoPresenter extends BasePlayerPresenter<TextureView, PullS
     }
 
     @Override
+    protected void updateShiftUp() {
+        // nothing to do
+    }
+
+    @Override
     public boolean onEvent(int event, IParams params) {
         return false;
     }
