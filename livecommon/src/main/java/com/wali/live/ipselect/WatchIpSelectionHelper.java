@@ -30,7 +30,6 @@ public class WatchIpSelectionHelper extends BaseIpSelectionHelper {
         return TAG;
     }
 
-
     public boolean hasStreamUrl() {
         return !TextUtils.isEmpty(mOriginalStreamUrl);
     }

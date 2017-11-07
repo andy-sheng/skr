@@ -3,7 +3,6 @@ package com.wali.live.watchsdk.videothird.data;
 import android.support.annotation.NonNull;
 
 import com.base.global.GlobalData;
-import com.thornbirds.component.IEventController;
 import com.wali.live.ipselect.FeedsIpSelectionHelper;
 import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
 
@@ -18,17 +17,17 @@ public class ThirdStreamerPresenter extends PullStreamerPresenter {
     private boolean mIsLocalVideo = false;
 
     @Override
-    protected String getTAG() {
+    protected final String getTAG() {
         return TAG;
     }
 
     @Override
-    public boolean isLocalVideo() {
+    public final boolean isLocalVideo() {
         return mIsLocalVideo;
     }
 
-    public ThirdStreamerPresenter(@NonNull IEventController controller) {
-        mController = controller;
+    public ThirdStreamerPresenter(@NonNull PlayerCallbackWrapper callbackWrapper) {
+        mOuterCallback = callbackWrapper;
         mUIHandler = new MyUIHandler(this);
         mReconnectHelper = new ReconnectHelper();
         mIpSelectionHelper = new FeedsIpSelectionHelper(GlobalData.app(), mReconnectHelper);

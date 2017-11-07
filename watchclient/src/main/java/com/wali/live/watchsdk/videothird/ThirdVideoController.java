@@ -7,9 +7,10 @@ import com.base.global.GlobalData;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.mi.live.engine.player.engine.GalileoPlayer;
 import com.wali.live.component.BaseSdkController;
 import com.wali.live.watchsdk.R;
-import com.mi.live.engine.player.engine.GalileoPlayer;
+import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.videothird.data.ThirdStreamerPresenter;
 import com.wali.live.watchsdk.videothird.presenter.ThirdPlayerPresenter;
 import com.wali.live.watchsdk.videothird.view.ThirdPlayerView;
@@ -39,11 +40,11 @@ public class ThirdVideoController extends BaseSdkController {
         mPlayerView = new ThirdPlayerView(context);
         mPlayerView.setId(R.id.video_view);
 
-        mStreamerPresenter = new ThirdStreamerPresenter(this);
+        mStreamerPresenter = new ThirdStreamerPresenter(new WatchComponentController.EventPlayerCallback(this));
         mStreamerPresenter.setIsRealTime(false);
         GalileoPlayer player = new GalileoPlayer(GlobalData.app(), UserAccountManager.getInstance().getUuid(),
                 MiLinkClientAdapter.getsInstance().getClientIp());
-        player.setCallback(mStreamerPresenter.getPlayerCallback());
+        player.setCallback(mStreamerPresenter.getInnerPlayerCallback());
         mStreamerPresenter.setStreamer(player);
 
         mPlayerPresenter = new ThirdPlayerPresenter(this, mStreamerPresenter);

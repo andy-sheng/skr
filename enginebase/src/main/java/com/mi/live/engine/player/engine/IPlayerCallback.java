@@ -3,17 +3,17 @@ package com.mi.live.engine.player.engine;
 /**
  * Created by yangli on 2017/9/21.
  */
-public interface IPlayerCallback<PLAYER> {
+public interface IPlayerCallback {
 
-    void onPrepared(PLAYER player);
+    void onPrepared();
 
-    void onCompletion(PLAYER player);
+    void onCompletion();
 
-    void onSeekComplete(PLAYER player);
+    void onSeekComplete();
 
-    void onVideoSizeChanged(PLAYER player, int width, int height);
+    void onVideoSizeChanged(int width, int height);
 
-    void onError(PLAYER player, int what, int extra);
+    void onError(int what, int extra);
 
-    void onInfo(PLAYER player, int what, int extra);
+    void onInfo(int what, int extra);
 }

@@ -3,17 +3,18 @@ package com.wali.live.watchsdk.component;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.mi.live.engine.player.engine.GalileoPlayer;
+import com.thornbirds.component.IEventController;
+import com.thornbirds.component.Params;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.BaseSdkController;
 import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
-import com.mi.live.engine.player.engine.GalileoPlayer;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
@@ -42,7 +43,6 @@ public class WatchComponentController extends BaseSdkController {
 
     protected PullStreamerPresenter mStreamerPresenter;
 
-    @Nullable
     @Override
     protected String getTAG() {
         return TAG;
@@ -56,11 +56,11 @@ public class WatchComponentController extends BaseSdkController {
     }
 
     public void setupController(Context context) {
-        mStreamerPresenter = new PullStreamerPresenter(this);
+        mStreamerPresenter = new PullStreamerPresenter(new EventPlayerCallback(this));
         mStreamerPresenter.setIsRealTime(true);
         GalileoPlayer player = new GalileoPlayer(GlobalData.app(), UserAccountManager.getInstance().getUuid(),
                 MiLinkClientAdapter.getsInstance().getClientIp());
-        player.setCallback(mStreamerPresenter.getPlayerCallback());
+        player.setCallback(mStreamerPresenter.getInnerPlayerCallback());
         mStreamerPresenter.setStreamer(player);
     }
 
@@ -131,6 +131,55 @@ public class WatchComponentController extends BaseSdkController {
             WatchSdkActivity.openActivity(activity, mRoomInfoList, mRoomInfoPosition);
         } else if (mRoomInfoList.size() == 1) {
             WatchSdkActivity.openActivity(activity, mRoomInfoList.get(0));
+        }
+    }
+
+    public static class EventPlayerCallback extends PullStreamerPresenter.PlayerCallbackWrapper {
+
+        private IEventController controller;
+
+        public EventPlayerCallback(@NonNull IEventController controller) {
+            this.controller = controller;
+        }
+
+        @Override
+        public void onPrepared() {
+            controller.postEvent(MSG_PLAYER_READY);
+        }
+
+        @Override
+        public void onCompletion() {
+            controller.postEvent(MSG_PLAYER_COMPLETED);
+        }
+
+        @Override
+        public void onSeekComplete() {
+            controller.postEvent(MSG_SEEK_COMPLETED);
+        }
+
+        @Override
+        public void onVideoSizeChanged(int width, int height) {
+            controller.postEvent(MSG_VIDEO_SIZE_CHANGED, new Params().putItem(width).putItem(height));
+        }
+
+        @Override
+        public void onError(int what, int extra) {
+            controller.postEvent(MSG_PLAYER_ERROR);
+        }
+
+        @Override
+        public void onShowLoading() {
+            controller.postEvent(MSG_PLAYER_SHOW_LOADING);
+        }
+
+        @Override
+        public void onHideLoading() {
+            controller.postEvent(MSG_PLAYER_HIDE_LOADING);
+        }
+
+        @Override
+        public void onUpdateProgress() {
+            controller.postEvent(MSG_UPDATE_PLAY_PROGRESS);
         }
     }
 }

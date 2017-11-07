@@ -9,11 +9,11 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
+import com.mi.live.engine.player.engine.GalileoPlayer;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
-import com.mi.live.engine.player.engine.GalileoPlayer;
 import com.xiaomi.player.Player;
 
 /**
@@ -35,12 +35,12 @@ public class HeaderVideoPresenter extends ComponentPresenter<TextureView>
 
     public HeaderVideoPresenter(@NonNull IEventController controller, boolean isRealTime) {
         super(controller);
-        mStreamerPresenter = new PullStreamerPresenter(controller);
+        mStreamerPresenter = new PullStreamerPresenter(new PullStreamerPresenter.PlayerCallbackWrapper());
         mStreamerPresenter.setIsRealTime(isRealTime);
 
         GalileoPlayer player = new GalileoPlayer(GlobalData.app(), UserAccountManager.getInstance().getUuid(),
                 MiLinkClientAdapter.getsInstance().getClientIp());
-        player.setCallback(mStreamerPresenter.getPlayerCallback());
+        player.setCallback(mStreamerPresenter.getInnerPlayerCallback());
         mStreamerPresenter.setStreamer(player);
     }
 

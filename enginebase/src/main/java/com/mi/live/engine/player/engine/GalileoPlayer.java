@@ -38,7 +38,7 @@ public class GalileoPlayer implements IPlayer {
 
     private static final String DEFAULT_PORT = "80";
 
-    private IPlayerCallback<GalileoPlayer> mCallback;
+    private IPlayerCallback mCallback;
 
     private SurfaceHolder mSurfaceHolder;
     private boolean mScreenOnWhilePlaying;
@@ -69,7 +69,7 @@ public class GalileoPlayer implements IPlayer {
         public void onVideoRenderingStart() {
             MyLog.w(TAG, "onVideoRenderingStart");
             if (mCallback != null) {
-                mCallback.onPrepared(GalileoPlayer.this);
+                mCallback.onPrepared();
             }
         }
 
@@ -78,7 +78,7 @@ public class GalileoPlayer implements IPlayer {
             MyLog.w(TAG, "onStartBuffering");
             mIsBuffering = true;
             if (mCallback != null) {
-                mCallback.onInfo(GalileoPlayer.this, MEDIA_INFO_BUFFERING_START, 0);
+                mCallback.onInfo(MEDIA_INFO_BUFFERING_START, 0);
             }
         }
 
@@ -87,7 +87,7 @@ public class GalileoPlayer implements IPlayer {
             MyLog.w(TAG, "onStartPlaying");
             mIsBuffering = false;
             if (mCallback != null) {
-                mCallback.onInfo(GalileoPlayer.this, MEDIA_INFO_BUFFERING_END, 0);
+                mCallback.onInfo(MEDIA_INFO_BUFFERING_END, 0);
             }
         }
 
@@ -112,8 +112,7 @@ public class GalileoPlayer implements IPlayer {
             MyLog.w(TAG, "onPlayerResumed");
             if (mCallback != null && mNeedSynthesize) {
                 mNeedSynthesize = false;
-                mCallback.onInfo(GalileoPlayer.this, mIsBuffering ?
-                        MEDIA_INFO_BUFFERING_START : MEDIA_INFO_BUFFERING_END, 0);
+                mCallback.onInfo(mIsBuffering ? MEDIA_INFO_BUFFERING_START : MEDIA_INFO_BUFFERING_END, 0);
             }
         }
 
@@ -121,7 +120,7 @@ public class GalileoPlayer implements IPlayer {
         public void onSeekCompleted() {
             MyLog.w(TAG, "onSeekCompleted");
             if (mCallback != null) {
-                mCallback.onSeekComplete(GalileoPlayer.this);
+                mCallback.onSeekComplete();
             }
         }
 
@@ -129,7 +128,7 @@ public class GalileoPlayer implements IPlayer {
         public void onStreamEOF() {
             MyLog.w(TAG, "onStreamEOF");
             if (mCallback != null) {
-                mCallback.onCompletion(GalileoPlayer.this);
+                mCallback.onCompletion();
             }
         }
 
@@ -137,7 +136,7 @@ public class GalileoPlayer implements IPlayer {
         public void onOpenStreamFailed() {
             MyLog.w(TAG, "onOpenStreamFailed");
             if (mCallback != null) {
-                mCallback.onError(GalileoPlayer.this, MEDIA_ERROR_CONNECT_SERVER_FAILED, 0);
+                mCallback.onError(MEDIA_ERROR_CONNECT_SERVER_FAILED, 0);
             }
         }
 
@@ -145,8 +144,7 @@ public class GalileoPlayer implements IPlayer {
         public void onVideoSizeChanged(VideoSize videoSize) {
             MyLog.w(TAG, "onVideoSizeChanged");
             if (mCallback != null) {
-                mCallback.onVideoSizeChanged(GalileoPlayer.this, (int) videoSize.video_width,
-                        (int) videoSize.video_height);
+                mCallback.onVideoSizeChanged((int) videoSize.video_width, (int) videoSize.video_height);
             }
         }
     };
@@ -208,8 +206,8 @@ public class GalileoPlayer implements IPlayer {
         }, "GalileoPlayer()");
     }
 
-    public void setCallback(IPlayerCallback<? extends IPlayer> callback) {
-        mCallback = (IPlayerCallback<GalileoPlayer>) callback;
+    public void setCallback(IPlayerCallback callback) {
+        mCallback = callback;
     }
 
     @Override

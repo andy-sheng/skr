@@ -15,7 +15,7 @@ public class ThirdPlayerPresenter extends DetailPlayerPresenter {
     private static final String TAG = "ThirdPlayerPresenter";
 
     @Override
-    protected String getTAG() {
+    protected final String getTAG() {
         return TAG;
     }
 

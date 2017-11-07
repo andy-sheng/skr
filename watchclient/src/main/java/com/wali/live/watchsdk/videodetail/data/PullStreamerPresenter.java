@@ -7,22 +7,11 @@ import android.view.Surface;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.engine.media.player.IMediaPlayer;
-import com.thornbirds.component.IEventController;
-import com.thornbirds.component.Params;
-import com.wali.live.dns.IDnsStatusListener;
-import com.wali.live.ipselect.WatchIpSelectionHelper;
 import com.mi.live.engine.player.engine.IPlayer;
 import com.mi.live.engine.player.engine.IPlayerCallback;
+import com.wali.live.dns.IDnsStatusListener;
+import com.wali.live.ipselect.WatchIpSelectionHelper;
 import com.xiaomi.player.Player;
-
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_COMPLETED;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_ERROR;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_HIDE_LOADING;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_READY;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SHOW_LOADING;
-import static com.wali.live.component.BaseSdkController.MSG_SEEK_COMPLETED;
-import static com.wali.live.component.BaseSdkController.MSG_UPDATE_PLAY_PROGRESS;
-import static com.wali.live.component.BaseSdkController.MSG_VIDEO_SIZE_CHANGED;
 
 /**
  * Created by yangli on 17-5-3.
@@ -43,14 +32,14 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
     protected static final int _MSG_PLAYER_PROGRESS = 2003;  // 进度刷新
 
     @NonNull
-    protected IEventController mController;
+    protected PlayerCallbackWrapper mOuterCallback;
 
     protected boolean mStarted = false;
     protected boolean mPaused = true;
 
     protected boolean mIsRealTime = true;
 
-    private final PlayerCallback<? extends IPlayer> mPlayerCallback = new PlayerCallback<>();
+    private final InnerPlayerCallback mInnerCallback = new InnerPlayerCallback();
 
     @Override
     protected String getTAG() {
@@ -73,22 +62,24 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         return mStreamer != null ? mStreamer.getDuration() : 0;
     }
 
-    public final PlayerCallback<? extends IPlayer> getPlayerCallback() {
-        return mPlayerCallback;
+    public final InnerPlayerCallback getInnerPlayerCallback() {
+        return mInnerCallback;
     }
 
     public boolean isLocalVideo() {
         return false;
     }
 
+    // 提供默认构造函数，供子类使用
     protected PullStreamerPresenter() {
     }
 
-    public PullStreamerPresenter(@NonNull IEventController controller) {
-        mController = controller;
+    public PullStreamerPresenter(@NonNull PlayerCallbackWrapper callbackWrapper) {
+        mOuterCallback = callbackWrapper;
         mUIHandler = new MyUIHandler(this);
         mReconnectHelper = new ReconnectHelper();
-        mIpSelectionHelper = new WatchIpSelectionHelper(GlobalData.app(), mReconnectHelper, null/*TODO YangLi 加入关键流程打点*/);
+        mIpSelectionHelper = new WatchIpSelectionHelper(GlobalData.app(), mReconnectHelper,
+                null/*TODO YangLi 加入关键流程打点*/);
     }
 
     @Override
@@ -198,48 +189,47 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
     }
 
     // 播放器回调
-    protected class PlayerCallback<PLAYER extends IPlayer> implements IPlayerCallback<PLAYER> {
+    protected class InnerPlayerCallback implements IPlayerCallback {
 
         @Override
-        public void onPrepared(PLAYER player) {
+        public void onPrepared() {
             mUIHandler.sendEmptyMessage(_MSG_PLAYER_PREPARED);
         }
 
         @Override
-        public void onCompletion(PLAYER player) {
+        public void onCompletion() {
             mUIHandler.sendEmptyMessage(_MSG_PLAYER_COMPLETED);
         }
 
         @Override
-        public void onSeekComplete(PLAYER player) {
+        public void onSeekComplete() {
             mUIHandler.sendEmptyMessage(_MSG_SEEK_COMPLETED);
         }
 
         @Override
-        public void onVideoSizeChanged(PLAYER player, final int width, final int height) {
+        public void onVideoSizeChanged(final int width, final int height) {
             mUIHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     MyLog.w(TAG, "onVideoSizeChanged width=" + width + " height=" + height);
-                    mController.postEvent(MSG_VIDEO_SIZE_CHANGED, new Params().putItem(width)
-                            .putItem(height));
+                    mOuterCallback.onVideoSizeChanged(width, height);
                 }
             });
         }
 
         @Override
-        public void onError(PLAYER player, int what, int extra) {
+        public void onError(final int what, final int extra) {
             mUIHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     stopWatch();
-                    mController.postEvent(MSG_PLAYER_ERROR);
+                    mOuterCallback.onError(what, extra);
                 }
             });
         }
 
         @Override
-        public void onInfo(PLAYER player, final int what, int extra) {
+        public void onInfo(final int what, int extra) {
             mUIHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -248,7 +238,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
                             MyLog.w(TAG, "MEDIA_INFO_BUFFERING_START");
                             mUIHandler.removeMessages(_MSG_RECONNECT_STREAM);
                             mUIHandler.sendEmptyMessageDelayed(_MSG_RECONNECT_STREAM, RECONNECT_TIMEOUT);
-                            mController.postEvent(MSG_PLAYER_SHOW_LOADING);
+                            mOuterCallback.onShowLoading();
                             break;
                         case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
                             MyLog.w(TAG, "MEDIA_INFO_BUFFERING_END");
@@ -256,7 +246,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
                                 mIpSelectionHelper.updateStutterStatus(false);
                             }
                             mUIHandler.removeMessages(_MSG_RECONNECT_STREAM);
-                            mController.postEvent(MSG_PLAYER_HIDE_LOADING);
+                            mOuterCallback.onHideLoading();
                             break;
                         default:
                             break;
@@ -283,23 +273,23 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
                     MyLog.w(TAG, "MSG_RECONNECT_STREAM");
                     presenter.mReconnectHelper.startReconnect(0);
                     break;
-                case _MSG_PLAYER_PROGRESS: // fall through
+                case _MSG_PLAYER_PROGRESS:
                     if (!presenter.mIsRealTime && !presenter.mPaused) {
                         removeMessages(_MSG_PLAYER_PROGRESS);
                         sendEmptyMessageDelayed(_MSG_PLAYER_PROGRESS, _UPDATE_PROGRESS_TIMEOUT);
-                        presenter.mController.postEvent(MSG_UPDATE_PLAY_PROGRESS);
+                        presenter.mOuterCallback.onUpdateProgress();
                     }
                     break;
                 case _MSG_PLAYER_PREPARED:
-                    presenter.mController.postEvent(MSG_PLAYER_READY);
+                    presenter.mOuterCallback.onPrepared();
                     break;
                 case _MSG_PLAYER_COMPLETED:
                     presenter.seekTo(0);
                     presenter.pauseWatch();
-                    presenter.mController.postEvent(MSG_PLAYER_COMPLETED);
+                    presenter.mOuterCallback.onCompletion();
                     break;
                 case _MSG_SEEK_COMPLETED:
-                    presenter.mController.postEvent(MSG_SEEK_COMPLETED);
+                    presenter.mOuterCallback.onSeekComplete();
                     break;
                 default:
                     break;
@@ -351,6 +341,42 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
             } else {
                 MyLog.w(TAG, "startReconnect is ignored, but is paused or not started");
             }
+        }
+    }
+
+    public static class PlayerCallbackWrapper implements IPlayerCallback {
+
+        @Override
+        public void onPrepared() {
+        }
+
+        @Override
+        public void onCompletion() {
+        }
+
+        @Override
+        public void onSeekComplete() {
+        }
+
+        @Override
+        public void onVideoSizeChanged(int width, int height) {
+        }
+
+        @Override
+        public void onError(int what, int extra) {
+        }
+
+        @Override
+        public final void onInfo(int what, int extra) {
+        }
+
+        public void onShowLoading() {
+        }
+
+        public void onHideLoading() {
+        }
+
+        public void onUpdateProgress() {
         }
     }
 }
