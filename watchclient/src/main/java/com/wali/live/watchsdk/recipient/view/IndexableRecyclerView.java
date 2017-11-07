@@ -39,7 +39,7 @@ public class IndexableRecyclerView extends RecyclerView {
     };
 
     public void updateCurrentSection(RecyclerView recyclerView) {
-        RecyclerView.LayoutManager mLayoutManager = recyclerView.getLayoutManager();
+        LayoutManager mLayoutManager = recyclerView.getLayoutManager();
         if (mLayoutManager != null && mLayoutManager instanceof LinearLayoutManager) {
             LinearLayoutManager layoutManager = (LinearLayoutManager) mLayoutManager;
             for (int i = layoutManager.findFirstVisibleItemPosition(); i < layoutManager.findLastVisibleItemPosition(); i++) {
@@ -126,7 +126,7 @@ public class IndexableRecyclerView extends RecyclerView {
     }
 
     @Override
-    public void setAdapter(RecyclerView.Adapter adapter) {
+    public void setAdapter(Adapter adapter) {
         super.setAdapter(adapter);
         if (mScroller != null) {
             mScroller.setAdapter(adapter);

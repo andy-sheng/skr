@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        app:is_profile_mode="true" />
+        app:is_profile_mode="true"/>
 
     <RelativeLayout
         android:id="@+id/search_bar"
@@ -46,7 +47,7 @@
                 android:textColor="@color/color_black_trans_90"
                 android:textColorHint="@color/color_black_trans_40"
                 android:textCursorDrawable="@drawable/edittext_goldencolor_cursor"
-                android:textSize="@dimen/text_size_42" />
+                android:textSize="@dimen/text_size_42"/>
 
             <ImageView
                 android:id="@+id/delete_btn"
@@ -56,7 +57,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/margin_20"
                 android:src="@drawable/live_icon_close_btn"
-                android:visibility="gone" />
+                android:visibility="gone"/>
         </RelativeLayout>
     </RelativeLayout>
 
@@ -73,65 +74,32 @@
         android:singleLine="true"
         android:text="@string/match_hint"
         android:textColor="@color/color_black_trans_70"
-        android:textSize="@dimen/text_size_40" />
+        android:textSize="@dimen/text_size_40"/>
 
     <View
-        android:id="@+id/linee"
+        android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_height"
         android:layout_below="@+id/hint_title"
-        android:background="@color/color_line_e0dfde" />
+        android:background="@color/color_line_e0dfde"/>
 
-        <FrameLayout
-            android:id="@+id/friend_list"
+    <FrameLayout
+        android:id="@+id/friend_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/line">
+
+        <include
+            android:id="@+id/cover_view"
+            layout="@layout/user_list_loading_and_empty_cover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.wali.live.watchsdk.recipient.view.IndexableRecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/invite_bottom"
-            android:layout_below="@id/linee">
-
-            <include
-                android:id="@+id/cover_view"
-                layout="@layout/user_list_loading_and_empty_cover"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <com.wali.live.watchsdk.recipient.view.IndexableRecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:overScrollMode="never" />
+            android:overScrollMode="never"/>
 
     </FrameLayout>
-   -->
-    <RelativeLayout
-        android:id="@+id/invite_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_dimen_180"
-        android:layout_alignParentBottom="true"
-        android:background="@color/color_fafafa"
-        android:padding="@dimen/view_dimen_40"
-        android:visibility="gone">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/invite_list_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/private_confirm" />
-
-        <TextView
-            android:id="@+id/private_confirm"
-            android:layout_width="@dimen/view_dimen_185"
-            android:layout_height="@dimen/view_dimen_90"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/confirm_btn"
-            android:gravity="center"
-            android:text="@string/ok"
-            android:textColor="@color/confirm_color"
-            android:textSize="@dimen/text_size_40" />
-
-    </RelativeLayout>
-
 </RelativeLayout>

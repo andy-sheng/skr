@@ -12,8 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.widget.SectionIndexer;
 
-import com.wali.live.watchsdk.recipient.view.IndexableRecyclerView;
-
 
 public class IndexScroller {
 
