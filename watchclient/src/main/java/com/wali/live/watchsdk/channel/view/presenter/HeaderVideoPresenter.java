@@ -7,7 +7,7 @@ import android.view.TextureView;
 import com.base.global.GlobalData;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
-import com.mi.live.engine.player.engine.GalileoPlayer;
+import com.mi.live.engine.player.GalileoPlayer;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.wali.live.watchsdk.component.WatchComponentController;

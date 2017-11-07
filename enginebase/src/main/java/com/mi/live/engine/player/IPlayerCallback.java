@@ -1,4 +1,4 @@
-package com.mi.live.engine.player.engine;
+package com.mi.live.engine.player;
 
 /**
  * Created by yangli on 2017/9/21.

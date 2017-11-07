@@ -1,4 +1,4 @@
-package com.mi.live.engine.player.engine;
+package com.mi.live.engine.player;
 
 import android.view.Surface;
 

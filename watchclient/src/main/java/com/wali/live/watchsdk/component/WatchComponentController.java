@@ -9,7 +9,7 @@ import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.mi.live.engine.player.engine.GalileoPlayer;
+import com.mi.live.engine.player.GalileoPlayer;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.Params;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;

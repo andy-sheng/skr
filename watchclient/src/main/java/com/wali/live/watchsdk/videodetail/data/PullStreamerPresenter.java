@@ -6,14 +6,14 @@ import android.view.Surface;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
-import com.mi.live.engine.player.engine.IPlayer;
-import com.mi.live.engine.player.engine.IPlayerCallback;
+import com.mi.live.engine.player.IPlayer;
+import com.mi.live.engine.player.IPlayerCallback;
 import com.wali.live.dns.IDnsStatusListener;
 import com.wali.live.ipselect.WatchIpSelectionHelper;
 import com.xiaomi.player.Player;
 
-import static com.mi.live.engine.player.engine.IPlayer.MEDIA_INFO_BUFFERING_END;
-import static com.mi.live.engine.player.engine.IPlayer.MEDIA_INFO_BUFFERING_START;
+import static com.mi.live.engine.player.IPlayer.MEDIA_INFO_BUFFERING_END;
+import static com.mi.live.engine.player.IPlayer.MEDIA_INFO_BUFFERING_START;
 
 /**
  * Created by yangli on 17-5-3.
