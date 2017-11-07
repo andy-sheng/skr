@@ -232,4 +232,5 @@
     <string name="unblock">Remove</string>
     <string name="choose_talk_title">Select friends</string>
     <string name="message_not_supported">[This message type isn\'t supported]</string>
+    <string name="vfan_me">My fan club</string>
 </resources>

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 
+import com.base.activity.BaseActivity;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.ImageFactory;
@@ -17,6 +18,7 @@ import com.wali.live.component.view.BaseBottomButton;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
+import com.wali.live.watchsdk.fans.FansGroupListFragment;
 import com.wali.live.watchsdk.view.MsgCtrlBtnView;
 
 /**
@@ -55,8 +57,9 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         } else if (id == R.id.rotate_btn) {
             mPresenter.rotateScreen();
         } else if (id == R.id.game_btn) {
-            mPresenter.showGameDownloadView();
-            clearAnimator(); // 点击的同时清除动画
+//            mPresenter.showGameDownloadView();
+//            clearAnimator(); // 点击的同时清除动画
+            FansGroupListFragment.open((BaseActivity) getContext());
         } else if (id == R.id.share_btn) {
             if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.showShareView();

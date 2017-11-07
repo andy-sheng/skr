@@ -227,4 +227,5 @@
     <string name="unblock">移出</string>
     <string name="choose_talk_title">選擇好友</string>
     <string name="message_not_supported">[該條消息類型不支持]</string>
+    <string name="vfan_me">我的粉絲團</string>
 </resources>
