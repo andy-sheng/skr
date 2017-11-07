@@ -240,7 +240,7 @@ public class HeaderVideoView extends RelativeLayout implements IEventObserver {
         public void destroy() {
             MyLog.w(TAG, "destroy");
             super.destroy();
-            mPresenter.destroyVideo();
+            mPresenter.releaseVideo();
         }
     }
 

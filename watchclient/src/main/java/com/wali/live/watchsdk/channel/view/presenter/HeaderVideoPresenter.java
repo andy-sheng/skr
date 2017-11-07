@@ -13,6 +13,7 @@ import com.mi.live.engine.player.engine.GalileoPlayer;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
+import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
 import com.xiaomi.player.Player;
 
@@ -35,7 +36,7 @@ public class HeaderVideoPresenter extends ComponentPresenter<TextureView>
 
     public HeaderVideoPresenter(@NonNull IEventController controller, boolean isRealTime) {
         super(controller);
-        mStreamerPresenter = new PullStreamerPresenter(new PullStreamerPresenter.PlayerCallbackWrapper());
+        mStreamerPresenter = new PullStreamerPresenter(new WatchComponentController.EventPlayerCallback(controller));
         mStreamerPresenter.setIsRealTime(isRealTime);
 
         GalileoPlayer player = new GalileoPlayer(GlobalData.app(), UserAccountManager.getInstance().getUuid(),
@@ -60,7 +61,7 @@ public class HeaderVideoPresenter extends ComponentPresenter<TextureView>
         mStreamerPresenter.resumeWatch();
     }
 
-    public void destroyVideo() {
+    public void releaseVideo() {
         mStreamerPresenter.stopWatch();
         mStreamerPresenter.destroy();
     }
@@ -82,11 +83,10 @@ public class HeaderVideoPresenter extends ComponentPresenter<TextureView>
     public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
         MyLog.w(TAG, "onSurfaceTextureSizeChanged");
         if (mSurfaceWidth != width || mSurfaceHeight != height) {
-            MyLog.w(TAG, "onSurfaceTextureSizeChanged width=" + width + ", height=" + width);
             mSurfaceWidth = width;
             mSurfaceHeight = height;
             mStreamerPresenter.setSurface(mSurface);
-            mStreamerPresenter.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspect,
+            mStreamerPresenter.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFit,
                     mSurfaceWidth, mSurfaceHeight);
         }
     }

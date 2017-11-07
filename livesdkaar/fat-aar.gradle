@@ -77,12 +77,12 @@ ext.embeddedRClasses = new ArrayList<String>()
 ext.build_dir = buildDir.path.replace(File.separator, '/');
 
 ext.exploded_aar_dir = "$build_dir/intermediates/exploded-aar";
-ext.classs_release_dir = "$build_dir/intermediates/classes/release";
-ext.bundle_release_dir = "$build_dir/intermediates/bundles/release";
-ext.manifest_aaapt_dir = "$build_dir/intermediates/manifests/aapt/release";
-ext.generated_rsrc_dir = "$build_dir/generated/source/r/release";
+ext.classs_release_dir = "$build_dir/intermediates/classes/releaseVideo";
+ext.bundle_release_dir = "$build_dir/intermediates/bundles/releaseVideo";
+ext.manifest_aaapt_dir = "$build_dir/intermediates/manifests/aapt/releaseVideo";
+ext.generated_rsrc_dir = "$build_dir/generated/source/r/releaseVideo";
 
-ext.base_r2x_dir = "$build_dir/fat-aar/release/";
+ext.base_r2x_dir = "$build_dir/fat-aar/releaseVideo/";
 
 afterEvaluate {
     // the list of dependency must be reversed to use the right overlay order.
@@ -90,7 +90,7 @@ afterEvaluate {
     dependencies.reverseEach {
         def aarPath = "${exploded_aar_dir}/${it.moduleGroup}/${it.moduleName}/${it.moduleVersion}"
         if("${it.moduleName}" == 'enginebase') {
-            aarPath = "${exploded_aar_dir}/${it.moduleGroup}/${it.moduleName}/${it.moduleVersion}/release"
+            aarPath = "${exploded_aar_dir}/${it.moduleGroup}/${it.moduleName}/${it.moduleVersion}/releaseVideo"
         }
         it.moduleArtifacts.each {
             artifact ->

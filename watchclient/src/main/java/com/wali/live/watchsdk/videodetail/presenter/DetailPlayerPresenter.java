@@ -180,7 +180,7 @@ public class DetailPlayerPresenter extends ComponentPresenter<DetailPlayerView.I
     public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
         MyLog.w(TAG, "onSurfaceTextureSizeChanged");
         if (mSurfaceWidth != width || mSurfaceHeight != height) {
-            MyLog.w(TAG, "onSurfaceTextureSizeChanged width=" + width + ", height=" + width);
+            MyLog.w(TAG, "onSurfaceTextureSizeChanged width=" + width + ", height=" + height);
             mSurfaceWidth = width;
             mSurfaceHeight = height;
             mStreamerPresenter.setSurface(mSurface);

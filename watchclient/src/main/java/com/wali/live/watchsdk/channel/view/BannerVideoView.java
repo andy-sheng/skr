@@ -132,7 +132,7 @@ public class BannerVideoView extends RelativeLayout implements IEventObserver {
     private void stopVideo() {
         MyLog.v(TAG, "stopVideo");
         if (mPresenter != null) {
-            mPresenter.destroyVideo();
+            mPresenter.releaseVideo();
         }
     }
 
