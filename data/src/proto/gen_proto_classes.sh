@@ -25,3 +25,5 @@ protoc --java_out=$genPath ./LiveMic.proto
 protoc --java_out=$genPath ./LivePk.proto
 #protoc --java_out=$genPath ./MibiTicket.proto
 #protoc --java_out=$genPath ./RedEnvelope.proto
+protoc --java_out=$genPath ./VFansCommon.proto
+protoc --java_out=$genPath ./VFans.proto

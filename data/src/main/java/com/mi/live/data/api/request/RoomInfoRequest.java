@@ -12,8 +12,6 @@ import com.wali.live.proto.LiveProto.RoomInfoRsp;
  * @description 查询房间状态
  */
 public class RoomInfoRequest extends BaseRequest {
-    private RoomInfoReq.Builder mBuilder = RoomInfoReq.newBuilder();
-
     public RoomInfoRequest(long zuid, String liveId) {
         this(zuid, liveId, false);
     }
@@ -24,14 +22,13 @@ public class RoomInfoRequest extends BaseRequest {
     }
 
     private void build(long zuid, String liveId, boolean isGameOnly) {
-        mBuilder = RoomInfoReq.newBuilder()
+        RoomInfoReq.Builder builder = RoomInfoReq.newBuilder()
                 .setUuid(UserAccountManager.getInstance().getUuidAsLong())
                 .setZuid(zuid)
                 .setLiveId(liveId)
                 .setGetLatestLive(false)
                 .setGetGameInfoOnly(isGameOnly);
-
-        mRequest = mBuilder.build();
+        mRequest = builder.build();
     }
 
     protected RoomInfoRsp parse(byte[] bytes) throws InvalidProtocolBufferException {

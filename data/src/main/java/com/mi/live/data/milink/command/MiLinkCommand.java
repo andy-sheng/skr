@@ -477,4 +477,9 @@ public class MiLinkCommand {
 
     // 打点统计，复用频道打点
     public static final String COMMAND_STATISTICS_RECOMMEND_TAG = "zhibo.ai.recommendflag";
+
+    // 宠爱团专用
+    private static final String COMMAND_VFANS_PREFIX = "zhibo.vfans.";
+    // 拉取用户加入的宠爱团列表
+    public static final String COMMAND_VFANS_GROUP_LIST = COMMAND_VFANS_PREFIX + "get_grouplist";
 }

@@ -228,4 +228,10 @@
     <string name="choose_talk_title">选择好友</string>
     <string name="message_not_supported">[该条消息类型不支持]</string>
     <string name="vfan_me">我的粉丝团</string>
+    <string name="vfans_open">开通粉丝团</string>
+    <string name="vfans_recommend">粉丝团是什么</string>
+    <string name="vfans_renew_pay">续费</string>
+    <string name="vfans_open_privilege">成为付费团员</string>
+    <string name="vfans_my_value">亲密值</string>
+    <string name="already_joined_group">已加入的粉丝团</string>
 </resources>

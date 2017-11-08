@@ -228,4 +228,10 @@
     <string name="choose_talk_title">選擇好友</string>
     <string name="message_not_supported">[該條消息類型不支持]</string>
     <string name="vfan_me">我的粉絲團</string>
+    <string name="vfans_open">開通粉絲團</string>
+    <string name="vfans_recommend">粉絲團是什麼</string>
+    <string name="vfans_renew_pay">續費</string>
+    <string name="vfans_open_privilege">成為付費團員</string>
+    <string name="vfans_my_value">親密值</string>
+    <string name="already_joined_group">已加入的粉絲團</string>
 </resources>
