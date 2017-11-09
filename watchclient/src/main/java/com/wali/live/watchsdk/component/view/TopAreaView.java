@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.activity.BaseSdkActivity;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
@@ -31,6 +32,7 @@ import com.wali.live.event.UserActionEvent;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.fans.FansFragment;
 import com.wali.live.watchsdk.watchtop.adapter.UserAvatarRecyclerAdapter;
 
 import java.util.List;
@@ -67,6 +69,7 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
     private TextView mTicketNumTv;
     //管理
     private View mManagerArea;
+    private View mFansArea;
 
     private UserAvatarRecyclerAdapter mAvatarRvAdapter;
     private final LinearLayoutManager mAvatarLayoutManager = new LinearLayoutManager(getContext());
@@ -117,6 +120,8 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
         mGuestIv = $(R.id.guest_iv);
         mLinkArea = $(R.id.link_guest_area);
         mManagerArea = $(R.id.manager_area);
+        mFansArea = $(R.id.vfans_area);
+        $click(mFansArea, this);
         mFollowTv.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mAnimationHelper.setFollowWidth(mFollowTv.getMeasuredWidth());
 
@@ -169,6 +174,10 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
             mPresenter.getTicketDetail();
         } else if (id == R.id.manager_area) {
             UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_SET_MANAGER, null, null);
+        } else if (id == R.id.vfans_area) {
+            if (getContext() instanceof BaseSdkActivity) {
+                mPresenter.showFansFragment();
+            }
         }
     }
 
@@ -204,6 +213,9 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
                         mAnimationHelper.startFollowAnim(needShow);
                     } else {
                         mFollowTv.setVisibility(needShow ? View.VISIBLE : View.GONE);
+                        if (!needShow) {
+                            mFansArea.setVisibility(VISIBLE);
+                        }
                     }
                 }
             }
@@ -333,6 +345,11 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
         void getTicketDetail();
 
         /**
+         * 打开粉丝页面
+         */
+        void showFansFragment();
+
+        /**
          * 更新数据
          */
         void syncData();
@@ -427,6 +444,10 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
                         mFollowTv.setVisibility(mFollowShow ? View.VISIBLE : View.GONE);
+                        // TODO 暫時加的粉丝团跳转入口
+                        if (!mFollowShow) {
+                            mFansArea.setVisibility(View.VISIBLE);
+                        }
                         ViewGroup.LayoutParams layoutParams = mAnchorInfoContainer.getLayoutParams();
                         layoutParams.width = LayoutParams.WRAP_CONTENT;
                         mAnchorInfoContainer.setLayoutParams(layoutParams);

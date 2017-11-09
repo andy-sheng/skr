@@ -311,7 +311,6 @@ public abstract class BaseFragment extends Fragment implements FragmentListener,
         return (V) parent.findViewById(resId);
     }
 
-
     protected void $click(View view, View.OnClickListener listener) {
         if (view != null) {
             view.setOnClickListener(listener);

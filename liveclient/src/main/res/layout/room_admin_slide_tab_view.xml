@@ -10,7 +10,7 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:singleLine="true"
-        android:textColor="@drawable/color_admin_tab_text"
+        android:textColor="@color/color_tab_text"
         android:textSize="@dimen/text_size_44" />
 
     <ImageView

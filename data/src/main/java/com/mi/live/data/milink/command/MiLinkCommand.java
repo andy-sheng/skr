@@ -482,4 +482,6 @@ public class MiLinkCommand {
     private static final String COMMAND_VFANS_PREFIX = "zhibo.vfans.";
     // 拉取用户加入的宠爱团列表
     public static final String COMMAND_VFANS_GROUP_LIST = COMMAND_VFANS_PREFIX + "get_grouplist";
+    // 宠爱团详情
+    public static final String COMMAND_VFANS_GROUP_DETAIL = COMMAND_VFANS_PREFIX + "group_detail";
 }

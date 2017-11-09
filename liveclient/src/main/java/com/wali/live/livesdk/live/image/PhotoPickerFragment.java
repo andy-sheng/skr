@@ -39,6 +39,8 @@ import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.toast.ToastUtils;
+import com.base.view.SlidingTabLayout;
+import com.base.view.SymmetryTitleBar;
 import com.mi.live.data.repository.DataType.PhotoFolder;
 import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.trello.rxlifecycle.FragmentEvent;
@@ -48,8 +50,6 @@ import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.image.adapter.FilePickerRecyclerAdapter;
 import com.wali.live.livesdk.live.image.adapter.PhotoPickerRecyclerAdapter;
 import com.wali.live.livesdk.live.utils.ImageUtils;
-import com.wali.live.livesdk.live.view.SlidingTabLayout;
-import com.base.view.SymmetryTitleBar;
 import com.wali.live.livesdk.live.viewmodel.PhotoItem;
 import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
 
@@ -65,7 +65,7 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.wali.live.livesdk.live.view.SlidingTabLayout.DISTRIBUTE_MODE_TAB_AS_DIVIDER;
+import static com.base.view.SlidingTabLayout.DISTRIBUTE_MODE_TAB_AS_DIVIDER;
 
 /**
  * Created by zyh on 15-12-23.

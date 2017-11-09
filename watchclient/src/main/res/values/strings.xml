@@ -233,10 +233,39 @@
     <string name="choose_talk_title">Select friends</string>
     <string name="message_not_supported">[This message type isn\'t supported]</string>
     <string name="vfan_me">My fan club</string>
+
     <string name="vfans_open">Create fan club</string>
-    <string name="vfans_recommend">What\'s the fan club?</string>
     <string name="vfans_renew_pay">Renew</string>
     <string name="vfans_open_privilege">Be a paid member</string>
-    <string name="vfans_my_value">Closeness</string>
     <string name="already_joined_group">Fan club you\'ve joined</string>
+    <string name="vfans_join">Free membership request</string>
+    <string name="eight_level_open">Required level: 8</string>
+    <string name="vfans_privilege_forbidden">Ban comments</string>
+    <string name="five_level_open">Required level: 5</string>
+    <string name="vfans_privilege_fly_barrage">Free on-screen comments</string>
+    <string name="three_level_open">Required level: 3</string>
+    <string name="vfans_privilege_color_barrage">Colorful on-screen comments</string>
+    <string name="one_level_open">Required level: 1</string>
+    <string name="vfans_privilege_accelerate">Speed boost</string>
+    <string name="vfans_privilege_title">Paid member benefits</string>
+    <string name="vfans_my_rank">Current ranking</string>
+    <string name="vfans_my_value">Closeness</string>
+    <string name="vfans_my_medal">My medals</string>
+    <string name="vfans_my_devote_intro">(Do tasks to increase the closeness and improve the host\'s popularity)</string>
+    <string name="vfans_my_devote">My contributions</string>
+    <string name="vfans_rank">Clubs rank</string>
+    <string name="vfans_list">Fans rank</string>
+    <string name="vfans_member_count_title">Members</string>
+    <string name="vfans_recommend">What\'s the fan club?</string>
+    <string name="vfans_homepage">Home</string>
+    <string name="vfans_task">Task</string>
+    <string name="vfans_member">Member</string>
+    <string name="vfans_group">Group chat</string>
+    <string name="vfans_nobody_finish_task">Complete tasks to improve the popularity of the host</string>
+    <string name="vfans_owner_name" formatted="true">%s\'s fan club</string>
+    <string name="my_privilege_title">My benefits</string>
+    <string name="vfans_privilege_tour_divide">Membership fees sharing</string>
+    <string name="vfans_privilege_more_fans">More fans</string>
+    <string name="vfans_privilege_comingsoon">Stay tuned</string>
+    <string name="vfans_privilege_chram_title">Popularity medals</string>
 </resources>

@@ -36,4 +36,35 @@ public class FansInfoUtils {
         }
         return id;
     }
+
+    public static int getImageResoucesByCharmLevelValue(int charmLevel) {
+        int id = R.drawable.live_pet_group_level;
+        switch (charmLevel) {
+            case 1:
+                id = R.drawable.live_pet_group_level;
+                break;
+            case 2:
+                id = R.drawable.live_pet_grade_tomorrow;
+                break;
+            case 3:
+                id = R.drawable.live_pet_grade_trend;
+                break;
+            case 4:
+                id = R.drawable.live_pet_grade_big;
+                break;
+            case 5:
+                id = R.drawable.live_pet_grade_super;
+                break;
+            case 6:
+                id = R.drawable.live_pet_grade_big_cast;
+                break;
+            case 7:
+                id = R.drawable.live_pet_grade_superstar;
+                break;
+            default:
+                id = R.drawable.live_pet_grade_king;
+                break;
+        }
+        return id;
+    }
 }

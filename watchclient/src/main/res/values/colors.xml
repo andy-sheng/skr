@@ -36,4 +36,7 @@
     <color name="color_cd1f1f">#cd1f1f</color>
 
     <color name="color_line_e0dfde">#e0dfde</color>
+    <!--粉丝团-->
+    <color name="cash_color">#FF2966</color>
+    <color name="color_ffd8d8d8">#FFD8D8D8</color>
 </resources>

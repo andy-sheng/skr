@@ -312,11 +312,13 @@
     <dimen name="margin_300">100dip</dimen>
 
     <dimen name="margin_285">95dip</dimen>
+    <dimen name="margin_270">90dip</dimen>
     <dimen name="margin_260">86.67dp</dimen>
     <dimen name="margin_253">84.33dp</dimen>
+    <dimen name="margin_230">76.67dp</dimen>
     <dimen name="margin_225">75dp</dimen>
     <dimen name="margin_220">70.33dp</dimen>
-
+    <dimen name="margin_218">72.66dp</dimen>
     <dimen name="margin_215">70.17dp</dimen>
     <dimen name="margin_210">70dp</dimen>
 
@@ -325,7 +327,7 @@
 
     <dimen name="margin_206">68.66dp</dimen>
     <dimen name="margin_216">72dp</dimen>
-
+    <dimen name="margin_188">62.66dp</dimen>
     <dimen name="margin_180">60dp</dimen>
 
     <dimen name="margin_176">58.67dip</dimen>

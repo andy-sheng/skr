@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.relation.RelationApi;
@@ -21,6 +22,7 @@ import com.wali.live.event.UserActionEvent;
 import com.wali.live.proto.RelationProto;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.view.TopAreaView;
+import com.wali.live.watchsdk.fans.FansFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -130,6 +132,17 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
     public void getTicketDetail() {
         UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_TICKET,
                 mRoomDataModel.getUid(), mRoomDataModel.getTicket(), mRoomDataModel.getRoomId());
+    }
+
+    @Override
+    public void showFansFragment() {
+        //TODO 粉丝团的信息获取暂时没有，ui写完再加
+        if (mView != null && mView.getRealView() != null
+                && mView.getRealView().getContext() instanceof BaseSdkActivity) {
+            FansFragment.openFragment((BaseSdkActivity) mView.getRealView().getContext(),
+                    mRoomDataModel.getNickName(), mRoomDataModel.getUid(), mRoomDataModel.getRoomId(),
+                    5);
+        }
     }
 
     @Override

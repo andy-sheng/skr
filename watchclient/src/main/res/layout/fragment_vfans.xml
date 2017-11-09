@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/cover_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_1302"
+        android:background="@drawable/shape_vfans_fragment_bg"
+        android:orientation="vertical">
+
+        <com.base.view.SlidingTabLayout
+            android:id="@+id/vfan_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/margin_130"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/margin_188"
+            android:layout_marginRight="@dimen/margin_188"/>
+
+        <View
+            android:id="@+id/split_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_1"
+            android:background="@color/color_e5e5e5"/>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vfans_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fadingEdge="none"
+            android:fadingEdgeLength="0dp"
+            android:overScrollMode="never"
+            android:requiresFadingEdge="none"/>
+
+        <LinearLayout
+            android:id="@+id/apply_join_vfan_area"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_218"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_18"
+                android:background="@drawable/live_pet_live_between_bottom_bg"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_white">
+
+                <TextView
+                    android:id="@+id/join_vfans_btn"
+                    android:layout_width="@dimen/margin_900"
+                    android:layout_height="@dimen/margin_120"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/vfans_join_bg_pink"
+                    android:gravity="center"
+                    android:text="@string/vfans_join"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/margin_42"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/apply_privilege_area"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_218"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_18"
+                android:background="@drawable/live_pet_live_between_bottom_bg"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_white">
+
+                <com.wali.live.watchsdk.channel.view.RepeatScrollView
+                    android:id="@+id/repeat_scroll_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="@dimen/margin_40"
+                    android:layout_marginRight="@dimen/margin_60"
+                    android:layout_toLeftOf="@+id/open_privilege_btn"
+                    android:background="@color/white"/>
+
+                <TextView
+                    android:id="@+id/open_privilege_btn"
+                    android:layout_width="@dimen/margin_360"
+                    android:layout_height="@dimen/margin_120"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/margin_50"
+                    android:background="@drawable/vfans_join_bg_pink"
+                    android:gravity="center"
+                    android:text="@string/vfans_open_privilege"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/margin_42"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+
+
+

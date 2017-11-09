@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/message_rl"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_dimen_110">
+
+    <TextView
+        android:id="@+id/text_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/vfans_nobody_finish_task"
+        android:gravity="center|left"
+        android:textColor="@color/color_black_trans_50"
+        android:textSize="@dimen/text_size_36"
+        android:singleLine="true"
+        android:ellipsize="end" />
+
+</RelativeLayout>

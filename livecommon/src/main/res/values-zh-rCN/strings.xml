@@ -228,7 +228,9 @@
     <string name="mi_coin_risk_control">您的账号状态异常,请联系客服处理</string>
     <string name="mi_coin_account_frozen">米币账号冻结</string>
     <string name="mi_coin_other_consume_error">米币消费其他异常</string>
-    <plurals name="verify_user_level_toast"><item quantity="other">用户等级达到%d级才能赠送</item></plurals>
+    <plurals name="verify_user_level_toast">
+        <item quantity="other">用户等级达到%d级才能赠送</item>
+    </plurals>
     <string name="old_gift_version">您的版本较旧，不支持这种礼物类型，请尽快更新</string>
     <string name="network_disable">网络未连接</string>
     <string name="gift_card_insufficient">礼物卡数量不足</string>
