@@ -96,6 +96,6 @@ public class FansGroupFragment extends RxFragment implements View.OnClickListene
 
     public static void open(BaseActivity activity) {
         FragmentNaviUtils.addFragmentToBackStack(activity, R.id.main_act_container, FansGroupFragment.class,
-                null, false, 0, 0);
+                null, true, R.anim.slide_right_in, R.anim.slide_right_out);
     }
 }

@@ -7,29 +7,21 @@ import com.mi.live.data.milink.command.MiLinkCommand;
 import com.wali.live.proto.VFansProto;
 
 /**
- * Created by zyh on 2017/11/8.
+ * Created by lan on 2017/11/9.
  */
-
 public class GetGroupDetailRequest extends BaseRequest {
-
-    private GetGroupDetailRequest() {
-        super(MiLinkCommand.COMMAND_VFANS_GROUP_DETAIL, "GetGroupDetailRequest");
-        build(-1);
+    public GetGroupDetailRequest(long zuid) {
+        super(MiLinkCommand.COMMAND_VFANS_GROUP_DETAIL, "getGroupDetail");
+        build(zuid);
     }
 
-    public GetGroupDetailRequest(long anchorId) {
-        super(MiLinkCommand.COMMAND_VFANS_GROUP_DETAIL, "GetGroupDetailRequest");
-        build(anchorId);
+    private void build(long zuid) {
+        mRequest = VFansProto.GroupDetailReq.newBuilder()
+                .setUuid(UserAccountManager.getInstance().getUuidAsLong())
+                .setZuid(zuid)
+                .build();
     }
-
-    private void build(long anchorId) {
-        VFansProto.GroupDetailReq.Builder builder = VFansProto.GroupDetailReq.newBuilder()
-                .setZuid(anchorId)
-                .setUuid(UserAccountManager.getInstance().getUuidAsLong());
-        mRequest = builder.build();
-    }
-
-
+    
     @Override
     protected VFansProto.GroupDetailRsp parse(byte[] bytes) throws InvalidProtocolBufferException {
         return VFansProto.GroupDetailRsp.parseFrom(bytes);

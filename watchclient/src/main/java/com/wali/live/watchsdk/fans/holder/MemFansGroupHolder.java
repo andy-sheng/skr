@@ -3,9 +3,11 @@ package com.wali.live.watchsdk.fans.holder;
 import android.view.View;
 import android.widget.TextView;
 
+import com.base.activity.BaseActivity;
 import com.base.image.fresco.BaseImageView;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.fans.MemGroupDetailFragment;
 import com.wali.live.watchsdk.fans.model.item.MemFansGroupModel;
 import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
 import com.wali.live.watchsdk.lit.recycler.holder.BaseHolder;
@@ -43,6 +45,17 @@ public class MemFansGroupHolder extends BaseHolder<MemFansGroupModel> {
         mTimeTv = $(R.id.time_tv);
 
         mRenewalTv = $(R.id.renewal_tv);
+
+        initListener();
+    }
+
+    private void initListener() {
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MemGroupDetailFragment.open((BaseActivity) itemView.getContext(), mViewModel.getZuid());
+            }
+        });
     }
 
     @Override

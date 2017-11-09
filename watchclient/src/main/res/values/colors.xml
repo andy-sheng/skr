@@ -8,10 +8,10 @@
     <color name="color_fff005">#fff005</color>
 
     <color name="color_ff729b">#ff729b</color>
+    <color name="color_dddddd">#dddddd</color>
 
     <color name="color_ffca02">#ffca02</color>
     <color name="color_eea727">#eea727</color>
-
 
     <!-- 主播排行榜-->
     <color name="avatar_outer_bg_top1">#ffca02</color>
@@ -36,7 +36,10 @@
     <color name="color_cd1f1f">#cd1f1f</color>
 
     <color name="color_line_e0dfde">#e0dfde</color>
+
     <!--粉丝团-->
-    <color name="cash_color">#FF2966</color>
+    <color name="cash_color">#eea727</color>
+    <color name="cash_color_pressed">#7feea727</color>
+
     <color name="color_ffd8d8d8">#FFD8D8D8</color>
 </resources>
