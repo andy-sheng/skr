@@ -3,6 +3,7 @@ package com.wali.live.watchsdk.component.presenter;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.milink.event.MiLinkEvent;
@@ -13,6 +14,7 @@ import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
+import com.wali.live.watchsdk.fans.FansGroupFragment;
 import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
 
 import org.greenrobot.eventbus.EventBus;
@@ -35,7 +37,6 @@ import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_DOWNLOAD;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_INPUT_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_MESSAGE_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SHARE_PANEL;
-import static com.wali.live.component.BaseSdkController.MSG_SHOW_VIP_FANS_PANEL;
 
 /**
  * Created by yangli on 2017/2/18.
@@ -122,7 +123,7 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
 
     @Override
     public void showVipFansView() {
-        postEvent(MSG_SHOW_VIP_FANS_PANEL);
+        FansGroupFragment.open((BaseActivity) mView.getRealView().getContext());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
