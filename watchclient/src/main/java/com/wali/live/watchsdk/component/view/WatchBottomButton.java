@@ -34,6 +34,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     private View mGameBtn;
     private View mShareBtn;
     private MsgCtrlBtnView mMsgCntBtn;
+    private View mVipFansBtn;
 
     private boolean mIsGameMode = false;
     private boolean mEnableShare;
@@ -68,6 +69,10 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.showMsgCtrlView();
             }
+        } else if (id == R.id.vip_fans_btn) {
+            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                mPresenter.showVipFansView();
+            }
         }
     }
 
@@ -87,15 +92,20 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         mMsgCntBtn = new MsgCtrlBtnView(getContext());
         addCreatedView(mMsgCntBtn, R.id.msg_ctrl_btn);
 
+        mVipFansBtn = createImageView(R.drawable.live_icon_star_1);
+        addCreatedView(mVipFansBtn, R.id.vip_fans_btn);
+
 //        mRotateBtn = createImageView(R.drawable.live_icon_rotate_screen);
 //        addCreatedView(mGiftBtn, R.id.rotate_btn);
 
         // 横竖屏时按钮排列顺序
         mRightBtnSetPort.add(mGiftBtn);
         mRightBtnSetPort.add(mMsgCntBtn);
+        mRightBtnSetPort.add(mVipFansBtn);
 
         mBottomBtnSetLand.add(mGiftBtn);
         mBottomBtnSetLand.add(mMsgCntBtn);
+        mBottomBtnSetLand.add(mVipFansBtn);
 
         //mBottomBtnSetLand.add(mRotateBtn);
 
@@ -267,6 +277,11 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
          * 显示私信面板
          */
         void showMsgCtrlView();
+
+        /**
+         * 显示粉丝团管理界面
+         */
+        void showVipFansView();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {

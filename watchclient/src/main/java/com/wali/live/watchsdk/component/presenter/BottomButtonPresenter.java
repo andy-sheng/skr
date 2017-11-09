@@ -35,6 +35,7 @@ import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_DOWNLOAD;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_INPUT_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_MESSAGE_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SHARE_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_VIP_FANS_PANEL;
 
 /**
  * Created by yangli on 2017/2/18.
@@ -117,6 +118,11 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
     @Override
     public void showMsgCtrlView() {
         postEvent(MSG_SHOW_MESSAGE_PANEL);
+    }
+
+    @Override
+    public void showVipFansView() {
+        postEvent(MSG_SHOW_VIP_FANS_PANEL);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
