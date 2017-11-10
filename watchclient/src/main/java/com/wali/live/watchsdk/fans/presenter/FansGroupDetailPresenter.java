@@ -5,7 +5,12 @@ import com.base.mvp.BaseRxPresenter;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.VFansProto;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
+import com.wali.live.watchsdk.fans.model.member.FansMemberListModel;
+import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
 import com.wali.live.watchsdk.fans.request.GetGroupDetailRequest;
+import com.wali.live.watchsdk.fans.request.GetMemberListRequest;
+
+import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -27,7 +32,7 @@ public class FansGroupDetailPresenter extends BaseRxPresenter<IFansGroupDetailVi
                     @Override
                     public void call(Subscriber<? super FansGroupDetailModel> subscriber) {
                         VFansProto.GroupDetailRsp rsp = new GetGroupDetailRequest(zuid).syncRsp();
-                        if (rsp.getErrCode() != ErrorCode.CODE_SUCCESS) {
+                        if (rsp == null || rsp.getErrCode() != ErrorCode.CODE_SUCCESS) {
                             subscriber.onError(new Exception(rsp.getErrMsg() + " : " + rsp.getErrCode()));
                             return;
                         }
@@ -41,7 +46,39 @@ public class FansGroupDetailPresenter extends BaseRxPresenter<IFansGroupDetailVi
                 .subscribe(new Action1<FansGroupDetailModel>() {
                     @Override
                     public void call(FansGroupDetailModel model) {
-                        mView.getFansGroupDetailSuccess(model);
+                        mView.setFansGroupDetail(model);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, throwable);
+                    }
+                });
+    }
+
+    public void getTopThreeMember(final long zuid) {
+        Observable
+                .create(new Observable.OnSubscribe<List<FansMemberModel>>() {
+                    @Override
+                    public void call(Subscriber<? super List<FansMemberModel>> subscriber) {
+                        VFansProto.MemberListRsp rsp = new GetMemberListRequest(zuid, 0, 3).syncRsp();
+                        if (rsp == null || rsp.getErrCode() != ErrorCode.CODE_SUCCESS) {
+                            subscriber.onError(new Exception(rsp.getErrMsg() + " : " + rsp.getErrCode()));
+                            return;
+                        }
+
+                        FansMemberListModel model = new FansMemberListModel(rsp);
+                        subscriber.onNext(model.getMemberList());
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .compose(mView.<List<FansMemberModel>>bindLifecycle())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<FansMemberModel>>() {
+                    @Override
+                    public void call(List<FansMemberModel> list) {
+                        mView.setTopThreeMember(list);
                     }
                 }, new Action1<Throwable>() {
                     @Override

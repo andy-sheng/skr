@@ -60,7 +60,7 @@ public class FansGroupFragment extends RxFragment implements View.OnClickListene
     }
 
     @Override
-    public void getFansGroupListSuccess(FansGroupListModel model) {
+    public void setFansGroupList(FansGroupListModel model) {
         if (model.isFirst()) {
             mFansGroupAdapter.setDataList(model);
         } else {

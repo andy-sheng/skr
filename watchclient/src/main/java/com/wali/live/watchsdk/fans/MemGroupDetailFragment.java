@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.HttpImage;
+import com.base.image.fresco.image.ResImage;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
@@ -22,10 +24,13 @@ import com.base.view.BackTitleBar;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
+import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
 import com.wali.live.watchsdk.fans.presenter.FansGroupDetailPresenter;
 import com.wali.live.watchsdk.fans.presenter.IFansGroupDetailView;
 import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
 import com.wali.live.watchsdk.fans.view.FansProgressView;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -35,6 +40,8 @@ import rx.Observable;
 public class MemGroupDetailFragment extends RxFragment implements View.OnClickListener, IFansGroupDetailView {
     private static final String EXTRA_ZUID = "extra_zuid";
 
+    private static final int MAX_COUNT_TOP = 3;
+
     private BackTitleBar mTitleBar;
 
     private BaseImageView mCoverIv;
@@ -42,7 +49,12 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
     private ImageView mCharmTitleIv;
     private TextView mLevelTv;
 
-    protected FansProgressView mCharmPv;
+    private FansProgressView mCharmPv;
+
+    private TextView mMemberCountTv;
+    private TextView mGroupRankTv;
+
+    private LinearLayout mFansListArea;
 
     private FansGroupDetailPresenter mFansGroupDetailPresenter;
 
@@ -68,7 +80,6 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
         MyLog.d(TAG, "user id=" + mZuid);
     }
 
-
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(R.layout.fragment_mem_group_detail, container, false);
@@ -90,16 +101,21 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
 
         mCharmPv = (FansProgressView) mRootView.findViewById(R.id.charm_pv);
 
+        mMemberCountTv = $(R.id.member_count_tv);
+        mFansListArea = $(R.id.vfans_list_area);
+        mGroupRankTv = $(R.id.group_rank_tv);
+
         initPresenter();
     }
 
     private void initPresenter() {
         mFansGroupDetailPresenter = new FansGroupDetailPresenter(this);
         mFansGroupDetailPresenter.getFansGroupDetail(mZuid);
+        mFansGroupDetailPresenter.getTopThreeMember(mZuid);
     }
 
     @Override
-    public void getFansGroupDetailSuccess(FansGroupDetailModel model) {
+    public void setFansGroupDetail(FansGroupDetailModel model) {
         mGroupDetailModel = model;
 
         updateView();
@@ -117,9 +133,52 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
         mFansNameTv.setText(mGroupDetailModel.getGroupName());
         mCharmTitleIv.setImageResource(FansInfoUtils.getImageResoucesByCharmLevelValue(mGroupDetailModel.getCharmLevel()));
         mLevelTv.setText("Lv." + mGroupDetailModel.getCharmLevel());
+
         mCharmPv.setProgress(mGroupDetailModel.getCharmExp(), mGroupDetailModel.getNextCharmExp());
 
+        mMemberCountTv.setText(String.valueOf(mGroupDetailModel.getCurrentMember()));
+        mGroupRankTv.setText(String.valueOf(mGroupDetailModel.getRanking()));
+    }
 
+    @Override
+    public void setTopThreeMember(List<FansMemberModel> memberList) {
+        mFansListArea.removeAllViews();
+
+        int memberCount = memberList == null ? 0 : memberList.size();
+        for (int i = 0; i < MAX_COUNT_TOP; i++) {
+            BaseImageView iv = new BaseImageView(this.getContext());
+            mFansListArea.addView(iv);
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) iv.getLayoutParams();
+            lp.width = DisplayUtils.dip2px(18);
+            lp.height = DisplayUtils.dip2px(18);
+            if (i > 0) {
+                lp.leftMargin = DisplayUtils.dip2px(8);
+            }
+
+            if (i < memberCount) {
+                addTopThreeImage(iv, memberList.get(i));
+            } else {
+                addPlaceHolderImage(iv);
+            }
+        }
+    }
+
+    private void addTopThreeImage(BaseImageView iv, FansMemberModel memberInfo) {
+        HttpImage httpImage = new HttpImage(AvatarUtils.getAvatarUrlByUid(memberInfo.getUuid(), memberInfo.getAvatar()));
+        httpImage.setHeight(DisplayUtils.dip2px(18));
+        httpImage.setWidth(DisplayUtils.dip2px(18));
+        httpImage.setLoadingDrawable(GlobalData.app().getResources().getDrawable(R.drawable.avatar_default_a));
+        httpImage.setFailureDrawable(GlobalData.app().getResources().getDrawable(R.drawable.avatar_default_a));
+        httpImage.setIsCircle(true);
+        FrescoWorker.loadImage(iv, httpImage);
+    }
+
+    private void addPlaceHolderImage(BaseImageView iv) {
+        ResImage httpImage = new ResImage(R.drawable.pet_group_placeholder);
+        httpImage.setHeight(DisplayUtils.dip2px(18));
+        httpImage.setWidth(DisplayUtils.dip2px(18));
+        httpImage.setIsCircle(true);
+        FrescoWorker.loadImage(iv, httpImage);
     }
 
     @Override

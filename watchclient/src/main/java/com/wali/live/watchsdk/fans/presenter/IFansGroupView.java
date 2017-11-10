@@ -2,10 +2,13 @@ package com.wali.live.watchsdk.fans.presenter;
 
 import com.base.mvp.IRxView;
 import com.wali.live.watchsdk.fans.model.FansGroupListModel;
+import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
+
+import java.util.List;
 
 /**
  * Created by lan on 2017/11/7.
  */
 public interface IFansGroupView extends IRxView {
-    void getFansGroupListSuccess(FansGroupListModel model);
+    void setFansGroupList(FansGroupListModel model);
 }

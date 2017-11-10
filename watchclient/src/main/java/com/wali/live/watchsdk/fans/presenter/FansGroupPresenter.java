@@ -52,7 +52,7 @@ public class FansGroupPresenter extends BaseRxPresenter<IFansGroupView> {
                     @Override
                     public void call(FansGroupListModel model) {
                         MyLog.d(TAG, "get fans group success");
-                        mView.getFansGroupListSuccess(model);
+                        mView.setFansGroupList(model);
                     }
                 }, new Action1<Throwable>() {
                     @Override
