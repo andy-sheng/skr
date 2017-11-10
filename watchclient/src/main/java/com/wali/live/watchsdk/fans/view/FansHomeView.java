@@ -21,7 +21,7 @@ import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.fans.model.GroupDetailModel;
+import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
 import com.wali.live.watchsdk.view.EmptyView;
 
@@ -30,12 +30,11 @@ import com.wali.live.watchsdk.view.EmptyView;
  *
  * @module 粉丝团的首页
  */
-
 public class FansHomeView extends RelativeLayout implements View.OnClickListener {
     private final String TAG = "FansHomeView";
     public static final int COVER_IV_WIDTH = DisplayUtils.dip2px(40);
     private String mAnchorName;
-    private GroupDetailModel mGroupDetailModel;
+    private FansGroupDetailModel mGroupDetailModel;
     private EmptyView mEmptyView;
     private TextView mFanTitleTv;
 
@@ -76,7 +75,7 @@ public class FansHomeView extends RelativeLayout implements View.OnClickListener
     private TextView mForbiddenTitleTv; //禁言特权
     private TextView mForbiddenStatus; //禁言特权
 
-    public void setGroupDetailModel(String anchorName, @NonNull GroupDetailModel groupDetailModel) {
+    public void setGroupDetailModel(String anchorName, @NonNull FansGroupDetailModel groupDetailModel) {
         mAnchorName = anchorName;
         mGroupDetailModel = groupDetailModel;
         if (mGroupDetailModel != null) {

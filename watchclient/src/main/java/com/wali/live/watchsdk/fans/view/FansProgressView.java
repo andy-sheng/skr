@@ -10,12 +10,15 @@ import android.widget.TextView;
 import com.base.global.GlobalData;
 import com.wali.live.watchsdk.R;
 
+/**
+ * Created by anping on 17/6/12.
+ */
 public class FansProgressView extends RelativeLayout {
-    private final String TAG = "FansProgressView";
     private ProgressBar mProgressBar;
-    private TextView mProgressBarTextView;
-    private Drawable drawable = null;
-    private Drawable drawable2 = null;
+    private TextView mProgressTv;
+
+    private Drawable mDrawable = null;
+    private Drawable mDrawable2 = null;
 
     public FansProgressView(Context context) {
         super(context);
@@ -33,26 +36,27 @@ public class FansProgressView extends RelativeLayout {
     }
 
     private void init(Context context) {
-        inflate(context, R.layout.vfans_progress, this);
+        inflate(context, R.layout.fans_progress_view, this);
         mProgressBar = (ProgressBar) this.findViewById(R.id.progress);
-        mProgressBarTextView = (TextView) this.findViewById(R.id.progress_tv);
+        mProgressTv = (TextView) this.findViewById(R.id.progress_tv);
     }
+
 
     public void setProgress(int progress, int max) {
         if ((double) progress / (double) max < 0.04) { //太小的话都显示不出来，所以设置最小0.2
-            if (drawable == null) {
-                drawable = GlobalData.app().getResources().getDrawable(R.drawable.vfans_pet_value_progress_min);
+            if (mDrawable == null) {
+                mDrawable = GlobalData.app().getResources().getDrawable(R.drawable.vfans_pet_value_progress2);
             }
-            mProgressBar.setProgressDrawable(drawable);
+            mProgressBar.setProgressDrawable(mDrawable);
         } else {
-            if (drawable2 == null) {
-                drawable2 = GlobalData.app().getResources().getDrawable(R.drawable.vfans_pet_value_progress);
+            if (mDrawable2 == null) {
+                mDrawable2 = GlobalData.app().getResources().getDrawable(R.drawable.vfans_pet_value_progress);
             }
-            mProgressBar.setProgressDrawable(drawable2);
+            mProgressBar.setProgressDrawable(mDrawable2);
         }
         mProgressBar.setMax(max);
         mProgressBar.setProgress(progress);
         mProgressBar.invalidate();
-        mProgressBarTextView.setText(progress + "/" + max);
+        mProgressTv.setText(progress + "/" + max);
     }
 }

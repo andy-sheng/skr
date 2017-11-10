@@ -6,7 +6,7 @@ import com.base.mvp.IRxView;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.VFansProto;
 import com.wali.live.watchsdk.eventbus.EventClass;
-import com.wali.live.watchsdk.fans.model.GroupDetailModel;
+import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.request.GetGroupDetailRequest;
 
 import org.greenrobot.eventbus.EventBus;
@@ -24,39 +24,33 @@ import rx.schedulers.Schedulers;
  */
 
 public class FansPresenter extends BaseRxPresenter<FansPresenter.IView> {
-
-    @Override
-    protected String getTAG() {
-        return "FansPresenter";
-    }
-
     public FansPresenter(IView view) {
         super(view);
     }
 
     public void getGroupDetailFromServer(final long anchorId) {
         Observable.just(anchorId)
-                .map(new Func1<Long, GroupDetailModel>() {
+                .map(new Func1<Long, FansGroupDetailModel>() {
                     @Override
-                    public GroupDetailModel call(Long anchorId) {
+                    public FansGroupDetailModel call(Long anchorId) {
                         if (anchorId <= 0) {
                             MyLog.e(TAG, "getGroupDetail null anchorId = " + anchorId);
                             return null;
                         }
                         VFansProto.GroupDetailRsp rsp = new GetGroupDetailRequest(anchorId).syncRsp();
                         if (rsp != null && rsp.getErrCode() == ErrorCode.CODE_SUCCESS) {
-                            return new GroupDetailModel(rsp);
+                            return new FansGroupDetailModel(rsp);
                         }
                         return null;
                     }
-                }).subscribeOn(Schedulers.io())
-                .compose(mView.<GroupDetailModel>bindLifecycle())
+                })
+                .subscribeOn(Schedulers.io())
+                .compose(mView.<FansGroupDetailModel>bindLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<GroupDetailModel>() {
+                .subscribe(new Action1<FansGroupDetailModel>() {
                     @Override
-                    public void call(GroupDetailModel groupDetailModel) {
-                        EventBus.getDefault().post(new EventClass.VfansDetailLoadResult(anchorId,
-                                groupDetailModel));
+                    public void call(FansGroupDetailModel groupDetailModel) {
+                        EventBus.getDefault().post(new EventClass.VfansDetailLoadResult(anchorId, groupDetailModel));
                         //TODO 这里需要加载每日任务 loadTask
                         if (mView != null && groupDetailModel != null) {
                             mView.setGroupDetail(groupDetailModel);
@@ -71,6 +65,6 @@ public class FansPresenter extends BaseRxPresenter<FansPresenter.IView> {
     }
 
     public interface IView extends IRxView {
-        void setGroupDetail(GroupDetailModel groupDetailModel);
+        void setGroupDetail(FansGroupDetailModel groupDetailModel);
     }
 }

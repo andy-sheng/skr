@@ -11,13 +11,12 @@ import com.base.activity.BaseSdkActivity;
 import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.keyboard.KeyboardUtils;
-import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.SlidingTabLayout;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
 import com.wali.live.watchsdk.channel.view.RepeatScrollView;
-import com.wali.live.watchsdk.fans.model.GroupDetailModel;
+import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.presenter.FansPresenter;
 import com.wali.live.watchsdk.fans.view.FansHomeView;
 
@@ -61,7 +60,7 @@ public class FansFragment extends RxFragment implements View.OnClickListener, Fa
     private long mRoomId;
     private int mMemberType;
     private FansPresenter mPresenter;
-    private GroupDetailModel mGroupDetailModel;
+    private FansGroupDetailModel mGroupDetailModel;
 
     @Override
     public int getRequestCode() {
@@ -200,8 +199,7 @@ public class FansFragment extends RxFragment implements View.OnClickListener, Fa
     }
 
     @Override
-    public void setGroupDetail(GroupDetailModel groupDetailModel) {
-        MyLog.v(TAG, "setGroupDetail " + groupDetailModel.toString());
+    public void setGroupDetail(FansGroupDetailModel groupDetailModel) {
         mGroupDetailModel = groupDetailModel;
         if (mFansHomeView != null) {
             mFansHomeView.setGroupDetailModel(mAnchorName, mGroupDetailModel);

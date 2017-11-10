@@ -24,7 +24,8 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.presenter.FansGroupDetailPresenter;
 import com.wali.live.watchsdk.fans.presenter.IFansGroupDetailView;
-import com.wali.live.watchsdk.fans.view.VfansProgressView;
+import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
+import com.wali.live.watchsdk.fans.view.FansProgressView;
 
 import rx.Observable;
 
@@ -41,7 +42,7 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
     private ImageView mCharmTitleIv;
     private TextView mLevelTv;
 
-    protected VfansProgressView mCharmPv;
+    protected FansProgressView mCharmPv;
 
     private FansGroupDetailPresenter mFansGroupDetailPresenter;
 
@@ -87,7 +88,7 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
         mCharmTitleIv = (ImageView) mRootView.findViewById(R.id.charm_title_iv);
         mLevelTv = (TextView) mRootView.findViewById(R.id.level_tv);
 
-        mCharmPv = (VfansProgressView) mRootView.findViewById(R.id.charm_pv);
+        mCharmPv = (FansProgressView) mRootView.findViewById(R.id.charm_pv);
 
         initPresenter();
     }
@@ -114,9 +115,11 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
         FrescoWorker.loadImage(mCoverIv, coverImage);
 
         mFansNameTv.setText(mGroupDetailModel.getGroupName());
-//        mCharmTitleIv.setImageResource(FansInfoUtils.getImageResoucesByCharmLevelValue(mGroupDetailModel.getCharmLevel()));
+        mCharmTitleIv.setImageResource(FansInfoUtils.getImageResoucesByCharmLevelValue(mGroupDetailModel.getCharmLevel()));
         mLevelTv.setText("Lv." + mGroupDetailModel.getCharmLevel());
         mCharmPv.setProgress(mGroupDetailModel.getCharmExp(), mGroupDetailModel.getNextCharmExp());
+
+
     }
 
     @Override

@@ -32,6 +32,8 @@ public class FansGroupDetailModel extends BaseViewModel {
     public void parse(VFansProto.GroupDetailRsp rsp) {
         this.mZuid = rsp.getZuid();
         this.mGroupName = rsp.getGroupName();
+
+
         this.mMemType = rsp.getMemType().getNumber();
 
         this.mCharmExp = rsp.getCharmExp();

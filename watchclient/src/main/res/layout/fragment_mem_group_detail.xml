@@ -92,7 +92,7 @@
                     android:textColor="@color/cash_color"
                     android:textSize="@dimen/margin_22"/>
 
-                <com.wali.live.watchsdk.fans.view.VfansProgressView
+                <com.wali.live.watchsdk.fans.view.FansProgressView
                     android:id="@+id/charm_pv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
