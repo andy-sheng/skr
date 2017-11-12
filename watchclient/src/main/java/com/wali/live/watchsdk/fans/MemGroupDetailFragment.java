@@ -131,7 +131,7 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
         FrescoWorker.loadImage(mCoverIv, coverImage);
 
         mFansNameTv.setText(mGroupDetailModel.getGroupName());
-        mCharmTitleIv.setImageResource(FansInfoUtils.getImageResoucesByCharmLevelValue(mGroupDetailModel.getCharmLevel()));
+        mCharmTitleIv.setImageResource(FansInfoUtils.getImageResourcesByCharmLevelValue(mGroupDetailModel.getCharmLevel()));
         mLevelTv.setText("Lv." + mGroupDetailModel.getCharmLevel());
 
         mCharmPv.setProgress(mGroupDetailModel.getCharmExp(), mGroupDetailModel.getNextCharmExp());

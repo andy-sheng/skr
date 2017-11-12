@@ -37,8 +37,8 @@ public class FansInfoUtils {
         return id;
     }
 
-    public static int getImageResoucesByCharmLevelValue(int charmLevel) {
-        int id = R.drawable.live_pet_group_level;
+    public static int getImageResourcesByCharmLevelValue(int charmLevel) {
+        int id;
         switch (charmLevel) {
             case 1:
                 id = R.drawable.live_pet_group_level;

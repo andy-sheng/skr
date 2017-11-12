@@ -32,7 +32,6 @@ import com.wali.live.event.UserActionEvent;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.fans.FansFragment;
 import com.wali.live.watchsdk.watchtop.adapter.UserAvatarRecyclerAdapter;
 
 import java.util.List;

@@ -20,11 +20,11 @@ import rx.schedulers.Schedulers;
 /**
  * Created by zyh on 2017/11/8.
  *
- * @module 粉丝团页面(FansFragment)的presenter
+ * @module 粉丝团页面(FansPagerFragment)的presenter
  */
 
-public class FansPresenter extends BaseRxPresenter<FansPresenter.IView> {
-    public FansPresenter(IView view) {
+public class FansPagerPresenter extends BaseRxPresenter<FansPagerPresenter.IView> {
+    public FansPagerPresenter(IView view) {
         super(view);
     }
 

@@ -17,7 +17,7 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
 import com.wali.live.watchsdk.channel.view.RepeatScrollView;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
-import com.wali.live.watchsdk.fans.presenter.FansPresenter;
+import com.wali.live.watchsdk.fans.presenter.FansPagerPresenter;
 import com.wali.live.watchsdk.fans.view.FansHomeView;
 
 import rx.Observable;
@@ -28,8 +28,8 @@ import rx.Observable;
  * @module 粉丝团页面
  */
 
-public class FansFragment extends RxFragment implements View.OnClickListener, FansPresenter.IView {
-    private final String TAG = "FansFragment";
+public class FansPagerFragment extends RxFragment implements View.OnClickListener, FansPagerPresenter.IView {
+    private final String TAG = "FansPagerFragment";
 
     private static final String EXTRA_ANCHOR_ID = "extra_anchor_id";
     private static final String EXTRA_ROOMID = "extra_roomId";
@@ -59,7 +59,7 @@ public class FansFragment extends RxFragment implements View.OnClickListener, Fa
     private long mAnchorId;
     private long mRoomId;
     private int mMemberType;
-    private FansPresenter mPresenter;
+    private FansPagerPresenter mPresenter;
     private FansGroupDetailModel mGroupDetailModel;
 
     @Override
@@ -95,7 +95,7 @@ public class FansFragment extends RxFragment implements View.OnClickListener, Fa
     }
 
     private void initPresenter() {
-        mPresenter = new FansPresenter(this);
+        mPresenter = new FansPagerPresenter(this);
         mPresenter.getGroupDetailFromServer(mAnchorId);
     }
 
@@ -113,9 +113,9 @@ public class FansFragment extends RxFragment implements View.OnClickListener, Fa
         //设置数据
         mFansHomeView = new FansHomeView(getContext());
         mTabPagerAdapter.addView(getString(R.string.vfans_homepage), mFansHomeView);
-//        mTabPagerAdapter.addView(getString(R.string.vfans_task), mFansHomeView);
-//        mTabPagerAdapter.addView(getString(R.string.vfans_member), mFansHomeView);
-//        mTabPagerAdapter.addView(getString(R.string.vfans_group), mFansHomeView);
+        mTabPagerAdapter.addView(getString(R.string.vfans_task), mFansHomeView);
+        mTabPagerAdapter.addView(getString(R.string.vfans_member), mFansHomeView);
+        mTabPagerAdapter.addView(getString(R.string.vfans_group), mFansHomeView);
 
         mTabPagerAdapter.notifyDataSetChanged();
         mViewPager.setAdapter(mTabPagerAdapter);
@@ -189,7 +189,7 @@ public class FansFragment extends RxFragment implements View.OnClickListener, Fa
         bundle.putLong(EXTRA_ANCHOR_ID, zuid);
         bundle.putString(EXTRA_ROOMID, roomId);
         bundle.putInt(EXTRA_MEMBER_TYPE, memberType);
-        FragmentNaviUtils.openFragment(activity, FansFragment.class, bundle, R.id.main_act_container,
+        FragmentNaviUtils.openFragment(activity, FansPagerFragment.class, bundle, R.id.main_act_container,
                 true, R.anim.slide_bottom_in, R.anim.slide_bottom_out);
     }
 

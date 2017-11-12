@@ -268,4 +268,5 @@
     <string name="vfans_privilege_more_fans">More fans</string>
     <string name="vfans_privilege_comingsoon">Stay tuned</string>
     <string name="vfans_privilege_chram_title">Popularity medals</string>
+    <string name="vfans_privilege_has_open">On</string>
 </resources>

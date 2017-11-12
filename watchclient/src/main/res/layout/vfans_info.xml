@@ -168,7 +168,28 @@
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/margin_54"
                             android:layout_centerHorizontal="true"
-                            android:orientation="horizontal"/>
+                            android:orientation="horizontal">
+
+                            <com.base.image.fresco.BaseImageView
+                                android:id="@+id/fan_tv1"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:background="@drawable/pet_group_placeholder"/>
+
+                            <com.base.image.fresco.BaseImageView
+                                android:id="@+id/fan_tv2"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_marginLeft="8dp"
+                                android:background="@drawable/pet_group_placeholder"/>
+
+                            <com.base.image.fresco.BaseImageView
+                                android:id="@+id/fan_tv3"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_marginLeft="8dp"
+                                android:background="@drawable/pet_group_placeholder"/>
+                        </LinearLayout>
 
                         <TextView
                             android:layout_width="wrap_content"

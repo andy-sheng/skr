@@ -22,7 +22,7 @@ import com.wali.live.event.UserActionEvent;
 import com.wali.live.proto.RelationProto;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.view.TopAreaView;
-import com.wali.live.watchsdk.fans.FansFragment;
+import com.wali.live.watchsdk.fans.FansPagerFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -139,7 +139,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
         //TODO 粉丝团的信息获取暂时没有，ui写完再加
         if (mView != null && mView.getRealView() != null
                 && mView.getRealView().getContext() instanceof BaseSdkActivity) {
-            FansFragment.openFragment((BaseSdkActivity) mView.getRealView().getContext(),
+            FansPagerFragment.openFragment((BaseSdkActivity) mView.getRealView().getContext(),
                     mRoomDataModel.getNickName(), mRoomDataModel.getUid(), mRoomDataModel.getRoomId(),
                     5);
         }
