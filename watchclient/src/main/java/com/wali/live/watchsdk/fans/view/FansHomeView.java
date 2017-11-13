@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.base.activity.BaseSdkActivity;
@@ -57,6 +58,7 @@ public class FansHomeView extends RelativeLayout implements View.OnClickListener
 
     private FansGroupDetailModel mGroupDetailModel;
     private EmptyView mEmptyView;
+    private ScrollView mMainArea;
     private ImageView mCharmTitleIv;
     private TextView mFanTitleTv;
     private TextView mFanNameTv;
@@ -97,12 +99,14 @@ public class FansHomeView extends RelativeLayout implements View.OnClickListener
     private String mAnchorName;
     private boolean mIsAnchor = false;
 
-    public void setGroupDetailModel(String anchorName, @NonNull FansGroupDetailModel groupDetailModel) {
+    public void setData(String anchorName, @NonNull FansGroupDetailModel groupDetailModel) {
         mAnchorName = anchorName;
         mGroupDetailModel = groupDetailModel;
         if (mGroupDetailModel != null) {
             refresh();
             initPresenter();
+        } else {
+            mEmptyView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -129,6 +133,8 @@ public class FansHomeView extends RelativeLayout implements View.OnClickListener
 
     private void initView() {
         mEmptyView = $(R.id.empty_view);
+        mMainArea = $(R.id.all_area);
+        mMainArea.setVisibility(View.GONE);
         mMyInfoContainer = $(R.id.vfan_myinfo);
         mGroupRankTv = $(R.id.group_rank_tv);
         mFanTitleTv = $(R.id.vfan_owner_title);
@@ -169,6 +175,7 @@ public class FansHomeView extends RelativeLayout implements View.OnClickListener
 
     private void refresh() {
         mEmptyView.setVisibility(GONE);
+        mMainArea.setVisibility(View.VISIBLE);
         String anchorName = mAnchorName;
         if (!TextUtils.isEmpty(anchorName) && anchorName.length() > 6) {
             anchorName = anchorName.substring(0, 6);

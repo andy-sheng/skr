@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/task_gift_area"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/margin_130"
+    android:layout_below="@+id/task_watch_live_area"
+    android:layout_marginLeft="@dimen/margin_30"
+    android:layout_marginRight="@dimen/margin_30"
+    android:layout_marginTop="@dimen/margin_30"
+    android:background="@drawable/shape_vfans_task_item_bg">
+
+    <ImageView
+        android:id="@+id/notice_gift_dot_iv"
+        android:layout_width="@dimen/margin_18"
+        android:layout_height="@dimen/margin_18"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_40"
+        android:src="@drawable/little_red_dot1"/>
+
+
+    <RelativeLayout
+        android:id="@+id/task_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_22"
+        android:layout_toRightOf="@id/notice_gift_dot_iv"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/task_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/vfans_daily_tasks_send_gift"
+            android:textColor="@color/color_black_trans_90"
+            android:textSize="@dimen/margin_36"/>
+
+        <TextView
+            android:id="@+id/task_info_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/task_tv"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/color_black_trans_90"
+            android:textSize="@dimen/margin_36"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/task_tip_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/task_tv"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/color_black_trans_50"
+            android:textSize="@dimen/text_size_32"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/gift_exp_value_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/gift_exp_receive_btn"
+        android:text="+200"
+        android:textColor="@color/color_black_trans_90"
+        android:textSize="@dimen/margin_36"/>
+
+    <TextView
+        android:id="@+id/gift_exp_receive_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/margin_90"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/margin_20"
+        android:background="@drawable/shape_vfans_task_item_received_bg"
+        android:gravity="center"
+        android:maxLines="1"
+        android:minWidth="@dimen/margin_150"
+        android:text="@string/vfans_daily_tasks_received"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/margin_40"/>
+</RelativeLayout>

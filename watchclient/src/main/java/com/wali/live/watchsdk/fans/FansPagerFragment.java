@@ -11,6 +11,7 @@ import com.base.activity.BaseSdkActivity;
 import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.keyboard.KeyboardUtils;
+import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.SlidingTabLayout;
 import com.wali.live.watchsdk.R;
@@ -19,6 +20,7 @@ import com.wali.live.watchsdk.channel.view.RepeatScrollView;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.presenter.FansPagerPresenter;
 import com.wali.live.watchsdk.fans.view.FansHomeView;
+import com.wali.live.watchsdk.fans.view.FansTaskView;
 
 import rx.Observable;
 
@@ -54,10 +56,11 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
 
     //adapter加載的view
     private FansHomeView mFansHomeView;
+    private FansTaskView mFansTaskView;
 
     private String mAnchorName;
     private long mAnchorId;
-    private long mRoomId;
+    private String mRoomId;
     private int mMemberType;
     private FansPagerPresenter mPresenter;
     private FansGroupDetailModel mGroupDetailModel;
@@ -69,6 +72,10 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
 
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
+        MyLog.w(TAG, "createView");
+        if (mRootView != null) {
+            return mRootView;
+        }
         return inflater.inflate(R.layout.fragment_vfans, container, false);
     }
 
@@ -84,7 +91,7 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
         if (bundle != null) {
             mAnchorName = bundle.getString(EXTRA_ANCHOR_NAME);
             mAnchorId = bundle.getLong(EXTRA_ANCHOR_ID);
-            mRoomId = bundle.getLong(EXTRA_ROOMID);
+            mRoomId = bundle.getString(EXTRA_ROOMID);
             mMemberType = bundle.getInt(EXTRA_MEMBER_TYPE);
         }
     }
@@ -112,10 +119,11 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
         mTabPagerAdapter = new CommonTabPagerAdapter();
         //设置数据
         mFansHomeView = new FansHomeView(getContext());
+        mFansTaskView = new FansTaskView(getContext());
         mTabPagerAdapter.addView(getString(R.string.vfans_homepage), mFansHomeView);
-        mTabPagerAdapter.addView(getString(R.string.vfans_task), mFansHomeView);
-        mTabPagerAdapter.addView(getString(R.string.vfans_member), mFansHomeView);
-        mTabPagerAdapter.addView(getString(R.string.vfans_group), mFansHomeView);
+        mTabPagerAdapter.addView(getString(R.string.vfans_task), mFansTaskView);
+//        mTabPagerAdapter.addView(getString(R.string.vfans_member), mFansHomeView);
+//        mTabPagerAdapter.addView(getString(R.string.vfans_group), mFansHomeView);
 
         mTabPagerAdapter.notifyDataSetChanged();
         mViewPager.setAdapter(mTabPagerAdapter);
@@ -137,7 +145,6 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
                         break;
                     case POSITION_FAN_GROUP:
                         break;
-
                 }
             }
 
@@ -201,8 +208,7 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
     @Override
     public void setGroupDetail(FansGroupDetailModel groupDetailModel) {
         mGroupDetailModel = groupDetailModel;
-        if (mFansHomeView != null) {
-            mFansHomeView.setGroupDetailModel(mAnchorName, mGroupDetailModel);
-        }
+        mFansHomeView.setData(mAnchorName, mGroupDetailModel);
+        mFansTaskView.setData(mGroupDetailModel);
     }
 }

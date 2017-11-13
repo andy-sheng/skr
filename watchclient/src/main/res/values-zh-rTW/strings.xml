@@ -264,4 +264,15 @@
     <string name="vfans_privilege_chram_title">魅力勳章</string>
     <string name="vfans_privilege_has_open">已開啟</string>
     <string name="vfans_privilege_colour_barrage">彩色彈幕</string>
+    <string name="vfans_daily_tasks_received">已領取</string>
+    <string name="vfans_daily_tasks_send_gift">贈送主播付費禮物</string>
+    <string name="vfans_daily_tasks_title">每日任務</string>
+    <string name="vfans_daily_tasks_title_notice">（完成任務可增長親密值並快速升級喲）</string>
+    <string name="limit_head_title">限次任務</string>
+    <string name="vip_prililege_more_text">敬請期待</string>
+    <string name="three_month_pay_fans">（已享付費團員1.2倍加速）</string>
+    <string name="six_month_pay_fans">（已享付費團員1.5倍加速）</string>
+    <string name="year_pay_fans">（已享年費團員2倍加速）</string>
+    <string name="one_month_pay_fans">（已享付費團員1.1倍加速）</string>
+    <string name="vfans_daily_tasks_receive">領取</string>
 </resources>

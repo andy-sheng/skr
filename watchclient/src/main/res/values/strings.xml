@@ -269,5 +269,17 @@
     <string name="vfans_privilege_comingsoon">Stay tuned</string>
     <string name="vfans_privilege_chram_title">Popularity medals</string>
     <string name="vfans_privilege_has_open">On</string>
+
     <string name="vfans_privilege_colour_barrage">Colorful on-screen comments</string>
+    <string name="vfans_daily_tasks_received">Claimed</string>
+    <string name="vfans_daily_tasks_send_gift">Give paid gifts to the host</string>
+    <string name="vfans_daily_tasks_title">Daily task</string>
+    <string name="vfans_daily_tasks_title_notice">(Complete tasks to increase closeness and upgrade Mi Live ID level)</string>
+    <string name="limit_head_title">Limited tasks</string>
+    <string name="vip_prililege_more_text">Stay tuned</string>
+    <string name="three_month_pay_fans">(Boosted speed for paid members: 1.2 times)</string>
+    <string name="six_month_pay_fans">(Boosted speed for paid members: 1.5 times)</string>
+    <string name="year_pay_fans">(Boosted speed for annual paid members: 2 times)</string>
+    <string name="one_month_pay_fans">(Boosted speed for paid members: 1.1 times)</string>
+    <string name="vfans_daily_tasks_receive">Claim</string>
 </resources>
