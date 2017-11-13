@@ -73,6 +73,10 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
     BaseImageView mGiftBiv;
     BaseImageView mGiftBiv2;//每次礼物过来，用mGiftBiv2显示。动画完成后和mGiftBiv交换，下次就可以继续用了。
 
+    private <T> T $(int id) {
+        return (T) findViewById(id);
+    }
+
     void onMainBtnClick() {
         switch (mMode) {
             case MODE_NORMAL:
@@ -88,10 +92,6 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
             default:
                 break;
         }
-    }
-
-    private <T> T $(int id) {
-        return (T) findViewById(id);
     }
 
     public GameFloatIcon(
@@ -131,7 +131,9 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
             public void onClick(View v) {
             }
         });
-        mPresenter = new GameFloatIconPresenter(this);
+        // TODO-YangLi Fixme 将其与小浮窗的显示与隐藏绑定
+        mPresenter = new GameFloatIconPresenter();
+        mPresenter.setView(this);
         mPresenter.startPresenter();
     }
 
