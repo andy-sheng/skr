@@ -13,7 +13,7 @@ public class FansMemberModel extends BaseViewModel {
     private int mPetExp;
     private int mPetLevel;
     private int mMemType;
-    private int mItemType;
+
     private String mMedalName;      // 等级对应的勋章名字
     private boolean mIsFollow;
     private boolean mIsBothWay;
@@ -27,11 +27,12 @@ public class FansMemberModel extends BaseViewModel {
     }
 
     public void parse(VFansProto.MemberInfo protoMember) {
-        this.mUuid = protoMember.getUuid();
-        this.mNickname = protoMember.getNickname();
-        this.mPetExp = protoMember.getPetExp();
-        this.mPetLevel = protoMember.getPetLevel();
-        this.mMemType = protoMember.getMemType().getNumber();
+        mUuid = protoMember.getUuid();
+        mNickname = protoMember.getNickname();
+        mPetExp = protoMember.getPetExp();
+        mPetLevel = protoMember.getPetLevel();
+        mMemType = protoMember.getMemType().getNumber();
+
         mMedalName = protoMember.getMedalValue();
         mAvatar = protoMember.getAvatar();
         mIsBothWay = protoMember.getIsBothfollowing();
@@ -66,10 +67,6 @@ public class FansMemberModel extends BaseViewModel {
         return mMemType;
     }
 
-    public int getItemType() {
-        return mItemType;
-    }
-
     public String getMedalName() {
         return mMedalName;
     }
@@ -96,5 +93,24 @@ public class FansMemberModel extends BaseViewModel {
 
     public int getNewLoveValue() {
         return mNewLoveValue;
+    }
+
+    @Override
+    public String toString() {
+        return "FansMemberModel{" +
+                "mUuid=" + mUuid +
+                ", mNickname='" + mNickname + '\'' +
+                ", mAvatar=" + mAvatar +
+                ", mPetExp=" + mPetExp +
+                ", mPetLevel=" + mPetLevel +
+                ", mMemType=" + mMemType +
+                ", mMedalName='" + mMedalName + '\'' +
+                ", mIsFollow=" + mIsFollow +
+                ", mIsBothWay=" + mIsBothWay +
+                ", mSign='" + mSign + '\'' +
+                ", mIsForbid=" + mIsForbid +
+                ", mVipType=" + mVipType +
+                ", mNewLoveValue=" + mNewLoveValue +
+                '}';
     }
 }

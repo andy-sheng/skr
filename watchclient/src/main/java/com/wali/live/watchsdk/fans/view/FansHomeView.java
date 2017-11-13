@@ -21,8 +21,9 @@ import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.fans.FansPrivilegeFragment;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
-import com.wali.live.watchsdk.fans.model.MemberInfoModel;
+import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
 import com.wali.live.watchsdk.fans.model.type.GroupMemType;
 import com.wali.live.watchsdk.fans.presenter.FansHomePresenter;
 import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
@@ -32,13 +33,13 @@ import java.util.List;
 
 import rx.Observable;
 
-import static com.wali.live.watchsdk.fans.view.FansPrivilegeFragment.TYPE_BAN_BARRAGE;
-import static com.wali.live.watchsdk.fans.view.FansPrivilegeFragment.TYPE_CHARM_MEDAL;
-import static com.wali.live.watchsdk.fans.view.FansPrivilegeFragment.TYPE_COLOR_BARRAGE;
-import static com.wali.live.watchsdk.fans.view.FansPrivilegeFragment.TYPE_FREE_FLY_BARRAGE;
-import static com.wali.live.watchsdk.fans.view.FansPrivilegeFragment.TYPE_MORE_FANS;
-import static com.wali.live.watchsdk.fans.view.FansPrivilegeFragment.TYPE_TOUR_DIVIDE;
-import static com.wali.live.watchsdk.fans.view.FansPrivilegeFragment.TYPE_UPGRADE_ACCELERATION;
+import static com.wali.live.watchsdk.fans.FansPrivilegeFragment.TYPE_BAN_BARRAGE;
+import static com.wali.live.watchsdk.fans.FansPrivilegeFragment.TYPE_CHARM_MEDAL;
+import static com.wali.live.watchsdk.fans.FansPrivilegeFragment.TYPE_COLOR_BARRAGE;
+import static com.wali.live.watchsdk.fans.FansPrivilegeFragment.TYPE_FREE_FLY_BARRAGE;
+import static com.wali.live.watchsdk.fans.FansPrivilegeFragment.TYPE_MORE_FANS;
+import static com.wali.live.watchsdk.fans.FansPrivilegeFragment.TYPE_TOUR_DIVIDE;
+import static com.wali.live.watchsdk.fans.FansPrivilegeFragment.TYPE_UPGRADE_ACCELERATION;
 
 /**
  * Created by zyh on 2017/11/8.
@@ -287,14 +288,14 @@ public class FansHomeView extends RelativeLayout implements View.OnClickListener
     }
 
     @Override
-    public void setTopThreeMember(List<MemberInfoModel> list) {
+    public void setTopThreeMember(List<FansMemberModel> list) {
         MyLog.w(TAG, "setTopThreeMember");
         if (list != null) {
             int[] fanIvList = {R.id.fan_tv1, R.id.fan_tv2, R.id.fan_tv3};
             int length = list.size();
             for (int i = 0; i < length; i++) {
-                MemberInfoModel model = list.get(i);
-                AvatarUtils.loadAvatarByUidTs((BaseImageView) $(fanIvList[i]), model.getUid(),
+                FansMemberModel model = list.get(i);
+                AvatarUtils.loadAvatarByUidTs((BaseImageView) $(fanIvList[i]), model.getUuid(),
                         model.getAvatar(), true);
             }
         }

@@ -25,6 +25,7 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
+import com.wali.live.watchsdk.fans.model.type.GroupMemType;
 import com.wali.live.watchsdk.fans.presenter.FansGroupDetailPresenter;
 import com.wali.live.watchsdk.fans.presenter.IFansGroupDetailView;
 import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
@@ -55,6 +56,12 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
     private TextView mGroupRankTv;
 
     private LinearLayout mFansListArea;
+
+    private ImageView mUnJoinGroupIv;
+    private RelativeLayout mMyInfoArea;
+    private TextView mMyMedalTv;
+    private TextView mFansPetValueTv;
+    private TextView mFansRankTv;
 
     private FansGroupDetailPresenter mFansGroupDetailPresenter;
 
@@ -105,6 +112,12 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
         mFansListArea = $(R.id.vfans_list_area);
         mGroupRankTv = $(R.id.group_rank_tv);
 
+        mUnJoinGroupIv = $(R.id.unjoin_group_iv);
+        mMyInfoArea = $(R.id.my_info_area);
+        mMyMedalTv = $(R.id.my_medal_tv);
+        mFansPetValueTv = $(R.id.vfan_value_tv);
+        mFansRankTv = $(R.id.vfan_rank_tv);
+
         initPresenter();
     }
 
@@ -124,6 +137,11 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
     private void updateView() {
         mTitleBar.setTitle(mGroupDetailModel.getGroupName());
 
+        updateBasicArea();
+        updateMyArea();
+    }
+
+    private void updateBasicArea() {
         HttpImage coverImage = new HttpImage(AvatarUtils.getAvatarUrlByUid(mGroupDetailModel.getZuid(), 0));
         coverImage.setIsCircle(true);
         coverImage.setLoadingDrawable(GlobalData.app().getResources().getDrawable(R.drawable.avatar_default_a));
@@ -138,6 +156,23 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
 
         mMemberCountTv.setText(String.valueOf(mGroupDetailModel.getCurrentMember()));
         mGroupRankTv.setText(String.valueOf(mGroupDetailModel.getRanking()));
+    }
+
+    private void updateMyArea() {
+        if (mGroupDetailModel.getMemType() == GroupMemType.GROUP_MEM_TYPE_NONE) {
+            //没有入团的
+            mMyInfoArea.setVisibility(View.GONE);
+            mUnJoinGroupIv.setVisibility(View.VISIBLE);
+        } else {
+            //入团了的
+            mMyInfoArea.setVisibility(View.VISIBLE);
+            mUnJoinGroupIv.setVisibility(View.GONE);
+
+            mMyMedalTv.setText(mGroupDetailModel.getMedalValue());
+            mMyMedalTv.setBackgroundResource(FansInfoUtils.getGroupMemberLevelDrawable(mGroupDetailModel.getMyPetLevel()));
+            mFansPetValueTv.setText(String.valueOf(mGroupDetailModel.getMyPetExp()));
+            mFansRankTv.setText(mGroupDetailModel.getPetRanking() + "/" + mGroupDetailModel.getCurrentMember());
+        }
     }
 
     @Override

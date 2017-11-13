@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.fans.view;
+package com.wali.live.watchsdk.fans;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
