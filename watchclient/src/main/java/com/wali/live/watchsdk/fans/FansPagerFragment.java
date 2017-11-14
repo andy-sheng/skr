@@ -11,18 +11,21 @@ import com.base.activity.BaseSdkActivity;
 import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.keyboard.KeyboardUtils;
-import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.SlidingTabLayout;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
 import com.wali.live.watchsdk.channel.view.RepeatScrollView;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
+import com.wali.live.watchsdk.fans.presenter.FansMemberPresenter;
 import com.wali.live.watchsdk.fans.presenter.FansPagerPresenter;
 import com.wali.live.watchsdk.fans.view.FansHomeView;
+import com.wali.live.watchsdk.fans.view.FansMemberView;
 import com.wali.live.watchsdk.fans.view.FansTaskView;
 
 import rx.Observable;
+
+import static com.wali.live.component.view.Utils.$component;
 
 /**
  * Created by zyh on 2017/11/8.
@@ -57,6 +60,7 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
     //adapter加載的view
     private FansHomeView mFansHomeView;
     private FansTaskView mFansTaskView;
+    private FansMemberView mFansMemberView;
 
     private String mAnchorName;
     private long mAnchorId;
@@ -113,13 +117,15 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
         mTabLayout.setIndicatorBottomMargin(DisplayUtils.dip2px(6));
         mViewPager = $(R.id.vfans_pager);
         mTabPagerAdapter = new CommonTabPagerAdapter();
-        //设置数据
+        // 设置数据
         mFansHomeView = new FansHomeView(getContext());
         mFansTaskView = new FansTaskView(getContext());
+        mFansMemberView = new FansMemberView(getContext());
+        $component(mFansMemberView, new FansMemberPresenter());
         mTabPagerAdapter.addView(getString(R.string.vfans_homepage), mFansHomeView);
         mTabPagerAdapter.addView(getString(R.string.vfans_task), mFansTaskView);
-//        mTabPagerAdapter.addView(getString(R.string.vfans_member), mFansHomeView);
-//        mTabPagerAdapter.addView(getString(R.string.vfans_group), mFansHomeView);
+        mTabPagerAdapter.addView(getString(R.string.vfans_member), mFansMemberView);
+//        mTabPagerAdapter.addView(getString(R.string.vfans_group), new FansHomeView(getContext()));
 
         mTabPagerAdapter.notifyDataSetChanged();
         mViewPager.setAdapter(mTabPagerAdapter);
@@ -127,7 +133,6 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -146,7 +151,6 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
     }

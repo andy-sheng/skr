@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.base.activity.BaseSdkActivity;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
@@ -174,9 +173,7 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
         } else if (id == R.id.manager_area) {
             UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_SET_MANAGER, null, null);
         } else if (id == R.id.vfans_area) {
-            if (getContext() instanceof BaseSdkActivity) {
-                mPresenter.showFansFragment();
-            }
+            mPresenter.showFansFragment();
         }
     }
 

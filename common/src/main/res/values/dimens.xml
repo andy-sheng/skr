@@ -180,6 +180,7 @@
     <dimen name="view_dimen_320">106.67dp</dimen>
     <dimen name="view_dimen_328">109.34dp</dimen>
     <dimen name="view_dimen_336">112dp</dimen>
+    <dimen name="view_dimen_338">112.67dp</dimen>
     <dimen name="view_dimen_340">113.33dp</dimen>
     <dimen name="view_dimen_342">114dp</dimen>
     <dimen name="view_dimen_360">120dp</dimen>

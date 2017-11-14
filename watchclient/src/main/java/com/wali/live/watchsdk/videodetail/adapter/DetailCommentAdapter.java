@@ -26,7 +26,6 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.adapter.ClickItemAdapter;
 
 import java.util.Collection;
-import java.util.Comparator;
 
 /**
  * Created by yangli on 2017/6/2.
@@ -53,11 +52,7 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
         return true;
     }
 
-    public final boolean isEmpty() {
-        return mItems.isEmpty();
-    }
-
-    public void setItemData(Collection<CommentItem> hotList, Collection<CommentItem> allList, boolean isReverse) {
+    public final void setItemData(Collection<CommentItem> hotList, Collection<CommentItem> allList, boolean isReverse) {
         mItems.clear();
         if (isReverse) {
             if (!allList.isEmpty()) {
@@ -87,29 +82,28 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
     }
 
     @Override
-    public int getItemViewType(int position) {
+    public final int getItemViewType(int position) {
         return mItems.get(position).type;
     }
 
     @Override
     public ClickItemAdapter.BaseHolder newViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
+            case ITEM_TYPE_COMMENT: {
+                View view = mInflater.inflate(R.layout.detail_comment_item, null);
+                return new CommentHolder(view);
+            }
             case ITEM_TYPE_HOT_LABEL:
             case ITEM_TYPE_ALL_LABEL: { // fall through
                 View view = mInflater.inflate(R.layout.detail_label_item, null);
                 return new LabelHolder(view);
             }
-            case ITEM_TYPE_COMMENT: {
-                View view = mInflater.inflate(R.layout.detail_comment_item, null);
-                return new CommentHolder(view);
-            }
             default:
-                break;
+                return null;
         }
-        return null;
     }
 
-    public static class LabelItem extends ClickItemAdapter.BaseItem {
+    public static class LabelItem {
         private int type;
 
         public LabelItem(int type) {
@@ -148,8 +142,7 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
         }
     }
 
-    protected static class LabelHolder extends ClickItemAdapter.BaseHolder<
-            LabelItem, ICommentClickListener> {
+    protected static class LabelHolder extends BaseHolder<LabelItem, ICommentClickListener> {
         private TextView mLabelTv;
 
         public LabelHolder(View view) {
@@ -172,7 +165,7 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
         }
     }
 
-    protected class CommentHolder extends ClickItemAdapter.BaseHolder<CommentItem, Object>
+    protected class CommentHolder extends BaseHolder<CommentItem, Object>
             implements View.OnClickListener, View.OnCreateContextMenuListener {
         private TextView mCommentTv;
         private TextView mLevelTv;

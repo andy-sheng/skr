@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/manager_member_area"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/margin_218"
+    android:layout_alignParentBottom="true"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_18"
+        android:background="@drawable/live_pet_live_between_bottom_bg" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_white">
+
+        <TextView
+            android:id="@+id/manage_vfans_member_btn"
+            android:layout_width="@dimen/margin_900"
+            android:layout_height="@dimen/margin_120"
+            android:layout_centerInParent="true"
+            android:background="@drawable/vfans_join_bg_pink"
+            android:gravity="center"
+            android:text="@string/vfans_manager_member"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/margin_42" />
+
+    </RelativeLayout>
+
+</LinearLayout>

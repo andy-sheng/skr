@@ -108,7 +108,7 @@ public class DetailReplayAdapter extends ClickItemAdapter<DetailReplayAdapter.Re
         }
     }
 
-    public static class ReplayInfoItem extends ClickItemAdapter.BaseItem {
+    public static class ReplayInfoItem {
         public String mLiveId;     //房间id
         public int mViewerCnt;     //观众数
         public String mUrl;        //回放地址

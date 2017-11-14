@@ -7,6 +7,10 @@ import com.wali.live.watchsdk.lit.recycler.viewmodel.BaseViewModel;
  * Created by lan on 2017/11/10.
  */
 public class FansMemberModel extends BaseViewModel {
+    public static final int VIP_TYPE_NO = 0;    // 没有
+    public static final int VIP_TYPE_MONTH = 1; // 月费
+    public static final int VIP_TYPE_YEAR = 2;  // 年费
+
     private long mUuid;
     private String mNickname;
     private long mAvatar;

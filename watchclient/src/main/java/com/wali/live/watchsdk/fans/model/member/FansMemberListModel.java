@@ -1,5 +1,7 @@
 package com.wali.live.watchsdk.fans.model.member;
 
+import android.support.annotation.NonNull;
+
 import com.wali.live.proto.VFansProto;
 import com.wali.live.watchsdk.lit.recycler.viewmodel.BaseViewModel;
 
@@ -12,7 +14,7 @@ import java.util.List;
 public class FansMemberListModel extends BaseViewModel {
     private List<FansMemberModel> mMemberList;
 
-    public FansMemberListModel(VFansProto.MemberListRsp rsp) {
+    public FansMemberListModel(@NonNull VFansProto.MemberListRsp rsp) {
         parse(rsp);
     }
 
@@ -25,7 +27,7 @@ public class FansMemberListModel extends BaseViewModel {
         }
     }
 
-    public List<FansMemberModel> getMemberList() {
+    public final List<FansMemberModel> getMemberList() {
         return mMemberList;
     }
 }

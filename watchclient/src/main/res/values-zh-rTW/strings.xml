@@ -263,6 +263,7 @@
     <string name="vfans_privilege_comingsoon">敬請期待</string>
     <string name="vfans_privilege_chram_title">魅力勳章</string>
     <string name="vfans_privilege_has_open">已開啟</string>
+
     <string name="vfans_privilege_colour_barrage">彩色彈幕</string>
     <string name="vfans_daily_tasks_received">已領取</string>
     <string name="vfans_daily_tasks_send_gift">贈送主播付費禮物</string>
@@ -275,4 +276,16 @@
     <string name="year_pay_fans">（已享年費團員2倍加速）</string>
     <string name="one_month_pay_fans">（已享付費團員1.1倍加速）</string>
     <string name="vfans_daily_tasks_receive">領取</string>
+    <string name="vfans_manager_member">管理團成員</string>
+    <string name="vfans_sixin">私信</string>
+    <string name="vfans_focus">關注</string>
+    <string name="vfan_member_loading">載入中.....</string>
+    <string name="vfans_no_member">快來成為主播第一位真愛粉吧！</string>
+    <string name="vfan_member_role_none">非成員</string>
+    <string name="vfan_member_role_owner">團主</string>
+    <string name="vfan_member_role_admin">團長</string>
+    <string name="vfan_member_role_deputy_admin">副團長</string>
+    <string name="vfan_member_role_mass">團員</string>
+    <string name="vfan_member_role_black">黑名單</string>
+    <string name="vfans_has_focus">已關注</string>
 </resources>

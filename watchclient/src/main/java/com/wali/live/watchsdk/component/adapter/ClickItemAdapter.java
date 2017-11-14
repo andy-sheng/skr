@@ -15,8 +15,8 @@ import java.util.List;
  *
  * @module 列表显示适配器
  */
-public abstract class ClickItemAdapter<ITEM extends ClickItemAdapter.BaseItem,
-        HOLDER extends ClickItemAdapter.BaseHolder, LISTENER> extends RecyclerView.Adapter<HOLDER> {
+public abstract class ClickItemAdapter<ITEM, HOLDER extends ClickItemAdapter.BaseHolder, LISTENER>
+        extends RecyclerView.Adapter<HOLDER> {
     protected LayoutInflater mInflater;
     protected List<ITEM> mItems = new ArrayList<>(0);
     protected LISTENER mListener;
@@ -24,7 +24,11 @@ public abstract class ClickItemAdapter<ITEM extends ClickItemAdapter.BaseItem,
     public ClickItemAdapter() {
     }
 
-    public abstract HOLDER newViewHolder(ViewGroup parent, int viewType);
+    protected abstract HOLDER newViewHolder(ViewGroup parent, int viewType);
+
+    public final boolean isEmpty() {
+        return mItems.isEmpty();
+    }
 
     @Override
     public int getItemCount() {
@@ -66,7 +70,7 @@ public abstract class ClickItemAdapter<ITEM extends ClickItemAdapter.BaseItem,
         mListener = listener;
     }
 
-    public static abstract class BaseHolder<ITEM extends BaseItem, LISTENER>
+    public static abstract class BaseHolder<ITEM, LISTENER>
             extends RecyclerView.ViewHolder {
 
         protected final <T extends View> T $(@IdRes int resId) {
@@ -91,6 +95,4 @@ public abstract class ClickItemAdapter<ITEM extends ClickItemAdapter.BaseItem,
         public abstract void bindView(ITEM item, LISTENER listener);
     }
 
-    public static abstract class BaseItem {
-    }
 }

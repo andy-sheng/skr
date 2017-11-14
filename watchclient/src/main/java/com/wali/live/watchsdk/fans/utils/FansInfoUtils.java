@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk.fans.utils;
 
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.fans.model.type.GroupMemType;
 
 /**
  * Created by lan on 2017/11/8.
@@ -66,5 +67,30 @@ public class FansInfoUtils {
                 break;
         }
         return id;
+    }
+
+    public static int getMemberRoleStringByType(int memberType){
+        int result = R.string.vfan_member_role_none;
+        switch (memberType){
+            case GroupMemType.GROUP_MEM_TYPE_OWNER:
+                result = R.string.vfan_member_role_owner;
+                break;
+            case GroupMemType.GROUP_MEM_TYPE_ADMIN:
+                result = R.string.vfan_member_role_admin;
+                break;
+            case GroupMemType.GROUP_MEM_TYPE_DEPUTY_ADMIN:
+                result = R.string.vfan_member_role_deputy_admin;
+                break;
+            case GroupMemType.GROUP_MEM_TYPE_MASS:
+                result = R.string.vfan_member_role_mass;
+                break;
+            case GroupMemType.GROUP_MEM_TYPE_NONE:
+                result = R.string.vfan_member_role_none;
+                break;
+            case GroupMemType.GROUP_MEM_TYPE_BLACK:
+                result = R.string.vfan_member_role_black;
+                break;
+        }
+        return result;
     }
 }

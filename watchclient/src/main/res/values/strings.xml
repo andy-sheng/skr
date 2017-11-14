@@ -282,4 +282,16 @@
     <string name="year_pay_fans">(Boosted speed for annual paid members: 2 times)</string>
     <string name="one_month_pay_fans">(Boosted speed for paid members: 1.1 times)</string>
     <string name="vfans_daily_tasks_receive">Claim</string>
+    <string name="vfans_manager_member">Manage members</string>
+    <string name="vfans_sixin">Message</string>
+    <string name="vfans_focus">Follow</string>
+    <string name="vfan_member_loading">Just a sec…</string>
+    <string name="vfans_no_member">Be the first member in this host\'s fan club</string>
+    <string name="vfan_member_role_none">Non-members</string>
+    <string name="vfan_member_role_owner">Club owner</string>
+    <string name="vfan_member_role_admin">Club admin</string>
+    <string name="vfan_member_role_deputy_admin">Associate admin</string>
+    <string name="vfan_member_role_mass">Members</string>
+    <string name="vfan_member_role_black">Blocklist</string>
+    <string name="vfans_has_focus">Following</string>
 </resources>

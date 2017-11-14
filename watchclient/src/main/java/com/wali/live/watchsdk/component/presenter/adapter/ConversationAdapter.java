@@ -194,7 +194,7 @@ public class ConversationAdapter extends ClickItemAdapter<ConversationAdapter.Co
         }
     }
 
-    public static class ConversationItem extends ClickItemAdapter.BaseItem {
+    public static class ConversationItem {
         public long id;
         public long uid;
         private User user;

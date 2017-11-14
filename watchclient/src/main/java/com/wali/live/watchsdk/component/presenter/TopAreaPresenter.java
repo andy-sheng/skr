@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.component.presenter;
 
+import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -137,11 +138,10 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
     @Override
     public void showFansFragment() {
         //TODO 粉丝团的信息获取暂时没有，ui写完再加
-        if (mView != null && mView.getRealView() != null
-                && mView.getRealView().getContext() instanceof BaseSdkActivity) {
-            FansPagerFragment.openFragment((BaseSdkActivity) mView.getRealView().getContext(),
-                    mRoomDataModel.getNickName(), mRoomDataModel.getUid(), mRoomDataModel.getRoomId(),
-                    5);
+        final Context context = mView.getRealView().getContext();
+        if (context instanceof BaseSdkActivity) {
+            FansPagerFragment.openFragment((BaseSdkActivity) context, mRoomDataModel.getNickName(),
+                    mRoomDataModel.getUid(), mRoomDataModel.getRoomId(), 5);
         }
     }
 
