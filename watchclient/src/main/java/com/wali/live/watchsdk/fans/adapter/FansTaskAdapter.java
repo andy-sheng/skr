@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.base.global.GlobalData;
-import com.base.log.MyLog;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.holder.EmptyHolder;
@@ -81,8 +79,7 @@ public class FansTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         int viewType = getItemViewType(position);
         switch (viewType) {
             case ITEM_TYPE_EMPTY:
-                ((EmptyHolder) holder).getEmptyTv().setText(GlobalData.app().getResources()
-                        .getString(R.string.vip_prililege_more_text));
+                ((EmptyHolder) holder).getEmptyTv().setText(R.string.vip_prililege_more_text);
                 break;
             case ITEM_TYPE_DAILY_TASK:
                 ((DailyTaskHolder) holder).onBind(mGroupJobModels.get(position - 1));
@@ -104,6 +101,19 @@ public class FansTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return ITEM_TYPE_HEAD_LIMIT_TASK;
         } else {
             return ITEM_TYPE_LIMIT_TASK;
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        if (mGroupJobModels.isEmpty() && mLimitGroupJobModels.isEmpty()) {
+            return 1;
+        } else if (mLimitGroupJobModels.isEmpty()) {
+            return mGroupJobModels.size() + 1;
+        } else if (mGroupJobModels.isEmpty()) {
+            return mLimitGroupJobModels.size() + 1;
+        } else {
+            return mGroupJobModels.size() + 1 + mLimitGroupJobModels.size() + 1;
         }
     }
 
@@ -190,19 +200,19 @@ public class FansTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mTipTv = $(itemView, R.id.tip_tv);
             switch (mVipType) {
                 case 0://未付费
-                    mTipTv.setText(mTipTv.getContext().getString(R.string.vfans_daily_tasks_title_notice));
+                    mTipTv.setText(R.string.vfans_daily_tasks_title_notice);
                     break;
                 case 1://一个月
-                    mTipTv.setText(mTipTv.getContext().getString(R.string.one_month_pay_fans));
+                    mTipTv.setText(R.string.one_month_pay_fans);
                     break;
                 case 2://三个月
-                    mTipTv.setText(mTipTv.getContext().getString(R.string.three_month_pay_fans));
+                    mTipTv.setText(R.string.three_month_pay_fans);
                     break;
                 case 3://半年
-                    mTipTv.setText(mTipTv.getContext().getString(R.string.six_month_pay_fans));
+                    mTipTv.setText(R.string.six_month_pay_fans);
                     break;
                 case 4://年费
-                    mTipTv.setText(mTipTv.getContext().getString(R.string.year_pay_fans));
+                    mTipTv.setText(R.string.year_pay_fans);
                     break;
             }
         }
@@ -223,19 +233,4 @@ public class FansTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         return (V) parent.findViewById(resId);
     }
-
-    @Override
-    public int getItemCount() {
-        if (mGroupJobModels.isEmpty() && mLimitGroupJobModels.isEmpty()) {
-            return 1;
-        } else if (mLimitGroupJobModels.isEmpty()) {
-            return mGroupJobModels.size() + 1;
-        } else if (mGroupJobModels.isEmpty()) {
-            return mLimitGroupJobModels.size() + 1;
-        } else {
-            return mGroupJobModels.size() + 1 + mLimitGroupJobModels.size() + 1;
-        }
-    }
-
-
 }

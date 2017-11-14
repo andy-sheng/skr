@@ -72,10 +72,6 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
 
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
-        MyLog.w(TAG, "createView");
-        if (mRootView != null) {
-            return mRootView;
-        }
         return inflater.inflate(R.layout.fragment_vfans, container, false);
     }
 
@@ -189,17 +185,6 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
         }
     }
 
-    public static void openFragment(BaseSdkActivity activity, String anchorName,
-                                    long zuid, String roomId, int memberType) {
-        Bundle bundle = new Bundle();
-        bundle.putString(EXTRA_ANCHOR_NAME, anchorName);
-        bundle.putLong(EXTRA_ANCHOR_ID, zuid);
-        bundle.putString(EXTRA_ROOMID, roomId);
-        bundle.putInt(EXTRA_MEMBER_TYPE, memberType);
-        FragmentNaviUtils.openFragment(activity, FansPagerFragment.class, bundle, R.id.main_act_container,
-                true, R.anim.slide_bottom_in, R.anim.slide_bottom_out);
-    }
-
     @Override
     public <T> Observable.Transformer<T, T> bindLifecycle() {
         return bindUntilEvent();
@@ -210,5 +195,16 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
         mGroupDetailModel = groupDetailModel;
         mFansHomeView.setData(mAnchorName, mGroupDetailModel);
         mFansTaskView.setData(mGroupDetailModel);
+    }
+
+    public static void openFragment(BaseSdkActivity activity, String anchorName,
+                                    long zuid, String roomId, int memberType) {
+        Bundle bundle = new Bundle();
+        bundle.putString(EXTRA_ANCHOR_NAME, anchorName);
+        bundle.putLong(EXTRA_ANCHOR_ID, zuid);
+        bundle.putString(EXTRA_ROOMID, roomId);
+        bundle.putInt(EXTRA_MEMBER_TYPE, memberType);
+        FragmentNaviUtils.openFragment(activity, FansPagerFragment.class, bundle, R.id.main_act_container,
+                true, R.anim.slide_bottom_in, R.anim.slide_bottom_out);
     }
 }
