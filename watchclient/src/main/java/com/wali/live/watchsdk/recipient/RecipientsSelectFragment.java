@@ -90,9 +90,9 @@ public class RecipientsSelectFragment extends RxFragment implements View.OnClick
                 intent.putExtra(RecipientsSelectFragment.RESULT_SINGLE_OBJECT,
                         new User(listData.userId, listData.userNickname, listData.level,
                                 listData.avatar, listData.certificationType));
+                finish();
                 EventBus.getDefault().post(new EventClass.OnActivityResultEvent(mRequestCode,
                         Activity.RESULT_OK, intent));
-                finish();
             } else if (mMode == SELECT_MODE_SINGLE_SELECT) {
                 mTitleBar.getRightTextBtn().setEnabled(true);
             }
@@ -209,18 +209,16 @@ public class RecipientsSelectFragment extends RxFragment implements View.OnClick
             Intent intent = new Intent();
             if (mMode == RecipientsSelectFragment.SELECT_MODE_SINGLE_SELECT) {
                 Object selObj = mRecyclerAdapter.getSelectItem();
-                if (selObj != null) {
-                    if (selObj instanceof UserListData) {
-                        UserListData listData = (UserListData) selObj;
-                        intent.putExtra(RecipientsSelectFragment.RESULT_SINGLE_OBJECT,
-                                new User(listData.userId, listData.userNickname, listData.level,
-                                        listData.avatar, listData.certificationType));
-                    }
+                if (selObj != null && selObj instanceof UserListData) {
+                    UserListData listData = (UserListData) selObj;
+                    intent.putExtra(RecipientsSelectFragment.RESULT_SINGLE_OBJECT,
+                            new User(listData.userId, listData.userNickname, listData.level,
+                                    listData.avatar, listData.certificationType));
                 }
             }
+            finish();
             EventBus.getDefault().post(new EventClass.OnActivityResultEvent(mRequestCode,
                     Activity.RESULT_OK, intent));
-            finish();
         } else if (i == R.id.delete_btn) {
             mSearchEt.setText("");
             KeyboardUtils.hideKeyboard(getActivity(), mSearchEt);
