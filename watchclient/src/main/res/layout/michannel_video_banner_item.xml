@@ -19,13 +19,13 @@
         android:layout_below="@id/split_area"
         android:visibility="gone"/>
 
-    <com.wali.live.michannel.view.ChannelVideoBannerView
+    <com.wali.live.watchsdk.channel.view.ChannelVideoBannerView
         android:id="@+id/banner_view"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_below="@id/title_area"/>
 
-    <com.wali.live.michannel.view.BannerVideoView
+    <com.wali.live.watchsdk.channel.view.BannerVideoView
         android:id="@+id/video_view"
         android:layout_width="match_parent"
         android:layout_height="200dp"

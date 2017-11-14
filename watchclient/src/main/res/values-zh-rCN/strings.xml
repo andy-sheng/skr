@@ -205,7 +205,6 @@
     <string name="detail_text">详情</string>
 
     <string name="currently_none_message">暂无新的消息</string>
-
     <string name="message_interact_notify">互动通知</string>
     <string name="msg_send_failed_not_follow_each_other">发送失败，需要双方关注才能发送私信</string>
     <string name="msg_send_failed_not_text_too_larger">发送失败，文字太多了</string>
@@ -227,6 +226,9 @@
     <string name="unblock">移出</string>
     <string name="choose_talk_title">选择好友</string>
     <string name="message_not_supported">[该条消息类型不支持]</string>
+
+    <string name="live_offline_no_network">系统网络已断开，请打开你的网络连接</string>
+
     <string name="vfan_me">我的粉丝团</string>
     <string name="vfans_open">开通粉丝团</string>
     <string name="vfans_renew_pay">续费</string>

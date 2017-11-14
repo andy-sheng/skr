@@ -58,11 +58,22 @@
             android:theme="@style/AppThemeLive"/>
 
         <activity
-            android:name="com.wali.live.watchsdk.watch.ReplaySdkActivity"
+            android:name="com.wali.live.watchsdk.watch.ThirdVideoPlayerActivity"
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
+            android:exported="true"
+            android:label="@string/third_video_player_label"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeLive"/>
+            android:theme="@style/AppThemeLive">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:mimeType="video/*" android:scheme="http"/>
+                <data android:mimeType="video/*" android:scheme="file"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".editinfo.EditInfoActivity"

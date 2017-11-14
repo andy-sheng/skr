@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextureView
+        android:id="@+id/video_texture_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/video_ctrl_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_125"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/jianbian_bottom"
+        android:paddingLeft="@dimen/margin_15"
+        android:paddingRight="@dimen/margin_15">
+
+        <ImageView
+            android:id="@+id/play_btn"
+            android:layout_width="@dimen/view_dimen_80"
+            android:layout_height="@dimen/view_dimen_80"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/margin_15"
+            android:scaleType="fitXY"
+            android:src="@drawable/feeds_video_play_btn" />
+
+        <TextView
+            android:id="@+id/curr_time_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_15"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_toRightOf="@id/play_btn"
+            android:text="00:00"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/text_size_30" />
+
+        <com.base.view.RotatedSeekBar
+            android:id="@+id/seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_120"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_centerHorizontal="true"
+            android:layout_toLeftOf="@+id/total_time_view"
+            android:layout_toRightOf="@+id/curr_time_view"
+            android:saveEnabled="false"
+            app:appSeekBarLeftPadding="@dimen/margin_30"
+            app:appSeekBarRightPadding="@dimen/margin_30"
+            app:appShapeColorBK="@color/color_white_trans_40"
+            app:appShapeColorFT="@color/color_e9ad1f"
+            app:appShapeSize="1.33dp"
+            app:appThumbDrawable="@drawable/live_icon_jindutiao_yuan_white"
+            app:appThumbDrawablePress="@drawable/live_icon_jindutiao_yuan_yellow"
+            app:appThumbSize="15.33dp"
+            app:appThumbSizePress="10.67dp" />
+
+        <TextView
+            android:id="@+id/total_time_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_15"
+            android:layout_toLeftOf="@+id/full_screen_btn"
+            android:text="00:00"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/text_size_30" />
+
+        <ImageView
+            android:id="@id/full_screen_btn"
+            android:layout_width="@dimen/view_dimen_80"
+            android:layout_height="@dimen/view_dimen_80"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/margin_16"
+            android:scaleType="fitXY"
+            android:src="@drawable/video_fullscreen_icon" />
+
+    </RelativeLayout>
+
+    <!-- 播放按钮-->
+    <ImageButton
+        android:id="@+id/middle_play_button"
+        android:layout_width="@dimen/view_dimen_140"
+        android:layout_height="@dimen/view_dimen_140"
+        android:layout_centerInParent="true"
+        android:src="@drawable/video_detail_play_btn"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/loading_view"
+        style="@style/progressLoading"
+        android:layout_width="@dimen/view_dimen_120"
+        android:layout_height="@dimen/view_dimen_120"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+</merge>

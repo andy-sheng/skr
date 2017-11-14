@@ -205,7 +205,6 @@
     <string name="detail_text">詳細資料</string>
 
     <string name="currently_none_message">暫無新的消息</string>
-
     <string name="message_interact_notify">互動通知</string>
     <string name="msg_send_failed_not_follow_each_other">發送失敗，需要雙方關注才能發送私信</string>
     <string name="msg_send_failed_not_text_too_larger">發送失敗，文字太多了</string>
@@ -227,6 +226,9 @@
     <string name="unblock">移出</string>
     <string name="choose_talk_title">選擇好友</string>
     <string name="message_not_supported">[該條消息類型不支持]</string>
+
+    <string name="live_offline_no_network">系統網路已斷開，請打開你的網路連接</string>
+
     <string name="vfan_me">我的粉絲團</string>
     <string name="vfans_open">開通粉絲團</string>
     <string name="vfans_renew_pay">續費</string>

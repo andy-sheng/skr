@@ -34,7 +34,7 @@ import com.wali.live.watchsdk.component.presenter.TopAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.component.view.TopAreaView;
-import com.wali.live.watchsdk.component.view.VideoDetailPlayerView;
+import com.wali.live.watchsdk.videodetail.view.DetailPlayerView;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
@@ -49,15 +49,15 @@ import java.util.TimerTask;
 import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
 import static com.wali.live.component.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_ENABLE_MOVE_VIEW;
+import static com.wali.live.component.BaseSdkController.MSG_FORCE_ROTATE_SCREEN;
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_GAME_INPUT;
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_INPUT_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_DETAIL_SCREEN;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_ROTATE_ORIENTATION;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_INPUT;
+import static com.wali.live.component.BaseSdkController.MSG_SWITCH_TO_DETAIL_MODE;
 
 /**
  * Created by yangli on 2017/6/19.
@@ -80,7 +80,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
 
     @Nullable
     protected TopAreaView mTopAreaView;
-    //protected WatchTopInfoSingleView mTopInfoView;
     @Nullable
     protected View mLiveCommentView;
     @Nullable
@@ -107,9 +106,9 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.close_btn) {
-            mController.postEvent(MSG_PLAYER_DETAIL_SCREEN);
+            mController.postEvent(MSG_SWITCH_TO_DETAIL_MODE);
         } else if (i == R.id.rotate_btn) {
-            mController.postEvent(MSG_PLAYER_ROTATE_ORIENTATION);
+            mController.postEvent(MSG_FORCE_ROTATE_SCREEN);
         }
     }
 
@@ -207,7 +206,9 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                 R.id.gift_animation_player_view,
                 R.id.gift_continue_vg,
                 R.id.gift_room_effect_view,
-                R.id.widget_view
+                R.id.widget_view,
+                R.id.close_btn,
+                R.id.rotate_btn,
         }, mHorizontalMoveSet, mVerticalMoveSet);
         if (mIsGameMode) {
             addViewToSet(new int[]{
@@ -216,6 +217,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                     R.id.game_barrage_view,
                     R.id.game_input_view,
                     R.id.close_btn,
+                    R.id.rotate_btn,
                     R.id.widget_view
             }, mGameHideSet);
         }
@@ -253,13 +255,13 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
         sdkActivity.addPushProcessor(mRoomStatusPresenter);
 
         // 添加播放器View
-        VideoDetailPlayerView view = mController.mPlayerView;
+        DetailPlayerView view = mController.mPlayerView;
         if (view == null) {
             MyLog.e(TAG, "missing mController.mPlayerView");
             return;
         }
-        view.switchToFullScreen(true);
-        view.showOrHideFullScreenBtn(false);
+        view.switchToReplayMode();
+        mController.mPlayerPresenter.setIsDetailMode(false);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addViewUnderAnchor(view, layoutParams, $(R.id.top_area_view));
@@ -291,7 +293,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
         // 将播放器View从其父View移出
         ViewGroup parentView = mController.mPlayerView != null ?
                 (ViewGroup) mController.mPlayerView.getParent() : null;
-        if (parentView != null && parentView.indexOfChild(mController.mPlayerView) != -1) {
+        if (parentView != null) {
             parentView.removeView(mController.mPlayerView);
         }
     }
@@ -304,7 +306,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
         mRoomViewerPresenter.destroy();
         mRoomStatusPresenter.destroy();
 
-        //mTopInfoView.onActivityDestroy();
         mGiftAnimationView.onActivityDestroy();
         mGiftRoomEffectView.onActivityDestroy();
         mGiftContinueViewGroup.onActivityDestroy();
@@ -324,7 +325,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
                     }
                     ReplayBarrageMessageManager.getInstance().getBarrageMessageByReplayTime(
                             mController.mMyRoomData.getRoomId(),
-                            mVideoStartTime + mController.mPlayerPresenter.getCurrentPosition(),
+                            mVideoStartTime + mController.mStreamerPresenter.getCurrentPosition(),
                             false);
                 }
             }, 0, 1000);
@@ -411,9 +412,6 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
             case MSG_BACKGROUND_CLICK:
                 if (mController.postEvent(MSG_HIDE_INPUT_VIEW)) {
                     return true;
-                }
-                if (mController.mPlayerView != null) {
-                    mController.mPlayerView.onSeekBarContainerClick();
                 }
                 if (mIsGameMode && mIsLandscape) {
                     mAnimationHelper.startGameAnimator();

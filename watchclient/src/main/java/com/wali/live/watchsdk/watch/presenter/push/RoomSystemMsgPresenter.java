@@ -1,9 +1,5 @@
 package com.wali.live.watchsdk.watch.presenter.push;
 
-import android.content.DialogInterface;
-
-import com.base.activity.RxActivity;
-import com.base.dialog.DialogUtils;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
@@ -15,7 +11,6 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.event.EventClass;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.watch.presenter.VideoPlayerPresenterEx;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -27,7 +22,7 @@ import rx.functions.Action1;
 
 /**
  * @module 房间系统消息
- *
+ * <p>
  * Created by wuxiaoshan on 17-3-15.
  */
 public class RoomSystemMsgPresenter implements IPushMsgProcessor {
@@ -36,14 +31,8 @@ public class RoomSystemMsgPresenter implements IPushMsgProcessor {
 
     LiveRoomChatMsgManager mRoomChatMsgManager;
 
-    private RxActivity mRxActivity;
-
-    private VideoPlayerPresenterEx mVideoPlayerPresenterEx;
-
-    public RoomSystemMsgPresenter(RxActivity rxActivity, LiveRoomChatMsgManager mRoomChatMsgManager, VideoPlayerPresenterEx videoPlayerPresenterEx) {
+    public RoomSystemMsgPresenter(LiveRoomChatMsgManager mRoomChatMsgManager) {
         this.mRoomChatMsgManager = mRoomChatMsgManager;
-        mRxActivity = rxActivity;
-        mVideoPlayerPresenterEx = videoPlayerPresenterEx;
     }
 
     @Override
@@ -83,7 +72,7 @@ public class RoomSystemMsgPresenter implements IPushMsgProcessor {
                     MyLog.w("receive barrage frequency control msg:" + messageExt.toString());
                 }
             }
-        } else if(msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_KICK_VIEWER) {
+        } else if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_KICK_VIEWER) {
             MyLog.w(TAG, "viewer kicked," + msg.toString());
             if (msg.getRoomId().equals(roomBaseDataModel.getRoomId()) && msg.getToUserId() == UserAccountManager.getInstance().getUuidAsLong()) {
                 Observable.just(0)
@@ -91,23 +80,7 @@ public class RoomSystemMsgPresenter implements IPushMsgProcessor {
                         .subscribe(new Action1<Integer>() {
                             @Override
                             public void call(Integer integer) {
-                                if(mRxActivity != null && mVideoPlayerPresenterEx !=null){
-                                    mVideoPlayerPresenterEx.onDestroy();
-                                    DialogUtils.showCancelableDialog(mRxActivity,
-                                            "",
-                                            com.base.global.GlobalData.app().getResources().getString(R.string.have_been_kicked),
-                                            R.string.i_know,
-                                            0,
-                                            new DialogUtils.IDialogCallback() {
-                                                @Override
-                                                public void process(DialogInterface dialogInterface, int i) {
-                                                    if(mRxActivity != null) {
-                                                        mRxActivity.finish();
-                                                    }
-                                                }
-                                            },
-                                            null);
-                                }
+                                EventBus.getDefault().post(new EventClass.KickEvent());
                             }
                         });
             }
@@ -173,8 +146,6 @@ public class RoomSystemMsgPresenter implements IPushMsgProcessor {
 
     @Override
     public void destroy() {
-        mRxActivity = null;
         mRoomChatMsgManager = null;
-        mVideoPlayerPresenterEx = null;
     }
 }

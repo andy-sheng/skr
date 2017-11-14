@@ -7,8 +7,10 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.base.activity.BaseActivity;
@@ -35,6 +37,7 @@ import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.presenter.TopAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
 import com.wali.live.watchsdk.component.presenter.WatchFloatPresenter;
+import com.wali.live.watchsdk.component.presenter.WatchPlayerPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.BarrageBtnView;
 import com.wali.live.watchsdk.component.view.ExtraContainerView;
@@ -59,6 +62,7 @@ import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
 import static com.wali.live.component.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_ENABLE_MOVE_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_FOLLOW_COUNT_DOWN;
+import static com.wali.live.component.BaseSdkController.MSG_FORCE_ROTATE_SCREEN;
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_GAME_INPUT;
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_INPUT_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
@@ -74,7 +78,7 @@ import static com.wali.live.component.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
  *
  * @module 游戏直播页面
  */
-public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
+public class WatchSdkView extends BaseSdkView<View, WatchComponentController> implements View.OnClickListener {
 
     private final List<View> mHorizontalMoveSet = new ArrayList();
     private final List<View> mVerticalMoveSet = new ArrayList(0);
@@ -105,12 +109,22 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
 
     protected ImagePagerView mPagerView;
 
+    protected ImageView mRotateBtn;
+
     protected boolean mIsGameMode = false;
     protected boolean mIsLandscape = false;
 
     @Override
     protected String getTAG() {
         return "WatchSdkView";
+    }
+
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.rotate_btn) {
+            mController.postEvent(MSG_FORCE_ROTATE_SCREEN);
+        }
     }
 
     public WatchSdkView(
@@ -142,7 +156,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
             layoutParams.rightMargin = DisplayUtils.dip2px(56f);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            addViewAboveAnchor(view, layoutParams, $(R.id.comment_rv));
+            addViewAboveAnchor(view, layoutParams, $(R.id.live_comment_view));
         } else {
             mGameBarragePresenter.startPresenter();
         }
@@ -180,6 +194,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                     R.id.game_barrage_view,
                     R.id.game_input_view,
                     R.id.close_btn,
+                    R.id.rotate_btn,
                     R.id.widget_view
             }, mGameHideSet);
         }
@@ -202,15 +217,26 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
     public void setupView() {
         mContentView = $(mParentView, R.id.main_act_container);
         mGiftContinueViewGroup = $(R.id.gift_continue_vg);  // 礼物
+        // 播放器
+        {
+            TextureView view = $(R.id.video_view);
+            if (view == null) {
+                MyLog.e(TAG, "missing R.id.video_view");
+                return;
+            }
+            WatchPlayerPresenter presenter = new WatchPlayerPresenter(mController, mController.mStreamerPresenter);
+            registerHybridComponent(presenter, view);
+        }
         //顶部view
         {
             mTopAreaView = $(R.id.top_area_view);
             if (mTopAreaView == null) {
+                MyLog.e(TAG, "missing R.id.top_area_view");
                 return;
             }
-            TopAreaPresenter mTopAreaPresenter = new TopAreaPresenter(mController,
+            TopAreaPresenter topAreaPresenter = new TopAreaPresenter(mController,
                     mController.mMyRoomData, false);
-            registerComponent(mTopAreaView, mTopAreaPresenter);
+            registerComponent(mTopAreaView, topAreaPresenter);
         }
         // 弹幕区
         {
@@ -318,6 +344,9 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
             registerComponent(mPagerView, presenter);
         }
 
+        mRotateBtn = $(R.id.rotate_btn);
+        $click(mRotateBtn, this);
+
         addViewToSet(new int[]{
                 R.id.top_area_view,
                 R.id.bottom_button_view,
@@ -326,7 +355,9 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                 R.id.gift_continue_vg,
                 R.id.gift_room_effect_view,
                 R.id.widget_view,
-                R.id.barrage_btn_view
+                R.id.barrage_btn_view,
+                R.id.close_btn,
+                R.id.rotate_btn,
         }, mHorizontalMoveSet);
         addViewToSet(new int[]{
                 R.id.top_area_view,
@@ -338,8 +369,8 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
                 R.id.widget_view,
                 R.id.barrage_btn_view,
                 R.id.mask_iv,
-                R.id.rotate_btn,
                 R.id.close_btn,
+                R.id.rotate_btn,
                 R.id.extra_container,
                 R.id.float_panel_view
         }, mVerticalMoveSet);
@@ -353,7 +384,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
             TouchPresenter presenter = new TouchPresenter(mController, view);
             registerComponent(presenter);
             presenter.setViewSet(mHorizontalMoveSet, mVerticalMoveSet, mIsGameMode);
-            // 增加上线滑动的判断
+            // 增加上下滑动的判断
             if (mController.mRoomInfoList != null && mController.mRoomInfoList.size() > 1) {
                 // 打开上下滑动的开关
                 presenter.setVerticalMoveEnabled(new View[]{$(R.id.last_dv), $(R.id.center_dv), $(R.id.next_dv)},
@@ -527,7 +558,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> {
             break;
             case MSG_SHOW_SEND_ENVELOPE:
                 SendEnvelopeFragment.openFragment((BaseActivity) mActivity, mController.mMyRoomData);
-                break;
+                return true;
             default:
                 break;
         }

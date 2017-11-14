@@ -51,7 +51,6 @@ import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.mi.live.data.user.User;
-import com.mi.live.engine.player.widget.VideoPlayerTextureView;
 import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.thornbirds.component.IEventObserver;
 import com.thornbirds.component.IParams;
@@ -89,7 +88,6 @@ import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.wali.live.watchsdk.watch.presenter.IWatchView;
 import com.wali.live.watchsdk.watch.presenter.LiveTaskPresenter;
 import com.wali.live.watchsdk.watch.presenter.UserInfoPresenter;
-import com.wali.live.watchsdk.watch.presenter.VideoPlayerPresenterEx;
 import com.wali.live.watchsdk.watch.presenter.VideoShowPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomManagerPresenter;
@@ -114,6 +112,8 @@ import rx.Observer;
 import rx.functions.Action1;
 
 import static com.wali.live.component.BaseSdkController.MSG_FOLLOW_COUNT_DOWN;
+import static com.wali.live.component.BaseSdkController.MSG_FORCE_ROTATE_SCREEN;
+import static com.wali.live.component.BaseSdkController.MSG_NEW_VIDEO_URL;
 import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_LINK_MIC_START;
 import static com.wali.live.component.BaseSdkController.MSG_ON_LIVE_SUCCESS;
@@ -122,6 +122,8 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_ON_PK_START;
 import static com.wali.live.component.BaseSdkController.MSG_PAGE_DOWN;
 import static com.wali.live.component.BaseSdkController.MSG_PAGE_UP;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_COMPLETED;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_READY;
 import static com.wali.live.component.BaseSdkController.MSG_SWITCH_ROOM;
 
 /**
@@ -134,16 +136,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     public static final String EXTRA_ROOM_INFO_LIST = "extra_room_info_list";
     public static final String EXTRA_ROOM_INFO_POSITION = "extra_room_info_position";
 
-    private static final int FLAG_PHONE_STATE = 0x1 << 0;
-    private static final int FLAG_SCREEN_STATE = 0x1 << 1;
-
-    private int mFlagState = 0;
-
-    // 播放器
-    protected VideoPlayerTextureView mVideoView;
-
     protected ImageView mCloseBtn;// 关闭按钮
-    protected ImageView mRotateBtn;// 关闭
 
     protected WatchComponentController mController;
     protected WatchSdkView mSdkView;
@@ -159,7 +152,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     /**
      * presenter放在这里
      */
-    private VideoPlayerPresenterEx mVideoPlayerPresenterEx;
     private RoomTextMsgPresenter mRoomTextMsgPresenter;
     private GiftPresenter mGiftPresenter;
     private RoomManagerPresenter mRoomManagerPresenter;
@@ -253,7 +245,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
             getVideoUrlFromServer();
         } else {
             MyLog.d(TAG, "trySendDataWithServerOnce startPlayer");
-            startPlayer();
+            mController.postEvent(MSG_NEW_VIDEO_URL, new Params().putItem(mMyRoomData.getVideoUrl()));
         }
     }
 
@@ -315,8 +307,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         }
         AvatarUtils.loadAvatarByUrl(mMaskIv, url, false, true, R.drawable.rect_loading_bg_24292d);
 
-        mVideoView = $(R.id.video_view);
-
         mGiftContinueViewGroup = $(R.id.gift_continue_vg);
         addBindActivityLifeCycle(mGiftContinueViewGroup, true);
 
@@ -338,21 +328,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         mCloseBtn.setVisibility(View.VISIBLE);
         orientCloseBtn(isDisplayLandscape());
 
-        mRotateBtn = $(R.id.rotate_btn);
-        RxView.clicks(mRotateBtn)
-                .throttleFirst(200, TimeUnit.MILLISECONDS)
-                .subscribe(new Action1<Void>() {
-                    @Override
-                    public void call(Void aVoid) {
-                        if (mLandscape) {
-                            tempForcePortrait();
-                        } else {
-                            tempForceLandscape();
-                        }
-                    }
-                });
-
         mController = new WatchComponentController(mMyRoomData, mRoomChatMsgManager);
+        mController.setupController(this);
         mController.setVerticalList(mRoomInfoList, mRoomInfoPosition);
 
         mSdkView = new WatchSdkView(this, mController);
@@ -365,48 +342,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         addBindActivityLifeCycle(mFlyBarrageViewGroup, true);
     }
 
-    private void startPlayer() {
-        if (mVideoPlayerPresenterEx != null) {
-            MyLog.d(TAG, "startPlayer enter");
-            // if (!mVideoPlayerPresenterEx.isActivate()) {
-            MyLog.d(TAG, "startPlayer start");
-            mVideoPlayerPresenterEx.play(mMyRoomData.getVideoUrl());//, mVideoContainer, false, VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE, true, true);
-            mVideoPlayerPresenterEx.setTransMode(VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE);
-            // }
-        }
-    }
-
-    private void stopPlayer() {
-        if (mVideoPlayerPresenterEx != null) {
-            mVideoPlayerPresenterEx.destroy();
-        }
-    }
-
     private void initPresenter() {
-        mVideoPlayerPresenterEx = new VideoPlayerPresenterEx(this, mVideoView, null, mRotateBtn, true) {
-            // 覆盖只为让他不执行
-            protected void orientRotateBtn() {
-                showPortraitRotateIfNeed();
-//                if(mIsLandscape){
-//                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRotateBtn.getLayoutParams();
-//                    // 清楚
-//                    layoutParams.addRule(RelativeLayout.CENTER_VERTICAL,0);
-//
-//                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-//                    layoutParams.addRule(RelativeLayout.ALIGN_TOP,R.id.bottom_button_zone);
-//                    mRotateBtn.setLayoutParams(layoutParams);
-//                }else{
-//                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRotateBtn.getLayoutParams();
-//                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,0);
-//                    layoutParams.addRule(RelativeLayout.ALIGN_TOP,0);
-//
-//                    layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
-//
-//                    mRotateBtn.setLayoutParams(layoutParams);
-//                }
-            }
-        };
-
         mLiveTaskPresenter = new LiveTaskPresenter(this, mWatchView, mMyRoomData);
         addBindActivityLifeCycle(mLiveTaskPresenter, false);
 
@@ -430,7 +366,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         mRoomStatusPresenter = new RoomStatusPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomStatusPresenter);
 
-        mRoomSystemMsgPresenter = new RoomSystemMsgPresenter(this, mRoomChatMsgManager, mVideoPlayerPresenterEx);
+        mRoomSystemMsgPresenter = new RoomSystemMsgPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomSystemMsgPresenter);
 
         mUserInfoPresenter = new UserInfoPresenter(this, mMyRoomData);
@@ -500,7 +436,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopPlayer();
         leaveLiveToServer();
         unregisterReceiver();
 
@@ -527,8 +462,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LiveEndEvent event) {
         MyLog.d(TAG, "liveEndEvent");
-
-        stopPlayer();
+        mController.postEvent(MSG_PLAYER_COMPLETED);
         showEndLiveFragment(true, UserEndLiveFragment.ENTER_TYPE_LIVE_END);
     }
 
@@ -597,69 +531,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
      */
     public void goToRecharge() {
         mRechargeFragment = (RechargeFragment) FragmentNaviUtils.addFragment(this, R.id.main_act_container, RechargeFragment.class, null, true, true, true);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EventClass.FeedsVideoEvent event) {
-        switch (event.mType) {
-            case EventClass.FeedsVideoEvent.TYPE_PLAYING:
-                if (mMaskIv.getVisibility() == View.VISIBLE) {
-                    mMaskIv.setVisibility(View.GONE);
-                }
-                if (mSdkView != null) {
-                    mSdkView.postPrepare();
-                }
-                break;
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EventClass.PhoneStateEvent event) {
-        if (mVideoPlayerPresenterEx == null) {
-            MyLog.d(TAG, "mVideoPlayerPresenterEx is null");
-            return;
-        }
-        switch (event.type) {
-            case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_IDLE:
-                mFlagState &= ~FLAG_PHONE_STATE;
-                if (mFlagState == 0) {
-                    mVideoPlayerPresenterEx.enableReconnect(true);
-                    mVideoPlayerPresenterEx.resume();
-                }
-                break;
-            case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_RING:
-                mFlagState |= FLAG_PHONE_STATE;
-                mVideoPlayerPresenterEx.enableReconnect(false);
-                mVideoPlayerPresenterEx.pause();
-                break;
-            case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_OFFHOOK:
-                mFlagState |= FLAG_PHONE_STATE;
-                mVideoPlayerPresenterEx.enableReconnect(false);
-                mVideoPlayerPresenterEx.pause();
-                break;
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(SdkEventClass.ScreenStateEvent event) {
-        if (mVideoPlayerPresenterEx == null) {
-            MyLog.d(TAG, "mVideoPlayerPresenterEx is null");
-            return;
-        }
-        switch (event.screenState) {
-            case SdkEventClass.ScreenStateEvent.ACTION_SCREEN_ON:
-                mFlagState &= ~FLAG_SCREEN_STATE;
-                if (mFlagState == 0) {
-                    mVideoPlayerPresenterEx.enableReconnect(true);
-                    mVideoPlayerPresenterEx.resume();
-                }
-                break;
-            case SdkEventClass.ScreenStateEvent.ACTION_SCREEN_OFF:
-                mFlagState |= FLAG_SCREEN_STATE;
-                mVideoPlayerPresenterEx.enableReconnect(false);
-                mVideoPlayerPresenterEx.pause();
-                break;
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -748,7 +619,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventEmitter.EnterRoomList event) {
-        if (event != null) {
+        if (event != null && mMyRoomData.isForeground()) { // 只有APP在前台才进行自动切换到下一个房间
             MyLog.d(TAG, "enterRoomList");
             mController.enterRoomList(this);
             finish();
@@ -1054,12 +925,12 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
     @Override
     public void onKickEvent(String msg) {
-        stopPlayer();
+        mController.postEvent(MSG_PLAYER_COMPLETED);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.KickEvent event) {
-        stopPlayer();
+        mController.postEvent(MSG_PLAYER_COMPLETED);
         DialogUtils.showCancelableDialog(this,
                 "",
                 GlobalData.app().getResources().getString(R.string.have_been_kicked),
@@ -1084,7 +955,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         if (TextUtils.isEmpty(mMyRoomData.getVideoUrl()) && !TextUtils.isEmpty(videoUrl)) {
             mMyRoomData.setVideoUrl(videoUrl);
             MyLog.d(TAG, "updateVideoUrl startPlayer");
-            startPlayer();
+            mController.postEvent(MSG_NEW_VIDEO_URL, new Params().putItem(videoUrl));
         }
     }
 
@@ -1107,8 +978,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
         private void registerAction() {
             if (mController != null) {
+                mController.registerObserverForEvent(MSG_FORCE_ROTATE_SCREEN, this);
                 mController.registerObserverForEvent(MSG_PAGE_DOWN, this);
                 mController.registerObserverForEvent(MSG_PAGE_UP, this);
+                mController.registerObserverForEvent(MSG_PLAYER_READY, this);
             }
         }
 
@@ -1121,6 +994,13 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         @Override
         public boolean onEvent(int event, IParams params) {
             switch (event) {
+                case MSG_FORCE_ROTATE_SCREEN:
+                    if (mLandscape) {
+                        tempForcePortrait();
+                    } else {
+                        tempForceLandscape();
+                    }
+                    break;
                 case MSG_PAGE_UP:
                     MyLog.d(TAG, "page up");
                     mController.switchToNextPosition();
@@ -1139,6 +1019,14 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                         mSdkView.switchToLastRoom();
                     }
                     break;
+                case MSG_PLAYER_READY:
+                    if (mMaskIv.getVisibility() == View.VISIBLE) {
+                        mMaskIv.setVisibility(View.GONE);
+                    }
+                    if (mSdkView != null) {
+                        mSdkView.postPrepare();
+                    }
+                    break;
                 default:
                     break;
             }
@@ -1154,7 +1042,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                 mRoomChatMsgManager.clear();
 
                 // 重置Presenter
-                mVideoPlayerPresenterEx.reset();
                 mUserInfoPresenter.reset();
                 mLiveTaskPresenter.reset();
                 if (mVideoShowPresenter != null) {

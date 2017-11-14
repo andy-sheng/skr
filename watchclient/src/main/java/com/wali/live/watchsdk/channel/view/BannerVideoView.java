@@ -1,12 +1,11 @@
 package com.wali.live.watchsdk.channel.view;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,30 +14,37 @@ import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
-import com.mi.live.engine.player.widget.IPlayerCallBack;
-import com.mi.live.engine.player.widget.VideoPlayerPresenter;
-import com.mi.live.engine.player.widget.VideoPlayerTextureView;
+import com.thornbirds.component.IEventObserver;
+import com.thornbirds.component.IParams;
+import com.wali.live.component.BaseSdkController;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.channel.view.presenter.HeaderVideoPresenter;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel.BaseLiveItem;
 
 /**
  * Created by lan on 16/9/8.
  *
- * @module 频道
+ * @module 频道--realTime true
  */
-public class BannerVideoView extends RelativeLayout implements IPlayerCallBack {
+public class BannerVideoView extends RelativeLayout implements IEventObserver {
     private static final String TAG = BannerVideoView.class.getSimpleName();
 
-    BaseImageView mBannerIv;
-    VideoPlayerTextureView mVideoView;
-    TextView mSingleTv;
-    TextView mTypeTv;
-    protected VideoPlayerPresenter mVideoPresenter;
+    private BaseImageView mBannerIv;
+    private TextureView mVideoView;
+    private TextView mSingleTv;
+    private TextView mTypeTv;
+    private HeaderVideoPresenter mPresenter;
     private BaseLiveItem mLiveItem;
     private Handler mUIHandler = new Handler(Looper.getMainLooper());
+    private BaseSdkController mController = new BaseSdkController() {
+        @Override
+        protected String getTAG() {
+            return "BannerVideoController";
+        }
+    };
 
-    public <V extends View> V $(int resId) {
+    private final <V extends View> V $(int resId) {
         return (V) findViewById(resId);
     }
 
@@ -64,20 +70,25 @@ public class BannerVideoView extends RelativeLayout implements IPlayerCallBack {
         init();
     }
 
-    public void init() {
+    private void init() {
         inflate(getContext(), R.layout.video_banner_view, this);
         initView();
-        mVideoView.setVideoTransMode(VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE);
+        initPresenter();
     }
 
-    public void initView() {
+    private void initView() {
         mBannerIv = $(R.id.banner_iv);
         mVideoView = $(R.id.video_player_view);
         mSingleTv = $(R.id.single_tv);
         mTypeTv = $(R.id.type_tv);
     }
 
-    public void postVideoRunnable() {
+    private void initPresenter() {
+        mPresenter = new HeaderVideoPresenter(mController, true);
+        mPresenter.setView(mVideoView);
+    }
+
+    private void postVideoRunnable() {
         mUIHandler.removeCallbacks(mVideoRunnable);
         mUIHandler.postDelayed(mVideoRunnable, 2000);
     }
@@ -87,42 +98,41 @@ public class BannerVideoView extends RelativeLayout implements IPlayerCallBack {
         stopVideo();
     }
 
-    private void startVideo() {
-        MyLog.v(TAG, "startVideo");
-        if (mLiveItem == null || TextUtils.isEmpty(mLiveItem.getVideoUrl())) {
-            return;
-        }
-        if (mVideoPresenter == null) {
-            mVideoPresenter = mVideoView.getVideoPlayerPresenter();
-            mVideoPresenter.setVideoPlayerCallBack(this);
-            mVideoPresenter.setNeedReset(false);
-        }
-        setVideoPath(mLiveItem.getId(), mLiveItem.getVideoUrl());
-    }
-
     public void bindData(BaseLiveItem item) {
         MyLog.v(TAG, "bindData");
+        if (item == null || TextUtils.isEmpty(item.getVideoUrl())) {
+            return;
+        }
         mLiveItem = item;
         bindTextView(mSingleTv, item.getTitleText());
         bindTextView(mTypeTv, item.getUpRightText());
         FrescoWorker.loadImage(mBannerIv,
                 ImageFactory.newHttpImage(item.getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_LARGE))
                         .build());
+        setVideoPath(mLiveItem.getVideoUrl());
         postVideoRunnable();
     }
 
-    private void setVideoPath(String id, String videoUrl) {
+    private void setVideoPath(String videoUrl) {
         if (TextUtils.isEmpty(videoUrl)) {
             return;
         }
-        mVideoPresenter.setVideoPath(videoUrl, Uri.parse(videoUrl).getHost());
-        mVideoPresenter.setVolume(0, 0);
+        mPresenter.setOriginalStreamUrl(videoUrl);
+        mPresenter.mute(true);
     }
 
-    public void stopVideo() {
+    private void startVideo() {
+        MyLog.v(TAG, "startVideo");
+        if (mPresenter != null) {
+            mPresenter.startVideo();
+        }
+
+    }
+
+    private void stopVideo() {
         MyLog.v(TAG, "stopVideo");
-        if (mVideoPresenter != null) {
-            mVideoPresenter.release();
+        if (mPresenter != null) {
+            mPresenter.releaseVideo();
         }
     }
 
@@ -133,53 +143,16 @@ public class BannerVideoView extends RelativeLayout implements IPlayerCallBack {
         mTypeTv.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void onLoad() {
-    }
-
-    @Override
-    public void onPrepared() {
+    private void onPlayerReady() {
         MyLog.e(TAG, "onPrepared");
         mSingleTv.setVisibility(View.GONE);
         mTypeTv.setVisibility(View.GONE);
     }
 
     @Override
-    public void onCompletion() {
-    }
-
-    @Override
-    public void onError(int errCode) {
-        MyLog.e(TAG, "onError errCode=" + errCode);
-    }
-
-    @Override
-    public void onBufferingUpdate(int percent) {
-    }
-
-    @Override
-    public void onInfo(int info) {
-    }
-
-    @Override
-    public void onInfo(Message msg) {
-    }
-
-    @Override
-    public void onSeekComplete() {
-    }
-
-    @Override
-    public void requestOrientation(int playMode) {
-    }
-
-    @Override
-    public void onReleased() {
-    }
-
-    @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        registerAction();
         MyLog.e(TAG, "onAttachedToWindow");
     }
 
@@ -188,6 +161,7 @@ public class BannerVideoView extends RelativeLayout implements IPlayerCallBack {
         super.onDetachedFromWindow();
         MyLog.e(TAG, "onDetachedFromWindow");
         removeVideoRunnable();
+        unregisterAction();
     }
 
     protected void bindTextView(TextView tv, String text) {
@@ -200,5 +174,31 @@ public class BannerVideoView extends RelativeLayout implements IPlayerCallBack {
         } else {
             tv.setVisibility(View.GONE);
         }
+    }
+
+    private void registerAction() {
+        mController.registerObserverForEvent(BaseSdkController.MSG_PLAYER_READY, this); //prepared
+    }
+
+    private void unregisterAction() {
+        if (mController != null) {
+            mController.unregisterObserver(this);
+        }
+    }
+
+    @Override
+    public boolean onEvent(int event, IParams params) {
+        switch (event) {
+            case BaseSdkController.MSG_PLAYER_READY:
+                onPlayerReady();
+                break;
+            case BaseSdkController.MSG_PLAYER_ERROR:
+            case BaseSdkController.MSG_PLAYER_COMPLETED:
+                startVideo();
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 }

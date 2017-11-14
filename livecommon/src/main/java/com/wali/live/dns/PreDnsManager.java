@@ -86,7 +86,8 @@ public enum PreDnsManager {
     private Subscription mPreFetchSub;
     private String mNetworkId;
     private boolean mNeedRefreshForMiLinkEvent = true;
-    private final ExecutorService mExecutor = Executors.newSingleThreadExecutor(); // 辅助线程
+    private final ExecutorService mExecutor = Executors.newSingleThreadExecutor(
+            new ThreadPool.NamedThreadFactory("PreDnsManager")); // 辅助线程
 
     PreDnsManager() {
         mDomainSet.add(PULL_STREAM_DOMAIN_DEFAULT);

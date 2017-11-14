@@ -1,6 +1,5 @@
 package com.wali.live.watchsdk.videodetail.view;
 
-import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -47,7 +46,7 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
     }
 
     @Override
-    public void setPresenter(@Nullable IPresenter iPresenter) {
+    public final void setPresenter(@Nullable IPresenter iPresenter) {
         mPresenter = iPresenter;
     }
 
@@ -84,7 +83,7 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
          */
         class ComponentView implements IView {
             @Override
-            public <T extends View> T getRealView() {
+            public final <T extends View> T getRealView() {
                 return (T) mRootView;
             }
 
@@ -100,21 +99,21 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
             }
 
             @Override
-            public void updateCommentTotalCnt(int cnt, boolean isReplay) {
+            public void onUpdateCommentTotalCnt(int cnt, boolean isReplay) {
                 mMessageAdapter.updatePageTitle(isReplay ? 0 : 1, String.format(mRootView.getResources()
                         .getString(R.string.feeds_detail_label_comment), "" + cnt));
                 mSlidingTabLayout.notifyDataChange();
             }
 
             @Override
-            public void updateReplayTotalCnt(int cnt) {
+            public void onUpdateReplayTotalCnt(int cnt) {
                 mMessageAdapter.updatePageTitle(1, String.format(mRootView.getResources()
                         .getString(R.string.feeds_detail_label_replay), "" + cnt));
                 mSlidingTabLayout.notifyDataChange();
             }
 
             @Override
-            public void onFoldInfoArea() {
+            public final void onFoldInfoArea() {
                 mAppBarLayout.setExpanded(false);
             }
         }
@@ -122,10 +121,6 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
     }
 
     public interface IPresenter {
-        /**
-         * 同步Tab的展示列表
-         */
-        void syncTabPageList(Context context);
     }
 
     public interface IView extends IViewProxy {
@@ -138,17 +133,13 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
 
         /**
          * 更新评论总数
-         *
-         * @param cnt 评论数目
          */
-        void updateCommentTotalCnt(int cnt, boolean isReplay);
+        void onUpdateCommentTotalCnt(int cnt, boolean isReplay);
 
         /**
          * 更新回放总数
-         *
-         * @param cnt 回放数目
          */
-        void updateReplayTotalCnt(int cnt);
+        void onUpdateReplayTotalCnt(int cnt);
 
         /**
          * 收起信息区

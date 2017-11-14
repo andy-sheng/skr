@@ -15,13 +15,13 @@ import com.thornbirds.component.IParams;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.view.InputAreaView;
-import com.wali.live.watchsdk.component.view.VideoDetailPlayerView;
 import com.wali.live.watchsdk.videodetail.presenter.CommentInputPresenter;
 import com.wali.live.watchsdk.videodetail.presenter.DetailBottomPresenter;
 import com.wali.live.watchsdk.videodetail.presenter.DetailInfoPresenter;
 import com.wali.live.watchsdk.videodetail.presenter.DetailTabPresenter;
 import com.wali.live.watchsdk.videodetail.view.DetailBottomView;
 import com.wali.live.watchsdk.videodetail.view.DetailInfoView;
+import com.wali.live.watchsdk.videodetail.view.DetailPlayerView;
 import com.wali.live.watchsdk.videodetail.view.DetailTabView;
 
 import java.lang.ref.WeakReference;
@@ -122,15 +122,14 @@ public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
             mParentView.addView(mContentView);
             mAnimationHelper.startShowAnimation();
         }
-
         // 添加播放器View
-        VideoDetailPlayerView view = mController.mPlayerView;
+        DetailPlayerView view = mController.mPlayerView;
         if (view == null) {
             MyLog.e(TAG, "missing mController.mPlayerView");
             return;
         }
-        view.switchToFullScreen(false);
-        view.showOrHideFullScreenBtn(true);
+        view.switchToDetailMode();
+        mController.mPlayerPresenter.setIsDetailMode(true);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.height = (int) mActivity.getResources().getDimension(R.dimen.view_dimen_608);
@@ -146,11 +145,10 @@ public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
         super.stopView();
         mAnimationHelper.clearAnimation();
         mParentView.removeView(mContentView);
-
         // 将播放器View从其父View移出
         ViewGroup parentView = mController.mPlayerView != null ?
                 (ViewGroup) mController.mPlayerView.getParent() : null;
-        if (parentView != null && parentView.indexOfChild(mController.mPlayerView) != -1) {
+        if (parentView != null) {
             parentView.removeView(mController.mPlayerView);
         }
     }

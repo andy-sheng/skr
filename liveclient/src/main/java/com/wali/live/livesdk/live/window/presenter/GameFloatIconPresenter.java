@@ -26,20 +26,17 @@ import rx.functions.Action1;
 
 public class GameFloatIconPresenter extends BaseSdkRxPresenter<IGameFloatIcon> {
 
-    private IGameFloatIcon mView;
-    private Subscription giftSubscription;
-    private LinkedList<Gift> mGiftQueue = new LinkedList<>();
+    private final LinkedList<Gift> mGiftQueue = new LinkedList<>();
+    private Subscription mGiftSubscription;
 
-    public GameFloatIconPresenter(IGameFloatIcon view) {
+    public GameFloatIconPresenter() {
         super(null);
-        mView = view;
     }
 
     @Override
-    protected String getTAG() {
+    protected final String getTAG() {
         return "GameFloatIconPresenter";
     }
-
 
     @Override
     public void startPresenter() {
@@ -54,9 +51,6 @@ public class GameFloatIconPresenter extends BaseSdkRxPresenter<IGameFloatIcon> {
         super.stopPresenter();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
-        }
-        if (giftSubscription != null && !giftSubscription.isUnsubscribed()) {
-            giftSubscription.unsubscribe();
         }
     }
 
@@ -76,8 +70,8 @@ public class GameFloatIconPresenter extends BaseSdkRxPresenter<IGameFloatIcon> {
     private void processGift() {
         Gift gift = mGiftQueue.poll();
         if (gift != null) {
-            if (giftSubscription != null && !giftSubscription.isUnsubscribed()) {
-                giftSubscription.unsubscribe();
+            if (mGiftSubscription != null && !mGiftSubscription.isUnsubscribed()) {
+                mGiftSubscription.unsubscribe();
             }
             BaseImage image = ImageFactory.newHttpImage(gift.getPicture()).build();
             mView.startGiftAnimator(false, image);
@@ -85,11 +79,11 @@ public class GameFloatIconPresenter extends BaseSdkRxPresenter<IGameFloatIcon> {
     }
 
     public void giftShowTimer(long delayTime) {
-        if (giftSubscription != null && !giftSubscription.isUnsubscribed()) {
-            giftSubscription.unsubscribe();
+        if (mGiftSubscription != null && !mGiftSubscription.isUnsubscribed()) {
+            mGiftSubscription.unsubscribe();
         }
-        giftSubscription = Observable.timer(delayTime, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-                .compose(GameFloatIconPresenter.this.<Long>bindUntilEvent(PresenterEvent.STOP))
+        mGiftSubscription = Observable.timer(delayTime, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                .compose(this.<Long>bindUntilEvent(PresenterEvent.STOP))
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long aLong) {
@@ -101,7 +95,7 @@ public class GameFloatIconPresenter extends BaseSdkRxPresenter<IGameFloatIcon> {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        MyLog.e(TAG, "giftSubscription throwable=" + throwable);
+                        MyLog.e(TAG, "giftShowTimer failed, throwable=" + throwable);
                     }
                 });
     }

@@ -25,16 +25,20 @@ public class WatchIpSelectionHelper extends BaseIpSelectionHelper {
             PreferenceUtils.KEY_DEBUG_DROP_BITRATE, false);
     private boolean mIsDropRate = false;
 
+    @Override
+    public String getTAG() {
+        return TAG;
+    }
+
+    public boolean hasStreamUrl() {
+        return !TextUtils.isEmpty(mOriginalStreamUrl);
+    }
+
     public WatchIpSelectionHelper(
             @NonNull Context context,
             IDnsStatusListener dnsStatusListener,
             KeyFlowReportManager keyFlowReporter) {
         super(context, dnsStatusListener, keyFlowReporter);
-    }
-
-    @Override
-    public String getTAG() {
-        return TAG;
     }
 
     private boolean needSetHost() {

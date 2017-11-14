@@ -13,6 +13,7 @@ import com.base.activity.RxActivity;
 import com.base.activity.assist.IBindActivityLIfeCycle;
 import com.base.event.SdkEventClass;
 import com.base.log.MyLog;
+import com.base.thread.ThreadPool;
 import com.base.utils.Constants;
 import com.base.utils.network.NetworkUtils;
 import com.base.utils.rx.RefuseRetryExeption;
@@ -94,7 +95,8 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
 
     private ContinueSendNumber mContinueSend = new ContinueSendNumber(); // 连送次数
 
-    private ExecutorService singleThreadForBuyGift = Executors.newSingleThreadExecutor(); // 送礼的线程池
+    private ExecutorService singleThreadForBuyGift = Executors.newSingleThreadExecutor(
+            new ThreadPool.NamedThreadFactory("GiftMallPresenter")); // 送礼的线程池
 
     private Subscription mSountDownSubscription; // 倒计时的订阅
     //房间花费星票数，结束页显示

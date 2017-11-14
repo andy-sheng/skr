@@ -14,7 +14,7 @@ buildscript {
         mavenCentral()
 
         maven {
-            url  "http://dl.bintray.com/vigidroid/maven"
+            url "http://dl.bintray.com/vigidroid/maven"
         }
     }
     dependencies {
@@ -32,6 +32,7 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
+
 allprojects {
 
     repositories {
@@ -40,6 +41,10 @@ allprojects {
         //        flatDir {
 //        maven { url '//            dirs \'../framework/libs\'' }
         //        }
+
+        maven {
+            url 'https://maven.google.com'
+        }
 
         maven {
             url 'https://raw.githubusercontent.com/ModerateFish/mvn-repo/master/'

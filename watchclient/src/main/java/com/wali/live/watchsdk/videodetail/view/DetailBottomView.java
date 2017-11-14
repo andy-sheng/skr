@@ -56,7 +56,7 @@ public class DetailBottomView implements View.OnClickListener,
     }
 
     @Override
-    public void setPresenter(@Nullable IPresenter iPresenter) {
+    public final void setPresenter(@Nullable IPresenter iPresenter) {
         mPresenter = iPresenter;
     }
 

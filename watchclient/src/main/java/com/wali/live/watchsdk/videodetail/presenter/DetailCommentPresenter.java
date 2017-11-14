@@ -8,11 +8,11 @@ import android.util.SparseArray;
 
 import com.base.dialog.MyAlertDialog;
 import com.base.log.MyLog;
+import com.base.thread.ThreadPool;
 import com.base.utils.rx.RxRetryAssist;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.api.ErrorCode;
-import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.Params;
@@ -36,12 +36,12 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.wali.live.component.BaseSdkController.MSG_COMMENT_TOTAL_CNT;
 import static com.wali.live.component.BaseSdkController.MSG_FOLD_INFO_AREA;
-import static com.wali.live.component.BaseSdkController.MSG_NEW_DETAIL_REPLAY;
+import static com.wali.live.component.BaseSdkController.MSG_NEW_FEED_ID;
 import static com.wali.live.component.BaseSdkController.MSG_SEND_COMMENT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_COMMENT_INPUT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_PERSONAL_INFO;
+import static com.wali.live.component.BaseSdkController.MSG_UPDATE_COMMENT_CNT;
 import static com.wali.live.watchsdk.feeds.FeedsCommentUtils.PULL_TYPE_ALL_HYBRID;
 import static com.wali.live.watchsdk.feeds.FeedsInfoUtils.FEED_TYPE_DEFAULT;
 
@@ -56,33 +56,32 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
 
     private final static int PULL_COMMENT_LIMIT = 12; // 单次拉取评论的条数
 
-    private RoomBaseDataModel mMyRoomData;
+    private String mFeedId;
+    private long mOwnerId;
 
     private Subscription mPullSubscription;
     private int mTotalCnt = 0;
     private volatile boolean mIsReverse = false;
 
-    private final ExecutorService mExecutor = Executors.newSingleThreadExecutor();
+    private final ExecutorService mExecutor = Executors.newSingleThreadExecutor(
+            new ThreadPool.NamedThreadFactory("DetailCommentPresenter"));
     private final PullCommentHelper mNewerPuller = new PullCommentHelper(true);
     private final PullCommentHelper mOlderPuller = new PullCommentHelper(false);
 
     @Override
-    protected String getTAG() {
+    protected final String getTAG() {
         return TAG;
     }
 
-    public DetailCommentPresenter(
-            @NonNull IEventController controller,
-            @NonNull RoomBaseDataModel roomData) {
+    public DetailCommentPresenter(@NonNull IEventController controller) {
         super(controller);
-        mMyRoomData = roomData;
     }
 
     @Override
     public void startPresenter() {
         super.startPresenter();
         registerAction(MSG_SEND_COMMENT);
-        registerAction(MSG_NEW_DETAIL_REPLAY);
+        registerAction(MSG_NEW_FEED_ID);
     }
 
     @Override
@@ -102,7 +101,7 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
         if (helper != null) {
             if (mTotalCnt != helper.mTotalCnt) {
                 mTotalCnt = helper.mTotalCnt;
-                postEvent(MSG_COMMENT_TOTAL_CNT, new Params().putItem(mTotalCnt));
+                postEvent(MSG_UPDATE_COMMENT_CNT, new Params().putItem(mTotalCnt));
             }
             mView.onUpdateCommentList(helper.mHotList, helper.mAllList, !helper.mIsAsc);
         } else {
@@ -124,7 +123,7 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
         }
         MyLog.w(TAG, "pullNewerComments");
         mView.onShowLoadingView(true);
-        final String feedId = mMyRoomData.getRoomId();
+        final String feedId = mFeedId;
         mPullSubscription = Observable.just(0)
                 .map(new Func1<Integer, PullCommentHelper>() {
                     @Override
@@ -166,7 +165,7 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
         }
         MyLog.w(TAG, "pullOlderComments");
         mView.onShowLoadingView(true);
-        final String feedId = mMyRoomData.getRoomId();
+        final String feedId = mFeedId;
         mPullSubscription = Observable.just(0)
                 .map(new Func1<Integer, PullCommentHelper>() {
                     @Override
@@ -224,8 +223,9 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
                 });
     }
 
-    @Override
-    public void reloadComments() {
+    public void onNewFeedId(final String feedId, final long ownerId) {
+        mOwnerId = ownerId;
+        mFeedId = feedId;
         if (mIsReverse) {
             mIsReverse = false;
             mView.setReverseLayout(mIsReverse);
@@ -235,6 +235,7 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
         mView.onUpdateCommentList(mNewerPuller.mHotList, mNewerPuller.mAllList, !mNewerPuller.mIsAsc);
         if (mPullSubscription != null && !mPullSubscription.isUnsubscribed()) {
             mPullSubscription.unsubscribe();
+            mPullSubscription = null;
         }
         pullNewerComments();
     }
@@ -245,17 +246,15 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
             // 不能回复自己的评论
             return;
         }
-        postEvent(MSG_SHOW_COMMENT_INPUT, new Params().putItem(mMyRoomData.getRoomId())
-                .putItem(commentItem));
+        postEvent(MSG_SHOW_COMMENT_INPUT, new Params().putItem(mFeedId).putItem(commentItem));
     }
 
-    @Override
-    public void sendComment(final String feedId, final DetailCommentAdapter.CommentItem commentItem) {
-        if (TextUtils.isEmpty(mMyRoomData.getRoomId()) || TextUtils.isEmpty(feedId) ||
-                !mMyRoomData.getRoomId().equals(feedId)) {
+    private void sendComment(final String feedId, final DetailCommentAdapter.CommentItem commentItem) {
+        if (TextUtils.isEmpty(mFeedId) || TextUtils.isEmpty(feedId) ||
+                !mFeedId.equals(feedId)) {
             return;
         }
-        final long ownerId = mMyRoomData.getUid();
+        final long ownerId = mOwnerId;
         Observable.just(0)
                 .map(new Func1<Integer, DetailCommentAdapter.CommentItem>() {
                     @Override
@@ -281,10 +280,11 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
                             return;
                         }
                         ++mTotalCnt;
-                        postEvent(MSG_COMMENT_TOTAL_CNT, new Params().putItem(mTotalCnt));
+                        postEvent(MSG_UPDATE_COMMENT_CNT, new Params().putItem(mTotalCnt));
                         if (!mIsReverse) {
                             if (mPullSubscription != null && !mPullSubscription.isUnsubscribed()) {
                                 mPullSubscription.unsubscribe();
+                                mPullSubscription = null;
                             }
                             pullOlderComments();
                         } else {
@@ -300,12 +300,12 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
                 });
     }
 
-    public void deleteComment(final DetailCommentAdapter.CommentItem commentItem) {
-        if (TextUtils.isEmpty(mMyRoomData.getRoomId())) {
+    private void deleteComment(final DetailCommentAdapter.CommentItem commentItem) {
+        if (TextUtils.isEmpty(mFeedId)) {
             return;
         }
-        final long ownerId = mMyRoomData.getUid();
-        final String feedId = mMyRoomData.getRoomId();
+        final long ownerId = mOwnerId;
+        final String feedId = mFeedId;
         Observable.just(0)
                 .map(new Func1<Integer, PullCommentHelper>() {
                     @Override
@@ -335,7 +335,7 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
                             return;
                         }
                         --mTotalCnt;
-                        postEvent(MSG_COMMENT_TOTAL_CNT, new Params().putItem(mTotalCnt));
+                        postEvent(MSG_UPDATE_COMMENT_CNT, new Params().putItem(mTotalCnt));
                         mView.onUpdateCommentList(helper.mHotList, helper.mAllList, !helper.mIsAsc);
                     }
                 }, new Action1<Throwable>() {
@@ -348,7 +348,7 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
     }
 
     @Override
-    public void foldInfoArea() {
+    public final void foldInfoArea() {
         postEvent(MSG_FOLD_INFO_AREA);
     }
 
@@ -364,7 +364,7 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
         String[] items = context.getResources().getStringArray(R.array.feeds_long_click_onther_comment);
         final SparseArray<Integer> itemsMap = new SparseArray<>();
         if (commentItem.fromUid == MyUserInfoManager.getInstance().getUuid() ||
-                mMyRoomData.getUid() == MyUserInfoManager.getInstance().getUuid()) { // 评论作者和Feeds作者 可以删除评论
+                mOwnerId == MyUserInfoManager.getInstance().getUuid()) { // 评论作者和Feeds作者 可以删除评论
             items = context.getResources().getStringArray(R.array.feeds_long_click_my_comment);
             itemsMap.put(0, MENU_COPY);
             itemsMap.put(1, MENU_DELETE);
@@ -398,7 +398,7 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
     }
 
     @Override
-    public void showPersonalInfo(long uid) {
+    public final void showPersonalInfo(long uid) {
         if (uid > 0) {
             postEvent(MSG_SHOW_PERSONAL_INFO, new Params().putItem(uid));
         }
@@ -433,11 +433,10 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
         }
         switch (event) {
             case MSG_SEND_COMMENT:
-                sendComment((String) params.getItem(0), (DetailCommentAdapter.CommentItem)
-                        params.getItem(1));
+                sendComment((String) params.getItem(0), (DetailCommentAdapter.CommentItem) params.getItem(1));
                 break;
-            case MSG_NEW_DETAIL_REPLAY:
-                reloadComments();
+            case MSG_NEW_FEED_ID:
+                onNewFeedId((String) params.getItem(0), (long) params.getItem(1));
                 break;
             default:
                 break;
@@ -445,7 +444,7 @@ public class DetailCommentPresenter extends BaseSdkRxPresenter<DetailCommentView
         return false;
     }
 
-    public class PullCommentHelper {
+    public static class PullCommentHelper {
         private boolean mIsAsc;
         private int mTotalCnt = 0;
         private long mCommentTs = 0;

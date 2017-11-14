@@ -1,320 +1,254 @@
 package com.mi.live.engine.player;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.PowerManager;
 import android.text.TextUtils;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
 import com.base.global.GlobalData;
+import com.base.log.MyLog;
 import com.base.thread.ThreadPool;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.engine.base.GalileoDeviceManager;
-import com.mi.live.engine.media.player.IMediaPlayer;
-import com.mi.live.engine.media.player.IjkMediaPlayer;
 import com.xiaomi.player.Player;
+import com.xiaomi.player.callback.PlayerCallback;
+import com.xiaomi.player.datastruct.VideoSize;
+import com.xiaomi.player.enums.PlayerSeekingMode;
 import com.xiaomi.player.enums.PlayerWorkingMode;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import static com.xiaomi.player.Player.SurfaceGravity.SurfaceGravityResizeAspectFit;
+
 /**
- * Created by chenyong on 16/7/11.
+ * Created by yangli on 2017/9/20.
  *
  * @module 拉流模块，实现引擎拉流功能
  */
 public class GalileoPlayer implements IPlayer {
+    private static final String TAG = "GalileoPlayer";
+
     private static final String DEFAULT_PORT = "80";
 
-    private IjkMediaPlayer mIjkMediaPlayer;
+    private IPlayerCallback mCallback;
 
-    public GalileoPlayer(final Context context, final PlayerWorkingMode mode, final long observer, final String userId, final String clientIp) {
+    private SurfaceHolder mSurfaceHolder;
+    private boolean mScreenOnWhilePlaying;
+    private boolean mStayAwake;
+    private PowerManager.WakeLock mWakeLock = null;
+
+    private long mTransferObserver = 0;
+    private PlayerWorkingMode mPlayerMode = PlayerWorkingMode.PlayerWorkingLipSyncMode;
+
+    private String mVideoUrl;
+    private String mVideoHost = "";
+    private int mVideoWidth;
+    private int mVideoHeight;
+
+    private boolean mIsRealTime = false;
+    private Player mPlayer;
+
+    private final PlayerCallback mInternalCallback = new PlayerCallback() {
+        private boolean mNeedSynthesize = false;
+        private boolean mIsBuffering = false;
+
+        @Override
+        public void onAudioRenderingStart() {
+            MyLog.w(TAG, "onAudioRenderingStart");
+        }
+
+        @Override
+        public void onVideoRenderingStart() {
+            MyLog.w(TAG, "onVideoRenderingStart");
+            if (mCallback != null) {
+                mCallback.onPrepared();
+            }
+        }
+
+        @Override
+        public void onStartBuffering() {
+            MyLog.w(TAG, "onStartBuffering");
+            mIsBuffering = true;
+            if (mCallback != null) {
+                mCallback.onInfo(MEDIA_INFO_BUFFERING_START, 0);
+            }
+        }
+
+        @Override
+        public void onStartPlaying() {
+            MyLog.w(TAG, "onStartPlaying");
+            mIsBuffering = false;
+            if (mCallback != null) {
+                mCallback.onInfo(MEDIA_INFO_BUFFERING_END, 0);
+            }
+        }
+
+        @Override
+        public void onPlayerStarted() {
+            MyLog.w(TAG, "onPlayerStarted");
+        }
+
+        @Override
+        public void onPlayerStoped() {
+            MyLog.w(TAG, "onPlayerStoped");
+        }
+
+        @Override
+        public void onPlayerPaused() {
+            MyLog.w(TAG, "onPlayerPaused");
+            mNeedSynthesize = true;
+        }
+
+        @Override
+        public void onPlayerResumed() {
+            MyLog.w(TAG, "onPlayerResumed");
+            if (mCallback != null && mNeedSynthesize) {
+                mNeedSynthesize = false;
+                mCallback.onInfo(mIsBuffering ? MEDIA_INFO_BUFFERING_START : MEDIA_INFO_BUFFERING_END, 0);
+            }
+        }
+
+        @Override
+        public void onSeekCompleted() {
+            MyLog.w(TAG, "onSeekCompleted");
+            if (mCallback != null) {
+                mCallback.onSeekComplete();
+            }
+        }
+
+        @Override
+        public void onStreamEOF() {
+            MyLog.w(TAG, "onStreamEOF");
+            if (mCallback != null) {
+                mCallback.onCompletion();
+            }
+        }
+
+        @Override
+        public void onOpenStreamFailed() {
+            MyLog.w(TAG, "onOpenStreamFailed");
+            if (mCallback != null) {
+                mCallback.onError(MEDIA_ERROR_CONNECT_SERVER_FAILED, 0);
+            }
+        }
+
+        @Override
+        public void onVideoSizeChanged(VideoSize videoSize) {
+            MyLog.w(TAG, "onVideoSizeChanged");
+            if (mCallback != null) {
+                mCallback.onVideoSizeChanged((int) videoSize.video_width, (int) videoSize.video_height);
+            }
+        }
+    };
+
+    @SuppressLint("Wakelock")
+    private void setWakeMode(Context context, int mode) {
+        boolean wasHeld = false;
+        if (mWakeLock != null) {
+            if (mWakeLock.isHeld()) {
+                wasHeld = true;
+                mWakeLock.release();
+            }
+            mWakeLock = null;
+        }
+        PowerManager pm = (PowerManager) context
+                .getSystemService(Context.POWER_SERVICE);
+        mWakeLock = pm.newWakeLock(mode | PowerManager.ON_AFTER_RELEASE,
+                GalileoPlayer.class.getName());
+        mWakeLock.setReferenceCounted(false);
+        if (wasHeld) {
+            mWakeLock.acquire();
+        }
+    }
+
+    @SuppressLint("Wakelock")
+    private void stayAwake(boolean awake) {
+        if (mWakeLock != null) {
+            if (awake && !mWakeLock.isHeld()) {
+                mWakeLock.acquire();
+            } else if (!awake && mWakeLock.isHeld()) {
+                mWakeLock.release();
+            }
+        }
+        mStayAwake = awake;
+        updateSurfaceScreenOn();
+    }
+
+    private void updateSurfaceScreenOn() {
+        if (mSurfaceHolder != null) {
+            mSurfaceHolder.setKeepScreenOn(mScreenOnWhilePlaying && mStayAwake);
+        } else {
+            MyLog.w(TAG, "setScreenOnWhilePlaying true is ineffective without a SurfaceHolder");
+        }
+    }
+
+    public GalileoPlayer(final Context context, final String userId, final String clientIp) {
         ThreadPool.runOnEngine(new Runnable() {
             @Override
             public void run() {
                 GalileoDeviceManager.INSTANCE.init(context);
-                String tag = TextUtils.isEmpty(clientIp) ? "" : userId + ":" + clientIp;
-                mIjkMediaPlayer = new IjkMediaPlayer(context, tag, mode, observer);
-                mIjkMediaPlayer.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFit, GlobalData.screenWidth, GlobalData.screenHeight);
-                int curMargin = (GlobalData.screenHeight - GlobalData.screenWidth * 9 / 16) / 2;
-                int targetMargin = DisplayUtils.dip2px(140);
-                float distance = curMargin - targetMargin;
-                mIjkMediaPlayer.shiftUp(distance * 2 / GlobalData.screenHeight);
+                final String tag = TextUtils.isEmpty(clientIp) ? "" : userId + ":" + clientIp;
+                mPlayer = new Player();
+                mPlayer.constructPlayer(tag, mInternalCallback, mPlayerMode, mTransferObserver);
+                final int screenWidth = GlobalData.screenWidth, screenHeight = GlobalData.screenHeight;
+                mPlayer.setGravity(SurfaceGravityResizeAspectFit, screenWidth, screenHeight);
+                mPlayer.shiftUp((screenHeight - screenWidth * 9 / 16 - DisplayUtils.dip2px(280)) / screenHeight);
+                setWakeMode(context, PowerManager.SCREEN_BRIGHT_WAKE_LOCK);
             }
         }, "GalileoPlayer()");
     }
 
-    @Override
-    public void setBufferTimeMax(final float timeSecond) {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.setBufferTimeMax((long) timeSecond);
-            }
-        }, "setBufferTimeMax");
-    }
-
-    @Override
-    public void reload(final String path, final boolean flushBuffer) {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.reload(path, flushBuffer);
-            }
-        }, "reload");
-    }
-
-    @Override
-    public void setSurface(final Surface surface) {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.setSurface(surface);
-            }
-        }, "setSurface");
-    }
-
-    @Override
-    public void setDisplay(final SurfaceHolder sh) {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.setDisplay(sh);
-            }
-        }, "setDisplay");
-    }
-
-    @Override
-    public void setTimeout(int prepareTimeout, int readTimeout) {
-
-    }
-
-    @Override
-    public void setOnPreparedListener(final IMediaPlayer.OnPreparedListener listener) {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.setOnPreparedListener(listener);
-            }
-        }, "setOnPreparedListener");
-    }
-
-    @Override
-    public void setOnCompletionListener(final IMediaPlayer.OnCompletionListener listener) {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.setOnCompletionListener(listener);
-            }
-        }, "setOnCompletionListener");
-    }
-
-    @Override
-    public void setOnSeekCompleteListener(final IMediaPlayer.OnSeekCompleteListener listener) {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.setOnSeekCompleteListener(listener);
-            }
-        }, "setOnSeekCompleteListener");
-    }
-
-    @Override
-    public void setOnVideoSizeChangedListener(final IMediaPlayer.OnVideoSizeChangedListener listener) {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.setOnVideoSizeChangedListener(listener);
-            }
-        }, "setOnVideoSizeChangedListener");
-    }
-
-    @Override
-    public void setOnErrorListener(final IMediaPlayer.OnErrorListener listener) {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.setOnErrorListener(listener);
-            }
-        }, "setOnErrorListener");
-    }
-
-    @Override
-    public void setOnInfoListener(final IMediaPlayer.OnInfoListener listener) {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.setOnInfoListener(listener);
-            }
-        }, "setOnInfoListener");
-    }
-
-    @Override
-    public void setDataSource(final String path, final String host) throws IOException, IllegalArgumentException, SecurityException, IllegalStateException {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    mIjkMediaPlayer.setDataSource(path, host);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, "setDataSource");
-    }
-
-    @Override
-    public void setScreenOnWhilePlaying(final boolean screenOn) {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.setScreenOnWhilePlaying(screenOn);
-            }
-        }, "setScreenOnWhilePlaying");
-    }
-
-    @Override
-    public void prepareAsync(final boolean realTime) {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.prepareAsync(realTime);
-            }
-        }, "prepareAsync");
+    public void setCallback(IPlayerCallback callback) {
+        mCallback = callback;
     }
 
     @Override
     public int getVideoWidth() {
-        if (mIjkMediaPlayer != null) {
-            return mIjkMediaPlayer.getVideoWidth();
-        }
-        return 0;
+        return mVideoWidth;
     }
 
     @Override
     public int getVideoHeight() {
-        if (mIjkMediaPlayer != null) {
-            return mIjkMediaPlayer.getVideoHeight();
-        }
-        return 0;
-    }
-
-    @Override
-    public void seekTo(final long msec) {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.seekTo(msec);
-            }
-        }, "seekTo");
-    }
-
-    @Override
-    public void start() {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.start();
-            }
-        }, "start");
-    }
-
-    @Override
-    public void reset() {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.reset();
-            }
-        }, "reset");
-    }
-
-    @Override
-    public boolean isPlaying() {
-        return mIjkMediaPlayer != null && mIjkMediaPlayer.isPlaying();
-    }
-
-    @Override
-    public void pause() {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.pause();
-            }
-        }, "pause");
+        return mVideoHeight;
     }
 
     @Override
     public long getDuration() {
-        if (mIjkMediaPlayer != null) {
-            return mIjkMediaPlayer.getDuration();
-        }
-        return 0;
-    }
-
-    @Override
-    public void stop() {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.stop();
-            }
-        }, "stop");
-    }
-
-    @Override
-    public void release() {
-        if (mIjkMediaPlayer != null) {
-            mIjkMediaPlayer.resetListeners();
-        }
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.release();
-                mIjkMediaPlayer = null;
-                GalileoDeviceManager.INSTANCE.destroy();
-            }
-        }, "release");
-    }
-
-    @Override
-    public String getServerAddress() {
-        if (mIjkMediaPlayer != null) {
-            return mIjkMediaPlayer.getDataSource();
-        }
-        return "";
+        final Player player = mPlayer;
+        return player != null ? player.duration() : 0;
     }
 
     @Override
     public long getCurrentPosition() {
-        if (mIjkMediaPlayer != null) {
-            return mIjkMediaPlayer.getCurrentPosition();
-        }
-        return 0;
-    }
-
-    @Override
-    public void setVolume(final float volumeL, final float volumeR) {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.setVolume(volumeL, volumeR);
-            }
-        }, "setVolume");
-    }
-
-    @Override
-    public void setBufferSize(int size) {
-
+        final Player player = mPlayer;
+        return player != null ? player.currentPlaybackTime() : 0;
     }
 
     @Override
     public long getCurrentStreamPosition() {
-        if (mIjkMediaPlayer != null) {
-            return mIjkMediaPlayer.getCurrentStreamPosition();
-        }
-        return 0;
+        final Player player = mPlayer;
+        return player != null ? player.GetCurrentStreamPosition() : 0;
+    }
+
+    @Override
+    public boolean isPlaying() {
+        final Player player = mPlayer;
+        return player != null && !player.isPaused();
+    }
+
+    @Override
+    public void setBufferTimeMax(final float timeInSecond) {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "setBufferTimeMax timeInSecond=" + timeInSecond);
+                mPlayer.setBufferTimeMax((long) timeInSecond);
+            }
+        }, "setBufferTimeMax");
     }
 
     @Override
@@ -322,7 +256,8 @@ public class GalileoPlayer implements IPlayer {
         ThreadPool.runOnEngine(new Runnable() {
             @Override
             public void run() {
-                mIjkMediaPlayer.setGravity(gravity, width, height);
+                MyLog.w(TAG, "setGravity gravity=" + gravity + ", width=" + width + ", height=" + height);
+                mPlayer.setGravity(gravity, width, height);
             }
         }, "setGravity");
     }
@@ -332,33 +267,183 @@ public class GalileoPlayer implements IPlayer {
         ThreadPool.runOnEngine(new Runnable() {
             @Override
             public void run() {
-                mIjkMediaPlayer.shiftUp(ratio);
+                MyLog.w(TAG, "shiftUp ratio=" + ratio);
+                mPlayer.shiftUp(ratio);
             }
         }, "shiftUp");
     }
 
     @Override
-    public long getStreamId() {
-        if (mIjkMediaPlayer != null) {
-            return mIjkMediaPlayer.getStreamId();
-        }
-        return 0;
+    public void setScreenOnWhilePlaying(final boolean screenOn) {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                if (mScreenOnWhilePlaying != screenOn) {
+                    mScreenOnWhilePlaying = screenOn;
+                    updateSurfaceScreenOn();
+                }
+            }
+        }, "setScreenOnWhilePlaying");
     }
 
     @Override
-    public long getAudioSource() {
-        if (mIjkMediaPlayer != null) {
-            return mIjkMediaPlayer.getAudioSource();
-        }
-        return 0;
+    public void setMuteAudio(final boolean isMute) {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "setMuteAudio isMute=" + isMute);
+                if (isMute) {
+                    mPlayer.muteAudio();
+                } else {
+                    mPlayer.unMuteAudio();
+                }
+            }
+        }, "setMuteAudio");
     }
 
-    private String getDefaultPortForUrl(String url) {
-        if (!TextUtils.isEmpty(url) && url.startsWith("http://")) {
-            return ":" + DEFAULT_PORT;
-        } else {
-            return "";
-        }
+    @Override
+    public void setSurface(final Surface surface) {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "setSurface");
+                mSurfaceHolder = null;
+                mPlayer.setVideoSurface(surface);
+                updateSurfaceScreenOn();
+            }
+        }, "setSurface");
+    }
+
+    public void setDisplay(final SurfaceHolder holder) {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "setDisplay");
+                mSurfaceHolder = holder;
+                mPlayer.setVideoSurface(holder != null ? holder.getSurface() : null);
+                updateSurfaceScreenOn();
+            }
+        }, "setDisplay");
+    }
+
+    @Override
+    public void setVideoPath(final String path, final String host) {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "setVideoPath path=" + path + ", host=" + host);
+                mVideoUrl = path;
+                mVideoHost = TextUtils.isEmpty(host) ? "" : host;
+            }
+        }, "setVideoPath");
+    }
+
+    @Override
+    public void prepare(final boolean realTime) {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "prepare realTime=" + realTime);
+                mIsRealTime = realTime;
+                mPlayer.start(mVideoUrl, mVideoHost, mIsRealTime);
+                mPlayer.setSpeaker(true);
+            }
+        }, "prepare");
+    }
+
+    @Override
+    public void start() {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "start");
+                stayAwake(true);
+                mPlayer.resume();
+            }
+        }, "start");
+    }
+
+    @Override
+    public void pause() {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "pause");
+                stayAwake(false);
+                mPlayer.pause();
+            }
+        }, "pause");
+    }
+
+    @Override
+    public void stop() {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "stop");
+                stayAwake(false);
+                mPlayer.stop();
+            }
+        }, "stop");
+    }
+
+    @Override
+    public void reset() {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "reset");
+                stayAwake(false);
+                mPlayer.stop();
+            }
+        }, "reset");
+    }
+
+    @Override
+    public void release() {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "release");
+                stayAwake(false);
+                updateSurfaceScreenOn();
+                mVideoWidth = mVideoHeight = 0;
+                mPlayer.setVideoSurface(null);
+                mPlayer.stop();
+                mPlayer.destructPlayer();
+                GalileoDeviceManager.INSTANCE.destroy();
+            }
+        }, "release");
+    }
+
+    @Override
+    public void seekTo(final long msec) {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "seekTo msec=" + msec);
+                mPlayer.seekTo(msec, PlayerSeekingMode.PlayerSeekingFastMode);
+            }
+        }, "seekTo");
+    }
+
+    @Override
+    public void reconnect() {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "reconnect isRealTime=" + mIsRealTime);
+                if (mIsRealTime) {
+                    mPlayer.reload(mVideoUrl, true);
+                } else {
+                    mPlayer.seekTo(mPlayer.currentPlaybackTime(), PlayerSeekingMode.PlayerSeekingFastMode);
+                }
+            }
+        }, "reconnect");
+    }
+
+    private String getDefaultPortForUrl() {
+        return mVideoUrl != null && mVideoUrl.startsWith("http://") ? ":" + DEFAULT_PORT : "";
     }
 
     private String[] ipListToIpArray(List<String> ipList) {
@@ -368,7 +453,7 @@ public class GalileoPlayer implements IPlayer {
             String[] ipArray = new String[ipSet.size()];
             int i = 0;
             for (String ip : ipSet) {
-                ipArray[i++] = ip.contains(":") ? ip : (ip + getDefaultPortForUrl(mIjkMediaPlayer.getDataSource()));
+                ipArray[i++] = ip.contains(":") ? ip : (ip + getDefaultPortForUrl());
             }
             return ipArray;
         } else {
@@ -381,13 +466,14 @@ public class GalileoPlayer implements IPlayer {
         ThreadPool.runOnEngine(new Runnable() {
             @Override
             public void run() {
+                MyLog.w(TAG, "setIpList");
                 List<String> tmpIpList = null;
                 if (httpIpList != null && !httpIpList.isEmpty() && localIpList != null && !localIpList.isEmpty()) {
                     tmpIpList = new ArrayList<>();
                     tmpIpList.addAll(localIpList);
                     tmpIpList.removeAll(httpIpList);
                 }
-                mIjkMediaPlayer.setIpList(ipListToIpArray(httpIpList), ipListToIpArray(tmpIpList));
+                mPlayer.setIpList(ipListToIpArray(httpIpList), ipListToIpArray(tmpIpList));
             }
         }, "setIpList");
     }

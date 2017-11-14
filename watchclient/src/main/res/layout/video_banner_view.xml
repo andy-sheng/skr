@@ -10,15 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <com.mi.live.engine.player.widget.VideoPlayerTextureView
+    <TextureView
         android:id="@+id/video_player_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/title_area"
         android:layout_centerHorizontal="true"
         app:layout_collapseMode="parallax"
-        app:layout_scrollFlags="scroll"
-        app:real_time="true"/>
+        app:layout_scrollFlags="scroll"/>
 
     <TextView
         android:id="@+id/type_tv"

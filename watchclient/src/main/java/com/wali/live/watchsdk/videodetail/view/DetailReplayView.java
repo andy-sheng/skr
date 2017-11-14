@@ -24,9 +24,10 @@ import java.util.List;
  *
  * @module 详情页底下的回放view
  */
-public class DetailReplayView extends RelativeLayout implements IComponentView<DetailReplayView.IPresenter,
-        DetailReplayView.IView> {
+public class DetailReplayView extends RelativeLayout
+        implements IComponentView<DetailReplayView.IPresenter, DetailReplayView.IView> {
     private static final String TAG = "DetailReplayView";
+
     private TextView mEmptyView;
     private View mLoadingView;
     private RecyclerView mRecyclerView;
@@ -51,6 +52,11 @@ public class DetailReplayView extends RelativeLayout implements IComponentView<D
         }
     }
 
+    @Override
+    public final void setPresenter(@Nullable IPresenter iPresenter) {
+        mPresenter = iPresenter;
+    }
+
     public DetailReplayView(Context context) {
         this(context, null, 0);
     }
@@ -66,6 +72,7 @@ public class DetailReplayView extends RelativeLayout implements IComponentView<D
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.replay_tab_page, this);
+
         mEmptyView = $(R.id.empty_view);
         mLoadingView = $(R.id.loading_view);
         mRecyclerView = $(R.id.recycler_view);
@@ -80,14 +87,6 @@ public class DetailReplayView extends RelativeLayout implements IComponentView<D
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false));
-    }
-
-    @Override
-    public void setPresenter(@Nullable IPresenter iPresenter) {
-        mPresenter = iPresenter;
-        if (mPresenter != null) {
-            mPresenter.pullReplayList();
-        }
     }
 
     @Override

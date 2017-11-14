@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/main_act_container"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_white"
@@ -13,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:layout_alignParentTop="true"
-        android:background="@color/black"/>
+        android:background="@color/black" />
 
     <ImageView
         android:id="@+id/back_iv"
@@ -21,7 +20,7 @@
         android:layout_height="@dimen/view_dimen_80"
         android:layout_marginTop="@dimen/margin_70"
         android:paddingLeft="@dimen/margin_30"
-        android:src="@drawable/topbar_icon_all_back_white_bg"/>
+        android:src="@drawable/topbar_icon_all_back_white_bg" />
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -38,7 +37,7 @@
             <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                app:layout_scrollFlags="scroll|enterAlways|exitUntilCollapsed|snap">
 
                 <!--标题 时间戳 个人资料区域-->
                 <LinearLayout
@@ -70,7 +69,7 @@
                             android:maxLines="2"
                             android:textColor="@color/color_black_trans_80"
                             android:textSize="@dimen/text_size_55"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/timestamp_tv"
@@ -80,7 +79,7 @@
                             android:gravity="center"
                             android:maxLines="1"
                             android:textColor="@color/color_black_trans_50"
-                            android:textSize="@dimen/text_size_40"/>
+                            android:textSize="@dimen/text_size_40" />
 
                         <TextView
                             android:id="@+id/watch_num_tv"
@@ -90,7 +89,7 @@
                             android:layout_marginLeft="13.33dp"
                             android:layout_toRightOf="@id/timestamp_tv"
                             android:textColor="@color/color_black_trans_50"
-                            android:textSize="13.33dp"/>
+                            android:textSize="13.33dp" />
 
                     </RelativeLayout>
 
@@ -107,7 +106,7 @@
                             android:layout_alignParentLeft="true"
                             android:layout_centerInParent="true"
                             android:layout_marginLeft="@dimen/margin_30"
-                            android:src="@drawable/avatar_default_a"/>
+                            android:src="@drawable/avatar_default_a" />
 
                         <RelativeLayout
                             android:layout_width="wrap_content"
@@ -124,7 +123,7 @@
                                 android:ellipsize="end"
                                 android:maxLines="1"
                                 android:textColor="@color/color_black_trans_90"
-                                android:textSize="@dimen/text_size_46"/>
+                                android:textSize="@dimen/text_size_46" />
 
                             <TextView
                                 android:id="@+id/fans_count_tv"
@@ -134,7 +133,7 @@
                                 android:layout_below="@+id/user_name"
                                 android:layout_marginTop="0.67dp"
                                 android:textColor="@color/color_black_trans_50"
-                                android:textSize="13.33dp"/>
+                                android:textSize="13.33dp" />
                         </RelativeLayout>
 
                         <TextView
@@ -148,7 +147,7 @@
                             android:gravity="center"
                             android:text="@string/follow"
                             android:textColor="@color/color_follow_btn"
-                            android:textSize="@dimen/text_size_40"/>
+                            android:textSize="@dimen/text_size_40" />
                     </RelativeLayout>
 
                     <View
@@ -156,7 +155,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0.33dip"
                         android:layout_marginTop="@dimen/margin_40"
-                        android:background="@color/color_black_trans_10"/>
+                        android:background="@color/color_black_trans_10" />
 
                 </LinearLayout>
 
@@ -167,7 +166,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_dimen_130"
                 android:background="@color/white"
-                app:layout_scrollFlags="scroll"/>
+                app:layout_scrollFlags="scroll" />
 
         </android.support.design.widget.AppBarLayout>
 
@@ -181,7 +180,7 @@
             android:fadingEdgeLength="0dp"
             android:overScrollMode="never"
             android:requiresFadingEdge="none"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </android.support.design.widget.CoordinatorLayout>
 
@@ -197,7 +196,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.33dp"
             android:layout_alignParentTop="true"
-            android:background="@color/color_black_trans_10"/>
+            android:background="@color/color_black_trans_10" />
 
         <!--评论输入框-->
         <TextView
@@ -218,18 +217,18 @@
             android:paddingRight="30dip"
             android:textColor="@color/color_black_trans_90"
             android:textColorHint="@color/color_black_trans_30"
-            android:textSize="@dimen/text_size_40"/>
+            android:textSize="@dimen/text_size_40" />
 
         <ImageView
             android:id="@+id/praise_button"
             android:layout_width="@dimen/view_dimen_60"
             android:layout_height="@dimen/view_dimen_60"
+            android:layout_alignWithParentIfMissing="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_60"
-            android:layout_toLeftOf="@+id/share_button"
             android:layout_marginRight="@dimen/margin_70"
-            android:layout_alignWithParentIfMissing="true"
-            android:src="@drawable/feeds_praise"/>
+            android:layout_toLeftOf="@+id/share_button"
+            android:src="@drawable/feeds_praise" />
 
         <ImageView
             android:id="@+id/share_button"
@@ -238,14 +237,14 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_60"
-            android:src="@drawable/feeds_share"/>
+            android:src="@drawable/feeds_share" />
     </RelativeLayout>
 
     <View
         android:id="@+id/touch_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <!--输入框-->
     <com.wali.live.watchsdk.component.view.InputAreaView
@@ -254,6 +253,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
 </RelativeLayout>

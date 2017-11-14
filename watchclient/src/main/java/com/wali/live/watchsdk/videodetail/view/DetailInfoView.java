@@ -66,11 +66,8 @@ public class DetailInfoView implements View.OnClickListener,
     }
 
     @Override
-    public void setPresenter(@Nullable IPresenter iPresenter) {
+    public final void setPresenter(@Nullable IPresenter iPresenter) {
         mPresenter = iPresenter;
-        if (mPresenter != null) {
-            mPresenter.syncFeedsInfo();
-        }
     }
 
     public DetailInfoView(View contentView) {
@@ -161,16 +158,6 @@ public class DetailInfoView implements View.OnClickListener,
     }
 
     public interface IPresenter {
-        /**
-         * 拉取用户信息
-         */
-        void syncUserInfo();
-
-        /**
-         * 拉取Feeds信息
-         */
-        void syncFeedsInfo();
-
         /**
          * 显示个人信息页
          */

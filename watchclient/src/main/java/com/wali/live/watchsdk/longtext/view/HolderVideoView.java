@@ -3,18 +3,20 @@ package com.wali.live.watchsdk.longtext.view;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.TextureView;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.presenter.RxLifeCyclePresenter;
 import com.base.utils.callback.ICommonCallBack;
-import com.wali.live.watchsdk.view.VideoPlayerWrapperView;
+import com.wali.live.component.BaseSdkController;
+import com.wali.live.watchsdk.channel.view.presenter.HeaderVideoPresenter;
 
 /**
  * Created by lan on 2017/9/21.
  *
  * @description 主要是用在recyclerView
  */
-public class HolderVideoView extends VideoPlayerWrapperView {
+public class HolderVideoView extends TextureView {
     public final static int PLAYER_INIT = 0;
     public final static int PLAYER_PLAYING = 1;
     public final static int PLAYER_PAUSE = 2;
@@ -24,15 +26,20 @@ public class HolderVideoView extends VideoPlayerWrapperView {
 
     private VideoPresenter mVideoPresenter;
     private HolderVideoCallback mCallback;
+    private HeaderVideoPresenter mHeaderVideoPresenter;
+    private BaseSdkController mController = new BaseSdkController() {
+        @Override
+        protected String getTAG() {
+            return "HolderVideoView";
+        }
+    };
 
     public HolderVideoView(Context context) {
-        super(context);
-        init();
+        this(context, null);
     }
 
     public HolderVideoView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
+        this(context, attrs, 0);
     }
 
     public HolderVideoView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -45,16 +52,18 @@ public class HolderVideoView extends VideoPlayerWrapperView {
         if (getContext() instanceof BaseSdkActivity) {
             ((BaseSdkActivity) getContext()).addPresent(mVideoPresenter);
         }
+        mHeaderVideoPresenter = new HeaderVideoPresenter(mController, false);
+        mHeaderVideoPresenter.setView(this);
     }
 
     public void setHolderCallback(HolderVideoCallback callback) {
         mCallback = callback;
     }
 
-    @Override
-    public void play(String videoUrl) throws LoadLibraryException {
-        super.play(videoUrl);
+    public void play(String videoUrl) {
         if (!TextUtils.isEmpty(videoUrl)) {
+            mHeaderVideoPresenter.setOriginalStreamUrl(videoUrl);
+            mHeaderVideoPresenter.startVideo();
             mPlayerState = PLAYER_PLAYING;
         }
     }
@@ -64,8 +73,7 @@ public class HolderVideoView extends VideoPlayerWrapperView {
         super.onDetachedFromWindow();
         if (mPlayerState != PLAYER_INIT) {
             mPlayerState = PLAYER_STOP;
-            release();
-
+            mHeaderVideoPresenter.releaseVideo();
             if (mCallback != null) {
                 mCallback.process(mPlayerState);
             }
@@ -77,7 +85,7 @@ public class HolderVideoView extends VideoPlayerWrapperView {
         public void resume() {
             super.resume();
             if (mPlayerState == PLAYER_PAUSE) {
-                HolderVideoView.this.resume();
+                mHeaderVideoPresenter.resumeVideo();
                 mPlayerState = PLAYER_PLAYING;
             }
         }
@@ -86,7 +94,7 @@ public class HolderVideoView extends VideoPlayerWrapperView {
         public void pause() {
             super.pause();
             if (mPlayerState == PLAYER_PLAYING) {
-                HolderVideoView.this.pause();
+                mHeaderVideoPresenter.pauseVideo();
                 mPlayerState = PLAYER_PAUSE;
             }
         }
@@ -96,7 +104,7 @@ public class HolderVideoView extends VideoPlayerWrapperView {
             super.destroy();
             if (mPlayerState != PLAYER_INIT) {
                 mPlayerState = PLAYER_STOP;
-                HolderVideoView.this.release();
+                mHeaderVideoPresenter.releaseVideo();
             }
         }
     }

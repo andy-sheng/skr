@@ -12,18 +12,18 @@ import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.videodetail.view.DetailIntroduceView;
 import com.wali.live.watchsdk.videodetail.view.DetailCommentView;
+import com.wali.live.watchsdk.videodetail.view.DetailIntroduceView;
 import com.wali.live.watchsdk.videodetail.view.DetailReplayView;
 import com.wali.live.watchsdk.videodetail.view.DetailTabView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.wali.live.component.BaseSdkController.MSG_COMMENT_TOTAL_CNT;
 import static com.wali.live.component.BaseSdkController.MSG_FOLD_INFO_AREA;
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_FEEDS_DETAIL;
 import static com.wali.live.component.BaseSdkController.MSG_REPLAY_TOTAL_CNT;
+import static com.wali.live.component.BaseSdkController.MSG_UPDATE_COMMENT_CNT;
+import static com.wali.live.component.BaseSdkController.MSG_UPDATE_TAB_TYPE;
 
 /**
  * Created by yangli on 2017/06/02.
@@ -36,8 +36,8 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
 
     private RoomBaseDataModel mMyRoomData;
 
-    private final DetailCommentPresenter mCommentPresenter;
-    private final DetailReplayPresenter mReplayPresenter;
+    private DetailCommentPresenter mCommentPresenter;
+    private DetailReplayPresenter mReplayPresenter;
 
     private DetailCommentView mCommentView;
     private DetailReplayView mReplayView;
@@ -56,53 +56,76 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
             @NonNull RoomBaseDataModel roomData) {
         super(controller);
         mMyRoomData = roomData;
-        mCommentPresenter = new DetailCommentPresenter(mController, mMyRoomData);
-        mReplayPresenter = new DetailReplayPresenter(mController, mMyRoomData);
     }
 
     @Override
     public void startPresenter() {
-        registerAction(MSG_COMMENT_TOTAL_CNT);
+        super.startPresenter();
+        registerAction(MSG_UPDATE_COMMENT_CNT);
         registerAction(MSG_REPLAY_TOTAL_CNT);
         registerAction(MSG_FOLD_INFO_AREA);
-        registerAction(MSG_PLAYER_FEEDS_DETAIL);
-        mCommentPresenter.startPresenter();
-        mReplayPresenter.startPresenter();
+        registerAction(MSG_UPDATE_TAB_TYPE);
+        if (mCommentPresenter != null) {
+            mCommentPresenter.startPresenter();
+        }
+        if (mReplayPresenter != null) {
+            mReplayPresenter.startPresenter();
+        }
     }
 
     @Override
     public void stopPresenter() {
         super.stopPresenter();
-        mCommentPresenter.stopPresenter();
-        mReplayPresenter.stopPresenter();
+        if (mCommentPresenter != null) {
+            mCommentPresenter.stopPresenter();
+        }
+        if (mReplayPresenter != null) {
+            mReplayPresenter.stopPresenter();
+        }
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        mCommentPresenter.destroy();
-        mReplayPresenter.destroy();
+        if (mCommentPresenter != null) {
+            mCommentPresenter.destroy();
+        }
+        if (mReplayPresenter != null) {
+            mReplayPresenter.destroy();
+        }
     }
 
-    @Override
-    public void syncTabPageList(Context context) {
+    private void setupCommentView(Context context) {
+        if (mCommentView == null) {
+            mCommentView = new DetailCommentView(context);
+            mCommentPresenter = new DetailCommentPresenter(mController);
+            mCommentPresenter.setView(mCommentView.getViewProxy());
+            mCommentView.setPresenter(mCommentPresenter);
+            mCommentPresenter.startPresenter();
+            mCommentPresenter.onNewFeedId(mMyRoomData.getRoomId(), mMyRoomData.getUid());
+        }
+    }
+
+    private void setupReplayView(Context context) {
+        if (mReplayView == null) {
+            mReplayView = new DetailReplayView(context);
+            mReplayPresenter = new DetailReplayPresenter(mController, mMyRoomData);
+            mReplayView.setMyRoomData(mMyRoomData);
+            mReplayPresenter.setView(mReplayView.getViewProxy());
+            mReplayView.setPresenter(mReplayPresenter);
+            mReplayPresenter.startPresenter();
+            mReplayPresenter.pullReplayList();
+        }
+    }
+
+    private void syncTabPageList(Context context) {
         MyLog.w(TAG, "synTabPageList");
         List<Pair<String, ? extends View>> tabPageList = new ArrayList<>();
         if (mIsReplay) {
-            if (mCommentView == null) {
-                mCommentView = new DetailCommentView(context);
-                mCommentPresenter.setView(mCommentView.getViewProxy());
-                mCommentView.setPresenter(mCommentPresenter);
-            }
+            setupCommentView(context);
             tabPageList.add(Pair.create(String.format(context.getResources().getString(
                     R.string.feeds_detail_label_comment), String.valueOf(mCommentCnt)), mCommentView));
-
-            if (mReplayView == null) {
-                mReplayView = new DetailReplayView(context);
-                mReplayView.setMyRoomData(mMyRoomData);
-                mReplayPresenter.setView(mReplayView.getViewProxy());
-                mReplayView.setPresenter(mReplayPresenter);
-            }
+            setupReplayView(context);
             tabPageList.add(Pair.create(String.format(context.getResources().getString(
                     R.string.feeds_detail_label_replay), String.valueOf(mReplayCnt)), mReplayView));
         } else {
@@ -111,12 +134,7 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
             }
             tabPageList.add(Pair.create(context.getResources().getString(
                     R.string.feeds_detail_label_detail), mDetailIntroduceView));
-
-            if (mCommentView == null) {
-                mCommentView = new DetailCommentView(context);
-                mCommentPresenter.setView(mCommentView.getViewProxy());
-                mCommentView.setPresenter(mCommentPresenter);
-            }
+            setupCommentView(context);
             tabPageList.add(Pair.create(String.format(context.getResources().getString(
                     R.string.feeds_detail_label_comment), String.valueOf(mCommentCnt)), mCommentView));
         }
@@ -130,21 +148,24 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
             return false;
         }
         switch (event) {
-            case MSG_COMMENT_TOTAL_CNT:
-                mCommentCnt = (int) params.getItem(0);
-                mView.updateCommentTotalCnt(mCommentCnt, mIsReplay);
-                break;
-            case MSG_REPLAY_TOTAL_CNT:
+            case MSG_UPDATE_COMMENT_CNT: {
+                mCommentCnt = params.getItem(0);
+                mView.onUpdateCommentTotalCnt(mCommentCnt, mIsReplay);
+                return true;
+            }
+            case MSG_REPLAY_TOTAL_CNT: {
                 if (!mIsReplay) {
                     return false;
                 }
-                mReplayCnt = (int) params.getItem(0);
-                mView.updateReplayTotalCnt(mReplayCnt);
-                break;
-            case MSG_FOLD_INFO_AREA:
+                mReplayCnt = params.getItem(0);
+                mView.onUpdateReplayTotalCnt(mReplayCnt);
+                return true;
+            }
+            case MSG_FOLD_INFO_AREA: {
                 mView.onFoldInfoArea();
-                break;
-            case MSG_PLAYER_FEEDS_DETAIL:
+                return true;
+            }
+            case MSG_UPDATE_TAB_TYPE: {
                 DetailInfoPresenter.FeedsInfo feedsInfo = params.getItem(0);
                 if (feedsInfo == null) {
                     return false;
@@ -152,13 +173,13 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
                 if (!feedsInfo.isReplay) {
                     mIsReplay = feedsInfo.isReplay;
                     syncTabPageList(GlobalData.app());
-                    //防止详情评论拉取失败tab上显示回放以及回放的数目
-                    mView.updateCommentTotalCnt(mCommentCnt, mIsReplay);
+                    mView.onUpdateCommentTotalCnt(mCommentCnt, mIsReplay); // 防止详情评论拉取失败时，Tab上错误显示回放及回放数目
                     mDetailIntroduceView.setData(feedsInfo.title, feedsInfo.description);
                 } else {
                     syncTabPageList(GlobalData.app());
                 }
-                break;
+                return true;
+            }
             default:
                 break;
         }

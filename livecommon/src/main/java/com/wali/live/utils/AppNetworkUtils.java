@@ -48,7 +48,7 @@ public class AppNetworkUtils {
                     }
                 });
                 futureTaskList.add(task);
-                new Thread(task).start();
+                new Thread(task, "horseRunner").start();
             }
         }
 

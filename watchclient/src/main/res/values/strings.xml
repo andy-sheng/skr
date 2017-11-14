@@ -210,7 +210,6 @@
     <string name="detail_text">Details</string>
 
     <string name="currently_none_message">No new messages</string>
-
     <string name="message_interact_notify">Notifications</string>
     <string name="msg_send_failed_not_follow_each_other">Couldn\'t send, follow each other to send private messages</string>
     <string name="msg_send_failed_not_text_too_larger">Couldn\'t send, message is too long</string>
@@ -232,6 +231,10 @@
     <string name="unblock">Remove</string>
     <string name="choose_talk_title">Select friends</string>
     <string name="message_not_supported">[This message type isn\'t supported]</string>
+
+    <string name="third_video_player_label">小米直播播放器</string>
+    <string name="live_offline_no_network">Can\'t connect to the network</string>
+
     <string name="vfan_me">My fan club</string>
 
     <string name="vfans_open">Create fan club</string>
