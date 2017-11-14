@@ -1,6 +1,7 @@
 package com.mi.live.data.query.mapper;
 
 import com.base.log.MyLog;
+import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.push.model.BarrageMsgExt;
 import com.mi.live.data.query.model.EnterRoomInfo;
@@ -99,8 +100,15 @@ public class RoomDataMapper {
         mMyRoomData.setCanSpeak(!enterRoomInfo.isBanSpeak());
         mMyRoomData.setMsgRule(enterRoomInfo.getMessageRule());
 
-        // TODO 暂时注掉，等以后处理再加回来，以外面进房间的liveType为准
-        // mMyRoomData.setLiveType(enterRoomInfo.getType());
+        /**
+         * TODO
+         * @notice 以外面进房间的liveType为准
+         * 但是如果liveType不为0，就设置进去
+         * 类型不一致应该是要做保护的，这里先简单赋值
+         */
+        if (enterRoomInfo.getType() != LiveManager.TYPE_LIVE_PUBLIC) {
+            mMyRoomData.setLiveType(enterRoomInfo.getType());
+        }
         MyLog.d("RoomDataMapper", "ignore liveType=" + enterRoomInfo.getType() + "@" + mMyRoomData.hashCode());
         mMyRoomData.setShareUrl(enterRoomInfo.getShareUrl());
 
