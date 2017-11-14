@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.fans.model.item;
+package com.wali.live.watchsdk.fans.model.type;
 
 import com.wali.live.watchsdk.lit.recycler.viewmodel.BaseViewModel;
 

@@ -21,19 +21,18 @@ import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.BackTitleBar;
+import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
-import com.wali.live.watchsdk.fans.model.type.GroupMemType;
 import com.wali.live.watchsdk.fans.presenter.FansGroupDetailPresenter;
 import com.wali.live.watchsdk.fans.presenter.IFansGroupDetailView;
 import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
 import com.wali.live.watchsdk.fans.view.FansProgressView;
+import com.wali.live.watchsdk.fans.view.FansTaskView;
 
 import java.util.List;
-
-import rx.Observable;
 
 /**
  * Created by lan on 2017/11/9.
@@ -62,6 +61,8 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
     private TextView mMyMedalTv;
     private TextView mFansPetValueTv;
     private TextView mFansRankTv;
+
+    private FansTaskView mTaskView;
 
     private FansGroupDetailPresenter mFansGroupDetailPresenter;
 
@@ -118,6 +119,8 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
         mFansPetValueTv = $(R.id.vfan_value_tv);
         mFansRankTv = $(R.id.vfan_rank_tv);
 
+        mTaskView = $(R.id.task_view);
+
         initPresenter();
     }
 
@@ -139,10 +142,11 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
 
         updateBasicArea();
         updateMyArea();
+        updateTaskArea();
     }
 
     private void updateBasicArea() {
-        HttpImage coverImage = new HttpImage(AvatarUtils.getAvatarUrlByUid(mGroupDetailModel.getZuid(), 0));
+        HttpImage coverImage = new HttpImage(AvatarUtils.getAvatarUrlByUid(mGroupDetailModel.getZuid(), 0l));
         coverImage.setIsCircle(true);
         coverImage.setLoadingDrawable(GlobalData.app().getResources().getDrawable(R.drawable.avatar_default_a));
         coverImage.setFailureDrawable(GlobalData.app().getResources().getDrawable(R.drawable.avatar_default_a));
@@ -159,7 +163,7 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
     }
 
     private void updateMyArea() {
-        if (mGroupDetailModel.getMemType() == GroupMemType.GROUP_MEM_TYPE_NONE) {
+        if (mGroupDetailModel.getMemType() == VFansCommonProto.GroupMemType.NONE.getNumber()) {
             //没有入团的
             mMyInfoArea.setVisibility(View.GONE);
             mUnJoinGroupIv.setVisibility(View.VISIBLE);
@@ -199,26 +203,33 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
     }
 
     private void addTopThreeImage(BaseImageView iv, FansMemberModel memberInfo) {
-        HttpImage httpImage = new HttpImage(AvatarUtils.getAvatarUrlByUid(memberInfo.getUuid(), memberInfo.getAvatar()));
-        httpImage.setHeight(DisplayUtils.dip2px(18));
-        httpImage.setWidth(DisplayUtils.dip2px(18));
-        httpImage.setLoadingDrawable(GlobalData.app().getResources().getDrawable(R.drawable.avatar_default_a));
-        httpImage.setFailureDrawable(GlobalData.app().getResources().getDrawable(R.drawable.avatar_default_a));
-        httpImage.setIsCircle(true);
-        FrescoWorker.loadImage(iv, httpImage);
+        HttpImage image = new HttpImage(AvatarUtils.getAvatarUrlByUid(memberInfo.getUuid(), memberInfo.getAvatar()));
+        image.setHeight(DisplayUtils.dip2px(18));
+        image.setWidth(DisplayUtils.dip2px(18));
+        image.setLoadingDrawable(GlobalData.app().getResources().getDrawable(R.drawable.avatar_default_a));
+        image.setFailureDrawable(GlobalData.app().getResources().getDrawable(R.drawable.avatar_default_a));
+        image.setIsCircle(true);
+        FrescoWorker.loadImage(iv, image);
     }
 
     private void addPlaceHolderImage(BaseImageView iv) {
-        ResImage httpImage = new ResImage(R.drawable.pet_group_placeholder);
-        httpImage.setHeight(DisplayUtils.dip2px(18));
-        httpImage.setWidth(DisplayUtils.dip2px(18));
-        httpImage.setIsCircle(true);
-        FrescoWorker.loadImage(iv, httpImage);
+        ResImage image = new ResImage(R.drawable.pet_group_placeholder);
+        image.setHeight(DisplayUtils.dip2px(18));
+        image.setWidth(DisplayUtils.dip2px(18));
+        image.setIsCircle(true);
+        FrescoWorker.loadImage(iv, image);
+    }
+
+    private void updateTaskArea() {
+        mTaskView.setGroupDetailModel(mGroupDetailModel);
     }
 
     @Override
-    public <T> Observable.Transformer<T, T> bindLifecycle() {
-        return bindUntilEvent();
+    public void onDestroy() {
+        super.onDestroy();
+        if (mTaskView != null) {
+            mTaskView.destroy();
+        }
     }
 
     @Override

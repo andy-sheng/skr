@@ -1,88 +1,64 @@
 package com.wali.live.watchsdk.fans.view;
 
 import android.content.Context;
-import android.support.annotation.IdRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Pair;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
+import com.base.mvp.specific.RxRelativeLayout;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.fans.adapter.FansTaskAdapter;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
-import com.wali.live.watchsdk.fans.model.task.GroupJobModel;
-import com.wali.live.watchsdk.fans.model.task.LimitGroupJobModel;
 import com.wali.live.watchsdk.fans.presenter.FansTaskPresenter;
-
-import java.util.ArrayList;
-
-import rx.Observable;
+import com.wali.live.watchsdk.fans.presenter.IFansTaskView;
+import com.wali.live.watchsdk.fans.task.adapter.FansTaskAdapter;
+import com.wali.live.watchsdk.fans.task.model.GroupJobListModel;
 
 /**
- * Created by zyh on 2017/11/13.
- *
- * @module 粉丝任务页面
+ * Created by anping on 17/6/6.
  */
 
-public class FansTaskView extends RelativeLayout implements FansTaskPresenter.IView {
-    private final String TAG = "FansTaskView";
-    private RecyclerView mRecyclerView;
-    private FansTaskAdapter mFansTaskAdapter;
-    private FansTaskPresenter mPresenter;
+public class FansTaskView extends RxRelativeLayout implements IFansTaskView {
+    protected FansTaskPresenter mTaskPresenter;
 
-    private FansGroupDetailModel mFansGroupDetailModel;
+    private RecyclerView mTaskRv;
+    private FansTaskAdapter mAdapter;
 
-    private <V extends View> V $(@IdRes int resId) {
-        return (V) findViewById(resId);
-    }
+    // 目前只需要detailModel里的vipLevel
+    private FansGroupDetailModel mGroupDetailModel;
 
     public FansTaskView(Context context) {
-        this(context, null);
+        super(context);
+        init();
     }
 
     public FansTaskView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        init();
     }
 
     public FansTaskView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initView();
+        init();
     }
 
-    public void setData(FansGroupDetailModel groupDetailModel) {
-        mFansGroupDetailModel = groupDetailModel;
-        initPresenter();
+    private void init() {
+        inflate(getContext(), R.layout.fans_task_view, this);
+
+        mTaskRv = $(R.id.task_rv);
+        mTaskRv.setLayoutManager(new LinearLayoutManager(getContext()));
+        mAdapter = new FansTaskAdapter();
+        mTaskRv.setAdapter(mAdapter);
+
+        mTaskPresenter = new FansTaskPresenter(this);
     }
 
-    private void initView() {
-        inflate(getContext(), R.layout.vfans_task, this);
-        mRecyclerView = $(R.id.recycler_view);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        mFansTaskAdapter = new FansTaskAdapter();
-        mRecyclerView.setAdapter(mFansTaskAdapter);
-    }
-
-    private void initPresenter() {
-        if (mPresenter == null) {
-            mPresenter = new FansTaskPresenter(this);
-        }
-        mPresenter.getTaskFromServer(mFansGroupDetailModel.getZuid());
+    public void setGroupDetailModel(FansGroupDetailModel model) {
+        mGroupDetailModel = model;
+        mTaskPresenter.getTaskList(model.getZuid());
     }
 
     @Override
-    public <T> Observable.Transformer<T, T> bindLifecycle() {
-        return null;
-    }
-
-    @Override
-    public void setDataList(Pair pair) {
-        mFansTaskAdapter.setList((ArrayList<GroupJobModel>) pair.first,
-                (ArrayList<LimitGroupJobModel>) pair.second,
-                mFansGroupDetailModel.getVipLevel()
-        );
+    public void setGroupTaskList(GroupJobListModel model) {
+        mAdapter.setDataList(model, mGroupDetailModel);
     }
 }

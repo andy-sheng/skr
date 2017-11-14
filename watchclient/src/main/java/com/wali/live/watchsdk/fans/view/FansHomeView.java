@@ -20,12 +20,12 @@ import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.account.UserAccountManager;
+import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.FansPrivilegeFragment;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
-import com.wali.live.watchsdk.fans.model.type.GroupMemType;
 import com.wali.live.watchsdk.fans.presenter.FansHomePresenter;
 import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
 import com.wali.live.watchsdk.view.EmptyView;
@@ -198,7 +198,7 @@ public class FansHomeView extends RelativeLayout implements View.OnClickListener
         AvatarUtils.loadAvatarByUidTs(((BaseImageView) $(R.id.cover_iv)), mGroupDetailModel.getZuid(),
                 0, true);
         if (!mIsAnchor) {
-            if (mGroupDetailModel.getMemType() == GroupMemType.GROUP_MEM_TYPE_NONE) {
+            if (mGroupDetailModel.getMemType() == VFansCommonProto.GroupMemType.NONE_VALUE) {
                 mMyInfoArea.setVisibility(GONE);
                 mJoinBannerIv.setVisibility(VISIBLE);
             } else {

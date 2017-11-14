@@ -6,6 +6,7 @@ import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.base.mvp.IRxView;
 import com.base.view.LoadDataView;
 import com.trello.rxlifecycle.FragmentEvent;
 import com.trello.rxlifecycle.RxLifecycle;
@@ -16,25 +17,13 @@ import rx.subjects.BehaviorSubject;
 /**
  * Created by chengsimin on 16/2/26.
  */
-public abstract class RxFragment extends BaseFragment implements LoadDataView {
+public abstract class RxFragment extends BaseFragment implements IRxView, LoadDataView {
     private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
-
-    @NonNull
-    @CheckResult
-    public final Observable<FragmentEvent> lifecycle() {
-        return lifecycleSubject.asObservable();
-    }
 
     @NonNull
     @CheckResult
     public final <T> Observable.Transformer<T, T> bindUntilEvent(@NonNull FragmentEvent event) {
         return RxLifecycle.bindUntilFragmentEvent(lifecycleSubject, event);
-    }
-
-    @NonNull
-    @CheckResult
-    public final <T> Observable.Transformer<T, T> bindToLifecycle() {
-        return RxLifecycle.bindFragment(lifecycleSubject);
     }
 
     @Override
@@ -108,9 +97,12 @@ public abstract class RxFragment extends BaseFragment implements LoadDataView {
     }
 
     @NonNull
-    @Override
     public <T> Observable.Transformer<T, T> bindUntilEvent() {
         return bindUntilEvent(FragmentEvent.DESTROY_VIEW);
+    }
+
+    public <T> Observable.Transformer<T, T> bindLifecycle() {
+        return bindUntilEvent();
     }
 
     @Override

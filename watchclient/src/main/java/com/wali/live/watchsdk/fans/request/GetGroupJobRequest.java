@@ -7,22 +7,19 @@ import com.mi.live.data.milink.command.MiLinkCommand;
 import com.wali.live.proto.VFansProto;
 
 /**
- * Created by zyh on 2017/11/13.
- *
- * @module 获取粉丝群任务列表
+ * Created by lan on 2017/11/13.
  */
-public class GetGroupJobListRequest extends BaseRequest {
-
-    public GetGroupJobListRequest(long zuid) {
-        super(MiLinkCommand.COMMAND_VFANS_JOB_LIST, "GetGroupJobListRequest");
+public class GetGroupJobRequest extends BaseRequest {
+    public GetGroupJobRequest(long zuid) {
+        super(MiLinkCommand.COMMAND_VFANS_JOB_LIST, "getGroupJob");
         build(zuid);
     }
 
     private void build(long zuid) {
-        VFansProto.GroupJobListReq.Builder builder = VFansProto.GroupJobListReq.newBuilder()
+        mRequest = VFansProto.GroupJobListReq.newBuilder()
+                .setUuid(UserAccountManager.getInstance().getUuidAsLong())
                 .setZuid(zuid)
-                .setUuid(UserAccountManager.getInstance().getUuidAsLong());
-        mRequest = builder.build();
+                .build();
     }
 
     @Override

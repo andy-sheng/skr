@@ -13,21 +13,19 @@ import com.base.view.BackTitleBar;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.adapter.FansGroupAdapter;
 import com.wali.live.watchsdk.fans.model.FansGroupListModel;
-import com.wali.live.watchsdk.fans.presenter.FansGroupPresenter;
-import com.wali.live.watchsdk.fans.presenter.IFansGroupView;
-
-import rx.Observable;
+import com.wali.live.watchsdk.fans.presenter.FansGroupListPresenter;
+import com.wali.live.watchsdk.fans.presenter.IFansGroupListView;
 
 /**
  * Created by lan on 17-6-15.
  */
-public class FansGroupFragment extends RxFragment implements View.OnClickListener, IFansGroupView {
+public class FansGroupListFragment extends RxFragment implements View.OnClickListener, IFansGroupListView {
     private BackTitleBar mTitleBar;
 
     private RecyclerView mFansGroupRv;
     private FansGroupAdapter mFansGroupAdapter;
 
-    private FansGroupPresenter mFansGroupPresenter;
+    private FansGroupListPresenter mFansGroupListPresenter;
 
     @Override
     public int getRequestCode() {
@@ -55,8 +53,8 @@ public class FansGroupFragment extends RxFragment implements View.OnClickListene
     }
 
     private void initPresenter() {
-        mFansGroupPresenter = new FansGroupPresenter(this);
-        mFansGroupPresenter.getFansGroupList();
+        mFansGroupListPresenter = new FansGroupListPresenter(this);
+        mFansGroupListPresenter.getFansGroupList();
     }
 
     @Override
@@ -66,11 +64,6 @@ public class FansGroupFragment extends RxFragment implements View.OnClickListene
         } else {
             mFansGroupAdapter.addDataList(model);
         }
-    }
-
-    @Override
-    public <T> Observable.Transformer<T, T> bindLifecycle() {
-        return bindUntilEvent();
     }
 
     @Override
@@ -95,7 +88,7 @@ public class FansGroupFragment extends RxFragment implements View.OnClickListene
     }
 
     public static void open(BaseActivity activity) {
-        FragmentNaviUtils.addFragmentToBackStack(activity, R.id.main_act_container, FansGroupFragment.class,
+        FragmentNaviUtils.addFragmentToBackStack(activity, R.id.main_act_container, FansGroupListFragment.class,
                 null, true, R.anim.slide_right_in, R.anim.slide_right_out);
     }
 }

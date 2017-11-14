@@ -1,7 +1,7 @@
 package com.wali.live.watchsdk.fans.model.item.special;
 
-import com.wali.live.watchsdk.fans.model.item.BaseTypeModel;
 import com.wali.live.watchsdk.fans.model.item.ViewType;
+import com.wali.live.watchsdk.fans.model.type.BaseTypeModel;
 
 /**
  * Created by lan on 2017/11/8.

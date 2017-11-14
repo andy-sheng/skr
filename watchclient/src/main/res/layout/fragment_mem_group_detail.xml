@@ -40,7 +40,6 @@
                     android:textColor="@color/color_black_trans_40"
                     android:textSize="@dimen/margin_32"/>
 
-
                 <com.base.image.fresco.BaseImageView
                     android:id="@+id/cover_iv"
                     android:layout_width="@dimen/margin_120"
@@ -516,6 +515,17 @@
                     </LinearLayout>
                 </RelativeLayout>
             </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_60"
+                android:background="@color/color_f2f2f2"/>
+
+            <com.wali.live.watchsdk.fans.view.FansTaskView
+                android:id="@+id/task_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

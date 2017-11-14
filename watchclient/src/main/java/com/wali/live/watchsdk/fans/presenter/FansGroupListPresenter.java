@@ -16,11 +16,11 @@ import rx.schedulers.Schedulers;
 /**
  * Created by lan on 2017/11/7.
  */
-public class FansGroupPresenter extends BaseRxPresenter<IFansGroupView> {
+public class FansGroupListPresenter extends BaseRxPresenter<IFansGroupListView> {
     private int mStart = 0;
     private boolean mHasMore = true;
 
-    public FansGroupPresenter(IFansGroupView view) {
+    public FansGroupListPresenter(IFansGroupListView view) {
         super(view);
     }
 

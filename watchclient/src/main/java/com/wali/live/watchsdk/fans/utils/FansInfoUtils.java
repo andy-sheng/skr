@@ -1,7 +1,7 @@
 package com.wali.live.watchsdk.fans.utils;
 
+import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.fans.model.type.GroupMemType;
 
 /**
  * Created by lan on 2017/11/8.
@@ -69,25 +69,25 @@ public class FansInfoUtils {
         return id;
     }
 
-    public static int getMemberRoleStringByType(int memberType){
+    public static int getMemberRoleStringByType(int memberType) {
         int result = R.string.vfan_member_role_none;
-        switch (memberType){
-            case GroupMemType.GROUP_MEM_TYPE_OWNER:
+        switch (memberType) {
+            case VFansCommonProto.GroupMemType.OWNER_VALUE:
                 result = R.string.vfan_member_role_owner;
                 break;
-            case GroupMemType.GROUP_MEM_TYPE_ADMIN:
+            case VFansCommonProto.GroupMemType.ADMIN_VALUE:
                 result = R.string.vfan_member_role_admin;
                 break;
-            case GroupMemType.GROUP_MEM_TYPE_DEPUTY_ADMIN:
+            case VFansCommonProto.GroupMemType.DEPUTY_ADMIN_VALUE:
                 result = R.string.vfan_member_role_deputy_admin;
                 break;
-            case GroupMemType.GROUP_MEM_TYPE_MASS:
+            case VFansCommonProto.GroupMemType.MASS_VALUE:
                 result = R.string.vfan_member_role_mass;
                 break;
-            case GroupMemType.GROUP_MEM_TYPE_NONE:
+            case VFansCommonProto.GroupMemType.NONE_VALUE:
                 result = R.string.vfan_member_role_none;
                 break;
-            case GroupMemType.GROUP_MEM_TYPE_BLACK:
+            case VFansCommonProto.GroupMemType.BLACK_VALUE:
                 result = R.string.vfan_member_role_black;
                 break;
         }

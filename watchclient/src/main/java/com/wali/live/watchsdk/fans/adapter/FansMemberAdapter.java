@@ -10,12 +10,12 @@ import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.HttpImage;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.account.MyUserInfoManager;
+import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
 import com.wali.live.watchsdk.component.adapter.ClickItemAdapter;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
-import com.wali.live.watchsdk.fans.model.type.GroupMemType;
 import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
 
 import static com.wali.live.component.view.Utils.$click;
@@ -150,7 +150,7 @@ public class FansMemberAdapter extends ClickItemAdapter<BaseViewModel,
                     break;
             }
 
-            if (memberInfo.getMemType() == GroupMemType.GROUP_MEM_TYPE_OWNER) {
+            if (memberInfo.getMemType() == VFansCommonProto.GroupMemType.OWNER_VALUE) {
                 mMyExpTitle.setText("");
                 mMyExpTitle.setBackgroundResource(FansInfoUtils.getImageResourcesByCharmLevelValue(mGroupCharmLevel));
                 mPetExpValueTv.setVisibility(View.GONE);

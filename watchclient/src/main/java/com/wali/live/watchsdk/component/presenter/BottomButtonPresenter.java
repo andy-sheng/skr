@@ -14,7 +14,7 @@ import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
-import com.wali.live.watchsdk.fans.FansGroupFragment;
+import com.wali.live.watchsdk.fans.FansGroupListFragment;
 import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
 
 import org.greenrobot.eventbus.EventBus;
@@ -123,7 +123,7 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
 
     @Override
     public void showVipFansView() {
-        FansGroupFragment.open((BaseActivity) mView.getRealView().getContext());
+        FansGroupListFragment.open((BaseActivity) mView.getRealView().getContext());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

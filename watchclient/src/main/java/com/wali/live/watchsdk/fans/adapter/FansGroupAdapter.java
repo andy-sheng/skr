@@ -9,10 +9,10 @@ import com.wali.live.watchsdk.fans.holder.CreateFansGroupHolder;
 import com.wali.live.watchsdk.fans.holder.MemFansGroupHolder;
 import com.wali.live.watchsdk.fans.holder.special.HintMemGroupHolder;
 import com.wali.live.watchsdk.fans.model.FansGroupListModel;
-import com.wali.live.watchsdk.fans.model.item.BaseTypeModel;
 import com.wali.live.watchsdk.fans.model.item.MemFansGroupModel;
 import com.wali.live.watchsdk.fans.model.item.ViewType;
 import com.wali.live.watchsdk.fans.model.item.special.HintMemGroupModel;
+import com.wali.live.watchsdk.fans.model.type.BaseTypeModel;
 import com.wali.live.watchsdk.lit.recycler.adapter.EmptyRecyclerAdapter;
 import com.wali.live.watchsdk.lit.recycler.holder.BaseHolder;
 
@@ -44,7 +44,7 @@ public class FansGroupAdapter extends EmptyRecyclerAdapter {
         List<MemFansGroupModel> memGroupList = model.getMemFansGroupModelList();
         if (memGroupList.size() > 0) {
             mDataList.add(new HintMemGroupModel());
-            mDataList.addAll(model.getMemFansGroupModelList());
+            mDataList.addAll(memGroupList);
         }
         notifyDataSetChanged();
     }

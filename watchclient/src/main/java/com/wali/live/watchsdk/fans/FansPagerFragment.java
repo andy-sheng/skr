@@ -23,8 +23,6 @@ import com.wali.live.watchsdk.fans.view.FansHomeView;
 import com.wali.live.watchsdk.fans.view.FansMemberView;
 import com.wali.live.watchsdk.fans.view.FansTaskView;
 
-import rx.Observable;
-
 import static com.wali.live.component.view.Utils.$component;
 
 /**
@@ -34,8 +32,6 @@ import static com.wali.live.component.view.Utils.$component;
  */
 
 public class FansPagerFragment extends RxFragment implements View.OnClickListener, FansPagerPresenter.IView {
-    private final String TAG = "FansPagerFragment";
-
     private static final String EXTRA_ANCHOR_ID = "extra_anchor_id";
     private static final String EXTRA_ROOMID = "extra_roomId";
     private static final String EXTRA_ANCHOR_NAME = "extra_anchor_name";
@@ -190,15 +186,10 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
     }
 
     @Override
-    public <T> Observable.Transformer<T, T> bindLifecycle() {
-        return bindUntilEvent();
-    }
-
-    @Override
     public void setGroupDetail(FansGroupDetailModel groupDetailModel) {
         mGroupDetailModel = groupDetailModel;
         mFansHomeView.setData(mAnchorName, mGroupDetailModel);
-        mFansTaskView.setData(mGroupDetailModel);
+        mFansTaskView.setGroupDetailModel(mGroupDetailModel);
     }
 
     public static void openFragment(BaseSdkActivity activity, String anchorName,

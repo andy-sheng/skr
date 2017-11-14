@@ -1,25 +1,29 @@
-package com.wali.live.watchsdk.fans.model.task;
+package com.wali.live.watchsdk.fans.task.model;
 
 import com.wali.live.proto.VFansCommonProto;
-import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
+import com.wali.live.watchsdk.fans.model.type.BaseTypeModel;
 
 /**
- * Created by zyh on 2017/11/13.
+ * Created by lan on 2017/11/13.
  */
-public class GroupJobModel extends BaseViewModel {
+public class GroupJobModel extends BaseTypeModel {
     protected int mJobType;
     protected int mExpSum;
     protected int mJobStatus;
     protected String mJobName;
 
-    public GroupJobModel() {
+    protected GroupJobModel() {
     }
 
-    public GroupJobModel(VFansCommonProto.GroupJobInfo info) {
-        mJobType = info.getJobType().getNumber();
-        mExpSum = info.getExpSum();
-        mJobStatus = info.getJobStatus().getNumber();
-        mJobName = info.getJobName();
+    public GroupJobModel(VFansCommonProto.GroupJobInfo protoJob) {
+        parse(protoJob);
+    }
+
+    public void parse(VFansCommonProto.GroupJobInfo protoJob) {
+        mJobType = protoJob.getJobType().getNumber();
+        mExpSum = protoJob.getExpSum();
+        mJobStatus = protoJob.getJobStatus().getNumber();
+        mJobName = protoJob.getJobName();
     }
 
     public int getJobType() {
@@ -36,6 +40,11 @@ public class GroupJobModel extends BaseViewModel {
 
     public String getJobName() {
         return mJobName;
+    }
+
+    @Override
+    protected int defaultType() {
+        return TaskViewType.TYPE_GROUP_TASK;
     }
 
     @Override
