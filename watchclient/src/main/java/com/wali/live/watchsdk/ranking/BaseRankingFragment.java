@@ -80,6 +80,12 @@ public abstract class BaseRankingFragment extends RxFragment {
         EventBus.getDefault().register(this);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+
     protected void initData(Bundle bundle) {
         mUuid = bundle.getLong(EXTRA_UUID);
         mLiveId = bundle.getString(EXTRA_LIVE_ID);
@@ -242,12 +248,6 @@ public abstract class BaseRankingFragment extends RxFragment {
                 }
             }
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        EventBus.getDefault().unregister(this);
     }
 
     /**
