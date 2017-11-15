@@ -132,7 +132,7 @@ public class FansMemberPresenter extends BaseSdkRxPresenter<FansMemberView.IView
                         return new FansMemberListModel(rsp);
                     }
                 }).subscribeOn(Schedulers.io())
-                .compose(this.<FansMemberListModel>bindUntilEvent(PresenterEvent.DESTROY))
+                .compose(this.<FansMemberListModel>bindUntilEvent(PresenterEvent.STOP))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<FansMemberListModel>() {
                     @Override

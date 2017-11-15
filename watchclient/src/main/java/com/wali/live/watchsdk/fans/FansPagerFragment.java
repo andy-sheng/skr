@@ -182,6 +182,7 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
         mGroupDetailModel = groupDetailModel;
         mFansHomeView.setData(mAnchorName, mGroupDetailModel);
         mFansTaskView.setGroupDetailModel(mGroupDetailModel);
+        mFansMemberView.updateGroupDetail(mGroupDetailModel);
     }
 
     public static void openFragment(BaseSdkActivity activity, String anchorName,

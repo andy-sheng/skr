@@ -40,6 +40,10 @@ public class FansMemberAdapter extends ClickItemAdapter<FansMemberModel,
 
     protected final FooterItem mFooterItem = new FooterItem();
 
+    public void setGroupCharmLevel(int groupCharmLevel) {
+        mGroupCharmLevel = groupCharmLevel;
+    }
+
     @Override
     protected BaseHolder newViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {

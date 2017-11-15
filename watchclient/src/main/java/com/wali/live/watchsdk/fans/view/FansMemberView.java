@@ -8,21 +8,27 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 
 import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
+import com.base.utils.toast.ToastUtils;
 import com.thornbirds.component.presenter.IEventPresenter;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
+import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.adapter.FansMemberAdapter;
+import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
 import com.wali.live.watchsdk.sixin.PopComposeMessageFragment;
 import com.wali.live.watchsdk.sixin.pojo.SixinTarget;
 
 import java.util.List;
+
+import static com.wali.live.component.view.Utils.$click;
 
 /**
  * Created by yangli on 2017/11/13.
@@ -35,6 +41,8 @@ public class FansMemberView extends RelativeLayout
 
     @Nullable
     protected IPresenter mPresenter;
+
+    private FansGroupDetailModel mGroupDetailModel;
 
     private final FansMemberAdapter mAdapter = new FansMemberAdapter();
     private boolean mHasInflated = false;
@@ -115,6 +123,7 @@ public class FansMemberView extends RelativeLayout
             }
         });
 
+        updateGroupDetail(mGroupDetailModel);
         mPresenter.startPresenter();
     }
 
@@ -122,6 +131,39 @@ public class FansMemberView extends RelativeLayout
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         inflateContent();
+    }
+
+    public void updateGroupDetail(FansGroupDetailModel groupDetailModel) {
+        if (groupDetailModel == null) {
+            return;
+        }
+        mGroupDetailModel = groupDetailModel;
+        mAdapter.setGroupCharmLevel(groupDetailModel.getCharmLevel());
+        if (mHasInflated) {
+            switch (groupDetailModel.getMemType()) {
+                case VFansCommonProto.GroupMemType.OWNER_VALUE:
+                case VFansCommonProto.GroupMemType.ADMIN_VALUE:
+                case VFansCommonProto.GroupMemType.DEPUTY_ADMIN_VALUE:
+                    if (mManagerMemberArea == null) {
+                        ViewStub viewStub = $(R.id.manager_view_stub);
+                        mManagerMemberArea = viewStub.inflate();
+                        $click($(R.id.manage_vfans_member_btn), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // TODO-YangLi 跳转到管理页面
+                                ToastUtils.showToast("该功能正在开发中");
+                            }
+                        });
+                    }
+                    mManagerMemberArea.setVisibility(VISIBLE);
+                    break;
+                default:
+                    if (mManagerMemberArea != null) {
+                        mManagerMemberArea.setVisibility(GONE);
+                    }
+                    break;
+            }
+        }
     }
 
     @Override
