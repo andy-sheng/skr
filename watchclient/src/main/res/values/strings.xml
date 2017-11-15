@@ -308,4 +308,5 @@
     <string name="create_fans_group_hint">(Enter up to 3 characters. You won\'t be able to change the name.)</string>
     <string name="create_group_success">Created successfully</string>
     <string name="create_group_faild">Couldn\'t create</string>
+    <string name="vfans_start_talk">Chat with others in the club</string>
 </resources>

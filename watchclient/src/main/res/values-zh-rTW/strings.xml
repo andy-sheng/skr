@@ -298,4 +298,5 @@
     <string name="create_fans_group_hint">（限3字，不能改名請慎重填寫）</string>
     <string name="create_group_success">建立成功</string>
     <string name="create_group_faild">建立失敗</string>
+    <string name="vfans_start_talk">進入粉絲團聊天</string>
 </resources>

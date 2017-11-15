@@ -7,10 +7,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.base.activity.BaseActivity;
 import com.base.image.fresco.BaseImageView;
 import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.fans.MyGroupDetailFragment;
 import com.wali.live.watchsdk.fans.model.item.MyFansGroupModel;
 import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
 import com.wali.live.watchsdk.lit.recycler.holder.BaseHolder;
@@ -47,6 +49,7 @@ public class MyFansGroupHolder extends BaseHolder<MyFansGroupModel> {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MyGroupDetailFragment.open((BaseActivity) itemView.getContext());
             }
         });
     }
