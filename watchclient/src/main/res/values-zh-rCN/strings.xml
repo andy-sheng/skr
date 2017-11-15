@@ -298,4 +298,5 @@
     <string name="create_fans_group_hint">（限3字，不能改名请慎重填写）</string>
     <string name="create_group_success">创建成功</string>
     <string name="create_group_faild">创建失败</string>
+    <string name="vfans_start_talk">进入粉丝团聊天</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.wali.live.watchsdk.fans;
 
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +17,9 @@ import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.HttpImage;
 import com.base.image.fresco.image.ResImage;
 import com.base.keyboard.KeyboardUtils;
-import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.BackTitleBar;
-import com.wali.live.proto.VFansCommonProto;
+import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
@@ -30,16 +28,13 @@ import com.wali.live.watchsdk.fans.presenter.FansGroupDetailPresenter;
 import com.wali.live.watchsdk.fans.presenter.IFansGroupDetailView;
 import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
 import com.wali.live.watchsdk.fans.view.FansProgressView;
-import com.wali.live.watchsdk.fans.view.FansTaskView;
 
 import java.util.List;
 
 /**
  * Created by lan on 2017/11/9.
  */
-public class MemGroupDetailFragment extends RxFragment implements View.OnClickListener, IFansGroupDetailView {
-    private static final String EXTRA_ZUID = "extra_zuid";
-
+public class MyGroupDetailFragment extends RxFragment implements View.OnClickListener, IFansGroupDetailView {
     private static final int MAX_COUNT_TOP = 3;
 
     private BackTitleBar mTitleBar;
@@ -56,17 +51,9 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
 
     private LinearLayout mFansListArea;
 
-    private ImageView mUnJoinGroupIv;
-    private RelativeLayout mMyInfoArea;
-    private TextView mMyMedalTv;
-    private TextView mFansPetValueTv;
-    private TextView mFansRankTv;
-
-    private FansTaskView mTaskView;
-
     private FansGroupDetailPresenter mFansGroupDetailPresenter;
 
-    private long mZuid;
+    private long mZuid = UserAccountManager.getInstance().getUuidAsLong();
     private FansGroupDetailModel mGroupDetailModel;
 
     @Override
@@ -75,22 +62,8 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
     }
 
     @Override
-    public void setArguments(Bundle args) {
-        super.setArguments(args);
-        initData(args);
-    }
-
-    private void initData(Bundle bundle) {
-        if (bundle == null) {
-            finish();
-        }
-        mZuid = bundle.getLong(EXTRA_ZUID);
-        MyLog.d(TAG, "user id=" + mZuid);
-    }
-
-    @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_mem_group_detail, container, false);
+        return inflater.inflate(R.layout.fragment_my_group_detail, container, false);
     }
 
     @Override
@@ -113,14 +86,6 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
         mFansListArea = $(R.id.vfans_list_area);
         mGroupRankTv = $(R.id.group_rank_tv);
 
-        mUnJoinGroupIv = $(R.id.unjoin_group_iv);
-        mMyInfoArea = $(R.id.my_info_area);
-        mMyMedalTv = $(R.id.my_medal_tv);
-        mFansPetValueTv = $(R.id.vfan_value_tv);
-        mFansRankTv = $(R.id.vfan_rank_tv);
-
-        mTaskView = $(R.id.task_view);
-
         initPresenter();
     }
 
@@ -141,8 +106,6 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
         mTitleBar.setTitle(mGroupDetailModel.getGroupName());
 
         updateBasicArea();
-        updateMyArea();
-        updateTaskArea();
     }
 
     private void updateBasicArea() {
@@ -160,23 +123,6 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
 
         mMemberCountTv.setText(String.valueOf(mGroupDetailModel.getCurrentMember()));
         mGroupRankTv.setText(String.valueOf(mGroupDetailModel.getRanking()));
-    }
-
-    private void updateMyArea() {
-        if (mGroupDetailModel.getMemType() == VFansCommonProto.GroupMemType.NONE.getNumber()) {
-            //没有入团的
-            mMyInfoArea.setVisibility(View.GONE);
-            mUnJoinGroupIv.setVisibility(View.VISIBLE);
-        } else {
-            //入团了的
-            mMyInfoArea.setVisibility(View.VISIBLE);
-            mUnJoinGroupIv.setVisibility(View.GONE);
-
-            mMyMedalTv.setText(mGroupDetailModel.getMedalValue());
-            mMyMedalTv.setBackgroundResource(FansInfoUtils.getGroupMemberLevelDrawable(mGroupDetailModel.getMyPetLevel()));
-            mFansPetValueTv.setText(String.valueOf(mGroupDetailModel.getMyPetExp()));
-            mFansRankTv.setText(mGroupDetailModel.getPetRanking() + "/" + mGroupDetailModel.getCurrentMember());
-        }
     }
 
     @Override
@@ -220,18 +166,6 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
         FrescoWorker.loadImage(iv, image);
     }
 
-    private void updateTaskArea() {
-        mTaskView.setGroupDetailModel(mGroupDetailModel);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mTaskView != null) {
-            mTaskView.destroy();
-        }
-    }
-
     @Override
     public boolean onBackPressed() {
         if (getActivity() == null) {
@@ -254,11 +188,9 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
         FragmentNaviUtils.popFragment(getActivity());
     }
 
-    public static void open(BaseActivity baseActivity, long zuid) {
-        Bundle bundle = new Bundle();
-        bundle.putLong(EXTRA_ZUID, zuid);
-        FragmentNaviUtils.addFragmentToBackStack(baseActivity, R.id.main_act_container, MemGroupDetailFragment.class,
-                bundle, true, R.anim.slide_right_in, R.anim.slide_right_out);
+    public static void open(BaseActivity baseActivity) {
+        FragmentNaviUtils.addFragmentToBackStack(baseActivity, R.id.main_act_container, MyGroupDetailFragment.class,
+                null, true, R.anim.slide_right_in, R.anim.slide_right_out);
 
     }
 }
