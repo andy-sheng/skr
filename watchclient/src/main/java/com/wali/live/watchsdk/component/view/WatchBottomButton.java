@@ -89,7 +89,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         mMsgCntBtn = new MsgCtrlBtnView(getContext());
         addCreatedView(mMsgCntBtn, R.id.msg_ctrl_btn);
 
-        mVipFansBtn = createImageView(R.drawable.live_icon_star_1);
+        mVipFansBtn = createImageView(R.drawable.game_live_icon_pet);
         addCreatedView(mVipFansBtn, R.id.vip_fans_btn);
 
 //        mRotateBtn = createImageView(R.drawable.live_icon_rotate_screen);
