@@ -90,12 +90,12 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
     public ClickItemAdapter.BaseHolder newViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case ITEM_TYPE_COMMENT: {
-                View view = mInflater.inflate(R.layout.detail_comment_item, null);
+                View view = mInflater.inflate(R.layout.detail_comment_item, parent, false);
                 return new CommentHolder(view);
             }
             case ITEM_TYPE_HOT_LABEL:
             case ITEM_TYPE_ALL_LABEL: { // fall through
-                View view = mInflater.inflate(R.layout.detail_label_item, null);
+                View view = mInflater.inflate(R.layout.detail_label_item, parent, false);
                 return new LabelHolder(view);
             }
             default:

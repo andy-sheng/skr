@@ -13,12 +13,12 @@ import com.mi.live.data.account.MyUserInfoManager;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
 import com.wali.live.watchsdk.component.adapter.ClickItemAdapter;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
 import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
 
 import static com.wali.live.component.view.Utils.$click;
+import static com.wali.live.watchsdk.fans.adapter.FansMemberAdapter.FooterItem.STATE_DONE;
 import static com.wali.live.watchsdk.fans.model.member.FansMemberModel.VIP_TYPE_MONTH;
 import static com.wali.live.watchsdk.fans.model.member.FansMemberModel.VIP_TYPE_YEAR;
 
@@ -27,7 +27,7 @@ import static com.wali.live.watchsdk.fans.model.member.FansMemberModel.VIP_TYPE_
  *
  * @module 粉丝团成员列表适配器
  */
-public class FansMemberAdapter extends ClickItemAdapter<BaseViewModel,
+public class FansMemberAdapter extends ClickItemAdapter<FansMemberModel,
         ClickItemAdapter.BaseHolder, FansMemberAdapter.IMemberClickListener> {
 
     private static final int ITEM_TYPE_NORMAL = 0;
@@ -35,21 +35,18 @@ public class FansMemberAdapter extends ClickItemAdapter<BaseViewModel,
 
     private int mGroupCharmLevel; // 群经验值
 
-    protected FooterHolder mFooterHolder;
+    protected final FooterItem mFooterItem = new FooterItem();
 
     @Override
     protected BaseHolder newViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case ITEM_TYPE_NORMAL: {
-                View view = mInflater.inflate(R.layout.fans_member_list_item, null);
+                View view = mInflater.inflate(R.layout.fans_member_list_item, parent, false);
                 return new MemberHolder(view);
             }
             case ITEM_TYPE_FOOTER: {
-                if (mFooterHolder == null) {
-                    View view = mInflater.inflate(R.layout.fans_member_foot_item, null);
-                    mFooterHolder = new FooterHolder(view);
-                }
-                return mFooterHolder;
+                View view = mInflater.inflate(R.layout.fans_member_foot_item, parent, false);
+                return new FooterHolder(view);
             }
             default:
                 return null;
@@ -69,9 +66,85 @@ public class FansMemberAdapter extends ClickItemAdapter<BaseViewModel,
     @Override
     public void onBindViewHolder(BaseHolder holder, int position) {
         if (holder instanceof FooterHolder) {
+            holder.bindView(mFooterItem, null);
+        } else {
+            super.onBindViewHolder(holder, position);
+        }
+    }
+
+    protected final void updateLoadingState(int state) {
+        if (mFooterItem.getState() == state) {
             return;
         }
-        super.onBindViewHolder(holder, position);
+        mFooterItem.setState(state);
+        notifyItemChanged(mItems.size());
+    }
+
+    public final void hideLoading() {
+        updateLoadingState(FooterItem.STATE_HIDDEN);
+    }
+
+    public final void showLoading() {
+        updateLoadingState(FooterItem.STATE_LOADING);
+    }
+
+    public final void onLoadingDone(boolean hasMore) {
+        if (hasMore) {
+            updateLoadingState(FooterItem.STATE_DONE);
+        } else {
+            updateLoadingState(FooterItem.STATE_NO_MORE);
+        }
+    }
+
+    public final void onLoadingFailed() {
+        updateLoadingState(FooterItem.STATE_FAILED);
+    }
+
+    protected static class FooterItem {
+        public static final int STATE_HIDDEN = 0;
+        public static final int STATE_LOADING = 1;
+        public static final int STATE_DONE = 2;
+        public static final int STATE_NO_MORE = 3;
+        public static final int STATE_FAILED = 4;
+
+        private int state;
+
+        public final int getState() {
+            return state;
+        }
+
+        public final void setState(int state) {
+            this.state = state;
+        }
+    }
+
+    protected static class FooterHolder extends ClickItemAdapter.BaseHolder<FooterItem, Object> {
+        private TextView mStatusView;
+
+        public FooterHolder(View view) {
+            super(view);
+            mStatusView = $(R.id.status_view);
+        }
+
+        @Override
+        public void bindView(FooterItem item, Object listener) {
+            switch (item.state) {
+                case FooterItem.STATE_LOADING:
+                    mStatusView.setText(R.string.vfan_member_loading);
+                    break;
+                case STATE_DONE:
+                    mStatusView.setText(R.string.loading_tips_done);
+                    break;
+                case FooterItem.STATE_NO_MORE:
+                    mStatusView.setText(R.string.loading_tips_no_more);
+                    break;
+                case FooterItem.STATE_FAILED:
+                    mStatusView.setText(R.string.loading_tips_failed);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     protected class MemberHolder extends BaseHolder<FansMemberModel, IMemberClickListener>
@@ -107,16 +180,16 @@ public class FansMemberAdapter extends ClickItemAdapter<BaseViewModel,
 
         public MemberHolder(View view) {
             super(view);
-            mMemberAvatar = (BaseImageView) itemView.findViewById(R.id.member_avatar);
-            mMemberName = (TextView) itemView.findViewById(R.id.member_name);
-            mMyExpTitle = (TextView) itemView.findViewById(R.id.my_exp_title);
-            mRoleName = (TextView) itemView.findViewById(R.id.role_name);
-            mPetExpValueTv = (TextView) itemView.findViewById(R.id.pet_exp_value_tv);
-            mFocusBtn = (TextView) itemView.findViewById(R.id.focus_btn);
-            mSixinBtn = (TextView) itemView.findViewById(R.id.sixin_btn);
-            mSplitLine = itemView.findViewById(R.id.split_line);
-            mPetExpTitleTv = (TextView) itemView.findViewById(R.id.pet_exp_title);
-            mVipTypeBtn = (ImageView) itemView.findViewById(R.id.vip_type);
+            mMemberAvatar = $(R.id.member_avatar);
+            mMemberName = $(R.id.member_name);
+            mMyExpTitle = $(R.id.my_exp_title);
+            mRoleName = $(R.id.role_name);
+            mPetExpValueTv = $(R.id.pet_exp_value_tv);
+            mFocusBtn = $(R.id.focus_btn);
+            mSixinBtn = $(R.id.sixin_btn);
+            mSplitLine = $(R.id.split_line);
+            mPetExpTitleTv = $(R.id.pet_exp_title);
+            mVipTypeBtn = $(R.id.vip_type);
             $click(mFocusBtn, this);
             $click(mSixinBtn, this);
             $click(itemView, this);
@@ -185,17 +258,6 @@ public class FansMemberAdapter extends ClickItemAdapter<BaseViewModel,
                 mFocusBtn.setVisibility(View.VISIBLE);
                 mSixinBtn.setVisibility(View.VISIBLE);
             }
-        }
-    }
-
-    protected static class FooterHolder extends ClickItemAdapter.BaseHolder {
-
-        public FooterHolder(View view) {
-            super(view);
-        }
-
-        @Override
-        public void bindView(Object item, Object listener) {
         }
     }
 

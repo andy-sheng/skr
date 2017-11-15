@@ -297,4 +297,7 @@
     <string name="vfan_member_role_mass">Members</string>
     <string name="vfan_member_role_black">Blocklist</string>
     <string name="vfans_has_focus">Following</string>
+    <string name="loading_tips_done">刷新完成</string>
+    <string name="loading_tips_failed">刷新失败</string>
+    <string name="loading_tips_no_more">没有更多数据了</string>
 </resources>

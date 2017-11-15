@@ -12,19 +12,31 @@ import java.util.List;
  * Created by lan on 2017/11/10.
  */
 public class FansMemberListModel extends BaseViewModel {
+    private int mNextStart;
+    private boolean mHasMoreData;
     private List<FansMemberModel> mMemberList;
 
     public FansMemberListModel(@NonNull VFansProto.MemberListRsp rsp) {
         parse(rsp);
     }
 
-    public void parse(VFansProto.MemberListRsp rsp) {
+    public void parse(@NonNull VFansProto.MemberListRsp rsp) {
+        mNextStart = rsp.getNextStart();
+        mHasMoreData = rsp.getHasMore();
         if (mMemberList == null) {
             mMemberList = new ArrayList();
         }
         for (VFansProto.MemberInfo protoMember : rsp.getMemListList()) {
             mMemberList.add(new FansMemberModel(protoMember));
         }
+    }
+
+    public final int getNextStart() {
+        return mNextStart;
+    }
+
+    public final boolean isHasMoreData() {
+        return mHasMoreData;
     }
 
     public final List<FansMemberModel> getMemberList() {

@@ -117,7 +117,7 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
         mFansHomeView = new FansHomeView(getContext());
         mFansTaskView = new FansTaskView(getContext());
         mFansMemberView = new FansMemberView(getContext());
-        $component(mFansMemberView, new FansMemberPresenter());
+        $component(mFansMemberView, new FansMemberPresenter(mAnchorId));
         mTabPagerAdapter.addView(getString(R.string.vfans_homepage), mFansHomeView);
         mTabPagerAdapter.addView(getString(R.string.vfans_task), mFansTaskView);
         mTabPagerAdapter.addView(getString(R.string.vfans_member), mFansMemberView);
@@ -126,11 +126,7 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
         mTabPagerAdapter.notifyDataSetChanged();
         mViewPager.setAdapter(mTabPagerAdapter);
         mTabLayout.setViewPager(mViewPager);
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
+        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 switch (position) {
@@ -143,10 +139,6 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
                     case POSITION_FAN_GROUP:
                         break;
                 }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
             }
         });
     }

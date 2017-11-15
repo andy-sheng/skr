@@ -53,6 +53,13 @@ public abstract class ClickItemAdapter<ITEM, HOLDER extends ClickItemAdapter.Bas
         notifyItemInserted(index);
     }
 
+    public void addItemData(List<? extends ITEM> items) {
+        if (items != null && !items.isEmpty()) {
+            mItems.addAll(items);
+            notifyDataSetChanged();
+        }
+    }
+
     public void setItemData(List<? extends ITEM> items) {
         mItems.clear();
         if (items != null) {
@@ -70,8 +77,7 @@ public abstract class ClickItemAdapter<ITEM, HOLDER extends ClickItemAdapter.Bas
         mListener = listener;
     }
 
-    public static abstract class BaseHolder<ITEM, LISTENER>
-            extends RecyclerView.ViewHolder {
+    public static abstract class BaseHolder<ITEM, LISTENER> extends RecyclerView.ViewHolder {
 
         protected final <T extends View> T $(@IdRes int resId) {
             return (T) itemView.findViewById(resId);

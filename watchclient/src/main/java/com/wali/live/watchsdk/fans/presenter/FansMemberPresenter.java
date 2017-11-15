@@ -30,9 +30,8 @@ public class FansMemberPresenter extends BaseSdkRxPresenter<FansMemberView.IView
 
     private static final int PAGE_LIMIT = 10;
 
-    private long mZuid;
+    private long mAnchorId;
     private int mLoadStart = 0;
-    private boolean mIsLoadingMore;
     private boolean mHasMoreData = true;
 
     private Subscription mPullSubscription;
@@ -42,8 +41,9 @@ public class FansMemberPresenter extends BaseSdkRxPresenter<FansMemberView.IView
         return TAG;
     }
 
-    public FansMemberPresenter() {
+    public FansMemberPresenter(long anchorId) {
         super(null);
+        mAnchorId = anchorId;
     }
 
     @Override
@@ -53,15 +53,25 @@ public class FansMemberPresenter extends BaseSdkRxPresenter<FansMemberView.IView
     }
 
     @Override
-    public void syncMemberData() {
-        if (mPullSubscription != null && !mPullSubscription.isUnsubscribed()) {
-            return;
-        }
+    public final void syncMemberData() {
+        getMemberListFromServer();
+    }
+
+    @Override
+    public final void pullMore() {
         getMemberListFromServer();
     }
 
     private void getMemberListFromServer() {
-        final long zuid = mZuid;
+        if (mPullSubscription != null && !mPullSubscription.isUnsubscribed()) {
+            return;
+        }
+        mView.onLoadingStarted();
+        if (!mHasMoreData) {
+            mView.onLoadingDone(false);
+            return;
+        }
+        final long zuid = mAnchorId;
         final int start = mLoadStart;
         mPullSubscription = Observable.just(0)
                 .map(new Func1<Integer, FansMemberListModel>() {
@@ -84,12 +94,19 @@ public class FansMemberPresenter extends BaseSdkRxPresenter<FansMemberView.IView
                         if (mView == null) {
                             return;
                         }
-
+                        mLoadStart = model.getNextStart();
+                        mHasMoreData = model.isHasMoreData();
+                        mView.onNewDataSet(model.getMemberList());
+                        mView.onLoadingDone(mHasMoreData);
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         MyLog.e(TAG, "getMemberListFromServer failed, throwable=" + throwable);
+                        if (mView == null) {
+                            return;
+                        }
+                        mView.onLoadingFailed();
                     }
                 });
     }

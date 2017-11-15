@@ -35,7 +35,7 @@ public class DetailReplayAdapter extends ClickItemAdapter<DetailReplayAdapter.Re
 
     @Override
     public ReplayHolder newViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.detail_replay_item, null);
+        View view = mInflater.inflate(R.layout.detail_replay_item, parent, false);
         return new ReplayHolder(view);
     }
 
