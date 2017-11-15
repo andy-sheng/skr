@@ -1,11 +1,17 @@
 package com.wali.live.watchsdk.fans.presenter;
 
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.VFansProto;
+import com.wali.live.utils.relation.RelationUtils;
+import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.model.member.FansMemberListModel;
+import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
 import com.wali.live.watchsdk.fans.request.GetMemberListRequest;
 import com.wali.live.watchsdk.fans.view.FansMemberView;
 
@@ -18,6 +24,9 @@ import rx.schedulers.Schedulers;
 
 import static com.wali.live.proto.VFansCommonProto.MemRankType.ORDER_BY_MEMTYPE;
 import static com.wali.live.proto.VFansCommonProto.RankDateType.TOTAL_TYPE;
+import static com.wali.live.utils.relation.RelationUtils.FOLLOW_STATE_BLACK;
+import static com.wali.live.utils.relation.RelationUtils.FOLLOW_STATE_BOTH_WAY;
+import static com.wali.live.utils.relation.RelationUtils.FOLLOW_STATE_SUCCESS;
 
 /**
  * Created by yangli on 2017/11/13.
@@ -60,6 +69,43 @@ public class FansMemberPresenter extends BaseSdkRxPresenter<FansMemberView.IView
     @Override
     public final void pullMore() {
         getMemberListFromServer();
+    }
+
+    @Override
+    public void fellowUser(final FansMemberModel item) {
+        final long targetUid = item.getUuid();
+        MyLog.w(TAG, "followUser targetUid=" + targetUid);
+        Observable.just(0)
+                .map(new Func1<Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer integer) {
+                        return RelationUtils.follow(UserAccountManager.getInstance().getUuidAsLong(), targetUid);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Integer>bindUntilEvent(PresenterEvent.STOP))
+                .subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer result) {
+                        if (mView == null) {
+                            return;
+                        }
+                        if (result >= FOLLOW_STATE_SUCCESS) {
+                            item.setIsFollow(true);
+                            item.setIsBothWay(result == FOLLOW_STATE_BOTH_WAY);
+                            mView.onFellowDone(item);
+                        } else if (result == FOLLOW_STATE_BLACK) {
+                            ToastUtils.showToast(GlobalData.app(), GlobalData.app().getString(
+                                    R.string.setting_black_follow_hint));
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, "followUser failed, exception=" + throwable);
+                    }
+                });
     }
 
     private void getMemberListFromServer() {

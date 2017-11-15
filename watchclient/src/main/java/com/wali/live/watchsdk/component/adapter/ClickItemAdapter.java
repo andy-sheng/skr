@@ -48,6 +48,13 @@ public abstract class ClickItemAdapter<ITEM, HOLDER extends ClickItemAdapter.Bas
         holder.bindView(mItems.get(position), mListener);
     }
 
+    public void onItemDataUpdated(ITEM item) {
+        final int index = mItems.indexOf(item);
+        if (index != -1) {
+            notifyItemChanged(index);
+        }
+    }
+
     public void insertItemData(int index, ITEM item) {
         mItems.add(index, item);
         notifyItemInserted(index);

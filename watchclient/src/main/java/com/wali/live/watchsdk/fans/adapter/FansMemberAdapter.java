@@ -10,12 +10,15 @@ import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.HttpImage;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.account.MyUserInfoManager;
+import com.mi.live.data.user.User;
+import com.wali.live.dao.SixinMessage;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.adapter.ClickItemAdapter;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
 import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
+import com.wali.live.watchsdk.sixin.pojo.SixinTarget;
 
 import static com.wali.live.component.view.Utils.$click;
 import static com.wali.live.watchsdk.fans.adapter.FansMemberAdapter.FooterItem.STATE_DONE;
@@ -151,6 +154,7 @@ public class FansMemberAdapter extends ClickItemAdapter<FansMemberModel,
             implements View.OnClickListener {
 
         private FansMemberModel mItem;
+        private SixinTarget mSixinTarget;
 
         private BaseImageView mMemberAvatar;
         private TextView mMemberName;
@@ -172,7 +176,24 @@ public class FansMemberAdapter extends ClickItemAdapter<FansMemberModel,
             if (i == R.id.focus_btn) {
                 mListener.onClickFocus(mItem);
             } else if (i == R.id.sixin_btn) {
-                mListener.onClickSixin(mItem);
+                if (mSixinTarget == null) {
+                    mSixinTarget = new SixinTarget(new User());
+                }
+                // User信息
+                final User user = mSixinTarget.getTargetUser();
+                user.setUid(mItem.getUuid());
+                user.setNickname(mItem.getNickname());
+                user.setAvatar(mItem.getAvatar());
+                user.setIsFocused(mItem.isFollow());
+                // 关注信息
+                if (mItem.isBothWay()) {
+                    mSixinTarget.setFocusState(SixinMessage.MSG_STATUE_BOTHFOUCS);
+                } else if (mItem.isFollow()) {
+                    mSixinTarget.setFocusState(SixinMessage.MSG_STATUS_ONLY_ME_FOUCS);
+                } else {
+                    mSixinTarget.setFocusState(SixinMessage.MSG_STATUS_UNFOUCS);
+                }
+                mListener.onClickSixin(mSixinTarget);
             } else {
                 mListener.onItemClick(mItem);
             }
@@ -262,10 +283,11 @@ public class FansMemberAdapter extends ClickItemAdapter<FansMemberModel,
     }
 
     public interface IMemberClickListener {
+
         void onItemClick(FansMemberModel item);
 
-        void onClickFocus(FansMemberModel mItem);
+        void onClickFocus(FansMemberModel item);
 
-        void onClickSixin(FansMemberModel mItem);
+        void onClickSixin(SixinTarget target);
     }
 }

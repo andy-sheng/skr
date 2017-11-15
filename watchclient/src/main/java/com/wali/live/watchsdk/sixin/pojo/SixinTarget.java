@@ -23,6 +23,14 @@ public class SixinTarget implements Serializable {
         mTargetType = targetType;
     }
 
+    public void setFocusState(int focusState) {
+        mFocusState = focusState;
+    }
+
+    public void setTargetType(int targetType) {
+        mTargetType = targetType;
+    }
+
     public User getTargetUser() {
         return mTargetUser;
     }

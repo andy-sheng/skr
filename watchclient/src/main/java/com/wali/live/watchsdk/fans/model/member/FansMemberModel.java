@@ -79,6 +79,14 @@ public class FansMemberModel extends BaseViewModel {
         return mIsFollow;
     }
 
+    public void setIsFollow(boolean isFollow) {
+        mIsFollow = isFollow;
+    }
+
+    public void setIsBothWay(boolean isBothWay) {
+        mIsBothWay = isBothWay;
+    }
+
     public boolean isBothWay() {
         return mIsBothWay;
     }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 
+import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
 import com.thornbirds.component.presenter.IEventPresenter;
 import com.thornbirds.component.view.IComponentView;
@@ -18,6 +19,8 @@ import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.adapter.FansMemberAdapter;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
+import com.wali.live.watchsdk.sixin.PopComposeMessageFragment;
+import com.wali.live.watchsdk.sixin.pojo.SixinTarget;
 
 import java.util.List;
 
@@ -40,6 +43,23 @@ public class FansMemberView extends RelativeLayout
     private RecyclerView mRecyclerView;
 
     private View mManagerMemberArea; // view in view stub
+
+    private final FansMemberAdapter.IMemberClickListener mMemberClickListener =
+            new FansMemberAdapter.IMemberClickListener() {
+                @Override
+                public void onItemClick(FansMemberModel item) {
+                }
+
+                @Override
+                public void onClickFocus(FansMemberModel item) {
+                    mPresenter.fellowUser(item);
+                }
+
+                @Override
+                public void onClickSixin(SixinTarget target) {
+                    PopComposeMessageFragment.open((BaseActivity) getContext(), target, true);
+                }
+            };
 
     private final Runnable mHideLoadingRunnable = new Runnable() {
         @Override
@@ -81,6 +101,7 @@ public class FansMemberView extends RelativeLayout
         mEmptyView = $(R.id.empty_view);
         mRecyclerView = $(R.id.recycler_view);
 
+        mAdapter.setClickListener(mMemberClickListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -139,6 +160,11 @@ public class FansMemberView extends RelativeLayout
                 mAdapter.onLoadingFailed();
                 postDelayed(mHideLoadingRunnable, 400);
             }
+
+            @Override
+            public void onFellowDone(FansMemberModel item) {
+                mAdapter.onItemDataUpdated(item);
+            }
         }
         return new ComponentView();
     }
@@ -153,6 +179,12 @@ public class FansMemberView extends RelativeLayout
          * 拉取更多成员数据
          */
         void pullMore();
+
+        /**
+         * 关注用户
+         */
+        void fellowUser(FansMemberModel item);
+
     }
 
     public interface IView extends IViewProxy {
@@ -175,5 +207,10 @@ public class FansMemberView extends RelativeLayout
          * 拉取失败
          */
         void onLoadingFailed();
+
+        /**
+         * 关注成功
+         */
+        void onFellowDone(FansMemberModel item);
     }
 }
