@@ -290,4 +290,12 @@
     <string name="vfan_member_role_mass">團員</string>
     <string name="vfan_member_role_black">黑名單</string>
     <string name="vfans_has_focus">已關注</string>
+    <string name="meili_value">魅力值</string>
+    <string name="group_ranking">團排名</string>
+    <string name="my_own_fans_group">我開通的粉絲團</string>
+    <string name="vfans_max_name_length">粉絲團名稱最多%d個字喲</string>
+    <string name="create_fans_group_message">你離擁有專屬粉絲團僅差一個好聽的名字喔～ 快來命名一個響亮的粉絲團名字吧！</string>
+    <string name="create_fans_group_hint">（限3字，不能改名請慎重填寫）</string>
+    <string name="create_group_success">建立成功</string>
+    <string name="create_group_faild">建立失敗</string>
 </resources>

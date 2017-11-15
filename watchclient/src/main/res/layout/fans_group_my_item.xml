@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/hint"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center|left"
+        android:paddingLeft="13.3dp"
+        android:text="@string/my_own_fans_group"
+        android:textColor="@color/color_black_trans_50"
+        android:textSize="@dimen/text_size_36"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="86.67dp"
+        android:layout_below="@id/hint"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/pet_group_intrant_bg">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="13.33dp"
+            android:background="@drawable/pet_group_anchor_face_bg"/>
+
+        <com.base.image.fresco.BaseImageView
+            android:id="@+id/avatar"
+            android:layout_width="53.33dp"
+            android:layout_height="53.33dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16.67dp"
+            />
+
+        <ImageView
+            android:id="@+id/charm_title_iv"
+            android:layout_width="@dimen/margin_150"
+            android:layout_height="@dimen/margin_40"
+            android:layout_alignLeft="@id/avatar"
+            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="13.33dp"
+            android:layout_marginLeft="1.67dp"
+            android:src="@drawable/live_pet_group_level"/>
+
+        <RelativeLayout
+            android:id="@+id/info_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toLeftOf="@+id/right_arrow"
+            android:layout_toRightOf="@id/avatar">
+
+            <TextView
+                android:id="@+id/name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="大大的宠爱团"
+                android:textColor="@color/color_black_trans_90"
+                android:textSize="@dimen/text_size_44"/>
+
+            <TextView
+                android:id="@+id/exp_value_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/name_tv"
+                android:layout_below="@id/name_tv"
+                android:layout_marginTop="8dp"
+                android:text="魅力值：120"
+                android:textColor="@color/color_black_trans_50"
+                android:textSize="@dimen/text_size_36"/>
+
+            <TextView
+                android:id="@+id/ranking_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/exp_value_tv"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/exp_value_tv"
+                android:text="团排名：120"
+                android:textColor="@color/color_black_trans_50"
+                android:textSize="@dimen/text_size_36"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/right_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="13.3dp"
+            android:background="@drawable/more_right_arrow_bg"/>
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/layer_bg"
+                android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="33dp"
+        android:layout_marginRight="33dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/create_fans_group_message"
+        android:textColor="@color/color_black_trans_50"
+        android:textSize="@dimen/text_size_40"/>
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="45.33dp"
+        android:layout_below="@id/message"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="25.67dp"
+        android:background="@drawable/pop_ups_input_box"
+        android:gravity="center|left"
+        android:hint="@string/create_fans_group_hint"
+        android:paddingLeft="6.67dp"
+        android:textColorHint="@color/color_black_trans_30"
+        android:textCursorDrawable="@drawable/shape_rectangle_cursor"
+        android:textSize="@dimen/text_size_40"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_below="@id/editText"
+        android:layout_marginTop="31dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <com.base.view.BottomButton
+            android:id="@+id/button1"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/cancel"
+            android:textColor="@color/color_black_trans_70"
+            android:textSize="14dp"
+            app:button_position="left"
+            app:button_style="normal"/>
+
+        <com.base.view.BottomButton
+            android:id="@+id/button2"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/ok"
+            android:textColor="@color/color_black_trans_70"
+            android:textSize="14dp"
+            app:button_position="center"
+            app:button_style="normal"/>
+
+    </LinearLayout>
+</RelativeLayout>

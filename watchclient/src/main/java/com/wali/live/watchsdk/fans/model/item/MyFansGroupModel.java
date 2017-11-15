@@ -27,6 +27,30 @@ public class MyFansGroupModel extends BaseTypeModel {
         mCharmLevel = protoMyGroup.getCharmLevel();
     }
 
+    public String getGroupName() {
+        return mGroupName;
+    }
+
+    public long getCreateTime() {
+        return mCreateTime;
+    }
+
+    public int getCharmExp() {
+        return mCharmExp;
+    }
+
+    public String getCharmTitle() {
+        return mCharmTitle;
+    }
+
+    public int getRanking() {
+        return mRanking;
+    }
+
+    public int getCharmLevel() {
+        return mCharmLevel;
+    }
+
     @Override
     protected int defaultType() {
         return ViewType.TYPE_MY_GROUP;

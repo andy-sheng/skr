@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.holder.CreateFansGroupHolder;
 import com.wali.live.watchsdk.fans.holder.MemFansGroupHolder;
+import com.wali.live.watchsdk.fans.holder.MyFansGroupHolder;
 import com.wali.live.watchsdk.fans.holder.special.HintMemGroupHolder;
+import com.wali.live.watchsdk.fans.listener.FansGroupListListener;
 import com.wali.live.watchsdk.fans.model.FansGroupListModel;
 import com.wali.live.watchsdk.fans.model.item.MemFansGroupModel;
 import com.wali.live.watchsdk.fans.model.item.ViewType;
@@ -22,11 +24,13 @@ import java.util.List;
 /**
  * Created by lan on 2017/11/7.
  */
-public class FansGroupAdapter extends EmptyRecyclerAdapter {
-    public List<BaseTypeModel> mDataList;
+public class FansGroupListAdapter extends EmptyRecyclerAdapter {
+    private List<BaseTypeModel> mDataList;
+    private FansGroupListListener mListener;
 
-    public FansGroupAdapter() {
+    public FansGroupListAdapter(FansGroupListListener listener) {
         mDataList = new ArrayList();
+        mListener = listener;
     }
 
     public void setDataList(FansGroupListModel model) {
@@ -34,9 +38,9 @@ public class FansGroupAdapter extends EmptyRecyclerAdapter {
         if (model.getCreateFansGroupModel() != null) {
             mDataList.add(model.getCreateFansGroupModel());
         }
-//        if (model.getMyFansGroupModel() != null) {
-//            mDataList.add(model.getMyFansGroupModel());
-//        }
+        if (model.getMyFansGroupModel() != null) {
+            mDataList.add(model.getMyFansGroupModel());
+        }
         addDataList(model);
     }
 
@@ -60,17 +64,19 @@ public class FansGroupAdapter extends EmptyRecyclerAdapter {
         View view;
         switch (viewType) {
             case ViewType.TYPE_CREATE_GROUP:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fans_create_group_item, parent, false);
-                holder = new CreateFansGroupHolder(view);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fans_group_create_item, parent, false);
+                holder = new CreateFansGroupHolder(view, mListener);
                 break;
             case ViewType.TYPE_MY_GROUP:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fans_group_my_item, parent, false);
+                holder = new MyFansGroupHolder(view);
                 break;
             case ViewType.TYPE_MEM_GROUP:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fans_mem_group_item, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fans_group_mem_item, parent, false);
                 holder = new MemFansGroupHolder(view);
                 break;
             case ViewType.TYPE_HINT_MEM_GROUP:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fans_hint_mem_group_item, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fans_group_mem_hint_item, parent, false);
                 holder = new HintMemGroupHolder(view);
                 break;
         }

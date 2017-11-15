@@ -9,9 +9,12 @@ import android.view.ViewGroup;
 import com.base.activity.BaseActivity;
 import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
+import com.base.keyboard.KeyboardUtils;
+import com.base.utils.toast.ToastUtils;
 import com.base.view.BackTitleBar;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.fans.adapter.FansGroupAdapter;
+import com.wali.live.watchsdk.fans.adapter.FansGroupListAdapter;
+import com.wali.live.watchsdk.fans.listener.FansGroupListListener;
 import com.wali.live.watchsdk.fans.model.FansGroupListModel;
 import com.wali.live.watchsdk.fans.presenter.FansGroupListPresenter;
 import com.wali.live.watchsdk.fans.presenter.IFansGroupListView;
@@ -19,13 +22,13 @@ import com.wali.live.watchsdk.fans.presenter.IFansGroupListView;
 /**
  * Created by lan on 17-6-15.
  */
-public class FansGroupListFragment extends RxFragment implements View.OnClickListener, IFansGroupListView {
+public class FansGroupListFragment extends RxFragment implements View.OnClickListener, IFansGroupListView, FansGroupListListener {
     private BackTitleBar mTitleBar;
 
     private RecyclerView mFansGroupRv;
-    private FansGroupAdapter mFansGroupAdapter;
+    private FansGroupListAdapter mAdapter;
 
-    private FansGroupListPresenter mFansGroupListPresenter;
+    private FansGroupListPresenter mPresenter;
 
     @Override
     public int getRequestCode() {
@@ -46,23 +49,39 @@ public class FansGroupListFragment extends RxFragment implements View.OnClickLis
         mFansGroupRv = $(R.id.recycler_view);
         mFansGroupRv.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mFansGroupAdapter = new FansGroupAdapter();
-        mFansGroupRv.setAdapter(mFansGroupAdapter);
+        mAdapter = new FansGroupListAdapter(this);
+        mFansGroupRv.setAdapter(mAdapter);
 
         initPresenter();
     }
 
     private void initPresenter() {
-        mFansGroupListPresenter = new FansGroupListPresenter(this);
-        mFansGroupListPresenter.getFansGroupList();
+        mPresenter = new FansGroupListPresenter(this);
+        mPresenter.getFansGroupList(true);
     }
 
     @Override
     public void setFansGroupList(FansGroupListModel model) {
         if (model.isFirst()) {
-            mFansGroupAdapter.setDataList(model);
+            mAdapter.setDataList(model);
         } else {
-            mFansGroupAdapter.addDataList(model);
+            mAdapter.addDataList(model);
+        }
+    }
+
+    @Override
+    public void createGroup(String name) {
+        mPresenter.createGroup(name);
+    }
+
+    @Override
+    public void notifyCreateGroupResult(boolean isSuccess) {
+        KeyboardUtils.hideKeyboard(getActivity());
+        if (isSuccess) {
+            ToastUtils.showToast(getContext(), R.string.create_group_success);
+            mPresenter.getFansGroupList(true);
+        } else {
+            ToastUtils.showToast(getContext(), R.string.create_group_faild);
         }
     }
 

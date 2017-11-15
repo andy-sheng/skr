@@ -8,4 +8,6 @@ import com.wali.live.watchsdk.fans.model.FansGroupListModel;
  */
 public interface IFansGroupListView extends IRxView {
     void setFansGroupList(FansGroupListModel model);
+
+    void notifyCreateGroupResult(boolean isSuccess);
 }

@@ -2,9 +2,9 @@ package com.wali.live.watchsdk.fans.model;
 
 import com.wali.live.proto.VFansProto;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
+import com.wali.live.watchsdk.fans.model.item.CreateFansGroupModel;
 import com.wali.live.watchsdk.fans.model.item.MemFansGroupModel;
 import com.wali.live.watchsdk.fans.model.item.MyFansGroupModel;
-import com.wali.live.watchsdk.fans.model.item.CreateFansGroupModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +23,10 @@ public class FansGroupListModel extends BaseViewModel {
     }
 
     public void parse(VFansProto.GetGroupListRsp rsp) {
-        if (rsp.hasCreateRights() && rsp.getCreateRights()) {
-            mCreateFansGroupModel = new CreateFansGroupModel();
-        }
         if (rsp.hasMyGroup()) {
             mMyFansGroupModel = new MyFansGroupModel(rsp.getMyGroup());
+        } else if (rsp.hasCreateRights() && rsp.getCreateRights()) {
+            mCreateFansGroupModel = new CreateFansGroupModel();
         }
 
         if (mMemFansGroupModelList == null) {

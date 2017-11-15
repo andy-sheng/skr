@@ -4,11 +4,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_130"
                 android:layout_below="@+id/task_watch_live_area"
+                android:layout_marginBottom="@dimen/margin_20"
                 android:layout_marginLeft="@dimen/margin_30"
                 android:layout_marginRight="@dimen/margin_30"
-                android:layout_marginTop="@dimen/margin_30"
+                android:layout_marginTop="@dimen/margin_20"
                 android:background="@drawable/shape_vfans_task_item_bg">
-
 
     <ImageView
         android:id="@+id/notice_gift_dot_iv"
@@ -86,5 +86,4 @@
         android:text="@string/vfans_daily_tasks_received"
         android:textColor="@color/color_white"
         android:textSize="@dimen/margin_40"/>
-
 </RelativeLayout>

@@ -300,4 +300,12 @@
     <string name="loading_tips_done">刷新完成</string>
     <string name="loading_tips_failed">刷新失败</string>
     <string name="loading_tips_no_more">没有更多数据了</string>
+    <string name="meili_value">Popularity</string>
+    <string name="group_ranking">Clubs rank</string>
+    <string name="my_own_fans_group">Created fan clubs</string>
+    <string name="vfans_max_name_length">Enter up to %d characters</string>
+    <string name="create_fans_group_message">Enter a good name for your fan club.</string>
+    <string name="create_fans_group_hint">(Enter up to 3 characters. You won\'t be able to change the name.)</string>
+    <string name="create_group_success">Created successfully</string>
+    <string name="create_group_faild">Couldn\'t create</string>
 </resources>

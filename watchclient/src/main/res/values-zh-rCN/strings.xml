@@ -290,4 +290,12 @@
     <string name="vfan_member_role_mass">团员</string>
     <string name="vfan_member_role_black">黑名单</string>
     <string name="vfans_has_focus">已关注</string>
+    <string name="meili_value">魅力值</string>
+    <string name="group_ranking">团排名</string>
+    <string name="my_own_fans_group">我开通的粉丝团</string>
+    <string name="vfans_max_name_length">粉丝团名称最多%d个字哟</string>
+    <string name="create_fans_group_message">你离拥有专属粉丝团仅差一个好听的名字喔～ 快来命名一个响亮的粉丝团名字吧！</string>
+    <string name="create_fans_group_hint">（限3字，不能改名请慎重填写）</string>
+    <string name="create_group_success">创建成功</string>
+    <string name="create_group_faild">创建失败</string>
 </resources>
