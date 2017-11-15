@@ -135,6 +135,7 @@ public class FansMemberAdapter extends ClickItemAdapter<FansMemberModel,
 
         @Override
         public void bindView(FooterItem item, Object listener) {
+            itemView.setVisibility(View.VISIBLE);
             switch (item.state) {
                 case FooterItem.STATE_LOADING:
                     mStatusView.setText(R.string.vfan_member_loading);
@@ -149,6 +150,7 @@ public class FansMemberAdapter extends ClickItemAdapter<FansMemberModel,
                     mStatusView.setText(R.string.loading_tips_failed);
                     break;
                 default:
+                    itemView.setVisibility(View.GONE);
                     break;
             }
         }

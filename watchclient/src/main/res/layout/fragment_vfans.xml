@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -9,7 +8,7 @@
         android:id="@+id/cover_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
     <LinearLayout
         android:id="@+id/container"
@@ -23,14 +22,15 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/margin_130"
             android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
             android:layout_marginLeft="@dimen/margin_188"
-            android:layout_marginRight="@dimen/margin_188"/>
+            android:layout_marginRight="@dimen/margin_188" />
 
         <View
             android:id="@+id/split_line"
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_1"
-            android:background="@color/color_e5e5e5"/>
+            android:background="@color/color_e5e5e5" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/vfans_pager"
@@ -40,7 +40,7 @@
             android:fadingEdge="none"
             android:fadingEdgeLength="0dp"
             android:overScrollMode="never"
-            android:requiresFadingEdge="none"/>
+            android:requiresFadingEdge="none" />
 
         <LinearLayout
             android:id="@+id/apply_join_vfan_area"
@@ -53,7 +53,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_18"
-                android:background="@drawable/live_pet_live_between_bottom_bg"/>
+                android:background="@drawable/live_pet_live_between_bottom_bg" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -69,7 +69,7 @@
                     android:gravity="center"
                     android:text="@string/vfans_join"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/margin_42"/>
+                    android:textSize="@dimen/margin_42" />
             </RelativeLayout>
         </LinearLayout>
 
@@ -84,7 +84,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_18"
-                android:background="@drawable/live_pet_live_between_bottom_bg"/>
+                android:background="@drawable/live_pet_live_between_bottom_bg" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -99,7 +99,7 @@
                     android:layout_marginLeft="@dimen/margin_40"
                     android:layout_marginRight="@dimen/margin_60"
                     android:layout_toLeftOf="@+id/open_privilege_btn"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
 
                 <TextView
                     android:id="@+id/open_privilege_btn"
@@ -112,7 +112,7 @@
                     android:gravity="center"
                     android:text="@string/vfans_open_privilege"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/margin_42"/>
+                    android:textSize="@dimen/margin_42" />
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
