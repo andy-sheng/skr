@@ -61,7 +61,7 @@ public class DetailInfoPresenter extends BaseSdkRxPresenter<DetailInfoView.IView
     private Subscription mFeedsSubscription;
 
     @Override
-    protected String getTAG() {
+    protected final String getTAG() {
         return TAG;
     }
 

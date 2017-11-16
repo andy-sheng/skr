@@ -56,6 +56,7 @@ public class FansMemberView extends RelativeLayout
             new FansMemberAdapter.IMemberClickListener() {
                 @Override
                 public void onItemClick(FansMemberModel item) {
+                    mPresenter.showPersonalInfo(item.getUuid());
                 }
 
                 @Override
@@ -221,6 +222,11 @@ public class FansMemberView extends RelativeLayout
          * 拉取更多成员数据
          */
         void pullMore();
+
+        /**
+         * 显示个人信息页
+         */
+        void showPersonalInfo(long userId);
 
         /**
          * 关注用户

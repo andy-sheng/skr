@@ -72,6 +72,11 @@ public class FansMemberPresenter extends BaseSdkRxPresenter<FansMemberView.IView
     }
 
     @Override
+    public void showPersonalInfo(long userId) {
+        // TODO-YangLi 添加跳转到个人信息页
+    }
+
+    @Override
     public void fellowUser(final FansMemberModel item) {
         final long targetUid = item.getUuid();
         MyLog.w(TAG, "followUser targetUid=" + targetUid);
