@@ -91,6 +91,7 @@ import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.proto.LiveProto;
+import com.wali.live.receiver.NetworkReceiver;
 import com.wali.live.receiver.PhoneStateReceiver;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
@@ -223,10 +224,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private LiveRoomPresenter mLiveRoomPresenter;
     private TextView mToHomeBtn;
 
-    private PhoneStateReceiver mPhoneStateReceiver = null; //监听电话打入
     private MyAlertDialog mPhoneInterruptDialog;
 
+    private PhoneStateReceiver mPhoneStateReceiver = null; //监听电话打入
     private ScreenStateReceiver mScreenStateReceiver; //屏幕状态监听
+    private NetworkReceiver mNetworkReceiver;
 
     private boolean mGenerateHistorySucc;
     private String mGenerateHistoryMsg;
@@ -313,13 +315,17 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mAction.registerAction(); // 注册事件，准备页可能需要
     }
 
-    private void registerScreenStateReceiver() {
-        mScreenStateReceiver = new ScreenStateReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_SCREEN_ON);
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-        filter.addAction(Intent.ACTION_USER_PRESENT);
-        registerReceiver(mScreenStateReceiver, filter);
+    private void registerReceiver() {
+        // 注册监听
+        mPhoneStateReceiver = PhoneStateReceiver.registerReceiver(this);
+        mScreenStateReceiver = ScreenStateReceiver.registerReceiver(this);
+        mNetworkReceiver = NetworkReceiver.registerReceiver(this);
+    }
+
+    private void unregisterReceiver() {
+        PhoneStateReceiver.unregisterReceiver(this, mPhoneStateReceiver);
+        ScreenStateReceiver.unregisterReceiver(this, mScreenStateReceiver);
+        NetworkReceiver.unRegisterReceiver(this, mNetworkReceiver);
     }
 
     @Override
@@ -442,10 +448,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             sRecording = false;
         }
         super.onDestroy();
-        if (mScreenStateReceiver != null) {
-            unregisterReceiver(mScreenStateReceiver);
-        }
-        PhoneStateReceiver.unregisterReceiver(this, mPhoneStateReceiver);
+        unregisterReceiver();
         if (mController != null) {
             mController.release();
             mController = null;
@@ -611,9 +614,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     private void postPrepare() {
-        // 注册监听
-        mPhoneStateReceiver = PhoneStateReceiver.registerReceiver(this);
-        registerScreenStateReceiver();
+        registerReceiver();
 
         if (mMyRoomData.getUser() == null || mMyRoomData.getUser().getUid() <= 0 || TextUtils.isEmpty(mMyRoomData.getUser().getNickname())) {
             if (MyUserInfoManager.getInstance().getUser() != null && MyUserInfoManager.getInstance().getUser().getUid() >= 0) {

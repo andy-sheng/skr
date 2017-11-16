@@ -66,6 +66,7 @@ import com.wali.live.event.EventClass;
 import com.wali.live.event.EventEmitter;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.manager.WatchRoomCharactorManager;
+import com.wali.live.receiver.NetworkReceiver;
 import com.wali.live.receiver.PhoneStateReceiver;
 import com.wali.live.recharge.view.RechargeFragment;
 import com.wali.live.utils.AppNetworkUtils;
@@ -164,6 +165,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
     private PhoneStateReceiver mPhoneStateReceiver;
     private ScreenStateReceiver mScreenStateReceiver;
+    private NetworkReceiver mNetworkReceiver;
 
     private RoomSystemMsgPresenter mRoomSystemMsgPresenter;
     private VideoShowPresenter mVideoShowPresenter;
@@ -378,6 +380,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     private void initReceiver() {
         mPhoneStateReceiver = PhoneStateReceiver.registerReceiver(this);
         mScreenStateReceiver = ScreenStateReceiver.registerReceiver(this);
+        mNetworkReceiver = NetworkReceiver.registerReceiver(this);
     }
 
     protected void leaveLiveToServer() {
@@ -456,6 +459,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     private void unregisterReceiver() {
         PhoneStateReceiver.unregisterReceiver(this, mPhoneStateReceiver);
         ScreenStateReceiver.unregisterReceiver(this, mScreenStateReceiver);
+        NetworkReceiver.unRegisterReceiver(this, mNetworkReceiver);
     }
 
     // 直播结束

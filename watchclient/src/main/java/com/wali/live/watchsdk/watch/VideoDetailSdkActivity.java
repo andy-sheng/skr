@@ -20,6 +20,7 @@ import com.thornbirds.component.IParams;
 import com.thornbirds.component.Params;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.event.UserActionEvent;
+import com.wali.live.receiver.NetworkReceiver;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.personinfo.fragment.FloatInfoFragment;
@@ -62,6 +63,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
     private long mVideoStartTime = -1;
 
     private VideoShowPresenter mVideoShowPresenter;
+    private NetworkReceiver mNetworkReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +76,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
         setContentView(R.layout.video_detail_layout);
         initData();
         initView();
+        registerReceiver();
     }
 
     @Override
@@ -152,6 +155,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
     protected void onDestroy() {
         MyLog.w(TAG, "onDestroy");
         super.onDestroy();
+        unregisterReceiver();
         if (mController != null) {
             mController.release();
             mController = null;
@@ -247,6 +251,15 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
         mSdkView = compoundView;
         mAction.unregisterAction();
         mAction.registerAction();
+    }
+
+    private void registerReceiver() {
+        // 注册监听
+        mNetworkReceiver = NetworkReceiver.registerReceiver(this);
+    }
+
+    private void unregisterReceiver() {
+        NetworkReceiver.unRegisterReceiver(this, mNetworkReceiver);
     }
 
     @Override

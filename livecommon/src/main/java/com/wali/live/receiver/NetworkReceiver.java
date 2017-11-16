@@ -1,8 +1,10 @@
 package com.wali.live.receiver;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
@@ -47,7 +49,7 @@ public class NetworkReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        MyLog.w("NetworkReceiver", "network changed, NetworkReceiver");
+        MyLog.w("NetworkReceiver", "network changed, NetworkReceiver action=" + intent.getAction());
         NetState netState = getCurrentNetStateCode(context);
         if (null != netState) {
             if (netState == NetState.NET_2G
@@ -118,5 +120,18 @@ public class NetworkReceiver extends BroadcastReceiver {
         }
 
         return stateCode;
+    }
+
+    public static NetworkReceiver registerReceiver(Activity activity) {
+        NetworkReceiver networkReceiver = new NetworkReceiver();
+        activity.registerReceiver(networkReceiver,
+                new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        return networkReceiver;
+    }
+
+    public static void unRegisterReceiver(Activity activity, NetworkReceiver networkReceiver) {
+        if (activity != null && networkReceiver != null) {
+            activity.unregisterReceiver(networkReceiver);
+        }
     }
 }
