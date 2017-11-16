@@ -20,7 +20,7 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
-import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
+import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.watchsdk.fans.view.custom.FansProgressView;
 
 import java.util.List;

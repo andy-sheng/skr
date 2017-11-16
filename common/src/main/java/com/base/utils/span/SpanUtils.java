@@ -278,6 +278,7 @@ public class SpanUtils {
 
     public static class MyImageSpan extends ImageSpan {
         private int lineSpace;
+
         public MyImageSpan(Drawable d, int verticalAlignment) {
             super(d, verticalAlignment);
         }
@@ -285,9 +286,9 @@ public class SpanUtils {
         /**
          * @param d
          * @param verticalAlignment
-         * @param lineSpace 行间距
+         * @param lineSpace         行间距
          */
-        public MyImageSpan(Drawable d, int verticalAlignment,int lineSpace) {
+        public MyImageSpan(Drawable d, int verticalAlignment, int lineSpace) {
             super(d, verticalAlignment);
             this.lineSpace = lineSpace;
         }
@@ -324,11 +325,30 @@ public class SpanUtils {
             // this is the key
             transY -= paint.getFontMetricsInt().descent / 2;
 
-            canvas.translate(x, transY-this.lineSpace);
+            canvas.translate(x, transY - this.lineSpace);
             b.draw(canvas);
             canvas.restore();
         }
+    }
 
+    public static class CenterImageSpan extends ImageSpan {
+        public CenterImageSpan(Drawable d, int verticalAlignment) {
+            super(d, verticalAlignment);
+        }
+
+        @Override
+        public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
+            Drawable b = getDrawable();
+            canvas.save();
+
+            Paint.FontMetricsInt fm = paint.getFontMetricsInt();
+            int transY = (y + fm.descent + y + fm.ascent) / 2
+                    - b.getBounds().bottom / 2;
+
+            canvas.translate(x, transY);
+            b.draw(canvas);
+            canvas.restore();
+        }
     }
 
     public abstract static class SchemeClickListener {

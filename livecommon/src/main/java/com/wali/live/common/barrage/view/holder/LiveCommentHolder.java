@@ -2,8 +2,11 @@ package com.wali.live.common.barrage.view.holder;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -16,6 +19,7 @@ import android.widget.TextView;
 
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
+import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.span.SpanUtils;
@@ -23,8 +27,10 @@ import com.live.module.common.R;
 import com.mi.live.data.config.GetConfigManager;
 import com.wali.live.common.barrage.event.BarrageCommonEvent;
 import com.wali.live.common.barrage.view.adapter.LiveCommentRecyclerAdapter;
+import com.wali.live.common.barrage.view.utils.CommentFansLevelCache;
+import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.common.model.CommentModel;
-import android.support.v7.widget.RecyclerView;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
@@ -86,6 +92,25 @@ public class LiveCommentHolder extends RecyclerView.ViewHolder {
                     0, commentSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
+    }
+    public void setFansMedalInfo() {
+        if (!TextUtils.isEmpty(liveComment.getFansMedal()) && liveComment.getFansLevel() > 0 && this.mContext != null && this.mContext.get() != null) {
+            Bitmap bitmap = CommentFansLevelCache.getLevelOrLike(String.valueOf(liveComment.getFansLevel()));
+
+            if (bitmap == null) {
+                bitmap = FansInfoUtils.getBitmapByFansLevel(liveComment.getFansLevel(), liveComment.getFansMedal(), this.mContext.get());
+                CommentFansLevelCache.setLevelOrLike(String.valueOf(liveComment.getFansLevel()), bitmap);
+            }
+            Drawable levelDrawable = new BitmapDrawable(bitmap);
+            int len = commentSpan.length();
+            levelDrawable.setBounds(0, 0, (int) (levelDrawable.getIntrinsicWidth() * DisplayUtils.getDensity()), (int) (levelDrawable.getIntrinsicHeight() * DisplayUtils.getDensity()));
+            int currentSdk = Build.VERSION.SDK_INT;
+            int lineSpace = currentSdk >= 22 ? 0 : DisplayUtils.dip2px(5);//行间距需求5.0版本适配
+            SpanUtils.CenterImageSpan imageSpan = new SpanUtils.CenterImageSpan(levelDrawable, lineSpace);
+            commentSpan.append("a");
+            commentSpan.setSpan(imageSpan, len, commentSpan.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            commentSpan.append(" ");
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

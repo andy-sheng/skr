@@ -29,8 +29,8 @@ import com.wali.live.pay.handler.PayPacketHandler;
 import com.wali.live.utils.ReplayBarrageMessageManager;
 import com.wali.live.watchsdk.fresco.FrescoManager;
 import com.wali.live.watchsdk.log.LogHandler;
-import com.wali.live.watchsdk.sixin.manager.SixinMessageManager;
 import com.wali.live.watchsdk.service.PacketProcessService;
+import com.wali.live.watchsdk.sixin.manager.SixinMessageManager;
 import com.xsj.crasheye.Crasheye;
 
 import org.greenrobot.eventbus.EventBus;

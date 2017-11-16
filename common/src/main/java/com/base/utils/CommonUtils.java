@@ -1473,8 +1473,9 @@ public abstract class CommonUtils {
             MyLog.d("convertViewToBitmap", "view == null");
             return null;
         }
-        //view.measure(View.MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-        //view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
         Bitmap bitmap = view.getDrawingCache();
@@ -1486,7 +1487,6 @@ public abstract class CommonUtils {
         view.setDrawingCacheEnabled(false);
         return bitmap;
     }
-
 
     public static String printPBDataLog(GeneratedMessage message) {
         Map fileds = message.getAllFields();

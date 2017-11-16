@@ -283,12 +283,6 @@
     <string name="vfans_focus">關注</string>
     <string name="vfan_member_loading">載入中.....</string>
     <string name="vfans_no_member">快來成為主播第一位真愛粉吧！</string>
-    <string name="vfan_member_role_none">非成員</string>
-    <string name="vfan_member_role_owner">團主</string>
-    <string name="vfan_member_role_admin">團長</string>
-    <string name="vfan_member_role_deputy_admin">副團長</string>
-    <string name="vfan_member_role_mass">團員</string>
-    <string name="vfan_member_role_black">黑名單</string>
     <string name="vfans_has_focus">已關注</string>
     <string name="meili_value">魅力值</string>
     <string name="group_ranking">團排名</string>

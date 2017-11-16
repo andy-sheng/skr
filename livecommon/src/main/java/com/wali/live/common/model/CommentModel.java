@@ -1,14 +1,20 @@
 package com.wali.live.common.model;
 
+import android.support.annotation.DrawableRes;
 import android.text.TextUtils;
 
 import com.base.global.GlobalData;
 import com.base.utils.display.DisplayUtils;
+import com.live.module.common.R;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
+import com.mi.live.data.push.model.GlobalRoomMsgExt;
 import com.wali.live.common.smiley.SmileyParser;
-import com.live.module.common.R;
+
+import java.util.ArrayList;
+
+import static com.mi.live.data.push.model.GlobalRoomMsgExt.INNER_GLOBAL_VFAN;
 
 /**
  * Created by chengsimin on 16/7/18.
@@ -19,6 +25,25 @@ public class CommentModel implements Comparable<CommentModel> {
     private long productId;
     private String shopUrl;
     private long giftId;
+    private int msgType;
+    private long sentTime;
+    private long senderMsgId;
+    private int level = -1;
+    private String name;
+    private int certificationType = -1;
+    private long senderId;
+    //去掉换行，已经转换为表情的
+    private CharSequence body;
+    private int commentColor = R.color.color_white;
+    private boolean canClickable = true;
+    private int backGround;
+    private int nameColor = R.color.ffd267;
+    private int likeId;
+    private String likePath;
+    private boolean redName;
+
+    private int fansLevel; // 宠爱团等级
+    private String fansMedal;// 宠爱团勋章
 
     public String getShopName() {
         return shopName;
@@ -60,8 +85,6 @@ public class CommentModel implements Comparable<CommentModel> {
         this.giftId = giftId;
     }
 
-    private int msgType;
-
     public long getSenderMsgId() {
         return senderMsgId;
     }
@@ -70,34 +93,13 @@ public class CommentModel implements Comparable<CommentModel> {
         this.senderMsgId = senderMsgId;
     }
 
-    private long senderMsgId;
-    private int level = -1;
-    private String name;
-    private int certificationType = -1;
-    private long senderId;
-    //去掉换行，已经转换为表情的
-    private CharSequence body;
-
-    private int commentColor = R.color.color_white;
-
-    private boolean canClickable = true;
-
     public int getBackGround() {
         return backGround;
     }
 
-    public void setBackGround(int backGround) {
+    public void setBackGround(@DrawableRes int backGround) {
         this.backGround = backGround;
     }
-
-    private int backGround;
-
-    private int nameColor = R.color.ffd267;
-
-
-    private String likePath;
-
-    private boolean redName;
 
     public long getSentTime() {
         return sentTime;
@@ -106,8 +108,6 @@ public class CommentModel implements Comparable<CommentModel> {
     public void setSentTime(long sentTime) {
         this.sentTime = sentTime;
     }
-
-    private long sentTime;
 
     public int getLikeId() {
         return likeId;
@@ -132,8 +132,6 @@ public class CommentModel implements Comparable<CommentModel> {
     public void setMsgType(int msgType) {
         this.msgType = msgType;
     }
-
-    private int likeId;
 
     public int getCommentColor() {
         return commentColor;
@@ -211,6 +209,22 @@ public class CommentModel implements Comparable<CommentModel> {
 
     public void setRedName(boolean redName) {
         this.redName = redName;
+    }
+
+    public void setFansLevel(int fansLevel) {
+        this.fansLevel = fansLevel;
+    }
+
+    public void setFansMedal(String fansMedal) {
+        this.fansMedal = fansMedal;
+    }
+
+    public int getFansLevel() {
+        return fansLevel;
+    }
+
+    public String getFansMedal() {
+        return fansMedal;
     }
 
     public static CommentModel loadFromBarrage(BarrageMsg msg) {
@@ -361,6 +375,33 @@ public class CommentModel implements Comparable<CommentModel> {
             BarrageMsg.LikeMsgExt ext = (BarrageMsg.LikeMsgExt) msg.getMsgExt();
             liveComment.setLikeId(ext.id);
             liveComment.setLikePath(ext.bitmapPath);
+        }
+        GlobalRoomMsgExt globalRoomMsgExt = msg.getGlobalRoomMsgExt();
+        if (globalRoomMsgExt != null && globalRoomMsgExt.getRoomMsgExtList() != null
+                && !globalRoomMsgExt.getRoomMsgExtList().isEmpty()) {
+            ArrayList<GlobalRoomMsgExt.BaseRoomMessageExt> msgExtList
+                    = globalRoomMsgExt.getRoomMsgExtList();
+            for (GlobalRoomMsgExt.BaseRoomMessageExt msgExt : msgExtList) {
+                switch (msgExt.getType()) {
+                    case INNER_GLOBAL_VFAN:
+                        GlobalRoomMsgExt.FansMemberMsgExt fansMemberMsgExt = (GlobalRoomMsgExt.FansMemberMsgExt) msgExt;
+                        if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_TEXT || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE
+                               /* || msg.getMsgType() == MSG_SMART_NORMAL*/) {
+                            //TODO zyh 飘萍弹幕之后加（智能弹幕相关）
+                            if (!fansMemberMsgExt.isVipExpire() && fansMemberMsgExt.getPetLevel() >= FansPrivilegeModel.SEND_COLOR_BARRAGE_VIP_LEVEL) {
+                                liveComment.setBackGround(R.drawable.live_bg_comment_pink);
+                            }
+                            liveComment.setFansLevel(fansMemberMsgExt.getPetLevel());
+                            liveComment.setFansMedal(fansMemberMsgExt.getMedalValue());
+                        }
+                        if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_GIFT || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_RED_ENVELOPE
+                                || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_ROOM_BACKGROUND_GIFT || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_LIGHT_UP_GIFT) {
+                            liveComment.setFansLevel(fansMemberMsgExt.getPetLevel());
+                            liveComment.setFansMedal(fansMemberMsgExt.getMedalValue());
+                        }
+                        break;
+                }
+            }
         }
         return liveComment;
     }

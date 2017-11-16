@@ -322,4 +322,10 @@
     <string name="user_protocal_content">To use live stream services provided by Mi Live Assistant, read our <a href="http://zhibo.mi.com/privacy/xieyi/xieyi.html"> User Agreement</a> and <a href="http://zhibo.mi.com/privacy/yinsi/yinsi.html"> Privacy Policy</a>. Mi Live Assistant requires internet connection, access to your contacts and location. Agree?</string>
     <string name="never_show">Don\'t show again</string>
     <string name="agree">Agree</string>
+    <string name="vfan_member_role_none">Non-members</string>
+    <string name="vfan_member_role_owner">Club owner</string>
+    <string name="vfan_member_role_admin">Club admin</string>
+    <string name="vfan_member_role_deputy_admin">Associate admin</string>
+    <string name="vfan_member_role_mass">Members</string>
+    <string name="vfan_member_role_black">Blocklist</string>
 </resources>

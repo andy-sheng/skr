@@ -21,7 +21,7 @@ import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
 import com.wali.live.watchsdk.fans.presenter.FansGroupDetailPresenter;
 import com.wali.live.watchsdk.fans.presenter.IFansGroupDetailView;
-import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
+import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.watchsdk.fans.view.FansTaskView;
 import com.wali.live.watchsdk.fans.view.merge.FansDetailBasicView;
 
