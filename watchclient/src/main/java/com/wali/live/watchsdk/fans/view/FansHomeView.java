@@ -1,7 +1,6 @@
 package com.wali.live.watchsdk.fans.view;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -10,27 +9,22 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.global.GlobalData;
-import com.base.image.fresco.BaseImageView;
-import com.base.image.fresco.FrescoWorker;
-import com.base.image.fresco.image.HttpImage;
-import com.base.image.fresco.image.ResImage;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.proto.VFansCommonProto;
-import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.FansPrivilegeFragment;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
 import com.wali.live.watchsdk.fans.presenter.FansHomePresenter;
 import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
+import com.wali.live.watchsdk.fans.view.merge.FansDetailBasicView;
 import com.wali.live.watchsdk.view.EmptyView;
 
 import java.util.List;
@@ -54,8 +48,6 @@ import static com.wali.live.watchsdk.fans.FansPrivilegeFragment.TYPE_UPGRADE_ACC
 public class FansHomeView extends RelativeLayout implements View.OnClickListener, FansHomePresenter.IView {
     private final String TAG = "FansHomeView";
 
-    private static final int MAX_COUNT_TOP = 3;
-
     public static final int UPGRADE_ACCELERATE_LEVEL = 1;
     public static final int SEND_COLOR_BARRAGE_VIP_LEVEL = 3;
     public static final int SEND_FLY_BARRAGE_LEVEL = 5;
@@ -66,18 +58,7 @@ public class FansHomeView extends RelativeLayout implements View.OnClickListener
     private EmptyView mEmptyView;
     private ScrollView mMainArea;
 
-    private TextView mFanTitleTv;
-    private BaseImageView mCoverIv;
-    private TextView mFansNameTv;
-    private ImageView mCharmTitleIv;
-    private TextView mLevelTv;
-
-    private FansProgressView mCharmPv;
-
-    private TextView mMemberCountTv;
-    private TextView mGroupRankTv;
-
-    private LinearLayout mFansListArea;
+    private FansDetailBasicView mDetailBasicView;
 
     private ViewGroup mMyInfoContainer;
     private ImageView mJoinBannerIv;
@@ -138,28 +119,19 @@ public class FansHomeView extends RelativeLayout implements View.OnClickListener
 
     public FansHomeView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        inflate(context, R.layout.vfans_info, this);
         initView();
     }
 
     private void initView() {
+        inflate(getContext(), R.layout.fans_home_view, this);
+
         mEmptyView = $(R.id.empty_view);
         mMainArea = $(R.id.all_area);
         mMainArea.setVisibility(View.GONE);
 
         mMyInfoContainer = $(R.id.vfan_myinfo);
 
-        mFanTitleTv = $(R.id.vfan_owner_title);
-        mCoverIv = $(R.id.cover_iv);
-        mFansNameTv = $(R.id.vfan_name_tv);
-        mCharmTitleIv = $(R.id.charm_title_iv);
-        mLevelTv = $(R.id.level_tv);
-
-        mCharmPv = $(R.id.charm_pv);
-
-        mMemberCountTv = $(R.id.member_count_tv);
-        mFansListArea = $(R.id.vfans_list_area);
-        mGroupRankTv = $(R.id.group_rank_tv);
+        mDetailBasicView = $(R.id.detail_basic_view);
 
         mJoinBannerIv = $(R.id.join_banner_iv);
         mMyInfoArea = $(R.id.my_info_area);
@@ -199,23 +171,9 @@ public class FansHomeView extends RelativeLayout implements View.OnClickListener
         }
         mIsAnchor = mGroupDetailModel.getZuid() == UserAccountManager.getInstance().getUuidAsLong();
         mMyInfoArea.setVisibility(mIsAnchor ? View.GONE : View.VISIBLE);
-        mFanTitleTv.setText(String.format(GlobalData.app().getResources()
-                .getString(R.string.vfans_owner_name), anchorName));
-        mFanTitleTv.setVisibility(View.VISIBLE);
 
-        mGroupRankTv.setText(String.valueOf(mGroupDetailModel.getRanking()));
-        mFansNameTv.setText(mGroupDetailModel.getGroupName());
-        mCharmTitleIv.setImageResource(
-                FansInfoUtils.getImageResourcesByCharmLevelValue(mGroupDetailModel.getCharmLevel()));
+        mDetailBasicView.setGroupDetailModel(mGroupDetailModel, mAnchorName);
 
-        mLevelTv.setText("Lv." + mGroupDetailModel.getCharmLevel());
-        mLevelTv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-
-        mCharmPv.setProgress(mGroupDetailModel.getCharmExp(), mGroupDetailModel.getNextCharmExp());
-        mMemberCountTv.setText(String.valueOf(mGroupDetailModel.getCurrentMember()));
-
-
-        AvatarUtils.loadAvatarByUidTs(mCoverIv, mGroupDetailModel.getZuid(), 0, true);
         if (!mIsAnchor) {
             if (mGroupDetailModel.getMemType() == VFansCommonProto.GroupMemType.NONE_VALUE) {
                 mMyInfoArea.setVisibility(GONE);
@@ -311,43 +269,7 @@ public class FansHomeView extends RelativeLayout implements View.OnClickListener
 
     @Override
     public void setTopThreeMember(List<FansMemberModel> memberList) {
-        mFansListArea.removeAllViews();
-
-        int memberCount = memberList == null ? 0 : memberList.size();
-        for (int i = 0; i < MAX_COUNT_TOP; i++) {
-            BaseImageView iv = new BaseImageView(this.getContext());
-            mFansListArea.addView(iv);
-            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) iv.getLayoutParams();
-            lp.width = DisplayUtils.dip2px(18);
-            lp.height = DisplayUtils.dip2px(18);
-            if (i > 0) {
-                lp.leftMargin = DisplayUtils.dip2px(8);
-            }
-
-            if (i < memberCount) {
-                addTopThreeImage(iv, memberList.get(i));
-            } else {
-                addPlaceHolderImage(iv);
-            }
-        }
-    }
-
-    private void addTopThreeImage(BaseImageView iv, FansMemberModel memberInfo) {
-        HttpImage image = new HttpImage(AvatarUtils.getAvatarUrlByUid(memberInfo.getUuid(), memberInfo.getAvatar()));
-        image.setHeight(DisplayUtils.dip2px(18));
-        image.setWidth(DisplayUtils.dip2px(18));
-        image.setLoadingDrawable(GlobalData.app().getResources().getDrawable(R.drawable.avatar_default_a));
-        image.setFailureDrawable(GlobalData.app().getResources().getDrawable(R.drawable.avatar_default_a));
-        image.setIsCircle(true);
-        FrescoWorker.loadImage(iv, image);
-    }
-
-    private void addPlaceHolderImage(BaseImageView iv) {
-        ResImage image = new ResImage(R.drawable.pet_group_placeholder);
-        image.setHeight(DisplayUtils.dip2px(18));
-        image.setWidth(DisplayUtils.dip2px(18));
-        image.setIsCircle(true);
-        FrescoWorker.loadImage(iv, image);
+        mDetailBasicView.setTopThreeMember(memberList);
     }
 
     @Override

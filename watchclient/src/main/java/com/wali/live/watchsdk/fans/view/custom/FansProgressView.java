@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.fans.view;
+package com.wali.live.watchsdk.fans.view.custom;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
