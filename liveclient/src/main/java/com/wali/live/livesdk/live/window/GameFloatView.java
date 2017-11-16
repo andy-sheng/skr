@@ -25,12 +25,15 @@ import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.channel.HostChannelManager;
-import com.wali.live.common.barrage.view.LiveCommentView;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
+import com.wali.live.component.EmptyController;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.view.GameRepeatScrollView;
 import com.wali.live.statistics.StatisticsKey;
+import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
+import com.wali.live.watchsdk.component.view.LiveCommentView;
 
+import static com.wali.live.component.view.Utils.$component;
 import static com.wali.live.statistics.StatisticsKey.AC_APP;
 import static com.wali.live.statistics.StatisticsKey.KEY;
 import static com.wali.live.statistics.StatisticsKey.TIMES;
@@ -67,18 +70,19 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
     private boolean mIsFocusable = false;
     private int mMode = MODE_MESSAGE;
 
-    LinearLayout mBtnArea;
-    View mMuteBtn;
-    View mFaceBtn;
-    ViewGroup mCommentTitle;
-    ViewGroup mListArea;
-    LiveCommentView mCommentView;
-    View mInputArea;
-    EditText mCommentInput;
-    View mSendBtn;
-    GameRepeatScrollView mGameRepeatScrollView;
-    View mTitleFoldLeft;
-    View mTitleFoldRight;
+    private LinearLayout mBtnArea;
+    private View mMuteBtn;
+    private View mFaceBtn;
+    private ViewGroup mCommentTitle;
+    private ViewGroup mListArea;
+    private LiveCommentPresenter mCommentPresenter = new LiveCommentPresenter(new EmptyController());
+    private LiveCommentView mCommentView;
+    private View mInputArea;
+    private EditText mCommentInput;
+    private View mSendBtn;
+    private GameRepeatScrollView mGameRepeatScrollView;
+    private View mTitleFoldLeft;
+    private View mTitleFoldRight;
 
     @Override
     public void onClick(View view) {
@@ -232,6 +236,8 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
         $click(R.id.send_btn, this);
         $click(R.id.face_btn, this);
 
+        $component(mCommentView, mCommentPresenter);
+
         mParentWidth = parentWidth;
         mParentHeight = parentHeight;
         mBoundRect = new Rect(0, 0, mParentWidth, mParentHeight);
@@ -314,12 +320,12 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
 
     public void register() {
         mGameRepeatScrollView.register();
-        mCommentView.onActivityCreate();
+        mCommentPresenter.startPresenter();
     }
 
     public void unregister() {
         mGameRepeatScrollView.unregister();
-        mCommentView.onActivityDestroy();
+        mCommentPresenter.stopPresenter();
     }
 
     private void setupLayoutParams() {

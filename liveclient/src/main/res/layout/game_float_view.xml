@@ -116,7 +116,7 @@
             android:layout_height="@dimen/view_dimen_1"
             android:background="@color/color_white_trans_60"/>
 
-        <com.wali.live.common.barrage.view.LiveCommentView
+        <com.wali.live.watchsdk.component.view.LiveCommentView
             android:id="@+id/comment_view"
             android:layout_width="match_parent"
             android:layout_height="200dp"

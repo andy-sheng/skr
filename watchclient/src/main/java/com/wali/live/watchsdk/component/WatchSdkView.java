@@ -87,7 +87,6 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
     protected final AnimationHelper mAnimationHelper = new AnimationHelper();
 
     protected TopAreaView mTopAreaView;
-    @Nullable
     protected LiveCommentView mLiveCommentView;
     protected View mBarrageBtnView;
 

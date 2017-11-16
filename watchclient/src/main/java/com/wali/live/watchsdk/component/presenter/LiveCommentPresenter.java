@@ -29,7 +29,7 @@ public class LiveCommentPresenter extends ComponentPresenter<LiveCommentView.IVi
     private static final String TAG = "LiveCommentPresenter";
 
     @Override
-    protected String getTAG() {
+    protected final String getTAG() {
         return TAG;
     }
 
@@ -69,6 +69,7 @@ public class LiveCommentPresenter extends ComponentPresenter<LiveCommentView.IVi
     @Override
     public void stopPresenter() {
         super.stopPresenter();
+        unregisterAllAction();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
