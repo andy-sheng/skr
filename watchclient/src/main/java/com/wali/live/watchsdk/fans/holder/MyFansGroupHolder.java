@@ -14,7 +14,7 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.MyGroupDetailFragment;
 import com.wali.live.watchsdk.fans.model.item.MyFansGroupModel;
-import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
+import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.watchsdk.lit.recycler.holder.BaseHolder;
 
 /**

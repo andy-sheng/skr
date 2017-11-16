@@ -17,7 +17,7 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.adapter.ClickItemAdapter;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
-import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
+import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.watchsdk.sixin.pojo.SixinTarget;
 
 import static com.wali.live.component.view.Utils.$click;

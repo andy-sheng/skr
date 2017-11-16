@@ -4,25 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="130dp">
 
-    <!--<com.wali.live.common.gift.view.GiftContinueView-->
-        <!--android:id="@+id/gift_continue_right_view2"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="65dp"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:visibility="gone"-->
-        <!--app:left="false" />-->
-
-    <!--<com.wali.live.common.gift.view.GiftContinueView-->
-        <!--android:id="@+id/gift_continue_right_view1"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="65dp"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:visibility="gone"-->
-        <!--app:left="false" />-->
-
-
     <com.wali.live.common.gift.view.GiftContinueView
         android:id="@+id/gift_continue_view2"
         android:layout_width="wrap_content"

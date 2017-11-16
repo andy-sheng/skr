@@ -23,7 +23,7 @@ import com.wali.live.watchsdk.fans.FansPrivilegeFragment;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
 import com.wali.live.watchsdk.fans.presenter.FansHomePresenter;
-import com.wali.live.watchsdk.fans.utils.FansInfoUtils;
+import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.watchsdk.fans.view.merge.FansDetailBasicView;
 import com.wali.live.watchsdk.view.EmptyView;
 

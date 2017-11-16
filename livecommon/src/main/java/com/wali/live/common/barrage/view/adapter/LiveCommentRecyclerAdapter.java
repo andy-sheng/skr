@@ -89,7 +89,8 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
             int type = liveComment.getMsgType();
             if ((type == BarrageMsgType.B_MSG_TYPE_TEXT || type == BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE || type == BarrageMsgType.B_MSG_TYPE_GLOBAL_SYS_MSG)
                     && null != mContext.get()) {
-                liveCommentHolder.itemView.setBackground(mContext.get().getResources().getDrawable(R.drawable.live_bg_comment));
+                int drawableRes = liveComment.getBackGround();
+                liveCommentHolder.itemView.setBackgroundResource(drawableRes == 0 ? R.drawable.live_bg_comment : drawableRes);
                 RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) liveCommentHolder.itemView.getLayoutParams();
                 lp.setMargins(0, 3, 0, 3);
             } else {
@@ -116,6 +117,7 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
             liveCommentHolder.levelTv.setCompoundDrawables(levelItem.drawableLevel, null, null, null);
             liveCommentHolder.levelTv.setVisibility(View.VISIBLE);
         }
+        liveCommentHolder.setFansMedalInfo();
     }
 
     private void bindNameView(LiveCommentHolder liveCommentHolder, CommentModel liveComment) {

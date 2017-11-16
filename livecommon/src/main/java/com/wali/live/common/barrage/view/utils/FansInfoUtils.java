@@ -1,7 +1,16 @@
-package com.wali.live.watchsdk.fans.utils;
+package com.wali.live.common.barrage.view.utils;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.base.utils.CommonUtils;
+import com.base.utils.display.DisplayUtils;
+import com.live.module.common.R;
 import com.wali.live.proto.VFansCommonProto;
-import com.wali.live.watchsdk.R;
 
 /**
  * Created by lan on 2017/11/8.
@@ -92,5 +101,19 @@ public class FansInfoUtils {
                 break;
         }
         return result;
+    }
+
+    public static Bitmap getBitmapByFansLevel(int petLevel, String medalValue, Context context){
+        TextView view = new TextView(context);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT
+                , LinearLayout.LayoutParams.WRAP_CONTENT);
+        view.setLayoutParams(lp);
+        lp.setMargins(DisplayUtils.dip2px(3f),0,0,0);
+        view.setGravity(Gravity.CENTER);
+        view.setTextSize(TypedValue.COMPLEX_UNIT_PX,context.getResources().getDimension(R.dimen.margin_24));
+        view.setTextColor(context.getResources().getColor(R.color.color_white));
+        view.setBackgroundResource(getGroupMemberLevelDrawable(petLevel));
+        view.setText(medalValue);
+        return CommonUtils.convertViewToBitmap(view);
     }
 }

@@ -67,6 +67,9 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
         if (msg.hasIsFromUserRedname() && msg.getIsFromUserRedname()) {
             barrageMsg.setRedName(msg.getIsFromUserRedname());
         }
+        if (msg.getGlobalRoomMsgExt() != null) {
+            barrageMsg.setGlobalRoomMsgExt(GlobalRoomMsgExt.loadFromPB(msg.getGlobalRoomMsgExt()));
+        }
 
         return barrageMsg;
     }
@@ -102,6 +105,7 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
     private long opponentAnchorId;
     private long toUserId;
     private boolean isRedName; // 是否被社区红名，红名表示是不友好名单，这类用户不显示等级，并且灰色字体显示弹幕
+    private GlobalRoomMsgExt globalRoomMsgExt; // 所有类型弹幕扩展字段(针对多种类型的弹幕)
 
     public BarrageMsg() {
         this.senderMsgId = System.currentTimeMillis();
@@ -285,9 +289,17 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
         this.msgExt = msgExt;
     }
 
+    public GlobalRoomMsgExt getGlobalRoomMsgExt() {
+        return globalRoomMsgExt;
+    }
+
+    public void setGlobalRoomMsgExt(GlobalRoomMsgExt globalRoomMsgExt) {
+        this.globalRoomMsgExt = globalRoomMsgExt;
+    }
+
     /*
-    * 引入clean模式后这个方法要慢慢被废弃掉，因为所有设计到pb的数据操作都应放到data层
-    * */
+        * 引入clean模式后这个方法要慢慢被废弃掉，因为所有设计到pb的数据操作都应放到data层
+        * */
     public void setMsgExt(byte[] data, int msgType) {
         if (data != null) {
             try {
@@ -877,6 +889,7 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
                         barrageMsg.setMsgType(parentMsg.getMsgType());
                         barrageMsg.setSentTime(parentMsg.getSentTime());
                         barrageMsg.setIsFromPkOpponent(parentMsg.isFromPkOpponent());
+                        barrageMsg.setGlobalRoomMsgExt(parentMsg.getGlobalRoomMsgExt());
                         barrageMsgs.add(barrageMsg);
                     }
                     i++;
@@ -1244,38 +1257,6 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
                 ext.type = red.getEnvelopLevel();
             }
             return ext;
-        }
-    }
-
-    public static class PKEndMsgExt implements MsgExt {
-
-        public LivePKProto.NewPKInfo info;
-        public long uuid;
-        public int endType;
-
-        public PKEndMsgExt(LivePKProto.NewPKInfo pkInfo, long uuid, int endType) {
-            info = pkInfo;
-            this.uuid = uuid;
-            this.endType = endType;
-        }
-
-        @Override
-        public ByteString toByteString() {
-            return null;
-        }
-    }
-
-    public static class PKInfoMsgExt implements MsgExt {
-
-        public LivePKProto.NewPKInfo info;
-
-        public PKInfoMsgExt(LivePKProto.NewPKInfo pkInfo) {
-            info = pkInfo;
-        }
-
-        @Override
-        public ByteString toByteString() {
-            return null;
         }
     }
 }
