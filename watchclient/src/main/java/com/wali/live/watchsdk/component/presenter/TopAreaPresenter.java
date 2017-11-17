@@ -8,6 +8,7 @@ import android.view.View;
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.relation.RelationApi;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.push.model.BarrageMsgExt;
@@ -21,9 +22,12 @@ import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.dao.RelationDaoAdapter;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.proto.RelationProto;
+import com.wali.live.proto.VFansProto;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.view.TopAreaView;
 import com.wali.live.watchsdk.fans.FansPagerFragment;
+import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
+import com.wali.live.watchsdk.fans.request.GetGroupDetailRequest;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -53,11 +57,12 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
         implements TopAreaView.IPresenter {
     private static final String TAG = "TopAreaPresenter";
 
-    private RoomBaseDataModel mRoomDataModel;
+    private RoomBaseDataModel mMyRoomData;
     private boolean mIsLive;
 
     private Subscription mFollowSubscription;
     private Subscription mRefViewersSubscription;
+    protected Subscription mSubscription;
 
     //刷新观众头像
     private Handler mRefViewersHandler = new Handler();
@@ -72,7 +77,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
             @NonNull RoomBaseDataModel roomData,
             boolean isLive) {
         super(controller);
-        mRoomDataModel = roomData;
+        mMyRoomData = roomData;
         mIsLive = isLive;
     }
 
@@ -84,6 +89,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        getGroupDetailFromServer();
     }
 
     @Override
@@ -100,7 +106,46 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
 
     @Override
     public void getAnchorInfo() {
-        UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, mRoomDataModel.getUid(), null);
+        UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, mMyRoomData.getUid(), null);
+    }
+
+    /***
+     *  TODO 获取粉丝团信息 -- 多处调用， 后续优化
+     */
+    private void getGroupDetailFromServer() {
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
+        mSubscription = Observable.just(0)
+                .map(new Func1<Object, FansGroupDetailModel>() {
+                    @Override
+                    public FansGroupDetailModel call(Object object) {
+                        if (mMyRoomData == null || mMyRoomData.getUid() <= 0) {
+                            MyLog.e(TAG, "getGroupDetail null");
+                            return null;
+                        }
+                        VFansProto.GroupDetailRsp rsp = new GetGroupDetailRequest(mMyRoomData.getUid()).syncRsp();
+                        if (rsp != null && rsp.getErrCode() == ErrorCode.CODE_SUCCESS) {
+                            return new FansGroupDetailModel(rsp);
+                        }
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<FansGroupDetailModel>() {
+                    @Override
+                    public void call(FansGroupDetailModel groupDetailModel) {
+                        if (groupDetailModel != null) {
+                            mView.setFansGroupModel(groupDetailModel);
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, "getGroupDetailFromServer failed=" + throwable);
+                    }
+                });
     }
 
     @Override
@@ -112,7 +157,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
             return;
         }
         mFollowSubscription = RelationApi.follow(UserAccountManager.getInstance().getUuidAsLong(),
-                mRoomDataModel.getUid(), mRoomDataModel.getRoomId())
+                mMyRoomData.getUid(), mMyRoomData.getRoomId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<RelationProto.FollowResponse>() {
@@ -132,7 +177,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
     @Override
     public void getTicketDetail() {
         UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_TICKET,
-                mRoomDataModel.getUid(), mRoomDataModel.getTicket(), mRoomDataModel.getRoomId());
+                mMyRoomData.getUid(), mMyRoomData.getTicket(), mMyRoomData.getRoomId());
     }
 
     @Override
@@ -140,18 +185,18 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
         //TODO 粉丝团的信息获取暂时没有，ui写完再加
         final Context context = mView.getRealView().getContext();
         if (context instanceof BaseSdkActivity) {
-            FansPagerFragment.openFragment((BaseSdkActivity) context, mRoomDataModel.getNickName(),
-                    mRoomDataModel.getUid(), mRoomDataModel.getRoomId(), 5);
+            FansPagerFragment.openFragment((BaseSdkActivity) context, mMyRoomData.getNickName(),
+                    mMyRoomData.getUid(), mMyRoomData.getRoomId(), 5);
         }
     }
 
     @Override
     public void syncData() {
-        mView.updateTicketAndViewerCount(mRoomDataModel.getTicket(), mRoomDataModel.getViewerCnt());
-        mView.updateAnchorInfo(mRoomDataModel.getUid(), mRoomDataModel.getAvatarTs(),
-                mRoomDataModel.getCertificationType(), mRoomDataModel.getLevel(), mRoomDataModel.getNickName());
+        mView.updateTicketAndViewerCount(mMyRoomData.getTicket(), mMyRoomData.getViewerCnt());
+        mView.updateAnchorInfo(mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
+                mMyRoomData.getCertificationType(), mMyRoomData.getLevel(), mMyRoomData.getNickName());
         mView.showManager(mIsLive);
-        mView.initViewers(mRoomDataModel.getViewersList());
+        mView.initViewers(mMyRoomData.getViewersList());
         initFollowAndLink();
     }
 
@@ -159,7 +204,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
         if (mView == null) {
             return;
         }
-        if (!mRoomDataModel.isFocused() && mRoomDataModel.getUid() != UserAccountManager.getInstance().getUuidAsLong()) {
+        if (!mMyRoomData.isFocused() && mMyRoomData.getUid() != UserAccountManager.getInstance().getUuidAsLong()) {
             mView.showFollowBtn(true, false);
         } else {
             mView.showFollowBtn(false, false);
@@ -169,8 +214,8 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
 
     @Override
     public void postAvatarEvent(int eventTypeRequestLookMoreViewer, int itemCount) {
-        if (mRoomDataModel.getViewerCnt() > itemCount) {
-            UserActionEvent.post(eventTypeRequestLookMoreViewer, mRoomDataModel, null);
+        if (mMyRoomData.getViewerCnt() > itemCount) {
+            UserActionEvent.post(eventTypeRequestLookMoreViewer, mMyRoomData, null);
         }
     }
 
@@ -186,23 +231,23 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
         if (mView == null) {
             return;
         }
-        if (event.source != mRoomDataModel || mView.getRealView().getVisibility() == View.GONE) {
+        if (event.source != mMyRoomData || mView.getRealView().getVisibility() == View.GONE) {
             return;
         }
         switch (event.type) {
             case RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE: {
-                mRoomDataModel = event.source;
+                mMyRoomData = event.source;
                 syncData();
             }
             break;
             case RoomDataChangeEvent.TYPE_CHANGE_TICKET:
             case RoomDataChangeEvent.TYPE_CHANGE_VIEWER_COUNT: {
-                mRoomDataModel = event.source;
-                mView.updateTicketAndViewerCount(mRoomDataModel.getTicket(), mRoomDataModel.getViewerCnt());
+                mMyRoomData = event.source;
+                mView.updateTicketAndViewerCount(mMyRoomData.getTicket(), mMyRoomData.getViewerCnt());
             }
             break;
             case RoomDataChangeEvent.TYPE_CHANGE_VIEWERS: {
-                mRoomDataModel = event.source;
+                mMyRoomData = event.source;
                 dealViewers();
             }
             break;
@@ -213,8 +258,8 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FollowOrUnfollowEvent event) {
-        if (null != event && mRoomDataModel != null && mRoomDataModel.getUser() != null && mRoomDataModel.getUser().getUid() == event.uuid) {
-            final User user = mRoomDataModel.getUser();
+        if (null != event && mMyRoomData != null && mMyRoomData.getUser() != null && mMyRoomData.getUser().getUid() == event.uuid) {
+            final User user = mMyRoomData.getUser();
             if (user != null && user.getUid() == event.uuid) {
                 boolean needUpdateDb = false;
 
@@ -264,7 +309,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
         @Override
         public void run() {
             ArrayList<ViewerModel> temp = new ArrayList<>();
-            temp.addAll(mRoomDataModel.getViewersList());
+            temp.addAll(mMyRoomData.getViewersList());
             mLastUpdateTime = System.currentTimeMillis();
             if (temp.isEmpty()) {
                 mView.updateViewers(temp);

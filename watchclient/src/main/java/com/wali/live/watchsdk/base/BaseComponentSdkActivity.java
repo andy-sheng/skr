@@ -235,7 +235,7 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
                 }
             }
             // 处理自己房间的push消息
-            // MyLog.d(TAG, "processPushMsgList msg=" + msg.getBody() + ",msgType" + msg.getMsgType());
+             MyLog.d(TAG, "processPushMsgList msg=" + msg.getBody() + ",msgType" + msg.getMsgType());
             processPushMessage(msg, mMyRoomData);
             // MyLog.d(TAG, "processPushMsgList msg=" + msg.getBody() + ",msgType" + msg.getMsgType() + " over");
         }

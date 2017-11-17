@@ -12,17 +12,23 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.data.LastBarrage;
 import com.mi.live.data.push.SendBarrageManager;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
+import com.mi.live.data.push.model.GlobalRoomMsgExt;
 import com.mi.live.data.query.model.MessageRule;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.presenter.ComponentPresenter;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.event.EventClass;
+import com.wali.live.proto.VFansCommonProto;
+import com.wali.live.proto.VFansProto;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
+import com.wali.live.watchsdk.fans.request.GetGroupDetailRequest;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -33,6 +39,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+
+import static com.mi.live.data.push.model.GlobalRoomMsgExt.INNER_GLOBAL_VFAN;
 
 /**
  * Created by zyh on 2017/7/28.
@@ -48,10 +63,12 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
     protected static final Map<String, LastBarrage> mLastBarrageMap = new HashMap<>();
 
     protected RoomBaseDataModel mMyRoomData;
+    protected FansGroupDetailModel mMyFansGroupModel;
     protected MyUIHandler mUIHandler;
     protected String mInputContent;
     protected boolean mCanInput;
     protected boolean mViewIsShow;
+    protected Subscription mSubscription;
 
     public InputPresenter(
             @NonNull IEventController controller,
@@ -70,6 +87,7 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        getGroupDetailFromServer();
     }
 
     @Override
@@ -79,12 +97,49 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
     }
 
     @Override
     public void destroy() {
         super.destroy();
         mUIHandler.removeCallbacksAndMessages(null);
+    }
+
+    private void getGroupDetailFromServer() {
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
+        mSubscription = Observable.just(0)
+                .map(new Func1<Object, FansGroupDetailModel>() {
+                    @Override
+                    public FansGroupDetailModel call(Object object) {
+                        if (mMyRoomData == null || mMyRoomData.getUid() <= 0) {
+                            MyLog.e(TAG, "getGroupDetail null");
+                            return null;
+                        }
+                        VFansProto.GroupDetailRsp rsp = new GetGroupDetailRequest(mMyRoomData.getUid()).syncRsp();
+                        if (rsp != null && rsp.getErrCode() == ErrorCode.CODE_SUCCESS) {
+                            return new FansGroupDetailModel(rsp);
+                        }
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<FansGroupDetailModel>() {
+                    @Override
+                    public void call(FansGroupDetailModel groupDetailModel) {
+                        mMyFansGroupModel = groupDetailModel;
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, "getGroupDetailFromServer failed=" + throwable);
+                    }
+                });
     }
 
     /**
@@ -134,12 +189,19 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
             }
             checkShowCountdownTimer();
         }
-
         BarrageMsg barrageMsg = SendBarrageManager.createBarrage(BarrageMsgType.B_MSG_TYPE_TEXT,
                 msg, mMyRoomData.getRoomId(), mMyRoomData.getUid(), System.currentTimeMillis(), null);
-        SendBarrageManager
-                .sendBarrageMessageAsync(barrageMsg)
-                .subscribe();
+
+        if (mMyFansGroupModel != null && mMyFansGroupModel.getMemType() != VFansCommonProto.GroupMemType.NONE.getNumber()) {
+            GlobalRoomMsgExt ext = new GlobalRoomMsgExt();
+            GlobalRoomMsgExt.FansMemberMsgExt fansMemberMsgExt = new GlobalRoomMsgExt.FansMemberMsgExt();
+            fansMemberMsgExt.setPetLevel(mMyFansGroupModel.getMyPetLevel());
+            fansMemberMsgExt.setVipExpire(System.currentTimeMillis() > mMyFansGroupModel.getVipExpire() * 1000);
+            fansMemberMsgExt.setMedalValue(mMyFansGroupModel.getMedalValue());
+            ext.addMsgExt(fansMemberMsgExt);
+            barrageMsg.setGlobalRoomMsgExt(ext);
+        }
+        SendBarrageManager.sendBarrageMessageAsync(barrageMsg).subscribe();
         SendBarrageManager.pretendPushBarrage(barrageMsg);
     }
 

@@ -195,7 +195,6 @@ public class BarrageMessageManager implements MiLinkPacketDispatcher.PacketDataH
             barrageMsgList.add(msg);
         }
         sendRecvEvent(barrageMsgList);
-
     }
 
     //处理系统弹幕

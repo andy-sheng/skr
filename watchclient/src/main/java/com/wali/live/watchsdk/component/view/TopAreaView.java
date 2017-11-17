@@ -31,6 +31,7 @@ import com.wali.live.event.UserActionEvent;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.watchtop.adapter.UserAvatarRecyclerAdapter;
 
 import java.util.List;
@@ -71,6 +72,8 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
 
     private UserAvatarRecyclerAdapter mAvatarRvAdapter;
     private final LinearLayoutManager mAvatarLayoutManager = new LinearLayoutManager(getContext());
+
+    private FansGroupDetailModel mFansGroupDetailModel;
 
     protected final <T extends View> T $(@IdRes int resId) {
         return (T) findViewById(resId);
@@ -209,7 +212,7 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
                         mAnimationHelper.startFollowAnim(needShow);
                     } else {
                         mFollowTv.setVisibility(needShow ? View.VISIBLE : View.GONE);
-                        if (!needShow) {
+                        if (!needShow && mFansGroupDetailModel != null) {
                             mFansArea.setVisibility(VISIBLE);
                         }
                     }
@@ -250,6 +253,11 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
             @Override
             public void initViewers(List<ViewerModel> viewersList) {
                 mAvatarRvAdapter.setViewerList(viewersList);
+            }
+
+            @Override
+            public void setFansGroupModel(FansGroupDetailModel model) {
+                mFansGroupDetailModel = model;
             }
 
             @Override
@@ -302,7 +310,6 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
                     mManagerArea.setVisibility(View.VISIBLE);
                 }
             }
-
         }
         return new ComponentView();
     }
@@ -413,6 +420,11 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
          * 初始化观众列表
          */
         void initViewers(List<ViewerModel> viewersList);
+
+        /**
+         * 设置粉丝团信息
+         */
+        void setFansGroupModel(FansGroupDetailModel model);
     }
 
     private class AnimationHelper {
@@ -440,8 +452,8 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
                         mFollowTv.setVisibility(mFollowShow ? View.VISIBLE : View.GONE);
-                        // TODO 暫時加的粉丝团跳转入口
-                        if (!mFollowShow) {
+                        //TODO 显示粉丝按钮，有job计时操作，之后加。  
+                        if (!mFollowShow && mFansGroupDetailModel != null) {
                             mFansArea.setVisibility(View.VISIBLE);
                         }
                         ViewGroup.LayoutParams layoutParams = mAnchorInfoContainer.getLayoutParams();

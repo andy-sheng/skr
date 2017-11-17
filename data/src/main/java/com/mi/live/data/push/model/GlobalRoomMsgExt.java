@@ -17,7 +17,7 @@ public class GlobalRoomMsgExt {
     public static final int INNER_GLOBAL_ADMIN_FLY = 500;//弹幕
     public static final int INNER_GLOBAL_PAY_HORN = 501;//喇叭
     public static final int INNER_GLOBAL_VFAN = 600;//宠爱团简要信息
-    private ArrayList<BaseRoomMessageExt> mRoomMsgExtList;
+    private ArrayList<BaseRoomMessageExt> mRoomMsgExtList = new ArrayList<>();
 
     public ArrayList<BaseRoomMessageExt> getRoomMsgExtList() {
         return mRoomMsgExtList;
@@ -29,7 +29,6 @@ public class GlobalRoomMsgExt {
             return null;
         }
         GlobalRoomMsgExt msgExt = new GlobalRoomMsgExt();
-        msgExt.mRoomMsgExtList = new ArrayList<>();
         for (LiveMessageProto.InnerGlobalRoomMessageExt pbMsgExt : globalRoomMsgExt.getInnerGlobalRoomMsgExtList()) {
             switch (pbMsgExt.getType()) {
                 case INNER_GLOBAL_VFAN:
@@ -44,6 +43,10 @@ public class GlobalRoomMsgExt {
             }
         }
         return msgExt;
+    }
+
+    public void addMsgExt(BaseRoomMessageExt ext) {
+        mRoomMsgExtList.add(ext);
     }
 
 
@@ -62,12 +65,15 @@ public class GlobalRoomMsgExt {
         private boolean isVipExpire;
         private String barrageColor;
 
+        public FansMemberMsgExt() {
+            this.type = INNER_GLOBAL_VFAN;
+        }
+
         public static FansMemberMsgExt loadFromPB(LiveMessageProto.VFansMemberBriefInfo message) {
             if (message == null) {
                 return null;
             }
             FansMemberMsgExt fansMemberMsgExt = new FansMemberMsgExt();
-            fansMemberMsgExt.type = INNER_GLOBAL_VFAN;
             fansMemberMsgExt.petLevel = message.getPetLevel();
             fansMemberMsgExt.medalValue = message.getMedalValue();
             fansMemberMsgExt.isUseMedal = message.getIsUseMedal();
@@ -80,20 +86,40 @@ public class GlobalRoomMsgExt {
             return petLevel;
         }
 
+        public void setPetLevel(int petLevel) {
+            this.petLevel = petLevel;
+        }
+
         public String getMedalValue() {
             return medalValue;
+        }
+
+        public void setMedalValue(String medalValue) {
+            this.medalValue = medalValue;
         }
 
         public boolean isUseMedal() {
             return isUseMedal;
         }
 
+        public void setUseMedal(boolean useMedal) {
+            isUseMedal = useMedal;
+        }
+
         public boolean isVipExpire() {
             return isVipExpire;
         }
 
+        public void setVipExpire(boolean vipExpire) {
+            isVipExpire = vipExpire;
+        }
+
         public String getBarrageColor() {
             return barrageColor;
+        }
+
+        public void setBarrageColor(String barrageColor) {
+            this.barrageColor = barrageColor;
         }
     }
 }

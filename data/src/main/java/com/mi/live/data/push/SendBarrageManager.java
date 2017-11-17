@@ -65,12 +65,12 @@ public class SendBarrageManager {
         });
     }
 
-    public static BarrageMsg createBarrage(int msgType, String body, String roomid, long anchorId, long sentTime , BarrageMsg.MsgExt ext){
+    public static BarrageMsg createBarrage(int msgType, String body, String roomid, long anchorId, long sentTime, BarrageMsg.MsgExt ext) {
         BarrageMsg msg = new BarrageMsg();
         msg.setMsgType(msgType);
         msg.setSender(UserAccountManager.getInstance().getUuidAsLong());
         String nickname = MyUserInfoManager.getInstance().getUser().getNickname();
-        if(TextUtils.isEmpty(nickname)){
+        if (TextUtils.isEmpty(nickname)) {
             nickname = String.valueOf(UserAccountManager.getInstance().getUuidAsLong());
         }
         msg.setSenderName(nickname);
@@ -92,7 +92,7 @@ public class SendBarrageManager {
     private static void sendRecvEvent(List<BarrageMsg> barrageMsgList) {
         if (barrageMsgList != null) {
             MyLog.v(TAG, "sendRecvEvent list.size:" + barrageMsgList.size());
-            EventBus.getDefault().post(new BarrageMsgEvent.ReceivedBarrageMsgEvent(barrageMsgList,"sendRecvEvent"));
+            EventBus.getDefault().post(new BarrageMsgEvent.ReceivedBarrageMsgEvent(barrageMsgList, "sendRecvEvent"));
         }
     }
 
@@ -103,6 +103,7 @@ public class SendBarrageManager {
      * @param msg
      */
     public static void pretendPushBarrage(BarrageMsg msg) {
+        MyLog.w(TAG, "pretendPushBarrage msg=" + msg.toString());
         ArrayList<BarrageMsg> barrageMsgList = new ArrayList<BarrageMsg>(1);
         if (msg != null) {
             barrageMsgList.add(msg);
