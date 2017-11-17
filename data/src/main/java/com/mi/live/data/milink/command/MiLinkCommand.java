@@ -490,4 +490,6 @@ public class MiLinkCommand {
     public static final String COMMAND_VFANS_JOB_LIST = COMMAND_VFANS_PREFIX + "group_joblist";
     // 创建宠爱团
     public static final String COMMAND_VFANS_CREATE_GROUP = COMMAND_VFANS_PREFIX + "create_group";
+    // 申请宠爱团请求
+    public static final String COMMAND_VFANS_APPLY_JOIN_GROUP = COMMAND_VFANS_PREFIX + "apply_joingroup";
 }

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/layer_bg">
+
+    <TextView
+        android:id="@+id/apply_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_150"
+        android:gravity="center"
+        android:text="@string/apply_join_vfans_title"
+        android:textColor="@color/color_black_trans_90"
+        android:textSize="@dimen/margin_44"/>
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_1"
+        android:layout_below="@+id/apply_title_tv"
+        android:background="@color/color_d6d6d6"/>
+
+    <EditText
+        android:id="@+id/edit_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_400"
+
+        android:layout_below="@id/line1"
+        android:background="@null"
+        android:focusable="true"
+        android:gravity="start"
+        android:hint="@string/apply_reason"
+        android:padding="@dimen/margin_30"
+        android:textColorHint="@color/color_black_trans_30"
+        android:textCursorDrawable="@drawable/edittext_color_cursor"
+        android:textSize="@dimen/text_size_38"/>
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_1"
+        android:layout_below="@+id/edit_content"
+        android:background="@color/color_d6d6d6"/>
+
+    <LinearLayout
+        android:id="@+id/bottom_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_157"
+        android:layout_below="@+id/line2"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@color/color_black_trans_70"
+            android:textSize="@dimen/margin_42"/>
+
+        <View
+            android:id="@+id/split_line"
+            android:layout_width="@dimen/margin_1"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/color_d6d6d6"/>
+
+        <TextView
+            android:id="@+id/sure"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/ok"
+            android:textColor="@color/color_black_trans_70"
+            android:textSize="@dimen/margin_42"/>
+    </LinearLayout>
+</RelativeLayout>

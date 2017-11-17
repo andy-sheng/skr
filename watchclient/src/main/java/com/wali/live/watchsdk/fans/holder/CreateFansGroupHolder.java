@@ -15,6 +15,7 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.constant.FansConstant;
 import com.wali.live.watchsdk.fans.dialog.CreateGroupDialog;
+import com.wali.live.watchsdk.fans.dialog.listener.OnConfirmClickListener;
 import com.wali.live.watchsdk.fans.listener.FansGroupListListener;
 import com.wali.live.watchsdk.fans.model.item.CreateFansGroupModel;
 import com.wali.live.watchsdk.lit.recycler.holder.BaseHolder;
@@ -65,7 +66,7 @@ public class CreateFansGroupHolder extends BaseHolder<CreateFansGroupModel> {
                 /**
                  * @colorWrong
                  */
-                WebViewActivity.open((Activity) itemView.getContext(), FansConstant.FANS_INTRO_LIVE_URL);
+                WebViewActivity.open((Activity) itemView.getContext(), FansConstant.FANS_INDEX_URL);
             }
         });
     }
@@ -83,9 +84,9 @@ public class CreateFansGroupHolder extends BaseHolder<CreateFansGroupModel> {
     private void showDialog() {
         if (mDialog == null) {
             mDialog = new CreateGroupDialog(itemView.getContext());
-            mDialog.setOnConfirmClickListener(new CreateGroupDialog.OnConfirmClickListener() {
+            mDialog.setOnConfirmClickListener(new OnConfirmClickListener() {
                 @Override
-                public void doConfirm() {
+                public void confirm() {
                     String name = mDialog.getEditMessage();
                     if (name.length() > MAX_GROUP_NAME_LENGTH) {
                         ToastUtils.showToast(itemView.getContext().getString(R.string.vfans_max_name_length, MAX_GROUP_NAME_LENGTH));

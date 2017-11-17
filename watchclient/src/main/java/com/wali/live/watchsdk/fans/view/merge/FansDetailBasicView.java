@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.base.activity.BaseActivity;
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
@@ -18,20 +19,24 @@ import com.base.mvp.specific.RxRelativeLayout;
 import com.base.utils.display.DisplayUtils;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.fans.constant.FansConstant;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
 import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.watchsdk.fans.view.custom.FansProgressView;
+import com.wali.live.watchsdk.webview.WebViewActivity;
 
 import java.util.List;
 
 /**
  * Created by lan on 2017/11/16.
  */
-public class FansDetailBasicView extends RxRelativeLayout {
+public class FansDetailBasicView extends RxRelativeLayout implements View.OnClickListener {
     private static final int MAX_COUNT_TOP = 3;
 
     private TextView mFanTitleTv;
+    private TextView mFanRecommendTv;
+
     private BaseImageView mCoverIv;
     private TextView mFansNameTv;
     private ImageView mCharmTitleIv;
@@ -66,6 +71,8 @@ public class FansDetailBasicView extends RxRelativeLayout {
         inflate(getContext(), R.layout.fans_detail_basic_view, this);
 
         mFanTitleTv = $(R.id.vfan_owner_title);
+        mFanRecommendTv = $click(R.id.vfan_recommend, this);
+
         mCoverIv = $(R.id.cover_iv);
         mFansNameTv = $(R.id.vfan_name_tv);
         mCharmTitleIv = $(R.id.charm_title_iv);
@@ -149,5 +156,13 @@ public class FansDetailBasicView extends RxRelativeLayout {
         image.setWidth(DisplayUtils.dip2px(18));
         image.setIsCircle(true);
         FrescoWorker.loadImage(iv, image);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.vfan_recommend) {
+            WebViewActivity.open((BaseActivity) getContext(), FansConstant.FANS_INDEX_URL);
+        }
     }
 }

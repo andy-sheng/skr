@@ -23,10 +23,17 @@ public class FansGroupListModel extends BaseViewModel {
     }
 
     public void parse(VFansProto.GetGroupListRsp rsp) {
+//        if (rsp.hasMyGroup()) {
+//            mMyFansGroupModel = new MyFansGroupModel(rsp.getMyGroup());
+//        } else if (rsp.hasCreateRights() && rsp.getCreateRights()) {
+//            mCreateFansGroupModel = new CreateFansGroupModel();
+//        }
+
+        if (rsp.hasCreateRights() && rsp.getCreateRights()) {
+            mCreateFansGroupModel = new CreateFansGroupModel();
+        }
         if (rsp.hasMyGroup()) {
             mMyFansGroupModel = new MyFansGroupModel(rsp.getMyGroup());
-        } else if (rsp.hasCreateRights() && rsp.getCreateRights()) {
-            mCreateFansGroupModel = new CreateFansGroupModel();
         }
 
         if (mMemFansGroupModelList == null) {
