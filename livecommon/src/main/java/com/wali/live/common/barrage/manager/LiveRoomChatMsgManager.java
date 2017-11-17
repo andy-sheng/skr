@@ -163,7 +163,7 @@ public class LiveRoomChatMsgManager {
     }
 
     public ArrayList<CommentModel> getMsgList() {
-        ArrayList<CommentModel> list = new ArrayList<>();
+        ArrayList<CommentModel> list = new ArrayList<>(setTopMsgList.size() + chatMsgList.size());
         list.addAll(setTopMsgList.toArrayList());
         list.addAll(chatMsgList.toArrayList());
         return list;

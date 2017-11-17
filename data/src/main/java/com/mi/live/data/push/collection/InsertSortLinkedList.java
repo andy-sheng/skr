@@ -122,7 +122,7 @@ public class InsertSortLinkedList<T extends Comparable<T>> {
     }
 
     public synchronized ArrayList<T> toArrayList() {
-        ArrayList<T> result = new ArrayList<T>();
+        ArrayList<T> result = new ArrayList<T>(size);
         Node<T> current = header.next;
         while (current != null) {
             result.add(current.data);

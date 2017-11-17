@@ -21,7 +21,6 @@ import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IOrientationListener;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.common.barrage.event.CommentRefreshEvent;
-import com.wali.live.common.barrage.view.MyListView;
 import com.wali.live.common.barrage.view.adapter.LiveCommentRecyclerAdapter;
 import com.wali.live.common.model.CommentModel;
 import com.wali.live.event.UserActionEvent;
@@ -65,7 +64,7 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
     private boolean mIsLandscape = false;
 
     private ImageView mMoveToLastItemIv;     //点击回到最底部
-    private MyListView mCommentRv;
+    private RecyclerView mCommentRv;
 
     protected final <T extends View> T $(@IdRes int resId) {
         return (T) findViewById(resId);
@@ -88,8 +87,8 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
         mNameViewClickListener = nameViewClickListener;
     }
 
-    public void setToken(String token) {
-        this.mToken = token;
+    public final void setToken(String token) {
+        mToken = token;
     }
 
     @Override
@@ -122,7 +121,7 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
     }
 
     private void setupCommentView() {
-        mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
+        mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mCommentRv.setLayoutManager(mLayoutManager);
         mCommentRv.setItemAnimator(null);
         mCommentRv.setVerticalFadingEdgeEnabled(true);
@@ -147,9 +146,9 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
                 if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     mDragging = false;
                     // 停下来判断是否是最后一个
-                    int firstVisiblePosition = mLayoutManager.findFirstVisibleItemPosition();
-                    MyLog.d(TAG, "onScrollStateChanged firstVisiblePosition :" + firstVisiblePosition);
-                    if (firstVisiblePosition == 0) {
+                    int bottomVisiblePosition = mLayoutManager.findLastVisibleItemPosition();
+                    MyLog.d(TAG, "onScrollStateChanged bottomVisiblePosition :" + bottomVisiblePosition);
+                    if (bottomVisiblePosition == mAdapter.getItemCount() - 1) {
                         setOnBottom("onScrollStateChanged", true);
                     } else {
                         setOnBottom("onScrollStateChanged", false);
@@ -180,15 +179,14 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
 
     private void setOnBottom(String from, boolean onBottom) {
         MyLog.d(TAG, "onBottom:" + this.mOnBottom + "-->" + onBottom + " from:" + from);
-        if (this.mOnBottom != onBottom) {
-            this.mOnBottom = onBottom;
+        if (mOnBottom != onBottom) {
+            mOnBottom = onBottom;
             if (mOnBottom) {
                 if (mHasDataUpdate) {
                     refreshComment(true);
                 }
-                mCommentRv.scrollToPosition(0);
-                // INVISIBLE占位
-                mMoveToLastItemIv.setVisibility(INVISIBLE);
+                mLayoutManager.scrollToPosition(mAdapter.getItemCount() - 1);
+                mMoveToLastItemIv.setVisibility(INVISIBLE); // INVISIBLE占位
                 EventBus.getDefault().post(new LiveCommentView.LiveCommentStateEvent(
                         LiveCommentView.LiveCommentStateEvent.TYPE_UPDATE_TO_DEFAULT_SIZE));
             } else {
@@ -226,11 +224,11 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
             if (force) {
                 mAdapter.setCommentList(mDataList);
                 mHasDataUpdate = false;
-                mCommentRv.scrollToPosition(0);
+                mLayoutManager.scrollToPosition(mAdapter.getItemCount() - 1);
             } else if (mOnBottom && this.getVisibility() == VISIBLE && !mDragging) {
                 mAdapter.setCommentList(mDataList);
                 mHasDataUpdate = false;
-                mCommentRv.scrollToPosition(0);
+                mLayoutManager.scrollToPosition(mAdapter.getItemCount() - 1);
             }
         }
     }

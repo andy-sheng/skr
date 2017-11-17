@@ -70,9 +70,10 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
     public void setCommentList(List<CommentModel> dataList) {
         if (dataList != null) {
             mCommentList.clear();
-            List<CommentModel> reverseList = new ArrayList<>(dataList);
-            Collections.reverse(reverseList);
-            mCommentList.addAll(reverseList);
+//            List<CommentModel> reverseList = new ArrayList<>(dataList);
+//            Collections.reverse(reverseList);
+//            mCommentList.addAll(reverseList);
+            mCommentList.addAll(dataList);
             notifyDataSetChanged();
         }
     }
