@@ -309,4 +309,9 @@
     <string name="create_group_success">Created successfully</string>
     <string name="create_group_faild">Couldn\'t create</string>
     <string name="vfans_start_talk">Chat with others in the club</string>
+    <string name="apply_join_vfans_title">Apply to join fan club</string>
+    <string name="resend_sixin_sure">OK</string>
+    <string name="apply_reason">Enter reasons of application</string>
+    <string name="vfans_apply_group_success">Request sent successfully. Wait for approval.</string>
+    <string name="vfans_apply_group_failed">Couldn\'t send request. Check your network connection.</string>
 </resources>

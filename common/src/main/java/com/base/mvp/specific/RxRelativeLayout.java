@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 import com.base.mvp.IRxView;
 
 import rx.Observable;
-import rx.functions.Func1;
 import rx.subjects.BehaviorSubject;
 
 /**
@@ -37,10 +36,6 @@ public abstract class RxRelativeLayout extends RelativeLayout implements IRxView
         super(context, attrs, defStyleAttr);
     }
 
-    protected <V extends View> V $(@IdRes int resId) {
-        return (V) findViewById(resId);
-    }
-
     @CallSuper
     public void destroy() {
         mBehaviorSubject.onNext(PresenterEvent.DESTROY);
@@ -51,23 +46,15 @@ public abstract class RxRelativeLayout extends RelativeLayout implements IRxView
         return PresenterEvent.bindUntilEvent(mBehaviorSubject, PresenterEvent.DESTROY);
     }
 
-    protected enum PresenterEvent {
-        DESTROY;
+    protected final <V extends View> V $(@IdRes int resId) {
+        return (V) findViewById(resId);
+    }
 
-        static <T, R> Observable.Transformer<T, T> bindUntilEvent(final BehaviorSubject<R> subject, final R event) {
-            return new Observable.Transformer<T, T>() {
-                @Override
-                public Observable<T> call(Observable<T> source) {
-                    return source.takeUntil(
-                            subject.takeFirst(new Func1<R, Boolean>() {
-                                @Override
-                                public Boolean call(R lifecycleEvent) {
-                                    return lifecycleEvent == event;
-                                }
-                            })
-                    );
-                }
-            };
+    protected final <V extends View> V $click(@IdRes int id, OnClickListener listener) {
+        V v = $(id);
+        if (v != null) {
+            v.setOnClickListener(listener);
         }
+        return v;
     }
 }

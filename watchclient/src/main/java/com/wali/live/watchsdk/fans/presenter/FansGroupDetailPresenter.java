@@ -32,7 +32,11 @@ public class FansGroupDetailPresenter extends BaseRxPresenter<IFansGroupDetailVi
                     @Override
                     public void call(Subscriber<? super FansGroupDetailModel> subscriber) {
                         VFansProto.GroupDetailRsp rsp = new GetGroupDetailRequest(zuid).syncRsp();
-                        if (rsp == null || rsp.getErrCode() != ErrorCode.CODE_SUCCESS) {
+                        if (rsp == null) {
+                            subscriber.onError(new Exception("get group detail rsp is null"));
+                            return;
+                        }
+                        if (rsp.getErrCode() != ErrorCode.CODE_SUCCESS) {
                             subscriber.onError(new Exception(rsp.getErrMsg() + " : " + rsp.getErrCode()));
                             return;
                         }
@@ -62,7 +66,11 @@ public class FansGroupDetailPresenter extends BaseRxPresenter<IFansGroupDetailVi
                     @Override
                     public void call(Subscriber<? super List<FansMemberModel>> subscriber) {
                         VFansProto.MemberListRsp rsp = new GetMemberListRequest(zuid, 0, 3).syncRsp();
-                        if (rsp == null || rsp.getErrCode() != ErrorCode.CODE_SUCCESS) {
+                        if (rsp == null) {
+                            subscriber.onError(new Exception("get top three rsp is null"));
+                            return;
+                        }
+                        if (rsp.getErrCode() != ErrorCode.CODE_SUCCESS) {
                             subscriber.onError(new Exception(rsp.getErrMsg() + " : " + rsp.getErrCode()));
                             return;
                         }

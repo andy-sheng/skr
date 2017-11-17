@@ -13,9 +13,12 @@ import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.keyboard.KeyboardUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.SlidingTabLayout;
+import com.mi.live.data.account.UserAccountManager;
+import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
 import com.wali.live.watchsdk.channel.view.RepeatScrollView;
+import com.wali.live.watchsdk.fans.dialog.ApplyJoinDialog;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.presenter.FansMemberPresenter;
 import com.wali.live.watchsdk.fans.presenter.FansPagerPresenter;
@@ -23,6 +26,8 @@ import com.wali.live.watchsdk.fans.view.FansHomeView;
 import com.wali.live.watchsdk.fans.view.FansMemberView;
 import com.wali.live.watchsdk.fans.view.FansTaskView;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.wali.live.component.view.Utils.$component;
 
 /**
@@ -30,7 +35,6 @@ import static com.wali.live.component.view.Utils.$component;
  *
  * @module 粉丝团页面
  */
-
 public class FansPagerFragment extends RxFragment implements View.OnClickListener, FansPagerPresenter.IView {
     private static final String EXTRA_ANCHOR_ID = "extra_anchor_id";
     private static final String EXTRA_ROOMID = "extra_roomId";
@@ -47,7 +51,10 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
     private SlidingTabLayout mTabLayout;
     private CommonTabPagerAdapter mTabPagerAdapter;
     private ViewPager mViewPager;
-    private View mJoinFanArea;
+
+    private View mApplyJoinArea;
+    private TextView mApplyJoinBtn;
+
     private View mPrivilegeArea;
     private RepeatScrollView mRepeatScrollView;
     private TextView mPrivilegeOpenBtn;
@@ -64,6 +71,9 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
     private int mMemberType;
     private FansPagerPresenter mPresenter;
     private FansGroupDetailModel mGroupDetailModel;
+
+    private boolean mHasJoinGroup;
+    private ApplyJoinDialog mApplyJoinDialog;
 
     @Override
     public int getRequestCode() {
@@ -105,6 +115,7 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
     private void initTopContainer() {
         mCoverView = $(R.id.cover_view);
         $click(mCoverView, this);
+
         mTabLayout = $(R.id.vfan_tab);
         mTabLayout.setCustomTabView(R.layout.fans_tab_view, R.id.tab_tv);
         mTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.color_e5aa1e));
@@ -144,12 +155,15 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
     }
 
     private void initBottomContainer() {
-        mJoinFanArea = $(R.id.apply_join_vfan_area);
+        mApplyJoinArea = $(R.id.apply_join_vfan_area);
+        mApplyJoinBtn = $(R.id.join_vfans_btn);
+        $click(mApplyJoinBtn, this);
+
         mPrivilegeArea = $(R.id.apply_privilege_area);
-        $click(mJoinFanArea, this);
         mRepeatScrollView = $(R.id.repeat_scroll_view);
         mPrivilegeOpenBtn = $(R.id.open_privilege_btn);
         $click(mPrivilegeOpenBtn, this);
+
         mRepeatScrollView.init(R.layout.vfans_repeat_scroll_view, DisplayUtils.dip2px(66.67f));
         mScrollTv = (TextView) mRepeatScrollView.getChildView(0).findViewById(R.id.text_message);
     }
@@ -170,19 +184,48 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
         int i = v.getId();
         if (i == R.id.cover_view) {
             finish();
+        } else if (i == R.id.join_vfans_btn) {
+            applyJoin();
         } else if (i == R.id.open_privilege_btn) {
-
-        } else if (i == R.id.apply_join_vfan_area) {
-
         }
+    }
+
+    private void applyJoin() {
+        if (mApplyJoinDialog == null) {
+            mApplyJoinDialog = new ApplyJoinDialog(getActivity());
+        }
+        mApplyJoinDialog.show(mAnchorId, mRoomId, null);
     }
 
     @Override
     public void setGroupDetail(FansGroupDetailModel groupDetailModel) {
         mGroupDetailModel = groupDetailModel;
+
         mFansHomeView.setData(mAnchorName, mGroupDetailModel);
         mFansTaskView.setGroupDetailModel(mGroupDetailModel);
         mFansMemberView.updateGroupDetail(mGroupDetailModel);
+
+        updateApplyArea();
+    }
+
+    private void updateApplyArea() {
+        if (mAnchorId != UserAccountManager.getInstance().getUuidAsLong()) {
+            mHasJoinGroup = mGroupDetailModel.getMemType() != VFansCommonProto.GroupMemType.NONE_VALUE;
+
+            if (mHasJoinGroup) {
+                mApplyJoinArea.setVisibility(GONE);
+            } else {
+                mApplyJoinArea.setVisibility(VISIBLE);
+            }
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mFansHomeView != null) {
+            mFansHomeView.destroy();
+        }
     }
 
     public static void openFragment(BaseSdkActivity activity, String anchorName,

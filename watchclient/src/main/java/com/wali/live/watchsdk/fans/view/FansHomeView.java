@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.global.GlobalData;
+import com.base.mvp.specific.RxRelativeLayout;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.proto.VFansCommonProto;
@@ -28,8 +29,6 @@ import com.wali.live.watchsdk.fans.view.merge.FansDetailBasicView;
 import com.wali.live.watchsdk.view.EmptyView;
 
 import java.util.List;
-
-import rx.Observable;
 
 import static com.wali.live.watchsdk.fans.FansPrivilegeFragment.TYPE_BAN_BARRAGE;
 import static com.wali.live.watchsdk.fans.FansPrivilegeFragment.TYPE_CHARM_MEDAL;
@@ -45,7 +44,7 @@ import static com.wali.live.watchsdk.fans.FansPrivilegeFragment.TYPE_UPGRADE_ACC
  * @module 粉丝团的首页
  */
 
-public class FansHomeView extends RelativeLayout implements View.OnClickListener, FansHomePresenter.IView {
+public class FansHomeView extends RxRelativeLayout implements View.OnClickListener, FansHomePresenter.IView {
     private final String TAG = "FansHomeView";
 
     public static final int UPGRADE_ACCELERATE_LEVEL = 1;
@@ -86,28 +85,10 @@ public class FansHomeView extends RelativeLayout implements View.OnClickListener
     private TextView mForbiddenTitleTv;
     private TextView mForbiddenStatusTv;
 
-    private FansHomePresenter mFansHomePresenter;
+    private FansHomePresenter mPresenter;
 
     private String mAnchorName;
     private boolean mIsAnchor = false;
-
-    public void setData(String anchorName, @NonNull FansGroupDetailModel groupDetailModel) {
-        mAnchorName = anchorName;
-        mGroupDetailModel = groupDetailModel;
-        if (mGroupDetailModel != null) {
-            refresh();
-            initPresenter();
-        } else {
-            mEmptyView.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void initPresenter() {
-        if (mFansHomePresenter == null) {
-            mFansHomePresenter = new FansHomePresenter(this, mGroupDetailModel);
-        }
-        mFansHomePresenter.getMemberListFromServer();
-    }
 
     public FansHomeView(Context context) {
         this(context, null);
@@ -153,12 +134,29 @@ public class FansHomeView extends RelativeLayout implements View.OnClickListener
         mForbiddenTitleTv = $(R.id.forbidden_title_tv);
         mForbiddenStatusTv = $(R.id.forbidden_status);
 
-        $click(R.id.vfan_recommend, this);
         $click(R.id.first_privilege_area, this);
         $click(R.id.color_barrage_area, this);
         $click(R.id.fly_barrage_privilege_area, this);
         $click(R.id.forbidden_privilege_area, this);
         $click(R.id.group_rank_area, this);
+
+        initPresenter();
+    }
+
+    private void initPresenter() {
+        mPresenter = new FansHomePresenter(this);
+    }
+
+    public void setData(String anchorName, @NonNull FansGroupDetailModel groupDetailModel) {
+        mAnchorName = anchorName;
+        mGroupDetailModel = groupDetailModel;
+
+        if (mGroupDetailModel != null) {
+            refresh();
+            mPresenter.getTopThreeMember(mGroupDetailModel.getZuid());
+        } else {
+            mEmptyView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void refresh() {
@@ -172,7 +170,7 @@ public class FansHomeView extends RelativeLayout implements View.OnClickListener
         mIsAnchor = mGroupDetailModel.getZuid() == UserAccountManager.getInstance().getUuidAsLong();
         mMyInfoArea.setVisibility(mIsAnchor ? View.GONE : View.VISIBLE);
 
-        mDetailBasicView.setGroupDetailModel(mGroupDetailModel, mAnchorName);
+        mDetailBasicView.setGroupDetailModel(mGroupDetailModel, anchorName);
 
         if (!mIsAnchor) {
             if (mGroupDetailModel.getMemType() == VFansCommonProto.GroupMemType.NONE_VALUE) {
@@ -234,8 +232,8 @@ public class FansHomeView extends RelativeLayout implements View.OnClickListener
     }
 
     public boolean hasPrivilege() {
-        return mGroupDetailModel.getVipLevel() > 0 && System.currentTimeMillis() / 1000
-                < mGroupDetailModel.getVipExpire();
+        return mGroupDetailModel.getVipLevel() > 0 &&
+                System.currentTimeMillis() / 1000 < mGroupDetailModel.getVipExpire();
     }
 
     @Override
@@ -270,21 +268,5 @@ public class FansHomeView extends RelativeLayout implements View.OnClickListener
     @Override
     public void setTopThreeMember(List<FansMemberModel> memberList) {
         mDetailBasicView.setTopThreeMember(memberList);
-    }
-
-    @Override
-    public <T> Observable.Transformer<T, T> bindLifecycle() {
-        return null;
-    }
-
-    private final <V extends View> V $(@IdRes int id) {
-        return (V) findViewById(id);
-    }
-
-    private final <V extends View> void $click(@IdRes int id, OnClickListener listener) {
-        V view = $(id);
-        if (view != null) {
-            view.setOnClickListener(listener);
-        }
     }
 }
