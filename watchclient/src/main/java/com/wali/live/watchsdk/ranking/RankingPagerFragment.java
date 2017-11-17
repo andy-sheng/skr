@@ -186,12 +186,6 @@ public class RankingPagerFragment extends BaseFragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mViewPager.setAdapter(null); // FragmentStatePagerAdapter不会移除已经添加的Fragment，强制其移除，防止内存泄漏
-    }
-
-    @Override
     public boolean onBackPressed() {
         FragmentNaviUtils.popFragmentFromStack(getActivity());
         return true;
