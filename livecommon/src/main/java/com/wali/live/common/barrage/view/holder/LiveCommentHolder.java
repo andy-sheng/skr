@@ -143,7 +143,7 @@ public class LiveCommentHolder extends RecyclerView.ViewHolder {
     // 防止过多 new 对象
     private SpanUtils.MyClickableSpan clickSpan;
     private CommentModel liveComment;
-    private LiveCommentRecyclerAdapter.LiveCommentNameClickListener mLiveCommentNameClickListener;
+    private LiveCommentRecyclerAdapter.NameClickListener mLiveCommentNameClickListener;
 
     public SpanUtils.MyClickableSpan getClickSpan() {
         if (clickSpan == null) {
@@ -169,7 +169,7 @@ public class LiveCommentHolder extends RecyclerView.ViewHolder {
         this.liveComment = liveComment;
     }
 
-    public void setNameClickListener(LiveCommentRecyclerAdapter.LiveCommentNameClickListener mLiveCommentNameClickListener) {
+    public void setNameClickListener(LiveCommentRecyclerAdapter.NameClickListener mLiveCommentNameClickListener) {
         this.mLiveCommentNameClickListener = mLiveCommentNameClickListener;
     }
 

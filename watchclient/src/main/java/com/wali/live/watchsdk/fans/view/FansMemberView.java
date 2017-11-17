@@ -184,6 +184,7 @@ public class FansMemberView extends RelativeLayout
             public void onLoadingStarted() {
                 MyLog.d(TAG, "onLoadingStarted");
                 mAdapter.showLoading();
+                mRecyclerView.getLayoutManager().scrollToPosition(mAdapter.getItemCount() - 1);
                 removeCallbacks(mHideLoadingRunnable);
                 mEmptyView.setVisibility(View.GONE);
             }

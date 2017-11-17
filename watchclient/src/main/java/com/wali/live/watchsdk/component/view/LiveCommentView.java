@@ -31,6 +31,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
+import static com.wali.live.component.view.Utils.$click;
+
 /**
  * Created by yangli on 2017/03/02.
  *
@@ -50,7 +52,7 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
 
     @Nullable
     protected IPresenter mPresenter;
-    private LiveCommentRecyclerAdapter.LiveCommentNameClickListener mNameViewClickListener = null;
+    private LiveCommentRecyclerAdapter.NameClickListener mNameViewClickListener = null;
 
     private LiveCommentRecyclerAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
@@ -65,16 +67,8 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
     private ImageView mMoveToLastItemIv;     //点击回到最底部
     private MyListView mCommentRv;
 
-    // Auto-generated to easy use findViewById
     protected final <T extends View> T $(@IdRes int resId) {
         return (T) findViewById(resId);
-    }
-
-    // Auto-generated to easy use setClickListener
-    protected final void $click(View view, View.OnClickListener listener) {
-        if (view != null) {
-            view.setOnClickListener(listener);
-        }
     }
 
     @Override
@@ -90,7 +84,7 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
     }
 
     public void setNameViewClickListener(
-            LiveCommentRecyclerAdapter.LiveCommentNameClickListener nameViewClickListener) {
+            LiveCommentRecyclerAdapter.NameClickListener nameViewClickListener) {
         mNameViewClickListener = nameViewClickListener;
     }
 
@@ -149,12 +143,12 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
         mOnScrollListener = new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                MyLog.d(TAG, "onScrollStateChangd, newState:" + newState + ", mOnBottom:" + mOnBottom);
+                MyLog.d(TAG, "onScrollStateChanged, newState:" + newState + ", mOnBottom:" + mOnBottom);
                 if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     mDragging = false;
                     // 停下来判断是否是最后一个
                     int firstVisiblePosition = mLayoutManager.findFirstVisibleItemPosition();
-                    MyLog.d(TAG, "onScrollStateChangd firstVisiblePosition :" + firstVisiblePosition);
+                    MyLog.d(TAG, "onScrollStateChanged firstVisiblePosition :" + firstVisiblePosition);
                     if (firstVisiblePosition == 0) {
                         setOnBottom("onScrollStateChanged", true);
                     } else {
@@ -164,16 +158,12 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
                     mDragging = true;
                 }
             }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            }
         };
         mCommentRv.addOnScrollListener(mOnScrollListener);
         mCommentRv.setHasFixedSize(true);
         mAdapter = new LiveCommentRecyclerAdapter(getContext());
         mCommentRv.setAdapter(mAdapter);
-        mAdapter.setLiveCommentNameClickListener(new LiveCommentRecyclerAdapter.LiveCommentNameClickListener() {
+        mAdapter.setLiveCommentNameClickListener(new LiveCommentRecyclerAdapter.NameClickListener() {
             @Override
             public void onClickName(long uid) {
                 if (mNameViewClickListener != null) {
@@ -182,7 +172,6 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
                     if (CommonUtils.isFastDoubleClick(200)) {
                         return;
                     }
-
                     UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, uid, uid);
                 }
             }

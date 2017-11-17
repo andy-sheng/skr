@@ -53,9 +53,9 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private HashMap<String, Bitmap> mBitmapHashMap = new HashMap<>();
 
-    private LiveCommentNameClickListener mLiveCommentNameClickListener = null;
+    private NameClickListener mLiveCommentNameClickListener = null;
 
-    public void setLiveCommentNameClickListener(LiveCommentNameClickListener listener) {
+    public void setLiveCommentNameClickListener(NameClickListener listener) {
         mLiveCommentNameClickListener = listener;
     }
 
@@ -75,13 +75,6 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
             mCommentList.addAll(reverseList);
             notifyDataSetChanged();
         }
-    }
-
-    /**
-     * 这个回调是点击弹幕的姓名时的回调
-     */
-    public interface LiveCommentNameClickListener {
-        void onClickName(long uid);
     }
 
     private void setBackground(LiveCommentHolder liveCommentHolder, CommentModel liveComment) {
@@ -223,5 +216,12 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public int getItemViewType(int position) {
         return 1;
+    }
+
+    /**
+     * 这个回调是点击弹幕的姓名时的回调
+     */
+    public interface NameClickListener {
+        void onClickName(long uid);
     }
 }
