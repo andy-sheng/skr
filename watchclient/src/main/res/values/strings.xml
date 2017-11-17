@@ -308,4 +308,9 @@
     <string name="apply_reason">Enter reasons of application</string>
     <string name="vfans_apply_group_success">Request sent successfully. Wait for approval.</string>
     <string name="vfans_apply_group_failed">Couldn\'t send request. Check your network connection.</string>
+    <string name="vfans_set_group_title">Customize level names</string>
+    <string name="vfans_quit">Leave the club</string>
+    <string name="vfans_join_vfans_notice">Apply to join the fan club</string>
+    <string name="group_quiting_success">Left successfully</string>
+    <string name="group_quiting_failed">Couldn\'t leave</string>
 </resources>

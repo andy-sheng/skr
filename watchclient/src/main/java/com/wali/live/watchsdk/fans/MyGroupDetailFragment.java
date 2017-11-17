@@ -3,13 +3,11 @@ package com.wali.live.watchsdk.fans;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.base.activity.BaseActivity;
 import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.keyboard.KeyboardUtils;
-import com.base.utils.display.DisplayUtils;
 import com.base.view.BackTitleBar;
 import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.watchsdk.R;
@@ -48,10 +46,6 @@ public class MyGroupDetailFragment extends RxFragment implements View.OnClickLis
         mTitleBar = $(R.id.title_bar);
         mTitleBar.getBackBtn().setOnClickListener(this);
 
-        mTitleBar.getRightImageBtn().setImageResource(R.drawable.web_icon_relay_bg);
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mTitleBar.getRightImageBtn().getLayoutParams();
-        lp.rightMargin = DisplayUtils.dip2px(10f);
-
         mDetailBasicView = $(R.id.detail_basic_view);
 
         initPresenter();
@@ -71,8 +65,17 @@ public class MyGroupDetailFragment extends RxFragment implements View.OnClickLis
     }
 
     private void updateView() {
-        mTitleBar.setTitle(mGroupDetailModel.getGroupName());
+        updateTitleArea();
         updateBasicArea();
+    }
+
+    private void updateTitleArea() {
+        mTitleBar.setTitle(mGroupDetailModel.getGroupName());
+
+//        mTitleBar.getRightImageBtn().setOnClickListener(this);
+//        mTitleBar.getRightImageBtn().setImageResource(R.drawable.web_icon_relay_bg);
+//        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mTitleBar.getRightImageBtn().getLayoutParams();
+//        lp.rightMargin = DisplayUtils.dip2px(10f);
     }
 
     private void updateBasicArea() {
@@ -82,6 +85,11 @@ public class MyGroupDetailFragment extends RxFragment implements View.OnClickLis
     @Override
     public void setTopThreeMember(List<FansMemberModel> memberList) {
         mDetailBasicView.setTopThreeMember(memberList);
+    }
+
+    @Override
+    public void notifyQuitGroupSuccess() {
+        //nothing to do
     }
 
     @Override

@@ -298,4 +298,9 @@
     <string name="apply_reason">请输入申请理由</string>
     <string name="vfans_apply_group_success">申请入团成功，请耐心等待审核，谢谢</string>
     <string name="vfans_apply_group_failed">申请入团失败，请您检查网络是否连接</string>
+    <string name="vfans_set_group_title">自定义团等级名称</string>
+    <string name="vfans_quit">退出粉丝团</string>
+    <string name="vfans_join_vfans_notice">先申请加入主播的粉丝团吧！</string>
+    <string name="group_quiting_success">群退出成功</string>
+    <string name="group_quiting_failed">群退出失败</string>
 </resources>

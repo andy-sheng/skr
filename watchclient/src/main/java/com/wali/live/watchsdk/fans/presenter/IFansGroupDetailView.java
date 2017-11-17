@@ -13,4 +13,6 @@ public interface IFansGroupDetailView extends IRxView {
     void setFansGroupDetail(FansGroupDetailModel model);
 
     void setTopThreeMember(List<FansMemberModel> modelList);
+
+    void notifyQuitGroupSuccess();
 }

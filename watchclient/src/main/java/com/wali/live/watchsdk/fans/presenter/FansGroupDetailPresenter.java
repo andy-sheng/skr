@@ -2,13 +2,16 @@ package com.wali.live.watchsdk.fans.presenter;
 
 import com.base.log.MyLog;
 import com.base.mvp.BaseRxPresenter;
+import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.VFansProto;
+import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberListModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
 import com.wali.live.watchsdk.fans.request.GetGroupDetailRequest;
 import com.wali.live.watchsdk.fans.request.GetMemberListRequest;
+import com.wali.live.watchsdk.fans.request.QuitGroupRequest;
 
 import java.util.List;
 
@@ -92,6 +95,41 @@ public class FansGroupDetailPresenter extends BaseRxPresenter<IFansGroupDetailVi
                     @Override
                     public void call(Throwable throwable) {
                         MyLog.e(TAG, throwable);
+                    }
+                });
+    }
+
+    public void quitFansGroup(final long zuid) {
+        Observable
+                .create(new Observable.OnSubscribe<Boolean>() {
+                    @Override
+                    public void call(Subscriber<? super Boolean> subscriber) {
+                        VFansProto.QuitGroupRsp rsp = new QuitGroupRequest(zuid).syncRsp();
+                        if (rsp == null) {
+                            subscriber.onError(new Exception("quit group rsp is null"));
+                            return;
+                        }
+                        subscriber.onNext(rsp.getErrCode() == ErrorCode.CODE_SUCCESS);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(mView.<Boolean>bindLifecycle())
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean result) {
+                        if (result) {
+                            mView.notifyQuitGroupSuccess();
+                            ToastUtils.showToast(R.string.group_quiting_success);
+                        } else {
+                            ToastUtils.showToast(R.string.group_quiting_failed);
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+
                     }
                 });
     }

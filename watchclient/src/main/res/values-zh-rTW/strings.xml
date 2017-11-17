@@ -298,4 +298,9 @@
     <string name="apply_reason">請輸入申請理由</string>
     <string name="vfans_apply_group_success">申請入團成功，請耐心等待審核，謝謝</string>
     <string name="vfans_apply_group_failed">申請入團失敗，請您檢查網路是否連接</string>
+    <string name="vfans_set_group_title">自訂團等級名稱</string>
+    <string name="vfans_quit">退出粉絲團</string>
+    <string name="vfans_join_vfans_notice">先申請加入主播的粉絲團吧！</string>
+    <string name="group_quiting_success">群組退出成功</string>
+    <string name="group_quiting_failed">群組退出失敗</string>
 </resources>

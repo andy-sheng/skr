@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.fans;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,19 +10,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.activity.BaseActivity;
+import com.base.dialog.MyAlertDialog;
 import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
+import com.base.utils.toast.ToastUtils;
 import com.base.view.BackTitleBar;
+import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
 import com.wali.live.watchsdk.fans.presenter.FansGroupDetailPresenter;
 import com.wali.live.watchsdk.fans.presenter.IFansGroupDetailView;
-import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.watchsdk.fans.view.FansTaskView;
 import com.wali.live.watchsdk.fans.view.merge.FansDetailBasicView;
 
@@ -45,7 +48,7 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
 
     private FansTaskView mTaskView;
 
-    private FansGroupDetailPresenter mFansGroupDetailPresenter;
+    private FansGroupDetailPresenter mDetailPresenter;
 
     private long mZuid;
     private FansGroupDetailModel mGroupDetailModel;
@@ -79,10 +82,6 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
         mTitleBar = $(R.id.title_bar);
         mTitleBar.getBackBtn().setOnClickListener(this);
 
-        mTitleBar.getRightImageBtn().setImageResource(R.drawable.web_icon_relay_bg);
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mTitleBar.getRightImageBtn().getLayoutParams();
-        lp.rightMargin = DisplayUtils.dip2px(10f);
-
         mDetailBasicView = $(R.id.detail_basic_view);
 
         mUnJoinGroupIv = $(R.id.unjoin_group_iv);
@@ -97,9 +96,9 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
     }
 
     private void initPresenter() {
-        mFansGroupDetailPresenter = new FansGroupDetailPresenter(this);
-        mFansGroupDetailPresenter.getFansGroupDetail(mZuid);
-        mFansGroupDetailPresenter.getTopThreeMember(mZuid);
+        mDetailPresenter = new FansGroupDetailPresenter(this);
+        mDetailPresenter.getFansGroupDetail(mZuid);
+        mDetailPresenter.getTopThreeMember(mZuid);
     }
 
     @Override
@@ -110,11 +109,19 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
     }
 
     private void updateView() {
-        mTitleBar.setTitle(mGroupDetailModel.getGroupName());
-
+        updateTitleArea();
         updateBasicArea();
         updateMyArea();
         updateTaskArea();
+    }
+
+    private void updateTitleArea() {
+        mTitleBar.setTitle(mGroupDetailModel.getGroupName());
+
+        mTitleBar.getRightImageBtn().setOnClickListener(this);
+        mTitleBar.getRightImageBtn().setImageResource(R.drawable.web_icon_relay_bg);
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mTitleBar.getRightImageBtn().getLayoutParams();
+        lp.rightMargin = DisplayUtils.dip2px(10f);
     }
 
     private void updateBasicArea() {
@@ -148,6 +155,11 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
     }
 
     @Override
+    public void notifyQuitGroupSuccess() {
+        finish();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (mTaskView != null) {
@@ -169,6 +181,42 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
         int id = v.getId();
         if (id == R.id.back_iv) {
             finish();
+        } else if (id == R.id.right_image_btn) {
+            if (mGroupDetailModel != null) {
+                showMoreDialog();
+            }
+        }
+    }
+
+    private void showMoreDialog() {
+        if (mGroupDetailModel.getMemType() == VFansCommonProto.GroupMemType.OWNER_VALUE
+                || mGroupDetailModel.getMemType() == VFansCommonProto.GroupMemType.ADMIN_VALUE
+                || mGroupDetailModel.getMemType() == VFansCommonProto.GroupMemType.DEPUTY_ADMIN_VALUE) {
+            new MyAlertDialog.Builder(getContext())
+                    .setItems(new String[]{getString(R.string.vfans_quit), getString(R.string.cancel)},
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (which == 0) {
+                                        mDetailPresenter.quitFansGroup(mGroupDetailModel.getZuid());
+                                    }
+                                }
+                            })
+                    .show();
+        } else if (mGroupDetailModel.getMemType() != VFansCommonProto.GroupMemType.NONE_VALUE) {
+            new MyAlertDialog.Builder(getContext())
+                    .setItems(new String[]{getString(R.string.vfans_quit), getString(R.string.cancel)},
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (which == 0) {
+                                        mDetailPresenter.quitFansGroup(mGroupDetailModel.getZuid());
+                                    }
+                                }
+                            })
+                    .show();
+        } else {
+            ToastUtils.showToast(R.string.vfans_join_vfans_notice);
         }
     }
 
