@@ -133,6 +133,23 @@ public class WatchFloatPresenter extends BaseSdkRxPresenter<RelativeLayout>
     }
 
     @Override
+    public void destroy() {
+        super.destroy();
+        {
+            PkInfoPresenter presenter = deRef(mPkInfoPresenterRef);
+            if (presenter != null) {
+                presenter.stopPresenter();
+            }
+        }
+        {
+            LinkInfoPresenter presenter = deRef(mLinkInfoPresenterRef);
+            if (presenter != null) {
+                presenter.stopPresenter();
+            }
+        }
+    }
+
+    @Override
     public final void onOrientation(boolean isLandscape) {
         if (mIsLandscape == isLandscape) {
             return;

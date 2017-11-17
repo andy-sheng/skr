@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk.scheme.processor;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
@@ -11,6 +12,8 @@ import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeUtils;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
+import com.wali.live.watchsdk.webview.HalfWebViewActivity;
+import com.wali.live.watchsdk.webview.WebViewActivity;
 
 /**
  * Created by lan on 16/10/26.
@@ -74,5 +77,19 @@ public class CommonProcessor {
         int select = SchemeUtils.getInt(uri, SchemeConstants.PARAM_SELECT, 0);
 
         SubChannelActivity.openActivity(activity, id, title, channelId, key, keyId, animation, source, select);
+    }
+
+    public static void processHostOpenUrl(Uri uri, @NonNull Activity activity) {
+        if (!isLegalPath(uri, "processHostOpenUrl", SchemeConstants.PATH_NEW_WINDOW)) {
+            return;
+        }
+
+        String url = Uri.decode(uri.getQueryParameter(SchemeConstants.PARAM_WEBVIEW_RUL));
+        boolean isHalf = uri.getBooleanQueryParameter(SchemeConstants.PARAM_WEBVIEW_ISHALF, false);
+
+        Intent intent = new Intent(activity, isHalf ? HalfWebViewActivity.class : WebViewActivity.class);
+        intent.putExtra(WebViewActivity.EXTRA_URL, url);
+        intent.putExtra(WebViewActivity.EXTRA_DISPLAY_TYPE, isHalf);
+        activity.startActivity(intent);
     }
 }

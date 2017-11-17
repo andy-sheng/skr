@@ -79,20 +79,6 @@ public class WaliliveProcessor extends CommonProcessor {
         return true;
     }
 
-    public static void processHostOpenUrl(Uri uri, @NonNull Activity activity) {
-        if (!isLegalPath(uri, "processHostOpenUrl", SchemeConstants.PATH_NEW_WINDOW)) {
-            return;
-        }
-
-        String url = Uri.decode(uri.getQueryParameter(SchemeConstants.PARAM_WEBVIEW_RUL));
-        boolean isHalf = uri.getBooleanQueryParameter(SchemeConstants.PARAM_WEBVIEW_ISHALF, false);
-
-        Intent intent = new Intent(activity, isHalf ? HalfWebViewActivity.class : WebViewActivity.class);
-        intent.putExtra(WebViewActivity.EXTRA_URL, url);
-        intent.putExtra(WebViewActivity.EXTRA_DISPLAY_TYPE, isHalf);
-        activity.startActivity(intent);
-    }
-
     public static void processHostFeed(Uri uri, @NonNull Activity activity) {
         if (!isLegalPath(uri, "processHostFeed", SchemeConstants.PATH_NEWS_INFO)) {
             return;

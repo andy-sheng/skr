@@ -129,11 +129,7 @@ public class RankingPagerFragment extends BaseFragment {
             mIndicator.setViewPager(mViewPager, 0);
         }
         mIndicator.resetTextView();
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
+        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
@@ -142,21 +138,7 @@ public class RankingPagerFragment extends BaseFragment {
                     StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, StatisticsKey.KEY_RANKING_CLICK_CURRENT, 1);
                 }
             }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
         });
-    }
-
-    @Override
-    public boolean isStatusBarDark() {
-        return true;
-    }
-
-    @Override
-    public boolean isOverrideStatusBar() {
-        return true;
     }
 
     private void initDatas() {
@@ -254,6 +236,16 @@ public class RankingPagerFragment extends BaseFragment {
                 return AnimationUtils.loadAnimation(getActivity(), R.anim.slide_alpha_out);
             }
         }
+    }
+
+    @Override
+    public boolean isStatusBarDark() {
+        return true;
+    }
+
+    @Override
+    public boolean isOverrideStatusBar() {
+        return true;
     }
 
     public static void openFragment(BaseActivity activity, int ticket, int startTicket, long ownerId, String roomId, String type, boolean isSHow, boolean isLandspace) {

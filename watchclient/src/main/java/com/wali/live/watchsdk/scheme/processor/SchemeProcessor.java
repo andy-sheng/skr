@@ -47,6 +47,9 @@ public class SchemeProcessor extends CommonProcessor {
         }
         MyLog.d(TAG, "process host=" + host);
         switch (host) {
+            case SchemeConstants.HOST_OPEN_URL:
+                processHostOpenUrl(uri, activity);
+                break;
             case SchemeConstants.HOST_ROOM:
                 processHostRoom(uri, activity);
                 return true;
