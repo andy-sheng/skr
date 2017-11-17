@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.fans.task.listener.FansGroupTaskListener;
 import com.wali.live.watchsdk.fans.task.model.GroupJobModel;
 import com.wali.live.watchsdk.lit.recycler.holder.BaseHolder;
 
@@ -16,8 +17,11 @@ public class GroupTaskHolder<VM extends GroupJobModel> extends BaseHolder<VM> {
     private TextView mExpValueTv;
     private TextView mExpReceivedBtn;
 
-    public GroupTaskHolder(View itemView) {
+    protected FansGroupTaskListener mListener;
+
+    public GroupTaskHolder(View itemView, FansGroupTaskListener listener) {
         super(itemView);
+        mListener = listener;
     }
 
     @Override
@@ -34,6 +38,7 @@ public class GroupTaskHolder<VM extends GroupJobModel> extends BaseHolder<VM> {
         mExpReceivedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mListener.finishTask(VFansCommonProto.GroupJobType.valueOf(mViewModel.getJobType()));
             }
         });
     }

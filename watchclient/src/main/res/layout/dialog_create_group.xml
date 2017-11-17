@@ -34,8 +34,7 @@
         android:paddingLeft="6.67dp"
         android:textColorHint="@color/color_black_trans_30"
         android:textCursorDrawable="@drawable/shape_rectangle_cursor"
-        android:textSize="@dimen/text_size_40"
-        />
+        android:textSize="@dimen/text_size_40"/>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -12,6 +12,7 @@ import com.wali.live.watchsdk.fans.task.holder.GroupTaskHeaderHolder;
 import com.wali.live.watchsdk.fans.task.holder.GroupTaskHolder;
 import com.wali.live.watchsdk.fans.task.holder.LimitTaskHeaderHolder;
 import com.wali.live.watchsdk.fans.task.holder.LimitTaskHolder;
+import com.wali.live.watchsdk.fans.task.listener.FansGroupTaskListener;
 import com.wali.live.watchsdk.fans.task.model.GroupJobHeaderModel;
 import com.wali.live.watchsdk.fans.task.model.GroupJobListModel;
 import com.wali.live.watchsdk.fans.task.model.GroupJobModel;
@@ -29,9 +30,11 @@ import java.util.List;
  */
 public class FansTaskAdapter extends EmptyRecyclerAdapter {
     private List<BaseTypeModel> mDataList;
+    private FansGroupTaskListener mListener;
 
-    public FansTaskAdapter() {
+    public FansTaskAdapter(FansGroupTaskListener listener) {
         mDataList = new ArrayList();
+        mListener = listener;
     }
 
     public void setDataList(GroupJobListModel model, @Nullable FansGroupDetailModel detailModel) {
@@ -61,11 +64,11 @@ public class FansTaskAdapter extends EmptyRecyclerAdapter {
         switch (viewType) {
             case TaskViewType.TYPE_GROUP_TASK:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fans_task_group_item, parent, false);
-                holder = new GroupTaskHolder(view);
+                holder = new GroupTaskHolder(view, mListener);
                 break;
             case TaskViewType.TYPE_LIMIT_TASK:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fans_task_group_item, parent, false);
-                holder = new LimitTaskHolder(view);
+                holder = new LimitTaskHolder(view, mListener);
                 break;
             case TaskViewType.TYPE_GROUP_HEADER:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fans_task_group_header_item, parent, false);

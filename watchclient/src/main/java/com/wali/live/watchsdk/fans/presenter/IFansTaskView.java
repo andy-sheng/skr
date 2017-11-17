@@ -8,4 +8,6 @@ import com.wali.live.watchsdk.fans.task.model.GroupJobListModel;
  */
 public interface IFansTaskView extends IRxView {
     void setGroupTaskList(GroupJobListModel model);
+
+    void notifyFinishTaskSuccess();
 }

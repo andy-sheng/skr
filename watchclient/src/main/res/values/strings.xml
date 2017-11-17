@@ -299,7 +299,7 @@
     <string name="my_own_fans_group">Created fan clubs</string>
     <string name="vfans_max_name_length">Enter up to %d characters</string>
     <string name="create_fans_group_message">Enter a good name for your fan club.</string>
-    <string name="create_fans_group_hint">(Enter up to 3 characters. You won\'t be able to change the name.)</string>
+    <string name="create_fans_group_hint">(Enter up to 4 characters. You won\'t be able to change the name.)</string>
     <string name="create_group_success">Created successfully</string>
     <string name="create_group_faild">Couldn\'t create</string>
     <string name="vfans_start_talk">Chat with others in the club</string>
@@ -313,4 +313,5 @@
     <string name="vfans_join_vfans_notice">Apply to join the fan club</string>
     <string name="group_quiting_success">Left successfully</string>
     <string name="group_quiting_failed">Couldn\'t leave</string>
+    <string name="fans_task_get_reword_fail">(Couldn\'t get the reward, try again later)</string>
 </resources>

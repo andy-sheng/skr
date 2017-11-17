@@ -494,4 +494,6 @@ public class MiLinkCommand {
     public static final String COMMAND_VFANS_APPLY_JOIN_GROUP = COMMAND_VFANS_PREFIX + "apply_joingroup";
     // 退出宠爱团
     public static final String COMMAND_VFANS_QUIT_GROUP = COMMAND_VFANS_PREFIX + "quit_group";
+    // 完成任务领取宠爱值
+    public static final String COMMAND_VFANS_FINISH_GROUP_JOB = COMMAND_VFANS_PREFIX + "finish_groupjob";
 }

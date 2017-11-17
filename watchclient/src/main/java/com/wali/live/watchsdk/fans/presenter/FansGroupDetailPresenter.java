@@ -129,7 +129,7 @@ public class FansGroupDetailPresenter extends BaseRxPresenter<IFansGroupDetailVi
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-
+                        MyLog.e(TAG, throwable);
                     }
                 });
     }

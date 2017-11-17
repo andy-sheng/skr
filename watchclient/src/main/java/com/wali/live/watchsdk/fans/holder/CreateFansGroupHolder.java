@@ -25,7 +25,7 @@ import com.wali.live.watchsdk.webview.WebViewActivity;
  * Created by lan on 2017/11/8.
  */
 public class CreateFansGroupHolder extends BaseHolder<CreateFansGroupModel> {
-    private static final int MAX_GROUP_NAME_LENGTH = 3;
+    private static final int MAX_GROUP_NAME_LENGTH = 4;
 
     private BaseImageView mAvatarIv;
 

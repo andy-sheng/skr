@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.fans.task.listener.FansGroupTaskListener;
 import com.wali.live.watchsdk.fans.task.model.LimitJobModel;
 
 /**
@@ -14,8 +15,8 @@ public class LimitTaskHolder extends GroupTaskHolder<LimitJobModel> {
     private TextView mTaskInfoTv;
     private TextView mTaskTipTv;
 
-    public LimitTaskHolder(View itemView) {
-        super(itemView);
+    public LimitTaskHolder(View itemView, FansGroupTaskListener listener) {
+        super(itemView, listener);
     }
 
     @Override
