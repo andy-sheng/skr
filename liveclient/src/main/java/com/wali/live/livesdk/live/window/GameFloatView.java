@@ -70,12 +70,13 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
     private boolean mIsFocusable = false;
     private int mMode = MODE_MESSAGE;
 
+    private final LiveCommentPresenter mCommentPresenter = new LiveCommentPresenter(new EmptyController());
+
     private LinearLayout mBtnArea;
     private View mMuteBtn;
     private View mFaceBtn;
     private ViewGroup mCommentTitle;
     private ViewGroup mListArea;
-    private LiveCommentPresenter mCommentPresenter = new LiveCommentPresenter(new EmptyController());
     private LiveCommentView mCommentView;
     private View mInputArea;
     private EditText mCommentInput;
@@ -83,6 +84,14 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
     private GameRepeatScrollView mGameRepeatScrollView;
     private View mTitleFoldLeft;
     private View mTitleFoldRight;
+
+    private <T> T $(int id) {
+        return (T) findViewById(id);
+    }
+
+    private void $click(int id, OnClickListener listener) {
+        findViewById(id).setOnClickListener(listener);
+    }
 
     @Override
     public void onClick(View view) {
@@ -100,8 +109,7 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
             keyType = StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_SILENT;
         } else if (i == R.id.face_btn) {
             if (!view.isSelected()) {
-                boolean hasCameraPermission = PermissionUtils.checkCamera(getContext());
-                if (!hasCameraPermission) {
+                if (!PermissionUtils.checkCamera(getContext())) {
                     ToastUtils.showToast(R.string.check_camera_video_message);
                     return;
                 }
@@ -121,7 +129,6 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
                     String.format(keyType, HostChannelManager.getInstance().getChannelId()),
                     TIMES, "1");
         }
-
     }
 
     private void enableCommentArea(boolean enable) {
@@ -192,14 +199,6 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
         } else {
             return false;
         }
-    }
-
-    private <T> T $(int id) {
-        return (T) findViewById(id);
-    }
-
-    private void $click(int id, OnClickListener listener) {
-        findViewById(id).setOnClickListener(listener);
     }
 
     public GameFloatView(
@@ -273,10 +272,7 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
         mCommentInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (null == event) {
-                    return false;
-                }
-                return (event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
+                return event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER;
             }
         });
         mCommentInput.addTextChangedListener(new TextWatcher() {
@@ -296,7 +292,7 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
         });
     }
 
-    public boolean isIsWindowShow() {
+    public final boolean isWindowShow() {
         return mIsWindowShow;
     }
 
@@ -355,17 +351,6 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
             return true;
         }
         return super.onTouchEvent(event);
-    }
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        // 不处理back键
-//        if (event.getAction() == KeyEvent.ACTION_UP && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-//            MyLog.d(TAG, "onKeyDown Test keyCode=" + event.getKeyCode());
-//            showCommentList(false);
-//            return true;
-//        }
-        return super.dispatchKeyEvent(event);
     }
 
     public void onMainBtnClick() {

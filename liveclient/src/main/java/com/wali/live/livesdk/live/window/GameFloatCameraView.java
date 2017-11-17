@@ -320,7 +320,8 @@ public class GameFloatCameraView extends FrameLayout {
                     }
                     break;
                 case MotionEvent.ACTION_UP:
-                    MyLog.i(TAG, "onTouchEvent ACTION_UP");
+                case MotionEvent.ACTION_CANCEL:
+                    MyLog.i(TAG, "onTouchEvent ACTION_UP or ACTION_CANCEL");
                     onExitDragMode();
                     break;
                 default:

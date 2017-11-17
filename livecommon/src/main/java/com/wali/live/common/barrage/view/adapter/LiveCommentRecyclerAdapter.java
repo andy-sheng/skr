@@ -30,7 +30,6 @@ import com.wali.live.dao.Gift;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -70,9 +69,6 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
     public void setCommentList(List<CommentModel> dataList) {
         if (dataList != null) {
             mCommentList.clear();
-//            List<CommentModel> reverseList = new ArrayList<>(dataList);
-//            Collections.reverse(reverseList);
-//            mCommentList.addAll(reverseList);
             mCommentList.addAll(dataList);
             notifyDataSetChanged();
         }

@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -40,6 +41,7 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
     public final static int WINDOW_PADDING = DisplayUtils.dip2px(6.67f);
     public final static int ICON_WIDTH = DisplayUtils.dip2px(38f);
     public final static int MOVE_THRESHOLD = DisplayUtils.dip2px(2f);
+    public final static int FAST_MOVE_THRESHOLD = DisplayUtils.dip2px(100f);
     private final static int ICON_TRANSLATION = DisplayUtils.dip2px(14f);
     private final static int ICON_ROTATION = 15;
     private final static float ICON_ALPHA = 0.5f;
@@ -68,10 +70,10 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
     private int mMode = MODE_NORMAL;
     private final TouchEventHelper mTouchEventHelper;
 
-    ImageView mMainBtn;
-    ImageView mStatusIcon;
-    BaseImageView mGiftBiv;
-    BaseImageView mGiftBiv2;//每次礼物过来，用mGiftBiv2显示。动画完成后和mGiftBiv交换，下次就可以继续用了。
+    private ImageView mMainBtn;
+    private ImageView mStatusIcon;
+    private BaseImageView mGiftBiv;
+    private BaseImageView mGiftBiv2; // 每次礼物过来，用mGiftBiv2显示。动画完成后和mGiftBiv交换，下次就可以继续用了。
 
     private <T> T $(int id) {
         return (T) findViewById(id);
@@ -147,7 +149,7 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
         }
     }
 
-    public boolean isIsWindowShow() {
+    public final boolean isWindowShow() {
         return mIsWindowShow;
     }
 
@@ -157,7 +159,8 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
         }
         mIsWindowShow = true;
         mWindowManager.addView(this, mFloatLayoutParams);
-        onOrientation(false);
+        final int rotation = mWindowManager.getDefaultDisplay().getRotation();
+        onOrientation(rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270);
     }
 
     public void removeWindow() {
@@ -474,7 +477,10 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
         private float xInScreen;
         private float yInScreen;
 
+        private long beginTime;
+
         public boolean onTouchEvent(MotionEvent event) {
+            boolean isCancel = false;
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     MyLog.i(TAG, "onTouchEvent ACTION_DOWN");
@@ -496,14 +502,34 @@ public class GameFloatIcon extends RelativeLayout implements IGameFloatIcon {
                         if (Math.abs(xDownInScreen - xInScreen) > MOVE_THRESHOLD ||
                                 Math.abs(yDownInScreen - yInScreen) > MOVE_THRESHOLD) {
                             onEnterDragMode();
+                            beginTime = System.currentTimeMillis();
                         }
                     }
                     break;
-                case MotionEvent.ACTION_UP:
-                    MyLog.i(TAG, "onTouchEvent ACTION_UP");
+                case MotionEvent.ACTION_CANCEL:
+                    isCancel = true;
+                case MotionEvent.ACTION_UP: // fall through
+                    MyLog.i(TAG, "onTouchEvent ACTION_UP or ACTION_CANCEL " + isCancel);
                     if (mMode == MODE_DRAGGING) {
-                        onEnterMoveMode(xInScreen < mBoundRect.centerX());
-                    } else if (mMode != MODE_MOVING) {
+                        if (isCancel) {
+                            onEnterMoveMode(xInScreen < mBoundRect.centerX());
+                        } else {
+                            xInScreen = event.getRawX();
+                            final int duration = (int) (System.currentTimeMillis() - beginTime);
+                            final int xDelta = (int) (xInScreen - xDownInScreen);
+                            if (duration <= 300) {
+                                if (xDelta > FAST_MOVE_THRESHOLD) {
+                                    onEnterMoveMode(false);
+                                } else if (xDelta < -FAST_MOVE_THRESHOLD) {
+                                    onEnterMoveMode(true);
+                                } else {
+                                    onEnterMoveMode(xInScreen < mBoundRect.centerX());
+                                }
+                            } else {
+                                onEnterMoveMode(xInScreen < mBoundRect.centerX());
+                            }
+                        }
+                    } else if (!isCancel && mMode != MODE_MOVING) {
                         xInScreen = event.getRawX();
                         yInScreen = event.getRawY();
                         if (Math.abs(xDownInScreen - xInScreen) <= MOVE_THRESHOLD &&

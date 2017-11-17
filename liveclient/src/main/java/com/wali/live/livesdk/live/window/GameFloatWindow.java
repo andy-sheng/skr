@@ -82,8 +82,8 @@ public class GameFloatWindow implements IGameFloatPresenter {
     }
 
     public boolean isWindowShow() {
-        return (mGameFloatView != null && mGameFloatView.isIsWindowShow()) ||
-                (mGameMainIcon != null && mGameMainIcon.isIsWindowShow());
+        return (mGameFloatView != null && mGameFloatView.isWindowShow()) ||
+                (mGameMainIcon != null && mGameMainIcon.isWindowShow());
     }
 
     public void showWindow(String token, int viewerCnt) {
@@ -109,7 +109,7 @@ public class GameFloatWindow implements IGameFloatPresenter {
                     mParentHeight);
         }
 
-        boolean hasCameraPermission = PermissionUtils.checkCamera(mContext);
+        final boolean hasCameraPermission = PermissionUtils.checkCamera(mContext);
         if (!hasCameraPermission) {
             mGameCameraView = null;
         }
