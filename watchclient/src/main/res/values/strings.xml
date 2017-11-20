@@ -318,4 +318,15 @@
     <string name="vfans_vip_horn_hint">Members in fan club (Level %1$d) can send %2$d comments/day for free</string>
     <string name="vfans_free_horn_hint">Free on-screen comments today: %d</string>
     <string name="flybarrage_none">You can\'t send more on-screen comments.</string>
+
+    <string name="vfans_owner">Club owner</string>
+    <string name="vfans_admin">Club admin</string>
+    <string name="vfans_deput_admin">Associate admin</string>
+    <string name="vfans_mass">Members</string>
+    <string name="love_value">Closeness</string>
+    <string name="sevendays_love_value">Closeness (7 days)</string>
+    <string name="vfans_member_title_manager_member">Manage group members</string>
+    <string name="vfans_member_delete">Remove</string>
+    <string name="vfans_member_title_manager_batch_delete">Remove</string>
+    <string name="vfans_member_title_manager_finish">Done</string>
 </resources>

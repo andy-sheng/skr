@@ -17,6 +17,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="@dimen/margin_30"
         android:layout_marginRight="@dimen/margin_30"
-        android:background="@color/color_e5e5e5" />
+        android:background="@color/color_e5e5e5"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -14,12 +14,12 @@ import android.widget.RelativeLayout;
 
 import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
-import com.base.utils.toast.ToastUtils;
 import com.thornbirds.component.presenter.IEventPresenter;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.fans.FansMemberManagerFragment;
 import com.wali.live.watchsdk.fans.adapter.FansMemberAdapter;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
@@ -42,10 +42,10 @@ public class FansMemberView extends RelativeLayout
     @Nullable
     protected IPresenter mPresenter;
 
-    private FansGroupDetailModel mGroupDetailModel;
-
     private final FansMemberAdapter mAdapter = new FansMemberAdapter();
     private boolean mHasInflated = false;
+
+    private FansGroupDetailModel mGroupDetailModel;
 
     private View mEmptyView;
     private RecyclerView mRecyclerView;
@@ -151,8 +151,7 @@ public class FansMemberView extends RelativeLayout
                         $click($(R.id.manage_vfans_member_btn), new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                // TODO-YangLi 跳转到管理页面
-                                ToastUtils.showToast("该功能正在开发中");
+                                FansMemberManagerFragment.openFragment((BaseActivity) getContext(), mGroupDetailModel);
                             }
                         });
                     }

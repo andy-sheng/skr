@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_dimen_190">
+    android:layout_height="@dimen/view_dimen_190"
+    android:background="@drawable/common_list_item_bg">
 
     <!--头像-->
     <com.base.image.fresco.BaseImageView
@@ -33,7 +34,6 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:maxWidth="@dimen/view_dimen_338"
-            android:text="茉莉花👶宝贝啦啦啦啦啦啦啦啦啦啦啦啦"
             android:textColor="@color/color_black_trans_90"
             android:textSize="@dimen/text_size_42" />
 
@@ -44,7 +44,6 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/member_name"
             android:gravity="center"
-            android:text="这是等级"
             android:textColor="@color/color_white"
             android:textSize="@dimen/text_size_24" />
 
@@ -73,7 +72,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/vip_type"
-            android:text="团长"
             android:textColor="@color/color_black_trans_40"
             android:textSize="@dimen/text_size_32" />
 

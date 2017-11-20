@@ -308,4 +308,11 @@
     <string name="vfans_vip_horn_hint">%1$d級寵愛團VIP專享免費%2$d條/天</string>
     <string name="vfans_free_horn_hint">今日剩餘%d條免費飄屏</string>
     <string name="flybarrage_none">飄屏次數已達上限，發太多會影響使用者觀看直播哦。</string>
+
+    <string name="love_value">親密值</string>
+    <string name="sevendays_love_value">7日親密值</string>
+    <string name="vfans_member_title_manager_member">管理群成員</string>
+    <string name="vfans_member_delete">刪除</string>
+    <string name="vfans_member_title_manager_batch_delete">批量刪除</string>
+    <string name="vfans_member_title_manager_finish">完成</string>
 </resources>

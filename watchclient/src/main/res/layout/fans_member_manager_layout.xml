@@ -1,8 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/manager_member_area"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/margin_218"
-    android:layout_alignParentBottom="true"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <TextView

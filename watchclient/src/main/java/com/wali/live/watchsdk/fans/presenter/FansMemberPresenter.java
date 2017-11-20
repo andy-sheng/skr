@@ -35,7 +35,6 @@ import static com.wali.live.utils.relation.RelationUtils.FOLLOW_STATE_SUCCESS;
  */
 public class FansMemberPresenter extends BaseSdkRxPresenter<FansMemberView.IView>
         implements FansMemberView.IPresenter {
-    private static final String TAG = "FansMemberPresenter";
 
     private static final int PAGE_LIMIT = 10;
 
@@ -47,7 +46,7 @@ public class FansMemberPresenter extends BaseSdkRxPresenter<FansMemberView.IView
 
     @Override
     protected final String getTAG() {
-        return TAG;
+        return "FansMemberPresenter";
     }
 
     public FansMemberPresenter(long anchorId) {

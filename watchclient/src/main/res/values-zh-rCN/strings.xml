@@ -308,4 +308,15 @@
     <string name="vfans_vip_horn_hint">%1$d级宠爱团VIP专享免费%2$d条/天</string>
     <string name="vfans_free_horn_hint">今日剩余%d条免费飘屏</string>
     <string name="flybarrage_none">飘屏次数已达上限，发太多会影响用户观看直播哦。</string>
+
+    <string name="vfans_owner">团主</string>
+    <string name="vfans_admin">团长</string>
+    <string name="vfans_deput_admin">副团长</string>
+    <string name="vfans_mass">团员</string>
+    <string name="love_value">亲密值</string>
+    <string name="sevendays_love_value">7日亲密值</string>
+    <string name="vfans_member_title_manager_member">管理群成员</string>
+    <string name="vfans_member_delete">删除</string>
+    <string name="vfans_member_title_manager_batch_delete">批量删除</string>
+    <string name="vfans_member_title_manager_finish">完成</string>
 </resources>
