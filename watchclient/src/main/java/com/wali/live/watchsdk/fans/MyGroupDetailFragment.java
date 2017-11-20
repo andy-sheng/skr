@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.base.activity.BaseActivity;
+import com.base.activity.BaseSdkActivity;
 import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.keyboard.KeyboardUtils;
@@ -47,6 +48,10 @@ public class MyGroupDetailFragment extends RxFragment implements View.OnClickLis
         mTitleBar.getBackBtn().setOnClickListener(this);
 
         mDetailBasicView = $(R.id.detail_basic_view);
+
+        $click($(R.id.first_privilege_area), this);
+        $click($(R.id.colour_barrage_area), this);
+        $click($(R.id.fly_barrage_privilege_area), this);
 
         initPresenter();
     }
@@ -106,6 +111,12 @@ public class MyGroupDetailFragment extends RxFragment implements View.OnClickLis
         int id = v.getId();
         if (id == R.id.back_iv) {
             finish();
+        } else if (id == R.id.first_privilege_area) {
+            FansPrivilegeFragment.openFragment((BaseSdkActivity) getActivity(), FansPrivilegeFragment.TYPE_CHARM_MEDAL);
+        } else if (id == R.id.colour_barrage_area) {
+            FansPrivilegeFragment.openFragment((BaseSdkActivity) getActivity(), FansPrivilegeFragment.TYPE_TOUR_DIVIDE);
+        } else if (id == R.id.fly_barrage_privilege_area) {
+            FansPrivilegeFragment.openFragment((BaseSdkActivity) getActivity(), FansPrivilegeFragment.TYPE_MORE_FANS);
         }
     }
 

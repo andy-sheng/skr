@@ -18,7 +18,6 @@ import com.wali.live.watchsdk.R;
  *
  * @module 特权页
  */
-
 public class FansPrivilegeFragment extends BaseFragment {
     public final static String EXTRA_TYPE = "extra_type";
 
@@ -26,9 +25,11 @@ public class FansPrivilegeFragment extends BaseFragment {
     public static final int TYPE_COLOR_BARRAGE = 1;
     public static final int TYPE_FREE_FLY_BARRAGE = 2;
     public static final int TYPE_BAN_BARRAGE = 3;
+    
     public static final int TYPE_CHARM_MEDAL = 4;
     public static final int TYPE_TOUR_DIVIDE = 5;
     public static final int TYPE_MORE_FANS = 6;
+
     private int mType;
     private ImageView mMainIv;
 

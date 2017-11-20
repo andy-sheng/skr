@@ -77,7 +77,7 @@ public class FansPrivilegeModel {
     }
 
     public boolean canSendFlyBarrage() {
-        return memType != VFansCommonProto.GroupMemType.NONE.getNumber() && vipLevel > 0
+        return memType != VFansCommonProto.GroupMemType.NONE_VALUE && vipLevel > 0
                 && expireTime > System.currentTimeMillis() / 1000
                 && petLevel >= SEND_FLY_BARRAGE_LEVEL;
     }

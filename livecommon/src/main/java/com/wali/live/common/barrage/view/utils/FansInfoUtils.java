@@ -12,6 +12,11 @@ import com.base.utils.display.DisplayUtils;
 import com.live.module.common.R;
 import com.wali.live.proto.VFansCommonProto;
 
+import static com.wali.live.common.model.FansPrivilegeModel.GAG_LEVEL;
+import static com.wali.live.common.model.FansPrivilegeModel.SEND_COLOR_BARRAGE_VIP_LEVEL;
+import static com.wali.live.common.model.FansPrivilegeModel.SEND_FLY_BARRAGE_LEVEL;
+import static com.wali.live.common.model.FansPrivilegeModel.UPGREAD_ACCELERATE_LEVEL;
+
 /**
  * Created by lan on 2017/11/8.
  */
@@ -103,17 +108,33 @@ public class FansInfoUtils {
         return result;
     }
 
-    public static Bitmap getBitmapByFansLevel(int petLevel, String medalValue, Context context){
+    public static Bitmap getBitmapByFansLevel(int petLevel, String medalValue, Context context) {
         TextView view = new TextView(context);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT
                 , LinearLayout.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
-        lp.setMargins(DisplayUtils.dip2px(3f),0,0,0);
+        lp.setMargins(DisplayUtils.dip2px(3f), 0, 0, 0);
         view.setGravity(Gravity.CENTER);
-        view.setTextSize(TypedValue.COMPLEX_UNIT_PX,context.getResources().getDimension(R.dimen.margin_24));
+        view.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.margin_24));
         view.setTextColor(context.getResources().getColor(R.color.color_white));
         view.setBackgroundResource(getGroupMemberLevelDrawable(petLevel));
         view.setText(medalValue);
         return CommonUtils.convertViewToBitmap(view);
+    }
+
+    public static boolean hasUpgradeAccelerationPrivilege(int petLevel, int vipLevel, long vipExpire) {
+        return petLevel >= UPGREAD_ACCELERATE_LEVEL && vipLevel > 0 && System.currentTimeMillis() / 1000 < vipExpire;
+    }
+
+    public static boolean hasColorBarragePrivilege(int petLevel, int vipLevel, long vipExpire) {
+        return petLevel >= SEND_COLOR_BARRAGE_VIP_LEVEL && vipLevel > 0 && System.currentTimeMillis() / 1000 < vipExpire;
+    }
+
+    public static boolean hasFlyBarragePrivilege(int petLevel, int vipLevel, long vipExpire) {
+        return petLevel >= SEND_FLY_BARRAGE_LEVEL && vipLevel > 0 && System.currentTimeMillis() / 1000 < vipExpire;
+    }
+
+    public static boolean hasBanPrivilege(int level, int vipLevel, long vipExpire) {
+        return level >= GAG_LEVEL && vipLevel > 0 && System.currentTimeMillis() / 1000 < vipExpire;
     }
 }
