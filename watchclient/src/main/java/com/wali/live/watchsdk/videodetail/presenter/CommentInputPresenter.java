@@ -137,6 +137,11 @@ public class CommentInputPresenter extends BaseSdkRxPresenter<InputAreaView.IVie
     }
 
     @Override
+    public void updateInputHint(boolean flyEnable) {
+        //回放不需要hint，只有房间内需要
+    }
+
+    @Override
     public boolean onEvent(int event, IParams params) {
         if (mView == null) {
             MyLog.e(TAG, "onAction but mView is null, event=" + event);

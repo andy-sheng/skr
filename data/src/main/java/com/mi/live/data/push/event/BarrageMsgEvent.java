@@ -19,7 +19,7 @@ public class BarrageMsgEvent {
             msgList = list;
         }
 
-        public ReceivedBarrageMsgEvent(List<BarrageMsg> list,String from) {
+        public ReceivedBarrageMsgEvent(List<BarrageMsg> list, String from) {
             msgList = list;
             this.from = from;
         }
@@ -41,10 +41,18 @@ public class BarrageMsgEvent {
     public static class SendBarrageResponseEvent {
         private long cid;
         private long sentTime;
+        private int flyCnt;
+        private int adminCnt;
+        private int vipCnt;
+        private int guardCnt;
 
-        public SendBarrageResponseEvent(long id, long time) {
-            this.cid = id;
-            this.sentTime = time;
+        public SendBarrageResponseEvent(long cid, long sentTime, int flyCnt, int adminCnt, int vipCnt, int guardCnt) {
+            this.cid = cid;
+            this.sentTime = sentTime;
+            this.flyCnt = flyCnt;
+            this.adminCnt = adminCnt;
+            this.vipCnt = vipCnt;
+            this.guardCnt = guardCnt;
         }
 
         public long getCid() {
@@ -55,10 +63,25 @@ public class BarrageMsgEvent {
             return sentTime;
         }
 
+        public int getFlyCnt() {
+            return flyCnt;
+        }
+
+        public int getAdminCnt() {
+            return adminCnt;
+        }
+
+        public int getVipCnt() {
+            return vipCnt;
+        }
+
+        public int getGuardCnt() {
+            return guardCnt;
+        }
     }
 
 
-    public static class CleanBarrageMsgEvent{
+    public static class CleanBarrageMsgEvent {
 
     }
 }

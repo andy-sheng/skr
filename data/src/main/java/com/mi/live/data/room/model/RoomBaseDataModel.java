@@ -40,7 +40,6 @@ public class RoomBaseDataModel implements Serializable {
     private boolean mHideGift;
     private long mEnterRoomTime = 0;            // 观众端进入直播房间的时间
     private int mHideIcon = 0;
-
     /**
      * 后续这些可以当做房间状态用另外一个类存起来
      **/

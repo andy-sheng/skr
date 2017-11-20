@@ -193,6 +193,7 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
 
             @Override
             public void onFollowResult(int resultCode) {
+                MyLog.v(TAG, "onFollowResult result=" + resultCode);
                 if (resultCode == ErrorCode.CODE_RELATION_BLACK) {
                     ToastUtils.showToast(getResources().getString(R.string.setting_black_follow_hint));
                 } else if (resultCode == 0) {
@@ -205,6 +206,7 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
 
             @Override
             public void showFollowBtn(boolean needShow, boolean useAnim) {
+                MyLog.v(TAG, "showFollowBtn needShow=" + needShow);
                 if (mIsLinking) {
                     mIsFollowGone = needShow;
                 } else {
@@ -257,7 +259,11 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
 
             @Override
             public void setFansGroupModel(FansGroupDetailModel model) {
+                MyLog.v(TAG, "setFansGroupModel model=" + model);
                 mFansGroupDetailModel = model;
+                if (mFansGroupDetailModel != null && mFollowTv.getVisibility() != View.VISIBLE) {
+                    mFansArea.setVisibility(VISIBLE);
+                }
             }
 
             @Override

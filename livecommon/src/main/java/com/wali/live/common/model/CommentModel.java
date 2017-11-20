@@ -10,6 +10,7 @@ import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.push.model.GlobalRoomMsgExt;
+import com.mi.live.data.room.model.FansPrivilegeModel;
 import com.wali.live.common.smiley.SmileyParser;
 
 import java.util.ArrayList;
@@ -383,7 +384,7 @@ public class CommentModel implements Comparable<CommentModel> {
                     = globalRoomMsgExt.getRoomMsgExtList();
             for (GlobalRoomMsgExt.BaseRoomMessageExt msgExt : msgExtList) {
                 switch (msgExt.getType()) {
-                    case INNER_GLOBAL_VFAN:
+                    case GlobalRoomMsgExt.INNER_GLOBAL_VFAN:
                         GlobalRoomMsgExt.FansMemberMsgExt fansMemberMsgExt = (GlobalRoomMsgExt.FansMemberMsgExt) msgExt;
                         if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_TEXT || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE
                                /* || msg.getMsgType() == MSG_SMART_NORMAL*/) {

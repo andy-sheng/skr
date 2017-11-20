@@ -12,10 +12,10 @@ import com.base.utils.display.DisplayUtils;
 import com.live.module.common.R;
 import com.wali.live.proto.VFansCommonProto;
 
-import static com.wali.live.common.model.FansPrivilegeModel.GAG_LEVEL;
-import static com.wali.live.common.model.FansPrivilegeModel.SEND_COLOR_BARRAGE_VIP_LEVEL;
-import static com.wali.live.common.model.FansPrivilegeModel.SEND_FLY_BARRAGE_LEVEL;
-import static com.wali.live.common.model.FansPrivilegeModel.UPGREAD_ACCELERATE_LEVEL;
+import static com.mi.live.data.room.model.FansPrivilegeModel.GAG_LEVEL;
+import static com.mi.live.data.room.model.FansPrivilegeModel.SEND_COLOR_BARRAGE_VIP_LEVEL;
+import static com.mi.live.data.room.model.FansPrivilegeModel.SEND_FLY_BARRAGE_LEVEL;
+import static com.mi.live.data.room.model.FansPrivilegeModel.UPGREAD_ACCELERATE_LEVEL;
 
 /**
  * Created by lan on 2017/11/8.

@@ -1,4 +1,4 @@
-package com.wali.live.common.model;
+package com.mi.live.data.room.model;
 
 import com.wali.live.proto.VFansCommonProto;
 
@@ -16,9 +16,10 @@ public class FansPrivilegeModel {
     private int vipLevel;
     private int petLevel;
     private long expireTime;
+    private String medal;
+
     private int hasSendFlyBarrageTimes;
     private int maxCanSendFlyBarrageTimes;
-    private String medal;
 
     public int getMemType() {
         return memType;
@@ -83,12 +84,12 @@ public class FansPrivilegeModel {
     }
 
     public boolean canSendColorBarrage() {
-        return memType != VFansCommonProto.GroupMemType.NONE.getNumber() && petLevel >= SEND_COLOR_BARRAGE_VIP_LEVEL
+        return memType != VFansCommonProto.GroupMemType.NONE_VALUE && petLevel >= SEND_COLOR_BARRAGE_VIP_LEVEL
                 && expireTime > System.currentTimeMillis() / 1000 && vipLevel > 0;
     }
 
     public boolean canGagSomeone() {
-        return memType <= VFansCommonProto.GroupMemType.DEPUTY_ADMIN.getNumber() || (
+        return memType <= VFansCommonProto.GroupMemType.NONE_VALUE || (
                 memType != VFansCommonProto.GroupMemType.NONE.getNumber() && petLevel >= GAG_LEVEL
                         && expireTime > System.currentTimeMillis() / 1000 && vipLevel > 0);
     }

@@ -19,6 +19,7 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
+import com.thornbirds.component.Params;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveMessageProto;
@@ -37,6 +38,7 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import static com.wali.live.component.BaseSdkController.MSG_BARRAGE_SWITCH;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_LIVE_SUCCESS;
@@ -207,6 +209,7 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
                         .setZuid(zuid)
                         .setIsGetAnimation(true)
                         .setRoomType(roomType)
+                        .setIsGetRoomExtraCtrl(true)
                         .setIsGetIconConfig(false)
                         .build();
                 PacketData data = new PacketData();
@@ -328,6 +331,10 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
                                     public void call(Object o) {
                                         LiveProto.GetRoomAttachmentRsp rsp = (LiveProto.GetRoomAttachmentRsp) o;
                                         setWidgetList(rsp.getNewWidgetInfo().getWidgetItemList());
+                                        //TODO 其他的飘萍弹幕/vip信息也得从RoomAttachment里面获取
+                                        if (rsp.hasGuardCounter()) {
+                                            mController.postEvent(MSG_BARRAGE_SWITCH, new Params().putItem(rsp.getGuardCounter()));
+                                        }
                                         if (rsp.getNewWidgetInfo().hasPullInterval()) {
                                             getAttachmentDelay(rsp.getNewWidgetInfo().getPullInterval());
                                         }

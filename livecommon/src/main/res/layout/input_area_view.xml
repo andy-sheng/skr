@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/input_container"
@@ -22,7 +22,7 @@
             android:padding="@dimen/margin_3"
             android:scaleType="fitStart"
             android:src="@drawable/live_barrage_switch_btn"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <com.base.view.MLTextView
             android:id="@+id/send_btn"
@@ -36,7 +36,7 @@
             android:singleLine="true"
             android:text="@string/send"
             android:textColor="@color/live_send_btn"
-            android:textSize="@dimen/text_size_38" />
+            android:textSize="@dimen/text_size_38"/>
 
         <EditText
             android:id="@+id/input_et"
@@ -61,7 +61,7 @@
             android:textColor="@color/color_black_trans_90"
             android:textColorHint="@color/color_black_trans_30"
             android:textCursorDrawable="@drawable/edittext_color_cursor"
-            android:textSize="@dimen/text_size_40" />
+            android:textSize="@dimen/text_size_40"/>
 
         <ImageView
             android:id="@+id/show_smiley_btn"
@@ -71,7 +71,7 @@
             android:layout_alignTop="@id/input_et"
             android:layout_marginRight="8dp"
             android:scaleType="center"
-            android:src="@drawable/chat_bottom_enter_expression_btn_2" />
+            android:src="@drawable/chat_bottom_enter_expression_btn_2"/>
     </RelativeLayout>
 
     <FrameLayout
@@ -86,7 +86,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/list_item_first_bg_normal_light"
             android:orientation="vertical"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
     </FrameLayout>
 

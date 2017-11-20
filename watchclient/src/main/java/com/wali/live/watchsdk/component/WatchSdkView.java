@@ -164,7 +164,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             GameInputView view = new GameInputView(mActivity);
             view.setId(R.id.game_input_view);
             view.setVisibility(View.GONE);
-            mGameInputPresenter = new GameInputPresenter(mController, mController.mMyRoomData);
+            mGameInputPresenter = new GameInputPresenter(mController, mController.mMyRoomData, mController.mRoomChatMsgManager);
             registerComponent(view, mGameInputPresenter);
 
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
@@ -278,7 +278,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 return;
             }
             InputAreaPresenter presenter = new InputAreaPresenter(
-                    mController, mController.mMyRoomData, true);
+                    mController, mController.mMyRoomData, mController.mRoomChatMsgManager, true);
             registerComponent(view, presenter);
         }
         //底部输入框

@@ -314,4 +314,8 @@
     <string name="group_quiting_success">Left successfully</string>
     <string name="group_quiting_failed">Couldn\'t leave</string>
     <string name="fans_task_get_reword_fail">(Couldn\'t get the reward, try again later)</string>
+    <string name="empty_edittext_hint">Say something here</string>
+    <string name="vfans_vip_horn_hint">Members in fan club (Level %1$d) can send %2$d comments/day for free</string>
+    <string name="vfans_free_horn_hint">Free on-screen comments today: %d</string>
+    <string name="flybarrage_none">You can\'t send more on-screen comments.</string>
 </resources>

@@ -102,6 +102,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
                         ImageView.ScaleType.FIT_END : ImageView.ScaleType.FIT_START);
             }
             mInputView.setFilters(isSelected ? mFlyBarrageFilter : mNormalFilter);
+            mPresenter.updateInputHint(isSelected);
         }
     }
 
@@ -444,6 +445,13 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
          * 得到横屏弹幕最小高度
          */
         int getMinHeightLand();
+
+        /**
+         * 更新EditText的hint
+         *
+         * @param flyEnable
+         */
+        void updateInputHint(boolean flyEnable);
     }
 
     public interface IView extends InputPresenter.IView, IOrientationListener {

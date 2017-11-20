@@ -6,6 +6,7 @@ import com.base.log.MyLog;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
+import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.watchsdk.component.view.GameInputView;
 
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_GAME_BARRAGE;
@@ -33,8 +34,9 @@ public class GameInputPresenter extends InputPresenter<GameInputView.IView>
 
     public GameInputPresenter(
             @NonNull IEventController controller,
-            @NonNull RoomBaseDataModel myRoomData) {
-        super(controller, myRoomData);
+            @NonNull RoomBaseDataModel myRoomData,
+            @NonNull LiveRoomChatMsgManager liveRoomChatMsgManager) {
+        super(controller, myRoomData, liveRoomChatMsgManager);
     }
 
     @Override

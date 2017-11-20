@@ -125,6 +125,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
                             return null;
                         }
                         VFansProto.GroupDetailRsp rsp = new GetGroupDetailRequest(mMyRoomData.getUid()).syncRsp();
+                        MyLog.v(TAG, "getGroupDetailFromServer rsp=" + rsp);
                         if (rsp != null && rsp.getErrCode() == ErrorCode.CODE_SUCCESS) {
                             return new FansGroupDetailModel(rsp);
                         }
@@ -302,7 +303,6 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
             mRefViewersHandler.removeCallbacks(mRefreshViewersRun);
             mRefViewersHandler.post(mRefreshViewersRun);
         }
-
     }
 
     private Runnable mRefreshViewersRun = new Runnable() {

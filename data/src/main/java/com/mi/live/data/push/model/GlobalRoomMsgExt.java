@@ -14,9 +14,13 @@ public class GlobalRoomMsgExt {
     public static final int INNER_GLOBAL_MEDAL_TYPE = 100;
     public static final int INNER_GLOBAL_SCHEME_TYPE = 101;
     public static final int INNER_GLOBAL_SHARE_JOIN_ROME_TYPE = 400;
+
+    //飘萍弹幕计数只认 500和501的type.
     public static final int INNER_GLOBAL_ADMIN_FLY = 500;//弹幕
     public static final int INNER_GLOBAL_PAY_HORN = 501;//喇叭
+
     public static final int INNER_GLOBAL_VFAN = 600;//宠爱团简要信息
+
     private ArrayList<BaseRoomMessageExt> mRoomMsgExtList = new ArrayList<>();
 
     public ArrayList<BaseRoomMessageExt> getRoomMsgExtList() {
@@ -55,6 +59,10 @@ public class GlobalRoomMsgExt {
 
         public int getType() {
             return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
         }
     }
 

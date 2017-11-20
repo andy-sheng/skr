@@ -11,6 +11,7 @@ import com.base.presenter.Presenter;
 import com.base.utils.callback.ICommonCallBack;
 import com.base.utils.sdcard.SDCardUtils;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.push.model.GlobalRoomMsgExt;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.engine.base.GalileoConstants;
 import com.mi.live.engine.streamer.IStreamer;
@@ -181,7 +182,8 @@ public class GameLivePresenter implements Presenter {
         if (mRoomChatMsgManager != null && mMyRoomData != null) {
             MyLog.d(TAG, "sendBarrage BaseInputArea msg=" + msg + ", isFlyBarrage=" + isFlyBarrage);
             if (isFlyBarrage) { // 飘屏弹幕
-                mRoomChatMsgManager.sendFlyBarrageMessageAsync(msg, mMyRoomData.getRoomId(), mMyRoomData.getUid(), null);
+                mRoomChatMsgManager.sendFlyBarrageMessageAsync(msg, mMyRoomData.getRoomId(),
+                        mMyRoomData.getUid(), GlobalRoomMsgExt.INNER_GLOBAL_PAY_HORN, null, null);
             } else {
                 mRoomChatMsgManager.sendTextBarrageMessageAsync(msg, mMyRoomData.getRoomId(), mMyRoomData.getUid(), null);
             }
@@ -287,8 +289,7 @@ public class GameLivePresenter implements Presenter {
         }
     }
 
-    public void startMergeCameraPreview(
-            float leftX, float leftY, float scaleWidth, float scaleHeight) {
+    public void startMergeCameraPreview(float leftX, float leftY, float scaleWidth, float scaleHeight) {
         if (mStreamer != null) {
             mStreamer.startAddExtra(0, leftX, leftY, scaleWidth, scaleHeight, scaleWidth, scaleHeight, 2);
         }

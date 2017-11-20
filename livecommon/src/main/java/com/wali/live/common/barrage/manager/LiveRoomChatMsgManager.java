@@ -12,10 +12,13 @@ import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.push.collection.InsertSortLinkedList;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
+import com.mi.live.data.push.model.GlobalRoomMsgExt;
 import com.wali.live.common.barrage.event.CommentRefreshEvent;
 import com.wali.live.common.model.CommentModel;
+import com.mi.live.data.room.model.FansPrivilegeModel;
 import com.wali.live.common.smiley.SmileyParser;
 import com.wali.live.event.EventClass;
+import com.wali.live.proto.VFansCommonProto;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -195,7 +198,9 @@ public class LiveRoomChatMsgManager {
      * @param anchorId
      * @param pkExt
      */
-    public void sendBarrageMessageAsync(String msgBody, int msgType, String roomid, long anchorId, BarrageMsg.PkMessageExt pkExt, BarrageMsg.MsgExt ext) {
+    public void sendBarrageMessageAsync(String msgBody, int msgType, String roomid, long anchorId,
+                                        BarrageMsg.PkMessageExt pkExt, BarrageMsg.MsgExt ext,
+                                        GlobalRoomMsgExt globalRoomMsgExt) {
         if (MyUserInfoManager.getInstance().getUser().getLevel() == 0) {
             MyUserInfoManager.getInstance().syncSelfDetailInfo();
         }
@@ -226,6 +231,9 @@ public class LiveRoomChatMsgManager {
             if (ext != null) {
                 msg.setMsgExt(ext);
             }
+            if (globalRoomMsgExt != null) {
+                msg.setGlobalRoomMsgExt(globalRoomMsgExt);
+            }
             msg.setRedName(MyUserInfoManager.getInstance().getUser().isRedName());
             BarrageMessageManager.getInstance().sendBarrageMessageAsync(msg, true);
             //假装是个push过去
@@ -235,21 +243,37 @@ public class LiveRoomChatMsgManager {
     }
 
     public void sendTextBarrageMessageAsync(String body, String liveId, long anchorId, BarrageMsg.PkMessageExt pkExt) {
-        sendBarrageMessageAsync(body, BarrageMsgType.B_MSG_TYPE_TEXT, liveId, anchorId, pkExt, null);
+        sendBarrageMessageAsync(body, BarrageMsgType.B_MSG_TYPE_TEXT, liveId, anchorId, pkExt, null, null);
     }
 
 
-    public void sendFlyBarrageMessageAsync(String body, String liveId, long anchorId, BarrageMsg.PkMessageExt pkExt) {
+    public void sendFlyBarrageMessageAsync(String body, String liveId, long anchorId, int flyBarrageType,
+                                           BarrageMsg.PkMessageExt pkExt, FansPrivilegeModel fansPrivilegeModel) {
         BarrageMsg.GiftMsgExt msgExt = new BarrageMsg.GiftMsgExt();
         msgExt.msgBody = SmileyParser.getInstance().convertString(body, SmileyParser.TYPE_LOCAL_TO_GLOBAL).toString();
-        sendBarrageMessageAsync(body, BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE, liveId, anchorId, pkExt, msgExt);
+
+        GlobalRoomMsgExt globalRoomMsgExt = new GlobalRoomMsgExt();
+        GlobalRoomMsgExt.BaseRoomMessageExt flyTypeExt = new GlobalRoomMsgExt.BaseRoomMessageExt();
+        flyTypeExt.setType(flyBarrageType);
+        globalRoomMsgExt.addMsgExt(flyTypeExt);
+
+        if (fansPrivilegeModel != null && fansPrivilegeModel.getMemType() != VFansCommonProto.GroupMemType.NONE.getNumber()) {
+            GlobalRoomMsgExt.FansMemberMsgExt fansMemberMsgExt = new GlobalRoomMsgExt.FansMemberMsgExt();
+            fansMemberMsgExt.setMedalValue(fansPrivilegeModel.getMedal());
+            fansMemberMsgExt.setVipExpire(System.currentTimeMillis() > fansPrivilegeModel.getExpireTime() * 1000);
+            fansMemberMsgExt.setPetLevel(fansPrivilegeModel.getPetLevel());
+            globalRoomMsgExt.addMsgExt(fansMemberMsgExt);
+        }
+
+        sendBarrageMessageAsync(body, BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE, liveId, anchorId, pkExt, msgExt, globalRoomMsgExt);
     }
+
 
     public void sendLikeBarrageMessageAsync(String liveId, long anchorId, int heartViewColorId, String heartViewBitmapPath) {
         BarrageMsg.LikeMsgExt msgExt = new BarrageMsg.LikeMsgExt();
         msgExt.id = heartViewColorId;
         msgExt.bitmapPath = heartViewBitmapPath;
-        sendBarrageMessageAsync(GlobalData.app().getString(R.string.live_start_light), BarrageMsgType.B_MSG_TYPE_LIKE, liveId, anchorId, null, msgExt);
+        sendBarrageMessageAsync(GlobalData.app().getString(R.string.live_start_light), BarrageMsgType.B_MSG_TYPE_LIKE, liveId, anchorId, null, msgExt, null);
     }
 
 

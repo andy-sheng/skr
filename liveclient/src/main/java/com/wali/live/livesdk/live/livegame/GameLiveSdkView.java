@@ -44,7 +44,6 @@ import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
-import static com.wali.live.component.BaseSdkController.MSG_SHOW_BARRAGE_SWITCH;
 
 /**
  * Created by yangli on 2017/2/18.
@@ -117,7 +116,7 @@ public class GameLiveSdkView extends BaseLiveSdkView<View, GameLiveController> {
                 return;
             }
             InputAreaPresenter presenter = new InputAreaPresenter(
-                    mController, mController.mMyRoomData, false);
+                    mController, mController.mMyRoomData, mController.mRoomChatMsgManager, false);
             registerComponent(view, presenter);
         }
         // 底部面板
@@ -193,7 +192,6 @@ public class GameLiveSdkView extends BaseLiveSdkView<View, GameLiveController> {
         registerAction(MSG_INPUT_VIEW_SHOWED);
         registerAction(MSG_INPUT_VIEW_HIDDEN);
         registerAction(MSG_BACKGROUND_CLICK);
-        mController.postEvent(MSG_SHOW_BARRAGE_SWITCH);
     }
 
     @Override

@@ -14,15 +14,16 @@ import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.data.LastBarrage;
-import com.mi.live.data.push.SendBarrageManager;
-import com.mi.live.data.push.model.BarrageMsg;
+import com.mi.live.data.push.event.BarrageMsgEvent;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.push.model.GlobalRoomMsgExt;
 import com.mi.live.data.query.model.MessageRule;
+import com.mi.live.data.room.model.FansPrivilegeModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.presenter.ComponentPresenter;
 import com.thornbirds.component.view.IViewProxy;
+import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.event.EventClass;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.proto.VFansProto;
@@ -47,8 +48,6 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.mi.live.data.push.model.GlobalRoomMsgExt.INNER_GLOBAL_VFAN;
-
 /**
  * Created by zyh on 2017/7/28.
  *
@@ -63,20 +62,24 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
     protected static final Map<String, LastBarrage> mLastBarrageMap = new HashMap<>();
 
     protected RoomBaseDataModel mMyRoomData;
-    protected FansGroupDetailModel mMyFansGroupModel;
+    protected FansPrivilegeModel mFansPrivilegeModel;
     protected MyUIHandler mUIHandler;
     protected String mInputContent;
     protected boolean mCanInput;
     protected boolean mViewIsShow;
     protected Subscription mSubscription;
+    protected LiveRoomChatMsgManager mLiveRoomChatMsgManager;
+    protected boolean mFlyBtnSelected = false;
 
     public InputPresenter(
             @NonNull IEventController controller,
-            @NonNull RoomBaseDataModel myRoomData) {
+            @NonNull RoomBaseDataModel myRoomData,
+            LiveRoomChatMsgManager liveRoomChatMsgManager) {
         super(controller);
         mMyRoomData = myRoomData;
         mCanInput = true;
         mUIHandler = new MyUIHandler(this);
+        mLiveRoomChatMsgManager = liveRoomChatMsgManager;
         clearBarrageCache();
     }
 
@@ -132,7 +135,16 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
                 .subscribe(new Action1<FansGroupDetailModel>() {
                     @Override
                     public void call(FansGroupDetailModel groupDetailModel) {
-                        mMyFansGroupModel = groupDetailModel;
+                        if (groupDetailModel != null) {
+                            if (mFansPrivilegeModel == null) {
+                                mFansPrivilegeModel = new FansPrivilegeModel();
+                            }
+                            mFansPrivilegeModel.setMedal(groupDetailModel.getMedalValue());
+                            mFansPrivilegeModel.setPetLevel(groupDetailModel.getMyPetLevel());
+                            mFansPrivilegeModel.setExpireTime(groupDetailModel.getVipExpire());
+                            mFansPrivilegeModel.setMemType(groupDetailModel.getMemType());
+                            mFansPrivilegeModel.setVipLevel(groupDetailModel.getVipLevel());
+                        }
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -152,7 +164,13 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
     }
 
     public void sendBarrage(String msg, boolean isFlyBarrage) {
+        mFlyBtnSelected = isFlyBarrage;
         if (TextUtils.isEmpty(msg) || mMyRoomData == null) {
+            return;
+        }
+        if (mFansPrivilegeModel != null && mFansPrivilegeModel.canSendFlyBarrage()
+                && mFansPrivilegeModel.getHasSendFlyBarrageTimes() > mFansPrivilegeModel.getMaxCanSendFlyBarrageTimes()) {
+            ToastUtils.showToast(GlobalData.app().getString(R.string.flybarrage_none));
             return;
         }
         if (isVisitor()) {
@@ -189,20 +207,25 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
             }
             checkShowCountdownTimer();
         }
-        BarrageMsg barrageMsg = SendBarrageManager.createBarrage(BarrageMsgType.B_MSG_TYPE_TEXT,
-                msg, mMyRoomData.getRoomId(), mMyRoomData.getUid(), System.currentTimeMillis(), null);
 
-        if (mMyFansGroupModel != null && mMyFansGroupModel.getMemType() != VFansCommonProto.GroupMemType.NONE.getNumber()) {
-            GlobalRoomMsgExt ext = new GlobalRoomMsgExt();
-            GlobalRoomMsgExt.FansMemberMsgExt fansMemberMsgExt = new GlobalRoomMsgExt.FansMemberMsgExt();
-            fansMemberMsgExt.setPetLevel(mMyFansGroupModel.getMyPetLevel());
-            fansMemberMsgExt.setVipExpire(System.currentTimeMillis() > mMyFansGroupModel.getVipExpire() * 1000);
-            fansMemberMsgExt.setMedalValue(mMyFansGroupModel.getMedalValue());
-            ext.addMsgExt(fansMemberMsgExt);
-            barrageMsg.setGlobalRoomMsgExt(ext);
+        if (isFlyBarrage) {
+            //TODO 飘萍弹幕暂时只考虑粉丝团的飘萍弹幕，管理員的暫時沒考慮
+            mLiveRoomChatMsgManager.sendFlyBarrageMessageAsync(msg, mMyRoomData.getRoomId(),
+                    mMyRoomData.getUid(), GlobalRoomMsgExt.INNER_GLOBAL_PAY_HORN, null, mFansPrivilegeModel);
+        } else {
+            FansPrivilegeModel fansPrivilegeModel = mFansPrivilegeModel;
+            GlobalRoomMsgExt globalRoomMsgExt = null;
+            if (fansPrivilegeModel != null && fansPrivilegeModel.getMemType() != VFansCommonProto.GroupMemType.NONE.getNumber()) {
+                globalRoomMsgExt = new GlobalRoomMsgExt();
+                GlobalRoomMsgExt.FansMemberMsgExt fansMemberMsgExt = new GlobalRoomMsgExt.FansMemberMsgExt();
+                fansMemberMsgExt.setPetLevel(fansPrivilegeModel.getPetLevel());
+                fansMemberMsgExt.setVipExpire(System.currentTimeMillis() > fansPrivilegeModel.getExpireTime() * 1000);
+                fansMemberMsgExt.setMedalValue(fansPrivilegeModel.getMedal());
+                globalRoomMsgExt.addMsgExt(fansMemberMsgExt);
+            }
+            mLiveRoomChatMsgManager.sendBarrageMessageAsync(msg, BarrageMsgType.B_MSG_TYPE_TEXT,
+                    mMyRoomData.getRoomId(), mMyRoomData.getUid(), null, null, globalRoomMsgExt);
         }
-        SendBarrageManager.sendBarrageMessageAsync(barrageMsg).subscribe();
-        SendBarrageManager.pretendPushBarrage(barrageMsg);
     }
 
     /**
@@ -261,11 +284,31 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
                 if (mCanInput == true) {
                     mCanInput = false;
                     mUIHandler.sendEmptyMessageDelayed(MSG_SEND_BARRAGE_COUNT_DOWN, 1000);
-
                 }
             }
         } catch (Exception e) {
             MyLog.e(TAG, e);
+        }
+    }
+
+    /**
+     * 更新EditText的hint
+     */
+    public void updateInputHint(boolean flyBtnSelected) {
+        MyLog.v(TAG, "updateInputHint");
+        mFlyBtnSelected = flyBtnSelected;
+        EditText editText = mView.getInputView();
+        if (flyBtnSelected && mFansPrivilegeModel != null && mFansPrivilegeModel.canSendFlyBarrage() &&
+                mFansPrivilegeModel.getMaxCanSendFlyBarrageTimes() - mFansPrivilegeModel.getHasSendFlyBarrageTimes() > 0) {
+            if (mFansPrivilegeModel.getHasSendFlyBarrageTimes() == 0) {
+                editText.setHint(GlobalData.app().getResources().getString(R.string.vfans_vip_horn_hint, mFansPrivilegeModel.getPetLevel(),
+                        mFansPrivilegeModel.getMaxCanSendFlyBarrageTimes() - mFansPrivilegeModel.getHasSendFlyBarrageTimes()));
+            } else {
+                editText.setHint(GlobalData.app().getResources().getString(R.string.vfans_free_horn_hint,
+                        mFansPrivilegeModel.getMaxCanSendFlyBarrageTimes() - mFansPrivilegeModel.getHasSendFlyBarrageTimes()));
+            }
+        } else {
+            editText.setHint(R.string.empty_edittext_hint);
         }
     }
 
@@ -282,8 +325,6 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
             return;
         }
         if (event.getRoomId() != null && mMyRoomData.getRoomId().equals(event.getRoomId())) {
-//            changeCommentBtnResource();
-
             MessageRule msgRule = new MessageRule();
             msgRule.setMessageRuleType(MessageRule.MessageRuleType.NORMAL);
             msgRule.setSpeakPeriod(event.getSpeakPeriod());
@@ -312,6 +353,14 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
             if (mViewIsShow) {
                 checkShowCountdownTimer();
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(BarrageMsgEvent.SendBarrageResponseEvent event) {
+        if (Integer.MAX_VALUE != event.getGuardCnt() && mFansPrivilegeModel.getHasSendFlyBarrageTimes() < event.getGuardCnt()) {
+            mFansPrivilegeModel.setHasSendFlyBarrageTimes(event.getGuardCnt());
+            updateInputHint(mFlyBtnSelected);
         }
     }
 
@@ -380,8 +429,8 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
                         inputPresenter.mUIHandler.sendEmptyMessageDelayed(MSG_SEND_BARRAGE_COUNT_DOWN, 1000);
                         inputPresenter.mCanInput = false;
                     } else {
-                        inputPresenter.mView.getInputView().setHint(R.string.empty_edittext_hint);
                         inputPresenter.mCanInput = true;
+                        inputPresenter.updateInputHint(inputPresenter.mFlyBtnSelected);
                         if (!TextUtils.isEmpty(mPresenter.get().mInputContent)) {
                             inputPresenter.mView.getInputView().setText(mPresenter.get().mInputContent);
                             inputPresenter.mView.getInputView().setSelection(mPresenter.get().mInputContent.length());

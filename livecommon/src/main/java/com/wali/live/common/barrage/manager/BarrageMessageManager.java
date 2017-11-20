@@ -18,6 +18,7 @@ import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.live.data.push.event.BarrageMsgEvent;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
+import com.mi.live.data.push.model.GlobalRoomMsgExt;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.wali.live.proto.LiveMessageProto;
@@ -32,6 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.mi.live.data.push.model.GlobalRoomMsgExt.INNER_GLOBAL_VFAN;
 
 /**
  * @module com.wali.live.message
@@ -124,7 +127,17 @@ public class BarrageMessageManager implements MiLinkPacketDispatcher.PacketDataH
             if (response != null) {
                 MyLog.v(TAG, "BarrageMsg recv:" + response.getCid() + " result:" + response.getRet());
                 StatisticUtils.addToMiLinkMonitor(StatisticsKey.KEY_BARRAGE_CUSTOM_SEND_SUCCESS, StatisticUtils.SUCCESS);
-                EventBus.getDefault().post(new BarrageMsgEvent.SendBarrageResponseEvent(response.getCid(), response.getTimestamp() == 0 ? System.currentTimeMillis() : response.getTimestamp()));
+                //TODO zyh 暂时只加入粉丝团的消息，vip的暂时不考虑
+                if (response.hasGuardBrCnt()) {
+                    EventBus.getDefault().post(new BarrageMsgEvent.SendBarrageResponseEvent(response.getCid(),
+                            response.getTimestamp() == 0 ? System.currentTimeMillis() : response.getTimestamp(),
+                            response.getFltbrCnt(), response.getAdminBrCnt(),
+                            Integer.MAX_VALUE, response.getGuardBrCnt()));
+                } else {
+                    EventBus.getDefault().post(new BarrageMsgEvent.SendBarrageResponseEvent(response.getCid(),
+                            response.getTimestamp() == 0 ? System.currentTimeMillis() : response.getTimestamp(),
+                            response.getFltbrCnt(), response.getAdminBrCnt(), Integer.MAX_VALUE, Integer.MAX_VALUE));
+                }
             }
         } catch (InvalidProtocolBufferException e) {
             MyLog.e(e);
@@ -248,7 +261,6 @@ public class BarrageMessageManager implements MiLinkPacketDispatcher.PacketDataH
                 builder.setMsgExt(ext);
             }
             builder.setAnchorId(msg.getAnchorId());
-//            builder.setSupportTxt("");
             builder.setRoomType(msg.getRoomType());
             if (!TextUtils.isEmpty(msg.getOpponentRoomId())) {
 
@@ -256,6 +268,17 @@ public class BarrageMessageManager implements MiLinkPacketDispatcher.PacketDataH
                 pkRoomInfoBuilder.setPkRoomId(msg.getOpponentRoomId())
                         .setPkZuid(msg.getOpponentAnchorId());
                 builder.setPkRoomInfo(pkRoomInfoBuilder.build());
+            }
+            if (msg.getGlobalRoomMsgExt() != null) {
+                LiveMessageProto.GlobalRoomMessageExt.Builder builder2 = LiveMessageProto.GlobalRoomMessageExt.newBuilder();
+                ArrayList<GlobalRoomMsgExt.BaseRoomMessageExt> list = msg.getGlobalRoomMsgExt().getRoomMsgExtList();
+                for (GlobalRoomMsgExt.BaseRoomMessageExt innerExt : list) {
+                    if (innerExt.getType() != INNER_GLOBAL_VFAN) {
+                        builder2.addInnerGlobalRoomMsgExt(LiveMessageProto.InnerGlobalRoomMessageExt.newBuilder()
+                                .setType(innerExt.getType()).build());
+                    }
+                }
+                builder.setGlobalRoomMsgExt(builder2.build());
             }
             packetData.setData(builder.build().toByteArray());
             MyLog.v(TAG, "BarrageMsg send:" + msg.getSenderMsgId() + "body :" + msg.getBody());
