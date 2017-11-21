@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.base.activity.BaseSdkActivity;
 import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
+import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.SlidingTabLayout;
@@ -17,14 +18,18 @@ import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
+import com.wali.live.watchsdk.channel.view.IScrollListener;
 import com.wali.live.watchsdk.channel.view.RepeatScrollView;
 import com.wali.live.watchsdk.fans.dialog.ApplyJoinDialog;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
+import com.wali.live.watchsdk.fans.model.specific.RecentJobModel;
 import com.wali.live.watchsdk.fans.presenter.FansMemberPresenter;
 import com.wali.live.watchsdk.fans.presenter.FansPagerPresenter;
 import com.wali.live.watchsdk.fans.view.FansHomeView;
 import com.wali.live.watchsdk.fans.view.FansMemberView;
 import com.wali.live.watchsdk.fans.view.FansTaskView;
+
+import java.util.List;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -52,13 +57,14 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
     private CommonTabPagerAdapter mTabPagerAdapter;
     private ViewPager mViewPager;
 
-    private View mApplyJoinArea;
-    private TextView mApplyJoinBtn;
+    private View mJoinFansArea;
+    private TextView mJoinFansBtn;
 
-    private View mPrivilegeArea;
+    private View mOpenPrivilegeArea;
     private RepeatScrollView mRepeatScrollView;
-    private TextView mPrivilegeOpenBtn;
-    private TextView mScrollTv;
+    private TextView mOpenPrivilegeBtn;
+    private TextView mMessageTv1;
+    private TextView mMessageTv2;
 
     //adapter加載的view
     private FansHomeView mFansHomeView;
@@ -69,11 +75,16 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
     private long mAnchorId;
     private String mRoomId;
     private int mMemberType;
+
     private FansPagerPresenter mPresenter;
     private FansGroupDetailModel mGroupDetailModel;
 
+    private List<RecentJobModel> mRecentJobList;
+
     private boolean mHasJoinGroup;
     private ApplyJoinDialog mApplyJoinDialog;
+
+    private boolean mShowApplyPrivilege = false;
 
     @Override
     public int getRequestCode() {
@@ -109,7 +120,8 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
 
     private void initPresenter() {
         mPresenter = new FansPagerPresenter(this);
-        mPresenter.getGroupDetailFromServer(mAnchorId);
+        mPresenter.getGroupDetail(mAnchorId);
+        mPresenter.getRecentJob(mAnchorId);
     }
 
     private void initTopContainer() {
@@ -142,12 +154,16 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
             public void onPageSelected(int position) {
                 switch (position) {
                     case POSITION_FANS_HOME:
+                        updateApplyPrivilegeArea(true);
                         break;
                     case POSITION_FAN_TASK:
+                        updateApplyPrivilegeArea(true);
                         break;
                     case POSITION_FAN_MEMBER:
+                        updateApplyPrivilegeArea(false);
                         break;
                     case POSITION_FAN_GROUP:
+                        updateApplyPrivilegeArea(false);
                         break;
                 }
             }
@@ -155,17 +171,18 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
     }
 
     private void initBottomContainer() {
-        mApplyJoinArea = $(R.id.apply_join_vfan_area);
-        mApplyJoinBtn = $(R.id.join_vfans_btn);
-        $click(mApplyJoinBtn, this);
+        mJoinFansArea = $(R.id.apply_join_vfan_area);
+        mJoinFansBtn = $(R.id.join_vfans_btn);
+        $click(mJoinFansBtn, this);
 
-        mPrivilegeArea = $(R.id.apply_privilege_area);
+        mOpenPrivilegeArea = $(R.id.open_privilege_area);
         mRepeatScrollView = $(R.id.repeat_scroll_view);
-        mPrivilegeOpenBtn = $(R.id.open_privilege_btn);
-        $click(mPrivilegeOpenBtn, this);
+        mOpenPrivilegeBtn = $(R.id.open_privilege_btn);
+        $click(mOpenPrivilegeBtn, this);
 
         mRepeatScrollView.init(R.layout.vfans_repeat_scroll_view, DisplayUtils.dip2px(66.67f));
-        mScrollTv = (TextView) mRepeatScrollView.getChildView(0).findViewById(R.id.text_message);
+        mMessageTv1 = $(mRepeatScrollView.getChildView(0), R.id.message_tv);
+        mMessageTv2 = $(mRepeatScrollView.getChildView(1), R.id.message_tv);
     }
 
     private void finish() {
@@ -197,6 +214,40 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
         mApplyJoinDialog.show(mAnchorId, mRoomId, null);
     }
 
+    private void updateApplyPrivilegeArea(boolean isShow) {
+        if (mShowApplyPrivilege != isShow) {
+            mShowApplyPrivilege = isShow;
+
+            if (mShowApplyPrivilege) {
+                showApplyPrivilege();
+            } else {
+                hideApplyPrivilege();
+            }
+        }
+    }
+
+    private void showApplyPrivilege() {
+        if (mHasJoinGroup && mAnchorId != UserAccountManager.getInstance().getUuidAsLong()) {
+            if (mGroupDetailModel.getVipLevel() == 0) {
+                mOpenPrivilegeBtn.setText(R.string.vfans_open_privilege);
+            } else if (mGroupDetailModel.getVipLevel() > 0 && mGroupDetailModel.getVipExpire() > System.currentTimeMillis() / 1000) {
+                mOpenPrivilegeBtn.setText(R.string.vfans_renew_pay);
+            }
+
+            mOpenPrivilegeArea.setVisibility(VISIBLE);
+
+            //
+            mRepeatScrollView.enterSingleMode();
+        }
+    }
+
+    private void hideApplyPrivilege() {
+        mOpenPrivilegeArea.setVisibility(GONE);
+
+        mRepeatScrollView.stopTimer();
+        mRepeatScrollView.stopAnimator();
+    }
+
     @Override
     public void setGroupDetail(FansGroupDetailModel groupDetailModel) {
         mGroupDetailModel = groupDetailModel;
@@ -213,11 +264,67 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
             mHasJoinGroup = mGroupDetailModel.getMemType() != VFansCommonProto.GroupMemType.NONE_VALUE;
 
             if (mHasJoinGroup) {
-                mApplyJoinArea.setVisibility(GONE);
+                mJoinFansArea.setVisibility(GONE);
+
+                int index = mViewPager.getCurrentItem();
+                if (index == POSITION_FANS_HOME || index == POSITION_FAN_TASK) {
+                    updateApplyPrivilegeArea(true);
+                }
             } else {
-                mApplyJoinArea.setVisibility(VISIBLE);
+                mJoinFansArea.setVisibility(VISIBLE);
+                updateApplyPrivilegeArea(false);
             }
         }
+    }
+
+    @Override
+    public void setRecentJobList(List<RecentJobModel> list) {
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+
+        mRecentJobList = list;
+        mRepeatScrollView.setListener(new IScrollListener() {
+            @Override
+            public void onFirstIndexed() {
+                bindItem(mRecentJobList.get(0), mMessageTv1);
+            }
+
+            @Override
+            public void onIndexChanged(int index) {
+                bindItem(mRecentJobList.get(index % mRecentJobList.size()), mMessageTv1);
+                bindItem(mRecentJobList.get((index + 1) % mRecentJobList.size()), mMessageTv2);
+            }
+        });
+
+        if (mShowApplyPrivilege) {
+            showApplyPrivilege();
+        }
+    }
+
+    protected void bindItem(RecentJobModel model, TextView tv) {
+        String nickname = model.getNickname();
+        if (nickname.length() > 5) {
+            nickname = nickname.substring(0, 5) + "...";
+        }
+        int taskType = model.getGroupJobType();
+        StringBuilder result = new StringBuilder().append(nickname).append(GlobalData.app().getString(R.string.vfans_task_ok));
+        switch (taskType) {
+            case VFansCommonProto.GroupJobType.GROUP_CHAT_VALUE:
+                result.append(GlobalData.app().getString(R.string.vfans_daily_tasks_finish_send_barrage));
+                break;
+            case VFansCommonProto.GroupJobType.SEND_GIFT_VALUE:
+                result.append(GlobalData.app().getString(R.string.vfans_daily_tasks_finish_send_gift));
+                break;
+            case VFansCommonProto.GroupJobType.SHARE_LIVE_VALUE:
+                result.append(GlobalData.app().getString(R.string.vfans_daily_tasks_finish_share_live));
+                break;
+            case VFansCommonProto.GroupJobType.VIEW_LIVE_VALUE:
+                result.append(GlobalData.app().getString(R.string.vfans_daily_tasks_finish_watch_live));
+                break;
+        }
+        result.append(",").append(GlobalData.app().getString(R.string.vfans_task_ok_exp_plus)).append(model.getJobExp());
+        tv.setText(result);
     }
 
     @Override

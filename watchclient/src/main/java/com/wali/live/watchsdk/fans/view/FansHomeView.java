@@ -18,13 +18,13 @@ import com.base.global.GlobalData;
 import com.base.mvp.specific.RxRelativeLayout;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.account.UserAccountManager;
+import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.FansPrivilegeFragment;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
 import com.wali.live.watchsdk.fans.presenter.FansHomePresenter;
-import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.watchsdk.fans.view.merge.FansDetailBasicView;
 import com.wali.live.watchsdk.view.EmptyView;
 
@@ -257,10 +257,10 @@ public class FansHomeView extends RxRelativeLayout implements View.OnClickListen
             return mIsAnchor ? TYPE_CHARM_MEDAL : TYPE_UPGRADE_ACCELERATION;
         } else if (resId == R.id.fly_barrage_privilege_area) {
             return mIsAnchor ? TYPE_MORE_FANS : TYPE_FREE_FLY_BARRAGE;
-        } else if (resId == R.id.forbidden_privilege_area) {
-            return mIsAnchor ? -1 : TYPE_BAN_BARRAGE;
         } else if (resId == R.id.color_barrage_area) {
             return mIsAnchor ? TYPE_TOUR_DIVIDE : TYPE_COLOR_BARRAGE;
+        } else if (resId == R.id.forbidden_privilege_area) {
+            return mIsAnchor ? -1 : TYPE_BAN_BARRAGE;
         }
         return -1;
     }

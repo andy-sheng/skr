@@ -144,7 +144,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        MyLog.e(TAG, "getGroupDetailFromServer failed=" + throwable);
+                        MyLog.e(TAG, "getGroupDetail failed=" + throwable);
                     }
                 });
     }

@@ -329,4 +329,10 @@
     <string name="vfans_member_delete">Remove</string>
     <string name="vfans_member_title_manager_batch_delete">Remove</string>
     <string name="vfans_member_title_manager_finish">Done</string>
+    <string name="vfans_daily_tasks_finish_send_barrage">Send comments</string>
+    <string name="vfans_daily_tasks_finish_send_gift">Send tasks</string>
+    <string name="vfans_daily_tasks_finish_share_live">Share tasks</string>
+    <string name="vfans_daily_tasks_finish_watch_live">Watch videos</string>
+    <string name="vfans_task_ok_exp_plus">Closeness +</string>
+    <string name="vfans_task_ok">Done</string>
 </resources>

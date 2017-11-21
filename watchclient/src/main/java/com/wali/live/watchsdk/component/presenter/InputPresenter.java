@@ -149,7 +149,7 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        MyLog.e(TAG, "getGroupDetailFromServer failed=" + throwable);
+                        MyLog.e(TAG, "getGroupDetail failed=" + throwable);
                     }
                 });
     }

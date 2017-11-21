@@ -315,4 +315,10 @@
     <string name="vfans_member_delete">刪除</string>
     <string name="vfans_member_title_manager_batch_delete">批量刪除</string>
     <string name="vfans_member_title_manager_finish">完成</string>
+    <string name="vfans_daily_tasks_finish_send_barrage">發言任務</string>
+    <string name="vfans_daily_tasks_finish_send_gift">贈送任務</string>
+    <string name="vfans_daily_tasks_finish_share_live">分享任務</string>
+    <string name="vfans_daily_tasks_finish_watch_live">觀看任務</string>
+    <string name="vfans_task_ok_exp_plus">親密值 +</string>
+    <string name="vfans_task_ok">完成了</string>
 </resources>

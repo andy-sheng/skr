@@ -319,4 +319,10 @@
     <string name="vfans_member_delete">删除</string>
     <string name="vfans_member_title_manager_batch_delete">批量删除</string>
     <string name="vfans_member_title_manager_finish">完成</string>
+    <string name="vfans_daily_tasks_finish_send_barrage">发言任务</string>
+    <string name="vfans_daily_tasks_finish_send_gift">赠送任务</string>
+    <string name="vfans_daily_tasks_finish_share_live">分享任务</string>
+    <string name="vfans_daily_tasks_finish_watch_live">观看任务</string>
+    <string name="vfans_task_ok_exp_plus">亲密值 +</string>
+    <string name="vfans_task_ok">完成了</string>
 </resources>

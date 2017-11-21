@@ -11,11 +11,8 @@ import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
-import com.wali.live.event.EventClass;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.concurrent.TimeUnit;
 
@@ -23,8 +20,6 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-
-import static android.R.attr.animation;
 
 /**
  * Created by lan on 16/9/8.
@@ -106,11 +101,11 @@ public class RepeatScrollView extends RelativeLayout {
         return view;
     }
 
-    private void startTime() {
+    private void startTimer() {
         if (mTimerSubscription != null && !mTimerSubscription.isUnsubscribed()) {
             return;
         }
-        MyLog.d(TAG, "startTime");
+        MyLog.d(TAG, "startTimer");
         mTimerSubscription = Observable.interval(3, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Long>() {
@@ -133,8 +128,8 @@ public class RepeatScrollView extends RelativeLayout {
                 });
     }
 
-    public void stopTime() {
-        MyLog.d(TAG, "stopTime");
+    public void stopTimer() {
+        MyLog.d(TAG, "stopTimer");
         if (mTimerSubscription != null) {
             mTimerSubscription.unsubscribe();
             mTimerSubscription = null;
@@ -158,7 +153,7 @@ public class RepeatScrollView extends RelativeLayout {
         mIsOnWindow = false;
         if (mNeedScroll) {
             unregisterEventBus();
-            stopTime();
+            stopTimer();
             stopAnimator();
         }
     }
@@ -214,7 +209,7 @@ public class RepeatScrollView extends RelativeLayout {
         mChildView1.setVisibility(View.VISIBLE);
         mChildView2.setVisibility(View.GONE);
 
-        stopTime();
+        stopTimer();
         stopAnimator();
         unregisterEventBus();
 
@@ -233,7 +228,7 @@ public class RepeatScrollView extends RelativeLayout {
         mChildView2.setTranslationY(mTranslationY);
 
         initAnimator();
-        startTime();
+        startTimer();
 
         if (mListener != null) {
             mListener.onIndexChanged(0);
@@ -247,7 +242,7 @@ public class RepeatScrollView extends RelativeLayout {
         mChildView1.setVisibility(View.GONE);
         mChildView2.setVisibility(View.GONE);
 
-        stopTime();
+        stopTimer();
         stopAnimator();
         unregisterEventBus();
     }
