@@ -77,6 +77,8 @@ public class GiftRepository {
     public static String KEY_PULL_GIFTLIST_TIMESTAMP = "key_pull_giftlist_timestamp";
     public static String TAG = "GiftRepository";
 
+    public static final int GIFT_CATEGORY_VFANS_PRIVILEGE = 16;
+
     //资源已经存在的礼物
     private static HashMap<Integer, Gift> mExistedGift = new HashMap<>();
     //绿色通道，无论那种都要下载

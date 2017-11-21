@@ -321,4 +321,8 @@
     <string name="vfans_daily_tasks_finish_watch_live">觀看任務</string>
     <string name="vfans_task_ok_exp_plus">親密值 +</string>
     <string name="vfans_task_ok">完成了</string>
+    <string name="vfans_open_privilege_now">馬上開通</string>
+    <string name="_5000_lova_value">+5000親密值</string>
+    <string name="vfans_continue_privilege_now">馬上續費</string>
+    <string name="vfans_pay_privilige_one_tips">及時續費保持特權不間斷</string>
 </resources>

@@ -75,6 +75,7 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
     private void initData(Bundle bundle) {
         if (bundle == null) {
             finish();
+            return;
         }
         mZuid = bundle.getLong(EXTRA_ZUID);
         MyLog.d(TAG, "user id=" + mZuid);

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.base.activity.BaseSdkActivity;
+import com.base.fragment.FragmentDataListener;
 import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
@@ -23,6 +24,7 @@ import com.wali.live.watchsdk.channel.view.RepeatScrollView;
 import com.wali.live.watchsdk.fans.dialog.ApplyJoinDialog;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.specific.RecentJobModel;
+import com.wali.live.watchsdk.fans.pay.FansPayFragment;
 import com.wali.live.watchsdk.fans.presenter.FansMemberPresenter;
 import com.wali.live.watchsdk.fans.presenter.FansPagerPresenter;
 import com.wali.live.watchsdk.fans.view.FansHomeView;
@@ -40,7 +42,7 @@ import static com.wali.live.component.view.Utils.$component;
  *
  * @module 粉丝团页面
  */
-public class FansPagerFragment extends RxFragment implements View.OnClickListener, FansPagerPresenter.IView {
+public class FansPagerFragment extends RxFragment implements View.OnClickListener, FansPagerPresenter.IView, FragmentDataListener {
     private static final String EXTRA_ANCHOR_ID = "extra_anchor_id";
     private static final String EXTRA_ROOMID = "extra_roomId";
     private static final String EXTRA_ANCHOR_NAME = "extra_anchor_name";
@@ -202,16 +204,22 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
         if (i == R.id.cover_view) {
             finish();
         } else if (i == R.id.join_vfans_btn) {
-            applyJoin();
+            joinFans();
         } else if (i == R.id.open_privilege_btn) {
+            openPrivilege();
         }
     }
 
-    private void applyJoin() {
+    private void joinFans() {
         if (mApplyJoinDialog == null) {
             mApplyJoinDialog = new ApplyJoinDialog(getActivity());
         }
         mApplyJoinDialog.show(mAnchorId, mRoomId, null);
+    }
+
+    private void openPrivilege() {
+        FansPayFragment.open((BaseSdkActivity) getActivity(),
+                mGroupDetailModel, mRoomId, mGroupDetailModel.getVipLevel() <= 0, true, this);
     }
 
     private void updateApplyPrivilegeArea(boolean isShow) {
@@ -236,8 +244,13 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
 
             mOpenPrivilegeArea.setVisibility(VISIBLE);
 
-            //
-            mRepeatScrollView.enterSingleMode();
+            if (mRecentJobList != null) {
+                if (mRecentJobList.size() == 1) {
+                    mRepeatScrollView.enterSingleMode();
+                } else {
+                    mRepeatScrollView.enterScrollMode();
+                }
+            }
         }
     }
 
@@ -325,6 +338,10 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
         }
         result.append(",").append(GlobalData.app().getString(R.string.vfans_task_ok_exp_plus)).append(model.getJobExp());
         tv.setText(result);
+    }
+
+    @Override
+    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
     }
 
     @Override

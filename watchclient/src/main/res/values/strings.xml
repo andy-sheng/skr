@@ -335,4 +335,8 @@
     <string name="vfans_daily_tasks_finish_watch_live">Watch videos</string>
     <string name="vfans_task_ok_exp_plus">Closeness +</string>
     <string name="vfans_task_ok">Done</string>
+    <string name="vfans_open_privilege_now">Get now</string>
+    <string name="_5000_lova_value">Closeness +5000</string>
+    <string name="vfans_continue_privilege_now">Renew now</string>
+    <string name="vfans_pay_privilige_one_tips">Renew to keep benefits</string>
 </resources>

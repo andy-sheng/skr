@@ -325,4 +325,8 @@
     <string name="vfans_daily_tasks_finish_watch_live">观看任务</string>
     <string name="vfans_task_ok_exp_plus">亲密值 +</string>
     <string name="vfans_task_ok">完成了</string>
+    <string name="vfans_open_privilege_now">马上开通</string>
+    <string name="_5000_lova_value">+5000亲密值</string>
+    <string name="vfans_continue_privilege_now">马上续费</string>
+    <string name="vfans_pay_privilige_one_tips">及时续费保持特权不间断</string>
 </resources>

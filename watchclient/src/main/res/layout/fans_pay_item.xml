@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/area"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_150"
+                android:background="@drawable/shape_vfans_vip_item_bg">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/pay_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:drawableLeft="@drawable/live_icon_diamonds_yellow_small"
+            android:drawablePadding="@dimen/margin_9"
+            android:text="300"
+            android:textColor="@color/color_black_trans_90"
+            android:textSize="@dimen/margin_36"/>
+
+        <TextView
+            android:id="@+id/pay_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pay_value"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin_15"
+            android:text="1个月"
+            android:textColor="@color/color_black_trans_50"
+            android:textSize="@dimen/margin_36"/>
+    </RelativeLayout>
+</RelativeLayout>
