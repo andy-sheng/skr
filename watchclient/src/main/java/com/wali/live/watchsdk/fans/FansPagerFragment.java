@@ -2,7 +2,10 @@ package com.wali.live.watchsdk.fans;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,6 +92,34 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
 
     private boolean mShowApplyPrivilege = false;
 
+    private boolean mNeedHideBehind = false;
+    private boolean mIsHideBehind = false;
+    private final FragmentManager.OnBackStackChangedListener mOnBackStackChangedListener =
+            new FragmentManager.OnBackStackChangedListener() {
+                @Override
+                public void onBackStackChanged() {
+                    if (!mNeedHideBehind) {
+                        return;
+                    }
+                    final FragmentManager fm = getFragmentManager();
+                    final int entryCount = fm.getBackStackEntryCount();
+                    if (entryCount == 0) {
+                        return;
+                    }
+                    String fName = fm.getBackStackEntryAt(entryCount - 1).getName();
+                    if (TextUtils.isEmpty(fName)) {
+                        return;
+                    }
+                    final Fragment currFragment = fm.findFragmentByTag(fName);
+                    final boolean isOnStackTop = currFragment == FansPagerFragment.this;
+                    final boolean hideBehind = !isOnStackTop || currFragment instanceof FansMemberManagerFragment;
+                    if (mIsHideBehind != hideBehind) {
+                        mIsHideBehind = hideBehind;
+                        FansPagerFragment.this.getView().setVisibility(hideBehind ? View.VISIBLE : View.GONE);
+                    }
+                }
+            };
+
     @Override
     public int getRequestCode() {
         return 0;
@@ -155,6 +186,7 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
         mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
+                mNeedHideBehind = false;
                 switch (position) {
                     case POSITION_FANS_HOME:
                         updateApplyPrivilegeArea(true);
@@ -163,6 +195,8 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
                         updateApplyPrivilegeArea(true);
                         break;
                     case POSITION_FAN_MEMBER:
+                        mNeedHideBehind = true;
+                        mIsHideBehind = false;
                         updateApplyPrivilegeArea(false);
                         break;
                     case POSITION_FAN_GROUP:
@@ -354,11 +388,18 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getFragmentManager().addOnBackStackChangedListener(mOnBackStackChangedListener);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         if (mFansHomeView != null) {
             mFansHomeView.destroy();
         }
+        getFragmentManager().removeOnBackStackChangedListener(mOnBackStackChangedListener);
     }
 
     public static void openFragment(BaseSdkActivity activity, String anchorName,

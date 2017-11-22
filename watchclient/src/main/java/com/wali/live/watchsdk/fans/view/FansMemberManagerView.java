@@ -19,19 +19,19 @@ import com.base.dialog.DialogUtils;
 import com.base.dialog.MyAlertDialog;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.log.MyLog;
+import com.base.utils.toast.ToastUtils;
 import com.base.view.SymmetryTitleBar;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.adapter.FansMemberManagerAdapter;
+import com.wali.live.watchsdk.fans.adapter.FansMemberManagerAdapter.MemberItem;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static com.wali.live.component.view.Utils.$click;
 
 /**
  * Created by yangli on 2017/11/16.
@@ -56,6 +56,8 @@ public class FansMemberManagerView extends LinearLayout
     private FansGroupDetailModel mGroupDetailModel;
 
     private SymmetryTitleBar mTitleBar;
+    private TextView mLeftBtn;
+    private TextView mRightBtn;
     private View mEmptyView;
     private RecyclerView mRecyclerView;
 
@@ -69,7 +71,7 @@ public class FansMemberManagerView extends LinearLayout
                 private static final int MENU_ITEM_CANCEL = 6;                // 取消
 
                 @Override
-                public void onItemClick(final FansMemberManagerAdapter.MemberItem memberItem) {
+                public void onItemClick(final MemberItem memberItem) {
                     final int myMemType = mGroupDetailModel.getMemType(), itemMemType = memberItem.getMemType();
                     if (myMemType >= itemMemType) {
                         return;
@@ -128,9 +130,15 @@ public class FansMemberManagerView extends LinearLayout
                             });
                     builder.create().show();
                 }
+
+                @Override
+                public void onItemSelectionChange(int cnt) {
+                    mRightBtn.setEnabled(cnt > 0);
+                    mRightBtn.setText(getResources().getString(R.string.vfans_member_delete, cnt));
+                }
             };
 
-    private void showRemoveDialog(final List<FansMemberManagerAdapter.MemberItem> memberItems) {
+    private void showRemoveDialog(final List<MemberItem> memberItems) {
         DialogUtils.showNormalDialog(
                 (Activity) getContext(),
                 0,
@@ -181,6 +189,8 @@ public class FansMemberManagerView extends LinearLayout
         inflate(getContext(), R.layout.fans_member_manager_view, this);
 
         mTitleBar = $(R.id.title_bar);
+        mLeftBtn = mTitleBar.getLeftTextBtn();
+        mRightBtn = mTitleBar.getRightTextBtn();
         mEmptyView = $(R.id.empty_view);
         mRecyclerView = $(R.id.recycler_view);
 
@@ -205,52 +215,41 @@ public class FansMemberManagerView extends LinearLayout
             return;
         }
         mMode = mode;
-        final TextView leftBtn = mTitleBar.getLeftTextBtn();
-        final TextView rightBtn = mTitleBar.getRightTextBtn();
         if (mMode == MODE_BATCH_DELETE) {
             mTitleBar.setTitle(R.string.vfans_member_title_manager_member);
-            leftBtn.setText(R.string.cancel);
-            $click(leftBtn, new View.OnClickListener() {
+            mLeftBtn.setText(R.string.cancel);
+            mLeftBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     switchMode(MODE_NORMAL);
                 }
             });
-            rightBtn.setText(R.string.vfans_member_delete);
-            $click(rightBtn, new View.OnClickListener() {
+            mRightBtn.setText(getResources().getString(R.string.vfans_member_delete, 0));
+            mRightBtn.setEnabled(false);
+            mRightBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    if (mAdapter.mSelelctMap.size() > 0) {
-//                        DialogUtils.showNormalDialog(
-//                                (Activity) getContext(),
-//                                0,
-//                                R.string.vfans_no_member_to_delete_notify,
-//                                R.string.ok,
-//                                R.string.cancel,
-//                                new DialogUtils.IDialogCallback() {
-//                                    @Override
-//                                    public void process(DialogInterface dialogInterface, int i) {
-//                                        mVfansMemberManagerPresenter.kickSomeOne(mVfansMemberManagerAdapter.mSelelctMap);
-//                                    }
-//                                });
-//
-//                    } else {
-//                        ToastUtils.showToast(R.string.vfans_no_member_to_delete);
-//                    }
+                    final List<MemberItem> selection = mAdapter.getSelectedItem();
+                    if (selection != null) {
+                        showRemoveDialog(selection);
+                    } else {
+                        ToastUtils.showToast(R.string.vfans_no_member_to_delete);
+                    }
                 }
             });
             mAdapter.setIsBatchDeleteMode(true);
         } else {
             mTitleBar.setTitle(R.string.vfans_member_title_manager_member);
-            leftBtn.setText(R.string.vfans_member_title_manager_batch_delete);
-            $click(leftBtn, new View.OnClickListener() {
+            mLeftBtn.setText(R.string.vfans_member_title_manager_batch_delete);
+            mLeftBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     switchMode(MODE_BATCH_DELETE);
                 }
             });
-            rightBtn.setText(R.string.vfans_member_title_manager_finish);
-            $click(rightBtn, new View.OnClickListener() {
+            mRightBtn.setText(R.string.vfans_member_title_manager_finish);
+            mRightBtn.setEnabled(true);
+            mRightBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     FragmentNaviUtils.popFragment((FragmentActivity) getContext());
@@ -278,9 +277,16 @@ public class FansMemberManagerView extends LinearLayout
             }
 
             @Override
-            public void onNewDataSet(List<FansMemberManagerAdapter.MemberItem> memberList) {
+            public void onNewDataSet(List<MemberItem> memberList) {
                 if (memberList != null) {
                     mAdapter.setItemDataEx(memberList);
+                }
+            }
+
+            @Override
+            public void onRemoveDone(List<MemberItem> memberList) {
+                if (memberList != null) {
+                    mAdapter.removeSelection(memberList);
                 }
             }
 
@@ -326,24 +332,29 @@ public class FansMemberManagerView extends LinearLayout
         /**
          * 设置/取消团长
          */
-        void setManager(FansMemberManagerAdapter.MemberItem memberItem, boolean state);
+        void setManager(MemberItem memberItem, boolean state);
 
         /**
          * 设置/取消副团长
          */
-        void setDeputyManager(FansMemberManagerAdapter.MemberItem memberItem, boolean state);
+        void setDeputyManager(MemberItem memberItem, boolean state);
 
         /**
          * 删除团成员
          */
-        void removeMember(List<FansMemberManagerAdapter.MemberItem> memberItems);
+        void removeMember(List<MemberItem> memberItems);
     }
 
     public interface IView extends IViewProxy {
         /**
          * 拉取到成员数据
          */
-        void onNewDataSet(List<FansMemberManagerAdapter.MemberItem> memberList);
+        void onNewDataSet(List<MemberItem> memberList);
+
+        /**
+         * 删除成功
+         */
+        void onRemoveDone(List<MemberItem> memberItems);
 
         /**
          * 拉取开始

@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.base.activity.BaseActivity;
 import com.base.fragment.RxFragment;
@@ -73,6 +75,12 @@ public class FansMemberManagerFragment extends RxFragment {
     public boolean onBackPressed() {
         finish();
         return true;
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        return AnimationUtils.loadAnimation(getActivity(), enter ?
+                R.anim.slide_alpha_in : R.anim.slide_alpha_out);
     }
 
     public static void openFragment(BaseActivity activity, FansGroupDetailModel groupDetailModel) {

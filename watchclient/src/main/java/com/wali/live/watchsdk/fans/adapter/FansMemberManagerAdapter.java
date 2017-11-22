@@ -26,7 +26,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.wali.live.component.view.Utils.$click;
 import static com.wali.live.watchsdk.fans.model.member.FansMemberModel.VIP_TYPE_MONTH;
 import static com.wali.live.watchsdk.fans.model.member.FansMemberModel.VIP_TYPE_YEAR;
 
@@ -43,10 +42,18 @@ public class FansMemberManagerAdapter extends LoadingItemAdapter<ClickItemAdapte
     protected static final int ITEM_TYPE_LABEL = 2;
 
     private boolean mIsBatchDeleteMode = false;
-    public final Set<FansMemberModel> mSelectedSet = new HashSet<>(10); // 已选择
+    private final Set<MemberItem> mSelectedSet = new HashSet<>(10); // 已选择
 
     private int mGroupCharmLevel; // 群经验值
     private int mMyMemType = VFansCommonProto.GroupMemType.DEPUTY_ADMIN_VALUE;
+
+    public final List<MemberItem> getSelectedItem() {
+        return mSelectedSet.isEmpty() ? null : new ArrayList<>(mSelectedSet);
+    }
+
+    public final void removeSelection(@NonNull List<MemberItem> memberList) {
+        mSelectedSet.removeAll(memberList);
+    }
 
     public final void setGroupCharmLevel(int groupCharmLevel) {
         mGroupCharmLevel = groupCharmLevel;
@@ -56,7 +63,7 @@ public class FansMemberManagerAdapter extends LoadingItemAdapter<ClickItemAdapte
         mMyMemType = memType;
     }
 
-    public void setIsBatchDeleteMode(boolean isBatchDeleteMode) {
+    public final void setIsBatchDeleteMode(boolean isBatchDeleteMode) {
         if (mIsBatchDeleteMode != isBatchDeleteMode) {
             mIsBatchDeleteMode = isBatchDeleteMode;
             mSelectedSet.clear();
@@ -209,14 +216,18 @@ public class FansMemberManagerAdapter extends LoadingItemAdapter<ClickItemAdapte
             mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (mListener == null) {
+                        return;
+                    }
                     if (isChecked) {
                         mSelectedSet.add(mItem);
                     } else {
                         mSelectedSet.remove(mItem);
                     }
+                    mListener.onItemSelectionChange(mSelectedSet.size());
                 }
             });
-            $click(itemView, this);
+            itemView.setOnClickListener(this);
         }
 
         @Override
@@ -255,19 +266,25 @@ public class FansMemberManagerAdapter extends LoadingItemAdapter<ClickItemAdapte
                 mMyExpTitle.setText(memberItem.getMedalName());
                 mMyExpTitle.setBackgroundResource(FansInfoUtils.getGroupMemberLevelDrawable(memberItem.getPetLevel()));
             }
-
-            if (mIsBatchDeleteMode && mMyMemType < mItem.getMemType()) {
-                mCheckBox.setVisibility(View.VISIBLE);
-                mCheckBox.setSelected(mSelectedSet.contains(mItem));
+            if (mMyMemType < mItem.getMemType()) {
+                itemView.setClickable(true);
+                if (mIsBatchDeleteMode) {
+                    mCheckBox.setVisibility(View.VISIBLE);
+                    mCheckBox.setChecked(mSelectedSet.contains(mItem));
+                }
             } else {
+                itemView.setClickable(false);
                 mCheckBox.setVisibility(View.GONE);
             }
+
         }
     }
 
     public interface IMemberClickListener {
 
         void onItemClick(MemberItem item);
+
+        void onItemSelectionChange(int cnt);
 
     }
 

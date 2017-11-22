@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.fans.presenter;
 
+import android.support.annotation.NonNull;
 import android.util.Pair;
 
 import com.base.log.MyLog;
@@ -10,7 +11,7 @@ import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.proto.VFansProto;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.fans.adapter.FansMemberManagerAdapter;
+import com.wali.live.watchsdk.fans.adapter.FansMemberManagerAdapter.MemberItem;
 import com.wali.live.watchsdk.fans.request.GetMemberListRequest;
 import com.wali.live.watchsdk.fans.request.UpdateMemberRequest;
 import com.wali.live.watchsdk.fans.view.FansMemberManagerView;
@@ -38,7 +39,7 @@ public class FansMemberManagerPresenter extends BaseSdkRxPresenter<FansMemberMan
 
     private static final int PAGE_LIMIT = 10;
 
-    private final ArrayList<FansMemberManagerAdapter.MemberItem> mDataSet = new ArrayList<>();
+    private final ArrayList<MemberItem> mDataSet = new ArrayList<>();
 
     private long mAnchorId;
     private volatile boolean mHasMoreData = true;
@@ -82,9 +83,9 @@ public class FansMemberManagerPresenter extends BaseSdkRxPresenter<FansMemberMan
         }
         final long zuid = mAnchorId;
         mPullSubscription = Observable.just(0)
-                .map(new Func1<Integer, List<FansMemberManagerAdapter.MemberItem>>() {
+                .map(new Func1<Integer, List<MemberItem>>() {
                     @Override
-                    public List<FansMemberManagerAdapter.MemberItem> call(Integer integer) {
+                    public List<MemberItem> call(Integer integer) {
                         final int start = mDataSet.size();
                         VFansProto.MemberListRsp rsp = new GetMemberListRequest(zuid, start,
                                 PAGE_LIMIT, ORDER_BY_MEMTYPE, TOTAL_TYPE).syncRsp();
@@ -98,19 +99,19 @@ public class FansMemberManagerPresenter extends BaseSdkRxPresenter<FansMemberMan
                             if (cnt > 0) {
                                 mDataSet.ensureCapacity(mDataSet.size() + cnt);
                                 for (VFansProto.MemberInfo memProto : rsp.getMemListList()) {
-                                    mDataSet.add(new FansMemberManagerAdapter.MemberItem(memProto));
+                                    mDataSet.add(new MemberItem(memProto));
                                 }
-                                return (List<FansMemberManagerAdapter.MemberItem>) mDataSet.clone();
+                                return (List<MemberItem>) mDataSet.clone();
                             }
                             return null;
                         }
                     }
                 }).subscribeOn(Schedulers.io())
-                .compose(this.<List<FansMemberManagerAdapter.MemberItem>>bindUntilEvent(PresenterEvent.STOP))
+                .compose(this.<List<MemberItem>>bindUntilEvent(PresenterEvent.STOP))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<FansMemberManagerAdapter.MemberItem>>() {
+                .subscribe(new Action1<List<MemberItem>>() {
                     @Override
-                    public void call(List<FansMemberManagerAdapter.MemberItem> result) {
+                    public void call(List<MemberItem> result) {
                         if (mView == null) {
                             return;
                         }
@@ -129,13 +130,13 @@ public class FansMemberManagerPresenter extends BaseSdkRxPresenter<FansMemberMan
                 });
     }
 
-    private Observable updateManager(final FansMemberManagerAdapter.MemberItem memberItem, final int updateType, final int memType) {
+    private Observable updateManager(final MemberItem memberItem, final int updateType, final int memType) {
         final long zuid = mAnchorId;
         final long targetId = memberItem.getUuid();
         return Observable.just(0)
-                .map(new Func1<Integer, Pair<Integer, List<FansMemberManagerAdapter.MemberItem>>>() {
+                .map(new Func1<Integer, Pair<Integer, List<MemberItem>>>() {
                     @Override
-                    public Pair<Integer, List<FansMemberManagerAdapter.MemberItem>> call(Integer integer) {
+                    public Pair<Integer, List<MemberItem>> call(Integer integer) {
                         VFansProto.UpdateGroupMemRsp rsp = new UpdateMemberRequest(zuid, targetId,
                                 updateType, memType).syncRsp();
                         if (rsp == null) {
@@ -146,7 +147,7 @@ public class FansMemberManagerPresenter extends BaseSdkRxPresenter<FansMemberMan
                             synchronized (mDataSet) {
                                 if (mDataSet.remove(memberItem)) { // 确保设置管理期间 该成员未删除
                                     int i = 0;
-                                    for (FansMemberManagerAdapter.MemberItem elem : mDataSet) {
+                                    for (MemberItem elem : mDataSet) {
                                         if (memType <= elem.getMemType()) {
                                             break;
                                         }
@@ -154,27 +155,27 @@ public class FansMemberManagerPresenter extends BaseSdkRxPresenter<FansMemberMan
                                     }
                                     memberItem.setMemType(memType);
                                     mDataSet.add(i, memberItem);
-                                    return Pair.create(errCode, (List<FansMemberManagerAdapter.MemberItem>) mDataSet.clone());
+                                    return Pair.create(errCode, (List<MemberItem>) mDataSet.clone());
                                 }
                             }
                         }
                         return Pair.create(errCode, null);
                     }
                 }).subscribeOn(Schedulers.io())
-                .compose(this.<Pair<Integer, List<FansMemberManagerAdapter.MemberItem>>>bindUntilEvent(PresenterEvent.STOP))
+                .compose(this.<Pair<Integer, List<MemberItem>>>bindUntilEvent(PresenterEvent.STOP))
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
-    public void setManager(final FansMemberManagerAdapter.MemberItem memberItem, final boolean state) {
+    public void setManager(final MemberItem memberItem, final boolean state) {
         final int updateType = state ? VFansProto.UpdateGroupMemType.SET_ADMIN_VALUE :
                 VFansProto.UpdateGroupMemType.CANCEL_ADMIN_VALUE;
         final int memType = state ? VFansCommonProto.GroupMemType.ADMIN_VALUE :
                 VFansCommonProto.GroupMemType.MASS_VALUE;
         updateManager(memberItem, updateType, memType)
-                .subscribe(new Action1<Pair<Integer, List<FansMemberManagerAdapter.MemberItem>>>() {
+                .subscribe(new Action1<Pair<Integer, List<MemberItem>>>() {
                     @Override
-                    public void call(Pair<Integer, List<FansMemberManagerAdapter.MemberItem>> result) {
+                    public void call(Pair<Integer, List<MemberItem>> result) {
                         if (mView == null) {
                             return;
                         }
@@ -199,15 +200,15 @@ public class FansMemberManagerPresenter extends BaseSdkRxPresenter<FansMemberMan
     }
 
     @Override
-    public void setDeputyManager(FansMemberManagerAdapter.MemberItem memberItem, final boolean state) {
+    public void setDeputyManager(MemberItem memberItem, final boolean state) {
         final int updateType = state ? VFansProto.UpdateGroupMemType.SET_ADMIN_VALUE :
                 VFansProto.UpdateGroupMemType.CANCEL_ADMIN_VALUE;
         final int memType = state ? VFansCommonProto.GroupMemType.DEPUTY_ADMIN_VALUE :
                 VFansCommonProto.GroupMemType.MASS_VALUE;
         updateManager(memberItem, updateType, memType)
-                .subscribe(new Action1<Pair<Integer, List<FansMemberManagerAdapter.MemberItem>>>() {
+                .subscribe(new Action1<Pair<Integer, List<MemberItem>>>() {
                     @Override
-                    public void call(Pair<Integer, List<FansMemberManagerAdapter.MemberItem>> result) {
+                    public void call(Pair<Integer, List<MemberItem>> result) {
                         if (mView == null) {
                             return;
                         }
@@ -232,16 +233,16 @@ public class FansMemberManagerPresenter extends BaseSdkRxPresenter<FansMemberMan
     }
 
     @Override
-    public void removeMember(final List<FansMemberManagerAdapter.MemberItem> memberItems) {
+    public void removeMember(@NonNull final List<MemberItem> memberItems) {
         final long zuid = mAnchorId;
         final int updateType = VFansProto.UpdateGroupMemType.REMOVE_MEMBER_VALUE;
         final int memType = VFansCommonProto.GroupMemType.MASS_VALUE;
         Observable.just(0)
-                .map(new Func1<Integer, List<FansMemberManagerAdapter.MemberItem>>() {
+                .map(new Func1<Integer, Pair<List<MemberItem>, List<MemberItem>>>() {
                     @Override
-                    public List<FansMemberManagerAdapter.MemberItem> call(Integer i) {
-                        ArrayList<FansMemberManagerAdapter.MemberItem> deletedSet = new ArrayList<>(memberItems.size());
-                        for (FansMemberManagerAdapter.MemberItem item : memberItems) {
+                    public Pair<List<MemberItem>, List<MemberItem>> call(Integer i) {
+                        ArrayList<MemberItem> deletedSet = new ArrayList<>(memberItems.size());
+                        for (MemberItem item : memberItems) {
                             final long targetId = item.getUuid();
                             VFansProto.UpdateGroupMemRsp rsp = new UpdateMemberRequest(zuid, targetId,
                                     updateType, memType).syncRsp();
@@ -253,25 +254,26 @@ public class FansMemberManagerPresenter extends BaseSdkRxPresenter<FansMemberMan
                         if (!deletedSet.isEmpty()) {
                             synchronized (mDataSet) {
                                 mDataSet.removeAll(deletedSet);
-                                return (List<FansMemberManagerAdapter.MemberItem>) mDataSet.clone();
+                                return Pair.create((List<MemberItem>) mDataSet.clone(), (List<MemberItem>) deletedSet);
                             }
                         }
-                        return null;
+                        return Pair.create(null, null);
                     }
                 }).subscribeOn(Schedulers.io())
-                .compose(this.<List<FansMemberManagerAdapter.MemberItem>>bindUntilEvent(PresenterEvent.STOP))
+                .compose(this.<Pair<List<MemberItem>, List<MemberItem>>>bindUntilEvent(PresenterEvent.STOP))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<FansMemberManagerAdapter.MemberItem>>() {
+                .subscribe(new Action1<Pair<List<MemberItem>, List<MemberItem>>>() {
                     @Override
-                    public void call(List<FansMemberManagerAdapter.MemberItem> result) {
+                    public void call(Pair<List<MemberItem>, List<MemberItem>> result) {
                         if (mView == null) {
                             return;
                         }
-                        if (result == null || result.isEmpty()) {
+                        if (result.first == null || result.first.isEmpty()) {
                             ToastUtils.showToast(R.string.vfans_kick_faild);
                         } else {
                             ToastUtils.showToast(R.string.vfans_kick_success);
-                            mView.onNewDataSet(result);
+                            mView.onNewDataSet(result.first);
+                            mView.onRemoveDone(result.second);
                         }
                     }
                 }, new Action1<Throwable>() {

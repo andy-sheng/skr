@@ -312,7 +312,7 @@
     <string name="love_value">親密值</string>
     <string name="sevendays_love_value">7日親密值</string>
     <string name="vfans_member_title_manager_member">管理群成員</string>
-    <string name="vfans_member_delete">刪除</string>
+    <string name="vfans_member_delete">刪除(%1$d)</string>
     <string name="vfans_member_title_manager_batch_delete">批量刪除</string>
     <string name="vfans_member_title_manager_finish">完成</string>
 
@@ -364,4 +364,5 @@
     <plurals name="vfans_pay_privilige_over_limit_tips">
         <item quantity="other">付費有效期大於%d年不可續費喔</item>
     </plurals>
+    <string name="vfans_no_member_to_delete">請選擇需要刪除的成員</string>
 </resources>

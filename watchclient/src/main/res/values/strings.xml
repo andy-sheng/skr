@@ -322,7 +322,7 @@
     <string name="love_value">Closeness</string>
     <string name="sevendays_love_value">Closeness (7 days)</string>
     <string name="vfans_member_title_manager_member">Manage group members</string>
-    <string name="vfans_member_delete">Remove</string>
+    <string name="vfans_member_delete">Remove(%1$d)</string>
     <string name="vfans_member_title_manager_batch_delete">Remove</string>
     <string name="vfans_member_title_manager_finish">Done</string>
 
@@ -382,4 +382,5 @@
         <item quantity="one">Can\'t renew when the valid payment period is longer than %d year</item>
         <item quantity="other">Can\'t renew when the valid payment period is longer than %d years</item>
     </plurals>
+    <string name="vfans_no_member_to_delete">Select members to remove</string>
 </resources>

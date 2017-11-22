@@ -19,7 +19,7 @@
             android:layout_width="@dimen/margin_900"
             android:layout_height="@dimen/margin_120"
             android:layout_centerInParent="true"
-            android:background="@drawable/vfans_join_bg_pink"
+            android:background="@drawable/vfans_join_bg"
             android:gravity="center"
             android:text="@string/vfans_manager_member"
             android:textColor="@color/color_white"

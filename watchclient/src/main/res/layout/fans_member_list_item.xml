@@ -119,7 +119,7 @@
         android:background="@drawable/live_pet_live_between_member_btn"
         android:gravity="center"
         android:text="@string/vfans_focus"
-        android:textColor="@color/cash_color"
+        android:textColor="@color/color_follow_btn"
         android:textSize="@dimen/text_size_36" />
 
     <!--私信按钮-->
@@ -133,7 +133,7 @@
         android:background="@drawable/live_pet_live_between_member_btn"
         android:gravity="center"
         android:text="@string/vfans_sixin"
-        android:textColor="@color/color_black_trans_60"
+        android:textColor="@color/color_black60_pressed_black30"
         android:textSize="@dimen/text_size_36" />
 
     <!--底部分割线-->
