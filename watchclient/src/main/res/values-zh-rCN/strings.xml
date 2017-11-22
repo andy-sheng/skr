@@ -361,4 +361,16 @@
     <string name="vfans_owner">团主</string>
     <string name="vfans_admin">团长</string>
     <string name="vfans_deput_admin">副团长</string>
+    <string name="vfans_choose_privilege">请选择需要的金额</string>
+    <string name="account_vfans_privilege_pay_user_account_not_enough_tip">当前余额不足,充值才可以购买特权,是否去充值.</string>
+    <string name="vfans_pay_privilige_group_not_exist_tips">购买失败</string>
+    <string name="vfans_pay_privilige_group_not_be_member_tips">成为粉丝团团员后才可购买喔</string>
+    <string name="vfans_first_by_privilege_faild">网络异常，请稍后重试</string>
+    <string name="vfans_renew_by_privilege_faild">网络异常，请稍后重试</string>
+    <string name="vfans_first_by_privilege_success">开通成功</string>
+    <string name="vfans_renew_by_privilege_success">续费成功</string>
+    <plurals name="vfans_pay_privilige_over_limit_tips">
+        <item quantity="one">付费有效期大于%d年不可续费喔</item>
+        <item quantity="other">付费有效期大于%d年不可续费喔</item>
+    </plurals>
 </resources>

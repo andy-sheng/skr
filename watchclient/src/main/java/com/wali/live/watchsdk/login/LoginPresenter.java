@@ -10,7 +10,6 @@ import com.base.activity.BaseSdkActivity;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.presenter.RxLifeCyclePresenter;
-import com.base.utils.CommonUtils;
 import com.base.utils.network.Network;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.XiaoMiOAuth;
@@ -92,16 +91,16 @@ public class LoginPresenter extends RxLifeCyclePresenter {
      * 判断是否支持sso
      */
     private boolean isSupportSso() {
-        if (CommonUtils.isMIUI()) {
-            String miAccount = CommonUtils.getSysMiAccount();
-            if (!TextUtils.isEmpty(miAccount)) {
-                if (TextUtils.isDigitsOnly(miAccount) && CommonUtils.isMIUI8()) {
-                    mMiid = Long.parseLong(miAccount);
-                    MyLog.w(TAG, "isSupportSso miid=" + mMiid);
-                    return true;
-                }
-            }
-        }
+//        if (CommonUtils.isMIUI()) {
+//            String miAccount = CommonUtils.getSysMiAccount();
+//            if (!TextUtils.isEmpty(miAccount)) {
+//                if (TextUtils.isDigitsOnly(miAccount) && CommonUtils.isMIUI8()) {
+//                    mMiid = Long.parseLong(miAccount);
+//                    MyLog.w(TAG, "isSupportSso miid=" + mMiid);
+//                    return true;
+//                }
+//            }
+//        }
         return false;
     }
 

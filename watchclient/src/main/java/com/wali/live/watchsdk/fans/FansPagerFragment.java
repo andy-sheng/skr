@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.fans;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -218,6 +219,7 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
     }
 
     private void openPrivilege() {
+        FragmentNaviUtils.hideFragment(this, getActivity());
         FansPayFragment.open((BaseSdkActivity) getActivity(),
                 mGroupDetailModel, mRoomId, mGroupDetailModel.getVipLevel() <= 0, true, this);
     }
@@ -342,6 +344,13 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
 
     @Override
     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
+        if (requestCode == FansPayFragment.REQUEST_CODE_PAY) {
+            FragmentNaviUtils.showFragment(this, getActivity());
+            if (resultCode == Activity.RESULT_OK) {
+                // 支付成功，重新拉一下数据
+                mPresenter.getGroupDetail(mAnchorId);
+            }
+        }
     }
 
     @Override

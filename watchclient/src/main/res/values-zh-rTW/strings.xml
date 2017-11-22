@@ -353,4 +353,15 @@
     <string name="notify_someone_be_group_menber" formatted="false">%s成為了%s群的成員</string>
     <string name="notify_remove_someone_from_group" formatted="false">%s將%s移出%s</string>
     <string name="notify_remove_from_group" formatted="false">%s將你移出%s</string>
+    <string name="vfans_choose_privilege">請選擇需要的金額</string>
+    <string name="account_vfans_privilege_pay_user_account_not_enough_tip">當前餘額不足,充值才可以購買特權,是否去充值.</string>
+    <string name="vfans_pay_privilige_group_not_exist_tips">購買失敗</string>
+    <string name="vfans_pay_privilige_group_not_be_member_tips">成為粉絲團團員後才可購買喔</string>
+    <string name="vfans_first_by_privilege_faild">網路異常，請稍後重試</string>
+    <string name="vfans_renew_by_privilege_faild">網路異常，請稍後重試</string>
+    <string name="vfans_first_by_privilege_success">開通成功</string>
+    <string name="vfans_renew_by_privilege_success">續費成功</string>
+    <plurals name="vfans_pay_privilige_over_limit_tips">
+        <item quantity="other">付費有效期大於%d年不可續費喔</item>
+    </plurals>
 </resources>

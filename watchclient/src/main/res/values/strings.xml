@@ -370,4 +370,16 @@
     <string name="vfans_owner">Club owner</string>
     <string name="vfans_admin">Club admin</string>
     <string name="vfans_deput_admin">Associate admin</string>
+    <string name="vfans_choose_privilege">Select amount</string>
+    <string name="account_vfans_privilege_pay_user_account_not_enough_tip">Insufficient funds, top up to get VIP benefits.</string>
+    <string name="vfans_pay_privilige_group_not_exist_tips">Couldn\'t complete purchase</string>
+    <string name="vfans_pay_privilige_group_not_be_member_tips">Only club members can buy this</string>
+    <string name="vfans_first_by_privilege_faild">Couldn\'t connect to the network, try again later</string>
+    <string name="vfans_renew_by_privilege_faild">Couldn\'t connect to the network, try again later</string>
+    <string name="vfans_first_by_privilege_success">Get successfully</string>
+    <string name="vfans_renew_by_privilege_success">Renewed successfully</string>
+    <plurals name="vfans_pay_privilige_over_limit_tips">
+        <item quantity="one">Can\'t renew when the valid payment period is longer than %d year</item>
+        <item quantity="other">Can\'t renew when the valid payment period is longer than %d years</item>
+    </plurals>
 </resources>

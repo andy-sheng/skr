@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.base.keyboard.KeyboardUtils;
+import com.base.log.MyLog;
 import com.base.mvp.specific.RxDialog;
 import com.wali.live.common.smiley.SmileyInputFilter;
 import com.wali.live.watchsdk.R;
@@ -74,6 +75,7 @@ public class ApplyJoinDialog extends RxDialog implements View.OnClickListener, I
 
     @Override
     public void setApplyJoinResult(boolean result) {
+        MyLog.d(TAG, "setApplyJoinResult=" + result);
         if (result) {
             if (mOnConfirmClickListener != null) {
                 mOnConfirmClickListener.confirm();

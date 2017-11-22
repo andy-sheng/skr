@@ -17,6 +17,7 @@ import java.util.List;
  */
 public class FansPayAdapter extends RecyclerView.Adapter<FansPayHolder> {
     private List<FansPayModel> mDataList;
+    private FansPayModel mSelectedItem;
 
     public FansPayAdapter() {
         mDataList = new ArrayList();
@@ -28,6 +29,15 @@ public class FansPayAdapter extends RecyclerView.Adapter<FansPayHolder> {
         notifyDataSetChanged();
     }
 
+    public FansPayModel getSelectedItem() {
+        return mSelectedItem;
+    }
+
+    public void setSelectedItem(FansPayModel selectedItem) {
+        mSelectedItem = selectedItem;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return mDataList == null ? 0 : mDataList.size();
@@ -36,7 +46,7 @@ public class FansPayAdapter extends RecyclerView.Adapter<FansPayHolder> {
     @Override
     public FansPayHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fans_pay_item, parent, false);
-        return new FansPayHolder(view);
+        return new FansPayHolder(view, this);
     }
 
     @Override

@@ -10,4 +10,6 @@ import java.util.List;
  */
 public interface IFansPayView extends IRxView {
     void setPayList(List<FansPayModel> list);
+
+    void notifyPayResult(int errorCode, int giftId);
 }

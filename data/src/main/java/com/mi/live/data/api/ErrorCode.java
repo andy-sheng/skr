@@ -114,10 +114,18 @@ public class ErrorCode {
 
     public static final int CODE_CONTAIN_SENSITIVE = 7021;       // 包含敏感词
 
-    /* 关系错误码 */
+    /*关系错误码*/
     public static final int CODE_RELATION_YOURSELF = 7505;
     public static final int CODE_RELATION_BLACK = 7506;     // 黑名单
 
+    /*礼物，粉丝相关错误码*/
+    public static final int VFANS_RPIVILEGE_GIFT_OVER_LIMIT = 6606;         // 购买特权超过年限了
+    public static final int VFANS_PRIVILEGE_GIFT_GROUP_NOT_EXIST = 10101;   // 粉丝团不存在
+    public static final int VFANS_PRIVILEGE_GIFT_NOT_IN_GROUP = 10102;      // 不是宠爱团成员
+
+    public static final int GIFT_PAY_BARRAGE = 11010;// 购买飘屏弹幕余额不足
+
+    /*feeds相关错误码*/
     public static final int CODE_FEEDS_DELETED = 17601;     // feeds被删除
 
     public static final int CODE_VFANS_NO_GROUP_PRIVILEGE = 10106;       // 没有操作权限

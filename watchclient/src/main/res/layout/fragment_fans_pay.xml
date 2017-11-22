@@ -83,7 +83,7 @@
                 android:layout_marginLeft="@dimen/margin_90"
                 android:layout_marginRight="@dimen/margin_90"
                 android:layout_marginTop="@dimen/margin_40"
-                android:background="@drawable/vfans_join_bg_pink"
+                android:background="@drawable/vfans_join_bg"
                 android:gravity="center"
                 android:text="@string/vfans_open_privilege_now"
                 android:textColor="@color/color_white"
