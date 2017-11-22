@@ -426,60 +426,6 @@ message ExecGroupJobRsp {
     required int32 err_code = 1;
 }
 
-//申请加入宠爱团群通知 APPLY_JOIN = 1;//申请加群
-message ApplyJoinVFansGroupNotify {
-    required uint64 candidate = 1; //申请人
-    required uint64 fgId = 2; //群id
-    required GroupMemType memType = 3 [default = MASS]; //进入身份，群众，管理员...
-    optional uint64 fgOwner = 4; //群主
-    optional string applyMsg = 5; //申请信息
-    optional uint64 ts = 6; //时间戳
-    optional JoinIntentionType joinType = 7; //加群动机，主动，受邀...
-    optional string msg = 8; //文案，建议客户端在该值非空时使用
-    optional string groupName = 9; //群名称
-    optional string candiName = 10; //申请人名称
-    optional uint64 candiHeadTs = 11; //申请人头像时间戳
-}
-
-//处理加群结果通知 HANDLE_JOIN = 3;//处理加群
-message HandleJoinVFansGroupNotify {
-    required uint64 handler = 1; //处理人
-    required uint64 candidate = 2; //被处理人
-    required uint64 fgId = 3; //群id
-    optional uint64 fgOwner = 4; //群主
-    optional ApplyJoinResult handleResult = 5; //处理结果
-    optional GroupMemType memType = 6; //请求加群身份
-    optional JoinIntentionType joinType = 7; //加群动机，主动，受邀...
-    optional uint64 referrer = 8; //推荐人， 如果有就填
-    optional string msg = 9; //文案，建议客户端在该值非空时使用
-    optional uint64 handleNotifyId = 10; //消息id
-    optional string groupName = 11; //群名称
-    optional string handlerName = 12; //处理人名称
-    optional uint64 handlerHeadTs = 13; //处理人头像时间戳
-    optional string candiName = 14; //被处理人名称
-    optional uint64 candiHeadTs = 15; //被处理人头像时间戳
-    optional string groupIcon = 16; //群头像
-    optional uint64 fgOwnerHeadTs = 17; //群主头像时间戳
-}
-
-//修改宠爱团成员通知 UPDATE_MEM = 5;//更新群成员信息
-message UpdateFansGroupMemNotify {
-    required uint64 handler = 1; //处理人
-    required uint64 candidate = 2; //被处理人
-    required uint64 fgId = 3; //群id
-    optional uint64 fgOwner = 4; //群主
-    optional uint64 ts = 5; //时间戳
-    optional VfansGroupMemInfo fgMemInfo = 6; //该成员新群信息
-    optional string msg = 7; //文案，建议客户端在该值非空时使用
-    optional string groupName = 8; //群名称
-    optional string handlerName = 9; //处理人名称
-    optional uint64 handlerHeadTs = 10; //处理人头像时间戳
-    optional string candiName = 11; //被处理人名称
-    optional uint64 candiHeadTs = 12; //被处理人头像时间戳
-    optional string groupIcon = 13; //群头像
-    optional uint64 fgOwnerHeadTs = 14; //群主头像时间戳
-}
-
 //宠爱团成员群信息
 message VfansGroupMemInfo {
     required uint64 uuid = 1; //用户id
@@ -516,4 +462,121 @@ message GetBuyVipPermitRsp {
     optional string err_msg = 2;
     optional uint64 next_buytime = 3; // 下次可以购买vip时间 如果大于0 则不可以购买
     optional uint32 buyinterval = 4; //购买vip间隔 单位:年, 用于购买提示使用
+}
+
+
+//申请加群通知 APPLY_JOIN = 1;//申请加群
+message ApplyJoinFansGroupNotify{
+    required uint64 candidate = 1;//申请人
+    required uint64 fgId = 2;//群id
+    required GroupMemType memType = 3[default = MASS];//进入身份，群众，管理员...
+    optional uint64 fgOwner = 4;//群主
+    optional string applyMsg = 5;//申请信息
+    optional uint64 ts = 6;//时间戳
+    optional JoinIntentionType joinType = 7;//加群动机，主动，受邀...
+    optional string msg = 8;//文案，建议客户端在该值非空时使用
+    optional string groupName = 9;//群名称
+    optional string candiName = 10;//申请人名称
+    optional uint64 candiHeadTs = 11;//申请人头像时间戳
+}
+
+//处理加群结果通知 HANDLE_JOIN = 3;//处理加群
+message HandleJoinFansGroupNotify{
+    required uint64 handler = 1;//处理人
+    required uint64 candidate = 2;//被处理人
+    required uint64 fgId = 3;//群id
+    optional uint64 fgOwner = 4;//群主
+    optional ApplyJoinResult  handleResult = 5;//处理结果
+    optional GroupMemType memType = 6;//请求加群身份
+    optional JoinIntentionType joinType = 7;//加群动机，主动，受邀...
+    optional uint64 referrer = 8;//推荐人， 如果有就填
+    optional string msg = 9;//文案，建议客户端在该值非空时使用
+    optional uint64 handleNotifyId = 10;//消息id
+    optional string groupName = 11;//群名称
+    optional string handlerName = 12;//处理人名称
+    optional uint64 handlerHeadTs = 13;//处理人头像时间戳
+    optional string candiName = 14;//被处理人名称
+    optional uint64 candiHeadTs = 15;//被处理人头像时间戳
+    optional string groupIcon = 16;//群头像
+    optional uint64 fgOwnerHeadTs = 17;//群主头像时间戳
+}
+
+//删除群成员通知 REMOVE_MEM = 4;//移除群成员
+message RemoveFansGroupMemNotify{
+    required uint64 handler = 1;//处理人
+    required uint64 candidate = 2;//被处理人
+    required uint64 fgId = 3;//群id
+    optional uint64 fgOwner = 4;//群主
+    optional uint64 ts = 5;//时间戳
+    optional string msg = 6;//文案，建议客户端在该值非空时使用
+    optional string groupName = 7;//群名称
+    optional string handlerName = 8;//处理人名称
+    optional uint64 handlerHeadTs = 9;//处理人头像时间戳
+    optional string candiName = 10;//被处理人名称
+    optional uint64 candiHeadTs = 11;//被处理人头像时间戳
+    optional string groupIcon = 12;//群头像
+    optional uint64 fgOwnerHeadTs = 13;//群主头像时间戳
+}
+
+//修改群成员通知 UPDATE_MEM = 5;//更新群成员信息
+message UpdateFansGroupMemNotify{
+    required uint64 handler = 1;//处理人
+    required uint64 candidate = 2;//被处理人
+    required uint64 fgId = 3;//群id
+    optional uint64 fgOwner = 4;//群主
+    optional uint64 ts = 5;//时间戳
+    optional VfansGroupMemInfo fgMemInfo = 6;//该成员新群信息
+    optional string msg = 7;//文案，建议客户端在该值非空时使用
+    optional string groupName = 8;//群名称
+    optional string handlerName = 9;//处理人名称
+    optional uint64 handlerHeadTs = 10;//处理人头像时间戳
+    optional string candiName = 11;//被处理人名称
+    optional uint64 candiHeadTs = 12;//被处理人头像时间戳
+    optional string groupIcon = 13;//群头像
+    optional uint64 fgOwnerHeadTs = 14;//群主头像时间戳
+}
+//禁言群成员通知 FORBID_NOISE = 6;//禁言
+message ForbidNoiseFansGroupMemNotify{
+    required uint64 handler = 1;//处理人
+    required uint64 member = 2;//被处理人
+    required uint64 fgId = 3;//群id
+    optional uint64 fgOwner = 4;//群主
+    optional uint64 ts = 5;//时间戳
+    optional string msg = 6;//文案，建议客户端在该值非空时使用
+    optional string groupName = 7;//群名称
+    optional string handlerName = 8;//处理人名称
+    optional uint64 handlerHeadTs = 9;//处理人头像时间戳
+    optional string candiName = 10;//被处理人名称
+    optional uint64 candiHeadTs = 11;//被处理人头像时间戳
+    optional string groupIcon = 12;//群头像
+    optional uint64 fgOwnerHeadTs = 13;//群主头像时间戳
+}
+//取消禁言群成员通知 CANCEL_FORBID_NOISE = 7;//取消禁言
+message CancelNoiseFansGroupMemNotify{
+    required uint64 handler = 1;//处理人
+    required uint64 member = 2;//被处理人
+    required uint64 fgId = 3;//群id
+    optional uint64 fgOwner = 4;//群主
+    optional uint64 ts = 5;//时间戳
+    optional string msg = 6;//文案，建议客户端在该值非空时使用
+    optional string groupName = 7;//群名称
+    optional string handlerName = 8;//处理人名称
+    optional uint64 handlerHeadTs = 9;//处理人头像时间戳
+    optional string candiName = 10;//被处理人名称
+    optional uint64 candiHeadTs = 11;//被处理人头像时间戳
+    optional string groupIcon = 12;//群头像
+    optional uint64 fgOwnerHeadTs = 13;//群主头像时间戳
+}
+
+//退群通知 QUIT_GROUP = 8;//退群
+message QuitGroupNotify{
+    required uint64 uuid = 1;//退群成员id
+    required uint64 fgId = 2;//群id
+    optional uint64 fgOwner = 3;//群主
+    optional uint64 ts = 4;//时间戳
+    optional string msg = 5;//文案，建议客户端在该值非空时使用
+    optional string groupName = 6;//群名称
+    optional string uName = 7;//退群人名称
+    optional uint64 uHeadTs = 8;//退群人头像时间戳
+    optional string groupIcon = 9;//群头像
 }

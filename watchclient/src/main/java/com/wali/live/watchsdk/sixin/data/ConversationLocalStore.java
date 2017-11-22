@@ -15,14 +15,15 @@ import com.wali.live.dao.Conversation;
 import com.wali.live.dao.ConversationDao;
 import com.wali.live.dao.SixinMessage;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.fans.model.notification.GroupNotifyBaseModel;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.dao.query.QueryBuilder;
+import de.greenrobot.dao.query.WhereCondition;
 
 /**
  * Created by anping on 16-10-10.
@@ -61,7 +62,6 @@ public class ConversationLocalStore {
     //加入常驻置顶的会话，
     private static void addPermanentConversationIfNeed(List<Conversation> conversations) {
         boolean hasInteract = false;
-
         for (Conversation conversation : conversations) {
             if (conversation.getTarget() == TARGET_126) {
                 hasInteract = true;
@@ -91,6 +91,56 @@ public class ConversationLocalStore {
         long id = GreenDaoManager.getDaoSession(GlobalData.app()).getConversationDao().insert(conversation);
         conversation.setId(id);
         EventBus.getDefault().post(new ConversationInsertEvent(conversation));
+    }
+
+    //删除单个conversation
+    public static void deleteConversation(long id) {
+        List<Long> ids = new ArrayList<>();
+        ids.add(id);
+        batchDeleteConversation(ids);
+    }
+
+    public static void batchDeleteConversation(List<Long> ids) {
+        List<Long> targets = getConversationSenderByIds(ids);
+        if (targets == null) {
+            return;
+        }
+        GreenDaoManager.getDaoSession(GlobalData.app()).getConversationDao().deleteByKeyInTx(ids);
+        long id = updateUnFoucsRobotConversationWhenSomeConversationDelete();
+        if (id > 0) {
+            ids.add(id);
+            targets.add((long) Conversation.UNFOCUS_CONVERSATION_TARGET);
+        }
+        EventBus.getDefault().post(new ConversationBulkDeleteEvent(ids));
+        EventBus.getDefault().post(new ConversationBulkDeleteByTargetEvent(targets));
+        long unreadCount = getAllConversationUnReadCount();
+        EventBus.getDefault().post(new NotifyUnreadCountChangeEvent(unreadCount));
+    }
+
+    public static List<Long> getConversationSenderByIds(List<Long> ids) {
+        ConversationDao dao = GreenDaoManager.getDaoSession(GlobalData.app()).getConversationDao();
+        QueryBuilder queryBuilder = dao.queryBuilder();
+        if (ids.size() == 1) {
+            queryBuilder.where(ConversationDao.Properties.Id.eq(ids.get(0)));
+        } else if (ids.size() == 2) {
+            queryBuilder.whereOr(ConversationDao.Properties.Id.eq(ids.get(0)), ConversationDao.Properties.Id.eq(ids.get(1)));
+        } else {
+            WhereCondition[] whereConditions = new WhereCondition[ids.size() - 2];
+            for (int i = 2; i < ids.size(); i++) {
+                whereConditions[i - 2] = ConversationDao.Properties.Id.eq(ids.get(i));
+            }
+            queryBuilder.whereOr(ConversationDao.Properties.Id.eq(ids.get(0)), ConversationDao.Properties.Id.eq(ids.get(1)), whereConditions);
+        }
+        queryBuilder.build();
+        List<Conversation> conversations = queryBuilder.list();
+        if (conversations != null && conversations.size() > 0) {
+            List<Long> targets = new ArrayList<>();
+            for (Conversation cv : conversations) {
+                targets.add(cv.getTarget());
+            }
+            return targets;
+        }
+        return null;
     }
 
     public static void insertOrUpdateConversationByMessage(SixinMessage sixinMessage, boolean needUpdateUnreadCount) {
@@ -487,6 +537,60 @@ public class ConversationLocalStore {
     public static void updateConversations(List<Conversation> conversations) {
         GreenDaoManager.getDaoSession(GlobalData.app()).getConversationDao().updateInTx(conversations);
         EventBus.getDefault().post(new ConversationListUpdateEvent(conversations));
+    }
+
+
+    /**
+     * 插入或者更新群通知对话列表
+     *
+     * @param groupNotify
+     * @param needsUpdateUnReadCount
+     */
+    public static void insertOrUpdateGroupNotifyRobotConversation(GroupNotifyBaseModel groupNotify, int unreadCount, boolean needsUpdateUnReadCount) {
+        if (groupNotify != null) {
+            Conversation robot = getConversationByTarget(Conversation.VFANS_NOTIFY_CONVERSATION_TARGET, SixinMessage.TARGET_TYPE_USER);//宠爱团通知
+            if (robot == null) {
+                long userId = UserAccountManager.getInstance().getUuidAsLong();
+                robot = new Conversation();
+                robot.setTarget(Conversation.VFANS_NOTIFY_CONVERSATION_TARGET);
+                robot.setLocaLUserId(userId);
+                robot.setReceivedTime(groupNotify.getTs());
+                if (needsUpdateUnReadCount) {
+                    robot.setUnreadCount(unreadCount);
+                } else {
+                    robot.setUnreadCount(0);
+                }
+                robot.setIsNotFocus(false);
+                robot.setTargetName(GlobalData.app().getString(R.string.vfans_notify_robot_name));
+                robot.setIgnoreStatus(Conversation.NOT_IGNORE);
+                robot.setSendTime(groupNotify.getTs());
+                robot.setLastMsgSeq(0l);
+                robot.setMsgId(0l);
+
+                String content = groupNotify.getMsgBrief();
+                robot.setContent(content);
+                robot.setMsgType(SixinMessage.S_MSG_TYPE_TEXT);
+                robot.setTargetType(SixinMessage.TARGET_TYPE_USER);
+                long cid = GreenDaoManager.getDaoSession(GlobalData.app()).getConversationDao().insert(robot);
+                robot.setId(cid);
+                EventBus.getDefault().post(new ConversationInsertEvent(robot));
+            } else {
+                if (groupNotify.getTs() > robot.getSendTime()) {
+                    robot.setSendTime(groupNotify.getTs());
+                    robot.setReceivedTime(groupNotify.getTs());
+                    robot.setContent(groupNotify.getMsgBrief());
+                    robot.setLastMsgSeq(0l);
+                    robot.setMsgType(SixinMessage.S_MSG_TYPE_TEXT);
+                    robot.setMsgId(0l);
+                }
+                if (needsUpdateUnReadCount) {
+                    robot.setUnreadCount(unreadCount);
+                }
+                updateConversation(robot);
+            }
+        }
+        long totalUnreadCount = ConversationLocalStore.getAllConversationUnReadCount();
+        EventBus.getDefault().post(new ConversationLocalStore.NotifyUnreadCountChangeEvent(totalUnreadCount));
     }
 
     /**

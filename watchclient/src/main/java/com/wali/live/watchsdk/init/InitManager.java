@@ -27,6 +27,7 @@ import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.dns.PreDnsManager;
 import com.wali.live.pay.handler.PayPacketHandler;
 import com.wali.live.utils.ReplayBarrageMessageManager;
+import com.wali.live.watchsdk.fans.push.FansNotificationManager;
 import com.wali.live.watchsdk.fresco.FrescoManager;
 import com.wali.live.watchsdk.log.LogHandler;
 import com.wali.live.watchsdk.service.PacketProcessService;
@@ -113,6 +114,7 @@ public class InitManager {
         MiLinkClientAdapter.getsInstance().addPacketDataHandler(ReplayBarrageMessageManager.getInstance());
         MiLinkClientAdapter.getsInstance().addPacketDataHandler(new LogHandler());
         MiLinkClientAdapter.getsInstance().addPacketDataHandler(new PayPacketHandler());
+        MiLinkClientAdapter.getsInstance().addPacketDataHandler(new FansNotificationManager());
     }
 
     public static void registerAllEventBus() {

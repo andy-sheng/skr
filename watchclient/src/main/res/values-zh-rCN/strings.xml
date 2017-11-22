@@ -315,6 +315,7 @@
     <string name="vfans_member_delete">删除</string>
     <string name="vfans_member_title_manager_batch_delete">批量删除</string>
     <string name="vfans_member_title_manager_finish">完成</string>
+
     <string name="vfans_daily_tasks_finish_send_barrage">发言任务</string>
     <string name="vfans_daily_tasks_finish_send_gift">赠送任务</string>
     <string name="vfans_daily_tasks_finish_share_live">分享任务</string>
@@ -325,6 +326,7 @@
     <string name="_5000_lova_value">+5000亲密值</string>
     <string name="vfans_continue_privilege_now">马上续费</string>
     <string name="vfans_pay_privilige_one_tips">及时续费保持特权不间断</string>
+
     <string name="vfans_member_cancle_manager">取消团长</string>
     <string name="vfans_member_add_manager">设为团长</string>
     <string name="vfans_member_cancle_deputy_manager">取消副团长</string>
@@ -340,4 +342,23 @@
     <string name="vfans_add_deputy_manager_faild">添加副团长失败,请稍后在试</string>
     <string name="vfans_cancel_deputy_manager_faild">取消副团长失败,请稍后在试</string>
     <string name="vfans_cancel_manager_faild">取消团长失败,请稍后在试</string>
+
+    <string name="notify_apply_join_group">%1$s申请加入%2$s</string>
+    <string name="notify_agree_join_group">%1$s同意%2$s加入%3$s</string>
+    <string name="notify_reject_join_group">%1$s拒绝%2$s加入%3$s</string>
+    <string name="vfans_admin_or_deput_admin">粉丝团管理人员</string>
+    <string name="vfans_notify_robot_name">粉丝团通知</string>
+    <string name="six_in_create_sucess_message">欢迎进入%s</string>
+
+    <string name="you" formatted="false">你</string>
+    <string name="vfans_manager_role" formatted="false">管理</string>
+    <string name="vfans_notify_to_be_admin" formatted="false">%s将%s设置为%s的%s</string>
+    <string name="vfans_notify_canel_manager" formatted="false">%s取消了%s在%s%s身份</string>
+    <string name="notify_be_group_member" formatted="false">你成为了%s群的成员</string>
+    <string name="notify_someone_be_group_menber" formatted="false">%s成为了%s群的成员</string>
+    <string name="notify_remove_someone_from_group" formatted="false">%s将%s移出%s</string>
+    <string name="notify_remove_from_group" formatted="false">%s将你移出%s</string>
+    <string name="vfans_owner">团主</string>
+    <string name="vfans_admin">团长</string>
+    <string name="vfans_deput_admin">副团长</string>
 </resources>

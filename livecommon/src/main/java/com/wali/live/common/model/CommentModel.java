@@ -15,8 +15,6 @@ import com.wali.live.common.smiley.SmileyParser;
 
 import java.util.ArrayList;
 
-import static com.mi.live.data.push.model.GlobalRoomMsgExt.INNER_GLOBAL_VFAN;
-
 /**
  * Created by chengsimin on 16/7/18.
  */
@@ -371,7 +369,6 @@ public class CommentModel implements Comparable<CommentModel> {
             }
             break;
         }
-
         if (liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_LIKE) {
             BarrageMsg.LikeMsgExt ext = (BarrageMsg.LikeMsgExt) msg.getMsgExt();
             liveComment.setLikeId(ext.id);

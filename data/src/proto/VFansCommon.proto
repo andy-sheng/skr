@@ -35,7 +35,7 @@ message GroupInfo {
     optional int32 today_exp = 11; // 当日新增魅力值，新的一天开始需要重新计算，并 把值存到每日魅力值榜
     optional uint64 update_ts = 12; //经验值最后修改时间
     repeated GroupAdminInfo admin_list = 13;
-    repeated string medal_list = 14;    // 勋章列表
+    repeated string medal_list = 14; // 勋章列表
     optional int32 lastday_exp = 15; // 前一天经验值
 }
 
@@ -81,7 +81,7 @@ message GroupMemInfo {
     optional uint64 update_ts = 12; //经验值最后修改时间
     optional bool msg_notify = 13; //消息通知
     optional bool forbid_noise = 14; //禁言
-    optional string medal_value = 15;   // 宠爱等级对应的勋章
+    optional string medal_value = 15; // 宠爱等级对应的勋章
 
     // 15-21 信息可能不实时
     optional uint64 avatar = 16;
@@ -89,7 +89,7 @@ message GroupMemInfo {
     optional uint32 gender = 18;
     optional uint32 certification_type = 19; //认证类型 ，1：新浪微博，2：官方账号，3：推荐认证，4：小米直播认证,   5: PGC认证， 6:电视台认证
     optional string certification_id = 20; //认证绑定信息，如身份证ID，护照，微博账号等
-    optional uint64 update_user_ts = 21;    // 更新用户信息时间戳
+    optional uint64 update_user_ts = 21; // 更新用户信息时间戳
 
     optional bool use_medal = 22; // 是否佩戴勋章
     optional int32 lastday_exp = 23; // 前一天经验值
@@ -110,11 +110,11 @@ message GroupJobInfo {
     required GroupJobType job_type = 2;
     required GroupJobStatus job_status = 3 [default = INITIALIZE];
     optional string job_name = 4; //任务说明
-    optional uint32  gift_val = 5; //礼物价值
+    optional uint32 gift_val = 5; //礼物价值
 }
 enum GroupJobType {
-    VIEW_LIVE = 1;  // 观看直播
-    SEND_GIFT = 2;  // 送礼物
+    VIEW_LIVE = 1; // 观看直播
+    SEND_GIFT = 2; // 送礼物
     SHARE_LIVE = 3; // 分享主播直播
     GROUP_CHAT = 4; // 宠爱群发言
     BUY_YEAR_VIP = 5; //包年守护
@@ -217,29 +217,29 @@ enum GroupJobType {
 message LimitedGroupJobInfo {
     optional int32 exp_val = 1; //经验值
     optional int32 max_finish_times = 2; //最大完成次数
-    required GroupJobType job_type = 3;  //任务类型
-    optional string job_name = 4;       //任务名称
-    optional string job_info = 5;       //任务说明
+    required GroupJobType job_type = 3; //任务类型
+    optional string job_name = 4; //任务名称
+    optional string job_info = 5; //任务说明
     required int32 finished_times = 6; //完成次数,初始化为0
     required GroupJobStatus job_status = 7 [default = INITIALIZE];
 }
 enum GroupJobStatus {
-    INITIALIZE = 1;    // 没完成
+    INITIALIZE = 1; // 没完成
     AVAILABLE_COMPLETE = 2; // 可以完成
-    COMPLETED = 3;  // 已经完成
+    COMPLETED = 3; // 已经完成
 }
 
 enum RankDateType {
     DAY_TYPE = 1;
-    YESTERDAY_TYPE= 2;
+    YESTERDAY_TYPE = 2;
     WEEK_TYPE = 3;
     TOTAL_TYPE = 10;
 }
 
 enum MemRankType {
-    ORDER_BY_MEMTYPE = 1;   // 根据团员类型
-    ORDER_BY_EXP = 2;       // 根据宠爱值排序
-    ORDER_BY_JOINTIME = 3;  // 根据加入时间
+    ORDER_BY_MEMTYPE = 1; // 根据团员类型
+    ORDER_BY_EXP = 2; // 根据宠爱值排序
+    ORDER_BY_JOINTIME = 3; // 根据加入时间
     ORDER_BY_EXP_ICON = 4; // 根据宠爱值排序 适用于宠爱团首页icon展示
 }
 

@@ -143,6 +143,7 @@ public class MiLinkCommand {
     public static final String COMMAND_PUSH_BARRAGE = "zhibo.push.roommsg";
     public static final String COMMAND_SYNC_SYSMSG = "zhibo.sync.sysmsg";
     public static final String COMMAND_PUSH_SYSMSG = "zhibo.push.sysmsg";
+    public static final String COMMAND_VFANS_PUSHMSG = "zhibo.push.vfansmsg";          //宠爱团的弹幕push
     public static final String COMMAND_REPLAY_BARRAGE = "zhibo.replay.roommsg";
     public static final String COMMAND_FEED_BARRAGE = "zhibo.feed.roommsg";           //拉取feeds 直播弹幕
 
@@ -500,4 +501,8 @@ public class MiLinkCommand {
     public static final String COMMAND_VFANS_UPDATE_GROUP_MEM = COMMAND_VFANS_PREFIX + "update_groupmem";
     // 用户完成的最近任务
     public static final String COMMAND_VFAN_GET_RECENT_JOB = "zhibo.vfans.get_recentjob";
+    // 粉丝团群通知
+    public static final String COMMAND_VFANS_GETNOTIFICATION = "zhibo.vfans.getnotification";
+    public static final String COMMAND_VFANS_ACKNOTIFICATION = "zhibo.vfans.acknotification";
+    public static final String COMMAND_VFANS_PUSHNOTIFICATION = "zhibo.push.vfansnotification";
 }

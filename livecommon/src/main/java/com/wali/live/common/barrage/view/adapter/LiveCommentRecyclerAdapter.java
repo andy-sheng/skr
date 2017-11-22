@@ -20,7 +20,6 @@ import com.base.utils.display.DisplayUtils;
 import com.base.utils.image.ImageUtils;
 import com.live.module.common.R;
 import com.mi.live.data.account.MyUserInfoManager;
-import com.mi.live.data.config.GetConfigManager;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.repository.GiftRepository;
 import com.wali.live.common.barrage.view.holder.LiveCommentHolder;
@@ -98,15 +97,16 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
         if (liveComment.getLevel() != 0 && liveComment.getSenderId() == MyUserInfoManager.getInstance().getUser().getUid() && MyUserInfoManager.getInstance().getUser().getLevel() > liveComment.getLevel()) {
             level = MyUserInfoManager.getInstance().getUser().getLevel();
         }
-        if (level <= 0) {
-            liveCommentHolder.levelTv.setVisibility(View.GONE);
-        } else {
-            GetConfigManager.LevelItem levelItem = GetConfigManager.getInstance().getLevelItem(level);
-            liveCommentHolder.levelTv.setText(String.valueOf(String.valueOf(level)));
-            liveCommentHolder.levelTv.setBackgroundDrawable(levelItem.drawableBG);
-            liveCommentHolder.levelTv.setCompoundDrawables(levelItem.drawableLevel, null, null, null);
-            liveCommentHolder.levelTv.setVisibility(View.VISIBLE);
-        }
+//        zyh 注：直播中拿掉了level的显示, 粉丝团和的level和medal的level都是在barrageTv里面拼在一起的。
+//        if (level <= 0) {
+        liveCommentHolder.levelTv.setVisibility(View.GONE);
+//        } else {
+//            GetConfigManager.LevelItem levelItem = GetConfigManager.getInstance().getLevelItem(level);
+//            liveCommentHolder.levelTv.setText(String.valueOf(String.valueOf(level)));
+//            liveCommentHolder.levelTv.setBackgroundDrawable(levelItem.drawableBG);
+//            liveCommentHolder.levelTv.setCompoundDrawables(levelItem.drawableLevel, null, null, null);
+//            liveCommentHolder.levelTv.setVisibility(View.VISIBLE);
+//        }
         liveCommentHolder.setFansMedalInfo();
     }
 

@@ -23,6 +23,11 @@ import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.statistics.StatisticUtils;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.fans.model.notification.GroupNotifyBaseModel;
+import com.wali.live.watchsdk.fans.push.GroupNotifyLocalStore;
+import com.wali.live.watchsdk.fans.push.event.FansMemberUpdateEvent;
+import com.wali.live.watchsdk.fans.push.event.GroupNotifyUpdateEvent;
+import com.wali.live.watchsdk.fans.push.type.GroupNotifyType;
 import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
 import com.wali.live.watchsdk.sixin.data.SixinMessageCloudStore;
 import com.wali.live.watchsdk.sixin.data.SixinMessageLocalStore;
@@ -155,14 +160,12 @@ public class SixinMessageManager implements MiLinkPacketDispatcher.PacketDataHan
              notifySixinMessage(sixinMessage);
              }
              **/
-
             Relation relation = RelationDaoAdapter.getInstance().getRelationByUUid(uuid);
             if (relation != null) {
                 relation.setIsBothway(bothWay == 1);
                 relation.setIsFollowing(foucsStatue != FollowOrUnfollowEvent.EVENT_TYPE_UNFOLLOW);
                 RelationDaoAdapter.getInstance().updateRelationAndNotNotify(relation);
             }
-
         }
     };
 
@@ -509,6 +512,51 @@ public class SixinMessageManager implements MiLinkPacketDispatcher.PacketDataHan
             if (targets != null && targets.size() > 0) {
                 SixinMessageLocalStore.deleteMessageByRcvConversationEvent(targets);
             }
+        }
+    }
+
+    /**
+     * 接收到群通知的变化事件
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onEvent(GroupNotifyUpdateEvent event) {
+        if (event != null && event.unDealGroupNotifyList != null && event.unDealGroupNotifyList.size() > 0) {
+            GroupNotifyBaseModel lastNotifyData = event.unDealGroupNotifyList.get(0);
+            if (lastNotifyData != null && (lastNotifyData.getNotificationType() != GroupNotifyType.BE_GROUP_MEM_NOTIFY
+                    || lastNotifyData.getNotificationType() == GroupNotifyType.AGREE_JOIN_GROUP_NOTIFY)) {
+                ConversationLocalStore.insertOrUpdateGroupNotifyRobotConversation(lastNotifyData, event.unDealGroupNotifyList.size(), true);
+            } else {
+                if (ConversationLocalStore.SHOW_VFAN_GROUP) {
+                    SixinMessageLocalStore.insertSixinMessage(SixinMessageLocalStore.
+                            getCreateGroupSucessMessage(lastNotifyData.getGroupId(),
+                                    lastNotifyData.getGroupName()));
+                }
+            }
+            for (GroupNotifyBaseModel model : event.unDealGroupNotifyList) {
+                switch (model.getNotificationType()) {
+                    case GroupNotifyType.AGREE_JOIN_GROUP_NOTIFY:
+                        //TODO 通知加群成功，reportJob的一些工作
+                        EventBus.getDefault().post(new FansMemberUpdateEvent(model.getGroupId(), FansMemberUpdateEvent.BE_MEMBER));
+                        break;
+                    case GroupNotifyType.REMOVE_GROUP_MEM_NOTIFY:
+                        EventBus.getDefault().post(new FansMemberUpdateEvent(model.getGroupId(), FansMemberUpdateEvent.CANCEL_BE_MEMBER));
+                        break;
+                    case GroupNotifyType.BE_GROUP_MANAGER_NOTIFY:
+                        EventBus.getDefault().post(new FansMemberUpdateEvent(model.getGroupId(), FansMemberUpdateEvent.BE_MANAGER_TYPE));
+                        break;
+                    case GroupNotifyType.CANCEL_GROUP_MANAGER_NOTIFY:
+                        EventBus.getDefault().post(new FansMemberUpdateEvent(model.getGroupId(), FansMemberUpdateEvent.CANCEL_BE_MANAGER_TYPE));
+                        break;
+                }
+                model.addStatus(GroupNotifyBaseModel.STATUS_HAS_DEAL);
+            }
+            GroupNotifyLocalStore.getInstance().updateGroupNotifyBaseModel(event.unDealGroupNotifyList);
+        }
+        if (event != null && event.empty) {
+            Conversation conversation = ConversationLocalStore.getConversationByTarget(Conversation.VFANS_NOTIFY_CONVERSATION_TARGET, SixinMessage.TARGET_TYPE_USER);
+            ConversationLocalStore.deleteConversation(conversation.getId());
         }
     }
 }

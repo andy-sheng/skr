@@ -315,6 +315,7 @@
     <string name="vfans_member_delete">刪除</string>
     <string name="vfans_member_title_manager_batch_delete">批量刪除</string>
     <string name="vfans_member_title_manager_finish">完成</string>
+
     <string name="vfans_daily_tasks_finish_send_barrage">發言任務</string>
     <string name="vfans_daily_tasks_finish_send_gift">贈送任務</string>
     <string name="vfans_daily_tasks_finish_share_live">分享任務</string>
@@ -325,6 +326,7 @@
     <string name="_5000_lova_value">+5000親密值</string>
     <string name="vfans_continue_privilege_now">馬上續費</string>
     <string name="vfans_pay_privilige_one_tips">及時續費保持特權不間斷</string>
+
     <string name="vfans_member_cancle_manager">取消團長</string>
     <string name="vfans_member_add_manager">設為團長</string>
     <string name="vfans_member_cancle_deputy_manager">取消副團長</string>
@@ -340,4 +342,15 @@
     <string name="vfans_add_deputy_manager_faild">增加副團長失敗,請稍後在試</string>
     <string name="vfans_cancel_deputy_manager_faild">取消副團長失敗,請稍後在試</string>
     <string name="vfans_cancel_manager_faild">取消團長失敗,請稍後在試</string>
+
+    <string name="notify_apply_join_group">%1$s申請加入%2$s</string>
+    <string name="notify_reject_join_group">%1$s拒絕%2$s加入%2$s</string>
+    <string name="notify_agree_join_group">%1$s同意%2$s加入%3$s</string>
+    <string name="vfans_notify_robot_name">粉絲團</string>
+    <string name="vfans_admin_or_deput_admin">粉絲團管理人員</string>
+    <string name="six_in_create_sucess_message">歡迎進入%s</string>
+    <string name="notify_be_group_member" formatted="false">你成為了%s群的成員</string>
+    <string name="notify_someone_be_group_menber" formatted="false">%s成為了%s群的成員</string>
+    <string name="notify_remove_someone_from_group" formatted="false">%s將%s移出%s</string>
+    <string name="notify_remove_from_group" formatted="false">%s將你移出%s</string>
 </resources>

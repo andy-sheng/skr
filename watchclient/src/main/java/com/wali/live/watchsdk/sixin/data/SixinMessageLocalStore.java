@@ -1,7 +1,5 @@
 package com.wali.live.watchsdk.sixin.data;
 
-import android.text.TextUtils;
-
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.data.account.MyUserInfoManager;
@@ -11,6 +9,7 @@ import com.mi.live.data.greendao.GreenDaoManager;
 import com.wali.live.dao.Conversation;
 import com.wali.live.dao.SixinMessage;
 import com.wali.live.dao.SixinMessageDao;
+import com.wali.live.watchsdk.R;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -356,6 +355,26 @@ public class SixinMessageLocalStore {
             queryBuilder.whereOr(SixinMessageDao.Properties.Target.eq(targets.get(0)), SixinMessageDao.Properties.Target.eq(targets.get(1)), whereConditions);
         }
         queryBuilder.buildDelete().executeDeleteWithoutDetachingEntities();
+    }
+
+    public static SixinMessage getCreateGroupSucessMessage(long groupId, String groupName) {
+        SixinMessage sixinMessage = new SixinMessage();
+        sixinMessage.setBody(GlobalData.app().getString(R.string.six_in_create_sucess_message, groupName));
+        sixinMessage.setMsgTyppe(SixinMessage.S_MSG_TYPE_ENTER_GROUP);
+        sixinMessage.setSentTime(System.currentTimeMillis());
+        sixinMessage.setReceivedTime(System.currentTimeMillis());
+        sixinMessage.setIsInbound(false);
+        sixinMessage.setMsgStatus(SixinMessage.MSG_STATUS_ONLY_ME_FOUCS);
+        sixinMessage.setOutboundStatus(SixinMessage.OUTBOUND_STATUS_RECEIVED);
+        sixinMessage.setTarget(groupId);
+        sixinMessage.setTargetName(groupName);
+        sixinMessage.setMsgSeq(0l);
+        sixinMessage.setSender(UserAccountManager.getInstance().getUuidAsLong());
+        sixinMessage.setLocaLUserId(UserAccountManager.getInstance().getUuidAsLong());
+        sixinMessage.setSenderMsgId(System.currentTimeMillis());
+        sixinMessage.setCertificationType(0);
+        sixinMessage.setTargetType(SixinMessage.TARGET_TYPE_VFANS);
+        return sixinMessage;
     }
 
     public static class SixinMessageBulkInsertEvent {

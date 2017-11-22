@@ -39369,7205 +39369,6 @@ public final class VFansProto {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.ExecGroupJobRsp)
   }
 
-  public interface ApplyJoinVFansGroupNotifyOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ApplyJoinVFansGroupNotify)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required uint64 candidate = 1;</code>
-     *
-     * <pre>
-     *申请人
-     * </pre>
-     */
-    boolean hasCandidate();
-    /**
-     * <code>required uint64 candidate = 1;</code>
-     *
-     * <pre>
-     *申请人
-     * </pre>
-     */
-    long getCandidate();
-
-    /**
-     * <code>required uint64 fgId = 2;</code>
-     *
-     * <pre>
-     *群id
-     * </pre>
-     */
-    boolean hasFgId();
-    /**
-     * <code>required uint64 fgId = 2;</code>
-     *
-     * <pre>
-     *群id
-     * </pre>
-     */
-    long getFgId();
-
-    /**
-     * <code>required .com.wali.live.proto.GroupMemType memType = 3 [default = MASS];</code>
-     *
-     * <pre>
-     *进入身份，群众，管理员...
-     * </pre>
-     */
-    boolean hasMemType();
-    /**
-     * <code>required .com.wali.live.proto.GroupMemType memType = 3 [default = MASS];</code>
-     *
-     * <pre>
-     *进入身份，群众，管理员...
-     * </pre>
-     */
-    com.wali.live.proto.VFansCommonProto.GroupMemType getMemType();
-
-    /**
-     * <code>optional uint64 fgOwner = 4;</code>
-     *
-     * <pre>
-     *群主
-     * </pre>
-     */
-    boolean hasFgOwner();
-    /**
-     * <code>optional uint64 fgOwner = 4;</code>
-     *
-     * <pre>
-     *群主
-     * </pre>
-     */
-    long getFgOwner();
-
-    /**
-     * <code>optional string applyMsg = 5;</code>
-     *
-     * <pre>
-     *申请信息
-     * </pre>
-     */
-    boolean hasApplyMsg();
-    /**
-     * <code>optional string applyMsg = 5;</code>
-     *
-     * <pre>
-     *申请信息
-     * </pre>
-     */
-    java.lang.String getApplyMsg();
-    /**
-     * <code>optional string applyMsg = 5;</code>
-     *
-     * <pre>
-     *申请信息
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getApplyMsgBytes();
-
-    /**
-     * <code>optional uint64 ts = 6;</code>
-     *
-     * <pre>
-     *时间戳
-     * </pre>
-     */
-    boolean hasTs();
-    /**
-     * <code>optional uint64 ts = 6;</code>
-     *
-     * <pre>
-     *时间戳
-     * </pre>
-     */
-    long getTs();
-
-    /**
-     * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
-     *
-     * <pre>
-     *加群动机，主动，受邀...
-     * </pre>
-     */
-    boolean hasJoinType();
-    /**
-     * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
-     *
-     * <pre>
-     *加群动机，主动，受邀...
-     * </pre>
-     */
-    com.wali.live.proto.VFansCommonProto.JoinIntentionType getJoinType();
-
-    /**
-     * <code>optional string msg = 8;</code>
-     *
-     * <pre>
-     *文案，建议客户端在该值非空时使用
-     * </pre>
-     */
-    boolean hasMsg();
-    /**
-     * <code>optional string msg = 8;</code>
-     *
-     * <pre>
-     *文案，建议客户端在该值非空时使用
-     * </pre>
-     */
-    java.lang.String getMsg();
-    /**
-     * <code>optional string msg = 8;</code>
-     *
-     * <pre>
-     *文案，建议客户端在该值非空时使用
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getMsgBytes();
-
-    /**
-     * <code>optional string groupName = 9;</code>
-     *
-     * <pre>
-     *群名称
-     * </pre>
-     */
-    boolean hasGroupName();
-    /**
-     * <code>optional string groupName = 9;</code>
-     *
-     * <pre>
-     *群名称
-     * </pre>
-     */
-    java.lang.String getGroupName();
-    /**
-     * <code>optional string groupName = 9;</code>
-     *
-     * <pre>
-     *群名称
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getGroupNameBytes();
-
-    /**
-     * <code>optional string candiName = 10;</code>
-     *
-     * <pre>
-     *申请人名称
-     * </pre>
-     */
-    boolean hasCandiName();
-    /**
-     * <code>optional string candiName = 10;</code>
-     *
-     * <pre>
-     *申请人名称
-     * </pre>
-     */
-    java.lang.String getCandiName();
-    /**
-     * <code>optional string candiName = 10;</code>
-     *
-     * <pre>
-     *申请人名称
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getCandiNameBytes();
-
-    /**
-     * <code>optional uint64 candiHeadTs = 11;</code>
-     *
-     * <pre>
-     *申请人头像时间戳
-     * </pre>
-     */
-    boolean hasCandiHeadTs();
-    /**
-     * <code>optional uint64 candiHeadTs = 11;</code>
-     *
-     * <pre>
-     *申请人头像时间戳
-     * </pre>
-     */
-    long getCandiHeadTs();
-  }
-  /**
-   * Protobuf type {@code com.wali.live.proto.ApplyJoinVFansGroupNotify}
-   *
-   * <pre>
-   *申请加入宠爱团群通知 APPLY_JOIN = 1;//申请加群
-   * </pre>
-   */
-  public static final class ApplyJoinVFansGroupNotify extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ApplyJoinVFansGroupNotify)
-      ApplyJoinVFansGroupNotifyOrBuilder {
-    // Use ApplyJoinVFansGroupNotify.newBuilder() to construct.
-    private ApplyJoinVFansGroupNotify(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private ApplyJoinVFansGroupNotify(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final ApplyJoinVFansGroupNotify defaultInstance;
-    public static ApplyJoinVFansGroupNotify getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public ApplyJoinVFansGroupNotify getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private ApplyJoinVFansGroupNotify(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              candidate_ = input.readUInt64();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              fgId_ = input.readUInt64();
-              break;
-            }
-            case 24: {
-              int rawValue = input.readEnum();
-              com.wali.live.proto.VFansCommonProto.GroupMemType value = com.wali.live.proto.VFansCommonProto.GroupMemType.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(3, rawValue);
-              } else {
-                bitField0_ |= 0x00000004;
-                memType_ = value;
-              }
-              break;
-            }
-            case 32: {
-              bitField0_ |= 0x00000008;
-              fgOwner_ = input.readUInt64();
-              break;
-            }
-            case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000010;
-              applyMsg_ = bs;
-              break;
-            }
-            case 48: {
-              bitField0_ |= 0x00000020;
-              ts_ = input.readUInt64();
-              break;
-            }
-            case 56: {
-              int rawValue = input.readEnum();
-              com.wali.live.proto.VFansCommonProto.JoinIntentionType value = com.wali.live.proto.VFansCommonProto.JoinIntentionType.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(7, rawValue);
-              } else {
-                bitField0_ |= 0x00000040;
-                joinType_ = value;
-              }
-              break;
-            }
-            case 66: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000080;
-              msg_ = bs;
-              break;
-            }
-            case 74: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000100;
-              groupName_ = bs;
-              break;
-            }
-            case 82: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000200;
-              candiName_ = bs;
-              break;
-            }
-            case 88: {
-              bitField0_ |= 0x00000400;
-              candiHeadTs_ = input.readUInt64();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_ApplyJoinVFansGroupNotify_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_ApplyJoinVFansGroupNotify_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify.class, com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<ApplyJoinVFansGroupNotify> PARSER =
-        new com.google.protobuf.AbstractParser<ApplyJoinVFansGroupNotify>() {
-      public ApplyJoinVFansGroupNotify parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ApplyJoinVFansGroupNotify(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<ApplyJoinVFansGroupNotify> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int CANDIDATE_FIELD_NUMBER = 1;
-    private long candidate_;
-    /**
-     * <code>required uint64 candidate = 1;</code>
-     *
-     * <pre>
-     *申请人
-     * </pre>
-     */
-    public boolean hasCandidate() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required uint64 candidate = 1;</code>
-     *
-     * <pre>
-     *申请人
-     * </pre>
-     */
-    public long getCandidate() {
-      return candidate_;
-    }
-
-    public static final int FGID_FIELD_NUMBER = 2;
-    private long fgId_;
-    /**
-     * <code>required uint64 fgId = 2;</code>
-     *
-     * <pre>
-     *群id
-     * </pre>
-     */
-    public boolean hasFgId() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>required uint64 fgId = 2;</code>
-     *
-     * <pre>
-     *群id
-     * </pre>
-     */
-    public long getFgId() {
-      return fgId_;
-    }
-
-    public static final int MEMTYPE_FIELD_NUMBER = 3;
-    private com.wali.live.proto.VFansCommonProto.GroupMemType memType_;
-    /**
-     * <code>required .com.wali.live.proto.GroupMemType memType = 3 [default = MASS];</code>
-     *
-     * <pre>
-     *进入身份，群众，管理员...
-     * </pre>
-     */
-    public boolean hasMemType() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>required .com.wali.live.proto.GroupMemType memType = 3 [default = MASS];</code>
-     *
-     * <pre>
-     *进入身份，群众，管理员...
-     * </pre>
-     */
-    public com.wali.live.proto.VFansCommonProto.GroupMemType getMemType() {
-      return memType_;
-    }
-
-    public static final int FGOWNER_FIELD_NUMBER = 4;
-    private long fgOwner_;
-    /**
-     * <code>optional uint64 fgOwner = 4;</code>
-     *
-     * <pre>
-     *群主
-     * </pre>
-     */
-    public boolean hasFgOwner() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>optional uint64 fgOwner = 4;</code>
-     *
-     * <pre>
-     *群主
-     * </pre>
-     */
-    public long getFgOwner() {
-      return fgOwner_;
-    }
-
-    public static final int APPLYMSG_FIELD_NUMBER = 5;
-    private java.lang.Object applyMsg_;
-    /**
-     * <code>optional string applyMsg = 5;</code>
-     *
-     * <pre>
-     *申请信息
-     * </pre>
-     */
-    public boolean hasApplyMsg() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    /**
-     * <code>optional string applyMsg = 5;</code>
-     *
-     * <pre>
-     *申请信息
-     * </pre>
-     */
-    public java.lang.String getApplyMsg() {
-      java.lang.Object ref = applyMsg_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          applyMsg_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string applyMsg = 5;</code>
-     *
-     * <pre>
-     *申请信息
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getApplyMsgBytes() {
-      java.lang.Object ref = applyMsg_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        applyMsg_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int TS_FIELD_NUMBER = 6;
-    private long ts_;
-    /**
-     * <code>optional uint64 ts = 6;</code>
-     *
-     * <pre>
-     *时间戳
-     * </pre>
-     */
-    public boolean hasTs() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
-    }
-    /**
-     * <code>optional uint64 ts = 6;</code>
-     *
-     * <pre>
-     *时间戳
-     * </pre>
-     */
-    public long getTs() {
-      return ts_;
-    }
-
-    public static final int JOINTYPE_FIELD_NUMBER = 7;
-    private com.wali.live.proto.VFansCommonProto.JoinIntentionType joinType_;
-    /**
-     * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
-     *
-     * <pre>
-     *加群动机，主动，受邀...
-     * </pre>
-     */
-    public boolean hasJoinType() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
-    }
-    /**
-     * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
-     *
-     * <pre>
-     *加群动机，主动，受邀...
-     * </pre>
-     */
-    public com.wali.live.proto.VFansCommonProto.JoinIntentionType getJoinType() {
-      return joinType_;
-    }
-
-    public static final int MSG_FIELD_NUMBER = 8;
-    private java.lang.Object msg_;
-    /**
-     * <code>optional string msg = 8;</code>
-     *
-     * <pre>
-     *文案，建议客户端在该值非空时使用
-     * </pre>
-     */
-    public boolean hasMsg() {
-      return ((bitField0_ & 0x00000080) == 0x00000080);
-    }
-    /**
-     * <code>optional string msg = 8;</code>
-     *
-     * <pre>
-     *文案，建议客户端在该值非空时使用
-     * </pre>
-     */
-    public java.lang.String getMsg() {
-      java.lang.Object ref = msg_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          msg_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string msg = 8;</code>
-     *
-     * <pre>
-     *文案，建议客户端在该值非空时使用
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getMsgBytes() {
-      java.lang.Object ref = msg_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        msg_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int GROUPNAME_FIELD_NUMBER = 9;
-    private java.lang.Object groupName_;
-    /**
-     * <code>optional string groupName = 9;</code>
-     *
-     * <pre>
-     *群名称
-     * </pre>
-     */
-    public boolean hasGroupName() {
-      return ((bitField0_ & 0x00000100) == 0x00000100);
-    }
-    /**
-     * <code>optional string groupName = 9;</code>
-     *
-     * <pre>
-     *群名称
-     * </pre>
-     */
-    public java.lang.String getGroupName() {
-      java.lang.Object ref = groupName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          groupName_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string groupName = 9;</code>
-     *
-     * <pre>
-     *群名称
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getGroupNameBytes() {
-      java.lang.Object ref = groupName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        groupName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int CANDINAME_FIELD_NUMBER = 10;
-    private java.lang.Object candiName_;
-    /**
-     * <code>optional string candiName = 10;</code>
-     *
-     * <pre>
-     *申请人名称
-     * </pre>
-     */
-    public boolean hasCandiName() {
-      return ((bitField0_ & 0x00000200) == 0x00000200);
-    }
-    /**
-     * <code>optional string candiName = 10;</code>
-     *
-     * <pre>
-     *申请人名称
-     * </pre>
-     */
-    public java.lang.String getCandiName() {
-      java.lang.Object ref = candiName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          candiName_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string candiName = 10;</code>
-     *
-     * <pre>
-     *申请人名称
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getCandiNameBytes() {
-      java.lang.Object ref = candiName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        candiName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int CANDIHEADTS_FIELD_NUMBER = 11;
-    private long candiHeadTs_;
-    /**
-     * <code>optional uint64 candiHeadTs = 11;</code>
-     *
-     * <pre>
-     *申请人头像时间戳
-     * </pre>
-     */
-    public boolean hasCandiHeadTs() {
-      return ((bitField0_ & 0x00000400) == 0x00000400);
-    }
-    /**
-     * <code>optional uint64 candiHeadTs = 11;</code>
-     *
-     * <pre>
-     *申请人头像时间戳
-     * </pre>
-     */
-    public long getCandiHeadTs() {
-      return candiHeadTs_;
-    }
-
-    private void initFields() {
-      candidate_ = 0L;
-      fgId_ = 0L;
-      memType_ = com.wali.live.proto.VFansCommonProto.GroupMemType.MASS;
-      fgOwner_ = 0L;
-      applyMsg_ = "";
-      ts_ = 0L;
-      joinType_ = com.wali.live.proto.VFansCommonProto.JoinIntentionType.UNKNOWN;
-      msg_ = "";
-      groupName_ = "";
-      candiName_ = "";
-      candiHeadTs_ = 0L;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasCandidate()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasFgId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasMemType()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeUInt64(1, candidate_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeUInt64(2, fgId_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeEnum(3, memType_.getNumber());
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeUInt64(4, fgOwner_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeBytes(5, getApplyMsgBytes());
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeUInt64(6, ts_);
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeEnum(7, joinType_.getNumber());
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeBytes(8, getMsgBytes());
-      }
-      if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        output.writeBytes(9, getGroupNameBytes());
-      }
-      if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        output.writeBytes(10, getCandiNameBytes());
-      }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        output.writeUInt64(11, candiHeadTs_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, candidate_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(2, fgId_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(3, memType_.getNumber());
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(4, fgOwner_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(5, getApplyMsgBytes());
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(6, ts_);
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(7, joinType_.getNumber());
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(8, getMsgBytes());
-      }
-      if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(9, getGroupNameBytes());
-      }
-      if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(10, getCandiNameBytes());
-      }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(11, candiHeadTs_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.wali.live.proto.ApplyJoinVFansGroupNotify}
-     *
-     * <pre>
-     *申请加入宠爱团群通知 APPLY_JOIN = 1;//申请加群
-     * </pre>
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ApplyJoinVFansGroupNotify)
-        com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotifyOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_ApplyJoinVFansGroupNotify_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_ApplyJoinVFansGroupNotify_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify.class, com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify.Builder.class);
-      }
-
-      // Construct using com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        candidate_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        fgId_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        memType_ = com.wali.live.proto.VFansCommonProto.GroupMemType.MASS;
-        bitField0_ = (bitField0_ & ~0x00000004);
-        fgOwner_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000008);
-        applyMsg_ = "";
-        bitField0_ = (bitField0_ & ~0x00000010);
-        ts_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000020);
-        joinType_ = com.wali.live.proto.VFansCommonProto.JoinIntentionType.UNKNOWN;
-        bitField0_ = (bitField0_ & ~0x00000040);
-        msg_ = "";
-        bitField0_ = (bitField0_ & ~0x00000080);
-        groupName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000100);
-        candiName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000200);
-        candiHeadTs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000400);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_ApplyJoinVFansGroupNotify_descriptor;
-      }
-
-      public com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify getDefaultInstanceForType() {
-        return com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify.getDefaultInstance();
-      }
-
-      public com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify build() {
-        com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify buildPartial() {
-        com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify result = new com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.candidate_ = candidate_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.fgId_ = fgId_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.memType_ = memType_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.fgOwner_ = fgOwner_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.applyMsg_ = applyMsg_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        result.ts_ = ts_;
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000040;
-        }
-        result.joinType_ = joinType_;
-        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
-          to_bitField0_ |= 0x00000080;
-        }
-        result.msg_ = msg_;
-        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
-          to_bitField0_ |= 0x00000100;
-        }
-        result.groupName_ = groupName_;
-        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
-          to_bitField0_ |= 0x00000200;
-        }
-        result.candiName_ = candiName_;
-        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
-          to_bitField0_ |= 0x00000400;
-        }
-        result.candiHeadTs_ = candiHeadTs_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify) {
-          return mergeFrom((com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify other) {
-        if (other == com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify.getDefaultInstance()) return this;
-        if (other.hasCandidate()) {
-          setCandidate(other.getCandidate());
-        }
-        if (other.hasFgId()) {
-          setFgId(other.getFgId());
-        }
-        if (other.hasMemType()) {
-          setMemType(other.getMemType());
-        }
-        if (other.hasFgOwner()) {
-          setFgOwner(other.getFgOwner());
-        }
-        if (other.hasApplyMsg()) {
-          bitField0_ |= 0x00000010;
-          applyMsg_ = other.applyMsg_;
-          onChanged();
-        }
-        if (other.hasTs()) {
-          setTs(other.getTs());
-        }
-        if (other.hasJoinType()) {
-          setJoinType(other.getJoinType());
-        }
-        if (other.hasMsg()) {
-          bitField0_ |= 0x00000080;
-          msg_ = other.msg_;
-          onChanged();
-        }
-        if (other.hasGroupName()) {
-          bitField0_ |= 0x00000100;
-          groupName_ = other.groupName_;
-          onChanged();
-        }
-        if (other.hasCandiName()) {
-          bitField0_ |= 0x00000200;
-          candiName_ = other.candiName_;
-          onChanged();
-        }
-        if (other.hasCandiHeadTs()) {
-          setCandiHeadTs(other.getCandiHeadTs());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (!hasCandidate()) {
-          
-          return false;
-        }
-        if (!hasFgId()) {
-          
-          return false;
-        }
-        if (!hasMemType()) {
-          
-          return false;
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.VFansProto.ApplyJoinVFansGroupNotify) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private long candidate_ ;
-      /**
-       * <code>required uint64 candidate = 1;</code>
-       *
-       * <pre>
-       *申请人
-       * </pre>
-       */
-      public boolean hasCandidate() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required uint64 candidate = 1;</code>
-       *
-       * <pre>
-       *申请人
-       * </pre>
-       */
-      public long getCandidate() {
-        return candidate_;
-      }
-      /**
-       * <code>required uint64 candidate = 1;</code>
-       *
-       * <pre>
-       *申请人
-       * </pre>
-       */
-      public Builder setCandidate(long value) {
-        bitField0_ |= 0x00000001;
-        candidate_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required uint64 candidate = 1;</code>
-       *
-       * <pre>
-       *申请人
-       * </pre>
-       */
-      public Builder clearCandidate() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        candidate_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private long fgId_ ;
-      /**
-       * <code>required uint64 fgId = 2;</code>
-       *
-       * <pre>
-       *群id
-       * </pre>
-       */
-      public boolean hasFgId() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>required uint64 fgId = 2;</code>
-       *
-       * <pre>
-       *群id
-       * </pre>
-       */
-      public long getFgId() {
-        return fgId_;
-      }
-      /**
-       * <code>required uint64 fgId = 2;</code>
-       *
-       * <pre>
-       *群id
-       * </pre>
-       */
-      public Builder setFgId(long value) {
-        bitField0_ |= 0x00000002;
-        fgId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required uint64 fgId = 2;</code>
-       *
-       * <pre>
-       *群id
-       * </pre>
-       */
-      public Builder clearFgId() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        fgId_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private com.wali.live.proto.VFansCommonProto.GroupMemType memType_ = com.wali.live.proto.VFansCommonProto.GroupMemType.MASS;
-      /**
-       * <code>required .com.wali.live.proto.GroupMemType memType = 3 [default = MASS];</code>
-       *
-       * <pre>
-       *进入身份，群众，管理员...
-       * </pre>
-       */
-      public boolean hasMemType() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>required .com.wali.live.proto.GroupMemType memType = 3 [default = MASS];</code>
-       *
-       * <pre>
-       *进入身份，群众，管理员...
-       * </pre>
-       */
-      public com.wali.live.proto.VFansCommonProto.GroupMemType getMemType() {
-        return memType_;
-      }
-      /**
-       * <code>required .com.wali.live.proto.GroupMemType memType = 3 [default = MASS];</code>
-       *
-       * <pre>
-       *进入身份，群众，管理员...
-       * </pre>
-       */
-      public Builder setMemType(com.wali.live.proto.VFansCommonProto.GroupMemType value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000004;
-        memType_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required .com.wali.live.proto.GroupMemType memType = 3 [default = MASS];</code>
-       *
-       * <pre>
-       *进入身份，群众，管理员...
-       * </pre>
-       */
-      public Builder clearMemType() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        memType_ = com.wali.live.proto.VFansCommonProto.GroupMemType.MASS;
-        onChanged();
-        return this;
-      }
-
-      private long fgOwner_ ;
-      /**
-       * <code>optional uint64 fgOwner = 4;</code>
-       *
-       * <pre>
-       *群主
-       * </pre>
-       */
-      public boolean hasFgOwner() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>optional uint64 fgOwner = 4;</code>
-       *
-       * <pre>
-       *群主
-       * </pre>
-       */
-      public long getFgOwner() {
-        return fgOwner_;
-      }
-      /**
-       * <code>optional uint64 fgOwner = 4;</code>
-       *
-       * <pre>
-       *群主
-       * </pre>
-       */
-      public Builder setFgOwner(long value) {
-        bitField0_ |= 0x00000008;
-        fgOwner_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 fgOwner = 4;</code>
-       *
-       * <pre>
-       *群主
-       * </pre>
-       */
-      public Builder clearFgOwner() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        fgOwner_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object applyMsg_ = "";
-      /**
-       * <code>optional string applyMsg = 5;</code>
-       *
-       * <pre>
-       *申请信息
-       * </pre>
-       */
-      public boolean hasApplyMsg() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      /**
-       * <code>optional string applyMsg = 5;</code>
-       *
-       * <pre>
-       *申请信息
-       * </pre>
-       */
-      public java.lang.String getApplyMsg() {
-        java.lang.Object ref = applyMsg_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            applyMsg_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string applyMsg = 5;</code>
-       *
-       * <pre>
-       *申请信息
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getApplyMsgBytes() {
-        java.lang.Object ref = applyMsg_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          applyMsg_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string applyMsg = 5;</code>
-       *
-       * <pre>
-       *申请信息
-       * </pre>
-       */
-      public Builder setApplyMsg(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        applyMsg_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string applyMsg = 5;</code>
-       *
-       * <pre>
-       *申请信息
-       * </pre>
-       */
-      public Builder clearApplyMsg() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        applyMsg_ = getDefaultInstance().getApplyMsg();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string applyMsg = 5;</code>
-       *
-       * <pre>
-       *申请信息
-       * </pre>
-       */
-      public Builder setApplyMsgBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        applyMsg_ = value;
-        onChanged();
-        return this;
-      }
-
-      private long ts_ ;
-      /**
-       * <code>optional uint64 ts = 6;</code>
-       *
-       * <pre>
-       *时间戳
-       * </pre>
-       */
-      public boolean hasTs() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
-      }
-      /**
-       * <code>optional uint64 ts = 6;</code>
-       *
-       * <pre>
-       *时间戳
-       * </pre>
-       */
-      public long getTs() {
-        return ts_;
-      }
-      /**
-       * <code>optional uint64 ts = 6;</code>
-       *
-       * <pre>
-       *时间戳
-       * </pre>
-       */
-      public Builder setTs(long value) {
-        bitField0_ |= 0x00000020;
-        ts_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 ts = 6;</code>
-       *
-       * <pre>
-       *时间戳
-       * </pre>
-       */
-      public Builder clearTs() {
-        bitField0_ = (bitField0_ & ~0x00000020);
-        ts_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private com.wali.live.proto.VFansCommonProto.JoinIntentionType joinType_ = com.wali.live.proto.VFansCommonProto.JoinIntentionType.UNKNOWN;
-      /**
-       * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
-       *
-       * <pre>
-       *加群动机，主动，受邀...
-       * </pre>
-       */
-      public boolean hasJoinType() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
-      }
-      /**
-       * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
-       *
-       * <pre>
-       *加群动机，主动，受邀...
-       * </pre>
-       */
-      public com.wali.live.proto.VFansCommonProto.JoinIntentionType getJoinType() {
-        return joinType_;
-      }
-      /**
-       * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
-       *
-       * <pre>
-       *加群动机，主动，受邀...
-       * </pre>
-       */
-      public Builder setJoinType(com.wali.live.proto.VFansCommonProto.JoinIntentionType value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000040;
-        joinType_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
-       *
-       * <pre>
-       *加群动机，主动，受邀...
-       * </pre>
-       */
-      public Builder clearJoinType() {
-        bitField0_ = (bitField0_ & ~0x00000040);
-        joinType_ = com.wali.live.proto.VFansCommonProto.JoinIntentionType.UNKNOWN;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object msg_ = "";
-      /**
-       * <code>optional string msg = 8;</code>
-       *
-       * <pre>
-       *文案，建议客户端在该值非空时使用
-       * </pre>
-       */
-      public boolean hasMsg() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
-      }
-      /**
-       * <code>optional string msg = 8;</code>
-       *
-       * <pre>
-       *文案，建议客户端在该值非空时使用
-       * </pre>
-       */
-      public java.lang.String getMsg() {
-        java.lang.Object ref = msg_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            msg_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string msg = 8;</code>
-       *
-       * <pre>
-       *文案，建议客户端在该值非空时使用
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getMsgBytes() {
-        java.lang.Object ref = msg_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          msg_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string msg = 8;</code>
-       *
-       * <pre>
-       *文案，建议客户端在该值非空时使用
-       * </pre>
-       */
-      public Builder setMsg(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000080;
-        msg_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string msg = 8;</code>
-       *
-       * <pre>
-       *文案，建议客户端在该值非空时使用
-       * </pre>
-       */
-      public Builder clearMsg() {
-        bitField0_ = (bitField0_ & ~0x00000080);
-        msg_ = getDefaultInstance().getMsg();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string msg = 8;</code>
-       *
-       * <pre>
-       *文案，建议客户端在该值非空时使用
-       * </pre>
-       */
-      public Builder setMsgBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000080;
-        msg_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object groupName_ = "";
-      /**
-       * <code>optional string groupName = 9;</code>
-       *
-       * <pre>
-       *群名称
-       * </pre>
-       */
-      public boolean hasGroupName() {
-        return ((bitField0_ & 0x00000100) == 0x00000100);
-      }
-      /**
-       * <code>optional string groupName = 9;</code>
-       *
-       * <pre>
-       *群名称
-       * </pre>
-       */
-      public java.lang.String getGroupName() {
-        java.lang.Object ref = groupName_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            groupName_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string groupName = 9;</code>
-       *
-       * <pre>
-       *群名称
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getGroupNameBytes() {
-        java.lang.Object ref = groupName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          groupName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string groupName = 9;</code>
-       *
-       * <pre>
-       *群名称
-       * </pre>
-       */
-      public Builder setGroupName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
-        groupName_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string groupName = 9;</code>
-       *
-       * <pre>
-       *群名称
-       * </pre>
-       */
-      public Builder clearGroupName() {
-        bitField0_ = (bitField0_ & ~0x00000100);
-        groupName_ = getDefaultInstance().getGroupName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string groupName = 9;</code>
-       *
-       * <pre>
-       *群名称
-       * </pre>
-       */
-      public Builder setGroupNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
-        groupName_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object candiName_ = "";
-      /**
-       * <code>optional string candiName = 10;</code>
-       *
-       * <pre>
-       *申请人名称
-       * </pre>
-       */
-      public boolean hasCandiName() {
-        return ((bitField0_ & 0x00000200) == 0x00000200);
-      }
-      /**
-       * <code>optional string candiName = 10;</code>
-       *
-       * <pre>
-       *申请人名称
-       * </pre>
-       */
-      public java.lang.String getCandiName() {
-        java.lang.Object ref = candiName_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            candiName_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string candiName = 10;</code>
-       *
-       * <pre>
-       *申请人名称
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getCandiNameBytes() {
-        java.lang.Object ref = candiName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          candiName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string candiName = 10;</code>
-       *
-       * <pre>
-       *申请人名称
-       * </pre>
-       */
-      public Builder setCandiName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000200;
-        candiName_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string candiName = 10;</code>
-       *
-       * <pre>
-       *申请人名称
-       * </pre>
-       */
-      public Builder clearCandiName() {
-        bitField0_ = (bitField0_ & ~0x00000200);
-        candiName_ = getDefaultInstance().getCandiName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string candiName = 10;</code>
-       *
-       * <pre>
-       *申请人名称
-       * </pre>
-       */
-      public Builder setCandiNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000200;
-        candiName_ = value;
-        onChanged();
-        return this;
-      }
-
-      private long candiHeadTs_ ;
-      /**
-       * <code>optional uint64 candiHeadTs = 11;</code>
-       *
-       * <pre>
-       *申请人头像时间戳
-       * </pre>
-       */
-      public boolean hasCandiHeadTs() {
-        return ((bitField0_ & 0x00000400) == 0x00000400);
-      }
-      /**
-       * <code>optional uint64 candiHeadTs = 11;</code>
-       *
-       * <pre>
-       *申请人头像时间戳
-       * </pre>
-       */
-      public long getCandiHeadTs() {
-        return candiHeadTs_;
-      }
-      /**
-       * <code>optional uint64 candiHeadTs = 11;</code>
-       *
-       * <pre>
-       *申请人头像时间戳
-       * </pre>
-       */
-      public Builder setCandiHeadTs(long value) {
-        bitField0_ |= 0x00000400;
-        candiHeadTs_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 candiHeadTs = 11;</code>
-       *
-       * <pre>
-       *申请人头像时间戳
-       * </pre>
-       */
-      public Builder clearCandiHeadTs() {
-        bitField0_ = (bitField0_ & ~0x00000400);
-        candiHeadTs_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ApplyJoinVFansGroupNotify)
-    }
-
-    static {
-      defaultInstance = new ApplyJoinVFansGroupNotify(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ApplyJoinVFansGroupNotify)
-  }
-
-  public interface HandleJoinVFansGroupNotifyOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.HandleJoinVFansGroupNotify)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required uint64 handler = 1;</code>
-     *
-     * <pre>
-     *处理人
-     * </pre>
-     */
-    boolean hasHandler();
-    /**
-     * <code>required uint64 handler = 1;</code>
-     *
-     * <pre>
-     *处理人
-     * </pre>
-     */
-    long getHandler();
-
-    /**
-     * <code>required uint64 candidate = 2;</code>
-     *
-     * <pre>
-     *被处理人
-     * </pre>
-     */
-    boolean hasCandidate();
-    /**
-     * <code>required uint64 candidate = 2;</code>
-     *
-     * <pre>
-     *被处理人
-     * </pre>
-     */
-    long getCandidate();
-
-    /**
-     * <code>required uint64 fgId = 3;</code>
-     *
-     * <pre>
-     *群id
-     * </pre>
-     */
-    boolean hasFgId();
-    /**
-     * <code>required uint64 fgId = 3;</code>
-     *
-     * <pre>
-     *群id
-     * </pre>
-     */
-    long getFgId();
-
-    /**
-     * <code>optional uint64 fgOwner = 4;</code>
-     *
-     * <pre>
-     *群主
-     * </pre>
-     */
-    boolean hasFgOwner();
-    /**
-     * <code>optional uint64 fgOwner = 4;</code>
-     *
-     * <pre>
-     *群主
-     * </pre>
-     */
-    long getFgOwner();
-
-    /**
-     * <code>optional .com.wali.live.proto.ApplyJoinResult handleResult = 5;</code>
-     *
-     * <pre>
-     *处理结果
-     * </pre>
-     */
-    boolean hasHandleResult();
-    /**
-     * <code>optional .com.wali.live.proto.ApplyJoinResult handleResult = 5;</code>
-     *
-     * <pre>
-     *处理结果
-     * </pre>
-     */
-    com.wali.live.proto.VFansCommonProto.ApplyJoinResult getHandleResult();
-
-    /**
-     * <code>optional .com.wali.live.proto.GroupMemType memType = 6;</code>
-     *
-     * <pre>
-     *请求加群身份
-     * </pre>
-     */
-    boolean hasMemType();
-    /**
-     * <code>optional .com.wali.live.proto.GroupMemType memType = 6;</code>
-     *
-     * <pre>
-     *请求加群身份
-     * </pre>
-     */
-    com.wali.live.proto.VFansCommonProto.GroupMemType getMemType();
-
-    /**
-     * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
-     *
-     * <pre>
-     *加群动机，主动，受邀...
-     * </pre>
-     */
-    boolean hasJoinType();
-    /**
-     * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
-     *
-     * <pre>
-     *加群动机，主动，受邀...
-     * </pre>
-     */
-    com.wali.live.proto.VFansCommonProto.JoinIntentionType getJoinType();
-
-    /**
-     * <code>optional uint64 referrer = 8;</code>
-     *
-     * <pre>
-     *推荐人， 如果有就填
-     * </pre>
-     */
-    boolean hasReferrer();
-    /**
-     * <code>optional uint64 referrer = 8;</code>
-     *
-     * <pre>
-     *推荐人， 如果有就填
-     * </pre>
-     */
-    long getReferrer();
-
-    /**
-     * <code>optional string msg = 9;</code>
-     *
-     * <pre>
-     *文案，建议客户端在该值非空时使用
-     * </pre>
-     */
-    boolean hasMsg();
-    /**
-     * <code>optional string msg = 9;</code>
-     *
-     * <pre>
-     *文案，建议客户端在该值非空时使用
-     * </pre>
-     */
-    java.lang.String getMsg();
-    /**
-     * <code>optional string msg = 9;</code>
-     *
-     * <pre>
-     *文案，建议客户端在该值非空时使用
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getMsgBytes();
-
-    /**
-     * <code>optional uint64 handleNotifyId = 10;</code>
-     *
-     * <pre>
-     *消息id
-     * </pre>
-     */
-    boolean hasHandleNotifyId();
-    /**
-     * <code>optional uint64 handleNotifyId = 10;</code>
-     *
-     * <pre>
-     *消息id
-     * </pre>
-     */
-    long getHandleNotifyId();
-
-    /**
-     * <code>optional string groupName = 11;</code>
-     *
-     * <pre>
-     *群名称
-     * </pre>
-     */
-    boolean hasGroupName();
-    /**
-     * <code>optional string groupName = 11;</code>
-     *
-     * <pre>
-     *群名称
-     * </pre>
-     */
-    java.lang.String getGroupName();
-    /**
-     * <code>optional string groupName = 11;</code>
-     *
-     * <pre>
-     *群名称
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getGroupNameBytes();
-
-    /**
-     * <code>optional string handlerName = 12;</code>
-     *
-     * <pre>
-     *处理人名称
-     * </pre>
-     */
-    boolean hasHandlerName();
-    /**
-     * <code>optional string handlerName = 12;</code>
-     *
-     * <pre>
-     *处理人名称
-     * </pre>
-     */
-    java.lang.String getHandlerName();
-    /**
-     * <code>optional string handlerName = 12;</code>
-     *
-     * <pre>
-     *处理人名称
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getHandlerNameBytes();
-
-    /**
-     * <code>optional uint64 handlerHeadTs = 13;</code>
-     *
-     * <pre>
-     *处理人头像时间戳
-     * </pre>
-     */
-    boolean hasHandlerHeadTs();
-    /**
-     * <code>optional uint64 handlerHeadTs = 13;</code>
-     *
-     * <pre>
-     *处理人头像时间戳
-     * </pre>
-     */
-    long getHandlerHeadTs();
-
-    /**
-     * <code>optional string candiName = 14;</code>
-     *
-     * <pre>
-     *被处理人名称
-     * </pre>
-     */
-    boolean hasCandiName();
-    /**
-     * <code>optional string candiName = 14;</code>
-     *
-     * <pre>
-     *被处理人名称
-     * </pre>
-     */
-    java.lang.String getCandiName();
-    /**
-     * <code>optional string candiName = 14;</code>
-     *
-     * <pre>
-     *被处理人名称
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getCandiNameBytes();
-
-    /**
-     * <code>optional uint64 candiHeadTs = 15;</code>
-     *
-     * <pre>
-     *被处理人头像时间戳
-     * </pre>
-     */
-    boolean hasCandiHeadTs();
-    /**
-     * <code>optional uint64 candiHeadTs = 15;</code>
-     *
-     * <pre>
-     *被处理人头像时间戳
-     * </pre>
-     */
-    long getCandiHeadTs();
-
-    /**
-     * <code>optional string groupIcon = 16;</code>
-     *
-     * <pre>
-     *群头像
-     * </pre>
-     */
-    boolean hasGroupIcon();
-    /**
-     * <code>optional string groupIcon = 16;</code>
-     *
-     * <pre>
-     *群头像
-     * </pre>
-     */
-    java.lang.String getGroupIcon();
-    /**
-     * <code>optional string groupIcon = 16;</code>
-     *
-     * <pre>
-     *群头像
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getGroupIconBytes();
-
-    /**
-     * <code>optional uint64 fgOwnerHeadTs = 17;</code>
-     *
-     * <pre>
-     *群主头像时间戳
-     * </pre>
-     */
-    boolean hasFgOwnerHeadTs();
-    /**
-     * <code>optional uint64 fgOwnerHeadTs = 17;</code>
-     *
-     * <pre>
-     *群主头像时间戳
-     * </pre>
-     */
-    long getFgOwnerHeadTs();
-  }
-  /**
-   * Protobuf type {@code com.wali.live.proto.HandleJoinVFansGroupNotify}
-   *
-   * <pre>
-   *处理加群结果通知 HANDLE_JOIN = 3;//处理加群
-   * </pre>
-   */
-  public static final class HandleJoinVFansGroupNotify extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.HandleJoinVFansGroupNotify)
-      HandleJoinVFansGroupNotifyOrBuilder {
-    // Use HandleJoinVFansGroupNotify.newBuilder() to construct.
-    private HandleJoinVFansGroupNotify(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private HandleJoinVFansGroupNotify(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final HandleJoinVFansGroupNotify defaultInstance;
-    public static HandleJoinVFansGroupNotify getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public HandleJoinVFansGroupNotify getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private HandleJoinVFansGroupNotify(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              handler_ = input.readUInt64();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              candidate_ = input.readUInt64();
-              break;
-            }
-            case 24: {
-              bitField0_ |= 0x00000004;
-              fgId_ = input.readUInt64();
-              break;
-            }
-            case 32: {
-              bitField0_ |= 0x00000008;
-              fgOwner_ = input.readUInt64();
-              break;
-            }
-            case 40: {
-              int rawValue = input.readEnum();
-              com.wali.live.proto.VFansCommonProto.ApplyJoinResult value = com.wali.live.proto.VFansCommonProto.ApplyJoinResult.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(5, rawValue);
-              } else {
-                bitField0_ |= 0x00000010;
-                handleResult_ = value;
-              }
-              break;
-            }
-            case 48: {
-              int rawValue = input.readEnum();
-              com.wali.live.proto.VFansCommonProto.GroupMemType value = com.wali.live.proto.VFansCommonProto.GroupMemType.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(6, rawValue);
-              } else {
-                bitField0_ |= 0x00000020;
-                memType_ = value;
-              }
-              break;
-            }
-            case 56: {
-              int rawValue = input.readEnum();
-              com.wali.live.proto.VFansCommonProto.JoinIntentionType value = com.wali.live.proto.VFansCommonProto.JoinIntentionType.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(7, rawValue);
-              } else {
-                bitField0_ |= 0x00000040;
-                joinType_ = value;
-              }
-              break;
-            }
-            case 64: {
-              bitField0_ |= 0x00000080;
-              referrer_ = input.readUInt64();
-              break;
-            }
-            case 74: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000100;
-              msg_ = bs;
-              break;
-            }
-            case 80: {
-              bitField0_ |= 0x00000200;
-              handleNotifyId_ = input.readUInt64();
-              break;
-            }
-            case 90: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000400;
-              groupName_ = bs;
-              break;
-            }
-            case 98: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000800;
-              handlerName_ = bs;
-              break;
-            }
-            case 104: {
-              bitField0_ |= 0x00001000;
-              handlerHeadTs_ = input.readUInt64();
-              break;
-            }
-            case 114: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00002000;
-              candiName_ = bs;
-              break;
-            }
-            case 120: {
-              bitField0_ |= 0x00004000;
-              candiHeadTs_ = input.readUInt64();
-              break;
-            }
-            case 130: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00008000;
-              groupIcon_ = bs;
-              break;
-            }
-            case 136: {
-              bitField0_ |= 0x00010000;
-              fgOwnerHeadTs_ = input.readUInt64();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_HandleJoinVFansGroupNotify_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_HandleJoinVFansGroupNotify_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify.class, com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<HandleJoinVFansGroupNotify> PARSER =
-        new com.google.protobuf.AbstractParser<HandleJoinVFansGroupNotify>() {
-      public HandleJoinVFansGroupNotify parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new HandleJoinVFansGroupNotify(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<HandleJoinVFansGroupNotify> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int HANDLER_FIELD_NUMBER = 1;
-    private long handler_;
-    /**
-     * <code>required uint64 handler = 1;</code>
-     *
-     * <pre>
-     *处理人
-     * </pre>
-     */
-    public boolean hasHandler() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required uint64 handler = 1;</code>
-     *
-     * <pre>
-     *处理人
-     * </pre>
-     */
-    public long getHandler() {
-      return handler_;
-    }
-
-    public static final int CANDIDATE_FIELD_NUMBER = 2;
-    private long candidate_;
-    /**
-     * <code>required uint64 candidate = 2;</code>
-     *
-     * <pre>
-     *被处理人
-     * </pre>
-     */
-    public boolean hasCandidate() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>required uint64 candidate = 2;</code>
-     *
-     * <pre>
-     *被处理人
-     * </pre>
-     */
-    public long getCandidate() {
-      return candidate_;
-    }
-
-    public static final int FGID_FIELD_NUMBER = 3;
-    private long fgId_;
-    /**
-     * <code>required uint64 fgId = 3;</code>
-     *
-     * <pre>
-     *群id
-     * </pre>
-     */
-    public boolean hasFgId() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>required uint64 fgId = 3;</code>
-     *
-     * <pre>
-     *群id
-     * </pre>
-     */
-    public long getFgId() {
-      return fgId_;
-    }
-
-    public static final int FGOWNER_FIELD_NUMBER = 4;
-    private long fgOwner_;
-    /**
-     * <code>optional uint64 fgOwner = 4;</code>
-     *
-     * <pre>
-     *群主
-     * </pre>
-     */
-    public boolean hasFgOwner() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>optional uint64 fgOwner = 4;</code>
-     *
-     * <pre>
-     *群主
-     * </pre>
-     */
-    public long getFgOwner() {
-      return fgOwner_;
-    }
-
-    public static final int HANDLERESULT_FIELD_NUMBER = 5;
-    private com.wali.live.proto.VFansCommonProto.ApplyJoinResult handleResult_;
-    /**
-     * <code>optional .com.wali.live.proto.ApplyJoinResult handleResult = 5;</code>
-     *
-     * <pre>
-     *处理结果
-     * </pre>
-     */
-    public boolean hasHandleResult() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    /**
-     * <code>optional .com.wali.live.proto.ApplyJoinResult handleResult = 5;</code>
-     *
-     * <pre>
-     *处理结果
-     * </pre>
-     */
-    public com.wali.live.proto.VFansCommonProto.ApplyJoinResult getHandleResult() {
-      return handleResult_;
-    }
-
-    public static final int MEMTYPE_FIELD_NUMBER = 6;
-    private com.wali.live.proto.VFansCommonProto.GroupMemType memType_;
-    /**
-     * <code>optional .com.wali.live.proto.GroupMemType memType = 6;</code>
-     *
-     * <pre>
-     *请求加群身份
-     * </pre>
-     */
-    public boolean hasMemType() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
-    }
-    /**
-     * <code>optional .com.wali.live.proto.GroupMemType memType = 6;</code>
-     *
-     * <pre>
-     *请求加群身份
-     * </pre>
-     */
-    public com.wali.live.proto.VFansCommonProto.GroupMemType getMemType() {
-      return memType_;
-    }
-
-    public static final int JOINTYPE_FIELD_NUMBER = 7;
-    private com.wali.live.proto.VFansCommonProto.JoinIntentionType joinType_;
-    /**
-     * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
-     *
-     * <pre>
-     *加群动机，主动，受邀...
-     * </pre>
-     */
-    public boolean hasJoinType() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
-    }
-    /**
-     * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
-     *
-     * <pre>
-     *加群动机，主动，受邀...
-     * </pre>
-     */
-    public com.wali.live.proto.VFansCommonProto.JoinIntentionType getJoinType() {
-      return joinType_;
-    }
-
-    public static final int REFERRER_FIELD_NUMBER = 8;
-    private long referrer_;
-    /**
-     * <code>optional uint64 referrer = 8;</code>
-     *
-     * <pre>
-     *推荐人， 如果有就填
-     * </pre>
-     */
-    public boolean hasReferrer() {
-      return ((bitField0_ & 0x00000080) == 0x00000080);
-    }
-    /**
-     * <code>optional uint64 referrer = 8;</code>
-     *
-     * <pre>
-     *推荐人， 如果有就填
-     * </pre>
-     */
-    public long getReferrer() {
-      return referrer_;
-    }
-
-    public static final int MSG_FIELD_NUMBER = 9;
-    private java.lang.Object msg_;
-    /**
-     * <code>optional string msg = 9;</code>
-     *
-     * <pre>
-     *文案，建议客户端在该值非空时使用
-     * </pre>
-     */
-    public boolean hasMsg() {
-      return ((bitField0_ & 0x00000100) == 0x00000100);
-    }
-    /**
-     * <code>optional string msg = 9;</code>
-     *
-     * <pre>
-     *文案，建议客户端在该值非空时使用
-     * </pre>
-     */
-    public java.lang.String getMsg() {
-      java.lang.Object ref = msg_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          msg_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string msg = 9;</code>
-     *
-     * <pre>
-     *文案，建议客户端在该值非空时使用
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getMsgBytes() {
-      java.lang.Object ref = msg_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        msg_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int HANDLENOTIFYID_FIELD_NUMBER = 10;
-    private long handleNotifyId_;
-    /**
-     * <code>optional uint64 handleNotifyId = 10;</code>
-     *
-     * <pre>
-     *消息id
-     * </pre>
-     */
-    public boolean hasHandleNotifyId() {
-      return ((bitField0_ & 0x00000200) == 0x00000200);
-    }
-    /**
-     * <code>optional uint64 handleNotifyId = 10;</code>
-     *
-     * <pre>
-     *消息id
-     * </pre>
-     */
-    public long getHandleNotifyId() {
-      return handleNotifyId_;
-    }
-
-    public static final int GROUPNAME_FIELD_NUMBER = 11;
-    private java.lang.Object groupName_;
-    /**
-     * <code>optional string groupName = 11;</code>
-     *
-     * <pre>
-     *群名称
-     * </pre>
-     */
-    public boolean hasGroupName() {
-      return ((bitField0_ & 0x00000400) == 0x00000400);
-    }
-    /**
-     * <code>optional string groupName = 11;</code>
-     *
-     * <pre>
-     *群名称
-     * </pre>
-     */
-    public java.lang.String getGroupName() {
-      java.lang.Object ref = groupName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          groupName_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string groupName = 11;</code>
-     *
-     * <pre>
-     *群名称
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getGroupNameBytes() {
-      java.lang.Object ref = groupName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        groupName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int HANDLERNAME_FIELD_NUMBER = 12;
-    private java.lang.Object handlerName_;
-    /**
-     * <code>optional string handlerName = 12;</code>
-     *
-     * <pre>
-     *处理人名称
-     * </pre>
-     */
-    public boolean hasHandlerName() {
-      return ((bitField0_ & 0x00000800) == 0x00000800);
-    }
-    /**
-     * <code>optional string handlerName = 12;</code>
-     *
-     * <pre>
-     *处理人名称
-     * </pre>
-     */
-    public java.lang.String getHandlerName() {
-      java.lang.Object ref = handlerName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          handlerName_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string handlerName = 12;</code>
-     *
-     * <pre>
-     *处理人名称
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getHandlerNameBytes() {
-      java.lang.Object ref = handlerName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        handlerName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int HANDLERHEADTS_FIELD_NUMBER = 13;
-    private long handlerHeadTs_;
-    /**
-     * <code>optional uint64 handlerHeadTs = 13;</code>
-     *
-     * <pre>
-     *处理人头像时间戳
-     * </pre>
-     */
-    public boolean hasHandlerHeadTs() {
-      return ((bitField0_ & 0x00001000) == 0x00001000);
-    }
-    /**
-     * <code>optional uint64 handlerHeadTs = 13;</code>
-     *
-     * <pre>
-     *处理人头像时间戳
-     * </pre>
-     */
-    public long getHandlerHeadTs() {
-      return handlerHeadTs_;
-    }
-
-    public static final int CANDINAME_FIELD_NUMBER = 14;
-    private java.lang.Object candiName_;
-    /**
-     * <code>optional string candiName = 14;</code>
-     *
-     * <pre>
-     *被处理人名称
-     * </pre>
-     */
-    public boolean hasCandiName() {
-      return ((bitField0_ & 0x00002000) == 0x00002000);
-    }
-    /**
-     * <code>optional string candiName = 14;</code>
-     *
-     * <pre>
-     *被处理人名称
-     * </pre>
-     */
-    public java.lang.String getCandiName() {
-      java.lang.Object ref = candiName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          candiName_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string candiName = 14;</code>
-     *
-     * <pre>
-     *被处理人名称
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getCandiNameBytes() {
-      java.lang.Object ref = candiName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        candiName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int CANDIHEADTS_FIELD_NUMBER = 15;
-    private long candiHeadTs_;
-    /**
-     * <code>optional uint64 candiHeadTs = 15;</code>
-     *
-     * <pre>
-     *被处理人头像时间戳
-     * </pre>
-     */
-    public boolean hasCandiHeadTs() {
-      return ((bitField0_ & 0x00004000) == 0x00004000);
-    }
-    /**
-     * <code>optional uint64 candiHeadTs = 15;</code>
-     *
-     * <pre>
-     *被处理人头像时间戳
-     * </pre>
-     */
-    public long getCandiHeadTs() {
-      return candiHeadTs_;
-    }
-
-    public static final int GROUPICON_FIELD_NUMBER = 16;
-    private java.lang.Object groupIcon_;
-    /**
-     * <code>optional string groupIcon = 16;</code>
-     *
-     * <pre>
-     *群头像
-     * </pre>
-     */
-    public boolean hasGroupIcon() {
-      return ((bitField0_ & 0x00008000) == 0x00008000);
-    }
-    /**
-     * <code>optional string groupIcon = 16;</code>
-     *
-     * <pre>
-     *群头像
-     * </pre>
-     */
-    public java.lang.String getGroupIcon() {
-      java.lang.Object ref = groupIcon_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          groupIcon_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string groupIcon = 16;</code>
-     *
-     * <pre>
-     *群头像
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getGroupIconBytes() {
-      java.lang.Object ref = groupIcon_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        groupIcon_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int FGOWNERHEADTS_FIELD_NUMBER = 17;
-    private long fgOwnerHeadTs_;
-    /**
-     * <code>optional uint64 fgOwnerHeadTs = 17;</code>
-     *
-     * <pre>
-     *群主头像时间戳
-     * </pre>
-     */
-    public boolean hasFgOwnerHeadTs() {
-      return ((bitField0_ & 0x00010000) == 0x00010000);
-    }
-    /**
-     * <code>optional uint64 fgOwnerHeadTs = 17;</code>
-     *
-     * <pre>
-     *群主头像时间戳
-     * </pre>
-     */
-    public long getFgOwnerHeadTs() {
-      return fgOwnerHeadTs_;
-    }
-
-    private void initFields() {
-      handler_ = 0L;
-      candidate_ = 0L;
-      fgId_ = 0L;
-      fgOwner_ = 0L;
-      handleResult_ = com.wali.live.proto.VFansCommonProto.ApplyJoinResult.UNDO;
-      memType_ = com.wali.live.proto.VFansCommonProto.GroupMemType.OWNER;
-      joinType_ = com.wali.live.proto.VFansCommonProto.JoinIntentionType.UNKNOWN;
-      referrer_ = 0L;
-      msg_ = "";
-      handleNotifyId_ = 0L;
-      groupName_ = "";
-      handlerName_ = "";
-      handlerHeadTs_ = 0L;
-      candiName_ = "";
-      candiHeadTs_ = 0L;
-      groupIcon_ = "";
-      fgOwnerHeadTs_ = 0L;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasHandler()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasCandidate()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasFgId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeUInt64(1, handler_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeUInt64(2, candidate_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeUInt64(3, fgId_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeUInt64(4, fgOwner_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeEnum(5, handleResult_.getNumber());
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeEnum(6, memType_.getNumber());
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeEnum(7, joinType_.getNumber());
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeUInt64(8, referrer_);
-      }
-      if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        output.writeBytes(9, getMsgBytes());
-      }
-      if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        output.writeUInt64(10, handleNotifyId_);
-      }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        output.writeBytes(11, getGroupNameBytes());
-      }
-      if (((bitField0_ & 0x00000800) == 0x00000800)) {
-        output.writeBytes(12, getHandlerNameBytes());
-      }
-      if (((bitField0_ & 0x00001000) == 0x00001000)) {
-        output.writeUInt64(13, handlerHeadTs_);
-      }
-      if (((bitField0_ & 0x00002000) == 0x00002000)) {
-        output.writeBytes(14, getCandiNameBytes());
-      }
-      if (((bitField0_ & 0x00004000) == 0x00004000)) {
-        output.writeUInt64(15, candiHeadTs_);
-      }
-      if (((bitField0_ & 0x00008000) == 0x00008000)) {
-        output.writeBytes(16, getGroupIconBytes());
-      }
-      if (((bitField0_ & 0x00010000) == 0x00010000)) {
-        output.writeUInt64(17, fgOwnerHeadTs_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, handler_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(2, candidate_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(3, fgId_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(4, fgOwner_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(5, handleResult_.getNumber());
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(6, memType_.getNumber());
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(7, joinType_.getNumber());
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(8, referrer_);
-      }
-      if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(9, getMsgBytes());
-      }
-      if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(10, handleNotifyId_);
-      }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(11, getGroupNameBytes());
-      }
-      if (((bitField0_ & 0x00000800) == 0x00000800)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(12, getHandlerNameBytes());
-      }
-      if (((bitField0_ & 0x00001000) == 0x00001000)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(13, handlerHeadTs_);
-      }
-      if (((bitField0_ & 0x00002000) == 0x00002000)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(14, getCandiNameBytes());
-      }
-      if (((bitField0_ & 0x00004000) == 0x00004000)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(15, candiHeadTs_);
-      }
-      if (((bitField0_ & 0x00008000) == 0x00008000)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(16, getGroupIconBytes());
-      }
-      if (((bitField0_ & 0x00010000) == 0x00010000)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(17, fgOwnerHeadTs_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.wali.live.proto.HandleJoinVFansGroupNotify}
-     *
-     * <pre>
-     *处理加群结果通知 HANDLE_JOIN = 3;//处理加群
-     * </pre>
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.HandleJoinVFansGroupNotify)
-        com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotifyOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_HandleJoinVFansGroupNotify_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_HandleJoinVFansGroupNotify_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify.class, com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify.Builder.class);
-      }
-
-      // Construct using com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        handler_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        candidate_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        fgId_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000004);
-        fgOwner_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000008);
-        handleResult_ = com.wali.live.proto.VFansCommonProto.ApplyJoinResult.UNDO;
-        bitField0_ = (bitField0_ & ~0x00000010);
-        memType_ = com.wali.live.proto.VFansCommonProto.GroupMemType.OWNER;
-        bitField0_ = (bitField0_ & ~0x00000020);
-        joinType_ = com.wali.live.proto.VFansCommonProto.JoinIntentionType.UNKNOWN;
-        bitField0_ = (bitField0_ & ~0x00000040);
-        referrer_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000080);
-        msg_ = "";
-        bitField0_ = (bitField0_ & ~0x00000100);
-        handleNotifyId_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000200);
-        groupName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000400);
-        handlerName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000800);
-        handlerHeadTs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00001000);
-        candiName_ = "";
-        bitField0_ = (bitField0_ & ~0x00002000);
-        candiHeadTs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00004000);
-        groupIcon_ = "";
-        bitField0_ = (bitField0_ & ~0x00008000);
-        fgOwnerHeadTs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00010000);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_HandleJoinVFansGroupNotify_descriptor;
-      }
-
-      public com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify getDefaultInstanceForType() {
-        return com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify.getDefaultInstance();
-      }
-
-      public com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify build() {
-        com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify buildPartial() {
-        com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify result = new com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.handler_ = handler_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.candidate_ = candidate_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.fgId_ = fgId_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.fgOwner_ = fgOwner_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.handleResult_ = handleResult_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        result.memType_ = memType_;
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000040;
-        }
-        result.joinType_ = joinType_;
-        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
-          to_bitField0_ |= 0x00000080;
-        }
-        result.referrer_ = referrer_;
-        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
-          to_bitField0_ |= 0x00000100;
-        }
-        result.msg_ = msg_;
-        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
-          to_bitField0_ |= 0x00000200;
-        }
-        result.handleNotifyId_ = handleNotifyId_;
-        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
-          to_bitField0_ |= 0x00000400;
-        }
-        result.groupName_ = groupName_;
-        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
-          to_bitField0_ |= 0x00000800;
-        }
-        result.handlerName_ = handlerName_;
-        if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
-          to_bitField0_ |= 0x00001000;
-        }
-        result.handlerHeadTs_ = handlerHeadTs_;
-        if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
-          to_bitField0_ |= 0x00002000;
-        }
-        result.candiName_ = candiName_;
-        if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
-          to_bitField0_ |= 0x00004000;
-        }
-        result.candiHeadTs_ = candiHeadTs_;
-        if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
-          to_bitField0_ |= 0x00008000;
-        }
-        result.groupIcon_ = groupIcon_;
-        if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
-          to_bitField0_ |= 0x00010000;
-        }
-        result.fgOwnerHeadTs_ = fgOwnerHeadTs_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify) {
-          return mergeFrom((com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify other) {
-        if (other == com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify.getDefaultInstance()) return this;
-        if (other.hasHandler()) {
-          setHandler(other.getHandler());
-        }
-        if (other.hasCandidate()) {
-          setCandidate(other.getCandidate());
-        }
-        if (other.hasFgId()) {
-          setFgId(other.getFgId());
-        }
-        if (other.hasFgOwner()) {
-          setFgOwner(other.getFgOwner());
-        }
-        if (other.hasHandleResult()) {
-          setHandleResult(other.getHandleResult());
-        }
-        if (other.hasMemType()) {
-          setMemType(other.getMemType());
-        }
-        if (other.hasJoinType()) {
-          setJoinType(other.getJoinType());
-        }
-        if (other.hasReferrer()) {
-          setReferrer(other.getReferrer());
-        }
-        if (other.hasMsg()) {
-          bitField0_ |= 0x00000100;
-          msg_ = other.msg_;
-          onChanged();
-        }
-        if (other.hasHandleNotifyId()) {
-          setHandleNotifyId(other.getHandleNotifyId());
-        }
-        if (other.hasGroupName()) {
-          bitField0_ |= 0x00000400;
-          groupName_ = other.groupName_;
-          onChanged();
-        }
-        if (other.hasHandlerName()) {
-          bitField0_ |= 0x00000800;
-          handlerName_ = other.handlerName_;
-          onChanged();
-        }
-        if (other.hasHandlerHeadTs()) {
-          setHandlerHeadTs(other.getHandlerHeadTs());
-        }
-        if (other.hasCandiName()) {
-          bitField0_ |= 0x00002000;
-          candiName_ = other.candiName_;
-          onChanged();
-        }
-        if (other.hasCandiHeadTs()) {
-          setCandiHeadTs(other.getCandiHeadTs());
-        }
-        if (other.hasGroupIcon()) {
-          bitField0_ |= 0x00008000;
-          groupIcon_ = other.groupIcon_;
-          onChanged();
-        }
-        if (other.hasFgOwnerHeadTs()) {
-          setFgOwnerHeadTs(other.getFgOwnerHeadTs());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (!hasHandler()) {
-          
-          return false;
-        }
-        if (!hasCandidate()) {
-          
-          return false;
-        }
-        if (!hasFgId()) {
-          
-          return false;
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.VFansProto.HandleJoinVFansGroupNotify) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private long handler_ ;
-      /**
-       * <code>required uint64 handler = 1;</code>
-       *
-       * <pre>
-       *处理人
-       * </pre>
-       */
-      public boolean hasHandler() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required uint64 handler = 1;</code>
-       *
-       * <pre>
-       *处理人
-       * </pre>
-       */
-      public long getHandler() {
-        return handler_;
-      }
-      /**
-       * <code>required uint64 handler = 1;</code>
-       *
-       * <pre>
-       *处理人
-       * </pre>
-       */
-      public Builder setHandler(long value) {
-        bitField0_ |= 0x00000001;
-        handler_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required uint64 handler = 1;</code>
-       *
-       * <pre>
-       *处理人
-       * </pre>
-       */
-      public Builder clearHandler() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        handler_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private long candidate_ ;
-      /**
-       * <code>required uint64 candidate = 2;</code>
-       *
-       * <pre>
-       *被处理人
-       * </pre>
-       */
-      public boolean hasCandidate() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>required uint64 candidate = 2;</code>
-       *
-       * <pre>
-       *被处理人
-       * </pre>
-       */
-      public long getCandidate() {
-        return candidate_;
-      }
-      /**
-       * <code>required uint64 candidate = 2;</code>
-       *
-       * <pre>
-       *被处理人
-       * </pre>
-       */
-      public Builder setCandidate(long value) {
-        bitField0_ |= 0x00000002;
-        candidate_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required uint64 candidate = 2;</code>
-       *
-       * <pre>
-       *被处理人
-       * </pre>
-       */
-      public Builder clearCandidate() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        candidate_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private long fgId_ ;
-      /**
-       * <code>required uint64 fgId = 3;</code>
-       *
-       * <pre>
-       *群id
-       * </pre>
-       */
-      public boolean hasFgId() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>required uint64 fgId = 3;</code>
-       *
-       * <pre>
-       *群id
-       * </pre>
-       */
-      public long getFgId() {
-        return fgId_;
-      }
-      /**
-       * <code>required uint64 fgId = 3;</code>
-       *
-       * <pre>
-       *群id
-       * </pre>
-       */
-      public Builder setFgId(long value) {
-        bitField0_ |= 0x00000004;
-        fgId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required uint64 fgId = 3;</code>
-       *
-       * <pre>
-       *群id
-       * </pre>
-       */
-      public Builder clearFgId() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        fgId_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private long fgOwner_ ;
-      /**
-       * <code>optional uint64 fgOwner = 4;</code>
-       *
-       * <pre>
-       *群主
-       * </pre>
-       */
-      public boolean hasFgOwner() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>optional uint64 fgOwner = 4;</code>
-       *
-       * <pre>
-       *群主
-       * </pre>
-       */
-      public long getFgOwner() {
-        return fgOwner_;
-      }
-      /**
-       * <code>optional uint64 fgOwner = 4;</code>
-       *
-       * <pre>
-       *群主
-       * </pre>
-       */
-      public Builder setFgOwner(long value) {
-        bitField0_ |= 0x00000008;
-        fgOwner_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 fgOwner = 4;</code>
-       *
-       * <pre>
-       *群主
-       * </pre>
-       */
-      public Builder clearFgOwner() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        fgOwner_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private com.wali.live.proto.VFansCommonProto.ApplyJoinResult handleResult_ = com.wali.live.proto.VFansCommonProto.ApplyJoinResult.UNDO;
-      /**
-       * <code>optional .com.wali.live.proto.ApplyJoinResult handleResult = 5;</code>
-       *
-       * <pre>
-       *处理结果
-       * </pre>
-       */
-      public boolean hasHandleResult() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      /**
-       * <code>optional .com.wali.live.proto.ApplyJoinResult handleResult = 5;</code>
-       *
-       * <pre>
-       *处理结果
-       * </pre>
-       */
-      public com.wali.live.proto.VFansCommonProto.ApplyJoinResult getHandleResult() {
-        return handleResult_;
-      }
-      /**
-       * <code>optional .com.wali.live.proto.ApplyJoinResult handleResult = 5;</code>
-       *
-       * <pre>
-       *处理结果
-       * </pre>
-       */
-      public Builder setHandleResult(com.wali.live.proto.VFansCommonProto.ApplyJoinResult value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000010;
-        handleResult_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional .com.wali.live.proto.ApplyJoinResult handleResult = 5;</code>
-       *
-       * <pre>
-       *处理结果
-       * </pre>
-       */
-      public Builder clearHandleResult() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        handleResult_ = com.wali.live.proto.VFansCommonProto.ApplyJoinResult.UNDO;
-        onChanged();
-        return this;
-      }
-
-      private com.wali.live.proto.VFansCommonProto.GroupMemType memType_ = com.wali.live.proto.VFansCommonProto.GroupMemType.OWNER;
-      /**
-       * <code>optional .com.wali.live.proto.GroupMemType memType = 6;</code>
-       *
-       * <pre>
-       *请求加群身份
-       * </pre>
-       */
-      public boolean hasMemType() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
-      }
-      /**
-       * <code>optional .com.wali.live.proto.GroupMemType memType = 6;</code>
-       *
-       * <pre>
-       *请求加群身份
-       * </pre>
-       */
-      public com.wali.live.proto.VFansCommonProto.GroupMemType getMemType() {
-        return memType_;
-      }
-      /**
-       * <code>optional .com.wali.live.proto.GroupMemType memType = 6;</code>
-       *
-       * <pre>
-       *请求加群身份
-       * </pre>
-       */
-      public Builder setMemType(com.wali.live.proto.VFansCommonProto.GroupMemType value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000020;
-        memType_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional .com.wali.live.proto.GroupMemType memType = 6;</code>
-       *
-       * <pre>
-       *请求加群身份
-       * </pre>
-       */
-      public Builder clearMemType() {
-        bitField0_ = (bitField0_ & ~0x00000020);
-        memType_ = com.wali.live.proto.VFansCommonProto.GroupMemType.OWNER;
-        onChanged();
-        return this;
-      }
-
-      private com.wali.live.proto.VFansCommonProto.JoinIntentionType joinType_ = com.wali.live.proto.VFansCommonProto.JoinIntentionType.UNKNOWN;
-      /**
-       * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
-       *
-       * <pre>
-       *加群动机，主动，受邀...
-       * </pre>
-       */
-      public boolean hasJoinType() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
-      }
-      /**
-       * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
-       *
-       * <pre>
-       *加群动机，主动，受邀...
-       * </pre>
-       */
-      public com.wali.live.proto.VFansCommonProto.JoinIntentionType getJoinType() {
-        return joinType_;
-      }
-      /**
-       * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
-       *
-       * <pre>
-       *加群动机，主动，受邀...
-       * </pre>
-       */
-      public Builder setJoinType(com.wali.live.proto.VFansCommonProto.JoinIntentionType value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000040;
-        joinType_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
-       *
-       * <pre>
-       *加群动机，主动，受邀...
-       * </pre>
-       */
-      public Builder clearJoinType() {
-        bitField0_ = (bitField0_ & ~0x00000040);
-        joinType_ = com.wali.live.proto.VFansCommonProto.JoinIntentionType.UNKNOWN;
-        onChanged();
-        return this;
-      }
-
-      private long referrer_ ;
-      /**
-       * <code>optional uint64 referrer = 8;</code>
-       *
-       * <pre>
-       *推荐人， 如果有就填
-       * </pre>
-       */
-      public boolean hasReferrer() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
-      }
-      /**
-       * <code>optional uint64 referrer = 8;</code>
-       *
-       * <pre>
-       *推荐人， 如果有就填
-       * </pre>
-       */
-      public long getReferrer() {
-        return referrer_;
-      }
-      /**
-       * <code>optional uint64 referrer = 8;</code>
-       *
-       * <pre>
-       *推荐人， 如果有就填
-       * </pre>
-       */
-      public Builder setReferrer(long value) {
-        bitField0_ |= 0x00000080;
-        referrer_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 referrer = 8;</code>
-       *
-       * <pre>
-       *推荐人， 如果有就填
-       * </pre>
-       */
-      public Builder clearReferrer() {
-        bitField0_ = (bitField0_ & ~0x00000080);
-        referrer_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object msg_ = "";
-      /**
-       * <code>optional string msg = 9;</code>
-       *
-       * <pre>
-       *文案，建议客户端在该值非空时使用
-       * </pre>
-       */
-      public boolean hasMsg() {
-        return ((bitField0_ & 0x00000100) == 0x00000100);
-      }
-      /**
-       * <code>optional string msg = 9;</code>
-       *
-       * <pre>
-       *文案，建议客户端在该值非空时使用
-       * </pre>
-       */
-      public java.lang.String getMsg() {
-        java.lang.Object ref = msg_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            msg_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string msg = 9;</code>
-       *
-       * <pre>
-       *文案，建议客户端在该值非空时使用
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getMsgBytes() {
-        java.lang.Object ref = msg_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          msg_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string msg = 9;</code>
-       *
-       * <pre>
-       *文案，建议客户端在该值非空时使用
-       * </pre>
-       */
-      public Builder setMsg(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
-        msg_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string msg = 9;</code>
-       *
-       * <pre>
-       *文案，建议客户端在该值非空时使用
-       * </pre>
-       */
-      public Builder clearMsg() {
-        bitField0_ = (bitField0_ & ~0x00000100);
-        msg_ = getDefaultInstance().getMsg();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string msg = 9;</code>
-       *
-       * <pre>
-       *文案，建议客户端在该值非空时使用
-       * </pre>
-       */
-      public Builder setMsgBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
-        msg_ = value;
-        onChanged();
-        return this;
-      }
-
-      private long handleNotifyId_ ;
-      /**
-       * <code>optional uint64 handleNotifyId = 10;</code>
-       *
-       * <pre>
-       *消息id
-       * </pre>
-       */
-      public boolean hasHandleNotifyId() {
-        return ((bitField0_ & 0x00000200) == 0x00000200);
-      }
-      /**
-       * <code>optional uint64 handleNotifyId = 10;</code>
-       *
-       * <pre>
-       *消息id
-       * </pre>
-       */
-      public long getHandleNotifyId() {
-        return handleNotifyId_;
-      }
-      /**
-       * <code>optional uint64 handleNotifyId = 10;</code>
-       *
-       * <pre>
-       *消息id
-       * </pre>
-       */
-      public Builder setHandleNotifyId(long value) {
-        bitField0_ |= 0x00000200;
-        handleNotifyId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 handleNotifyId = 10;</code>
-       *
-       * <pre>
-       *消息id
-       * </pre>
-       */
-      public Builder clearHandleNotifyId() {
-        bitField0_ = (bitField0_ & ~0x00000200);
-        handleNotifyId_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object groupName_ = "";
-      /**
-       * <code>optional string groupName = 11;</code>
-       *
-       * <pre>
-       *群名称
-       * </pre>
-       */
-      public boolean hasGroupName() {
-        return ((bitField0_ & 0x00000400) == 0x00000400);
-      }
-      /**
-       * <code>optional string groupName = 11;</code>
-       *
-       * <pre>
-       *群名称
-       * </pre>
-       */
-      public java.lang.String getGroupName() {
-        java.lang.Object ref = groupName_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            groupName_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string groupName = 11;</code>
-       *
-       * <pre>
-       *群名称
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getGroupNameBytes() {
-        java.lang.Object ref = groupName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          groupName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string groupName = 11;</code>
-       *
-       * <pre>
-       *群名称
-       * </pre>
-       */
-      public Builder setGroupName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000400;
-        groupName_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string groupName = 11;</code>
-       *
-       * <pre>
-       *群名称
-       * </pre>
-       */
-      public Builder clearGroupName() {
-        bitField0_ = (bitField0_ & ~0x00000400);
-        groupName_ = getDefaultInstance().getGroupName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string groupName = 11;</code>
-       *
-       * <pre>
-       *群名称
-       * </pre>
-       */
-      public Builder setGroupNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000400;
-        groupName_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object handlerName_ = "";
-      /**
-       * <code>optional string handlerName = 12;</code>
-       *
-       * <pre>
-       *处理人名称
-       * </pre>
-       */
-      public boolean hasHandlerName() {
-        return ((bitField0_ & 0x00000800) == 0x00000800);
-      }
-      /**
-       * <code>optional string handlerName = 12;</code>
-       *
-       * <pre>
-       *处理人名称
-       * </pre>
-       */
-      public java.lang.String getHandlerName() {
-        java.lang.Object ref = handlerName_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            handlerName_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string handlerName = 12;</code>
-       *
-       * <pre>
-       *处理人名称
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getHandlerNameBytes() {
-        java.lang.Object ref = handlerName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          handlerName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string handlerName = 12;</code>
-       *
-       * <pre>
-       *处理人名称
-       * </pre>
-       */
-      public Builder setHandlerName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000800;
-        handlerName_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string handlerName = 12;</code>
-       *
-       * <pre>
-       *处理人名称
-       * </pre>
-       */
-      public Builder clearHandlerName() {
-        bitField0_ = (bitField0_ & ~0x00000800);
-        handlerName_ = getDefaultInstance().getHandlerName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string handlerName = 12;</code>
-       *
-       * <pre>
-       *处理人名称
-       * </pre>
-       */
-      public Builder setHandlerNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000800;
-        handlerName_ = value;
-        onChanged();
-        return this;
-      }
-
-      private long handlerHeadTs_ ;
-      /**
-       * <code>optional uint64 handlerHeadTs = 13;</code>
-       *
-       * <pre>
-       *处理人头像时间戳
-       * </pre>
-       */
-      public boolean hasHandlerHeadTs() {
-        return ((bitField0_ & 0x00001000) == 0x00001000);
-      }
-      /**
-       * <code>optional uint64 handlerHeadTs = 13;</code>
-       *
-       * <pre>
-       *处理人头像时间戳
-       * </pre>
-       */
-      public long getHandlerHeadTs() {
-        return handlerHeadTs_;
-      }
-      /**
-       * <code>optional uint64 handlerHeadTs = 13;</code>
-       *
-       * <pre>
-       *处理人头像时间戳
-       * </pre>
-       */
-      public Builder setHandlerHeadTs(long value) {
-        bitField0_ |= 0x00001000;
-        handlerHeadTs_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 handlerHeadTs = 13;</code>
-       *
-       * <pre>
-       *处理人头像时间戳
-       * </pre>
-       */
-      public Builder clearHandlerHeadTs() {
-        bitField0_ = (bitField0_ & ~0x00001000);
-        handlerHeadTs_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object candiName_ = "";
-      /**
-       * <code>optional string candiName = 14;</code>
-       *
-       * <pre>
-       *被处理人名称
-       * </pre>
-       */
-      public boolean hasCandiName() {
-        return ((bitField0_ & 0x00002000) == 0x00002000);
-      }
-      /**
-       * <code>optional string candiName = 14;</code>
-       *
-       * <pre>
-       *被处理人名称
-       * </pre>
-       */
-      public java.lang.String getCandiName() {
-        java.lang.Object ref = candiName_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            candiName_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string candiName = 14;</code>
-       *
-       * <pre>
-       *被处理人名称
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getCandiNameBytes() {
-        java.lang.Object ref = candiName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          candiName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string candiName = 14;</code>
-       *
-       * <pre>
-       *被处理人名称
-       * </pre>
-       */
-      public Builder setCandiName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00002000;
-        candiName_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string candiName = 14;</code>
-       *
-       * <pre>
-       *被处理人名称
-       * </pre>
-       */
-      public Builder clearCandiName() {
-        bitField0_ = (bitField0_ & ~0x00002000);
-        candiName_ = getDefaultInstance().getCandiName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string candiName = 14;</code>
-       *
-       * <pre>
-       *被处理人名称
-       * </pre>
-       */
-      public Builder setCandiNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00002000;
-        candiName_ = value;
-        onChanged();
-        return this;
-      }
-
-      private long candiHeadTs_ ;
-      /**
-       * <code>optional uint64 candiHeadTs = 15;</code>
-       *
-       * <pre>
-       *被处理人头像时间戳
-       * </pre>
-       */
-      public boolean hasCandiHeadTs() {
-        return ((bitField0_ & 0x00004000) == 0x00004000);
-      }
-      /**
-       * <code>optional uint64 candiHeadTs = 15;</code>
-       *
-       * <pre>
-       *被处理人头像时间戳
-       * </pre>
-       */
-      public long getCandiHeadTs() {
-        return candiHeadTs_;
-      }
-      /**
-       * <code>optional uint64 candiHeadTs = 15;</code>
-       *
-       * <pre>
-       *被处理人头像时间戳
-       * </pre>
-       */
-      public Builder setCandiHeadTs(long value) {
-        bitField0_ |= 0x00004000;
-        candiHeadTs_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 candiHeadTs = 15;</code>
-       *
-       * <pre>
-       *被处理人头像时间戳
-       * </pre>
-       */
-      public Builder clearCandiHeadTs() {
-        bitField0_ = (bitField0_ & ~0x00004000);
-        candiHeadTs_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object groupIcon_ = "";
-      /**
-       * <code>optional string groupIcon = 16;</code>
-       *
-       * <pre>
-       *群头像
-       * </pre>
-       */
-      public boolean hasGroupIcon() {
-        return ((bitField0_ & 0x00008000) == 0x00008000);
-      }
-      /**
-       * <code>optional string groupIcon = 16;</code>
-       *
-       * <pre>
-       *群头像
-       * </pre>
-       */
-      public java.lang.String getGroupIcon() {
-        java.lang.Object ref = groupIcon_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            groupIcon_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string groupIcon = 16;</code>
-       *
-       * <pre>
-       *群头像
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getGroupIconBytes() {
-        java.lang.Object ref = groupIcon_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          groupIcon_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string groupIcon = 16;</code>
-       *
-       * <pre>
-       *群头像
-       * </pre>
-       */
-      public Builder setGroupIcon(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00008000;
-        groupIcon_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string groupIcon = 16;</code>
-       *
-       * <pre>
-       *群头像
-       * </pre>
-       */
-      public Builder clearGroupIcon() {
-        bitField0_ = (bitField0_ & ~0x00008000);
-        groupIcon_ = getDefaultInstance().getGroupIcon();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string groupIcon = 16;</code>
-       *
-       * <pre>
-       *群头像
-       * </pre>
-       */
-      public Builder setGroupIconBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00008000;
-        groupIcon_ = value;
-        onChanged();
-        return this;
-      }
-
-      private long fgOwnerHeadTs_ ;
-      /**
-       * <code>optional uint64 fgOwnerHeadTs = 17;</code>
-       *
-       * <pre>
-       *群主头像时间戳
-       * </pre>
-       */
-      public boolean hasFgOwnerHeadTs() {
-        return ((bitField0_ & 0x00010000) == 0x00010000);
-      }
-      /**
-       * <code>optional uint64 fgOwnerHeadTs = 17;</code>
-       *
-       * <pre>
-       *群主头像时间戳
-       * </pre>
-       */
-      public long getFgOwnerHeadTs() {
-        return fgOwnerHeadTs_;
-      }
-      /**
-       * <code>optional uint64 fgOwnerHeadTs = 17;</code>
-       *
-       * <pre>
-       *群主头像时间戳
-       * </pre>
-       */
-      public Builder setFgOwnerHeadTs(long value) {
-        bitField0_ |= 0x00010000;
-        fgOwnerHeadTs_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 fgOwnerHeadTs = 17;</code>
-       *
-       * <pre>
-       *群主头像时间戳
-       * </pre>
-       */
-      public Builder clearFgOwnerHeadTs() {
-        bitField0_ = (bitField0_ & ~0x00010000);
-        fgOwnerHeadTs_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.HandleJoinVFansGroupNotify)
-    }
-
-    static {
-      defaultInstance = new HandleJoinVFansGroupNotify(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.HandleJoinVFansGroupNotify)
-  }
-
-  public interface UpdateFansGroupMemNotifyOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UpdateFansGroupMemNotify)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required uint64 handler = 1;</code>
-     *
-     * <pre>
-     *处理人
-     * </pre>
-     */
-    boolean hasHandler();
-    /**
-     * <code>required uint64 handler = 1;</code>
-     *
-     * <pre>
-     *处理人
-     * </pre>
-     */
-    long getHandler();
-
-    /**
-     * <code>required uint64 candidate = 2;</code>
-     *
-     * <pre>
-     *被处理人
-     * </pre>
-     */
-    boolean hasCandidate();
-    /**
-     * <code>required uint64 candidate = 2;</code>
-     *
-     * <pre>
-     *被处理人
-     * </pre>
-     */
-    long getCandidate();
-
-    /**
-     * <code>required uint64 fgId = 3;</code>
-     *
-     * <pre>
-     *群id
-     * </pre>
-     */
-    boolean hasFgId();
-    /**
-     * <code>required uint64 fgId = 3;</code>
-     *
-     * <pre>
-     *群id
-     * </pre>
-     */
-    long getFgId();
-
-    /**
-     * <code>optional uint64 fgOwner = 4;</code>
-     *
-     * <pre>
-     *群主
-     * </pre>
-     */
-    boolean hasFgOwner();
-    /**
-     * <code>optional uint64 fgOwner = 4;</code>
-     *
-     * <pre>
-     *群主
-     * </pre>
-     */
-    long getFgOwner();
-
-    /**
-     * <code>optional uint64 ts = 5;</code>
-     *
-     * <pre>
-     *时间戳
-     * </pre>
-     */
-    boolean hasTs();
-    /**
-     * <code>optional uint64 ts = 5;</code>
-     *
-     * <pre>
-     *时间戳
-     * </pre>
-     */
-    long getTs();
-
-    /**
-     * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
-     *
-     * <pre>
-     *该成员新群信息
-     * </pre>
-     */
-    boolean hasFgMemInfo();
-    /**
-     * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
-     *
-     * <pre>
-     *该成员新群信息
-     * </pre>
-     */
-    com.wali.live.proto.VFansProto.VfansGroupMemInfo getFgMemInfo();
-    /**
-     * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
-     *
-     * <pre>
-     *该成员新群信息
-     * </pre>
-     */
-    com.wali.live.proto.VFansProto.VfansGroupMemInfoOrBuilder getFgMemInfoOrBuilder();
-
-    /**
-     * <code>optional string msg = 7;</code>
-     *
-     * <pre>
-     *文案，建议客户端在该值非空时使用
-     * </pre>
-     */
-    boolean hasMsg();
-    /**
-     * <code>optional string msg = 7;</code>
-     *
-     * <pre>
-     *文案，建议客户端在该值非空时使用
-     * </pre>
-     */
-    java.lang.String getMsg();
-    /**
-     * <code>optional string msg = 7;</code>
-     *
-     * <pre>
-     *文案，建议客户端在该值非空时使用
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getMsgBytes();
-
-    /**
-     * <code>optional string groupName = 8;</code>
-     *
-     * <pre>
-     *群名称
-     * </pre>
-     */
-    boolean hasGroupName();
-    /**
-     * <code>optional string groupName = 8;</code>
-     *
-     * <pre>
-     *群名称
-     * </pre>
-     */
-    java.lang.String getGroupName();
-    /**
-     * <code>optional string groupName = 8;</code>
-     *
-     * <pre>
-     *群名称
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getGroupNameBytes();
-
-    /**
-     * <code>optional string handlerName = 9;</code>
-     *
-     * <pre>
-     *处理人名称
-     * </pre>
-     */
-    boolean hasHandlerName();
-    /**
-     * <code>optional string handlerName = 9;</code>
-     *
-     * <pre>
-     *处理人名称
-     * </pre>
-     */
-    java.lang.String getHandlerName();
-    /**
-     * <code>optional string handlerName = 9;</code>
-     *
-     * <pre>
-     *处理人名称
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getHandlerNameBytes();
-
-    /**
-     * <code>optional uint64 handlerHeadTs = 10;</code>
-     *
-     * <pre>
-     *处理人头像时间戳
-     * </pre>
-     */
-    boolean hasHandlerHeadTs();
-    /**
-     * <code>optional uint64 handlerHeadTs = 10;</code>
-     *
-     * <pre>
-     *处理人头像时间戳
-     * </pre>
-     */
-    long getHandlerHeadTs();
-
-    /**
-     * <code>optional string candiName = 11;</code>
-     *
-     * <pre>
-     *被处理人名称
-     * </pre>
-     */
-    boolean hasCandiName();
-    /**
-     * <code>optional string candiName = 11;</code>
-     *
-     * <pre>
-     *被处理人名称
-     * </pre>
-     */
-    java.lang.String getCandiName();
-    /**
-     * <code>optional string candiName = 11;</code>
-     *
-     * <pre>
-     *被处理人名称
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getCandiNameBytes();
-
-    /**
-     * <code>optional uint64 candiHeadTs = 12;</code>
-     *
-     * <pre>
-     *被处理人头像时间戳
-     * </pre>
-     */
-    boolean hasCandiHeadTs();
-    /**
-     * <code>optional uint64 candiHeadTs = 12;</code>
-     *
-     * <pre>
-     *被处理人头像时间戳
-     * </pre>
-     */
-    long getCandiHeadTs();
-
-    /**
-     * <code>optional string groupIcon = 13;</code>
-     *
-     * <pre>
-     *群头像
-     * </pre>
-     */
-    boolean hasGroupIcon();
-    /**
-     * <code>optional string groupIcon = 13;</code>
-     *
-     * <pre>
-     *群头像
-     * </pre>
-     */
-    java.lang.String getGroupIcon();
-    /**
-     * <code>optional string groupIcon = 13;</code>
-     *
-     * <pre>
-     *群头像
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getGroupIconBytes();
-
-    /**
-     * <code>optional uint64 fgOwnerHeadTs = 14;</code>
-     *
-     * <pre>
-     *群主头像时间戳
-     * </pre>
-     */
-    boolean hasFgOwnerHeadTs();
-    /**
-     * <code>optional uint64 fgOwnerHeadTs = 14;</code>
-     *
-     * <pre>
-     *群主头像时间戳
-     * </pre>
-     */
-    long getFgOwnerHeadTs();
-  }
-  /**
-   * Protobuf type {@code com.wali.live.proto.UpdateFansGroupMemNotify}
-   *
-   * <pre>
-   *修改宠爱团成员通知 UPDATE_MEM = 5;//更新群成员信息
-   * </pre>
-   */
-  public static final class UpdateFansGroupMemNotify extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UpdateFansGroupMemNotify)
-      UpdateFansGroupMemNotifyOrBuilder {
-    // Use UpdateFansGroupMemNotify.newBuilder() to construct.
-    private UpdateFansGroupMemNotify(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private UpdateFansGroupMemNotify(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final UpdateFansGroupMemNotify defaultInstance;
-    public static UpdateFansGroupMemNotify getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public UpdateFansGroupMemNotify getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private UpdateFansGroupMemNotify(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              handler_ = input.readUInt64();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              candidate_ = input.readUInt64();
-              break;
-            }
-            case 24: {
-              bitField0_ |= 0x00000004;
-              fgId_ = input.readUInt64();
-              break;
-            }
-            case 32: {
-              bitField0_ |= 0x00000008;
-              fgOwner_ = input.readUInt64();
-              break;
-            }
-            case 40: {
-              bitField0_ |= 0x00000010;
-              ts_ = input.readUInt64();
-              break;
-            }
-            case 50: {
-              com.wali.live.proto.VFansProto.VfansGroupMemInfo.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000020) == 0x00000020)) {
-                subBuilder = fgMemInfo_.toBuilder();
-              }
-              fgMemInfo_ = input.readMessage(com.wali.live.proto.VFansProto.VfansGroupMemInfo.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(fgMemInfo_);
-                fgMemInfo_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000020;
-              break;
-            }
-            case 58: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000040;
-              msg_ = bs;
-              break;
-            }
-            case 66: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000080;
-              groupName_ = bs;
-              break;
-            }
-            case 74: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000100;
-              handlerName_ = bs;
-              break;
-            }
-            case 80: {
-              bitField0_ |= 0x00000200;
-              handlerHeadTs_ = input.readUInt64();
-              break;
-            }
-            case 90: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000400;
-              candiName_ = bs;
-              break;
-            }
-            case 96: {
-              bitField0_ |= 0x00000800;
-              candiHeadTs_ = input.readUInt64();
-              break;
-            }
-            case 106: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00001000;
-              groupIcon_ = bs;
-              break;
-            }
-            case 112: {
-              bitField0_ |= 0x00002000;
-              fgOwnerHeadTs_ = input.readUInt64();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify.class, com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<UpdateFansGroupMemNotify> PARSER =
-        new com.google.protobuf.AbstractParser<UpdateFansGroupMemNotify>() {
-      public UpdateFansGroupMemNotify parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new UpdateFansGroupMemNotify(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<UpdateFansGroupMemNotify> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int HANDLER_FIELD_NUMBER = 1;
-    private long handler_;
-    /**
-     * <code>required uint64 handler = 1;</code>
-     *
-     * <pre>
-     *处理人
-     * </pre>
-     */
-    public boolean hasHandler() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required uint64 handler = 1;</code>
-     *
-     * <pre>
-     *处理人
-     * </pre>
-     */
-    public long getHandler() {
-      return handler_;
-    }
-
-    public static final int CANDIDATE_FIELD_NUMBER = 2;
-    private long candidate_;
-    /**
-     * <code>required uint64 candidate = 2;</code>
-     *
-     * <pre>
-     *被处理人
-     * </pre>
-     */
-    public boolean hasCandidate() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>required uint64 candidate = 2;</code>
-     *
-     * <pre>
-     *被处理人
-     * </pre>
-     */
-    public long getCandidate() {
-      return candidate_;
-    }
-
-    public static final int FGID_FIELD_NUMBER = 3;
-    private long fgId_;
-    /**
-     * <code>required uint64 fgId = 3;</code>
-     *
-     * <pre>
-     *群id
-     * </pre>
-     */
-    public boolean hasFgId() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>required uint64 fgId = 3;</code>
-     *
-     * <pre>
-     *群id
-     * </pre>
-     */
-    public long getFgId() {
-      return fgId_;
-    }
-
-    public static final int FGOWNER_FIELD_NUMBER = 4;
-    private long fgOwner_;
-    /**
-     * <code>optional uint64 fgOwner = 4;</code>
-     *
-     * <pre>
-     *群主
-     * </pre>
-     */
-    public boolean hasFgOwner() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>optional uint64 fgOwner = 4;</code>
-     *
-     * <pre>
-     *群主
-     * </pre>
-     */
-    public long getFgOwner() {
-      return fgOwner_;
-    }
-
-    public static final int TS_FIELD_NUMBER = 5;
-    private long ts_;
-    /**
-     * <code>optional uint64 ts = 5;</code>
-     *
-     * <pre>
-     *时间戳
-     * </pre>
-     */
-    public boolean hasTs() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    /**
-     * <code>optional uint64 ts = 5;</code>
-     *
-     * <pre>
-     *时间戳
-     * </pre>
-     */
-    public long getTs() {
-      return ts_;
-    }
-
-    public static final int FGMEMINFO_FIELD_NUMBER = 6;
-    private com.wali.live.proto.VFansProto.VfansGroupMemInfo fgMemInfo_;
-    /**
-     * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
-     *
-     * <pre>
-     *该成员新群信息
-     * </pre>
-     */
-    public boolean hasFgMemInfo() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
-    }
-    /**
-     * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
-     *
-     * <pre>
-     *该成员新群信息
-     * </pre>
-     */
-    public com.wali.live.proto.VFansProto.VfansGroupMemInfo getFgMemInfo() {
-      return fgMemInfo_;
-    }
-    /**
-     * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
-     *
-     * <pre>
-     *该成员新群信息
-     * </pre>
-     */
-    public com.wali.live.proto.VFansProto.VfansGroupMemInfoOrBuilder getFgMemInfoOrBuilder() {
-      return fgMemInfo_;
-    }
-
-    public static final int MSG_FIELD_NUMBER = 7;
-    private java.lang.Object msg_;
-    /**
-     * <code>optional string msg = 7;</code>
-     *
-     * <pre>
-     *文案，建议客户端在该值非空时使用
-     * </pre>
-     */
-    public boolean hasMsg() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
-    }
-    /**
-     * <code>optional string msg = 7;</code>
-     *
-     * <pre>
-     *文案，建议客户端在该值非空时使用
-     * </pre>
-     */
-    public java.lang.String getMsg() {
-      java.lang.Object ref = msg_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          msg_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string msg = 7;</code>
-     *
-     * <pre>
-     *文案，建议客户端在该值非空时使用
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getMsgBytes() {
-      java.lang.Object ref = msg_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        msg_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int GROUPNAME_FIELD_NUMBER = 8;
-    private java.lang.Object groupName_;
-    /**
-     * <code>optional string groupName = 8;</code>
-     *
-     * <pre>
-     *群名称
-     * </pre>
-     */
-    public boolean hasGroupName() {
-      return ((bitField0_ & 0x00000080) == 0x00000080);
-    }
-    /**
-     * <code>optional string groupName = 8;</code>
-     *
-     * <pre>
-     *群名称
-     * </pre>
-     */
-    public java.lang.String getGroupName() {
-      java.lang.Object ref = groupName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          groupName_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string groupName = 8;</code>
-     *
-     * <pre>
-     *群名称
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getGroupNameBytes() {
-      java.lang.Object ref = groupName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        groupName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int HANDLERNAME_FIELD_NUMBER = 9;
-    private java.lang.Object handlerName_;
-    /**
-     * <code>optional string handlerName = 9;</code>
-     *
-     * <pre>
-     *处理人名称
-     * </pre>
-     */
-    public boolean hasHandlerName() {
-      return ((bitField0_ & 0x00000100) == 0x00000100);
-    }
-    /**
-     * <code>optional string handlerName = 9;</code>
-     *
-     * <pre>
-     *处理人名称
-     * </pre>
-     */
-    public java.lang.String getHandlerName() {
-      java.lang.Object ref = handlerName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          handlerName_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string handlerName = 9;</code>
-     *
-     * <pre>
-     *处理人名称
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getHandlerNameBytes() {
-      java.lang.Object ref = handlerName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        handlerName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int HANDLERHEADTS_FIELD_NUMBER = 10;
-    private long handlerHeadTs_;
-    /**
-     * <code>optional uint64 handlerHeadTs = 10;</code>
-     *
-     * <pre>
-     *处理人头像时间戳
-     * </pre>
-     */
-    public boolean hasHandlerHeadTs() {
-      return ((bitField0_ & 0x00000200) == 0x00000200);
-    }
-    /**
-     * <code>optional uint64 handlerHeadTs = 10;</code>
-     *
-     * <pre>
-     *处理人头像时间戳
-     * </pre>
-     */
-    public long getHandlerHeadTs() {
-      return handlerHeadTs_;
-    }
-
-    public static final int CANDINAME_FIELD_NUMBER = 11;
-    private java.lang.Object candiName_;
-    /**
-     * <code>optional string candiName = 11;</code>
-     *
-     * <pre>
-     *被处理人名称
-     * </pre>
-     */
-    public boolean hasCandiName() {
-      return ((bitField0_ & 0x00000400) == 0x00000400);
-    }
-    /**
-     * <code>optional string candiName = 11;</code>
-     *
-     * <pre>
-     *被处理人名称
-     * </pre>
-     */
-    public java.lang.String getCandiName() {
-      java.lang.Object ref = candiName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          candiName_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string candiName = 11;</code>
-     *
-     * <pre>
-     *被处理人名称
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getCandiNameBytes() {
-      java.lang.Object ref = candiName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        candiName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int CANDIHEADTS_FIELD_NUMBER = 12;
-    private long candiHeadTs_;
-    /**
-     * <code>optional uint64 candiHeadTs = 12;</code>
-     *
-     * <pre>
-     *被处理人头像时间戳
-     * </pre>
-     */
-    public boolean hasCandiHeadTs() {
-      return ((bitField0_ & 0x00000800) == 0x00000800);
-    }
-    /**
-     * <code>optional uint64 candiHeadTs = 12;</code>
-     *
-     * <pre>
-     *被处理人头像时间戳
-     * </pre>
-     */
-    public long getCandiHeadTs() {
-      return candiHeadTs_;
-    }
-
-    public static final int GROUPICON_FIELD_NUMBER = 13;
-    private java.lang.Object groupIcon_;
-    /**
-     * <code>optional string groupIcon = 13;</code>
-     *
-     * <pre>
-     *群头像
-     * </pre>
-     */
-    public boolean hasGroupIcon() {
-      return ((bitField0_ & 0x00001000) == 0x00001000);
-    }
-    /**
-     * <code>optional string groupIcon = 13;</code>
-     *
-     * <pre>
-     *群头像
-     * </pre>
-     */
-    public java.lang.String getGroupIcon() {
-      java.lang.Object ref = groupIcon_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          groupIcon_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string groupIcon = 13;</code>
-     *
-     * <pre>
-     *群头像
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getGroupIconBytes() {
-      java.lang.Object ref = groupIcon_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        groupIcon_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int FGOWNERHEADTS_FIELD_NUMBER = 14;
-    private long fgOwnerHeadTs_;
-    /**
-     * <code>optional uint64 fgOwnerHeadTs = 14;</code>
-     *
-     * <pre>
-     *群主头像时间戳
-     * </pre>
-     */
-    public boolean hasFgOwnerHeadTs() {
-      return ((bitField0_ & 0x00002000) == 0x00002000);
-    }
-    /**
-     * <code>optional uint64 fgOwnerHeadTs = 14;</code>
-     *
-     * <pre>
-     *群主头像时间戳
-     * </pre>
-     */
-    public long getFgOwnerHeadTs() {
-      return fgOwnerHeadTs_;
-    }
-
-    private void initFields() {
-      handler_ = 0L;
-      candidate_ = 0L;
-      fgId_ = 0L;
-      fgOwner_ = 0L;
-      ts_ = 0L;
-      fgMemInfo_ = com.wali.live.proto.VFansProto.VfansGroupMemInfo.getDefaultInstance();
-      msg_ = "";
-      groupName_ = "";
-      handlerName_ = "";
-      handlerHeadTs_ = 0L;
-      candiName_ = "";
-      candiHeadTs_ = 0L;
-      groupIcon_ = "";
-      fgOwnerHeadTs_ = 0L;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasHandler()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasCandidate()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasFgId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (hasFgMemInfo()) {
-        if (!getFgMemInfo().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeUInt64(1, handler_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeUInt64(2, candidate_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeUInt64(3, fgId_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeUInt64(4, fgOwner_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeUInt64(5, ts_);
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeMessage(6, fgMemInfo_);
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeBytes(7, getMsgBytes());
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeBytes(8, getGroupNameBytes());
-      }
-      if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        output.writeBytes(9, getHandlerNameBytes());
-      }
-      if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        output.writeUInt64(10, handlerHeadTs_);
-      }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        output.writeBytes(11, getCandiNameBytes());
-      }
-      if (((bitField0_ & 0x00000800) == 0x00000800)) {
-        output.writeUInt64(12, candiHeadTs_);
-      }
-      if (((bitField0_ & 0x00001000) == 0x00001000)) {
-        output.writeBytes(13, getGroupIconBytes());
-      }
-      if (((bitField0_ & 0x00002000) == 0x00002000)) {
-        output.writeUInt64(14, fgOwnerHeadTs_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, handler_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(2, candidate_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(3, fgId_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(4, fgOwner_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(5, ts_);
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, fgMemInfo_);
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(7, getMsgBytes());
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(8, getGroupNameBytes());
-      }
-      if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(9, getHandlerNameBytes());
-      }
-      if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(10, handlerHeadTs_);
-      }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(11, getCandiNameBytes());
-      }
-      if (((bitField0_ & 0x00000800) == 0x00000800)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(12, candiHeadTs_);
-      }
-      if (((bitField0_ & 0x00001000) == 0x00001000)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(13, getGroupIconBytes());
-      }
-      if (((bitField0_ & 0x00002000) == 0x00002000)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(14, fgOwnerHeadTs_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.wali.live.proto.UpdateFansGroupMemNotify}
-     *
-     * <pre>
-     *修改宠爱团成员通知 UPDATE_MEM = 5;//更新群成员信息
-     * </pre>
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UpdateFansGroupMemNotify)
-        com.wali.live.proto.VFansProto.UpdateFansGroupMemNotifyOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify.class, com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify.Builder.class);
-      }
-
-      // Construct using com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getFgMemInfoFieldBuilder();
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        handler_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        candidate_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        fgId_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000004);
-        fgOwner_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000008);
-        ts_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000010);
-        if (fgMemInfoBuilder_ == null) {
-          fgMemInfo_ = com.wali.live.proto.VFansProto.VfansGroupMemInfo.getDefaultInstance();
-        } else {
-          fgMemInfoBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000020);
-        msg_ = "";
-        bitField0_ = (bitField0_ & ~0x00000040);
-        groupName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000080);
-        handlerName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000100);
-        handlerHeadTs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000200);
-        candiName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000400);
-        candiHeadTs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000800);
-        groupIcon_ = "";
-        bitField0_ = (bitField0_ & ~0x00001000);
-        fgOwnerHeadTs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00002000);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_descriptor;
-      }
-
-      public com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify getDefaultInstanceForType() {
-        return com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify.getDefaultInstance();
-      }
-
-      public com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify build() {
-        com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify buildPartial() {
-        com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify result = new com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.handler_ = handler_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.candidate_ = candidate_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.fgId_ = fgId_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.fgOwner_ = fgOwner_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.ts_ = ts_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        if (fgMemInfoBuilder_ == null) {
-          result.fgMemInfo_ = fgMemInfo_;
-        } else {
-          result.fgMemInfo_ = fgMemInfoBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000040;
-        }
-        result.msg_ = msg_;
-        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
-          to_bitField0_ |= 0x00000080;
-        }
-        result.groupName_ = groupName_;
-        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
-          to_bitField0_ |= 0x00000100;
-        }
-        result.handlerName_ = handlerName_;
-        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
-          to_bitField0_ |= 0x00000200;
-        }
-        result.handlerHeadTs_ = handlerHeadTs_;
-        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
-          to_bitField0_ |= 0x00000400;
-        }
-        result.candiName_ = candiName_;
-        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
-          to_bitField0_ |= 0x00000800;
-        }
-        result.candiHeadTs_ = candiHeadTs_;
-        if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
-          to_bitField0_ |= 0x00001000;
-        }
-        result.groupIcon_ = groupIcon_;
-        if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
-          to_bitField0_ |= 0x00002000;
-        }
-        result.fgOwnerHeadTs_ = fgOwnerHeadTs_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify) {
-          return mergeFrom((com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify other) {
-        if (other == com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify.getDefaultInstance()) return this;
-        if (other.hasHandler()) {
-          setHandler(other.getHandler());
-        }
-        if (other.hasCandidate()) {
-          setCandidate(other.getCandidate());
-        }
-        if (other.hasFgId()) {
-          setFgId(other.getFgId());
-        }
-        if (other.hasFgOwner()) {
-          setFgOwner(other.getFgOwner());
-        }
-        if (other.hasTs()) {
-          setTs(other.getTs());
-        }
-        if (other.hasFgMemInfo()) {
-          mergeFgMemInfo(other.getFgMemInfo());
-        }
-        if (other.hasMsg()) {
-          bitField0_ |= 0x00000040;
-          msg_ = other.msg_;
-          onChanged();
-        }
-        if (other.hasGroupName()) {
-          bitField0_ |= 0x00000080;
-          groupName_ = other.groupName_;
-          onChanged();
-        }
-        if (other.hasHandlerName()) {
-          bitField0_ |= 0x00000100;
-          handlerName_ = other.handlerName_;
-          onChanged();
-        }
-        if (other.hasHandlerHeadTs()) {
-          setHandlerHeadTs(other.getHandlerHeadTs());
-        }
-        if (other.hasCandiName()) {
-          bitField0_ |= 0x00000400;
-          candiName_ = other.candiName_;
-          onChanged();
-        }
-        if (other.hasCandiHeadTs()) {
-          setCandiHeadTs(other.getCandiHeadTs());
-        }
-        if (other.hasGroupIcon()) {
-          bitField0_ |= 0x00001000;
-          groupIcon_ = other.groupIcon_;
-          onChanged();
-        }
-        if (other.hasFgOwnerHeadTs()) {
-          setFgOwnerHeadTs(other.getFgOwnerHeadTs());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (!hasHandler()) {
-          
-          return false;
-        }
-        if (!hasCandidate()) {
-          
-          return false;
-        }
-        if (!hasFgId()) {
-          
-          return false;
-        }
-        if (hasFgMemInfo()) {
-          if (!getFgMemInfo().isInitialized()) {
-            
-            return false;
-          }
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private long handler_ ;
-      /**
-       * <code>required uint64 handler = 1;</code>
-       *
-       * <pre>
-       *处理人
-       * </pre>
-       */
-      public boolean hasHandler() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required uint64 handler = 1;</code>
-       *
-       * <pre>
-       *处理人
-       * </pre>
-       */
-      public long getHandler() {
-        return handler_;
-      }
-      /**
-       * <code>required uint64 handler = 1;</code>
-       *
-       * <pre>
-       *处理人
-       * </pre>
-       */
-      public Builder setHandler(long value) {
-        bitField0_ |= 0x00000001;
-        handler_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required uint64 handler = 1;</code>
-       *
-       * <pre>
-       *处理人
-       * </pre>
-       */
-      public Builder clearHandler() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        handler_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private long candidate_ ;
-      /**
-       * <code>required uint64 candidate = 2;</code>
-       *
-       * <pre>
-       *被处理人
-       * </pre>
-       */
-      public boolean hasCandidate() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>required uint64 candidate = 2;</code>
-       *
-       * <pre>
-       *被处理人
-       * </pre>
-       */
-      public long getCandidate() {
-        return candidate_;
-      }
-      /**
-       * <code>required uint64 candidate = 2;</code>
-       *
-       * <pre>
-       *被处理人
-       * </pre>
-       */
-      public Builder setCandidate(long value) {
-        bitField0_ |= 0x00000002;
-        candidate_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required uint64 candidate = 2;</code>
-       *
-       * <pre>
-       *被处理人
-       * </pre>
-       */
-      public Builder clearCandidate() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        candidate_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private long fgId_ ;
-      /**
-       * <code>required uint64 fgId = 3;</code>
-       *
-       * <pre>
-       *群id
-       * </pre>
-       */
-      public boolean hasFgId() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>required uint64 fgId = 3;</code>
-       *
-       * <pre>
-       *群id
-       * </pre>
-       */
-      public long getFgId() {
-        return fgId_;
-      }
-      /**
-       * <code>required uint64 fgId = 3;</code>
-       *
-       * <pre>
-       *群id
-       * </pre>
-       */
-      public Builder setFgId(long value) {
-        bitField0_ |= 0x00000004;
-        fgId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required uint64 fgId = 3;</code>
-       *
-       * <pre>
-       *群id
-       * </pre>
-       */
-      public Builder clearFgId() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        fgId_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private long fgOwner_ ;
-      /**
-       * <code>optional uint64 fgOwner = 4;</code>
-       *
-       * <pre>
-       *群主
-       * </pre>
-       */
-      public boolean hasFgOwner() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>optional uint64 fgOwner = 4;</code>
-       *
-       * <pre>
-       *群主
-       * </pre>
-       */
-      public long getFgOwner() {
-        return fgOwner_;
-      }
-      /**
-       * <code>optional uint64 fgOwner = 4;</code>
-       *
-       * <pre>
-       *群主
-       * </pre>
-       */
-      public Builder setFgOwner(long value) {
-        bitField0_ |= 0x00000008;
-        fgOwner_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 fgOwner = 4;</code>
-       *
-       * <pre>
-       *群主
-       * </pre>
-       */
-      public Builder clearFgOwner() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        fgOwner_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private long ts_ ;
-      /**
-       * <code>optional uint64 ts = 5;</code>
-       *
-       * <pre>
-       *时间戳
-       * </pre>
-       */
-      public boolean hasTs() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      /**
-       * <code>optional uint64 ts = 5;</code>
-       *
-       * <pre>
-       *时间戳
-       * </pre>
-       */
-      public long getTs() {
-        return ts_;
-      }
-      /**
-       * <code>optional uint64 ts = 5;</code>
-       *
-       * <pre>
-       *时间戳
-       * </pre>
-       */
-      public Builder setTs(long value) {
-        bitField0_ |= 0x00000010;
-        ts_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 ts = 5;</code>
-       *
-       * <pre>
-       *时间戳
-       * </pre>
-       */
-      public Builder clearTs() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        ts_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private com.wali.live.proto.VFansProto.VfansGroupMemInfo fgMemInfo_ = com.wali.live.proto.VFansProto.VfansGroupMemInfo.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          com.wali.live.proto.VFansProto.VfansGroupMemInfo, com.wali.live.proto.VFansProto.VfansGroupMemInfo.Builder, com.wali.live.proto.VFansProto.VfansGroupMemInfoOrBuilder> fgMemInfoBuilder_;
-      /**
-       * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
-       *
-       * <pre>
-       *该成员新群信息
-       * </pre>
-       */
-      public boolean hasFgMemInfo() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
-      }
-      /**
-       * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
-       *
-       * <pre>
-       *该成员新群信息
-       * </pre>
-       */
-      public com.wali.live.proto.VFansProto.VfansGroupMemInfo getFgMemInfo() {
-        if (fgMemInfoBuilder_ == null) {
-          return fgMemInfo_;
-        } else {
-          return fgMemInfoBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
-       *
-       * <pre>
-       *该成员新群信息
-       * </pre>
-       */
-      public Builder setFgMemInfo(com.wali.live.proto.VFansProto.VfansGroupMemInfo value) {
-        if (fgMemInfoBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          fgMemInfo_ = value;
-          onChanged();
-        } else {
-          fgMemInfoBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000020;
-        return this;
-      }
-      /**
-       * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
-       *
-       * <pre>
-       *该成员新群信息
-       * </pre>
-       */
-      public Builder setFgMemInfo(
-          com.wali.live.proto.VFansProto.VfansGroupMemInfo.Builder builderForValue) {
-        if (fgMemInfoBuilder_ == null) {
-          fgMemInfo_ = builderForValue.build();
-          onChanged();
-        } else {
-          fgMemInfoBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000020;
-        return this;
-      }
-      /**
-       * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
-       *
-       * <pre>
-       *该成员新群信息
-       * </pre>
-       */
-      public Builder mergeFgMemInfo(com.wali.live.proto.VFansProto.VfansGroupMemInfo value) {
-        if (fgMemInfoBuilder_ == null) {
-          if (((bitField0_ & 0x00000020) == 0x00000020) &&
-              fgMemInfo_ != com.wali.live.proto.VFansProto.VfansGroupMemInfo.getDefaultInstance()) {
-            fgMemInfo_ =
-              com.wali.live.proto.VFansProto.VfansGroupMemInfo.newBuilder(fgMemInfo_).mergeFrom(value).buildPartial();
-          } else {
-            fgMemInfo_ = value;
-          }
-          onChanged();
-        } else {
-          fgMemInfoBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000020;
-        return this;
-      }
-      /**
-       * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
-       *
-       * <pre>
-       *该成员新群信息
-       * </pre>
-       */
-      public Builder clearFgMemInfo() {
-        if (fgMemInfoBuilder_ == null) {
-          fgMemInfo_ = com.wali.live.proto.VFansProto.VfansGroupMemInfo.getDefaultInstance();
-          onChanged();
-        } else {
-          fgMemInfoBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000020);
-        return this;
-      }
-      /**
-       * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
-       *
-       * <pre>
-       *该成员新群信息
-       * </pre>
-       */
-      public com.wali.live.proto.VFansProto.VfansGroupMemInfo.Builder getFgMemInfoBuilder() {
-        bitField0_ |= 0x00000020;
-        onChanged();
-        return getFgMemInfoFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
-       *
-       * <pre>
-       *该成员新群信息
-       * </pre>
-       */
-      public com.wali.live.proto.VFansProto.VfansGroupMemInfoOrBuilder getFgMemInfoOrBuilder() {
-        if (fgMemInfoBuilder_ != null) {
-          return fgMemInfoBuilder_.getMessageOrBuilder();
-        } else {
-          return fgMemInfo_;
-        }
-      }
-      /**
-       * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
-       *
-       * <pre>
-       *该成员新群信息
-       * </pre>
-       */
-      private com.google.protobuf.SingleFieldBuilder<
-          com.wali.live.proto.VFansProto.VfansGroupMemInfo, com.wali.live.proto.VFansProto.VfansGroupMemInfo.Builder, com.wali.live.proto.VFansProto.VfansGroupMemInfoOrBuilder> 
-          getFgMemInfoFieldBuilder() {
-        if (fgMemInfoBuilder_ == null) {
-          fgMemInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.wali.live.proto.VFansProto.VfansGroupMemInfo, com.wali.live.proto.VFansProto.VfansGroupMemInfo.Builder, com.wali.live.proto.VFansProto.VfansGroupMemInfoOrBuilder>(
-                  getFgMemInfo(),
-                  getParentForChildren(),
-                  isClean());
-          fgMemInfo_ = null;
-        }
-        return fgMemInfoBuilder_;
-      }
-
-      private java.lang.Object msg_ = "";
-      /**
-       * <code>optional string msg = 7;</code>
-       *
-       * <pre>
-       *文案，建议客户端在该值非空时使用
-       * </pre>
-       */
-      public boolean hasMsg() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
-      }
-      /**
-       * <code>optional string msg = 7;</code>
-       *
-       * <pre>
-       *文案，建议客户端在该值非空时使用
-       * </pre>
-       */
-      public java.lang.String getMsg() {
-        java.lang.Object ref = msg_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            msg_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string msg = 7;</code>
-       *
-       * <pre>
-       *文案，建议客户端在该值非空时使用
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getMsgBytes() {
-        java.lang.Object ref = msg_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          msg_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string msg = 7;</code>
-       *
-       * <pre>
-       *文案，建议客户端在该值非空时使用
-       * </pre>
-       */
-      public Builder setMsg(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-        msg_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string msg = 7;</code>
-       *
-       * <pre>
-       *文案，建议客户端在该值非空时使用
-       * </pre>
-       */
-      public Builder clearMsg() {
-        bitField0_ = (bitField0_ & ~0x00000040);
-        msg_ = getDefaultInstance().getMsg();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string msg = 7;</code>
-       *
-       * <pre>
-       *文案，建议客户端在该值非空时使用
-       * </pre>
-       */
-      public Builder setMsgBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-        msg_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object groupName_ = "";
-      /**
-       * <code>optional string groupName = 8;</code>
-       *
-       * <pre>
-       *群名称
-       * </pre>
-       */
-      public boolean hasGroupName() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
-      }
-      /**
-       * <code>optional string groupName = 8;</code>
-       *
-       * <pre>
-       *群名称
-       * </pre>
-       */
-      public java.lang.String getGroupName() {
-        java.lang.Object ref = groupName_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            groupName_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string groupName = 8;</code>
-       *
-       * <pre>
-       *群名称
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getGroupNameBytes() {
-        java.lang.Object ref = groupName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          groupName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string groupName = 8;</code>
-       *
-       * <pre>
-       *群名称
-       * </pre>
-       */
-      public Builder setGroupName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000080;
-        groupName_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string groupName = 8;</code>
-       *
-       * <pre>
-       *群名称
-       * </pre>
-       */
-      public Builder clearGroupName() {
-        bitField0_ = (bitField0_ & ~0x00000080);
-        groupName_ = getDefaultInstance().getGroupName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string groupName = 8;</code>
-       *
-       * <pre>
-       *群名称
-       * </pre>
-       */
-      public Builder setGroupNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000080;
-        groupName_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object handlerName_ = "";
-      /**
-       * <code>optional string handlerName = 9;</code>
-       *
-       * <pre>
-       *处理人名称
-       * </pre>
-       */
-      public boolean hasHandlerName() {
-        return ((bitField0_ & 0x00000100) == 0x00000100);
-      }
-      /**
-       * <code>optional string handlerName = 9;</code>
-       *
-       * <pre>
-       *处理人名称
-       * </pre>
-       */
-      public java.lang.String getHandlerName() {
-        java.lang.Object ref = handlerName_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            handlerName_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string handlerName = 9;</code>
-       *
-       * <pre>
-       *处理人名称
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getHandlerNameBytes() {
-        java.lang.Object ref = handlerName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          handlerName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string handlerName = 9;</code>
-       *
-       * <pre>
-       *处理人名称
-       * </pre>
-       */
-      public Builder setHandlerName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
-        handlerName_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string handlerName = 9;</code>
-       *
-       * <pre>
-       *处理人名称
-       * </pre>
-       */
-      public Builder clearHandlerName() {
-        bitField0_ = (bitField0_ & ~0x00000100);
-        handlerName_ = getDefaultInstance().getHandlerName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string handlerName = 9;</code>
-       *
-       * <pre>
-       *处理人名称
-       * </pre>
-       */
-      public Builder setHandlerNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
-        handlerName_ = value;
-        onChanged();
-        return this;
-      }
-
-      private long handlerHeadTs_ ;
-      /**
-       * <code>optional uint64 handlerHeadTs = 10;</code>
-       *
-       * <pre>
-       *处理人头像时间戳
-       * </pre>
-       */
-      public boolean hasHandlerHeadTs() {
-        return ((bitField0_ & 0x00000200) == 0x00000200);
-      }
-      /**
-       * <code>optional uint64 handlerHeadTs = 10;</code>
-       *
-       * <pre>
-       *处理人头像时间戳
-       * </pre>
-       */
-      public long getHandlerHeadTs() {
-        return handlerHeadTs_;
-      }
-      /**
-       * <code>optional uint64 handlerHeadTs = 10;</code>
-       *
-       * <pre>
-       *处理人头像时间戳
-       * </pre>
-       */
-      public Builder setHandlerHeadTs(long value) {
-        bitField0_ |= 0x00000200;
-        handlerHeadTs_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 handlerHeadTs = 10;</code>
-       *
-       * <pre>
-       *处理人头像时间戳
-       * </pre>
-       */
-      public Builder clearHandlerHeadTs() {
-        bitField0_ = (bitField0_ & ~0x00000200);
-        handlerHeadTs_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object candiName_ = "";
-      /**
-       * <code>optional string candiName = 11;</code>
-       *
-       * <pre>
-       *被处理人名称
-       * </pre>
-       */
-      public boolean hasCandiName() {
-        return ((bitField0_ & 0x00000400) == 0x00000400);
-      }
-      /**
-       * <code>optional string candiName = 11;</code>
-       *
-       * <pre>
-       *被处理人名称
-       * </pre>
-       */
-      public java.lang.String getCandiName() {
-        java.lang.Object ref = candiName_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            candiName_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string candiName = 11;</code>
-       *
-       * <pre>
-       *被处理人名称
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getCandiNameBytes() {
-        java.lang.Object ref = candiName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          candiName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string candiName = 11;</code>
-       *
-       * <pre>
-       *被处理人名称
-       * </pre>
-       */
-      public Builder setCandiName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000400;
-        candiName_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string candiName = 11;</code>
-       *
-       * <pre>
-       *被处理人名称
-       * </pre>
-       */
-      public Builder clearCandiName() {
-        bitField0_ = (bitField0_ & ~0x00000400);
-        candiName_ = getDefaultInstance().getCandiName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string candiName = 11;</code>
-       *
-       * <pre>
-       *被处理人名称
-       * </pre>
-       */
-      public Builder setCandiNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000400;
-        candiName_ = value;
-        onChanged();
-        return this;
-      }
-
-      private long candiHeadTs_ ;
-      /**
-       * <code>optional uint64 candiHeadTs = 12;</code>
-       *
-       * <pre>
-       *被处理人头像时间戳
-       * </pre>
-       */
-      public boolean hasCandiHeadTs() {
-        return ((bitField0_ & 0x00000800) == 0x00000800);
-      }
-      /**
-       * <code>optional uint64 candiHeadTs = 12;</code>
-       *
-       * <pre>
-       *被处理人头像时间戳
-       * </pre>
-       */
-      public long getCandiHeadTs() {
-        return candiHeadTs_;
-      }
-      /**
-       * <code>optional uint64 candiHeadTs = 12;</code>
-       *
-       * <pre>
-       *被处理人头像时间戳
-       * </pre>
-       */
-      public Builder setCandiHeadTs(long value) {
-        bitField0_ |= 0x00000800;
-        candiHeadTs_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 candiHeadTs = 12;</code>
-       *
-       * <pre>
-       *被处理人头像时间戳
-       * </pre>
-       */
-      public Builder clearCandiHeadTs() {
-        bitField0_ = (bitField0_ & ~0x00000800);
-        candiHeadTs_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object groupIcon_ = "";
-      /**
-       * <code>optional string groupIcon = 13;</code>
-       *
-       * <pre>
-       *群头像
-       * </pre>
-       */
-      public boolean hasGroupIcon() {
-        return ((bitField0_ & 0x00001000) == 0x00001000);
-      }
-      /**
-       * <code>optional string groupIcon = 13;</code>
-       *
-       * <pre>
-       *群头像
-       * </pre>
-       */
-      public java.lang.String getGroupIcon() {
-        java.lang.Object ref = groupIcon_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            groupIcon_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string groupIcon = 13;</code>
-       *
-       * <pre>
-       *群头像
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getGroupIconBytes() {
-        java.lang.Object ref = groupIcon_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          groupIcon_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string groupIcon = 13;</code>
-       *
-       * <pre>
-       *群头像
-       * </pre>
-       */
-      public Builder setGroupIcon(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00001000;
-        groupIcon_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string groupIcon = 13;</code>
-       *
-       * <pre>
-       *群头像
-       * </pre>
-       */
-      public Builder clearGroupIcon() {
-        bitField0_ = (bitField0_ & ~0x00001000);
-        groupIcon_ = getDefaultInstance().getGroupIcon();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string groupIcon = 13;</code>
-       *
-       * <pre>
-       *群头像
-       * </pre>
-       */
-      public Builder setGroupIconBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00001000;
-        groupIcon_ = value;
-        onChanged();
-        return this;
-      }
-
-      private long fgOwnerHeadTs_ ;
-      /**
-       * <code>optional uint64 fgOwnerHeadTs = 14;</code>
-       *
-       * <pre>
-       *群主头像时间戳
-       * </pre>
-       */
-      public boolean hasFgOwnerHeadTs() {
-        return ((bitField0_ & 0x00002000) == 0x00002000);
-      }
-      /**
-       * <code>optional uint64 fgOwnerHeadTs = 14;</code>
-       *
-       * <pre>
-       *群主头像时间戳
-       * </pre>
-       */
-      public long getFgOwnerHeadTs() {
-        return fgOwnerHeadTs_;
-      }
-      /**
-       * <code>optional uint64 fgOwnerHeadTs = 14;</code>
-       *
-       * <pre>
-       *群主头像时间戳
-       * </pre>
-       */
-      public Builder setFgOwnerHeadTs(long value) {
-        bitField0_ |= 0x00002000;
-        fgOwnerHeadTs_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 fgOwnerHeadTs = 14;</code>
-       *
-       * <pre>
-       *群主头像时间戳
-       * </pre>
-       */
-      public Builder clearFgOwnerHeadTs() {
-        bitField0_ = (bitField0_ & ~0x00002000);
-        fgOwnerHeadTs_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UpdateFansGroupMemNotify)
-    }
-
-    static {
-      defaultInstance = new UpdateFansGroupMemNotify(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UpdateFansGroupMemNotify)
-  }
-
   public interface VfansGroupMemInfoOrBuilder extends
       // @@protoc_insertion_point(interface_extends:com.wali.live.proto.VfansGroupMemInfo)
       com.google.protobuf.MessageOrBuilder {
@@ -50055,6 +42856,15686 @@ public final class VFansProto {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetBuyVipPermitRsp)
   }
 
+  public interface ApplyJoinFansGroupNotifyOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ApplyJoinFansGroupNotify)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 candidate = 1;</code>
+     *
+     * <pre>
+     *申请人
+     * </pre>
+     */
+    boolean hasCandidate();
+    /**
+     * <code>required uint64 candidate = 1;</code>
+     *
+     * <pre>
+     *申请人
+     * </pre>
+     */
+    long getCandidate();
+
+    /**
+     * <code>required uint64 fgId = 2;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    boolean hasFgId();
+    /**
+     * <code>required uint64 fgId = 2;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    long getFgId();
+
+    /**
+     * <code>required .com.wali.live.proto.GroupMemType memType = 3 [default = MASS];</code>
+     *
+     * <pre>
+     *进入身份，群众，管理员...
+     * </pre>
+     */
+    boolean hasMemType();
+    /**
+     * <code>required .com.wali.live.proto.GroupMemType memType = 3 [default = MASS];</code>
+     *
+     * <pre>
+     *进入身份，群众，管理员...
+     * </pre>
+     */
+    com.wali.live.proto.VFansCommonProto.GroupMemType getMemType();
+
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    boolean hasFgOwner();
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    long getFgOwner();
+
+    /**
+     * <code>optional string applyMsg = 5;</code>
+     *
+     * <pre>
+     *申请信息
+     * </pre>
+     */
+    boolean hasApplyMsg();
+    /**
+     * <code>optional string applyMsg = 5;</code>
+     *
+     * <pre>
+     *申请信息
+     * </pre>
+     */
+    java.lang.String getApplyMsg();
+    /**
+     * <code>optional string applyMsg = 5;</code>
+     *
+     * <pre>
+     *申请信息
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getApplyMsgBytes();
+
+    /**
+     * <code>optional uint64 ts = 6;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    boolean hasTs();
+    /**
+     * <code>optional uint64 ts = 6;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    long getTs();
+
+    /**
+     * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
+     *
+     * <pre>
+     *加群动机，主动，受邀...
+     * </pre>
+     */
+    boolean hasJoinType();
+    /**
+     * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
+     *
+     * <pre>
+     *加群动机，主动，受邀...
+     * </pre>
+     */
+    com.wali.live.proto.VFansCommonProto.JoinIntentionType getJoinType();
+
+    /**
+     * <code>optional string msg = 8;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    boolean hasMsg();
+    /**
+     * <code>optional string msg = 8;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    java.lang.String getMsg();
+    /**
+     * <code>optional string msg = 8;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getMsgBytes();
+
+    /**
+     * <code>optional string groupName = 9;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    boolean hasGroupName();
+    /**
+     * <code>optional string groupName = 9;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    java.lang.String getGroupName();
+    /**
+     * <code>optional string groupName = 9;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getGroupNameBytes();
+
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *申请人名称
+     * </pre>
+     */
+    boolean hasCandiName();
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *申请人名称
+     * </pre>
+     */
+    java.lang.String getCandiName();
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *申请人名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getCandiNameBytes();
+
+    /**
+     * <code>optional uint64 candiHeadTs = 11;</code>
+     *
+     * <pre>
+     *申请人头像时间戳
+     * </pre>
+     */
+    boolean hasCandiHeadTs();
+    /**
+     * <code>optional uint64 candiHeadTs = 11;</code>
+     *
+     * <pre>
+     *申请人头像时间戳
+     * </pre>
+     */
+    long getCandiHeadTs();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.ApplyJoinFansGroupNotify}
+   *
+   * <pre>
+   *申请加群通知 APPLY_JOIN = 1;//申请加群
+   * </pre>
+   */
+  public static final class ApplyJoinFansGroupNotify extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ApplyJoinFansGroupNotify)
+      ApplyJoinFansGroupNotifyOrBuilder {
+    // Use ApplyJoinFansGroupNotify.newBuilder() to construct.
+    private ApplyJoinFansGroupNotify(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ApplyJoinFansGroupNotify(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ApplyJoinFansGroupNotify defaultInstance;
+    public static ApplyJoinFansGroupNotify getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ApplyJoinFansGroupNotify getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ApplyJoinFansGroupNotify(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              candidate_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              fgId_ = input.readUInt64();
+              break;
+            }
+            case 24: {
+              int rawValue = input.readEnum();
+              com.wali.live.proto.VFansCommonProto.GroupMemType value = com.wali.live.proto.VFansCommonProto.GroupMemType.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(3, rawValue);
+              } else {
+                bitField0_ |= 0x00000004;
+                memType_ = value;
+              }
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              fgOwner_ = input.readUInt64();
+              break;
+            }
+            case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000010;
+              applyMsg_ = bs;
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              ts_ = input.readUInt64();
+              break;
+            }
+            case 56: {
+              int rawValue = input.readEnum();
+              com.wali.live.proto.VFansCommonProto.JoinIntentionType value = com.wali.live.proto.VFansCommonProto.JoinIntentionType.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(7, rawValue);
+              } else {
+                bitField0_ |= 0x00000040;
+                joinType_ = value;
+              }
+              break;
+            }
+            case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000080;
+              msg_ = bs;
+              break;
+            }
+            case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000100;
+              groupName_ = bs;
+              break;
+            }
+            case 82: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000200;
+              candiName_ = bs;
+              break;
+            }
+            case 88: {
+              bitField0_ |= 0x00000400;
+              candiHeadTs_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_ApplyJoinFansGroupNotify_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_ApplyJoinFansGroupNotify_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify.class, com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ApplyJoinFansGroupNotify> PARSER =
+        new com.google.protobuf.AbstractParser<ApplyJoinFansGroupNotify>() {
+      public ApplyJoinFansGroupNotify parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ApplyJoinFansGroupNotify(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ApplyJoinFansGroupNotify> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int CANDIDATE_FIELD_NUMBER = 1;
+    private long candidate_;
+    /**
+     * <code>required uint64 candidate = 1;</code>
+     *
+     * <pre>
+     *申请人
+     * </pre>
+     */
+    public boolean hasCandidate() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 candidate = 1;</code>
+     *
+     * <pre>
+     *申请人
+     * </pre>
+     */
+    public long getCandidate() {
+      return candidate_;
+    }
+
+    public static final int FGID_FIELD_NUMBER = 2;
+    private long fgId_;
+    /**
+     * <code>required uint64 fgId = 2;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    public boolean hasFgId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required uint64 fgId = 2;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    public long getFgId() {
+      return fgId_;
+    }
+
+    public static final int MEMTYPE_FIELD_NUMBER = 3;
+    private com.wali.live.proto.VFansCommonProto.GroupMemType memType_;
+    /**
+     * <code>required .com.wali.live.proto.GroupMemType memType = 3 [default = MASS];</code>
+     *
+     * <pre>
+     *进入身份，群众，管理员...
+     * </pre>
+     */
+    public boolean hasMemType() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required .com.wali.live.proto.GroupMemType memType = 3 [default = MASS];</code>
+     *
+     * <pre>
+     *进入身份，群众，管理员...
+     * </pre>
+     */
+    public com.wali.live.proto.VFansCommonProto.GroupMemType getMemType() {
+      return memType_;
+    }
+
+    public static final int FGOWNER_FIELD_NUMBER = 4;
+    private long fgOwner_;
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    public boolean hasFgOwner() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    public long getFgOwner() {
+      return fgOwner_;
+    }
+
+    public static final int APPLYMSG_FIELD_NUMBER = 5;
+    private java.lang.Object applyMsg_;
+    /**
+     * <code>optional string applyMsg = 5;</code>
+     *
+     * <pre>
+     *申请信息
+     * </pre>
+     */
+    public boolean hasApplyMsg() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional string applyMsg = 5;</code>
+     *
+     * <pre>
+     *申请信息
+     * </pre>
+     */
+    public java.lang.String getApplyMsg() {
+      java.lang.Object ref = applyMsg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          applyMsg_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string applyMsg = 5;</code>
+     *
+     * <pre>
+     *申请信息
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getApplyMsgBytes() {
+      java.lang.Object ref = applyMsg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        applyMsg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TS_FIELD_NUMBER = 6;
+    private long ts_;
+    /**
+     * <code>optional uint64 ts = 6;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    public boolean hasTs() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional uint64 ts = 6;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    public long getTs() {
+      return ts_;
+    }
+
+    public static final int JOINTYPE_FIELD_NUMBER = 7;
+    private com.wali.live.proto.VFansCommonProto.JoinIntentionType joinType_;
+    /**
+     * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
+     *
+     * <pre>
+     *加群动机，主动，受邀...
+     * </pre>
+     */
+    public boolean hasJoinType() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
+     *
+     * <pre>
+     *加群动机，主动，受邀...
+     * </pre>
+     */
+    public com.wali.live.proto.VFansCommonProto.JoinIntentionType getJoinType() {
+      return joinType_;
+    }
+
+    public static final int MSG_FIELD_NUMBER = 8;
+    private java.lang.Object msg_;
+    /**
+     * <code>optional string msg = 8;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public boolean hasMsg() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional string msg = 8;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public java.lang.String getMsg() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          msg_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string msg = 8;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getMsgBytes() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int GROUPNAME_FIELD_NUMBER = 9;
+    private java.lang.Object groupName_;
+    /**
+     * <code>optional string groupName = 9;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public boolean hasGroupName() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional string groupName = 9;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public java.lang.String getGroupName() {
+      java.lang.Object ref = groupName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          groupName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string groupName = 9;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getGroupNameBytes() {
+      java.lang.Object ref = groupName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        groupName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CANDINAME_FIELD_NUMBER = 10;
+    private java.lang.Object candiName_;
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *申请人名称
+     * </pre>
+     */
+    public boolean hasCandiName() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *申请人名称
+     * </pre>
+     */
+    public java.lang.String getCandiName() {
+      java.lang.Object ref = candiName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          candiName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *申请人名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getCandiNameBytes() {
+      java.lang.Object ref = candiName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        candiName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CANDIHEADTS_FIELD_NUMBER = 11;
+    private long candiHeadTs_;
+    /**
+     * <code>optional uint64 candiHeadTs = 11;</code>
+     *
+     * <pre>
+     *申请人头像时间戳
+     * </pre>
+     */
+    public boolean hasCandiHeadTs() {
+      return ((bitField0_ & 0x00000400) == 0x00000400);
+    }
+    /**
+     * <code>optional uint64 candiHeadTs = 11;</code>
+     *
+     * <pre>
+     *申请人头像时间戳
+     * </pre>
+     */
+    public long getCandiHeadTs() {
+      return candiHeadTs_;
+    }
+
+    private void initFields() {
+      candidate_ = 0L;
+      fgId_ = 0L;
+      memType_ = com.wali.live.proto.VFansCommonProto.GroupMemType.MASS;
+      fgOwner_ = 0L;
+      applyMsg_ = "";
+      ts_ = 0L;
+      joinType_ = com.wali.live.proto.VFansCommonProto.JoinIntentionType.UNKNOWN;
+      msg_ = "";
+      groupName_ = "";
+      candiName_ = "";
+      candiHeadTs_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasCandidate()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasFgId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasMemType()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, candidate_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, fgId_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeEnum(3, memType_.getNumber());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt64(4, fgOwner_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, getApplyMsgBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeUInt64(6, ts_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeEnum(7, joinType_.getNumber());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeBytes(8, getMsgBytes());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeBytes(9, getGroupNameBytes());
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeBytes(10, getCandiNameBytes());
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        output.writeUInt64(11, candiHeadTs_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, candidate_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, fgId_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(3, memType_.getNumber());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(4, fgOwner_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getApplyMsgBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(6, ts_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(7, joinType_.getNumber());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(8, getMsgBytes());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(9, getGroupNameBytes());
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(10, getCandiNameBytes());
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(11, candiHeadTs_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.ApplyJoinFansGroupNotify}
+     *
+     * <pre>
+     *申请加群通知 APPLY_JOIN = 1;//申请加群
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ApplyJoinFansGroupNotify)
+        com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotifyOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_ApplyJoinFansGroupNotify_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_ApplyJoinFansGroupNotify_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify.class, com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        candidate_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        fgId_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        memType_ = com.wali.live.proto.VFansCommonProto.GroupMemType.MASS;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        fgOwner_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        applyMsg_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        ts_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        joinType_ = com.wali.live.proto.VFansCommonProto.JoinIntentionType.UNKNOWN;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        msg_ = "";
+        bitField0_ = (bitField0_ & ~0x00000080);
+        groupName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000100);
+        candiName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000200);
+        candiHeadTs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000400);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_ApplyJoinFansGroupNotify_descriptor;
+      }
+
+      public com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify getDefaultInstanceForType() {
+        return com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify build() {
+        com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify buildPartial() {
+        com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify result = new com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.candidate_ = candidate_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.fgId_ = fgId_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.memType_ = memType_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.fgOwner_ = fgOwner_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.applyMsg_ = applyMsg_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.ts_ = ts_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.joinType_ = joinType_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.msg_ = msg_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.groupName_ = groupName_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        result.candiName_ = candiName_;
+        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+          to_bitField0_ |= 0x00000400;
+        }
+        result.candiHeadTs_ = candiHeadTs_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify) {
+          return mergeFrom((com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify other) {
+        if (other == com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify.getDefaultInstance()) return this;
+        if (other.hasCandidate()) {
+          setCandidate(other.getCandidate());
+        }
+        if (other.hasFgId()) {
+          setFgId(other.getFgId());
+        }
+        if (other.hasMemType()) {
+          setMemType(other.getMemType());
+        }
+        if (other.hasFgOwner()) {
+          setFgOwner(other.getFgOwner());
+        }
+        if (other.hasApplyMsg()) {
+          bitField0_ |= 0x00000010;
+          applyMsg_ = other.applyMsg_;
+          onChanged();
+        }
+        if (other.hasTs()) {
+          setTs(other.getTs());
+        }
+        if (other.hasJoinType()) {
+          setJoinType(other.getJoinType());
+        }
+        if (other.hasMsg()) {
+          bitField0_ |= 0x00000080;
+          msg_ = other.msg_;
+          onChanged();
+        }
+        if (other.hasGroupName()) {
+          bitField0_ |= 0x00000100;
+          groupName_ = other.groupName_;
+          onChanged();
+        }
+        if (other.hasCandiName()) {
+          bitField0_ |= 0x00000200;
+          candiName_ = other.candiName_;
+          onChanged();
+        }
+        if (other.hasCandiHeadTs()) {
+          setCandiHeadTs(other.getCandiHeadTs());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasCandidate()) {
+          
+          return false;
+        }
+        if (!hasFgId()) {
+          
+          return false;
+        }
+        if (!hasMemType()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.VFansProto.ApplyJoinFansGroupNotify) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long candidate_ ;
+      /**
+       * <code>required uint64 candidate = 1;</code>
+       *
+       * <pre>
+       *申请人
+       * </pre>
+       */
+      public boolean hasCandidate() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 candidate = 1;</code>
+       *
+       * <pre>
+       *申请人
+       * </pre>
+       */
+      public long getCandidate() {
+        return candidate_;
+      }
+      /**
+       * <code>required uint64 candidate = 1;</code>
+       *
+       * <pre>
+       *申请人
+       * </pre>
+       */
+      public Builder setCandidate(long value) {
+        bitField0_ |= 0x00000001;
+        candidate_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 candidate = 1;</code>
+       *
+       * <pre>
+       *申请人
+       * </pre>
+       */
+      public Builder clearCandidate() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        candidate_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long fgId_ ;
+      /**
+       * <code>required uint64 fgId = 2;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public boolean hasFgId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required uint64 fgId = 2;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public long getFgId() {
+        return fgId_;
+      }
+      /**
+       * <code>required uint64 fgId = 2;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public Builder setFgId(long value) {
+        bitField0_ |= 0x00000002;
+        fgId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 fgId = 2;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public Builder clearFgId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        fgId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.VFansCommonProto.GroupMemType memType_ = com.wali.live.proto.VFansCommonProto.GroupMemType.MASS;
+      /**
+       * <code>required .com.wali.live.proto.GroupMemType memType = 3 [default = MASS];</code>
+       *
+       * <pre>
+       *进入身份，群众，管理员...
+       * </pre>
+       */
+      public boolean hasMemType() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required .com.wali.live.proto.GroupMemType memType = 3 [default = MASS];</code>
+       *
+       * <pre>
+       *进入身份，群众，管理员...
+       * </pre>
+       */
+      public com.wali.live.proto.VFansCommonProto.GroupMemType getMemType() {
+        return memType_;
+      }
+      /**
+       * <code>required .com.wali.live.proto.GroupMemType memType = 3 [default = MASS];</code>
+       *
+       * <pre>
+       *进入身份，群众，管理员...
+       * </pre>
+       */
+      public Builder setMemType(com.wali.live.proto.VFansCommonProto.GroupMemType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000004;
+        memType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required .com.wali.live.proto.GroupMemType memType = 3 [default = MASS];</code>
+       *
+       * <pre>
+       *进入身份，群众，管理员...
+       * </pre>
+       */
+      public Builder clearMemType() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        memType_ = com.wali.live.proto.VFansCommonProto.GroupMemType.MASS;
+        onChanged();
+        return this;
+      }
+
+      private long fgOwner_ ;
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public boolean hasFgOwner() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public long getFgOwner() {
+        return fgOwner_;
+      }
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public Builder setFgOwner(long value) {
+        bitField0_ |= 0x00000008;
+        fgOwner_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public Builder clearFgOwner() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        fgOwner_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object applyMsg_ = "";
+      /**
+       * <code>optional string applyMsg = 5;</code>
+       *
+       * <pre>
+       *申请信息
+       * </pre>
+       */
+      public boolean hasApplyMsg() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string applyMsg = 5;</code>
+       *
+       * <pre>
+       *申请信息
+       * </pre>
+       */
+      public java.lang.String getApplyMsg() {
+        java.lang.Object ref = applyMsg_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            applyMsg_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string applyMsg = 5;</code>
+       *
+       * <pre>
+       *申请信息
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getApplyMsgBytes() {
+        java.lang.Object ref = applyMsg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          applyMsg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string applyMsg = 5;</code>
+       *
+       * <pre>
+       *申请信息
+       * </pre>
+       */
+      public Builder setApplyMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        applyMsg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string applyMsg = 5;</code>
+       *
+       * <pre>
+       *申请信息
+       * </pre>
+       */
+      public Builder clearApplyMsg() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        applyMsg_ = getDefaultInstance().getApplyMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string applyMsg = 5;</code>
+       *
+       * <pre>
+       *申请信息
+       * </pre>
+       */
+      public Builder setApplyMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        applyMsg_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long ts_ ;
+      /**
+       * <code>optional uint64 ts = 6;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public boolean hasTs() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional uint64 ts = 6;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public long getTs() {
+        return ts_;
+      }
+      /**
+       * <code>optional uint64 ts = 6;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public Builder setTs(long value) {
+        bitField0_ |= 0x00000020;
+        ts_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 ts = 6;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public Builder clearTs() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        ts_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.VFansCommonProto.JoinIntentionType joinType_ = com.wali.live.proto.VFansCommonProto.JoinIntentionType.UNKNOWN;
+      /**
+       * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
+       *
+       * <pre>
+       *加群动机，主动，受邀...
+       * </pre>
+       */
+      public boolean hasJoinType() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
+       *
+       * <pre>
+       *加群动机，主动，受邀...
+       * </pre>
+       */
+      public com.wali.live.proto.VFansCommonProto.JoinIntentionType getJoinType() {
+        return joinType_;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
+       *
+       * <pre>
+       *加群动机，主动，受邀...
+       * </pre>
+       */
+      public Builder setJoinType(com.wali.live.proto.VFansCommonProto.JoinIntentionType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000040;
+        joinType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
+       *
+       * <pre>
+       *加群动机，主动，受邀...
+       * </pre>
+       */
+      public Builder clearJoinType() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        joinType_ = com.wali.live.proto.VFansCommonProto.JoinIntentionType.UNKNOWN;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object msg_ = "";
+      /**
+       * <code>optional string msg = 8;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public boolean hasMsg() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional string msg = 8;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public java.lang.String getMsg() {
+        java.lang.Object ref = msg_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msg_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string msg = 8;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getMsgBytes() {
+        java.lang.Object ref = msg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string msg = 8;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder setMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg = 8;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder clearMsg() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        msg_ = getDefaultInstance().getMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg = 8;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder setMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object groupName_ = "";
+      /**
+       * <code>optional string groupName = 9;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public boolean hasGroupName() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional string groupName = 9;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public java.lang.String getGroupName() {
+        java.lang.Object ref = groupName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            groupName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string groupName = 9;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getGroupNameBytes() {
+        java.lang.Object ref = groupName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          groupName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string groupName = 9;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder setGroupName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        groupName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupName = 9;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder clearGroupName() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        groupName_ = getDefaultInstance().getGroupName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupName = 9;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder setGroupNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        groupName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object candiName_ = "";
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *申请人名称
+       * </pre>
+       */
+      public boolean hasCandiName() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *申请人名称
+       * </pre>
+       */
+      public java.lang.String getCandiName() {
+        java.lang.Object ref = candiName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            candiName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *申请人名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getCandiNameBytes() {
+        java.lang.Object ref = candiName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          candiName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *申请人名称
+       * </pre>
+       */
+      public Builder setCandiName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+        candiName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *申请人名称
+       * </pre>
+       */
+      public Builder clearCandiName() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        candiName_ = getDefaultInstance().getCandiName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *申请人名称
+       * </pre>
+       */
+      public Builder setCandiNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+        candiName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long candiHeadTs_ ;
+      /**
+       * <code>optional uint64 candiHeadTs = 11;</code>
+       *
+       * <pre>
+       *申请人头像时间戳
+       * </pre>
+       */
+      public boolean hasCandiHeadTs() {
+        return ((bitField0_ & 0x00000400) == 0x00000400);
+      }
+      /**
+       * <code>optional uint64 candiHeadTs = 11;</code>
+       *
+       * <pre>
+       *申请人头像时间戳
+       * </pre>
+       */
+      public long getCandiHeadTs() {
+        return candiHeadTs_;
+      }
+      /**
+       * <code>optional uint64 candiHeadTs = 11;</code>
+       *
+       * <pre>
+       *申请人头像时间戳
+       * </pre>
+       */
+      public Builder setCandiHeadTs(long value) {
+        bitField0_ |= 0x00000400;
+        candiHeadTs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 candiHeadTs = 11;</code>
+       *
+       * <pre>
+       *申请人头像时间戳
+       * </pre>
+       */
+      public Builder clearCandiHeadTs() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        candiHeadTs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ApplyJoinFansGroupNotify)
+    }
+
+    static {
+      defaultInstance = new ApplyJoinFansGroupNotify(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ApplyJoinFansGroupNotify)
+  }
+
+  public interface HandleJoinFansGroupNotifyOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.HandleJoinFansGroupNotify)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    boolean hasHandler();
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    long getHandler();
+
+    /**
+     * <code>required uint64 candidate = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    boolean hasCandidate();
+    /**
+     * <code>required uint64 candidate = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    long getCandidate();
+
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    boolean hasFgId();
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    long getFgId();
+
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    boolean hasFgOwner();
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    long getFgOwner();
+
+    /**
+     * <code>optional .com.wali.live.proto.ApplyJoinResult handleResult = 5;</code>
+     *
+     * <pre>
+     *处理结果
+     * </pre>
+     */
+    boolean hasHandleResult();
+    /**
+     * <code>optional .com.wali.live.proto.ApplyJoinResult handleResult = 5;</code>
+     *
+     * <pre>
+     *处理结果
+     * </pre>
+     */
+    com.wali.live.proto.VFansCommonProto.ApplyJoinResult getHandleResult();
+
+    /**
+     * <code>optional .com.wali.live.proto.GroupMemType memType = 6;</code>
+     *
+     * <pre>
+     *请求加群身份
+     * </pre>
+     */
+    boolean hasMemType();
+    /**
+     * <code>optional .com.wali.live.proto.GroupMemType memType = 6;</code>
+     *
+     * <pre>
+     *请求加群身份
+     * </pre>
+     */
+    com.wali.live.proto.VFansCommonProto.GroupMemType getMemType();
+
+    /**
+     * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
+     *
+     * <pre>
+     *加群动机，主动，受邀...
+     * </pre>
+     */
+    boolean hasJoinType();
+    /**
+     * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
+     *
+     * <pre>
+     *加群动机，主动，受邀...
+     * </pre>
+     */
+    com.wali.live.proto.VFansCommonProto.JoinIntentionType getJoinType();
+
+    /**
+     * <code>optional uint64 referrer = 8;</code>
+     *
+     * <pre>
+     *推荐人， 如果有就填
+     * </pre>
+     */
+    boolean hasReferrer();
+    /**
+     * <code>optional uint64 referrer = 8;</code>
+     *
+     * <pre>
+     *推荐人， 如果有就填
+     * </pre>
+     */
+    long getReferrer();
+
+    /**
+     * <code>optional string msg = 9;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    boolean hasMsg();
+    /**
+     * <code>optional string msg = 9;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    java.lang.String getMsg();
+    /**
+     * <code>optional string msg = 9;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getMsgBytes();
+
+    /**
+     * <code>optional uint64 handleNotifyId = 10;</code>
+     *
+     * <pre>
+     *消息id
+     * </pre>
+     */
+    boolean hasHandleNotifyId();
+    /**
+     * <code>optional uint64 handleNotifyId = 10;</code>
+     *
+     * <pre>
+     *消息id
+     * </pre>
+     */
+    long getHandleNotifyId();
+
+    /**
+     * <code>optional string groupName = 11;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    boolean hasGroupName();
+    /**
+     * <code>optional string groupName = 11;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    java.lang.String getGroupName();
+    /**
+     * <code>optional string groupName = 11;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getGroupNameBytes();
+
+    /**
+     * <code>optional string handlerName = 12;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    boolean hasHandlerName();
+    /**
+     * <code>optional string handlerName = 12;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    java.lang.String getHandlerName();
+    /**
+     * <code>optional string handlerName = 12;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getHandlerNameBytes();
+
+    /**
+     * <code>optional uint64 handlerHeadTs = 13;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    boolean hasHandlerHeadTs();
+    /**
+     * <code>optional uint64 handlerHeadTs = 13;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    long getHandlerHeadTs();
+
+    /**
+     * <code>optional string candiName = 14;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    boolean hasCandiName();
+    /**
+     * <code>optional string candiName = 14;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    java.lang.String getCandiName();
+    /**
+     * <code>optional string candiName = 14;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getCandiNameBytes();
+
+    /**
+     * <code>optional uint64 candiHeadTs = 15;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    boolean hasCandiHeadTs();
+    /**
+     * <code>optional uint64 candiHeadTs = 15;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    long getCandiHeadTs();
+
+    /**
+     * <code>optional string groupIcon = 16;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    boolean hasGroupIcon();
+    /**
+     * <code>optional string groupIcon = 16;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    java.lang.String getGroupIcon();
+    /**
+     * <code>optional string groupIcon = 16;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getGroupIconBytes();
+
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 17;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    boolean hasFgOwnerHeadTs();
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 17;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    long getFgOwnerHeadTs();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.HandleJoinFansGroupNotify}
+   *
+   * <pre>
+   *处理加群结果通知 HANDLE_JOIN = 3;//处理加群
+   * </pre>
+   */
+  public static final class HandleJoinFansGroupNotify extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.HandleJoinFansGroupNotify)
+      HandleJoinFansGroupNotifyOrBuilder {
+    // Use HandleJoinFansGroupNotify.newBuilder() to construct.
+    private HandleJoinFansGroupNotify(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private HandleJoinFansGroupNotify(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final HandleJoinFansGroupNotify defaultInstance;
+    public static HandleJoinFansGroupNotify getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public HandleJoinFansGroupNotify getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private HandleJoinFansGroupNotify(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              handler_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              candidate_ = input.readUInt64();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              fgId_ = input.readUInt64();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              fgOwner_ = input.readUInt64();
+              break;
+            }
+            case 40: {
+              int rawValue = input.readEnum();
+              com.wali.live.proto.VFansCommonProto.ApplyJoinResult value = com.wali.live.proto.VFansCommonProto.ApplyJoinResult.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(5, rawValue);
+              } else {
+                bitField0_ |= 0x00000010;
+                handleResult_ = value;
+              }
+              break;
+            }
+            case 48: {
+              int rawValue = input.readEnum();
+              com.wali.live.proto.VFansCommonProto.GroupMemType value = com.wali.live.proto.VFansCommonProto.GroupMemType.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(6, rawValue);
+              } else {
+                bitField0_ |= 0x00000020;
+                memType_ = value;
+              }
+              break;
+            }
+            case 56: {
+              int rawValue = input.readEnum();
+              com.wali.live.proto.VFansCommonProto.JoinIntentionType value = com.wali.live.proto.VFansCommonProto.JoinIntentionType.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(7, rawValue);
+              } else {
+                bitField0_ |= 0x00000040;
+                joinType_ = value;
+              }
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000080;
+              referrer_ = input.readUInt64();
+              break;
+            }
+            case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000100;
+              msg_ = bs;
+              break;
+            }
+            case 80: {
+              bitField0_ |= 0x00000200;
+              handleNotifyId_ = input.readUInt64();
+              break;
+            }
+            case 90: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000400;
+              groupName_ = bs;
+              break;
+            }
+            case 98: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000800;
+              handlerName_ = bs;
+              break;
+            }
+            case 104: {
+              bitField0_ |= 0x00001000;
+              handlerHeadTs_ = input.readUInt64();
+              break;
+            }
+            case 114: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00002000;
+              candiName_ = bs;
+              break;
+            }
+            case 120: {
+              bitField0_ |= 0x00004000;
+              candiHeadTs_ = input.readUInt64();
+              break;
+            }
+            case 130: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00008000;
+              groupIcon_ = bs;
+              break;
+            }
+            case 136: {
+              bitField0_ |= 0x00010000;
+              fgOwnerHeadTs_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_HandleJoinFansGroupNotify_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_HandleJoinFansGroupNotify_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify.class, com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<HandleJoinFansGroupNotify> PARSER =
+        new com.google.protobuf.AbstractParser<HandleJoinFansGroupNotify>() {
+      public HandleJoinFansGroupNotify parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new HandleJoinFansGroupNotify(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<HandleJoinFansGroupNotify> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int HANDLER_FIELD_NUMBER = 1;
+    private long handler_;
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    public boolean hasHandler() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    public long getHandler() {
+      return handler_;
+    }
+
+    public static final int CANDIDATE_FIELD_NUMBER = 2;
+    private long candidate_;
+    /**
+     * <code>required uint64 candidate = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    public boolean hasCandidate() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required uint64 candidate = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    public long getCandidate() {
+      return candidate_;
+    }
+
+    public static final int FGID_FIELD_NUMBER = 3;
+    private long fgId_;
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    public boolean hasFgId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    public long getFgId() {
+      return fgId_;
+    }
+
+    public static final int FGOWNER_FIELD_NUMBER = 4;
+    private long fgOwner_;
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    public boolean hasFgOwner() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    public long getFgOwner() {
+      return fgOwner_;
+    }
+
+    public static final int HANDLERESULT_FIELD_NUMBER = 5;
+    private com.wali.live.proto.VFansCommonProto.ApplyJoinResult handleResult_;
+    /**
+     * <code>optional .com.wali.live.proto.ApplyJoinResult handleResult = 5;</code>
+     *
+     * <pre>
+     *处理结果
+     * </pre>
+     */
+    public boolean hasHandleResult() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.ApplyJoinResult handleResult = 5;</code>
+     *
+     * <pre>
+     *处理结果
+     * </pre>
+     */
+    public com.wali.live.proto.VFansCommonProto.ApplyJoinResult getHandleResult() {
+      return handleResult_;
+    }
+
+    public static final int MEMTYPE_FIELD_NUMBER = 6;
+    private com.wali.live.proto.VFansCommonProto.GroupMemType memType_;
+    /**
+     * <code>optional .com.wali.live.proto.GroupMemType memType = 6;</code>
+     *
+     * <pre>
+     *请求加群身份
+     * </pre>
+     */
+    public boolean hasMemType() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.GroupMemType memType = 6;</code>
+     *
+     * <pre>
+     *请求加群身份
+     * </pre>
+     */
+    public com.wali.live.proto.VFansCommonProto.GroupMemType getMemType() {
+      return memType_;
+    }
+
+    public static final int JOINTYPE_FIELD_NUMBER = 7;
+    private com.wali.live.proto.VFansCommonProto.JoinIntentionType joinType_;
+    /**
+     * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
+     *
+     * <pre>
+     *加群动机，主动，受邀...
+     * </pre>
+     */
+    public boolean hasJoinType() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
+     *
+     * <pre>
+     *加群动机，主动，受邀...
+     * </pre>
+     */
+    public com.wali.live.proto.VFansCommonProto.JoinIntentionType getJoinType() {
+      return joinType_;
+    }
+
+    public static final int REFERRER_FIELD_NUMBER = 8;
+    private long referrer_;
+    /**
+     * <code>optional uint64 referrer = 8;</code>
+     *
+     * <pre>
+     *推荐人， 如果有就填
+     * </pre>
+     */
+    public boolean hasReferrer() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional uint64 referrer = 8;</code>
+     *
+     * <pre>
+     *推荐人， 如果有就填
+     * </pre>
+     */
+    public long getReferrer() {
+      return referrer_;
+    }
+
+    public static final int MSG_FIELD_NUMBER = 9;
+    private java.lang.Object msg_;
+    /**
+     * <code>optional string msg = 9;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public boolean hasMsg() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional string msg = 9;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public java.lang.String getMsg() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          msg_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string msg = 9;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getMsgBytes() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int HANDLENOTIFYID_FIELD_NUMBER = 10;
+    private long handleNotifyId_;
+    /**
+     * <code>optional uint64 handleNotifyId = 10;</code>
+     *
+     * <pre>
+     *消息id
+     * </pre>
+     */
+    public boolean hasHandleNotifyId() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional uint64 handleNotifyId = 10;</code>
+     *
+     * <pre>
+     *消息id
+     * </pre>
+     */
+    public long getHandleNotifyId() {
+      return handleNotifyId_;
+    }
+
+    public static final int GROUPNAME_FIELD_NUMBER = 11;
+    private java.lang.Object groupName_;
+    /**
+     * <code>optional string groupName = 11;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public boolean hasGroupName() {
+      return ((bitField0_ & 0x00000400) == 0x00000400);
+    }
+    /**
+     * <code>optional string groupName = 11;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public java.lang.String getGroupName() {
+      java.lang.Object ref = groupName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          groupName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string groupName = 11;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getGroupNameBytes() {
+      java.lang.Object ref = groupName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        groupName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int HANDLERNAME_FIELD_NUMBER = 12;
+    private java.lang.Object handlerName_;
+    /**
+     * <code>optional string handlerName = 12;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    public boolean hasHandlerName() {
+      return ((bitField0_ & 0x00000800) == 0x00000800);
+    }
+    /**
+     * <code>optional string handlerName = 12;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    public java.lang.String getHandlerName() {
+      java.lang.Object ref = handlerName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          handlerName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string handlerName = 12;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getHandlerNameBytes() {
+      java.lang.Object ref = handlerName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        handlerName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int HANDLERHEADTS_FIELD_NUMBER = 13;
+    private long handlerHeadTs_;
+    /**
+     * <code>optional uint64 handlerHeadTs = 13;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    public boolean hasHandlerHeadTs() {
+      return ((bitField0_ & 0x00001000) == 0x00001000);
+    }
+    /**
+     * <code>optional uint64 handlerHeadTs = 13;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    public long getHandlerHeadTs() {
+      return handlerHeadTs_;
+    }
+
+    public static final int CANDINAME_FIELD_NUMBER = 14;
+    private java.lang.Object candiName_;
+    /**
+     * <code>optional string candiName = 14;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    public boolean hasCandiName() {
+      return ((bitField0_ & 0x00002000) == 0x00002000);
+    }
+    /**
+     * <code>optional string candiName = 14;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    public java.lang.String getCandiName() {
+      java.lang.Object ref = candiName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          candiName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string candiName = 14;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getCandiNameBytes() {
+      java.lang.Object ref = candiName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        candiName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CANDIHEADTS_FIELD_NUMBER = 15;
+    private long candiHeadTs_;
+    /**
+     * <code>optional uint64 candiHeadTs = 15;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    public boolean hasCandiHeadTs() {
+      return ((bitField0_ & 0x00004000) == 0x00004000);
+    }
+    /**
+     * <code>optional uint64 candiHeadTs = 15;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    public long getCandiHeadTs() {
+      return candiHeadTs_;
+    }
+
+    public static final int GROUPICON_FIELD_NUMBER = 16;
+    private java.lang.Object groupIcon_;
+    /**
+     * <code>optional string groupIcon = 16;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    public boolean hasGroupIcon() {
+      return ((bitField0_ & 0x00008000) == 0x00008000);
+    }
+    /**
+     * <code>optional string groupIcon = 16;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    public java.lang.String getGroupIcon() {
+      java.lang.Object ref = groupIcon_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          groupIcon_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string groupIcon = 16;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getGroupIconBytes() {
+      java.lang.Object ref = groupIcon_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        groupIcon_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int FGOWNERHEADTS_FIELD_NUMBER = 17;
+    private long fgOwnerHeadTs_;
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 17;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    public boolean hasFgOwnerHeadTs() {
+      return ((bitField0_ & 0x00010000) == 0x00010000);
+    }
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 17;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    public long getFgOwnerHeadTs() {
+      return fgOwnerHeadTs_;
+    }
+
+    private void initFields() {
+      handler_ = 0L;
+      candidate_ = 0L;
+      fgId_ = 0L;
+      fgOwner_ = 0L;
+      handleResult_ = com.wali.live.proto.VFansCommonProto.ApplyJoinResult.UNDO;
+      memType_ = com.wali.live.proto.VFansCommonProto.GroupMemType.OWNER;
+      joinType_ = com.wali.live.proto.VFansCommonProto.JoinIntentionType.UNKNOWN;
+      referrer_ = 0L;
+      msg_ = "";
+      handleNotifyId_ = 0L;
+      groupName_ = "";
+      handlerName_ = "";
+      handlerHeadTs_ = 0L;
+      candiName_ = "";
+      candiHeadTs_ = 0L;
+      groupIcon_ = "";
+      fgOwnerHeadTs_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasHandler()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasCandidate()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasFgId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, handler_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, candidate_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt64(3, fgId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt64(4, fgOwner_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeEnum(5, handleResult_.getNumber());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeEnum(6, memType_.getNumber());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeEnum(7, joinType_.getNumber());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeUInt64(8, referrer_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeBytes(9, getMsgBytes());
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeUInt64(10, handleNotifyId_);
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        output.writeBytes(11, getGroupNameBytes());
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        output.writeBytes(12, getHandlerNameBytes());
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        output.writeUInt64(13, handlerHeadTs_);
+      }
+      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+        output.writeBytes(14, getCandiNameBytes());
+      }
+      if (((bitField0_ & 0x00004000) == 0x00004000)) {
+        output.writeUInt64(15, candiHeadTs_);
+      }
+      if (((bitField0_ & 0x00008000) == 0x00008000)) {
+        output.writeBytes(16, getGroupIconBytes());
+      }
+      if (((bitField0_ & 0x00010000) == 0x00010000)) {
+        output.writeUInt64(17, fgOwnerHeadTs_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, handler_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, candidate_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(3, fgId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(4, fgOwner_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(5, handleResult_.getNumber());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(6, memType_.getNumber());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(7, joinType_.getNumber());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(8, referrer_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(9, getMsgBytes());
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(10, handleNotifyId_);
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(11, getGroupNameBytes());
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(12, getHandlerNameBytes());
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(13, handlerHeadTs_);
+      }
+      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(14, getCandiNameBytes());
+      }
+      if (((bitField0_ & 0x00004000) == 0x00004000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(15, candiHeadTs_);
+      }
+      if (((bitField0_ & 0x00008000) == 0x00008000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(16, getGroupIconBytes());
+      }
+      if (((bitField0_ & 0x00010000) == 0x00010000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(17, fgOwnerHeadTs_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.HandleJoinFansGroupNotify}
+     *
+     * <pre>
+     *处理加群结果通知 HANDLE_JOIN = 3;//处理加群
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.HandleJoinFansGroupNotify)
+        com.wali.live.proto.VFansProto.HandleJoinFansGroupNotifyOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_HandleJoinFansGroupNotify_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_HandleJoinFansGroupNotify_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify.class, com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        handler_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        candidate_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        fgId_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        fgOwner_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        handleResult_ = com.wali.live.proto.VFansCommonProto.ApplyJoinResult.UNDO;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        memType_ = com.wali.live.proto.VFansCommonProto.GroupMemType.OWNER;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        joinType_ = com.wali.live.proto.VFansCommonProto.JoinIntentionType.UNKNOWN;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        referrer_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        msg_ = "";
+        bitField0_ = (bitField0_ & ~0x00000100);
+        handleNotifyId_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000200);
+        groupName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000400);
+        handlerName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000800);
+        handlerHeadTs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00001000);
+        candiName_ = "";
+        bitField0_ = (bitField0_ & ~0x00002000);
+        candiHeadTs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00004000);
+        groupIcon_ = "";
+        bitField0_ = (bitField0_ & ~0x00008000);
+        fgOwnerHeadTs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00010000);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_HandleJoinFansGroupNotify_descriptor;
+      }
+
+      public com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify getDefaultInstanceForType() {
+        return com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify build() {
+        com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify buildPartial() {
+        com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify result = new com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.handler_ = handler_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.candidate_ = candidate_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.fgId_ = fgId_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.fgOwner_ = fgOwner_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.handleResult_ = handleResult_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.memType_ = memType_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.joinType_ = joinType_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.referrer_ = referrer_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.msg_ = msg_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        result.handleNotifyId_ = handleNotifyId_;
+        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+          to_bitField0_ |= 0x00000400;
+        }
+        result.groupName_ = groupName_;
+        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+          to_bitField0_ |= 0x00000800;
+        }
+        result.handlerName_ = handlerName_;
+        if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
+          to_bitField0_ |= 0x00001000;
+        }
+        result.handlerHeadTs_ = handlerHeadTs_;
+        if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
+          to_bitField0_ |= 0x00002000;
+        }
+        result.candiName_ = candiName_;
+        if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
+          to_bitField0_ |= 0x00004000;
+        }
+        result.candiHeadTs_ = candiHeadTs_;
+        if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
+          to_bitField0_ |= 0x00008000;
+        }
+        result.groupIcon_ = groupIcon_;
+        if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
+          to_bitField0_ |= 0x00010000;
+        }
+        result.fgOwnerHeadTs_ = fgOwnerHeadTs_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify) {
+          return mergeFrom((com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify other) {
+        if (other == com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify.getDefaultInstance()) return this;
+        if (other.hasHandler()) {
+          setHandler(other.getHandler());
+        }
+        if (other.hasCandidate()) {
+          setCandidate(other.getCandidate());
+        }
+        if (other.hasFgId()) {
+          setFgId(other.getFgId());
+        }
+        if (other.hasFgOwner()) {
+          setFgOwner(other.getFgOwner());
+        }
+        if (other.hasHandleResult()) {
+          setHandleResult(other.getHandleResult());
+        }
+        if (other.hasMemType()) {
+          setMemType(other.getMemType());
+        }
+        if (other.hasJoinType()) {
+          setJoinType(other.getJoinType());
+        }
+        if (other.hasReferrer()) {
+          setReferrer(other.getReferrer());
+        }
+        if (other.hasMsg()) {
+          bitField0_ |= 0x00000100;
+          msg_ = other.msg_;
+          onChanged();
+        }
+        if (other.hasHandleNotifyId()) {
+          setHandleNotifyId(other.getHandleNotifyId());
+        }
+        if (other.hasGroupName()) {
+          bitField0_ |= 0x00000400;
+          groupName_ = other.groupName_;
+          onChanged();
+        }
+        if (other.hasHandlerName()) {
+          bitField0_ |= 0x00000800;
+          handlerName_ = other.handlerName_;
+          onChanged();
+        }
+        if (other.hasHandlerHeadTs()) {
+          setHandlerHeadTs(other.getHandlerHeadTs());
+        }
+        if (other.hasCandiName()) {
+          bitField0_ |= 0x00002000;
+          candiName_ = other.candiName_;
+          onChanged();
+        }
+        if (other.hasCandiHeadTs()) {
+          setCandiHeadTs(other.getCandiHeadTs());
+        }
+        if (other.hasGroupIcon()) {
+          bitField0_ |= 0x00008000;
+          groupIcon_ = other.groupIcon_;
+          onChanged();
+        }
+        if (other.hasFgOwnerHeadTs()) {
+          setFgOwnerHeadTs(other.getFgOwnerHeadTs());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasHandler()) {
+          
+          return false;
+        }
+        if (!hasCandidate()) {
+          
+          return false;
+        }
+        if (!hasFgId()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.VFansProto.HandleJoinFansGroupNotify) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long handler_ ;
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public boolean hasHandler() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public long getHandler() {
+        return handler_;
+      }
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public Builder setHandler(long value) {
+        bitField0_ |= 0x00000001;
+        handler_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public Builder clearHandler() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        handler_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long candidate_ ;
+      /**
+       * <code>required uint64 candidate = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public boolean hasCandidate() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required uint64 candidate = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public long getCandidate() {
+        return candidate_;
+      }
+      /**
+       * <code>required uint64 candidate = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public Builder setCandidate(long value) {
+        bitField0_ |= 0x00000002;
+        candidate_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 candidate = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public Builder clearCandidate() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        candidate_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long fgId_ ;
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public boolean hasFgId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public long getFgId() {
+        return fgId_;
+      }
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public Builder setFgId(long value) {
+        bitField0_ |= 0x00000004;
+        fgId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public Builder clearFgId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        fgId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long fgOwner_ ;
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public boolean hasFgOwner() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public long getFgOwner() {
+        return fgOwner_;
+      }
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public Builder setFgOwner(long value) {
+        bitField0_ |= 0x00000008;
+        fgOwner_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public Builder clearFgOwner() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        fgOwner_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.VFansCommonProto.ApplyJoinResult handleResult_ = com.wali.live.proto.VFansCommonProto.ApplyJoinResult.UNDO;
+      /**
+       * <code>optional .com.wali.live.proto.ApplyJoinResult handleResult = 5;</code>
+       *
+       * <pre>
+       *处理结果
+       * </pre>
+       */
+      public boolean hasHandleResult() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ApplyJoinResult handleResult = 5;</code>
+       *
+       * <pre>
+       *处理结果
+       * </pre>
+       */
+      public com.wali.live.proto.VFansCommonProto.ApplyJoinResult getHandleResult() {
+        return handleResult_;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ApplyJoinResult handleResult = 5;</code>
+       *
+       * <pre>
+       *处理结果
+       * </pre>
+       */
+      public Builder setHandleResult(com.wali.live.proto.VFansCommonProto.ApplyJoinResult value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000010;
+        handleResult_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ApplyJoinResult handleResult = 5;</code>
+       *
+       * <pre>
+       *处理结果
+       * </pre>
+       */
+      public Builder clearHandleResult() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        handleResult_ = com.wali.live.proto.VFansCommonProto.ApplyJoinResult.UNDO;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.VFansCommonProto.GroupMemType memType_ = com.wali.live.proto.VFansCommonProto.GroupMemType.OWNER;
+      /**
+       * <code>optional .com.wali.live.proto.GroupMemType memType = 6;</code>
+       *
+       * <pre>
+       *请求加群身份
+       * </pre>
+       */
+      public boolean hasMemType() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.GroupMemType memType = 6;</code>
+       *
+       * <pre>
+       *请求加群身份
+       * </pre>
+       */
+      public com.wali.live.proto.VFansCommonProto.GroupMemType getMemType() {
+        return memType_;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.GroupMemType memType = 6;</code>
+       *
+       * <pre>
+       *请求加群身份
+       * </pre>
+       */
+      public Builder setMemType(com.wali.live.proto.VFansCommonProto.GroupMemType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000020;
+        memType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.GroupMemType memType = 6;</code>
+       *
+       * <pre>
+       *请求加群身份
+       * </pre>
+       */
+      public Builder clearMemType() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        memType_ = com.wali.live.proto.VFansCommonProto.GroupMemType.OWNER;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.VFansCommonProto.JoinIntentionType joinType_ = com.wali.live.proto.VFansCommonProto.JoinIntentionType.UNKNOWN;
+      /**
+       * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
+       *
+       * <pre>
+       *加群动机，主动，受邀...
+       * </pre>
+       */
+      public boolean hasJoinType() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
+       *
+       * <pre>
+       *加群动机，主动，受邀...
+       * </pre>
+       */
+      public com.wali.live.proto.VFansCommonProto.JoinIntentionType getJoinType() {
+        return joinType_;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
+       *
+       * <pre>
+       *加群动机，主动，受邀...
+       * </pre>
+       */
+      public Builder setJoinType(com.wali.live.proto.VFansCommonProto.JoinIntentionType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000040;
+        joinType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.JoinIntentionType joinType = 7;</code>
+       *
+       * <pre>
+       *加群动机，主动，受邀...
+       * </pre>
+       */
+      public Builder clearJoinType() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        joinType_ = com.wali.live.proto.VFansCommonProto.JoinIntentionType.UNKNOWN;
+        onChanged();
+        return this;
+      }
+
+      private long referrer_ ;
+      /**
+       * <code>optional uint64 referrer = 8;</code>
+       *
+       * <pre>
+       *推荐人， 如果有就填
+       * </pre>
+       */
+      public boolean hasReferrer() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional uint64 referrer = 8;</code>
+       *
+       * <pre>
+       *推荐人， 如果有就填
+       * </pre>
+       */
+      public long getReferrer() {
+        return referrer_;
+      }
+      /**
+       * <code>optional uint64 referrer = 8;</code>
+       *
+       * <pre>
+       *推荐人， 如果有就填
+       * </pre>
+       */
+      public Builder setReferrer(long value) {
+        bitField0_ |= 0x00000080;
+        referrer_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 referrer = 8;</code>
+       *
+       * <pre>
+       *推荐人， 如果有就填
+       * </pre>
+       */
+      public Builder clearReferrer() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        referrer_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object msg_ = "";
+      /**
+       * <code>optional string msg = 9;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public boolean hasMsg() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional string msg = 9;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public java.lang.String getMsg() {
+        java.lang.Object ref = msg_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msg_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string msg = 9;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getMsgBytes() {
+        java.lang.Object ref = msg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string msg = 9;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder setMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg = 9;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder clearMsg() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        msg_ = getDefaultInstance().getMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg = 9;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder setMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long handleNotifyId_ ;
+      /**
+       * <code>optional uint64 handleNotifyId = 10;</code>
+       *
+       * <pre>
+       *消息id
+       * </pre>
+       */
+      public boolean hasHandleNotifyId() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional uint64 handleNotifyId = 10;</code>
+       *
+       * <pre>
+       *消息id
+       * </pre>
+       */
+      public long getHandleNotifyId() {
+        return handleNotifyId_;
+      }
+      /**
+       * <code>optional uint64 handleNotifyId = 10;</code>
+       *
+       * <pre>
+       *消息id
+       * </pre>
+       */
+      public Builder setHandleNotifyId(long value) {
+        bitField0_ |= 0x00000200;
+        handleNotifyId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 handleNotifyId = 10;</code>
+       *
+       * <pre>
+       *消息id
+       * </pre>
+       */
+      public Builder clearHandleNotifyId() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        handleNotifyId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object groupName_ = "";
+      /**
+       * <code>optional string groupName = 11;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public boolean hasGroupName() {
+        return ((bitField0_ & 0x00000400) == 0x00000400);
+      }
+      /**
+       * <code>optional string groupName = 11;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public java.lang.String getGroupName() {
+        java.lang.Object ref = groupName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            groupName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string groupName = 11;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getGroupNameBytes() {
+        java.lang.Object ref = groupName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          groupName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string groupName = 11;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder setGroupName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000400;
+        groupName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupName = 11;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder clearGroupName() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        groupName_ = getDefaultInstance().getGroupName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupName = 11;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder setGroupNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000400;
+        groupName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object handlerName_ = "";
+      /**
+       * <code>optional string handlerName = 12;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public boolean hasHandlerName() {
+        return ((bitField0_ & 0x00000800) == 0x00000800);
+      }
+      /**
+       * <code>optional string handlerName = 12;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public java.lang.String getHandlerName() {
+        java.lang.Object ref = handlerName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            handlerName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string handlerName = 12;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getHandlerNameBytes() {
+        java.lang.Object ref = handlerName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          handlerName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string handlerName = 12;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public Builder setHandlerName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000800;
+        handlerName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string handlerName = 12;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public Builder clearHandlerName() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        handlerName_ = getDefaultInstance().getHandlerName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string handlerName = 12;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public Builder setHandlerNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000800;
+        handlerName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long handlerHeadTs_ ;
+      /**
+       * <code>optional uint64 handlerHeadTs = 13;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public boolean hasHandlerHeadTs() {
+        return ((bitField0_ & 0x00001000) == 0x00001000);
+      }
+      /**
+       * <code>optional uint64 handlerHeadTs = 13;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public long getHandlerHeadTs() {
+        return handlerHeadTs_;
+      }
+      /**
+       * <code>optional uint64 handlerHeadTs = 13;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public Builder setHandlerHeadTs(long value) {
+        bitField0_ |= 0x00001000;
+        handlerHeadTs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 handlerHeadTs = 13;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public Builder clearHandlerHeadTs() {
+        bitField0_ = (bitField0_ & ~0x00001000);
+        handlerHeadTs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object candiName_ = "";
+      /**
+       * <code>optional string candiName = 14;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public boolean hasCandiName() {
+        return ((bitField0_ & 0x00002000) == 0x00002000);
+      }
+      /**
+       * <code>optional string candiName = 14;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public java.lang.String getCandiName() {
+        java.lang.Object ref = candiName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            candiName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string candiName = 14;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getCandiNameBytes() {
+        java.lang.Object ref = candiName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          candiName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string candiName = 14;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public Builder setCandiName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00002000;
+        candiName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string candiName = 14;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public Builder clearCandiName() {
+        bitField0_ = (bitField0_ & ~0x00002000);
+        candiName_ = getDefaultInstance().getCandiName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string candiName = 14;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public Builder setCandiNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00002000;
+        candiName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long candiHeadTs_ ;
+      /**
+       * <code>optional uint64 candiHeadTs = 15;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public boolean hasCandiHeadTs() {
+        return ((bitField0_ & 0x00004000) == 0x00004000);
+      }
+      /**
+       * <code>optional uint64 candiHeadTs = 15;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public long getCandiHeadTs() {
+        return candiHeadTs_;
+      }
+      /**
+       * <code>optional uint64 candiHeadTs = 15;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public Builder setCandiHeadTs(long value) {
+        bitField0_ |= 0x00004000;
+        candiHeadTs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 candiHeadTs = 15;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public Builder clearCandiHeadTs() {
+        bitField0_ = (bitField0_ & ~0x00004000);
+        candiHeadTs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object groupIcon_ = "";
+      /**
+       * <code>optional string groupIcon = 16;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public boolean hasGroupIcon() {
+        return ((bitField0_ & 0x00008000) == 0x00008000);
+      }
+      /**
+       * <code>optional string groupIcon = 16;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public java.lang.String getGroupIcon() {
+        java.lang.Object ref = groupIcon_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            groupIcon_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string groupIcon = 16;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getGroupIconBytes() {
+        java.lang.Object ref = groupIcon_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          groupIcon_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string groupIcon = 16;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public Builder setGroupIcon(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00008000;
+        groupIcon_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupIcon = 16;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public Builder clearGroupIcon() {
+        bitField0_ = (bitField0_ & ~0x00008000);
+        groupIcon_ = getDefaultInstance().getGroupIcon();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupIcon = 16;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public Builder setGroupIconBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00008000;
+        groupIcon_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long fgOwnerHeadTs_ ;
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 17;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public boolean hasFgOwnerHeadTs() {
+        return ((bitField0_ & 0x00010000) == 0x00010000);
+      }
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 17;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public long getFgOwnerHeadTs() {
+        return fgOwnerHeadTs_;
+      }
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 17;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public Builder setFgOwnerHeadTs(long value) {
+        bitField0_ |= 0x00010000;
+        fgOwnerHeadTs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 17;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public Builder clearFgOwnerHeadTs() {
+        bitField0_ = (bitField0_ & ~0x00010000);
+        fgOwnerHeadTs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.HandleJoinFansGroupNotify)
+    }
+
+    static {
+      defaultInstance = new HandleJoinFansGroupNotify(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.HandleJoinFansGroupNotify)
+  }
+
+  public interface RemoveFansGroupMemNotifyOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.RemoveFansGroupMemNotify)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    boolean hasHandler();
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    long getHandler();
+
+    /**
+     * <code>required uint64 candidate = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    boolean hasCandidate();
+    /**
+     * <code>required uint64 candidate = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    long getCandidate();
+
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    boolean hasFgId();
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    long getFgId();
+
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    boolean hasFgOwner();
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    long getFgOwner();
+
+    /**
+     * <code>optional uint64 ts = 5;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    boolean hasTs();
+    /**
+     * <code>optional uint64 ts = 5;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    long getTs();
+
+    /**
+     * <code>optional string msg = 6;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    boolean hasMsg();
+    /**
+     * <code>optional string msg = 6;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    java.lang.String getMsg();
+    /**
+     * <code>optional string msg = 6;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getMsgBytes();
+
+    /**
+     * <code>optional string groupName = 7;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    boolean hasGroupName();
+    /**
+     * <code>optional string groupName = 7;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    java.lang.String getGroupName();
+    /**
+     * <code>optional string groupName = 7;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getGroupNameBytes();
+
+    /**
+     * <code>optional string handlerName = 8;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    boolean hasHandlerName();
+    /**
+     * <code>optional string handlerName = 8;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    java.lang.String getHandlerName();
+    /**
+     * <code>optional string handlerName = 8;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getHandlerNameBytes();
+
+    /**
+     * <code>optional uint64 handlerHeadTs = 9;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    boolean hasHandlerHeadTs();
+    /**
+     * <code>optional uint64 handlerHeadTs = 9;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    long getHandlerHeadTs();
+
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    boolean hasCandiName();
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    java.lang.String getCandiName();
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getCandiNameBytes();
+
+    /**
+     * <code>optional uint64 candiHeadTs = 11;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    boolean hasCandiHeadTs();
+    /**
+     * <code>optional uint64 candiHeadTs = 11;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    long getCandiHeadTs();
+
+    /**
+     * <code>optional string groupIcon = 12;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    boolean hasGroupIcon();
+    /**
+     * <code>optional string groupIcon = 12;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    java.lang.String getGroupIcon();
+    /**
+     * <code>optional string groupIcon = 12;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getGroupIconBytes();
+
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    boolean hasFgOwnerHeadTs();
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    long getFgOwnerHeadTs();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.RemoveFansGroupMemNotify}
+   *
+   * <pre>
+   *删除群成员通知 REMOVE_MEM = 4;//移除群成员
+   * </pre>
+   */
+  public static final class RemoveFansGroupMemNotify extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.RemoveFansGroupMemNotify)
+      RemoveFansGroupMemNotifyOrBuilder {
+    // Use RemoveFansGroupMemNotify.newBuilder() to construct.
+    private RemoveFansGroupMemNotify(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private RemoveFansGroupMemNotify(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final RemoveFansGroupMemNotify defaultInstance;
+    public static RemoveFansGroupMemNotify getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public RemoveFansGroupMemNotify getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RemoveFansGroupMemNotify(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              handler_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              candidate_ = input.readUInt64();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              fgId_ = input.readUInt64();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              fgOwner_ = input.readUInt64();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              ts_ = input.readUInt64();
+              break;
+            }
+            case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000020;
+              msg_ = bs;
+              break;
+            }
+            case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000040;
+              groupName_ = bs;
+              break;
+            }
+            case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000080;
+              handlerName_ = bs;
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000100;
+              handlerHeadTs_ = input.readUInt64();
+              break;
+            }
+            case 82: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000200;
+              candiName_ = bs;
+              break;
+            }
+            case 88: {
+              bitField0_ |= 0x00000400;
+              candiHeadTs_ = input.readUInt64();
+              break;
+            }
+            case 98: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000800;
+              groupIcon_ = bs;
+              break;
+            }
+            case 104: {
+              bitField0_ |= 0x00001000;
+              fgOwnerHeadTs_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_RemoveFansGroupMemNotify_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_RemoveFansGroupMemNotify_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify.class, com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<RemoveFansGroupMemNotify> PARSER =
+        new com.google.protobuf.AbstractParser<RemoveFansGroupMemNotify>() {
+      public RemoveFansGroupMemNotify parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RemoveFansGroupMemNotify(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RemoveFansGroupMemNotify> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int HANDLER_FIELD_NUMBER = 1;
+    private long handler_;
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    public boolean hasHandler() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    public long getHandler() {
+      return handler_;
+    }
+
+    public static final int CANDIDATE_FIELD_NUMBER = 2;
+    private long candidate_;
+    /**
+     * <code>required uint64 candidate = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    public boolean hasCandidate() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required uint64 candidate = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    public long getCandidate() {
+      return candidate_;
+    }
+
+    public static final int FGID_FIELD_NUMBER = 3;
+    private long fgId_;
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    public boolean hasFgId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    public long getFgId() {
+      return fgId_;
+    }
+
+    public static final int FGOWNER_FIELD_NUMBER = 4;
+    private long fgOwner_;
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    public boolean hasFgOwner() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    public long getFgOwner() {
+      return fgOwner_;
+    }
+
+    public static final int TS_FIELD_NUMBER = 5;
+    private long ts_;
+    /**
+     * <code>optional uint64 ts = 5;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    public boolean hasTs() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional uint64 ts = 5;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    public long getTs() {
+      return ts_;
+    }
+
+    public static final int MSG_FIELD_NUMBER = 6;
+    private java.lang.Object msg_;
+    /**
+     * <code>optional string msg = 6;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public boolean hasMsg() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional string msg = 6;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public java.lang.String getMsg() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          msg_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string msg = 6;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getMsgBytes() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int GROUPNAME_FIELD_NUMBER = 7;
+    private java.lang.Object groupName_;
+    /**
+     * <code>optional string groupName = 7;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public boolean hasGroupName() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional string groupName = 7;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public java.lang.String getGroupName() {
+      java.lang.Object ref = groupName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          groupName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string groupName = 7;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getGroupNameBytes() {
+      java.lang.Object ref = groupName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        groupName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int HANDLERNAME_FIELD_NUMBER = 8;
+    private java.lang.Object handlerName_;
+    /**
+     * <code>optional string handlerName = 8;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    public boolean hasHandlerName() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional string handlerName = 8;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    public java.lang.String getHandlerName() {
+      java.lang.Object ref = handlerName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          handlerName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string handlerName = 8;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getHandlerNameBytes() {
+      java.lang.Object ref = handlerName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        handlerName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int HANDLERHEADTS_FIELD_NUMBER = 9;
+    private long handlerHeadTs_;
+    /**
+     * <code>optional uint64 handlerHeadTs = 9;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    public boolean hasHandlerHeadTs() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional uint64 handlerHeadTs = 9;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    public long getHandlerHeadTs() {
+      return handlerHeadTs_;
+    }
+
+    public static final int CANDINAME_FIELD_NUMBER = 10;
+    private java.lang.Object candiName_;
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    public boolean hasCandiName() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    public java.lang.String getCandiName() {
+      java.lang.Object ref = candiName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          candiName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getCandiNameBytes() {
+      java.lang.Object ref = candiName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        candiName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CANDIHEADTS_FIELD_NUMBER = 11;
+    private long candiHeadTs_;
+    /**
+     * <code>optional uint64 candiHeadTs = 11;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    public boolean hasCandiHeadTs() {
+      return ((bitField0_ & 0x00000400) == 0x00000400);
+    }
+    /**
+     * <code>optional uint64 candiHeadTs = 11;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    public long getCandiHeadTs() {
+      return candiHeadTs_;
+    }
+
+    public static final int GROUPICON_FIELD_NUMBER = 12;
+    private java.lang.Object groupIcon_;
+    /**
+     * <code>optional string groupIcon = 12;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    public boolean hasGroupIcon() {
+      return ((bitField0_ & 0x00000800) == 0x00000800);
+    }
+    /**
+     * <code>optional string groupIcon = 12;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    public java.lang.String getGroupIcon() {
+      java.lang.Object ref = groupIcon_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          groupIcon_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string groupIcon = 12;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getGroupIconBytes() {
+      java.lang.Object ref = groupIcon_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        groupIcon_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int FGOWNERHEADTS_FIELD_NUMBER = 13;
+    private long fgOwnerHeadTs_;
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    public boolean hasFgOwnerHeadTs() {
+      return ((bitField0_ & 0x00001000) == 0x00001000);
+    }
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    public long getFgOwnerHeadTs() {
+      return fgOwnerHeadTs_;
+    }
+
+    private void initFields() {
+      handler_ = 0L;
+      candidate_ = 0L;
+      fgId_ = 0L;
+      fgOwner_ = 0L;
+      ts_ = 0L;
+      msg_ = "";
+      groupName_ = "";
+      handlerName_ = "";
+      handlerHeadTs_ = 0L;
+      candiName_ = "";
+      candiHeadTs_ = 0L;
+      groupIcon_ = "";
+      fgOwnerHeadTs_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasHandler()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasCandidate()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasFgId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, handler_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, candidate_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt64(3, fgId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt64(4, fgOwner_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeUInt64(5, ts_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBytes(6, getMsgBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBytes(7, getGroupNameBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeBytes(8, getHandlerNameBytes());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeUInt64(9, handlerHeadTs_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeBytes(10, getCandiNameBytes());
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        output.writeUInt64(11, candiHeadTs_);
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        output.writeBytes(12, getGroupIconBytes());
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        output.writeUInt64(13, fgOwnerHeadTs_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, handler_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, candidate_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(3, fgId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(4, fgOwner_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(5, ts_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, getMsgBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, getGroupNameBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(8, getHandlerNameBytes());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(9, handlerHeadTs_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(10, getCandiNameBytes());
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(11, candiHeadTs_);
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(12, getGroupIconBytes());
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(13, fgOwnerHeadTs_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.RemoveFansGroupMemNotify}
+     *
+     * <pre>
+     *删除群成员通知 REMOVE_MEM = 4;//移除群成员
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.RemoveFansGroupMemNotify)
+        com.wali.live.proto.VFansProto.RemoveFansGroupMemNotifyOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_RemoveFansGroupMemNotify_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_RemoveFansGroupMemNotify_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify.class, com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        handler_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        candidate_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        fgId_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        fgOwner_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        ts_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        msg_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
+        groupName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
+        handlerName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000080);
+        handlerHeadTs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000100);
+        candiName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000200);
+        candiHeadTs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000400);
+        groupIcon_ = "";
+        bitField0_ = (bitField0_ & ~0x00000800);
+        fgOwnerHeadTs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00001000);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_RemoveFansGroupMemNotify_descriptor;
+      }
+
+      public com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify getDefaultInstanceForType() {
+        return com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify build() {
+        com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify buildPartial() {
+        com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify result = new com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.handler_ = handler_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.candidate_ = candidate_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.fgId_ = fgId_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.fgOwner_ = fgOwner_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.ts_ = ts_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.msg_ = msg_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.groupName_ = groupName_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.handlerName_ = handlerName_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.handlerHeadTs_ = handlerHeadTs_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        result.candiName_ = candiName_;
+        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+          to_bitField0_ |= 0x00000400;
+        }
+        result.candiHeadTs_ = candiHeadTs_;
+        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+          to_bitField0_ |= 0x00000800;
+        }
+        result.groupIcon_ = groupIcon_;
+        if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
+          to_bitField0_ |= 0x00001000;
+        }
+        result.fgOwnerHeadTs_ = fgOwnerHeadTs_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify) {
+          return mergeFrom((com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify other) {
+        if (other == com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify.getDefaultInstance()) return this;
+        if (other.hasHandler()) {
+          setHandler(other.getHandler());
+        }
+        if (other.hasCandidate()) {
+          setCandidate(other.getCandidate());
+        }
+        if (other.hasFgId()) {
+          setFgId(other.getFgId());
+        }
+        if (other.hasFgOwner()) {
+          setFgOwner(other.getFgOwner());
+        }
+        if (other.hasTs()) {
+          setTs(other.getTs());
+        }
+        if (other.hasMsg()) {
+          bitField0_ |= 0x00000020;
+          msg_ = other.msg_;
+          onChanged();
+        }
+        if (other.hasGroupName()) {
+          bitField0_ |= 0x00000040;
+          groupName_ = other.groupName_;
+          onChanged();
+        }
+        if (other.hasHandlerName()) {
+          bitField0_ |= 0x00000080;
+          handlerName_ = other.handlerName_;
+          onChanged();
+        }
+        if (other.hasHandlerHeadTs()) {
+          setHandlerHeadTs(other.getHandlerHeadTs());
+        }
+        if (other.hasCandiName()) {
+          bitField0_ |= 0x00000200;
+          candiName_ = other.candiName_;
+          onChanged();
+        }
+        if (other.hasCandiHeadTs()) {
+          setCandiHeadTs(other.getCandiHeadTs());
+        }
+        if (other.hasGroupIcon()) {
+          bitField0_ |= 0x00000800;
+          groupIcon_ = other.groupIcon_;
+          onChanged();
+        }
+        if (other.hasFgOwnerHeadTs()) {
+          setFgOwnerHeadTs(other.getFgOwnerHeadTs());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasHandler()) {
+          
+          return false;
+        }
+        if (!hasCandidate()) {
+          
+          return false;
+        }
+        if (!hasFgId()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.VFansProto.RemoveFansGroupMemNotify) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long handler_ ;
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public boolean hasHandler() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public long getHandler() {
+        return handler_;
+      }
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public Builder setHandler(long value) {
+        bitField0_ |= 0x00000001;
+        handler_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public Builder clearHandler() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        handler_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long candidate_ ;
+      /**
+       * <code>required uint64 candidate = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public boolean hasCandidate() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required uint64 candidate = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public long getCandidate() {
+        return candidate_;
+      }
+      /**
+       * <code>required uint64 candidate = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public Builder setCandidate(long value) {
+        bitField0_ |= 0x00000002;
+        candidate_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 candidate = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public Builder clearCandidate() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        candidate_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long fgId_ ;
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public boolean hasFgId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public long getFgId() {
+        return fgId_;
+      }
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public Builder setFgId(long value) {
+        bitField0_ |= 0x00000004;
+        fgId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public Builder clearFgId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        fgId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long fgOwner_ ;
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public boolean hasFgOwner() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public long getFgOwner() {
+        return fgOwner_;
+      }
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public Builder setFgOwner(long value) {
+        bitField0_ |= 0x00000008;
+        fgOwner_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public Builder clearFgOwner() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        fgOwner_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long ts_ ;
+      /**
+       * <code>optional uint64 ts = 5;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public boolean hasTs() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional uint64 ts = 5;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public long getTs() {
+        return ts_;
+      }
+      /**
+       * <code>optional uint64 ts = 5;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public Builder setTs(long value) {
+        bitField0_ |= 0x00000010;
+        ts_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 ts = 5;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public Builder clearTs() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        ts_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object msg_ = "";
+      /**
+       * <code>optional string msg = 6;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public boolean hasMsg() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public java.lang.String getMsg() {
+        java.lang.Object ref = msg_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msg_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getMsgBytes() {
+        java.lang.Object ref = msg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder setMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder clearMsg() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        msg_ = getDefaultInstance().getMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder setMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object groupName_ = "";
+      /**
+       * <code>optional string groupName = 7;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public boolean hasGroupName() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional string groupName = 7;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public java.lang.String getGroupName() {
+        java.lang.Object ref = groupName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            groupName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string groupName = 7;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getGroupNameBytes() {
+        java.lang.Object ref = groupName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          groupName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string groupName = 7;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder setGroupName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        groupName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupName = 7;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder clearGroupName() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        groupName_ = getDefaultInstance().getGroupName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupName = 7;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder setGroupNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        groupName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object handlerName_ = "";
+      /**
+       * <code>optional string handlerName = 8;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public boolean hasHandlerName() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional string handlerName = 8;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public java.lang.String getHandlerName() {
+        java.lang.Object ref = handlerName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            handlerName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string handlerName = 8;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getHandlerNameBytes() {
+        java.lang.Object ref = handlerName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          handlerName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string handlerName = 8;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public Builder setHandlerName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        handlerName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string handlerName = 8;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public Builder clearHandlerName() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        handlerName_ = getDefaultInstance().getHandlerName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string handlerName = 8;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public Builder setHandlerNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        handlerName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long handlerHeadTs_ ;
+      /**
+       * <code>optional uint64 handlerHeadTs = 9;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public boolean hasHandlerHeadTs() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional uint64 handlerHeadTs = 9;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public long getHandlerHeadTs() {
+        return handlerHeadTs_;
+      }
+      /**
+       * <code>optional uint64 handlerHeadTs = 9;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public Builder setHandlerHeadTs(long value) {
+        bitField0_ |= 0x00000100;
+        handlerHeadTs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 handlerHeadTs = 9;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public Builder clearHandlerHeadTs() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        handlerHeadTs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object candiName_ = "";
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public boolean hasCandiName() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public java.lang.String getCandiName() {
+        java.lang.Object ref = candiName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            candiName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getCandiNameBytes() {
+        java.lang.Object ref = candiName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          candiName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public Builder setCandiName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+        candiName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public Builder clearCandiName() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        candiName_ = getDefaultInstance().getCandiName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public Builder setCandiNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+        candiName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long candiHeadTs_ ;
+      /**
+       * <code>optional uint64 candiHeadTs = 11;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public boolean hasCandiHeadTs() {
+        return ((bitField0_ & 0x00000400) == 0x00000400);
+      }
+      /**
+       * <code>optional uint64 candiHeadTs = 11;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public long getCandiHeadTs() {
+        return candiHeadTs_;
+      }
+      /**
+       * <code>optional uint64 candiHeadTs = 11;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public Builder setCandiHeadTs(long value) {
+        bitField0_ |= 0x00000400;
+        candiHeadTs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 candiHeadTs = 11;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public Builder clearCandiHeadTs() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        candiHeadTs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object groupIcon_ = "";
+      /**
+       * <code>optional string groupIcon = 12;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public boolean hasGroupIcon() {
+        return ((bitField0_ & 0x00000800) == 0x00000800);
+      }
+      /**
+       * <code>optional string groupIcon = 12;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public java.lang.String getGroupIcon() {
+        java.lang.Object ref = groupIcon_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            groupIcon_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string groupIcon = 12;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getGroupIconBytes() {
+        java.lang.Object ref = groupIcon_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          groupIcon_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string groupIcon = 12;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public Builder setGroupIcon(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000800;
+        groupIcon_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupIcon = 12;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public Builder clearGroupIcon() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        groupIcon_ = getDefaultInstance().getGroupIcon();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupIcon = 12;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public Builder setGroupIconBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000800;
+        groupIcon_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long fgOwnerHeadTs_ ;
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public boolean hasFgOwnerHeadTs() {
+        return ((bitField0_ & 0x00001000) == 0x00001000);
+      }
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public long getFgOwnerHeadTs() {
+        return fgOwnerHeadTs_;
+      }
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public Builder setFgOwnerHeadTs(long value) {
+        bitField0_ |= 0x00001000;
+        fgOwnerHeadTs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public Builder clearFgOwnerHeadTs() {
+        bitField0_ = (bitField0_ & ~0x00001000);
+        fgOwnerHeadTs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.RemoveFansGroupMemNotify)
+    }
+
+    static {
+      defaultInstance = new RemoveFansGroupMemNotify(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.RemoveFansGroupMemNotify)
+  }
+
+  public interface UpdateFansGroupMemNotifyOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UpdateFansGroupMemNotify)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    boolean hasHandler();
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    long getHandler();
+
+    /**
+     * <code>required uint64 candidate = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    boolean hasCandidate();
+    /**
+     * <code>required uint64 candidate = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    long getCandidate();
+
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    boolean hasFgId();
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    long getFgId();
+
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    boolean hasFgOwner();
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    long getFgOwner();
+
+    /**
+     * <code>optional uint64 ts = 5;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    boolean hasTs();
+    /**
+     * <code>optional uint64 ts = 5;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    long getTs();
+
+    /**
+     * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
+     *
+     * <pre>
+     *该成员新群信息
+     * </pre>
+     */
+    boolean hasFgMemInfo();
+    /**
+     * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
+     *
+     * <pre>
+     *该成员新群信息
+     * </pre>
+     */
+    com.wali.live.proto.VFansProto.VfansGroupMemInfo getFgMemInfo();
+    /**
+     * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
+     *
+     * <pre>
+     *该成员新群信息
+     * </pre>
+     */
+    com.wali.live.proto.VFansProto.VfansGroupMemInfoOrBuilder getFgMemInfoOrBuilder();
+
+    /**
+     * <code>optional string msg = 7;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    boolean hasMsg();
+    /**
+     * <code>optional string msg = 7;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    java.lang.String getMsg();
+    /**
+     * <code>optional string msg = 7;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getMsgBytes();
+
+    /**
+     * <code>optional string groupName = 8;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    boolean hasGroupName();
+    /**
+     * <code>optional string groupName = 8;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    java.lang.String getGroupName();
+    /**
+     * <code>optional string groupName = 8;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getGroupNameBytes();
+
+    /**
+     * <code>optional string handlerName = 9;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    boolean hasHandlerName();
+    /**
+     * <code>optional string handlerName = 9;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    java.lang.String getHandlerName();
+    /**
+     * <code>optional string handlerName = 9;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getHandlerNameBytes();
+
+    /**
+     * <code>optional uint64 handlerHeadTs = 10;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    boolean hasHandlerHeadTs();
+    /**
+     * <code>optional uint64 handlerHeadTs = 10;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    long getHandlerHeadTs();
+
+    /**
+     * <code>optional string candiName = 11;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    boolean hasCandiName();
+    /**
+     * <code>optional string candiName = 11;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    java.lang.String getCandiName();
+    /**
+     * <code>optional string candiName = 11;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getCandiNameBytes();
+
+    /**
+     * <code>optional uint64 candiHeadTs = 12;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    boolean hasCandiHeadTs();
+    /**
+     * <code>optional uint64 candiHeadTs = 12;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    long getCandiHeadTs();
+
+    /**
+     * <code>optional string groupIcon = 13;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    boolean hasGroupIcon();
+    /**
+     * <code>optional string groupIcon = 13;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    java.lang.String getGroupIcon();
+    /**
+     * <code>optional string groupIcon = 13;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getGroupIconBytes();
+
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 14;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    boolean hasFgOwnerHeadTs();
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 14;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    long getFgOwnerHeadTs();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.UpdateFansGroupMemNotify}
+   *
+   * <pre>
+   *修改群成员通知 UPDATE_MEM = 5;//更新群成员信息
+   * </pre>
+   */
+  public static final class UpdateFansGroupMemNotify extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UpdateFansGroupMemNotify)
+      UpdateFansGroupMemNotifyOrBuilder {
+    // Use UpdateFansGroupMemNotify.newBuilder() to construct.
+    private UpdateFansGroupMemNotify(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private UpdateFansGroupMemNotify(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final UpdateFansGroupMemNotify defaultInstance;
+    public static UpdateFansGroupMemNotify getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public UpdateFansGroupMemNotify getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private UpdateFansGroupMemNotify(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              handler_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              candidate_ = input.readUInt64();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              fgId_ = input.readUInt64();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              fgOwner_ = input.readUInt64();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              ts_ = input.readUInt64();
+              break;
+            }
+            case 50: {
+              com.wali.live.proto.VFansProto.VfansGroupMemInfo.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000020) == 0x00000020)) {
+                subBuilder = fgMemInfo_.toBuilder();
+              }
+              fgMemInfo_ = input.readMessage(com.wali.live.proto.VFansProto.VfansGroupMemInfo.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(fgMemInfo_);
+                fgMemInfo_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000020;
+              break;
+            }
+            case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000040;
+              msg_ = bs;
+              break;
+            }
+            case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000080;
+              groupName_ = bs;
+              break;
+            }
+            case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000100;
+              handlerName_ = bs;
+              break;
+            }
+            case 80: {
+              bitField0_ |= 0x00000200;
+              handlerHeadTs_ = input.readUInt64();
+              break;
+            }
+            case 90: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000400;
+              candiName_ = bs;
+              break;
+            }
+            case 96: {
+              bitField0_ |= 0x00000800;
+              candiHeadTs_ = input.readUInt64();
+              break;
+            }
+            case 106: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00001000;
+              groupIcon_ = bs;
+              break;
+            }
+            case 112: {
+              bitField0_ |= 0x00002000;
+              fgOwnerHeadTs_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify.class, com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<UpdateFansGroupMemNotify> PARSER =
+        new com.google.protobuf.AbstractParser<UpdateFansGroupMemNotify>() {
+      public UpdateFansGroupMemNotify parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new UpdateFansGroupMemNotify(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<UpdateFansGroupMemNotify> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int HANDLER_FIELD_NUMBER = 1;
+    private long handler_;
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    public boolean hasHandler() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    public long getHandler() {
+      return handler_;
+    }
+
+    public static final int CANDIDATE_FIELD_NUMBER = 2;
+    private long candidate_;
+    /**
+     * <code>required uint64 candidate = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    public boolean hasCandidate() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required uint64 candidate = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    public long getCandidate() {
+      return candidate_;
+    }
+
+    public static final int FGID_FIELD_NUMBER = 3;
+    private long fgId_;
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    public boolean hasFgId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    public long getFgId() {
+      return fgId_;
+    }
+
+    public static final int FGOWNER_FIELD_NUMBER = 4;
+    private long fgOwner_;
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    public boolean hasFgOwner() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    public long getFgOwner() {
+      return fgOwner_;
+    }
+
+    public static final int TS_FIELD_NUMBER = 5;
+    private long ts_;
+    /**
+     * <code>optional uint64 ts = 5;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    public boolean hasTs() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional uint64 ts = 5;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    public long getTs() {
+      return ts_;
+    }
+
+    public static final int FGMEMINFO_FIELD_NUMBER = 6;
+    private com.wali.live.proto.VFansProto.VfansGroupMemInfo fgMemInfo_;
+    /**
+     * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
+     *
+     * <pre>
+     *该成员新群信息
+     * </pre>
+     */
+    public boolean hasFgMemInfo() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
+     *
+     * <pre>
+     *该成员新群信息
+     * </pre>
+     */
+    public com.wali.live.proto.VFansProto.VfansGroupMemInfo getFgMemInfo() {
+      return fgMemInfo_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
+     *
+     * <pre>
+     *该成员新群信息
+     * </pre>
+     */
+    public com.wali.live.proto.VFansProto.VfansGroupMemInfoOrBuilder getFgMemInfoOrBuilder() {
+      return fgMemInfo_;
+    }
+
+    public static final int MSG_FIELD_NUMBER = 7;
+    private java.lang.Object msg_;
+    /**
+     * <code>optional string msg = 7;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public boolean hasMsg() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional string msg = 7;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public java.lang.String getMsg() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          msg_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string msg = 7;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getMsgBytes() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int GROUPNAME_FIELD_NUMBER = 8;
+    private java.lang.Object groupName_;
+    /**
+     * <code>optional string groupName = 8;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public boolean hasGroupName() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional string groupName = 8;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public java.lang.String getGroupName() {
+      java.lang.Object ref = groupName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          groupName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string groupName = 8;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getGroupNameBytes() {
+      java.lang.Object ref = groupName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        groupName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int HANDLERNAME_FIELD_NUMBER = 9;
+    private java.lang.Object handlerName_;
+    /**
+     * <code>optional string handlerName = 9;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    public boolean hasHandlerName() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional string handlerName = 9;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    public java.lang.String getHandlerName() {
+      java.lang.Object ref = handlerName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          handlerName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string handlerName = 9;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getHandlerNameBytes() {
+      java.lang.Object ref = handlerName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        handlerName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int HANDLERHEADTS_FIELD_NUMBER = 10;
+    private long handlerHeadTs_;
+    /**
+     * <code>optional uint64 handlerHeadTs = 10;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    public boolean hasHandlerHeadTs() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional uint64 handlerHeadTs = 10;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    public long getHandlerHeadTs() {
+      return handlerHeadTs_;
+    }
+
+    public static final int CANDINAME_FIELD_NUMBER = 11;
+    private java.lang.Object candiName_;
+    /**
+     * <code>optional string candiName = 11;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    public boolean hasCandiName() {
+      return ((bitField0_ & 0x00000400) == 0x00000400);
+    }
+    /**
+     * <code>optional string candiName = 11;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    public java.lang.String getCandiName() {
+      java.lang.Object ref = candiName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          candiName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string candiName = 11;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getCandiNameBytes() {
+      java.lang.Object ref = candiName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        candiName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CANDIHEADTS_FIELD_NUMBER = 12;
+    private long candiHeadTs_;
+    /**
+     * <code>optional uint64 candiHeadTs = 12;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    public boolean hasCandiHeadTs() {
+      return ((bitField0_ & 0x00000800) == 0x00000800);
+    }
+    /**
+     * <code>optional uint64 candiHeadTs = 12;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    public long getCandiHeadTs() {
+      return candiHeadTs_;
+    }
+
+    public static final int GROUPICON_FIELD_NUMBER = 13;
+    private java.lang.Object groupIcon_;
+    /**
+     * <code>optional string groupIcon = 13;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    public boolean hasGroupIcon() {
+      return ((bitField0_ & 0x00001000) == 0x00001000);
+    }
+    /**
+     * <code>optional string groupIcon = 13;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    public java.lang.String getGroupIcon() {
+      java.lang.Object ref = groupIcon_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          groupIcon_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string groupIcon = 13;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getGroupIconBytes() {
+      java.lang.Object ref = groupIcon_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        groupIcon_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int FGOWNERHEADTS_FIELD_NUMBER = 14;
+    private long fgOwnerHeadTs_;
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 14;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    public boolean hasFgOwnerHeadTs() {
+      return ((bitField0_ & 0x00002000) == 0x00002000);
+    }
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 14;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    public long getFgOwnerHeadTs() {
+      return fgOwnerHeadTs_;
+    }
+
+    private void initFields() {
+      handler_ = 0L;
+      candidate_ = 0L;
+      fgId_ = 0L;
+      fgOwner_ = 0L;
+      ts_ = 0L;
+      fgMemInfo_ = com.wali.live.proto.VFansProto.VfansGroupMemInfo.getDefaultInstance();
+      msg_ = "";
+      groupName_ = "";
+      handlerName_ = "";
+      handlerHeadTs_ = 0L;
+      candiName_ = "";
+      candiHeadTs_ = 0L;
+      groupIcon_ = "";
+      fgOwnerHeadTs_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasHandler()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasCandidate()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasFgId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (hasFgMemInfo()) {
+        if (!getFgMemInfo().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, handler_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, candidate_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt64(3, fgId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt64(4, fgOwner_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeUInt64(5, ts_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeMessage(6, fgMemInfo_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBytes(7, getMsgBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeBytes(8, getGroupNameBytes());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeBytes(9, getHandlerNameBytes());
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeUInt64(10, handlerHeadTs_);
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        output.writeBytes(11, getCandiNameBytes());
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        output.writeUInt64(12, candiHeadTs_);
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        output.writeBytes(13, getGroupIconBytes());
+      }
+      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+        output.writeUInt64(14, fgOwnerHeadTs_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, handler_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, candidate_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(3, fgId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(4, fgOwner_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(5, ts_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, fgMemInfo_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, getMsgBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(8, getGroupNameBytes());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(9, getHandlerNameBytes());
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(10, handlerHeadTs_);
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(11, getCandiNameBytes());
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(12, candiHeadTs_);
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(13, getGroupIconBytes());
+      }
+      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(14, fgOwnerHeadTs_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.UpdateFansGroupMemNotify}
+     *
+     * <pre>
+     *修改群成员通知 UPDATE_MEM = 5;//更新群成员信息
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UpdateFansGroupMemNotify)
+        com.wali.live.proto.VFansProto.UpdateFansGroupMemNotifyOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify.class, com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getFgMemInfoFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        handler_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        candidate_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        fgId_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        fgOwner_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        ts_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        if (fgMemInfoBuilder_ == null) {
+          fgMemInfo_ = com.wali.live.proto.VFansProto.VfansGroupMemInfo.getDefaultInstance();
+        } else {
+          fgMemInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000020);
+        msg_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
+        groupName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000080);
+        handlerName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000100);
+        handlerHeadTs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000200);
+        candiName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000400);
+        candiHeadTs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000800);
+        groupIcon_ = "";
+        bitField0_ = (bitField0_ & ~0x00001000);
+        fgOwnerHeadTs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00002000);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_descriptor;
+      }
+
+      public com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify getDefaultInstanceForType() {
+        return com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify build() {
+        com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify buildPartial() {
+        com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify result = new com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.handler_ = handler_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.candidate_ = candidate_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.fgId_ = fgId_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.fgOwner_ = fgOwner_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.ts_ = ts_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        if (fgMemInfoBuilder_ == null) {
+          result.fgMemInfo_ = fgMemInfo_;
+        } else {
+          result.fgMemInfo_ = fgMemInfoBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.msg_ = msg_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.groupName_ = groupName_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.handlerName_ = handlerName_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        result.handlerHeadTs_ = handlerHeadTs_;
+        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+          to_bitField0_ |= 0x00000400;
+        }
+        result.candiName_ = candiName_;
+        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+          to_bitField0_ |= 0x00000800;
+        }
+        result.candiHeadTs_ = candiHeadTs_;
+        if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
+          to_bitField0_ |= 0x00001000;
+        }
+        result.groupIcon_ = groupIcon_;
+        if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
+          to_bitField0_ |= 0x00002000;
+        }
+        result.fgOwnerHeadTs_ = fgOwnerHeadTs_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify) {
+          return mergeFrom((com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify other) {
+        if (other == com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify.getDefaultInstance()) return this;
+        if (other.hasHandler()) {
+          setHandler(other.getHandler());
+        }
+        if (other.hasCandidate()) {
+          setCandidate(other.getCandidate());
+        }
+        if (other.hasFgId()) {
+          setFgId(other.getFgId());
+        }
+        if (other.hasFgOwner()) {
+          setFgOwner(other.getFgOwner());
+        }
+        if (other.hasTs()) {
+          setTs(other.getTs());
+        }
+        if (other.hasFgMemInfo()) {
+          mergeFgMemInfo(other.getFgMemInfo());
+        }
+        if (other.hasMsg()) {
+          bitField0_ |= 0x00000040;
+          msg_ = other.msg_;
+          onChanged();
+        }
+        if (other.hasGroupName()) {
+          bitField0_ |= 0x00000080;
+          groupName_ = other.groupName_;
+          onChanged();
+        }
+        if (other.hasHandlerName()) {
+          bitField0_ |= 0x00000100;
+          handlerName_ = other.handlerName_;
+          onChanged();
+        }
+        if (other.hasHandlerHeadTs()) {
+          setHandlerHeadTs(other.getHandlerHeadTs());
+        }
+        if (other.hasCandiName()) {
+          bitField0_ |= 0x00000400;
+          candiName_ = other.candiName_;
+          onChanged();
+        }
+        if (other.hasCandiHeadTs()) {
+          setCandiHeadTs(other.getCandiHeadTs());
+        }
+        if (other.hasGroupIcon()) {
+          bitField0_ |= 0x00001000;
+          groupIcon_ = other.groupIcon_;
+          onChanged();
+        }
+        if (other.hasFgOwnerHeadTs()) {
+          setFgOwnerHeadTs(other.getFgOwnerHeadTs());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasHandler()) {
+          
+          return false;
+        }
+        if (!hasCandidate()) {
+          
+          return false;
+        }
+        if (!hasFgId()) {
+          
+          return false;
+        }
+        if (hasFgMemInfo()) {
+          if (!getFgMemInfo().isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.VFansProto.UpdateFansGroupMemNotify) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long handler_ ;
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public boolean hasHandler() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public long getHandler() {
+        return handler_;
+      }
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public Builder setHandler(long value) {
+        bitField0_ |= 0x00000001;
+        handler_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public Builder clearHandler() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        handler_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long candidate_ ;
+      /**
+       * <code>required uint64 candidate = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public boolean hasCandidate() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required uint64 candidate = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public long getCandidate() {
+        return candidate_;
+      }
+      /**
+       * <code>required uint64 candidate = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public Builder setCandidate(long value) {
+        bitField0_ |= 0x00000002;
+        candidate_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 candidate = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public Builder clearCandidate() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        candidate_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long fgId_ ;
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public boolean hasFgId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public long getFgId() {
+        return fgId_;
+      }
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public Builder setFgId(long value) {
+        bitField0_ |= 0x00000004;
+        fgId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public Builder clearFgId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        fgId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long fgOwner_ ;
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public boolean hasFgOwner() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public long getFgOwner() {
+        return fgOwner_;
+      }
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public Builder setFgOwner(long value) {
+        bitField0_ |= 0x00000008;
+        fgOwner_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public Builder clearFgOwner() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        fgOwner_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long ts_ ;
+      /**
+       * <code>optional uint64 ts = 5;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public boolean hasTs() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional uint64 ts = 5;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public long getTs() {
+        return ts_;
+      }
+      /**
+       * <code>optional uint64 ts = 5;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public Builder setTs(long value) {
+        bitField0_ |= 0x00000010;
+        ts_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 ts = 5;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public Builder clearTs() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        ts_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.VFansProto.VfansGroupMemInfo fgMemInfo_ = com.wali.live.proto.VFansProto.VfansGroupMemInfo.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.VFansProto.VfansGroupMemInfo, com.wali.live.proto.VFansProto.VfansGroupMemInfo.Builder, com.wali.live.proto.VFansProto.VfansGroupMemInfoOrBuilder> fgMemInfoBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
+       *
+       * <pre>
+       *该成员新群信息
+       * </pre>
+       */
+      public boolean hasFgMemInfo() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
+       *
+       * <pre>
+       *该成员新群信息
+       * </pre>
+       */
+      public com.wali.live.proto.VFansProto.VfansGroupMemInfo getFgMemInfo() {
+        if (fgMemInfoBuilder_ == null) {
+          return fgMemInfo_;
+        } else {
+          return fgMemInfoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
+       *
+       * <pre>
+       *该成员新群信息
+       * </pre>
+       */
+      public Builder setFgMemInfo(com.wali.live.proto.VFansProto.VfansGroupMemInfo value) {
+        if (fgMemInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          fgMemInfo_ = value;
+          onChanged();
+        } else {
+          fgMemInfoBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
+       *
+       * <pre>
+       *该成员新群信息
+       * </pre>
+       */
+      public Builder setFgMemInfo(
+          com.wali.live.proto.VFansProto.VfansGroupMemInfo.Builder builderForValue) {
+        if (fgMemInfoBuilder_ == null) {
+          fgMemInfo_ = builderForValue.build();
+          onChanged();
+        } else {
+          fgMemInfoBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
+       *
+       * <pre>
+       *该成员新群信息
+       * </pre>
+       */
+      public Builder mergeFgMemInfo(com.wali.live.proto.VFansProto.VfansGroupMemInfo value) {
+        if (fgMemInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00000020) == 0x00000020) &&
+              fgMemInfo_ != com.wali.live.proto.VFansProto.VfansGroupMemInfo.getDefaultInstance()) {
+            fgMemInfo_ =
+              com.wali.live.proto.VFansProto.VfansGroupMemInfo.newBuilder(fgMemInfo_).mergeFrom(value).buildPartial();
+          } else {
+            fgMemInfo_ = value;
+          }
+          onChanged();
+        } else {
+          fgMemInfoBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
+       *
+       * <pre>
+       *该成员新群信息
+       * </pre>
+       */
+      public Builder clearFgMemInfo() {
+        if (fgMemInfoBuilder_ == null) {
+          fgMemInfo_ = com.wali.live.proto.VFansProto.VfansGroupMemInfo.getDefaultInstance();
+          onChanged();
+        } else {
+          fgMemInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000020);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
+       *
+       * <pre>
+       *该成员新群信息
+       * </pre>
+       */
+      public com.wali.live.proto.VFansProto.VfansGroupMemInfo.Builder getFgMemInfoBuilder() {
+        bitField0_ |= 0x00000020;
+        onChanged();
+        return getFgMemInfoFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
+       *
+       * <pre>
+       *该成员新群信息
+       * </pre>
+       */
+      public com.wali.live.proto.VFansProto.VfansGroupMemInfoOrBuilder getFgMemInfoOrBuilder() {
+        if (fgMemInfoBuilder_ != null) {
+          return fgMemInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return fgMemInfo_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.VfansGroupMemInfo fgMemInfo = 6;</code>
+       *
+       * <pre>
+       *该成员新群信息
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.VFansProto.VfansGroupMemInfo, com.wali.live.proto.VFansProto.VfansGroupMemInfo.Builder, com.wali.live.proto.VFansProto.VfansGroupMemInfoOrBuilder> 
+          getFgMemInfoFieldBuilder() {
+        if (fgMemInfoBuilder_ == null) {
+          fgMemInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.VFansProto.VfansGroupMemInfo, com.wali.live.proto.VFansProto.VfansGroupMemInfo.Builder, com.wali.live.proto.VFansProto.VfansGroupMemInfoOrBuilder>(
+                  getFgMemInfo(),
+                  getParentForChildren(),
+                  isClean());
+          fgMemInfo_ = null;
+        }
+        return fgMemInfoBuilder_;
+      }
+
+      private java.lang.Object msg_ = "";
+      /**
+       * <code>optional string msg = 7;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public boolean hasMsg() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional string msg = 7;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public java.lang.String getMsg() {
+        java.lang.Object ref = msg_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msg_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string msg = 7;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getMsgBytes() {
+        java.lang.Object ref = msg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string msg = 7;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder setMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg = 7;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder clearMsg() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        msg_ = getDefaultInstance().getMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg = 7;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder setMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object groupName_ = "";
+      /**
+       * <code>optional string groupName = 8;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public boolean hasGroupName() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional string groupName = 8;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public java.lang.String getGroupName() {
+        java.lang.Object ref = groupName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            groupName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string groupName = 8;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getGroupNameBytes() {
+        java.lang.Object ref = groupName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          groupName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string groupName = 8;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder setGroupName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        groupName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupName = 8;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder clearGroupName() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        groupName_ = getDefaultInstance().getGroupName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupName = 8;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder setGroupNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        groupName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object handlerName_ = "";
+      /**
+       * <code>optional string handlerName = 9;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public boolean hasHandlerName() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional string handlerName = 9;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public java.lang.String getHandlerName() {
+        java.lang.Object ref = handlerName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            handlerName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string handlerName = 9;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getHandlerNameBytes() {
+        java.lang.Object ref = handlerName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          handlerName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string handlerName = 9;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public Builder setHandlerName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        handlerName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string handlerName = 9;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public Builder clearHandlerName() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        handlerName_ = getDefaultInstance().getHandlerName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string handlerName = 9;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public Builder setHandlerNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        handlerName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long handlerHeadTs_ ;
+      /**
+       * <code>optional uint64 handlerHeadTs = 10;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public boolean hasHandlerHeadTs() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional uint64 handlerHeadTs = 10;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public long getHandlerHeadTs() {
+        return handlerHeadTs_;
+      }
+      /**
+       * <code>optional uint64 handlerHeadTs = 10;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public Builder setHandlerHeadTs(long value) {
+        bitField0_ |= 0x00000200;
+        handlerHeadTs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 handlerHeadTs = 10;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public Builder clearHandlerHeadTs() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        handlerHeadTs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object candiName_ = "";
+      /**
+       * <code>optional string candiName = 11;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public boolean hasCandiName() {
+        return ((bitField0_ & 0x00000400) == 0x00000400);
+      }
+      /**
+       * <code>optional string candiName = 11;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public java.lang.String getCandiName() {
+        java.lang.Object ref = candiName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            candiName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string candiName = 11;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getCandiNameBytes() {
+        java.lang.Object ref = candiName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          candiName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string candiName = 11;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public Builder setCandiName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000400;
+        candiName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string candiName = 11;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public Builder clearCandiName() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        candiName_ = getDefaultInstance().getCandiName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string candiName = 11;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public Builder setCandiNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000400;
+        candiName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long candiHeadTs_ ;
+      /**
+       * <code>optional uint64 candiHeadTs = 12;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public boolean hasCandiHeadTs() {
+        return ((bitField0_ & 0x00000800) == 0x00000800);
+      }
+      /**
+       * <code>optional uint64 candiHeadTs = 12;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public long getCandiHeadTs() {
+        return candiHeadTs_;
+      }
+      /**
+       * <code>optional uint64 candiHeadTs = 12;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public Builder setCandiHeadTs(long value) {
+        bitField0_ |= 0x00000800;
+        candiHeadTs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 candiHeadTs = 12;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public Builder clearCandiHeadTs() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        candiHeadTs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object groupIcon_ = "";
+      /**
+       * <code>optional string groupIcon = 13;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public boolean hasGroupIcon() {
+        return ((bitField0_ & 0x00001000) == 0x00001000);
+      }
+      /**
+       * <code>optional string groupIcon = 13;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public java.lang.String getGroupIcon() {
+        java.lang.Object ref = groupIcon_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            groupIcon_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string groupIcon = 13;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getGroupIconBytes() {
+        java.lang.Object ref = groupIcon_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          groupIcon_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string groupIcon = 13;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public Builder setGroupIcon(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00001000;
+        groupIcon_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupIcon = 13;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public Builder clearGroupIcon() {
+        bitField0_ = (bitField0_ & ~0x00001000);
+        groupIcon_ = getDefaultInstance().getGroupIcon();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupIcon = 13;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public Builder setGroupIconBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00001000;
+        groupIcon_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long fgOwnerHeadTs_ ;
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 14;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public boolean hasFgOwnerHeadTs() {
+        return ((bitField0_ & 0x00002000) == 0x00002000);
+      }
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 14;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public long getFgOwnerHeadTs() {
+        return fgOwnerHeadTs_;
+      }
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 14;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public Builder setFgOwnerHeadTs(long value) {
+        bitField0_ |= 0x00002000;
+        fgOwnerHeadTs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 14;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public Builder clearFgOwnerHeadTs() {
+        bitField0_ = (bitField0_ & ~0x00002000);
+        fgOwnerHeadTs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UpdateFansGroupMemNotify)
+    }
+
+    static {
+      defaultInstance = new UpdateFansGroupMemNotify(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UpdateFansGroupMemNotify)
+  }
+
+  public interface ForbidNoiseFansGroupMemNotifyOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ForbidNoiseFansGroupMemNotify)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    boolean hasHandler();
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    long getHandler();
+
+    /**
+     * <code>required uint64 member = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    boolean hasMember();
+    /**
+     * <code>required uint64 member = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    long getMember();
+
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    boolean hasFgId();
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    long getFgId();
+
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    boolean hasFgOwner();
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    long getFgOwner();
+
+    /**
+     * <code>optional uint64 ts = 5;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    boolean hasTs();
+    /**
+     * <code>optional uint64 ts = 5;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    long getTs();
+
+    /**
+     * <code>optional string msg = 6;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    boolean hasMsg();
+    /**
+     * <code>optional string msg = 6;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    java.lang.String getMsg();
+    /**
+     * <code>optional string msg = 6;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getMsgBytes();
+
+    /**
+     * <code>optional string groupName = 7;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    boolean hasGroupName();
+    /**
+     * <code>optional string groupName = 7;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    java.lang.String getGroupName();
+    /**
+     * <code>optional string groupName = 7;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getGroupNameBytes();
+
+    /**
+     * <code>optional string handlerName = 8;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    boolean hasHandlerName();
+    /**
+     * <code>optional string handlerName = 8;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    java.lang.String getHandlerName();
+    /**
+     * <code>optional string handlerName = 8;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getHandlerNameBytes();
+
+    /**
+     * <code>optional uint64 handlerHeadTs = 9;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    boolean hasHandlerHeadTs();
+    /**
+     * <code>optional uint64 handlerHeadTs = 9;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    long getHandlerHeadTs();
+
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    boolean hasCandiName();
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    java.lang.String getCandiName();
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getCandiNameBytes();
+
+    /**
+     * <code>optional uint64 candiHeadTs = 11;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    boolean hasCandiHeadTs();
+    /**
+     * <code>optional uint64 candiHeadTs = 11;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    long getCandiHeadTs();
+
+    /**
+     * <code>optional string groupIcon = 12;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    boolean hasGroupIcon();
+    /**
+     * <code>optional string groupIcon = 12;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    java.lang.String getGroupIcon();
+    /**
+     * <code>optional string groupIcon = 12;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getGroupIconBytes();
+
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    boolean hasFgOwnerHeadTs();
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    long getFgOwnerHeadTs();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.ForbidNoiseFansGroupMemNotify}
+   *
+   * <pre>
+   *禁言群成员通知 FORBID_NOISE = 6;//禁言
+   * </pre>
+   */
+  public static final class ForbidNoiseFansGroupMemNotify extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ForbidNoiseFansGroupMemNotify)
+      ForbidNoiseFansGroupMemNotifyOrBuilder {
+    // Use ForbidNoiseFansGroupMemNotify.newBuilder() to construct.
+    private ForbidNoiseFansGroupMemNotify(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ForbidNoiseFansGroupMemNotify(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ForbidNoiseFansGroupMemNotify defaultInstance;
+    public static ForbidNoiseFansGroupMemNotify getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ForbidNoiseFansGroupMemNotify getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ForbidNoiseFansGroupMemNotify(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              handler_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              member_ = input.readUInt64();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              fgId_ = input.readUInt64();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              fgOwner_ = input.readUInt64();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              ts_ = input.readUInt64();
+              break;
+            }
+            case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000020;
+              msg_ = bs;
+              break;
+            }
+            case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000040;
+              groupName_ = bs;
+              break;
+            }
+            case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000080;
+              handlerName_ = bs;
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000100;
+              handlerHeadTs_ = input.readUInt64();
+              break;
+            }
+            case 82: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000200;
+              candiName_ = bs;
+              break;
+            }
+            case 88: {
+              bitField0_ |= 0x00000400;
+              candiHeadTs_ = input.readUInt64();
+              break;
+            }
+            case 98: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000800;
+              groupIcon_ = bs;
+              break;
+            }
+            case 104: {
+              bitField0_ |= 0x00001000;
+              fgOwnerHeadTs_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_ForbidNoiseFansGroupMemNotify_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_ForbidNoiseFansGroupMemNotify_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify.class, com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ForbidNoiseFansGroupMemNotify> PARSER =
+        new com.google.protobuf.AbstractParser<ForbidNoiseFansGroupMemNotify>() {
+      public ForbidNoiseFansGroupMemNotify parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ForbidNoiseFansGroupMemNotify(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ForbidNoiseFansGroupMemNotify> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int HANDLER_FIELD_NUMBER = 1;
+    private long handler_;
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    public boolean hasHandler() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    public long getHandler() {
+      return handler_;
+    }
+
+    public static final int MEMBER_FIELD_NUMBER = 2;
+    private long member_;
+    /**
+     * <code>required uint64 member = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    public boolean hasMember() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required uint64 member = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    public long getMember() {
+      return member_;
+    }
+
+    public static final int FGID_FIELD_NUMBER = 3;
+    private long fgId_;
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    public boolean hasFgId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    public long getFgId() {
+      return fgId_;
+    }
+
+    public static final int FGOWNER_FIELD_NUMBER = 4;
+    private long fgOwner_;
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    public boolean hasFgOwner() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    public long getFgOwner() {
+      return fgOwner_;
+    }
+
+    public static final int TS_FIELD_NUMBER = 5;
+    private long ts_;
+    /**
+     * <code>optional uint64 ts = 5;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    public boolean hasTs() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional uint64 ts = 5;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    public long getTs() {
+      return ts_;
+    }
+
+    public static final int MSG_FIELD_NUMBER = 6;
+    private java.lang.Object msg_;
+    /**
+     * <code>optional string msg = 6;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public boolean hasMsg() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional string msg = 6;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public java.lang.String getMsg() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          msg_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string msg = 6;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getMsgBytes() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int GROUPNAME_FIELD_NUMBER = 7;
+    private java.lang.Object groupName_;
+    /**
+     * <code>optional string groupName = 7;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public boolean hasGroupName() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional string groupName = 7;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public java.lang.String getGroupName() {
+      java.lang.Object ref = groupName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          groupName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string groupName = 7;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getGroupNameBytes() {
+      java.lang.Object ref = groupName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        groupName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int HANDLERNAME_FIELD_NUMBER = 8;
+    private java.lang.Object handlerName_;
+    /**
+     * <code>optional string handlerName = 8;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    public boolean hasHandlerName() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional string handlerName = 8;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    public java.lang.String getHandlerName() {
+      java.lang.Object ref = handlerName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          handlerName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string handlerName = 8;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getHandlerNameBytes() {
+      java.lang.Object ref = handlerName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        handlerName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int HANDLERHEADTS_FIELD_NUMBER = 9;
+    private long handlerHeadTs_;
+    /**
+     * <code>optional uint64 handlerHeadTs = 9;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    public boolean hasHandlerHeadTs() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional uint64 handlerHeadTs = 9;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    public long getHandlerHeadTs() {
+      return handlerHeadTs_;
+    }
+
+    public static final int CANDINAME_FIELD_NUMBER = 10;
+    private java.lang.Object candiName_;
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    public boolean hasCandiName() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    public java.lang.String getCandiName() {
+      java.lang.Object ref = candiName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          candiName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getCandiNameBytes() {
+      java.lang.Object ref = candiName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        candiName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CANDIHEADTS_FIELD_NUMBER = 11;
+    private long candiHeadTs_;
+    /**
+     * <code>optional uint64 candiHeadTs = 11;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    public boolean hasCandiHeadTs() {
+      return ((bitField0_ & 0x00000400) == 0x00000400);
+    }
+    /**
+     * <code>optional uint64 candiHeadTs = 11;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    public long getCandiHeadTs() {
+      return candiHeadTs_;
+    }
+
+    public static final int GROUPICON_FIELD_NUMBER = 12;
+    private java.lang.Object groupIcon_;
+    /**
+     * <code>optional string groupIcon = 12;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    public boolean hasGroupIcon() {
+      return ((bitField0_ & 0x00000800) == 0x00000800);
+    }
+    /**
+     * <code>optional string groupIcon = 12;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    public java.lang.String getGroupIcon() {
+      java.lang.Object ref = groupIcon_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          groupIcon_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string groupIcon = 12;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getGroupIconBytes() {
+      java.lang.Object ref = groupIcon_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        groupIcon_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int FGOWNERHEADTS_FIELD_NUMBER = 13;
+    private long fgOwnerHeadTs_;
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    public boolean hasFgOwnerHeadTs() {
+      return ((bitField0_ & 0x00001000) == 0x00001000);
+    }
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    public long getFgOwnerHeadTs() {
+      return fgOwnerHeadTs_;
+    }
+
+    private void initFields() {
+      handler_ = 0L;
+      member_ = 0L;
+      fgId_ = 0L;
+      fgOwner_ = 0L;
+      ts_ = 0L;
+      msg_ = "";
+      groupName_ = "";
+      handlerName_ = "";
+      handlerHeadTs_ = 0L;
+      candiName_ = "";
+      candiHeadTs_ = 0L;
+      groupIcon_ = "";
+      fgOwnerHeadTs_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasHandler()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasMember()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasFgId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, handler_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, member_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt64(3, fgId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt64(4, fgOwner_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeUInt64(5, ts_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBytes(6, getMsgBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBytes(7, getGroupNameBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeBytes(8, getHandlerNameBytes());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeUInt64(9, handlerHeadTs_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeBytes(10, getCandiNameBytes());
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        output.writeUInt64(11, candiHeadTs_);
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        output.writeBytes(12, getGroupIconBytes());
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        output.writeUInt64(13, fgOwnerHeadTs_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, handler_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, member_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(3, fgId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(4, fgOwner_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(5, ts_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, getMsgBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, getGroupNameBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(8, getHandlerNameBytes());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(9, handlerHeadTs_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(10, getCandiNameBytes());
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(11, candiHeadTs_);
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(12, getGroupIconBytes());
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(13, fgOwnerHeadTs_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.ForbidNoiseFansGroupMemNotify}
+     *
+     * <pre>
+     *禁言群成员通知 FORBID_NOISE = 6;//禁言
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ForbidNoiseFansGroupMemNotify)
+        com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotifyOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_ForbidNoiseFansGroupMemNotify_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_ForbidNoiseFansGroupMemNotify_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify.class, com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        handler_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        member_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        fgId_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        fgOwner_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        ts_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        msg_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
+        groupName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
+        handlerName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000080);
+        handlerHeadTs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000100);
+        candiName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000200);
+        candiHeadTs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000400);
+        groupIcon_ = "";
+        bitField0_ = (bitField0_ & ~0x00000800);
+        fgOwnerHeadTs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00001000);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_ForbidNoiseFansGroupMemNotify_descriptor;
+      }
+
+      public com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify getDefaultInstanceForType() {
+        return com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify build() {
+        com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify buildPartial() {
+        com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify result = new com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.handler_ = handler_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.member_ = member_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.fgId_ = fgId_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.fgOwner_ = fgOwner_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.ts_ = ts_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.msg_ = msg_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.groupName_ = groupName_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.handlerName_ = handlerName_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.handlerHeadTs_ = handlerHeadTs_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        result.candiName_ = candiName_;
+        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+          to_bitField0_ |= 0x00000400;
+        }
+        result.candiHeadTs_ = candiHeadTs_;
+        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+          to_bitField0_ |= 0x00000800;
+        }
+        result.groupIcon_ = groupIcon_;
+        if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
+          to_bitField0_ |= 0x00001000;
+        }
+        result.fgOwnerHeadTs_ = fgOwnerHeadTs_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify) {
+          return mergeFrom((com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify other) {
+        if (other == com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify.getDefaultInstance()) return this;
+        if (other.hasHandler()) {
+          setHandler(other.getHandler());
+        }
+        if (other.hasMember()) {
+          setMember(other.getMember());
+        }
+        if (other.hasFgId()) {
+          setFgId(other.getFgId());
+        }
+        if (other.hasFgOwner()) {
+          setFgOwner(other.getFgOwner());
+        }
+        if (other.hasTs()) {
+          setTs(other.getTs());
+        }
+        if (other.hasMsg()) {
+          bitField0_ |= 0x00000020;
+          msg_ = other.msg_;
+          onChanged();
+        }
+        if (other.hasGroupName()) {
+          bitField0_ |= 0x00000040;
+          groupName_ = other.groupName_;
+          onChanged();
+        }
+        if (other.hasHandlerName()) {
+          bitField0_ |= 0x00000080;
+          handlerName_ = other.handlerName_;
+          onChanged();
+        }
+        if (other.hasHandlerHeadTs()) {
+          setHandlerHeadTs(other.getHandlerHeadTs());
+        }
+        if (other.hasCandiName()) {
+          bitField0_ |= 0x00000200;
+          candiName_ = other.candiName_;
+          onChanged();
+        }
+        if (other.hasCandiHeadTs()) {
+          setCandiHeadTs(other.getCandiHeadTs());
+        }
+        if (other.hasGroupIcon()) {
+          bitField0_ |= 0x00000800;
+          groupIcon_ = other.groupIcon_;
+          onChanged();
+        }
+        if (other.hasFgOwnerHeadTs()) {
+          setFgOwnerHeadTs(other.getFgOwnerHeadTs());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasHandler()) {
+          
+          return false;
+        }
+        if (!hasMember()) {
+          
+          return false;
+        }
+        if (!hasFgId()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.VFansProto.ForbidNoiseFansGroupMemNotify) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long handler_ ;
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public boolean hasHandler() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public long getHandler() {
+        return handler_;
+      }
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public Builder setHandler(long value) {
+        bitField0_ |= 0x00000001;
+        handler_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public Builder clearHandler() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        handler_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long member_ ;
+      /**
+       * <code>required uint64 member = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public boolean hasMember() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required uint64 member = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public long getMember() {
+        return member_;
+      }
+      /**
+       * <code>required uint64 member = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public Builder setMember(long value) {
+        bitField0_ |= 0x00000002;
+        member_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 member = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public Builder clearMember() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        member_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long fgId_ ;
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public boolean hasFgId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public long getFgId() {
+        return fgId_;
+      }
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public Builder setFgId(long value) {
+        bitField0_ |= 0x00000004;
+        fgId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public Builder clearFgId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        fgId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long fgOwner_ ;
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public boolean hasFgOwner() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public long getFgOwner() {
+        return fgOwner_;
+      }
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public Builder setFgOwner(long value) {
+        bitField0_ |= 0x00000008;
+        fgOwner_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public Builder clearFgOwner() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        fgOwner_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long ts_ ;
+      /**
+       * <code>optional uint64 ts = 5;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public boolean hasTs() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional uint64 ts = 5;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public long getTs() {
+        return ts_;
+      }
+      /**
+       * <code>optional uint64 ts = 5;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public Builder setTs(long value) {
+        bitField0_ |= 0x00000010;
+        ts_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 ts = 5;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public Builder clearTs() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        ts_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object msg_ = "";
+      /**
+       * <code>optional string msg = 6;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public boolean hasMsg() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public java.lang.String getMsg() {
+        java.lang.Object ref = msg_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msg_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getMsgBytes() {
+        java.lang.Object ref = msg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder setMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder clearMsg() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        msg_ = getDefaultInstance().getMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder setMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object groupName_ = "";
+      /**
+       * <code>optional string groupName = 7;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public boolean hasGroupName() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional string groupName = 7;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public java.lang.String getGroupName() {
+        java.lang.Object ref = groupName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            groupName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string groupName = 7;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getGroupNameBytes() {
+        java.lang.Object ref = groupName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          groupName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string groupName = 7;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder setGroupName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        groupName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupName = 7;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder clearGroupName() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        groupName_ = getDefaultInstance().getGroupName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupName = 7;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder setGroupNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        groupName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object handlerName_ = "";
+      /**
+       * <code>optional string handlerName = 8;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public boolean hasHandlerName() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional string handlerName = 8;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public java.lang.String getHandlerName() {
+        java.lang.Object ref = handlerName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            handlerName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string handlerName = 8;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getHandlerNameBytes() {
+        java.lang.Object ref = handlerName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          handlerName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string handlerName = 8;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public Builder setHandlerName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        handlerName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string handlerName = 8;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public Builder clearHandlerName() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        handlerName_ = getDefaultInstance().getHandlerName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string handlerName = 8;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public Builder setHandlerNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        handlerName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long handlerHeadTs_ ;
+      /**
+       * <code>optional uint64 handlerHeadTs = 9;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public boolean hasHandlerHeadTs() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional uint64 handlerHeadTs = 9;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public long getHandlerHeadTs() {
+        return handlerHeadTs_;
+      }
+      /**
+       * <code>optional uint64 handlerHeadTs = 9;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public Builder setHandlerHeadTs(long value) {
+        bitField0_ |= 0x00000100;
+        handlerHeadTs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 handlerHeadTs = 9;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public Builder clearHandlerHeadTs() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        handlerHeadTs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object candiName_ = "";
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public boolean hasCandiName() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public java.lang.String getCandiName() {
+        java.lang.Object ref = candiName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            candiName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getCandiNameBytes() {
+        java.lang.Object ref = candiName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          candiName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public Builder setCandiName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+        candiName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public Builder clearCandiName() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        candiName_ = getDefaultInstance().getCandiName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public Builder setCandiNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+        candiName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long candiHeadTs_ ;
+      /**
+       * <code>optional uint64 candiHeadTs = 11;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public boolean hasCandiHeadTs() {
+        return ((bitField0_ & 0x00000400) == 0x00000400);
+      }
+      /**
+       * <code>optional uint64 candiHeadTs = 11;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public long getCandiHeadTs() {
+        return candiHeadTs_;
+      }
+      /**
+       * <code>optional uint64 candiHeadTs = 11;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public Builder setCandiHeadTs(long value) {
+        bitField0_ |= 0x00000400;
+        candiHeadTs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 candiHeadTs = 11;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public Builder clearCandiHeadTs() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        candiHeadTs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object groupIcon_ = "";
+      /**
+       * <code>optional string groupIcon = 12;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public boolean hasGroupIcon() {
+        return ((bitField0_ & 0x00000800) == 0x00000800);
+      }
+      /**
+       * <code>optional string groupIcon = 12;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public java.lang.String getGroupIcon() {
+        java.lang.Object ref = groupIcon_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            groupIcon_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string groupIcon = 12;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getGroupIconBytes() {
+        java.lang.Object ref = groupIcon_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          groupIcon_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string groupIcon = 12;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public Builder setGroupIcon(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000800;
+        groupIcon_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupIcon = 12;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public Builder clearGroupIcon() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        groupIcon_ = getDefaultInstance().getGroupIcon();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupIcon = 12;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public Builder setGroupIconBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000800;
+        groupIcon_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long fgOwnerHeadTs_ ;
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public boolean hasFgOwnerHeadTs() {
+        return ((bitField0_ & 0x00001000) == 0x00001000);
+      }
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public long getFgOwnerHeadTs() {
+        return fgOwnerHeadTs_;
+      }
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public Builder setFgOwnerHeadTs(long value) {
+        bitField0_ |= 0x00001000;
+        fgOwnerHeadTs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public Builder clearFgOwnerHeadTs() {
+        bitField0_ = (bitField0_ & ~0x00001000);
+        fgOwnerHeadTs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ForbidNoiseFansGroupMemNotify)
+    }
+
+    static {
+      defaultInstance = new ForbidNoiseFansGroupMemNotify(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ForbidNoiseFansGroupMemNotify)
+  }
+
+  public interface CancelNoiseFansGroupMemNotifyOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.CancelNoiseFansGroupMemNotify)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    boolean hasHandler();
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    long getHandler();
+
+    /**
+     * <code>required uint64 member = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    boolean hasMember();
+    /**
+     * <code>required uint64 member = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    long getMember();
+
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    boolean hasFgId();
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    long getFgId();
+
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    boolean hasFgOwner();
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    long getFgOwner();
+
+    /**
+     * <code>optional uint64 ts = 5;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    boolean hasTs();
+    /**
+     * <code>optional uint64 ts = 5;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    long getTs();
+
+    /**
+     * <code>optional string msg = 6;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    boolean hasMsg();
+    /**
+     * <code>optional string msg = 6;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    java.lang.String getMsg();
+    /**
+     * <code>optional string msg = 6;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getMsgBytes();
+
+    /**
+     * <code>optional string groupName = 7;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    boolean hasGroupName();
+    /**
+     * <code>optional string groupName = 7;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    java.lang.String getGroupName();
+    /**
+     * <code>optional string groupName = 7;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getGroupNameBytes();
+
+    /**
+     * <code>optional string handlerName = 8;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    boolean hasHandlerName();
+    /**
+     * <code>optional string handlerName = 8;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    java.lang.String getHandlerName();
+    /**
+     * <code>optional string handlerName = 8;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getHandlerNameBytes();
+
+    /**
+     * <code>optional uint64 handlerHeadTs = 9;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    boolean hasHandlerHeadTs();
+    /**
+     * <code>optional uint64 handlerHeadTs = 9;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    long getHandlerHeadTs();
+
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    boolean hasCandiName();
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    java.lang.String getCandiName();
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getCandiNameBytes();
+
+    /**
+     * <code>optional uint64 candiHeadTs = 11;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    boolean hasCandiHeadTs();
+    /**
+     * <code>optional uint64 candiHeadTs = 11;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    long getCandiHeadTs();
+
+    /**
+     * <code>optional string groupIcon = 12;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    boolean hasGroupIcon();
+    /**
+     * <code>optional string groupIcon = 12;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    java.lang.String getGroupIcon();
+    /**
+     * <code>optional string groupIcon = 12;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getGroupIconBytes();
+
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    boolean hasFgOwnerHeadTs();
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    long getFgOwnerHeadTs();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.CancelNoiseFansGroupMemNotify}
+   *
+   * <pre>
+   *取消禁言群成员通知 CANCEL_FORBID_NOISE = 7;//取消禁言
+   * </pre>
+   */
+  public static final class CancelNoiseFansGroupMemNotify extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.CancelNoiseFansGroupMemNotify)
+      CancelNoiseFansGroupMemNotifyOrBuilder {
+    // Use CancelNoiseFansGroupMemNotify.newBuilder() to construct.
+    private CancelNoiseFansGroupMemNotify(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private CancelNoiseFansGroupMemNotify(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final CancelNoiseFansGroupMemNotify defaultInstance;
+    public static CancelNoiseFansGroupMemNotify getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public CancelNoiseFansGroupMemNotify getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private CancelNoiseFansGroupMemNotify(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              handler_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              member_ = input.readUInt64();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              fgId_ = input.readUInt64();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              fgOwner_ = input.readUInt64();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              ts_ = input.readUInt64();
+              break;
+            }
+            case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000020;
+              msg_ = bs;
+              break;
+            }
+            case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000040;
+              groupName_ = bs;
+              break;
+            }
+            case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000080;
+              handlerName_ = bs;
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000100;
+              handlerHeadTs_ = input.readUInt64();
+              break;
+            }
+            case 82: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000200;
+              candiName_ = bs;
+              break;
+            }
+            case 88: {
+              bitField0_ |= 0x00000400;
+              candiHeadTs_ = input.readUInt64();
+              break;
+            }
+            case 98: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000800;
+              groupIcon_ = bs;
+              break;
+            }
+            case 104: {
+              bitField0_ |= 0x00001000;
+              fgOwnerHeadTs_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_CancelNoiseFansGroupMemNotify_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_CancelNoiseFansGroupMemNotify_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify.class, com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<CancelNoiseFansGroupMemNotify> PARSER =
+        new com.google.protobuf.AbstractParser<CancelNoiseFansGroupMemNotify>() {
+      public CancelNoiseFansGroupMemNotify parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new CancelNoiseFansGroupMemNotify(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<CancelNoiseFansGroupMemNotify> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int HANDLER_FIELD_NUMBER = 1;
+    private long handler_;
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    public boolean hasHandler() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 handler = 1;</code>
+     *
+     * <pre>
+     *处理人
+     * </pre>
+     */
+    public long getHandler() {
+      return handler_;
+    }
+
+    public static final int MEMBER_FIELD_NUMBER = 2;
+    private long member_;
+    /**
+     * <code>required uint64 member = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    public boolean hasMember() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required uint64 member = 2;</code>
+     *
+     * <pre>
+     *被处理人
+     * </pre>
+     */
+    public long getMember() {
+      return member_;
+    }
+
+    public static final int FGID_FIELD_NUMBER = 3;
+    private long fgId_;
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    public boolean hasFgId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required uint64 fgId = 3;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    public long getFgId() {
+      return fgId_;
+    }
+
+    public static final int FGOWNER_FIELD_NUMBER = 4;
+    private long fgOwner_;
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    public boolean hasFgOwner() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint64 fgOwner = 4;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    public long getFgOwner() {
+      return fgOwner_;
+    }
+
+    public static final int TS_FIELD_NUMBER = 5;
+    private long ts_;
+    /**
+     * <code>optional uint64 ts = 5;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    public boolean hasTs() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional uint64 ts = 5;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    public long getTs() {
+      return ts_;
+    }
+
+    public static final int MSG_FIELD_NUMBER = 6;
+    private java.lang.Object msg_;
+    /**
+     * <code>optional string msg = 6;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public boolean hasMsg() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional string msg = 6;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public java.lang.String getMsg() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          msg_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string msg = 6;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getMsgBytes() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int GROUPNAME_FIELD_NUMBER = 7;
+    private java.lang.Object groupName_;
+    /**
+     * <code>optional string groupName = 7;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public boolean hasGroupName() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional string groupName = 7;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public java.lang.String getGroupName() {
+      java.lang.Object ref = groupName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          groupName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string groupName = 7;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getGroupNameBytes() {
+      java.lang.Object ref = groupName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        groupName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int HANDLERNAME_FIELD_NUMBER = 8;
+    private java.lang.Object handlerName_;
+    /**
+     * <code>optional string handlerName = 8;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    public boolean hasHandlerName() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional string handlerName = 8;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    public java.lang.String getHandlerName() {
+      java.lang.Object ref = handlerName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          handlerName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string handlerName = 8;</code>
+     *
+     * <pre>
+     *处理人名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getHandlerNameBytes() {
+      java.lang.Object ref = handlerName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        handlerName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int HANDLERHEADTS_FIELD_NUMBER = 9;
+    private long handlerHeadTs_;
+    /**
+     * <code>optional uint64 handlerHeadTs = 9;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    public boolean hasHandlerHeadTs() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional uint64 handlerHeadTs = 9;</code>
+     *
+     * <pre>
+     *处理人头像时间戳
+     * </pre>
+     */
+    public long getHandlerHeadTs() {
+      return handlerHeadTs_;
+    }
+
+    public static final int CANDINAME_FIELD_NUMBER = 10;
+    private java.lang.Object candiName_;
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    public boolean hasCandiName() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    public java.lang.String getCandiName() {
+      java.lang.Object ref = candiName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          candiName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string candiName = 10;</code>
+     *
+     * <pre>
+     *被处理人名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getCandiNameBytes() {
+      java.lang.Object ref = candiName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        candiName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CANDIHEADTS_FIELD_NUMBER = 11;
+    private long candiHeadTs_;
+    /**
+     * <code>optional uint64 candiHeadTs = 11;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    public boolean hasCandiHeadTs() {
+      return ((bitField0_ & 0x00000400) == 0x00000400);
+    }
+    /**
+     * <code>optional uint64 candiHeadTs = 11;</code>
+     *
+     * <pre>
+     *被处理人头像时间戳
+     * </pre>
+     */
+    public long getCandiHeadTs() {
+      return candiHeadTs_;
+    }
+
+    public static final int GROUPICON_FIELD_NUMBER = 12;
+    private java.lang.Object groupIcon_;
+    /**
+     * <code>optional string groupIcon = 12;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    public boolean hasGroupIcon() {
+      return ((bitField0_ & 0x00000800) == 0x00000800);
+    }
+    /**
+     * <code>optional string groupIcon = 12;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    public java.lang.String getGroupIcon() {
+      java.lang.Object ref = groupIcon_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          groupIcon_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string groupIcon = 12;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getGroupIconBytes() {
+      java.lang.Object ref = groupIcon_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        groupIcon_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int FGOWNERHEADTS_FIELD_NUMBER = 13;
+    private long fgOwnerHeadTs_;
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    public boolean hasFgOwnerHeadTs() {
+      return ((bitField0_ & 0x00001000) == 0x00001000);
+    }
+    /**
+     * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+     *
+     * <pre>
+     *群主头像时间戳
+     * </pre>
+     */
+    public long getFgOwnerHeadTs() {
+      return fgOwnerHeadTs_;
+    }
+
+    private void initFields() {
+      handler_ = 0L;
+      member_ = 0L;
+      fgId_ = 0L;
+      fgOwner_ = 0L;
+      ts_ = 0L;
+      msg_ = "";
+      groupName_ = "";
+      handlerName_ = "";
+      handlerHeadTs_ = 0L;
+      candiName_ = "";
+      candiHeadTs_ = 0L;
+      groupIcon_ = "";
+      fgOwnerHeadTs_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasHandler()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasMember()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasFgId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, handler_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, member_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt64(3, fgId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt64(4, fgOwner_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeUInt64(5, ts_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBytes(6, getMsgBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBytes(7, getGroupNameBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeBytes(8, getHandlerNameBytes());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeUInt64(9, handlerHeadTs_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeBytes(10, getCandiNameBytes());
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        output.writeUInt64(11, candiHeadTs_);
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        output.writeBytes(12, getGroupIconBytes());
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        output.writeUInt64(13, fgOwnerHeadTs_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, handler_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, member_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(3, fgId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(4, fgOwner_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(5, ts_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, getMsgBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, getGroupNameBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(8, getHandlerNameBytes());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(9, handlerHeadTs_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(10, getCandiNameBytes());
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(11, candiHeadTs_);
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(12, getGroupIconBytes());
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(13, fgOwnerHeadTs_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.CancelNoiseFansGroupMemNotify}
+     *
+     * <pre>
+     *取消禁言群成员通知 CANCEL_FORBID_NOISE = 7;//取消禁言
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.CancelNoiseFansGroupMemNotify)
+        com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotifyOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_CancelNoiseFansGroupMemNotify_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_CancelNoiseFansGroupMemNotify_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify.class, com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        handler_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        member_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        fgId_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        fgOwner_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        ts_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        msg_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
+        groupName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
+        handlerName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000080);
+        handlerHeadTs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000100);
+        candiName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000200);
+        candiHeadTs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000400);
+        groupIcon_ = "";
+        bitField0_ = (bitField0_ & ~0x00000800);
+        fgOwnerHeadTs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00001000);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_CancelNoiseFansGroupMemNotify_descriptor;
+      }
+
+      public com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify getDefaultInstanceForType() {
+        return com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify build() {
+        com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify buildPartial() {
+        com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify result = new com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.handler_ = handler_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.member_ = member_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.fgId_ = fgId_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.fgOwner_ = fgOwner_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.ts_ = ts_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.msg_ = msg_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.groupName_ = groupName_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.handlerName_ = handlerName_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.handlerHeadTs_ = handlerHeadTs_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        result.candiName_ = candiName_;
+        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+          to_bitField0_ |= 0x00000400;
+        }
+        result.candiHeadTs_ = candiHeadTs_;
+        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+          to_bitField0_ |= 0x00000800;
+        }
+        result.groupIcon_ = groupIcon_;
+        if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
+          to_bitField0_ |= 0x00001000;
+        }
+        result.fgOwnerHeadTs_ = fgOwnerHeadTs_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify) {
+          return mergeFrom((com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify other) {
+        if (other == com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify.getDefaultInstance()) return this;
+        if (other.hasHandler()) {
+          setHandler(other.getHandler());
+        }
+        if (other.hasMember()) {
+          setMember(other.getMember());
+        }
+        if (other.hasFgId()) {
+          setFgId(other.getFgId());
+        }
+        if (other.hasFgOwner()) {
+          setFgOwner(other.getFgOwner());
+        }
+        if (other.hasTs()) {
+          setTs(other.getTs());
+        }
+        if (other.hasMsg()) {
+          bitField0_ |= 0x00000020;
+          msg_ = other.msg_;
+          onChanged();
+        }
+        if (other.hasGroupName()) {
+          bitField0_ |= 0x00000040;
+          groupName_ = other.groupName_;
+          onChanged();
+        }
+        if (other.hasHandlerName()) {
+          bitField0_ |= 0x00000080;
+          handlerName_ = other.handlerName_;
+          onChanged();
+        }
+        if (other.hasHandlerHeadTs()) {
+          setHandlerHeadTs(other.getHandlerHeadTs());
+        }
+        if (other.hasCandiName()) {
+          bitField0_ |= 0x00000200;
+          candiName_ = other.candiName_;
+          onChanged();
+        }
+        if (other.hasCandiHeadTs()) {
+          setCandiHeadTs(other.getCandiHeadTs());
+        }
+        if (other.hasGroupIcon()) {
+          bitField0_ |= 0x00000800;
+          groupIcon_ = other.groupIcon_;
+          onChanged();
+        }
+        if (other.hasFgOwnerHeadTs()) {
+          setFgOwnerHeadTs(other.getFgOwnerHeadTs());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasHandler()) {
+          
+          return false;
+        }
+        if (!hasMember()) {
+          
+          return false;
+        }
+        if (!hasFgId()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.VFansProto.CancelNoiseFansGroupMemNotify) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long handler_ ;
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public boolean hasHandler() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public long getHandler() {
+        return handler_;
+      }
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public Builder setHandler(long value) {
+        bitField0_ |= 0x00000001;
+        handler_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 handler = 1;</code>
+       *
+       * <pre>
+       *处理人
+       * </pre>
+       */
+      public Builder clearHandler() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        handler_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long member_ ;
+      /**
+       * <code>required uint64 member = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public boolean hasMember() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required uint64 member = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public long getMember() {
+        return member_;
+      }
+      /**
+       * <code>required uint64 member = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public Builder setMember(long value) {
+        bitField0_ |= 0x00000002;
+        member_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 member = 2;</code>
+       *
+       * <pre>
+       *被处理人
+       * </pre>
+       */
+      public Builder clearMember() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        member_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long fgId_ ;
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public boolean hasFgId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public long getFgId() {
+        return fgId_;
+      }
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public Builder setFgId(long value) {
+        bitField0_ |= 0x00000004;
+        fgId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 fgId = 3;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public Builder clearFgId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        fgId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long fgOwner_ ;
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public boolean hasFgOwner() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public long getFgOwner() {
+        return fgOwner_;
+      }
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public Builder setFgOwner(long value) {
+        bitField0_ |= 0x00000008;
+        fgOwner_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 fgOwner = 4;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public Builder clearFgOwner() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        fgOwner_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long ts_ ;
+      /**
+       * <code>optional uint64 ts = 5;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public boolean hasTs() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional uint64 ts = 5;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public long getTs() {
+        return ts_;
+      }
+      /**
+       * <code>optional uint64 ts = 5;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public Builder setTs(long value) {
+        bitField0_ |= 0x00000010;
+        ts_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 ts = 5;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public Builder clearTs() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        ts_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object msg_ = "";
+      /**
+       * <code>optional string msg = 6;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public boolean hasMsg() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public java.lang.String getMsg() {
+        java.lang.Object ref = msg_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msg_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getMsgBytes() {
+        java.lang.Object ref = msg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder setMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder clearMsg() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        msg_ = getDefaultInstance().getMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder setMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object groupName_ = "";
+      /**
+       * <code>optional string groupName = 7;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public boolean hasGroupName() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional string groupName = 7;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public java.lang.String getGroupName() {
+        java.lang.Object ref = groupName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            groupName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string groupName = 7;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getGroupNameBytes() {
+        java.lang.Object ref = groupName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          groupName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string groupName = 7;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder setGroupName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        groupName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupName = 7;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder clearGroupName() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        groupName_ = getDefaultInstance().getGroupName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupName = 7;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder setGroupNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        groupName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object handlerName_ = "";
+      /**
+       * <code>optional string handlerName = 8;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public boolean hasHandlerName() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional string handlerName = 8;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public java.lang.String getHandlerName() {
+        java.lang.Object ref = handlerName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            handlerName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string handlerName = 8;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getHandlerNameBytes() {
+        java.lang.Object ref = handlerName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          handlerName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string handlerName = 8;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public Builder setHandlerName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        handlerName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string handlerName = 8;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public Builder clearHandlerName() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        handlerName_ = getDefaultInstance().getHandlerName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string handlerName = 8;</code>
+       *
+       * <pre>
+       *处理人名称
+       * </pre>
+       */
+      public Builder setHandlerNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        handlerName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long handlerHeadTs_ ;
+      /**
+       * <code>optional uint64 handlerHeadTs = 9;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public boolean hasHandlerHeadTs() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional uint64 handlerHeadTs = 9;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public long getHandlerHeadTs() {
+        return handlerHeadTs_;
+      }
+      /**
+       * <code>optional uint64 handlerHeadTs = 9;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public Builder setHandlerHeadTs(long value) {
+        bitField0_ |= 0x00000100;
+        handlerHeadTs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 handlerHeadTs = 9;</code>
+       *
+       * <pre>
+       *处理人头像时间戳
+       * </pre>
+       */
+      public Builder clearHandlerHeadTs() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        handlerHeadTs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object candiName_ = "";
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public boolean hasCandiName() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public java.lang.String getCandiName() {
+        java.lang.Object ref = candiName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            candiName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getCandiNameBytes() {
+        java.lang.Object ref = candiName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          candiName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public Builder setCandiName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+        candiName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public Builder clearCandiName() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        candiName_ = getDefaultInstance().getCandiName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string candiName = 10;</code>
+       *
+       * <pre>
+       *被处理人名称
+       * </pre>
+       */
+      public Builder setCandiNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+        candiName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long candiHeadTs_ ;
+      /**
+       * <code>optional uint64 candiHeadTs = 11;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public boolean hasCandiHeadTs() {
+        return ((bitField0_ & 0x00000400) == 0x00000400);
+      }
+      /**
+       * <code>optional uint64 candiHeadTs = 11;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public long getCandiHeadTs() {
+        return candiHeadTs_;
+      }
+      /**
+       * <code>optional uint64 candiHeadTs = 11;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public Builder setCandiHeadTs(long value) {
+        bitField0_ |= 0x00000400;
+        candiHeadTs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 candiHeadTs = 11;</code>
+       *
+       * <pre>
+       *被处理人头像时间戳
+       * </pre>
+       */
+      public Builder clearCandiHeadTs() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        candiHeadTs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object groupIcon_ = "";
+      /**
+       * <code>optional string groupIcon = 12;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public boolean hasGroupIcon() {
+        return ((bitField0_ & 0x00000800) == 0x00000800);
+      }
+      /**
+       * <code>optional string groupIcon = 12;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public java.lang.String getGroupIcon() {
+        java.lang.Object ref = groupIcon_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            groupIcon_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string groupIcon = 12;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getGroupIconBytes() {
+        java.lang.Object ref = groupIcon_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          groupIcon_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string groupIcon = 12;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public Builder setGroupIcon(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000800;
+        groupIcon_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupIcon = 12;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public Builder clearGroupIcon() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        groupIcon_ = getDefaultInstance().getGroupIcon();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupIcon = 12;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public Builder setGroupIconBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000800;
+        groupIcon_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long fgOwnerHeadTs_ ;
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public boolean hasFgOwnerHeadTs() {
+        return ((bitField0_ & 0x00001000) == 0x00001000);
+      }
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public long getFgOwnerHeadTs() {
+        return fgOwnerHeadTs_;
+      }
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public Builder setFgOwnerHeadTs(long value) {
+        bitField0_ |= 0x00001000;
+        fgOwnerHeadTs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 fgOwnerHeadTs = 13;</code>
+       *
+       * <pre>
+       *群主头像时间戳
+       * </pre>
+       */
+      public Builder clearFgOwnerHeadTs() {
+        bitField0_ = (bitField0_ & ~0x00001000);
+        fgOwnerHeadTs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.CancelNoiseFansGroupMemNotify)
+    }
+
+    static {
+      defaultInstance = new CancelNoiseFansGroupMemNotify(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.CancelNoiseFansGroupMemNotify)
+  }
+
+  public interface QuitGroupNotifyOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.QuitGroupNotify)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 uuid = 1;</code>
+     *
+     * <pre>
+     *退群成员id
+     * </pre>
+     */
+    boolean hasUuid();
+    /**
+     * <code>required uint64 uuid = 1;</code>
+     *
+     * <pre>
+     *退群成员id
+     * </pre>
+     */
+    long getUuid();
+
+    /**
+     * <code>required uint64 fgId = 2;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    boolean hasFgId();
+    /**
+     * <code>required uint64 fgId = 2;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    long getFgId();
+
+    /**
+     * <code>optional uint64 fgOwner = 3;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    boolean hasFgOwner();
+    /**
+     * <code>optional uint64 fgOwner = 3;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    long getFgOwner();
+
+    /**
+     * <code>optional uint64 ts = 4;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    boolean hasTs();
+    /**
+     * <code>optional uint64 ts = 4;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    long getTs();
+
+    /**
+     * <code>optional string msg = 5;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    boolean hasMsg();
+    /**
+     * <code>optional string msg = 5;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    java.lang.String getMsg();
+    /**
+     * <code>optional string msg = 5;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getMsgBytes();
+
+    /**
+     * <code>optional string groupName = 6;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    boolean hasGroupName();
+    /**
+     * <code>optional string groupName = 6;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    java.lang.String getGroupName();
+    /**
+     * <code>optional string groupName = 6;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getGroupNameBytes();
+
+    /**
+     * <code>optional string uName = 7;</code>
+     *
+     * <pre>
+     *退群人名称
+     * </pre>
+     */
+    boolean hasUName();
+    /**
+     * <code>optional string uName = 7;</code>
+     *
+     * <pre>
+     *退群人名称
+     * </pre>
+     */
+    java.lang.String getUName();
+    /**
+     * <code>optional string uName = 7;</code>
+     *
+     * <pre>
+     *退群人名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getUNameBytes();
+
+    /**
+     * <code>optional uint64 uHeadTs = 8;</code>
+     *
+     * <pre>
+     *退群人头像时间戳
+     * </pre>
+     */
+    boolean hasUHeadTs();
+    /**
+     * <code>optional uint64 uHeadTs = 8;</code>
+     *
+     * <pre>
+     *退群人头像时间戳
+     * </pre>
+     */
+    long getUHeadTs();
+
+    /**
+     * <code>optional string groupIcon = 9;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    boolean hasGroupIcon();
+    /**
+     * <code>optional string groupIcon = 9;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    java.lang.String getGroupIcon();
+    /**
+     * <code>optional string groupIcon = 9;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getGroupIconBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.QuitGroupNotify}
+   *
+   * <pre>
+   *退群通知 QUIT_GROUP = 8;//退群
+   * </pre>
+   */
+  public static final class QuitGroupNotify extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.QuitGroupNotify)
+      QuitGroupNotifyOrBuilder {
+    // Use QuitGroupNotify.newBuilder() to construct.
+    private QuitGroupNotify(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private QuitGroupNotify(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final QuitGroupNotify defaultInstance;
+    public static QuitGroupNotify getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public QuitGroupNotify getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private QuitGroupNotify(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uuid_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              fgId_ = input.readUInt64();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              fgOwner_ = input.readUInt64();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              ts_ = input.readUInt64();
+              break;
+            }
+            case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000010;
+              msg_ = bs;
+              break;
+            }
+            case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000020;
+              groupName_ = bs;
+              break;
+            }
+            case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000040;
+              uName_ = bs;
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000080;
+              uHeadTs_ = input.readUInt64();
+              break;
+            }
+            case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000100;
+              groupIcon_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_QuitGroupNotify_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_QuitGroupNotify_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.VFansProto.QuitGroupNotify.class, com.wali.live.proto.VFansProto.QuitGroupNotify.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<QuitGroupNotify> PARSER =
+        new com.google.protobuf.AbstractParser<QuitGroupNotify>() {
+      public QuitGroupNotify parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new QuitGroupNotify(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<QuitGroupNotify> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int UUID_FIELD_NUMBER = 1;
+    private long uuid_;
+    /**
+     * <code>required uint64 uuid = 1;</code>
+     *
+     * <pre>
+     *退群成员id
+     * </pre>
+     */
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 uuid = 1;</code>
+     *
+     * <pre>
+     *退群成员id
+     * </pre>
+     */
+    public long getUuid() {
+      return uuid_;
+    }
+
+    public static final int FGID_FIELD_NUMBER = 2;
+    private long fgId_;
+    /**
+     * <code>required uint64 fgId = 2;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    public boolean hasFgId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required uint64 fgId = 2;</code>
+     *
+     * <pre>
+     *群id
+     * </pre>
+     */
+    public long getFgId() {
+      return fgId_;
+    }
+
+    public static final int FGOWNER_FIELD_NUMBER = 3;
+    private long fgOwner_;
+    /**
+     * <code>optional uint64 fgOwner = 3;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    public boolean hasFgOwner() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint64 fgOwner = 3;</code>
+     *
+     * <pre>
+     *群主
+     * </pre>
+     */
+    public long getFgOwner() {
+      return fgOwner_;
+    }
+
+    public static final int TS_FIELD_NUMBER = 4;
+    private long ts_;
+    /**
+     * <code>optional uint64 ts = 4;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    public boolean hasTs() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint64 ts = 4;</code>
+     *
+     * <pre>
+     *时间戳
+     * </pre>
+     */
+    public long getTs() {
+      return ts_;
+    }
+
+    public static final int MSG_FIELD_NUMBER = 5;
+    private java.lang.Object msg_;
+    /**
+     * <code>optional string msg = 5;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public boolean hasMsg() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional string msg = 5;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public java.lang.String getMsg() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          msg_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string msg = 5;</code>
+     *
+     * <pre>
+     *文案，建议客户端在该值非空时使用
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getMsgBytes() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int GROUPNAME_FIELD_NUMBER = 6;
+    private java.lang.Object groupName_;
+    /**
+     * <code>optional string groupName = 6;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public boolean hasGroupName() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional string groupName = 6;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public java.lang.String getGroupName() {
+      java.lang.Object ref = groupName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          groupName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string groupName = 6;</code>
+     *
+     * <pre>
+     *群名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getGroupNameBytes() {
+      java.lang.Object ref = groupName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        groupName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int UNAME_FIELD_NUMBER = 7;
+    private java.lang.Object uName_;
+    /**
+     * <code>optional string uName = 7;</code>
+     *
+     * <pre>
+     *退群人名称
+     * </pre>
+     */
+    public boolean hasUName() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional string uName = 7;</code>
+     *
+     * <pre>
+     *退群人名称
+     * </pre>
+     */
+    public java.lang.String getUName() {
+      java.lang.Object ref = uName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          uName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string uName = 7;</code>
+     *
+     * <pre>
+     *退群人名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getUNameBytes() {
+      java.lang.Object ref = uName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        uName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int UHEADTS_FIELD_NUMBER = 8;
+    private long uHeadTs_;
+    /**
+     * <code>optional uint64 uHeadTs = 8;</code>
+     *
+     * <pre>
+     *退群人头像时间戳
+     * </pre>
+     */
+    public boolean hasUHeadTs() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional uint64 uHeadTs = 8;</code>
+     *
+     * <pre>
+     *退群人头像时间戳
+     * </pre>
+     */
+    public long getUHeadTs() {
+      return uHeadTs_;
+    }
+
+    public static final int GROUPICON_FIELD_NUMBER = 9;
+    private java.lang.Object groupIcon_;
+    /**
+     * <code>optional string groupIcon = 9;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    public boolean hasGroupIcon() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional string groupIcon = 9;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    public java.lang.String getGroupIcon() {
+      java.lang.Object ref = groupIcon_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          groupIcon_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string groupIcon = 9;</code>
+     *
+     * <pre>
+     *群头像
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getGroupIconBytes() {
+      java.lang.Object ref = groupIcon_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        groupIcon_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      uuid_ = 0L;
+      fgId_ = 0L;
+      fgOwner_ = 0L;
+      ts_ = 0L;
+      msg_ = "";
+      groupName_ = "";
+      uName_ = "";
+      uHeadTs_ = 0L;
+      groupIcon_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasUuid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasFgId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, fgId_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt64(3, fgOwner_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt64(4, ts_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, getMsgBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBytes(6, getGroupNameBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBytes(7, getUNameBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeUInt64(8, uHeadTs_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeBytes(9, getGroupIconBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, fgId_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(3, fgOwner_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(4, ts_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getMsgBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, getGroupNameBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, getUNameBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(8, uHeadTs_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(9, getGroupIconBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.VFansProto.QuitGroupNotify parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.VFansProto.QuitGroupNotify parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.QuitGroupNotify parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.VFansProto.QuitGroupNotify parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.QuitGroupNotify parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.QuitGroupNotify parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.QuitGroupNotify parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.QuitGroupNotify parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.VFansProto.QuitGroupNotify parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.VFansProto.QuitGroupNotify parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.VFansProto.QuitGroupNotify prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.QuitGroupNotify}
+     *
+     * <pre>
+     *退群通知 QUIT_GROUP = 8;//退群
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.QuitGroupNotify)
+        com.wali.live.proto.VFansProto.QuitGroupNotifyOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_QuitGroupNotify_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_QuitGroupNotify_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.VFansProto.QuitGroupNotify.class, com.wali.live.proto.VFansProto.QuitGroupNotify.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.VFansProto.QuitGroupNotify.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        fgId_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        fgOwner_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        ts_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        msg_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        groupName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
+        uName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
+        uHeadTs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        groupIcon_ = "";
+        bitField0_ = (bitField0_ & ~0x00000100);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.VFansProto.internal_static_com_wali_live_proto_QuitGroupNotify_descriptor;
+      }
+
+      public com.wali.live.proto.VFansProto.QuitGroupNotify getDefaultInstanceForType() {
+        return com.wali.live.proto.VFansProto.QuitGroupNotify.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.VFansProto.QuitGroupNotify build() {
+        com.wali.live.proto.VFansProto.QuitGroupNotify result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.VFansProto.QuitGroupNotify buildPartial() {
+        com.wali.live.proto.VFansProto.QuitGroupNotify result = new com.wali.live.proto.VFansProto.QuitGroupNotify(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uuid_ = uuid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.fgId_ = fgId_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.fgOwner_ = fgOwner_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.ts_ = ts_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.msg_ = msg_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.groupName_ = groupName_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.uName_ = uName_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.uHeadTs_ = uHeadTs_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.groupIcon_ = groupIcon_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.VFansProto.QuitGroupNotify) {
+          return mergeFrom((com.wali.live.proto.VFansProto.QuitGroupNotify)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.VFansProto.QuitGroupNotify other) {
+        if (other == com.wali.live.proto.VFansProto.QuitGroupNotify.getDefaultInstance()) return this;
+        if (other.hasUuid()) {
+          setUuid(other.getUuid());
+        }
+        if (other.hasFgId()) {
+          setFgId(other.getFgId());
+        }
+        if (other.hasFgOwner()) {
+          setFgOwner(other.getFgOwner());
+        }
+        if (other.hasTs()) {
+          setTs(other.getTs());
+        }
+        if (other.hasMsg()) {
+          bitField0_ |= 0x00000010;
+          msg_ = other.msg_;
+          onChanged();
+        }
+        if (other.hasGroupName()) {
+          bitField0_ |= 0x00000020;
+          groupName_ = other.groupName_;
+          onChanged();
+        }
+        if (other.hasUName()) {
+          bitField0_ |= 0x00000040;
+          uName_ = other.uName_;
+          onChanged();
+        }
+        if (other.hasUHeadTs()) {
+          setUHeadTs(other.getUHeadTs());
+        }
+        if (other.hasGroupIcon()) {
+          bitField0_ |= 0x00000100;
+          groupIcon_ = other.groupIcon_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasUuid()) {
+          
+          return false;
+        }
+        if (!hasFgId()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.VFansProto.QuitGroupNotify parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.VFansProto.QuitGroupNotify) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long uuid_ ;
+      /**
+       * <code>required uint64 uuid = 1;</code>
+       *
+       * <pre>
+       *退群成员id
+       * </pre>
+       */
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 uuid = 1;</code>
+       *
+       * <pre>
+       *退群成员id
+       * </pre>
+       */
+      public long getUuid() {
+        return uuid_;
+      }
+      /**
+       * <code>required uint64 uuid = 1;</code>
+       *
+       * <pre>
+       *退群成员id
+       * </pre>
+       */
+      public Builder setUuid(long value) {
+        bitField0_ |= 0x00000001;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 uuid = 1;</code>
+       *
+       * <pre>
+       *退群成员id
+       * </pre>
+       */
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long fgId_ ;
+      /**
+       * <code>required uint64 fgId = 2;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public boolean hasFgId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required uint64 fgId = 2;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public long getFgId() {
+        return fgId_;
+      }
+      /**
+       * <code>required uint64 fgId = 2;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public Builder setFgId(long value) {
+        bitField0_ |= 0x00000002;
+        fgId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 fgId = 2;</code>
+       *
+       * <pre>
+       *群id
+       * </pre>
+       */
+      public Builder clearFgId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        fgId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long fgOwner_ ;
+      /**
+       * <code>optional uint64 fgOwner = 3;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public boolean hasFgOwner() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint64 fgOwner = 3;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public long getFgOwner() {
+        return fgOwner_;
+      }
+      /**
+       * <code>optional uint64 fgOwner = 3;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public Builder setFgOwner(long value) {
+        bitField0_ |= 0x00000004;
+        fgOwner_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 fgOwner = 3;</code>
+       *
+       * <pre>
+       *群主
+       * </pre>
+       */
+      public Builder clearFgOwner() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        fgOwner_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long ts_ ;
+      /**
+       * <code>optional uint64 ts = 4;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public boolean hasTs() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint64 ts = 4;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public long getTs() {
+        return ts_;
+      }
+      /**
+       * <code>optional uint64 ts = 4;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public Builder setTs(long value) {
+        bitField0_ |= 0x00000008;
+        ts_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 ts = 4;</code>
+       *
+       * <pre>
+       *时间戳
+       * </pre>
+       */
+      public Builder clearTs() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        ts_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object msg_ = "";
+      /**
+       * <code>optional string msg = 5;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public boolean hasMsg() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string msg = 5;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public java.lang.String getMsg() {
+        java.lang.Object ref = msg_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msg_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string msg = 5;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getMsgBytes() {
+        java.lang.Object ref = msg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string msg = 5;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder setMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg = 5;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder clearMsg() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        msg_ = getDefaultInstance().getMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg = 5;</code>
+       *
+       * <pre>
+       *文案，建议客户端在该值非空时使用
+       * </pre>
+       */
+      public Builder setMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object groupName_ = "";
+      /**
+       * <code>optional string groupName = 6;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public boolean hasGroupName() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional string groupName = 6;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public java.lang.String getGroupName() {
+        java.lang.Object ref = groupName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            groupName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string groupName = 6;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getGroupNameBytes() {
+        java.lang.Object ref = groupName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          groupName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string groupName = 6;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder setGroupName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        groupName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupName = 6;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder clearGroupName() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        groupName_ = getDefaultInstance().getGroupName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupName = 6;</code>
+       *
+       * <pre>
+       *群名称
+       * </pre>
+       */
+      public Builder setGroupNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        groupName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object uName_ = "";
+      /**
+       * <code>optional string uName = 7;</code>
+       *
+       * <pre>
+       *退群人名称
+       * </pre>
+       */
+      public boolean hasUName() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional string uName = 7;</code>
+       *
+       * <pre>
+       *退群人名称
+       * </pre>
+       */
+      public java.lang.String getUName() {
+        java.lang.Object ref = uName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            uName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string uName = 7;</code>
+       *
+       * <pre>
+       *退群人名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getUNameBytes() {
+        java.lang.Object ref = uName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          uName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string uName = 7;</code>
+       *
+       * <pre>
+       *退群人名称
+       * </pre>
+       */
+      public Builder setUName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        uName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string uName = 7;</code>
+       *
+       * <pre>
+       *退群人名称
+       * </pre>
+       */
+      public Builder clearUName() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        uName_ = getDefaultInstance().getUName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string uName = 7;</code>
+       *
+       * <pre>
+       *退群人名称
+       * </pre>
+       */
+      public Builder setUNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        uName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long uHeadTs_ ;
+      /**
+       * <code>optional uint64 uHeadTs = 8;</code>
+       *
+       * <pre>
+       *退群人头像时间戳
+       * </pre>
+       */
+      public boolean hasUHeadTs() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional uint64 uHeadTs = 8;</code>
+       *
+       * <pre>
+       *退群人头像时间戳
+       * </pre>
+       */
+      public long getUHeadTs() {
+        return uHeadTs_;
+      }
+      /**
+       * <code>optional uint64 uHeadTs = 8;</code>
+       *
+       * <pre>
+       *退群人头像时间戳
+       * </pre>
+       */
+      public Builder setUHeadTs(long value) {
+        bitField0_ |= 0x00000080;
+        uHeadTs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 uHeadTs = 8;</code>
+       *
+       * <pre>
+       *退群人头像时间戳
+       * </pre>
+       */
+      public Builder clearUHeadTs() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        uHeadTs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object groupIcon_ = "";
+      /**
+       * <code>optional string groupIcon = 9;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public boolean hasGroupIcon() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional string groupIcon = 9;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public java.lang.String getGroupIcon() {
+        java.lang.Object ref = groupIcon_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            groupIcon_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string groupIcon = 9;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getGroupIconBytes() {
+        java.lang.Object ref = groupIcon_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          groupIcon_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string groupIcon = 9;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public Builder setGroupIcon(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        groupIcon_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupIcon = 9;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public Builder clearGroupIcon() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        groupIcon_ = getDefaultInstance().getGroupIcon();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupIcon = 9;</code>
+       *
+       * <pre>
+       *群头像
+       * </pre>
+       */
+      public Builder setGroupIconBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        groupIcon_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.QuitGroupNotify)
+    }
+
+    static {
+      defaultInstance = new QuitGroupNotify(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.QuitGroupNotify)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_CreateGroupReq_descriptor;
   private static
@@ -50276,21 +58757,6 @@ public final class VFansProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_ExecGroupJobRsp_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_ApplyJoinVFansGroupNotify_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_ApplyJoinVFansGroupNotify_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_HandleJoinVFansGroupNotify_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_HandleJoinVFansGroupNotify_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_VfansGroupMemInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -50315,6 +58781,41 @@ public final class VFansProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetBuyVipPermitRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_ApplyJoinFansGroupNotify_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_ApplyJoinFansGroupNotify_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_HandleJoinFansGroupNotify_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_HandleJoinFansGroupNotify_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_RemoveFansGroupMemNotify_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_RemoveFansGroupMemNotify_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_ForbidNoiseFansGroupMemNotify_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_ForbidNoiseFansGroupMemNotify_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_CancelNoiseFansGroupMemNotify_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_CancelNoiseFansGroupMemNotify_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_QuitGroupNotify_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_QuitGroupNotify_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -50452,48 +58953,72 @@ public final class VFansProto {
       "q\022\014\n\004zuid\030\001 \002(\004\022\014\n\004uuid\030\002 \002(\004\0223\n\010job_typ" +
       "e\030\003 \002(\0162!.com.wali.live.proto.GroupJobTy" +
       "pe\"#\n\017ExecGroupJobRsp\022\020\n\010err_code\030\001 \002(\005\"" +
-      "\247\002\n\031ApplyJoinVFansGroupNotify\022\021\n\tcandida" +
-      "te\030\001 \002(\004\022\014\n\004fgId\030\002 \002(\004\0228\n\007memType\030\003 \002(\0162",
-      "!.com.wali.live.proto.GroupMemType:\004MASS" +
-      "\022\017\n\007fgOwner\030\004 \001(\004\022\020\n\010applyMsg\030\005 \001(\t\022\n\n\002t" +
-      "s\030\006 \001(\004\0228\n\010joinType\030\007 \001(\0162&.com.wali.liv" +
-      "e.proto.JoinIntentionType\022\013\n\003msg\030\010 \001(\t\022\021" +
-      "\n\tgroupName\030\t \001(\t\022\021\n\tcandiName\030\n \001(\t\022\023\n\013" +
-      "candiHeadTs\030\013 \001(\004\"\321\003\n\032HandleJoinVFansGro" +
-      "upNotify\022\017\n\007handler\030\001 \002(\004\022\021\n\tcandidate\030\002" +
-      " \002(\004\022\014\n\004fgId\030\003 \002(\004\022\017\n\007fgOwner\030\004 \001(\004\022:\n\014h" +
-      "andleResult\030\005 \001(\0162$.com.wali.live.proto." +
-      "ApplyJoinResult\0222\n\007memType\030\006 \001(\0162!.com.w",
-      "ali.live.proto.GroupMemType\0228\n\010joinType\030" +
-      "\007 \001(\0162&.com.wali.live.proto.JoinIntentio" +
-      "nType\022\020\n\010referrer\030\010 \001(\004\022\013\n\003msg\030\t \001(\t\022\026\n\016" +
-      "handleNotifyId\030\n \001(\004\022\021\n\tgroupName\030\013 \001(\t\022" +
-      "\023\n\013handlerName\030\014 \001(\t\022\025\n\rhandlerHeadTs\030\r " +
-      "\001(\004\022\021\n\tcandiName\030\016 \001(\t\022\023\n\013candiHeadTs\030\017 " +
-      "\001(\004\022\021\n\tgroupIcon\030\020 \001(\t\022\025\n\rfgOwnerHeadTs\030" +
-      "\021 \001(\004\"\302\002\n\030UpdateFansGroupMemNotify\022\017\n\007ha" +
-      "ndler\030\001 \002(\004\022\021\n\tcandidate\030\002 \002(\004\022\014\n\004fgId\030\003" +
-      " \002(\004\022\017\n\007fgOwner\030\004 \001(\004\022\n\n\002ts\030\005 \001(\004\0229\n\tfgM",
-      "emInfo\030\006 \001(\0132&.com.wali.live.proto.Vfans" +
-      "GroupMemInfo\022\013\n\003msg\030\007 \001(\t\022\021\n\tgroupName\030\010" +
-      " \001(\t\022\023\n\013handlerName\030\t \001(\t\022\025\n\rhandlerHead" +
-      "Ts\030\n \001(\004\022\021\n\tcandiName\030\013 \001(\t\022\023\n\013candiHead" +
-      "Ts\030\014 \001(\004\022\021\n\tgroupIcon\030\r \001(\t\022\025\n\rfgOwnerHe" +
-      "adTs\030\016 \001(\004\"g\n\021VfansGroupMemInfo\022\014\n\004uuid\030" +
-      "\001 \002(\004\0222\n\007memType\030\002 \001(\0162!.com.wali.live.p" +
-      "roto.GroupMemType\022\020\n\010nickname\030\003 \001(\t\"-\n\017G" +
-      "etRecentJobReq\022\014\n\004zuid\030\001 \002(\004\022\014\n\004uuid\030\002 \002" +
-      "(\004\"j\n\017GetRecentJobRsp\022\020\n\010err_code\030\001 \002(\005\022",
-      "\017\n\007err_msg\030\002 \001(\t\0224\n\010job_list\030\003 \003(\0132\".com" +
-      ".wali.live.proto.RecentJobInfo\"0\n\022GetBuy" +
-      "VipPermitReq\022\014\n\004zuid\030\001 \002(\004\022\014\n\004uuid\030\002 \002(\004" +
-      "\"b\n\022GetBuyVipPermitRsp\022\020\n\010err_code\030\001 \002(\005" +
-      "\022\017\n\007err_msg\030\002 \001(\t\022\024\n\014next_buytime\030\003 \001(\004\022" +
-      "\023\n\013buyinterval\030\004 \001(\r*Z\n\022UpdateGroupMemTy" +
+      "g\n\021VfansGroupMemInfo\022\014\n\004uuid\030\001 \002(\004\0222\n\007me" +
+      "mType\030\002 \001(\0162!.com.wali.live.proto.GroupM",
+      "emType\022\020\n\010nickname\030\003 \001(\t\"-\n\017GetRecentJob" +
+      "Req\022\014\n\004zuid\030\001 \002(\004\022\014\n\004uuid\030\002 \002(\004\"j\n\017GetRe" +
+      "centJobRsp\022\020\n\010err_code\030\001 \002(\005\022\017\n\007err_msg\030" +
+      "\002 \001(\t\0224\n\010job_list\030\003 \003(\0132\".com.wali.live." +
+      "proto.RecentJobInfo\"0\n\022GetBuyVipPermitRe" +
+      "q\022\014\n\004zuid\030\001 \002(\004\022\014\n\004uuid\030\002 \002(\004\"b\n\022GetBuyV" +
+      "ipPermitRsp\022\020\n\010err_code\030\001 \002(\005\022\017\n\007err_msg" +
+      "\030\002 \001(\t\022\024\n\014next_buytime\030\003 \001(\004\022\023\n\013buyinter" +
+      "val\030\004 \001(\r\"\246\002\n\030ApplyJoinFansGroupNotify\022\021" +
+      "\n\tcandidate\030\001 \002(\004\022\014\n\004fgId\030\002 \002(\004\0228\n\007memTy",
+      "pe\030\003 \002(\0162!.com.wali.live.proto.GroupMemT" +
+      "ype:\004MASS\022\017\n\007fgOwner\030\004 \001(\004\022\020\n\010applyMsg\030\005" +
+      " \001(\t\022\n\n\002ts\030\006 \001(\004\0228\n\010joinType\030\007 \001(\0162&.com" +
+      ".wali.live.proto.JoinIntentionType\022\013\n\003ms" +
+      "g\030\010 \001(\t\022\021\n\tgroupName\030\t \001(\t\022\021\n\tcandiName\030" +
+      "\n \001(\t\022\023\n\013candiHeadTs\030\013 \001(\004\"\320\003\n\031HandleJoi" +
+      "nFansGroupNotify\022\017\n\007handler\030\001 \002(\004\022\021\n\tcan" +
+      "didate\030\002 \002(\004\022\014\n\004fgId\030\003 \002(\004\022\017\n\007fgOwner\030\004 " +
+      "\001(\004\022:\n\014handleResult\030\005 \001(\0162$.com.wali.liv" +
+      "e.proto.ApplyJoinResult\0222\n\007memType\030\006 \001(\016",
+      "2!.com.wali.live.proto.GroupMemType\0228\n\010j" +
+      "oinType\030\007 \001(\0162&.com.wali.live.proto.Join" +
+      "IntentionType\022\020\n\010referrer\030\010 \001(\004\022\013\n\003msg\030\t" +
+      " \001(\t\022\026\n\016handleNotifyId\030\n \001(\004\022\021\n\tgroupNam" +
+      "e\030\013 \001(\t\022\023\n\013handlerName\030\014 \001(\t\022\025\n\rhandlerH" +
+      "eadTs\030\r \001(\004\022\021\n\tcandiName\030\016 \001(\t\022\023\n\013candiH" +
+      "eadTs\030\017 \001(\004\022\021\n\tgroupIcon\030\020 \001(\t\022\025\n\rfgOwne" +
+      "rHeadTs\030\021 \001(\004\"\207\002\n\030RemoveFansGroupMemNoti" +
+      "fy\022\017\n\007handler\030\001 \002(\004\022\021\n\tcandidate\030\002 \002(\004\022\014" +
+      "\n\004fgId\030\003 \002(\004\022\017\n\007fgOwner\030\004 \001(\004\022\n\n\002ts\030\005 \001(",
+      "\004\022\013\n\003msg\030\006 \001(\t\022\021\n\tgroupName\030\007 \001(\t\022\023\n\013han" +
+      "dlerName\030\010 \001(\t\022\025\n\rhandlerHeadTs\030\t \001(\004\022\021\n" +
+      "\tcandiName\030\n \001(\t\022\023\n\013candiHeadTs\030\013 \001(\004\022\021\n" +
+      "\tgroupIcon\030\014 \001(\t\022\025\n\rfgOwnerHeadTs\030\r \001(\004\"" +
+      "\302\002\n\030UpdateFansGroupMemNotify\022\017\n\007handler\030" +
+      "\001 \002(\004\022\021\n\tcandidate\030\002 \002(\004\022\014\n\004fgId\030\003 \002(\004\022\017" +
+      "\n\007fgOwner\030\004 \001(\004\022\n\n\002ts\030\005 \001(\004\0229\n\tfgMemInfo" +
+      "\030\006 \001(\0132&.com.wali.live.proto.VfansGroupM" +
+      "emInfo\022\013\n\003msg\030\007 \001(\t\022\021\n\tgroupName\030\010 \001(\t\022\023" +
+      "\n\013handlerName\030\t \001(\t\022\025\n\rhandlerHeadTs\030\n \001",
+      "(\004\022\021\n\tcandiName\030\013 \001(\t\022\023\n\013candiHeadTs\030\014 \001" +
+      "(\004\022\021\n\tgroupIcon\030\r \001(\t\022\025\n\rfgOwnerHeadTs\030\016" +
+      " \001(\004\"\211\002\n\035ForbidNoiseFansGroupMemNotify\022\017" +
+      "\n\007handler\030\001 \002(\004\022\016\n\006member\030\002 \002(\004\022\014\n\004fgId\030" +
+      "\003 \002(\004\022\017\n\007fgOwner\030\004 \001(\004\022\n\n\002ts\030\005 \001(\004\022\013\n\003ms" +
+      "g\030\006 \001(\t\022\021\n\tgroupName\030\007 \001(\t\022\023\n\013handlerNam" +
+      "e\030\010 \001(\t\022\025\n\rhandlerHeadTs\030\t \001(\004\022\021\n\tcandiN" +
+      "ame\030\n \001(\t\022\023\n\013candiHeadTs\030\013 \001(\004\022\021\n\tgroupI" +
+      "con\030\014 \001(\t\022\025\n\rfgOwnerHeadTs\030\r \001(\004\"\211\002\n\035Can" +
+      "celNoiseFansGroupMemNotify\022\017\n\007handler\030\001 ",
+      "\002(\004\022\016\n\006member\030\002 \002(\004\022\014\n\004fgId\030\003 \002(\004\022\017\n\007fgO" +
+      "wner\030\004 \001(\004\022\n\n\002ts\030\005 \001(\004\022\013\n\003msg\030\006 \001(\t\022\021\n\tg" +
+      "roupName\030\007 \001(\t\022\023\n\013handlerName\030\010 \001(\t\022\025\n\rh" +
+      "andlerHeadTs\030\t \001(\004\022\021\n\tcandiName\030\n \001(\t\022\023\n" +
+      "\013candiHeadTs\030\013 \001(\004\022\021\n\tgroupIcon\030\014 \001(\t\022\025\n" +
+      "\rfgOwnerHeadTs\030\r \001(\004\"\235\001\n\017QuitGroupNotify" +
+      "\022\014\n\004uuid\030\001 \002(\004\022\014\n\004fgId\030\002 \002(\004\022\017\n\007fgOwner\030" +
+      "\003 \001(\004\022\n\n\002ts\030\004 \001(\004\022\013\n\003msg\030\005 \001(\t\022\021\n\tgroupN" +
+      "ame\030\006 \001(\t\022\r\n\005uName\030\007 \001(\t\022\017\n\007uHeadTs\030\010 \001(" +
+      "\004\022\021\n\tgroupIcon\030\t \001(\t*Z\n\022UpdateGroupMemTy",
       "pe\022\r\n\tSET_ADMIN\020\001\022\020\n\014CANCEL_ADMIN\020\002\022\020\n\014F" +
       "ORBID_NOISE\020\003\022\021\n\rREMOVE_MEMBER\020\004*4\n\023MemG" +
       "roupSettingType\022\016\n\nMSG_NOTIFY\020\001\022\r\n\tUSE_M" +
-      "EDAL\020\002B!\n\023com.wali.live.protoB\nVFansProt",
+      "EDAL\020\002B!\n\023com.wali.live.protoB\nVFansProt" +
       "o"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
@@ -50773,54 +59298,78 @@ public final class VFansProto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ExecGroupJobRsp_descriptor,
         new java.lang.String[] { "ErrCode", });
-    internal_static_com_wali_live_proto_ApplyJoinVFansGroupNotify_descriptor =
-      getDescriptor().getMessageTypes().get(44);
-    internal_static_com_wali_live_proto_ApplyJoinVFansGroupNotify_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_ApplyJoinVFansGroupNotify_descriptor,
-        new java.lang.String[] { "Candidate", "FgId", "MemType", "FgOwner", "ApplyMsg", "Ts", "JoinType", "Msg", "GroupName", "CandiName", "CandiHeadTs", });
-    internal_static_com_wali_live_proto_HandleJoinVFansGroupNotify_descriptor =
-      getDescriptor().getMessageTypes().get(45);
-    internal_static_com_wali_live_proto_HandleJoinVFansGroupNotify_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_HandleJoinVFansGroupNotify_descriptor,
-        new java.lang.String[] { "Handler", "Candidate", "FgId", "FgOwner", "HandleResult", "MemType", "JoinType", "Referrer", "Msg", "HandleNotifyId", "GroupName", "HandlerName", "HandlerHeadTs", "CandiName", "CandiHeadTs", "GroupIcon", "FgOwnerHeadTs", });
-    internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_descriptor =
-      getDescriptor().getMessageTypes().get(46);
-    internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_descriptor,
-        new java.lang.String[] { "Handler", "Candidate", "FgId", "FgOwner", "Ts", "FgMemInfo", "Msg", "GroupName", "HandlerName", "HandlerHeadTs", "CandiName", "CandiHeadTs", "GroupIcon", "FgOwnerHeadTs", });
     internal_static_com_wali_live_proto_VfansGroupMemInfo_descriptor =
-      getDescriptor().getMessageTypes().get(47);
+      getDescriptor().getMessageTypes().get(44);
     internal_static_com_wali_live_proto_VfansGroupMemInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_VfansGroupMemInfo_descriptor,
         new java.lang.String[] { "Uuid", "MemType", "Nickname", });
     internal_static_com_wali_live_proto_GetRecentJobReq_descriptor =
-      getDescriptor().getMessageTypes().get(48);
+      getDescriptor().getMessageTypes().get(45);
     internal_static_com_wali_live_proto_GetRecentJobReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetRecentJobReq_descriptor,
         new java.lang.String[] { "Zuid", "Uuid", });
     internal_static_com_wali_live_proto_GetRecentJobRsp_descriptor =
-      getDescriptor().getMessageTypes().get(49);
+      getDescriptor().getMessageTypes().get(46);
     internal_static_com_wali_live_proto_GetRecentJobRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetRecentJobRsp_descriptor,
         new java.lang.String[] { "ErrCode", "ErrMsg", "JobList", });
     internal_static_com_wali_live_proto_GetBuyVipPermitReq_descriptor =
-      getDescriptor().getMessageTypes().get(50);
+      getDescriptor().getMessageTypes().get(47);
     internal_static_com_wali_live_proto_GetBuyVipPermitReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetBuyVipPermitReq_descriptor,
         new java.lang.String[] { "Zuid", "Uuid", });
     internal_static_com_wali_live_proto_GetBuyVipPermitRsp_descriptor =
-      getDescriptor().getMessageTypes().get(51);
+      getDescriptor().getMessageTypes().get(48);
     internal_static_com_wali_live_proto_GetBuyVipPermitRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetBuyVipPermitRsp_descriptor,
         new java.lang.String[] { "ErrCode", "ErrMsg", "NextBuytime", "Buyinterval", });
+    internal_static_com_wali_live_proto_ApplyJoinFansGroupNotify_descriptor =
+      getDescriptor().getMessageTypes().get(49);
+    internal_static_com_wali_live_proto_ApplyJoinFansGroupNotify_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_ApplyJoinFansGroupNotify_descriptor,
+        new java.lang.String[] { "Candidate", "FgId", "MemType", "FgOwner", "ApplyMsg", "Ts", "JoinType", "Msg", "GroupName", "CandiName", "CandiHeadTs", });
+    internal_static_com_wali_live_proto_HandleJoinFansGroupNotify_descriptor =
+      getDescriptor().getMessageTypes().get(50);
+    internal_static_com_wali_live_proto_HandleJoinFansGroupNotify_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_HandleJoinFansGroupNotify_descriptor,
+        new java.lang.String[] { "Handler", "Candidate", "FgId", "FgOwner", "HandleResult", "MemType", "JoinType", "Referrer", "Msg", "HandleNotifyId", "GroupName", "HandlerName", "HandlerHeadTs", "CandiName", "CandiHeadTs", "GroupIcon", "FgOwnerHeadTs", });
+    internal_static_com_wali_live_proto_RemoveFansGroupMemNotify_descriptor =
+      getDescriptor().getMessageTypes().get(51);
+    internal_static_com_wali_live_proto_RemoveFansGroupMemNotify_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_RemoveFansGroupMemNotify_descriptor,
+        new java.lang.String[] { "Handler", "Candidate", "FgId", "FgOwner", "Ts", "Msg", "GroupName", "HandlerName", "HandlerHeadTs", "CandiName", "CandiHeadTs", "GroupIcon", "FgOwnerHeadTs", });
+    internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_descriptor =
+      getDescriptor().getMessageTypes().get(52);
+    internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_UpdateFansGroupMemNotify_descriptor,
+        new java.lang.String[] { "Handler", "Candidate", "FgId", "FgOwner", "Ts", "FgMemInfo", "Msg", "GroupName", "HandlerName", "HandlerHeadTs", "CandiName", "CandiHeadTs", "GroupIcon", "FgOwnerHeadTs", });
+    internal_static_com_wali_live_proto_ForbidNoiseFansGroupMemNotify_descriptor =
+      getDescriptor().getMessageTypes().get(53);
+    internal_static_com_wali_live_proto_ForbidNoiseFansGroupMemNotify_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_ForbidNoiseFansGroupMemNotify_descriptor,
+        new java.lang.String[] { "Handler", "Member", "FgId", "FgOwner", "Ts", "Msg", "GroupName", "HandlerName", "HandlerHeadTs", "CandiName", "CandiHeadTs", "GroupIcon", "FgOwnerHeadTs", });
+    internal_static_com_wali_live_proto_CancelNoiseFansGroupMemNotify_descriptor =
+      getDescriptor().getMessageTypes().get(54);
+    internal_static_com_wali_live_proto_CancelNoiseFansGroupMemNotify_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_CancelNoiseFansGroupMemNotify_descriptor,
+        new java.lang.String[] { "Handler", "Member", "FgId", "FgOwner", "Ts", "Msg", "GroupName", "HandlerName", "HandlerHeadTs", "CandiName", "CandiHeadTs", "GroupIcon", "FgOwnerHeadTs", });
+    internal_static_com_wali_live_proto_QuitGroupNotify_descriptor =
+      getDescriptor().getMessageTypes().get(55);
+    internal_static_com_wali_live_proto_QuitGroupNotify_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_QuitGroupNotify_descriptor,
+        new java.lang.String[] { "Uuid", "FgId", "FgOwner", "Ts", "Msg", "GroupName", "UName", "UHeadTs", "GroupIcon", });
     com.wali.live.proto.VFansCommonProto.getDescriptor();
   }
 

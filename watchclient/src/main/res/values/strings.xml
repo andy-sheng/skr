@@ -325,6 +325,7 @@
     <string name="vfans_member_delete">Remove</string>
     <string name="vfans_member_title_manager_batch_delete">Remove</string>
     <string name="vfans_member_title_manager_finish">Done</string>
+
     <string name="vfans_daily_tasks_finish_send_barrage">Send comments</string>
     <string name="vfans_daily_tasks_finish_send_gift">Send tasks</string>
     <string name="vfans_daily_tasks_finish_share_live">Share tasks</string>
@@ -335,6 +336,7 @@
     <string name="_5000_lova_value">Closeness +5000</string>
     <string name="vfans_continue_privilege_now">Renew now</string>
     <string name="vfans_pay_privilige_one_tips">Renew to keep benefits</string>
+
     <string name="vfans_member_cancle_manager">Remove admin</string>
     <string name="vfans_member_add_manager">Set as club admin</string>
     <string name="vfans_member_cancle_deputy_manager">Remove associate admin</string>
@@ -350,4 +352,22 @@
     <string name="vfans_add_deputy_manager_faild">Couldn\'t add associate admin, try again later</string>
     <string name="vfans_cancel_deputy_manager_faild">Couldn\'t remove associate admin, try again later</string>
     <string name="vfans_cancel_manager_faild">Couldn\'t remove the admin, try again later</string>
+
+    <string name="notify_apply_join_group">%1$s applies to join %2$s</string>
+    <string name="vfans_admin_or_deput_admin">Club managers</string>
+    <string name="notify_agree_join_group">%1$s approved %2$s\'s request to join %3$s</string>
+    <string name="notify_reject_join_group">%1$s declined %2$s\'s request to join %3$s</string>
+    <string name="vfans_notify_robot_name">Club notifications</string>
+    <string name="six_in_create_sucess_message">Welcome to %s</string>
+    <string name="you" formatted="false">you</string>
+    <string name="vfans_manager_role" formatted="false">Manager</string>
+    <string name="vfans_notify_to_be_admin" formatted="false">%s将%s设置为%s的%s</string>
+    <string name="vfans_notify_canel_manager" formatted="false">%s取消了%s在%s%s身份</string>
+    <string name="notify_be_group_member" formatted="false">You\'ve joined group %s</string>
+    <string name="notify_someone_be_group_menber" formatted="false">%s\'s joined group %s</string>
+    <string name="notify_remove_someone_from_group" formatted="false">%s\'s kicked out from %s by the %s</string>
+    <string name="notify_remove_from_group" formatted="false">You\'re kicked out from %s by the %s</string>
+    <string name="vfans_owner">Club owner</string>
+    <string name="vfans_admin">Club admin</string>
+    <string name="vfans_deput_admin">Associate admin</string>
 </resources>

@@ -5,6 +5,7 @@ import de.greenrobot.daogenerator.Entity;
 import de.greenrobot.daogenerator.Schema;
 
 public class GreenDaoGenerator {
+    //添加GroupNotify     59变为60
     //添加sixinMessage    58变为59
     //更新私信Conversation  57变为58
     //account 添加 miid字段 版本号+1 56变为57
@@ -23,7 +24,7 @@ public class GreenDaoGenerator {
     //新增虚拟钻，版本号变为43
     //新增红名，版本号变为42
     //新增聊天模块用户微博认证，版本号变为40
-    public static final int DB_VERSION = 59;
+    public static final int DB_VERSION = 60;
 
     public static final String PACKAGE_DAO_NAME = "com.wali.live.dao";
 
@@ -38,6 +39,7 @@ public class GreenDaoGenerator {
     public static final String REGION_TW = "RegionTw";
     public static final String LOADING_BANNER = "LoadingBanner";
     public static final String ROOM_GLANCE_TABLE_NAME = "RoomGlance";
+    public static final String GROUP_NOTIFY = "GroupNotify";
 
     public static void main(String[] args) throws Exception {
         Schema schema = new Schema(DB_VERSION, PACKAGE_DAO_NAME);
@@ -64,6 +66,9 @@ public class GreenDaoGenerator {
         addCountryTW(schema);
         addLoadingBanner(schema);
         addChatMessage(schema);
+
+        //群聊的通知
+        addGroupNotify(schema);
 
         new DaoGenerator().generateAll(schema, "data/src/main/java-gen");
     }
@@ -306,5 +311,37 @@ public class GreenDaoGenerator {
         roomGlance.addIdProperty().autoincrement().primaryKey();
         roomGlance.addLongProperty("uuid").index();
         roomGlance.addStringProperty("roomId").index();
+    }
+
+    /**
+     * 申请加群、踢人、禁言等操作的表格
+     *
+     * @param schema
+     */
+    private static void addGroupNotify(Schema schema) {
+        Entity entity = schema.addEntity(GROUP_NOTIFY);
+        entity.implementsSerializable();
+        entity.addLongProperty("notifyId").notNull().index().primaryKey();
+        entity.addIntProperty("type");
+        entity.addLongProperty("time");
+        entity.addIntProperty("status");
+
+        entity.addLongProperty("candidate");
+        entity.addStringProperty("candidateName");
+        entity.addLongProperty("candidateTs");
+
+        entity.addLongProperty("groupId");
+        entity.addLongProperty("groupOwner");
+        entity.addStringProperty("groupName");
+        entity.addStringProperty("groupIcon");
+        entity.addLongProperty("groupOwnerTs");
+
+        entity.addStringProperty("msg");
+        entity.addStringProperty("msgBrief");
+
+//        entity.addIntProperty("scene"); // 场景，场景分为群聊的通知和宠爱团的通知 sdk目前只有宠爱团，群聊的拿掉。
+
+        entity.addStringProperty("content");
+        entity.addLongProperty("localUserId").index().notNull();
     }
 }
