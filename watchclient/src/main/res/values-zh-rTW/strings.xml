@@ -325,4 +325,19 @@
     <string name="_5000_lova_value">+5000親密值</string>
     <string name="vfans_continue_privilege_now">馬上續費</string>
     <string name="vfans_pay_privilige_one_tips">及時續費保持特權不間斷</string>
+    <string name="vfans_member_cancle_manager">取消團長</string>
+    <string name="vfans_member_add_manager">設為團長</string>
+    <string name="vfans_member_cancle_deputy_manager">取消副團長</string>
+    <string name="vfans_member_add_deputy_manager">設為副團長</string>
+    <string name="vfans_member_remove_member">移除粉絲團</string>
+    <string name="vfans_add_manager_faild_has_enough">增加團長失敗,團長數量已達上限</string>
+    <string name="vfans_oprate_no_permisson">您沒有操作權限</string>
+    <string name="vfans_add_manager_faild">增加團長失敗,請稍後在試</string>
+    <string name="vfans_no_member_to_delete_notify">確定將選中的用戶移除嗎？</string>
+    <string name="vfans_kick_faild">刪除成員失敗</string>
+    <string name="vfans_kick_success">刪除成員成功</string>
+    <string name="vfans_add_deputy_manager_faild_has_enough">增加副團長失敗,副團長數量已達上限</string>
+    <string name="vfans_add_deputy_manager_faild">增加副團長失敗,請稍後在試</string>
+    <string name="vfans_cancel_deputy_manager_faild">取消副團長失敗,請稍後在試</string>
+    <string name="vfans_cancel_manager_faild">取消團長失敗,請稍後在試</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.fans.adapter;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -7,18 +8,23 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.HttpImage;
 import com.base.utils.display.DisplayUtils;
 import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.proto.VFansCommonProto;
+import com.wali.live.proto.VFansProto;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.adapter.ClickItemAdapter;
 import com.wali.live.watchsdk.component.adapter.LoadingItemAdapter;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.wali.live.component.view.Utils.$click;
 import static com.wali.live.watchsdk.fans.model.member.FansMemberModel.VIP_TYPE_MONTH;
@@ -29,7 +35,7 @@ import static com.wali.live.watchsdk.fans.model.member.FansMemberModel.VIP_TYPE_
  *
  * @module 粉丝团成员管理列表适配器
  */
-public class FansMemberManagerAdapter extends LoadingItemAdapter<FansMemberModel,
+public class FansMemberManagerAdapter extends LoadingItemAdapter<ClickItemAdapter.TypeItem,
         ClickItemAdapter.BaseHolder, FansMemberManagerAdapter.IMemberClickListener> {
 
     protected static final int ITEM_TYPE_NORMAL = 0;
@@ -37,14 +43,47 @@ public class FansMemberManagerAdapter extends LoadingItemAdapter<FansMemberModel
     protected static final int ITEM_TYPE_LABEL = 2;
 
     private boolean mIsBatchDeleteMode = false;
+    public final Set<FansMemberModel> mSelectedSet = new HashSet<>(10); // 已选择
 
     private int mGroupCharmLevel; // 群经验值
+    private int mMyMemType = VFansCommonProto.GroupMemType.DEPUTY_ADMIN_VALUE;
+
+    public final void setGroupCharmLevel(int groupCharmLevel) {
+        mGroupCharmLevel = groupCharmLevel;
+    }
+
+    public final void setMyMemType(int memType) {
+        mMyMemType = memType;
+    }
 
     public void setIsBatchDeleteMode(boolean isBatchDeleteMode) {
         if (mIsBatchDeleteMode != isBatchDeleteMode) {
             mIsBatchDeleteMode = isBatchDeleteMode;
+            mSelectedSet.clear();
             notifyDataSetChanged();
         }
+    }
+
+    public void setItemDataEx(@NonNull List<MemberItem> dataSet) {
+        mItems.clear();
+        if (!dataSet.isEmpty()) {
+            final int size = dataSet.size();
+            ((ArrayList) mItems).ensureCapacity(size + 4); // with four label
+            int memType = -1, i = 0;
+            for (MemberItem elem : dataSet) {
+                if (memType != elem.getMemType()) {
+                    memType = elem.getMemType();
+                    mItems.add(new LabelItem(FansInfoUtils.getMemberRoleStringByType(memType))); // TODO-YangLi 使用对象池优化LabelItem
+                    if (memType == VFansCommonProto.GroupMemType.MASS_VALUE) {
+                        ((ArrayList) mItems).addAll(dataSet.subList(i, size));
+                        break;
+                    }
+                }
+                ++i;
+                mItems.add(elem);
+            }
+        }
+        notifyDataSetChanged();
     }
 
     @Override
@@ -66,16 +105,23 @@ public class FansMemberManagerAdapter extends LoadingItemAdapter<FansMemberModel
         return super.newViewHolder(parent, viewType);
     }
 
-    public static class LabelItem {
-        public static final int TYPE_GROUP_OWNER = 0;
-        public static final int TYPE_GROUP_ADMIN = 1;
-        public static final int TYPE_GROUP_DEPUTY_ADMIN = 2;
-        public static final int TYPE_GROUP_MASS = 3;
+    @Override
+    public int getItemViewType(int position) {
+        return mItems.size() == position ? ITEM_TYPE_FOOTER :
+                (position == 1 ? ITEM_TYPE_OWNER : mItems.get(position).getItemType());
+    }
 
-        private int type;
+    public static class LabelItem implements TypeItem {
 
-        public LabelItem(int type) {
-            this.type = type;
+        private int strResId;
+
+        public LabelItem(int strResId) {
+            this.strResId = strResId;
+        }
+
+        @Override
+        public final int getItemType() {
+            return ITEM_TYPE_LABEL;
         }
     }
 
@@ -89,31 +135,31 @@ public class FansMemberManagerAdapter extends LoadingItemAdapter<FansMemberModel
 
         @Override
         public void bindView(LabelItem item, Object listener) {
-            itemView.setVisibility(View.VISIBLE);
-            switch (item.type) {
-                case LabelItem.TYPE_GROUP_OWNER:
-                    mTitleView.setText(R.string.vfans_owner);
-                    break;
-                case LabelItem.TYPE_GROUP_ADMIN:
-                    mTitleView.setText(R.string.vfans_admin);
-                    break;
-                case LabelItem.TYPE_GROUP_DEPUTY_ADMIN:
-                    mTitleView.setText(R.string.vfans_deput_admin);
-                    break;
-                case LabelItem.TYPE_GROUP_MASS:
-                    mTitleView.setText(R.string.vfans_mass);
-                    break;
-                default:
-                    itemView.setVisibility(View.GONE);
-                    break;
+            if (item.strResId > 0) {
+                itemView.setVisibility(View.VISIBLE);
+                mTitleView.setText(item.strResId);
+            } else {
+                itemView.setVisibility(View.GONE);
             }
         }
     }
 
-    protected class MemberHolder extends BaseHolder<FansMemberModel, IMemberClickListener>
+    public static class MemberItem extends FansMemberModel implements TypeItem {
+
+        public MemberItem(VFansProto.MemberInfo protoMember) {
+            super(protoMember);
+        }
+
+        @Override
+        public final int getItemType() {
+            return ITEM_TYPE_NORMAL;
+        }
+    }
+
+    protected class MemberHolder extends BaseHolder<MemberItem, IMemberClickListener>
             implements View.OnClickListener {
 
-        private FansMemberModel mItem;
+        private MemberItem mItem;
 
         private CheckBox mCheckBox;
         private BaseImageView mMemberAvatar;
@@ -132,8 +178,14 @@ public class FansMemberManagerAdapter extends LoadingItemAdapter<FansMemberModel
             }
             switch (v.getId()) {
                 default:
-                    mListener.onItemClick(mItem);
                     break;
+            }
+            if (mMyMemType < mItem.getMemType()) {
+                if (mIsBatchDeleteMode) {
+                    mCheckBox.setChecked(!mCheckBox.isChecked());
+                } else {
+                    mListener.onItemClick(mItem);
+                }
             }
         }
 
@@ -149,61 +201,40 @@ public class FansMemberManagerAdapter extends LoadingItemAdapter<FansMemberModel
             mNewLoveValue = $(R.id.new_love_value);
             mNewLoveTitle = $(R.id.sevendays_love_title);
             if (isOwner) {
-                mLoveTitle.setVisibility(View.VISIBLE);
-                mLoveValue.setVisibility(View.VISIBLE);
-                mNewLoveTitle.setVisibility(View.VISIBLE);
-                mNewLoveValue.setVisibility(View.VISIBLE);
+                mLoveTitle.setVisibility(View.GONE);
+                mLoveValue.setVisibility(View.GONE);
+                mNewLoveTitle.setVisibility(View.GONE);
+                mNewLoveValue.setVisibility(View.GONE);
             }
             mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                    if (isChecked) {
-//                        vfansMemberManagerAdapter.mSelelctMap.put(mGroupMemberInfo.getUuid(), mGroupMemberInfo);
-//                    } else {
-//                        vfansMemberManagerAdapter.mSelelctMap.remove(mGroupMemberInfo.getUuid());
-//                    }
+                    if (isChecked) {
+                        mSelectedSet.add(mItem);
+                    } else {
+                        mSelectedSet.remove(mItem);
+                    }
                 }
             });
-
             $click(itemView, this);
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (mGroupMemberInfo != null) {
-//                        if (mCurrentShowMode == FansMemberManagerFragment.MODEL_BATCH_REMOVE) {
-//                            if (mVfansMemberManagerViewWeakReference != null && mVfansMemberManagerViewWeakReference.get() != null
-//                                    && mVfansMemberManagerViewWeakReference.get().getMyRole() < mGroupMemberInfo.getMemType()) {
-//                                mCheckBox.setChecked(!mCheckBox.isChecked());
-//                            }
-//                        } else if (mCurrentShowMode == FansMemberManagerFragment.MODEL_MANAGER) {
-//                            if (mVfansMemberManagerViewWeakReference != null && mVfansMemberManagerViewWeakReference.get() != null
-//                                    && mVfansMemberManagerViewWeakReference.get().getMyRole() < mGroupMemberInfo.getMemType()) {
-//                                onCliclMoreBtn();
-//                            }
-//                        } else if (mVfansMemberManagerViewWeakReference != null && mVfansMemberManagerViewWeakReference.get() != null) {
-//                            mVfansMemberManagerViewWeakReference.get().openPersonInfo(mGroupMemberInfo.getUuid());
-//                        }
-//                    }
-//                }
-//            });
         }
 
         @Override
-        public void bindView(FansMemberModel memberInfo, IMemberClickListener listener) {
-            mItem = memberInfo;
+        public void bindView(MemberItem memberItem, IMemberClickListener listener) {
+            mItem = memberItem;
 
-            HttpImage httpImage = new HttpImage(AvatarUtils.getAvatarUrlByUid(memberInfo.getUuid(), 0));
+            HttpImage httpImage = new HttpImage(AvatarUtils.getAvatarUrlByUid(memberItem.getUuid(), 0));
             httpImage.setWidth(DisplayUtils.dip2px(34));
             httpImage.setHeight(DisplayUtils.dip2px(34));
             httpImage.setIsCircle(true);
-            httpImage.setLoadingDrawable(GlobalData.app().getResources().getDrawable(R.drawable.avatar_default_a));
-            httpImage.setFailureDrawable(GlobalData.app().getResources().getDrawable(R.drawable.avatar_default_a));
+            httpImage.setLoadingDrawable(getResources().getDrawable(R.drawable.avatar_default_a));
+            httpImage.setFailureDrawable(getResources().getDrawable(R.drawable.avatar_default_a));
             FrescoWorker.loadImage(mMemberAvatar, httpImage);
 
-            mMemberName.setText(memberInfo.getNickname());
-            mNewLoveValue.setText(String.valueOf(memberInfo.getNewLoveValue()));
-            mLoveValue.setText(String.valueOf(memberInfo.getPetExp()));
-            switch (memberInfo.getVipType()) {
+            mMemberName.setText(memberItem.getNickname());
+            mNewLoveValue.setText(String.valueOf(memberItem.getNewLoveValue()));
+            mLoveValue.setText(String.valueOf(memberItem.getPetExp()));
+            switch (memberItem.getVipType()) {
                 case VIP_TYPE_MONTH:
                     mVipTypeBtn.setVisibility(View.VISIBLE);
                     mVipTypeBtn.setImageDrawable(getResources().getDrawable(R.drawable.live_pet_live_member_month));
@@ -217,40 +248,26 @@ public class FansMemberManagerAdapter extends LoadingItemAdapter<FansMemberModel
                     break;
             }
 
-            if (memberInfo.getMemType() == VFansCommonProto.GroupMemType.OWNER_VALUE) {
+            if (memberItem.getMemType() == VFansCommonProto.GroupMemType.OWNER_VALUE) {
                 mMyExpTitle.setText("");
                 mMyExpTitle.setBackgroundResource(FansInfoUtils.getImageResourcesByCharmLevelValue(mGroupCharmLevel));
             } else {
-                mMyExpTitle.setText(memberInfo.getMedalName());
-                mMyExpTitle.setBackgroundResource(FansInfoUtils.getGroupMemberLevelDrawable(memberInfo.getPetLevel()));
+                mMyExpTitle.setText(memberItem.getMedalName());
+                mMyExpTitle.setBackgroundResource(FansInfoUtils.getGroupMemberLevelDrawable(memberItem.getPetLevel()));
             }
 
-//            if (mCurrentShowMode == FansMemberManagerFragment.MODEL_BATCH_REMOVE) {
-//                mMoreBtn.setVisibility(View.GONE);
-//                if (mVfansMemberManagerViewWeakReference != null && mVfansMemberManagerViewWeakReference.get() != null
-//                        && mVfansMemberManagerViewWeakReference.get().getMyRole() < memberInfo.getMemType()) {
-//                    mCheckBox.setVisibility(View.VISIBLE);
-//                } else {
-//                    mCheckBox.setVisibility(View.GONE);
-//                }
-//            } else if (mCurrentShowMode == FansMemberManagerFragment.MODEL_MANAGER) {
-//                if (mVfansMemberManagerViewWeakReference != null && mVfansMemberManagerViewWeakReference.get() != null
-//                        && mVfansMemberManagerViewWeakReference.get().getMyRole() < memberInfo.getMemType()) {
-//                    mMoreBtn.setVisibility(View.VISIBLE);
-//                } else {
-//                    mMoreBtn.setVisibility(View.GONE);
-//                }
-//                mCheckBox.setVisibility(View.GONE);
-//            } else {
-//                mMoreBtn.setVisibility(View.GONE);
-//                mCheckBox.setVisibility(View.GONE);
-//            }
+            if (mIsBatchDeleteMode && mMyMemType < mItem.getMemType()) {
+                mCheckBox.setVisibility(View.VISIBLE);
+                mCheckBox.setSelected(mSelectedSet.contains(mItem));
+            } else {
+                mCheckBox.setVisibility(View.GONE);
+            }
         }
     }
 
     public interface IMemberClickListener {
 
-        void onItemClick(FansMemberModel item);
+        void onItemClick(MemberItem item);
 
     }
 

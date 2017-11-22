@@ -119,4 +119,8 @@ public class ErrorCode {
     public static final int CODE_RELATION_BLACK = 7506;     // 黑名单
 
     public static final int CODE_FEEDS_DELETED = 17601;     // feeds被删除
+
+    public static final int CODE_VFANS_NO_GROUP_PRIVILEGE = 10106;       // 没有操作权限
+    public static final int CODE_VFANS_ADMIN_REACH_LIMIT = 10107;        // 管理员达到上限
+    public static final int CODE_VFANS_DEPUTY_ADMIN_REACH_LIMIT = 10108; // 副管理员达到上限
 }

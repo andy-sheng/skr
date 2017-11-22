@@ -1,6 +1,8 @@
 package com.wali.live.watchsdk.fans.view;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -13,15 +15,20 @@ import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.base.dialog.DialogUtils;
+import com.base.dialog.MyAlertDialog;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.log.MyLog;
 import com.base.view.SymmetryTitleBar;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
+import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.adapter.FansMemberManagerAdapter;
-import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
+import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.wali.live.component.view.Utils.$click;
@@ -46,16 +53,98 @@ public class FansMemberManagerView extends LinearLayout
 
     private final FansMemberManagerAdapter mAdapter = new FansMemberManagerAdapter();
 
+    private FansGroupDetailModel mGroupDetailModel;
+
     private SymmetryTitleBar mTitleBar;
     private View mEmptyView;
     private RecyclerView mRecyclerView;
 
     private final FansMemberManagerAdapter.IMemberClickListener mMemberClickListener =
             new FansMemberManagerAdapter.IMemberClickListener() {
+                private static final int MENU_ITEM_ADD_MANAGER = 1;           // 设置为管理员
+                private static final int MENU_ITEM_REMOVE_MANAGER = 2;        // 取消管理员
+                private static final int MENU_ITEM_ADD_DEPUTY_MANAGER = 3;    // 添加副管理员
+                private static final int MENU_ITEM_REMOVE_DEPUTY_MANAGER = 4; // 删除副管理员
+                private static final int MENU_ITEM_KICK = 5;                  // 踢出粉丝团
+                private static final int MENU_ITEM_CANCEL = 6;                // 取消
+
                 @Override
-                public void onItemClick(FansMemberModel item) {
+                public void onItemClick(final FansMemberManagerAdapter.MemberItem memberItem) {
+                    final int myMemType = mGroupDetailModel.getMemType(), itemMemType = memberItem.getMemType();
+                    if (myMemType >= itemMemType) {
+                        return;
+                    }
+                    final List<Integer> actions = new ArrayList<>(4);
+                    final List<String> names = new ArrayList<>(4);
+                    if (myMemType == VFansCommonProto.GroupMemType.OWNER_VALUE) {
+                        if (itemMemType == VFansCommonProto.GroupMemType.ADMIN_VALUE) {
+                            names.add(getResources().getString(R.string.vfans_member_cancle_manager));
+                            actions.add(MENU_ITEM_REMOVE_MANAGER);
+                        } else {
+                            names.add(getResources().getString(R.string.vfans_member_add_manager));
+                            actions.add(MENU_ITEM_ADD_MANAGER);
+                        }
+                    }
+                    if (myMemType == VFansCommonProto.GroupMemType.ADMIN_VALUE ||
+                            myMemType == VFansCommonProto.GroupMemType.OWNER_VALUE) {
+                        if (itemMemType == VFansCommonProto.GroupMemType.DEPUTY_ADMIN_VALUE) {
+                            names.add(getResources().getString(R.string.vfans_member_cancle_deputy_manager));
+                            actions.add(MENU_ITEM_REMOVE_DEPUTY_MANAGER);
+                        } else {
+                            names.add(getResources().getString(R.string.vfans_member_add_deputy_manager));
+                            actions.add(MENU_ITEM_ADD_DEPUTY_MANAGER);
+                        }
+                    }
+                    actions.add(MENU_ITEM_KICK);
+                    names.add(getResources().getString(R.string.vfans_member_remove_member));
+                    actions.add(MENU_ITEM_CANCEL);
+                    names.add(getResources().getString(R.string.cancel));
+
+                    final String[] nameAsArray = new String[names.size()];
+                    names.toArray(nameAsArray);
+                    MyAlertDialog.Builder builder = new MyAlertDialog.Builder(getContext())
+                            .setItems(nameAsArray, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    switch (actions.get(which)) {
+                                        case MENU_ITEM_ADD_MANAGER:
+                                            mPresenter.setManager(memberItem, true);
+                                            break;
+                                        case MENU_ITEM_REMOVE_MANAGER:
+                                            mPresenter.setManager(memberItem, false);
+                                            break;
+                                        case MENU_ITEM_ADD_DEPUTY_MANAGER:
+                                            mPresenter.setDeputyManager(memberItem, true);
+                                            break;
+                                        case MENU_ITEM_REMOVE_DEPUTY_MANAGER:
+                                            mPresenter.setDeputyManager(memberItem, false);
+                                            break;
+                                        case MENU_ITEM_KICK: {
+                                            showRemoveDialog(Arrays.asList(memberItem));
+                                            break;
+                                        }
+                                    }
+                                }
+                            });
+                    builder.create().show();
                 }
             };
+
+    private void showRemoveDialog(final List<FansMemberManagerAdapter.MemberItem> memberItems) {
+        DialogUtils.showNormalDialog(
+                (Activity) getContext(),
+                0,
+                R.string.vfans_no_member_to_delete_notify,
+                R.string.ok,
+                R.string.cancel,
+                new DialogUtils.IDialogCallback() {
+                    @Override
+                    public void process(DialogInterface dialogInterface, int i) {
+                        mPresenter.removeMember(memberItems);
+                    }
+                },
+                null);
+    }
 
     private final Runnable mHideLoadingRunnable = new Runnable() {
         @Override
@@ -171,6 +260,15 @@ public class FansMemberManagerView extends LinearLayout
         }
     }
 
+    public void updateGroupDetail(FansGroupDetailModel groupDetailModel) {
+        if (groupDetailModel == null) {
+            return;
+        }
+        mGroupDetailModel = groupDetailModel;
+        mAdapter.setGroupCharmLevel(groupDetailModel.getCharmLevel());
+        mAdapter.setMyMemType(groupDetailModel.getMemType());
+    }
+
     @Override
     public IView getViewProxy() {
         class ComponentView implements IView {
@@ -180,8 +278,10 @@ public class FansMemberManagerView extends LinearLayout
             }
 
             @Override
-            public void onNewDataSet(List<FansMemberModel> memberList) {
-                mAdapter.addItemData(memberList);
+            public void onNewDataSet(List<FansMemberManagerAdapter.MemberItem> memberList) {
+                if (memberList != null) {
+                    mAdapter.setItemDataEx(memberList);
+                }
             }
 
             @Override
@@ -222,13 +322,28 @@ public class FansMemberManagerView extends LinearLayout
          * 拉取更多成员数据
          */
         void pullMore();
+
+        /**
+         * 设置/取消团长
+         */
+        void setManager(FansMemberManagerAdapter.MemberItem memberItem, boolean state);
+
+        /**
+         * 设置/取消副团长
+         */
+        void setDeputyManager(FansMemberManagerAdapter.MemberItem memberItem, boolean state);
+
+        /**
+         * 删除团成员
+         */
+        void removeMember(List<FansMemberManagerAdapter.MemberItem> memberItems);
     }
 
     public interface IView extends IViewProxy {
         /**
          * 拉取到成员数据
          */
-        void onNewDataSet(List<FansMemberModel> memberList);
+        void onNewDataSet(List<FansMemberManagerAdapter.MemberItem> memberList);
 
         /**
          * 拉取开始

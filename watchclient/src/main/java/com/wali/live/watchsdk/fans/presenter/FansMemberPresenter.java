@@ -7,6 +7,7 @@ import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.proto.VFansProto;
 import com.wali.live.utils.relation.RelationUtils;
 import com.wali.live.watchsdk.R;
@@ -72,7 +73,7 @@ public class FansMemberPresenter extends BaseSdkRxPresenter<FansMemberView.IView
 
     @Override
     public void showPersonalInfo(long userId) {
-        // TODO-YangLi 添加跳转到个人信息页
+        UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, userId, null);
     }
 
     @Override

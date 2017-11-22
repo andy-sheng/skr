@@ -71,6 +71,10 @@ public class FansMemberModel extends BaseViewModel {
         return mMemType;
     }
 
+    public void setMemType(int memType) {
+        mMemType = memType;
+    }
+
     public String getMedalName() {
         return mMedalName;
     }

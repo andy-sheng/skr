@@ -319,10 +319,6 @@
     <string name="vfans_free_horn_hint">Free on-screen comments today: %d</string>
     <string name="flybarrage_none">You can\'t send more on-screen comments.</string>
 
-    <string name="vfans_owner">Club owner</string>
-    <string name="vfans_admin">Club admin</string>
-    <string name="vfans_deput_admin">Associate admin</string>
-    <string name="vfans_mass">Members</string>
     <string name="love_value">Closeness</string>
     <string name="sevendays_love_value">Closeness (7 days)</string>
     <string name="vfans_member_title_manager_member">Manage group members</string>
@@ -339,4 +335,19 @@
     <string name="_5000_lova_value">Closeness +5000</string>
     <string name="vfans_continue_privilege_now">Renew now</string>
     <string name="vfans_pay_privilige_one_tips">Renew to keep benefits</string>
+    <string name="vfans_member_cancle_manager">Remove admin</string>
+    <string name="vfans_member_add_manager">Set as club admin</string>
+    <string name="vfans_member_cancle_deputy_manager">Remove associate admin</string>
+    <string name="vfans_member_add_deputy_manager">Set as associate admin</string>
+    <string name="vfans_member_remove_member">Remove fan club</string>
+    <string name="vfans_add_manager_faild_has_enough">Can\'t add more club admins</string>
+    <string name="vfans_oprate_no_permisson">You don\'t have permissions</string>
+    <string name="vfans_add_manager_faild">Couldn\'t add club admin, try again later</string>
+    <string name="vfans_no_member_to_delete_notify">Remove selected members?</string>
+    <string name="vfans_kick_faild">Couldn\'t remove</string>
+    <string name="vfans_kick_success">Removed successfully</string>
+    <string name="vfans_add_deputy_manager_faild_has_enough">Can\'t add more associate admins</string>
+    <string name="vfans_add_deputy_manager_faild">Couldn\'t add associate admin, try again later</string>
+    <string name="vfans_cancel_deputy_manager_faild">Couldn\'t remove associate admin, try again later</string>
+    <string name="vfans_cancel_manager_faild">Couldn\'t remove the admin, try again later</string>
 </resources>

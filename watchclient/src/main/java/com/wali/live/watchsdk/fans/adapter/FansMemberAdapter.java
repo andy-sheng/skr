@@ -33,11 +33,9 @@ import static com.wali.live.watchsdk.fans.model.member.FansMemberModel.VIP_TYPE_
 public class FansMemberAdapter extends LoadingItemAdapter<FansMemberModel,
         ClickItemAdapter.BaseHolder, FansMemberAdapter.IMemberClickListener> {
 
-    protected static final int ITEM_TYPE_NORMAL = 0;
-
     private int mGroupCharmLevel; // 群经验值
 
-    public void setGroupCharmLevel(int groupCharmLevel) {
+    public final void setGroupCharmLevel(int groupCharmLevel) {
         mGroupCharmLevel = groupCharmLevel;
     }
 

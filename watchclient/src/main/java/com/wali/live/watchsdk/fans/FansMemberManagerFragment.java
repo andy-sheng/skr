@@ -50,6 +50,7 @@ public class FansMemberManagerFragment extends RxFragment {
         mManagerView = $(R.id.member_manager_view);
         mManagerPresenter = new FansMemberManagerPresenter(mGroupDetailModel.getZuid());
         $component(mManagerView, mManagerPresenter);
+        mManagerView.updateGroupDetail(mGroupDetailModel);
         mManagerPresenter.startPresenter();
     }
 

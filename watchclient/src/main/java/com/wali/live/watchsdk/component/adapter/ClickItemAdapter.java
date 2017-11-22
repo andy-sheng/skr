@@ -17,6 +17,11 @@ import java.util.List;
  */
 public abstract class ClickItemAdapter<ITEM, HOLDER extends ClickItemAdapter.BaseHolder, LISTENER>
         extends RecyclerView.Adapter<HOLDER> {
+
+    protected static final int ITEM_TYPE_FOOTER = -2;
+    protected static final int ITEM_TYPE_HEADER = -1;
+    protected static final int ITEM_TYPE_NORMAL = 0;
+
     protected LayoutInflater mInflater;
     protected List<ITEM> mItems = new ArrayList<>(0);
     protected LISTENER mListener;
@@ -82,6 +87,10 @@ public abstract class ClickItemAdapter<ITEM, HOLDER extends ClickItemAdapter.Bas
 
     public void setClickListener(LISTENER listener) {
         mListener = listener;
+    }
+
+    public interface TypeItem {
+        int getItemType();
     }
 
     public static abstract class BaseHolder<ITEM, LISTENER> extends RecyclerView.ViewHolder {

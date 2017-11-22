@@ -13,8 +13,6 @@ import com.wali.live.watchsdk.fans.adapter.FansMemberAdapter;
 public abstract class LoadingItemAdapter<ITEM, HOLDER extends ClickItemAdapter.BaseHolder, LISTENER>
         extends ClickItemAdapter<ITEM, HOLDER, LISTENER> {
 
-    protected static final int ITEM_TYPE_FOOTER = -1;
-
     protected final FansMemberAdapter.FooterItem mFooterItem = new FansMemberAdapter.FooterItem();
 
     @Override
@@ -38,8 +36,8 @@ public abstract class LoadingItemAdapter<ITEM, HOLDER extends ClickItemAdapter.B
     }
 
     @Override
-    public final int getItemViewType(int position) {
-        return mItems.size() == position ? ITEM_TYPE_FOOTER : 0;
+    public int getItemViewType(int position) {
+        return mItems.size() == position ? ITEM_TYPE_FOOTER : ITEM_TYPE_NORMAL;
     }
 
     @Override

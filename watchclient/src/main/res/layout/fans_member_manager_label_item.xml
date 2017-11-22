@@ -10,7 +10,6 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/margin_30"
-        android:text="@string/vfans_admin"
         android:textColor="@color/color_black_trans_50"
         android:textSize="@dimen/margin_36" />
 

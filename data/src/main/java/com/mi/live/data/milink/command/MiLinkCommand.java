@@ -496,6 +496,8 @@ public class MiLinkCommand {
     public static final String COMMAND_VFANS_QUIT_GROUP = COMMAND_VFANS_PREFIX + "quit_group";
     // 完成任务领取宠爱值
     public static final String COMMAND_VFANS_FINISH_GROUP_JOB = COMMAND_VFANS_PREFIX + "finish_groupjob";
+    // 修改群成员请求
+    public static final String COMMAND_VFANS_UPDATE_GROUP_MEM = COMMAND_VFANS_PREFIX + "update_groupmem";
     // 用户完成的最近任务
     public static final String COMMAND_VFAN_GET_RECENT_JOB = "zhibo.vfans.get_recentjob";
 }

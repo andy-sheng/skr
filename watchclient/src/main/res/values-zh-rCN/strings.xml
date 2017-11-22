@@ -309,10 +309,6 @@
     <string name="vfans_free_horn_hint">今日剩余%d条免费飘屏</string>
     <string name="flybarrage_none">飘屏次数已达上限，发太多会影响用户观看直播哦。</string>
 
-    <string name="vfans_owner">团主</string>
-    <string name="vfans_admin">团长</string>
-    <string name="vfans_deput_admin">副团长</string>
-    <string name="vfans_mass">团员</string>
     <string name="love_value">亲密值</string>
     <string name="sevendays_love_value">7日亲密值</string>
     <string name="vfans_member_title_manager_member">管理群成员</string>
@@ -329,4 +325,19 @@
     <string name="_5000_lova_value">+5000亲密值</string>
     <string name="vfans_continue_privilege_now">马上续费</string>
     <string name="vfans_pay_privilige_one_tips">及时续费保持特权不间断</string>
+    <string name="vfans_member_cancle_manager">取消团长</string>
+    <string name="vfans_member_add_manager">设为团长</string>
+    <string name="vfans_member_cancle_deputy_manager">取消副团长</string>
+    <string name="vfans_member_add_deputy_manager">设为副团长</string>
+    <string name="vfans_member_remove_member">移除粉丝团</string>
+    <string name="vfans_add_manager_faild_has_enough">添加团长失败,团长数量已达上限</string>
+    <string name="vfans_oprate_no_permisson">您没有操作权限</string>
+    <string name="vfans_add_manager_faild">添加团长失败,请稍后在试</string>
+    <string name="vfans_no_member_to_delete_notify">确定将选中的用户移除吗？</string>
+    <string name="vfans_kick_faild">删除成员失败</string>
+    <string name="vfans_kick_success">删除成员成功</string>
+    <string name="vfans_add_deputy_manager_faild_has_enough">添加副团长失败,副团长数量已达上限</string>
+    <string name="vfans_add_deputy_manager_faild">添加副团长失败,请稍后在试</string>
+    <string name="vfans_cancel_deputy_manager_faild">取消副团长失败,请稍后在试</string>
+    <string name="vfans_cancel_manager_faild">取消团长失败,请稍后在试</string>
 </resources>
