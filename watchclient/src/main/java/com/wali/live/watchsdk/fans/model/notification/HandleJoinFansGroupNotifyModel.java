@@ -98,9 +98,9 @@ public class HandleJoinFansGroupNotifyModel extends GroupNotifyBaseModel {
     public void loadFromJson(JSONObject jsonObject) {
         handler = jsonObject.optLong("handler");
         handlerName = jsonObject.optString("handlerName");
-        fansJoinResult = VFansCommonProto.ApplyJoinResult.valueOf(jsonObject.optString("handleFGResultType"));
+        fansJoinResult = VFansCommonProto.ApplyJoinResult.valueOf(jsonObject.optString("applyJoinResult"));
         fansMemType = VFansCommonProto.GroupMemType.valueOf(jsonObject.optString("fansGroupMemType"));
-        fansJoinIntentionType = VFansCommonProto.JoinIntentionType.valueOf(jsonObject.optString("joinFGItentionType"));
+        fansJoinIntentionType = VFansCommonProto.JoinIntentionType.valueOf(jsonObject.optString("joinIntentionType"));
         referrer = jsonObject.optLong("referrer");
     }
 
@@ -110,7 +110,7 @@ public class HandleJoinFansGroupNotifyModel extends GroupNotifyBaseModel {
         try {
             jsonObject.put("handler", handler);
             jsonObject.put("handlerName", handlerName);
-            jsonObject.put("handleFGResultType", fansJoinResult.name());
+            jsonObject.put("applyJoinResult", fansJoinResult.name());
             jsonObject.put("fansGroupMemType", fansMemType.name());
             jsonObject.put("joinIntentionType", fansJoinIntentionType.name());
             jsonObject.put("referrer", referrer);

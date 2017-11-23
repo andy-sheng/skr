@@ -1,12 +1,16 @@
 package com.wali.live.watchsdk.fans.push.data;
 
 import com.base.log.MyLog;
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
+import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.live.data.preference.MLPreferenceUtils;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.proto.GroupMessageProto;
+import com.wali.live.proto.VFansCommonProto;
+import com.wali.live.proto.VFansProto;
 
 /**
  * Created by anping on 17/7/3.
@@ -15,7 +19,7 @@ public class FansNotifyRepository {
     private static final String TAG = "FansNotifyRepository";
     public final static String PREF_KEY_PULL_GROUP_NOTIFICATION_TS = "key_pull_fans_notification_ts_"; //注意多账号
 
-    public void syncFansNotify() {
+    public static void syncFansNotify() {
         GroupMessageProto.GetGroupNotificationRequest.Builder reqBuilder = GroupMessageProto
                 .GetGroupNotificationRequest.newBuilder()
                 .setUserId(UserAccountManager.getInstance().getUuidAsLong())
@@ -60,5 +64,33 @@ public class FansNotifyRepository {
         data.setNeedCached(true);
         MyLog.w(TAG, "sendGroupNotifyAck req:" + request);
         MiLinkClientAdapter.getsInstance().sendAsync(data);
+    }
+
+    public static VFansProto.HandleJoinGroupRsp handleJoinGroup(long zuid, long adminId, long memId,
+                                                                VFansCommonProto.ApplyJoinResult joinResult,
+                                                                boolean addBlack) {
+        if (zuid <= 0 || adminId <= 0 || memId <= 0 || joinResult == null) {
+            MyLog.e(TAG, "handleJoinGroup null zuid = " + zuid + " adminId = " + addBlack);
+            return null;
+        }
+        VFansProto.HandleJoinGroupReq request = VFansProto.HandleJoinGroupReq.newBuilder()
+                .setZuid(zuid)
+                .setAdminId(adminId)
+                .setMemId(memId)
+                .setJoinResult(joinResult)
+                .setAddBlack(addBlack)
+                .build();
+        PacketData data = new PacketData();
+        data.setCommand(MiLinkCommand.COMMAND_VFANS_HANDLE_JOIN_GROUP);
+        data.setData(request.toByteArray());
+        PacketData rsp = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
+        if (rsp != null) {
+            try {
+                return VFansProto.HandleJoinGroupRsp.parseFrom(rsp.getData());
+            } catch (InvalidProtocolBufferException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }

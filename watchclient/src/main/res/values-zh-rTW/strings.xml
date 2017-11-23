@@ -367,4 +367,9 @@
     <string name="vfans_no_member_to_delete">請選擇需要刪除的成員</string>
     <string name="vfans_quit_group_confirm">確定要退出粉絲團嗎？</string>
     <string name="leave_vfan_tip_message">（退團將清零親密值並失去付費身份）</string>
+
+    <string name="vfans_notify">粉絲團通知</string>
+    <string name="clear_text">清空</string>
+    <string name="agreed">已同意</string>
+    <string name="vfans_notify_clear_confirm">確定要清空粉絲團通知?</string>
 </resources>

@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.base.activity.BaseActivity;
+import com.base.activity.BaseSdkActivity;
 import com.base.fragment.BaseFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.log.MyLog;
@@ -24,6 +25,7 @@ import com.wali.live.event.EventClass;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.presenter.adapter.ConversationAdapter;
 import com.wali.live.watchsdk.component.view.panel.MessagePanel;
+import com.wali.live.watchsdk.fans.GroupNotifyFragment;
 import com.wali.live.watchsdk.recipient.RecipientsSelectFragment;
 import com.wali.live.watchsdk.sixin.PopComposeMessageFragment;
 import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
@@ -208,6 +210,8 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
                 markAsReadAsync(item.uid);
             }
             switchToUnFocusMode();
+        } else if (item.uid == Conversation.VFANS_NOTIFY_CONVERSATION_TARGET) {
+            GroupNotifyFragment.openFragment((BaseActivity) context);
         } else {
             PopComposeMessageFragment.open((BaseActivity) context, item.getSixinTarget(), true);
         }

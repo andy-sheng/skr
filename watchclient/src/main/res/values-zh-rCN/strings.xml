@@ -376,4 +376,17 @@
     <string name="vfans_no_member_to_delete">请选择需要删除的成员</string>
     <string name="vfans_quit_group_confirm">确定要退出粉丝团吗？</string>
     <string name="leave_vfan_tip_message">（退团将清零亲密值并失去付费身份）</string>
+
+    <string name="vfans_notify">粉丝团通知</string>
+    <string name="clear_text">清空</string>
+    <string name="agreed">已同意</string>
+    <string name="apply_join_group_has_access" formatted="false">已同意</string>
+    <string name="apply_join_group_has_reject" formatted="false">已拒绝</string>
+    <string name="vfans_group_someone_agree_join" formatted="false">%s同意%s加入粉丝团</string>
+    <string name="vfans_group_someone_reject_join" formatted="false">%s拒绝%s加入粉丝团</string>
+    <string name="vfans_notify_be_remove" formatted="false">%s将%s移出了粉丝团</string>
+    <string name="vfans_notify_cancle_someone_to_be_admin" formatted="false">%s取消了%s的%s身份</string>
+    <string name="vfans_notify_be_member" formatted="false">%s已经成为粉丝团成员</string>
+    <string name="vfans_notify_make_someone_to_be_admin" formatted="false">%s将%s设置为%s</string>
+    <string name="vfans_notify_clear_confirm">确定要清空粉丝团通知?</string>
 </resources>
