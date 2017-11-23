@@ -5,11 +5,12 @@ import android.widget.TextView;
 
 import com.base.activity.BaseActivity;
 import com.base.image.fresco.BaseImageView;
+import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.MemGroupDetailFragment;
+import com.wali.live.watchsdk.fans.listener.FansGroupListListener;
 import com.wali.live.watchsdk.fans.model.item.MemFansGroupModel;
-import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.watchsdk.lit.recycler.holder.BaseHolder;
 
 import java.text.SimpleDateFormat;
@@ -30,8 +31,11 @@ public class MemFansGroupHolder extends BaseHolder<MemFansGroupModel> {
 
     private TextView mRenewalTv;
 
-    public MemFansGroupHolder(View itemView) {
+    private FansGroupListListener mListener;
+
+    public MemFansGroupHolder(View itemView, FansGroupListListener listener) {
         super(itemView);
+        mListener = listener;
     }
 
     @Override
@@ -54,6 +58,13 @@ public class MemFansGroupHolder extends BaseHolder<MemFansGroupModel> {
             @Override
             public void onClick(View v) {
                 MemGroupDetailFragment.open((BaseActivity) itemView.getContext(), mViewModel.getZuid());
+            }
+        });
+
+        mRenewalTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.openPrivilege(mViewModel.getDetailModel());
             }
         });
     }

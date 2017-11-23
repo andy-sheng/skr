@@ -1,5 +1,7 @@
 package com.wali.live.watchsdk.fans;
 
+import android.app.Activity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.base.activity.BaseActivity;
+import com.base.activity.BaseSdkActivity;
 import com.base.fragment.BaseEventBusFragment;
+import com.base.fragment.FragmentDataListener;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.keyboard.KeyboardUtils;
 import com.base.utils.toast.ToastUtils;
@@ -16,7 +20,9 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.adapter.FansGroupListAdapter;
 import com.wali.live.watchsdk.fans.event.QuitGroupEvent;
 import com.wali.live.watchsdk.fans.listener.FansGroupListListener;
+import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.FansGroupListModel;
+import com.wali.live.watchsdk.fans.pay.FansPayFragment;
 import com.wali.live.watchsdk.fans.presenter.FansGroupListPresenter;
 import com.wali.live.watchsdk.fans.presenter.IFansGroupListView;
 
@@ -26,7 +32,7 @@ import org.greenrobot.eventbus.ThreadMode;
 /**
  * Created by lan on 17-6-15.
  */
-public class FansGroupListFragment extends BaseEventBusFragment implements View.OnClickListener, IFansGroupListView, FansGroupListListener {
+public class FansGroupListFragment extends BaseEventBusFragment implements View.OnClickListener, IFansGroupListView, FansGroupListListener, FragmentDataListener {
     private BackTitleBar mTitleBar;
 
     private RecyclerView mFansGroupRv;
@@ -79,6 +85,12 @@ public class FansGroupListFragment extends BaseEventBusFragment implements View.
     }
 
     @Override
+    public void openPrivilege(FansGroupDetailModel detailModel) {
+        FansPayFragment.open((BaseSdkActivity) getActivity(),
+                detailModel, "", detailModel.getVipLevel() <= 0, false, this);
+    }
+
+    @Override
     public void notifyCreateGroupResult(boolean isSuccess) {
         KeyboardUtils.hideKeyboard(getActivity());
         if (isSuccess) {
@@ -97,6 +109,25 @@ public class FansGroupListFragment extends BaseEventBusFragment implements View.
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(QuitGroupEvent event) {
+        if (event != null) {
+            if (mPresenter != null) {
+                mPresenter.getFansGroupList(true);
+            }
+        }
+    }
+
+    @Override
+    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
+        if (requestCode == FansPayFragment.REQUEST_CODE_PAY) {
+            if (resultCode == Activity.RESULT_OK) {
+                // 支付成功，重新拉一下数据
+                mPresenter.getFansGroupList(true);
+            }
+        }
+    }
+
     @Override
     public boolean onBackPressed() {
         if (getActivity() == null) {
@@ -108,16 +139,6 @@ public class FansGroupListFragment extends BaseEventBusFragment implements View.
 
     private void finish() {
         FragmentNaviUtils.popFragment(getActivity());
-    }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(QuitGroupEvent event) {
-        if (event != null) {
-            if (mPresenter != null) {
-                mPresenter.getFansGroupList(true);
-            }
-        }
     }
 
     public static void open(BaseActivity activity) {

@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk.fans.model.item;
 
 import com.wali.live.proto.VFansProto;
+import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.type.BaseTypeModel;
 
 /**
@@ -19,6 +20,8 @@ public class MemFansGroupModel extends BaseTypeModel {
 
     private String mZuidNickname;   // 创建者昵称
     private long mZuidAvatar;       // 创建者头像
+
+    private FansGroupDetailModel mDetailModel;
 
     public MemFansGroupModel(VFansProto.MemGroupInfo protoMemGroup) {
         parse(protoMemGroup);
@@ -77,6 +80,13 @@ public class MemFansGroupModel extends BaseTypeModel {
 
     public long getZuidAvatar() {
         return mZuidAvatar;
+    }
+
+    public FansGroupDetailModel getDetailModel() {
+        if (mDetailModel == null) {
+            mDetailModel = new FansGroupDetailModel(this);
+        }
+        return mDetailModel;
     }
 
     @Override

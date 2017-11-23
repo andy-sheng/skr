@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk.fans.model;
 
 import com.wali.live.proto.VFansProto;
+import com.wali.live.watchsdk.fans.model.item.MemFansGroupModel;
 import com.wali.live.watchsdk.lit.recycler.viewmodel.BaseViewModel;
 
 /**
@@ -9,6 +10,7 @@ import com.wali.live.watchsdk.lit.recycler.viewmodel.BaseViewModel;
 public class FansGroupDetailModel extends BaseViewModel {
     private long mZuid;
     private String mGroupName;
+    
     private int mMemType;
 
     private int mCharmExp;          // 魅力值
@@ -29,9 +31,23 @@ public class FansGroupDetailModel extends BaseViewModel {
         parse(rsp);
     }
 
+    public FansGroupDetailModel(MemFansGroupModel memGroupModel) {
+        mZuid = memGroupModel.getZuid();
+        mGroupName = memGroupModel.getGroupName();
+
+        mMyPetExp = memGroupModel.getPetExp();
+        mMyPetLevel = memGroupModel.getPetLevel();
+
+        mVipExpire = memGroupModel.getVipExpire();
+        mVipLevel = memGroupModel.getVipLevel();
+
+        mMedalValue = memGroupModel.getMedalValue();
+    }
+
     public void parse(VFansProto.GroupDetailRsp rsp) {
         this.mZuid = rsp.getZuid();
         this.mGroupName = rsp.getGroupName();
+
         this.mMemType = rsp.getMemType().getNumber();
 
         this.mCharmExp = rsp.getCharmExp();

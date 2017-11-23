@@ -73,7 +73,7 @@ public class FansGroupListAdapter extends EmptyRecyclerAdapter {
                 break;
             case ViewType.TYPE_MEM_GROUP:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fans_group_mem_item, parent, false);
-                holder = new MemFansGroupHolder(view);
+                holder = new MemFansGroupHolder(view, mListener);
                 break;
             case ViewType.TYPE_HINT_MEM_GROUP:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fans_group_mem_hint_item, parent, false);
