@@ -6,6 +6,7 @@ import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.VFansProto;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.fans.event.QuitGroupEvent;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberListModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
@@ -121,6 +122,7 @@ public class FansGroupDetailPresenter extends BaseRxPresenter<IFansGroupDetailVi
                     public void call(Boolean result) {
                         if (result) {
                             mView.notifyQuitGroupSuccess();
+                            QuitGroupEvent.post(zuid);
                             ToastUtils.showToast(R.string.group_quiting_success);
                         } else {
                             ToastUtils.showToast(R.string.group_quiting_failed);

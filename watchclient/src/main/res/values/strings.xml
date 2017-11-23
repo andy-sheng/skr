@@ -383,4 +383,6 @@
         <item quantity="other">Can\'t renew when the valid payment period is longer than %d years</item>
     </plurals>
     <string name="vfans_no_member_to_delete">Select members to remove</string>
+    <string name="vfans_quit_group_confirm">Leave the fan club?</string>
+    <string name="leave_vfan_tip_message">(Closeness points &amp; membership will be removed after you leave the club)</string>
 </resources>

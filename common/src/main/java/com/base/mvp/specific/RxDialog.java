@@ -27,7 +27,7 @@ public abstract class RxDialog extends Dialog implements IRxView {
     protected final String TAG = getTAG();
 
     protected Context mContext;
-    protected BehaviorSubject<PresenterEvent> mBehaviorSubject = BehaviorSubject.create();
+    protected BehaviorSubject<PresenterEvent> mBehaviorSubject;
 
     protected String getTAG() {
         return getClass().getSimpleName();
@@ -59,6 +59,11 @@ public abstract class RxDialog extends Dialog implements IRxView {
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.getDecorView().setPadding(DEFAULT_PADDING, 0, DEFAULT_PADDING, DEFAULT_PADDING);
         window.setAttributes(lp);
+    }
+
+    public void show() {
+        super.show();
+        mBehaviorSubject = BehaviorSubject.create();
     }
 
     @Override

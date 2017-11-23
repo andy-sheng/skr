@@ -374,4 +374,6 @@
         <item quantity="other">付费有效期大于%d年不可续费喔</item>
     </plurals>
     <string name="vfans_no_member_to_delete">请选择需要删除的成员</string>
+    <string name="vfans_quit_group_confirm">确定要退出粉丝团吗？</string>
+    <string name="leave_vfan_tip_message">（退团将清零亲密值并失去付费身份）</string>
 </resources>

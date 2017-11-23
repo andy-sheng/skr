@@ -7,22 +7,26 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.base.activity.BaseActivity;
-import com.base.fragment.RxFragment;
+import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.keyboard.KeyboardUtils;
 import com.base.utils.toast.ToastUtils;
 import com.base.view.BackTitleBar;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.adapter.FansGroupListAdapter;
+import com.wali.live.watchsdk.fans.event.QuitGroupEvent;
 import com.wali.live.watchsdk.fans.listener.FansGroupListListener;
 import com.wali.live.watchsdk.fans.model.FansGroupListModel;
 import com.wali.live.watchsdk.fans.presenter.FansGroupListPresenter;
 import com.wali.live.watchsdk.fans.presenter.IFansGroupListView;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 /**
  * Created by lan on 17-6-15.
  */
-public class FansGroupListFragment extends RxFragment implements View.OnClickListener, IFansGroupListView, FansGroupListListener {
+public class FansGroupListFragment extends BaseEventBusFragment implements View.OnClickListener, IFansGroupListView, FansGroupListListener {
     private BackTitleBar mTitleBar;
 
     private RecyclerView mFansGroupRv;
@@ -104,6 +108,16 @@ public class FansGroupListFragment extends RxFragment implements View.OnClickLis
 
     private void finish() {
         FragmentNaviUtils.popFragment(getActivity());
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(QuitGroupEvent event) {
+        if (event != null) {
+            if (mPresenter != null) {
+                mPresenter.getFansGroupList(true);
+            }
+        }
     }
 
     public static void open(BaseActivity activity) {

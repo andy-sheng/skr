@@ -85,6 +85,8 @@ public class FansPayFragment extends RxFragment implements View.OnClickListener,
     private Animator mAnimator2;
     private AnimatorSet mAnimatorSet;
 
+    private boolean mIsFinishing;
+
     @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
@@ -115,6 +117,8 @@ public class FansPayFragment extends RxFragment implements View.OnClickListener,
 
     @Override
     protected void bindView() {
+        mIsFinishing = false;
+
         mBgView = mRootView.findViewById(R.id.bg_view);
         mBgView.setOnClickListener(this);
 
@@ -237,8 +241,7 @@ public class FansPayFragment extends RxFragment implements View.OnClickListener,
         MyLog.d(TAG, "pay success=" + giftId);
         if (giftId == 189732) {
             // 年费会员giftid 仅此一处，就不加静态变量了
-            // yearAnimate();
-            finishOk();
+            yearAnimate();
         } else {
             finishOk();
         }
@@ -249,12 +252,12 @@ public class FansPayFragment extends RxFragment implements View.OnClickListener,
             PropertyValuesHolder holder1 = PropertyValuesHolder.ofFloat("alpha", 0f, 1f);
             PropertyValuesHolder holder2 = PropertyValuesHolder.ofFloat("translationY", 0f, -200f);
             mAnimator1 = ObjectAnimator.ofPropertyValuesHolder(mYearTv, holder1, holder2);
-            mAnimator1.setDuration(600);
+            mAnimator1.setDuration(500);
         }
         if (mAnimator2 == null) {
             mAnimator2 = ObjectAnimator.ofFloat(mYearTv, "alpha", 1f, 0f);
             mAnimator2.setDuration(200);
-            mAnimator2.setStartDelay(1600);
+            mAnimator2.setStartDelay(2000);
         }
         if (mAnimatorSet == null) {
             mAnimatorSet = new AnimatorSet();
@@ -265,7 +268,8 @@ public class FansPayFragment extends RxFragment implements View.OnClickListener,
                 }
             });
         }
-        mAnimatorSet.playSequentially(mAnimator1, mAnimator2);
+        mAnimatorSet.playTogether(mAnimator1, mAnimator2);
+        mAnimatorSet.start();
     }
 
     @Override
@@ -303,6 +307,10 @@ public class FansPayFragment extends RxFragment implements View.OnClickListener,
     }
 
     private void finish() {
+        if (mIsFinishing) {
+            return;
+        }
+        mIsFinishing = true;
         FragmentNaviUtils.popFragment(getActivity());
     }
 

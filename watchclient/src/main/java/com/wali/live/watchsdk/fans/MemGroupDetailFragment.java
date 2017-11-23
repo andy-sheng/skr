@@ -252,7 +252,7 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     if (which == 0) {
-                                        mDetailPresenter.quitFansGroup(mGroupDetailModel.getZuid());
+                                        quitGroup();
                                     }
                                 }
                             })
@@ -264,7 +264,7 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     if (which == 0) {
-                                        mDetailPresenter.quitFansGroup(mGroupDetailModel.getZuid());
+                                        quitGroup();
                                     }
                                 }
                             })
@@ -272,6 +272,24 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
         } else {
             ToastUtils.showToast(R.string.vfans_join_vfans_notice);
         }
+    }
+
+    private void quitGroup() {
+        MyAlertDialog.Builder builder = new MyAlertDialog.Builder(getContext());
+        builder.setTitle(R.string.vfans_quit_group_confirm);
+        builder.setMessage(R.string.leave_vfan_tip_message);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mDetailPresenter.quitFansGroup(mGroupDetailModel.getZuid());
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.setAutoDismiss(true).show();
     }
 
     private void finish() {

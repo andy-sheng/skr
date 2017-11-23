@@ -2,7 +2,6 @@ package com.wali.live.watchsdk.fans.request;
 
 import android.text.TextUtils;
 
-import com.google.protobuf.GeneratedMessage;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.request.BaseRequest;
@@ -31,7 +30,7 @@ public class FinishJobRequest extends BaseRequest {
     }
 
     @Override
-    protected GeneratedMessage parse(byte[] bytes) throws InvalidProtocolBufferException {
+    protected VFansProto.FinishGroupJobRsp parse(byte[] bytes) throws InvalidProtocolBufferException {
         return VFansProto.FinishGroupJobRsp.parseFrom(bytes);
     }
 }

@@ -62,7 +62,7 @@ public class FansTaskPresenter extends BaseRxPresenter<IFansTaskView> {
                 .create(new Observable.OnSubscribe<Boolean>() {
                     @Override
                     public void call(Subscriber<? super Boolean> subscriber) {
-                        VFansProto.GroupJobListRsp rsp = new FinishJobRequest(zuid, jobType, roomId).syncRsp();
+                        VFansProto.FinishGroupJobRsp rsp = new FinishJobRequest(zuid, jobType, roomId).syncRsp();
                         if (rsp == null) {
                             subscriber.onError(new Exception("finish job rsp is null"));
                             return;

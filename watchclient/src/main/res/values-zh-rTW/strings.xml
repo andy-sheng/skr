@@ -365,4 +365,6 @@
         <item quantity="other">付費有效期大於%d年不可續費喔</item>
     </plurals>
     <string name="vfans_no_member_to_delete">請選擇需要刪除的成員</string>
+    <string name="vfans_quit_group_confirm">確定要退出粉絲團嗎？</string>
+    <string name="leave_vfan_tip_message">（退團將清零親密值並失去付費身份）</string>
 </resources>

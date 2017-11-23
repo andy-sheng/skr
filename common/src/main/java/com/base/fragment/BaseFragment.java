@@ -1,6 +1,5 @@
 package com.base.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -151,14 +150,6 @@ public abstract class BaseFragment extends Fragment implements FragmentListener,
     @Override
     public void onSelect() {
         isSelected = true;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        if (TAG != null) {
-            MyLog.d(TAG, "onAttach");
-        }
-        super.onAttach(activity);
     }
 
     @Override
