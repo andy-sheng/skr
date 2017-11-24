@@ -258,6 +258,8 @@ public class FansMemberManagerAdapter extends LoadingItemAdapter<ClickItemAdapte
                 if (mIsBatchDeleteMode) {
                     mCheckBox.setVisibility(View.VISIBLE);
                     mCheckBox.setChecked(mSelectedSet.contains(mItem));
+                } else {
+                    mCheckBox.setVisibility(View.GONE);
                 }
             } else {
                 itemView.setClickable(false);
