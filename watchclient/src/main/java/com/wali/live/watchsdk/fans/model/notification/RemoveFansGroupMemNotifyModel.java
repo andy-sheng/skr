@@ -3,7 +3,6 @@ package com.wali.live.watchsdk.fans.model.notification;
 import android.text.TextUtils;
 
 import com.base.global.GlobalData;
-import com.base.log.MyLog;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.UserAccountManager;
@@ -47,7 +46,6 @@ public class RemoveFansGroupMemNotifyModel extends GroupNotifyBaseModel {
     @Override
     protected void loadNotifyInfoInternal(ByteString content) {
         try {
-            MyLog.w(TAG, "RemoveFansGroupMemNotifyModel loadNotifyInfoInternal content=" + content);
             VFansProto.RemoveFansGroupMemNotify notifyInfo = VFansProto.RemoveFansGroupMemNotify.parseFrom(content);
             candidate = notifyInfo.getCandidate();
             candidateName = notifyInfo.getCandiName();
