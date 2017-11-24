@@ -397,4 +397,12 @@
     <string name="vfans_notify_be_member" formatted="false">%s became a club member</string>
     <string name="vfans_notify_make_someone_to_be_admin" formatted="false">%s set %s as %s</string>
     <string name="vfans_notify_clear_confirm">Clear all notifications from the club</string>
+    <string name="vfans_level_one">Level 1</string>
+    <string name="vfans_level_two">Level 2</string>
+    <string name="vfans_level_three">Level 3</string>
+    <string name="vfans_level_four">Level 4</string>
+    <string name="vfans_level_five">Level 5</string>
+    <string name="vfans_level_six">Level 6</string>
+    <string name="vfans_level_seven">Level 7</string>
+    <string name="vfans_level_eight">Level 8</string>
 </resources>

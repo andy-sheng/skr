@@ -389,4 +389,12 @@
     <string name="vfans_notify_be_member" formatted="false">%s已经成为粉丝团成员</string>
     <string name="vfans_notify_make_someone_to_be_admin" formatted="false">%s将%s设置为%s</string>
     <string name="vfans_notify_clear_confirm">确定要清空粉丝团通知?</string>
+    <string name="vfans_level_one">等级1</string>
+    <string name="vfans_level_two">等级2</string>
+    <string name="vfans_level_three">等级3</string>
+    <string name="vfans_level_four">等级4</string>
+    <string name="vfans_level_five">等级5</string>
+    <string name="vfans_level_six">等级6</string>
+    <string name="vfans_level_seven">等级7</string>
+    <string name="vfans_level_eight">等级8</string>
 </resources>

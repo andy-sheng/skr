@@ -1,14 +1,18 @@
 package com.wali.live.watchsdk.fans;
 
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.base.activity.BaseActivity;
 import com.base.activity.BaseSdkActivity;
+import com.base.dialog.MyAlertDialog;
 import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.keyboard.KeyboardUtils;
+import com.base.utils.display.DisplayUtils;
 import com.base.view.BackTitleBar;
 import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.watchsdk.R;
@@ -16,6 +20,7 @@ import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
 import com.wali.live.watchsdk.fans.presenter.FansGroupDetailPresenter;
 import com.wali.live.watchsdk.fans.presenter.IFansGroupDetailView;
+import com.wali.live.watchsdk.fans.setting.FansMedalSettingFragment;
 import com.wali.live.watchsdk.fans.view.merge.FansDetailBasicView;
 
 import java.util.List;
@@ -77,10 +82,10 @@ public class MyGroupDetailFragment extends RxFragment implements View.OnClickLis
     private void updateTitleArea() {
         mTitleBar.setTitle(mGroupDetailModel.getGroupName());
 
-//        mTitleBar.getRightImageBtn().setOnClickListener(this);
-//        mTitleBar.getRightImageBtn().setImageResource(R.drawable.web_icon_relay_bg);
-//        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mTitleBar.getRightImageBtn().getLayoutParams();
-//        lp.rightMargin = DisplayUtils.dip2px(10f);
+        mTitleBar.getRightImageBtn().setOnClickListener(this);
+        mTitleBar.getRightImageBtn().setImageResource(R.drawable.web_icon_relay_bg);
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mTitleBar.getRightImageBtn().getLayoutParams();
+        lp.rightMargin = DisplayUtils.dip2px(10f);
     }
 
     private void updateBasicArea() {
@@ -111,6 +116,8 @@ public class MyGroupDetailFragment extends RxFragment implements View.OnClickLis
         int id = v.getId();
         if (id == R.id.back_iv) {
             finish();
+        } else if (id == R.id.right_image_btn) {
+            showMoreDialog();
         } else if (id == R.id.first_privilege_area) {
             FansPrivilegeFragment.openFragment((BaseSdkActivity) getActivity(), FansPrivilegeFragment.TYPE_CHARM_MEDAL);
         } else if (id == R.id.colour_barrage_area) {
@@ -118,6 +125,20 @@ public class MyGroupDetailFragment extends RxFragment implements View.OnClickLis
         } else if (id == R.id.fly_barrage_privilege_area) {
             FansPrivilegeFragment.openFragment((BaseSdkActivity) getActivity(), FansPrivilegeFragment.TYPE_MORE_FANS);
         }
+    }
+
+    private void showMoreDialog() {
+        new MyAlertDialog.Builder(getContext())
+                .setItems(new String[]{getString(R.string.vfans_set_group_title), getString(R.string.cancel)},
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (which == 0) {
+                                    FansMedalSettingFragment.openFragment((BaseSdkActivity) getActivity(), mZuid);
+                                }
+                            }
+                        })
+                .create().show();
     }
 
     private void finish() {

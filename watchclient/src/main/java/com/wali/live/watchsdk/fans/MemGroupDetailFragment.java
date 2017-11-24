@@ -28,6 +28,7 @@ import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
 import com.wali.live.watchsdk.fans.presenter.FansGroupDetailPresenter;
 import com.wali.live.watchsdk.fans.presenter.IFansGroupDetailView;
+import com.wali.live.watchsdk.fans.setting.FansMedalSettingFragment;
 import com.wali.live.watchsdk.fans.view.FansTaskView;
 import com.wali.live.watchsdk.fans.view.merge.FansDetailBasicView;
 
@@ -247,11 +248,13 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
                 || mGroupDetailModel.getMemType() == VFansCommonProto.GroupMemType.ADMIN_VALUE
                 || mGroupDetailModel.getMemType() == VFansCommonProto.GroupMemType.DEPUTY_ADMIN_VALUE) {
             new MyAlertDialog.Builder(getContext())
-                    .setItems(new String[]{getString(R.string.vfans_quit), getString(R.string.cancel)},
+                    .setItems(new String[]{getString(R.string.vfans_set_group_title), getString(R.string.vfans_quit), getString(R.string.cancel)},
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     if (which == 0) {
+                                        FansMedalSettingFragment.openFragment((BaseSdkActivity) getActivity(), mZuid);
+                                    } else if (which == 1) {
                                         quitGroup();
                                     }
                                 }

@@ -480,29 +480,32 @@ public class MiLinkCommand {
     public static final String COMMAND_STATISTICS_RECOMMEND_TAG = "zhibo.ai.recommendflag";
 
     // 宠爱团专用
-    private static final String COMMAND_VFANS_PREFIX = "zhibo.vfans.";
     // 拉取用户加入的宠爱团列表
-    public static final String COMMAND_VFANS_GROUP_LIST = COMMAND_VFANS_PREFIX + "get_grouplist";
+    public static final String COMMAND_VFANS_GROUP_LIST = "zhibo.vfans.get_grouplist";
     // 宠爱团详情
-    public static final String COMMAND_VFANS_GROUP_DETAIL = COMMAND_VFANS_PREFIX + "group_detail";
+    public static final String COMMAND_VFANS_GROUP_DETAIL = "zhibo.vfans.group_detail";
     // 列表拉取群成员请求
-    public static final String COMMAND_VFANS_MEM_LIST = COMMAND_VFANS_PREFIX + "member_list";
+    public static final String COMMAND_VFANS_MEM_LIST = "zhibo.vfans.member_list";
     // 查看群完成任务
-    public static final String COMMAND_VFANS_JOB_LIST = COMMAND_VFANS_PREFIX + "group_joblist";
+    public static final String COMMAND_VFANS_JOB_LIST = "zhibo.vfans.group_joblist";
     // 创建宠爱团
-    public static final String COMMAND_VFANS_CREATE_GROUP = COMMAND_VFANS_PREFIX + "create_group";
+    public static final String COMMAND_VFANS_CREATE_GROUP = "zhibo.vfans.create_group";
     // 申请宠爱团请求
-    public static final String COMMAND_VFANS_APPLY_JOIN_GROUP = COMMAND_VFANS_PREFIX + "apply_joingroup";
+    public static final String COMMAND_VFANS_APPLY_JOIN_GROUP = "zhibo.vfans.apply_joingroup";
     // 退出宠爱团
-    public static final String COMMAND_VFANS_QUIT_GROUP = COMMAND_VFANS_PREFIX + "quit_group";
+    public static final String COMMAND_VFANS_QUIT_GROUP = "zhibo.vfans.quit_group";
     // 完成任务领取宠爱值
-    public static final String COMMAND_VFANS_FINISH_GROUP_JOB = COMMAND_VFANS_PREFIX + "finish_groupjob";
+    public static final String COMMAND_VFANS_FINISH_GROUP_JOB = "zhibo.vfans.finish_groupjob";
     // 修改群成员请求
-    public static final String COMMAND_VFANS_UPDATE_GROUP_MEM = COMMAND_VFANS_PREFIX + "update_groupmem";
+    public static final String COMMAND_VFANS_UPDATE_GROUP_MEM = "zhibo.vfans.update_groupmem";
     // 用户完成的最近任务
-    public static final String COMMAND_VFAN_GET_RECENT_JOB = COMMAND_VFANS_PREFIX + "get_recentjob";
+    public static final String COMMAND_VFAN_GET_RECENT_JOB = "zhibo.vfans.get_recentjob";
     // 处理加群请求
-    public static final String COMMAND_VFANS_HANDLE_JOIN_GROUP = COMMAND_VFANS_PREFIX + "handle_joingroup";
+    public static final String COMMAND_VFANS_HANDLE_JOIN_GROUP = "zhibo.vfans.handle_joingroup";
+    // 查询宠爱团勋章
+    public static final String COMMAND_VFAN_GET_GROUP_MEDAL = "zhibo.vfans.get_groupmedal";
+    // 设置宠爱团勋章
+    public static final String COMMAND_VFAN_SET_GROUP_MEDAL = "zhibo.vfans.set_groupmedal";
 
     // 粉丝团群通知
     public static final String COMMAND_VFANS_GETNOTIFICATION = "zhibo.vfans.getnotification";

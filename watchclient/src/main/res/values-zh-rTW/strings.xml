@@ -372,4 +372,12 @@
     <string name="clear_text">清空</string>
     <string name="agreed">已同意</string>
     <string name="vfans_notify_clear_confirm">確定要清空粉絲團通知?</string>
+    <string name="vfans_level_one">等級1</string>
+    <string name="vfans_level_two">等級2</string>
+    <string name="vfans_level_three">等級3</string>
+    <string name="vfans_level_four">等級4</string>
+    <string name="vfans_level_five">等級5</string>
+    <string name="vfans_level_six">等級6</string>
+    <string name="vfans_level_seven">等級7</string>
+    <string name="vfans_level_eight">等級8</string>
 </resources>
