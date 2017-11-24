@@ -1,6 +1,5 @@
 package com.wali.live.watchsdk.fans;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -112,6 +111,12 @@ public class GroupNotifyFragment extends BaseEventBusFragment implements View.On
         builder.create().show();
     }
 
+    @Override
+    public void onDestroy() {
+        mPresenter.markConversationAsRead();
+        super.onDestroy();
+    }
+
     private void finish() {
         FragmentNaviUtils.popFragment(getActivity());
     }
@@ -129,10 +134,5 @@ public class GroupNotifyFragment extends BaseEventBusFragment implements View.On
     @Override
     public void setGroupNotifyData(List<GroupNotifyBaseModel> models) {
         mAdapter.setGroupNotifyBaseModels(models);
-    }
-
-    @Override
-    public void onJoinSuccess() {
-
     }
 }

@@ -91,11 +91,10 @@ public class ApplyJoinFansModel extends GroupNotifyBaseModel {
     /**
      * 同意变成已处理
      */
-    public HandleJoinFansGroupNotifyModel toHandleJoinFansGroupNotifyModel
-    (VFansCommonProto.ApplyJoinResult resultType, VFansCommonProto.ApplyJoinResult applyJoinResult) {
+    public HandleJoinFansGroupNotifyModel toHandleJoinFansGroupNotifyModel(VFansCommonProto.ApplyJoinResult applyJoinResult) {
         HandleJoinFansGroupNotifyModel model = new HandleJoinFansGroupNotifyModel();
         model.setId(id);
-        if (resultType == VFansCommonProto.ApplyJoinResult.PASS) {
+        if (applyJoinResult == VFansCommonProto.ApplyJoinResult.PASS) {
             model.setNotificationType(GroupNotifyType.AGREE_JOIN_GROUP_NOTIFY);
         } else {
             model.setNotificationType(GroupNotifyType.REJECT_JOIN_GROUP_NOTIFY);

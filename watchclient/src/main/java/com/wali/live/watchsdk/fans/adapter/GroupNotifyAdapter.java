@@ -20,6 +20,8 @@ import java.util.List;
 
 /**
  * Created by zyh on 2017/11/23.
+ *
+ * @module
  */
 
 public class GroupNotifyAdapter extends RecyclerView.Adapter<BaseNotifyHolder> {
@@ -47,6 +49,7 @@ public class GroupNotifyAdapter extends RecyclerView.Adapter<BaseNotifyHolder> {
         switch (viewType) {
             case TYPE_EMPTY:
                 view = LayoutInflater.from(GlobalData.app()).inflate(R.layout.empty_view, parent, false);
+                //TODO zyh 空页面holder没加，因为不需要空页面bind,所以暂时复用基类的holder
                 holder = new BaseNotifyHolder(view);
                 break;
             case GroupNotifyType.APPLY_JOIN_GROUP_NOTIFY:
