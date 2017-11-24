@@ -78,7 +78,7 @@ public class GroupNotifyLocalStore {
 
                     HandleJoinFansGroupNotifyModel handleJoinFansGroupNotifyModel = (HandleJoinFansGroupNotifyModel) groupNotifyBaseModel;
                     if (handleJoinFansGroupNotifyModel.getHandler() == MyUserInfoManager.getInstance().getUuid()) {
-                        if (deleteAllApplyJoinAndInsert(groupNotifyBaseModel.getCandidate(), groupNotifyBaseModel.getGroupId(), type, vfansJoinResult)) {
+                        if (deleteAllApplyJoinAndInsert(groupNotifyBaseModel.getCandidate(), groupNotifyBaseModel.getGroupId(), vfansJoinResult)) {
                             //TODO 先简单点，一发现有数据更新，抛出事件，这个事件带着所有通知。
                             GroupNotifyUpdateEvent event = GroupNotifyLocalStore.getInstance().getGroupNotifyBaseModelListEventFromDB();
                             EventBus.getDefault().post(event);
@@ -190,7 +190,8 @@ public class GroupNotifyLocalStore {
         return true;
     }
 
-    public boolean deleteAllApplyJoinAndInsert(long candidate, long groupid, VFansCommonProto.ApplyJoinResult resultType, VFansCommonProto.ApplyJoinResult applyJoinResult) {
+    public boolean deleteAllApplyJoinAndInsert(long candidate, long groupid,
+                                               VFansCommonProto.ApplyJoinResult applyJoinResult) {
         boolean bret = false;
         List<GroupNotify> list = getAllGroupNotifyFromDB();
         for (GroupNotify gn : list) {
@@ -199,7 +200,7 @@ public class GroupNotifyLocalStore {
                     && gn.getGroupId() == groupid) {
                 mGroupNotifyDao.delete(gn);
                 ApplyJoinFansModel model = (ApplyJoinFansModel) GroupNotifyMapper.transformGroupNotifyToGroupNotifyBaseModel(gn);
-                insertOrReplaceGroupNotifyBaseModel(model.toHandleJoinFansGroupNotifyModel(resultType, applyJoinResult));
+                insertOrReplaceGroupNotifyBaseModel(model.toHandleJoinFansGroupNotifyModel(applyJoinResult));
                 bret = true;
             }
         }

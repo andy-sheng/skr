@@ -8,6 +8,9 @@ import com.base.mvp.IRxView;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
+import com.wali.live.dao.Conversation;
+import com.wali.live.dao.GroupNotify;
+import com.wali.live.dao.SixinMessage;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.proto.VFansProto;
 import com.wali.live.watchsdk.fans.model.notification.GroupNotifyBaseModel;
@@ -15,6 +18,9 @@ import com.wali.live.watchsdk.fans.push.GroupNotifyLocalStore;
 import com.wali.live.watchsdk.fans.push.data.FansNotifyRepository;
 import com.wali.live.watchsdk.fans.push.event.GroupNotifyUpdateEvent;
 import com.wali.live.watchsdk.fans.push.type.GroupNotifyType;
+import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Iterator;
 import java.util.List;
@@ -53,7 +59,8 @@ public class GroupNotifyPresenter extends BaseRxPresenter<GroupNotifyPresenter.I
                 .map(new Func1<Integer, List<GroupNotifyBaseModel>>() {
                     @Override
                     public List<GroupNotifyBaseModel> call(Integer integer) {
-                        GroupNotifyUpdateEvent event = GroupNotifyLocalStore.getInstance().getGroupNotifyBaseModelListEventFromDB();
+                        GroupNotifyUpdateEvent event = GroupNotifyLocalStore.getInstance().
+                                getGroupNotifyBaseModelListEventFromDB();
                         List<GroupNotifyBaseModel> list = event.allGroupNotifyList;
                         if (list != null && !list.isEmpty()) {
                             Iterator<GroupNotifyBaseModel> iterator = list.iterator();
@@ -101,7 +108,16 @@ public class GroupNotifyPresenter extends BaseRxPresenter<GroupNotifyPresenter.I
                     public void call(VFansProto.HandleJoinGroupRsp rsp) {
                         if (rsp != null) {
                             if (rsp.getErrCode() == ErrorCode.CODE_SUCCESS && mView != null) {
-                                mView.onJoinSuccess();
+                                if (GroupNotifyLocalStore.getInstance().deleteAllApplyJoinAndInsert(model.getCandidate(),
+                                        model.getGroupId(), VFansCommonProto.ApplyJoinResult.PASS)) {
+                                    //TODO 先简单点，一发现有数据更新，抛出事件，这个事件带着所有通知。
+                                    GroupNotifyUpdateEvent event = GroupNotifyLocalStore.getInstance()
+                                            .getGroupNotifyBaseModelListEventFromDB();
+                                    EventBus.getDefault().post(event);
+                                }
+                            } else if (rsp.getErrCode() == ErrorCode.CODE_HANDEL_JOIN_NOTIFY) {
+                                //已经处理过的消息直接删除
+                                GroupNotifyLocalStore.getInstance().delete(model);
                             } else if (!TextUtils.isEmpty(rsp.getErrMsg())) {
                                 ToastUtils.showToast(rsp.getErrMsg());
                             }
@@ -127,9 +143,17 @@ public class GroupNotifyPresenter extends BaseRxPresenter<GroupNotifyPresenter.I
                 .subscribe();
     }
 
+    public static void markConversationAsRead() {
+        Observable.just("").observeOn(Schedulers.io()).subscribe(new Action1<String>() {
+            @Override
+            public void call(String s) {
+                ConversationLocalStore.markConversationAsRead(Conversation.VFANS_NOTIFY_CONVERSATION_TARGET,
+                        SixinMessage.TARGET_TYPE_USER);
+            }
+        });
+    }
+
     public interface IView extends IRxView {
         void setGroupNotifyData(List<GroupNotifyBaseModel> models);
-
-        void onJoinSuccess();
     }
 }
