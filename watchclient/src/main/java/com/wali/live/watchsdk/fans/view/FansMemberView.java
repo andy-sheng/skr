@@ -21,8 +21,8 @@ import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.FansMemberManagerFragment;
 import com.wali.live.watchsdk.fans.adapter.FansMemberAdapter;
+import com.wali.live.watchsdk.fans.adapter.FansMemberAdapter.MemberItem;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
-import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
 import com.wali.live.watchsdk.sixin.PopComposeMessageFragment;
 import com.wali.live.watchsdk.sixin.pojo.SixinTarget;
 
@@ -55,12 +55,12 @@ public class FansMemberView extends RelativeLayout
     private final FansMemberAdapter.IMemberClickListener mMemberClickListener =
             new FansMemberAdapter.IMemberClickListener() {
                 @Override
-                public void onItemClick(FansMemberModel item) {
+                public void onItemClick(MemberItem item) {
                     mPresenter.showPersonalInfo(item.getUuid());
                 }
 
                 @Override
-                public void onClickFocus(FansMemberModel item) {
+                public void onClickFocus(MemberItem item) {
                     mPresenter.fellowUser(item);
                 }
 
@@ -134,6 +134,11 @@ public class FansMemberView extends RelativeLayout
         inflateContent();
     }
 
+    public void destroy() {
+        mPresenter.stopPresenter();
+        mPresenter.destroy();
+    }
+
     public void updateGroupDetail(FansGroupDetailModel groupDetailModel) {
         if (groupDetailModel == null) {
             return;
@@ -151,7 +156,8 @@ public class FansMemberView extends RelativeLayout
                         $click($(R.id.manage_vfans_member_btn), new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                FansMemberManagerFragment.openFragment((BaseActivity) getContext(), mGroupDetailModel);
+                                FansMemberManagerFragment.openFragment((BaseActivity) getContext(),
+                                        mGroupDetailModel, mAdapter.getItemData());
                             }
                         });
                     }
@@ -175,8 +181,13 @@ public class FansMemberView extends RelativeLayout
             }
 
             @Override
-            public void onNewDataSet(List<FansMemberModel> memberList) {
+            public void onNewDataSet(List<MemberItem> memberList) {
                 mAdapter.addItemData(memberList);
+            }
+
+            @Override
+            public void onUpdateDataSet(List<MemberItem> memberList) {
+                mAdapter.setItemData(memberList);
             }
 
             @Override
@@ -205,7 +216,7 @@ public class FansMemberView extends RelativeLayout
             }
 
             @Override
-            public void onFellowDone(FansMemberModel item) {
+            public void onFellowDone(MemberItem item) {
                 mAdapter.onItemDataUpdated(item);
             }
         }
@@ -231,7 +242,7 @@ public class FansMemberView extends RelativeLayout
         /**
          * 关注用户
          */
-        void fellowUser(FansMemberModel item);
+        void fellowUser(MemberItem item);
 
     }
 
@@ -239,7 +250,12 @@ public class FansMemberView extends RelativeLayout
         /**
          * 拉取到成员数据
          */
-        void onNewDataSet(List<FansMemberModel> memberList);
+        void onNewDataSet(List<MemberItem> memberList);
+
+        /**
+         * 更新成员数据
+         */
+        void onUpdateDataSet(List<MemberItem> memberList);
 
         /**
          * 拉取开始
@@ -259,6 +275,6 @@ public class FansMemberView extends RelativeLayout
         /**
          * 关注成功
          */
-        void onFellowDone(FansMemberModel item);
+        void onFellowDone(MemberItem item);
     }
 }

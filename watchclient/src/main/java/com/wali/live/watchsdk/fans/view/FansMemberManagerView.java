@@ -25,8 +25,8 @@ import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.fans.adapter.FansMemberAdapter.MemberItem;
 import com.wali.live.watchsdk.fans.adapter.FansMemberManagerAdapter;
-import com.wali.live.watchsdk.fans.adapter.FansMemberManagerAdapter.MemberItem;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 
 import java.util.ArrayList;
@@ -277,7 +277,7 @@ public class FansMemberManagerView extends LinearLayout
             }
 
             @Override
-            public void onNewDataSet(List<MemberItem> memberList) {
+            public void onUpdateDataSet(List<MemberItem> memberList) {
                 if (memberList != null) {
                     mAdapter.setItemDataEx(memberList);
                 }
@@ -347,9 +347,9 @@ public class FansMemberManagerView extends LinearLayout
 
     public interface IView extends IViewProxy {
         /**
-         * 拉取到成员数据
+         * 更新成员数据
          */
-        void onNewDataSet(List<MemberItem> memberList);
+        void onUpdateDataSet(List<MemberItem> memberList);
 
         /**
          * 删除成功

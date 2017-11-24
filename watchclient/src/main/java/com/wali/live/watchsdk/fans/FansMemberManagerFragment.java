@@ -12,9 +12,14 @@ import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.log.MyLog;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.fans.adapter.FansMemberAdapter.MemberItem;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.presenter.FansMemberManagerPresenter;
 import com.wali.live.watchsdk.fans.view.FansMemberManagerView;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.wali.live.component.view.Utils.$component;
 
@@ -24,6 +29,7 @@ import static com.wali.live.component.view.Utils.$component;
 public class FansMemberManagerFragment extends RxFragment {
 
     private static final String EXTRA_GROUP_INFO = "EXTRA_GROUP_INFO";
+    private static final String EXTRA_MEM_LIST = "EXTRA_MEM_LIST";
 
     private FansGroupDetailModel mGroupDetailModel;
 
@@ -42,8 +48,10 @@ public class FansMemberManagerFragment extends RxFragment {
 
     @Override
     protected void bindView() {
+        List<MemberItem> memberItems = null;
         if (getArguments() != null) {
             mGroupDetailModel = (FansGroupDetailModel) getArguments().getSerializable(EXTRA_GROUP_INFO);
+            memberItems = (List<MemberItem>) getArguments().getSerializable(EXTRA_MEM_LIST);
         }
         if (mGroupDetailModel == null) {
             finish();
@@ -56,7 +64,7 @@ public class FansMemberManagerFragment extends RxFragment {
             }
         });
         mManagerView = $(R.id.member_manager_view);
-        mManagerPresenter = new FansMemberManagerPresenter(mGroupDetailModel.getZuid());
+        mManagerPresenter = new FansMemberManagerPresenter(mGroupDetailModel.getZuid(), memberItems);
         $component(mManagerView, mManagerPresenter);
         mManagerView.updateGroupDetail(mGroupDetailModel);
         mManagerPresenter.startPresenter();
@@ -89,9 +97,11 @@ public class FansMemberManagerFragment extends RxFragment {
                 R.anim.slide_alpha_in : R.anim.slide_alpha_out);
     }
 
-    public static void openFragment(BaseActivity activity, FansGroupDetailModel groupDetailModel) {
+    public static void openFragment(
+            BaseActivity activity, FansGroupDetailModel groupDetailModel, List<MemberItem> memberItems) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(EXTRA_GROUP_INFO, groupDetailModel);
+        bundle.putSerializable(EXTRA_MEM_LIST, (Serializable) memberItems);
         FragmentNaviUtils.addFragment(activity, FansMemberManagerFragment.class, bundle, R.id.main_act_container);
     }
 }

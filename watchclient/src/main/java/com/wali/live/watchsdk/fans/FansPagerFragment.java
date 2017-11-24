@@ -399,6 +399,9 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
         if (mFansHomeView != null) {
             mFansHomeView.destroy();
         }
+        if (mFansMemberView != null) {
+            mFansMemberView.destroy();
+        }
         getFragmentManager().removeOnBackStackChangedListener(mOnBackStackChangedListener);
     }
 

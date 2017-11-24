@@ -10,7 +10,7 @@
         android:gravity="center"
         android:text="@string/vfan_member_loading"
         android:textColor="@color/color_black_trans_30"
-        android:textSize="@dimen/text_size_40" />
+        android:textSize="@dimen/text_size_38" />
 
     <View
         android:layout_width="match_parent"

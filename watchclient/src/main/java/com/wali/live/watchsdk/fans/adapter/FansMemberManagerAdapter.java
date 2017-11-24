@@ -14,12 +14,11 @@ import com.base.image.fresco.image.HttpImage;
 import com.base.utils.display.DisplayUtils;
 import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.proto.VFansCommonProto;
-import com.wali.live.proto.VFansProto;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.adapter.ClickItemAdapter;
 import com.wali.live.watchsdk.component.adapter.LoadingItemAdapter;
-import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
+import com.wali.live.watchsdk.fans.adapter.FansMemberAdapter.MemberItem;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -148,18 +147,6 @@ public class FansMemberManagerAdapter extends LoadingItemAdapter<ClickItemAdapte
             } else {
                 itemView.setVisibility(View.GONE);
             }
-        }
-    }
-
-    public static class MemberItem extends FansMemberModel implements TypeItem {
-
-        public MemberItem(VFansProto.MemberInfo protoMember) {
-            super(protoMember);
-        }
-
-        @Override
-        public final int getItemType() {
-            return ITEM_TYPE_NORMAL;
         }
     }
 

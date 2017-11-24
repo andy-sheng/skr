@@ -11,10 +11,13 @@ import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.proto.VFansProto;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.fans.adapter.FansMemberManagerAdapter.MemberItem;
+import com.wali.live.watchsdk.eventbus.EventClass;
+import com.wali.live.watchsdk.fans.adapter.FansMemberAdapter.MemberItem;
 import com.wali.live.watchsdk.fans.request.GetMemberListRequest;
 import com.wali.live.watchsdk.fans.request.UpdateMemberRequest;
 import com.wali.live.watchsdk.fans.view.FansMemberManagerView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,15 +54,27 @@ public class FansMemberManagerPresenter extends BaseSdkRxPresenter<FansMemberMan
         return "FansMemberManagerPresenter";
     }
 
-    public FansMemberManagerPresenter(long anchorId) {
+    public FansMemberManagerPresenter(long anchorId, List<MemberItem> memberItems) {
         super(null);
         mAnchorId = anchorId;
+        if (memberItems != null && !memberItems.isEmpty()) {
+            mDataSet.addAll(memberItems);
+        }
     }
 
     @Override
     public void startPresenter() {
         super.startPresenter();
+        if (!mDataSet.isEmpty()) {
+            mView.onUpdateDataSet(mDataSet);
+        }
         syncMemberData();
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        EventBus.getDefault().post(new EventClass.UpdateMemberListEvent(mDataSet));
     }
 
     @Override
@@ -115,7 +130,7 @@ public class FansMemberManagerPresenter extends BaseSdkRxPresenter<FansMemberMan
                         if (mView == null) {
                             return;
                         }
-                        mView.onNewDataSet(result);
+                        mView.onUpdateDataSet(result);
                         mView.onLoadingDone(mHasMoreData);
                     }
                 }, new Action1<Throwable>() {
@@ -181,7 +196,7 @@ public class FansMemberManagerPresenter extends BaseSdkRxPresenter<FansMemberMan
                         }
                         final int errCode = result.first;
                         if (errCode == ErrorCode.CODE_SUCCESS) {
-                            mView.onNewDataSet(result.second);
+                            mView.onUpdateDataSet(result.second);
                         } else if (errCode == ErrorCode.CODE_VFANS_NO_GROUP_PRIVILEGE) {
                             ToastUtils.showToast(R.string.vfans_oprate_no_permisson);
                         } else if (errCode == ErrorCode.CODE_VFANS_ADMIN_REACH_LIMIT) {
@@ -214,7 +229,7 @@ public class FansMemberManagerPresenter extends BaseSdkRxPresenter<FansMemberMan
                         }
                         final int errCode = result.first;
                         if (errCode == ErrorCode.CODE_SUCCESS) {
-                            mView.onNewDataSet(result.second);
+                            mView.onUpdateDataSet(result.second);
                         } else if (errCode == ErrorCode.CODE_VFANS_NO_GROUP_PRIVILEGE) {
                             ToastUtils.showToast(R.string.vfans_oprate_no_permisson);
                         } else if (errCode == ErrorCode.CODE_VFANS_DEPUTY_ADMIN_REACH_LIMIT) {
@@ -272,7 +287,7 @@ public class FansMemberManagerPresenter extends BaseSdkRxPresenter<FansMemberMan
                             ToastUtils.showToast(R.string.vfans_kick_faild);
                         } else {
                             ToastUtils.showToast(R.string.vfans_kick_success);
-                            mView.onNewDataSet(result.first);
+                            mView.onUpdateDataSet(result.first);
                             mView.onRemoveDone(result.second);
                         }
                     }
@@ -287,8 +302,5 @@ public class FansMemberManagerPresenter extends BaseSdkRxPresenter<FansMemberMan
     @Override
     public final boolean onEvent(int event, IParams params) {
         return false;
-    }
-
-    public static class MemberPullerHelper {
     }
 }

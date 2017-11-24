@@ -293,7 +293,7 @@
     <string name="vfans_has_focus">Following</string>
     <string name="loading_tips_done">刷新完成</string>
     <string name="loading_tips_failed">刷新失败</string>
-    <string name="loading_tips_no_more">已全部加载完</string>
+    <string name="loading_tips_no_more">已全部加载完毕</string>
     <string name="meili_value">Popularity</string>
     <string name="group_ranking">Clubs rank</string>
     <string name="my_own_fans_group">Created fan clubs</string>

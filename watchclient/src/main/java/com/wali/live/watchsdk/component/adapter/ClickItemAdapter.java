@@ -72,6 +72,10 @@ public abstract class ClickItemAdapter<ITEM, HOLDER extends ClickItemAdapter.Bas
         }
     }
 
+    public List<ITEM> getItemData() {
+        return mItems;
+    }
+
     public void setItemData(List<? extends ITEM> items) {
         mItems.clear();
         if (items != null) {

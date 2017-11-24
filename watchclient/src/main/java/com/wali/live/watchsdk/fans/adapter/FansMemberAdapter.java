@@ -14,6 +14,7 @@ import com.mi.live.data.user.User;
 import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.dao.SixinMessage;
 import com.wali.live.proto.VFansCommonProto;
+import com.wali.live.proto.VFansProto;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.adapter.ClickItemAdapter;
@@ -30,7 +31,7 @@ import static com.wali.live.watchsdk.fans.model.member.FansMemberModel.VIP_TYPE_
  *
  * @module 粉丝团成员列表适配器
  */
-public class FansMemberAdapter extends LoadingItemAdapter<FansMemberModel,
+public class FansMemberAdapter extends LoadingItemAdapter<FansMemberAdapter.MemberItem,
         ClickItemAdapter.BaseHolder, FansMemberAdapter.IMemberClickListener> {
 
     private int mGroupCharmLevel; // 群经验值
@@ -50,10 +51,22 @@ public class FansMemberAdapter extends LoadingItemAdapter<FansMemberModel,
         return super.newViewHolder(parent, viewType);
     }
 
-    protected class MemberHolder extends BaseHolder<FansMemberModel, IMemberClickListener>
+    public static class MemberItem extends FansMemberModel implements ClickItemAdapter.TypeItem {
+
+        public MemberItem(VFansProto.MemberInfo protoMember) {
+            super(protoMember);
+        }
+
+        @Override
+        public final int getItemType() {
+            return ITEM_TYPE_NORMAL;
+        }
+    }
+
+    protected class MemberHolder extends BaseHolder<MemberItem, IMemberClickListener>
             implements View.OnClickListener {
 
-        private FansMemberModel mItem;
+        private MemberItem mItem;
         private SixinTarget mSixinTarget;
 
         private BaseImageView mMemberAvatar;
@@ -117,7 +130,7 @@ public class FansMemberAdapter extends LoadingItemAdapter<FansMemberModel,
         }
 
         @Override
-        public void bindView(FansMemberModel memberInfo, IMemberClickListener listener) {
+        public void bindView(MemberItem memberInfo, IMemberClickListener listener) {
             mItem = memberInfo;
 
             HttpImage httpImage = new HttpImage(AvatarUtils.getAvatarUrlByUid(memberInfo.getUuid(), 0));
@@ -183,9 +196,9 @@ public class FansMemberAdapter extends LoadingItemAdapter<FansMemberModel,
 
     public interface IMemberClickListener {
 
-        void onItemClick(FansMemberModel item);
+        void onItemClick(MemberItem item);
 
-        void onClickFocus(FansMemberModel item);
+        void onClickFocus(MemberItem item);
 
         void onClickSixin(SixinTarget target);
     }

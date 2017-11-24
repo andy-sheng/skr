@@ -11,10 +11,17 @@ import com.wali.live.event.UserActionEvent;
 import com.wali.live.proto.VFansProto;
 import com.wali.live.utils.relation.RelationUtils;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.fans.model.member.FansMemberListModel;
-import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
+import com.wali.live.watchsdk.eventbus.EventClass;
+import com.wali.live.watchsdk.fans.adapter.FansMemberAdapter.MemberItem;
 import com.wali.live.watchsdk.fans.request.GetMemberListRequest;
 import com.wali.live.watchsdk.fans.view.FansMemberView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.Observable;
 import rx.Subscription;
@@ -58,7 +65,18 @@ public class FansMemberPresenter extends BaseSdkRxPresenter<FansMemberView.IView
     @Override
     public void startPresenter() {
         super.startPresenter();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         syncMemberData();
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Override
@@ -77,7 +95,7 @@ public class FansMemberPresenter extends BaseSdkRxPresenter<FansMemberView.IView
     }
 
     @Override
-    public void fellowUser(final FansMemberModel item) {
+    public void fellowUser(final MemberItem item) {
         final long targetUid = item.getUuid();
         MyLog.w(TAG, "followUser targetUid=" + targetUid);
         Observable.just(0)
@@ -125,29 +143,41 @@ public class FansMemberPresenter extends BaseSdkRxPresenter<FansMemberView.IView
         final long zuid = mAnchorId;
         final int start = mLoadStart;
         mPullSubscription = Observable.just(0)
-                .map(new Func1<Integer, FansMemberListModel>() {
+                .map(new Func1<Integer, Object[]>() {
                     @Override
-                    public FansMemberListModel call(Integer integer) {
+                    public Object[] call(Integer integer) {
                         VFansProto.MemberListRsp rsp = new GetMemberListRequest(zuid, start,
                                 PAGE_LIMIT, ORDER_BY_MEMTYPE, TOTAL_TYPE).syncRsp();
                         if (rsp == null || rsp.getErrCode() != ErrorCode.CODE_SUCCESS) {
                             throw new RuntimeException("GetMemberListRequest failed, errCode=" +
                                     (rsp != null ? rsp.getErrCode() : "null"));
                         }
-                        return new FansMemberListModel(rsp);
+
+                        final Object[] result = new Object[3];
+                        result[0] = Integer.valueOf(rsp.getNextStart());
+                        result[1] = Boolean.valueOf(rsp.getHasMore());
+                        final int cnt = rsp.getMemListCount();
+                        if (cnt > 0) {
+                            final ArrayList<MemberItem> memberItems = new ArrayList<>(cnt);
+                            for (VFansProto.MemberInfo memProto : rsp.getMemListList()) {
+                                memberItems.add(new MemberItem(memProto));
+                            }
+                            result[2] = memberItems;
+                        }
+                        return result;
                     }
                 }).subscribeOn(Schedulers.io())
-                .compose(this.<FansMemberListModel>bindUntilEvent(PresenterEvent.STOP))
+                .compose(this.<Object[]>bindUntilEvent(PresenterEvent.STOP))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<FansMemberListModel>() {
+                .subscribe(new Action1<Object[]>() {
                     @Override
-                    public void call(FansMemberListModel model) {
+                    public void call(Object[] result) {
                         if (mView == null) {
                             return;
                         }
-                        mLoadStart = model.getNextStart();
-                        mHasMoreData = model.isHasMoreData();
-                        mView.onNewDataSet(model.getMemberList());
+                        mLoadStart = (int) result[0];
+                        mHasMoreData = (boolean) result[1];
+                        mView.onNewDataSet((List<MemberItem>) result[2]);
                         mView.onLoadingDone(mHasMoreData);
                     }
                 }, new Action1<Throwable>() {
@@ -165,5 +195,14 @@ public class FansMemberPresenter extends BaseSdkRxPresenter<FansMemberView.IView
     @Override
     public boolean onEvent(int event, IParams params) {
         return false;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventClass.UpdateMemberListEvent event) {
+        if (event == null) {
+            return;
+        }
+        mLoadStart = event.loadingStart;
+        mView.onUpdateDataSet(event.memberItems);
     }
 }

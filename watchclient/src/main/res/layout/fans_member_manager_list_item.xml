@@ -105,7 +105,7 @@
             android:id="@+id/sevendays_love_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="@dimen/margin_10"
             android:layout_toLeftOf="@id/new_love_value"
             android:text="@string/sevendays_love_value"
             android:textColor="@color/color_black_trans_50"
