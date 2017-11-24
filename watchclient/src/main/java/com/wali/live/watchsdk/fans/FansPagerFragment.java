@@ -112,10 +112,10 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
                     }
                     final Fragment currFragment = fm.findFragmentByTag(fName);
                     final boolean isOnStackTop = currFragment == FansPagerFragment.this;
-                    final boolean hideBehind = !isOnStackTop || currFragment instanceof FansMemberManagerFragment;
-                    if (mIsHideBehind != hideBehind) {
-                        mIsHideBehind = hideBehind;
-                        FansPagerFragment.this.getView().setVisibility(hideBehind ? View.VISIBLE : View.GONE);
+                    final boolean needHide = !isOnStackTop && !(currFragment instanceof FansMemberManagerFragment);
+                    if (mIsHideBehind != needHide) {
+                        mIsHideBehind = needHide;
+                        FansPagerFragment.this.getView().setVisibility(needHide ? View.GONE : View.VISIBLE);
                     }
                 }
             };

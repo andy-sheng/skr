@@ -49,6 +49,12 @@ public class FansMemberManagerFragment extends RxFragment {
             finish();
             return;
         }
+        $click($(R.id.cover_view), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         mManagerView = $(R.id.member_manager_view);
         mManagerPresenter = new FansMemberManagerPresenter(mGroupDetailModel.getZuid());
         $component(mManagerView, mManagerPresenter);
