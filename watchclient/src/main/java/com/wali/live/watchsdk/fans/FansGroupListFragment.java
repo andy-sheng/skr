@@ -25,6 +25,7 @@ import com.wali.live.watchsdk.fans.model.FansGroupListModel;
 import com.wali.live.watchsdk.fans.pay.FansPayFragment;
 import com.wali.live.watchsdk.fans.presenter.FansGroupListPresenter;
 import com.wali.live.watchsdk.fans.presenter.IFansGroupListView;
+import com.wali.live.watchsdk.fans.push.event.FansMemberUpdateEvent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -111,6 +112,15 @@ public class FansGroupListFragment extends BaseEventBusFragment implements View.
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QuitGroupEvent event) {
+        if (event != null) {
+            if (mPresenter != null) {
+                mPresenter.getFansGroupList(true);
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FansMemberUpdateEvent event) {
         if (event != null) {
             if (mPresenter != null) {
                 mPresenter.getFansGroupList(true);

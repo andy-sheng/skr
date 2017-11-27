@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.base.activity.BaseActivity;
 import com.base.activity.BaseSdkActivity;
 import com.base.dialog.MyAlertDialog;
-import com.base.fragment.RxFragment;
+import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
@@ -28,16 +28,20 @@ import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
 import com.wali.live.watchsdk.fans.presenter.FansGroupDetailPresenter;
 import com.wali.live.watchsdk.fans.presenter.IFansGroupDetailView;
+import com.wali.live.watchsdk.fans.push.event.FansMemberUpdateEvent;
 import com.wali.live.watchsdk.fans.setting.FansMedalSettingFragment;
 import com.wali.live.watchsdk.fans.view.FansTaskView;
 import com.wali.live.watchsdk.fans.view.merge.FansDetailBasicView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
 /**
  * Created by lan on 2017/11/9.
  */
-public class MemGroupDetailFragment extends RxFragment implements View.OnClickListener, IFansGroupDetailView {
+public class MemGroupDetailFragment extends BaseEventBusFragment implements View.OnClickListener, IFansGroupDetailView {
     private static final String EXTRA_ZUID = "extra_zuid";
 
     private BackTitleBar mTitleBar;
@@ -206,6 +210,16 @@ public class MemGroupDetailFragment extends RxFragment implements View.OnClickLi
     @Override
     public void notifyQuitGroupSuccess() {
         finish();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FansMemberUpdateEvent event) {
+        if (event != null) {
+            if (mDetailPresenter != null) {
+                mDetailPresenter.getFansGroupDetail(mZuid);
+                mDetailPresenter.getTopThreeMember(mZuid);
+            }
+        }
     }
 
     @Override

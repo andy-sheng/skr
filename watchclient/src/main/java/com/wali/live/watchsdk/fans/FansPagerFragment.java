@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.base.activity.BaseSdkActivity;
+import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.FragmentDataListener;
-import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
@@ -31,9 +31,13 @@ import com.wali.live.watchsdk.fans.model.specific.RecentJobModel;
 import com.wali.live.watchsdk.fans.pay.FansPayFragment;
 import com.wali.live.watchsdk.fans.presenter.FansMemberPresenter;
 import com.wali.live.watchsdk.fans.presenter.FansPagerPresenter;
+import com.wali.live.watchsdk.fans.push.event.FansMemberUpdateEvent;
 import com.wali.live.watchsdk.fans.view.FansHomeView;
 import com.wali.live.watchsdk.fans.view.FansMemberView;
 import com.wali.live.watchsdk.fans.view.FansTaskView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -45,8 +49,9 @@ import static com.wali.live.component.view.Utils.$component;
  * Created by zyh on 2017/11/8.
  *
  * @module 粉丝团页面
+ * @notice FirstEnterVfansDialog
  */
-public class FansPagerFragment extends RxFragment implements View.OnClickListener, FansPagerPresenter.IView, FragmentDataListener {
+public class FansPagerFragment extends BaseEventBusFragment implements View.OnClickListener, FansPagerPresenter.IView, FragmentDataListener {
     private static final String EXTRA_ANCHOR_ID = "extra_anchor_id";
     private static final String EXTRA_ROOMID = "extra_roomId";
     private static final String EXTRA_ANCHOR_NAME = "extra_anchor_name";
@@ -374,6 +379,13 @@ public class FansPagerFragment extends RxFragment implements View.OnClickListene
         }
         result.append(",").append(GlobalData.app().getString(R.string.vfans_task_ok_exp_plus)).append(model.getJobExp());
         tv.setText(result);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FansMemberUpdateEvent event) {
+        if (event != null) {
+            mPresenter.getGroupDetail(mAnchorId);
+        }
     }
 
     @Override
