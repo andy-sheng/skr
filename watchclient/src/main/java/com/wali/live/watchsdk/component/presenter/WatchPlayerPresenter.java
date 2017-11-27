@@ -181,11 +181,11 @@ public class WatchPlayerPresenter extends BasePlayerPresenter<TextureView, PullS
     public void onEventMainThread(EventClass.PhoneStateEvent event) {
         switch (event.type) {
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_IDLE:
-                addForcePauseFlag(FLAG_PHONE_STATE);
+                removeForcePauseFlag(FLAG_PHONE_STATE);
                 break;
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_RING:
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_OFFHOOK: // fall through
-                removeForcePauseFlag(FLAG_PHONE_STATE);
+                addForcePauseFlag(FLAG_PHONE_STATE);
                 break;
             default:
                 break;
@@ -196,10 +196,10 @@ public class WatchPlayerPresenter extends BasePlayerPresenter<TextureView, PullS
     public void onEventMainThread(SdkEventClass.ScreenStateEvent event) {
         switch (event.screenState) {
             case SdkEventClass.ScreenStateEvent.ACTION_SCREEN_ON:
-                addForcePauseFlag(FLAG_SCREEN_STATE);
+                removeForcePauseFlag(FLAG_SCREEN_STATE);
                 break;
             case SdkEventClass.ScreenStateEvent.ACTION_SCREEN_OFF:
-                removeForcePauseFlag(FLAG_SCREEN_STATE);
+                addForcePauseFlag(FLAG_SCREEN_STATE);
                 break;
             default:
                 break;
