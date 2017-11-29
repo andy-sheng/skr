@@ -6,7 +6,11 @@ import android.media.AudioManager;
 import android.support.annotation.MainThread;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.TextureView;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -15,10 +19,13 @@ import com.base.player.VideoPlayerPresenter;
 /**
  * Created by yangli on 2017/11/28.
  */
-public class VideoPlayerWrapperView extends TextureView {
+public class VideoPlayerWrapperView extends FrameLayout {
     private static final String TAG = "VideoPlayerWrapperView";
 
     private VideoPlayerPresenter mPlayerPresenter;
+
+    private TextureView mVideoView;
+    private TextView mWaterView;
 
     public VideoPlayerWrapperView(Context context) {
         this(context, null);
@@ -36,8 +43,29 @@ public class VideoPlayerWrapperView extends TextureView {
     private void init(Context context) {
         GlobalData.setApplication(((Activity) context).getApplication());
         ((Activity) context).setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
+        mVideoView = new TextureView(getContext());
+        mWaterView = new TextView(getContext());
+
+        final float density = getContext().getResources().getDisplayMetrics().density;
+
+        // add video view
+        addView(mVideoView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+
+        // add water mark view
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.RIGHT | Gravity.TOP;
+        layoutParams.topMargin = layoutParams.rightMargin = (int) (20 * density);
+        addView(mWaterView, layoutParams);
+        mWaterView.setTextColor(0x99FFFFFF);
+        mWaterView.setTextSize(13f);
+        mWaterView.setShadowLayer(1, 1, 1, 0xFF000000);
+        mWaterView.setText("MIBO");
+
         mPlayerPresenter = new VideoPlayerPresenter(true);
-        mPlayerPresenter.setView(this);
+        mPlayerPresenter.setView(mVideoView);
         mPlayerPresenter.startPresenter();
     }
 

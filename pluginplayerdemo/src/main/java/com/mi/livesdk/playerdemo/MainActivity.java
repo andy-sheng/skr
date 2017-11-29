@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     if (isSelect) {
                         mPlayBtn.setText("Stop");
-                        mPlayerWrapperView.play("http://v2.zb.mi.com/live/12664098_1511925183.flv?playui=0");
+                        mPlayerWrapperView.play("http://v2.zb.mi.com/live/3918969_1511935820.flv?playui=0");
                     } else {
                         mPlayBtn.setText("Play");
                         mPlayerWrapperView.stop();
