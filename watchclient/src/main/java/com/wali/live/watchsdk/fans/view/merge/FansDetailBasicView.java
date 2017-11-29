@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,12 +18,13 @@ import com.base.image.fresco.image.HttpImage;
 import com.base.image.fresco.image.ResImage;
 import com.base.mvp.specific.RxRelativeLayout;
 import com.base.utils.display.DisplayUtils;
+import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.constant.FansConstant;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.model.member.FansMemberModel;
-import com.wali.live.common.barrage.view.utils.FansInfoUtils;
+import com.wali.live.watchsdk.fans.rank.FansRankFragment;
 import com.wali.live.watchsdk.fans.view.custom.FansProgressView;
 import com.wali.live.watchsdk.webview.WebViewActivity;
 
@@ -45,9 +47,12 @@ public class FansDetailBasicView extends RxRelativeLayout implements View.OnClic
     private FansProgressView mCharmPv;
 
     private TextView mMemberCountTv;
-    private TextView mGroupRankTv;
 
+    private ViewGroup mRankArea;
     private LinearLayout mFansListArea;
+
+    private ViewGroup mGroupRankArea;
+    private TextView mGroupRankTv;
 
     private FansGroupDetailModel mGroupDetailModel;
     private String mAnchorName;
@@ -81,7 +86,11 @@ public class FansDetailBasicView extends RxRelativeLayout implements View.OnClic
         mCharmPv = $(R.id.charm_pv);
 
         mMemberCountTv = $(R.id.member_count_tv);
+
+        mRankArea = $click(R.id.rank_area, this);
         mFansListArea = $(R.id.vfans_list_area);
+
+        mGroupRankArea = $click(R.id.group_rank_area, this);
         mGroupRankTv = $(R.id.group_rank_tv);
     }
 
@@ -142,8 +151,6 @@ public class FansDetailBasicView extends RxRelativeLayout implements View.OnClic
 
     private void addTopThreeImage(BaseImageView iv, FansMemberModel memberInfo) {
         HttpImage image = new HttpImage(AvatarUtils.getAvatarUrlByUid(memberInfo.getUuid(), memberInfo.getAvatar()));
-        image.setHeight(DisplayUtils.dip2px(18));
-        image.setWidth(DisplayUtils.dip2px(18));
         image.setLoadingDrawable(GlobalData.app().getResources().getDrawable(R.drawable.avatar_default_a));
         image.setFailureDrawable(GlobalData.app().getResources().getDrawable(R.drawable.avatar_default_a));
         image.setIsCircle(true);
@@ -152,8 +159,6 @@ public class FansDetailBasicView extends RxRelativeLayout implements View.OnClic
 
     private void addPlaceHolderImage(BaseImageView iv) {
         ResImage image = new ResImage(R.drawable.pet_group_placeholder);
-        image.setHeight(DisplayUtils.dip2px(18));
-        image.setWidth(DisplayUtils.dip2px(18));
         image.setIsCircle(true);
         FrescoWorker.loadImage(iv, image);
     }
@@ -163,6 +168,10 @@ public class FansDetailBasicView extends RxRelativeLayout implements View.OnClic
         int id = v.getId();
         if (id == R.id.vfan_recommend) {
             WebViewActivity.open((BaseActivity) getContext(), FansConstant.FANS_INDEX_URL);
+        } else if (id == R.id.rank_area) {
+            FansRankFragment.open((BaseActivity) getContext(), mGroupDetailModel.getZuid(), false);
+        } else if (id == R.id.group_rank_area) {
+            FansRankFragment.open((BaseActivity) getContext(), mGroupDetailModel.getZuid(), true);
         }
     }
 }

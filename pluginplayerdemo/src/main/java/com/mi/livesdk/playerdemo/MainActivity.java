@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    mPlayerWrapperView.play("http://v2.zb.mi.com/live/30971062_1504695646.flv?playui=0");
+                    mPlayerWrapperView.play("http://v2.zb.mi.com/live/3918969_1511846893.flv?playui=0");
                 } catch (LoadLibraryException e) {
                     Log.d(TAG, "load library=" + mPlayerWrapperView.checkLibrary());
                 }

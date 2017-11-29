@@ -506,6 +506,8 @@ public class MiLinkCommand {
     public static final String COMMAND_VFAN_GET_GROUP_MEDAL = "zhibo.vfans.get_groupmedal";
     // 设置宠爱团勋章
     public static final String COMMAND_VFAN_SET_GROUP_MEDAL = "zhibo.vfans.set_groupmedal";
+    // 团排行榜
+    public static final String COMMAND_VFANS_GROUP_RANK_LIST = "zhibo.vfans.group_ranklist";
 
     // 粉丝团群通知
     public static final String COMMAND_VFANS_GETNOTIFICATION = "zhibo.vfans.getnotification";

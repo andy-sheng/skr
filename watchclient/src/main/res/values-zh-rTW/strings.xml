@@ -380,4 +380,12 @@
     <string name="vfans_level_six">等級6</string>
     <string name="vfans_level_seven">等級7</string>
     <string name="vfans_level_eight">等級8</string>
+    <string name="vfans_rank_title">粉絲榜</string>
+    <string name="rank_day_list">日榜</string>
+    <string name="rank_week_list">週榜</string>
+    <string name="rank_total_list">總榜</string>
+    <string name="vfans_friendliness_value">親密值: %d</string>
+    <string name="vfans_exp_value">經驗值</string>
+    <string name="gap_hint">與上一名相差</string>
+    <string name="vfans_friendliness">親密值</string>
 </resources>

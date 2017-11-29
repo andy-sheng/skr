@@ -405,4 +405,12 @@
     <string name="vfans_level_six">Level 6</string>
     <string name="vfans_level_seven">Level 7</string>
     <string name="vfans_level_eight">Level 8</string>
+    <string name="vfans_rank_title">Fans rank</string>
+    <string name="rank_day_list">Daily</string>
+    <string name="rank_week_list">Weekly</string>
+    <string name="rank_total_list">Overall</string>
+    <string name="vfans_friendliness_value">Closeness: %d</string>
+    <string name="vfans_exp_value">Exp. points</string>
+    <string name="gap_hint">Compared with last contributor:</string>
+    <string name="vfans_friendliness">Closeness</string>
 </resources>

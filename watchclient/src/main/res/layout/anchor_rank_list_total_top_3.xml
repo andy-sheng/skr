@@ -22,8 +22,8 @@
                 android:id="@+id/current_rank_avatar_imgSecondBg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/single_card_bottom_info_2"
-                android:layout_centerHorizontal="true">
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/single_card_bottom_info_2">
 
                 <com.base.image.fresco.BaseImageView
                     android:id="@+id/current_rank_avatar_imgSecond"
@@ -36,15 +36,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/anchor_rank_bg_top_2"/>
+
             </FrameLayout>
 
             <include
                 android:id="@+id/single_card_bottom_info_2"
-                layout="@layout/anchor_rank_top_card_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="12dp"
+                layout="@layout/anchor_rank_top_card_info"/>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -57,8 +59,8 @@
                 android:id="@+id/current_rank_avatar_imgFirstBg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/single_card_bottom_info_1"
-                android:layout_centerHorizontal="true">
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/single_card_bottom_info_1">
 
                 <com.base.image.fresco.BaseImageView
                     android:id="@+id/current_rank_avatar_imgFirst"
@@ -76,11 +78,11 @@
 
             <include
                 android:id="@+id/single_card_bottom_info_1"
-                layout="@layout/anchor_rank_top_card_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="12dp"
+                layout="@layout/anchor_rank_top_card_info"/>
 
         </RelativeLayout>
 
@@ -107,16 +109,17 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/anchor_rank_bg_top_3"/>
+                    android:background="@drawable/anchor_rank_bg_top_3" />
+
             </FrameLayout>
 
             <include
                 android:id="@+id/single_card_bottom_info_3"
-                layout="@layout/anchor_rank_top_card_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="12dp"
+                layout="@layout/anchor_rank_top_card_info"/>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

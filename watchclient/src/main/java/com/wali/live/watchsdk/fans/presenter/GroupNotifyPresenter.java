@@ -9,7 +9,6 @@ import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.dao.Conversation;
-import com.wali.live.dao.GroupNotify;
 import com.wali.live.dao.SixinMessage;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.proto.VFansProto;

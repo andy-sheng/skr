@@ -62,6 +62,10 @@ public class EmptyView extends RelativeLayout {
         mEmptyTv.setText(emptyTips);
     }
 
+    public void setEmptyTips(String emptyTips) {
+        mEmptyTv.setText(emptyTips);
+    }
+
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
