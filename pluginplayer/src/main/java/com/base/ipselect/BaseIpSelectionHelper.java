@@ -1,6 +1,8 @@
 package com.base.ipselect;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 
 import com.base.log.MyLog;
@@ -43,6 +45,7 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
     protected String mProtocol = ""; // 协议
     protected String mHost = ""; // 域名
 
+    protected final Handler mHandler = new Handler(Looper.getMainLooper());
     protected final ExecutorService mLocalAndHttpExecutor = Executors.newSingleThreadExecutor(
             new NamedThreadFactory("IpSelect"));
     protected Future mLocalAndHttpFuture;
@@ -124,7 +127,6 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
             mSelectedIpList = ipInfo.getIpList();
             mSelectedIp = mSelectedIpList.get(0);
             mStreamUrl = generateUrlForIp(mOriginalStreamUrl, mHost, mSelectedIp);
-
             MyLog.w(TAG, "ipSelect new mStreamUrl=" + mStreamUrl + ", mSelectedIpList=" + mSelectedIpList);
             return true;
         } else {
@@ -262,15 +264,13 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
         if (!ipInfo.isEmpty()) {
             return ipInfo;
         }
-        if (!ipInfo.isEmpty()) {
-            return ipInfo;
-        }
         onIpSetRunOut(ipInfo);
         return ipInfo;
     }
 
     public void destroy() {
         mLocalAndHttpExecutor.shutdownNow();
+        mHandler.removeCallbacksAndMessages(null);
         mContext = null;
         mDnsStatusListener = null;
     }
@@ -329,15 +329,18 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
                     }
                     localIpSet.removeAll(httpIpSet); // 去重
 
-                    PreDnsManager.IpInfo ipInfo = new PreDnsManager.IpInfo(localIpSet, httpIpSet);
-
-                    //TODO
-                    PreDnsManager.INSTANCE.addIpSetToPool(host, ipInfo);
+                    final PreDnsManager.IpInfo ipInfo = new PreDnsManager.IpInfo(localIpSet, httpIpSet);
                     if (!Thread.currentThread().isInterrupted()) {
-                        onFetchIpSetByHostDone(ipInfo);
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                PreDnsManager.INSTANCE.addIpSetToPool(host, ipInfo);
+                                onFetchIpSetByHostDone(ipInfo);
+                            }
+                        });
                     }
                 } catch (Exception e) {
-                    MyLog.e(TAG, "fetchIpSetByHost failed, exception=" + e);
+                    MyLog.e(TAG, e);
                 }
             }
         });
