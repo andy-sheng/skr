@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.mi.liveassistant.player.VideoPlayerWrapperView;
-import com.mi.liveassistant.player.VideoPlayerWrapperView.LoadLibraryException;
 import com.mi.liveassistant.playerdemo.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mPlayerWrapperView = (VideoPlayerWrapperView) findViewById(R.id.player_view);
-        mPlayerWrapperView.setVideoTransMode(VideoPlayerWrapperView.TRANS_MODE_CENTER_INSIDE);
+//        mPlayerWrapperView.setVideoTransMode(VideoPlayerWrapperView.TRANS_MODE_CENTER_INSIDE);
         mPlayerWrapperView.setOuterCallBack(new VideoPlayerWrapperView.IOuterCallBack() {
             @Override
             //缓冲开始
@@ -47,9 +46,17 @@ public class MainActivity extends AppCompatActivity {
         mPlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean isSelect = !mPlayBtn.isSelected();
+                mPlayBtn.setSelected(isSelect);
                 try {
-                    mPlayerWrapperView.play("http://v2.zb.mi.com/live/30971062_1504695646.flv?playui=0");
-                } catch (LoadLibraryException e) {
+                    if (isSelect) {
+                        mPlayBtn.setText("Stop");
+                        mPlayerWrapperView.play("http://v2.zb.mi.com/live/12664098_1511925183.flv?playui=0");
+                    } else {
+                        mPlayBtn.setText("Play");
+                        mPlayerWrapperView.stop();
+                    }
+                } catch (VideoPlayerWrapperView.LoadLibraryException e) {
                     Log.d(TAG, "load library=" + mPlayerWrapperView.checkLibrary());
                 }
             }

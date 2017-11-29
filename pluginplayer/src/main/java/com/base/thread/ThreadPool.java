@@ -10,7 +10,8 @@ import java.util.concurrent.Future;
  * Created by chenyong on 2017/3/7.
  */
 public class ThreadPool {
-    private static ExecutorService sEngineService = Executors.newSingleThreadExecutor();
+    private static ExecutorService sEngineService = Executors.newSingleThreadExecutor(
+            new NamedThreadFactory("GalileoEngine", Thread.MAX_PRIORITY));
 
     public static Future<?> runOnEngine(final Runnable r, final String from) {
         if (!sEngineService.isShutdown()) {

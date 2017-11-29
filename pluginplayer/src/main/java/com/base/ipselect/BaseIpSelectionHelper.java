@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.base.log.MyLog;
+import com.base.thread.NamedThreadFactory;
 import com.base.utils.network.NetworkUtils;
 
 import java.net.URI;
@@ -42,7 +43,8 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
     protected String mProtocol = ""; // 协议
     protected String mHost = ""; // 域名
 
-    protected final ExecutorService mLocalAndHttpExecutor = Executors.newSingleThreadExecutor();
+    protected final ExecutorService mLocalAndHttpExecutor = Executors.newSingleThreadExecutor(
+            new NamedThreadFactory("IpSelect"));
     protected Future mLocalAndHttpFuture;
 
     private IDnsStatusListener mDnsStatusListener;
