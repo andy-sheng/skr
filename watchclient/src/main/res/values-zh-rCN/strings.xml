@@ -405,4 +405,11 @@
     <string name="vfans_exp_value">经验值</string>
     <string name="gap_hint">与上一名相差</string>
     <string name="vfans_friendliness">亲密值</string>
+    <string name="deny">拒绝</string>
+    <string name="agree_apply">已同意该申请</string>
+    <string name="group_account" formatted="false">直播账号：%d</string>
+    <string name="group_apply_join" formatted="false">申请加入 %s</string>
+    <string name="group_apply_join_title" formatted="false">申请加入 </string>
+    <string name="group_apply_access_txt" formatted="false">已同意该申请</string>
+    <string name="group_apply_reject_txt" formatted="false">已拒绝该申请</string>
 </resources>

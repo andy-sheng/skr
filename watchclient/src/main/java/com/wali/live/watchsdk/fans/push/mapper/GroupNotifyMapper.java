@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.fans.push.mapper;
 
+import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.dao.GroupNotify;
 import com.wali.live.proto.GroupMessageProto;
@@ -28,6 +29,7 @@ public class GroupNotifyMapper {
             return null;
         }
         GroupNotifyBaseModel model = null;
+        MyLog.d(TAG, "loadFromPB type=" + rsp.getType());
         switch (rsp.getType()) {
             case GroupNotifyType.APPLY_JOIN_GROUP_NOTIFY: {
                 model = new ApplyJoinFansModel();
@@ -55,8 +57,9 @@ public class GroupNotifyMapper {
             case GroupNotifyType.CANCEL_FORBID_GROUP_MEM_NOTIFY: {
             }
             break;
-            case GroupNotifyType.GROUP_MEM_QUIT_GROUP_NOTIFY:
-                break;
+            case GroupNotifyType.GROUP_MEM_QUIT_GROUP_NOTIFY: {
+            }
+            break;
         }
         if (model != null) {
             model.setNotificationType(rsp.getType());

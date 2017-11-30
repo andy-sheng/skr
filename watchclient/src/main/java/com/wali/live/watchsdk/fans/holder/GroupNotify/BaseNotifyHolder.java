@@ -5,12 +5,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.base.activity.BaseSdkActivity;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.utils.date.DateTimeUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.fans.GroupNotifyDetailFragment;
 import com.wali.live.watchsdk.fans.model.notification.GroupNotifyBaseModel;
 import com.wali.live.watchsdk.ranking.holder.EmptyViewHolder;
 
@@ -33,7 +35,7 @@ public class BaseNotifyHolder extends EmptyViewHolder {
         mListener = listener;
     }
 
-    public BaseNotifyHolder(View itemView) {
+    public BaseNotifyHolder(final View itemView) {
         super(itemView);
         mAvatarDv = $(itemView, R.id.avatar_dv);
         mNameTv = $(itemView, R.id.nickname_tv);
@@ -41,6 +43,13 @@ public class BaseNotifyHolder extends EmptyViewHolder {
         mApplyTimeTv = $(itemView, R.id.apply_time_tv);
         mAgreeTv = $(itemView, R.id.agree_tv);
         mHandlerInfoTv = $(itemView, R.id.handler_info_tv);
+        $click(itemView, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GroupNotifyDetailFragment.openFragment((BaseSdkActivity) itemView.getContext(),
+                        mGroupNotifyBaseModel);
+            }
+        });
     }
 
     public void bindHolder(GroupNotifyBaseModel model) {
@@ -66,6 +75,13 @@ public class BaseNotifyHolder extends EmptyViewHolder {
             return null;
         }
         return (V) parent.findViewById(resId);
+    }
+
+    private final <V extends View> void $click(V view, View.OnClickListener listener) {
+        if (view == null) {
+            return;
+        }
+        view.setOnClickListener(listener);
     }
 
     public interface OnItemClickListener {

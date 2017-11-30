@@ -413,4 +413,11 @@
     <string name="vfans_exp_value">Exp. points</string>
     <string name="gap_hint">Compared with last contributor:</string>
     <string name="vfans_friendliness">Closeness</string>
+    <string name="deny">Refuse</string>
+    <string name="agree_apply">Request approved</string>
+    <string name="group_account" formatted="false">Mi Live ID: %d</string>
+    <string name="group_apply_join" formatted="false">Apply to join %s</string>
+    <string name="group_apply_join_title" formatted="false">Apply to join </string>
+    <string name="group_apply_access_txt" formatted="false">Request approved</string>
+    <string name="group_apply_reject_txt" formatted="false">Request declined</string>
 </resources>

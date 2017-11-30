@@ -15,7 +15,7 @@ import com.wali.live.watchsdk.fans.push.type.GroupNotifyType;
  * Created by zyh on 2017/11/23.
  */
 
-public class HandleJoinNotifyHolder  extends BaseNotifyHolder {
+public class HandleJoinNotifyHolder extends BaseNotifyHolder {
     public HandleJoinNotifyHolder(View itemView) {
         super(itemView);
     }
@@ -24,7 +24,7 @@ public class HandleJoinNotifyHolder  extends BaseNotifyHolder {
     public void bindHolder(GroupNotifyBaseModel model) {
         super.bindHolder(model);
         HandleJoinFansGroupNotifyModel handleModel = (HandleJoinFansGroupNotifyModel) model;
-        if (handleModel.getId() == UserAccountManager.getInstance().getUuidAsLong()) {
+        if (handleModel.getHandler() == UserAccountManager.getInstance().getUuidAsLong()) {
             AvatarUtils.loadAvatarByUidTs(mAvatarDv, handleModel.getCandidate(), handleModel.getCandidateTs(), true);
             mNameTv.setText(GlobalData.app().getString(R.string.notify_apply_join_group,
                     handleModel.getCandidateName(), handleModel.getGroupName()));
@@ -53,6 +53,7 @@ public class HandleJoinNotifyHolder  extends BaseNotifyHolder {
             } else {
                 mHandlerInfoTv.setText(GlobalData.app().getString(R.string.vfans_group_someone_reject_join, handlerName, candidateName));
             }
+            mNameTv.setText(model.getGroupName());
         }
     }
 }

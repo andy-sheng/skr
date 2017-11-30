@@ -527,15 +527,10 @@ public class SixinMessageManager implements MiLinkPacketDispatcher.PacketDataHan
             if (lastNotifyData != null && (lastNotifyData.getNotificationType() != GroupNotifyType.BE_GROUP_MEM_NOTIFY
                     || lastNotifyData.getNotificationType() == GroupNotifyType.AGREE_JOIN_GROUP_NOTIFY)) {
                 ConversationLocalStore.insertOrUpdateGroupNotifyRobotConversation(lastNotifyData, event.unDealGroupNotifyList.size(), true);
-            } else {
-                if (ConversationLocalStore.SHOW_VFAN_GROUP) {
-                    SixinMessageLocalStore.insertSixinMessage(SixinMessageLocalStore.
-                            getCreateGroupSucessMessage(lastNotifyData.getGroupId(),
-                                    lastNotifyData.getGroupName()));
-                }
             }
             for (GroupNotifyBaseModel model : event.unDealGroupNotifyList) {
                 switch (model.getNotificationType()) {
+                    case GroupNotifyType.BE_GROUP_MEM_NOTIFY:
                     case GroupNotifyType.AGREE_JOIN_GROUP_NOTIFY:
                         //TODO 通知加群成功，reportJob的一些工作
                         EventBus.getDefault().post(new FansMemberUpdateEvent(model.getGroupId(), FansMemberUpdateEvent.BE_MEMBER));
@@ -549,11 +544,16 @@ public class SixinMessageManager implements MiLinkPacketDispatcher.PacketDataHan
                     case GroupNotifyType.CANCEL_GROUP_MANAGER_NOTIFY:
                         EventBus.getDefault().post(new FansMemberUpdateEvent(model.getGroupId(), FansMemberUpdateEvent.CANCEL_BE_MANAGER_TYPE));
                         break;
+                    case GroupNotifyType.FORBID_GROUP_MEM_NOTIFY:
+                        break;
+                    case GroupNotifyType.CANCEL_FORBID_GROUP_MEM_NOTIFY:
+                        break;
                 }
                 model.addStatus(GroupNotifyBaseModel.STATUS_HAS_DEAL);
             }
             GroupNotifyLocalStore.getInstance().updateGroupNotifyBaseModel(event.unDealGroupNotifyList);
         }
+        MyLog.d(TAG, "GroupNotifyUpdateEvent event.empty=" + event.empty);
         if (event != null && event.empty) {
             Conversation conversation = ConversationLocalStore.getConversationByTarget(Conversation.VFANS_NOTIFY_CONVERSATION_TARGET, SixinMessage.TARGET_TYPE_USER);
             ConversationLocalStore.deleteConversation(conversation.getId());
