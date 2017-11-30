@@ -167,7 +167,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         }
     }
 
-    // 结束播放
+    // 暂停播放
     public void pauseWatch() {
         if (mStreamer == null || !mStarted || mPaused) {
             MyLog.w(TAG, "pauseWatch failed, mStreamer=" + mStreamer);
@@ -176,6 +176,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         MyLog.w(TAG, "pauseWatch");
         mPaused = true;
         mStreamer.pause();
+        mIpSelectionHelper.updateStutterStatus(false);
         if (!mIsRealTime) {
             mUIHandler.removeMessages(_MSG_PLAYER_PROGRESS);
         }
