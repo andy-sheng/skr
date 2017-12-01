@@ -43,7 +43,7 @@ public class GroupNotifyDetailPresenter extends BaseRxPresenter<GroupNotifyDetai
                     public VFansProto.HandleJoinGroupRsp call(Integer integer) {
                         return FansNotifyRepository.handleJoinGroup(model.getGroupId(),
                                 UserAccountManager.getInstance().getUuidAsLong(),
-                                model.getCandidate(), resultType, false);
+                                model.getCandidate(), resultType, false, model.getId());
                     }
                 }).subscribeOn(Schedulers.io())
                 .compose(mView.<VFansProto.HandleJoinGroupRsp>bindLifecycle())

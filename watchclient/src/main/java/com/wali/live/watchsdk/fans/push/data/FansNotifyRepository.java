@@ -68,7 +68,7 @@ public class FansNotifyRepository {
 
     public static VFansProto.HandleJoinGroupRsp handleJoinGroup(long zuid, long adminId, long memId,
                                                                 VFansCommonProto.ApplyJoinResult joinResult,
-                                                                boolean addBlack) {
+                                                                boolean addBlack, long notifyId) {
         if (zuid <= 0 || adminId <= 0 || memId <= 0 || joinResult == null) {
             MyLog.e(TAG, "handleJoinGroup null zuid = " + zuid + " adminId = " + addBlack);
             return null;
@@ -79,6 +79,7 @@ public class FansNotifyRepository {
                 .setMemId(memId)
                 .setJoinResult(joinResult)
                 .setAddBlack(addBlack)
+                .setNotifyId(notifyId)
                 .build();
         MyLog.d(TAG, "handleJoinGroup request=" + request.toString());
         PacketData data = new PacketData();
