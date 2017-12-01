@@ -12,11 +12,6 @@ import com.base.utils.display.DisplayUtils;
 import com.live.module.common.R;
 import com.wali.live.proto.VFansCommonProto;
 
-import static com.mi.live.data.room.model.FansPrivilegeModel.GAG_LEVEL;
-import static com.mi.live.data.room.model.FansPrivilegeModel.SEND_COLOR_BARRAGE_VIP_LEVEL;
-import static com.mi.live.data.room.model.FansPrivilegeModel.SEND_FLY_BARRAGE_LEVEL;
-import static com.mi.live.data.room.model.FansPrivilegeModel.UPGREAD_ACCELERATE_LEVEL;
-
 /**
  * Created by lan on 2017/11/8.
  */
@@ -122,19 +117,7 @@ public class FansInfoUtils {
         return CommonUtils.convertViewToBitmap(view);
     }
 
-    public static boolean hasUpgradeAccelerationPrivilege(int petLevel, int vipLevel, long vipExpire) {
-        return petLevel >= UPGREAD_ACCELERATE_LEVEL && vipLevel > 0 && System.currentTimeMillis() / 1000 < vipExpire;
-    }
-
-    public static boolean hasColorBarragePrivilege(int petLevel, int vipLevel, long vipExpire) {
-        return petLevel >= SEND_COLOR_BARRAGE_VIP_LEVEL && vipLevel > 0 && System.currentTimeMillis() / 1000 < vipExpire;
-    }
-
-    public static boolean hasFlyBarragePrivilege(int petLevel, int vipLevel, long vipExpire) {
-        return petLevel >= SEND_FLY_BARRAGE_LEVEL && vipLevel > 0 && System.currentTimeMillis() / 1000 < vipExpire;
-    }
-
-    public static boolean hasBanPrivilege(int level, int vipLevel, long vipExpire) {
-        return level >= GAG_LEVEL && vipLevel > 0 && System.currentTimeMillis() / 1000 < vipExpire;
+    public static boolean hasPrivilege(int vipLevel, long vipExpire) {
+        return vipLevel > 0 && System.currentTimeMillis() / 1000 < vipExpire;
     }
 }

@@ -18,6 +18,7 @@ import com.base.global.GlobalData;
 import com.base.mvp.specific.RxRelativeLayout;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.room.model.FansPrivilegeModel;
 import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.watchsdk.R;
@@ -43,15 +44,7 @@ import static com.wali.live.watchsdk.fans.FansPrivilegeFragment.TYPE_UPGRADE_ACC
  *
  * @module 粉丝团的首页
  */
-
 public class FansHomeView extends RxRelativeLayout implements View.OnClickListener, FansHomePresenter.IView {
-    private final String TAG = "FansHomeView";
-
-    public static final int UPGRADE_ACCELERATE_LEVEL = 1;
-    public static final int SEND_COLOR_BARRAGE_VIP_LEVEL = 3;
-    public static final int SEND_FLY_BARRAGE_LEVEL = 5;
-    public static final int BAN_LEVEL = 8;
-
     private FansGroupDetailModel mGroupDetailModel;
 
     private EmptyView mEmptyView;
@@ -187,18 +180,18 @@ public class FansHomeView extends RxRelativeLayout implements View.OnClickListen
                 mFanRankTv.setText(mGroupDetailModel.getPetRanking() + "/"
                         + mGroupDetailModel.getCurrentMember());
             }
-            if (hasPrivilege()) {
+            if (FansInfoUtils.hasPrivilege(mGroupDetailModel.getVipLevel(), mGroupDetailModel.getVipExpire())) {
                 int myPetLevel = mGroupDetailModel.getMyPetLevel();
-                if (myPetLevel >= UPGRADE_ACCELERATE_LEVEL) {
+                if (myPetLevel >= FansPrivilegeModel.UPGRADE_ACCELERATE_LEVEL) {
                     updateLevelTv(mAcceleratePrivilegeStatusTv);
                 }
-                if (myPetLevel >= SEND_COLOR_BARRAGE_VIP_LEVEL) {
+                if (myPetLevel >= FansPrivilegeModel.SEND_COLOR_BARRAGE_VIP_LEVEL) {
                     updateLevelTv(mColorBarrageStatusTv);
                 }
-                if (myPetLevel >= SEND_FLY_BARRAGE_LEVEL) {
-                    updateLevelTv(mColorBarrageStatusTv);
+                if (myPetLevel >= FansPrivilegeModel.SEND_FLY_BARRAGE_LEVEL) {
+                    updateLevelTv(mFlyBarrageStatusTv);
                 }
-                if (myPetLevel >= BAN_LEVEL) {
+                if (myPetLevel >= FansPrivilegeModel.GAG_LEVEL) {
                     updateLevelTv(mForbiddenStatusTv);
                 }
             }
@@ -229,11 +222,6 @@ public class FansHomeView extends RxRelativeLayout implements View.OnClickListen
         drawable.setBounds(0, 0, DisplayUtils.dip2px(9.33f), DisplayUtils.dip2px(9.33f));
         tv.setCompoundDrawables(drawable, null, null, null);
         tv.setText(R.string.vfans_privilege_has_open);
-    }
-
-    public boolean hasPrivilege() {
-        return mGroupDetailModel.getVipLevel() > 0 &&
-                System.currentTimeMillis() / 1000 < mGroupDetailModel.getVipExpire();
     }
 
     @Override

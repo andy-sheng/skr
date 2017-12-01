@@ -21,6 +21,7 @@ import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.toast.ToastUtils;
 import com.base.view.BackTitleBar;
+import com.mi.live.data.room.model.FansPrivilegeModel;
 import com.wali.live.common.barrage.view.utils.FansInfoUtils;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.watchsdk.R;
@@ -56,8 +57,8 @@ public class MemGroupDetailFragment extends BaseEventBusFragment implements View
 
     private TextView mAccelerateStatusTv;
     private TextView mColourBarrageStatusTv;
-    private TextView mFlyBarrageStatus;
-    private TextView mForbiddenStatus;
+    private TextView mFlyBarrageStatusTv;
+    private TextView mForbiddenStatusTv;
 
     private FansTaskView mTaskView;
 
@@ -106,8 +107,8 @@ public class MemGroupDetailFragment extends BaseEventBusFragment implements View
 
         mAccelerateStatusTv = $(R.id.accelerate_status);
         mColourBarrageStatusTv = $(R.id.colour_barrage_status);
-        mFlyBarrageStatus = $(R.id.fly_barrage_status);
-        mForbiddenStatus = $(R.id.forbidden_status);
+        mFlyBarrageStatusTv = $(R.id.fly_barrage_status);
+        mForbiddenStatusTv = $(R.id.forbidden_status);
 
         $click($(R.id.first_privilege_area), this);
         $click($(R.id.colour_barrage_area), this);
@@ -172,30 +173,28 @@ public class MemGroupDetailFragment extends BaseEventBusFragment implements View
     }
 
     private void updatePrivilegeArea() {
-        if (FansInfoUtils.hasUpgradeAccelerationPrivilege(mGroupDetailModel.getMyPetLevel(), mGroupDetailModel.getVipLevel(), mGroupDetailModel.getVipExpire())) {
-            Drawable drawable = GlobalData.app().getResources().getDrawable(R.drawable.live_pet_group_have_turned);
-            drawable.setBounds(0, 0, DisplayUtils.dip2px(9.33f), DisplayUtils.dip2px(9.33f));
-            mAccelerateStatusTv.setCompoundDrawables(drawable, null, null, null);
-            mAccelerateStatusTv.setText(R.string.vfans_privilege_has_open);
+        if (FansInfoUtils.hasPrivilege(mGroupDetailModel.getVipLevel(), mGroupDetailModel.getVipExpire())) {
+            int myPetLevel = mGroupDetailModel.getMyPetLevel();
+            if (myPetLevel >= FansPrivilegeModel.UPGRADE_ACCELERATE_LEVEL) {
+                updateLevelTv(mAccelerateStatusTv);
+            }
+            if (myPetLevel >= FansPrivilegeModel.SEND_COLOR_BARRAGE_VIP_LEVEL) {
+                updateLevelTv(mColourBarrageStatusTv);
+            }
+            if (myPetLevel >= FansPrivilegeModel.SEND_FLY_BARRAGE_LEVEL) {
+                updateLevelTv(mFlyBarrageStatusTv);
+            }
+            if (myPetLevel >= FansPrivilegeModel.GAG_LEVEL) {
+                updateLevelTv(mForbiddenStatusTv);
+            }
         }
-        if (FansInfoUtils.hasColorBarragePrivilege(mGroupDetailModel.getMyPetLevel(), mGroupDetailModel.getVipLevel(), mGroupDetailModel.getVipExpire())) {
-            Drawable drawable = GlobalData.app().getResources().getDrawable(R.drawable.live_pet_group_have_turned);
-            drawable.setBounds(0, 0, DisplayUtils.dip2px(9.33f), DisplayUtils.dip2px(9.33f));
-            mColourBarrageStatusTv.setCompoundDrawables(drawable, null, null, null);
-            mColourBarrageStatusTv.setText(R.string.vfans_privilege_has_open);
-        }
-        if (FansInfoUtils.hasFlyBarragePrivilege(mGroupDetailModel.getMyPetLevel(), mGroupDetailModel.getVipLevel(), mGroupDetailModel.getVipExpire())) {
-            Drawable drawable = GlobalData.app().getResources().getDrawable(R.drawable.live_pet_group_have_turned);
-            drawable.setBounds(0, 0, DisplayUtils.dip2px(9.33f), DisplayUtils.dip2px(9.33f));
-            mFlyBarrageStatus.setCompoundDrawables(drawable, null, null, null);
-            mFlyBarrageStatus.setText(R.string.vfans_privilege_has_open);
-        }
-        if (FansInfoUtils.hasBanPrivilege(mGroupDetailModel.getMyPetLevel(), mGroupDetailModel.getVipLevel(), mGroupDetailModel.getVipExpire())) {
-            Drawable drawable = GlobalData.app().getResources().getDrawable(R.drawable.live_pet_group_have_turned);
-            drawable.setBounds(0, 0, DisplayUtils.dip2px(9.33f), DisplayUtils.dip2px(9.33f));
-            mForbiddenStatus.setCompoundDrawables(drawable, null, null, null);
-            mForbiddenStatus.setText(R.string.vfans_privilege_has_open);
-        }
+    }
+
+    private void updateLevelTv(TextView tv) {
+        Drawable drawable = GlobalData.app().getResources().getDrawable(R.drawable.live_pet_group_have_turned);
+        drawable.setBounds(0, 0, DisplayUtils.dip2px(9.33f), DisplayUtils.dip2px(9.33f));
+        tv.setCompoundDrawables(drawable, null, null, null);
+        tv.setText(R.string.vfans_privilege_has_open);
     }
 
     private void updateTaskArea() {

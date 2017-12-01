@@ -5,9 +5,8 @@ import com.wali.live.proto.VFansCommonProto;
 /**
  * Created by anping on 17/6/23.
  */
-
 public class FansPrivilegeModel {
-    public static final int UPGREAD_ACCELERATE_LEVEL = 1;
+    public static final int UPGRADE_ACCELERATE_LEVEL = 1;
     public static final int SEND_COLOR_BARRAGE_VIP_LEVEL = 3;
     public static final int SEND_FLY_BARRAGE_LEVEL = 5;
     public static final int GAG_LEVEL = 8;
