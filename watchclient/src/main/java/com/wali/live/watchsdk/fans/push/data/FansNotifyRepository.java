@@ -80,13 +80,16 @@ public class FansNotifyRepository {
                 .setJoinResult(joinResult)
                 .setAddBlack(addBlack)
                 .build();
+        MyLog.d(TAG, "handleJoinGroup request=" + request.toString());
         PacketData data = new PacketData();
         data.setCommand(MiLinkCommand.COMMAND_VFANS_HANDLE_JOIN_GROUP);
         data.setData(request.toByteArray());
-        PacketData rsp = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
-        if (rsp != null) {
+        PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
+        if (rspData != null) {
             try {
-                return VFansProto.HandleJoinGroupRsp.parseFrom(rsp.getData());
+                VFansProto.HandleJoinGroupRsp rsp = VFansProto.HandleJoinGroupRsp.parseFrom(rspData.getData());
+                MyLog.d(TAG, "handleJoinGroup rsp=" + ((rsp == null) ? rsp : rsp.toString()));
+                return rsp;
             } catch (InvalidProtocolBufferException e) {
                 e.printStackTrace();
             }

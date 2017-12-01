@@ -189,16 +189,16 @@ public class FansHomeView extends RxRelativeLayout implements View.OnClickListen
             }
             if (hasPrivilege()) {
                 int myPetLevel = mGroupDetailModel.getMyPetLevel();
-                if (myPetLevel > UPGRADE_ACCELERATE_LEVEL) {
+                if (myPetLevel >= UPGRADE_ACCELERATE_LEVEL) {
                     updateLevelTv(mAcceleratePrivilegeStatusTv);
                 }
-                if (myPetLevel > SEND_COLOR_BARRAGE_VIP_LEVEL) {
+                if (myPetLevel >= SEND_COLOR_BARRAGE_VIP_LEVEL) {
                     updateLevelTv(mColorBarrageStatusTv);
                 }
-                if (myPetLevel > SEND_FLY_BARRAGE_LEVEL) {
+                if (myPetLevel >= SEND_FLY_BARRAGE_LEVEL) {
                     updateLevelTv(mColorBarrageStatusTv);
                 }
-                if (myPetLevel > BAN_LEVEL) {
+                if (myPetLevel >= BAN_LEVEL) {
                     updateLevelTv(mForbiddenStatusTv);
                 }
             }
