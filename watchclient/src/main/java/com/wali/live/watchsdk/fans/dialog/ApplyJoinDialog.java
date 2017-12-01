@@ -89,6 +89,7 @@ public class ApplyJoinDialog extends RxDialog implements View.OnClickListener, I
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
+        mEditText.setText("");
         mEditText.clearFocus();
         mEditText.setFilters(new InputFilter[]{});
         mEditText.setOnClickListener(null);

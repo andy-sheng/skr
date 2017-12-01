@@ -54,7 +54,7 @@ public class FansPagerPresenter extends BaseRxPresenter<FansPagerPresenter.IView
                     @Override
                     public void call(FansGroupDetailModel groupDetailModel) {
                         //TODO 这里需要加载每日任务 loadTask
-                        if (mView != null && groupDetailModel != null) {
+                        if (groupDetailModel != null) {
                             mView.setGroupDetail(groupDetailModel);
                         }
                     }

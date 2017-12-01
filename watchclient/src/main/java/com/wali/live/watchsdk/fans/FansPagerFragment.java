@@ -17,6 +17,7 @@ import com.base.fragment.FragmentDataListener;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
+import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.SlidingTabLayout;
 import com.mi.live.data.account.UserAccountManager;
@@ -383,6 +384,7 @@ public class FansPagerFragment extends BaseEventBusFragment implements View.OnCl
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FansMemberUpdateEvent event) {
+        MyLog.d(TAG, "FansMemberUpdateEvent=" + mAnchorId);
         if (event != null) {
             mPresenter.getGroupDetail(mAnchorId);
         }

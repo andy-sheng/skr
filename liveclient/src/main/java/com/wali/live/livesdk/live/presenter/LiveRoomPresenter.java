@@ -14,11 +14,11 @@ import com.mi.live.data.milink.command.MiLinkCommand;
 import com.wali.live.livesdk.live.api.BeginLiveRequest;
 import com.wali.live.livesdk.live.api.EndLiveRequest;
 import com.wali.live.livesdk.live.api.GetRoomIdRequest;
-import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.proto.AccountProto;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveProto;
+import com.wali.live.watchsdk.task.IActionCallBack;
 
 import java.util.ArrayList;
 import java.util.List;
