@@ -19,6 +19,7 @@ import com.wali.live.watchsdk.fans.model.notification.GroupNotifyBaseModel;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,6 @@ public class ConversationLocalStore {
 
     public static boolean SHOW_VFAN_GROUP = false; //是否显示宠爱团的对话列表
     public static final int FEED_TYPE_WORKS = 6;      //作品
-
 
     //由于直播的原因，对话列表的私信可能会很多，所以getAllConversaion基本不会使用
     public static List<Conversation> getAllConversation(boolean showFocus) {
@@ -584,7 +584,8 @@ public class ConversationLocalStore {
                     robot.setMsgId(0l);
                 }
                 if (needsUpdateUnReadCount) {
-                    robot.setUnreadCount(unreadCount);
+                    long currentUnreadCnt = ConversationLocalStore.getAllConversationUnReadCount();
+                    robot.setUnreadCount((int) (currentUnreadCnt + unreadCount));
                 }
                 updateConversation(robot);
             }
