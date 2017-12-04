@@ -176,15 +176,19 @@ public class FansPagerFragment extends BaseEventBusFragment implements View.OnCl
         mTabLayout.setIndicatorBottomMargin(DisplayUtils.dip2px(6));
         mViewPager = $(R.id.vfans_pager);
         mTabPagerAdapter = new CommonTabPagerAdapter();
+
         // 设置数据
         mFansHomeView = new FansHomeView(getContext());
-        mFansTaskView = new FansTaskView(getContext());
+        mTabPagerAdapter.addView(getString(R.string.vfans_homepage), mFansHomeView);
+
+        if (mAnchorId != UserAccountManager.getInstance().getUuidAsLong()) {
+            mFansTaskView = new FansTaskView(getContext());
+            mTabPagerAdapter.addView(getString(R.string.vfans_task), mFansTaskView);
+        }
+
         mFansMemberView = new FansMemberView(getContext());
         $component(mFansMemberView, new FansMemberPresenter(mAnchorId));
-        mTabPagerAdapter.addView(getString(R.string.vfans_homepage), mFansHomeView);
-        mTabPagerAdapter.addView(getString(R.string.vfans_task), mFansTaskView);
         mTabPagerAdapter.addView(getString(R.string.vfans_member), mFansMemberView);
-//        mTabPagerAdapter.addView(getString(R.string.vfans_group), new FansHomeView(getContext()));
 
         mTabPagerAdapter.notifyDataSetChanged();
         mViewPager.setAdapter(mTabPagerAdapter);
