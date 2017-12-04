@@ -5,16 +5,20 @@ import android.view.View;
 
 import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
+import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
+import com.wali.live.proto.VFansProto;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
 import com.wali.live.watchsdk.fans.FansGroupListFragment;
+import com.wali.live.watchsdk.fans.model.FansGroupListModel;
+import com.wali.live.watchsdk.fans.request.GetGroupListRequest;
 import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,6 +26,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -49,6 +54,8 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
 
     private RoomBaseDataModel mMyRoomData;
 
+    private Boolean mHasGroup;
+
     @Override
     protected final String getTAG() {
         return TAG;
@@ -70,7 +77,9 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
         registerAction(MSG_BOTTOM_POPUP_HIDDEN);
         registerAction(MSG_SHOE_GAME_ICON);
         EventBus.getDefault().register(this);
+
         syncUnreadCount();
+        checkFans();
     }
 
     @Override
@@ -145,8 +154,12 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
 
     // TODO-YangLi 相同代码，可以考虑抽取基类
     private Subscription mSubscription;
+    private Subscription mFansSubscription;
 
     private void syncUnreadCount() {
+        if (mHasGroup != null) {
+            return;
+        }
         if (mSubscription != null && !mSubscription.isUnsubscribed()) {
             return;
         }
@@ -156,7 +169,8 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
                     public Integer call(Integer i) {
                         return (int) ConversationLocalStore.getAllConversationUnReadCount();
                     }
-                }).subscribeOn(Schedulers.io())
+                })
+                .subscribeOn(Schedulers.io())
                 .compose(this.<Integer>bindUntilEvent(PresenterEvent.STOP))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Integer>() {
@@ -169,6 +183,50 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
+                    }
+                });
+    }
+
+    private void checkFans() {
+        if (mFansSubscription != null && !mFansSubscription.isUnsubscribed()) {
+            return;
+        }
+        mFansSubscription = Observable
+                .create(new Observable.OnSubscribe<FansGroupListModel>() {
+                    @Override
+                    public void call(Subscriber<? super FansGroupListModel> subscriber) {
+                        VFansProto.GetGroupListRsp rsp = new GetGroupListRequest().syncRsp();
+                        if (rsp == null) {
+                            subscriber.onError(new Exception("group list rsp is null"));
+                            return;
+                        }
+                        if (rsp.getErrCode() != ErrorCode.CODE_SUCCESS) {
+                            subscriber.onError(new Exception(rsp.getErrMsg() + " : " + rsp.getErrCode()));
+                            return;
+                        }
+                        subscriber.onNext(new FansGroupListModel(rsp));
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .compose(this.<FansGroupListModel>bindUntilEvent(PresenterEvent.STOP))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<FansGroupListModel>() {
+                    @Override
+                    public void call(FansGroupListModel model) {
+                        MyLog.d(TAG, "get fans group success");
+                        if (mView != null) {
+                            mHasGroup = model.hasGroup();
+                            MyLog.d(TAG, "has group info=" + mHasGroup);
+                            if (mHasGroup) {
+                                mView.showFansIcon();
+                            }
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, throwable);
                     }
                 });
     }

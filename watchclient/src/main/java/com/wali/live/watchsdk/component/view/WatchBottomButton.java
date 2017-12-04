@@ -32,7 +32,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     private View mGameBtn;
     private View mShareBtn;
     private MsgCtrlBtnView mMsgCntBtn;
-    private View mVipFansBtn;
+    private View mFansBtn;
 
     private boolean mIsGameMode = false;
     private boolean mEnableShare;
@@ -89,8 +89,9 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         mMsgCntBtn = new MsgCtrlBtnView(getContext());
         addCreatedView(mMsgCntBtn, R.id.msg_ctrl_btn);
 
-        mVipFansBtn = createImageView(R.drawable.game_live_icon_pet);
-        addCreatedView(mVipFansBtn, R.id.vip_fans_btn);
+        mFansBtn = createImageView(R.drawable.game_live_icon_pet);
+        addCreatedView(mFansBtn, R.id.vip_fans_btn);
+        mFansBtn.setVisibility(View.GONE);
 
 //        mRotateBtn = createImageView(R.drawable.live_icon_rotate_screen);
 //        addCreatedView(mGiftBtn, R.id.rotate_btn);
@@ -98,11 +99,11 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         // 横竖屏时按钮排列顺序
         mRightBtnSetPort.add(mGiftBtn);
         mRightBtnSetPort.add(mMsgCntBtn);
-        mRightBtnSetPort.add(mVipFansBtn);
+        mRightBtnSetPort.add(mFansBtn);
 
         mBottomBtnSetLand.add(mGiftBtn);
         mBottomBtnSetLand.add(mMsgCntBtn);
-        mBottomBtnSetLand.add(mVipFansBtn);
+        mBottomBtnSetLand.add(mFansBtn);
 
         //mBottomBtnSetLand.add(mRotateBtn);
 
@@ -149,6 +150,10 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             };
         }
         mGameBtn.postDelayed(mAnimatorRunnable, 60 * 1000);
+    }
+
+    private void showFansIcon() {
+        mFansBtn.setVisibility(View.VISIBLE);
     }
 
     private void startGameAnimator() {
@@ -232,6 +237,11 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             }
 
             @Override
+            public void showFansIcon() {
+                WatchBottomButton.this.showFansIcon();
+            }
+
+            @Override
             public void destroyView() {
                 WatchBottomButton.this.destroyView();
             }
@@ -283,6 +293,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
     public interface IView extends IViewProxy, IOrientationListener {
         void showGameIcon(GameViewModel gameModel);
+
+        void showFansIcon();
 
         void destroyView();
 

@@ -37,6 +37,10 @@ public class FansGroupListModel extends BaseViewModel {
         }
     }
 
+    public boolean hasGroup() {
+        return mMyFansGroupModel != null || mCreateFansGroupModel != null || mMemFansGroupModelList.size() > 0;
+    }
+
     public boolean isFirst() {
         return mCreateFansGroupModel != null || mMyFansGroupModel != null;
     }
