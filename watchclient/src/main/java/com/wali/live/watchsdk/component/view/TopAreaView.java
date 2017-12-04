@@ -216,6 +216,8 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
                         mFollowTv.setVisibility(needShow ? View.VISIBLE : View.GONE);
                         if (!needShow && mFansGroupDetailModel != null) {
                             mFansArea.setVisibility(VISIBLE);
+                        } else {
+                            mFansArea.setVisibility(GONE);
                         }
                     }
                 }
@@ -334,6 +336,7 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
         mAvatarRvAdapter.setViewerList(null);
         mFollowTv.setVisibility(View.GONE);
         mLinkArea.setVisibility(View.GONE);
+        mFansGroupDetailModel = null;
     }
 
     public interface IPresenter {

@@ -89,7 +89,6 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        getGroupDetailFromServer();
     }
 
     @Override
@@ -238,6 +237,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
         switch (event.type) {
             case RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE: {
                 mMyRoomData = event.source;
+                getGroupDetailFromServer();
                 syncData();
             }
             break;
