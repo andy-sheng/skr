@@ -345,9 +345,14 @@ public class VersionCheckManager {
     private static String getCachePath(String name) {
         File tempPath = new File(Environment.getExternalStorageDirectory()
                 .getAbsolutePath(), "/WaliLivesdk/cache/");
-        if (!tempPath.exists()) {
-            tempPath.mkdirs();
+        if (tempPath.canWrite()) {
+            if (!tempPath.exists()) {
+                tempPath.mkdirs();
+            }
+        } else {
+            tempPath = GlobalData.app().getCacheDir();
         }
+        Logger.w("VersionCheckManager", "getCachePath=" + tempPath.getAbsolutePath());
         return new File(tempPath.getAbsolutePath(), name).getAbsolutePath();
     }
 
