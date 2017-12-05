@@ -138,6 +138,7 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MiLinkEvent.StatusLogined event) {
         syncUnreadCount();
+        checkFans();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

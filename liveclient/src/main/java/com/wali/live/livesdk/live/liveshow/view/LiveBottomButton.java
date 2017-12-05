@@ -1,7 +1,6 @@
 package com.wali.live.livesdk.live.liveshow.view;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -15,7 +14,6 @@ import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.liveshow.view.button.MagicControlBtnView;
 import com.wali.live.livesdk.live.liveshow.view.button.PlusControlBtnView;
 import com.wali.live.statistics.StatisticsKey;
-import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.view.MsgCtrlBtnView;
 
 import static com.wali.live.statistics.StatisticsKey.AC_APP;
