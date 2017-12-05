@@ -35,7 +35,7 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     protected View mSettingBtn;
     protected View mShareBtn;
     private MsgCtrlBtnView mMsgCntBtn;
-
+    private View mFansBtn;
     private boolean mEnableShare;
 
     @Override
@@ -62,16 +62,22 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         mMsgCntBtn = new MsgCtrlBtnView(getContext());
         addCreatedView(mMsgCntBtn, R.id.msg_ctrl_btn);
 
+        mFansBtn = createImageView(R.drawable.game_live_icon_pet);
+        addCreatedView(mFansBtn, R.id.vip_fans_btn);
+        mFansBtn.setVisibility(View.GONE);
+
         // 横竖屏时按钮排列顺序
         mLeftBtnSetPort.add(mPlusBtn);
         mRightBtnSetPort.add(mSettingBtn);
         mRightBtnSetPort.add(mMagicBtn);
         mRightBtnSetPort.add(mMsgCntBtn);
+        mRightBtnSetPort.add(mFansBtn);
 
         mBottomBtnSetLand.add(mPlusBtn);
         mBottomBtnSetLand.add(mSettingBtn);
         mBottomBtnSetLand.add(mMagicBtn);
         mBottomBtnSetLand.add(mMsgCntBtn);
+        mBottomBtnSetLand.add(mFansBtn);
 
         addShareBtn();
 
@@ -105,9 +111,9 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         } else if (id == R.id.share_btn) {
             mPresenter.showShareView();
         } else if (id == R.id.msg_ctrl_btn) {
-            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
-                mPresenter.showMsgCtrlView();
-            }
+            mPresenter.showMsgCtrlView();
+        } else if (id == R.id.vip_fans_btn) {
+            mPresenter.showVipFansView();
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
@@ -135,6 +141,11 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
             @Override
             public void onUpdateUnreadCount(int unreadCount) {
                 mMsgCntBtn.setMsgUnreadCnt(unreadCount);
+            }
+
+            @Override
+            public void showFansIcon() {
+                mFansBtn.setVisibility(View.VISIBLE);
             }
         }
         return new ComponentView();
@@ -165,6 +176,11 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
          * 显示私信面板
          */
         void showMsgCtrlView();
+
+        /**
+         * 显示粉丝团管理界面
+         */
+        void showVipFansView();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
@@ -172,5 +188,10 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
          * 更新私信未读数
          */
         void onUpdateUnreadCount(int unreadCount);
+
+        /**
+         * 显示粉丝团入口按钮
+         */
+        void showFansIcon();
     }
 }
