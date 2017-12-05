@@ -57,14 +57,14 @@ public class HeaderVideoView extends RelativeLayout implements IEventObserver {
     private Handler mUIHandler = new Handler(Looper.getMainLooper());
 
     private HeaderVideoPresenter mPresenter;
-    private BaseSdkController mController = new BaseSdkController() {
+    private final BaseSdkController mController = new BaseSdkController() {
         @Override
         protected String getTAG() {
             return "HeaderVideoController";
         }
     };
 
-    private Runnable mVideoRunnable = new Runnable() {
+    private final Runnable mVideoRunnable = new Runnable() {
         @Override
         public void run() {
             mPresenter.startVideo();
@@ -72,6 +72,10 @@ public class HeaderVideoView extends RelativeLayout implements IEventObserver {
             MyLog.v(TAG, "play mVideoUrl=" + mVideoUrl + "   mPlayerState" + mPlayerState);
         }
     };
+
+    protected final <T extends View> T $(int resId) {
+        return (T) findViewById(resId);
+    }
 
     public void setData(String videoUrl, String coverUrl) {
         MyLog.w(TAG, "setData videoUrl=" + videoUrl + " coverUrl=" + coverUrl);
@@ -242,9 +246,5 @@ public class HeaderVideoView extends RelativeLayout implements IEventObserver {
             super.destroy();
             mPresenter.releaseVideo();
         }
-    }
-
-    protected <T extends View> T $(int resId) {
-        return (T) findViewById(resId);
     }
 }

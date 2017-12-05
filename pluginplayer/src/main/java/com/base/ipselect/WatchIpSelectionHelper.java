@@ -21,8 +21,12 @@ public class WatchIpSelectionHelper extends BaseIpSelectionHelper {
     }
 
     @Override
-    public String getTAG() {
+    public final String getTAG() {
         return TAG;
+    }
+
+    public boolean hasStreamUrl() {
+        return !TextUtils.isEmpty(mOriginalStreamUrl);
     }
 
     private boolean needSetHost() {
