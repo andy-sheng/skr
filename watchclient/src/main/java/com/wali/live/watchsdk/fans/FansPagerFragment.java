@@ -312,7 +312,9 @@ public class FansPagerFragment extends BaseEventBusFragment implements View.OnCl
         mGroupDetailModel = groupDetailModel;
 
         mFansHomeView.setData(mAnchorName, mGroupDetailModel);
-        mFansTaskView.setGroupDetailModel(mGroupDetailModel);
+        if (mFansTaskView != null) {
+            mFansTaskView.setGroupDetailModel(mGroupDetailModel);
+        }
         mFansMemberView.updateGroupDetail(mGroupDetailModel);
 
         updateApplyArea();

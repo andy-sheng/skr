@@ -59,6 +59,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
 
     private RoomBaseDataModel mMyRoomData;
     private boolean mIsLive;
+    private FansGroupDetailModel mFansGroupDetailModel;
 
     private Subscription mFollowSubscription;
     private Subscription mRefViewersSubscription;
@@ -109,7 +110,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
     }
 
     /***
-     *  TODO 获取粉丝团信息 -- 多处调用， 后续优化
+     *  TODO 获取粉丝团信息 -- 多处调用,后续优化
      */
     private void getGroupDetailFromServer() {
         if (mSubscription != null && !mSubscription.isUnsubscribed()) {
@@ -137,6 +138,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
                     @Override
                     public void call(FansGroupDetailModel groupDetailModel) {
                         if (groupDetailModel != null) {
+                            mFansGroupDetailModel = groupDetailModel;
                             mView.setFansGroupModel(groupDetailModel);
                         }
                     }
@@ -192,6 +194,11 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
 
     @Override
     public void syncData() {
+        MyLog.d(TAG, "syncData");
+        if (mFansGroupDetailModel == null || mFansGroupDetailModel.getZuid() != mMyRoomData.getUid()) {
+            //这里加条件限制是因为观看端RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE这个事件会多次触发
+            getGroupDetailFromServer();
+        }
         mView.updateTicketAndViewerCount(mMyRoomData.getTicket(), mMyRoomData.getViewerCnt());
         mView.updateAnchorInfo(mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
                 mMyRoomData.getCertificationType(), mMyRoomData.getLevel(), mMyRoomData.getNickName());
@@ -224,6 +231,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
         mView.cancelAnimator();
         mRefViewersHandler.removeCallbacks(mRefreshViewersRun);
         mView.onLinkMicStopped();
+        mFansGroupDetailModel = null;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -237,7 +245,6 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
         switch (event.type) {
             case RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE: {
                 mMyRoomData = event.source;
-                getGroupDetailFromServer();
                 syncData();
             }
             break;

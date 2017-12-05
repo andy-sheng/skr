@@ -97,8 +97,9 @@ public class FansMemberManagerFragment extends RxFragment {
                 R.anim.slide_alpha_in : R.anim.slide_alpha_out);
     }
 
-    public static void openFragment(
-            BaseActivity activity, FansGroupDetailModel groupDetailModel, List<MemberItem> memberItems) {
+    public static void openFragment(BaseActivity activity,
+                                    FansGroupDetailModel groupDetailModel,
+                                    List<MemberItem> memberItems) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(EXTRA_GROUP_INFO, groupDetailModel);
         bundle.putSerializable(EXTRA_MEM_LIST, (Serializable) memberItems);
