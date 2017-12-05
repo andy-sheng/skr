@@ -7,12 +7,12 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.base.activity.BaseSdkActivity;
-import com.base.fragment.RxFragment;
+import com.base.event.KeyboardEvent;
+import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
@@ -21,12 +21,15 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.setting.presenter.FansMedalSettingPresenter;
 import com.wali.live.watchsdk.fans.setting.presenter.IFansMedalSettingView;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 /**
  * Created by lan on 2017/11/24.
  */
-public class FansMedalSettingFragment extends RxFragment implements View.OnClickListener, IFansMedalSettingView {
+public class FansMedalSettingFragment extends BaseEventBusFragment implements View.OnClickListener, IFansMedalSettingView {
     private static final String EXTRA_ZUID = "extra_zuid";
 
     private static final int[][] ID_ARRAY = {
@@ -43,10 +46,12 @@ public class FansMedalSettingFragment extends RxFragment implements View.OnClick
     private BackTitleBar mTitleBar;
     private SparseArray<MedalItemUIWrapper> mMedalItemArray;
 
+    private View mPlaceholderView;
+
     private FansMedalSettingPresenter mPresenter;
     private long mZuid;
 
-    private int mLastInputMode = 0;
+//    private int mLastInputMode = 0;
 
     @Override
     public int getRequestCode() {
@@ -89,18 +94,22 @@ public class FansMedalSettingFragment extends RxFragment implements View.OnClick
             mMedalItemArray.put(ID_ARRAY[i][0], new MedalItemUIWrapper(i));
         }
 
-        setSoftInputMode();
+        mPlaceholderView = $(R.id.placeholder_view);
+
+//        setSoftInputMode();
         initPresenter();
     }
 
-    private void setSoftInputMode() {
-        mLastInputMode = getActivity().getWindow().getAttributes().softInputMode;
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-    }
-
-    private void recoverSoftInputMode() {
-        getActivity().getWindow().setSoftInputMode(mLastInputMode);
-    }
+//    private void setSoftInputMode() {
+//        mLastInputMode = getActivity().getWindow().getAttributes().softInputMode;
+//        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+//    }
+//
+//    private void recoverSoftInputMode() {
+//        if (mLastInputMode != 0) {
+//            getActivity().getWindow().setSoftInputMode(mLastInputMode);
+//        }
+//    }
 
     private void initPresenter() {
         mPresenter = new FansMedalSettingPresenter(this, mZuid);
@@ -127,7 +136,7 @@ public class FansMedalSettingFragment extends RxFragment implements View.OnClick
 
     private void finish() {
         KeyboardUtils.hideKeyboardImmediately(getActivity());
-        recoverSoftInputMode();
+//        recoverSoftInputMode();
 
         FragmentNaviUtils.popFragment(getActivity());
     }
@@ -138,6 +147,28 @@ public class FansMedalSettingFragment extends RxFragment implements View.OnClick
             MedalItemUIWrapper medalItem = mMedalItemArray.get(ID_ARRAY[i][0]);
             if (medalItem != null) {
                 medalItem.setMedalText(list.get(i));
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(KeyboardEvent event) {
+        MyLog.d(TAG, "KeyboardEvent eventType=" + event.eventType);
+        switch (event.eventType) {
+            case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE: {
+                int keyboardHeight = Integer.parseInt(String.valueOf(event.obj1));
+                ViewGroup.MarginLayoutParams layoutParams =
+                        (ViewGroup.MarginLayoutParams) mPlaceholderView.getLayoutParams();
+                layoutParams.height = keyboardHeight;
+                mPlaceholderView.setLayoutParams(layoutParams);
+                break;
+            }
+            case KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN: {
+                ViewGroup.MarginLayoutParams layoutParams =
+                        (ViewGroup.MarginLayoutParams) mPlaceholderView.getLayoutParams();
+                layoutParams.height = 0;
+                mPlaceholderView.setLayoutParams(layoutParams);
+                break;
             }
         }
     }
