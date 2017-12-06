@@ -107,7 +107,6 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
         mPresenter.syncData();
     }
 
-
     private void init(Context context) {
         inflate(context, R.layout.top_area_view, this);
         mAnchorIv = $(R.id.anchor_iv);
@@ -264,7 +263,9 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
                 MyLog.v(TAG, "setFansGroupModel model=" + model);
                 mFansGroupDetailModel = model;
                 if (mFansGroupDetailModel != null && mFollowTv.getVisibility() != View.VISIBLE) {
-                    mFansArea.setVisibility(VISIBLE);
+                    mFansArea.setVisibility(View.VISIBLE);
+                } else {
+                    mFansArea.setVisibility(View.GONE);
                 }
             }
 
@@ -464,6 +465,8 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
                         //TODO 显示粉丝按钮，有job计时操作，之后加。  
                         if (!mFollowShow && mFansGroupDetailModel != null) {
                             mFansArea.setVisibility(View.VISIBLE);
+                        } else {
+                            mFansArea.setVisibility(View.GONE);
                         }
                         ViewGroup.LayoutParams layoutParams = mAnchorInfoContainer.getLayoutParams();
                         layoutParams.width = LayoutParams.WRAP_CONTENT;
