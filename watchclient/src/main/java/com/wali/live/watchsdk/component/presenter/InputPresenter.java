@@ -170,7 +170,7 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
         if (TextUtils.isEmpty(msg) || mMyRoomData == null) {
             return;
         }
-        if (mFansPrivilegeModel != null && mFansPrivilegeModel.canSendFlyBarrage()
+        if (isFlyBarrage && mFansPrivilegeModel != null && mFansPrivilegeModel.canSendFlyBarrage()
                 && mFansPrivilegeModel.getHasSendFlyBarrageTimes() >= mFansPrivilegeModel.getMaxCanSendFlyBarrageTimes()) {
             ToastUtils.showToast(GlobalData.app().getString(R.string.flybarrage_none));
             return;
