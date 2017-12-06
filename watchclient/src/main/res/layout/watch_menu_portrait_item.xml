@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/view_dimen_300"
+    android:layout_height="@dimen/view_dimen_220">
+
+
+    <ImageView
+        android:id="@+id/watch_menu_protrait_item_imgPic"
+        android:layout_width="@dimen/view_dimen_80"
+        android:layout_height="@dimen/view_dimen_80"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_dimen_65"
+        android:src="@drawable/feeds_card_icon_share_normal"/>
+
+    <TextView
+        android:id="@+id/watch_menu_protrait_item_txtName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_35"
+        android:text="菜单"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_32"/>
+
+    <ImageView
+        android:id="@+id/watch_menu_protrait_item_txtUnread"
+        android:layout_width="@dimen/view_dimen_25"
+        android:layout_height="@dimen/view_dimen_25"
+        android:layout_marginLeft="-6dp"
+        android:layout_marginTop="@dimen/view_dimen_63"
+        android:layout_toRightOf="@id/watch_menu_protrait_item_imgPic"
+        android:background="@drawable/little_red_dot_number"
+        android:visibility="gone"/>
+
+    <View
+        android:id="@+id/watch_menu_protrait_item_imgLine"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="#4CE3E3E3"
+        android:visibility="gone"/>
+</merge>

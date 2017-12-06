@@ -3,22 +3,17 @@ package com.wali.live.watchsdk.component.presenter;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
-import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
+import com.thornbirds.component.Params;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
-import com.wali.live.proto.VFansProto;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
-import com.wali.live.watchsdk.fans.FansGroupListFragment;
-import com.wali.live.watchsdk.fans.model.FansGroupListModel;
-import com.wali.live.watchsdk.fans.request.GetGroupListRequest;
 import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
 
 import org.greenrobot.eventbus.EventBus;
@@ -26,7 +21,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -35,13 +29,13 @@ import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_MENU_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOE_GAME_ICON;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_DOWNLOAD;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_INPUT_VIEW;
-import static com.wali.live.component.BaseSdkController.MSG_SHOW_MESSAGE_PANEL;
-import static com.wali.live.component.BaseSdkController.MSG_SHOW_SHARE_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_MENU_PANEL;
 
 /**
  * Created by yangli on 2017/2/18.
@@ -53,8 +47,6 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
     private static final String TAG = "BottomButtonPresenter";
 
     private RoomBaseDataModel mMyRoomData;
-
-    private Boolean mHasGroup;
 
     @Override
     protected final String getTAG() {
@@ -76,10 +68,10 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
         registerAction(MSG_BOTTOM_POPUP_SHOWED);
         registerAction(MSG_BOTTOM_POPUP_HIDDEN);
         registerAction(MSG_SHOE_GAME_ICON);
+        registerAction(MSG_HIDE_MENU_PANEL);
         EventBus.getDefault().register(this);
 
         syncUnreadCount();
-        checkFans();
     }
 
     @Override
@@ -103,8 +95,6 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
     @Override
     public void showGiftView() {
         if (AccountAuthManager.triggerActionNeedAccount(mView.getRealView().getContext())) {
-            // 飘屏测试
-//            FlyBarrageManager.testFlyBarrage(mMyRoomData.getRoomId(),String.valueOf(mMyRoomData.getUid()));
             EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(
                     GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_SHOW_MALL_LIST));
         }
@@ -121,24 +111,13 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
     }
 
     @Override
-    public void showShareView() {
-        postEvent(MSG_SHOW_SHARE_PANEL);
-    }
-
-    @Override
-    public void showMsgCtrlView() {
-        postEvent(MSG_SHOW_MESSAGE_PANEL);
-    }
-
-    @Override
-    public void showVipFansView() {
-        FansGroupListFragment.open((BaseActivity) mView.getRealView().getContext());
+    public void showWatchMenuPanel(int unReadCnt) {
+        postEvent(MSG_SHOW_MENU_PANEL, new Params().putItem(unReadCnt));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MiLinkEvent.StatusLogined event) {
         syncUnreadCount();
-        checkFans();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -158,9 +137,6 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
     private Subscription mFansSubscription;
 
     private void syncUnreadCount() {
-        if (mHasGroup != null) {
-            return;
-        }
         if (mSubscription != null && !mSubscription.isUnsubscribed()) {
             return;
         }
@@ -188,50 +164,6 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
                 });
     }
 
-    private void checkFans() {
-        if (mFansSubscription != null && !mFansSubscription.isUnsubscribed()) {
-            return;
-        }
-        mFansSubscription = Observable
-                .create(new Observable.OnSubscribe<FansGroupListModel>() {
-                    @Override
-                    public void call(Subscriber<? super FansGroupListModel> subscriber) {
-                        VFansProto.GetGroupListRsp rsp = new GetGroupListRequest().syncRsp();
-                        if (rsp == null) {
-                            subscriber.onError(new Exception("group list rsp is null"));
-                            return;
-                        }
-                        if (rsp.getErrCode() != ErrorCode.CODE_SUCCESS) {
-                            subscriber.onError(new Exception(rsp.getErrMsg() + " : " + rsp.getErrCode()));
-                            return;
-                        }
-                        subscriber.onNext(new FansGroupListModel(rsp));
-                        subscriber.onCompleted();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .compose(this.<FansGroupListModel>bindUntilEvent(PresenterEvent.STOP))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<FansGroupListModel>() {
-                    @Override
-                    public void call(FansGroupListModel model) {
-                        MyLog.d(TAG, "get fans group success");
-                        if (mView != null) {
-                            mHasGroup = model.hasGroup();
-                            MyLog.d(TAG, "has group info=" + mHasGroup);
-                            if (mHasGroup) {
-                                mView.showFansIcon();
-                            }
-                        }
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        MyLog.e(TAG, throwable);
-                    }
-                });
-    }
-
     @Override
     public boolean onEvent(int event, IParams params) {
         if (mView == null) {
@@ -254,6 +186,9 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
             case MSG_SHOE_GAME_ICON:
                 mView.showGameIcon((GameViewModel) params.getItem(0));
                 return true;
+            case MSG_HIDE_MENU_PANEL:
+                mView.updateMoreBtnStatus();
+                break;
             default:
                 break;
         }

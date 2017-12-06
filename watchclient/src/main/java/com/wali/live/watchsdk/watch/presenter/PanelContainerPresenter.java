@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.mi.live.data.room.model.RoomBaseDataModel;
@@ -11,14 +12,19 @@ import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
 import com.wali.live.watchsdk.component.presenter.panel.MessagePresenter;
+import com.wali.live.watchsdk.component.presenter.panel.WatchMenuPresenter;
 import com.wali.live.watchsdk.component.view.panel.MessagePanel;
+import com.wali.live.watchsdk.component.view.panel.WatchMenuPanel;
+import com.wali.live.watchsdk.fans.FansGroupListFragment;
 
-import java.lang.ref.WeakReference;
+import java.lang.ref.SoftReference;
 
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_BOTTOM_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_FANS_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_MENU_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_MESSAGE_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SHARE_PANEL;
 
@@ -31,8 +37,10 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     private static final String TAG = "PanelContainerPresenter";
     private RoomBaseDataModel mMyRoomData;
 
-    private WeakReference<MessagePanel> mMessagePanelRef;
-    private WeakReference<MessagePresenter> mMessagePresenterRef;
+    private SoftReference<MessagePanel> mMessagePanelRef;
+    private SoftReference<MessagePresenter> mMessagePresenterRef;
+    private SoftReference<WatchMenuPanel> mMenuPanelRef;
+    private SoftReference<WatchMenuPresenter> mMenuPresenterRef;
 
     @Override
     protected final String getTAG() {
@@ -66,6 +74,8 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
         registerAction(MSG_SHOW_SHARE_PANEL);
         registerAction(MSG_SHOW_MESSAGE_PANEL);
         registerAction(MSG_HIDE_BOTTOM_PANEL);
+        registerAction(MSG_SHOW_MENU_PANEL);
+        registerAction(MSG_SHOW_FANS_PANEL);
     }
 
     @Override
@@ -83,11 +93,26 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
         MessagePanel panel = deRef(mMessagePanelRef);
         if (panel == null) {
             panel = new MessagePanel(mView);
-            mMessagePanelRef = new WeakReference<>(panel);
+            mMessagePanelRef = new SoftReference<>(panel);
             MessagePresenter presenter = deRef(mMessagePresenterRef);
             if (presenter == null) {
                 presenter = new MessagePresenter(mController);
-                mMessagePresenterRef = new WeakReference<>(presenter);
+                mMessagePresenterRef = new SoftReference<>(presenter);
+            }
+            setupComponent(panel, presenter);
+        }
+        showPanel(panel, true);
+    }
+
+    private void showWatchMenuPanel(int unReadCnt) {
+        WatchMenuPanel panel = deRef(mMenuPanelRef);
+        if (panel == null) {
+            panel = new WatchMenuPanel(mView, unReadCnt, mMyRoomData.getEnableShare());
+            mMenuPanelRef = new SoftReference<>(panel);
+            WatchMenuPresenter presenter = deRef(mMenuPresenterRef);
+            if (presenter == null) {
+                presenter = new WatchMenuPresenter(mController);
+                mMenuPresenterRef = new SoftReference<>(presenter);
             }
             setupComponent(panel, presenter);
         }
@@ -122,6 +147,13 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
             case MSG_HIDE_BOTTOM_PANEL:
             case MSG_ON_BACK_PRESSED:
                 return hidePanel(true);
+            case MSG_SHOW_MENU_PANEL:
+                int unReadCnt = params.getItem(0);
+                showWatchMenuPanel(unReadCnt);
+                break;
+            case MSG_SHOW_FANS_PANEL:
+                FansGroupListFragment.open((BaseActivity) mView.getContext());
+                break;
             default:
                 break;
         }

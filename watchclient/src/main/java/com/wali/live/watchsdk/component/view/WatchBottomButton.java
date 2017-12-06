@@ -15,9 +15,7 @@ import com.thornbirds.component.view.IOrientationListener;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.component.view.BaseBottomButton;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
-import com.wali.live.watchsdk.view.MsgCtrlBtnView;
 
 /**
  * Created by yangli on 16-8-29.
@@ -30,12 +28,9 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     private View mGiftBtn;
     //    protected View mRotateBtn;
     private View mGameBtn;
-    private View mShareBtn;
-    private MsgCtrlBtnView mMsgCntBtn;
-    private View mFansBtn;
+    private WatchMenuIconView mMoreBtn;
 
     private boolean mIsGameMode = false;
-    private boolean mEnableShare;
 
     private Runnable mAnimatorRunnable;
     private ValueAnimator mShakeAnimator;
@@ -58,27 +53,17 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         } else if (id == R.id.game_btn) {
             mPresenter.showGameDownloadView();
             clearAnimator(); // 点击的同时清除动画
-        } else if (id == R.id.share_btn) {
-            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
-                mPresenter.showShareView();
-            }
-        } else if (id == R.id.msg_ctrl_btn) {
-            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
-                mPresenter.showMsgCtrlView();
-            }
-        } else if (id == R.id.vip_fans_btn) {
-            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
-                mPresenter.showVipFansView();
-            }
+        } else if (id == R.id.more_btn) {
+            mMoreBtn.changeIconStatus(true);
+            mPresenter.showWatchMenuPanel(mMoreBtn.getMsgUnreadCnt());
         }
     }
 
     public WatchBottomButton(
             @NonNull RelativeLayout contentContainer,
-            boolean isGameMode, boolean enableShare) {
+            boolean isGameMode) {
         super(contentContainer);
         mIsGameMode = isGameMode;
-        mEnableShare = enableShare;
         initView();
     }
 
@@ -86,40 +71,17 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         mGiftBtn = createImageView(R.drawable.live_icon_gift_btn);
         addCreatedView(mGiftBtn, R.id.gift_btn);
 
-        mMsgCntBtn = new MsgCtrlBtnView(getContext());
-        addCreatedView(mMsgCntBtn, R.id.msg_ctrl_btn);
-
-        mFansBtn = createImageView(R.drawable.game_live_icon_pet);
-        addCreatedView(mFansBtn, R.id.vip_fans_btn);
-        mFansBtn.setVisibility(View.GONE);
-
-//        mRotateBtn = createImageView(R.drawable.live_icon_rotate_screen);
-//        addCreatedView(mGiftBtn, R.id.rotate_btn);
+        mMoreBtn = new WatchMenuIconView(getContext());
+        addCreatedView(mMoreBtn, R.id.more_btn);
 
         // 横竖屏时按钮排列顺序
         mRightBtnSetPort.add(mGiftBtn);
-        mRightBtnSetPort.add(mMsgCntBtn);
-        mRightBtnSetPort.add(mFansBtn);
+        mRightBtnSetPort.add(mMoreBtn);
 
         mBottomBtnSetLand.add(mGiftBtn);
-        mBottomBtnSetLand.add(mMsgCntBtn);
-        mBottomBtnSetLand.add(mFansBtn);
-
-        //mBottomBtnSetLand.add(mRotateBtn);
-
-        addShareBtn();
+        mBottomBtnSetLand.add(mMoreBtn);
 
         orientChild();
-    }
-
-    private void addShareBtn() {
-        if (mEnableShare) {
-            mShareBtn = createImageView(R.drawable.live_icon_share_btn);
-            addCreatedView(mShareBtn, R.id.share_btn);
-
-            mRightBtnSetPort.add(mShareBtn);
-            mBottomBtnSetLand.add(mShareBtn);
-        }
     }
 
     private void showGameIcon(final GameViewModel gameModel) {
@@ -150,10 +112,6 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             };
         }
         mGameBtn.postDelayed(mAnimatorRunnable, 60 * 1000);
-    }
-
-    private void showFansIcon() {
-        mFansBtn.setVisibility(View.VISIBLE);
     }
 
     private void startGameAnimator() {
@@ -237,18 +195,18 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             }
 
             @Override
-            public void showFansIcon() {
-                WatchBottomButton.this.showFansIcon();
-            }
-
-            @Override
             public void destroyView() {
                 WatchBottomButton.this.destroyView();
             }
 
             @Override
-            public void onUpdateUnreadCount(int unreadCount) {
-                mMsgCntBtn.setMsgUnreadCnt(unreadCount);
+            public void onUpdateUnreadCount(int unReadCnt) {
+                mMoreBtn.setMsgUnreadCnt(unReadCnt);
+            }
+
+            @Override
+            public void updateMoreBtnStatus() {
+                mMoreBtn.changeIconStatus(false);
             }
         }
         return new ComponentView();
@@ -276,31 +234,24 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         void showGameDownloadView();
 
         /**
-         * 显示分享界面
+         * 显示更多面板
          */
-        void showShareView();
-
-        /**
-         * 显示私信面板
-         */
-        void showMsgCtrlView();
-
-        /**
-         * 显示粉丝团管理界面
-         */
-        void showVipFansView();
+        void showWatchMenuPanel(int unReadCnt);
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
         void showGameIcon(GameViewModel gameModel);
-
-        void showFansIcon();
 
         void destroyView();
 
         /**
          * 更新私信未读数
          */
-        void onUpdateUnreadCount(int unreadCount);
+        void onUpdateUnreadCount(int unReadCnt);
+
+        /**
+         * 更新更多按钮
+         */
+        void updateMoreBtnStatus();
     }
 }

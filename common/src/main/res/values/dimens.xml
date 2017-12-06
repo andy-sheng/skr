@@ -106,6 +106,7 @@
     <dimen name="view_dimen_51">17dip</dimen>
     <dimen name="view_dimen_56">18.67dip</dimen>
     <dimen name="view_dimen_60">20dp</dimen>
+    <dimen name="view_dimen_63">21dp</dimen>
     <dimen name="view_dimen_64">21.33dp</dimen>
     <dimen name="view_dimen_65">21.67dp</dimen>
     <dimen name="view_dimen_66">22dp</dimen>

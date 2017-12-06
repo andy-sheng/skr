@@ -390,4 +390,5 @@
     <string name="vfans_friendliness">親密值</string>
     <string name="deny">拒絕</string>
     <string name="agree_apply">已同意該申請</string>
+    <string name="watch_share_btn">分享</string>
 </resources>

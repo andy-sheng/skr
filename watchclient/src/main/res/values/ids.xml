@@ -2,6 +2,7 @@
 <resources>
     <!--底部按钮相关-->
     <item type="id" name="gift_btn"/>
+    <item type="id" name="more_btn"/>
     <item type="id" name="game_btn"/>
     <item type="id" name="share_btn"/>
     <item type="id" name="msg_ctrl_btn"/>

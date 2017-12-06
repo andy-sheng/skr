@@ -141,7 +141,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
                 return true;
             case MSG_SHOW_SHARE_PANEL:
                 showShareControlPanel();
-                break;
+                return true;
             case MSG_SHOW_MESSAGE_PANEL:
                 showMessagePanel();
                 return true;
