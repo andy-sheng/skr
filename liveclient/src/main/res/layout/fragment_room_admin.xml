@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         app:is_profile_mode="true"/>
 
-    <com.wali.live.livesdk.live.view.SlidingTabLayout
+    <com.base.view.SlidingTabLayout
         android:id="@+id/manager_tab"
         android:layout_below="@+id/title_bar"
         android:layout_width="match_parent"

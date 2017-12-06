@@ -21,7 +21,7 @@
         <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
         <!--app:layout_collapseMode="pin"-->
 
-        <com.wali.live.livesdk.live.view.SlidingTabLayout
+        <com.base.view.SlidingTabLayout
             android:id="@+id/photo_tab"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_130"
