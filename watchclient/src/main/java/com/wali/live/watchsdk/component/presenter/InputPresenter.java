@@ -15,6 +15,7 @@ import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.data.LastBarrage;
 import com.mi.live.data.push.event.BarrageMsgEvent;
+import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.push.model.GlobalRoomMsgExt;
 import com.mi.live.data.query.model.MessageRule;
@@ -23,6 +24,7 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.presenter.ComponentPresenter;
 import com.thornbirds.component.view.IViewProxy;
+import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.event.EventClass;
 import com.wali.live.proto.VFansCommonProto;
@@ -169,7 +171,7 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
             return;
         }
         if (mFansPrivilegeModel != null && mFansPrivilegeModel.canSendFlyBarrage()
-                && mFansPrivilegeModel.getHasSendFlyBarrageTimes() > mFansPrivilegeModel.getMaxCanSendFlyBarrageTimes()) {
+                && mFansPrivilegeModel.getHasSendFlyBarrageTimes() >= mFansPrivilegeModel.getMaxCanSendFlyBarrageTimes()) {
             ToastUtils.showToast(GlobalData.app().getString(R.string.flybarrage_none));
             return;
         }
@@ -358,6 +360,14 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(BarrageMsgEvent.SendBarrageResponseEvent event) {
+        BarrageMsg msg = BarrageMessageManager.mSendingMsgCache.get(event.getCid());
+        if (msg == null) {//表示之前发送的消息不是从这个房间发送的
+            return;
+        }
+        BarrageMessageManager.mSendingMsgCache.remove(event.getCid());
+        if (!msg.getRoomId().equals(mMyRoomData.getRoomId())) {
+            return;
+        }
         if (Integer.MAX_VALUE != event.getGuardCnt() && mFansPrivilegeModel.getHasSendFlyBarrageTimes() < event.getGuardCnt()) {
             mFansPrivilegeModel.setHasSendFlyBarrageTimes(event.getGuardCnt());
             updateInputHint(mFlyBtnSelected);

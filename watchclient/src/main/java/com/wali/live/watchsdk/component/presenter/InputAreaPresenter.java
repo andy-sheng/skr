@@ -116,7 +116,10 @@ public class InputAreaPresenter extends InputPresenter<InputAreaView.IView>
                 LiveProto.LimitedInfo limitedInfo = params.getItem(0);
                 mFansPrivilegeModel.setHasSendFlyBarrageTimes(limitedInfo.getCounter());
                 mFansPrivilegeModel.setMaxCanSendFlyBarrageTimes(limitedInfo.getMax());
-                if (limitedInfo.getCounter() > 0 && limitedInfo.getCounter() < limitedInfo.getMax()) {
+                MyLog.d(TAG, "MSG_BARRAGE_SWITCH currentCnt=" + limitedInfo.getCounter()
+                        + " maxCnt=" + limitedInfo.getMax());
+                if (limitedInfo.getCounter() >= 0 && limitedInfo.getMax() > 0
+                    /* limitedInfo.getCounter() < limitedInfo.getMax()*/) {
                     mView.enableFlyBarrage(true);
                 } else {
                     mView.enableFlyBarrage(false);
