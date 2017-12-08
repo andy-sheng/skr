@@ -186,6 +186,14 @@ public class RankingPagerFragment extends BaseFragment {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (getActivity() != null && !getActivity().isFinishing()) {
+            mViewPager.setAdapter(null);
+        }
+    }
+
+    @Override
     public boolean onBackPressed() {
         FragmentNaviUtils.popFragmentFromStack(getActivity());
         return true;
