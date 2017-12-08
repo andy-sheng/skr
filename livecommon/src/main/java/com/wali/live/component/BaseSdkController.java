@@ -85,7 +85,7 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_SHOW_SEND_ENVELOPE = MSG_POPUP_FIRST + 12;  // 显示 发送红包页面
     public static final int MSG_SHOW_MESSAGE_PANEL = MSG_POPUP_FIRST + 13;  // 显示 私信面板
     public static final int MSG_SHOW_MENU_PANEL = MSG_POPUP_FIRST + 14;     // 显示 更多面板
-    public static final int MSG_HIDE_MENU_PANEL = MSG_POPUP_FIRST + 15;     //  更多面板
+    public static final int MSG_ON_MENU_PANEL_HIDDEN = MSG_POPUP_FIRST + 15;// 更多面板已隐藏
     public static final int MSG_SHOW_FANS_PANEL = MSG_POPUP_FIRST + 16;     // 显示 更多面板
 
     //连麦/PK相关消息
@@ -116,6 +116,4 @@ public abstract class BaseSdkController extends ComponentController {
 
     // 其他
     private static final int MSG_MORE_FIRST = 90000;
-
-
 }

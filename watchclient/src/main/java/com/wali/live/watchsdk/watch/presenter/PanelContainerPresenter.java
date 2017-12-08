@@ -132,12 +132,6 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
             case MSG_ON_ORIENT_LANDSCAPE:
                 onOrientation(true);
                 return true;
-        }
-        if (CommonUtils.isFastDoubleClick()) {
-            MyLog.w(TAG, "onAction but isFastDoubleClick, event=" + event);
-            return false;
-        }
-        switch (event) {
             case MSG_SHOW_SHARE_PANEL:
                 showSharePanel();
                 return true;

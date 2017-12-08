@@ -29,7 +29,7 @@ import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
-import static com.wali.live.component.BaseSdkController.MSG_HIDE_MENU_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_ON_MENU_PANEL_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOE_GAME_ICON;
@@ -68,7 +68,7 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
         registerAction(MSG_BOTTOM_POPUP_SHOWED);
         registerAction(MSG_BOTTOM_POPUP_HIDDEN);
         registerAction(MSG_SHOE_GAME_ICON);
-        registerAction(MSG_HIDE_MENU_PANEL);
+        registerAction(MSG_ON_MENU_PANEL_HIDDEN);
         EventBus.getDefault().register(this);
 
         syncUnreadCount();
@@ -186,7 +186,7 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
             case MSG_SHOE_GAME_ICON:
                 mView.showGameIcon((GameViewModel) params.getItem(0));
                 return true;
-            case MSG_HIDE_MENU_PANEL:
+            case MSG_ON_MENU_PANEL_HIDDEN:
                 mView.updateMoreBtnStatus();
                 break;
             default:

@@ -21,7 +21,6 @@ import java.util.List;
 import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
 import static android.widget.RelativeLayout.ALIGN_PARENT_RIGHT;
 import static android.widget.RelativeLayout.BELOW;
-import static android.widget.RelativeLayout.CENTER_VERTICAL;
 import static android.widget.RelativeLayout.RIGHT_OF;
 import static com.mi.milink.sdk.base.Global.getContext;
 
@@ -33,7 +32,8 @@ import static com.mi.milink.sdk.base.Global.getContext;
 public class WatchMenuPanel extends BaseBottomPanel<RelativeLayout, RelativeLayout>
         implements View.OnClickListener, IComponentView<WatchMenuPanel.IPresenter, WatchMenuPanel.IView> {
     private static final String TAG = "WatchMenuPanel";
-    private final static int RIGHT_MARGIN = DisplayUtils.dip2px(46.66f);
+    private final static int BOTTOM_MARGIN = DisplayUtils.dip2px(98f);
+    private final static int RIGHT_MARGIN = DisplayUtils.dip2px(6f);
 
     @Nullable
     protected IPresenter mPresenter;
@@ -159,16 +159,15 @@ public class WatchMenuPanel extends BaseBottomPanel<RelativeLayout, RelativeLayo
         super.orientSelf();
         setBackgroundResource();
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mContentView.getLayoutParams();
+        layoutParams.addRule(ALIGN_PARENT_BOTTOM);
         if (mIsLandscape) {
-            layoutParams.removeRule(ALIGN_PARENT_BOTTOM);
             layoutParams.addRule(ALIGN_PARENT_RIGHT);
-            layoutParams.addRule(CENTER_VERTICAL);
+            layoutParams.bottomMargin = BOTTOM_MARGIN;
             layoutParams.rightMargin = RIGHT_MARGIN;
         } else {
             layoutParams.removeRule(ALIGN_PARENT_RIGHT);
-            layoutParams.removeRule(CENTER_VERTICAL);
-            layoutParams.addRule(ALIGN_PARENT_BOTTOM);
             layoutParams.rightMargin = 0;
+            layoutParams.bottomMargin = 0;
         }
         mContentView.setLayoutParams(layoutParams);
     }

@@ -27,7 +27,7 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_BOTTOM_PANEL;
-import static com.wali.live.component.BaseSdkController.MSG_HIDE_MENU_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_ON_MENU_PANEL_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_FANS_PANEL;
@@ -65,27 +65,27 @@ public class WatchMenuPresenter extends BaseSdkRxPresenter<WatchMenuPanel.IView>
     @Override
     public void stopPresenter() {
         super.stopPresenter();
-        postEvent(MSG_HIDE_MENU_PANEL);
+        postEvent(MSG_ON_MENU_PANEL_HIDDEN);
         unregisterAllAction();
         EventBus.getDefault().unregister(this);
     }
 
     @Override
     public void showShareView() {
-        postEvent(MSG_SHOW_SHARE_PANEL);
         postEvent(MSG_HIDE_BOTTOM_PANEL);
+        postEvent(MSG_SHOW_SHARE_PANEL);
     }
 
     @Override
     public void showMsgCtrlView() {
-        postEvent(MSG_SHOW_MESSAGE_PANEL);
         postEvent(MSG_HIDE_BOTTOM_PANEL);
+        postEvent(MSG_SHOW_MESSAGE_PANEL);
     }
 
     @Override
     public void showVipFansView() {
-        postEvent(MSG_SHOW_FANS_PANEL);
         postEvent(MSG_HIDE_BOTTOM_PANEL);
+        postEvent(MSG_SHOW_FANS_PANEL);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
