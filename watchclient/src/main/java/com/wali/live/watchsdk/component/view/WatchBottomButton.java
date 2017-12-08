@@ -15,6 +15,7 @@ import com.thornbirds.component.view.IOrientationListener;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.component.view.BaseBottomButton;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
 
 /**
@@ -54,8 +55,10 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             mPresenter.showGameDownloadView();
             clearAnimator(); // 点击的同时清除动画
         } else if (id == R.id.more_btn) {
-            mMoreBtn.changeIconStatus(true);
-            mPresenter.showWatchMenuPanel(mMoreBtn.getMsgUnreadCnt());
+            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                mMoreBtn.changeIconStatus(true);
+                mPresenter.showWatchMenuPanel(mMoreBtn.getMsgUnreadCnt());
+            }
         }
     }
 
