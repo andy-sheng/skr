@@ -93,7 +93,7 @@ public class WatchMenuPanel extends BaseBottomPanel<RelativeLayout, RelativeLayo
             mBottomBtnSet.add(mShareIv);
         }
         if (mEnableFans) {
-            mFansIv = createImageView(R.drawable.game_live_icon_pet, R.string.vfan_me, R.id.vip_fans_btn);
+            mFansIv = createImageView(R.drawable.menu_live_icon_pet, R.string.vfan_me, R.id.vip_fans_btn);
             mBottomBtnSet.add(mFansIv);
         }
         orientChild();
@@ -195,7 +195,7 @@ public class WatchMenuPanel extends BaseBottomPanel<RelativeLayout, RelativeLayo
             public void showFansIcon() {
                 mEnableFans = true;
                 if (mFansIv == null) {
-                    mFansIv = createImageView(R.drawable.menu_live_icon_pet, R.string.fans, R.id.vip_fans_btn);
+                    mFansIv = createImageView(R.drawable.menu_live_icon_pet, R.string.vfan_me, R.id.vip_fans_btn);
                     mBottomBtnSet.add(mFansIv);
                     addView(mFansIv, mBottomBtnSet.size() - 1);
                 }
@@ -203,7 +203,6 @@ public class WatchMenuPanel extends BaseBottomPanel<RelativeLayout, RelativeLayo
         }
         return new ComponentView();
     }
-
 
     public interface IPresenter {
         /**
