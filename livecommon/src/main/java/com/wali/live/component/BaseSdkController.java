@@ -48,6 +48,8 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_BOTTOM_POPUP_SHOWED = MSG_COMPOUND_FIRST + 2; // 底部面板/礼物页面等显示时，通知 底部按钮和弹幕区 隐藏
     public static final int MSG_BOTTOM_POPUP_HIDDEN = MSG_COMPOUND_FIRST + 3; // 底部面板/礼物页面等隐藏时，通知 底部按钮和弹幕区 显示
     public static final int MSG_FORCE_ROTATE_SCREEN = MSG_COMPOUND_FIRST + 4; // 强制旋转UI
+    public static final int MSG_VIDEO_PORTRAIT = MSG_COMPOUND_FIRST + 5;      // 视频流方向为竖向
+    public static final int MSG_VIDEO_LANDSCAPE = MSG_COMPOUND_FIRST + 6;     // 视屏流方向为横向
 
     // 触摸相关消息
     private static final int MSG_TOUCH_FIRST = 21000;

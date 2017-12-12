@@ -134,7 +134,6 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
 
     // TODO-YangLi 相同代码，可以考虑抽取基类
     private Subscription mSubscription;
-    private Subscription mFansSubscription;
 
     private void syncUnreadCount() {
         if (mSubscription != null && !mSubscription.isUnsubscribed()) {

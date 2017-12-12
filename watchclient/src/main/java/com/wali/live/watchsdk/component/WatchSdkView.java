@@ -71,6 +71,8 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_FOLLOW_GUIDE;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_INPUT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
+import static com.wali.live.component.BaseSdkController.MSG_VIDEO_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_VIDEO_PORTRAIT;
 
 /**
  * Created by yangli on 2017/2/18.
@@ -111,6 +113,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
 
     protected boolean mIsGameMode = false;
     protected boolean mIsLandscape = false;
+    protected boolean mIsVideoLandscape = false;
 
     @Override
     protected String getTAG() {
@@ -401,6 +404,8 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
         registerAction(MSG_SHOW_FOLLOW_GUIDE);
         registerAction(MSG_FOLLOW_COUNT_DOWN);
         registerAction(MSG_SHOW_SEND_ENVELOPE);
+        registerAction(MSG_VIDEO_PORTRAIT);
+        registerAction(MSG_VIDEO_LANDSCAPE);
     }
 
     @Override
@@ -456,6 +461,14 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
         }
     }
 
+    public void updateRotateBtn() {
+        if (!mIsVideoLandscape && !mIsLandscape) {
+            mRotateBtn.setVisibility(View.GONE);
+        } else {
+            mRotateBtn.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public boolean onEvent(int event, IParams params) {
         switch (event) {
@@ -476,6 +489,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                     mBarrageBtnView.setVisibility(View.VISIBLE);
                     mController.postEvent(MSG_HIDE_GAME_INPUT);
                 }
+                updateRotateBtn();
                 return true;
             case MSG_ON_ORIENT_LANDSCAPE:
                 mIsLandscape = true;
@@ -486,6 +500,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                     mBarrageBtnView.setVisibility(View.INVISIBLE);
                     mController.postEvent(MSG_SHOW_GAME_INPUT);
                 }
+                updateRotateBtn();
                 return true;
             case MSG_INPUT_VIEW_SHOWED:
                 if (!mIsGameMode || !mIsLandscape) {
@@ -556,6 +571,14 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             case MSG_SHOW_SEND_ENVELOPE:
                 SendEnvelopeFragment.openFragment((BaseActivity) mActivity, mController.mMyRoomData);
                 return true;
+            case MSG_VIDEO_LANDSCAPE:
+                mIsVideoLandscape = true;
+                updateRotateBtn();
+                break;
+            case MSG_VIDEO_PORTRAIT:
+                mIsVideoLandscape = false;
+                updateRotateBtn();
+                break;
             default:
                 break;
         }

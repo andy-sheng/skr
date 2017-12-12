@@ -31,10 +31,10 @@ public abstract class BasePlayerPresenter<VIEW, STREAMER extends PullStreamerPre
 
     protected STREAMER mStreamerPresenter;
 
-    private int mVideoWidth;
-    private int mVideoHeight;
-    private int mSurfaceWidth;
-    private int mSurfaceHeight;
+    protected int mVideoWidth;
+    protected int mVideoHeight;
+    protected int mSurfaceWidth;
+    protected int mSurfaceHeight;
     private Surface mSurface;
 
     private boolean mIsLandscape = false;
@@ -109,11 +109,16 @@ public abstract class BasePlayerPresenter<VIEW, STREAMER extends PullStreamerPre
         }
     }
 
+    protected void notifyVideoDirection() {
+        // nothing to do
+    }
+
     protected final void onVideoSizeChange(int width, int height) {
         if (mVideoWidth != width || mVideoHeight != height) {
             mVideoWidth = width;
             mVideoHeight = height;
             updateShiftUp();
+            notifyVideoDirection();
         }
     }
 

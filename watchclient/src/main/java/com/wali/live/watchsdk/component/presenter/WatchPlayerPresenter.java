@@ -22,6 +22,8 @@ import static com.wali.live.component.BaseSdkController.MSG_NEW_VIDEO_URL;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_COMPLETED;
+import static com.wali.live.component.BaseSdkController.MSG_VIDEO_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_VIDEO_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_VIDEO_SIZE_CHANGED;
 
 /**
@@ -189,6 +191,18 @@ public class WatchPlayerPresenter extends BasePlayerPresenter<TextureView, PullS
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void notifyVideoDirection() {
+        if (mVideoWidth == 0 || mVideoHeight == 0) {
+            return;
+        }
+        if (mVideoWidth > mVideoHeight) {
+            mController.postEvent(MSG_VIDEO_LANDSCAPE);
+        } else {
+            mController.postEvent(MSG_VIDEO_PORTRAIT);
         }
     }
 

@@ -88,7 +88,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="6.67dp"
         android:src="@drawable/live_icon_rotate_screen"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <com.wali.live.watchsdk.component.view.ExtraContainerView
         android:id="@+id/extra_container"
