@@ -6,7 +6,7 @@ allprojects {
 
 ext {
     //Android
-    androidBuildToolsVersion = "25.0.1"
+    androidBuildToolsVersion = '25.0.1'
     androidMinSdkVersion = 18
     androidTargetSdkVersion = 25
     androidCompileSdkVersion = 25
@@ -92,7 +92,7 @@ ext {
             leakCanary: "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}",
     ]
 
-    flavorType = "live"
-    //控制liveCommon flavor，不同的flavor有不同的支付方式，取值:livesdkapp,livesdkaar
+    flavorType = 'live'
+    //控制liveCommon flavor，不同的flavor有不同的支付方式，取值:livesdkapp, livesdkaar
     buildFlavorType = 'livesdkapp'
 }

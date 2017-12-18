@@ -7,10 +7,10 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.androidMinSdkVersion
         targetSdkVersion rootProject.ext.androidTargetSdkVersion
-        if(buildFlavorType == 'livesdkaar'){
-            buildConfigField("int","MILINK_APP_ID","10013")
-        }else{
-            buildConfigField("int","MILINK_APP_ID","10008")
+        if (rootProject.ext.buildFlavorType == 'livesdkaar') {
+            buildConfigField('int', 'MILINK_APP_ID', '10013')
+        } else {
+            buildConfigField('int', 'MILINK_APP_ID', '10008')
         }
     }
     lintOptions {
