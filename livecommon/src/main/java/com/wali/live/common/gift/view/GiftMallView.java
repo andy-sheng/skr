@@ -27,6 +27,7 @@ import com.base.activity.assist.IBindActivityLIfeCycle;
 import com.base.dialog.MyAlertDialog;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.mvp.specific.RxRelativeLayout;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.toast.ToastUtils;
@@ -62,9 +63,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by zjn on 16-11-30.
  */
-public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCycle {
-    public static String TAG = "GiftMallView";
-
+public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeCycle {
     public static final String SP_FILENAME_GIFTMALL_CONFIG = "giftmall.config";
 
     public static final String FIRST_SHOW_GIFT_MALL_VIEW = "isFirstShowGiftMall";
@@ -120,12 +119,19 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
     private boolean mIsContinueSendFlag = false;//彩蛋礼物引入判断是否处于连送状态
 
     private static final int TIPS_TYPE_BALANCE = 1;
-
     private static final int TIPS_TYPE_SILIVER_DIAMOND = 2;
-
     private static final int TIPS_TYPE_MI_COIN = 3;
 
     private Activity mActivity;
+
+    //TODO 开始修改
+    private TextView mMallGiftTv;
+    private TextView mPacketGiftTv;
+
+    private TextView mRechargeTv;
+
+    //标记当前的选择的礼物状态
+    private boolean mIsMallGift = true;
 
     public GiftMallView(Context context) {
         super(context);
@@ -398,6 +404,7 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
                         mGiftMallPresenter.buyGift();
                     }
                 });
+
         // 连送按钮的点击
         RxView.clicks(mContinueSendBtn)
                 .throttleFirst(200, TimeUnit.MILLISECONDS)
@@ -410,15 +417,13 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
                 });
 
         // 充值按钮的点击
-        RxView.clicks(findViewById(R.id.recharge_tv))
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Action1<Void>() {
-                    @Override
-                    public void call(Void aVoid) {
-                        //TODO 一定记得加上
-                        EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_GO_RECHARGE));
-                    }
-                });
+        mRechargeTv = $rxClick(R.id.recharge_tv, 500, new Action1<Void>() {
+            @Override
+            public void call(Void aVoid) {
+                //TODO 一定记得加上
+                EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_GO_RECHARGE));
+            }
+        });
 
         //金钻银钻点击事件处理一样
         RxView.clicks(mBalanceTv)
@@ -438,6 +443,84 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
                         showDiamondTips(TIPS_TYPE_SILIVER_DIAMOND);
                     }
                 });
+
+        mMallGiftTv = $rxClick(R.id.tv_gift, 300, new Action1() {
+            @Override
+            public void call(Object o) {
+                if (!mIsMallGift) {
+                    clickMallGift();
+                }
+            }
+        });
+
+        mPacketGiftTv = $rxClick(R.id.tv_pkt_gift, 300, new Action1() {
+            @Override
+            public void call(Object o) {
+                if (mIsMallGift) {
+                    clickPktGift();
+                }
+            }
+        });
+    }
+
+    public boolean isMallGift() {
+        return mIsMallGift;
+    }
+
+    /**
+     * 选择花钱礼物，默认选中花钱礼物
+     */
+    private void clickMallGift() {
+        mIsMallGift = true;
+        setGiftTabBackground();
+        switchMallType();
+
+        // 先直接加载，之后加缓存
+        mGiftMallPresenter.loadDataFromCache("clickMallGift");
+    }
+
+    /**
+     * 选择背包礼物
+     */
+    private void clickPktGift() {
+        mIsMallGift = false;
+        setGiftTabBackground();
+        switchMallType();
+
+        // 先直接加载，之后加缓存
+        mGiftMallPresenter.loadDataFromCache("clickPktGift");
+    }
+
+    void setGiftTabBackground() {
+        if (mIsMallGift) {
+            mMallGiftTv.setSelected(true);
+            mPacketGiftTv.setSelected(false);
+
+            mBalanceTv.setVisibility(View.VISIBLE);
+            mSiliverDiamond.setVisibility(View.VISIBLE);
+
+            mRechargeTv.setVisibility(View.VISIBLE);
+        } else {
+            mMallGiftTv.setSelected(false);
+            mPacketGiftTv.setSelected(true);
+
+            mBalanceTv.setVisibility(View.GONE);
+            mSiliverDiamond.setVisibility(View.GONE);
+
+            mRechargeTv.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 切换礼物状态，花钱礼物和 包裹礼物（礼物卡，免费礼物）
+     */
+    public void switchMallType() {
+        cancelSelectView(mSelectedView);
+        mSelectedGift = null;
+
+        clearAllGiftItemStatus();
+        resetGiftItemBtnInfo();
+
     }
 
     private void unSubscribeDiamondTipSubscription() {
@@ -472,7 +555,6 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
      * @param tipsType
      */
     private void showDiamondTips(int tipsType) {
-
         unsubscribeTipsHideSubscription();
 
         if (mDiamondTips == null) {
@@ -526,6 +608,7 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
             if (left < DisplayUtils.dip2px(getContext(), 13.33f)) {
                 left = DisplayUtils.dip2px(getContext(), 13.33f);
             }
+
             layoutParams.setMargins(left, 0, 0, bottom);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             mGiftBottomPanel.addView(mDiamondTips, layoutParams);
@@ -703,8 +786,6 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
 
     /**
      * 根据礼物id选中一个礼物
-     *
-     * @param id
      */
     public void selectGiftById(final int id) {
         //如果这个商品是已经选中的商品就走正常选中逻辑就行
@@ -774,11 +855,8 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
 
     /**
      * 横屏时候选中礼物
-     *
-     * @param id
      */
     private void selectGiftByIdLandScape(final int id) {
-
         Observable.create(new Observable.OnSubscribe<Integer>() {
             @Override
             public void call(Subscriber<? super Integer> subscriber) {
@@ -1207,7 +1285,6 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
 
     public void onActivityDestroy() {
         MyLog.d(TAG, "onDestroy : unregister eventbus");
-
         unSubscribeDiamondTipSubscription();
 
         if (mNormalBuyAnimationSet != null) {

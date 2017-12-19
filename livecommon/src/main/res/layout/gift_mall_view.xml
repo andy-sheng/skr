@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mall_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+       android:id="@+id/mall_container"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
 
     <!-- 礼物列表 -->
     <RelativeLayout
         android:id="@+id/gift_bottom_panel"
         android:layout_width="match_parent"
-        android:layout_height="238dp"
+        android:layout_height="@dimen/view_dimen_864"
         android:layout_alignParentBottom="true"
         android:background="@color/color_black_trans_80">
 
@@ -16,7 +16,7 @@
             android:id="@+id/gift_display_bottom"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentTop="true">
 
             <TextView
                 android:id="@+id/diamond_max_tv"
@@ -29,7 +29,7 @@
                 android:gravity="center"
                 android:text="10"
                 android:textColor="@color/color_white"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/diamond_siliver_tv"
@@ -43,7 +43,7 @@
                 android:gravity="center"
                 android:text="0"
                 android:textColor="@color/color_white"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/recharge_tv"
@@ -58,7 +58,7 @@
                 android:padding="10dp"
                 android:text="@string/recharge"
                 android:textColor="@color/color_fed533"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/send_gift"
@@ -72,28 +72,94 @@
                 android:gravity="center"
                 android:text="@string/send_gift"
                 android:textColor="@color/gift_send_btn_bg_color"
-                android:textSize="13.33dp" />
+                android:textSize="13.33dp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/bottom_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/margin_16">
+
+            <FrameLayout
+                android:id="@+id/fl_gift"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_dimen_70">
+
+                <TextView
+                    android:id="@+id/tv_gift"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:drawableLeft="@drawable/live_gift_icon"
+                    android:drawablePadding="@dimen/margin_10"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/margin_20"
+                    android:paddingRight="@dimen/margin_20"
+                    android:text="@string/gift"
+                    android:textColor="@drawable/gift_mall_text_color"
+                    android:textSize="@dimen/text_size_36"/>
+
+                <View
+                    android:id="@+id/slide_gift"
+                    android:layout_width="@dimen/view_dimen_120"
+                    android:layout_height="@dimen/margin_4"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:background="@drawable/gift_mall_bottom_slide_view_bg"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fl_pkt"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_70"
+                android:layout_marginLeft="@dimen/margin_138"
+                android:layout_toRightOf="@+id/fl_gift">
+
+                <TextView
+                    android:id="@+id/tv_pkt_gift"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/gift_pkt_bg"
+                    android:drawablePadding="@dimen/margin_10"
+                    android:gravity="top"
+                    android:paddingLeft="@dimen/margin_20"
+                    android:paddingRight="@dimen/margin_20"
+                    android:text="@string/gift_packet_text"
+                    android:textColor="@drawable/gift_mall_text_color"
+                    android:textSize="@dimen/text_size_36"
+                    android:visibility="visible"/>
+
+                <View
+                    android:id="@+id/slide_pkt"
+                    android:layout_width="@dimen/view_dimen_120"
+                    android:layout_height="@dimen/margin_4"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:background="@drawable/gift_mall_bottom_slide_view_bg"/>
+            </FrameLayout>
         </RelativeLayout>
 
         <com.wali.live.common.view.ViewPagerWithCircleIndicator
             android:id="@+id/gift_display_viewpager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/gift_display_bottom" />
+            android:layout_above="@id/bottom_tab"
+            android:layout_below="@id/gift_display_bottom"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_dimen_1"
-            android:layout_above="@id/gift_display_bottom"
-            android:layout_alignBottom="@+id/gift_display_viewpager"
-            android:background="@color/color_white_trans_20" />
+            android:layout_alignTop="@+id/gift_display_viewpager"
+            android:layout_below="@id/gift_display_bottom"
+            android:background="@color/color_white_trans_20"/>
 
         <com.wali.live.common.view.ErrorView
             android:id="@+id/gift_list_error_view"
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:layout_above="@id/gift_display_bottom"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <com.wali.live.common.gift.view.ContinueSendBtn
             android:id="@+id/continue_send_btn"
@@ -101,14 +167,14 @@
             android:layout_height="200dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <ViewStub
             android:id="@+id/gift_mall_guide_page_viewstub"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inflatedId="@+id/gift_mall_guide_page"
-            android:layout="@layout/gift_mall_guide_page_view" />
+            android:layout="@layout/gift_mall_guide_page_view"/>
         <!--<include layout="@layout/gift_mall_guide_page_view"/>-->
     </RelativeLayout>
 
@@ -116,5 +182,5 @@
         android:id="@+id/top_transparent_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/gift_bottom_panel" />
+        android:layout_above="@id/gift_bottom_panel"/>
 </merge>

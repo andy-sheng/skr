@@ -305,4 +305,6 @@
     <string name="vfan_member_role_deputy_admin">副團長</string>
     <string name="vfan_member_role_mass">團員</string>
     <string name="vfan_member_role_black">黑名單</string>
+
+    <string name="gift_packet_text">背包</string>
 </resources>

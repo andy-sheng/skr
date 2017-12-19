@@ -95,7 +95,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
 
     private ContinueSendNumber mContinueSend = new ContinueSendNumber(); // 连送次数
 
-    private ExecutorService singleThreadForBuyGift = Executors.newSingleThreadExecutor(
+    private ExecutorService mSingleThreadForBuyGift = Executors.newSingleThreadExecutor(
             new ThreadPool.NamedThreadFactory("GiftMallPresenter")); // 送礼的线程池
 
     private Subscription mSountDownSubscription; // 倒计时的订阅
@@ -181,7 +181,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
 //        if (true && Constants.isDebugOrTestBuild) {
 //            final Gift buyGift = buyGiftWithCard.gift;
 //            Observable.just(buyGift)
-//                    .observeOn(Schedulers.from(singleThreadForBuyGift))
+//                    .observeOn(Schedulers.from(mSingleThreadForBuyGift))
 //                    .flatMap(new Func1<Gift, Observable<?>>() {
 //                        @Override
 //                        public Observable<?> call(Gift gift) {
@@ -224,7 +224,6 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
          * 因为可能第一个连送的最一个（或n个）还没有返回response的时候下一个连送已经开始
          * 这个时候会影响continueId和连送num的值
          */
-
         final Long[] requestTime = {System.currentTimeMillis()};
         /**
          * 记录这个连送的continueId,因为这个请求回来的时候全局的continueId可能已经改变了
@@ -388,7 +387,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                         return Observable.just(buyGiftRsp);
                     }
                 })
-                .subscribeOn(Schedulers.from(singleThreadForBuyGift))
+                .subscribeOn(Schedulers.from(mSingleThreadForBuyGift))
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(getRxActivity().<GiftProto.BuyGiftRsp>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new Observer<GiftProto.BuyGiftRsp>() {
@@ -516,7 +515,17 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         }
         if (!mIsLandscape) {
             final List<List<GiftMallPresenter.GiftWithCard>> dataSourceList = new ArrayList<>(); // 数据源
-            mLoadDataSubscription = dataSource()
+            mLoadDataSubscription = dataSource(mGiftMallView.isMallGift())
+                    .filter(new Func1<GiftWithCard, Boolean>() {
+                        @Override
+                        public Boolean call(GiftWithCard giftWithCard) {
+                            // 如果是在包裹礼物状态
+                            if (!mGiftMallView.isMallGift()) {
+                                return giftWithCard.canUseCard();
+                            }
+                            return true;
+                        }
+                    })
                     .buffer(8)
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(getRxActivity().<List<GiftWithCard>>bindUntilEvent(ActivityEvent.DESTROY))
@@ -529,7 +538,9 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                                 loadDataFromCache("onCompleted orient1");
                                 return;
                             }
+
                             mGiftMallView.setGiftDisplayViewPagerAdapterDataSource(dataSourceList);
+
                             mGiftMallView.setGiftListErrorViewVisibility(true);
                             mHasLoadData = true;
 
@@ -551,8 +562,18 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                     });
         } else {
             final List<GiftMallPresenter.GiftWithCard> dataList = new ArrayList<>();
-            mLoadDataSubscription = dataSource()
+            mLoadDataSubscription = dataSource(mGiftMallView.isMallGift())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .filter(new Func1<GiftWithCard, Boolean>() {
+                        @Override
+                        public Boolean call(GiftWithCard giftWithCard) {
+                            // 如果是在包裹礼物状态
+                            if (!mGiftMallView.isMallGift()) {
+                                return giftWithCard.canUseCard();
+                            }
+                            return true;
+                        }
+                    })
                     .compose(getRxActivity().<GiftMallPresenter.GiftWithCard>bindUntilEvent(ActivityEvent.DESTROY))
                     .subscribe(new Observer<GiftMallPresenter.GiftWithCard>() {
                         @Override
@@ -562,6 +583,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                                 loadDataFromCache("onCompleted orient2");
                                 return;
                             }
+
                             if (mGiftMallView.setGiftDisplayRecycleViewAdapterDataSource(dataList)) {
                                 mHasLoadData = true;
 
@@ -573,7 +595,6 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
 
                         @Override
                         public void onError(Throwable e) {
-
                         }
 
                         @Override
@@ -585,11 +606,15 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
     }
 
     public void resetContinueSend() {
-        mContinueSend.reset();
+        mSingleThreadForBuyGift.execute(new Runnable() {
+            @Override
+            public void run() {
+                mContinueSend.reset();
+            }
+        });
     }
 
-    private Observable<GiftWithCard> dataSource() {
-//        final boolean[] isHasLoadingMiCoinFirstTime = {false};
+    private Observable<GiftWithCard> dataSource(final boolean mallType) {
         return Observable.just(GiftRepository.getGiftListCache())
                 .flatMap(new Func1<List<Gift>, Observable<List<Gift>>>() {
                     @Override
@@ -616,21 +641,14 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                     @Override
                     public Boolean call(Gift gift) {
                         MyLog.d(TAG, "dataSourceGiftId:" + gift.toString());
+                        if (!mallType) {
+                            return true;
+                        }
 
                         if (mGiftInfoForThisRoom != null && mGiftInfoForThisRoom.enable()) {
                             return mGiftInfoForThisRoom.needShow(gift.getGiftId());
                         }
                         return gift.getCanSale();
-                    }
-                })
-                //仅仅在watchsdkLite上去除红包入口
-                .filter(new Func1<Gift, Boolean>() {
-                    @Override
-                    public Boolean call(Gift gift) {
-//                        if (gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
-//                            return false;
-//                        }
-                        return true;
                     }
                 })
                 .map(new Func1<Gift, GiftWithCard>() {
@@ -960,8 +978,8 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
     @Override
     public void onActivityDestroy() {
         EventBus.getDefault().unregister(this);
-        if (singleThreadForBuyGift != null) {
-            singleThreadForBuyGift.shutdown();
+        if (mSingleThreadForBuyGift != null) {
+            mSingleThreadForBuyGift.shutdown();
         }
 
         if (mGiftMallView != null) {
@@ -1067,8 +1085,6 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
             }
 
             return num;
-
         }
     }
-
 }
