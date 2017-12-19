@@ -13,7 +13,7 @@
         android:background="@color/color_black_trans_80">
 
         <RelativeLayout
-            android:id="@+id/gift_display_bottom"
+            android:id="@+id/gift_display_area"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_alignParentTop="true">
@@ -73,6 +73,23 @@
                 android:text="@string/send_gift"
                 android:textColor="@color/gift_send_btn_bg_color"
                 android:textSize="13.33dp"/>
+
+            <TextView
+                android:id="@+id/pkt_detail_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="-1.33dp"
+                android:layout_marginRight="@dimen/margin_30"
+                android:background="@drawable/live_icon_gift_recharge"
+                android:gravity="center"
+                android:paddingLeft="@dimen/margin_30"
+                android:paddingRight="@dimen/margin_50"
+                android:text="@string/pkt_gift_detail"
+                android:textColor="@color/color_ff2966"
+                android:textSize="@dimen/text_size_36"
+                android:visibility="gone"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -145,20 +162,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/bottom_tab"
-            android:layout_below="@id/gift_display_bottom"/>
+            android:layout_below="@id/gift_display_area"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_dimen_1"
             android:layout_alignTop="@+id/gift_display_viewpager"
-            android:layout_below="@id/gift_display_bottom"
+            android:layout_below="@id/gift_display_area"
             android:background="@color/color_white_trans_20"/>
 
         <com.wali.live.common.view.ErrorView
             android:id="@+id/gift_list_error_view"
             android:layout_width="match_parent"
             android:layout_height="180dp"
-            android:layout_above="@id/gift_display_bottom"
+            android:layout_above="@id/gift_display_area"
             android:visibility="gone"/>
 
         <com.wali.live.common.gift.view.ContinueSendBtn

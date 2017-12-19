@@ -307,4 +307,5 @@
     <string name="vfan_member_role_black">黑名單</string>
 
     <string name="gift_packet_text">背包</string>
+    <string name="pkt_gift_detail">詳細資料</string>
 </resources>

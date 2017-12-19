@@ -330,4 +330,5 @@
     <string name="vfan_member_role_black">Blocklist</string>
 
     <string name="gift_packet_text">Backpacks</string>
+    <string name="pkt_gift_detail">Details</string>
 </resources>
