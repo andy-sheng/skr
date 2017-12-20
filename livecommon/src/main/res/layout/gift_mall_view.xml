@@ -23,13 +23,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="14dp"
+                android:layout_marginLeft="13.33dp"
+                android:drawableLeft="@drawable/live_icon_golden_diamond_big"
                 android:drawablePadding="6.66dp"
-                android:drawableRight="@drawable/live_icon_golden_diamond_big"
                 android:gravity="center"
                 android:text="10"
                 android:textColor="@color/color_white"
-                android:textSize="15sp"/>
+                android:textSize="@dimen/text_size_34"/>
 
             <TextView
                 android:id="@+id/diamond_siliver_tv"
@@ -38,27 +38,26 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="13.33dp"
                 android:layout_toRightOf="@id/diamond_max_tv"
+                android:drawableLeft="@drawable/live_icon_argentum_diamond_big"
                 android:drawablePadding="6.66dp"
-                android:drawableRight="@drawable/live_icon_argentum_diamond_big"
                 android:gravity="center"
                 android:text="0"
                 android:textColor="@color/color_white"
-                android:textSize="15sp"/>
+                android:textSize="@dimen/text_size_36"/>
 
             <TextView
                 android:id="@+id/recharge_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="-1.33dp"
                 android:layout_toRightOf="@id/diamond_siliver_tv"
-                android:drawablePadding="6.66dp"
+                android:drawablePadding="5dp"
                 android:drawableRight="@drawable/live_icon_more_big_normal"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="@string/recharge"
                 android:textColor="@color/color_fed533"
-                android:textSize="15sp"/>
+                android:textSize="@dimen/text_size_36"/>
 
             <TextView
                 android:id="@+id/send_gift"
@@ -72,22 +71,19 @@
                 android:gravity="center"
                 android:text="@string/send_gift"
                 android:textColor="@color/gift_send_btn_bg_color"
-                android:textSize="13.33dp"/>
+                android:textSize="@dimen/text_size_36"/>
 
             <TextView
                 android:id="@+id/pkt_detail_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="-1.33dp"
-                android:layout_marginRight="@dimen/margin_30"
-                android:background="@drawable/live_icon_gift_recharge"
+                android:drawablePadding="5dp"
+                android:drawableRight="@drawable/live_icon_more_big_normal"
                 android:gravity="center"
-                android:paddingLeft="@dimen/margin_30"
-                android:paddingRight="@dimen/margin_50"
+                android:padding="10dp"
                 android:text="@string/pkt_gift_detail"
-                android:textColor="@color/color_ff2966"
+                android:textColor="@color/color_fed533"
                 android:textSize="@dimen/text_size_36"
                 android:visibility="gone"/>
         </RelativeLayout>

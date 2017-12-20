@@ -137,8 +137,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
     private View mSlidePkt;
 
     private TextView mRechargeTv;
-    //TODO 准备考虑去掉
-    private TextView mSendGiftTv; // 发送按钮
+    private TextView mSendGiftTv;
 
     private TextView mPktDetailTv;
 
@@ -471,6 +470,8 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
 
         mSlideGift = $(R.id.slide_gift);
         mSlidePkt = $(R.id.slide_pkt);
+
+        setGiftTabBackground();
     }
 
     public boolean isMallGift() {
@@ -513,7 +514,6 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
             mBalanceTv.setVisibility(View.VISIBLE);
             mSiliverDiamond.setVisibility(View.VISIBLE);
             mRechargeTv.setVisibility(View.VISIBLE);
-            mSendGiftTv.setVisibility(View.VISIBLE);
 
             mPktDetailTv.setVisibility(View.GONE);
         } else {
@@ -527,7 +527,6 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
             mBalanceTv.setVisibility(View.GONE);
             mSiliverDiamond.setVisibility(View.GONE);
             mRechargeTv.setVisibility(View.GONE);
-            mSendGiftTv.setVisibility(View.GONE);
 
             mPktDetailTv.setVisibility(View.VISIBLE);
         }
@@ -752,7 +751,6 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
                 .doOnSubscribe(new Action0() {
                     @Override
                     public void call() {
-
                         if (mIsBuyGiftBySendBtn) {
                             mSendGiftTv.setVisibility(View.INVISIBLE);
                             mContinueSendBtn.setVisibility(View.VISIBLE);
@@ -1241,7 +1239,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
             mNormalBuyAnimationSet.cancel();
         }
 
-//        mSendGiftTv.setVisibility(View.VISIBLE);
+        mSendGiftTv.setVisibility(View.VISIBLE);
         mContinueSendBtn.setVisibility(View.GONE);
     }
 
