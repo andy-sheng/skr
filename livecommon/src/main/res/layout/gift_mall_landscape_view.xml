@@ -96,6 +96,16 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/divider"/>
 
+        <ImageView
+            android:id="@+id/pkt_empty_iv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_270"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/divider"
+            android:scaleType="centerInside"
+            android:src="@drawable/gift_pkt_empty"
+            android:visibility="gone"/>
+
         <RelativeLayout
             android:id="@+id/gift_display_area"
             android:layout_width="match_parent"

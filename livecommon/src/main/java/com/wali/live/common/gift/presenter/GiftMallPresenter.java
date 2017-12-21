@@ -33,6 +33,7 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.EventController;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
+import com.wali.live.common.gift.bean.GiftMallBean;
 import com.wali.live.common.gift.exception.GiftErrorCode;
 import com.wali.live.common.gift.exception.GiftException;
 import com.wali.live.common.gift.view.GiftDisPlayItemView;
@@ -412,6 +413,12 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                             switch (((GiftException) e).errCode) {
                                 case GiftErrorCode.GIFT_CARD_INSUFFICIENT: {
                                     giftDisPlayItemView.setDataSource(buyGiftWithCard);
+
+                                    //礼物卡数量不足
+                                    if (buyGiftWithCard.card != null) {
+                                        //删除用完的礼物
+                                        mGiftMallBean.remove(buyGiftWithCard);
+                                    }
                                 }
                                 break;
                             }
@@ -488,6 +495,13 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                             //获取礼物特效时候加载数据
                             giftDisPlayItemView.setDataSource(buyGiftWithCard);
                         }
+
+                        //礼物卡赠送完后马上清除
+                        if (buyGiftWithCard.card != null && buyGiftWithCard.card.getGiftCardCount() <= 0 && useGiftCard[0]) {
+                            mGiftMallBean.remove(buyGiftWithCard);
+                            buyGiftWithCard.card = null;
+                            ToastUtils.showToast(R.string.gift_card_insufficient);
+                        }
                     }
                 });
 
@@ -503,7 +517,42 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         }
     }
 
-    Subscription mLoadDataSubscription;
+    private boolean mHasNewGiftCard;
+
+    // 多加一层缓存，跟直播一致
+    private GiftMallBean mGiftMallBean = new GiftMallBean();
+
+    /**
+     * 防止每次切换（正常礼物/包裹礼物）都要去筛选数据
+     * 需要优化  写的太烂
+     */
+    public synchronized boolean loadExistedDataFromBean() {
+        // 如果有新数据则重新加载，而不是从缓存里读取
+        if (mHasNewGiftCard) {
+            mHasNewGiftCard = false;
+            return false;
+        }
+
+        if (!mIsLandscape) {
+            List<List<GiftMallPresenter.GiftWithCard>> dataSourceList = mGiftMallBean.getGiftPortraitList(mGiftMallView.isMallGift());
+            if (dataSourceList == null) {
+                return false;
+            }
+
+            setPortraitSourceList(dataSourceList);
+            return true;
+        } else {
+            List<GiftMallPresenter.GiftWithCard> dataList = mGiftMallBean.getGiftLandscapeList(mGiftMallView.isMallGift());
+            if (dataList == null) {
+                return false;
+            }
+
+            setLandscapeSourceList(dataList);
+            return true;
+        }
+    }
+
+    private Subscription mLoadDataSubscription;
 
     public synchronized void loadDataFromCache(String from) {
         MyLog.d(TAG, "loadDataFromCache from:" + from);
@@ -539,19 +588,18 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                                 return;
                             }
 
-                            mGiftMallView.setGiftDisplayViewPagerAdapterDataSource(dataSourceList);
-
-                            mGiftMallView.setGiftListErrorViewVisibility(true);
-                            mHasLoadData = true;
-
-                            if (mGiftMallView.getSelectGiftViewByGiftId() != null) {
-                                mGiftMallView.getSelectGiftViewByGiftId().select();
+                            if (mGiftMallView.isMallGift()) {
+                                mGiftMallBean.setNormalGiftPortraitList(dataSourceList);
+                            } else {
+                                mGiftMallBean.setPktGiftPortraitList(dataSourceList);
                             }
+
+                            setPortraitSourceList(dataSourceList);
                         }
 
                         @Override
                         public void onError(Throwable e) {
-                            mGiftMallView.setGiftListErrorViewVisibility(false);
+                            mGiftMallView.setGiftListErrorViewGone(false);
                         }
 
                         @Override
@@ -584,13 +632,12 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                                 return;
                             }
 
-                            if (mGiftMallView.setGiftDisplayRecycleViewAdapterDataSource(dataList)) {
-                                mHasLoadData = true;
-
-                                if (mGiftMallView.getSelectGiftViewByGiftId() != null) {
-                                    mGiftMallView.getSelectGiftViewByGiftId().select();
-                                }
+                            if (mGiftMallView.isMallGift()) {
+                                mGiftMallBean.setNormalGiftLandscapeList(dataList);
+                            } else {
+                                mGiftMallBean.setPktGiftLandscapeList(dataList);
                             }
+                            setLandscapeSourceList(dataList);
                         }
 
                         @Override
@@ -602,6 +649,27 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                             dataList.add(gift);
                         }
                     });
+        }
+    }
+
+    private void setPortraitSourceList(List<List<GiftMallPresenter.GiftWithCard>> dataSourceList) {
+        mGiftMallView.setGiftDisplayViewPagerAdapterDataSource(dataSourceList);
+
+        mGiftMallView.setGiftListErrorViewGone(true);
+        mHasLoadData = true;
+
+        if (mGiftMallView.getSelectGiftViewByGiftId() != null) {
+            mGiftMallView.getSelectGiftViewByGiftId().select();
+        }
+    }
+
+    private void setLandscapeSourceList(List<GiftMallPresenter.GiftWithCard> dataList) {
+        if (mGiftMallView.setGiftDisplayRecycleViewAdapterDataSource(dataList)) {
+            mHasLoadData = true;
+
+            if (mGiftMallView.getSelectGiftViewByGiftId() != null) {
+                mGiftMallView.getSelectGiftViewByGiftId().select();
+            }
         }
     }
 
@@ -850,8 +918,6 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
 
     /**
      * giftcard的push
-     *
-     * @param event
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(GiftEventClass.GiftCardPush event) {
@@ -860,8 +926,11 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         MyLog.w(TAG, "giftCardPush:" + giftCardPush);
         updateUserAsset(giftCardPush.getAndUsableGemCnt(), giftCardPush.getUsableVirtualGemCnt(),
                 GiftCard.convert(giftCardPush.getGiftCardsList()), giftCardPush.getUserAssetTimestamp());
+
+        // 与直播逻辑不同，这里收到push就默认有新数据
+        mHasNewGiftCard = true;
     }
-//
+
 //    @Subscribe(threadMode = ThreadMode.POSTING)
 //    public void onEvent(EventClass.SwitchAnchor event) {
 //        mGiftInfoForThisRoom = null;

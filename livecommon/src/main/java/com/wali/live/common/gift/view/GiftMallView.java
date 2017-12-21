@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -140,6 +141,8 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
     private TextView mSendGiftTv;
 
     private TextView mPktDetailTv;
+
+    private ImageView mEmptyIv;
 
     //标记当前的选择的礼物状态
     private boolean mIsMallGift = true;
@@ -471,6 +474,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         mSlideGift = $(R.id.slide_gift);
         mSlidePkt = $(R.id.slide_pkt);
 
+        mEmptyIv = $(R.id.pkt_empty_iv);
         setGiftTabBackground();
     }
 
@@ -486,8 +490,9 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         setGiftTabBackground();
         switchMallType();
 
-        // 先直接加载，之后加缓存策略
-        mGiftMallPresenter.loadDataFromCache("clickMallGift");
+        if (!mGiftMallPresenter.loadExistedDataFromBean()) {
+            mGiftMallPresenter.loadDataFromCache("clickMallGift");
+        }
     }
 
     /**
@@ -498,8 +503,9 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         setGiftTabBackground();
         switchMallType();
 
-        // 先直接加载，之后加缓存策略
-        mGiftMallPresenter.loadDataFromCache("clickPktGift");
+        if (!mGiftMallPresenter.loadExistedDataFromBean()) {
+            mGiftMallPresenter.loadDataFromCache("clickPktGift");
+        }
     }
 
     void setGiftTabBackground() {
@@ -1015,29 +1021,23 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
      */
     public void setGiftDisplayViewPagerAdapterDataSource(List<List<GiftMallPresenter.GiftWithCard>> dataSourceList) {
         mGiftDisplayViewPagerAdapter.setDataSource(dataSourceList);
+        mEmptyIv.setVisibility(dataSourceList.isEmpty() ? VISIBLE : GONE);
     }
 
     /**
      * 横屏加载数据源
-     *
-     * @param dataList
-     * @return
      */
     public boolean setGiftDisplayRecycleViewAdapterDataSource(List<GiftMallPresenter.GiftWithCard> dataList) {
         if (mGiftDisplayRecycleViewAdapter != null) {
             mGiftDisplayRecycleViewAdapter.setData(dataList);
+            mEmptyIv.setVisibility(dataList.isEmpty() ? VISIBLE : GONE);
             return true;
         }
-
         return false;
     }
 
-    public void setGiftListErrorViewVisibility(boolean isGone) {
-        if (isGone) {
-            mGiftListErrorView.setVisibility(View.GONE);
-        } else {
-            mGiftListErrorView.setVisibility(View.VISIBLE);
-        }
+    public void setGiftListErrorViewGone(boolean isGone) {
+        mGiftListErrorView.setVisibility(isGone ? GONE : VISIBLE);
     }
 
     public boolean getHasLoadViewFlag() {
@@ -1240,6 +1240,8 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         }
 
         mSendGiftTv.setVisibility(View.VISIBLE);
+        mSendGiftTv.setEnabled(false);
+
         mContinueSendBtn.setVisibility(View.GONE);
     }
 

@@ -167,6 +167,17 @@
             android:layout_below="@id/gift_display_area"
             android:background="@color/color_white_trans_20"/>
 
+        <ImageView
+            android:id="@+id/pkt_empty_iv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/bottom_tab"
+            android:layout_below="@id/gift_display_area"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/gift_pkt_empty"
+            android:visibility="gone"/>
+
         <com.wali.live.common.view.ErrorView
             android:id="@+id/gift_list_error_view"
             android:layout_width="match_parent"
