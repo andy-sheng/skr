@@ -23,6 +23,8 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.presenter.InputPresenter;
 
+import static com.wali.live.watchsdk.component.viewmodel.BarrageState.BARRAGE_NORMAL;
+
 /**
  * Created by yangli on 2017/02/28.
  *
@@ -64,7 +66,7 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
                 String body = mInputView.getText().toString().trim();
                 if (!TextUtils.isEmpty(body)) {
                     if (mPresenter != null) {
-                        mPresenter.sendBarrage(body, false);
+                        mPresenter.sendBarrage(body, BARRAGE_NORMAL);
                     }
                     mInputView.setText("");
                 }

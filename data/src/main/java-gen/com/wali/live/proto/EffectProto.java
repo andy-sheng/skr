@@ -9083,21 +9083,82 @@ public final class EffectProto {
         int index);
 
     /**
-     * <code>optional uint32 usable_virtual_gem_cnt = 13;</code>
+     * <code>optional bool maskGlobalGiftPush = 13 [default = false];</code>
      *
      * <pre>
-     *可用虚拟钻数量
+     * 房间是否屏蔽全局礼物的push
      * </pre>
      */
-    boolean hasUsableVirtualGemCnt();
+    boolean hasMaskGlobalGiftPush();
     /**
-     * <code>optional uint32 usable_virtual_gem_cnt = 13;</code>
+     * <code>optional bool maskGlobalGiftPush = 13 [default = false];</code>
      *
      * <pre>
-     *可用虚拟钻数量
+     * 房间是否屏蔽全局礼物的push
      * </pre>
      */
-    int getUsableVirtualGemCnt();
+    boolean getMaskGlobalGiftPush();
+
+    /**
+     * <code>optional bool magicGiftAnchorDeviceSupport = 14 [default = false];</code>
+     *
+     * <pre>
+     *当前机型是否支持魔法表情
+     * </pre>
+     */
+    boolean hasMagicGiftAnchorDeviceSupport();
+    /**
+     * <code>optional bool magicGiftAnchorDeviceSupport = 14 [default = false];</code>
+     *
+     * <pre>
+     *当前机型是否支持魔法表情
+     * </pre>
+     */
+    boolean getMagicGiftAnchorDeviceSupport();
+
+    /**
+     * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+     *
+     * <pre>
+     *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+     * </pre>
+     */
+    java.util.List<com.wali.live.proto.EffectProto.GiftObj> 
+        getUseableGiftCardListList();
+    /**
+     * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+     *
+     * <pre>
+     *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+     * </pre>
+     */
+    com.wali.live.proto.EffectProto.GiftObj getUseableGiftCardList(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+     *
+     * <pre>
+     *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+     * </pre>
+     */
+    int getUseableGiftCardListCount();
+    /**
+     * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+     *
+     * <pre>
+     *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+     * </pre>
+     */
+    java.util.List<? extends com.wali.live.proto.EffectProto.GiftObjOrBuilder> 
+        getUseableGiftCardListOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+     *
+     * <pre>
+     *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+     * </pre>
+     */
+    com.wali.live.proto.EffectProto.GiftObjOrBuilder getUseableGiftCardListOrBuilder(
+        int index);
   }
   /**
    * Protobuf type {@code com.wali.live.proto.GetRoomEffectsResponse}
@@ -9231,7 +9292,20 @@ public final class EffectProto {
             }
             case 104: {
               bitField0_ |= 0x00000040;
-              usableVirtualGemCnt_ = input.readUInt32();
+              maskGlobalGiftPush_ = input.readBool();
+              break;
+            }
+            case 112: {
+              bitField0_ |= 0x00000080;
+              magicGiftAnchorDeviceSupport_ = input.readBool();
+              break;
+            }
+            case 122: {
+              if (!((mutable_bitField0_ & 0x00004000) == 0x00004000)) {
+                useableGiftCardList_ = new java.util.ArrayList<com.wali.live.proto.EffectProto.GiftObj>();
+                mutable_bitField0_ |= 0x00004000;
+              }
+              useableGiftCardList_.add(input.readMessage(com.wali.live.proto.EffectProto.GiftObj.PARSER, extensionRegistry));
               break;
             }
           }
@@ -9259,6 +9333,9 @@ public final class EffectProto {
         }
         if (((mutable_bitField0_ & 0x00000800) == 0x00000800)) {
           top10Items_ = java.util.Collections.unmodifiableList(top10Items_);
+        }
+        if (((mutable_bitField0_ & 0x00004000) == 0x00004000)) {
+          useableGiftCardList_ = java.util.Collections.unmodifiableList(useableGiftCardList_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -9712,27 +9789,105 @@ public final class EffectProto {
       return top10Items_.get(index);
     }
 
-    public static final int USABLE_VIRTUAL_GEM_CNT_FIELD_NUMBER = 13;
-    private int usableVirtualGemCnt_;
+    public static final int MASKGLOBALGIFTPUSH_FIELD_NUMBER = 13;
+    private boolean maskGlobalGiftPush_;
     /**
-     * <code>optional uint32 usable_virtual_gem_cnt = 13;</code>
+     * <code>optional bool maskGlobalGiftPush = 13 [default = false];</code>
      *
      * <pre>
-     *可用虚拟钻数量
+     * 房间是否屏蔽全局礼物的push
      * </pre>
      */
-    public boolean hasUsableVirtualGemCnt() {
+    public boolean hasMaskGlobalGiftPush() {
       return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     /**
-     * <code>optional uint32 usable_virtual_gem_cnt = 13;</code>
+     * <code>optional bool maskGlobalGiftPush = 13 [default = false];</code>
      *
      * <pre>
-     *可用虚拟钻数量
+     * 房间是否屏蔽全局礼物的push
      * </pre>
      */
-    public int getUsableVirtualGemCnt() {
-      return usableVirtualGemCnt_;
+    public boolean getMaskGlobalGiftPush() {
+      return maskGlobalGiftPush_;
+    }
+
+    public static final int MAGICGIFTANCHORDEVICESUPPORT_FIELD_NUMBER = 14;
+    private boolean magicGiftAnchorDeviceSupport_;
+    /**
+     * <code>optional bool magicGiftAnchorDeviceSupport = 14 [default = false];</code>
+     *
+     * <pre>
+     *当前机型是否支持魔法表情
+     * </pre>
+     */
+    public boolean hasMagicGiftAnchorDeviceSupport() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional bool magicGiftAnchorDeviceSupport = 14 [default = false];</code>
+     *
+     * <pre>
+     *当前机型是否支持魔法表情
+     * </pre>
+     */
+    public boolean getMagicGiftAnchorDeviceSupport() {
+      return magicGiftAnchorDeviceSupport_;
+    }
+
+    public static final int USEABLE_GIFT_CARD_LIST_FIELD_NUMBER = 15;
+    private java.util.List<com.wali.live.proto.EffectProto.GiftObj> useableGiftCardList_;
+    /**
+     * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+     *
+     * <pre>
+     *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+     * </pre>
+     */
+    public java.util.List<com.wali.live.proto.EffectProto.GiftObj> getUseableGiftCardListList() {
+      return useableGiftCardList_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+     *
+     * <pre>
+     *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+     * </pre>
+     */
+    public java.util.List<? extends com.wali.live.proto.EffectProto.GiftObjOrBuilder> 
+        getUseableGiftCardListOrBuilderList() {
+      return useableGiftCardList_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+     *
+     * <pre>
+     *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+     * </pre>
+     */
+    public int getUseableGiftCardListCount() {
+      return useableGiftCardList_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+     *
+     * <pre>
+     *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+     * </pre>
+     */
+    public com.wali.live.proto.EffectProto.GiftObj getUseableGiftCardList(int index) {
+      return useableGiftCardList_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+     *
+     * <pre>
+     *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+     * </pre>
+     */
+    public com.wali.live.proto.EffectProto.GiftObjOrBuilder getUseableGiftCardListOrBuilder(
+        int index) {
+      return useableGiftCardList_.get(index);
     }
 
     private void initFields() {
@@ -9748,7 +9903,9 @@ public final class EffectProto {
       isSpecialGiftList_ = false;
       timestamp_ = 0L;
       top10Items_ = java.util.Collections.emptyList();
-      usableVirtualGemCnt_ = 0;
+      maskGlobalGiftPush_ = false;
+      magicGiftAnchorDeviceSupport_ = false;
+      useableGiftCardList_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -9828,7 +9985,13 @@ public final class EffectProto {
         output.writeMessage(12, top10Items_.get(i));
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeUInt32(13, usableVirtualGemCnt_);
+        output.writeBool(13, maskGlobalGiftPush_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeBool(14, magicGiftAnchorDeviceSupport_);
+      }
+      for (int i = 0; i < useableGiftCardList_.size(); i++) {
+        output.writeMessage(15, useableGiftCardList_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -9889,7 +10052,15 @@ public final class EffectProto {
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(13, usableVirtualGemCnt_);
+          .computeBoolSize(13, maskGlobalGiftPush_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(14, magicGiftAnchorDeviceSupport_);
+      }
+      for (int i = 0; i < useableGiftCardList_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(15, useableGiftCardList_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -10006,6 +10177,7 @@ public final class EffectProto {
           getGiftListFieldBuilder();
           getGiftCardListFieldBuilder();
           getTop10ItemsFieldBuilder();
+          getUseableGiftCardListFieldBuilder();
         }
       }
       private static Builder create() {
@@ -10062,8 +10234,16 @@ public final class EffectProto {
         } else {
           top10ItemsBuilder_.clear();
         }
-        usableVirtualGemCnt_ = 0;
+        maskGlobalGiftPush_ = false;
         bitField0_ = (bitField0_ & ~0x00001000);
+        magicGiftAnchorDeviceSupport_ = false;
+        bitField0_ = (bitField0_ & ~0x00002000);
+        if (useableGiftCardListBuilder_ == null) {
+          useableGiftCardList_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00004000);
+        } else {
+          useableGiftCardListBuilder_.clear();
+        }
         return this;
       }
 
@@ -10173,7 +10353,20 @@ public final class EffectProto {
         if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
           to_bitField0_ |= 0x00000040;
         }
-        result.usableVirtualGemCnt_ = usableVirtualGemCnt_;
+        result.maskGlobalGiftPush_ = maskGlobalGiftPush_;
+        if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.magicGiftAnchorDeviceSupport_ = magicGiftAnchorDeviceSupport_;
+        if (useableGiftCardListBuilder_ == null) {
+          if (((bitField0_ & 0x00004000) == 0x00004000)) {
+            useableGiftCardList_ = java.util.Collections.unmodifiableList(useableGiftCardList_);
+            bitField0_ = (bitField0_ & ~0x00004000);
+          }
+          result.useableGiftCardList_ = useableGiftCardList_;
+        } else {
+          result.useableGiftCardList_ = useableGiftCardListBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -10364,8 +10557,37 @@ public final class EffectProto {
             }
           }
         }
-        if (other.hasUsableVirtualGemCnt()) {
-          setUsableVirtualGemCnt(other.getUsableVirtualGemCnt());
+        if (other.hasMaskGlobalGiftPush()) {
+          setMaskGlobalGiftPush(other.getMaskGlobalGiftPush());
+        }
+        if (other.hasMagicGiftAnchorDeviceSupport()) {
+          setMagicGiftAnchorDeviceSupport(other.getMagicGiftAnchorDeviceSupport());
+        }
+        if (useableGiftCardListBuilder_ == null) {
+          if (!other.useableGiftCardList_.isEmpty()) {
+            if (useableGiftCardList_.isEmpty()) {
+              useableGiftCardList_ = other.useableGiftCardList_;
+              bitField0_ = (bitField0_ & ~0x00004000);
+            } else {
+              ensureUseableGiftCardListIsMutable();
+              useableGiftCardList_.addAll(other.useableGiftCardList_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.useableGiftCardList_.isEmpty()) {
+            if (useableGiftCardListBuilder_.isEmpty()) {
+              useableGiftCardListBuilder_.dispose();
+              useableGiftCardListBuilder_ = null;
+              useableGiftCardList_ = other.useableGiftCardList_;
+              bitField0_ = (bitField0_ & ~0x00004000);
+              useableGiftCardListBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getUseableGiftCardListFieldBuilder() : null;
+            } else {
+              useableGiftCardListBuilder_.addAllMessages(other.useableGiftCardList_);
+            }
+          }
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -12422,52 +12644,412 @@ public final class EffectProto {
         return top10ItemsBuilder_;
       }
 
-      private int usableVirtualGemCnt_ ;
+      private boolean maskGlobalGiftPush_ ;
       /**
-       * <code>optional uint32 usable_virtual_gem_cnt = 13;</code>
+       * <code>optional bool maskGlobalGiftPush = 13 [default = false];</code>
        *
        * <pre>
-       *可用虚拟钻数量
+       * 房间是否屏蔽全局礼物的push
        * </pre>
        */
-      public boolean hasUsableVirtualGemCnt() {
+      public boolean hasMaskGlobalGiftPush() {
         return ((bitField0_ & 0x00001000) == 0x00001000);
       }
       /**
-       * <code>optional uint32 usable_virtual_gem_cnt = 13;</code>
+       * <code>optional bool maskGlobalGiftPush = 13 [default = false];</code>
        *
        * <pre>
-       *可用虚拟钻数量
+       * 房间是否屏蔽全局礼物的push
        * </pre>
        */
-      public int getUsableVirtualGemCnt() {
-        return usableVirtualGemCnt_;
+      public boolean getMaskGlobalGiftPush() {
+        return maskGlobalGiftPush_;
       }
       /**
-       * <code>optional uint32 usable_virtual_gem_cnt = 13;</code>
+       * <code>optional bool maskGlobalGiftPush = 13 [default = false];</code>
        *
        * <pre>
-       *可用虚拟钻数量
+       * 房间是否屏蔽全局礼物的push
        * </pre>
        */
-      public Builder setUsableVirtualGemCnt(int value) {
+      public Builder setMaskGlobalGiftPush(boolean value) {
         bitField0_ |= 0x00001000;
-        usableVirtualGemCnt_ = value;
+        maskGlobalGiftPush_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional uint32 usable_virtual_gem_cnt = 13;</code>
+       * <code>optional bool maskGlobalGiftPush = 13 [default = false];</code>
        *
        * <pre>
-       *可用虚拟钻数量
+       * 房间是否屏蔽全局礼物的push
        * </pre>
        */
-      public Builder clearUsableVirtualGemCnt() {
+      public Builder clearMaskGlobalGiftPush() {
         bitField0_ = (bitField0_ & ~0x00001000);
-        usableVirtualGemCnt_ = 0;
+        maskGlobalGiftPush_ = false;
         onChanged();
         return this;
+      }
+
+      private boolean magicGiftAnchorDeviceSupport_ ;
+      /**
+       * <code>optional bool magicGiftAnchorDeviceSupport = 14 [default = false];</code>
+       *
+       * <pre>
+       *当前机型是否支持魔法表情
+       * </pre>
+       */
+      public boolean hasMagicGiftAnchorDeviceSupport() {
+        return ((bitField0_ & 0x00002000) == 0x00002000);
+      }
+      /**
+       * <code>optional bool magicGiftAnchorDeviceSupport = 14 [default = false];</code>
+       *
+       * <pre>
+       *当前机型是否支持魔法表情
+       * </pre>
+       */
+      public boolean getMagicGiftAnchorDeviceSupport() {
+        return magicGiftAnchorDeviceSupport_;
+      }
+      /**
+       * <code>optional bool magicGiftAnchorDeviceSupport = 14 [default = false];</code>
+       *
+       * <pre>
+       *当前机型是否支持魔法表情
+       * </pre>
+       */
+      public Builder setMagicGiftAnchorDeviceSupport(boolean value) {
+        bitField0_ |= 0x00002000;
+        magicGiftAnchorDeviceSupport_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool magicGiftAnchorDeviceSupport = 14 [default = false];</code>
+       *
+       * <pre>
+       *当前机型是否支持魔法表情
+       * </pre>
+       */
+      public Builder clearMagicGiftAnchorDeviceSupport() {
+        bitField0_ = (bitField0_ & ~0x00002000);
+        magicGiftAnchorDeviceSupport_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<com.wali.live.proto.EffectProto.GiftObj> useableGiftCardList_ =
+        java.util.Collections.emptyList();
+      private void ensureUseableGiftCardListIsMutable() {
+        if (!((bitField0_ & 0x00004000) == 0x00004000)) {
+          useableGiftCardList_ = new java.util.ArrayList<com.wali.live.proto.EffectProto.GiftObj>(useableGiftCardList_);
+          bitField0_ |= 0x00004000;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.EffectProto.GiftObj, com.wali.live.proto.EffectProto.GiftObj.Builder, com.wali.live.proto.EffectProto.GiftObjOrBuilder> useableGiftCardListBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+       *
+       * <pre>
+       *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.EffectProto.GiftObj> getUseableGiftCardListList() {
+        if (useableGiftCardListBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(useableGiftCardList_);
+        } else {
+          return useableGiftCardListBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+       *
+       * <pre>
+       *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+       * </pre>
+       */
+      public int getUseableGiftCardListCount() {
+        if (useableGiftCardListBuilder_ == null) {
+          return useableGiftCardList_.size();
+        } else {
+          return useableGiftCardListBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+       *
+       * <pre>
+       *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+       * </pre>
+       */
+      public com.wali.live.proto.EffectProto.GiftObj getUseableGiftCardList(int index) {
+        if (useableGiftCardListBuilder_ == null) {
+          return useableGiftCardList_.get(index);
+        } else {
+          return useableGiftCardListBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+       *
+       * <pre>
+       *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+       * </pre>
+       */
+      public Builder setUseableGiftCardList(
+          int index, com.wali.live.proto.EffectProto.GiftObj value) {
+        if (useableGiftCardListBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUseableGiftCardListIsMutable();
+          useableGiftCardList_.set(index, value);
+          onChanged();
+        } else {
+          useableGiftCardListBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+       *
+       * <pre>
+       *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+       * </pre>
+       */
+      public Builder setUseableGiftCardList(
+          int index, com.wali.live.proto.EffectProto.GiftObj.Builder builderForValue) {
+        if (useableGiftCardListBuilder_ == null) {
+          ensureUseableGiftCardListIsMutable();
+          useableGiftCardList_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          useableGiftCardListBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+       *
+       * <pre>
+       *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+       * </pre>
+       */
+      public Builder addUseableGiftCardList(com.wali.live.proto.EffectProto.GiftObj value) {
+        if (useableGiftCardListBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUseableGiftCardListIsMutable();
+          useableGiftCardList_.add(value);
+          onChanged();
+        } else {
+          useableGiftCardListBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+       *
+       * <pre>
+       *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+       * </pre>
+       */
+      public Builder addUseableGiftCardList(
+          int index, com.wali.live.proto.EffectProto.GiftObj value) {
+        if (useableGiftCardListBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUseableGiftCardListIsMutable();
+          useableGiftCardList_.add(index, value);
+          onChanged();
+        } else {
+          useableGiftCardListBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+       *
+       * <pre>
+       *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+       * </pre>
+       */
+      public Builder addUseableGiftCardList(
+          com.wali.live.proto.EffectProto.GiftObj.Builder builderForValue) {
+        if (useableGiftCardListBuilder_ == null) {
+          ensureUseableGiftCardListIsMutable();
+          useableGiftCardList_.add(builderForValue.build());
+          onChanged();
+        } else {
+          useableGiftCardListBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+       *
+       * <pre>
+       *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+       * </pre>
+       */
+      public Builder addUseableGiftCardList(
+          int index, com.wali.live.proto.EffectProto.GiftObj.Builder builderForValue) {
+        if (useableGiftCardListBuilder_ == null) {
+          ensureUseableGiftCardListIsMutable();
+          useableGiftCardList_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          useableGiftCardListBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+       *
+       * <pre>
+       *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+       * </pre>
+       */
+      public Builder addAllUseableGiftCardList(
+          java.lang.Iterable<? extends com.wali.live.proto.EffectProto.GiftObj> values) {
+        if (useableGiftCardListBuilder_ == null) {
+          ensureUseableGiftCardListIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, useableGiftCardList_);
+          onChanged();
+        } else {
+          useableGiftCardListBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+       *
+       * <pre>
+       *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+       * </pre>
+       */
+      public Builder clearUseableGiftCardList() {
+        if (useableGiftCardListBuilder_ == null) {
+          useableGiftCardList_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00004000);
+          onChanged();
+        } else {
+          useableGiftCardListBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+       *
+       * <pre>
+       *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+       * </pre>
+       */
+      public Builder removeUseableGiftCardList(int index) {
+        if (useableGiftCardListBuilder_ == null) {
+          ensureUseableGiftCardListIsMutable();
+          useableGiftCardList_.remove(index);
+          onChanged();
+        } else {
+          useableGiftCardListBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+       *
+       * <pre>
+       *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+       * </pre>
+       */
+      public com.wali.live.proto.EffectProto.GiftObj.Builder getUseableGiftCardListBuilder(
+          int index) {
+        return getUseableGiftCardListFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+       *
+       * <pre>
+       *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+       * </pre>
+       */
+      public com.wali.live.proto.EffectProto.GiftObjOrBuilder getUseableGiftCardListOrBuilder(
+          int index) {
+        if (useableGiftCardListBuilder_ == null) {
+          return useableGiftCardList_.get(index);  } else {
+          return useableGiftCardListBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+       *
+       * <pre>
+       *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+       * </pre>
+       */
+      public java.util.List<? extends com.wali.live.proto.EffectProto.GiftObjOrBuilder> 
+           getUseableGiftCardListOrBuilderList() {
+        if (useableGiftCardListBuilder_ != null) {
+          return useableGiftCardListBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(useableGiftCardList_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+       *
+       * <pre>
+       *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+       * </pre>
+       */
+      public com.wali.live.proto.EffectProto.GiftObj.Builder addUseableGiftCardListBuilder() {
+        return getUseableGiftCardListFieldBuilder().addBuilder(
+            com.wali.live.proto.EffectProto.GiftObj.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+       *
+       * <pre>
+       *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+       * </pre>
+       */
+      public com.wali.live.proto.EffectProto.GiftObj.Builder addUseableGiftCardListBuilder(
+          int index) {
+        return getUseableGiftCardListFieldBuilder().addBuilder(
+            index, com.wali.live.proto.EffectProto.GiftObj.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GiftObj useable_gift_card_list = 15;</code>
+       *
+       * <pre>
+       *主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.EffectProto.GiftObj.Builder> 
+           getUseableGiftCardListBuilderList() {
+        return getUseableGiftCardListFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.EffectProto.GiftObj, com.wali.live.proto.EffectProto.GiftObj.Builder, com.wali.live.proto.EffectProto.GiftObjOrBuilder> 
+          getUseableGiftCardListFieldBuilder() {
+        if (useableGiftCardListBuilder_ == null) {
+          useableGiftCardListBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.EffectProto.GiftObj, com.wali.live.proto.EffectProto.GiftObj.Builder, com.wali.live.proto.EffectProto.GiftObjOrBuilder>(
+                  useableGiftCardList_,
+                  ((bitField0_ & 0x00004000) == 0x00004000),
+                  getParentForChildren(),
+                  isClean());
+          useableGiftCardList_ = null;
+        }
+        return useableGiftCardListBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetRoomEffectsResponse)
@@ -13994,7 +14576,7 @@ public final class EffectProto {
       " \001(\004\022\021\n\tanchor_id\030\003 \001(\004\022/\n\010location\030\004 \001(" +
       "\0132\035.com.wali.live.proto.Location\022/\n\010plat" +
       "form\030\005 \001(\0162\035.com.wali.live.proto.Platfor" +
-      "m\"\211\004\n\026GetRoomEffectsResponse\022\020\n\010ret_code" +
+      "m\"\367\004\n\026GetRoomEffectsResponse\022\020\n\010ret_code" +
       "\030\001 \002(\r\0222\n\tbgEffects\030\002 \003(\0132\037.com.wali.liv" +
       "e.proto.GiftEffect\0225\n\014lightEffects\030\003 \003(\013" +
       "2\037.com.wali.live.proto.GiftEffect\0226\n\rglo" +
@@ -14006,13 +14588,16 @@ public final class EffectProto {
       "(\0132\035.com.wali.live.proto.GiftCard\022\034\n\024is_" +
       "special_gift_list\030\n \001(\010\022\021\n\ttimestamp\030\013 \001" +
       "(\004\0221\n\ntop10Items\030\014 \003(\0132\035.com.wali.live.p" +
-      "roto.RankItem\022\036\n\026usable_virtual_gem_cnt\030" +
-      "\r \001(\r\"(\n\010RankItem\022\014\n\004uuid\030\001 \002(\004\022\016\n\006ticke" +
-      "t\030\002 \002(\r\"k\n\010GiftCard\022\017\n\007gift_id\030\001 \001(\r\022\025\n\r",
-      "gift_card_cnt\030\002 \001(\r\022\022\n\nbegin_time\030\003 \001(\004\022" +
-      "\020\n\010end_time\030\004 \001(\004\022\021\n\tactive_id\030\005 \001(\r* \n\010" +
-      "Platform\022\007\n\003IOS\020\001\022\013\n\007ANDROID\020\002B\"\n\023com.wa" +
-      "li.live.protoB\013EffectProto"
+      "roto.RankItem\022!\n\022maskGlobalGiftPush\030\r \001(" +
+      "\010:\005false\022+\n\034magicGiftAnchorDeviceSupport" +
+      "\030\016 \001(\010:\005false\022<\n\026useable_gift_card_list\030",
+      "\017 \003(\0132\034.com.wali.live.proto.GiftObj\"(\n\010R" +
+      "ankItem\022\014\n\004uuid\030\001 \002(\004\022\016\n\006ticket\030\002 \002(\r\"k\n" +
+      "\010GiftCard\022\017\n\007gift_id\030\001 \001(\r\022\025\n\rgift_card_" +
+      "cnt\030\002 \001(\r\022\022\n\nbegin_time\030\003 \001(\004\022\020\n\010end_tim" +
+      "e\030\004 \001(\004\022\021\n\tactive_id\030\005 \001(\r* \n\010Platform\022\007" +
+      "\n\003IOS\020\001\022\013\n\007ANDROID\020\002B\"\n\023com.wali.live.pr" +
+      "otoB\013EffectProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -14079,7 +14664,7 @@ public final class EffectProto {
     internal_static_com_wali_live_proto_GetRoomEffectsResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetRoomEffectsResponse_descriptor,
-        new java.lang.String[] { "RetCode", "BgEffects", "LightEffects", "GlobalEffects", "RoomOpenedTicketCnt", "GiftList", "BulletGiftId", "UsableGemCnt", "GiftCardList", "IsSpecialGiftList", "Timestamp", "Top10Items", "UsableVirtualGemCnt", });
+        new java.lang.String[] { "RetCode", "BgEffects", "LightEffects", "GlobalEffects", "RoomOpenedTicketCnt", "GiftList", "BulletGiftId", "UsableGemCnt", "GiftCardList", "IsSpecialGiftList", "Timestamp", "Top10Items", "MaskGlobalGiftPush", "MagicGiftAnchorDeviceSupport", "UseableGiftCardList", });
     internal_static_com_wali_live_proto_RankItem_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_com_wali_live_proto_RankItem_fieldAccessorTable = new

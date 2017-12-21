@@ -391,4 +391,11 @@
     <string name="deny">拒絕</string>
     <string name="agree_apply">已同意該申請</string>
     <string name="watch_share_btn">分享</string>
+    <string name="barrage_normal">發言</string>
+    <string name="barrage_manage">管理</string>
+    <string name="barrage_horn">喇叭</string>
+    <string name="vip_horn_hint">%1$d級VIP專享免費%2$d條/天</string>
+    <string name="horn_barrage_hint">飄屏大喇叭，%d鑽/條</string>
+    <string name="vip_free_horn_hint">今日剩餘%d條免費大喇叭</string>
+    <string name="account_withdraw_pay_barrage_user_account_not_enough_tip">目前餘額不足,充值才可以繼續發送飄屏彈幕,是否去充值.</string>
 </resources>

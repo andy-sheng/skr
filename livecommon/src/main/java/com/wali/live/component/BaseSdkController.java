@@ -66,9 +66,11 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_HIDE_INPUT_VIEW = MSG_INPUT_FIRST + 1;     // 请求隐藏 输入框
     public static final int MSG_SHOW_GAME_INPUT = MSG_INPUT_FIRST + 2;     // 请求显示 游戏输入框
     public static final int MSG_HIDE_GAME_INPUT = MSG_INPUT_FIRST + 3;     // 请求隐藏 游戏输入框
-    public static final int MSG_BARRAGE_SWITCH = MSG_INPUT_FIRST + 4;      // 显示隐藏 飘屏弹幕开关
-    public static final int MSG_SHOW_GAME_BARRAGE = MSG_INPUT_FIRST + 5;   // 显示 游戏弹幕
-    public static final int MSG_HIDE_GAME_BARRAGE = MSG_INPUT_FIRST + 6;   // 隐藏 游戏弹幕
+    public static final int MSG_SHOW_GAME_BARRAGE = MSG_INPUT_FIRST + 4;   // 显示 游戏弹幕
+    public static final int MSG_HIDE_GAME_BARRAGE = MSG_INPUT_FIRST + 5;   // 隐藏 游戏弹幕
+    public static final int MSG_BARRAGE_FANS = MSG_INPUT_FIRST + 6;        // 显示隐藏 飘屏弹幕开关
+    public static final int MSG_BARRAGE_ADMIN = MSG_INPUT_FIRST + 7;       // 显示隐藏 飘屏弹幕开关
+    public static final int MSG_BARRAGE_VIP = MSG_INPUT_FIRST + 8;         // 显示隐藏 飘屏弹幕开关
 
     // 弹出页面相关消息
     private static final int MSG_POPUP_FIRST = 23000;

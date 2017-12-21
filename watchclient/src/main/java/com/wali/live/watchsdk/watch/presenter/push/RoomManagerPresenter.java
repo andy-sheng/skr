@@ -24,6 +24,9 @@ import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.eventbus.EventClass;
+
+import org.greenrobot.eventbus.EventBus;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -93,6 +96,7 @@ public class RoomManagerPresenter extends RxLifeCyclePresenter implements IPushM
                 manager.certificationType = mine.getCertificationType();
                 WatchRoomCharactorManager.getInstance().setManager(manager);
                 WatchRoomCharactorManager.initBanSpeakerList(UserAccountManager.getInstance().getUuidAsLong(), roomBaseDataModel.getUid(), roomBaseDataModel.getRoomId());
+                EventBus.getDefault().post(new EventClass.AdminChangeEvent(true));
                 if (mHandler == null) {
                     mHandler = new Handler(Looper.getMainLooper());
                 }
@@ -114,6 +118,7 @@ public class RoomManagerPresenter extends RxLifeCyclePresenter implements IPushM
             if (msg.getSentTime() > mManagerUpdateTime) {
                 mManagerUpdateTime = msg.getSentTime();
                 WatchRoomCharactorManager.getInstance().setManager(null);
+                EventBus.getDefault().post(new EventClass.AdminChangeEvent(false));
                 if (mHandler == null) {
                     mHandler = new Handler(Looper.getMainLooper());
                 }

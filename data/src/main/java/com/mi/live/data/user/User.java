@@ -90,10 +90,19 @@ public class User implements Serializable {
     private int payBarrageGiftId = -1;
 
     private List<Long> mRankTopThreeList = new ArrayList<>();      //排行前三名用户
-    private String mViewUrl;            //直播地址
-    private String mRoomId = null;           //正在直播的id, 房间号
-    private String mTVRoomId = null;         //正在播放的电视台房间id
+    private String mViewUrl;                                       //直播地址
+    private String mRoomId = null;                                 //正在直播的id, 房间号
+    private String mTVRoomId = null;                               //正在播放的电视台房间id
     private int mRoomType;
+
+    private int mAppType;                                          // app类型 4代表一直播
+    private boolean certificationChanged;
+    private boolean mRedName;                                      //是否被社区红名了
+
+    // vip相关
+    private int mVipLevel;                                         //vip等级
+    private boolean mIsVipFrozen;                                  //vip是否被冻结
+    private boolean mIsVipHide;                                    //该vip用户最后一次的隐身状态
 
     public int getAppType() {
         return mAppType;
@@ -110,11 +119,6 @@ public class User implements Serializable {
     public String getTVRoomId() {
         return mTVRoomId;
     }
-
-    private int mAppType;     // app类型 4代表一直播
-    private boolean certificationChanged;
-
-    private boolean mRedName;      //是否被社区红名了
 
     public UserProto.Region getRegion() {
         if (mRegion != null) {
@@ -219,6 +223,9 @@ public class User implements Serializable {
             }
             managerList = list;
         }
+        this.mVipLevel = protoUser.getVipLevel();
+        this.mIsVipHide = protoUser.getVipHidden();
+        this.mIsVipFrozen = protoUser.getVipDisable();
     }
 
     public void parse(UserProto.PersonalData protoData) {
@@ -627,5 +634,29 @@ public class User implements Serializable {
 
     public void setCertificationChanged(boolean certificationChanged) {
         this.certificationChanged = certificationChanged;
+    }
+
+    public int getVipLevel() {
+        return mVipLevel;
+    }
+
+    public void setVipLevel(int vipLevel) {
+        mVipLevel = vipLevel;
+    }
+
+    public boolean isVipFrozen() {
+        return mIsVipFrozen;
+    }
+
+    public void setVipFrozen(boolean vipFrozen) {
+        mIsVipFrozen = vipFrozen;
+    }
+
+    public boolean isVipHide() {
+        return mIsVipHide;
+    }
+
+    public void setVipHide(boolean vipHide) {
+        mIsVipHide = vipHide;
     }
 }

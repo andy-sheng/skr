@@ -38,7 +38,9 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.wali.live.component.BaseSdkController.MSG_BARRAGE_SWITCH;
+import static com.wali.live.component.BaseSdkController.MSG_BARRAGE_ADMIN;
+import static com.wali.live.component.BaseSdkController.MSG_BARRAGE_FANS;
+import static com.wali.live.component.BaseSdkController.MSG_BARRAGE_VIP;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_LIVE_SUCCESS;
@@ -331,9 +333,17 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
                                     public void call(Object o) {
                                         LiveProto.GetRoomAttachmentRsp rsp = (LiveProto.GetRoomAttachmentRsp) o;
                                         setWidgetList(rsp.getNewWidgetInfo().getWidgetItemList());
-                                        //TODO 其他的飘萍弹幕/vip信息也得从RoomAttachment里面获取
+                                        //粉丝团飘萍计数
                                         if (rsp.hasGuardCounter()) {
-                                            mController.postEvent(MSG_BARRAGE_SWITCH, new Params().putItem(rsp.getGuardCounter()));
+                                            mController.postEvent(MSG_BARRAGE_FANS, new Params().putItem(rsp.getGuardCounter()));
+                                        }
+                                        //管理员飘萍计数
+                                        if (rsp.hasCounter()) {
+                                            mController.postEvent(MSG_BARRAGE_ADMIN, new Params().putItem(rsp.getCounter()));
+                                        }
+                                        // vip用户计数
+                                        if (rsp.hasVipCounter()) {
+                                            mController.postEvent(MSG_BARRAGE_VIP, new Params().putItem(rsp.getVipCounter()));
                                         }
                                         if (rsp.getNewWidgetInfo().hasPullInterval()) {
                                             getAttachmentDelay(rsp.getNewWidgetInfo().getPullInterval());

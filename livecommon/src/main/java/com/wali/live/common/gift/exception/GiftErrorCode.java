@@ -28,6 +28,7 @@ public class GiftErrorCode {
 
     public static final int GIFT_CARD_INSUFFICIENT = 11013; // 礼物卡数量不足
     public static final int GIFT_INSUFFICIENT_BALANCE = 11014;//余额不足
+    public static final int GIFT_PAY_BARRAGE = 11010;// 购买飘屏弹幕余额不足
 
     // 米币购买礼物相关 BuyGiftRsp、GetMibiBalanceResponse用
     public static final int CODE_RISK_CONTROL = 11073;// 风控

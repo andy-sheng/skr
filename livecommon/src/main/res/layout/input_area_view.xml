@@ -21,7 +21,16 @@
             android:background="@drawable/live_barrage_switch_btn_bg"
             android:padding="@dimen/margin_3"
             android:scaleType="fitStart"
-            android:src="@drawable/live_barrage_switch_btn"
+            android:src="@drawable/live_barrage_switch_btn"/>
+
+        <com.wali.live.watchsdk.component.view.BarrageSelectView
+            android:id="@+id/barrage_select_btn"
+            android:layout_width="43.33dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="@dimen/view_dimen_20"
+            android:layout_marginLeft="@dimen/view_dimen_20"
+            android:layout_marginTop="@dimen/view_dimen_20"
             android:visibility="gone"/>
 
         <com.base.view.MLTextView
@@ -45,7 +54,7 @@
             android:layout_alignWithParentIfMissing="true"
             android:layout_margin="6.67dip"
             android:layout_toLeftOf="@id/send_btn"
-            android:layout_toRightOf="@id/barrage_switch_btn"
+            android:layout_toRightOf="@+id/barrage_switch_btn"
             android:background="@drawable/live_input_field_bg_3"
             android:focusable="true"
             android:gravity="center_vertical"
@@ -89,5 +98,4 @@
             android:visibility="gone"/>
 
     </FrameLayout>
-
 </merge>

@@ -70,6 +70,9 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
         if (msg.getGlobalRoomMsgExt() != null) {
             barrageMsg.setGlobalRoomMsgExt(GlobalRoomMsgExt.loadFromPB(msg.getGlobalRoomMsgExt()));
         }
+        barrageMsg.setVipFrozen(msg.getVipDisable());
+        barrageMsg.setVipLevel(msg.getVipLevel());
+        barrageMsg.setVipHide(msg.getVipHidden());
 
         return barrageMsg;
     }
@@ -80,32 +83,35 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
     /**
      * 操作人类型，用于踢人、禁言等消息
      **/
-    public static final int OPERATOR_TYPE_ADMIN = 0; //管理员
-    public static final int OPERATOR_TYPE_INSPECTOR = 1; //巡查员
-    public static final int OPERATOR_TYPE_TOP1 = 2; //热门榜一
-    public static final int OPERATOR_TYPE_OWNER = 3;//房主
-    public static final int OPERATOR_TYPE_OSS = 4; //运营管理端后台
+    public static final int OPERATOR_TYPE_ADMIN = 0;             //管理员
+    public static final int OPERATOR_TYPE_INSPECTOR = 1;         //巡查员
+    public static final int OPERATOR_TYPE_TOP1 = 2;              //热门榜一
+    public static final int OPERATOR_TYPE_OWNER = 3;             //房主
+    public static final int OPERATOR_TYPE_OSS = 4;               //运营管理端后台
 
     private long sender;
     private String roomId;
     private long sentTime;
-    private long senderMsgId; //发送方的消息，可以用来去重
+    private long senderMsgId;                          //发送方的消息，可以用来去重
     private int msgType;
-    private String senderName;//发送者名称
-    private int senderLevel; //发送者用户级别
+    private String senderName;                         //发送者名称
+    private int senderLevel;                           //发送者用户级别
     private String body;
     private long anchorId;
     private int certificationType;
-    private int resendTimes; //用来客户端重发弹幕逻辑调整
+    private int resendTimes;                           //用来客户端重发弹幕逻辑调整
     private MsgExt msgExt;
     private int roomType = ROOM_TYPE_NORMAL;
-    private String originRoomId;// 消息来源的roomId
+    private String originRoomId;                       // 消息来源的roomId
     private boolean isFromPkOpponent = false;
     private String opponentRoomId;
     private long opponentAnchorId;
     private long toUserId;
-    private boolean isRedName; // 是否被社区红名，红名表示是不友好名单，这类用户不显示等级，并且灰色字体显示弹幕
-    private GlobalRoomMsgExt globalRoomMsgExt; // 所有类型弹幕扩展字段(针对多种类型的弹幕)
+    private boolean isRedName;                         // 是否被社区红名，红名表示是不友好名单，这类用户不显示等级，并且灰色字体显示弹幕
+    private GlobalRoomMsgExt globalRoomMsgExt;         // 所有类型弹幕扩展字段(针对多种类型的弹幕)
+    private int vipLevel;                              //vip等级
+    private boolean isVipFrozen;                       //vip是否被冻结
+    private boolean isVipHide;                         //vip用户是否设置隐身
 
     public BarrageMsg() {
         this.senderMsgId = System.currentTimeMillis();
@@ -297,9 +303,33 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
         this.globalRoomMsgExt = globalRoomMsgExt;
     }
 
+    public int getVipLevel() {
+        return vipLevel;
+    }
+
+    public void setVipLevel(int vipLevel) {
+        this.vipLevel = vipLevel;
+    }
+
+    public boolean isVipFrozen() {
+        return isVipFrozen;
+    }
+
+    public void setVipFrozen(boolean vipFrozen) {
+        isVipFrozen = vipFrozen;
+    }
+
+    public boolean isVipHide() {
+        return isVipHide;
+    }
+
+    public void setVipHide(boolean vipHide) {
+        isVipHide = vipHide;
+    }
+
     /*
-        * 引入clean模式后这个方法要慢慢被废弃掉，因为所有设计到pb的数据操作都应放到data层
-        * */
+            * 引入clean模式后这个方法要慢慢被废弃掉，因为所有设计到pb的数据操作都应放到data层
+            * */
     public void setMsgExt(byte[] data, int msgType) {
         if (data != null) {
             try {

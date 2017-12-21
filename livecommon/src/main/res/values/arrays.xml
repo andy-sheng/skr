@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="welcome_vip_enter_room_tip">
+        <item>entered the room</item>
+        <item>entered the room</item>
+        <item>entered the room</item>
+        <item>entered the room</item>
+        <item>entered the room</item>
+    </string-array>
+</resources>

@@ -18,7 +18,6 @@ public class GlobalRoomMsgExt {
     //飘萍弹幕计数只认 500和501的type.
     public static final int INNER_GLOBAL_ADMIN_FLY = 500;//弹幕
     public static final int INNER_GLOBAL_PAY_HORN = 501;//喇叭
-
     public static final int INNER_GLOBAL_VFAN = 600;//宠爱团简要信息
 
     private ArrayList<BaseRoomMessageExt> mRoomMsgExtList = new ArrayList<>();

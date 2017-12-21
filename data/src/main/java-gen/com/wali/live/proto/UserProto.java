@@ -1690,6 +1690,125 @@ public final class UserProto {
      * </pre>
      */
     com.wali.live.proto.UserProto.RegionOrBuilder getRegionOrBuilder();
+
+    /**
+     * <code>optional uint32 fans_number = 26;</code>
+     *
+     * <pre>
+     *粉丝数
+     * </pre>
+     */
+    boolean hasFansNumber();
+    /**
+     * <code>optional uint32 fans_number = 26;</code>
+     *
+     * <pre>
+     *粉丝数
+     * </pre>
+     */
+    int getFansNumber();
+
+    /**
+     * <code>optional uint32 seller_type = 27;</code>
+     *
+     * <pre>
+     *卖家类型
+     * </pre>
+     */
+    boolean hasSellerType();
+    /**
+     * <code>optional uint32 seller_type = 27;</code>
+     *
+     * <pre>
+     *卖家类型
+     * </pre>
+     */
+    int getSellerType();
+
+    /**
+     * <code>optional bool is_union_admin = 28;</code>
+     *
+     * <pre>
+     *  是否是工会管理员
+     * </pre>
+     */
+    boolean hasIsUnionAdmin();
+    /**
+     * <code>optional bool is_union_admin = 28;</code>
+     *
+     * <pre>
+     *  是否是工会管理员
+     * </pre>
+     */
+    boolean getIsUnionAdmin();
+
+    /**
+     * <code>optional uint32 vip_level = 29;</code>
+     *
+     * <pre>
+     *财富等级
+     * </pre>
+     */
+    boolean hasVipLevel();
+    /**
+     * <code>optional uint32 vip_level = 29;</code>
+     *
+     * <pre>
+     *财富等级
+     * </pre>
+     */
+    int getVipLevel();
+
+    /**
+     * <code>optional bool vip_disable = 30;</code>
+     *
+     * <pre>
+     *财富等级是否被冻结
+     * </pre>
+     */
+    boolean hasVipDisable();
+    /**
+     * <code>optional bool vip_disable = 30;</code>
+     *
+     * <pre>
+     *财富等级是否被冻结
+     * </pre>
+     */
+    boolean getVipDisable();
+
+    /**
+     * <code>optional bool vip_hidden = 31;</code>
+     *
+     * <pre>
+     *是否VIP隐身
+     * </pre>
+     */
+    boolean hasVipHidden();
+    /**
+     * <code>optional bool vip_hidden = 31;</code>
+     *
+     * <pre>
+     *是否VIP隐身
+     * </pre>
+     */
+    boolean getVipHidden();
+
+    /**
+     * <code>optional bool is_live = 32;</code>
+     *
+     * <pre>
+     *是否正在直播
+     * </pre>
+     */
+    boolean hasIsLive();
+    /**
+     * <code>optional bool is_live = 32;</code>
+     *
+     * <pre>
+     *是否正在直播
+     * </pre>
+     */
+    boolean getIsLive();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.PersonalInfo}
@@ -1903,6 +2022,41 @@ public final class UserProto {
                 region_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00800000;
+              break;
+            }
+            case 208: {
+              bitField0_ |= 0x01000000;
+              fansNumber_ = input.readUInt32();
+              break;
+            }
+            case 216: {
+              bitField0_ |= 0x02000000;
+              sellerType_ = input.readUInt32();
+              break;
+            }
+            case 224: {
+              bitField0_ |= 0x04000000;
+              isUnionAdmin_ = input.readBool();
+              break;
+            }
+            case 232: {
+              bitField0_ |= 0x08000000;
+              vipLevel_ = input.readUInt32();
+              break;
+            }
+            case 240: {
+              bitField0_ |= 0x10000000;
+              vipDisable_ = input.readBool();
+              break;
+            }
+            case 248: {
+              bitField0_ |= 0x20000000;
+              vipHidden_ = input.readBool();
+              break;
+            }
+            case 256: {
+              bitField0_ |= 0x40000000;
+              isLive_ = input.readBool();
               break;
             }
           }
@@ -2701,6 +2855,167 @@ public final class UserProto {
       return region_;
     }
 
+    public static final int FANS_NUMBER_FIELD_NUMBER = 26;
+    private int fansNumber_;
+    /**
+     * <code>optional uint32 fans_number = 26;</code>
+     *
+     * <pre>
+     *粉丝数
+     * </pre>
+     */
+    public boolean hasFansNumber() {
+      return ((bitField0_ & 0x01000000) == 0x01000000);
+    }
+    /**
+     * <code>optional uint32 fans_number = 26;</code>
+     *
+     * <pre>
+     *粉丝数
+     * </pre>
+     */
+    public int getFansNumber() {
+      return fansNumber_;
+    }
+
+    public static final int SELLER_TYPE_FIELD_NUMBER = 27;
+    private int sellerType_;
+    /**
+     * <code>optional uint32 seller_type = 27;</code>
+     *
+     * <pre>
+     *卖家类型
+     * </pre>
+     */
+    public boolean hasSellerType() {
+      return ((bitField0_ & 0x02000000) == 0x02000000);
+    }
+    /**
+     * <code>optional uint32 seller_type = 27;</code>
+     *
+     * <pre>
+     *卖家类型
+     * </pre>
+     */
+    public int getSellerType() {
+      return sellerType_;
+    }
+
+    public static final int IS_UNION_ADMIN_FIELD_NUMBER = 28;
+    private boolean isUnionAdmin_;
+    /**
+     * <code>optional bool is_union_admin = 28;</code>
+     *
+     * <pre>
+     *  是否是工会管理员
+     * </pre>
+     */
+    public boolean hasIsUnionAdmin() {
+      return ((bitField0_ & 0x04000000) == 0x04000000);
+    }
+    /**
+     * <code>optional bool is_union_admin = 28;</code>
+     *
+     * <pre>
+     *  是否是工会管理员
+     * </pre>
+     */
+    public boolean getIsUnionAdmin() {
+      return isUnionAdmin_;
+    }
+
+    public static final int VIP_LEVEL_FIELD_NUMBER = 29;
+    private int vipLevel_;
+    /**
+     * <code>optional uint32 vip_level = 29;</code>
+     *
+     * <pre>
+     *财富等级
+     * </pre>
+     */
+    public boolean hasVipLevel() {
+      return ((bitField0_ & 0x08000000) == 0x08000000);
+    }
+    /**
+     * <code>optional uint32 vip_level = 29;</code>
+     *
+     * <pre>
+     *财富等级
+     * </pre>
+     */
+    public int getVipLevel() {
+      return vipLevel_;
+    }
+
+    public static final int VIP_DISABLE_FIELD_NUMBER = 30;
+    private boolean vipDisable_;
+    /**
+     * <code>optional bool vip_disable = 30;</code>
+     *
+     * <pre>
+     *财富等级是否被冻结
+     * </pre>
+     */
+    public boolean hasVipDisable() {
+      return ((bitField0_ & 0x10000000) == 0x10000000);
+    }
+    /**
+     * <code>optional bool vip_disable = 30;</code>
+     *
+     * <pre>
+     *财富等级是否被冻结
+     * </pre>
+     */
+    public boolean getVipDisable() {
+      return vipDisable_;
+    }
+
+    public static final int VIP_HIDDEN_FIELD_NUMBER = 31;
+    private boolean vipHidden_;
+    /**
+     * <code>optional bool vip_hidden = 31;</code>
+     *
+     * <pre>
+     *是否VIP隐身
+     * </pre>
+     */
+    public boolean hasVipHidden() {
+      return ((bitField0_ & 0x20000000) == 0x20000000);
+    }
+    /**
+     * <code>optional bool vip_hidden = 31;</code>
+     *
+     * <pre>
+     *是否VIP隐身
+     * </pre>
+     */
+    public boolean getVipHidden() {
+      return vipHidden_;
+    }
+
+    public static final int IS_LIVE_FIELD_NUMBER = 32;
+    private boolean isLive_;
+    /**
+     * <code>optional bool is_live = 32;</code>
+     *
+     * <pre>
+     *是否正在直播
+     * </pre>
+     */
+    public boolean hasIsLive() {
+      return ((bitField0_ & 0x40000000) == 0x40000000);
+    }
+    /**
+     * <code>optional bool is_live = 32;</code>
+     *
+     * <pre>
+     *是否正在直播
+     * </pre>
+     */
+    public boolean getIsLive() {
+      return isLive_;
+    }
+
     private void initFields() {
       zuid_ = 0L;
       avatar_ = 0L;
@@ -2727,6 +3042,13 @@ public final class UserProto {
       isFirstAudit_ = false;
       isRedname_ = false;
       region_ = com.wali.live.proto.UserProto.Region.getDefaultInstance();
+      fansNumber_ = 0;
+      sellerType_ = 0;
+      isUnionAdmin_ = false;
+      vipLevel_ = 0;
+      vipDisable_ = false;
+      vipHidden_ = false;
+      isLive_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -2819,6 +3141,27 @@ public final class UserProto {
       }
       if (((bitField0_ & 0x00800000) == 0x00800000)) {
         output.writeMessage(25, region_);
+      }
+      if (((bitField0_ & 0x01000000) == 0x01000000)) {
+        output.writeUInt32(26, fansNumber_);
+      }
+      if (((bitField0_ & 0x02000000) == 0x02000000)) {
+        output.writeUInt32(27, sellerType_);
+      }
+      if (((bitField0_ & 0x04000000) == 0x04000000)) {
+        output.writeBool(28, isUnionAdmin_);
+      }
+      if (((bitField0_ & 0x08000000) == 0x08000000)) {
+        output.writeUInt32(29, vipLevel_);
+      }
+      if (((bitField0_ & 0x10000000) == 0x10000000)) {
+        output.writeBool(30, vipDisable_);
+      }
+      if (((bitField0_ & 0x20000000) == 0x20000000)) {
+        output.writeBool(31, vipHidden_);
+      }
+      if (((bitField0_ & 0x40000000) == 0x40000000)) {
+        output.writeBool(32, isLive_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -2933,6 +3276,34 @@ public final class UserProto {
       if (((bitField0_ & 0x00800000) == 0x00800000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(25, region_);
+      }
+      if (((bitField0_ & 0x01000000) == 0x01000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(26, fansNumber_);
+      }
+      if (((bitField0_ & 0x02000000) == 0x02000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(27, sellerType_);
+      }
+      if (((bitField0_ & 0x04000000) == 0x04000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(28, isUnionAdmin_);
+      }
+      if (((bitField0_ & 0x08000000) == 0x08000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(29, vipLevel_);
+      }
+      if (((bitField0_ & 0x10000000) == 0x10000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(30, vipDisable_);
+      }
+      if (((bitField0_ & 0x20000000) == 0x20000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(31, vipHidden_);
+      }
+      if (((bitField0_ & 0x40000000) == 0x40000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(32, isLive_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -3111,6 +3482,20 @@ public final class UserProto {
           regionBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x01000000);
+        fansNumber_ = 0;
+        bitField0_ = (bitField0_ & ~0x02000000);
+        sellerType_ = 0;
+        bitField0_ = (bitField0_ & ~0x04000000);
+        isUnionAdmin_ = false;
+        bitField0_ = (bitField0_ & ~0x08000000);
+        vipLevel_ = 0;
+        bitField0_ = (bitField0_ & ~0x10000000);
+        vipDisable_ = false;
+        bitField0_ = (bitField0_ & ~0x20000000);
+        vipHidden_ = false;
+        bitField0_ = (bitField0_ & ~0x40000000);
+        isLive_ = false;
+        bitField0_ = (bitField0_ & ~0x80000000);
         return this;
       }
 
@@ -3248,6 +3633,34 @@ public final class UserProto {
         } else {
           result.region_ = regionBuilder_.build();
         }
+        if (((from_bitField0_ & 0x02000000) == 0x02000000)) {
+          to_bitField0_ |= 0x01000000;
+        }
+        result.fansNumber_ = fansNumber_;
+        if (((from_bitField0_ & 0x04000000) == 0x04000000)) {
+          to_bitField0_ |= 0x02000000;
+        }
+        result.sellerType_ = sellerType_;
+        if (((from_bitField0_ & 0x08000000) == 0x08000000)) {
+          to_bitField0_ |= 0x04000000;
+        }
+        result.isUnionAdmin_ = isUnionAdmin_;
+        if (((from_bitField0_ & 0x10000000) == 0x10000000)) {
+          to_bitField0_ |= 0x08000000;
+        }
+        result.vipLevel_ = vipLevel_;
+        if (((from_bitField0_ & 0x20000000) == 0x20000000)) {
+          to_bitField0_ |= 0x10000000;
+        }
+        result.vipDisable_ = vipDisable_;
+        if (((from_bitField0_ & 0x40000000) == 0x40000000)) {
+          to_bitField0_ |= 0x20000000;
+        }
+        result.vipHidden_ = vipHidden_;
+        if (((from_bitField0_ & 0x80000000) == 0x80000000)) {
+          to_bitField0_ |= 0x40000000;
+        }
+        result.isLive_ = isLive_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -3355,6 +3768,27 @@ public final class UserProto {
         }
         if (other.hasRegion()) {
           mergeRegion(other.getRegion());
+        }
+        if (other.hasFansNumber()) {
+          setFansNumber(other.getFansNumber());
+        }
+        if (other.hasSellerType()) {
+          setSellerType(other.getSellerType());
+        }
+        if (other.hasIsUnionAdmin()) {
+          setIsUnionAdmin(other.getIsUnionAdmin());
+        }
+        if (other.hasVipLevel()) {
+          setVipLevel(other.getVipLevel());
+        }
+        if (other.hasVipDisable()) {
+          setVipDisable(other.getVipDisable());
+        }
+        if (other.hasVipHidden()) {
+          setVipHidden(other.getVipHidden());
+        }
+        if (other.hasIsLive()) {
+          setIsLive(other.getIsLive());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -5085,6 +5519,342 @@ public final class UserProto {
         return regionBuilder_;
       }
 
+      private int fansNumber_ ;
+      /**
+       * <code>optional uint32 fans_number = 26;</code>
+       *
+       * <pre>
+       *粉丝数
+       * </pre>
+       */
+      public boolean hasFansNumber() {
+        return ((bitField0_ & 0x02000000) == 0x02000000);
+      }
+      /**
+       * <code>optional uint32 fans_number = 26;</code>
+       *
+       * <pre>
+       *粉丝数
+       * </pre>
+       */
+      public int getFansNumber() {
+        return fansNumber_;
+      }
+      /**
+       * <code>optional uint32 fans_number = 26;</code>
+       *
+       * <pre>
+       *粉丝数
+       * </pre>
+       */
+      public Builder setFansNumber(int value) {
+        bitField0_ |= 0x02000000;
+        fansNumber_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 fans_number = 26;</code>
+       *
+       * <pre>
+       *粉丝数
+       * </pre>
+       */
+      public Builder clearFansNumber() {
+        bitField0_ = (bitField0_ & ~0x02000000);
+        fansNumber_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int sellerType_ ;
+      /**
+       * <code>optional uint32 seller_type = 27;</code>
+       *
+       * <pre>
+       *卖家类型
+       * </pre>
+       */
+      public boolean hasSellerType() {
+        return ((bitField0_ & 0x04000000) == 0x04000000);
+      }
+      /**
+       * <code>optional uint32 seller_type = 27;</code>
+       *
+       * <pre>
+       *卖家类型
+       * </pre>
+       */
+      public int getSellerType() {
+        return sellerType_;
+      }
+      /**
+       * <code>optional uint32 seller_type = 27;</code>
+       *
+       * <pre>
+       *卖家类型
+       * </pre>
+       */
+      public Builder setSellerType(int value) {
+        bitField0_ |= 0x04000000;
+        sellerType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 seller_type = 27;</code>
+       *
+       * <pre>
+       *卖家类型
+       * </pre>
+       */
+      public Builder clearSellerType() {
+        bitField0_ = (bitField0_ & ~0x04000000);
+        sellerType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean isUnionAdmin_ ;
+      /**
+       * <code>optional bool is_union_admin = 28;</code>
+       *
+       * <pre>
+       *  是否是工会管理员
+       * </pre>
+       */
+      public boolean hasIsUnionAdmin() {
+        return ((bitField0_ & 0x08000000) == 0x08000000);
+      }
+      /**
+       * <code>optional bool is_union_admin = 28;</code>
+       *
+       * <pre>
+       *  是否是工会管理员
+       * </pre>
+       */
+      public boolean getIsUnionAdmin() {
+        return isUnionAdmin_;
+      }
+      /**
+       * <code>optional bool is_union_admin = 28;</code>
+       *
+       * <pre>
+       *  是否是工会管理员
+       * </pre>
+       */
+      public Builder setIsUnionAdmin(boolean value) {
+        bitField0_ |= 0x08000000;
+        isUnionAdmin_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool is_union_admin = 28;</code>
+       *
+       * <pre>
+       *  是否是工会管理员
+       * </pre>
+       */
+      public Builder clearIsUnionAdmin() {
+        bitField0_ = (bitField0_ & ~0x08000000);
+        isUnionAdmin_ = false;
+        onChanged();
+        return this;
+      }
+
+      private int vipLevel_ ;
+      /**
+       * <code>optional uint32 vip_level = 29;</code>
+       *
+       * <pre>
+       *财富等级
+       * </pre>
+       */
+      public boolean hasVipLevel() {
+        return ((bitField0_ & 0x10000000) == 0x10000000);
+      }
+      /**
+       * <code>optional uint32 vip_level = 29;</code>
+       *
+       * <pre>
+       *财富等级
+       * </pre>
+       */
+      public int getVipLevel() {
+        return vipLevel_;
+      }
+      /**
+       * <code>optional uint32 vip_level = 29;</code>
+       *
+       * <pre>
+       *财富等级
+       * </pre>
+       */
+      public Builder setVipLevel(int value) {
+        bitField0_ |= 0x10000000;
+        vipLevel_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 vip_level = 29;</code>
+       *
+       * <pre>
+       *财富等级
+       * </pre>
+       */
+      public Builder clearVipLevel() {
+        bitField0_ = (bitField0_ & ~0x10000000);
+        vipLevel_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean vipDisable_ ;
+      /**
+       * <code>optional bool vip_disable = 30;</code>
+       *
+       * <pre>
+       *财富等级是否被冻结
+       * </pre>
+       */
+      public boolean hasVipDisable() {
+        return ((bitField0_ & 0x20000000) == 0x20000000);
+      }
+      /**
+       * <code>optional bool vip_disable = 30;</code>
+       *
+       * <pre>
+       *财富等级是否被冻结
+       * </pre>
+       */
+      public boolean getVipDisable() {
+        return vipDisable_;
+      }
+      /**
+       * <code>optional bool vip_disable = 30;</code>
+       *
+       * <pre>
+       *财富等级是否被冻结
+       * </pre>
+       */
+      public Builder setVipDisable(boolean value) {
+        bitField0_ |= 0x20000000;
+        vipDisable_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool vip_disable = 30;</code>
+       *
+       * <pre>
+       *财富等级是否被冻结
+       * </pre>
+       */
+      public Builder clearVipDisable() {
+        bitField0_ = (bitField0_ & ~0x20000000);
+        vipDisable_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean vipHidden_ ;
+      /**
+       * <code>optional bool vip_hidden = 31;</code>
+       *
+       * <pre>
+       *是否VIP隐身
+       * </pre>
+       */
+      public boolean hasVipHidden() {
+        return ((bitField0_ & 0x40000000) == 0x40000000);
+      }
+      /**
+       * <code>optional bool vip_hidden = 31;</code>
+       *
+       * <pre>
+       *是否VIP隐身
+       * </pre>
+       */
+      public boolean getVipHidden() {
+        return vipHidden_;
+      }
+      /**
+       * <code>optional bool vip_hidden = 31;</code>
+       *
+       * <pre>
+       *是否VIP隐身
+       * </pre>
+       */
+      public Builder setVipHidden(boolean value) {
+        bitField0_ |= 0x40000000;
+        vipHidden_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool vip_hidden = 31;</code>
+       *
+       * <pre>
+       *是否VIP隐身
+       * </pre>
+       */
+      public Builder clearVipHidden() {
+        bitField0_ = (bitField0_ & ~0x40000000);
+        vipHidden_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean isLive_ ;
+      /**
+       * <code>optional bool is_live = 32;</code>
+       *
+       * <pre>
+       *是否正在直播
+       * </pre>
+       */
+      public boolean hasIsLive() {
+        return ((bitField0_ & 0x80000000) == 0x80000000);
+      }
+      /**
+       * <code>optional bool is_live = 32;</code>
+       *
+       * <pre>
+       *是否正在直播
+       * </pre>
+       */
+      public boolean getIsLive() {
+        return isLive_;
+      }
+      /**
+       * <code>optional bool is_live = 32;</code>
+       *
+       * <pre>
+       *是否正在直播
+       * </pre>
+       */
+      public Builder setIsLive(boolean value) {
+        bitField0_ |= 0x80000000;
+        isLive_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool is_live = 32;</code>
+       *
+       * <pre>
+       *是否正在直播
+       * </pre>
+       */
+      public Builder clearIsLive() {
+        bitField0_ = (bitField0_ & ~0x80000000);
+        isLive_ = false;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.PersonalInfo)
     }
 
@@ -5244,6 +6014,23 @@ public final class UserProto {
      * </pre>
      */
     com.google.protobuf.ByteString getUserEcoAttr();
+
+    /**
+     * <code>optional uint32 usable_mibi_ticket_cnt = 17;</code>
+     *
+     * <pre>
+     *可用米币星票数量
+     * </pre>
+     */
+    boolean hasUsableMibiTicketCnt();
+    /**
+     * <code>optional uint32 usable_mibi_ticket_cnt = 17;</code>
+     *
+     * <pre>
+     *可用米币星票数量
+     * </pre>
+     */
+    int getUsableMibiTicketCnt();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.PersonalData}
@@ -5340,6 +6127,11 @@ public final class UserProto {
             case 130: {
               bitField0_ |= 0x00000100;
               userEcoAttr_ = input.readBytes();
+              break;
+            }
+            case 136: {
+              bitField0_ |= 0x00000200;
+              usableMibiTicketCnt_ = input.readUInt32();
               break;
             }
           }
@@ -5581,6 +6373,29 @@ public final class UserProto {
       return userEcoAttr_;
     }
 
+    public static final int USABLE_MIBI_TICKET_CNT_FIELD_NUMBER = 17;
+    private int usableMibiTicketCnt_;
+    /**
+     * <code>optional uint32 usable_mibi_ticket_cnt = 17;</code>
+     *
+     * <pre>
+     *可用米币星票数量
+     * </pre>
+     */
+    public boolean hasUsableMibiTicketCnt() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional uint32 usable_mibi_ticket_cnt = 17;</code>
+     *
+     * <pre>
+     *可用米币星票数量
+     * </pre>
+     */
+    public int getUsableMibiTicketCnt() {
+      return usableMibiTicketCnt_;
+    }
+
     private void initFields() {
       zuid_ = 0L;
       mliveTicketNum_ = 0;
@@ -5591,6 +6406,7 @@ public final class UserProto {
       earnNum_ = 0;
       diamondNum_ = 0;
       userEcoAttr_ = com.google.protobuf.ByteString.EMPTY;
+      usableMibiTicketCnt_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -5636,6 +6452,9 @@ public final class UserProto {
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         output.writeBytes(16, userEcoAttr_);
       }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeUInt32(17, usableMibiTicketCnt_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -5680,6 +6499,10 @@ public final class UserProto {
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(16, userEcoAttr_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(17, usableMibiTicketCnt_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -5816,6 +6639,8 @@ public final class UserProto {
         bitField0_ = (bitField0_ & ~0x00000080);
         userEcoAttr_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000100);
+        usableMibiTicketCnt_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
 
@@ -5880,6 +6705,10 @@ public final class UserProto {
           to_bitField0_ |= 0x00000100;
         }
         result.userEcoAttr_ = userEcoAttr_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        result.usableMibiTicketCnt_ = usableMibiTicketCnt_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -5922,6 +6751,9 @@ public final class UserProto {
         }
         if (other.hasUserEcoAttr()) {
           setUserEcoAttr(other.getUserEcoAttr());
+        }
+        if (other.hasUsableMibiTicketCnt()) {
+          setUsableMibiTicketCnt(other.getUsableMibiTicketCnt());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -6369,6 +7201,54 @@ public final class UserProto {
       public Builder clearUserEcoAttr() {
         bitField0_ = (bitField0_ & ~0x00000100);
         userEcoAttr_ = getDefaultInstance().getUserEcoAttr();
+        onChanged();
+        return this;
+      }
+
+      private int usableMibiTicketCnt_ ;
+      /**
+       * <code>optional uint32 usable_mibi_ticket_cnt = 17;</code>
+       *
+       * <pre>
+       *可用米币星票数量
+       * </pre>
+       */
+      public boolean hasUsableMibiTicketCnt() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional uint32 usable_mibi_ticket_cnt = 17;</code>
+       *
+       * <pre>
+       *可用米币星票数量
+       * </pre>
+       */
+      public int getUsableMibiTicketCnt() {
+        return usableMibiTicketCnt_;
+      }
+      /**
+       * <code>optional uint32 usable_mibi_ticket_cnt = 17;</code>
+       *
+       * <pre>
+       *可用米币星票数量
+       * </pre>
+       */
+      public Builder setUsableMibiTicketCnt(int value) {
+        bitField0_ |= 0x00000200;
+        usableMibiTicketCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 usable_mibi_ticket_cnt = 17;</code>
+       *
+       * <pre>
+       *可用米币星票数量
+       * </pre>
+       */
+      public Builder clearUsableMibiTicketCnt() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        usableMibiTicketCnt_ = 0;
         onChanged();
         return this;
       }
@@ -8752,6 +9632,121 @@ public final class UserProto {
      * </pre>
      */
     long getRankTopThreeList(int index);
+
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+     */
+    java.util.List<com.wali.live.proto.UserProto.Medal> 
+        getBeforeNicknameMedalList();
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+     */
+    com.wali.live.proto.UserProto.Medal getBeforeNicknameMedal(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+     */
+    int getBeforeNicknameMedalCount();
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+     */
+    java.util.List<? extends com.wali.live.proto.UserProto.MedalOrBuilder> 
+        getBeforeNicknameMedalOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+     */
+    com.wali.live.proto.UserProto.MedalOrBuilder getBeforeNicknameMedalOrBuilder(
+        int index);
+
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+     */
+    java.util.List<com.wali.live.proto.UserProto.Medal> 
+        getAfterNicknameMedalList();
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+     */
+    com.wali.live.proto.UserProto.Medal getAfterNicknameMedal(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+     */
+    int getAfterNicknameMedalCount();
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+     */
+    java.util.List<? extends com.wali.live.proto.UserProto.MedalOrBuilder> 
+        getAfterNicknameMedalOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+     */
+    com.wali.live.proto.UserProto.MedalOrBuilder getAfterNicknameMedalOrBuilder(
+        int index);
+
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+     */
+    java.util.List<com.wali.live.proto.UserProto.Medal> 
+        getUserCardMedalList();
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+     */
+    com.wali.live.proto.UserProto.Medal getUserCardMedal(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+     */
+    int getUserCardMedalCount();
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+     */
+    java.util.List<? extends com.wali.live.proto.UserProto.MedalOrBuilder> 
+        getUserCardMedalOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+     */
+    com.wali.live.proto.UserProto.MedalOrBuilder getUserCardMedalOrBuilder(
+        int index);
+
+    /**
+     * <code>optional bool need_bind_phone = 11;</code>
+     *
+     * <pre>
+     * 是否需要绑定手机号 true 需要绑定弹窗 false 不需要弹窗
+     * </pre>
+     */
+    boolean hasNeedBindPhone();
+    /**
+     * <code>optional bool need_bind_phone = 11;</code>
+     *
+     * <pre>
+     * 是否需要绑定手机号 true 需要绑定弹窗 false 不需要弹窗
+     * </pre>
+     */
+    boolean getNeedBindPhone();
+
+    /**
+     * <code>optional string phoneNum = 12 [deprecated = true];</code>
+     *
+     * <pre>
+     * 绑定的手机号码 新版废弃 移植到GetBindPhoneNumInfoReq
+     * </pre>
+     */
+    @java.lang.Deprecated boolean hasPhoneNum();
+    /**
+     * <code>optional string phoneNum = 12 [deprecated = true];</code>
+     *
+     * <pre>
+     * 绑定的手机号码 新版废弃 移植到GetBindPhoneNumInfoReq
+     * </pre>
+     */
+    @java.lang.Deprecated java.lang.String getPhoneNum();
+    /**
+     * <code>optional string phoneNum = 12 [deprecated = true];</code>
+     *
+     * <pre>
+     * 绑定的手机号码 新版废弃 移植到GetBindPhoneNumInfoReq
+     * </pre>
+     */
+    @java.lang.Deprecated com.google.protobuf.ByteString
+        getPhoneNumBytes();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.GetOwnInfoRsp}
@@ -8857,6 +9852,41 @@ public final class UserProto {
               input.popLimit(limit);
               break;
             }
+            case 66: {
+              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+                beforeNicknameMedal_ = new java.util.ArrayList<com.wali.live.proto.UserProto.Medal>();
+                mutable_bitField0_ |= 0x00000010;
+              }
+              beforeNicknameMedal_.add(input.readMessage(com.wali.live.proto.UserProto.Medal.PARSER, extensionRegistry));
+              break;
+            }
+            case 74: {
+              if (!((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+                afterNicknameMedal_ = new java.util.ArrayList<com.wali.live.proto.UserProto.Medal>();
+                mutable_bitField0_ |= 0x00000020;
+              }
+              afterNicknameMedal_.add(input.readMessage(com.wali.live.proto.UserProto.Medal.PARSER, extensionRegistry));
+              break;
+            }
+            case 82: {
+              if (!((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
+                userCardMedal_ = new java.util.ArrayList<com.wali.live.proto.UserProto.Medal>();
+                mutable_bitField0_ |= 0x00000040;
+              }
+              userCardMedal_.add(input.readMessage(com.wali.live.proto.UserProto.Medal.PARSER, extensionRegistry));
+              break;
+            }
+            case 88: {
+              bitField0_ |= 0x00000008;
+              needBindPhone_ = input.readBool();
+              break;
+            }
+            case 98: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000010;
+              phoneNum_ = bs;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -8867,6 +9897,15 @@ public final class UserProto {
       } finally {
         if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
           rankTopThreeList_ = java.util.Collections.unmodifiableList(rankTopThreeList_);
+        }
+        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+          beforeNicknameMedal_ = java.util.Collections.unmodifiableList(beforeNicknameMedal_);
+        }
+        if (((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+          afterNicknameMedal_ = java.util.Collections.unmodifiableList(afterNicknameMedal_);
+        }
+        if (((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
+          userCardMedal_ = java.util.Collections.unmodifiableList(userCardMedal_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -8991,11 +10030,198 @@ public final class UserProto {
       return rankTopThreeList_.get(index);
     }
 
+    public static final int BEFORE_NICKNAME_MEDAL_FIELD_NUMBER = 8;
+    private java.util.List<com.wali.live.proto.UserProto.Medal> beforeNicknameMedal_;
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+     */
+    public java.util.List<com.wali.live.proto.UserProto.Medal> getBeforeNicknameMedalList() {
+      return beforeNicknameMedal_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+     */
+    public java.util.List<? extends com.wali.live.proto.UserProto.MedalOrBuilder> 
+        getBeforeNicknameMedalOrBuilderList() {
+      return beforeNicknameMedal_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+     */
+    public int getBeforeNicknameMedalCount() {
+      return beforeNicknameMedal_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+     */
+    public com.wali.live.proto.UserProto.Medal getBeforeNicknameMedal(int index) {
+      return beforeNicknameMedal_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+     */
+    public com.wali.live.proto.UserProto.MedalOrBuilder getBeforeNicknameMedalOrBuilder(
+        int index) {
+      return beforeNicknameMedal_.get(index);
+    }
+
+    public static final int AFTER_NICKNAME_MEDAL_FIELD_NUMBER = 9;
+    private java.util.List<com.wali.live.proto.UserProto.Medal> afterNicknameMedal_;
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+     */
+    public java.util.List<com.wali.live.proto.UserProto.Medal> getAfterNicknameMedalList() {
+      return afterNicknameMedal_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+     */
+    public java.util.List<? extends com.wali.live.proto.UserProto.MedalOrBuilder> 
+        getAfterNicknameMedalOrBuilderList() {
+      return afterNicknameMedal_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+     */
+    public int getAfterNicknameMedalCount() {
+      return afterNicknameMedal_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+     */
+    public com.wali.live.proto.UserProto.Medal getAfterNicknameMedal(int index) {
+      return afterNicknameMedal_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+     */
+    public com.wali.live.proto.UserProto.MedalOrBuilder getAfterNicknameMedalOrBuilder(
+        int index) {
+      return afterNicknameMedal_.get(index);
+    }
+
+    public static final int USER_CARD_MEDAL_FIELD_NUMBER = 10;
+    private java.util.List<com.wali.live.proto.UserProto.Medal> userCardMedal_;
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+     */
+    public java.util.List<com.wali.live.proto.UserProto.Medal> getUserCardMedalList() {
+      return userCardMedal_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+     */
+    public java.util.List<? extends com.wali.live.proto.UserProto.MedalOrBuilder> 
+        getUserCardMedalOrBuilderList() {
+      return userCardMedal_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+     */
+    public int getUserCardMedalCount() {
+      return userCardMedal_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+     */
+    public com.wali.live.proto.UserProto.Medal getUserCardMedal(int index) {
+      return userCardMedal_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+     */
+    public com.wali.live.proto.UserProto.MedalOrBuilder getUserCardMedalOrBuilder(
+        int index) {
+      return userCardMedal_.get(index);
+    }
+
+    public static final int NEED_BIND_PHONE_FIELD_NUMBER = 11;
+    private boolean needBindPhone_;
+    /**
+     * <code>optional bool need_bind_phone = 11;</code>
+     *
+     * <pre>
+     * 是否需要绑定手机号 true 需要绑定弹窗 false 不需要弹窗
+     * </pre>
+     */
+    public boolean hasNeedBindPhone() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional bool need_bind_phone = 11;</code>
+     *
+     * <pre>
+     * 是否需要绑定手机号 true 需要绑定弹窗 false 不需要弹窗
+     * </pre>
+     */
+    public boolean getNeedBindPhone() {
+      return needBindPhone_;
+    }
+
+    public static final int PHONENUM_FIELD_NUMBER = 12;
+    private java.lang.Object phoneNum_;
+    /**
+     * <code>optional string phoneNum = 12 [deprecated = true];</code>
+     *
+     * <pre>
+     * 绑定的手机号码 新版废弃 移植到GetBindPhoneNumInfoReq
+     * </pre>
+     */
+    @java.lang.Deprecated public boolean hasPhoneNum() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional string phoneNum = 12 [deprecated = true];</code>
+     *
+     * <pre>
+     * 绑定的手机号码 新版废弃 移植到GetBindPhoneNumInfoReq
+     * </pre>
+     */
+    @java.lang.Deprecated public java.lang.String getPhoneNum() {
+      java.lang.Object ref = phoneNum_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          phoneNum_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string phoneNum = 12 [deprecated = true];</code>
+     *
+     * <pre>
+     * 绑定的手机号码 新版废弃 移植到GetBindPhoneNumInfoReq
+     * </pre>
+     */
+    @java.lang.Deprecated public com.google.protobuf.ByteString
+        getPhoneNumBytes() {
+      java.lang.Object ref = phoneNum_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        phoneNum_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       errorCode_ = 0;
       personalInfo_ = com.wali.live.proto.UserProto.PersonalInfo.getDefaultInstance();
       personalData_ = com.wali.live.proto.UserProto.PersonalData.getDefaultInstance();
       rankTopThreeList_ = java.util.Collections.emptyList();
+      beforeNicknameMedal_ = java.util.Collections.emptyList();
+      afterNicknameMedal_ = java.util.Collections.emptyList();
+      userCardMedal_ = java.util.Collections.emptyList();
+      needBindPhone_ = false;
+      phoneNum_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -9038,6 +10264,21 @@ public final class UserProto {
       for (int i = 0; i < rankTopThreeList_.size(); i++) {
         output.writeUInt64(6, rankTopThreeList_.get(i));
       }
+      for (int i = 0; i < beforeNicknameMedal_.size(); i++) {
+        output.writeMessage(8, beforeNicknameMedal_.get(i));
+      }
+      for (int i = 0; i < afterNicknameMedal_.size(); i++) {
+        output.writeMessage(9, afterNicknameMedal_.get(i));
+      }
+      for (int i = 0; i < userCardMedal_.size(); i++) {
+        output.writeMessage(10, userCardMedal_.get(i));
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBool(11, needBindPhone_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(12, getPhoneNumBytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -9067,6 +10308,26 @@ public final class UserProto {
         }
         size += dataSize;
         size += 1 * getRankTopThreeListList().size();
+      }
+      for (int i = 0; i < beforeNicknameMedal_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(8, beforeNicknameMedal_.get(i));
+      }
+      for (int i = 0; i < afterNicknameMedal_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(9, afterNicknameMedal_.get(i));
+      }
+      for (int i = 0; i < userCardMedal_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, userCardMedal_.get(i));
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(11, needBindPhone_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(12, getPhoneNumBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -9179,6 +10440,9 @@ public final class UserProto {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getPersonalInfoFieldBuilder();
           getPersonalDataFieldBuilder();
+          getBeforeNicknameMedalFieldBuilder();
+          getAfterNicknameMedalFieldBuilder();
+          getUserCardMedalFieldBuilder();
         }
       }
       private static Builder create() {
@@ -9203,6 +10467,28 @@ public final class UserProto {
         bitField0_ = (bitField0_ & ~0x00000004);
         rankTopThreeList_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000008);
+        if (beforeNicknameMedalBuilder_ == null) {
+          beforeNicknameMedal_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000010);
+        } else {
+          beforeNicknameMedalBuilder_.clear();
+        }
+        if (afterNicknameMedalBuilder_ == null) {
+          afterNicknameMedal_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000020);
+        } else {
+          afterNicknameMedalBuilder_.clear();
+        }
+        if (userCardMedalBuilder_ == null) {
+          userCardMedal_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000040);
+        } else {
+          userCardMedalBuilder_.clear();
+        }
+        needBindPhone_ = false;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        phoneNum_ = "";
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
@@ -9256,6 +10542,41 @@ public final class UserProto {
           bitField0_ = (bitField0_ & ~0x00000008);
         }
         result.rankTopThreeList_ = rankTopThreeList_;
+        if (beforeNicknameMedalBuilder_ == null) {
+          if (((bitField0_ & 0x00000010) == 0x00000010)) {
+            beforeNicknameMedal_ = java.util.Collections.unmodifiableList(beforeNicknameMedal_);
+            bitField0_ = (bitField0_ & ~0x00000010);
+          }
+          result.beforeNicknameMedal_ = beforeNicknameMedal_;
+        } else {
+          result.beforeNicknameMedal_ = beforeNicknameMedalBuilder_.build();
+        }
+        if (afterNicknameMedalBuilder_ == null) {
+          if (((bitField0_ & 0x00000020) == 0x00000020)) {
+            afterNicknameMedal_ = java.util.Collections.unmodifiableList(afterNicknameMedal_);
+            bitField0_ = (bitField0_ & ~0x00000020);
+          }
+          result.afterNicknameMedal_ = afterNicknameMedal_;
+        } else {
+          result.afterNicknameMedal_ = afterNicknameMedalBuilder_.build();
+        }
+        if (userCardMedalBuilder_ == null) {
+          if (((bitField0_ & 0x00000040) == 0x00000040)) {
+            userCardMedal_ = java.util.Collections.unmodifiableList(userCardMedal_);
+            bitField0_ = (bitField0_ & ~0x00000040);
+          }
+          result.userCardMedal_ = userCardMedal_;
+        } else {
+          result.userCardMedal_ = userCardMedalBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.needBindPhone_ = needBindPhone_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.phoneNum_ = phoneNum_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -9289,6 +10610,92 @@ public final class UserProto {
             ensureRankTopThreeListIsMutable();
             rankTopThreeList_.addAll(other.rankTopThreeList_);
           }
+          onChanged();
+        }
+        if (beforeNicknameMedalBuilder_ == null) {
+          if (!other.beforeNicknameMedal_.isEmpty()) {
+            if (beforeNicknameMedal_.isEmpty()) {
+              beforeNicknameMedal_ = other.beforeNicknameMedal_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+            } else {
+              ensureBeforeNicknameMedalIsMutable();
+              beforeNicknameMedal_.addAll(other.beforeNicknameMedal_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.beforeNicknameMedal_.isEmpty()) {
+            if (beforeNicknameMedalBuilder_.isEmpty()) {
+              beforeNicknameMedalBuilder_.dispose();
+              beforeNicknameMedalBuilder_ = null;
+              beforeNicknameMedal_ = other.beforeNicknameMedal_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+              beforeNicknameMedalBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getBeforeNicknameMedalFieldBuilder() : null;
+            } else {
+              beforeNicknameMedalBuilder_.addAllMessages(other.beforeNicknameMedal_);
+            }
+          }
+        }
+        if (afterNicknameMedalBuilder_ == null) {
+          if (!other.afterNicknameMedal_.isEmpty()) {
+            if (afterNicknameMedal_.isEmpty()) {
+              afterNicknameMedal_ = other.afterNicknameMedal_;
+              bitField0_ = (bitField0_ & ~0x00000020);
+            } else {
+              ensureAfterNicknameMedalIsMutable();
+              afterNicknameMedal_.addAll(other.afterNicknameMedal_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.afterNicknameMedal_.isEmpty()) {
+            if (afterNicknameMedalBuilder_.isEmpty()) {
+              afterNicknameMedalBuilder_.dispose();
+              afterNicknameMedalBuilder_ = null;
+              afterNicknameMedal_ = other.afterNicknameMedal_;
+              bitField0_ = (bitField0_ & ~0x00000020);
+              afterNicknameMedalBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getAfterNicknameMedalFieldBuilder() : null;
+            } else {
+              afterNicknameMedalBuilder_.addAllMessages(other.afterNicknameMedal_);
+            }
+          }
+        }
+        if (userCardMedalBuilder_ == null) {
+          if (!other.userCardMedal_.isEmpty()) {
+            if (userCardMedal_.isEmpty()) {
+              userCardMedal_ = other.userCardMedal_;
+              bitField0_ = (bitField0_ & ~0x00000040);
+            } else {
+              ensureUserCardMedalIsMutable();
+              userCardMedal_.addAll(other.userCardMedal_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.userCardMedal_.isEmpty()) {
+            if (userCardMedalBuilder_.isEmpty()) {
+              userCardMedalBuilder_.dispose();
+              userCardMedalBuilder_ = null;
+              userCardMedal_ = other.userCardMedal_;
+              bitField0_ = (bitField0_ & ~0x00000040);
+              userCardMedalBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getUserCardMedalFieldBuilder() : null;
+            } else {
+              userCardMedalBuilder_.addAllMessages(other.userCardMedal_);
+            }
+          }
+        }
+        if (other.hasNeedBindPhone()) {
+          setNeedBindPhone(other.getNeedBindPhone());
+        }
+        if (other.hasPhoneNum()) {
+          bitField0_ |= 0x00000100;
+          phoneNum_ = other.phoneNum_;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -9692,6 +11099,874 @@ public final class UserProto {
         return this;
       }
 
+      private java.util.List<com.wali.live.proto.UserProto.Medal> beforeNicknameMedal_ =
+        java.util.Collections.emptyList();
+      private void ensureBeforeNicknameMedalIsMutable() {
+        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
+          beforeNicknameMedal_ = new java.util.ArrayList<com.wali.live.proto.UserProto.Medal>(beforeNicknameMedal_);
+          bitField0_ |= 0x00000010;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder> beforeNicknameMedalBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+       */
+      public java.util.List<com.wali.live.proto.UserProto.Medal> getBeforeNicknameMedalList() {
+        if (beforeNicknameMedalBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(beforeNicknameMedal_);
+        } else {
+          return beforeNicknameMedalBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+       */
+      public int getBeforeNicknameMedalCount() {
+        if (beforeNicknameMedalBuilder_ == null) {
+          return beforeNicknameMedal_.size();
+        } else {
+          return beforeNicknameMedalBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal getBeforeNicknameMedal(int index) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          return beforeNicknameMedal_.get(index);
+        } else {
+          return beforeNicknameMedalBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+       */
+      public Builder setBeforeNicknameMedal(
+          int index, com.wali.live.proto.UserProto.Medal value) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureBeforeNicknameMedalIsMutable();
+          beforeNicknameMedal_.set(index, value);
+          onChanged();
+        } else {
+          beforeNicknameMedalBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+       */
+      public Builder setBeforeNicknameMedal(
+          int index, com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          ensureBeforeNicknameMedalIsMutable();
+          beforeNicknameMedal_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          beforeNicknameMedalBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+       */
+      public Builder addBeforeNicknameMedal(com.wali.live.proto.UserProto.Medal value) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureBeforeNicknameMedalIsMutable();
+          beforeNicknameMedal_.add(value);
+          onChanged();
+        } else {
+          beforeNicknameMedalBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+       */
+      public Builder addBeforeNicknameMedal(
+          int index, com.wali.live.proto.UserProto.Medal value) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureBeforeNicknameMedalIsMutable();
+          beforeNicknameMedal_.add(index, value);
+          onChanged();
+        } else {
+          beforeNicknameMedalBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+       */
+      public Builder addBeforeNicknameMedal(
+          com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          ensureBeforeNicknameMedalIsMutable();
+          beforeNicknameMedal_.add(builderForValue.build());
+          onChanged();
+        } else {
+          beforeNicknameMedalBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+       */
+      public Builder addBeforeNicknameMedal(
+          int index, com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          ensureBeforeNicknameMedalIsMutable();
+          beforeNicknameMedal_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          beforeNicknameMedalBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+       */
+      public Builder addAllBeforeNicknameMedal(
+          java.lang.Iterable<? extends com.wali.live.proto.UserProto.Medal> values) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          ensureBeforeNicknameMedalIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, beforeNicknameMedal_);
+          onChanged();
+        } else {
+          beforeNicknameMedalBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+       */
+      public Builder clearBeforeNicknameMedal() {
+        if (beforeNicknameMedalBuilder_ == null) {
+          beforeNicknameMedal_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000010);
+          onChanged();
+        } else {
+          beforeNicknameMedalBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+       */
+      public Builder removeBeforeNicknameMedal(int index) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          ensureBeforeNicknameMedalIsMutable();
+          beforeNicknameMedal_.remove(index);
+          onChanged();
+        } else {
+          beforeNicknameMedalBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder getBeforeNicknameMedalBuilder(
+          int index) {
+        return getBeforeNicknameMedalFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+       */
+      public com.wali.live.proto.UserProto.MedalOrBuilder getBeforeNicknameMedalOrBuilder(
+          int index) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          return beforeNicknameMedal_.get(index);  } else {
+          return beforeNicknameMedalBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+       */
+      public java.util.List<? extends com.wali.live.proto.UserProto.MedalOrBuilder> 
+           getBeforeNicknameMedalOrBuilderList() {
+        if (beforeNicknameMedalBuilder_ != null) {
+          return beforeNicknameMedalBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(beforeNicknameMedal_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder addBeforeNicknameMedalBuilder() {
+        return getBeforeNicknameMedalFieldBuilder().addBuilder(
+            com.wali.live.proto.UserProto.Medal.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder addBeforeNicknameMedalBuilder(
+          int index) {
+        return getBeforeNicknameMedalFieldBuilder().addBuilder(
+            index, com.wali.live.proto.UserProto.Medal.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 8;</code>
+       */
+      public java.util.List<com.wali.live.proto.UserProto.Medal.Builder> 
+           getBeforeNicknameMedalBuilderList() {
+        return getBeforeNicknameMedalFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder> 
+          getBeforeNicknameMedalFieldBuilder() {
+        if (beforeNicknameMedalBuilder_ == null) {
+          beforeNicknameMedalBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder>(
+                  beforeNicknameMedal_,
+                  ((bitField0_ & 0x00000010) == 0x00000010),
+                  getParentForChildren(),
+                  isClean());
+          beforeNicknameMedal_ = null;
+        }
+        return beforeNicknameMedalBuilder_;
+      }
+
+      private java.util.List<com.wali.live.proto.UserProto.Medal> afterNicknameMedal_ =
+        java.util.Collections.emptyList();
+      private void ensureAfterNicknameMedalIsMutable() {
+        if (!((bitField0_ & 0x00000020) == 0x00000020)) {
+          afterNicknameMedal_ = new java.util.ArrayList<com.wali.live.proto.UserProto.Medal>(afterNicknameMedal_);
+          bitField0_ |= 0x00000020;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder> afterNicknameMedalBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+       */
+      public java.util.List<com.wali.live.proto.UserProto.Medal> getAfterNicknameMedalList() {
+        if (afterNicknameMedalBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(afterNicknameMedal_);
+        } else {
+          return afterNicknameMedalBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+       */
+      public int getAfterNicknameMedalCount() {
+        if (afterNicknameMedalBuilder_ == null) {
+          return afterNicknameMedal_.size();
+        } else {
+          return afterNicknameMedalBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal getAfterNicknameMedal(int index) {
+        if (afterNicknameMedalBuilder_ == null) {
+          return afterNicknameMedal_.get(index);
+        } else {
+          return afterNicknameMedalBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+       */
+      public Builder setAfterNicknameMedal(
+          int index, com.wali.live.proto.UserProto.Medal value) {
+        if (afterNicknameMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAfterNicknameMedalIsMutable();
+          afterNicknameMedal_.set(index, value);
+          onChanged();
+        } else {
+          afterNicknameMedalBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+       */
+      public Builder setAfterNicknameMedal(
+          int index, com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (afterNicknameMedalBuilder_ == null) {
+          ensureAfterNicknameMedalIsMutable();
+          afterNicknameMedal_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          afterNicknameMedalBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+       */
+      public Builder addAfterNicknameMedal(com.wali.live.proto.UserProto.Medal value) {
+        if (afterNicknameMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAfterNicknameMedalIsMutable();
+          afterNicknameMedal_.add(value);
+          onChanged();
+        } else {
+          afterNicknameMedalBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+       */
+      public Builder addAfterNicknameMedal(
+          int index, com.wali.live.proto.UserProto.Medal value) {
+        if (afterNicknameMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAfterNicknameMedalIsMutable();
+          afterNicknameMedal_.add(index, value);
+          onChanged();
+        } else {
+          afterNicknameMedalBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+       */
+      public Builder addAfterNicknameMedal(
+          com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (afterNicknameMedalBuilder_ == null) {
+          ensureAfterNicknameMedalIsMutable();
+          afterNicknameMedal_.add(builderForValue.build());
+          onChanged();
+        } else {
+          afterNicknameMedalBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+       */
+      public Builder addAfterNicknameMedal(
+          int index, com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (afterNicknameMedalBuilder_ == null) {
+          ensureAfterNicknameMedalIsMutable();
+          afterNicknameMedal_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          afterNicknameMedalBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+       */
+      public Builder addAllAfterNicknameMedal(
+          java.lang.Iterable<? extends com.wali.live.proto.UserProto.Medal> values) {
+        if (afterNicknameMedalBuilder_ == null) {
+          ensureAfterNicknameMedalIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, afterNicknameMedal_);
+          onChanged();
+        } else {
+          afterNicknameMedalBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+       */
+      public Builder clearAfterNicknameMedal() {
+        if (afterNicknameMedalBuilder_ == null) {
+          afterNicknameMedal_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000020);
+          onChanged();
+        } else {
+          afterNicknameMedalBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+       */
+      public Builder removeAfterNicknameMedal(int index) {
+        if (afterNicknameMedalBuilder_ == null) {
+          ensureAfterNicknameMedalIsMutable();
+          afterNicknameMedal_.remove(index);
+          onChanged();
+        } else {
+          afterNicknameMedalBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder getAfterNicknameMedalBuilder(
+          int index) {
+        return getAfterNicknameMedalFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+       */
+      public com.wali.live.proto.UserProto.MedalOrBuilder getAfterNicknameMedalOrBuilder(
+          int index) {
+        if (afterNicknameMedalBuilder_ == null) {
+          return afterNicknameMedal_.get(index);  } else {
+          return afterNicknameMedalBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+       */
+      public java.util.List<? extends com.wali.live.proto.UserProto.MedalOrBuilder> 
+           getAfterNicknameMedalOrBuilderList() {
+        if (afterNicknameMedalBuilder_ != null) {
+          return afterNicknameMedalBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(afterNicknameMedal_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder addAfterNicknameMedalBuilder() {
+        return getAfterNicknameMedalFieldBuilder().addBuilder(
+            com.wali.live.proto.UserProto.Medal.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder addAfterNicknameMedalBuilder(
+          int index) {
+        return getAfterNicknameMedalFieldBuilder().addBuilder(
+            index, com.wali.live.proto.UserProto.Medal.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 9;</code>
+       */
+      public java.util.List<com.wali.live.proto.UserProto.Medal.Builder> 
+           getAfterNicknameMedalBuilderList() {
+        return getAfterNicknameMedalFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder> 
+          getAfterNicknameMedalFieldBuilder() {
+        if (afterNicknameMedalBuilder_ == null) {
+          afterNicknameMedalBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder>(
+                  afterNicknameMedal_,
+                  ((bitField0_ & 0x00000020) == 0x00000020),
+                  getParentForChildren(),
+                  isClean());
+          afterNicknameMedal_ = null;
+        }
+        return afterNicknameMedalBuilder_;
+      }
+
+      private java.util.List<com.wali.live.proto.UserProto.Medal> userCardMedal_ =
+        java.util.Collections.emptyList();
+      private void ensureUserCardMedalIsMutable() {
+        if (!((bitField0_ & 0x00000040) == 0x00000040)) {
+          userCardMedal_ = new java.util.ArrayList<com.wali.live.proto.UserProto.Medal>(userCardMedal_);
+          bitField0_ |= 0x00000040;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder> userCardMedalBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+       */
+      public java.util.List<com.wali.live.proto.UserProto.Medal> getUserCardMedalList() {
+        if (userCardMedalBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(userCardMedal_);
+        } else {
+          return userCardMedalBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+       */
+      public int getUserCardMedalCount() {
+        if (userCardMedalBuilder_ == null) {
+          return userCardMedal_.size();
+        } else {
+          return userCardMedalBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal getUserCardMedal(int index) {
+        if (userCardMedalBuilder_ == null) {
+          return userCardMedal_.get(index);
+        } else {
+          return userCardMedalBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+       */
+      public Builder setUserCardMedal(
+          int index, com.wali.live.proto.UserProto.Medal value) {
+        if (userCardMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUserCardMedalIsMutable();
+          userCardMedal_.set(index, value);
+          onChanged();
+        } else {
+          userCardMedalBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+       */
+      public Builder setUserCardMedal(
+          int index, com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (userCardMedalBuilder_ == null) {
+          ensureUserCardMedalIsMutable();
+          userCardMedal_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          userCardMedalBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+       */
+      public Builder addUserCardMedal(com.wali.live.proto.UserProto.Medal value) {
+        if (userCardMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUserCardMedalIsMutable();
+          userCardMedal_.add(value);
+          onChanged();
+        } else {
+          userCardMedalBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+       */
+      public Builder addUserCardMedal(
+          int index, com.wali.live.proto.UserProto.Medal value) {
+        if (userCardMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUserCardMedalIsMutable();
+          userCardMedal_.add(index, value);
+          onChanged();
+        } else {
+          userCardMedalBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+       */
+      public Builder addUserCardMedal(
+          com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (userCardMedalBuilder_ == null) {
+          ensureUserCardMedalIsMutable();
+          userCardMedal_.add(builderForValue.build());
+          onChanged();
+        } else {
+          userCardMedalBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+       */
+      public Builder addUserCardMedal(
+          int index, com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (userCardMedalBuilder_ == null) {
+          ensureUserCardMedalIsMutable();
+          userCardMedal_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          userCardMedalBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+       */
+      public Builder addAllUserCardMedal(
+          java.lang.Iterable<? extends com.wali.live.proto.UserProto.Medal> values) {
+        if (userCardMedalBuilder_ == null) {
+          ensureUserCardMedalIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, userCardMedal_);
+          onChanged();
+        } else {
+          userCardMedalBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+       */
+      public Builder clearUserCardMedal() {
+        if (userCardMedalBuilder_ == null) {
+          userCardMedal_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000040);
+          onChanged();
+        } else {
+          userCardMedalBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+       */
+      public Builder removeUserCardMedal(int index) {
+        if (userCardMedalBuilder_ == null) {
+          ensureUserCardMedalIsMutable();
+          userCardMedal_.remove(index);
+          onChanged();
+        } else {
+          userCardMedalBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder getUserCardMedalBuilder(
+          int index) {
+        return getUserCardMedalFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+       */
+      public com.wali.live.proto.UserProto.MedalOrBuilder getUserCardMedalOrBuilder(
+          int index) {
+        if (userCardMedalBuilder_ == null) {
+          return userCardMedal_.get(index);  } else {
+          return userCardMedalBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+       */
+      public java.util.List<? extends com.wali.live.proto.UserProto.MedalOrBuilder> 
+           getUserCardMedalOrBuilderList() {
+        if (userCardMedalBuilder_ != null) {
+          return userCardMedalBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(userCardMedal_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder addUserCardMedalBuilder() {
+        return getUserCardMedalFieldBuilder().addBuilder(
+            com.wali.live.proto.UserProto.Medal.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder addUserCardMedalBuilder(
+          int index) {
+        return getUserCardMedalFieldBuilder().addBuilder(
+            index, com.wali.live.proto.UserProto.Medal.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 10;</code>
+       */
+      public java.util.List<com.wali.live.proto.UserProto.Medal.Builder> 
+           getUserCardMedalBuilderList() {
+        return getUserCardMedalFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder> 
+          getUserCardMedalFieldBuilder() {
+        if (userCardMedalBuilder_ == null) {
+          userCardMedalBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder>(
+                  userCardMedal_,
+                  ((bitField0_ & 0x00000040) == 0x00000040),
+                  getParentForChildren(),
+                  isClean());
+          userCardMedal_ = null;
+        }
+        return userCardMedalBuilder_;
+      }
+
+      private boolean needBindPhone_ ;
+      /**
+       * <code>optional bool need_bind_phone = 11;</code>
+       *
+       * <pre>
+       * 是否需要绑定手机号 true 需要绑定弹窗 false 不需要弹窗
+       * </pre>
+       */
+      public boolean hasNeedBindPhone() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional bool need_bind_phone = 11;</code>
+       *
+       * <pre>
+       * 是否需要绑定手机号 true 需要绑定弹窗 false 不需要弹窗
+       * </pre>
+       */
+      public boolean getNeedBindPhone() {
+        return needBindPhone_;
+      }
+      /**
+       * <code>optional bool need_bind_phone = 11;</code>
+       *
+       * <pre>
+       * 是否需要绑定手机号 true 需要绑定弹窗 false 不需要弹窗
+       * </pre>
+       */
+      public Builder setNeedBindPhone(boolean value) {
+        bitField0_ |= 0x00000080;
+        needBindPhone_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool need_bind_phone = 11;</code>
+       *
+       * <pre>
+       * 是否需要绑定手机号 true 需要绑定弹窗 false 不需要弹窗
+       * </pre>
+       */
+      public Builder clearNeedBindPhone() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        needBindPhone_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object phoneNum_ = "";
+      /**
+       * <code>optional string phoneNum = 12 [deprecated = true];</code>
+       *
+       * <pre>
+       * 绑定的手机号码 新版废弃 移植到GetBindPhoneNumInfoReq
+       * </pre>
+       */
+      @java.lang.Deprecated public boolean hasPhoneNum() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional string phoneNum = 12 [deprecated = true];</code>
+       *
+       * <pre>
+       * 绑定的手机号码 新版废弃 移植到GetBindPhoneNumInfoReq
+       * </pre>
+       */
+      @java.lang.Deprecated public java.lang.String getPhoneNum() {
+        java.lang.Object ref = phoneNum_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            phoneNum_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string phoneNum = 12 [deprecated = true];</code>
+       *
+       * <pre>
+       * 绑定的手机号码 新版废弃 移植到GetBindPhoneNumInfoReq
+       * </pre>
+       */
+      @java.lang.Deprecated public com.google.protobuf.ByteString
+          getPhoneNumBytes() {
+        java.lang.Object ref = phoneNum_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          phoneNum_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string phoneNum = 12 [deprecated = true];</code>
+       *
+       * <pre>
+       * 绑定的手机号码 新版废弃 移植到GetBindPhoneNumInfoReq
+       * </pre>
+       */
+      @java.lang.Deprecated public Builder setPhoneNum(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        phoneNum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string phoneNum = 12 [deprecated = true];</code>
+       *
+       * <pre>
+       * 绑定的手机号码 新版废弃 移植到GetBindPhoneNumInfoReq
+       * </pre>
+       */
+      @java.lang.Deprecated public Builder clearPhoneNum() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        phoneNum_ = getDefaultInstance().getPhoneNum();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string phoneNum = 12 [deprecated = true];</code>
+       *
+       * <pre>
+       * 绑定的手机号码 新版废弃 移植到GetBindPhoneNumInfoReq
+       * </pre>
+       */
+      @java.lang.Deprecated public Builder setPhoneNumBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        phoneNum_ = value;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetOwnInfoRsp)
     }
 
@@ -9701,6 +11976,482 @@ public final class UserProto {
     }
 
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetOwnInfoRsp)
+  }
+
+  public interface MedalOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.Medal)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string pic_id = 1;</code>
+     */
+    boolean hasPicId();
+    /**
+     * <code>optional string pic_id = 1;</code>
+     */
+    java.lang.String getPicId();
+    /**
+     * <code>optional string pic_id = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getPicIdBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.Medal}
+   */
+  public static final class Medal extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.Medal)
+      MedalOrBuilder {
+    // Use Medal.newBuilder() to construct.
+    private Medal(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private Medal(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final Medal defaultInstance;
+    public static Medal getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public Medal getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Medal(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              picId_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_Medal_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_Medal_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.UserProto.Medal.class, com.wali.live.proto.UserProto.Medal.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<Medal> PARSER =
+        new com.google.protobuf.AbstractParser<Medal>() {
+      public Medal parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Medal(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Medal> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int PIC_ID_FIELD_NUMBER = 1;
+    private java.lang.Object picId_;
+    /**
+     * <code>optional string pic_id = 1;</code>
+     */
+    public boolean hasPicId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string pic_id = 1;</code>
+     */
+    public java.lang.String getPicId() {
+      java.lang.Object ref = picId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          picId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string pic_id = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPicIdBytes() {
+      java.lang.Object ref = picId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        picId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      picId_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getPicIdBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getPicIdBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.UserProto.Medal parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.UserProto.Medal parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.Medal parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.UserProto.Medal parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.Medal parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.Medal parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.Medal parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.Medal parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.Medal parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.Medal parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.UserProto.Medal prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.Medal}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.Medal)
+        com.wali.live.proto.UserProto.MedalOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_Medal_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_Medal_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.UserProto.Medal.class, com.wali.live.proto.UserProto.Medal.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.UserProto.Medal.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        picId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_Medal_descriptor;
+      }
+
+      public com.wali.live.proto.UserProto.Medal getDefaultInstanceForType() {
+        return com.wali.live.proto.UserProto.Medal.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.UserProto.Medal build() {
+        com.wali.live.proto.UserProto.Medal result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.UserProto.Medal buildPartial() {
+        com.wali.live.proto.UserProto.Medal result = new com.wali.live.proto.UserProto.Medal(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.picId_ = picId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.UserProto.Medal) {
+          return mergeFrom((com.wali.live.proto.UserProto.Medal)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.UserProto.Medal other) {
+        if (other == com.wali.live.proto.UserProto.Medal.getDefaultInstance()) return this;
+        if (other.hasPicId()) {
+          bitField0_ |= 0x00000001;
+          picId_ = other.picId_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.UserProto.Medal parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.UserProto.Medal) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object picId_ = "";
+      /**
+       * <code>optional string pic_id = 1;</code>
+       */
+      public boolean hasPicId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string pic_id = 1;</code>
+       */
+      public java.lang.String getPicId() {
+        java.lang.Object ref = picId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            picId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string pic_id = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getPicIdBytes() {
+        java.lang.Object ref = picId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          picId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string pic_id = 1;</code>
+       */
+      public Builder setPicId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        picId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string pic_id = 1;</code>
+       */
+      public Builder clearPicId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        picId_ = getDefaultInstance().getPicId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string pic_id = 1;</code>
+       */
+      public Builder setPicIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        picId_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.Medal)
+    }
+
+    static {
+      defaultInstance = new Medal(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.Medal)
   }
 
   public interface GetPersonalDataByIdReqOrBuilder extends
@@ -11379,6 +14130,78 @@ public final class UserProto {
      * </pre>
      */
     com.google.protobuf.ByteString getRoomInfo();
+
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+     */
+    java.util.List<com.wali.live.proto.UserProto.Medal> 
+        getBeforeNicknameMedalList();
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+     */
+    com.wali.live.proto.UserProto.Medal getBeforeNicknameMedal(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+     */
+    int getBeforeNicknameMedalCount();
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+     */
+    java.util.List<? extends com.wali.live.proto.UserProto.MedalOrBuilder> 
+        getBeforeNicknameMedalOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+     */
+    com.wali.live.proto.UserProto.MedalOrBuilder getBeforeNicknameMedalOrBuilder(
+        int index);
+
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+     */
+    java.util.List<com.wali.live.proto.UserProto.Medal> 
+        getAfterNicknameMedalList();
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+     */
+    com.wali.live.proto.UserProto.Medal getAfterNicknameMedal(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+     */
+    int getAfterNicknameMedalCount();
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+     */
+    java.util.List<? extends com.wali.live.proto.UserProto.MedalOrBuilder> 
+        getAfterNicknameMedalOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+     */
+    com.wali.live.proto.UserProto.MedalOrBuilder getAfterNicknameMedalOrBuilder(
+        int index);
+
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+     */
+    java.util.List<com.wali.live.proto.UserProto.Medal> 
+        getUserCardMedalList();
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+     */
+    com.wali.live.proto.UserProto.Medal getUserCardMedal(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+     */
+    int getUserCardMedalCount();
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+     */
+    java.util.List<? extends com.wali.live.proto.UserProto.MedalOrBuilder> 
+        getUserCardMedalOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+     */
+    com.wali.live.proto.UserProto.MedalOrBuilder getUserCardMedalOrBuilder(
+        int index);
   }
   /**
    * Protobuf type {@code com.wali.live.proto.GetHomepageResp}
@@ -11501,6 +14324,30 @@ public final class UserProto {
               roomInfo_ = input.readBytes();
               break;
             }
+            case 74: {
+              if (!((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
+                beforeNicknameMedal_ = new java.util.ArrayList<com.wali.live.proto.UserProto.Medal>();
+                mutable_bitField0_ |= 0x00000080;
+              }
+              beforeNicknameMedal_.add(input.readMessage(com.wali.live.proto.UserProto.Medal.PARSER, extensionRegistry));
+              break;
+            }
+            case 82: {
+              if (!((mutable_bitField0_ & 0x00000100) == 0x00000100)) {
+                afterNicknameMedal_ = new java.util.ArrayList<com.wali.live.proto.UserProto.Medal>();
+                mutable_bitField0_ |= 0x00000100;
+              }
+              afterNicknameMedal_.add(input.readMessage(com.wali.live.proto.UserProto.Medal.PARSER, extensionRegistry));
+              break;
+            }
+            case 90: {
+              if (!((mutable_bitField0_ & 0x00000200) == 0x00000200)) {
+                userCardMedal_ = new java.util.ArrayList<com.wali.live.proto.UserProto.Medal>();
+                mutable_bitField0_ |= 0x00000200;
+              }
+              userCardMedal_.add(input.readMessage(com.wali.live.proto.UserProto.Medal.PARSER, extensionRegistry));
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -11511,6 +14358,15 @@ public final class UserProto {
       } finally {
         if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
           rankTopThreeList_ = java.util.Collections.unmodifiableList(rankTopThreeList_);
+        }
+        if (((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
+          beforeNicknameMedal_ = java.util.Collections.unmodifiableList(beforeNicknameMedal_);
+        }
+        if (((mutable_bitField0_ & 0x00000100) == 0x00000100)) {
+          afterNicknameMedal_ = java.util.Collections.unmodifiableList(afterNicknameMedal_);
+        }
+        if (((mutable_bitField0_ & 0x00000200) == 0x00000200)) {
+          userCardMedal_ = java.util.Collections.unmodifiableList(userCardMedal_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -11766,6 +14622,111 @@ public final class UserProto {
       return roomInfo_;
     }
 
+    public static final int BEFORE_NICKNAME_MEDAL_FIELD_NUMBER = 9;
+    private java.util.List<com.wali.live.proto.UserProto.Medal> beforeNicknameMedal_;
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+     */
+    public java.util.List<com.wali.live.proto.UserProto.Medal> getBeforeNicknameMedalList() {
+      return beforeNicknameMedal_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+     */
+    public java.util.List<? extends com.wali.live.proto.UserProto.MedalOrBuilder> 
+        getBeforeNicknameMedalOrBuilderList() {
+      return beforeNicknameMedal_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+     */
+    public int getBeforeNicknameMedalCount() {
+      return beforeNicknameMedal_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+     */
+    public com.wali.live.proto.UserProto.Medal getBeforeNicknameMedal(int index) {
+      return beforeNicknameMedal_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+     */
+    public com.wali.live.proto.UserProto.MedalOrBuilder getBeforeNicknameMedalOrBuilder(
+        int index) {
+      return beforeNicknameMedal_.get(index);
+    }
+
+    public static final int AFTER_NICKNAME_MEDAL_FIELD_NUMBER = 10;
+    private java.util.List<com.wali.live.proto.UserProto.Medal> afterNicknameMedal_;
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+     */
+    public java.util.List<com.wali.live.proto.UserProto.Medal> getAfterNicknameMedalList() {
+      return afterNicknameMedal_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+     */
+    public java.util.List<? extends com.wali.live.proto.UserProto.MedalOrBuilder> 
+        getAfterNicknameMedalOrBuilderList() {
+      return afterNicknameMedal_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+     */
+    public int getAfterNicknameMedalCount() {
+      return afterNicknameMedal_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+     */
+    public com.wali.live.proto.UserProto.Medal getAfterNicknameMedal(int index) {
+      return afterNicknameMedal_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+     */
+    public com.wali.live.proto.UserProto.MedalOrBuilder getAfterNicknameMedalOrBuilder(
+        int index) {
+      return afterNicknameMedal_.get(index);
+    }
+
+    public static final int USER_CARD_MEDAL_FIELD_NUMBER = 11;
+    private java.util.List<com.wali.live.proto.UserProto.Medal> userCardMedal_;
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+     */
+    public java.util.List<com.wali.live.proto.UserProto.Medal> getUserCardMedalList() {
+      return userCardMedal_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+     */
+    public java.util.List<? extends com.wali.live.proto.UserProto.MedalOrBuilder> 
+        getUserCardMedalOrBuilderList() {
+      return userCardMedal_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+     */
+    public int getUserCardMedalCount() {
+      return userCardMedal_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+     */
+    public com.wali.live.proto.UserProto.Medal getUserCardMedal(int index) {
+      return userCardMedal_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+     */
+    public com.wali.live.proto.UserProto.MedalOrBuilder getUserCardMedalOrBuilder(
+        int index) {
+      return userCardMedal_.get(index);
+    }
+
     private void initFields() {
       retCode_ = 0;
       personalInfo_ = com.wali.live.proto.UserProto.PersonalInfo.getDefaultInstance();
@@ -11774,6 +14735,9 @@ public final class UserProto {
       rankTopThreeList_ = java.util.Collections.emptyList();
       roomId_ = "";
       roomInfo_ = com.google.protobuf.ByteString.EMPTY;
+      beforeNicknameMedal_ = java.util.Collections.emptyList();
+      afterNicknameMedal_ = java.util.Collections.emptyList();
+      userCardMedal_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -11825,6 +14789,15 @@ public final class UserProto {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         output.writeBytes(8, roomInfo_);
       }
+      for (int i = 0; i < beforeNicknameMedal_.size(); i++) {
+        output.writeMessage(9, beforeNicknameMedal_.get(i));
+      }
+      for (int i = 0; i < afterNicknameMedal_.size(); i++) {
+        output.writeMessage(10, afterNicknameMedal_.get(i));
+      }
+      for (int i = 0; i < userCardMedal_.size(); i++) {
+        output.writeMessage(11, userCardMedal_.get(i));
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -11866,6 +14839,18 @@ public final class UserProto {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(8, roomInfo_);
+      }
+      for (int i = 0; i < beforeNicknameMedal_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(9, beforeNicknameMedal_.get(i));
+      }
+      for (int i = 0; i < afterNicknameMedal_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, afterNicknameMedal_.get(i));
+      }
+      for (int i = 0; i < userCardMedal_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(11, userCardMedal_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -11978,6 +14963,9 @@ public final class UserProto {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getPersonalInfoFieldBuilder();
           getPersonalDataFieldBuilder();
+          getBeforeNicknameMedalFieldBuilder();
+          getAfterNicknameMedalFieldBuilder();
+          getUserCardMedalFieldBuilder();
         }
       }
       private static Builder create() {
@@ -12008,6 +14996,24 @@ public final class UserProto {
         bitField0_ = (bitField0_ & ~0x00000020);
         roomInfo_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000040);
+        if (beforeNicknameMedalBuilder_ == null) {
+          beforeNicknameMedal_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000080);
+        } else {
+          beforeNicknameMedalBuilder_.clear();
+        }
+        if (afterNicknameMedalBuilder_ == null) {
+          afterNicknameMedal_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000100);
+        } else {
+          afterNicknameMedalBuilder_.clear();
+        }
+        if (userCardMedalBuilder_ == null) {
+          userCardMedal_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000200);
+        } else {
+          userCardMedalBuilder_.clear();
+        }
         return this;
       }
 
@@ -12073,6 +15079,33 @@ public final class UserProto {
           to_bitField0_ |= 0x00000020;
         }
         result.roomInfo_ = roomInfo_;
+        if (beforeNicknameMedalBuilder_ == null) {
+          if (((bitField0_ & 0x00000080) == 0x00000080)) {
+            beforeNicknameMedal_ = java.util.Collections.unmodifiableList(beforeNicknameMedal_);
+            bitField0_ = (bitField0_ & ~0x00000080);
+          }
+          result.beforeNicknameMedal_ = beforeNicknameMedal_;
+        } else {
+          result.beforeNicknameMedal_ = beforeNicknameMedalBuilder_.build();
+        }
+        if (afterNicknameMedalBuilder_ == null) {
+          if (((bitField0_ & 0x00000100) == 0x00000100)) {
+            afterNicknameMedal_ = java.util.Collections.unmodifiableList(afterNicknameMedal_);
+            bitField0_ = (bitField0_ & ~0x00000100);
+          }
+          result.afterNicknameMedal_ = afterNicknameMedal_;
+        } else {
+          result.afterNicknameMedal_ = afterNicknameMedalBuilder_.build();
+        }
+        if (userCardMedalBuilder_ == null) {
+          if (((bitField0_ & 0x00000200) == 0x00000200)) {
+            userCardMedal_ = java.util.Collections.unmodifiableList(userCardMedal_);
+            bitField0_ = (bitField0_ & ~0x00000200);
+          }
+          result.userCardMedal_ = userCardMedal_;
+        } else {
+          result.userCardMedal_ = userCardMedalBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -12120,6 +15153,84 @@ public final class UserProto {
         }
         if (other.hasRoomInfo()) {
           setRoomInfo(other.getRoomInfo());
+        }
+        if (beforeNicknameMedalBuilder_ == null) {
+          if (!other.beforeNicknameMedal_.isEmpty()) {
+            if (beforeNicknameMedal_.isEmpty()) {
+              beforeNicknameMedal_ = other.beforeNicknameMedal_;
+              bitField0_ = (bitField0_ & ~0x00000080);
+            } else {
+              ensureBeforeNicknameMedalIsMutable();
+              beforeNicknameMedal_.addAll(other.beforeNicknameMedal_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.beforeNicknameMedal_.isEmpty()) {
+            if (beforeNicknameMedalBuilder_.isEmpty()) {
+              beforeNicknameMedalBuilder_.dispose();
+              beforeNicknameMedalBuilder_ = null;
+              beforeNicknameMedal_ = other.beforeNicknameMedal_;
+              bitField0_ = (bitField0_ & ~0x00000080);
+              beforeNicknameMedalBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getBeforeNicknameMedalFieldBuilder() : null;
+            } else {
+              beforeNicknameMedalBuilder_.addAllMessages(other.beforeNicknameMedal_);
+            }
+          }
+        }
+        if (afterNicknameMedalBuilder_ == null) {
+          if (!other.afterNicknameMedal_.isEmpty()) {
+            if (afterNicknameMedal_.isEmpty()) {
+              afterNicknameMedal_ = other.afterNicknameMedal_;
+              bitField0_ = (bitField0_ & ~0x00000100);
+            } else {
+              ensureAfterNicknameMedalIsMutable();
+              afterNicknameMedal_.addAll(other.afterNicknameMedal_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.afterNicknameMedal_.isEmpty()) {
+            if (afterNicknameMedalBuilder_.isEmpty()) {
+              afterNicknameMedalBuilder_.dispose();
+              afterNicknameMedalBuilder_ = null;
+              afterNicknameMedal_ = other.afterNicknameMedal_;
+              bitField0_ = (bitField0_ & ~0x00000100);
+              afterNicknameMedalBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getAfterNicknameMedalFieldBuilder() : null;
+            } else {
+              afterNicknameMedalBuilder_.addAllMessages(other.afterNicknameMedal_);
+            }
+          }
+        }
+        if (userCardMedalBuilder_ == null) {
+          if (!other.userCardMedal_.isEmpty()) {
+            if (userCardMedal_.isEmpty()) {
+              userCardMedal_ = other.userCardMedal_;
+              bitField0_ = (bitField0_ & ~0x00000200);
+            } else {
+              ensureUserCardMedalIsMutable();
+              userCardMedal_.addAll(other.userCardMedal_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.userCardMedal_.isEmpty()) {
+            if (userCardMedalBuilder_.isEmpty()) {
+              userCardMedalBuilder_.dispose();
+              userCardMedalBuilder_ = null;
+              userCardMedal_ = other.userCardMedal_;
+              bitField0_ = (bitField0_ & ~0x00000200);
+              userCardMedalBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getUserCardMedalFieldBuilder() : null;
+            } else {
+              userCardMedalBuilder_.addAllMessages(other.userCardMedal_);
+            }
+          }
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -12773,6 +15884,726 @@ public final class UserProto {
         return this;
       }
 
+      private java.util.List<com.wali.live.proto.UserProto.Medal> beforeNicknameMedal_ =
+        java.util.Collections.emptyList();
+      private void ensureBeforeNicknameMedalIsMutable() {
+        if (!((bitField0_ & 0x00000080) == 0x00000080)) {
+          beforeNicknameMedal_ = new java.util.ArrayList<com.wali.live.proto.UserProto.Medal>(beforeNicknameMedal_);
+          bitField0_ |= 0x00000080;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder> beforeNicknameMedalBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+       */
+      public java.util.List<com.wali.live.proto.UserProto.Medal> getBeforeNicknameMedalList() {
+        if (beforeNicknameMedalBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(beforeNicknameMedal_);
+        } else {
+          return beforeNicknameMedalBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+       */
+      public int getBeforeNicknameMedalCount() {
+        if (beforeNicknameMedalBuilder_ == null) {
+          return beforeNicknameMedal_.size();
+        } else {
+          return beforeNicknameMedalBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal getBeforeNicknameMedal(int index) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          return beforeNicknameMedal_.get(index);
+        } else {
+          return beforeNicknameMedalBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+       */
+      public Builder setBeforeNicknameMedal(
+          int index, com.wali.live.proto.UserProto.Medal value) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureBeforeNicknameMedalIsMutable();
+          beforeNicknameMedal_.set(index, value);
+          onChanged();
+        } else {
+          beforeNicknameMedalBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+       */
+      public Builder setBeforeNicknameMedal(
+          int index, com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          ensureBeforeNicknameMedalIsMutable();
+          beforeNicknameMedal_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          beforeNicknameMedalBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+       */
+      public Builder addBeforeNicknameMedal(com.wali.live.proto.UserProto.Medal value) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureBeforeNicknameMedalIsMutable();
+          beforeNicknameMedal_.add(value);
+          onChanged();
+        } else {
+          beforeNicknameMedalBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+       */
+      public Builder addBeforeNicknameMedal(
+          int index, com.wali.live.proto.UserProto.Medal value) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureBeforeNicknameMedalIsMutable();
+          beforeNicknameMedal_.add(index, value);
+          onChanged();
+        } else {
+          beforeNicknameMedalBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+       */
+      public Builder addBeforeNicknameMedal(
+          com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          ensureBeforeNicknameMedalIsMutable();
+          beforeNicknameMedal_.add(builderForValue.build());
+          onChanged();
+        } else {
+          beforeNicknameMedalBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+       */
+      public Builder addBeforeNicknameMedal(
+          int index, com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          ensureBeforeNicknameMedalIsMutable();
+          beforeNicknameMedal_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          beforeNicknameMedalBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+       */
+      public Builder addAllBeforeNicknameMedal(
+          java.lang.Iterable<? extends com.wali.live.proto.UserProto.Medal> values) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          ensureBeforeNicknameMedalIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, beforeNicknameMedal_);
+          onChanged();
+        } else {
+          beforeNicknameMedalBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+       */
+      public Builder clearBeforeNicknameMedal() {
+        if (beforeNicknameMedalBuilder_ == null) {
+          beforeNicknameMedal_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000080);
+          onChanged();
+        } else {
+          beforeNicknameMedalBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+       */
+      public Builder removeBeforeNicknameMedal(int index) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          ensureBeforeNicknameMedalIsMutable();
+          beforeNicknameMedal_.remove(index);
+          onChanged();
+        } else {
+          beforeNicknameMedalBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder getBeforeNicknameMedalBuilder(
+          int index) {
+        return getBeforeNicknameMedalFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+       */
+      public com.wali.live.proto.UserProto.MedalOrBuilder getBeforeNicknameMedalOrBuilder(
+          int index) {
+        if (beforeNicknameMedalBuilder_ == null) {
+          return beforeNicknameMedal_.get(index);  } else {
+          return beforeNicknameMedalBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+       */
+      public java.util.List<? extends com.wali.live.proto.UserProto.MedalOrBuilder> 
+           getBeforeNicknameMedalOrBuilderList() {
+        if (beforeNicknameMedalBuilder_ != null) {
+          return beforeNicknameMedalBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(beforeNicknameMedal_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder addBeforeNicknameMedalBuilder() {
+        return getBeforeNicknameMedalFieldBuilder().addBuilder(
+            com.wali.live.proto.UserProto.Medal.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder addBeforeNicknameMedalBuilder(
+          int index) {
+        return getBeforeNicknameMedalFieldBuilder().addBuilder(
+            index, com.wali.live.proto.UserProto.Medal.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal before_nickname_medal = 9;</code>
+       */
+      public java.util.List<com.wali.live.proto.UserProto.Medal.Builder> 
+           getBeforeNicknameMedalBuilderList() {
+        return getBeforeNicknameMedalFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder> 
+          getBeforeNicknameMedalFieldBuilder() {
+        if (beforeNicknameMedalBuilder_ == null) {
+          beforeNicknameMedalBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder>(
+                  beforeNicknameMedal_,
+                  ((bitField0_ & 0x00000080) == 0x00000080),
+                  getParentForChildren(),
+                  isClean());
+          beforeNicknameMedal_ = null;
+        }
+        return beforeNicknameMedalBuilder_;
+      }
+
+      private java.util.List<com.wali.live.proto.UserProto.Medal> afterNicknameMedal_ =
+        java.util.Collections.emptyList();
+      private void ensureAfterNicknameMedalIsMutable() {
+        if (!((bitField0_ & 0x00000100) == 0x00000100)) {
+          afterNicknameMedal_ = new java.util.ArrayList<com.wali.live.proto.UserProto.Medal>(afterNicknameMedal_);
+          bitField0_ |= 0x00000100;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder> afterNicknameMedalBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+       */
+      public java.util.List<com.wali.live.proto.UserProto.Medal> getAfterNicknameMedalList() {
+        if (afterNicknameMedalBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(afterNicknameMedal_);
+        } else {
+          return afterNicknameMedalBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+       */
+      public int getAfterNicknameMedalCount() {
+        if (afterNicknameMedalBuilder_ == null) {
+          return afterNicknameMedal_.size();
+        } else {
+          return afterNicknameMedalBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal getAfterNicknameMedal(int index) {
+        if (afterNicknameMedalBuilder_ == null) {
+          return afterNicknameMedal_.get(index);
+        } else {
+          return afterNicknameMedalBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+       */
+      public Builder setAfterNicknameMedal(
+          int index, com.wali.live.proto.UserProto.Medal value) {
+        if (afterNicknameMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAfterNicknameMedalIsMutable();
+          afterNicknameMedal_.set(index, value);
+          onChanged();
+        } else {
+          afterNicknameMedalBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+       */
+      public Builder setAfterNicknameMedal(
+          int index, com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (afterNicknameMedalBuilder_ == null) {
+          ensureAfterNicknameMedalIsMutable();
+          afterNicknameMedal_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          afterNicknameMedalBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+       */
+      public Builder addAfterNicknameMedal(com.wali.live.proto.UserProto.Medal value) {
+        if (afterNicknameMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAfterNicknameMedalIsMutable();
+          afterNicknameMedal_.add(value);
+          onChanged();
+        } else {
+          afterNicknameMedalBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+       */
+      public Builder addAfterNicknameMedal(
+          int index, com.wali.live.proto.UserProto.Medal value) {
+        if (afterNicknameMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAfterNicknameMedalIsMutable();
+          afterNicknameMedal_.add(index, value);
+          onChanged();
+        } else {
+          afterNicknameMedalBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+       */
+      public Builder addAfterNicknameMedal(
+          com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (afterNicknameMedalBuilder_ == null) {
+          ensureAfterNicknameMedalIsMutable();
+          afterNicknameMedal_.add(builderForValue.build());
+          onChanged();
+        } else {
+          afterNicknameMedalBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+       */
+      public Builder addAfterNicknameMedal(
+          int index, com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (afterNicknameMedalBuilder_ == null) {
+          ensureAfterNicknameMedalIsMutable();
+          afterNicknameMedal_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          afterNicknameMedalBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+       */
+      public Builder addAllAfterNicknameMedal(
+          java.lang.Iterable<? extends com.wali.live.proto.UserProto.Medal> values) {
+        if (afterNicknameMedalBuilder_ == null) {
+          ensureAfterNicknameMedalIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, afterNicknameMedal_);
+          onChanged();
+        } else {
+          afterNicknameMedalBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+       */
+      public Builder clearAfterNicknameMedal() {
+        if (afterNicknameMedalBuilder_ == null) {
+          afterNicknameMedal_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000100);
+          onChanged();
+        } else {
+          afterNicknameMedalBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+       */
+      public Builder removeAfterNicknameMedal(int index) {
+        if (afterNicknameMedalBuilder_ == null) {
+          ensureAfterNicknameMedalIsMutable();
+          afterNicknameMedal_.remove(index);
+          onChanged();
+        } else {
+          afterNicknameMedalBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder getAfterNicknameMedalBuilder(
+          int index) {
+        return getAfterNicknameMedalFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+       */
+      public com.wali.live.proto.UserProto.MedalOrBuilder getAfterNicknameMedalOrBuilder(
+          int index) {
+        if (afterNicknameMedalBuilder_ == null) {
+          return afterNicknameMedal_.get(index);  } else {
+          return afterNicknameMedalBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+       */
+      public java.util.List<? extends com.wali.live.proto.UserProto.MedalOrBuilder> 
+           getAfterNicknameMedalOrBuilderList() {
+        if (afterNicknameMedalBuilder_ != null) {
+          return afterNicknameMedalBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(afterNicknameMedal_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder addAfterNicknameMedalBuilder() {
+        return getAfterNicknameMedalFieldBuilder().addBuilder(
+            com.wali.live.proto.UserProto.Medal.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder addAfterNicknameMedalBuilder(
+          int index) {
+        return getAfterNicknameMedalFieldBuilder().addBuilder(
+            index, com.wali.live.proto.UserProto.Medal.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal after_nickname_medal = 10;</code>
+       */
+      public java.util.List<com.wali.live.proto.UserProto.Medal.Builder> 
+           getAfterNicknameMedalBuilderList() {
+        return getAfterNicknameMedalFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder> 
+          getAfterNicknameMedalFieldBuilder() {
+        if (afterNicknameMedalBuilder_ == null) {
+          afterNicknameMedalBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder>(
+                  afterNicknameMedal_,
+                  ((bitField0_ & 0x00000100) == 0x00000100),
+                  getParentForChildren(),
+                  isClean());
+          afterNicknameMedal_ = null;
+        }
+        return afterNicknameMedalBuilder_;
+      }
+
+      private java.util.List<com.wali.live.proto.UserProto.Medal> userCardMedal_ =
+        java.util.Collections.emptyList();
+      private void ensureUserCardMedalIsMutable() {
+        if (!((bitField0_ & 0x00000200) == 0x00000200)) {
+          userCardMedal_ = new java.util.ArrayList<com.wali.live.proto.UserProto.Medal>(userCardMedal_);
+          bitField0_ |= 0x00000200;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder> userCardMedalBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+       */
+      public java.util.List<com.wali.live.proto.UserProto.Medal> getUserCardMedalList() {
+        if (userCardMedalBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(userCardMedal_);
+        } else {
+          return userCardMedalBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+       */
+      public int getUserCardMedalCount() {
+        if (userCardMedalBuilder_ == null) {
+          return userCardMedal_.size();
+        } else {
+          return userCardMedalBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal getUserCardMedal(int index) {
+        if (userCardMedalBuilder_ == null) {
+          return userCardMedal_.get(index);
+        } else {
+          return userCardMedalBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+       */
+      public Builder setUserCardMedal(
+          int index, com.wali.live.proto.UserProto.Medal value) {
+        if (userCardMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUserCardMedalIsMutable();
+          userCardMedal_.set(index, value);
+          onChanged();
+        } else {
+          userCardMedalBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+       */
+      public Builder setUserCardMedal(
+          int index, com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (userCardMedalBuilder_ == null) {
+          ensureUserCardMedalIsMutable();
+          userCardMedal_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          userCardMedalBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+       */
+      public Builder addUserCardMedal(com.wali.live.proto.UserProto.Medal value) {
+        if (userCardMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUserCardMedalIsMutable();
+          userCardMedal_.add(value);
+          onChanged();
+        } else {
+          userCardMedalBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+       */
+      public Builder addUserCardMedal(
+          int index, com.wali.live.proto.UserProto.Medal value) {
+        if (userCardMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUserCardMedalIsMutable();
+          userCardMedal_.add(index, value);
+          onChanged();
+        } else {
+          userCardMedalBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+       */
+      public Builder addUserCardMedal(
+          com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (userCardMedalBuilder_ == null) {
+          ensureUserCardMedalIsMutable();
+          userCardMedal_.add(builderForValue.build());
+          onChanged();
+        } else {
+          userCardMedalBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+       */
+      public Builder addUserCardMedal(
+          int index, com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (userCardMedalBuilder_ == null) {
+          ensureUserCardMedalIsMutable();
+          userCardMedal_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          userCardMedalBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+       */
+      public Builder addAllUserCardMedal(
+          java.lang.Iterable<? extends com.wali.live.proto.UserProto.Medal> values) {
+        if (userCardMedalBuilder_ == null) {
+          ensureUserCardMedalIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, userCardMedal_);
+          onChanged();
+        } else {
+          userCardMedalBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+       */
+      public Builder clearUserCardMedal() {
+        if (userCardMedalBuilder_ == null) {
+          userCardMedal_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000200);
+          onChanged();
+        } else {
+          userCardMedalBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+       */
+      public Builder removeUserCardMedal(int index) {
+        if (userCardMedalBuilder_ == null) {
+          ensureUserCardMedalIsMutable();
+          userCardMedal_.remove(index);
+          onChanged();
+        } else {
+          userCardMedalBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder getUserCardMedalBuilder(
+          int index) {
+        return getUserCardMedalFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+       */
+      public com.wali.live.proto.UserProto.MedalOrBuilder getUserCardMedalOrBuilder(
+          int index) {
+        if (userCardMedalBuilder_ == null) {
+          return userCardMedal_.get(index);  } else {
+          return userCardMedalBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+       */
+      public java.util.List<? extends com.wali.live.proto.UserProto.MedalOrBuilder> 
+           getUserCardMedalOrBuilderList() {
+        if (userCardMedalBuilder_ != null) {
+          return userCardMedalBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(userCardMedal_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder addUserCardMedalBuilder() {
+        return getUserCardMedalFieldBuilder().addBuilder(
+            com.wali.live.proto.UserProto.Medal.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder addUserCardMedalBuilder(
+          int index) {
+        return getUserCardMedalFieldBuilder().addBuilder(
+            index, com.wali.live.proto.UserProto.Medal.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.Medal user_card_medal = 11;</code>
+       */
+      public java.util.List<com.wali.live.proto.UserProto.Medal.Builder> 
+           getUserCardMedalBuilderList() {
+        return getUserCardMedalFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder> 
+          getUserCardMedalFieldBuilder() {
+        if (userCardMedalBuilder_ == null) {
+          userCardMedalBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder>(
+                  userCardMedal_,
+                  ((bitField0_ & 0x00000200) == 0x00000200),
+                  getParentForChildren(),
+                  isClean());
+          userCardMedal_ = null;
+        }
+        return userCardMedalBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetHomepageResp)
     }
 
@@ -12864,6 +16695,23 @@ public final class UserProto {
      * </pre>
      */
     boolean getIsNotifyNoShake();
+
+    /**
+     * <code>optional bool isVipHide = 6;</code>
+     *
+     * <pre>
+     *是否设置vip隐身
+     * </pre>
+     */
+    boolean hasIsVipHide();
+    /**
+     * <code>optional bool isVipHide = 6;</code>
+     *
+     * <pre>
+     *是否设置vip隐身
+     * </pre>
+     */
+    boolean getIsVipHide();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.UploadUserSettingReq}
@@ -12945,6 +16793,11 @@ public final class UserProto {
             case 40: {
               bitField0_ |= 0x00000010;
               isNotifyNoShake_ = input.readBool();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              isVipHide_ = input.readBool();
               break;
             }
           }
@@ -13094,12 +16947,36 @@ public final class UserProto {
       return isNotifyNoShake_;
     }
 
+    public static final int ISVIPHIDE_FIELD_NUMBER = 6;
+    private boolean isVipHide_;
+    /**
+     * <code>optional bool isVipHide = 6;</code>
+     *
+     * <pre>
+     *是否设置vip隐身
+     * </pre>
+     */
+    public boolean hasIsVipHide() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional bool isVipHide = 6;</code>
+     *
+     * <pre>
+     *是否设置vip隐身
+     * </pre>
+     */
+    public boolean getIsVipHide() {
+      return isVipHide_;
+    }
+
     private void initFields() {
       zuid_ = 0L;
       isPushable_ = false;
       isNotifyNoDisturb_ = false;
       isNotifyNoSound_ = false;
       isNotifyNoShake_ = false;
+      isVipHide_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -13133,6 +17010,9 @@ public final class UserProto {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeBool(5, isNotifyNoShake_);
       }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBool(6, isVipHide_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -13161,6 +17041,10 @@ public final class UserProto {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(5, isNotifyNoShake_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(6, isVipHide_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -13294,6 +17178,8 @@ public final class UserProto {
         bitField0_ = (bitField0_ & ~0x00000008);
         isNotifyNoShake_ = false;
         bitField0_ = (bitField0_ & ~0x00000010);
+        isVipHide_ = false;
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -13342,6 +17228,10 @@ public final class UserProto {
           to_bitField0_ |= 0x00000010;
         }
         result.isNotifyNoShake_ = isNotifyNoShake_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.isVipHide_ = isVipHide_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -13372,6 +17262,9 @@ public final class UserProto {
         }
         if (other.hasIsNotifyNoShake()) {
           setIsNotifyNoShake(other.getIsNotifyNoShake());
+        }
+        if (other.hasIsVipHide()) {
+          setIsVipHide(other.getIsVipHide());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -13624,6 +17517,54 @@ public final class UserProto {
       public Builder clearIsNotifyNoShake() {
         bitField0_ = (bitField0_ & ~0x00000010);
         isNotifyNoShake_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean isVipHide_ ;
+      /**
+       * <code>optional bool isVipHide = 6;</code>
+       *
+       * <pre>
+       *是否设置vip隐身
+       * </pre>
+       */
+      public boolean hasIsVipHide() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional bool isVipHide = 6;</code>
+       *
+       * <pre>
+       *是否设置vip隐身
+       * </pre>
+       */
+      public boolean getIsVipHide() {
+        return isVipHide_;
+      }
+      /**
+       * <code>optional bool isVipHide = 6;</code>
+       *
+       * <pre>
+       *是否设置vip隐身
+       * </pre>
+       */
+      public Builder setIsVipHide(boolean value) {
+        bitField0_ |= 0x00000020;
+        isVipHide_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool isVipHide = 6;</code>
+       *
+       * <pre>
+       *是否设置vip隐身
+       * </pre>
+       */
+      public Builder clearIsVipHide() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        isVipHide_ = false;
         onChanged();
         return this;
       }
@@ -14079,6 +18020,23 @@ public final class UserProto {
      * <code>required uint32 limit = 3;</code>
      */
     int getLimit();
+
+    /**
+     * <code>optional bool live_status = 4;</code>
+     *
+     * <pre>
+     *是否显示直播状态
+     * </pre>
+     */
+    boolean hasLiveStatus();
+    /**
+     * <code>optional bool live_status = 4;</code>
+     *
+     * <pre>
+     *是否显示直播状态
+     * </pre>
+     */
+    boolean getLiveStatus();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.SearchUserInfoReq}
@@ -14151,6 +18109,11 @@ public final class UserProto {
             case 24: {
               bitField0_ |= 0x00000004;
               limit_ = input.readUInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              liveStatus_ = input.readBool();
               break;
             }
           }
@@ -14265,10 +18228,34 @@ public final class UserProto {
       return limit_;
     }
 
+    public static final int LIVE_STATUS_FIELD_NUMBER = 4;
+    private boolean liveStatus_;
+    /**
+     * <code>optional bool live_status = 4;</code>
+     *
+     * <pre>
+     *是否显示直播状态
+     * </pre>
+     */
+    public boolean hasLiveStatus() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional bool live_status = 4;</code>
+     *
+     * <pre>
+     *是否显示直播状态
+     * </pre>
+     */
+    public boolean getLiveStatus() {
+      return liveStatus_;
+    }
+
     private void initFields() {
       keyword_ = "";
       offset_ = 0;
       limit_ = 0;
+      liveStatus_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -14304,6 +18291,9 @@ public final class UserProto {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeUInt32(3, limit_);
       }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBool(4, liveStatus_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -14324,6 +18314,10 @@ public final class UserProto {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(3, limit_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, liveStatus_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -14453,6 +18447,8 @@ public final class UserProto {
         bitField0_ = (bitField0_ & ~0x00000002);
         limit_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
+        liveStatus_ = false;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -14493,6 +18489,10 @@ public final class UserProto {
           to_bitField0_ |= 0x00000004;
         }
         result.limit_ = limit_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.liveStatus_ = liveStatus_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -14519,6 +18519,9 @@ public final class UserProto {
         }
         if (other.hasLimit()) {
           setLimit(other.getLimit());
+        }
+        if (other.hasLiveStatus()) {
+          setLiveStatus(other.getLiveStatus());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -14695,6 +18698,54 @@ public final class UserProto {
       public Builder clearLimit() {
         bitField0_ = (bitField0_ & ~0x00000004);
         limit_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean liveStatus_ ;
+      /**
+       * <code>optional bool live_status = 4;</code>
+       *
+       * <pre>
+       *是否显示直播状态
+       * </pre>
+       */
+      public boolean hasLiveStatus() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional bool live_status = 4;</code>
+       *
+       * <pre>
+       *是否显示直播状态
+       * </pre>
+       */
+      public boolean getLiveStatus() {
+        return liveStatus_;
+      }
+      /**
+       * <code>optional bool live_status = 4;</code>
+       *
+       * <pre>
+       *是否显示直播状态
+       * </pre>
+       */
+      public Builder setLiveStatus(boolean value) {
+        bitField0_ |= 0x00000008;
+        liveStatus_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool live_status = 4;</code>
+       *
+       * <pre>
+       *是否显示直播状态
+       * </pre>
+       */
+      public Builder clearLiveStatus() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        liveStatus_ = false;
         onChanged();
         return this;
       }
@@ -15818,6 +19869,23 @@ public final class UserProto {
      * </pre>
      */
     com.wali.live.proto.UserProto.RegionOrBuilder getRegionOrBuilder();
+
+    /**
+     * <code>optional uint32 modify_nickname_interval = 15;</code>
+     *
+     * <pre>
+     * 修改昵称间隔(秒). 如果为0 则不会限制
+     * </pre>
+     */
+    boolean hasModifyNicknameInterval();
+    /**
+     * <code>optional uint32 modify_nickname_interval = 15;</code>
+     *
+     * <pre>
+     * 修改昵称间隔(秒). 如果为0 则不会限制
+     * </pre>
+     */
+    int getModifyNicknameInterval();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.UploadUserPropertiesReq}
@@ -15948,6 +20016,11 @@ public final class UserProto {
                 region_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000800;
+              break;
+            }
+            case 120: {
+              bitField0_ |= 0x00001000;
+              modifyNicknameInterval_ = input.readUInt32();
               break;
             }
           }
@@ -16446,6 +20519,29 @@ public final class UserProto {
       return region_;
     }
 
+    public static final int MODIFY_NICKNAME_INTERVAL_FIELD_NUMBER = 15;
+    private int modifyNicknameInterval_;
+    /**
+     * <code>optional uint32 modify_nickname_interval = 15;</code>
+     *
+     * <pre>
+     * 修改昵称间隔(秒). 如果为0 则不会限制
+     * </pre>
+     */
+    public boolean hasModifyNicknameInterval() {
+      return ((bitField0_ & 0x00001000) == 0x00001000);
+    }
+    /**
+     * <code>optional uint32 modify_nickname_interval = 15;</code>
+     *
+     * <pre>
+     * 修改昵称间隔(秒). 如果为0 则不会限制
+     * </pre>
+     */
+    public int getModifyNicknameInterval() {
+      return modifyNicknameInterval_;
+    }
+
     private void initFields() {
       zuid_ = 0L;
       avatar_ = 0L;
@@ -16459,6 +20555,7 @@ public final class UserProto {
       address_ = "";
       avatarMd5_ = "";
       region_ = com.wali.live.proto.UserProto.Region.getDefaultInstance();
+      modifyNicknameInterval_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -16512,6 +20609,9 @@ public final class UserProto {
       }
       if (((bitField0_ & 0x00000800) == 0x00000800)) {
         output.writeMessage(14, region_);
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        output.writeUInt32(15, modifyNicknameInterval_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -16569,6 +20669,10 @@ public final class UserProto {
       if (((bitField0_ & 0x00000800) == 0x00000800)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(14, region_);
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(15, modifyNicknameInterval_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -16721,6 +20825,8 @@ public final class UserProto {
           regionBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000800);
+        modifyNicknameInterval_ = 0;
+        bitField0_ = (bitField0_ & ~0x00001000);
         return this;
       }
 
@@ -16801,6 +20907,10 @@ public final class UserProto {
         } else {
           result.region_ = regionBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
+          to_bitField0_ |= 0x00001000;
+        }
+        result.modifyNicknameInterval_ = modifyNicknameInterval_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -16864,6 +20974,9 @@ public final class UserProto {
         }
         if (other.hasRegion()) {
           mergeRegion(other.getRegion());
+        }
+        if (other.hasModifyNicknameInterval()) {
+          setModifyNicknameInterval(other.getModifyNicknameInterval());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -17856,6 +21969,54 @@ public final class UserProto {
         return regionBuilder_;
       }
 
+      private int modifyNicknameInterval_ ;
+      /**
+       * <code>optional uint32 modify_nickname_interval = 15;</code>
+       *
+       * <pre>
+       * 修改昵称间隔(秒). 如果为0 则不会限制
+       * </pre>
+       */
+      public boolean hasModifyNicknameInterval() {
+        return ((bitField0_ & 0x00001000) == 0x00001000);
+      }
+      /**
+       * <code>optional uint32 modify_nickname_interval = 15;</code>
+       *
+       * <pre>
+       * 修改昵称间隔(秒). 如果为0 则不会限制
+       * </pre>
+       */
+      public int getModifyNicknameInterval() {
+        return modifyNicknameInterval_;
+      }
+      /**
+       * <code>optional uint32 modify_nickname_interval = 15;</code>
+       *
+       * <pre>
+       * 修改昵称间隔(秒). 如果为0 则不会限制
+       * </pre>
+       */
+      public Builder setModifyNicknameInterval(int value) {
+        bitField0_ |= 0x00001000;
+        modifyNicknameInterval_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 modify_nickname_interval = 15;</code>
+       *
+       * <pre>
+       * 修改昵称间隔(秒). 如果为0 则不会限制
+       * </pre>
+       */
+      public Builder clearModifyNicknameInterval() {
+        bitField0_ = (bitField0_ & ~0x00001000);
+        modifyNicknameInterval_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UploadUserPropertiesReq)
     }
 
@@ -17931,6 +22092,40 @@ public final class UserProto {
      */
     com.google.protobuf.ByteString
         getNicknameBytes();
+
+    /**
+     * <code>optional uint64 update_nickname_time = 4;</code>
+     *
+     * <pre>
+     * 当retcode=7031时生效，记录昵称上次修改时间(秒)
+     * </pre>
+     */
+    boolean hasUpdateNicknameTime();
+    /**
+     * <code>optional uint64 update_nickname_time = 4;</code>
+     *
+     * <pre>
+     * 当retcode=7031时生效，记录昵称上次修改时间(秒)
+     * </pre>
+     */
+    long getUpdateNicknameTime();
+
+    /**
+     * <code>optional uint64 current_time = 5;</code>
+     *
+     * <pre>
+     * 服务器当前时间戳(秒) 当 update_nickname_time 存在时生效
+     * </pre>
+     */
+    boolean hasCurrentTime();
+    /**
+     * <code>optional uint64 current_time = 5;</code>
+     *
+     * <pre>
+     * 服务器当前时间戳(秒) 当 update_nickname_time 存在时生效
+     * </pre>
+     */
+    long getCurrentTime();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.UploadUserPropertiesRsp}
@@ -17999,6 +22194,16 @@ public final class UserProto {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
               nickname_ = bs;
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              updateNicknameTime_ = input.readUInt64();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              currentTime_ = input.readUInt64();
               break;
             }
           }
@@ -18164,10 +22369,58 @@ public final class UserProto {
       }
     }
 
+    public static final int UPDATE_NICKNAME_TIME_FIELD_NUMBER = 4;
+    private long updateNicknameTime_;
+    /**
+     * <code>optional uint64 update_nickname_time = 4;</code>
+     *
+     * <pre>
+     * 当retcode=7031时生效，记录昵称上次修改时间(秒)
+     * </pre>
+     */
+    public boolean hasUpdateNicknameTime() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint64 update_nickname_time = 4;</code>
+     *
+     * <pre>
+     * 当retcode=7031时生效，记录昵称上次修改时间(秒)
+     * </pre>
+     */
+    public long getUpdateNicknameTime() {
+      return updateNicknameTime_;
+    }
+
+    public static final int CURRENT_TIME_FIELD_NUMBER = 5;
+    private long currentTime_;
+    /**
+     * <code>optional uint64 current_time = 5;</code>
+     *
+     * <pre>
+     * 服务器当前时间戳(秒) 当 update_nickname_time 存在时生效
+     * </pre>
+     */
+    public boolean hasCurrentTime() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional uint64 current_time = 5;</code>
+     *
+     * <pre>
+     * 服务器当前时间戳(秒) 当 update_nickname_time 存在时生效
+     * </pre>
+     */
+    public long getCurrentTime() {
+      return currentTime_;
+    }
+
     private void initFields() {
       retCode_ = 0;
       errMsg_ = "";
       nickname_ = "";
+      updateNicknameTime_ = 0L;
+      currentTime_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -18195,6 +22448,12 @@ public final class UserProto {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeBytes(3, getNicknameBytes());
       }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt64(4, updateNicknameTime_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeUInt64(5, currentTime_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -18215,6 +22474,14 @@ public final class UserProto {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(3, getNicknameBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(4, updateNicknameTime_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(5, currentTime_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -18339,6 +22606,10 @@ public final class UserProto {
         bitField0_ = (bitField0_ & ~0x00000002);
         nickname_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
+        updateNicknameTime_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        currentTime_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -18379,6 +22650,14 @@ public final class UserProto {
           to_bitField0_ |= 0x00000004;
         }
         result.nickname_ = nickname_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.updateNicknameTime_ = updateNicknameTime_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.currentTime_ = currentTime_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -18407,6 +22686,12 @@ public final class UserProto {
           bitField0_ |= 0x00000004;
           nickname_ = other.nickname_;
           onChanged();
+        }
+        if (other.hasUpdateNicknameTime()) {
+          setUpdateNicknameTime(other.getUpdateNicknameTime());
+        }
+        if (other.hasCurrentTime()) {
+          setCurrentTime(other.getCurrentTime());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -18667,6 +22952,102 @@ public final class UserProto {
   }
   bitField0_ |= 0x00000004;
         nickname_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long updateNicknameTime_ ;
+      /**
+       * <code>optional uint64 update_nickname_time = 4;</code>
+       *
+       * <pre>
+       * 当retcode=7031时生效，记录昵称上次修改时间(秒)
+       * </pre>
+       */
+      public boolean hasUpdateNicknameTime() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint64 update_nickname_time = 4;</code>
+       *
+       * <pre>
+       * 当retcode=7031时生效，记录昵称上次修改时间(秒)
+       * </pre>
+       */
+      public long getUpdateNicknameTime() {
+        return updateNicknameTime_;
+      }
+      /**
+       * <code>optional uint64 update_nickname_time = 4;</code>
+       *
+       * <pre>
+       * 当retcode=7031时生效，记录昵称上次修改时间(秒)
+       * </pre>
+       */
+      public Builder setUpdateNicknameTime(long value) {
+        bitField0_ |= 0x00000008;
+        updateNicknameTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 update_nickname_time = 4;</code>
+       *
+       * <pre>
+       * 当retcode=7031时生效，记录昵称上次修改时间(秒)
+       * </pre>
+       */
+      public Builder clearUpdateNicknameTime() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        updateNicknameTime_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long currentTime_ ;
+      /**
+       * <code>optional uint64 current_time = 5;</code>
+       *
+       * <pre>
+       * 服务器当前时间戳(秒) 当 update_nickname_time 存在时生效
+       * </pre>
+       */
+      public boolean hasCurrentTime() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional uint64 current_time = 5;</code>
+       *
+       * <pre>
+       * 服务器当前时间戳(秒) 当 update_nickname_time 存在时生效
+       * </pre>
+       */
+      public long getCurrentTime() {
+        return currentTime_;
+      }
+      /**
+       * <code>optional uint64 current_time = 5;</code>
+       *
+       * <pre>
+       * 服务器当前时间戳(秒) 当 update_nickname_time 存在时生效
+       * </pre>
+       */
+      public Builder setCurrentTime(long value) {
+        bitField0_ |= 0x00000010;
+        currentTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 current_time = 5;</code>
+       *
+       * <pre>
+       * 服务器当前时间戳(秒) 当 update_nickname_time 存在时生效
+       * </pre>
+       */
+      public Builder clearCurrentTime() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        currentTime_ = 0L;
         onChanged();
         return this;
       }
@@ -21622,6 +26003,23 @@ public final class UserProto {
      * </pre>
      */
     boolean getIsNotifyNoShake();
+
+    /**
+     * <code>optional bool isVipHide = 6;</code>
+     *
+     * <pre>
+     *是否开启vip隐身
+     * </pre>
+     */
+    boolean hasIsVipHide();
+    /**
+     * <code>optional bool isVipHide = 6;</code>
+     *
+     * <pre>
+     *是否开启vip隐身
+     * </pre>
+     */
+    boolean getIsVipHide();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.GetOwnSettingRsp}
@@ -21698,6 +26096,11 @@ public final class UserProto {
             case 40: {
               bitField0_ |= 0x00000010;
               isNotifyNoShake_ = input.readBool();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              isVipHide_ = input.readBool();
               break;
             }
           }
@@ -21847,12 +26250,36 @@ public final class UserProto {
       return isNotifyNoShake_;
     }
 
+    public static final int ISVIPHIDE_FIELD_NUMBER = 6;
+    private boolean isVipHide_;
+    /**
+     * <code>optional bool isVipHide = 6;</code>
+     *
+     * <pre>
+     *是否开启vip隐身
+     * </pre>
+     */
+    public boolean hasIsVipHide() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional bool isVipHide = 6;</code>
+     *
+     * <pre>
+     *是否开启vip隐身
+     * </pre>
+     */
+    public boolean getIsVipHide() {
+      return isVipHide_;
+    }
+
     private void initFields() {
       retCode_ = 0;
       isPushable_ = false;
       isNotifyNoDisturb_ = false;
       isNotifyNoSound_ = false;
       isNotifyNoShake_ = false;
+      isVipHide_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -21886,6 +26313,9 @@ public final class UserProto {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeBool(5, isNotifyNoShake_);
       }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBool(6, isVipHide_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -21914,6 +26344,10 @@ public final class UserProto {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(5, isNotifyNoShake_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(6, isVipHide_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -22042,6 +26476,8 @@ public final class UserProto {
         bitField0_ = (bitField0_ & ~0x00000008);
         isNotifyNoShake_ = false;
         bitField0_ = (bitField0_ & ~0x00000010);
+        isVipHide_ = false;
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -22090,6 +26526,10 @@ public final class UserProto {
           to_bitField0_ |= 0x00000010;
         }
         result.isNotifyNoShake_ = isNotifyNoShake_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.isVipHide_ = isVipHide_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -22120,6 +26560,9 @@ public final class UserProto {
         }
         if (other.hasIsNotifyNoShake()) {
           setIsNotifyNoShake(other.getIsNotifyNoShake());
+        }
+        if (other.hasIsVipHide()) {
+          setIsVipHide(other.getIsVipHide());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -22372,6 +26815,54 @@ public final class UserProto {
       public Builder clearIsNotifyNoShake() {
         bitField0_ = (bitField0_ & ~0x00000010);
         isNotifyNoShake_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean isVipHide_ ;
+      /**
+       * <code>optional bool isVipHide = 6;</code>
+       *
+       * <pre>
+       *是否开启vip隐身
+       * </pre>
+       */
+      public boolean hasIsVipHide() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional bool isVipHide = 6;</code>
+       *
+       * <pre>
+       *是否开启vip隐身
+       * </pre>
+       */
+      public boolean getIsVipHide() {
+        return isVipHide_;
+      }
+      /**
+       * <code>optional bool isVipHide = 6;</code>
+       *
+       * <pre>
+       *是否开启vip隐身
+       * </pre>
+       */
+      public Builder setIsVipHide(boolean value) {
+        bitField0_ |= 0x00000020;
+        isVipHide_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool isVipHide = 6;</code>
+       *
+       * <pre>
+       *是否开启vip隐身
+       * </pre>
+       */
+      public Builder clearIsVipHide() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        isVipHide_ = false;
         onChanged();
         return this;
       }
@@ -43491,6 +47982,1346 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetCountryCodeRsp)
   }
 
+  public interface GetBindPhoneNumReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetBindPhoneNumReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     */
+    boolean hasZuid();
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     */
+    long getZuid();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetBindPhoneNumReq}
+   *
+   * <pre>
+   * 获取用户绑定手机号信息
+   * cmd zhibo.user.getbindphonenum
+   * </pre>
+   */
+  public static final class GetBindPhoneNumReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetBindPhoneNumReq)
+      GetBindPhoneNumReqOrBuilder {
+    // Use GetBindPhoneNumReq.newBuilder() to construct.
+    private GetBindPhoneNumReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetBindPhoneNumReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetBindPhoneNumReq defaultInstance;
+    public static GetBindPhoneNumReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetBindPhoneNumReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetBindPhoneNumReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              zuid_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_GetBindPhoneNumReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_GetBindPhoneNumReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.UserProto.GetBindPhoneNumReq.class, com.wali.live.proto.UserProto.GetBindPhoneNumReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetBindPhoneNumReq> PARSER =
+        new com.google.protobuf.AbstractParser<GetBindPhoneNumReq>() {
+      public GetBindPhoneNumReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetBindPhoneNumReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetBindPhoneNumReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int ZUID_FIELD_NUMBER = 1;
+    private long zuid_;
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     */
+    public boolean hasZuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     */
+    public long getZuid() {
+      return zuid_;
+    }
+
+    private void initFields() {
+      zuid_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasZuid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, zuid_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, zuid_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.UserProto.GetBindPhoneNumReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetBindPhoneNumReq}
+     *
+     * <pre>
+     * 获取用户绑定手机号信息
+     * cmd zhibo.user.getbindphonenum
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetBindPhoneNumReq)
+        com.wali.live.proto.UserProto.GetBindPhoneNumReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_GetBindPhoneNumReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_GetBindPhoneNumReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.UserProto.GetBindPhoneNumReq.class, com.wali.live.proto.UserProto.GetBindPhoneNumReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.UserProto.GetBindPhoneNumReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        zuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_GetBindPhoneNumReq_descriptor;
+      }
+
+      public com.wali.live.proto.UserProto.GetBindPhoneNumReq getDefaultInstanceForType() {
+        return com.wali.live.proto.UserProto.GetBindPhoneNumReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.UserProto.GetBindPhoneNumReq build() {
+        com.wali.live.proto.UserProto.GetBindPhoneNumReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.UserProto.GetBindPhoneNumReq buildPartial() {
+        com.wali.live.proto.UserProto.GetBindPhoneNumReq result = new com.wali.live.proto.UserProto.GetBindPhoneNumReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.zuid_ = zuid_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.UserProto.GetBindPhoneNumReq) {
+          return mergeFrom((com.wali.live.proto.UserProto.GetBindPhoneNumReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.UserProto.GetBindPhoneNumReq other) {
+        if (other == com.wali.live.proto.UserProto.GetBindPhoneNumReq.getDefaultInstance()) return this;
+        if (other.hasZuid()) {
+          setZuid(other.getZuid());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasZuid()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.UserProto.GetBindPhoneNumReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.UserProto.GetBindPhoneNumReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long zuid_ ;
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       */
+      public boolean hasZuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       */
+      public long getZuid() {
+        return zuid_;
+      }
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       */
+      public Builder setZuid(long value) {
+        bitField0_ |= 0x00000001;
+        zuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       */
+      public Builder clearZuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        zuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetBindPhoneNumReq)
+    }
+
+    static {
+      defaultInstance = new GetBindPhoneNumReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetBindPhoneNumReq)
+  }
+
+  public interface GetBindPhoneNumRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetBindPhoneNumRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    int getRetCode();
+
+    /**
+     * <code>optional string err_msg = 2;</code>
+     *
+     * <pre>
+     *错误提示文案, 非空时显示，否则显示客户端默认文案
+     * </pre>
+     */
+    boolean hasErrMsg();
+    /**
+     * <code>optional string err_msg = 2;</code>
+     *
+     * <pre>
+     *错误提示文案, 非空时显示，否则显示客户端默认文案
+     * </pre>
+     */
+    java.lang.String getErrMsg();
+    /**
+     * <code>optional string err_msg = 2;</code>
+     *
+     * <pre>
+     *错误提示文案, 非空时显示，否则显示客户端默认文案
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getErrMsgBytes();
+
+    /**
+     * <code>optional uint32 bindStatus = 3;</code>
+     *
+     * <pre>
+     * 绑定状态 0 没绑定 1 已经绑定
+     * </pre>
+     */
+    boolean hasBindStatus();
+    /**
+     * <code>optional uint32 bindStatus = 3;</code>
+     *
+     * <pre>
+     * 绑定状态 0 没绑定 1 已经绑定
+     * </pre>
+     */
+    int getBindStatus();
+
+    /**
+     * <code>optional string bindPhoneNum = 4;</code>
+     *
+     * <pre>
+     * 如果已经绑定 则显示绑定的手机号码
+     * </pre>
+     */
+    boolean hasBindPhoneNum();
+    /**
+     * <code>optional string bindPhoneNum = 4;</code>
+     *
+     * <pre>
+     * 如果已经绑定 则显示绑定的手机号码
+     * </pre>
+     */
+    java.lang.String getBindPhoneNum();
+    /**
+     * <code>optional string bindPhoneNum = 4;</code>
+     *
+     * <pre>
+     * 如果已经绑定 则显示绑定的手机号码
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getBindPhoneNumBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetBindPhoneNumRsp}
+   */
+  public static final class GetBindPhoneNumRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetBindPhoneNumRsp)
+      GetBindPhoneNumRspOrBuilder {
+    // Use GetBindPhoneNumRsp.newBuilder() to construct.
+    private GetBindPhoneNumRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetBindPhoneNumRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetBindPhoneNumRsp defaultInstance;
+    public static GetBindPhoneNumRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetBindPhoneNumRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetBindPhoneNumRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              errMsg_ = bs;
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              bindStatus_ = input.readUInt32();
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              bindPhoneNum_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_GetBindPhoneNumRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_GetBindPhoneNumRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.UserProto.GetBindPhoneNumRsp.class, com.wali.live.proto.UserProto.GetBindPhoneNumRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetBindPhoneNumRsp> PARSER =
+        new com.google.protobuf.AbstractParser<GetBindPhoneNumRsp>() {
+      public GetBindPhoneNumRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetBindPhoneNumRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetBindPhoneNumRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    public static final int ERR_MSG_FIELD_NUMBER = 2;
+    private java.lang.Object errMsg_;
+    /**
+     * <code>optional string err_msg = 2;</code>
+     *
+     * <pre>
+     *错误提示文案, 非空时显示，否则显示客户端默认文案
+     * </pre>
+     */
+    public boolean hasErrMsg() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string err_msg = 2;</code>
+     *
+     * <pre>
+     *错误提示文案, 非空时显示，否则显示客户端默认文案
+     * </pre>
+     */
+    public java.lang.String getErrMsg() {
+      java.lang.Object ref = errMsg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          errMsg_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string err_msg = 2;</code>
+     *
+     * <pre>
+     *错误提示文案, 非空时显示，否则显示客户端默认文案
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getErrMsgBytes() {
+      java.lang.Object ref = errMsg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        errMsg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int BINDSTATUS_FIELD_NUMBER = 3;
+    private int bindStatus_;
+    /**
+     * <code>optional uint32 bindStatus = 3;</code>
+     *
+     * <pre>
+     * 绑定状态 0 没绑定 1 已经绑定
+     * </pre>
+     */
+    public boolean hasBindStatus() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint32 bindStatus = 3;</code>
+     *
+     * <pre>
+     * 绑定状态 0 没绑定 1 已经绑定
+     * </pre>
+     */
+    public int getBindStatus() {
+      return bindStatus_;
+    }
+
+    public static final int BINDPHONENUM_FIELD_NUMBER = 4;
+    private java.lang.Object bindPhoneNum_;
+    /**
+     * <code>optional string bindPhoneNum = 4;</code>
+     *
+     * <pre>
+     * 如果已经绑定 则显示绑定的手机号码
+     * </pre>
+     */
+    public boolean hasBindPhoneNum() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string bindPhoneNum = 4;</code>
+     *
+     * <pre>
+     * 如果已经绑定 则显示绑定的手机号码
+     * </pre>
+     */
+    public java.lang.String getBindPhoneNum() {
+      java.lang.Object ref = bindPhoneNum_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          bindPhoneNum_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string bindPhoneNum = 4;</code>
+     *
+     * <pre>
+     * 如果已经绑定 则显示绑定的手机号码
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getBindPhoneNumBytes() {
+      java.lang.Object ref = bindPhoneNum_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        bindPhoneNum_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+      errMsg_ = "";
+      bindStatus_ = 0;
+      bindPhoneNum_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getErrMsgBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, bindStatus_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getBindPhoneNumBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getErrMsgBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, bindStatus_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getBindPhoneNumBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.GetBindPhoneNumRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.UserProto.GetBindPhoneNumRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetBindPhoneNumRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetBindPhoneNumRsp)
+        com.wali.live.proto.UserProto.GetBindPhoneNumRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_GetBindPhoneNumRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_GetBindPhoneNumRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.UserProto.GetBindPhoneNumRsp.class, com.wali.live.proto.UserProto.GetBindPhoneNumRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.UserProto.GetBindPhoneNumRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        errMsg_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        bindStatus_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        bindPhoneNum_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_GetBindPhoneNumRsp_descriptor;
+      }
+
+      public com.wali.live.proto.UserProto.GetBindPhoneNumRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.UserProto.GetBindPhoneNumRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.UserProto.GetBindPhoneNumRsp build() {
+        com.wali.live.proto.UserProto.GetBindPhoneNumRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.UserProto.GetBindPhoneNumRsp buildPartial() {
+        com.wali.live.proto.UserProto.GetBindPhoneNumRsp result = new com.wali.live.proto.UserProto.GetBindPhoneNumRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.errMsg_ = errMsg_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.bindStatus_ = bindStatus_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.bindPhoneNum_ = bindPhoneNum_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.UserProto.GetBindPhoneNumRsp) {
+          return mergeFrom((com.wali.live.proto.UserProto.GetBindPhoneNumRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.UserProto.GetBindPhoneNumRsp other) {
+        if (other == com.wali.live.proto.UserProto.GetBindPhoneNumRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        if (other.hasErrMsg()) {
+          bitField0_ |= 0x00000002;
+          errMsg_ = other.errMsg_;
+          onChanged();
+        }
+        if (other.hasBindStatus()) {
+          setBindStatus(other.getBindStatus());
+        }
+        if (other.hasBindPhoneNum()) {
+          bitField0_ |= 0x00000008;
+          bindPhoneNum_ = other.bindPhoneNum_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.UserProto.GetBindPhoneNumRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.UserProto.GetBindPhoneNumRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object errMsg_ = "";
+      /**
+       * <code>optional string err_msg = 2;</code>
+       *
+       * <pre>
+       *错误提示文案, 非空时显示，否则显示客户端默认文案
+       * </pre>
+       */
+      public boolean hasErrMsg() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string err_msg = 2;</code>
+       *
+       * <pre>
+       *错误提示文案, 非空时显示，否则显示客户端默认文案
+       * </pre>
+       */
+      public java.lang.String getErrMsg() {
+        java.lang.Object ref = errMsg_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string err_msg = 2;</code>
+       *
+       * <pre>
+       *错误提示文案, 非空时显示，否则显示客户端默认文案
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getErrMsgBytes() {
+        java.lang.Object ref = errMsg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          errMsg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string err_msg = 2;</code>
+       *
+       * <pre>
+       *错误提示文案, 非空时显示，否则显示客户端默认文案
+       * </pre>
+       */
+      public Builder setErrMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        errMsg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string err_msg = 2;</code>
+       *
+       * <pre>
+       *错误提示文案, 非空时显示，否则显示客户端默认文案
+       * </pre>
+       */
+      public Builder clearErrMsg() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        errMsg_ = getDefaultInstance().getErrMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string err_msg = 2;</code>
+       *
+       * <pre>
+       *错误提示文案, 非空时显示，否则显示客户端默认文案
+       * </pre>
+       */
+      public Builder setErrMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        errMsg_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int bindStatus_ ;
+      /**
+       * <code>optional uint32 bindStatus = 3;</code>
+       *
+       * <pre>
+       * 绑定状态 0 没绑定 1 已经绑定
+       * </pre>
+       */
+      public boolean hasBindStatus() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint32 bindStatus = 3;</code>
+       *
+       * <pre>
+       * 绑定状态 0 没绑定 1 已经绑定
+       * </pre>
+       */
+      public int getBindStatus() {
+        return bindStatus_;
+      }
+      /**
+       * <code>optional uint32 bindStatus = 3;</code>
+       *
+       * <pre>
+       * 绑定状态 0 没绑定 1 已经绑定
+       * </pre>
+       */
+      public Builder setBindStatus(int value) {
+        bitField0_ |= 0x00000004;
+        bindStatus_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 bindStatus = 3;</code>
+       *
+       * <pre>
+       * 绑定状态 0 没绑定 1 已经绑定
+       * </pre>
+       */
+      public Builder clearBindStatus() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        bindStatus_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object bindPhoneNum_ = "";
+      /**
+       * <code>optional string bindPhoneNum = 4;</code>
+       *
+       * <pre>
+       * 如果已经绑定 则显示绑定的手机号码
+       * </pre>
+       */
+      public boolean hasBindPhoneNum() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string bindPhoneNum = 4;</code>
+       *
+       * <pre>
+       * 如果已经绑定 则显示绑定的手机号码
+       * </pre>
+       */
+      public java.lang.String getBindPhoneNum() {
+        java.lang.Object ref = bindPhoneNum_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            bindPhoneNum_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string bindPhoneNum = 4;</code>
+       *
+       * <pre>
+       * 如果已经绑定 则显示绑定的手机号码
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getBindPhoneNumBytes() {
+        java.lang.Object ref = bindPhoneNum_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          bindPhoneNum_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string bindPhoneNum = 4;</code>
+       *
+       * <pre>
+       * 如果已经绑定 则显示绑定的手机号码
+       * </pre>
+       */
+      public Builder setBindPhoneNum(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        bindPhoneNum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string bindPhoneNum = 4;</code>
+       *
+       * <pre>
+       * 如果已经绑定 则显示绑定的手机号码
+       * </pre>
+       */
+      public Builder clearBindPhoneNum() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        bindPhoneNum_ = getDefaultInstance().getBindPhoneNum();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string bindPhoneNum = 4;</code>
+       *
+       * <pre>
+       * 如果已经绑定 则显示绑定的手机号码
+       * </pre>
+       */
+      public Builder setBindPhoneNumBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        bindPhoneNum_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetBindPhoneNumRsp)
+    }
+
+    static {
+      defaultInstance = new GetBindPhoneNumRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetBindPhoneNumRsp)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_BusinessUserInfo_descriptor;
   private static
@@ -43531,6 +49362,11 @@ public final class UserProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetOwnInfoRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_Medal_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_Medal_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetPersonalDataByIdReq_descriptor;
   private static
@@ -43721,6 +49557,16 @@ public final class UserProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetCountryCodeRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetBindPhoneNumReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetBindPhoneNumReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetBindPhoneNumRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetBindPhoneNumRsp_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -43733,7 +49579,7 @@ public final class UserProto {
       "\n\nUser.proto\022\023com.wali.live.proto\"a\n\020Bus" +
       "inessUserInfo\022\025\n\rservice_phone\030\001 \003(\t\022\017\n\007" +
       "address\030\002 \001(\t\022\026\n\016business_hours\030\003 \001(\t\022\r\n" +
-      "\005intro\030\004 \001(\t\"\350\004\n\014PersonalInfo\022\014\n\004zuid\030\001 " +
+      "\005intro\030\004 \001(\t\"\367\005\n\014PersonalInfo\022\014\n\004zuid\030\001 " +
       "\002(\004\022\016\n\006avatar\030\002 \001(\004\022\020\n\010nickname\030\003 \001(\t\022\014\n" +
       "\004sign\030\004 \001(\t\022\016\n\006gender\030\005 \001(\r\022\r\n\005level\030\006 \001" +
       "(\r\022\r\n\005badge\030\007 \001(\r\022\022\n\nupdateTime\030\010 \001(\004\022\021\n" +
@@ -43748,115 +49594,136 @@ public final class UserProto {
       "\001(\0132%.com.wali.live.proto.BusinessUserIn" +
       "fo\022\025\n\rseller_status\030\026 \001(\r\022\024\n\014isFirstAudi" +
       "t\030\027 \001(\010\022\021\n\tisRedname\030\030 \001(\010\022+\n\006region\030\031 \001" +
-      "(\0132\033.com.wali.live.proto.Region\"\274\001\n\014Pers" +
-      "onalData\022\014\n\004zuid\030\001 \002(\004\022\026\n\016mliveTicketNum",
-      "\030\t \001(\r\022\017\n\007fansNum\030\n \001(\r\022\021\n\tfollowNum\030\013 \001" +
-      "(\r\022\026\n\016sendDiamondNum\030\014 \001(\r\022\016\n\006vodNum\030\r \001" +
-      "(\r\022\017\n\007earnNum\030\016 \001(\r\022\022\n\ndiamondNum\030\017 \001(\r\022" +
-      "\025\n\ruser_eco_attr\030\020 \001(\014\"}\n\013UserEcoAttr\022\026\n" +
-      "\016bullet_gift_id\030\001 \001(\r\022\026\n\016bullet_gem_cnt\030" +
-      "\002 \001(\r\022\036\n\026consum_virtual_gem_cnt\030\003 \001(\r\022\036\n" +
-      "\026usable_virtual_gem_cnt\030\004 \001(\r\"\"\n\022GetUser" +
-      "InfoByIdReq\022\014\n\004zuid\030\001 \002(\004\"`\n\022GetUserInfo" +
-      "ByIdRsp\022\021\n\terrorCode\030\001 \002(\r\0227\n\014personalIn" +
-      "fo\030\002 \001(\0132!.com.wali.live.proto.PersonalI",
-      "nfo\"8\n\rGetOwnInfoReq\022\014\n\004zuid\030\001 \002(\004\022\031\n\013ge" +
-      "tLiveInfo\030\002 \001(\010:\004true\"\261\001\n\rGetOwnInfoRsp\022" +
-      "\021\n\terrorCode\030\001 \002(\r\0227\n\014personalInfo\030\002 \001(\013" +
-      "2!.com.wali.live.proto.PersonalInfo\0227\n\014p" +
-      "ersonalData\030\003 \001(\0132!.com.wali.live.proto." +
-      "PersonalData\022\033\n\023rank_top_three_list\030\006 \003(" +
-      "\004\"&\n\026GetPersonalDataByIdReq\022\014\n\004zuid\030\001 \002(" +
-      "\004\"d\n\026GetPersonalDataByIdRsp\022\021\n\terrorCode" +
-      "\030\001 \002(\r\0227\n\014personalData\030\002 \001(\0132!.com.wali." +
-      "live.proto.PersonalData\"9\n\016GetHomepageRe",
-      "q\022\014\n\004zuid\030\001 \002(\004\022\031\n\013getLiveInfo\030\002 \001(\010:\004tr" +
-      "ue\"\344\001\n\017GetHomepageResp\022\017\n\007retCode\030\001 \002(\r\022" +
-      "7\n\014personalInfo\030\002 \001(\0132!.com.wali.live.pr" +
-      "oto.PersonalInfo\0227\n\014personalData\030\003 \001(\0132!" +
-      ".com.wali.live.proto.PersonalData\022\017\n\007vie" +
-      "wUrl\030\004 \001(\t\022\033\n\023rank_top_three_list\030\006 \003(\004\022" +
-      "\016\n\006roomId\030\007 \001(\t\022\020\n\010roomInfo\030\010 \001(\014\"\205\001\n\024Up" +
-      "loadUserSettingReq\022\014\n\004zuid\030\001 \002(\004\022\022\n\nisPu" +
-      "shable\030\002 \001(\010\022\031\n\021isNotifyNoDisturb\030\003 \001(\010\022" +
-      "\027\n\017isNotifyNoSound\030\004 \001(\010\022\027\n\017isNotifyNoSh",
-      "ake\030\005 \001(\010\")\n\024UploadUserSettingRsp\022\021\n\terr" +
-      "orCode\030\001 \002(\r\"C\n\021SearchUserInfoReq\022\017\n\007key" +
-      "word\030\001 \002(\t\022\016\n\006offset\030\002 \002(\r\022\r\n\005limit\030\003 \002(" +
-      "\r\"r\n\021SearchUserInfoRsp\022\021\n\terrorCode\030\001 \002(" +
-      "\r\022\020\n\010totalNum\030\002 \001(\r\0228\n\rpersonalInfos\030\003 \003" +
-      "(\0132!.com.wali.live.proto.PersonalInfo\"\232\002" +
-      "\n\027UploadUserPropertiesReq\022\014\n\004zuid\030\001 \002(\004\022" +
-      "\016\n\006avatar\030\002 \001(\004\022\020\n\010nickname\030\003 \001(\t\022\014\n\004sig" +
-      "n\030\004 \001(\t\022\016\n\006gender\030\005 \001(\r\022\025\n\rcertification" +
-      "\030\006 \001(\t\022\031\n\021certificationType\030\007 \001(\r\022\030\n\tis_",
-      "manual\030\n \001(\010:\005false\022\023\n\013cover_photo\030\013 \001(\t" +
-      "\022\017\n\007address\030\014 \001(\t\022\022\n\navatar_md5\030\r \001(\t\022+\n" +
-      "\006region\030\016 \001(\0132\033.com.wali.live.proto.Regi" +
-      "on\"M\n\027UploadUserPropertiesRsp\022\017\n\007retCode" +
-      "\030\001 \002(\r\022\017\n\007err_msg\030\002 \001(\t\022\020\n\010nickname\030\003 \001(" +
-      "\t\"F\n\017AdminSettingReq\022\020\n\010adminUid\030\001 \002(\004\022\021" +
-      "\n\toperation\030\002 \002(\r\022\016\n\006roomId\030\003 \001(\t\"\"\n\017Adm" +
-      "inSettingRsp\022\017\n\007retCode\030\001 \002(\r\"\034\n\014AdminLi" +
-      "stReq\022\014\n\004zuid\030\001 \002(\004\"U\n\014AdminListRsp\022\017\n\007r" +
-      "etCode\030\001 \002(\r\0224\n\tuserInfos\030\002 \003(\0132!.com.wa",
-      "li.live.proto.PersonalInfo\" \n\020GetOwnSett" +
-      "ingReq\022\014\n\004zuid\030\001 \002(\004\"\204\001\n\020GetOwnSettingRs" +
-      "p\022\017\n\007retCode\030\001 \002(\r\022\022\n\nisPushable\030\002 \001(\010\022\031" +
-      "\n\021isNotifyNoDisturb\030\003 \001(\010\022\027\n\017isNotifyNoS" +
-      "ound\030\004 \001(\010\022\027\n\017isNotifyNoShake\030\005 \001(\010\"\032\n\nH" +
-      "isRoomReq\022\014\n\004zuid\030\001 \002(\004\"^\n\nHisRoomRsp\022\017\n" +
-      "\007retCode\030\001 \002(\r\022\016\n\006liveId\030\002 \001(\t\022\020\n\010shareU" +
-      "rl\030\003 \001(\t\022\017\n\007viewUrl\030\004 \001(\t\022\014\n\004type\030\005 \001(\r\"" +
-      "\"\n\022MutiGetUserInfoReq\022\014\n\004zuid\030\001 \003(\004\"^\n\022M" +
-      "utiGetUserInfoRsp\022\017\n\007retCode\030\001 \002(\r\0227\n\014pe",
-      "rsonalInfo\030\002 \003(\0132!.com.wali.live.proto.P" +
-      "ersonalInfo\"=\n\rGetCaptchaReq\022\020\n\010phoneNum" +
-      "\030\001 \002(\t\022\014\n\004type\030\002 \002(\r\022\014\n\004lang\030\003 \001(\t\" \n\rGe" +
-      "tCaptchaRsp\022\017\n\007retCode\030\001 \002(\r\"V\n\020VerifyCa" +
-      "ptchaReq\022\020\n\010phoneNum\030\001 \002(\t\022\014\n\004type\030\002 \002(\r" +
-      "\022\017\n\007captcha\030\003 \002(\t\022\021\n\tidCardNum\030\004 \001(\t\"#\n\020" +
-      "VerifyCaptchaRsp\022\017\n\007retCode\030\001 \002(\r\"C\n\025App" +
-      "lyCertificationReq\022\031\n\021certificationInfo\030" +
-      "\001 \002(\014\022\017\n\004type\030\002 \001(\r:\0011\"(\n\025ApplyCertifica" +
-      "tionRsp\022\017\n\007retCode\030\001 \002(\r\"\366\002\n\021Certificati",
-      "onInfo\022\014\n\004uuid\030\001 \001(\004\022\014\n\004name\030\002 \001(\t\022\020\n\010ph" +
-      "oneNum\030\003 \001(\t\022/\n\006idcard\030\004 \003(\0132\037.com.wali." +
-      "live.proto.PrivateImg\022\025\n\rcertification\030\005" +
-      " \001(\t\022\023\n\013companyName\030\006 \001(\t\022\022\n\nprofession\030" +
-      "\007 \001(\t\0222\n\tproofJobs\030\010 \003(\0132\037.com.wali.live" +
-      ".proto.PrivateImg\0224\n\013otherIdCard\030\t \003(\0132\037" +
-      ".com.wali.live.proto.PrivateImg\022\r\n\005works" +
-      "\030\n \001(\t\022\021\n\tidCardNum\030\013 \001(\t\022\020\n\010birthday\030\014 " +
-      "\001(\t\022\017\n\004type\030\r \001(\r:\0011\022\023\n\010cardType\030\016 \001(\r:\001" +
-      "1\"/\n\nPrivateImg\022\016\n\006bucket\030\001 \001(\t\022\021\n\tobjec",
-      "tKey\030\002 \001(\t\"\035\n\tLiveCover\022\020\n\010coverUrl\030\001 \001(" +
-      "\t\"\364\001\n\007HisLive\022\016\n\006liveId\030\001 \002(\t\022\021\n\tviewerC" +
-      "nt\030\002 \001(\r\022\013\n\003url\030\003 \001(\t\022\021\n\tstartTime\030\004 \001(\004" +
-      "\022\017\n\007endTime\030\005 \001(\004\022\021\n\tliveTitle\030\006 \001(\t\022\020\n\010" +
-      "shareUrl\030\007 \001(\t\0221\n\tliveCover\030\010 \001(\0132\036.com." +
-      "wali.live.proto.LiveCover\022/\n\004user\030\t \001(\0132" +
-      "!.com.wali.live.proto.PersonalInfo\022\014\n\004ty" +
-      "pe\030\n \001(\r\"D\n\021FirstAudit4ProReq\022\014\n\004zuid\030\001 " +
-      "\002(\004\022\017\n\007headurl\030\002 \001(\t\022\020\n\010nickname\030\003 \001(\t\"5" +
-      "\n\021FirstAudit4ProRsp\022\017\n\007retCode\030\001 \002(\r\022\017\n\007",
-      "err_msg\030\002 \001(\t\"&\n\021GetCountryListReq\022\021\n\tla" +
-      "ng_type\030\001 \002(\r\"\246\001\n\021GetCountryListRsp\022\017\n\007r" +
-      "etCode\030\001 \002(\r\022\017\n\007err_msg\030\002 \001(\t\0225\n\013country" +
-      "info\030\003 \003(\0132 .com.wali.live.proto.Country" +
-      "Info\0228\n\016hotcountryinfo\030\004 \003(\0132 .com.wali." +
-      "live.proto.CountryInfo\"D\n\006Region\022\023\n\013sour" +
-      "ce_type\030\001 \001(\r\022\017\n\007country\030\002 \001(\t\022\024\n\014countr" +
-      "y_code\030\003 \001(\t\"4\n\013CountryInfo\022\017\n\007country\030\001" +
-      " \002(\t\022\024\n\014country_code\030\002 \002(\t\"\265\001\n\021GetCountr" +
-      "yCodeReq\022\017\n\007gps_lon\030\001 \001(\001\022\017\n\007gps_lat\030\002 \001",
-      "(\001\022\023\n\013gps_country\030\003 \001(\t\022\030\n\020gps_country_c" +
-      "ode\030\004 \001(\t\022\024\n\014gps_province\030\005 \001(\t\022\020\n\010gps_c" +
-      "ity\030\006 \001(\t\022\020\n\010gps_type\030\007 \001(\r\022\025\n\rgps_lang_" +
-      "type\030\010 \001(\r\"K\n\021GetCountryCodeRsp\022\017\n\007retCo" +
-      "de\030\001 \002(\r\022\017\n\007err_msg\030\002 \001(\t\022\024\n\014country_cod" +
-      "e\030\003 \001(\tB \n\023com.wali.live.protoB\tUserProt" +
-      "o"
+      "(\0132\033.com.wali.live.proto.Region\022\023\n\013fans_" +
+      "number\030\032 \001(\r\022\023\n\013seller_type\030\033 \001(\r\022\026\n\016is_",
+      "union_admin\030\034 \001(\010\022\021\n\tvip_level\030\035 \001(\r\022\023\n\013" +
+      "vip_disable\030\036 \001(\010\022\022\n\nvip_hidden\030\037 \001(\010\022\017\n" +
+      "\007is_live\030  \001(\010\"\334\001\n\014PersonalData\022\014\n\004zuid\030" +
+      "\001 \002(\004\022\026\n\016mliveTicketNum\030\t \001(\r\022\017\n\007fansNum" +
+      "\030\n \001(\r\022\021\n\tfollowNum\030\013 \001(\r\022\026\n\016sendDiamond" +
+      "Num\030\014 \001(\r\022\016\n\006vodNum\030\r \001(\r\022\017\n\007earnNum\030\016 \001" +
+      "(\r\022\022\n\ndiamondNum\030\017 \001(\r\022\025\n\ruser_eco_attr\030" +
+      "\020 \001(\014\022\036\n\026usable_mibi_ticket_cnt\030\021 \001(\r\"}\n" +
+      "\013UserEcoAttr\022\026\n\016bullet_gift_id\030\001 \001(\r\022\026\n\016" +
+      "bullet_gem_cnt\030\002 \001(\r\022\036\n\026consum_virtual_g",
+      "em_cnt\030\003 \001(\r\022\036\n\026usable_virtual_gem_cnt\030\004" +
+      " \001(\r\"\"\n\022GetUserInfoByIdReq\022\014\n\004zuid\030\001 \002(\004" +
+      "\"`\n\022GetUserInfoByIdRsp\022\021\n\terrorCode\030\001 \002(" +
+      "\r\0227\n\014personalInfo\030\002 \001(\0132!.com.wali.live." +
+      "proto.PersonalInfo\"8\n\rGetOwnInfoReq\022\014\n\004z" +
+      "uid\030\001 \002(\004\022\031\n\013getLiveInfo\030\002 \001(\010:\004true\"\212\003\n" +
+      "\rGetOwnInfoRsp\022\021\n\terrorCode\030\001 \002(\r\0227\n\014per" +
+      "sonalInfo\030\002 \001(\0132!.com.wali.live.proto.Pe" +
+      "rsonalInfo\0227\n\014personalData\030\003 \001(\0132!.com.w" +
+      "ali.live.proto.PersonalData\022\033\n\023rank_top_",
+      "three_list\030\006 \003(\004\0229\n\025before_nickname_meda" +
+      "l\030\010 \003(\0132\032.com.wali.live.proto.Medal\0228\n\024a" +
+      "fter_nickname_medal\030\t \003(\0132\032.com.wali.liv" +
+      "e.proto.Medal\0223\n\017user_card_medal\030\n \003(\0132\032" +
+      ".com.wali.live.proto.Medal\022\027\n\017need_bind_" +
+      "phone\030\013 \001(\010\022\024\n\010phoneNum\030\014 \001(\tB\002\030\001\"\027\n\005Med" +
+      "al\022\016\n\006pic_id\030\001 \001(\t\"&\n\026GetPersonalDataByI" +
+      "dReq\022\014\n\004zuid\030\001 \002(\004\"d\n\026GetPersonalDataByI" +
+      "dRsp\022\021\n\terrorCode\030\001 \002(\r\0227\n\014personalData\030" +
+      "\002 \001(\0132!.com.wali.live.proto.PersonalData",
+      "\"9\n\016GetHomepageReq\022\014\n\004zuid\030\001 \002(\004\022\031\n\013getL" +
+      "iveInfo\030\002 \001(\010:\004true\"\216\003\n\017GetHomepageResp\022" +
+      "\017\n\007retCode\030\001 \002(\r\0227\n\014personalInfo\030\002 \001(\0132!" +
+      ".com.wali.live.proto.PersonalInfo\0227\n\014per" +
+      "sonalData\030\003 \001(\0132!.com.wali.live.proto.Pe" +
+      "rsonalData\022\017\n\007viewUrl\030\004 \001(\t\022\033\n\023rank_top_" +
+      "three_list\030\006 \003(\004\022\016\n\006roomId\030\007 \001(\t\022\020\n\010room" +
+      "Info\030\010 \001(\014\0229\n\025before_nickname_medal\030\t \003(" +
+      "\0132\032.com.wali.live.proto.Medal\0228\n\024after_n" +
+      "ickname_medal\030\n \003(\0132\032.com.wali.live.prot",
+      "o.Medal\0223\n\017user_card_medal\030\013 \003(\0132\032.com.w" +
+      "ali.live.proto.Medal\"\230\001\n\024UploadUserSetti" +
+      "ngReq\022\014\n\004zuid\030\001 \002(\004\022\022\n\nisPushable\030\002 \001(\010\022" +
+      "\031\n\021isNotifyNoDisturb\030\003 \001(\010\022\027\n\017isNotifyNo" +
+      "Sound\030\004 \001(\010\022\027\n\017isNotifyNoShake\030\005 \001(\010\022\021\n\t" +
+      "isVipHide\030\006 \001(\010\")\n\024UploadUserSettingRsp\022" +
+      "\021\n\terrorCode\030\001 \002(\r\"X\n\021SearchUserInfoReq\022" +
+      "\017\n\007keyword\030\001 \002(\t\022\016\n\006offset\030\002 \002(\r\022\r\n\005limi" +
+      "t\030\003 \002(\r\022\023\n\013live_status\030\004 \001(\010\"r\n\021SearchUs" +
+      "erInfoRsp\022\021\n\terrorCode\030\001 \002(\r\022\020\n\010totalNum",
+      "\030\002 \001(\r\0228\n\rpersonalInfos\030\003 \003(\0132!.com.wali" +
+      ".live.proto.PersonalInfo\"\274\002\n\027UploadUserP" +
+      "ropertiesReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006avatar\030\002 \001" +
+      "(\004\022\020\n\010nickname\030\003 \001(\t\022\014\n\004sign\030\004 \001(\t\022\016\n\006ge" +
+      "nder\030\005 \001(\r\022\025\n\rcertification\030\006 \001(\t\022\031\n\021cer" +
+      "tificationType\030\007 \001(\r\022\030\n\tis_manual\030\n \001(\010:" +
+      "\005false\022\023\n\013cover_photo\030\013 \001(\t\022\017\n\007address\030\014" +
+      " \001(\t\022\022\n\navatar_md5\030\r \001(\t\022+\n\006region\030\016 \001(\013" +
+      "2\033.com.wali.live.proto.Region\022 \n\030modify_" +
+      "nickname_interval\030\017 \001(\r\"\201\001\n\027UploadUserPr",
+      "opertiesRsp\022\017\n\007retCode\030\001 \002(\r\022\017\n\007err_msg\030" +
+      "\002 \001(\t\022\020\n\010nickname\030\003 \001(\t\022\034\n\024update_nickna" +
+      "me_time\030\004 \001(\004\022\024\n\014current_time\030\005 \001(\004\"F\n\017A" +
+      "dminSettingReq\022\020\n\010adminUid\030\001 \002(\004\022\021\n\toper" +
+      "ation\030\002 \002(\r\022\016\n\006roomId\030\003 \001(\t\"\"\n\017AdminSett" +
+      "ingRsp\022\017\n\007retCode\030\001 \002(\r\"\034\n\014AdminListReq\022" +
+      "\014\n\004zuid\030\001 \002(\004\"U\n\014AdminListRsp\022\017\n\007retCode" +
+      "\030\001 \002(\r\0224\n\tuserInfos\030\002 \003(\0132!.com.wali.liv" +
+      "e.proto.PersonalInfo\" \n\020GetOwnSettingReq" +
+      "\022\014\n\004zuid\030\001 \002(\004\"\227\001\n\020GetOwnSettingRsp\022\017\n\007r",
+      "etCode\030\001 \002(\r\022\022\n\nisPushable\030\002 \001(\010\022\031\n\021isNo" +
+      "tifyNoDisturb\030\003 \001(\010\022\027\n\017isNotifyNoSound\030\004" +
+      " \001(\010\022\027\n\017isNotifyNoShake\030\005 \001(\010\022\021\n\tisVipHi" +
+      "de\030\006 \001(\010\"\032\n\nHisRoomReq\022\014\n\004zuid\030\001 \002(\004\"^\n\n" +
+      "HisRoomRsp\022\017\n\007retCode\030\001 \002(\r\022\016\n\006liveId\030\002 " +
+      "\001(\t\022\020\n\010shareUrl\030\003 \001(\t\022\017\n\007viewUrl\030\004 \001(\t\022\014" +
+      "\n\004type\030\005 \001(\r\"\"\n\022MutiGetUserInfoReq\022\014\n\004zu" +
+      "id\030\001 \003(\004\"^\n\022MutiGetUserInfoRsp\022\017\n\007retCod" +
+      "e\030\001 \002(\r\0227\n\014personalInfo\030\002 \003(\0132!.com.wali" +
+      ".live.proto.PersonalInfo\"=\n\rGetCaptchaRe",
+      "q\022\020\n\010phoneNum\030\001 \002(\t\022\014\n\004type\030\002 \002(\r\022\014\n\004lan" +
+      "g\030\003 \001(\t\" \n\rGetCaptchaRsp\022\017\n\007retCode\030\001 \002(" +
+      "\r\"V\n\020VerifyCaptchaReq\022\020\n\010phoneNum\030\001 \002(\t\022" +
+      "\014\n\004type\030\002 \002(\r\022\017\n\007captcha\030\003 \002(\t\022\021\n\tidCard" +
+      "Num\030\004 \001(\t\"#\n\020VerifyCaptchaRsp\022\017\n\007retCode" +
+      "\030\001 \002(\r\"C\n\025ApplyCertificationReq\022\031\n\021certi" +
+      "ficationInfo\030\001 \002(\014\022\017\n\004type\030\002 \001(\r:\0011\"(\n\025A" +
+      "pplyCertificationRsp\022\017\n\007retCode\030\001 \002(\r\"\366\002" +
+      "\n\021CertificationInfo\022\014\n\004uuid\030\001 \001(\004\022\014\n\004nam" +
+      "e\030\002 \001(\t\022\020\n\010phoneNum\030\003 \001(\t\022/\n\006idcard\030\004 \003(",
+      "\0132\037.com.wali.live.proto.PrivateImg\022\025\n\rce" +
+      "rtification\030\005 \001(\t\022\023\n\013companyName\030\006 \001(\t\022\022" +
+      "\n\nprofession\030\007 \001(\t\0222\n\tproofJobs\030\010 \003(\0132\037." +
+      "com.wali.live.proto.PrivateImg\0224\n\013otherI" +
+      "dCard\030\t \003(\0132\037.com.wali.live.proto.Privat" +
+      "eImg\022\r\n\005works\030\n \001(\t\022\021\n\tidCardNum\030\013 \001(\t\022\020" +
+      "\n\010birthday\030\014 \001(\t\022\017\n\004type\030\r \001(\r:\0011\022\023\n\010car" +
+      "dType\030\016 \001(\r:\0011\"/\n\nPrivateImg\022\016\n\006bucket\030\001" +
+      " \001(\t\022\021\n\tobjectKey\030\002 \001(\t\"\035\n\tLiveCover\022\020\n\010" +
+      "coverUrl\030\001 \001(\t\"\364\001\n\007HisLive\022\016\n\006liveId\030\001 \002",
+      "(\t\022\021\n\tviewerCnt\030\002 \001(\r\022\013\n\003url\030\003 \001(\t\022\021\n\tst" +
+      "artTime\030\004 \001(\004\022\017\n\007endTime\030\005 \001(\004\022\021\n\tliveTi" +
+      "tle\030\006 \001(\t\022\020\n\010shareUrl\030\007 \001(\t\0221\n\tliveCover" +
+      "\030\010 \001(\0132\036.com.wali.live.proto.LiveCover\022/" +
+      "\n\004user\030\t \001(\0132!.com.wali.live.proto.Perso" +
+      "nalInfo\022\014\n\004type\030\n \001(\r\"D\n\021FirstAudit4ProR" +
+      "eq\022\014\n\004zuid\030\001 \002(\004\022\017\n\007headurl\030\002 \001(\t\022\020\n\010nic" +
+      "kname\030\003 \001(\t\"5\n\021FirstAudit4ProRsp\022\017\n\007retC" +
+      "ode\030\001 \002(\r\022\017\n\007err_msg\030\002 \001(\t\"&\n\021GetCountry" +
+      "ListReq\022\021\n\tlang_type\030\001 \002(\r\"\246\001\n\021GetCountr",
+      "yListRsp\022\017\n\007retCode\030\001 \002(\r\022\017\n\007err_msg\030\002 \001" +
+      "(\t\0225\n\013countryinfo\030\003 \003(\0132 .com.wali.live." +
+      "proto.CountryInfo\0228\n\016hotcountryinfo\030\004 \003(" +
+      "\0132 .com.wali.live.proto.CountryInfo\"D\n\006R" +
+      "egion\022\023\n\013source_type\030\001 \001(\r\022\017\n\007country\030\002 " +
+      "\001(\t\022\024\n\014country_code\030\003 \001(\t\"4\n\013CountryInfo" +
+      "\022\017\n\007country\030\001 \002(\t\022\024\n\014country_code\030\002 \002(\t\"" +
+      "\265\001\n\021GetCountryCodeReq\022\017\n\007gps_lon\030\001 \001(\001\022\017" +
+      "\n\007gps_lat\030\002 \001(\001\022\023\n\013gps_country\030\003 \001(\t\022\030\n\020" +
+      "gps_country_code\030\004 \001(\t\022\024\n\014gps_province\030\005",
+      " \001(\t\022\020\n\010gps_city\030\006 \001(\t\022\020\n\010gps_type\030\007 \001(\r" +
+      "\022\025\n\rgps_lang_type\030\010 \001(\r\"K\n\021GetCountryCod" +
+      "eRsp\022\017\n\007retCode\030\001 \002(\r\022\017\n\007err_msg\030\002 \001(\t\022\024" +
+      "\n\014country_code\030\003 \001(\t\"\"\n\022GetBindPhoneNumR" +
+      "eq\022\014\n\004zuid\030\001 \002(\004\"`\n\022GetBindPhoneNumRsp\022\017" +
+      "\n\007retCode\030\001 \002(\r\022\017\n\007err_msg\030\002 \001(\t\022\022\n\nbind" +
+      "Status\030\003 \001(\r\022\024\n\014bindPhoneNum\030\004 \001(\tB \n\023co" +
+      "m.wali.live.protoB\tUserProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -43881,13 +49748,13 @@ public final class UserProto {
     internal_static_com_wali_live_proto_PersonalInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_PersonalInfo_descriptor,
-        new java.lang.String[] { "Zuid", "Avatar", "Nickname", "Sign", "Gender", "Level", "Badge", "UpdateTime", "IsFocused", "Certification", "IsBothwayFollowing", "CertificationType", "IsBlocked", "IsInspector", "AdminUids", "WaitingCertificationType", "CertificationId", "RealNameCertificationStatus", "CoverPhoto", "UserType", "BusinessUserInfo", "SellerStatus", "IsFirstAudit", "IsRedname", "Region", });
+        new java.lang.String[] { "Zuid", "Avatar", "Nickname", "Sign", "Gender", "Level", "Badge", "UpdateTime", "IsFocused", "Certification", "IsBothwayFollowing", "CertificationType", "IsBlocked", "IsInspector", "AdminUids", "WaitingCertificationType", "CertificationId", "RealNameCertificationStatus", "CoverPhoto", "UserType", "BusinessUserInfo", "SellerStatus", "IsFirstAudit", "IsRedname", "Region", "FansNumber", "SellerType", "IsUnionAdmin", "VipLevel", "VipDisable", "VipHidden", "IsLive", });
     internal_static_com_wali_live_proto_PersonalData_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_com_wali_live_proto_PersonalData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_PersonalData_descriptor,
-        new java.lang.String[] { "Zuid", "MliveTicketNum", "FansNum", "FollowNum", "SendDiamondNum", "VodNum", "EarnNum", "DiamondNum", "UserEcoAttr", });
+        new java.lang.String[] { "Zuid", "MliveTicketNum", "FansNum", "FollowNum", "SendDiamondNum", "VodNum", "EarnNum", "DiamondNum", "UserEcoAttr", "UsableMibiTicketCnt", });
     internal_static_com_wali_live_proto_UserEcoAttr_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_com_wali_live_proto_UserEcoAttr_fieldAccessorTable = new
@@ -43917,235 +49784,253 @@ public final class UserProto {
     internal_static_com_wali_live_proto_GetOwnInfoRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetOwnInfoRsp_descriptor,
-        new java.lang.String[] { "ErrorCode", "PersonalInfo", "PersonalData", "RankTopThreeList", });
-    internal_static_com_wali_live_proto_GetPersonalDataByIdReq_descriptor =
+        new java.lang.String[] { "ErrorCode", "PersonalInfo", "PersonalData", "RankTopThreeList", "BeforeNicknameMedal", "AfterNicknameMedal", "UserCardMedal", "NeedBindPhone", "PhoneNum", });
+    internal_static_com_wali_live_proto_Medal_descriptor =
       getDescriptor().getMessageTypes().get(8);
+    internal_static_com_wali_live_proto_Medal_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_Medal_descriptor,
+        new java.lang.String[] { "PicId", });
+    internal_static_com_wali_live_proto_GetPersonalDataByIdReq_descriptor =
+      getDescriptor().getMessageTypes().get(9);
     internal_static_com_wali_live_proto_GetPersonalDataByIdReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetPersonalDataByIdReq_descriptor,
         new java.lang.String[] { "Zuid", });
     internal_static_com_wali_live_proto_GetPersonalDataByIdRsp_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_com_wali_live_proto_GetPersonalDataByIdRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetPersonalDataByIdRsp_descriptor,
         new java.lang.String[] { "ErrorCode", "PersonalData", });
     internal_static_com_wali_live_proto_GetHomepageReq_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_com_wali_live_proto_GetHomepageReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetHomepageReq_descriptor,
         new java.lang.String[] { "Zuid", "GetLiveInfo", });
     internal_static_com_wali_live_proto_GetHomepageResp_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_com_wali_live_proto_GetHomepageResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetHomepageResp_descriptor,
-        new java.lang.String[] { "RetCode", "PersonalInfo", "PersonalData", "ViewUrl", "RankTopThreeList", "RoomId", "RoomInfo", });
+        new java.lang.String[] { "RetCode", "PersonalInfo", "PersonalData", "ViewUrl", "RankTopThreeList", "RoomId", "RoomInfo", "BeforeNicknameMedal", "AfterNicknameMedal", "UserCardMedal", });
     internal_static_com_wali_live_proto_UploadUserSettingReq_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_com_wali_live_proto_UploadUserSettingReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UploadUserSettingReq_descriptor,
-        new java.lang.String[] { "Zuid", "IsPushable", "IsNotifyNoDisturb", "IsNotifyNoSound", "IsNotifyNoShake", });
+        new java.lang.String[] { "Zuid", "IsPushable", "IsNotifyNoDisturb", "IsNotifyNoSound", "IsNotifyNoShake", "IsVipHide", });
     internal_static_com_wali_live_proto_UploadUserSettingRsp_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_com_wali_live_proto_UploadUserSettingRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UploadUserSettingRsp_descriptor,
         new java.lang.String[] { "ErrorCode", });
     internal_static_com_wali_live_proto_SearchUserInfoReq_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_com_wali_live_proto_SearchUserInfoReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SearchUserInfoReq_descriptor,
-        new java.lang.String[] { "Keyword", "Offset", "Limit", });
+        new java.lang.String[] { "Keyword", "Offset", "Limit", "LiveStatus", });
     internal_static_com_wali_live_proto_SearchUserInfoRsp_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_com_wali_live_proto_SearchUserInfoRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SearchUserInfoRsp_descriptor,
         new java.lang.String[] { "ErrorCode", "TotalNum", "PersonalInfos", });
     internal_static_com_wali_live_proto_UploadUserPropertiesReq_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_com_wali_live_proto_UploadUserPropertiesReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UploadUserPropertiesReq_descriptor,
-        new java.lang.String[] { "Zuid", "Avatar", "Nickname", "Sign", "Gender", "Certification", "CertificationType", "IsManual", "CoverPhoto", "Address", "AvatarMd5", "Region", });
+        new java.lang.String[] { "Zuid", "Avatar", "Nickname", "Sign", "Gender", "Certification", "CertificationType", "IsManual", "CoverPhoto", "Address", "AvatarMd5", "Region", "ModifyNicknameInterval", });
     internal_static_com_wali_live_proto_UploadUserPropertiesRsp_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_com_wali_live_proto_UploadUserPropertiesRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UploadUserPropertiesRsp_descriptor,
-        new java.lang.String[] { "RetCode", "ErrMsg", "Nickname", });
+        new java.lang.String[] { "RetCode", "ErrMsg", "Nickname", "UpdateNicknameTime", "CurrentTime", });
     internal_static_com_wali_live_proto_AdminSettingReq_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_com_wali_live_proto_AdminSettingReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AdminSettingReq_descriptor,
         new java.lang.String[] { "AdminUid", "Operation", "RoomId", });
     internal_static_com_wali_live_proto_AdminSettingRsp_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(20);
     internal_static_com_wali_live_proto_AdminSettingRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AdminSettingRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_AdminListReq_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(21);
     internal_static_com_wali_live_proto_AdminListReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AdminListReq_descriptor,
         new java.lang.String[] { "Zuid", });
     internal_static_com_wali_live_proto_AdminListRsp_descriptor =
-      getDescriptor().getMessageTypes().get(21);
+      getDescriptor().getMessageTypes().get(22);
     internal_static_com_wali_live_proto_AdminListRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AdminListRsp_descriptor,
         new java.lang.String[] { "RetCode", "UserInfos", });
     internal_static_com_wali_live_proto_GetOwnSettingReq_descriptor =
-      getDescriptor().getMessageTypes().get(22);
+      getDescriptor().getMessageTypes().get(23);
     internal_static_com_wali_live_proto_GetOwnSettingReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetOwnSettingReq_descriptor,
         new java.lang.String[] { "Zuid", });
     internal_static_com_wali_live_proto_GetOwnSettingRsp_descriptor =
-      getDescriptor().getMessageTypes().get(23);
+      getDescriptor().getMessageTypes().get(24);
     internal_static_com_wali_live_proto_GetOwnSettingRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetOwnSettingRsp_descriptor,
-        new java.lang.String[] { "RetCode", "IsPushable", "IsNotifyNoDisturb", "IsNotifyNoSound", "IsNotifyNoShake", });
+        new java.lang.String[] { "RetCode", "IsPushable", "IsNotifyNoDisturb", "IsNotifyNoSound", "IsNotifyNoShake", "IsVipHide", });
     internal_static_com_wali_live_proto_HisRoomReq_descriptor =
-      getDescriptor().getMessageTypes().get(24);
+      getDescriptor().getMessageTypes().get(25);
     internal_static_com_wali_live_proto_HisRoomReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_HisRoomReq_descriptor,
         new java.lang.String[] { "Zuid", });
     internal_static_com_wali_live_proto_HisRoomRsp_descriptor =
-      getDescriptor().getMessageTypes().get(25);
+      getDescriptor().getMessageTypes().get(26);
     internal_static_com_wali_live_proto_HisRoomRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_HisRoomRsp_descriptor,
         new java.lang.String[] { "RetCode", "LiveId", "ShareUrl", "ViewUrl", "Type", });
     internal_static_com_wali_live_proto_MutiGetUserInfoReq_descriptor =
-      getDescriptor().getMessageTypes().get(26);
+      getDescriptor().getMessageTypes().get(27);
     internal_static_com_wali_live_proto_MutiGetUserInfoReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_MutiGetUserInfoReq_descriptor,
         new java.lang.String[] { "Zuid", });
     internal_static_com_wali_live_proto_MutiGetUserInfoRsp_descriptor =
-      getDescriptor().getMessageTypes().get(27);
+      getDescriptor().getMessageTypes().get(28);
     internal_static_com_wali_live_proto_MutiGetUserInfoRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_MutiGetUserInfoRsp_descriptor,
         new java.lang.String[] { "RetCode", "PersonalInfo", });
     internal_static_com_wali_live_proto_GetCaptchaReq_descriptor =
-      getDescriptor().getMessageTypes().get(28);
+      getDescriptor().getMessageTypes().get(29);
     internal_static_com_wali_live_proto_GetCaptchaReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetCaptchaReq_descriptor,
         new java.lang.String[] { "PhoneNum", "Type", "Lang", });
     internal_static_com_wali_live_proto_GetCaptchaRsp_descriptor =
-      getDescriptor().getMessageTypes().get(29);
+      getDescriptor().getMessageTypes().get(30);
     internal_static_com_wali_live_proto_GetCaptchaRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetCaptchaRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_VerifyCaptchaReq_descriptor =
-      getDescriptor().getMessageTypes().get(30);
+      getDescriptor().getMessageTypes().get(31);
     internal_static_com_wali_live_proto_VerifyCaptchaReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_VerifyCaptchaReq_descriptor,
         new java.lang.String[] { "PhoneNum", "Type", "Captcha", "IdCardNum", });
     internal_static_com_wali_live_proto_VerifyCaptchaRsp_descriptor =
-      getDescriptor().getMessageTypes().get(31);
+      getDescriptor().getMessageTypes().get(32);
     internal_static_com_wali_live_proto_VerifyCaptchaRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_VerifyCaptchaRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_ApplyCertificationReq_descriptor =
-      getDescriptor().getMessageTypes().get(32);
+      getDescriptor().getMessageTypes().get(33);
     internal_static_com_wali_live_proto_ApplyCertificationReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ApplyCertificationReq_descriptor,
         new java.lang.String[] { "CertificationInfo", "Type", });
     internal_static_com_wali_live_proto_ApplyCertificationRsp_descriptor =
-      getDescriptor().getMessageTypes().get(33);
+      getDescriptor().getMessageTypes().get(34);
     internal_static_com_wali_live_proto_ApplyCertificationRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ApplyCertificationRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_CertificationInfo_descriptor =
-      getDescriptor().getMessageTypes().get(34);
+      getDescriptor().getMessageTypes().get(35);
     internal_static_com_wali_live_proto_CertificationInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_CertificationInfo_descriptor,
         new java.lang.String[] { "Uuid", "Name", "PhoneNum", "Idcard", "Certification", "CompanyName", "Profession", "ProofJobs", "OtherIdCard", "Works", "IdCardNum", "Birthday", "Type", "CardType", });
     internal_static_com_wali_live_proto_PrivateImg_descriptor =
-      getDescriptor().getMessageTypes().get(35);
+      getDescriptor().getMessageTypes().get(36);
     internal_static_com_wali_live_proto_PrivateImg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_PrivateImg_descriptor,
         new java.lang.String[] { "Bucket", "ObjectKey", });
     internal_static_com_wali_live_proto_LiveCover_descriptor =
-      getDescriptor().getMessageTypes().get(36);
+      getDescriptor().getMessageTypes().get(37);
     internal_static_com_wali_live_proto_LiveCover_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_LiveCover_descriptor,
         new java.lang.String[] { "CoverUrl", });
     internal_static_com_wali_live_proto_HisLive_descriptor =
-      getDescriptor().getMessageTypes().get(37);
+      getDescriptor().getMessageTypes().get(38);
     internal_static_com_wali_live_proto_HisLive_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_HisLive_descriptor,
         new java.lang.String[] { "LiveId", "ViewerCnt", "Url", "StartTime", "EndTime", "LiveTitle", "ShareUrl", "LiveCover", "User", "Type", });
     internal_static_com_wali_live_proto_FirstAudit4ProReq_descriptor =
-      getDescriptor().getMessageTypes().get(38);
+      getDescriptor().getMessageTypes().get(39);
     internal_static_com_wali_live_proto_FirstAudit4ProReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_FirstAudit4ProReq_descriptor,
         new java.lang.String[] { "Zuid", "Headurl", "Nickname", });
     internal_static_com_wali_live_proto_FirstAudit4ProRsp_descriptor =
-      getDescriptor().getMessageTypes().get(39);
+      getDescriptor().getMessageTypes().get(40);
     internal_static_com_wali_live_proto_FirstAudit4ProRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_FirstAudit4ProRsp_descriptor,
         new java.lang.String[] { "RetCode", "ErrMsg", });
     internal_static_com_wali_live_proto_GetCountryListReq_descriptor =
-      getDescriptor().getMessageTypes().get(40);
+      getDescriptor().getMessageTypes().get(41);
     internal_static_com_wali_live_proto_GetCountryListReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetCountryListReq_descriptor,
         new java.lang.String[] { "LangType", });
     internal_static_com_wali_live_proto_GetCountryListRsp_descriptor =
-      getDescriptor().getMessageTypes().get(41);
+      getDescriptor().getMessageTypes().get(42);
     internal_static_com_wali_live_proto_GetCountryListRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetCountryListRsp_descriptor,
         new java.lang.String[] { "RetCode", "ErrMsg", "Countryinfo", "Hotcountryinfo", });
     internal_static_com_wali_live_proto_Region_descriptor =
-      getDescriptor().getMessageTypes().get(42);
+      getDescriptor().getMessageTypes().get(43);
     internal_static_com_wali_live_proto_Region_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_Region_descriptor,
         new java.lang.String[] { "SourceType", "Country", "CountryCode", });
     internal_static_com_wali_live_proto_CountryInfo_descriptor =
-      getDescriptor().getMessageTypes().get(43);
+      getDescriptor().getMessageTypes().get(44);
     internal_static_com_wali_live_proto_CountryInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_CountryInfo_descriptor,
         new java.lang.String[] { "Country", "CountryCode", });
     internal_static_com_wali_live_proto_GetCountryCodeReq_descriptor =
-      getDescriptor().getMessageTypes().get(44);
+      getDescriptor().getMessageTypes().get(45);
     internal_static_com_wali_live_proto_GetCountryCodeReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetCountryCodeReq_descriptor,
         new java.lang.String[] { "GpsLon", "GpsLat", "GpsCountry", "GpsCountryCode", "GpsProvince", "GpsCity", "GpsType", "GpsLangType", });
     internal_static_com_wali_live_proto_GetCountryCodeRsp_descriptor =
-      getDescriptor().getMessageTypes().get(45);
+      getDescriptor().getMessageTypes().get(46);
     internal_static_com_wali_live_proto_GetCountryCodeRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetCountryCodeRsp_descriptor,
         new java.lang.String[] { "RetCode", "ErrMsg", "CountryCode", });
+    internal_static_com_wali_live_proto_GetBindPhoneNumReq_descriptor =
+      getDescriptor().getMessageTypes().get(47);
+    internal_static_com_wali_live_proto_GetBindPhoneNumReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetBindPhoneNumReq_descriptor,
+        new java.lang.String[] { "Zuid", });
+    internal_static_com_wali_live_proto_GetBindPhoneNumRsp_descriptor =
+      getDescriptor().getMessageTypes().get(48);
+    internal_static_com_wali_live_proto_GetBindPhoneNumRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetBindPhoneNumRsp_descriptor,
+        new java.lang.String[] { "RetCode", "ErrMsg", "BindStatus", "BindPhoneNum", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

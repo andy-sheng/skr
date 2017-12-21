@@ -97,7 +97,7 @@ public class CommentInputPresenter extends BaseSdkRxPresenter<InputAreaView.IVie
     }
 
     @Override
-    public void sendBarrage(String msg, boolean isFlyBarrage) {
+    public void sendBarrage(String msg, int barrageState) {
         if (TextUtils.isEmpty(msg) || mFeedsIdToReply == null) {
             return;
         }
@@ -137,8 +137,8 @@ public class CommentInputPresenter extends BaseSdkRxPresenter<InputAreaView.IVie
     }
 
     @Override
-    public void updateInputHint(boolean flyEnable) {
-        //回放不需要hint，只有房间内需要
+    public void updateInputHint(int state) {
+
     }
 
     @Override

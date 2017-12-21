@@ -1,16 +1,22 @@
 package com.wali.live.watchsdk.component.presenter;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.widget.EditText;
 
+import com.base.dialog.MyAlertDialog;
 import com.base.event.KeyboardEvent;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.data.LastBarrage;
@@ -19,6 +25,7 @@ import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.push.model.GlobalRoomMsgExt;
 import com.mi.live.data.query.model.MessageRule;
+import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.room.model.FansPrivilegeModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
@@ -26,9 +33,12 @@ import com.thornbirds.component.presenter.ComponentPresenter;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
+import com.wali.live.common.gift.exception.GiftErrorCode;
 import com.wali.live.event.EventClass;
+import com.wali.live.proto.GiftProto;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.proto.VFansProto;
+import com.wali.live.recharge.view.RechargeFragment;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.fans.model.FansGroupDetailModel;
 import com.wali.live.watchsdk.fans.request.GetGroupDetailRequest;
@@ -49,6 +59,12 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
+
+import static com.mi.live.data.push.model.GlobalRoomMsgExt.INNER_GLOBAL_PAY_HORN;
+import static com.wali.live.watchsdk.component.viewmodel.BarrageState.BARRAGE_MANAGE;
+import static com.wali.live.watchsdk.component.viewmodel.BarrageState.BARRAGE_NORMAL;
+import static com.wali.live.watchsdk.component.viewmodel.BarrageState.BARRAGE_NOTIFY;
 
 /**
  * Created by zyh on 2017/7/28.
@@ -69,9 +85,12 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
     protected String mInputContent;
     protected boolean mCanInput;
     protected boolean mViewIsShow;
-    protected Subscription mSubscription;
+    protected CompositeSubscription mSubscriptions;
     protected LiveRoomChatMsgManager mLiveRoomChatMsgManager;
-    protected boolean mFlyBtnSelected = false;
+    protected int mBarrageState = BARRAGE_NORMAL;
+
+    protected int mVipMaxCnt;
+    protected int mVipCurCnt;
 
     public InputPresenter(
             @NonNull IEventController controller,
@@ -102,8 +121,8 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
+        if (mSubscriptions != null) {
+            mSubscriptions.clear();
         }
     }
 
@@ -114,10 +133,7 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
     }
 
     private void getGroupDetailFromServer() {
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
-        }
-        mSubscription = Observable.just(0)
+        Subscription subscription = Observable.just(0)
                 .map(new Func1<Object, FansGroupDetailModel>() {
                     @Override
                     public FansGroupDetailModel call(Object object) {
@@ -154,6 +170,73 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
                         MyLog.e(TAG, "getGroupDetail failed=" + throwable);
                     }
                 });
+        mSubscriptions.add(subscription);
+    }
+
+    private void buyCostBarrage(final String msg) {
+        Subscription subscription = Observable.just(msg)
+                .map(new Func1<String, Object>() {
+                    @Override
+                    public Object call(String body) {
+                        //TODO zyh 这里拿掉了@协议, 需要再加
+                        return GiftRepository.bugGiftSync(GiftRepository.getBulletGift(),
+                                mMyRoomData.getUid(), mMyRoomData.getRoomId(), 0,
+                                System.currentTimeMillis(), System.currentTimeMillis(), body,
+                                mMyRoomData.getLiveType(), false, false);
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object o) {
+                        GiftProto.BuyGiftRsp rsp = (GiftProto.BuyGiftRsp) o;
+                        if (rsp != null) {
+                            switch (rsp.getRetCode()) {
+                                case GiftErrorCode.SUCC:
+                                    mLiveRoomChatMsgManager.sendFlyBarrageMessageAsync(msg, mMyRoomData.getRoomId(),
+                                            mMyRoomData.getUid(), INNER_GLOBAL_PAY_HORN, null, mFansPrivilegeModel);
+                                    //TODO 这里需要刷新一下钻的数量
+                                    break;
+                                case GiftErrorCode.GIFT_PAY_BARRAGE:
+                                    showBalanceTipDialog();
+                                    break;
+                            }
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, "buyCostBarrage failed=" + throwable);
+                    }
+                });
+        mSubscriptions.add(subscription);
+    }
+
+    private void showBalanceTipDialog() {
+        if (mView == null) {
+            return;
+        }
+        final Context context = mView.getRealView().getContext();
+        MyAlertDialog dialog = new MyAlertDialog.Builder(context).create();
+        dialog.setTitle(R.string.account_withdraw_pay_user_account_not_enough);
+        dialog.setMessage(context.getString(R.string.account_withdraw_pay_barrage_user_account_not_enough_tip));
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(R.string.live_traffic_positive),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        RechargeFragment.openFragment((FragmentActivity) context, R.id.main_act_container, null, true);
+                        dialog.dismiss();
+                    }
+                });
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, context.getString(R.string.live_traffic_negative),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     /**
@@ -165,14 +248,8 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
         return mMyRoomData.getUid() != UserAccountManager.getInstance().getUuidAsLong();
     }
 
-    public void sendBarrage(String msg, boolean isFlyBarrage) {
-        mFlyBtnSelected = isFlyBarrage;
+    public void sendBarrage(String msg, int barrageState) {
         if (TextUtils.isEmpty(msg) || mMyRoomData == null) {
-            return;
-        }
-        if (isFlyBarrage && mFansPrivilegeModel != null && mFansPrivilegeModel.canSendFlyBarrage()
-                && mFansPrivilegeModel.getHasSendFlyBarrageTimes() >= mFansPrivilegeModel.getMaxCanSendFlyBarrageTimes()) {
-            ToastUtils.showToast(GlobalData.app().getString(R.string.flybarrage_none));
             return;
         }
         if (isVisitor()) {
@@ -209,25 +286,38 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
             }
             checkShowCountdownTimer();
         }
-
-        if (isFlyBarrage) {
-            //TODO 飘萍弹幕暂时只考虑粉丝团的飘萍弹幕，管理員的暫時沒考慮
-            mLiveRoomChatMsgManager.sendFlyBarrageMessageAsync(msg, mMyRoomData.getRoomId(),
-                    mMyRoomData.getUid(), GlobalRoomMsgExt.INNER_GLOBAL_PAY_HORN, null, mFansPrivilegeModel);
-        } else {
-            FansPrivilegeModel fansPrivilegeModel = mFansPrivilegeModel;
-            GlobalRoomMsgExt globalRoomMsgExt = null;
-            if (fansPrivilegeModel != null && fansPrivilegeModel.getMemType() != VFansCommonProto.GroupMemType.NONE.getNumber()) {
-                globalRoomMsgExt = new GlobalRoomMsgExt();
-                GlobalRoomMsgExt.FansMemberMsgExt fansMemberMsgExt = new GlobalRoomMsgExt.FansMemberMsgExt();
-                fansMemberMsgExt.setPetLevel(fansPrivilegeModel.getPetLevel());
-                fansMemberMsgExt.setVipExpire(System.currentTimeMillis() > fansPrivilegeModel.getExpireTime() * 1000);
-                fansMemberMsgExt.setMedalValue(fansPrivilegeModel.getMedal());
-                globalRoomMsgExt.addMsgExt(fansMemberMsgExt);
-            }
-            mLiveRoomChatMsgManager.sendBarrageMessageAsync(msg, BarrageMsgType.B_MSG_TYPE_TEXT,
-                    mMyRoomData.getRoomId(), mMyRoomData.getUid(), null, null, globalRoomMsgExt);
+        switch (barrageState) {
+            case BARRAGE_MANAGE:
+                mLiveRoomChatMsgManager.sendFlyBarrageMessageAsync(msg, mMyRoomData.getRoomId(),
+                        mMyRoomData.getUid(), GlobalRoomMsgExt.INNER_GLOBAL_ADMIN_FLY, null, mFansPrivilegeModel);
+                break;
+            case BARRAGE_NOTIFY:
+                if (mVipCurCnt < mVipMaxCnt && !MyUserInfoManager.getInstance().isVipFrozen()) {
+                    mLiveRoomChatMsgManager.sendFlyBarrageMessageAsync(msg, mMyRoomData.getRoomId(),
+                            mMyRoomData.getUid(), INNER_GLOBAL_PAY_HORN, null, mFansPrivilegeModel);
+                } else {
+                    buyCostBarrage(msg);
+                }
+                break;
+            default:
+                sendBarrageByType(msg, BarrageMsgType.B_MSG_TYPE_TEXT);
+                break;
         }
+    }
+
+    private void sendBarrageByType(String msg, int type) {
+        FansPrivilegeModel fansPrivilegeModel = mFansPrivilegeModel;
+        GlobalRoomMsgExt globalRoomMsgExt = null;
+        if (fansPrivilegeModel != null && fansPrivilegeModel.getMemType() != VFansCommonProto.GroupMemType.NONE.getNumber()) {
+            globalRoomMsgExt = new GlobalRoomMsgExt();
+            GlobalRoomMsgExt.FansMemberMsgExt fansMemberMsgExt = new GlobalRoomMsgExt.FansMemberMsgExt();
+            fansMemberMsgExt.setPetLevel(fansPrivilegeModel.getPetLevel());
+            fansMemberMsgExt.setVipExpire(System.currentTimeMillis() > fansPrivilegeModel.getExpireTime() * 1000);
+            fansMemberMsgExt.setMedalValue(fansPrivilegeModel.getMedal());
+            globalRoomMsgExt.addMsgExt(fansMemberMsgExt);
+        }
+        mLiveRoomChatMsgManager.sendBarrageMessageAsync(msg, type,
+                mMyRoomData.getRoomId(), mMyRoomData.getUid(), null, null, globalRoomMsgExt);
     }
 
     /**
@@ -296,11 +386,27 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
     /**
      * 更新EditText的hint
      */
-    public void updateInputHint(boolean flyBtnSelected) {
+    public void updateInputHint(int barrageState) {
         MyLog.v(TAG, "updateInputHint");
-        mFlyBtnSelected = flyBtnSelected;
+        mBarrageState = barrageState;
         EditText editText = mView.getInputView();
-        if (flyBtnSelected && mFansPrivilegeModel != null && mFansPrivilegeModel.canSendFlyBarrage() &&
+        switch (mBarrageState) {
+            case BARRAGE_NORMAL:
+            case BARRAGE_MANAGE:
+                editText.setHint(R.string.empty_edittext_hint);
+                break;
+            case BARRAGE_NOTIFY:
+                updateVipHint();
+                break;
+        }
+    }
+
+    /**
+     * vip和粉丝团vip的hint文案
+     */
+    private void updateVipHint() {
+        EditText editText = mView.getInputView();
+        if (mFansPrivilegeModel != null && mFansPrivilegeModel.canSendFlyBarrage() &&
                 mFansPrivilegeModel.getMaxCanSendFlyBarrageTimes() - mFansPrivilegeModel.getHasSendFlyBarrageTimes() > 0) {
             if (mFansPrivilegeModel.getHasSendFlyBarrageTimes() == 0) {
                 editText.setHint(GlobalData.app().getResources().getString(R.string.vfans_vip_horn_hint, mFansPrivilegeModel.getPetLevel(),
@@ -309,11 +415,21 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
                 editText.setHint(GlobalData.app().getResources().getString(R.string.vfans_free_horn_hint,
                         mFansPrivilegeModel.getMaxCanSendFlyBarrageTimes() - mFansPrivilegeModel.getHasSendFlyBarrageTimes()));
             }
+        } else if (!MyUserInfoManager.getInstance().isVipFrozen() && mVipMaxCnt > 0) {
+            if (mVipCurCnt == 0) {
+                editText.setHint(GlobalData.app().getString(R.string.vip_horn_hint,
+                        MyUserInfoManager.getInstance().getVipLevel(), mVipMaxCnt).toString());
+            } else {
+                if (mVipCurCnt >= mVipMaxCnt) {
+                    editText.setHint(GlobalData.app().getString(R.string.horn_barrage_hint, GiftRepository.getBulletGift().getPrice()));
+                } else {
+                    editText.setHint(GlobalData.app().getString(R.string.vip_free_horn_hint, mVipMaxCnt - mVipCurCnt));
+                }
+            }
         } else {
-            editText.setHint(R.string.empty_edittext_hint);
+            editText.setHint(GlobalData.app().getString(R.string.horn_barrage_hint, GiftRepository.getBulletGift().getPrice()));
         }
     }
-
 
     /**
      * 处理发送弹幕频率限制更改事件
@@ -370,8 +486,11 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
         }
         if (Integer.MAX_VALUE != event.getGuardCnt() && mFansPrivilegeModel.getHasSendFlyBarrageTimes() < event.getGuardCnt()) {
             mFansPrivilegeModel.setHasSendFlyBarrageTimes(event.getGuardCnt());
-            updateInputHint(mFlyBtnSelected);
         }
+        if (Integer.MAX_VALUE != event.getVipCnt() && mVipCurCnt < event.getVipCnt()) {
+            mVipCurCnt = event.getVipCnt();
+        }
+        updateInputHint(mBarrageState);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -397,7 +516,7 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
         /**
          * 发送消息
          */
-        void sendBarrage(String msg, boolean isFlyBarrage);
+        void sendBarrage(String msg, int state);
     }
 
     public interface IView extends IViewProxy {
@@ -440,10 +559,10 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
                         inputPresenter.mCanInput = false;
                     } else {
                         inputPresenter.mCanInput = true;
-                        inputPresenter.updateInputHint(inputPresenter.mFlyBtnSelected);
-                        if (!TextUtils.isEmpty(mPresenter.get().mInputContent)) {
-                            inputPresenter.mView.getInputView().setText(mPresenter.get().mInputContent);
-                            inputPresenter.mView.getInputView().setSelection(mPresenter.get().mInputContent.length());
+                        inputPresenter.updateInputHint(inputPresenter.mBarrageState);
+                        if (!TextUtils.isEmpty(inputPresenter.mInputContent)) {
+                            inputPresenter.mView.getInputView().setText(inputPresenter.mInputContent);
+                            inputPresenter.mView.getInputView().setSelection(inputPresenter.mInputContent.length());
                             inputPresenter.mInputContent = "";
                         }
                     }

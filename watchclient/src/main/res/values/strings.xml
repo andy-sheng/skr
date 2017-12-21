@@ -421,4 +421,11 @@
     <string name="group_apply_access_txt" formatted="false">Request approved</string>
     <string name="group_apply_reject_txt" formatted="false">Request declined</string>
     <string name="watch_share_btn">Share</string>
+    <string name="barrage_normal">Send comments</string>
+    <string name="barrage_manage">Manage</string>
+    <string name="barrage_horn">Broadcast</string>
+    <string name="vip_horn_hint">VIP%1$d can send %2$d broadcasts/day for free</string>
+    <string name="horn_barrage_hint">On-screen broadcast, %d gems/message</string>
+    <string name="vip_free_horn_hint">%d free broadcasts available today</string>
+    <string name="account_withdraw_pay_barrage_user_account_not_enough_tip">Insufficient balance, top up to send on-screen comments.</string>
 </resources>

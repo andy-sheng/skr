@@ -87,6 +87,7 @@ public class GiftRepository {
      * 专门用于下载礼物动画资源
      */
     private static PublishSubject<Gift> mDownloadAnimationRes = PublishSubject.create();
+    private static int mBulletGiftId = -1;
 
     static {
         mDownloadAnimationRes
@@ -201,6 +202,9 @@ public class GiftRepository {
                         try {
                             rsp = EffectProto.GetRoomEffectsResponse.parseFrom(response.getData());
                             MyLog.w(TAG, "getRoomEffect response:" + rsp);
+                            if (rsp.hasBulletGiftId()) {
+                                mBulletGiftId = rsp.getBulletGiftId();
+                            }
                         } catch (Exception e) {
                             subscriber.onError(e);
                         }
@@ -647,6 +651,16 @@ public class GiftRepository {
             }
             replaceCache(newList);
         }
+    }
+
+    public static Gift getBulletGift() {
+        Gift gift = findGiftById(mBulletGiftId);
+        if (gift == null) {
+            gift = new Gift();
+            gift.setGiftId(mBulletGiftId);
+            gift.setPrice(5);
+        }
+        return gift;
     }
 
     public static List<Gift> getGiftListCache() {

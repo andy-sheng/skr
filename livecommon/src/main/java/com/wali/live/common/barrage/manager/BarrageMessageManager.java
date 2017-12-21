@@ -127,17 +127,25 @@ public class BarrageMessageManager implements MiLinkPacketDispatcher.PacketDataH
             if (response != null) {
                 MyLog.v(TAG, "BarrageMsg recv:" + response.getCid() + " result:" + response.getRet());
                 StatisticUtils.addToMiLinkMonitor(StatisticsKey.KEY_BARRAGE_CUSTOM_SEND_SUCCESS, StatisticUtils.SUCCESS);
-                //TODO zyh 暂时只加入粉丝团的消息，vip的暂时不考虑
-                if (response.hasGuardBrCnt()) {
-                    EventBus.getDefault().post(new BarrageMsgEvent.SendBarrageResponseEvent(response.getCid(),
-                            response.getTimestamp() == 0 ? System.currentTimeMillis() : response.getTimestamp(),
-                            response.getFltbrCnt(), response.getAdminBrCnt(),
-                            Integer.MAX_VALUE, response.getGuardBrCnt()));
-                } else {
-                    EventBus.getDefault().post(new BarrageMsgEvent.SendBarrageResponseEvent(response.getCid(),
-                            response.getTimestamp() == 0 ? System.currentTimeMillis() : response.getTimestamp(),
-                            response.getFltbrCnt(), response.getAdminBrCnt(), Integer.MAX_VALUE, Integer.MAX_VALUE));
+                int adminBrCnt = Integer.MAX_VALUE;
+                int guardBrCnt = Integer.MAX_VALUE;
+                int vipBrCnt = Integer.MAX_VALUE;
+                int flyBrCnt = Integer.MAX_VALUE;
+                if (response.hasAdminBrCnt()) {
+                    adminBrCnt = response.getAdminBrCnt();
                 }
+                if (response.hasGuardBrCnt()) {
+                    guardBrCnt = response.getGuardBrCnt();
+                }
+                if (response.hasVipBrCnt()) {
+                    vipBrCnt = response.getVipBrCnt();
+                }
+                if (response.hasFltbrCnt()) {
+                    flyBrCnt = response.getFltbrCnt();
+                }
+                EventBus.getDefault().post(new BarrageMsgEvent.SendBarrageResponseEvent(response.getCid(),
+                        response.getTimestamp() == 0 ? System.currentTimeMillis() : response.getTimestamp(),
+                        adminBrCnt, flyBrCnt, vipBrCnt, guardBrCnt));
             }
         } catch (InvalidProtocolBufferException e) {
             MyLog.e(e);
@@ -158,17 +166,7 @@ public class BarrageMessageManager implements MiLinkPacketDispatcher.PacketDataH
                         if (msg != null) {
                             BarrageMsg barrageMsg = BarrageMsg.toBarrageMsg(msg);
                             barrageMsgList.add(barrageMsg);
-                            if (msg.getFromUser() == MyUserInfoManager.getInstance().getUser().getUid() && msg.getFromUserLevel() > 0) {
-                                MyUserInfoManager.getInstance().setLevel(msg.getFromUserLevel());
-                                // 如果是进入房间消息，尝试矫正一下nickname ，这里谨防变成系统消息，这里暂时不考虑英文版
-                                if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getUser().getNickname())
-                                        && msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_JOIN
-                                        && !TextUtils.isEmpty(msg.getFromUserNickName())
-                                        && !msg.getFromUserNickName().equals("系统消息")) {
-                                    MyUserInfoManager.getInstance().setNickname(msg.getFromUserNickName());
-                                }
-                            }
-
+                            updateOwnInfo(msg);
                             MyLog.v(TAG, "BarrageMsg msgType:" + msg.getMsgType() + ", roomid:" + msg.getRoomId() + ",body:" + msg.getMsgBody());
                             if (careLeaveRoom) {
                                 RoomInfoGlobalCache.getsInstance().sendLeaveRoomIfNeed(barrageMsg.getAnchorId(), barrageMsg.getRoomId());
@@ -189,13 +187,36 @@ public class BarrageMessageManager implements MiLinkPacketDispatcher.PacketDataH
         }
     }
 
+    private void updateOwnInfo(LiveMessageProto.Message msg) {
+        if (msg.getFromUser() == MyUserInfoManager.getInstance().getUser().getUid()) {
+            if (msg.getFromUserLevel() != MyUserInfoManager.getInstance().getLevel()) {
+                MyUserInfoManager.getInstance().setLevel(msg.getFromUserLevel());
+            }
+            if (msg.getVipLevel() != MyUserInfoManager.getInstance().getVipLevel()) {
+                MyUserInfoManager.getInstance().setVipLevel(msg.getVipLevel());
+            }
+            if (msg.getVipDisable() != MyUserInfoManager.getInstance().isVipFrozen()) {
+                MyUserInfoManager.getInstance().setVipFrozen(msg.getVipDisable());
+            }
+            if (msg.getVipHidden() != MyUserInfoManager.getInstance().isVipHide()) {
+                MyUserInfoManager.getInstance().setVipHide(msg.getVipHidden());
+            }
+            // 如果是进入房间消息，尝试矫正一下nickname ，这里谨防变成系统消息，这里暂时不考虑英文版
+            if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getUser().getNickname())
+                    && msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_JOIN
+                    && !TextUtils.isEmpty(msg.getFromUserNickName())
+                    && !msg.getFromUserNickName().equals("系统消息")) {
+                MyUserInfoManager.getInstance().setNickname(msg.getFromUserNickName());
+            }
+        }
+    }
+
     private void sendRecvEvent(List<BarrageMsg> barrageMsgList) {
         if (barrageMsgList != null) {
             MyLog.v(TAG, "sendRecvEvent list.size:" + barrageMsgList.size());
             EventBus.getDefault().post(new BarrageMsgEvent.ReceivedBarrageMsgEvent(barrageMsgList, "sendRecvEvent"));
         }
     }
-
 
     /**
      * 伪装成pushmessage发出去

@@ -4,6 +4,7 @@ import android.support.annotation.DrawableRes;
 import android.text.TextUtils;
 
 import com.base.global.GlobalData;
+import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.live.module.common.R;
 import com.mi.live.data.account.UserAccountManager;
@@ -310,7 +311,13 @@ public class CommentModel implements Comparable<CommentModel> {
             break;
             case BarrageMsgType.B_MSG_TYPE_JOIN: {
                 if (!TextUtils.isEmpty(name)) {
-                    liveComment.setBody(GlobalData.app().getString(R.string.barrage_enter_live_body), false);
+                    if (msg.getVipLevel() > 1 && !msg.isVipFrozen() && !msg.isVipHide()) {
+                        String[] tips = GlobalData.app().getResources().getStringArray(R.array.welcome_vip_enter_room_tip);
+                        String body = tips[(int) (System.currentTimeMillis() % tips.length)];
+                        liveComment.setBody(body, false);
+                    } else {
+                        liveComment.setBody(GlobalData.app().getString(R.string.barrage_enter_live_body), false);
+                    }
                 } else {
                     liveComment.setName(null);
                     liveComment.setBody(msg.getBody(), false);
@@ -430,5 +437,4 @@ public class CommentModel implements Comparable<CommentModel> {
         CommentModel that = (CommentModel) o;
         return senderId == that.senderId && senderMsgId == that.senderMsgId;
     }
-
 }

@@ -413,4 +413,11 @@
     <string name="group_apply_access_txt" formatted="false">已同意该申请</string>
     <string name="group_apply_reject_txt" formatted="false">已拒绝该申请</string>
     <string name="watch_share_btn">分享</string>
+    <string name="barrage_normal">发言</string>
+    <string name="barrage_manage">管理</string>
+    <string name="barrage_horn">喇叭</string>
+    <string name="vip_horn_hint">%1$d级VIP专享免费%2$d条/天</string>
+    <string name="horn_barrage_hint">飘屏大喇叭，%d钻/条</string>
+    <string name="vip_free_horn_hint">今日剩余%d条免费大喇叭</string>
+    <string name="account_withdraw_pay_barrage_user_account_not_enough_tip">当前余额不足,充值才可以继续发送飘屏弹幕,是否去充值.</string>
 </resources>

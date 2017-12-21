@@ -16,20 +16,28 @@ import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.live.module.common.R;
+import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.preference.MLPreferenceUtils;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IOrientationListener;
 import com.wali.live.common.smiley.SmileyInputFilter;
 import com.wali.live.common.smiley.SmileyPicker;
 import com.wali.live.common.smiley.SmileyTranslateFilter;
+import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.presenter.InputPresenter;
+
+import static android.widget.RelativeLayout.RIGHT_OF;
+import static com.wali.live.watchsdk.component.viewmodel.BarrageState.BARRAGE_MANAGE;
+import static com.wali.live.watchsdk.component.viewmodel.BarrageState.BARRAGE_NORMAL;
+import static com.wali.live.watchsdk.component.viewmodel.BarrageState.BARRAGE_NOTIFY;
 
 /**
  * Created by yangli on 17/02/20.
@@ -51,6 +59,8 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
     protected boolean mIsShowSmileyPicker = false;
     protected boolean mIsLandscape = false;
 
+    protected int mState = BARRAGE_NORMAL;
+
     protected InputFilter[] mNormalFilter;
     @Nullable
     protected InputFilter[] mFlyBarrageFilter;
@@ -61,6 +71,8 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
     protected TextView mSendBtn;
     @Nullable
     protected View mBarrageSwitchBtn; // 飘屏弹幕开关
+    @Nullable
+    protected BarrageSelectView mBarrageSelectBtn;
 
     protected ImageView mShowSmileyBtn;
     protected SmileyPicker mSmileyPicker;
@@ -74,8 +86,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
                 String body = mInputView.getText().toString().trim();
                 if (!TextUtils.isEmpty(body)) {
                     if (mPresenter != null) {
-                        mPresenter.sendBarrage(body, mBarrageSwitchBtn != null ?
-                                mBarrageSwitchBtn.isSelected() : false);
+                        mPresenter.sendBarrage(body, mState);
                     }
                     mInputView.setText("");
                 }
@@ -91,6 +102,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
         } else if (id == R.id.barrage_switch_btn) { // 开启飘屏弹幕
             boolean isSelected = !view.isSelected();
             view.setSelected(isSelected);
+            mState = isSelected ? BARRAGE_NOTIFY : BARRAGE_NORMAL;
             if (isSelected && mFlyBarrageFilter == null) {
                 mFlyBarrageFilter = new InputFilter[]{
                         new SmileyTranslateFilter(mInputView.getTextSize()),
@@ -102,7 +114,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
                         ImageView.ScaleType.FIT_END : ImageView.ScaleType.FIT_START);
             }
             mInputView.setFilters(isSelected ? mFlyBarrageFilter : mNormalFilter);
-            mPresenter.updateInputHint(isSelected);
+            mPresenter.updateInputHint(mState);
         }
     }
 
@@ -140,30 +152,50 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
 
         mShowSmileyBtn = $(R.id.show_smiley_btn);
         mSmileyPicker = $(R.id.smiley_picker);
+        mBarrageSwitchBtn = $(R.id.barrage_switch_btn);
+        mBarrageSelectBtn = $(R.id.barrage_select_btn);
 
+        mBarrageSelectBtn.setListener(new BarrageSelectView.IBtnChangeListener() {
+            @Override
+            public void onChange(int status) {
+                mState = status;
+                switch (mState) {
+                    case BARRAGE_NORMAL:
+                        mInputView.setFilters(mNormalFilter);
+                        mInputView.setHint(R.string.empty_edittext_hint);
+                        break;
+                    case BARRAGE_MANAGE:
+                        if (mFlyBarrageFilter == null) {
+                            mFlyBarrageFilter = new InputFilter[]{
+                                    new SmileyTranslateFilter(mInputView.getTextSize()),
+                                    new SmileyInputFilter(mInputView, 50)};
+                        }
+                        mInputView.setFilters(mFlyBarrageFilter);
+                        mInputView.setHint(R.string.empty_edittext_hint);
+                        break;
+                    case BARRAGE_NOTIFY:
+                        if (mFlyBarrageFilter == null) {
+                            mFlyBarrageFilter = new InputFilter[]{
+                                    new SmileyTranslateFilter(mInputView.getTextSize()),
+                                    new SmileyInputFilter(mInputView, 50)};
+                        }
+                        mInputView.setFilters(mFlyBarrageFilter);
+                        mPresenter.updateInputHint(mState);
+                        break;
+                }
+            }
+        });
+
+        $click(mBarrageSwitchBtn, this);
         $click(mSendBtn, this);
         $click(mShowSmileyBtn, this);
+        $click(mBarrageSelectBtn, this);
 
         setMinimumHeight(MINIMUM_HEIGHT_PORTRAIT);
         mInputContainer.setOnClickListener(this); // 吃掉点击事件
         mInputContainer.setSoundEffectsEnabled(false);
 
         setupInputArea();
-    }
-
-    private void enableFlyBarrage(boolean isEnable) {
-        if (isEnable) {
-            if (mBarrageSwitchBtn == null) {
-                mBarrageSwitchBtn = $(R.id.barrage_switch_btn);
-                $click(mBarrageSwitchBtn, this);
-            }
-            if (mBarrageSwitchBtn != null) {
-                mBarrageSwitchBtn.setVisibility(View.VISIBLE);
-            }
-        } else if (mBarrageSwitchBtn != null) {
-            mBarrageSwitchBtn.setSelected(false);
-            mBarrageSwitchBtn.setVisibility(View.GONE);
-        }
     }
 
     private void setupInputArea() {
@@ -241,6 +273,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
         }
         MyLog.w(TAG, "showInputView softKeyboardHeight=" + keyboardHeight);
         mIsInputMode = true;
+
         setVisibility(View.VISIBLE);
         mInputContainer.setVisibility(View.VISIBLE);
         mPlaceHolderContainer.setVisibility(View.VISIBLE);
@@ -257,6 +290,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
         }
         return true;
     }
+
 
     public boolean hideInputView() {
         if (!mIsInputMode) {
@@ -286,6 +320,9 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
             mPlaceHolderContainer.setVisibility(View.GONE);
             if (mPresenter != null) {
                 mPresenter.notifyInputViewHidden();
+            }
+            if (mBarrageSelectBtn.isOpen()) {
+                mBarrageSelectBtn.hidePopWindow();
             }
         }
     }
@@ -382,6 +419,20 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
             }
 
             @Override
+            public void enableBarrageSelectView(boolean enable) {
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mInputView.getLayoutParams();
+                if (enable) {
+                    mBarrageSwitchBtn.setVisibility(View.GONE);
+                    mBarrageSelectBtn.setVisibility(View.VISIBLE);
+                    lp.addRule(RIGHT_OF, mBarrageSelectBtn.getId());
+                } else {
+                    mBarrageSwitchBtn.setVisibility(View.VISIBLE);
+                    mBarrageSelectBtn.setVisibility(View.GONE);
+                    lp.addRule(RIGHT_OF, mBarrageSwitchBtn.getId());
+                }
+            }
+
+            @Override
             public void onKeyboardShowed(int keyboardHeight) {
                 if (getVisibility() != View.VISIBLE) {
                     return;
@@ -405,11 +456,6 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
                 if (!mIsShowSmileyPicker) {
                     hideInputViewDirectly();
                 }
-            }
-
-            @Override
-            public void enableFlyBarrage(boolean isEnable) {
-                InputAreaView.this.enableFlyBarrage(isEnable);
             }
 
             @Override
@@ -448,10 +494,8 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
 
         /**
          * 更新EditText的hint
-         *
-         * @param flyEnable
          */
-        void updateInputHint(boolean flyEnable);
+        void updateInputHint(int state);
     }
 
     public interface IView extends InputPresenter.IView, IOrientationListener {
@@ -481,8 +525,9 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
         void setHint(String hint);
 
         /**
-         * 设置是否显示飘屏弹幕开关按钮
+         * 显示管理员消息入口
+         * 1. 普通发言 2. 管理员无限飘屏 3. 大喇叭消息
          */
-        void enableFlyBarrage(boolean isEnable);
+        void enableBarrageSelectView(boolean enable);
     }
 }

@@ -1,0 +1,153 @@
+package com.wali.live.proto;
+
+option java_package = "com.wali.live.proto";
+option java_outer_classname = "EffectProto";
+
+
+
+//礼物特效
+
+message GiftEffect{
+
+required uint64 uuid                 = 1;//礼物购买人
+
+required uint32 giftId               = 2;//礼物id
+
+required uint32 type                 = 3;//动画类型,0:普通;1:弹幕礼物;2:红包礼物;3:背景特效礼物;4:点亮特效礼物;5:全局特效礼物
+
+required uint64 createdTime          = 4;//创建时间,毫秒
+
+optional uint32 costTime             = 5;//动画时长,毫秒
+
+optional uint64 startTime            = 6;//动画开始时间,毫秒
+
+optional uint64 leftTime             = 7;//剩余动画市场,毫秒
+
+optional string uniq                 = 8;//防重放
+
+optional uint64 avatar               = 9; //头像
+
+optional string nickname             = 10;//昵称
+
+optional uint32 level                = 11;//等级
+
+optional uint32 certification_type   = 12;//认证类型
+
+}
+
+//房间特效
+
+message RoomEffects{
+
+required string roomId               = 1;//房间号
+
+required uint64 zuid                 = 2;//主播id
+
+repeated GiftEffect bgEffects        = 3;//背景礼物特效,按创建时间排序,每次更新会将已结束的特效剔除掉。
+
+repeated GiftEffect lightEffects     = 4;//点亮礼物特效
+
+repeated GiftEffect globalEffects    = 5;//全局礼物特效
+
+}
+
+
+
+//添加特效
+
+message AddGiftEffectRequest{
+
+required string roomId               = 1;//房间号
+
+required uint64 zuid                 = 2;//主播id
+
+required GiftEffect effect           = 3;//礼物特效
+
+}
+
+message AddGiftEffectResponse{
+
+required uint32 ret_code             = 1;//返回码
+
+}
+
+message AnchorSetting{
+    optional string locale = 1;//语言locale环境
+    repeated uint32 white_gift_ids  = 2;//礼物白名单
+    repeated uint32 black_gift_ids  = 3;//礼物黑名单
+    optional string open_room_id    = 4;
+    optional uint32 open_room_ticket_cnt    = 5;//直播房间开播时的票数
+}
+
+message GiftObj{
+    optional uint32     gift_id     = 1;
+}
+message Location {
+    optional string country     = 1;
+    optional string province    = 2;
+}
+
+enum Platform{
+    IOS     = 1;
+    ANDROID = 2;
+}
+
+//拉取特效
+
+//服务器会按当前时间计算，将尚未结束的特效返给客户端
+
+message GetRoomEffectsRequest{
+
+required string roomId               = 1;//房间号
+optional uint64 user_id        = 2;//观众ID
+optional uint64 anchor_id       = 3;//房间主播ID
+optional Location location      = 4;//房间的地理位置信息
+optional Platform platform        = 5;//客户端平台
+}
+
+message GetRoomEffectsResponse{
+
+required uint32 ret_code             = 1;//返回码
+
+repeated GiftEffect bgEffects        = 2;//背景礼物特效
+
+repeated GiftEffect lightEffects     = 3;//点亮礼物特效
+
+repeated GiftEffect globalEffects    = 4;//全局礼物特效
+
+optional uint32 room_opened_ticket_cnt = 5;//房间开始时的星票数
+
+repeated GiftObj gift_list              = 6;//主播房间展示的礼物列表
+
+optional uint32 bullet_gift_id          = 7;//收费弹幕礼物ID
+
+optional uint32 usable_gem_cnt      = 8;//可用钻石余额，包含可用的虚拟钻
+
+repeated GiftCard gift_card_list            = 9;
+
+optional bool is_special_gift_list        = 10;//当为true时，客户端使用gift_list中的定义
+
+optional uint64 timestamp               = 11;
+
+repeated RankItem top10Items        = 12;
+
+optional bool maskGlobalGiftPush                    = 13[default=false]; // 房间是否屏蔽全局礼物的push
+
+optional bool magicGiftAnchorDeviceSupport      = 14[default=false];//当前机型是否支持魔法表情
+
+repeated GiftObj useable_gift_card_list         = 15;//主播房间可使用礼物卡名单(即使礼物不可显示，该礼物卡也可见可被使用)
+}
+
+message RankItem{
+    required uint64 uuid             = 1;//用户id
+    required uint32 ticket           = 2;//票数量
+}
+
+message GiftCard{
+    optional uint32 gift_id         = 1;//礼品卡可兑换的礼物Id
+    optional uint32 gift_card_cnt   = 2;//礼品卡数量
+    optional uint64 begin_time      = 3;//礼品卡有效期开始时间,单位s
+    optional uint64 end_time        = 4;//礼品卡有效期结束时间,单位s
+    optional uint32 active_id       = 5;//指定活动id,只有参加这个活动的主播才可以使用
+}
+

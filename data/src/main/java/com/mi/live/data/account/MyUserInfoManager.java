@@ -320,6 +320,30 @@ public class MyUserInfoManager {
         EventBus.getDefault().post(new UserInfoEvent()); //发送event
     }
 
+    public int getVipLevel() {
+        return mMyInfo.getVipLevel();
+    }
+
+    public void setVipLevel(int vipLevel) {
+        mMyInfo.setVipLevel(vipLevel);
+    }
+
+    public boolean isVipFrozen() {
+        return mMyInfo.isVipFrozen();
+    }
+
+    public void setVipFrozen(boolean vipFrozen) {
+        mMyInfo.setVipFrozen(vipFrozen);
+    }
+
+    public boolean isVipHide() {
+        return mMyInfo.isVipHide();
+    }
+
+    public void setVipHide(boolean vipHide) {
+        mMyInfo.setVipHide(vipHide);
+    }
+
     public void updateUserInfoIfNeed() {
         Long lastInfoTs = mLastInfoTsMap.get(HostChannelManager.getInstance().getChannelId());
         lastInfoTs = lastInfoTs == null ? 0 : lastInfoTs;
