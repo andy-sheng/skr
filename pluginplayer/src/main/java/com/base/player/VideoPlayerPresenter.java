@@ -95,7 +95,8 @@ public class VideoPlayerPresenter extends BasePlayerPresenter<TextureView, PullS
         mStreamerPresenter.stopWatch();
     }
 
-    public void releaseVideo() {
+    @Override
+    public void destroy() {
         mStreamerPresenter.stopWatch();
         mStreamerPresenter.destroy();
     }
