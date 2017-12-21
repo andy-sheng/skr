@@ -20,6 +20,37 @@ import java.lang.ref.WeakReference;
 
 /**
  * Created by yangli on 16-11-29.
+ * <p>
+ * <b>悬浮窗</b>
+ * <p>
+ * 旨在为游戏直播时主播与观众的交互方式提供良好的解决方案。<br/>
+ * 通过WindowManager的addView操作向window添加视图。悬浮窗需要使用系统悬浮窗权限。<br/>
+ * 采用外观(Facade)模式实现，基础组成如下：
+ * <p>
+ * 1) <strong>浮窗控制器</strong> {@link GameFloatWindow}
+ * <p>
+ * 封装了操作悬浮窗的接口，外界不需要直接与具体的子部件打交道，只能通过该类控制浮窗。
+ * <ul>
+ * <li>提供<em><b>showWindow</b></em>操作显示悬浮窗。</li>
+ * <li>提供<em><b>removeWindow</b></em>操作隐藏悬浮窗。</li>
+ * <li>提供<em><b>destroyWindow</b></em>操作销毁实例、回收资源。</li>
+ * </ul>
+ * 2) <strong>浮球</strong> {@link GameFloatIcon}
+ * <p>
+ * 主要负责处理Touch事件和屏幕方向变化的监听，浮球内部存在一个状态机，包含一下几个状态：
+ * <ul>
+ * <li><em><b>MODE_NORMAL</b></em>正常状态</li>
+ * <li><em><b>MODE_HALF_HIDDEN</b></em>半隐藏状态</li>
+ * <li><em><b>MODE_DRAGGING</b></em>用户正在拖动浮球</li>
+ * <li><em><b>MODE_MOVING</b></em>正在移动(拖动之后自动恢复位置)</li>
+ * </ul>
+ * 浮球还提供了播放礼物动画的功能，具体请自行查阅源码。
+ * <p>
+ * 3) <strong>浮窗主体</strong> {@link GameFloatView}
+ * <p>
+ * 悬浮窗内容主体，主要提供一些诸如返回App、静音、截屏等控制操作，以及消息列表显示。
+ * 浮窗逻辑上分为操作条和消息面板两部分，两者可以单独控制显示/隐藏状态。<br/>
+ * 浮球会将用户点击自己的事件以及屏幕旋转事件转发给浮窗主体，浮窗主体接到通知后会更新自己的内部状态。
  *
  * @module 悬浮窗
  */
