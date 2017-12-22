@@ -93,9 +93,12 @@ import java.lang.ref.WeakReference;
  * 当收到{@link IDnsStatusListener#onDnsReady}回调时，会检查当前是否卡顿，若是，则表明当前推流未成功，
  * 此时会触发一次重连操作，将域名替换成IP。
  * </ul>
+ * 1) <strong>域名预解析</strong>
+ * <ul>
  * 域名解析结果会缓存在名为{@link PreDnsManager}的单例中，以降低网络请求的频率。
  * PreDnsManager还负责对服务器下发的域名列表进行预解析，以加速推/拉流开始时的首次域名解析。同时，
  * 服务配置的域名对应的IP信息也保存在该类中。
+ * </ul>
  *
  * @module 推拉流
  */
