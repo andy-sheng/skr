@@ -12,13 +12,12 @@ import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
  * @module 第三方拉流器 IP优选和重连辅助类
  */
 public class ThirdStreamerPresenter extends PullStreamerPresenter {
-    private static final String TAG = "ThirdStreamerPresenter";
 
     private boolean mIsLocalVideo = false;
 
     @Override
     protected final String getTAG() {
-        return TAG;
+        return "ThirdStreamerPresenter";
     }
 
     @Override

@@ -3,13 +3,16 @@ package com.wali.live.watchsdk.videodetail.data;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 
+import com.base.presenter.RxLifeCyclePresenter;
+
 import java.lang.ref.WeakReference;
 
 /**
  * Created by yangli on 2017/3/15.
  */
-public abstract class BaseStreamerPresenter<R extends BaseStreamerPresenter.ReconnectHelper, IP, STREAM> {
-    private String TAG = getTAG();
+public abstract class BaseStreamerPresenter<R extends BaseStreamerPresenter.ReconnectHelper, IP, STREAM>
+        extends RxLifeCyclePresenter {
+    protected final String TAG = getTAG();
 
     protected static final int RECONNECT_TIMEOUT = 5 * 1000;    // 卡顿超时换IP时间
     protected static final int START_STREAM_TIMEOUT = 5 * 1000; // 推流超时时间
@@ -25,8 +28,6 @@ public abstract class BaseStreamerPresenter<R extends BaseStreamerPresenter.Reco
     protected STREAM mStreamer;
 
     protected abstract String getTAG();
-
-    public abstract void destroy();
 
     public final void setStreamer(STREAM streamer) {
         mStreamer = streamer;

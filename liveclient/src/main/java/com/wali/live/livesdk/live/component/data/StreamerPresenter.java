@@ -4,7 +4,6 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.base.global.GlobalData;
@@ -23,6 +22,7 @@ import com.wali.live.livesdk.live.component.utils.MagicParamUtils;
 import com.wali.live.livesdk.live.dns.MultiCdnIpSelectionHelper;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.receiver.NetworkReceiver;
+import com.wali.live.watchsdk.videodetail.data.BaseStreamerPresenter;
 import com.xiaomi.broadcaster.dataStruct.ConnectedServerInfo;
 
 import org.greenrobot.eventbus.EventBus;
@@ -41,14 +41,14 @@ import static com.wali.live.component.BaseSdkController.MSG_OPEN_MIC_FAILED;
 
 /**
  * Created by yangli on 2017/03/08.
- * <p>
- * Generated using create_component_data.py
  *
  * @module 推流器数据
  */
 public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.ReconnectHelper,
         MultiCdnIpSelectionHelper, IStreamer> {
-    private static final String TAG = "StreamerPresenter";
+
+    protected boolean mLiveStarted = false;
+    protected boolean mStreamStarted = false;
 
     @NonNull
     private IEventController mController;
@@ -73,8 +73,8 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
     private float mQualityRate = 1.0f;
 
     @Override
-    protected String getTAG() {
-        return TAG;
+    protected final String getTAG() {
+        return "StreamerPresenter";
     }
 
     public void setComponentController(@NonNull IEventController controller) {
