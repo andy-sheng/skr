@@ -44,7 +44,7 @@ import rx.schedulers.Schedulers;
  * @module 域名解析
  */
 public abstract class BaseIpSelectionHelper implements IStreamUrl {
-    private final String TAG = getTAG();
+    protected final String TAG = getTAG();
 
     protected int mLocalIpIndex = 0;
     protected int mHttpIpIndex = 0;
@@ -74,7 +74,7 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
 
     private KeyFlowReportManager mKeyFlowReporter;
 
-    public abstract String getTAG();
+    protected abstract String getTAG();
 
     protected abstract String generateUrlForGuaranteeIp(String host, String originalStreamUrl);
 
@@ -138,7 +138,7 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
             MyLog.w(TAG, "ipSelect, but network is unavailable, just ignore current call");
             return false;
         }
-        PreDnsManager.IpInfo ipInfo = queryNewIpSet();
+        final PreDnsManager.IpInfo ipInfo = queryNewIpSet();
         if (!ipInfo.isEmpty()) {
             ipInfo.addPortInfoIfNeed(generatePortList());
             mSelectedHttpIpList = ipInfo.httpIpSet;
@@ -314,7 +314,7 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
     }
 
     private PreDnsManager.IpInfo queryNewIpSet() {
-        PreDnsManager.IpInfo ipInfo = new PreDnsManager.IpInfo();
+        final PreDnsManager.IpInfo ipInfo = new PreDnsManager.IpInfo();
         fetchFromHttpAndLocalIpSet(ipInfo);
         if (!ipInfo.isEmpty()) {
             return ipInfo;
