@@ -128,7 +128,7 @@ public abstract class BaseStreamerPresenter<R extends BaseStreamerPresenter.Reco
     /**
      * 重连
      */
-    protected abstract class ReconnectHelper {
+    public abstract class ReconnectHelper {
         /**
          * 开始推/拉流
          */
