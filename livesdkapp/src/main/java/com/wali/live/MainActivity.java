@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.base.activity.BaseSdkActivity;
+import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.toast.ToastUtils;
@@ -29,6 +30,7 @@ import com.wali.live.watchsdk.channel.presenter.ChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelView;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
+import com.wali.live.watchsdk.cta.CTANotifyFragment;
 import com.wali.live.watchsdk.login.LoginPresenter;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
@@ -67,57 +69,31 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
 
         initViews();
         initPresenters();
-        initData();
-        getChannelFromServer();
-        $(R.id.show_live_tv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (AccountAuthManager.triggerActionNeedAccount(MainActivity.this)) {
-                    LiveSdkActivity.openActivity(MainActivity.this, null, false, false);
+        if (CommonUtils.isNeedShowCtaDialog()) {
+            CTANotifyFragment.openFragment(this, android.R.id.content, new CTANotifyFragment.CTANotifyButtonClickListener() {
+                @Override
+                public void onClickCancelButton() {
+                    finish();
                 }
-            }
-        });
 
-        $(R.id.game_live_tv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (AccountAuthManager.triggerActionNeedAccount(MainActivity.this)) {
-                    LiveSdkActivity.openActivity(MainActivity.this, null, false, true);
+                @Override
+                public void onClickConfirmButton() {
+                    popFragment();
+                    syncDataFromServer();
                 }
-            }
-        });
-
-        ($(R.id.login_tv)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mLoginPresenter == null) {
-                    mLoginPresenter = new LoginPresenter(MainActivity.this);
-                }
-                mLoginPresenter.miLogin(HostChannelManager.getInstance().getChannelId());
-            }
-        });
-        ($(R.id.replay_tv)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RoomInfo roomInfo = RoomInfo.Builder.newInstance(101743, "101743_1471260348",
-                        "http://playback.ks.zb.mi.com/record/live/101743_1471260348/hls/101743_1471260348.m3u8?playui=1")
-                        .setLiveType(6)
-                        .setEnableShare(true)
-                        .build();
-                VideoDetailSdkActivity.openActivity(MainActivity.this, roomInfo);
-            }
-        });
-
-        ($(R.id.channel_tv)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getChannelById(201);
-            }
-        });
+            });
+        } else {
+            syncDataFromServer();
+        }
     }
 
-    private void initData() {
+    private void popFragment() {
+        FragmentNaviUtils.popFragment(this);
+    }
+
+    private void syncDataFromServer() {
         syncGiftList();
+        getChannelFromServer();
     }
 
     private void syncGiftList() {
@@ -183,6 +159,52 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
                 } else {
                     ToastUtils.showToast("主播id不是数字");
                 }
+            }
+        });
+
+        $(R.id.show_live_tv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AccountAuthManager.triggerActionNeedAccount(MainActivity.this)) {
+                    LiveSdkActivity.openActivity(MainActivity.this, null, false, false);
+                }
+            }
+        });
+
+        $(R.id.game_live_tv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AccountAuthManager.triggerActionNeedAccount(MainActivity.this)) {
+                    LiveSdkActivity.openActivity(MainActivity.this, null, false, true);
+                }
+            }
+        });
+
+        ($(R.id.login_tv)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mLoginPresenter == null) {
+                    mLoginPresenter = new LoginPresenter(MainActivity.this);
+                }
+                mLoginPresenter.miLogin(HostChannelManager.getInstance().getChannelId());
+            }
+        });
+        ($(R.id.replay_tv)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RoomInfo roomInfo = RoomInfo.Builder.newInstance(101743, "101743_1471260348",
+                        "http://playback.ks.zb.mi.com/record/live/101743_1471260348/hls/101743_1471260348.m3u8?playui=1")
+                        .setLiveType(6)
+                        .setEnableShare(true)
+                        .build();
+                VideoDetailSdkActivity.openActivity(MainActivity.this, roomInfo);
+            }
+        });
+
+        ($(R.id.channel_tv)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getChannelById(201);
             }
         });
     }
