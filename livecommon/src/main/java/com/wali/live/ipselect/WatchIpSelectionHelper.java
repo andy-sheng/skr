@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.base.global.GlobalData;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.Constants;
 import com.mi.live.data.report.keyflow.KeyFlowReportManager;
@@ -19,15 +20,14 @@ import java.util.List;
  * @module 域名解析(拉流)
  */
 public class WatchIpSelectionHelper extends BaseIpSelectionHelper {
-    private static final String TAG = "WatchIpSelectionHelper";
 
-    private boolean mIsForceDropRate = PreferenceUtils.getSettingBoolean(com.base.global.GlobalData.app(),
+    private final boolean mIsForceDropRate = PreferenceUtils.getSettingBoolean(GlobalData.app(),
             PreferenceUtils.KEY_DEBUG_DROP_BITRATE, false);
     private boolean mIsDropRate = false;
 
     @Override
-    public String getTAG() {
-        return TAG;
+    protected String getTAG() {
+        return "WatchIpSelectionHelper";
     }
 
     public boolean hasStreamUrl() {

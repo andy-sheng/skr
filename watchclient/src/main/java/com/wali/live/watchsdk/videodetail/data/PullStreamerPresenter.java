@@ -22,7 +22,6 @@ import static com.mi.live.engine.player.IPlayer.MEDIA_INFO_BUFFERING_START;
  */
 public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPresenter.ReconnectHelper,
         WatchIpSelectionHelper, IPlayer> {
-    private static final String TAG = "PullStreamerPresenter";
 
     protected static final int _UPDATE_PROGRESS_TIMEOUT = 1000; // 刷新播放进度间隔
 
@@ -45,7 +44,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
 
     @Override
     protected String getTAG() {
-        return TAG;
+        return "PullStreamerPresenter";
     }
 
     public final boolean isStarted() {
