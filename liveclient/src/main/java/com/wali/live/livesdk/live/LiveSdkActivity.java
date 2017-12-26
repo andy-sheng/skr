@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,6 +36,7 @@ import com.base.thread.ThreadPool;
 import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.network.Network;
+import com.base.utils.rx.RxRetryAssist;
 import com.base.utils.toast.ToastUtils;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.jakewharton.rxbinding.view.RxView;
@@ -47,8 +47,11 @@ import com.mi.live.data.account.event.UserInfoEvent;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
+import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
+import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
+import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
@@ -64,6 +67,7 @@ import com.mi.milink.sdk.aidl.PacketData;
 import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.thornbirds.component.IEventObserver;
 import com.thornbirds.component.IParams;
+import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.view.GiftAnimationView;
@@ -88,6 +92,7 @@ import com.wali.live.livesdk.live.liveshow.ShowLiveSdkView;
 import com.wali.live.livesdk.live.presenter.LiveRoomPresenter;
 import com.wali.live.livesdk.live.view.CountDownView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
+import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.proto.LiveProto;
@@ -125,6 +130,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import rx.Observer;
 import rx.functions.Action1;
 
 import static com.wali.live.component.BaseSdkController.MSG_END_LIVE_UNEXPECTED;
@@ -363,6 +369,24 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (null != event) {
             check4GNet();
         }
+    }
+
+    /* 拉取房间礼物属性信息 TODO 添加这个入口是因为消息的付费弹幕需要获取的礼物id是从这个api获取到的 */
+    protected void syncRoomEffect(final String roomId, long uuid, long zuid, Location location) {
+        GiftRepository.getRoomEnterGiftInfo(roomId, uuid, zuid, location)
+                .compose(this.<GiftInfoForEnterRoom>bindUntilEvent(ActivityEvent.DESTROY))
+                .retryWhen(new RxRetryAssist(3, 5, true))
+                .subscribe(new Action1<GiftInfoForEnterRoom>() {
+                    @Override
+                    public void call(GiftInfoForEnterRoom giftInfoForEnterRoom) {
+
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.w(TAG, "syncRoomEffect failed=" + throwable);
+                    }
+                });
     }
 
     private boolean check4GNet() {
@@ -981,6 +1005,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             mPullRoomMessagePresenter.startWork();
             mStreamerPresenter.startLive();
             mController.onStartLive();
+            syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);
         }
     }
 

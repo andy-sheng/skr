@@ -87,7 +87,7 @@ public class GiftRepository {
      * 专门用于下载礼物动画资源
      */
     private static PublishSubject<Gift> mDownloadAnimationRes = PublishSubject.create();
-    private static int mBulletGiftId = -1;
+    private static int mBulletGiftId = 100011;
 
     static {
         mDownloadAnimationRes

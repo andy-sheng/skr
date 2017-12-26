@@ -101,6 +101,7 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
         mCanInput = true;
         mUIHandler = new MyUIHandler(this);
         mLiveRoomChatMsgManager = liveRoomChatMsgManager;
+        mSubscriptions = new CompositeSubscription();
         clearBarrageCache();
     }
 
@@ -200,6 +201,9 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
                                 case GiftErrorCode.GIFT_PAY_BARRAGE:
                                     showBalanceTipDialog();
                                     break;
+                                default:
+                                    ToastUtils.showToast(R.string.sns_unknown_error);
+                                    break;
                             }
                         }
                     }
@@ -220,7 +224,7 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
         MyAlertDialog dialog = new MyAlertDialog.Builder(context).create();
         dialog.setTitle(R.string.account_withdraw_pay_user_account_not_enough);
         dialog.setMessage(context.getString(R.string.account_withdraw_pay_barrage_user_account_not_enough_tip));
-        dialog.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(R.string.live_traffic_positive),
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(R.string.recharge),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -228,7 +232,7 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
                         dialog.dismiss();
                     }
                 });
-        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, context.getString(R.string.live_traffic_negative),
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, context.getString(R.string.cancel),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -460,7 +464,8 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
                     lastBarrage.setLastSendTime(0);
                 }
             } else if (event.getSpeakPeriod() > event.getOriSpeakPeriod()) {
-                if (lastBarrage != null && lastBarrage.getLastSendTime() > 0 && (System.currentTimeMillis() - lastBarrage.getLastSendTime()) < event.getSpeakPeriod() * 1000) {
+                if (lastBarrage != null && lastBarrage.getLastSendTime() > 0 &&
+                        (System.currentTimeMillis() - lastBarrage.getLastSendTime()) < event.getSpeakPeriod() * 1000) {
                     String text = mView.getInputView().getText().toString();
                     if (!TextUtils.isEmpty(text)) {
                         mInputContent = text;
