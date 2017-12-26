@@ -12,11 +12,10 @@ import com.wali.live.dns.IDnsStatusListener;
  * @module 域名解析(Feeds)
  */
 public class FeedsIpSelectionHelper extends WatchIpSelectionHelper {
-    private static final String TAG = "FeedsIpSelectionHelper";
 
     @Override
-    public String getTAG() {
-        return TAG;
+    protected final String getTAG() {
+        return "FeedsIpSelectionHelper";
     }
 
     public FeedsIpSelectionHelper(

@@ -1,6 +1,7 @@
 package com.wali.live.livesdk.live.dns;
 
 import android.content.Context;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.LruCache;
@@ -110,10 +111,9 @@ public class MultiCdnIpSelectionHelper {
         return stringBuilder.toString();
     }
 
-    public final
     @NonNull
-    RtmpServerInfo[] getRtmpServerInfos() {
-        RtmpServerInfo[] rtmpServerInfos = new RtmpServerInfo[mCdnItemList.size()];
+    public final RtmpServerInfo[] getRtmpServerInfos() {
+        final RtmpServerInfo[] rtmpServerInfos = new RtmpServerInfo[mCdnItemList.size()];
         int i = 0;
         for (MultiCdnIpSelectionHelper.CdnItem cdnItem : mCdnItemList) {
             rtmpServerInfos[i++] = cdnItem.toRtmpServerInfo();
@@ -125,7 +125,7 @@ public class MultiCdnIpSelectionHelper {
      * IP解析方式：1-LocalDNS(LocalIp), 2-DnsPod(HttpIp), 3-网宿HttpDns(GuaranteeIp)
      */
     public final int queryIpFlag(String ip) {
-        Integer flag = mIpFlagMap.get(ip);
+        final Integer flag = mIpFlagMap.get(ip);
         return flag != null ? flag : PreDnsManager.URL_STATUS_DNS_ERR;
     }
 
@@ -178,6 +178,7 @@ public class MultiCdnIpSelectionHelper {
     /**
      * 该操作应在主线程调用
      */
+    @MainThread
     public final boolean ipSelect() {
         MyLog.w(TAG, "ipSelect");
         if (!isIpPortFull()) {
@@ -216,14 +217,16 @@ public class MultiCdnIpSelectionHelper {
         fetchIpSetForHost(mCdnItemList);
     }
 
-    public void setOriginalStreamUrl(List<LiveCommonProto.UpStreamUrl> originalStreamUrlList, String originalUdpStreamUrl) {
+    public void setOriginalStreamUrl(
+            List<LiveCommonProto.UpStreamUrl> originalStreamUrlList, String originalUdpStreamUrl) {
         MyLog.w(TAG, "setOriginalStreamUrl originalStreamUrlList=" + originalStreamUrlList +
                 ", originalUdpStreamUrl=" + originalUdpStreamUrl);
         mSavedOriginalStreamUrlList = originalStreamUrlList;
         mSavedOriginalUdpStreamUrlList.clear();
         if (!TextUtils.isEmpty(originalUdpStreamUrl)) {
             LiveCommonProto.UpStreamUrl upStreamUrl = LiveCommonProto.UpStreamUrl.newBuilder()
-                    .setUrl(originalUdpStreamUrl).setWeight(100)
+                    .setUrl(originalUdpStreamUrl)
+                    .setWeight(100)
                     .build();
             mSavedOriginalUdpStreamUrlList.add(upStreamUrl);
         }
