@@ -7,11 +7,11 @@ import android.support.v4.util.LruCache;
  * Created by anping on 17/2/17.
  */
 
-public class CommentFansLevelCache {
+public class CommentVipLevelCache {
     private static LruCache<String, Bitmap> sLevelCache = null;
     private static final int LEVEL_CACHE_MAX_SIZE = 50 * 1024;
 
-    public static Bitmap getLevelOrLike(String level) {
+    public static Bitmap getLevelBitmap(String level) {
         if (sLevelCache != null && sLevelCache.size() > 0) {
             return sLevelCache.get(level);
         }
@@ -27,7 +27,7 @@ public class CommentFansLevelCache {
         }
     }
 
-    public static void setLevelOrLike(String level, Bitmap bitmap) {
+    public static void setLevelBitmap(String level, Bitmap bitmap) {
         if (sLevelCache == null) {
             sLevelCache = new LruCache<String, Bitmap>(LEVEL_CACHE_MAX_SIZE) {
                 protected int sizeOf(String key, Bitmap value) {

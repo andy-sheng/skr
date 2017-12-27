@@ -73,7 +73,6 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
         barrageMsg.setVipFrozen(msg.getVipDisable());
         barrageMsg.setVipLevel(msg.getVipLevel());
         barrageMsg.setVipHide(msg.getVipHidden());
-
         return barrageMsg;
     }
 
@@ -160,6 +159,12 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
                 ", isFromPkOpponent=" + isFromPkOpponent +
                 ", opponentRoomId='" + opponentRoomId + '\'' +
                 ", opponentAnchorId=" + opponentAnchorId +
+                ", toUserId=" + toUserId +
+                ", isRedName=" + isRedName +
+                ", globalRoomMsgExt=" + globalRoomMsgExt +
+                ", vipLevel=" + vipLevel +
+                ", isVipFrozen=" + isVipFrozen +
+                ", isVipHide=" + isVipHide +
                 '}';
     }
 

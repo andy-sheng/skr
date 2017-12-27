@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
-import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.span.SpanUtils;
@@ -28,7 +27,9 @@ import com.mi.live.data.config.GetConfigManager;
 import com.wali.live.common.barrage.event.BarrageCommonEvent;
 import com.wali.live.common.barrage.view.adapter.LiveCommentRecyclerAdapter;
 import com.wali.live.common.barrage.view.utils.CommentFansLevelCache;
+import com.wali.live.common.barrage.view.utils.CommentVipLevelCache;
 import com.wali.live.common.barrage.view.utils.FansInfoUtils;
+import com.wali.live.common.barrage.view.utils.CommentVipUtils;
 import com.wali.live.common.model.CommentModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -93,6 +94,29 @@ public class LiveCommentHolder extends RecyclerView.ViewHolder {
         }
 
     }
+
+    public void setLevelInfo() {
+        levelTv.setHorizontallyScrolling(false);
+        //vipLevel
+        int resId = CommentVipUtils.getLevelBadgeResId(liveComment.getVipLevel(), liveComment.isVipFrozen(), false);
+        if (resId != -1) {
+            Bitmap bitmap = CommentVipLevelCache.getLevelBitmap(String.valueOf(liveComment.getVipLevel()));
+            if (bitmap == null) {
+                bitmap = CommentVipUtils.getBitmapByResId(mContext.get(), resId);
+                CommentVipLevelCache.setLevelBitmap(String.valueOf(liveComment.getVipLevel()), bitmap);
+            }
+            Drawable vipLevelDrawable = new BitmapDrawable(bitmap);
+            int len = commentSpan.length();
+            vipLevelDrawable.setBounds(0, 0, (int) (vipLevelDrawable.getIntrinsicWidth() * DisplayUtils.getDensity()), (int) (vipLevelDrawable.getIntrinsicHeight() * DisplayUtils.getDensity()));
+            int currentSdk = Build.VERSION.SDK_INT;
+            int lineSpace = currentSdk >= 22 ? 0 : DisplayUtils.dip2px(5);//行间距需求5.0版本适配
+            SpanUtils.CenterImageSpan imageSpan = new SpanUtils.CenterImageSpan(vipLevelDrawable, lineSpace);
+            commentSpan.append("a");
+            commentSpan.setSpan(imageSpan, len, commentSpan.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            commentSpan.append(" ");
+        }
+    }
+
     public void setFansMedalInfo() {
         if (!TextUtils.isEmpty(liveComment.getFansMedal()) && liveComment.getFansLevel() > 0 && this.mContext != null && this.mContext.get() != null) {
             Bitmap bitmap = CommentFansLevelCache.getLevelOrLike(String.valueOf(liveComment.getFansLevel()));

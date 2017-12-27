@@ -226,6 +226,9 @@ public class BarrageMessageManager implements MiLinkPacketDispatcher.PacketDataH
     public void pretendPushBarrage(BarrageMsg msg) {
         ArrayList<BarrageMsg> barrageMsgList = new ArrayList<BarrageMsg>(1);
         if (msg != null) {
+            msg.setVipFrozen(MyUserInfoManager.getInstance().isVipFrozen());
+            msg.setVipHide(MyUserInfoManager.getInstance().isVipHide());
+            msg.setVipLevel(MyUserInfoManager.getInstance().getVipLevel());
             barrageMsgList.add(msg);
         }
         sendRecvEvent(barrageMsgList);
