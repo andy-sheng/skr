@@ -13,9 +13,9 @@ import com.mi.live.data.push.collection.InsertSortLinkedList;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.push.model.GlobalRoomMsgExt;
+import com.mi.live.data.room.model.FansPrivilegeModel;
 import com.wali.live.common.barrage.event.CommentRefreshEvent;
 import com.wali.live.common.model.CommentModel;
-import com.mi.live.data.room.model.FansPrivilegeModel;
 import com.wali.live.common.smiley.SmileyParser;
 import com.wali.live.event.EventClass;
 import com.wali.live.proto.VFansCommonProto;
@@ -128,7 +128,8 @@ public class LiveRoomChatMsgManager {
             return false;
         }
         CommentModel commentModel = CommentModel.loadFromBarrage(msg);
-        chatMsgList.insert(commentModel);
+//        chatMsgList.insert(commentModel);
+        replaceEnterAndLike(commentModel);
         EventBus.getDefault().post(new CommentRefreshEvent(getMsgList(), !isInBound, this.toString()));
         if (mIsGameLiveMode) {
             EventBus.getDefault().post(new EventClass.RefreshGameLiveCommentEvent(commentModel, this.toString()));
@@ -154,10 +155,28 @@ public class LiveRoomChatMsgManager {
                     if ((msgTypeFilter != null && !msgTypeFilter.isAcceptMsg(barrageMsg)) || !canAddToChatMsgManager(barrageMsg)) {
                         continue;
                     }
-                    chatMsgList.insert(CommentModel.loadFromBarrage(barrageMsg));
+                    replaceEnterAndLike(CommentModel.loadFromBarrage(barrageMsg));
                 }
             }
             EventBus.getDefault().post(new CommentRefreshEvent(getMsgList(), !isInBound, this.toString()));
+        }
+    }
+
+
+    private void replaceEnterAndLike(CommentModel commentModel) {
+        if (chatMsgList.size() > 0) {
+            CommentModel lastComment = chatMsgList.getLastRough();
+            if (lastComment.getMsgType() != BarrageMsgType.B_MSG_TYPE_JOIN &&
+                    lastComment.getMsgType() != BarrageMsgType.B_MSG_TYPE_LIKE) {
+                chatMsgList.insert(commentModel);
+            } else if (lastComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_JOIN &&
+                    (lastComment.getVipLevel() > 1 && !lastComment.isVipFrozen())) {
+                chatMsgList.insert(commentModel);
+            } else {
+                chatMsgList.replaceTail(commentModel);
+            }
+        } else {
+            chatMsgList.insert(commentModel);
         }
     }
 

@@ -1,7 +1,6 @@
 package com.mi.live.data.push.collection;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 /**
  * @module com.wali.live.video
@@ -36,7 +35,8 @@ public class InsertSortLinkedList<T extends Comparable<T>> {
     }
 
     /**
-     *做时间比较插入
+     * 做时间比较插入
+     *
      * @param data
      */
     public synchronized void insertOrderByTime(T data) {
@@ -47,7 +47,7 @@ public class InsertSortLinkedList<T extends Comparable<T>> {
                 }
             }
             //开始插入
-            if(size >= maxSize) {
+            if (size >= maxSize) {
                 deleteFirst();
             }
             Node<T> node = new Node<T>(data);
@@ -71,8 +71,10 @@ public class InsertSortLinkedList<T extends Comparable<T>> {
 
     // 可以优化
     private ArrayList<T> fastReturnList = new ArrayList();
+
     /**
      * 不做时间比较直接插入
+     *
      * @param data
      */
     public synchronized void insert(T data) {
@@ -84,14 +86,14 @@ public class InsertSortLinkedList<T extends Comparable<T>> {
                 }
             }
             //开始插入
-            while(size >= maxSize) {
+            while (size >= maxSize) {
                 deleteFirst();
             }
             Node<T> node = new Node<T>(data);
             Node<T> current = header.next;
             Node<T> previous = null;
-            int i=0;
-            while (current != null && i<MAX_MAX_SIZE) {
+            int i = 0;
+            while (current != null && i < MAX_MAX_SIZE) {
                 i++;
                 previous = current;
                 current = current.next;
@@ -107,8 +109,31 @@ public class InsertSortLinkedList<T extends Comparable<T>> {
         }
     }
 
+    public synchronized void replaceTail(T data) {
+        if (data != null) {
+            last = data;
+            Node<T> current = header.next;
+            Node<T> previous = null;
+            int i = 0;
+            while (current != null && i <= DEFAULT_MAX_SIZE) {
+                i++;
+                previous = current;
+                current = current.next;
+            }
+            current = null;
+            if (previous == null) {
+                Node<T> node = new Node<T>(data);
+                header.next = node;
+                node.next = current;
+                size++;
+            } else {
+                previous.data = data;
+            }
+        }
+    }
+
     // 不一定完全准
-    public T getLastRough(){
+    public T getLastRough() {
         return last;
     }
 
@@ -147,8 +172,8 @@ public class InsertSortLinkedList<T extends Comparable<T>> {
     private boolean update(T data) {
         if (data != null) {
             Node<T> current = header.next; //指向第一个元素
-            int i=0;
-            while (current != null && i<=DEFAULT_MAX_SIZE) {
+            int i = 0;
+            while (current != null && i <= DEFAULT_MAX_SIZE) {
                 i++;
                 if (current.data.equals(data)) { //找到
                     current.data = data;
@@ -174,8 +199,8 @@ public class InsertSortLinkedList<T extends Comparable<T>> {
         }
     }
 
-    public void updateMaxSize(int maxSize){
-        if(maxSize<=0){
+    public void updateMaxSize(int maxSize) {
+        if (maxSize <= 0) {
             return;
         }
         this.maxSize = maxSize;

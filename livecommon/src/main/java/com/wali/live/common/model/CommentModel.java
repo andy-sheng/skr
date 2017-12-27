@@ -42,8 +42,12 @@ public class CommentModel implements Comparable<CommentModel> {
     private String likePath;
     private boolean redName;
 
-    private int fansLevel; // 宠爱团等级
-    private String fansMedal;// 宠爱团勋章
+    private int fansLevel;                            // 宠爱团等级
+    private String fansMedal;                         // 宠爱团勋章
+
+    private int vipLevel;                             //vip等级
+    private boolean isVipFrozen;                      //vip是否被冻结
+    private boolean isVipHide;                        //vip用户是否设置隐身
 
     public String getShopName() {
         return shopName;
@@ -227,6 +231,30 @@ public class CommentModel implements Comparable<CommentModel> {
         return fansMedal;
     }
 
+    public int getVipLevel() {
+        return vipLevel;
+    }
+
+    public void setVipLevel(int vipLevel) {
+        this.vipLevel = vipLevel;
+    }
+
+    public boolean isVipFrozen() {
+        return isVipFrozen;
+    }
+
+    public void setVipFrozen(boolean vipFrozen) {
+        isVipFrozen = vipFrozen;
+    }
+
+    public boolean isVipHide() {
+        return isVipHide;
+    }
+
+    public void setVipHide(boolean vipHide) {
+        isVipHide = vipHide;
+    }
+
     public static CommentModel loadFromBarrage(BarrageMsg msg) {
         CommentModel liveComment = new CommentModel();
         liveComment.setSenderId(msg.getSender());
@@ -244,6 +272,9 @@ public class CommentModel implements Comparable<CommentModel> {
         liveComment.setCommentColor(R.color.f7a66b);
         liveComment.setNameColor(R.color.ffd267);
         liveComment.setRedName(msg.isRedName());
+        liveComment.setVipLevel(msg.getVipLevel());
+        liveComment.setVipFrozen(msg.isVipFrozen());
+        liveComment.setVipHide(msg.isVipHide());
 
         switch (liveComment.getMsgType()) {
             //以下是　系统消息类 　不显示名字和级别
