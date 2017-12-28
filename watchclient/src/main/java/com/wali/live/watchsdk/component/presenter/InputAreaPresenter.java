@@ -145,6 +145,8 @@ public class InputAreaPresenter extends InputPresenter<InputAreaView.IView>
             case MSG_BARRAGE_ADMIN:
                 //TODO zyh 管理員漂屏消息做多1000上限，这里的数据又不需要文案显示，感觉可以拿掉。
                 LiveProto.LimitedInfo adminInfo = params.getItem(0);
+                mManagerMaxCnt = adminInfo.getMax();
+                mManagerCurCnt = adminInfo.getCounter();
                 break;
             case MSG_BARRAGE_VIP:
                 LiveProto.LimitedInfo vipInfo = params.getItem(0);

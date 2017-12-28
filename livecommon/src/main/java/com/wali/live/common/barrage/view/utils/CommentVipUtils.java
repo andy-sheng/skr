@@ -52,7 +52,6 @@ public class CommentVipUtils {
             return idField.getInt(idField);
         } catch (Exception e) {
             e.printStackTrace();
-            MyLog.w(TAG, e);
             return -1;
         }
     }

@@ -29,7 +29,7 @@ public class RoomSystemMsgPresenter implements IPushMsgProcessor {
 
     private static final String TAG = RoomSystemMsgPresenter.class.getSimpleName();
 
-    LiveRoomChatMsgManager mRoomChatMsgManager;
+    private LiveRoomChatMsgManager mRoomChatMsgManager;
 
     public RoomSystemMsgPresenter(LiveRoomChatMsgManager mRoomChatMsgManager) {
         this.mRoomChatMsgManager = mRoomChatMsgManager;
@@ -40,7 +40,8 @@ public class RoomSystemMsgPresenter implements IPushMsgProcessor {
         if (mRoomChatMsgManager.isHideSysMsg()) {
             return;
         }
-        if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_GLOBAL_SYS_MSG || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_COMMEN_SYS_MSG) {
+        if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_GLOBAL_SYS_MSG
+                || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_COMMEN_SYS_MSG) {
             //处理全局系统消息
             BarrageMsg.GlobalMessageExt globalMessageExt = (BarrageMsg.GlobalMessageExt) msg.getMsgExt();
             if (globalMessageExt != null) {
@@ -66,7 +67,9 @@ public class RoomSystemMsgPresenter implements IPushMsgProcessor {
                     if (roomBaseDataModel.getMsgRule() != null && roomBaseDataModel.getMsgRule().getSpeakPeriod() > 0) {
                         oriSpeakPeriod = roomBaseDataModel.getMsgRule().getSpeakPeriod();
                     }
-                    EventClass.MsgRuleChangedEvent event = new EventClass.MsgRuleChangedEvent(roomBaseDataModel.getRoomId(), messageExt.getMessageRule().getSpeakPeriod(), oriSpeakPeriod, messageExt.getMessageRule().isUnrepeatable());
+                    EventClass.MsgRuleChangedEvent event = new EventClass.MsgRuleChangedEvent(roomBaseDataModel.getRoomId(),
+                            messageExt.getMessageRule().getSpeakPeriod(), oriSpeakPeriod,
+                            messageExt.getMessageRule().isUnrepeatable());
                     roomBaseDataModel.setMsgRule(messageExt.getMessageRule());
                     EventBus.getDefault().post(event);
                     MyLog.w("receive barrage frequency control msg:" + messageExt.toString());
@@ -74,7 +77,8 @@ public class RoomSystemMsgPresenter implements IPushMsgProcessor {
             }
         } else if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_KICK_VIEWER) {
             MyLog.w(TAG, "viewer kicked," + msg.toString());
-            if (msg.getRoomId().equals(roomBaseDataModel.getRoomId()) && msg.getToUserId() == UserAccountManager.getInstance().getUuidAsLong()) {
+            if (msg.getRoomId().equals(roomBaseDataModel.getRoomId()) && msg.getToUserId()
+                    == UserAccountManager.getInstance().getUuidAsLong()) {
                 Observable.just(0)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Action1<Integer>() {

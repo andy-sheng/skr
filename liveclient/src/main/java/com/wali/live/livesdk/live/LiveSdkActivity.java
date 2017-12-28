@@ -365,7 +365,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.NetWorkChangeEvent event) {
-        MyLog.w(TAG, "EventClass.NetWorkChangeEvent");
+        MyLog.d(TAG, "EventClass.NetWorkChangeEvent");
         if (null != event) {
             check4GNet();
         }

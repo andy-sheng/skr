@@ -57,8 +57,8 @@ import java.lang.ref.WeakReference;
 public class GameFloatWindow implements IGameFloatPresenter {
     private static final String TAG = "GameFloatWindow";
 
-    public static final int TIME_TAKE_SCREEN_SHOT_DONE = 2000;
-    public static final int TIME_HIDE_GAME_FLOAT_BALL = 3000;
+    public static final int TIME_TAKE_SCREEN_SHOT_DONE = 2_000;
+    public static final int TIME_HIDE_GAME_FLOAT_BALL = 3_000;
 
     public static final int MSG_TAKE_SCREEN_SHOT_DONE = 1000;
     public static final int MSG_HALF_HIDE_FLOAT_BALL = 1001;

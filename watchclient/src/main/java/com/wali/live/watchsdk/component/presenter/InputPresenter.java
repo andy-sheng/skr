@@ -91,6 +91,8 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
 
     protected int mVipMaxCnt;
     protected int mVipCurCnt;
+    protected int mManagerMaxCnt;
+    protected int mManagerCurCnt;
 
     public InputPresenter(
             @NonNull IEventController controller,
@@ -261,7 +263,6 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
                 ToastUtils.showToast(GlobalData.app(), R.string.can_not_speak);
                 return;
             }
-
             LastBarrage lastBarrage = mLastBarrageMap.get(getBarrageCacheKey(mMyRoomData.getRoomId()));
             long sendTime = System.currentTimeMillis();
             if (mMyRoomData.getMsgRule() != null && lastBarrage != null) {
@@ -290,7 +291,8 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
             }
             checkShowCountdownTimer();
         }
-        switch (barrageState) {
+        mBarrageState = barrageState;
+        switch (mBarrageState) {
             case BARRAGE_MANAGE:
                 mLiveRoomChatMsgManager.sendFlyBarrageMessageAsync(msg, mMyRoomData.getRoomId(),
                         mMyRoomData.getUid(), GlobalRoomMsgExt.INNER_GLOBAL_ADMIN_FLY, null, mFansPrivilegeModel);
@@ -392,6 +394,9 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
      */
     public void updateInputHint(int barrageState) {
         MyLog.v(TAG, "updateInputHint");
+        if (mBarrageState == barrageState) {
+            return;
+        }
         mBarrageState = barrageState;
         EditText editText = mView.getInputView();
         switch (mBarrageState) {
