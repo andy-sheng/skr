@@ -429,4 +429,5 @@
     <string name="vip_free_horn_hint">%d free broadcasts available today</string>
     <string name="account_withdraw_pay_barrage_user_account_not_enough_tip">Insufficient balance, top up to send on-screen comments.</string>
     <string name="sns_unknown_error">Unknown error</string>
+    <string name="vip_content_enter">Join the session</string>
 </resources>

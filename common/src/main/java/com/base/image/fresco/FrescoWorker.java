@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.support.annotation.RawRes;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
@@ -20,20 +21,25 @@ import com.facebook.binaryresource.FileBinaryResource;
 import com.facebook.cache.common.CacheKey;
 import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.common.references.CloseableReference;
+import com.facebook.common.util.UriUtil;
 import com.facebook.datasource.DataSource;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.drawee.controller.ControllerListener;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.common.Priority;
 import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.common.RotationOptions;
 import com.facebook.imagepipeline.core.ImagePipeline;
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
 import com.facebook.imagepipeline.image.CloseableImage;
 import com.facebook.imagepipeline.image.ImageInfo;
+import com.facebook.imagepipeline.request.BasePostprocessor;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.facebook.imagepipeline.request.Postprocessor;
@@ -357,6 +363,67 @@ public class FrescoWorker {
 
         DraweeController draweeController = builder.build();
         draweeView.setController(draweeController);
+    }
+
+    public static void frescoShowWebp(SimpleDraweeView simpleDraweeView, @RawRes int webpId, int width, int heigh) {
+        loadDrawable(simpleDraweeView, webpId, width,heigh);
+    }
+
+    private static void loadDrawable(SimpleDraweeView simpleDraweeView, int resId, final int reqWidth, final int reqHeight) {
+        if (resId == 0 || simpleDraweeView == null) {
+            return;
+        }
+
+        Uri uri = new Uri.Builder()
+                .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
+                .path(String.valueOf(resId))
+                .build();
+        loadImage(simpleDraweeView, uri, reqWidth, reqHeight, null, null, false);
+    }
+
+    public static void loadImage(SimpleDraweeView simpleDraweeView,
+                                 Uri uri,
+                                 final int reqWidth,
+                                 final int reqHeight,
+                                 BasePostprocessor postprocessor,
+                                 ControllerListener<ImageInfo> controllerListener,
+                                 boolean isSmall) {
+
+        ImageRequestBuilder imageRequestBuilder = ImageRequestBuilder.newBuilderWithSource(uri);
+        imageRequestBuilder.setRotationOptions(RotationOptions.autoRotate());
+        imageRequestBuilder.setProgressiveRenderingEnabled(true); // 支持图片渐进式加载
+
+        if (isSmall) {
+            imageRequestBuilder.setCacheChoice(ImageRequest.CacheChoice.SMALL);
+        }
+
+        if (reqWidth > 0 && reqHeight > 0) {
+            imageRequestBuilder.setResizeOptions(new ResizeOptions(reqWidth, reqHeight));
+        }
+
+        if (UriUtil.isLocalFileUri(uri)) {
+            imageRequestBuilder.setLocalThumbnailPreviewsEnabled(true);
+        }
+
+        if (postprocessor != null) {
+            imageRequestBuilder.setPostprocessor(postprocessor);
+        }
+
+        ImageRequest imageRequest = imageRequestBuilder.build();
+
+        PipelineDraweeControllerBuilder draweeControllerBuilder = Fresco.newDraweeControllerBuilder();
+        draweeControllerBuilder.setOldController(simpleDraweeView.getController());
+        draweeControllerBuilder.setImageRequest(imageRequest);
+
+        if (controllerListener != null) {
+            draweeControllerBuilder.setControllerListener(controllerListener);
+        }
+
+//      draweeControllerBuilder.setTapToRetryEnabled(true); // 开启重试功能
+        simpleDraweeView.getHierarchy().setActualImageScaleType(ScalingUtils.ScaleType.FIT_XY);
+        draweeControllerBuilder.setAutoPlayAnimations(true); // 自动播放gif动画
+        DraweeController draweeController = draweeControllerBuilder.build();
+        simpleDraweeView.setController(draweeController);
     }
 
 }

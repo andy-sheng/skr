@@ -1,9 +1,10 @@
 package com.wali.live.common.gift.utils;
 
-import com.base.activity.RxActivity;
 import com.base.log.MyLog;
 import com.trello.rxlifecycle.ActivityEvent;
+import com.base.activity.RxActivity;
 
+import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -27,16 +28,16 @@ import rx.schedulers.Schedulers;
 public abstract class AnimationPlayControlTemplate<T> {
     public static final String TAG = "AnimationPlayControlTemplate";
     public static final int SIZE = 100;
-    private RxActivity rxActivity;
-    boolean mOverByTimer = true;
+    private WeakReference<RxActivity> rxActivity;
+    private boolean mOverByTimer = true;
 
     public AnimationPlayControlTemplate(RxActivity rxActivity, boolean overByTimer) {
-        this.rxActivity = rxActivity;
+        this.rxActivity = new WeakReference<>(rxActivity);
         this.mOverByTimer = overByTimer;
     }
 
     public AnimationPlayControlTemplate(RxActivity rxActivity, boolean overByTimer, int maxConsumerNumber) {
-        this.rxActivity = rxActivity;
+        this.rxActivity = new WeakReference<>(rxActivity);
         this.mOverByTimer = overByTimer;
         this.maxConsumerNumber = maxConsumerNumber;
     }
@@ -57,17 +58,17 @@ public abstract class AnimationPlayControlTemplate<T> {
             new RejectedExecutionHandler() {
                 @Override
                 public void rejectedExecution(final Runnable r, final ThreadPoolExecutor executor) {
-//                    MyLog.w(TAG, "rejectedExecution discard runnable");
+                    MyLog.w(TAG, "rejectedExecution discard runnable");
                 }
             });
 
-    int maxConsumerNumber = 1;
+    private int maxConsumerNumber = 1;
 
-    int mCurConsumerNumber = 0;
+    private int mCurConsumerNumber = 0;
     /**
      * 播放动画队列
      */
-    private LinkedList<T> mQueue = new LinkedList();
+    private LinkedList<T> mQueue = new LinkedList<>();
 
     public void add(T model, boolean must) {
         synchronized (mQueue) {
@@ -82,7 +83,7 @@ public abstract class AnimationPlayControlTemplate<T> {
         if (mCurConsumerNumber >= maxConsumerNumber) {
             return;
         }
-        Observable.create(new Observable.OnSubscribe<T>() {
+        Observable observable = Observable.create(new Observable.OnSubscribe<T>() {
             @Override
             public void call(Subscriber<? super T> subscriber) {
                 if (mCurConsumerNumber >= maxConsumerNumber) {
@@ -103,26 +104,31 @@ public abstract class AnimationPlayControlTemplate<T> {
             }
         })
                 .subscribeOn(Schedulers.from(mSingleThread))
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(rxActivity.<T>bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribe(new Observer<T>() {
-                    @Override
-                    public void onCompleted() {
+                .observeOn(AndroidSchedulers.mainThread());
 
-                    }
+        if (rxActivity != null && rxActivity.get() != null && !rxActivity.get().isFinishing()) {
+            observable.compose(rxActivity.get().bindUntilEvent(ActivityEvent.DESTROY));
+        } else {
+            return;
+        }
+        observable.subscribe(new Observer<T>() {
+            @Override
+            public void onCompleted() {
 
-                    @Override
-                    public void onError(Throwable e) {
-                        MyLog.d("AnimationPlayControlTemplate", e);
-                    }
+            }
 
-                    @Override
-                    public void onNext(T model) {
-                        if (model != null) {
-                            onStartInside(model);
-                        }
-                    }
-                });
+            @Override
+            public void onError(Throwable e) {
+                MyLog.d(TAG, e);
+            }
+
+            @Override
+            public void onNext(T model) {
+                if (model != null) {
+                    onStartInside(model);
+                }
+            }
+        });
     }
 
     private Subscription mEndDelaySubscription;
@@ -141,13 +147,21 @@ public abstract class AnimationPlayControlTemplate<T> {
         if (mOverByTimer) {
             // 自动延迟结束
             if (mEndDelayTime > 0) {
-                if (mEndDelaySubscription != null && !mEndDelaySubscription.isUnsubscribed()) {
+                if (mEndDelaySubscription != null) {
                     return;
                 }
-                mEndDelaySubscription = Observable.timer(mEndDelayTime, TimeUnit.MILLISECONDS)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .compose(rxActivity.bindUntilEvent(ActivityEvent.DESTROY))
-                        .subscribe(new Action1<Object>() {
+
+                Observable observable = Observable.timer(mEndDelayTime, TimeUnit.MILLISECONDS)
+                        .observeOn(AndroidSchedulers.mainThread());
+
+                if (rxActivity != null && rxActivity.get() != null && !rxActivity.get().isFinishing()) {
+                    observable.compose(rxActivity.get().bindUntilEvent(ActivityEvent.DESTROY));
+                } else {
+                    return;
+                }
+
+                mEndDelaySubscription = observable
+                        .subscribe(new Action1() {
                             @Override
                             public void call(Object o) {
                                 onEndInSide(model);
@@ -166,6 +180,7 @@ public abstract class AnimationPlayControlTemplate<T> {
         if (--mCurConsumerNumber < 0) {
             mCurConsumerNumber = 0;
         }
+        mEndDelaySubscription = null;
         play();
     }
 
@@ -184,7 +199,12 @@ public abstract class AnimationPlayControlTemplate<T> {
         mCurConsumerNumber = 0;
         mQueue.clear();
         if (mSingleThread != null) {
-            mSingleThread.shutdown();
+            mSingleThread.shutdownNow();
+            mSingleThread = null;
+        }
+        if (rxActivity != null) {
+            rxActivity.clear();
+            rxActivity = null;
         }
     }
 

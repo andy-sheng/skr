@@ -23,6 +23,7 @@ import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.BarrageBtnPresenter;
+import com.wali.live.watchsdk.component.presenter.BarrageControlAnimPresenter;
 import com.wali.live.watchsdk.component.presenter.BottomButtonPresenter;
 import com.wali.live.watchsdk.component.presenter.EnvelopePresenter;
 import com.wali.live.watchsdk.component.presenter.ExtraContainerPresenter;
@@ -39,6 +40,7 @@ import com.wali.live.watchsdk.component.presenter.WatchFloatPresenter;
 import com.wali.live.watchsdk.component.presenter.WatchPlayerPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.BarrageBtnView;
+import com.wali.live.watchsdk.component.view.BarrageControlAnimView;
 import com.wali.live.watchsdk.component.view.ExtraContainerView;
 import com.wali.live.watchsdk.component.view.FollowGuideView;
 import com.wali.live.watchsdk.component.view.GameBarrageView;
@@ -250,6 +252,12 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             registerComponent(view, presenter);
             view.setToken(mController.mRoomChatMsgManager.toString());
             mLiveCommentView = view;
+        }
+        //弹幕区上面的特权弹幕动画展示
+        {
+            BarrageControlAnimView view = $(R.id.msg_anim_view);
+            BarrageControlAnimPresenter presenter = new BarrageControlAnimPresenter(mController, mController.mMyRoomData);
+            registerComponent(view, presenter);
         }
         // 底部面板
         {

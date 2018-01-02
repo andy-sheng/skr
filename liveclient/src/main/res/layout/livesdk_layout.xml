@@ -56,6 +56,14 @@
         android:paddingRight="6.67dip"
         android:requiresFadingEdge="none"/>
 
+
+    <com.wali.live.watchsdk.component.view.BarrageControlAnimView
+        android:id="@+id/msg_anim_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/live_comment_view"
+        android:layout_marginBottom="-23.66dip"/>
+
     <com.wali.live.watchsdk.component.view.WidgetView
         android:id="@+id/widget_view"
         android:layout_width="match_parent"

@@ -58,6 +58,7 @@ public class BarrageMsgType {
     public static final int B_MSG_TYPE_COMMEN_SYS_MSG = 403;//通用系统消息(系统消息)
     public static final int B_MSG_TYPE_LEVEL_UPGRADE_SYS_MSG = 406; //等级升级提示
     public static final int B_MSG_TYPE_RED_NAME_STATUES = 407; //红名信息状态变化
+    public static final int B_MSG_TYPE_VIP_LEVEL_CHANGED = 409;//VIP用户等级变化，只发给自己
 
     public static final int B_MSG_TYPE_LIGHT_UP_GIFT = 339;//点亮礼物消息
     public static final int B_MSG_TYPE_ROOM_BACKGROUND_GIFT = 340;//背景礼物推送

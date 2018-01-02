@@ -389,6 +389,7 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
                             ext.viewerList = temp;
                         }
                         ext.viewerCount = join.getViewerCount();
+                        ext.vipJoinEnable = join.getShowSpecialEffect();
                         msgExt = ext;
                     }
                     break;
@@ -789,8 +790,8 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
     //这种消息，客户端只是接收方， 不会发出
     public static class JoinRoomMsgExt implements MsgExt {
         public int viewerCount;
-
         public List<ViewerModel> viewerList = new ArrayList<>();
+        public boolean vipJoinEnable;
 
         @Override
         public ByteString toByteString() {

@@ -22,11 +22,13 @@ import com.wali.live.livesdk.live.livegame.presenter.BottomButtonPresenter;
 import com.wali.live.livesdk.live.livegame.presenter.PanelContainerPresenter;
 import com.wali.live.livesdk.live.livegame.view.LiveBottomButton;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
+import com.wali.live.watchsdk.component.presenter.BarrageControlAnimPresenter;
 import com.wali.live.watchsdk.component.presenter.EnvelopePresenter;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.presenter.TopAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
+import com.wali.live.watchsdk.component.view.BarrageControlAnimView;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.component.view.TopAreaView;
@@ -108,6 +110,12 @@ public class GameLiveSdkView extends BaseLiveSdkView<View, GameLiveController> {
             view.setToken(mController.mRoomChatMsgManager.toString());
 
             mLiveCommentView = view;
+        }
+        //弹幕区上面的特权弹幕动画展示
+        {
+            BarrageControlAnimView view = $(R.id.msg_anim_view);
+            BarrageControlAnimPresenter presenter = new BarrageControlAnimPresenter(mController, mController.mMyRoomData);
+            registerComponent(view, presenter);
         }
         // 输入框
         {

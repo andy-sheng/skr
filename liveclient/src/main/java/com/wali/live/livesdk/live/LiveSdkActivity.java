@@ -48,10 +48,8 @@ import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
-import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
-import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
@@ -92,7 +90,6 @@ import com.wali.live.livesdk.live.liveshow.ShowLiveSdkView;
 import com.wali.live.livesdk.live.presenter.LiveRoomPresenter;
 import com.wali.live.livesdk.live.view.CountDownView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
-import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.proto.LiveProto;
@@ -113,6 +110,7 @@ import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.watchsdk.task.LiveTask;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
+import com.wali.live.watchsdk.watch.presenter.push.AnimMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomManagerPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
@@ -130,7 +128,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import rx.Observer;
 import rx.functions.Action1;
 
 import static com.wali.live.component.BaseSdkController.MSG_END_LIVE_UNEXPECTED;
@@ -206,6 +203,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private RoomViewerPresenter mRoomViewerPresenter;
     private ForbidManagePresenter mForbidManagePresenter;
     private RoomManagerPresenter mRoomManagerPresenter;
+    private AnimMsgPresenter mAnimMsgPresenter;
 
     protected BaseImageView mMaskIv; // 高斯蒙层
     protected ImageView mCloseBtn; // 关闭按钮
@@ -683,6 +681,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mRoomManagerPresenter = new RoomManagerPresenter(this, mRoomChatMsgManager, false, mMyRoomData);
         addPresent(mRoomManagerPresenter);
         addPushProcessor(mRoomManagerPresenter);
+        mAnimMsgPresenter = new AnimMsgPresenter(mMyRoomData);
+        addPresent(mAnimMsgPresenter);
+        addPushProcessor(mAnimMsgPresenter);
 
         mTipsTv = $(R.id.tips_tv);
 

@@ -90,6 +90,7 @@ import com.wali.live.watchsdk.watch.presenter.IWatchView;
 import com.wali.live.watchsdk.watch.presenter.LiveTaskPresenter;
 import com.wali.live.watchsdk.watch.presenter.UserInfoPresenter;
 import com.wali.live.watchsdk.watch.presenter.VideoShowPresenter;
+import com.wali.live.watchsdk.watch.presenter.push.AnimMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomManagerPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
@@ -160,6 +161,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     private GiftMallPresenter mGiftMallPresenter;
     private RoomViewerPresenter mRoomViewerPresenter;
     private RoomStatusPresenter mRoomStatusPresenter;
+    private AnimMsgPresenter mAnimMsgPresenter;
     private ForbidManagePresenter mForbidManagePresenter;
     protected UserInfoPresenter mUserInfoPresenter;
 
@@ -350,12 +352,15 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
         mGiftPresenter = new GiftPresenter(mRoomChatMsgManager, false);
         addPushProcessor(mGiftPresenter);
+        addPresent(mGiftPresenter);
 
         mRoomTextMsgPresenter = new RoomTextMsgPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomTextMsgPresenter);
+        addPresent(mRoomTextMsgPresenter);
 
         mRoomManagerPresenter = new RoomManagerPresenter(this, mRoomChatMsgManager, true, mMyRoomData);
         addPushProcessor(mRoomManagerPresenter);
+        addPresent(mRoomManagerPresenter);
         mRoomManagerPresenter.syncOwnerInfo(mMyRoomData.getUid(), true); // 拉取一下主播信息，同步观看端是否是管理员
 
         mGiftMallPresenter = new GiftMallPresenter(this, getBaseContext(), mMyRoomData, mController);
@@ -364,12 +369,19 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
         mRoomViewerPresenter = new RoomViewerPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomViewerPresenter);
+        addPresent(mRoomViewerPresenter);
 
         mRoomStatusPresenter = new RoomStatusPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomStatusPresenter);
+        addPresent(mRoomStatusPresenter);
 
         mRoomSystemMsgPresenter = new RoomSystemMsgPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomSystemMsgPresenter);
+        addPresent(mRoomSystemMsgPresenter);
+
+        mAnimMsgPresenter = new AnimMsgPresenter(mMyRoomData);
+        addPushProcessor(mAnimMsgPresenter);
+        addPresent(mAnimMsgPresenter);
 
         mUserInfoPresenter = new UserInfoPresenter(this, mMyRoomData);
 
@@ -398,31 +410,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     protected void onResume() {
         super.onResume();
         KeyboardUtils.hideKeyboard(this);
-
-//        // TEST
-//        Observable.interval(5, 5, TimeUnit.SECONDS)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .take(3)
-//                .subscribe(new Action1<Long>() {
-//                    @Override
-//                    public void call(Long aLong) {
-//                        RedEnvelopeModel redEnvelopeModel = new RedEnvelopeModel();
-//                        redEnvelopeModel.setRedEnvelopeId("" + aLong);
-//                        redEnvelopeModel.setUserId(100067);
-//                        redEnvelopeModel.setNickName("biglee");
-//                        redEnvelopeModel.setAvatarTimestamp(0);
-//                        redEnvelopeModel.setLevel(1);
-//                        redEnvelopeModel.setRoomId("123456789");
-//                        redEnvelopeModel.setMsg("红包测试");
-//                        redEnvelopeModel.setGemCnt((int)(long)aLong + 1);
-//                        redEnvelopeModel.setType(((int)(long)aLong % 3) + 1);
-//                        EventBus.getDefault().post(new GiftEventClass.GiftAttrMessage.RedEnvelope(redEnvelopeModel));
-//                    }
-//                }, new Action1<Throwable>() {
-//                    @Override
-//                    public void call(Throwable throwable) {
-//                    }
-//                });
     }
 
     @Override

@@ -421,4 +421,5 @@
     <string name="vip_free_horn_hint">今日剩余%d条免费大喇叭</string>
     <string name="account_withdraw_pay_barrage_user_account_not_enough_tip">当前余额不足,充值才可以继续发送飘屏弹幕,是否去充值.</string>
     <string name="sns_unknown_error">未知错误</string>
+    <string name="vip_content_enter">进入直播间</string>
 </resources>
