@@ -31,7 +31,7 @@ import com.wali.live.watchsdk.R;
  * @module 弹幕区域上方的vip弹幕动画展示
  */
 public class BarrageAnimView extends RelativeLayout implements IAnimView {
-    private final String TAG = "BarrageAnimView_test";
+    private final String TAG = "BarrageAnimView";
     private final static int LEVEL_MARGIN_LEFT = DisplayUtils.dip2px(5.67f);
     private final static int LEVEL_MARGIN_RIGHT = DisplayUtils.dip2px(5f);
     private final static int LEVEL_MARGIN_TOP = DisplayUtils.dip2px(1f);
@@ -196,7 +196,6 @@ public class BarrageAnimView extends RelativeLayout implements IAnimView {
                         public void run() {
                             mAnimDv.setVisibility(View.INVISIBLE);
                             mAnimContainer.removeView(mAnimDv);
-                            mAnimDv = null;
                             startLeaveAnim();
                         }
                     }, 4_000);
@@ -296,14 +295,17 @@ public class BarrageAnimView extends RelativeLayout implements IAnimView {
     }
 
     @Override
+    public void reset() {
+        MyLog.d(TAG, "reset");
+        mAnimContainer.removeView(mAnimDv);
+        mContentView.clearAnimation();
+        setVisibility(View.GONE);
+    }
+
+    @Override
     public void onDestroy() {
-        if (mEnterAnimation != null) {
-            mEnterAnimation.cancel();
-            mEnterAnimation = null;
-        }
-        if (mLeaveAnimation != null) {
-            mLeaveAnimation.cancel();
-            mLeaveAnimation = null;
-        }
+        MyLog.d(TAG, "onDestroy");
+        mAnimContainer.removeView(mAnimDv);
+        mContentView.clearAnimation();
     }
 }

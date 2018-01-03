@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class BarrageControlAnimView extends RelativeLayout implements IComponentView<BarrageControlAnimView.IPresenter,
         BarrageControlAnimView.IView> {
-    private static final String TAG = "BarrageControlAnimView" + "_BarrageAnimView";
+    private static final String TAG = "BarrageControlAnimView";
     private AnimationPlayControlTemplate<BarrageMsg> mFlyBarrageControl; //播放队列控制器
     private List<IAnimView> mAnimViews = new ArrayList<>();
 
@@ -105,6 +105,16 @@ public class BarrageControlAnimView extends RelativeLayout implements IComponent
         mAnimViews.add(new BarrageAnimView(getContext()));
         for (IAnimView view : mAnimViews) {
             addView((View) view);
+        }
+    }
+
+    //上下滑switchRoom的时候需要重置一下数据
+    public void reset() {
+        mFlyBarrageControl.reset();
+        if (mAnimViews != null) {
+            for (IAnimView item : mAnimViews) {
+                item.reset();
+            }
         }
     }
 

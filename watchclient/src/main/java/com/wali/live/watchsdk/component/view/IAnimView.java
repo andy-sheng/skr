@@ -17,5 +17,7 @@ public interface IAnimView {
 
     boolean onEnd();
 
+    void reset();
+
     void onDestroy();
 }

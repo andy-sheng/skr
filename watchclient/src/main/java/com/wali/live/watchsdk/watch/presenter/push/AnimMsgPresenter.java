@@ -2,7 +2,6 @@ package com.wali.live.watchsdk.watch.presenter.push;
 
 import android.support.annotation.NonNull;
 
-import com.base.log.MyLog;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.push.IPushMsgProcessor;
 import com.mi.live.data.push.model.BarrageMsg;
@@ -35,7 +34,6 @@ public class AnimMsgPresenter implements IPushMsgProcessor {
         if (msg == null || !isSameRoom(roomBaseDataModel)) {
             return;
         }
-        MyLog.w("AnimMsgPresenter", "BarrageAnim process msg =" + msg.toString());
         switch (msg.getMsgType()) {
             case BarrageMsgType.B_MSG_TYPE_JOIN:
             case BarrageMsgType.B_MSG_TYPE_ANIM:

@@ -92,6 +92,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
     protected TopAreaView mTopAreaView;
     protected LiveCommentView mLiveCommentView;
     protected View mBarrageBtnView;
+    protected BarrageControlAnimView mBarrageControlAnimView;
 
     protected GiftContinueViewGroup mGiftContinueViewGroup;
 
@@ -258,6 +259,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             BarrageControlAnimView view = $(R.id.msg_anim_view);
             BarrageControlAnimPresenter presenter = new BarrageControlAnimPresenter(mController, mController.mMyRoomData);
             registerComponent(view, presenter);
+            mBarrageControlAnimView = view;
         }
         // 底部面板
         {
@@ -359,6 +361,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 R.id.top_area_view,
                 R.id.bottom_button_view,
                 R.id.live_comment_view,
+                R.id.msg_anim_view,
                 R.id.gift_animation_player_view,
                 R.id.gift_continue_vg,
                 R.id.gift_room_effect_view,
@@ -371,6 +374,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 R.id.top_area_view,
                 R.id.bottom_button_view,
                 R.id.live_comment_view,
+                R.id.msg_anim_view,
                 R.id.gift_animation_player_view,
                 R.id.gift_continue_vg,
                 R.id.gift_room_effect_view,
@@ -445,6 +449,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             mWidgetPresenter.reset();
         }
         mLiveCommentView.reset();
+        mBarrageControlAnimView.reset();
         mWatchBottomButton.reset();
         mTopAreaView.reset();
     }
