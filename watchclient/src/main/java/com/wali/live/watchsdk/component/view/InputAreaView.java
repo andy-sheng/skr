@@ -23,14 +23,12 @@ import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.live.module.common.R;
-import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.preference.MLPreferenceUtils;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IOrientationListener;
 import com.wali.live.common.smiley.SmileyInputFilter;
 import com.wali.live.common.smiley.SmileyPicker;
 import com.wali.live.common.smiley.SmileyTranslateFilter;
-import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.presenter.InputPresenter;
 
@@ -162,17 +160,9 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
                 switch (mState) {
                     case BARRAGE_NORMAL:
                         mInputView.setFilters(mNormalFilter);
-                        mInputView.setHint(R.string.empty_edittext_hint);
+                        mPresenter.updateInputHint(mState);
                         break;
                     case BARRAGE_MANAGE:
-                        if (mFlyBarrageFilter == null) {
-                            mFlyBarrageFilter = new InputFilter[]{
-                                    new SmileyTranslateFilter(mInputView.getTextSize()),
-                                    new SmileyInputFilter(mInputView, 50)};
-                        }
-                        mInputView.setFilters(mFlyBarrageFilter);
-                        mInputView.setHint(R.string.empty_edittext_hint);
-                        break;
                     case BARRAGE_NOTIFY:
                         if (mFlyBarrageFilter == null) {
                             mFlyBarrageFilter = new InputFilter[]{

@@ -394,9 +394,6 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
      */
     public void updateInputHint(int barrageState) {
         MyLog.v(TAG, "updateInputHint");
-        if (mBarrageState == barrageState) {
-            return;
-        }
         mBarrageState = barrageState;
         EditText editText = mView.getInputView();
         switch (mBarrageState) {
