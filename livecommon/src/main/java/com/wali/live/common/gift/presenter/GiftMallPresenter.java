@@ -335,6 +335,8 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                                         //礼物卡数量不足
                                         if (buyGiftWithCard.card != null) {
                                             buyGiftWithCard.card.setGiftCardCount(0);
+                                            //删除用完的礼物
+                                            mGiftMallBean.remove(buyGiftWithCard);
                                         }
                                         return Observable.error(new GiftException(GiftErrorCode.GIFT_CARD_INSUFFICIENT, mContext.getString(R.string.gift_card_insufficient)));
                                     }
@@ -412,13 +414,9 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                             }
                             switch (((GiftException) e).errCode) {
                                 case GiftErrorCode.GIFT_CARD_INSUFFICIENT: {
-                                    giftDisPlayItemView.setDataSource(buyGiftWithCard);
-
-                                    //礼物卡数量不足
-                                    if (buyGiftWithCard.card != null) {
-                                        //删除用完的礼物
-                                        mGiftMallBean.remove(buyGiftWithCard);
-                                    }
+                                    MyLog.d(TAG, "gift card insufficient");
+                                    // 重新加载礼物数据
+                                    loadExistedDataFromBean();
                                 }
                                 break;
                             }
@@ -843,7 +841,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         mGiftMallView = (GiftMallView) root.findViewById(R.id.gift_mall_view);
         toShowGiftMallView();
 
-        mGiftMallView.firstInflateGiftMallView(this, mActivity, mMyRoomData, mIsLandscape);
+        mGiftMallView.firstInflateGiftMallView(this, mMyRoomData, mIsLandscape);
         mGiftMallViewStub = null;
     }
 

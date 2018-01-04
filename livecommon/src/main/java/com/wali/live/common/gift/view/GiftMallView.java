@@ -129,9 +129,6 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
     private static final int TIPS_TYPE_SILIVER_DIAMOND = 2;
     private static final int TIPS_TYPE_MI_COIN = 3;
 
-    private Activity mActivity;
-
-    //TODO 开始修改
     private TextView mMallGiftTv;
     private TextView mPktGiftTv;
     private View mSlideGift;
@@ -270,7 +267,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
          */
         private boolean judgeBuyGiftCondition() {
             if (mSelectedGift.gift.getCatagory() == GiftType.MAGIC_GIFT && !mMyRoomData.isSupportMagicFace()) {
-                ToastUtils.showToast(mActivity, getResources().getString(R.string.no_support_magic_gift_tips));
+                ToastUtils.showToast(getResources().getString(R.string.no_support_magic_gift_tips));
                 return false;
             }
 
@@ -692,6 +689,8 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
 
         prepareHideDiamondTips();
     }
+
+
 
     /**
      * 五秒后然将优先使用银钻提示消失
@@ -1252,8 +1251,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
     private GiftMallPresenter mGiftMallPresenter;
 
     //TODO 一定记得改
-    public void firstInflateGiftMallView(GiftMallPresenter giftMallPresenter, Activity activity, RoomBaseDataModel myRoomData, boolean isLandscape) {
-        this.mActivity = activity;
+    public void firstInflateGiftMallView(GiftMallPresenter giftMallPresenter, RoomBaseDataModel myRoomData, boolean isLandscape) {
         this.mMyRoomData = myRoomData;
         this.mIsLandscape = isLandscape;
         this.mGiftMallPresenter = giftMallPresenter;
