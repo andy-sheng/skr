@@ -1,14 +1,14 @@
 apply plugin: 'com.android.library'
 
 android {
-    if(buildFlavorType == 'livesdkaar'){
-        defaultPublishConfig "livesdkaarRelease"
-    }else{
-        defaultPublishConfig "livesdkappRelease"
+    if (rootProject.ext.buildFlavorType == 'livesdkaar') {
+        defaultPublishConfig 'livesdkaarRelease'
+    } else {
+        defaultPublishConfig 'livesdkappRelease'
     }
     compileSdkVersion rootProject.ext.androidCompileSdkVersion
     buildToolsVersion rootProject.ext.androidBuildToolsVersion
-//    useLibrary 'org.apache.http.legacy'
+
     defaultConfig {
         minSdkVersion rootProject.ext.androidMinSdkVersion
         targetSdkVersion rootProject.ext.androidTargetSdkVersion
@@ -25,27 +25,27 @@ android {
         abortOnError false
     }
 
-    productFlavors{
+    productFlavors {
         livesdkapp
         livesdkaar
     }
 
-    sourceSets{
-        livesdkapp{
-            manifest.srcFile 'src/main/AndroidManifest.xml'
-            java.srcDirs = ['src/main/java','src/livesdkapp/java']
-            resources.srcDirs = ['src/main/java']
-            res.srcDirs = ['src/main/res']
-            assets.srcDirs = ['src/main/assets']
-        }
-        livesdkaar{
-            manifest.srcFile 'src/livesdkaar/AndroidManifest1.xml'
-            java.srcDirs = ['src/main/java','src/livesdkaar/java']
-            resources.srcDirs = ['src/main/java']
-            res.srcDirs = ['src/main/res']
-            assets.srcDirs = ['src/main/assets']
-        }
-    }
+//    sourceSets {
+//        livesdkapp {
+//            manifest.srcFile 'src/main/AndroidManifest.xml'
+//            java.srcDirs = ['src/main/java', 'src/livesdkapp/java']
+//            resources.srcDirs = ['src/main/java']
+//            res.srcDirs = ['src/main/res']
+//            assets.srcDirs = ['src/main/assets']
+//        }
+//        livesdkaar {
+//            manifest.srcFile 'src/livesdkaar/AndroidManifest1.xml'
+//            java.srcDirs = ['src/main/java', 'src/livesdkaar/java']
+//            resources.srcDirs = ['src/main/java']
+//            res.srcDirs = ['src/main/res']
+//            assets.srcDirs = ['src/main/assets']
+//        }
+//    }
 
     useLibrary 'org.apache.http.legacy'
 }
@@ -84,7 +84,7 @@ dependencies {
 //        compile project(':engine')
 //    }
 
-    if (flavorType == "live") {
+    if (rootProject.ext.flavorType == 'live') {
         compile project(':enginelive')
     } else {
         compile project(':engineplayer')

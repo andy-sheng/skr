@@ -8,6 +8,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -18,15 +20,18 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.base.activity.BaseSdkActivity;
 import com.base.activity.RxActivity;
 import com.base.activity.assist.IBindActivityLIfeCycle;
 import com.base.dialog.MyAlertDialog;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.mvp.specific.RxRelativeLayout;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.toast.ToastUtils;
@@ -44,6 +49,10 @@ import com.wali.live.common.gift.utils.MyAnimationUtils;
 import com.wali.live.common.view.ErrorView;
 import com.wali.live.common.view.ViewPagerWithCircleIndicator;
 import com.wali.live.dao.Gift;
+import com.wali.live.pay.fragment.BalanceFragment;
+import com.wali.live.pay.manager.PayManager;
+import com.wali.live.pay.model.BalanceDetail;
+import com.wali.live.proto.PayProto;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -57,14 +66,13 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
  * Created by zjn on 16-11-30.
  */
-public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCycle {
-    public static String TAG = "GiftMallView";
-
+public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeCycle {
     public static final String SP_FILENAME_GIFTMALL_CONFIG = "giftmall.config";
 
     public static final String FIRST_SHOW_GIFT_MALL_VIEW = "isFirstShowGiftMall";
@@ -78,8 +86,6 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
     private TextView mBalanceTv; // 余额
 
     private ErrorView mGiftListErrorView;// 错误页面
-
-    private TextView mSendGiftTv; // 发送按钮
 
     private GiftDisPlayItemView mSelectedView; // 选中的gift view
 
@@ -120,12 +126,23 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
     private boolean mIsContinueSendFlag = false;//彩蛋礼物引入判断是否处于连送状态
 
     private static final int TIPS_TYPE_BALANCE = 1;
-
     private static final int TIPS_TYPE_SILIVER_DIAMOND = 2;
-
     private static final int TIPS_TYPE_MI_COIN = 3;
 
-    private Activity mActivity;
+    private TextView mMallGiftTv;
+    private TextView mPktGiftTv;
+    private View mSlideGift;
+    private View mSlidePkt;
+
+    private TextView mRechargeTv;
+    private TextView mSendGiftTv;
+
+    private TextView mPktDetailTv;
+
+    private ImageView mEmptyIv;
+
+    //标记当前的选择的礼物状态
+    private boolean mIsMallGift = true;
 
     public GiftMallView(Context context) {
         super(context);
@@ -250,7 +267,7 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
          */
         private boolean judgeBuyGiftCondition() {
             if (mSelectedGift.gift.getCatagory() == GiftType.MAGIC_GIFT && !mMyRoomData.isSupportMagicFace()) {
-                ToastUtils.showToast(mActivity, getResources().getString(R.string.no_support_magic_gift_tips));
+                ToastUtils.showToast(getResources().getString(R.string.no_support_magic_gift_tips));
                 return false;
             }
 
@@ -337,67 +354,54 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
                         // 点击顶部透明区域
                         //TODO 一定记得加上
                         EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST));
-
                     }
                 });
-        mSendGiftTv = (TextView) findViewById(R.id.send_gift);
-        if (mSelectedGift != null) {
-            mSendGiftTv.setEnabled(true);
-        } else {
-            mSendGiftTv.setEnabled(false);
-        }
-        // 送礼物按钮的点击
-        RxView.clicks(mSendGiftTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Action1<Void>() {
-                    @Override
-                    public void call(Void aVoid) {
-                        if (mNormalBuyAnimationSet == null) {
-                            ObjectAnimator scaleX = ObjectAnimator.ofFloat(mSendGiftTv, "scaleX", 1.5f, 1f);
-                            ObjectAnimator scaleY = ObjectAnimator.ofFloat(mSendGiftTv, "scaleY", 1.5f, 1f);
-                            scaleX.setDuration(50);
-                            scaleY.setDuration(50);
-                            mNormalBuyAnimationSet = new AnimatorSet();
-                            mNormalBuyAnimationSet.play(scaleX).with(scaleY);
-                            mNormalBuyAnimationSet.addListener(new AnimatorListenerAdapter() {
-                                @Override
-                                public void onAnimationCancel(Animator animation) {
 
-                                    if (mCancelBuyAnimationSet == null) {
-                                        ObjectAnimator scaleX = ObjectAnimator.ofFloat(mSendGiftTv, "scaleX", 1f);
-                                        ObjectAnimator scaleY = ObjectAnimator.ofFloat(mSendGiftTv, "scaleY", 1f);
-                                        scaleX.setDuration(1);
-                                        scaleY.setDuration(1);
-                                        mCancelBuyAnimationSet = new AnimatorSet();
-                                        mCancelBuyAnimationSet.play(scaleX).with(scaleY);
-                                    }
-                                    mCancelBuyAnimationSet.start();
-                                }
-
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    super.onAnimationEnd(animation);
-                                }
-                            });
-                        } else {
-                            if (mNormalBuyAnimationSet.isRunning()) {
-                                mNormalBuyAnimationSet.cancel();
+        mSendGiftTv = $rxClick(R.id.send_gift, 500, new Action1<Void>() {
+            @Override
+            public void call(Void aVoid) {
+                if (mNormalBuyAnimationSet == null) {
+                    ObjectAnimator scaleX = ObjectAnimator.ofFloat(mSendGiftTv, "scaleX", 1.5f, 1f);
+                    ObjectAnimator scaleY = ObjectAnimator.ofFloat(mSendGiftTv, "scaleY", 1.5f, 1f);
+                    scaleX.setDuration(50);
+                    scaleY.setDuration(50);
+                    mNormalBuyAnimationSet = new AnimatorSet();
+                    mNormalBuyAnimationSet.play(scaleX).with(scaleY);
+                    mNormalBuyAnimationSet.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+                            if (mCancelBuyAnimationSet == null) {
+                                ObjectAnimator scaleX = ObjectAnimator.ofFloat(mSendGiftTv, "scaleX", 1f);
+                                ObjectAnimator scaleY = ObjectAnimator.ofFloat(mSendGiftTv, "scaleY", 1f);
+                                scaleX.setDuration(1);
+                                scaleY.setDuration(1);
+                                mCancelBuyAnimationSet = new AnimatorSet();
+                                mCancelBuyAnimationSet.play(scaleX).with(scaleY);
                             }
+                            mCancelBuyAnimationSet.start();
                         }
-                        if (mSelectedGift != null) {
-                            if (mSelectedGift.gift.getCatagory() == GiftType.MAGIC_GIFT && !mMyRoomData.isSupportMagicFace()) {
-                                ToastUtils.showToast(mActivity, getResources().getString(R.string.no_support_magic_gift_tips));
-                                return;
-                            }
-                            // 符合购买条件才播放动画
-                            if ((mSelectedGift.card != null && mSelectedGift.card.getGiftCardCount() <= 0) || (mSelectedGift.gift.getPrice() <= mGiftMallPresenter.getCurrentTotalBalance())) {
-                                mNormalBuyAnimationSet.start();
-                            }
-                        }
-                        mIsBuyGiftBySendBtn = true;
-                        mGiftMallPresenter.buyGift();
+                    });
+                } else {
+                    if (mNormalBuyAnimationSet.isRunning()) {
+                        mNormalBuyAnimationSet.cancel();
                     }
-                });
+                }
+                if (mSelectedGift != null) {
+                    if (mSelectedGift.gift.getCatagory() == GiftType.MAGIC_GIFT && !mMyRoomData.isSupportMagicFace()) {
+                        ToastUtils.showToast(R.string.no_support_magic_gift_tips);
+                        return;
+                    }
+                    // 符合购买条件才播放动画
+                    if ((mSelectedGift.card != null && mSelectedGift.card.getGiftCardCount() <= 0) || (mSelectedGift.gift.getPrice() <= mGiftMallPresenter.getCurrentTotalBalance())) {
+                        mNormalBuyAnimationSet.start();
+                    }
+                }
+                mIsBuyGiftBySendBtn = true;
+                mGiftMallPresenter.buyGift();
+            }
+        });
+        mSendGiftTv.setEnabled(mSelectedGift != null);
+
         // 连送按钮的点击
         RxView.clicks(mContinueSendBtn)
                 .throttleFirst(200, TimeUnit.MILLISECONDS)
@@ -410,15 +414,13 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
                 });
 
         // 充值按钮的点击
-        RxView.clicks(findViewById(R.id.recharge_tv))
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Action1<Void>() {
-                    @Override
-                    public void call(Void aVoid) {
-                        //TODO 一定记得加上
-                        EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_GO_RECHARGE));
-                    }
-                });
+        mRechargeTv = $rxClick(R.id.recharge_tv, 500, new Action1<Void>() {
+            @Override
+            public void call(Void aVoid) {
+                //TODO 一定记得加上
+                EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_GO_RECHARGE));
+            }
+        });
 
         //金钻银钻点击事件处理一样
         RxView.clicks(mBalanceTv)
@@ -436,6 +438,153 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
                     @Override
                     public void call(Void aVoid) {
                         showDiamondTips(TIPS_TYPE_SILIVER_DIAMOND);
+                    }
+                });
+
+        mPktDetailTv = $rxClick(R.id.pkt_detail_tv, 300, new Action1<Void>() {
+            @Override
+            public void call(Void aVoid) {
+                if (!mIsMallGift) {
+                    showPktGiftDetail();
+                }
+            }
+        });
+
+        mMallGiftTv = $rxClick(R.id.tv_gift, 300, new Action1() {
+            @Override
+            public void call(Object o) {
+                if (!mIsMallGift) {
+                    clickMallGift();
+                }
+            }
+        });
+
+        mPktGiftTv = $rxClick(R.id.tv_pkt_gift, 300, new Action1() {
+            @Override
+            public void call(Object o) {
+                if (mIsMallGift) {
+                    clickPktGift();
+                }
+            }
+        });
+
+        mSlideGift = $(R.id.slide_gift);
+        mSlidePkt = $(R.id.slide_pkt);
+
+        mEmptyIv = $(R.id.pkt_empty_iv);
+        setGiftTabBackground();
+    }
+
+    public boolean isMallGift() {
+        return mIsMallGift;
+    }
+
+    /**
+     * 选择花钱礼物，默认选中花钱礼物
+     */
+    private void clickMallGift() {
+        mIsMallGift = true;
+        setGiftTabBackground();
+        switchMallType();
+
+        if (!mGiftMallPresenter.loadExistedDataFromBean()) {
+            mGiftMallPresenter.loadDataFromCache("clickMallGift");
+        }
+    }
+
+    /**
+     * 选择背包礼物
+     */
+    private void clickPktGift() {
+        mIsMallGift = false;
+        setGiftTabBackground();
+        switchMallType();
+
+        if (!mGiftMallPresenter.loadExistedDataFromBean()) {
+            mGiftMallPresenter.loadDataFromCache("clickPktGift");
+        }
+    }
+
+    void setGiftTabBackground() {
+        if (mIsMallGift) {
+            mMallGiftTv.setSelected(true);
+            mPktGiftTv.setSelected(false);
+            mMallGiftTv.setBackgroundColor(Color.TRANSPARENT);
+
+            mSlideGift.setVisibility(View.VISIBLE);
+            mSlidePkt.setVisibility(View.GONE);
+
+            mBalanceTv.setVisibility(View.VISIBLE);
+            mSiliverDiamond.setVisibility(View.VISIBLE);
+            mRechargeTv.setVisibility(View.VISIBLE);
+
+            mPktDetailTv.setVisibility(View.GONE);
+        } else {
+            mMallGiftTv.setSelected(false);
+            mPktGiftTv.setSelected(true);
+            mPktGiftTv.setBackgroundColor(Color.TRANSPARENT);
+
+            mSlideGift.setVisibility(View.GONE);
+            mSlidePkt.setVisibility(View.VISIBLE);
+
+            mBalanceTv.setVisibility(View.GONE);
+            mSiliverDiamond.setVisibility(View.GONE);
+            mRechargeTv.setVisibility(View.GONE);
+
+            mPktDetailTv.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * 切换礼物状态，花钱礼物和 包裹礼物（礼物卡，免费礼物）
+     */
+    public void switchMallType() {
+        cancelSelectView(mSelectedView);
+        mSelectedGift = null;
+
+        clearAllGiftItemStatus();
+        resetGiftItemBtnInfo();
+    }
+
+    private Subscription mGetBalanceDetailSub;
+
+    /**
+     * 点击包裹礼物详情
+     */
+    private void showPktGiftDetail() {
+        if (mGetBalanceDetailSub != null && !mGetBalanceDetailSub.isUnsubscribed()) {
+            mGetBalanceDetailSub.unsubscribe();
+        }
+        mGetBalanceDetailSub = PayManager.getBalanceDetailRsp()
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Func1<PayProto.QueryBalanceDetailResponse, Observable<BalanceDetail>>() {
+                    @Override
+                    public Observable<BalanceDetail> call(PayProto.QueryBalanceDetailResponse rsp) {
+                        if (rsp == null) {
+                            return Observable.error(new Exception("QueryBalanceDetailResponse is null"));
+                        } else if (rsp.getRetCode() != 0) {
+                            return Observable.error(new Exception("QueryBalanceDetailResponse.retCode:" + rsp.getRetCode()));
+                        }
+                        return Observable.just(BalanceDetail.parseOnlyPktFrom(rsp));
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(getRxActivity().<BalanceDetail>bindUntilEvent(ActivityEvent.DESTROY))
+                .subscribe(new Action1<BalanceDetail>() {
+                    @Override
+                    public void call(BalanceDetail balanceDetail) {
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(BalanceFragment.BUNDLE_KEY_BALANCE_DETAIL, balanceDetail);
+                        bundle.putSerializable(BalanceFragment.BUNDLE_KEY_FROM, BalanceFragment.BUNDLE_VALUE_FROM_GIFT);
+                        BalanceFragment.openFragment((BaseSdkActivity) getContext(), bundle, null);
+
+                        //隐藏包裹界面,防止消耗onBackPressed()事件
+                        EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST));
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, throwable.getMessage());
                     }
                 });
     }
@@ -472,7 +621,6 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
      * @param tipsType
      */
     private void showDiamondTips(int tipsType) {
-
         unsubscribeTipsHideSubscription();
 
         if (mDiamondTips == null) {
@@ -526,6 +674,7 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
             if (left < DisplayUtils.dip2px(getContext(), 13.33f)) {
                 left = DisplayUtils.dip2px(getContext(), 13.33f);
             }
+
             layoutParams.setMargins(left, 0, 0, bottom);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             mGiftBottomPanel.addView(mDiamondTips, layoutParams);
@@ -540,6 +689,8 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
 
         prepareHideDiamondTips();
     }
+
+
 
     /**
      * 五秒后然将优先使用银钻提示消失
@@ -605,7 +756,6 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
                 .doOnSubscribe(new Action0() {
                     @Override
                     public void call() {
-
                         if (mIsBuyGiftBySendBtn) {
                             mSendGiftTv.setVisibility(View.INVISIBLE);
                             mContinueSendBtn.setVisibility(View.VISIBLE);
@@ -630,7 +780,6 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
                 .doOnUnsubscribe(new Action0() {
                     @Override
                     public void call() {
-
                         if (mIsBuyGiftBySendBtn) {
                             mSendGiftTv.setVisibility(View.VISIBLE);
                             mContinueSendBtn.setVisibility(View.GONE);
@@ -703,8 +852,6 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
 
     /**
      * 根据礼物id选中一个礼物
-     *
-     * @param id
      */
     public void selectGiftById(final int id) {
         //如果这个商品是已经选中的商品就走正常选中逻辑就行
@@ -774,11 +921,8 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
 
     /**
      * 横屏时候选中礼物
-     *
-     * @param id
      */
     private void selectGiftByIdLandScape(final int id) {
-
         Observable.create(new Observable.OnSubscribe<Integer>() {
             @Override
             public void call(Subscriber<? super Integer> subscriber) {
@@ -876,29 +1020,23 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
      */
     public void setGiftDisplayViewPagerAdapterDataSource(List<List<GiftMallPresenter.GiftWithCard>> dataSourceList) {
         mGiftDisplayViewPagerAdapter.setDataSource(dataSourceList);
+        mEmptyIv.setVisibility(dataSourceList.isEmpty() ? VISIBLE : GONE);
     }
 
     /**
      * 横屏加载数据源
-     *
-     * @param dataList
-     * @return
      */
     public boolean setGiftDisplayRecycleViewAdapterDataSource(List<GiftMallPresenter.GiftWithCard> dataList) {
         if (mGiftDisplayRecycleViewAdapter != null) {
             mGiftDisplayRecycleViewAdapter.setData(dataList);
+            mEmptyIv.setVisibility(dataList.isEmpty() ? VISIBLE : GONE);
             return true;
         }
-
         return false;
     }
 
-    public void setGiftListErrorViewVisibility(boolean isGone) {
-        if (isGone) {
-            mGiftListErrorView.setVisibility(View.GONE);
-        } else {
-            mGiftListErrorView.setVisibility(View.VISIBLE);
-        }
+    public void setGiftListErrorViewGone(boolean isGone) {
+        mGiftListErrorView.setVisibility(isGone ? GONE : VISIBLE);
     }
 
     public boolean getHasLoadViewFlag() {
@@ -1099,7 +1237,10 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
         if (mNormalBuyAnimationSet != null) {
             mNormalBuyAnimationSet.cancel();
         }
+
         mSendGiftTv.setVisibility(View.VISIBLE);
+        mSendGiftTv.setEnabled(false);
+
         mContinueSendBtn.setVisibility(View.GONE);
     }
 
@@ -1110,8 +1251,7 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
     private GiftMallPresenter mGiftMallPresenter;
 
     //TODO 一定记得改
-    public void firstInflateGiftMallView(GiftMallPresenter giftMallPresenter, Activity activity, RoomBaseDataModel myRoomData, boolean isLandscape) {
-        this.mActivity = activity;
+    public void firstInflateGiftMallView(GiftMallPresenter giftMallPresenter, RoomBaseDataModel myRoomData, boolean isLandscape) {
         this.mMyRoomData = myRoomData;
         this.mIsLandscape = isLandscape;
         this.mGiftMallPresenter = giftMallPresenter;
@@ -1207,7 +1347,6 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
 
     public void onActivityDestroy() {
         MyLog.d(TAG, "onDestroy : unregister eventbus");
-
         unSubscribeDiamondTipSubscription();
 
         if (mNormalBuyAnimationSet != null) {
@@ -1217,7 +1356,6 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
 
     @Override
     public void setVisibility(int visibility) {
-
         if (this.getVisibility() != GONE && visibility == GONE) {
             GiftMallView.super.setVisibility(GONE);
             Animation animation = onCreateAnimation(false);

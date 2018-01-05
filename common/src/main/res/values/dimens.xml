@@ -221,6 +221,7 @@
     <dimen name="view_dimen_800">266.67dp</dimen>
     <dimen name="view_dimen_830">276.67dp</dimen>
     <dimen name="view_dimen_840">280dp</dimen>
+    <dimen name="view_dimen_864">288dp</dimen>
     <dimen name="view_dimen_873">291dp</dimen>
     <dimen name="view_dimen_892">297.33dp</dimen>
     <dimen name="view_dimen_900">300dp</dimen>

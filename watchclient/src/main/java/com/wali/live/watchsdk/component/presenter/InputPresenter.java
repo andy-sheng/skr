@@ -198,7 +198,7 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
                                 case GiftErrorCode.SUCC:
                                     mLiveRoomChatMsgManager.sendFlyBarrageMessageAsync(msg, mMyRoomData.getRoomId(),
                                             mMyRoomData.getUid(), INNER_GLOBAL_PAY_HORN, null, mFansPrivilegeModel);
-                                    //TODO 这里需要刷新一下钻的数量
+                                    MyUserInfoManager.getInstance().setDiamondNum(rsp.getUsableGemCnt());
                                     break;
                                 case GiftErrorCode.GIFT_PAY_BARRAGE:
                                     showBalanceTipDialog();
