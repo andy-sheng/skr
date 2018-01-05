@@ -97,7 +97,7 @@ dependencies {
     compile presentationDependencies.frescoWebpSupport
     compile presentationDependencies.frescoGif
 
-    if (flavorType == "live") {
+    if (rootProject.ext.flavorType == 'live') {
         compile project(':liveclient')
     } else {
         compile project(':watchclient')

@@ -8,8 +8,12 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.base.mvp.IRxView;
+import com.jakewharton.rxbinding.view.RxView;
+
+import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.functions.Action1;
 import rx.subjects.BehaviorSubject;
 
 /**
@@ -54,6 +58,16 @@ public abstract class RxRelativeLayout extends RelativeLayout implements IRxView
         V v = $(id);
         if (v != null) {
             v.setOnClickListener(listener);
+        }
+        return v;
+    }
+
+    protected final <V extends View> V $rxClick(@IdRes int id, long milliSeconds, Action1 action) {
+        V v = $(id);
+        if (v != null) {
+            RxView.clicks(v)
+                    .throttleFirst(milliSeconds, TimeUnit.MILLISECONDS)
+                    .subscribe(action);
         }
         return v;
     }
