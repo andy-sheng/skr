@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/main_act_container"
+<RelativeLayout android:id="@+id/main_act_container"
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/color_black"
@@ -55,7 +55,6 @@
         android:paddingLeft="6dip"
         android:paddingRight="6.67dip"
         android:requiresFadingEdge="none"/>
-
 
     <com.wali.live.watchsdk.component.view.BarrageControlAnimView
         android:id="@+id/msg_anim_view"

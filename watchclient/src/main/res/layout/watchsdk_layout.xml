@@ -63,6 +63,14 @@
         android:inflatedId="@+id/game_barrage_view"
         android:layout="@layout/view_game_barrage"/>
 
+
+    <com.wali.live.watchsdk.component.view.BarrageControlAnimView
+        android:id="@+id/msg_anim_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/live_comment_view"
+        android:layout_marginBottom="-23.66dip"/>
+
     <!--<ViewStub-->
     <!--android:id="@+id/game_bottom_viewstub"-->
     <!--android:layout_width="wrap_content"-->
@@ -102,13 +110,6 @@
         android:layout_height="140dp"
         android:layout_above="@id/live_comment_view"
         android:layout_marginBottom="61.33dip"/>
-
-    <com.wali.live.watchsdk.component.view.BarrageControlAnimView
-        android:id="@+id/msg_anim_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/live_comment_view"
-        android:layout_marginBottom="-23.66dip"/>
 
     <com.wali.live.common.flybarrage.view.FlyBarrageViewGroup
         android:id="@+id/fly_barrage_viewgroup"

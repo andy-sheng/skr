@@ -155,6 +155,7 @@ public class LiveRoomChatMsgManager {
                     if ((msgTypeFilter != null && !msgTypeFilter.isAcceptMsg(barrageMsg)) || !canAddToChatMsgManager(barrageMsg)) {
                         continue;
                     }
+//                    chatMsgList.insert(CommentModel.loadFromBarrage(barrageMsg));
                     replaceEnterAndLike(CommentModel.loadFromBarrage(barrageMsg));
                 }
             }
@@ -238,7 +239,7 @@ public class LiveRoomChatMsgManager {
             msg.setRoomId(roomid);
             msg.setBody(globalMes);
             msg.setAnchorId(anchorId);
-            msg.setSentTime(getLastBrrageMsgSentTime());
+            msg.setSentTime(getLastBarrageMsgSentTime());
             if (MyUserInfoManager.getInstance().getUser() != null) {
                 msg.setCertificationType(MyUserInfoManager.getInstance().getUser().getCertificationType());
             }
@@ -313,7 +314,7 @@ public class LiveRoomChatMsgManager {
             msg.setRoomId(liveId);
             msg.setBody(message);
             msg.setAnchorId(anchorId);
-            msg.setSentTime(getLastBrrageMsgSentTime());
+            msg.setSentTime(getLastBarrageMsgSentTime());
             if (MyUserInfoManager.getInstance().getUser() != null) {
                 msg.setCertificationType(MyUserInfoManager.getInstance().getUser().getCertificationType());
             }
@@ -333,7 +334,7 @@ public class LiveRoomChatMsgManager {
             msg.setRoomId(liveId);
             msg.setBody(message);
             msg.setAnchorId(anchorId);
-            msg.setSentTime(getLastBrrageMsgSentTime());
+            msg.setSentTime(getLastBarrageMsgSentTime());
             msg.setRedName(MyUserInfoManager.getInstance().getUser().isRedName());
             if (MyUserInfoManager.getInstance().getUser() != null) {
                 msg.setCertificationType(MyUserInfoManager.getInstance().getUser().getCertificationType());
@@ -353,7 +354,7 @@ public class LiveRoomChatMsgManager {
             msg.setRoomId(liveId);
             msg.setBody(GlobalData.app().getString(R.string.barrage_share_body));
             msg.setAnchorId(anchorId);
-            msg.setSentTime(getLastBrrageMsgSentTime());
+            msg.setSentTime(getLastBarrageMsgSentTime());
             msg.setRedName(MyUserInfoManager.getInstance().getUser().isRedName());
             if (MyUserInfoManager.getInstance().getUser() != null) {
                 msg.setCertificationType(MyUserInfoManager.getInstance().getUser().getCertificationType());
@@ -364,7 +365,7 @@ public class LiveRoomChatMsgManager {
     }
 
 
-    public BarrageMsg sendLevelUpgradeAnimeMessageAsync(String liveId, long anchorId) {
+    public BarrageMsg sendLevelUpgradeAnimMessageAsync(String liveId, long anchorId) {
         if (!TextUtils.isEmpty(liveId)) {
             BarrageMsg msg = new BarrageMsg();
             msg.setMsgType(BarrageMsgType.B_MSG_TYPE_ANIM);
@@ -375,7 +376,7 @@ public class LiveRoomChatMsgManager {
             String name = TextUtils.isEmpty(msg.getSenderName()) ? String.valueOf(msg.getSender()) : msg.getSenderName();
             msg.setBody(String.format(GlobalData.app().getResources().getString(R.string.brrage_level_upgrade), name, msg.getSenderLevel()));
             msg.setAnchorId(anchorId);
-            msg.setSentTime(getLastBrrageMsgSentTime());
+            msg.setSentTime(getLastBarrageMsgSentTime());
             if (MyUserInfoManager.getInstance().getUser() != null) {
                 msg.setCertificationType(MyUserInfoManager.getInstance().getUser().getCertificationType());
             }
@@ -399,15 +400,24 @@ public class LiveRoomChatMsgManager {
         boolean canAdd = true;
         if (null != msg) {
             switch (msg.getMsgType()) {
-
                 case BarrageMsgType.B_MSG_TYPE_JOIN: {
+                    if (msg.getVipLevel() > 0 && !msg.isVipFrozen() && msg.isVipHide()) {
+                        // vip隐身,不显示入场消息
+                        return false;
+                    } else if (msg.getSender() == MyUserInfoManager.getInstance().getUuid()) {
+                        //注：助手因为是拉消息的逻辑，所以再自己的进场消息之前也会拉回来其他的进场消息，
+                        // 下面的checkMoreThanMaxCountByTime函数的丢消息逻辑，两个消息时间间隔小于5s,
+                        // 则会将后者消息扔掉。这里避免将自己消息扔掉，所以在之前单独加回来。
+                        return true;
+                    }
                     try {
                         String variables = MLPreferenceUtils.getSettingString(GlobalData.app(), PreferenceKeys.PREF_KEY_CONVERGED, PreferenceKeys.CONVERGED_DEFAULT_VALUE);
                         String[] variable = variables.split("_");
                         if (msg.getSenderLevel() >= Integer.parseInt(variable[0]) || rankTops.contains(msg.getSender())) {
                             canAdd = true;
-                        } else
+                        } else {
                             canAdd = !checkMoreThanMaxCountByTime(msg.getSentTime(), Integer.parseInt(variable[2]) * 1000, Integer.parseInt(variable[3]));
+                        }
                     } catch (Exception e) {
                         MyLog.e(e);
                     }
@@ -503,7 +513,7 @@ public class LiveRoomChatMsgManager {
         return result >= maxCount;
     }
 
-    public long getLastBrrageMsgSentTime() {
+    public long getLastBarrageMsgSentTime() {
         long time = 0;
         CommentModel last = chatMsgList.getLastRough();
         if (last != null) {

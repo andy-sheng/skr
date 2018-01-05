@@ -198,7 +198,7 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
                                 case GiftErrorCode.SUCC:
                                     mLiveRoomChatMsgManager.sendFlyBarrageMessageAsync(msg, mMyRoomData.getRoomId(),
                                             mMyRoomData.getUid(), INNER_GLOBAL_PAY_HORN, null, mFansPrivilegeModel);
-                                    MyUserInfoManager.getInstance().setDiamondNum(rsp.getUsableGemCnt());
+                                    MyUserInfoManager.getInstance().setDiamonds(rsp.getUsableGemCnt(), rsp.getUsableVirtualGemCnt());
                                     break;
                                 case GiftErrorCode.GIFT_PAY_BARRAGE:
                                     showBalanceTipDialog();

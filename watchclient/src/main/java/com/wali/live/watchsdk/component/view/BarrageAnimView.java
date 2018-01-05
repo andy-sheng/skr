@@ -32,10 +32,15 @@ import com.wali.live.watchsdk.R;
  */
 public class BarrageAnimView extends RelativeLayout implements IAnimView {
     private final String TAG = "BarrageAnimView";
+
     private final static int LEVEL_MARGIN_LEFT = DisplayUtils.dip2px(5.67f);
     private final static int LEVEL_MARGIN_RIGHT = DisplayUtils.dip2px(5f);
     private final static int LEVEL_MARGIN_TOP = DisplayUtils.dip2px(1f);
     private final static int LEVEL_MARGIN_BOTTOM = DisplayUtils.dip2px(1.33f);
+
+    private final static int ANIM_DV_WIDTH = DisplayUtils.dip2px(257);
+    private final static int ANIM_DV_HEIGHT = DisplayUtils.dip2px(81);
+    private final static int ANIM_MARGIN_RIGHT = DisplayUtils.dip2px(10);
 
     //该房间是否禁止播放VIP进场特效， 0 不禁止， 1 禁止
     public static final int VIP_ENTER_ROOM_EFFECT_ALLOW = 0;
@@ -59,6 +64,7 @@ public class BarrageAnimView extends RelativeLayout implements IAnimView {
     private Animation mLeaveAnimation;
     private int mCurEffectLevel = -1;
     private boolean mJoinAnimEnable = true;
+    private Runnable mRunnable;
 
     public void setJoinAnimEnable(boolean joinAnimEnable) {
         mJoinAnimEnable = joinAnimEnable;
@@ -149,11 +155,11 @@ public class BarrageAnimView extends RelativeLayout implements IAnimView {
         MyLog.d(TAG, "setupLayoutParams");
         if (mAnimDv == null) {
             mAnimDv = new SimpleDraweeView(getContext());
+            LayoutParams lp = new LayoutParams(ANIM_DV_WIDTH, ANIM_DV_HEIGHT);
+            lp.rightMargin = ANIM_MARGIN_RIGHT;
+            lp.addRule(ALIGN_RIGHT, R.id.content_area);
+            mAnimContainer.addView(mAnimDv, lp);
         }
-        LayoutParams lp = new LayoutParams(DisplayUtils.dip2px(257), DisplayUtils.dip2px(81));
-        lp.rightMargin = DisplayUtils.dip2px(10);
-        lp.addRule(ALIGN_RIGHT, R.id.content_area);
-        mAnimContainer.addView(mAnimDv, lp);
     }
 
     private int getLevelAnimIndex() {
@@ -191,14 +197,18 @@ public class BarrageAnimView extends RelativeLayout implements IAnimView {
                         FrescoWorker.frescoShowWebp(mAnimDv, mLevelAnimMap.get(mCurEffectLevel),
                                 DisplayUtils.dip2px(200), DisplayUtils.dip2px(81));
                     }
-                    postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mAnimDv.setVisibility(View.INVISIBLE);
-                            mAnimContainer.removeView(mAnimDv);
-                            startLeaveAnim();
-                        }
-                    }, 4_000);
+                    if (mRunnable == null) {
+                        mRunnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                mAnimDv.setVisibility(View.INVISIBLE);
+                                mAnimContainer.removeView(mAnimDv);
+                                mAnimDv = null;
+                                startLeaveAnim();
+                            }
+                        };
+                    }
+                    postDelayed(mRunnable, 4_000);
                 }
 
                 @Override
@@ -285,18 +295,21 @@ public class BarrageAnimView extends RelativeLayout implements IAnimView {
 
     @Override
     public boolean onStart() {
+        MyLog.d(TAG, "onStart");
         play();
         return true;
     }
 
     @Override
     public boolean onEnd() {
+        MyLog.d(TAG, "onEnd");
         return false;
     }
 
     @Override
     public void reset() {
         MyLog.d(TAG, "reset");
+        removeCallbacks(mRunnable);
         mAnimContainer.removeView(mAnimDv);
         Animation animation = mContentView.getAnimation();
         if (animation != null) {
@@ -304,16 +317,12 @@ public class BarrageAnimView extends RelativeLayout implements IAnimView {
         }
         mContentView.clearAnimation();
         setVisibility(View.GONE);
+        mAnimDv = null;
     }
 
     @Override
     public void onDestroy() {
         MyLog.d(TAG, "onDestroy");
-        mAnimContainer.removeView(mAnimDv);
-        Animation animation = mContentView.getAnimation();
-        if (animation != null) {
-            animation.cancel();
-        }
-        mContentView.clearAnimation();
+        reset();
     }
 }
