@@ -295,7 +295,6 @@ public class MyUserInfoManager {
     }
 
     public synchronized void setDiamonds(int diamondNum, int virtualGemCnt) {
-        MyLog.w(TAG, "diamondNum=" + diamondNum + " virtualDiamondGemCnt" + virtualGemCnt);
         mMyInfo.setDiamondNum(diamondNum);
         mMyInfo.setVirtualDiamondNum(virtualGemCnt);
         EventBus.getDefault().post(new UserInfoEvent());

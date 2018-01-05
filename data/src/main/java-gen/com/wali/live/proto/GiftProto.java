@@ -8188,7 +8188,7 @@ public final class GiftProto {
      * <code>required uint64 receiverId = 2;</code>
      *
      * <pre>
-     * 接受者id，zuid
+     * 主播id，zuid
      * </pre>
      */
     boolean hasReceiverId();
@@ -8196,7 +8196,7 @@ public final class GiftProto {
      * <code>required uint64 receiverId = 2;</code>
      *
      * <pre>
-     * 接受者id，zuid
+     * 主播id，zuid
      * </pre>
      */
     long getReceiverId();
@@ -8205,7 +8205,7 @@ public final class GiftProto {
      * <code>required string roomId = 3;</code>
      *
      * <pre>
-     * 房间id
+     * 主播房间id
      * </pre>
      */
     boolean hasRoomId();
@@ -8213,7 +8213,7 @@ public final class GiftProto {
      * <code>required string roomId = 3;</code>
      *
      * <pre>
-     * 房间id
+     * 主播房间id
      * </pre>
      */
     java.lang.String getRoomId();
@@ -8221,7 +8221,7 @@ public final class GiftProto {
      * <code>required string roomId = 3;</code>
      *
      * <pre>
-     * 房间id
+     * 主播房间id
      * </pre>
      */
     com.google.protobuf.ByteString
@@ -8231,7 +8231,7 @@ public final class GiftProto {
      * <code>required uint32 giftId = 4;</code>
      *
      * <pre>
-     * 商品id
+     * 礼物商品id
      * </pre>
      */
     boolean hasGiftId();
@@ -8239,7 +8239,7 @@ public final class GiftProto {
      * <code>required uint32 giftId = 4;</code>
      *
      * <pre>
-     * 商品id
+     * 礼物商品id
      * </pre>
      */
     int getGiftId();
@@ -8248,7 +8248,7 @@ public final class GiftProto {
      * <code>required uint64 timestamp = 5;</code>
      *
      * <pre>
-     * 时间戳
+     * 客户端时间戳
      * </pre>
      */
     boolean hasTimestamp();
@@ -8256,7 +8256,7 @@ public final class GiftProto {
      * <code>required uint64 timestamp = 5;</code>
      *
      * <pre>
-     * 时间戳
+     * 客户端时间戳
      * </pre>
      */
     long getTimestamp();
@@ -8265,7 +8265,7 @@ public final class GiftProto {
      * <code>optional uint32 count = 8 [default = 1];</code>
      *
      * <pre>
-     * 连续赠送次
+     * 礼物连击次数
      * </pre>
      */
     boolean hasCount();
@@ -8273,10 +8273,27 @@ public final class GiftProto {
      * <code>optional uint32 count = 8 [default = 1];</code>
      *
      * <pre>
-     * 连续赠送次
+     * 礼物连击次数
      * </pre>
      */
     int getCount();
+
+    /**
+     * <code>optional uint32 giftCount = 9 [default = 1];</code>
+     *
+     * <pre>
+     * 此次发送的礼物个数
+     * </pre>
+     */
+    boolean hasGiftCount();
+    /**
+     * <code>optional uint32 giftCount = 9 [default = 1];</code>
+     *
+     * <pre>
+     * 此次发送的礼物个数
+     * </pre>
+     */
+    int getGiftCount();
 
     /**
      * <code>optional uint64 continueId = 10;</code>
@@ -8485,24 +8502,29 @@ public final class GiftProto {
               count_ = input.readUInt32();
               break;
             }
-            case 80: {
+            case 72: {
               bitField0_ |= 0x00000040;
+              giftCount_ = input.readUInt32();
+              break;
+            }
+            case 80: {
+              bitField0_ |= 0x00000080;
               continueId_ = input.readUInt64();
               break;
             }
             case 90: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000080;
+              bitField0_ |= 0x00000100;
               msgBody_ = bs;
               break;
             }
             case 96: {
-              bitField0_ |= 0x00000100;
+              bitField0_ |= 0x00000200;
               roomType_ = input.readUInt32();
               break;
             }
             case 104: {
-              bitField0_ |= 0x00000200;
+              bitField0_ |= 0x00000400;
               useGiftCard_ = input.readBool();
               break;
             }
@@ -8512,14 +8534,14 @@ public final class GiftProto {
               if (value == null) {
                 unknownFields.mergeVarintField(14, rawValue);
               } else {
-                bitField0_ |= 0x00000400;
+                bitField0_ |= 0x00000800;
                 platform_ = value;
               }
               break;
             }
             case 122: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000800;
+              bitField0_ |= 0x00001000;
               accessToken_ = bs;
               break;
             }
@@ -8592,7 +8614,7 @@ public final class GiftProto {
      * <code>required uint64 receiverId = 2;</code>
      *
      * <pre>
-     * 接受者id，zuid
+     * 主播id，zuid
      * </pre>
      */
     public boolean hasReceiverId() {
@@ -8602,7 +8624,7 @@ public final class GiftProto {
      * <code>required uint64 receiverId = 2;</code>
      *
      * <pre>
-     * 接受者id，zuid
+     * 主播id，zuid
      * </pre>
      */
     public long getReceiverId() {
@@ -8615,7 +8637,7 @@ public final class GiftProto {
      * <code>required string roomId = 3;</code>
      *
      * <pre>
-     * 房间id
+     * 主播房间id
      * </pre>
      */
     public boolean hasRoomId() {
@@ -8625,7 +8647,7 @@ public final class GiftProto {
      * <code>required string roomId = 3;</code>
      *
      * <pre>
-     * 房间id
+     * 主播房间id
      * </pre>
      */
     public java.lang.String getRoomId() {
@@ -8646,7 +8668,7 @@ public final class GiftProto {
      * <code>required string roomId = 3;</code>
      *
      * <pre>
-     * 房间id
+     * 主播房间id
      * </pre>
      */
     public com.google.protobuf.ByteString
@@ -8669,7 +8691,7 @@ public final class GiftProto {
      * <code>required uint32 giftId = 4;</code>
      *
      * <pre>
-     * 商品id
+     * 礼物商品id
      * </pre>
      */
     public boolean hasGiftId() {
@@ -8679,7 +8701,7 @@ public final class GiftProto {
      * <code>required uint32 giftId = 4;</code>
      *
      * <pre>
-     * 商品id
+     * 礼物商品id
      * </pre>
      */
     public int getGiftId() {
@@ -8692,7 +8714,7 @@ public final class GiftProto {
      * <code>required uint64 timestamp = 5;</code>
      *
      * <pre>
-     * 时间戳
+     * 客户端时间戳
      * </pre>
      */
     public boolean hasTimestamp() {
@@ -8702,7 +8724,7 @@ public final class GiftProto {
      * <code>required uint64 timestamp = 5;</code>
      *
      * <pre>
-     * 时间戳
+     * 客户端时间戳
      * </pre>
      */
     public long getTimestamp() {
@@ -8715,7 +8737,7 @@ public final class GiftProto {
      * <code>optional uint32 count = 8 [default = 1];</code>
      *
      * <pre>
-     * 连续赠送次
+     * 礼物连击次数
      * </pre>
      */
     public boolean hasCount() {
@@ -8725,11 +8747,34 @@ public final class GiftProto {
      * <code>optional uint32 count = 8 [default = 1];</code>
      *
      * <pre>
-     * 连续赠送次
+     * 礼物连击次数
      * </pre>
      */
     public int getCount() {
       return count_;
+    }
+
+    public static final int GIFTCOUNT_FIELD_NUMBER = 9;
+    private int giftCount_;
+    /**
+     * <code>optional uint32 giftCount = 9 [default = 1];</code>
+     *
+     * <pre>
+     * 此次发送的礼物个数
+     * </pre>
+     */
+    public boolean hasGiftCount() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional uint32 giftCount = 9 [default = 1];</code>
+     *
+     * <pre>
+     * 此次发送的礼物个数
+     * </pre>
+     */
+    public int getGiftCount() {
+      return giftCount_;
     }
 
     public static final int CONTINUEID_FIELD_NUMBER = 10;
@@ -8742,7 +8787,7 @@ public final class GiftProto {
      * </pre>
      */
     public boolean hasContinueId() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
+      return ((bitField0_ & 0x00000080) == 0x00000080);
     }
     /**
      * <code>optional uint64 continueId = 10;</code>
@@ -8765,7 +8810,7 @@ public final class GiftProto {
      * </pre>
      */
     public boolean hasMsgBody() {
-      return ((bitField0_ & 0x00000080) == 0x00000080);
+      return ((bitField0_ & 0x00000100) == 0x00000100);
     }
     /**
      * <code>optional string msg_body = 11;</code>
@@ -8819,7 +8864,7 @@ public final class GiftProto {
      * </pre>
      */
     public boolean hasRoomType() {
-      return ((bitField0_ & 0x00000100) == 0x00000100);
+      return ((bitField0_ & 0x00000200) == 0x00000200);
     }
     /**
      * <code>optional uint32 room_type = 12;</code>
@@ -8842,7 +8887,7 @@ public final class GiftProto {
      * </pre>
      */
     public boolean hasUseGiftCard() {
-      return ((bitField0_ & 0x00000200) == 0x00000200);
+      return ((bitField0_ & 0x00000400) == 0x00000400);
     }
     /**
      * <code>optional bool use_gift_card = 13;</code>
@@ -8865,7 +8910,7 @@ public final class GiftProto {
      * </pre>
      */
     public boolean hasPlatform() {
-      return ((bitField0_ & 0x00000400) == 0x00000400);
+      return ((bitField0_ & 0x00000800) == 0x00000800);
     }
     /**
      * <code>optional .com.wali.live.proto.Platform platform = 14;</code>
@@ -8888,7 +8933,7 @@ public final class GiftProto {
      * </pre>
      */
     public boolean hasAccessToken() {
-      return ((bitField0_ & 0x00000800) == 0x00000800);
+      return ((bitField0_ & 0x00001000) == 0x00001000);
     }
     /**
      * <code>optional string access_token = 15;</code>
@@ -8939,6 +8984,7 @@ public final class GiftProto {
       giftId_ = 0;
       timestamp_ = 0L;
       count_ = 1;
+      giftCount_ = 1;
       continueId_ = 0L;
       msgBody_ = "";
       roomType_ = 0;
@@ -8998,21 +9044,24 @@ public final class GiftProto {
         output.writeUInt32(8, count_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeUInt64(10, continueId_);
+        output.writeUInt32(9, giftCount_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeBytes(11, getMsgBodyBytes());
+        output.writeUInt64(10, continueId_);
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        output.writeUInt32(12, roomType_);
+        output.writeBytes(11, getMsgBodyBytes());
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        output.writeBool(13, useGiftCard_);
+        output.writeUInt32(12, roomType_);
       }
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        output.writeEnum(14, platform_.getNumber());
+        output.writeBool(13, useGiftCard_);
       }
       if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        output.writeEnum(14, platform_.getNumber());
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
         output.writeBytes(15, getAccessTokenBytes());
       }
       getUnknownFields().writeTo(output);
@@ -9050,25 +9099,29 @@ public final class GiftProto {
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(10, continueId_);
+          .computeUInt32Size(9, giftCount_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(11, getMsgBodyBytes());
+          .computeUInt64Size(10, continueId_);
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(12, roomType_);
+          .computeBytesSize(11, getMsgBodyBytes());
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(13, useGiftCard_);
+          .computeUInt32Size(12, roomType_);
       }
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(14, platform_.getNumber());
+          .computeBoolSize(13, useGiftCard_);
       }
       if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(14, platform_.getNumber());
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(15, getAccessTokenBytes());
       }
@@ -9205,18 +9258,20 @@ public final class GiftProto {
         bitField0_ = (bitField0_ & ~0x00000010);
         count_ = 1;
         bitField0_ = (bitField0_ & ~0x00000020);
-        continueId_ = 0L;
+        giftCount_ = 1;
         bitField0_ = (bitField0_ & ~0x00000040);
-        msgBody_ = "";
+        continueId_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000080);
-        roomType_ = 0;
+        msgBody_ = "";
         bitField0_ = (bitField0_ & ~0x00000100);
-        useGiftCard_ = false;
+        roomType_ = 0;
         bitField0_ = (bitField0_ & ~0x00000200);
-        platform_ = com.wali.live.proto.GiftProto.Platform.IOS;
+        useGiftCard_ = false;
         bitField0_ = (bitField0_ & ~0x00000400);
-        accessToken_ = "";
+        platform_ = com.wali.live.proto.GiftProto.Platform.IOS;
         bitField0_ = (bitField0_ & ~0x00000800);
+        accessToken_ = "";
+        bitField0_ = (bitField0_ & ~0x00001000);
         return this;
       }
 
@@ -9272,25 +9327,29 @@ public final class GiftProto {
         if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
           to_bitField0_ |= 0x00000040;
         }
-        result.continueId_ = continueId_;
+        result.giftCount_ = giftCount_;
         if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
           to_bitField0_ |= 0x00000080;
         }
-        result.msgBody_ = msgBody_;
+        result.continueId_ = continueId_;
         if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
           to_bitField0_ |= 0x00000100;
         }
-        result.roomType_ = roomType_;
+        result.msgBody_ = msgBody_;
         if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
           to_bitField0_ |= 0x00000200;
         }
-        result.useGiftCard_ = useGiftCard_;
+        result.roomType_ = roomType_;
         if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
           to_bitField0_ |= 0x00000400;
         }
-        result.platform_ = platform_;
+        result.useGiftCard_ = useGiftCard_;
         if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
           to_bitField0_ |= 0x00000800;
+        }
+        result.platform_ = platform_;
+        if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
+          to_bitField0_ |= 0x00001000;
         }
         result.accessToken_ = accessToken_;
         result.bitField0_ = to_bitField0_;
@@ -9329,11 +9388,14 @@ public final class GiftProto {
         if (other.hasCount()) {
           setCount(other.getCount());
         }
+        if (other.hasGiftCount()) {
+          setGiftCount(other.getGiftCount());
+        }
         if (other.hasContinueId()) {
           setContinueId(other.getContinueId());
         }
         if (other.hasMsgBody()) {
-          bitField0_ |= 0x00000080;
+          bitField0_ |= 0x00000100;
           msgBody_ = other.msgBody_;
           onChanged();
         }
@@ -9347,7 +9409,7 @@ public final class GiftProto {
           setPlatform(other.getPlatform());
         }
         if (other.hasAccessToken()) {
-          bitField0_ |= 0x00000800;
+          bitField0_ |= 0x00001000;
           accessToken_ = other.accessToken_;
           onChanged();
         }
@@ -9451,7 +9513,7 @@ public final class GiftProto {
        * <code>required uint64 receiverId = 2;</code>
        *
        * <pre>
-       * 接受者id，zuid
+       * 主播id，zuid
        * </pre>
        */
       public boolean hasReceiverId() {
@@ -9461,7 +9523,7 @@ public final class GiftProto {
        * <code>required uint64 receiverId = 2;</code>
        *
        * <pre>
-       * 接受者id，zuid
+       * 主播id，zuid
        * </pre>
        */
       public long getReceiverId() {
@@ -9471,7 +9533,7 @@ public final class GiftProto {
        * <code>required uint64 receiverId = 2;</code>
        *
        * <pre>
-       * 接受者id，zuid
+       * 主播id，zuid
        * </pre>
        */
       public Builder setReceiverId(long value) {
@@ -9484,7 +9546,7 @@ public final class GiftProto {
        * <code>required uint64 receiverId = 2;</code>
        *
        * <pre>
-       * 接受者id，zuid
+       * 主播id，zuid
        * </pre>
        */
       public Builder clearReceiverId() {
@@ -9499,7 +9561,7 @@ public final class GiftProto {
        * <code>required string roomId = 3;</code>
        *
        * <pre>
-       * 房间id
+       * 主播房间id
        * </pre>
        */
       public boolean hasRoomId() {
@@ -9509,7 +9571,7 @@ public final class GiftProto {
        * <code>required string roomId = 3;</code>
        *
        * <pre>
-       * 房间id
+       * 主播房间id
        * </pre>
        */
       public java.lang.String getRoomId() {
@@ -9530,7 +9592,7 @@ public final class GiftProto {
        * <code>required string roomId = 3;</code>
        *
        * <pre>
-       * 房间id
+       * 主播房间id
        * </pre>
        */
       public com.google.protobuf.ByteString
@@ -9550,7 +9612,7 @@ public final class GiftProto {
        * <code>required string roomId = 3;</code>
        *
        * <pre>
-       * 房间id
+       * 主播房间id
        * </pre>
        */
       public Builder setRoomId(
@@ -9567,7 +9629,7 @@ public final class GiftProto {
        * <code>required string roomId = 3;</code>
        *
        * <pre>
-       * 房间id
+       * 主播房间id
        * </pre>
        */
       public Builder clearRoomId() {
@@ -9580,7 +9642,7 @@ public final class GiftProto {
        * <code>required string roomId = 3;</code>
        *
        * <pre>
-       * 房间id
+       * 主播房间id
        * </pre>
        */
       public Builder setRoomIdBytes(
@@ -9599,7 +9661,7 @@ public final class GiftProto {
        * <code>required uint32 giftId = 4;</code>
        *
        * <pre>
-       * 商品id
+       * 礼物商品id
        * </pre>
        */
       public boolean hasGiftId() {
@@ -9609,7 +9671,7 @@ public final class GiftProto {
        * <code>required uint32 giftId = 4;</code>
        *
        * <pre>
-       * 商品id
+       * 礼物商品id
        * </pre>
        */
       public int getGiftId() {
@@ -9619,7 +9681,7 @@ public final class GiftProto {
        * <code>required uint32 giftId = 4;</code>
        *
        * <pre>
-       * 商品id
+       * 礼物商品id
        * </pre>
        */
       public Builder setGiftId(int value) {
@@ -9632,7 +9694,7 @@ public final class GiftProto {
        * <code>required uint32 giftId = 4;</code>
        *
        * <pre>
-       * 商品id
+       * 礼物商品id
        * </pre>
        */
       public Builder clearGiftId() {
@@ -9647,7 +9709,7 @@ public final class GiftProto {
        * <code>required uint64 timestamp = 5;</code>
        *
        * <pre>
-       * 时间戳
+       * 客户端时间戳
        * </pre>
        */
       public boolean hasTimestamp() {
@@ -9657,7 +9719,7 @@ public final class GiftProto {
        * <code>required uint64 timestamp = 5;</code>
        *
        * <pre>
-       * 时间戳
+       * 客户端时间戳
        * </pre>
        */
       public long getTimestamp() {
@@ -9667,7 +9729,7 @@ public final class GiftProto {
        * <code>required uint64 timestamp = 5;</code>
        *
        * <pre>
-       * 时间戳
+       * 客户端时间戳
        * </pre>
        */
       public Builder setTimestamp(long value) {
@@ -9680,7 +9742,7 @@ public final class GiftProto {
        * <code>required uint64 timestamp = 5;</code>
        *
        * <pre>
-       * 时间戳
+       * 客户端时间戳
        * </pre>
        */
       public Builder clearTimestamp() {
@@ -9695,7 +9757,7 @@ public final class GiftProto {
        * <code>optional uint32 count = 8 [default = 1];</code>
        *
        * <pre>
-       * 连续赠送次
+       * 礼物连击次数
        * </pre>
        */
       public boolean hasCount() {
@@ -9705,7 +9767,7 @@ public final class GiftProto {
        * <code>optional uint32 count = 8 [default = 1];</code>
        *
        * <pre>
-       * 连续赠送次
+       * 礼物连击次数
        * </pre>
        */
       public int getCount() {
@@ -9715,7 +9777,7 @@ public final class GiftProto {
        * <code>optional uint32 count = 8 [default = 1];</code>
        *
        * <pre>
-       * 连续赠送次
+       * 礼物连击次数
        * </pre>
        */
       public Builder setCount(int value) {
@@ -9728,12 +9790,60 @@ public final class GiftProto {
        * <code>optional uint32 count = 8 [default = 1];</code>
        *
        * <pre>
-       * 连续赠送次
+       * 礼物连击次数
        * </pre>
        */
       public Builder clearCount() {
         bitField0_ = (bitField0_ & ~0x00000020);
         count_ = 1;
+        onChanged();
+        return this;
+      }
+
+      private int giftCount_ = 1;
+      /**
+       * <code>optional uint32 giftCount = 9 [default = 1];</code>
+       *
+       * <pre>
+       * 此次发送的礼物个数
+       * </pre>
+       */
+      public boolean hasGiftCount() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional uint32 giftCount = 9 [default = 1];</code>
+       *
+       * <pre>
+       * 此次发送的礼物个数
+       * </pre>
+       */
+      public int getGiftCount() {
+        return giftCount_;
+      }
+      /**
+       * <code>optional uint32 giftCount = 9 [default = 1];</code>
+       *
+       * <pre>
+       * 此次发送的礼物个数
+       * </pre>
+       */
+      public Builder setGiftCount(int value) {
+        bitField0_ |= 0x00000040;
+        giftCount_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 giftCount = 9 [default = 1];</code>
+       *
+       * <pre>
+       * 此次发送的礼物个数
+       * </pre>
+       */
+      public Builder clearGiftCount() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        giftCount_ = 1;
         onChanged();
         return this;
       }
@@ -9747,7 +9857,7 @@ public final class GiftProto {
        * </pre>
        */
       public boolean hasContinueId() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
+        return ((bitField0_ & 0x00000080) == 0x00000080);
       }
       /**
        * <code>optional uint64 continueId = 10;</code>
@@ -9767,7 +9877,7 @@ public final class GiftProto {
        * </pre>
        */
       public Builder setContinueId(long value) {
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000080;
         continueId_ = value;
         onChanged();
         return this;
@@ -9780,7 +9890,7 @@ public final class GiftProto {
        * </pre>
        */
       public Builder clearContinueId() {
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         continueId_ = 0L;
         onChanged();
         return this;
@@ -9795,7 +9905,7 @@ public final class GiftProto {
        * </pre>
        */
       public boolean hasMsgBody() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
+        return ((bitField0_ & 0x00000100) == 0x00000100);
       }
       /**
        * <code>optional string msg_body = 11;</code>
@@ -9850,7 +9960,7 @@ public final class GiftProto {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000080;
+  bitField0_ |= 0x00000100;
         msgBody_ = value;
         onChanged();
         return this;
@@ -9863,7 +9973,7 @@ public final class GiftProto {
        * </pre>
        */
       public Builder clearMsgBody() {
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000100);
         msgBody_ = getDefaultInstance().getMsgBody();
         onChanged();
         return this;
@@ -9880,7 +9990,7 @@ public final class GiftProto {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000080;
+  bitField0_ |= 0x00000100;
         msgBody_ = value;
         onChanged();
         return this;
@@ -9895,7 +10005,7 @@ public final class GiftProto {
        * </pre>
        */
       public boolean hasRoomType() {
-        return ((bitField0_ & 0x00000100) == 0x00000100);
+        return ((bitField0_ & 0x00000200) == 0x00000200);
       }
       /**
        * <code>optional uint32 room_type = 12;</code>
@@ -9915,7 +10025,7 @@ public final class GiftProto {
        * </pre>
        */
       public Builder setRoomType(int value) {
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         roomType_ = value;
         onChanged();
         return this;
@@ -9928,7 +10038,7 @@ public final class GiftProto {
        * </pre>
        */
       public Builder clearRoomType() {
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000200);
         roomType_ = 0;
         onChanged();
         return this;
@@ -9943,7 +10053,7 @@ public final class GiftProto {
        * </pre>
        */
       public boolean hasUseGiftCard() {
-        return ((bitField0_ & 0x00000200) == 0x00000200);
+        return ((bitField0_ & 0x00000400) == 0x00000400);
       }
       /**
        * <code>optional bool use_gift_card = 13;</code>
@@ -9963,7 +10073,7 @@ public final class GiftProto {
        * </pre>
        */
       public Builder setUseGiftCard(boolean value) {
-        bitField0_ |= 0x00000200;
+        bitField0_ |= 0x00000400;
         useGiftCard_ = value;
         onChanged();
         return this;
@@ -9976,7 +10086,7 @@ public final class GiftProto {
        * </pre>
        */
       public Builder clearUseGiftCard() {
-        bitField0_ = (bitField0_ & ~0x00000200);
+        bitField0_ = (bitField0_ & ~0x00000400);
         useGiftCard_ = false;
         onChanged();
         return this;
@@ -9991,7 +10101,7 @@ public final class GiftProto {
        * </pre>
        */
       public boolean hasPlatform() {
-        return ((bitField0_ & 0x00000400) == 0x00000400);
+        return ((bitField0_ & 0x00000800) == 0x00000800);
       }
       /**
        * <code>optional .com.wali.live.proto.Platform platform = 14;</code>
@@ -10014,7 +10124,7 @@ public final class GiftProto {
         if (value == null) {
           throw new NullPointerException();
         }
-        bitField0_ |= 0x00000400;
+        bitField0_ |= 0x00000800;
         platform_ = value;
         onChanged();
         return this;
@@ -10027,7 +10137,7 @@ public final class GiftProto {
        * </pre>
        */
       public Builder clearPlatform() {
-        bitField0_ = (bitField0_ & ~0x00000400);
+        bitField0_ = (bitField0_ & ~0x00000800);
         platform_ = com.wali.live.proto.GiftProto.Platform.IOS;
         onChanged();
         return this;
@@ -10042,7 +10152,7 @@ public final class GiftProto {
        * </pre>
        */
       public boolean hasAccessToken() {
-        return ((bitField0_ & 0x00000800) == 0x00000800);
+        return ((bitField0_ & 0x00001000) == 0x00001000);
       }
       /**
        * <code>optional string access_token = 15;</code>
@@ -10097,7 +10207,7 @@ public final class GiftProto {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000800;
+  bitField0_ |= 0x00001000;
         accessToken_ = value;
         onChanged();
         return this;
@@ -10110,7 +10220,7 @@ public final class GiftProto {
        * </pre>
        */
       public Builder clearAccessToken() {
-        bitField0_ = (bitField0_ & ~0x00000800);
+        bitField0_ = (bitField0_ & ~0x00001000);
         accessToken_ = getDefaultInstance().getAccessToken();
         onChanged();
         return this;
@@ -10127,7 +10237,7 @@ public final class GiftProto {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000800;
+  bitField0_ |= 0x00001000;
         accessToken_ = value;
         onChanged();
         return this;
@@ -13702,6 +13812,4464 @@ public final class GiftProto {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetMibiBalanceResponse)
   }
 
+  public interface GetConsumeTaskListReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetConsumeTaskListReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    boolean hasUuid();
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    long getUuid();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetConsumeTaskListReq}
+   *
+   * <pre>
+   *获取消费任务列表c2s接口
+   *zhibo.activity.getconsumetasklist
+   * </pre>
+   */
+  public static final class GetConsumeTaskListReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetConsumeTaskListReq)
+      GetConsumeTaskListReqOrBuilder {
+    // Use GetConsumeTaskListReq.newBuilder() to construct.
+    private GetConsumeTaskListReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetConsumeTaskListReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetConsumeTaskListReq defaultInstance;
+    public static GetConsumeTaskListReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetConsumeTaskListReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetConsumeTaskListReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uuid_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskListReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskListReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.GiftProto.GetConsumeTaskListReq.class, com.wali.live.proto.GiftProto.GetConsumeTaskListReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetConsumeTaskListReq> PARSER =
+        new com.google.protobuf.AbstractParser<GetConsumeTaskListReq>() {
+      public GetConsumeTaskListReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetConsumeTaskListReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetConsumeTaskListReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int UUID_FIELD_NUMBER = 1;
+    private long uuid_;
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    public long getUuid() {
+      return uuid_;
+    }
+
+    private void initFields() {
+      uuid_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uuid_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uuid_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.GiftProto.GetConsumeTaskListReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetConsumeTaskListReq}
+     *
+     * <pre>
+     *获取消费任务列表c2s接口
+     *zhibo.activity.getconsumetasklist
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetConsumeTaskListReq)
+        com.wali.live.proto.GiftProto.GetConsumeTaskListReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskListReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskListReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.GiftProto.GetConsumeTaskListReq.class, com.wali.live.proto.GiftProto.GetConsumeTaskListReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.GiftProto.GetConsumeTaskListReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskListReq_descriptor;
+      }
+
+      public com.wali.live.proto.GiftProto.GetConsumeTaskListReq getDefaultInstanceForType() {
+        return com.wali.live.proto.GiftProto.GetConsumeTaskListReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.GiftProto.GetConsumeTaskListReq build() {
+        com.wali.live.proto.GiftProto.GetConsumeTaskListReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.GiftProto.GetConsumeTaskListReq buildPartial() {
+        com.wali.live.proto.GiftProto.GetConsumeTaskListReq result = new com.wali.live.proto.GiftProto.GetConsumeTaskListReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uuid_ = uuid_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.GiftProto.GetConsumeTaskListReq) {
+          return mergeFrom((com.wali.live.proto.GiftProto.GetConsumeTaskListReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.GiftProto.GetConsumeTaskListReq other) {
+        if (other == com.wali.live.proto.GiftProto.GetConsumeTaskListReq.getDefaultInstance()) return this;
+        if (other.hasUuid()) {
+          setUuid(other.getUuid());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.GiftProto.GetConsumeTaskListReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.GiftProto.GetConsumeTaskListReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long uuid_ ;
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public long getUuid() {
+        return uuid_;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public Builder setUuid(long value) {
+        bitField0_ |= 0x00000001;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetConsumeTaskListReq)
+    }
+
+    static {
+      defaultInstance = new GetConsumeTaskListReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetConsumeTaskListReq)
+  }
+
+  public interface GetConsumeTaskListRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetConsumeTaskListRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    int getRetCode();
+
+    /**
+     * <code>optional string bannerImgUrl = 2;</code>
+     */
+    boolean hasBannerImgUrl();
+    /**
+     * <code>optional string bannerImgUrl = 2;</code>
+     */
+    java.lang.String getBannerImgUrl();
+    /**
+     * <code>optional string bannerImgUrl = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getBannerImgUrlBytes();
+
+    /**
+     * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+     */
+    java.util.List<com.wali.live.proto.GiftProto.ConsumeTaskItem> 
+        getConsumeTaskList();
+    /**
+     * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+     */
+    com.wali.live.proto.GiftProto.ConsumeTaskItem getConsumeTask(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+     */
+    int getConsumeTaskCount();
+    /**
+     * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+     */
+    java.util.List<? extends com.wali.live.proto.GiftProto.ConsumeTaskItemOrBuilder> 
+        getConsumeTaskOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+     */
+    com.wali.live.proto.GiftProto.ConsumeTaskItemOrBuilder getConsumeTaskOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetConsumeTaskListRsp}
+   */
+  public static final class GetConsumeTaskListRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetConsumeTaskListRsp)
+      GetConsumeTaskListRspOrBuilder {
+    // Use GetConsumeTaskListRsp.newBuilder() to construct.
+    private GetConsumeTaskListRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetConsumeTaskListRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetConsumeTaskListRsp defaultInstance;
+    public static GetConsumeTaskListRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetConsumeTaskListRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetConsumeTaskListRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              bannerImgUrl_ = bs;
+              break;
+            }
+            case 26: {
+              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+                consumeTask_ = new java.util.ArrayList<com.wali.live.proto.GiftProto.ConsumeTaskItem>();
+                mutable_bitField0_ |= 0x00000004;
+              }
+              consumeTask_.add(input.readMessage(com.wali.live.proto.GiftProto.ConsumeTaskItem.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+          consumeTask_ = java.util.Collections.unmodifiableList(consumeTask_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskListRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskListRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.GiftProto.GetConsumeTaskListRsp.class, com.wali.live.proto.GiftProto.GetConsumeTaskListRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetConsumeTaskListRsp> PARSER =
+        new com.google.protobuf.AbstractParser<GetConsumeTaskListRsp>() {
+      public GetConsumeTaskListRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetConsumeTaskListRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetConsumeTaskListRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    public static final int BANNERIMGURL_FIELD_NUMBER = 2;
+    private java.lang.Object bannerImgUrl_;
+    /**
+     * <code>optional string bannerImgUrl = 2;</code>
+     */
+    public boolean hasBannerImgUrl() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string bannerImgUrl = 2;</code>
+     */
+    public java.lang.String getBannerImgUrl() {
+      java.lang.Object ref = bannerImgUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          bannerImgUrl_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string bannerImgUrl = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getBannerImgUrlBytes() {
+      java.lang.Object ref = bannerImgUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        bannerImgUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CONSUMETASK_FIELD_NUMBER = 3;
+    private java.util.List<com.wali.live.proto.GiftProto.ConsumeTaskItem> consumeTask_;
+    /**
+     * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+     */
+    public java.util.List<com.wali.live.proto.GiftProto.ConsumeTaskItem> getConsumeTaskList() {
+      return consumeTask_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+     */
+    public java.util.List<? extends com.wali.live.proto.GiftProto.ConsumeTaskItemOrBuilder> 
+        getConsumeTaskOrBuilderList() {
+      return consumeTask_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+     */
+    public int getConsumeTaskCount() {
+      return consumeTask_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+     */
+    public com.wali.live.proto.GiftProto.ConsumeTaskItem getConsumeTask(int index) {
+      return consumeTask_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+     */
+    public com.wali.live.proto.GiftProto.ConsumeTaskItemOrBuilder getConsumeTaskOrBuilder(
+        int index) {
+      return consumeTask_.get(index);
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+      bannerImgUrl_ = "";
+      consumeTask_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getBannerImgUrlBytes());
+      }
+      for (int i = 0; i < consumeTask_.size(); i++) {
+        output.writeMessage(3, consumeTask_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getBannerImgUrlBytes());
+      }
+      for (int i = 0; i < consumeTask_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, consumeTask_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskListRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.GiftProto.GetConsumeTaskListRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetConsumeTaskListRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetConsumeTaskListRsp)
+        com.wali.live.proto.GiftProto.GetConsumeTaskListRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskListRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskListRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.GiftProto.GetConsumeTaskListRsp.class, com.wali.live.proto.GiftProto.GetConsumeTaskListRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.GiftProto.GetConsumeTaskListRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getConsumeTaskFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        bannerImgUrl_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        if (consumeTaskBuilder_ == null) {
+          consumeTask_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
+        } else {
+          consumeTaskBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskListRsp_descriptor;
+      }
+
+      public com.wali.live.proto.GiftProto.GetConsumeTaskListRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.GiftProto.GetConsumeTaskListRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.GiftProto.GetConsumeTaskListRsp build() {
+        com.wali.live.proto.GiftProto.GetConsumeTaskListRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.GiftProto.GetConsumeTaskListRsp buildPartial() {
+        com.wali.live.proto.GiftProto.GetConsumeTaskListRsp result = new com.wali.live.proto.GiftProto.GetConsumeTaskListRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bannerImgUrl_ = bannerImgUrl_;
+        if (consumeTaskBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004)) {
+            consumeTask_ = java.util.Collections.unmodifiableList(consumeTask_);
+            bitField0_ = (bitField0_ & ~0x00000004);
+          }
+          result.consumeTask_ = consumeTask_;
+        } else {
+          result.consumeTask_ = consumeTaskBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.GiftProto.GetConsumeTaskListRsp) {
+          return mergeFrom((com.wali.live.proto.GiftProto.GetConsumeTaskListRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.GiftProto.GetConsumeTaskListRsp other) {
+        if (other == com.wali.live.proto.GiftProto.GetConsumeTaskListRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        if (other.hasBannerImgUrl()) {
+          bitField0_ |= 0x00000002;
+          bannerImgUrl_ = other.bannerImgUrl_;
+          onChanged();
+        }
+        if (consumeTaskBuilder_ == null) {
+          if (!other.consumeTask_.isEmpty()) {
+            if (consumeTask_.isEmpty()) {
+              consumeTask_ = other.consumeTask_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+            } else {
+              ensureConsumeTaskIsMutable();
+              consumeTask_.addAll(other.consumeTask_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.consumeTask_.isEmpty()) {
+            if (consumeTaskBuilder_.isEmpty()) {
+              consumeTaskBuilder_.dispose();
+              consumeTaskBuilder_ = null;
+              consumeTask_ = other.consumeTask_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+              consumeTaskBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getConsumeTaskFieldBuilder() : null;
+            } else {
+              consumeTaskBuilder_.addAllMessages(other.consumeTask_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.GiftProto.GetConsumeTaskListRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.GiftProto.GetConsumeTaskListRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object bannerImgUrl_ = "";
+      /**
+       * <code>optional string bannerImgUrl = 2;</code>
+       */
+      public boolean hasBannerImgUrl() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string bannerImgUrl = 2;</code>
+       */
+      public java.lang.String getBannerImgUrl() {
+        java.lang.Object ref = bannerImgUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            bannerImgUrl_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string bannerImgUrl = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getBannerImgUrlBytes() {
+        java.lang.Object ref = bannerImgUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          bannerImgUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string bannerImgUrl = 2;</code>
+       */
+      public Builder setBannerImgUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        bannerImgUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string bannerImgUrl = 2;</code>
+       */
+      public Builder clearBannerImgUrl() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        bannerImgUrl_ = getDefaultInstance().getBannerImgUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string bannerImgUrl = 2;</code>
+       */
+      public Builder setBannerImgUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        bannerImgUrl_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<com.wali.live.proto.GiftProto.ConsumeTaskItem> consumeTask_ =
+        java.util.Collections.emptyList();
+      private void ensureConsumeTaskIsMutable() {
+        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
+          consumeTask_ = new java.util.ArrayList<com.wali.live.proto.GiftProto.ConsumeTaskItem>(consumeTask_);
+          bitField0_ |= 0x00000004;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.GiftProto.ConsumeTaskItem, com.wali.live.proto.GiftProto.ConsumeTaskItem.Builder, com.wali.live.proto.GiftProto.ConsumeTaskItemOrBuilder> consumeTaskBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+       */
+      public java.util.List<com.wali.live.proto.GiftProto.ConsumeTaskItem> getConsumeTaskList() {
+        if (consumeTaskBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(consumeTask_);
+        } else {
+          return consumeTaskBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+       */
+      public int getConsumeTaskCount() {
+        if (consumeTaskBuilder_ == null) {
+          return consumeTask_.size();
+        } else {
+          return consumeTaskBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+       */
+      public com.wali.live.proto.GiftProto.ConsumeTaskItem getConsumeTask(int index) {
+        if (consumeTaskBuilder_ == null) {
+          return consumeTask_.get(index);
+        } else {
+          return consumeTaskBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+       */
+      public Builder setConsumeTask(
+          int index, com.wali.live.proto.GiftProto.ConsumeTaskItem value) {
+        if (consumeTaskBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureConsumeTaskIsMutable();
+          consumeTask_.set(index, value);
+          onChanged();
+        } else {
+          consumeTaskBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+       */
+      public Builder setConsumeTask(
+          int index, com.wali.live.proto.GiftProto.ConsumeTaskItem.Builder builderForValue) {
+        if (consumeTaskBuilder_ == null) {
+          ensureConsumeTaskIsMutable();
+          consumeTask_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          consumeTaskBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+       */
+      public Builder addConsumeTask(com.wali.live.proto.GiftProto.ConsumeTaskItem value) {
+        if (consumeTaskBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureConsumeTaskIsMutable();
+          consumeTask_.add(value);
+          onChanged();
+        } else {
+          consumeTaskBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+       */
+      public Builder addConsumeTask(
+          int index, com.wali.live.proto.GiftProto.ConsumeTaskItem value) {
+        if (consumeTaskBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureConsumeTaskIsMutable();
+          consumeTask_.add(index, value);
+          onChanged();
+        } else {
+          consumeTaskBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+       */
+      public Builder addConsumeTask(
+          com.wali.live.proto.GiftProto.ConsumeTaskItem.Builder builderForValue) {
+        if (consumeTaskBuilder_ == null) {
+          ensureConsumeTaskIsMutable();
+          consumeTask_.add(builderForValue.build());
+          onChanged();
+        } else {
+          consumeTaskBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+       */
+      public Builder addConsumeTask(
+          int index, com.wali.live.proto.GiftProto.ConsumeTaskItem.Builder builderForValue) {
+        if (consumeTaskBuilder_ == null) {
+          ensureConsumeTaskIsMutable();
+          consumeTask_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          consumeTaskBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+       */
+      public Builder addAllConsumeTask(
+          java.lang.Iterable<? extends com.wali.live.proto.GiftProto.ConsumeTaskItem> values) {
+        if (consumeTaskBuilder_ == null) {
+          ensureConsumeTaskIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, consumeTask_);
+          onChanged();
+        } else {
+          consumeTaskBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+       */
+      public Builder clearConsumeTask() {
+        if (consumeTaskBuilder_ == null) {
+          consumeTask_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
+          onChanged();
+        } else {
+          consumeTaskBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+       */
+      public Builder removeConsumeTask(int index) {
+        if (consumeTaskBuilder_ == null) {
+          ensureConsumeTaskIsMutable();
+          consumeTask_.remove(index);
+          onChanged();
+        } else {
+          consumeTaskBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+       */
+      public com.wali.live.proto.GiftProto.ConsumeTaskItem.Builder getConsumeTaskBuilder(
+          int index) {
+        return getConsumeTaskFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+       */
+      public com.wali.live.proto.GiftProto.ConsumeTaskItemOrBuilder getConsumeTaskOrBuilder(
+          int index) {
+        if (consumeTaskBuilder_ == null) {
+          return consumeTask_.get(index);  } else {
+          return consumeTaskBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+       */
+      public java.util.List<? extends com.wali.live.proto.GiftProto.ConsumeTaskItemOrBuilder> 
+           getConsumeTaskOrBuilderList() {
+        if (consumeTaskBuilder_ != null) {
+          return consumeTaskBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(consumeTask_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+       */
+      public com.wali.live.proto.GiftProto.ConsumeTaskItem.Builder addConsumeTaskBuilder() {
+        return getConsumeTaskFieldBuilder().addBuilder(
+            com.wali.live.proto.GiftProto.ConsumeTaskItem.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+       */
+      public com.wali.live.proto.GiftProto.ConsumeTaskItem.Builder addConsumeTaskBuilder(
+          int index) {
+        return getConsumeTaskFieldBuilder().addBuilder(
+            index, com.wali.live.proto.GiftProto.ConsumeTaskItem.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.ConsumeTaskItem consumeTask = 3;</code>
+       */
+      public java.util.List<com.wali.live.proto.GiftProto.ConsumeTaskItem.Builder> 
+           getConsumeTaskBuilderList() {
+        return getConsumeTaskFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.GiftProto.ConsumeTaskItem, com.wali.live.proto.GiftProto.ConsumeTaskItem.Builder, com.wali.live.proto.GiftProto.ConsumeTaskItemOrBuilder> 
+          getConsumeTaskFieldBuilder() {
+        if (consumeTaskBuilder_ == null) {
+          consumeTaskBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.GiftProto.ConsumeTaskItem, com.wali.live.proto.GiftProto.ConsumeTaskItem.Builder, com.wali.live.proto.GiftProto.ConsumeTaskItemOrBuilder>(
+                  consumeTask_,
+                  ((bitField0_ & 0x00000004) == 0x00000004),
+                  getParentForChildren(),
+                  isClean());
+          consumeTask_ = null;
+        }
+        return consumeTaskBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetConsumeTaskListRsp)
+    }
+
+    static {
+      defaultInstance = new GetConsumeTaskListRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetConsumeTaskListRsp)
+  }
+
+  public interface ConsumeTaskItemOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ConsumeTaskItem)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint32 taskId = 1;</code>
+     *
+     * <pre>
+     *任务ID
+     * </pre>
+     */
+    boolean hasTaskId();
+    /**
+     * <code>optional uint32 taskId = 1;</code>
+     *
+     * <pre>
+     *任务ID
+     * </pre>
+     */
+    int getTaskId();
+
+    /**
+     * <code>optional uint64 uuid = 2;</code>
+     *
+     * <pre>
+     *用户ID
+     * </pre>
+     */
+    boolean hasUuid();
+    /**
+     * <code>optional uint64 uuid = 2;</code>
+     *
+     * <pre>
+     *用户ID
+     * </pre>
+     */
+    long getUuid();
+
+    /**
+     * <code>optional string taskType = 3;</code>
+     *
+     * <pre>
+     *每日，活动...
+     * </pre>
+     */
+    boolean hasTaskType();
+    /**
+     * <code>optional string taskType = 3;</code>
+     *
+     * <pre>
+     *每日，活动...
+     * </pre>
+     */
+    java.lang.String getTaskType();
+    /**
+     * <code>optional string taskType = 3;</code>
+     *
+     * <pre>
+     *每日，活动...
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getTaskTypeBytes();
+
+    /**
+     * <code>optional string taskDesc = 4;</code>
+     *
+     * <pre>
+     *任务描述
+     * </pre>
+     */
+    boolean hasTaskDesc();
+    /**
+     * <code>optional string taskDesc = 4;</code>
+     *
+     * <pre>
+     *任务描述
+     * </pre>
+     */
+    java.lang.String getTaskDesc();
+    /**
+     * <code>optional string taskDesc = 4;</code>
+     *
+     * <pre>
+     *任务描述
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getTaskDescBytes();
+
+    /**
+     * <code>optional uint32 progress = 5;</code>
+     *
+     * <pre>
+     *任务进度
+     * </pre>
+     */
+    boolean hasProgress();
+    /**
+     * <code>optional uint32 progress = 5;</code>
+     *
+     * <pre>
+     *任务进度
+     * </pre>
+     */
+    int getProgress();
+
+    /**
+     * <code>optional uint32 taskNeedNum = 6;</code>
+     *
+     * <pre>
+     *完成一次任务所需的数量
+     * </pre>
+     */
+    boolean hasTaskNeedNum();
+    /**
+     * <code>optional uint32 taskNeedNum = 6;</code>
+     *
+     * <pre>
+     *完成一次任务所需的数量
+     * </pre>
+     */
+    int getTaskNeedNum();
+
+    /**
+     * <code>optional string rewardDesc = 7;</code>
+     *
+     * <pre>
+     *任务奖品文字描述
+     * </pre>
+     */
+    boolean hasRewardDesc();
+    /**
+     * <code>optional string rewardDesc = 7;</code>
+     *
+     * <pre>
+     *任务奖品文字描述
+     * </pre>
+     */
+    java.lang.String getRewardDesc();
+    /**
+     * <code>optional string rewardDesc = 7;</code>
+     *
+     * <pre>
+     *任务奖品文字描述
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getRewardDescBytes();
+
+    /**
+     * <code>optional string rewardAvailTimes = 8;</code>
+     *
+     * <pre>
+     *可以获得的奖励次数
+     * </pre>
+     */
+    boolean hasRewardAvailTimes();
+    /**
+     * <code>optional string rewardAvailTimes = 8;</code>
+     *
+     * <pre>
+     *可以获得的奖励次数
+     * </pre>
+     */
+    java.lang.String getRewardAvailTimes();
+    /**
+     * <code>optional string rewardAvailTimes = 8;</code>
+     *
+     * <pre>
+     *可以获得的奖励次数
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getRewardAvailTimesBytes();
+
+    /**
+     * <code>optional uint32 rewardType = 9;</code>
+     *
+     * <pre>
+     *奖励类型, 1:钻石 2:礼品卡
+     * </pre>
+     */
+    boolean hasRewardType();
+    /**
+     * <code>optional uint32 rewardType = 9;</code>
+     *
+     * <pre>
+     *奖励类型, 1:钻石 2:礼品卡
+     * </pre>
+     */
+    int getRewardType();
+
+    /**
+     * <code>optional uint32 rewardGiftId = 10;</code>
+     *
+     * <pre>
+     *任务类型为2:礼品卡时，礼品卡对应的礼物ID
+     * </pre>
+     */
+    boolean hasRewardGiftId();
+    /**
+     * <code>optional uint32 rewardGiftId = 10;</code>
+     *
+     * <pre>
+     *任务类型为2:礼品卡时，礼品卡对应的礼物ID
+     * </pre>
+     */
+    int getRewardGiftId();
+
+    /**
+     * <code>optional uint32 taskStatus = 11;</code>
+     *
+     * <pre>
+     *1:未开始，2:未完成，3:可领取, 4:已完成
+     * </pre>
+     */
+    boolean hasTaskStatus();
+    /**
+     * <code>optional uint32 taskStatus = 11;</code>
+     *
+     * <pre>
+     *1:未开始，2:未完成，3:可领取, 4:已完成
+     * </pre>
+     */
+    int getTaskStatus();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.ConsumeTaskItem}
+   */
+  public static final class ConsumeTaskItem extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ConsumeTaskItem)
+      ConsumeTaskItemOrBuilder {
+    // Use ConsumeTaskItem.newBuilder() to construct.
+    private ConsumeTaskItem(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ConsumeTaskItem(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ConsumeTaskItem defaultInstance;
+    public static ConsumeTaskItem getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ConsumeTaskItem getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ConsumeTaskItem(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              taskId_ = input.readUInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              uuid_ = input.readUInt64();
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              taskType_ = bs;
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              taskDesc_ = bs;
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              progress_ = input.readUInt32();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              taskNeedNum_ = input.readUInt32();
+              break;
+            }
+            case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000040;
+              rewardDesc_ = bs;
+              break;
+            }
+            case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000080;
+              rewardAvailTimes_ = bs;
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000100;
+              rewardType_ = input.readUInt32();
+              break;
+            }
+            case 80: {
+              bitField0_ |= 0x00000200;
+              rewardGiftId_ = input.readUInt32();
+              break;
+            }
+            case 88: {
+              bitField0_ |= 0x00000400;
+              taskStatus_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_ConsumeTaskItem_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_ConsumeTaskItem_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.GiftProto.ConsumeTaskItem.class, com.wali.live.proto.GiftProto.ConsumeTaskItem.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ConsumeTaskItem> PARSER =
+        new com.google.protobuf.AbstractParser<ConsumeTaskItem>() {
+      public ConsumeTaskItem parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ConsumeTaskItem(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ConsumeTaskItem> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int TASKID_FIELD_NUMBER = 1;
+    private int taskId_;
+    /**
+     * <code>optional uint32 taskId = 1;</code>
+     *
+     * <pre>
+     *任务ID
+     * </pre>
+     */
+    public boolean hasTaskId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint32 taskId = 1;</code>
+     *
+     * <pre>
+     *任务ID
+     * </pre>
+     */
+    public int getTaskId() {
+      return taskId_;
+    }
+
+    public static final int UUID_FIELD_NUMBER = 2;
+    private long uuid_;
+    /**
+     * <code>optional uint64 uuid = 2;</code>
+     *
+     * <pre>
+     *用户ID
+     * </pre>
+     */
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint64 uuid = 2;</code>
+     *
+     * <pre>
+     *用户ID
+     * </pre>
+     */
+    public long getUuid() {
+      return uuid_;
+    }
+
+    public static final int TASKTYPE_FIELD_NUMBER = 3;
+    private java.lang.Object taskType_;
+    /**
+     * <code>optional string taskType = 3;</code>
+     *
+     * <pre>
+     *每日，活动...
+     * </pre>
+     */
+    public boolean hasTaskType() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string taskType = 3;</code>
+     *
+     * <pre>
+     *每日，活动...
+     * </pre>
+     */
+    public java.lang.String getTaskType() {
+      java.lang.Object ref = taskType_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          taskType_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string taskType = 3;</code>
+     *
+     * <pre>
+     *每日，活动...
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getTaskTypeBytes() {
+      java.lang.Object ref = taskType_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        taskType_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TASKDESC_FIELD_NUMBER = 4;
+    private java.lang.Object taskDesc_;
+    /**
+     * <code>optional string taskDesc = 4;</code>
+     *
+     * <pre>
+     *任务描述
+     * </pre>
+     */
+    public boolean hasTaskDesc() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string taskDesc = 4;</code>
+     *
+     * <pre>
+     *任务描述
+     * </pre>
+     */
+    public java.lang.String getTaskDesc() {
+      java.lang.Object ref = taskDesc_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          taskDesc_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string taskDesc = 4;</code>
+     *
+     * <pre>
+     *任务描述
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getTaskDescBytes() {
+      java.lang.Object ref = taskDesc_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        taskDesc_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PROGRESS_FIELD_NUMBER = 5;
+    private int progress_;
+    /**
+     * <code>optional uint32 progress = 5;</code>
+     *
+     * <pre>
+     *任务进度
+     * </pre>
+     */
+    public boolean hasProgress() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional uint32 progress = 5;</code>
+     *
+     * <pre>
+     *任务进度
+     * </pre>
+     */
+    public int getProgress() {
+      return progress_;
+    }
+
+    public static final int TASKNEEDNUM_FIELD_NUMBER = 6;
+    private int taskNeedNum_;
+    /**
+     * <code>optional uint32 taskNeedNum = 6;</code>
+     *
+     * <pre>
+     *完成一次任务所需的数量
+     * </pre>
+     */
+    public boolean hasTaskNeedNum() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional uint32 taskNeedNum = 6;</code>
+     *
+     * <pre>
+     *完成一次任务所需的数量
+     * </pre>
+     */
+    public int getTaskNeedNum() {
+      return taskNeedNum_;
+    }
+
+    public static final int REWARDDESC_FIELD_NUMBER = 7;
+    private java.lang.Object rewardDesc_;
+    /**
+     * <code>optional string rewardDesc = 7;</code>
+     *
+     * <pre>
+     *任务奖品文字描述
+     * </pre>
+     */
+    public boolean hasRewardDesc() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional string rewardDesc = 7;</code>
+     *
+     * <pre>
+     *任务奖品文字描述
+     * </pre>
+     */
+    public java.lang.String getRewardDesc() {
+      java.lang.Object ref = rewardDesc_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          rewardDesc_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string rewardDesc = 7;</code>
+     *
+     * <pre>
+     *任务奖品文字描述
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getRewardDescBytes() {
+      java.lang.Object ref = rewardDesc_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        rewardDesc_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int REWARDAVAILTIMES_FIELD_NUMBER = 8;
+    private java.lang.Object rewardAvailTimes_;
+    /**
+     * <code>optional string rewardAvailTimes = 8;</code>
+     *
+     * <pre>
+     *可以获得的奖励次数
+     * </pre>
+     */
+    public boolean hasRewardAvailTimes() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional string rewardAvailTimes = 8;</code>
+     *
+     * <pre>
+     *可以获得的奖励次数
+     * </pre>
+     */
+    public java.lang.String getRewardAvailTimes() {
+      java.lang.Object ref = rewardAvailTimes_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          rewardAvailTimes_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string rewardAvailTimes = 8;</code>
+     *
+     * <pre>
+     *可以获得的奖励次数
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getRewardAvailTimesBytes() {
+      java.lang.Object ref = rewardAvailTimes_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        rewardAvailTimes_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int REWARDTYPE_FIELD_NUMBER = 9;
+    private int rewardType_;
+    /**
+     * <code>optional uint32 rewardType = 9;</code>
+     *
+     * <pre>
+     *奖励类型, 1:钻石 2:礼品卡
+     * </pre>
+     */
+    public boolean hasRewardType() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional uint32 rewardType = 9;</code>
+     *
+     * <pre>
+     *奖励类型, 1:钻石 2:礼品卡
+     * </pre>
+     */
+    public int getRewardType() {
+      return rewardType_;
+    }
+
+    public static final int REWARDGIFTID_FIELD_NUMBER = 10;
+    private int rewardGiftId_;
+    /**
+     * <code>optional uint32 rewardGiftId = 10;</code>
+     *
+     * <pre>
+     *任务类型为2:礼品卡时，礼品卡对应的礼物ID
+     * </pre>
+     */
+    public boolean hasRewardGiftId() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional uint32 rewardGiftId = 10;</code>
+     *
+     * <pre>
+     *任务类型为2:礼品卡时，礼品卡对应的礼物ID
+     * </pre>
+     */
+    public int getRewardGiftId() {
+      return rewardGiftId_;
+    }
+
+    public static final int TASKSTATUS_FIELD_NUMBER = 11;
+    private int taskStatus_;
+    /**
+     * <code>optional uint32 taskStatus = 11;</code>
+     *
+     * <pre>
+     *1:未开始，2:未完成，3:可领取, 4:已完成
+     * </pre>
+     */
+    public boolean hasTaskStatus() {
+      return ((bitField0_ & 0x00000400) == 0x00000400);
+    }
+    /**
+     * <code>optional uint32 taskStatus = 11;</code>
+     *
+     * <pre>
+     *1:未开始，2:未完成，3:可领取, 4:已完成
+     * </pre>
+     */
+    public int getTaskStatus() {
+      return taskStatus_;
+    }
+
+    private void initFields() {
+      taskId_ = 0;
+      uuid_ = 0L;
+      taskType_ = "";
+      taskDesc_ = "";
+      progress_ = 0;
+      taskNeedNum_ = 0;
+      rewardDesc_ = "";
+      rewardAvailTimes_ = "";
+      rewardType_ = 0;
+      rewardGiftId_ = 0;
+      taskStatus_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, taskId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, uuid_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getTaskTypeBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getTaskDescBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeUInt32(5, progress_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeUInt32(6, taskNeedNum_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBytes(7, getRewardDescBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeBytes(8, getRewardAvailTimesBytes());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeUInt32(9, rewardType_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeUInt32(10, rewardGiftId_);
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        output.writeUInt32(11, taskStatus_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, taskId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, uuid_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getTaskTypeBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getTaskDescBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(5, progress_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(6, taskNeedNum_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, getRewardDescBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(8, getRewardAvailTimesBytes());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(9, rewardType_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(10, rewardGiftId_);
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(11, taskStatus_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.GiftProto.ConsumeTaskItem parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.GiftProto.ConsumeTaskItem parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.ConsumeTaskItem parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.GiftProto.ConsumeTaskItem parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.ConsumeTaskItem parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.GiftProto.ConsumeTaskItem parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.ConsumeTaskItem parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.GiftProto.ConsumeTaskItem parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.ConsumeTaskItem parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.GiftProto.ConsumeTaskItem parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.GiftProto.ConsumeTaskItem prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.ConsumeTaskItem}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ConsumeTaskItem)
+        com.wali.live.proto.GiftProto.ConsumeTaskItemOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_ConsumeTaskItem_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_ConsumeTaskItem_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.GiftProto.ConsumeTaskItem.class, com.wali.live.proto.GiftProto.ConsumeTaskItem.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.GiftProto.ConsumeTaskItem.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        taskId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        taskType_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        taskDesc_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        progress_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        taskNeedNum_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        rewardDesc_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
+        rewardAvailTimes_ = "";
+        bitField0_ = (bitField0_ & ~0x00000080);
+        rewardType_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000100);
+        rewardGiftId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000200);
+        taskStatus_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000400);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_ConsumeTaskItem_descriptor;
+      }
+
+      public com.wali.live.proto.GiftProto.ConsumeTaskItem getDefaultInstanceForType() {
+        return com.wali.live.proto.GiftProto.ConsumeTaskItem.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.GiftProto.ConsumeTaskItem build() {
+        com.wali.live.proto.GiftProto.ConsumeTaskItem result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.GiftProto.ConsumeTaskItem buildPartial() {
+        com.wali.live.proto.GiftProto.ConsumeTaskItem result = new com.wali.live.proto.GiftProto.ConsumeTaskItem(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.taskId_ = taskId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.uuid_ = uuid_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.taskType_ = taskType_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.taskDesc_ = taskDesc_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.progress_ = progress_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.taskNeedNum_ = taskNeedNum_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.rewardDesc_ = rewardDesc_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.rewardAvailTimes_ = rewardAvailTimes_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.rewardType_ = rewardType_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        result.rewardGiftId_ = rewardGiftId_;
+        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+          to_bitField0_ |= 0x00000400;
+        }
+        result.taskStatus_ = taskStatus_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.GiftProto.ConsumeTaskItem) {
+          return mergeFrom((com.wali.live.proto.GiftProto.ConsumeTaskItem)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.GiftProto.ConsumeTaskItem other) {
+        if (other == com.wali.live.proto.GiftProto.ConsumeTaskItem.getDefaultInstance()) return this;
+        if (other.hasTaskId()) {
+          setTaskId(other.getTaskId());
+        }
+        if (other.hasUuid()) {
+          setUuid(other.getUuid());
+        }
+        if (other.hasTaskType()) {
+          bitField0_ |= 0x00000004;
+          taskType_ = other.taskType_;
+          onChanged();
+        }
+        if (other.hasTaskDesc()) {
+          bitField0_ |= 0x00000008;
+          taskDesc_ = other.taskDesc_;
+          onChanged();
+        }
+        if (other.hasProgress()) {
+          setProgress(other.getProgress());
+        }
+        if (other.hasTaskNeedNum()) {
+          setTaskNeedNum(other.getTaskNeedNum());
+        }
+        if (other.hasRewardDesc()) {
+          bitField0_ |= 0x00000040;
+          rewardDesc_ = other.rewardDesc_;
+          onChanged();
+        }
+        if (other.hasRewardAvailTimes()) {
+          bitField0_ |= 0x00000080;
+          rewardAvailTimes_ = other.rewardAvailTimes_;
+          onChanged();
+        }
+        if (other.hasRewardType()) {
+          setRewardType(other.getRewardType());
+        }
+        if (other.hasRewardGiftId()) {
+          setRewardGiftId(other.getRewardGiftId());
+        }
+        if (other.hasTaskStatus()) {
+          setTaskStatus(other.getTaskStatus());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.GiftProto.ConsumeTaskItem parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.GiftProto.ConsumeTaskItem) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int taskId_ ;
+      /**
+       * <code>optional uint32 taskId = 1;</code>
+       *
+       * <pre>
+       *任务ID
+       * </pre>
+       */
+      public boolean hasTaskId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint32 taskId = 1;</code>
+       *
+       * <pre>
+       *任务ID
+       * </pre>
+       */
+      public int getTaskId() {
+        return taskId_;
+      }
+      /**
+       * <code>optional uint32 taskId = 1;</code>
+       *
+       * <pre>
+       *任务ID
+       * </pre>
+       */
+      public Builder setTaskId(int value) {
+        bitField0_ |= 0x00000001;
+        taskId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 taskId = 1;</code>
+       *
+       * <pre>
+       *任务ID
+       * </pre>
+       */
+      public Builder clearTaskId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        taskId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private long uuid_ ;
+      /**
+       * <code>optional uint64 uuid = 2;</code>
+       *
+       * <pre>
+       *用户ID
+       * </pre>
+       */
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint64 uuid = 2;</code>
+       *
+       * <pre>
+       *用户ID
+       * </pre>
+       */
+      public long getUuid() {
+        return uuid_;
+      }
+      /**
+       * <code>optional uint64 uuid = 2;</code>
+       *
+       * <pre>
+       *用户ID
+       * </pre>
+       */
+      public Builder setUuid(long value) {
+        bitField0_ |= 0x00000002;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 uuid = 2;</code>
+       *
+       * <pre>
+       *用户ID
+       * </pre>
+       */
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        uuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object taskType_ = "";
+      /**
+       * <code>optional string taskType = 3;</code>
+       *
+       * <pre>
+       *每日，活动...
+       * </pre>
+       */
+      public boolean hasTaskType() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string taskType = 3;</code>
+       *
+       * <pre>
+       *每日，活动...
+       * </pre>
+       */
+      public java.lang.String getTaskType() {
+        java.lang.Object ref = taskType_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            taskType_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string taskType = 3;</code>
+       *
+       * <pre>
+       *每日，活动...
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getTaskTypeBytes() {
+        java.lang.Object ref = taskType_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          taskType_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string taskType = 3;</code>
+       *
+       * <pre>
+       *每日，活动...
+       * </pre>
+       */
+      public Builder setTaskType(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        taskType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string taskType = 3;</code>
+       *
+       * <pre>
+       *每日，活动...
+       * </pre>
+       */
+      public Builder clearTaskType() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        taskType_ = getDefaultInstance().getTaskType();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string taskType = 3;</code>
+       *
+       * <pre>
+       *每日，活动...
+       * </pre>
+       */
+      public Builder setTaskTypeBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        taskType_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object taskDesc_ = "";
+      /**
+       * <code>optional string taskDesc = 4;</code>
+       *
+       * <pre>
+       *任务描述
+       * </pre>
+       */
+      public boolean hasTaskDesc() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string taskDesc = 4;</code>
+       *
+       * <pre>
+       *任务描述
+       * </pre>
+       */
+      public java.lang.String getTaskDesc() {
+        java.lang.Object ref = taskDesc_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            taskDesc_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string taskDesc = 4;</code>
+       *
+       * <pre>
+       *任务描述
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getTaskDescBytes() {
+        java.lang.Object ref = taskDesc_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          taskDesc_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string taskDesc = 4;</code>
+       *
+       * <pre>
+       *任务描述
+       * </pre>
+       */
+      public Builder setTaskDesc(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        taskDesc_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string taskDesc = 4;</code>
+       *
+       * <pre>
+       *任务描述
+       * </pre>
+       */
+      public Builder clearTaskDesc() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        taskDesc_ = getDefaultInstance().getTaskDesc();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string taskDesc = 4;</code>
+       *
+       * <pre>
+       *任务描述
+       * </pre>
+       */
+      public Builder setTaskDescBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        taskDesc_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int progress_ ;
+      /**
+       * <code>optional uint32 progress = 5;</code>
+       *
+       * <pre>
+       *任务进度
+       * </pre>
+       */
+      public boolean hasProgress() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional uint32 progress = 5;</code>
+       *
+       * <pre>
+       *任务进度
+       * </pre>
+       */
+      public int getProgress() {
+        return progress_;
+      }
+      /**
+       * <code>optional uint32 progress = 5;</code>
+       *
+       * <pre>
+       *任务进度
+       * </pre>
+       */
+      public Builder setProgress(int value) {
+        bitField0_ |= 0x00000010;
+        progress_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 progress = 5;</code>
+       *
+       * <pre>
+       *任务进度
+       * </pre>
+       */
+      public Builder clearProgress() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        progress_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int taskNeedNum_ ;
+      /**
+       * <code>optional uint32 taskNeedNum = 6;</code>
+       *
+       * <pre>
+       *完成一次任务所需的数量
+       * </pre>
+       */
+      public boolean hasTaskNeedNum() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional uint32 taskNeedNum = 6;</code>
+       *
+       * <pre>
+       *完成一次任务所需的数量
+       * </pre>
+       */
+      public int getTaskNeedNum() {
+        return taskNeedNum_;
+      }
+      /**
+       * <code>optional uint32 taskNeedNum = 6;</code>
+       *
+       * <pre>
+       *完成一次任务所需的数量
+       * </pre>
+       */
+      public Builder setTaskNeedNum(int value) {
+        bitField0_ |= 0x00000020;
+        taskNeedNum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 taskNeedNum = 6;</code>
+       *
+       * <pre>
+       *完成一次任务所需的数量
+       * </pre>
+       */
+      public Builder clearTaskNeedNum() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        taskNeedNum_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object rewardDesc_ = "";
+      /**
+       * <code>optional string rewardDesc = 7;</code>
+       *
+       * <pre>
+       *任务奖品文字描述
+       * </pre>
+       */
+      public boolean hasRewardDesc() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional string rewardDesc = 7;</code>
+       *
+       * <pre>
+       *任务奖品文字描述
+       * </pre>
+       */
+      public java.lang.String getRewardDesc() {
+        java.lang.Object ref = rewardDesc_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            rewardDesc_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string rewardDesc = 7;</code>
+       *
+       * <pre>
+       *任务奖品文字描述
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getRewardDescBytes() {
+        java.lang.Object ref = rewardDesc_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          rewardDesc_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string rewardDesc = 7;</code>
+       *
+       * <pre>
+       *任务奖品文字描述
+       * </pre>
+       */
+      public Builder setRewardDesc(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        rewardDesc_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string rewardDesc = 7;</code>
+       *
+       * <pre>
+       *任务奖品文字描述
+       * </pre>
+       */
+      public Builder clearRewardDesc() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        rewardDesc_ = getDefaultInstance().getRewardDesc();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string rewardDesc = 7;</code>
+       *
+       * <pre>
+       *任务奖品文字描述
+       * </pre>
+       */
+      public Builder setRewardDescBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        rewardDesc_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object rewardAvailTimes_ = "";
+      /**
+       * <code>optional string rewardAvailTimes = 8;</code>
+       *
+       * <pre>
+       *可以获得的奖励次数
+       * </pre>
+       */
+      public boolean hasRewardAvailTimes() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional string rewardAvailTimes = 8;</code>
+       *
+       * <pre>
+       *可以获得的奖励次数
+       * </pre>
+       */
+      public java.lang.String getRewardAvailTimes() {
+        java.lang.Object ref = rewardAvailTimes_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            rewardAvailTimes_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string rewardAvailTimes = 8;</code>
+       *
+       * <pre>
+       *可以获得的奖励次数
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getRewardAvailTimesBytes() {
+        java.lang.Object ref = rewardAvailTimes_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          rewardAvailTimes_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string rewardAvailTimes = 8;</code>
+       *
+       * <pre>
+       *可以获得的奖励次数
+       * </pre>
+       */
+      public Builder setRewardAvailTimes(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        rewardAvailTimes_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string rewardAvailTimes = 8;</code>
+       *
+       * <pre>
+       *可以获得的奖励次数
+       * </pre>
+       */
+      public Builder clearRewardAvailTimes() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        rewardAvailTimes_ = getDefaultInstance().getRewardAvailTimes();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string rewardAvailTimes = 8;</code>
+       *
+       * <pre>
+       *可以获得的奖励次数
+       * </pre>
+       */
+      public Builder setRewardAvailTimesBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        rewardAvailTimes_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int rewardType_ ;
+      /**
+       * <code>optional uint32 rewardType = 9;</code>
+       *
+       * <pre>
+       *奖励类型, 1:钻石 2:礼品卡
+       * </pre>
+       */
+      public boolean hasRewardType() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional uint32 rewardType = 9;</code>
+       *
+       * <pre>
+       *奖励类型, 1:钻石 2:礼品卡
+       * </pre>
+       */
+      public int getRewardType() {
+        return rewardType_;
+      }
+      /**
+       * <code>optional uint32 rewardType = 9;</code>
+       *
+       * <pre>
+       *奖励类型, 1:钻石 2:礼品卡
+       * </pre>
+       */
+      public Builder setRewardType(int value) {
+        bitField0_ |= 0x00000100;
+        rewardType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 rewardType = 9;</code>
+       *
+       * <pre>
+       *奖励类型, 1:钻石 2:礼品卡
+       * </pre>
+       */
+      public Builder clearRewardType() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        rewardType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int rewardGiftId_ ;
+      /**
+       * <code>optional uint32 rewardGiftId = 10;</code>
+       *
+       * <pre>
+       *任务类型为2:礼品卡时，礼品卡对应的礼物ID
+       * </pre>
+       */
+      public boolean hasRewardGiftId() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional uint32 rewardGiftId = 10;</code>
+       *
+       * <pre>
+       *任务类型为2:礼品卡时，礼品卡对应的礼物ID
+       * </pre>
+       */
+      public int getRewardGiftId() {
+        return rewardGiftId_;
+      }
+      /**
+       * <code>optional uint32 rewardGiftId = 10;</code>
+       *
+       * <pre>
+       *任务类型为2:礼品卡时，礼品卡对应的礼物ID
+       * </pre>
+       */
+      public Builder setRewardGiftId(int value) {
+        bitField0_ |= 0x00000200;
+        rewardGiftId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 rewardGiftId = 10;</code>
+       *
+       * <pre>
+       *任务类型为2:礼品卡时，礼品卡对应的礼物ID
+       * </pre>
+       */
+      public Builder clearRewardGiftId() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        rewardGiftId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int taskStatus_ ;
+      /**
+       * <code>optional uint32 taskStatus = 11;</code>
+       *
+       * <pre>
+       *1:未开始，2:未完成，3:可领取, 4:已完成
+       * </pre>
+       */
+      public boolean hasTaskStatus() {
+        return ((bitField0_ & 0x00000400) == 0x00000400);
+      }
+      /**
+       * <code>optional uint32 taskStatus = 11;</code>
+       *
+       * <pre>
+       *1:未开始，2:未完成，3:可领取, 4:已完成
+       * </pre>
+       */
+      public int getTaskStatus() {
+        return taskStatus_;
+      }
+      /**
+       * <code>optional uint32 taskStatus = 11;</code>
+       *
+       * <pre>
+       *1:未开始，2:未完成，3:可领取, 4:已完成
+       * </pre>
+       */
+      public Builder setTaskStatus(int value) {
+        bitField0_ |= 0x00000400;
+        taskStatus_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 taskStatus = 11;</code>
+       *
+       * <pre>
+       *1:未开始，2:未完成，3:可领取, 4:已完成
+       * </pre>
+       */
+      public Builder clearTaskStatus() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        taskStatus_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ConsumeTaskItem)
+    }
+
+    static {
+      defaultInstance = new ConsumeTaskItem(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ConsumeTaskItem)
+  }
+
+  public interface GetConsumeTaskRewardReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetConsumeTaskRewardReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    boolean hasUuid();
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    long getUuid();
+
+    /**
+     * <code>optional uint32 taskId = 2;</code>
+     */
+    boolean hasTaskId();
+    /**
+     * <code>optional uint32 taskId = 2;</code>
+     */
+    int getTaskId();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetConsumeTaskRewardReq}
+   *
+   * <pre>
+   *获取消费任务奖励c2s接口
+   *zhibo.activity.getconsumetaskreward
+   * </pre>
+   */
+  public static final class GetConsumeTaskRewardReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetConsumeTaskRewardReq)
+      GetConsumeTaskRewardReqOrBuilder {
+    // Use GetConsumeTaskRewardReq.newBuilder() to construct.
+    private GetConsumeTaskRewardReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetConsumeTaskRewardReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetConsumeTaskRewardReq defaultInstance;
+    public static GetConsumeTaskRewardReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetConsumeTaskRewardReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetConsumeTaskRewardReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uuid_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              taskId_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskRewardReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskRewardReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq.class, com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetConsumeTaskRewardReq> PARSER =
+        new com.google.protobuf.AbstractParser<GetConsumeTaskRewardReq>() {
+      public GetConsumeTaskRewardReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetConsumeTaskRewardReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetConsumeTaskRewardReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int UUID_FIELD_NUMBER = 1;
+    private long uuid_;
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    public long getUuid() {
+      return uuid_;
+    }
+
+    public static final int TASKID_FIELD_NUMBER = 2;
+    private int taskId_;
+    /**
+     * <code>optional uint32 taskId = 2;</code>
+     */
+    public boolean hasTaskId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 taskId = 2;</code>
+     */
+    public int getTaskId() {
+      return taskId_;
+    }
+
+    private void initFields() {
+      uuid_ = 0L;
+      taskId_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, taskId_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, taskId_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetConsumeTaskRewardReq}
+     *
+     * <pre>
+     *获取消费任务奖励c2s接口
+     *zhibo.activity.getconsumetaskreward
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetConsumeTaskRewardReq)
+        com.wali.live.proto.GiftProto.GetConsumeTaskRewardReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskRewardReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskRewardReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq.class, com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        taskId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskRewardReq_descriptor;
+      }
+
+      public com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq getDefaultInstanceForType() {
+        return com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq build() {
+        com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq buildPartial() {
+        com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq result = new com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uuid_ = uuid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.taskId_ = taskId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq) {
+          return mergeFrom((com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq other) {
+        if (other == com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq.getDefaultInstance()) return this;
+        if (other.hasUuid()) {
+          setUuid(other.getUuid());
+        }
+        if (other.hasTaskId()) {
+          setTaskId(other.getTaskId());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.GiftProto.GetConsumeTaskRewardReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long uuid_ ;
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public long getUuid() {
+        return uuid_;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public Builder setUuid(long value) {
+        bitField0_ |= 0x00000001;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int taskId_ ;
+      /**
+       * <code>optional uint32 taskId = 2;</code>
+       */
+      public boolean hasTaskId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 taskId = 2;</code>
+       */
+      public int getTaskId() {
+        return taskId_;
+      }
+      /**
+       * <code>optional uint32 taskId = 2;</code>
+       */
+      public Builder setTaskId(int value) {
+        bitField0_ |= 0x00000002;
+        taskId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 taskId = 2;</code>
+       */
+      public Builder clearTaskId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        taskId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetConsumeTaskRewardReq)
+    }
+
+    static {
+      defaultInstance = new GetConsumeTaskRewardReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetConsumeTaskRewardReq)
+  }
+
+  public interface GetConsumeTaskRewardRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetConsumeTaskRewardRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    int getRetCode();
+
+    /**
+     * <code>optional uint32 rewardType = 2;</code>
+     *
+     * <pre>
+     *奖励类型, 1:钻石 2:礼品卡
+     * </pre>
+     */
+    boolean hasRewardType();
+    /**
+     * <code>optional uint32 rewardType = 2;</code>
+     *
+     * <pre>
+     *奖励类型, 1:钻石 2:礼品卡
+     * </pre>
+     */
+    int getRewardType();
+
+    /**
+     * <code>optional uint32 rewardCnt = 3;</code>
+     *
+     * <pre>
+     *奖励数量，银钻数/礼品卡数
+     * </pre>
+     */
+    boolean hasRewardCnt();
+    /**
+     * <code>optional uint32 rewardCnt = 3;</code>
+     *
+     * <pre>
+     *奖励数量，银钻数/礼品卡数
+     * </pre>
+     */
+    int getRewardCnt();
+
+    /**
+     * <code>optional uint32 rewardGiftId = 4;</code>
+     *
+     * <pre>
+     *奖励的礼品卡ID
+     * </pre>
+     */
+    boolean hasRewardGiftId();
+    /**
+     * <code>optional uint32 rewardGiftId = 4;</code>
+     *
+     * <pre>
+     *奖励的礼品卡ID
+     * </pre>
+     */
+    int getRewardGiftId();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetConsumeTaskRewardRsp}
+   */
+  public static final class GetConsumeTaskRewardRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetConsumeTaskRewardRsp)
+      GetConsumeTaskRewardRspOrBuilder {
+    // Use GetConsumeTaskRewardRsp.newBuilder() to construct.
+    private GetConsumeTaskRewardRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetConsumeTaskRewardRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetConsumeTaskRewardRsp defaultInstance;
+    public static GetConsumeTaskRewardRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetConsumeTaskRewardRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetConsumeTaskRewardRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              rewardType_ = input.readUInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              rewardCnt_ = input.readUInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              rewardGiftId_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskRewardRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskRewardRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp.class, com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetConsumeTaskRewardRsp> PARSER =
+        new com.google.protobuf.AbstractParser<GetConsumeTaskRewardRsp>() {
+      public GetConsumeTaskRewardRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetConsumeTaskRewardRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetConsumeTaskRewardRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    public static final int REWARDTYPE_FIELD_NUMBER = 2;
+    private int rewardType_;
+    /**
+     * <code>optional uint32 rewardType = 2;</code>
+     *
+     * <pre>
+     *奖励类型, 1:钻石 2:礼品卡
+     * </pre>
+     */
+    public boolean hasRewardType() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 rewardType = 2;</code>
+     *
+     * <pre>
+     *奖励类型, 1:钻石 2:礼品卡
+     * </pre>
+     */
+    public int getRewardType() {
+      return rewardType_;
+    }
+
+    public static final int REWARDCNT_FIELD_NUMBER = 3;
+    private int rewardCnt_;
+    /**
+     * <code>optional uint32 rewardCnt = 3;</code>
+     *
+     * <pre>
+     *奖励数量，银钻数/礼品卡数
+     * </pre>
+     */
+    public boolean hasRewardCnt() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint32 rewardCnt = 3;</code>
+     *
+     * <pre>
+     *奖励数量，银钻数/礼品卡数
+     * </pre>
+     */
+    public int getRewardCnt() {
+      return rewardCnt_;
+    }
+
+    public static final int REWARDGIFTID_FIELD_NUMBER = 4;
+    private int rewardGiftId_;
+    /**
+     * <code>optional uint32 rewardGiftId = 4;</code>
+     *
+     * <pre>
+     *奖励的礼品卡ID
+     * </pre>
+     */
+    public boolean hasRewardGiftId() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint32 rewardGiftId = 4;</code>
+     *
+     * <pre>
+     *奖励的礼品卡ID
+     * </pre>
+     */
+    public int getRewardGiftId() {
+      return rewardGiftId_;
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+      rewardType_ = 0;
+      rewardCnt_ = 0;
+      rewardGiftId_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, rewardType_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, rewardCnt_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt32(4, rewardGiftId_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, rewardType_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, rewardCnt_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(4, rewardGiftId_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetConsumeTaskRewardRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetConsumeTaskRewardRsp)
+        com.wali.live.proto.GiftProto.GetConsumeTaskRewardRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskRewardRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskRewardRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp.class, com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        rewardType_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        rewardCnt_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        rewardGiftId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.GiftProto.internal_static_com_wali_live_proto_GetConsumeTaskRewardRsp_descriptor;
+      }
+
+      public com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp build() {
+        com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp buildPartial() {
+        com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp result = new com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.rewardType_ = rewardType_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.rewardCnt_ = rewardCnt_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.rewardGiftId_ = rewardGiftId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp) {
+          return mergeFrom((com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp other) {
+        if (other == com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        if (other.hasRewardType()) {
+          setRewardType(other.getRewardType());
+        }
+        if (other.hasRewardCnt()) {
+          setRewardCnt(other.getRewardCnt());
+        }
+        if (other.hasRewardGiftId()) {
+          setRewardGiftId(other.getRewardGiftId());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.GiftProto.GetConsumeTaskRewardRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int rewardType_ ;
+      /**
+       * <code>optional uint32 rewardType = 2;</code>
+       *
+       * <pre>
+       *奖励类型, 1:钻石 2:礼品卡
+       * </pre>
+       */
+      public boolean hasRewardType() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 rewardType = 2;</code>
+       *
+       * <pre>
+       *奖励类型, 1:钻石 2:礼品卡
+       * </pre>
+       */
+      public int getRewardType() {
+        return rewardType_;
+      }
+      /**
+       * <code>optional uint32 rewardType = 2;</code>
+       *
+       * <pre>
+       *奖励类型, 1:钻石 2:礼品卡
+       * </pre>
+       */
+      public Builder setRewardType(int value) {
+        bitField0_ |= 0x00000002;
+        rewardType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 rewardType = 2;</code>
+       *
+       * <pre>
+       *奖励类型, 1:钻石 2:礼品卡
+       * </pre>
+       */
+      public Builder clearRewardType() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        rewardType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int rewardCnt_ ;
+      /**
+       * <code>optional uint32 rewardCnt = 3;</code>
+       *
+       * <pre>
+       *奖励数量，银钻数/礼品卡数
+       * </pre>
+       */
+      public boolean hasRewardCnt() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint32 rewardCnt = 3;</code>
+       *
+       * <pre>
+       *奖励数量，银钻数/礼品卡数
+       * </pre>
+       */
+      public int getRewardCnt() {
+        return rewardCnt_;
+      }
+      /**
+       * <code>optional uint32 rewardCnt = 3;</code>
+       *
+       * <pre>
+       *奖励数量，银钻数/礼品卡数
+       * </pre>
+       */
+      public Builder setRewardCnt(int value) {
+        bitField0_ |= 0x00000004;
+        rewardCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 rewardCnt = 3;</code>
+       *
+       * <pre>
+       *奖励数量，银钻数/礼品卡数
+       * </pre>
+       */
+      public Builder clearRewardCnt() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        rewardCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int rewardGiftId_ ;
+      /**
+       * <code>optional uint32 rewardGiftId = 4;</code>
+       *
+       * <pre>
+       *奖励的礼品卡ID
+       * </pre>
+       */
+      public boolean hasRewardGiftId() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint32 rewardGiftId = 4;</code>
+       *
+       * <pre>
+       *奖励的礼品卡ID
+       * </pre>
+       */
+      public int getRewardGiftId() {
+        return rewardGiftId_;
+      }
+      /**
+       * <code>optional uint32 rewardGiftId = 4;</code>
+       *
+       * <pre>
+       *奖励的礼品卡ID
+       * </pre>
+       */
+      public Builder setRewardGiftId(int value) {
+        bitField0_ |= 0x00000008;
+        rewardGiftId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 rewardGiftId = 4;</code>
+       *
+       * <pre>
+       *奖励的礼品卡ID
+       * </pre>
+       */
+      public Builder clearRewardGiftId() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        rewardGiftId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetConsumeTaskRewardRsp)
+    }
+
+    static {
+      defaultInstance = new GetConsumeTaskRewardRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetConsumeTaskRewardRsp)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GiftInfo_descriptor;
   private static
@@ -13752,6 +18320,31 @@ public final class GiftProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetMibiBalanceResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetConsumeTaskListReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetConsumeTaskListReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetConsumeTaskListRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetConsumeTaskListRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_ConsumeTaskItem_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_ConsumeTaskItem_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetConsumeTaskRewardReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetConsumeTaskRewardReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetConsumeTaskRewardRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetConsumeTaskRewardRsp_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -13784,29 +18377,43 @@ public final class GiftProto {
       "\017\n\007retCode\030\001 \001(\r\022/\n\010giftList\030\002 \001(\0132\035.com" +
       ".wali.live.proto.GiftList\022\021\n\ttimestamp\030\003" +
       " \001(\004\"E\n\tVGiftCard\022\017\n\007gift_id\030\001 \001(\r\022\025\n\rgi" +
-      "ft_card_cnt\030\002 \001(\r\022\020\n\010end_time\030\003 \001(\004\"\214\002\n\n" +
+      "ft_card_cnt\030\002 \001(\r\022\020\n\010end_time\030\003 \001(\004\"\242\002\n\n" +
       "BuyGiftReq\022\016\n\006userId\030\001 \002(\004\022\022\n\nreceiverId" +
       "\030\002 \002(\004\022\016\n\006roomId\030\003 \002(\t\022\016\n\006giftId\030\004 \002(\r\022\021" +
-      "\n\ttimestamp\030\005 \002(\004\022\020\n\005count\030\010 \001(\r:\0011\022\022\n\nc" +
-      "ontinueId\030\n \001(\004\022\020\n\010msg_body\030\013 \001(\t\022\021\n\troo" +
-      "m_type\030\014 \001(\r\022\025\n\ruse_gift_card\030\r \001(\010\022/\n\010p" +
-      "latform\030\016 \001(\0162\035.com.wali.live.proto.Plat",
-      "form\022\024\n\014access_token\030\017 \001(\t\"\342\002\n\nBuyGiftRs" +
-      "p\022\017\n\007retCode\030\001 \002(\r\022\016\n\006retMsg\030\002 \001(\t\022\026\n\016us" +
-      "able_gem_cnt\030\003 \001(\r\022\034\n\024user_asset_timesta" +
-      "mp\030\004 \001(\004\022\020\n\010sequence\030\005 \001(\004\022\036\n\026receiver_t" +
-      "otal_tickets\030\006 \001(\r\022\032\n\022ticket_update_time" +
-      "\030\007 \001(\004\022\025\n\rred_packet_id\030\010 \001(\t\022\020\n\010order_i" +
-      "d\030\t \001(\t\0226\n\016gift_card_list\030\n \003(\0132\036.com.wa" +
-      "li.live.proto.VGiftCard\022\036\n\026usable_virtua" +
-      "l_gem_cnt\030\013 \001(\r\022\024\n\014mibi_balance\030\014 \001(\r\022\030\n" +
-      "\020mibi_update_time\030\r \001(\004\"%\n\025GetMibiBalanc",
-      "eRequest\022\014\n\004uuid\030\001 \002(\004\"o\n\026GetMibiBalance" +
-      "Response\022\020\n\010ret_code\030\001 \002(\r\022\017\n\007balance\030\002 " +
-      "\001(\r\022\023\n\013balanceTime\030\003 \001(\r\022\035\n\025exchangeable" +
-      "_mibi_cnt\030\004 \001(\r* \n\010Platform\022\007\n\003IOS\020\001\022\013\n\007" +
-      "ANDROID\020\002B \n\023com.wali.live.protoB\tGiftPr" +
-      "oto"
+      "\n\ttimestamp\030\005 \002(\004\022\020\n\005count\030\010 \001(\r:\0011\022\024\n\tg" +
+      "iftCount\030\t \001(\r:\0011\022\022\n\ncontinueId\030\n \001(\004\022\020\n" +
+      "\010msg_body\030\013 \001(\t\022\021\n\troom_type\030\014 \001(\r\022\025\n\rus" +
+      "e_gift_card\030\r \001(\010\022/\n\010platform\030\016 \001(\0162\035.co",
+      "m.wali.live.proto.Platform\022\024\n\014access_tok" +
+      "en\030\017 \001(\t\"\342\002\n\nBuyGiftRsp\022\017\n\007retCode\030\001 \002(\r" +
+      "\022\016\n\006retMsg\030\002 \001(\t\022\026\n\016usable_gem_cnt\030\003 \001(\r" +
+      "\022\034\n\024user_asset_timestamp\030\004 \001(\004\022\020\n\010sequen" +
+      "ce\030\005 \001(\004\022\036\n\026receiver_total_tickets\030\006 \001(\r" +
+      "\022\032\n\022ticket_update_time\030\007 \001(\004\022\025\n\rred_pack" +
+      "et_id\030\010 \001(\t\022\020\n\010order_id\030\t \001(\t\0226\n\016gift_ca" +
+      "rd_list\030\n \003(\0132\036.com.wali.live.proto.VGif" +
+      "tCard\022\036\n\026usable_virtual_gem_cnt\030\013 \001(\r\022\024\n" +
+      "\014mibi_balance\030\014 \001(\r\022\030\n\020mibi_update_time\030",
+      "\r \001(\004\"%\n\025GetMibiBalanceRequest\022\014\n\004uuid\030\001" +
+      " \002(\004\"o\n\026GetMibiBalanceResponse\022\020\n\010ret_co" +
+      "de\030\001 \002(\r\022\017\n\007balance\030\002 \001(\r\022\023\n\013balanceTime" +
+      "\030\003 \001(\r\022\035\n\025exchangeable_mibi_cnt\030\004 \001(\r\"%\n" +
+      "\025GetConsumeTaskListReq\022\014\n\004uuid\030\001 \001(\004\"y\n\025" +
+      "GetConsumeTaskListRsp\022\017\n\007retCode\030\001 \002(\r\022\024" +
+      "\n\014bannerImgUrl\030\002 \001(\t\0229\n\013consumeTask\030\003 \003(" +
+      "\0132$.com.wali.live.proto.ConsumeTaskItem\"" +
+      "\346\001\n\017ConsumeTaskItem\022\016\n\006taskId\030\001 \001(\r\022\014\n\004u" +
+      "uid\030\002 \001(\004\022\020\n\010taskType\030\003 \001(\t\022\020\n\010taskDesc\030",
+      "\004 \001(\t\022\020\n\010progress\030\005 \001(\r\022\023\n\013taskNeedNum\030\006" +
+      " \001(\r\022\022\n\nrewardDesc\030\007 \001(\t\022\030\n\020rewardAvailT" +
+      "imes\030\010 \001(\t\022\022\n\nrewardType\030\t \001(\r\022\024\n\014reward" +
+      "GiftId\030\n \001(\r\022\022\n\ntaskStatus\030\013 \001(\r\"7\n\027GetC" +
+      "onsumeTaskRewardReq\022\014\n\004uuid\030\001 \001(\004\022\016\n\006tas" +
+      "kId\030\002 \001(\r\"g\n\027GetConsumeTaskRewardRsp\022\017\n\007" +
+      "retCode\030\001 \002(\r\022\022\n\nrewardType\030\002 \001(\r\022\021\n\trew" +
+      "ardCnt\030\003 \001(\r\022\024\n\014rewardGiftId\030\004 \001(\r* \n\010Pl" +
+      "atform\022\007\n\003IOS\020\001\022\013\n\007ANDROID\020\002B \n\023com.wali" +
+      ".live.protoB\tGiftProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -13861,7 +18468,7 @@ public final class GiftProto {
     internal_static_com_wali_live_proto_BuyGiftReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_BuyGiftReq_descriptor,
-        new java.lang.String[] { "UserId", "ReceiverId", "RoomId", "GiftId", "Timestamp", "Count", "ContinueId", "MsgBody", "RoomType", "UseGiftCard", "Platform", "AccessToken", });
+        new java.lang.String[] { "UserId", "ReceiverId", "RoomId", "GiftId", "Timestamp", "Count", "GiftCount", "ContinueId", "MsgBody", "RoomType", "UseGiftCard", "Platform", "AccessToken", });
     internal_static_com_wali_live_proto_BuyGiftRsp_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_com_wali_live_proto_BuyGiftRsp_fieldAccessorTable = new
@@ -13880,6 +18487,36 @@ public final class GiftProto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetMibiBalanceResponse_descriptor,
         new java.lang.String[] { "RetCode", "Balance", "BalanceTime", "ExchangeableMibiCnt", });
+    internal_static_com_wali_live_proto_GetConsumeTaskListReq_descriptor =
+      getDescriptor().getMessageTypes().get(10);
+    internal_static_com_wali_live_proto_GetConsumeTaskListReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetConsumeTaskListReq_descriptor,
+        new java.lang.String[] { "Uuid", });
+    internal_static_com_wali_live_proto_GetConsumeTaskListRsp_descriptor =
+      getDescriptor().getMessageTypes().get(11);
+    internal_static_com_wali_live_proto_GetConsumeTaskListRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetConsumeTaskListRsp_descriptor,
+        new java.lang.String[] { "RetCode", "BannerImgUrl", "ConsumeTask", });
+    internal_static_com_wali_live_proto_ConsumeTaskItem_descriptor =
+      getDescriptor().getMessageTypes().get(12);
+    internal_static_com_wali_live_proto_ConsumeTaskItem_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_ConsumeTaskItem_descriptor,
+        new java.lang.String[] { "TaskId", "Uuid", "TaskType", "TaskDesc", "Progress", "TaskNeedNum", "RewardDesc", "RewardAvailTimes", "RewardType", "RewardGiftId", "TaskStatus", });
+    internal_static_com_wali_live_proto_GetConsumeTaskRewardReq_descriptor =
+      getDescriptor().getMessageTypes().get(13);
+    internal_static_com_wali_live_proto_GetConsumeTaskRewardReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetConsumeTaskRewardReq_descriptor,
+        new java.lang.String[] { "Uuid", "TaskId", });
+    internal_static_com_wali_live_proto_GetConsumeTaskRewardRsp_descriptor =
+      getDescriptor().getMessageTypes().get(14);
+    internal_static_com_wali_live_proto_GetConsumeTaskRewardRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetConsumeTaskRewardRsp_descriptor,
+        new java.lang.String[] { "RetCode", "RewardType", "RewardCnt", "RewardGiftId", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

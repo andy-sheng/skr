@@ -121,6 +121,7 @@ public class BarrageAnimView extends RelativeLayout implements IAnimView {
             @DrawableRes int drawableId = CommentVipUtils.getLevelBadgeResId(vipLevel, mCurBarrage.isVipFrozen(), false);
             vipIcon = GlobalData.app().getResources().getDrawable(drawableId);
             vipIcon.setBounds(0, 0, vipIcon.getIntrinsicWidth(), vipIcon.getIntrinsicHeight());
+            mLevelTv.setBackground(vipIcon);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -130,7 +131,6 @@ public class BarrageAnimView extends RelativeLayout implements IAnimView {
         params.topMargin = vipLevel > 4 ? 0 : LEVEL_MARGIN_TOP;
         params.bottomMargin = vipLevel > 4 ? LEVEL_MARGIN_BOTTOM : 0;
         mLevelTv.setLayoutParams(params);
-        mLevelTv.setBackground(vipIcon);
 
         String name = TextUtils.isEmpty(mCurBarrage.getSenderName()) ?
                 String.valueOf(mCurBarrage.getSender()) :
@@ -298,6 +298,10 @@ public class BarrageAnimView extends RelativeLayout implements IAnimView {
     public void reset() {
         MyLog.d(TAG, "reset");
         mAnimContainer.removeView(mAnimDv);
+        Animation animation = mContentView.getAnimation();
+        if (animation != null) {
+            animation.cancel();
+        }
         mContentView.clearAnimation();
         setVisibility(View.GONE);
     }
@@ -306,6 +310,10 @@ public class BarrageAnimView extends RelativeLayout implements IAnimView {
     public void onDestroy() {
         MyLog.d(TAG, "onDestroy");
         mAnimContainer.removeView(mAnimDv);
+        Animation animation = mContentView.getAnimation();
+        if (animation != null) {
+            animation.cancel();
+        }
         mContentView.clearAnimation();
     }
 }
