@@ -28,9 +28,9 @@ public class GiftDisplayView extends RelativeLayout {
 
     private TextView mGiftMallItemTips;
 
-    public GiftDisplayView(Context context, GiftDisplayRecycleViewAdapter.GiftItemListener l) {
+    public GiftDisplayView(Context context, GiftDisplayRecycleViewAdapter.GiftItemListener giftItemListener) {
         super(context);
-        init(context, l);
+        init(giftItemListener);
     }
 
 //    @Override
@@ -71,14 +71,14 @@ public class GiftDisplayView extends RelativeLayout {
 
     private GiftDisplayRecycleViewAdapter mGiftDisplayRecycleViewAdapter;
 
-    public void init(Context context, GiftDisplayRecycleViewAdapter.GiftItemListener l) {
+    public void init(GiftDisplayRecycleViewAdapter.GiftItemListener giftItemListener) {
         inflate(getContext(), R.layout.layout_gift_display_view, this);
         mGiftDisplayRecycleView = (RecyclerView) findViewById(R.id.gift_display_recycleview);
 
         mGiftMallItemTips = (TextView) findViewById(R.id.gift_mall_item_tips);
 
         GridLayoutManager fourColumGridManager = new GridLayoutManager(getContext(), 4);
-        mGiftDisplayRecycleViewAdapter = new GiftDisplayRecycleViewAdapter(context, false, l);
+        mGiftDisplayRecycleViewAdapter = new GiftDisplayRecycleViewAdapter(false, giftItemListener);
         mGiftDisplayRecycleView.setAdapter(mGiftDisplayRecycleViewAdapter);
         mGiftDisplayRecycleView.setLayoutManager(fourColumGridManager);
 //        mGiftDisplayRecycleView.addItemDecoration(new GiftDisplayDividerItemDecoration(GiftDisplayDividerItemDecoration.GRID_LIST));
@@ -93,7 +93,6 @@ public class GiftDisplayView extends RelativeLayout {
 
     public void setDataSource(List<GiftMallPresenter.GiftWithCard> dataSource) {
         mGiftDisplayRecycleViewAdapter.setData(dataSource);
-        mGiftDisplayRecycleViewAdapter.notifyDataSetChanged();
     }
 
 

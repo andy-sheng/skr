@@ -156,13 +156,16 @@ public class GiftDisPlayItemView extends RelativeLayout {
 
         GiftCard card = infoWithCard.card;
 
-        long now = System.currentTimeMillis();
         // 免费卡
         if (card != null && card.getGiftCardCount() > 0) {
             MyLog.d(TAG, "免费卡");
             // 显示免费卡
             mFreeGiftTv.setVisibility(VISIBLE);
-            mFreeGiftTv.setText(String.valueOf(getResources().getString(R.string.gift_card_num) + card.getGiftCardCount()));
+            if (card != null) {
+                mFreeGiftTv.setText(getResources().getString(R.string.gift_card_num) + card.getGiftCardCount());
+            } else {
+                mFreeGiftTv.setText(getResources().getString(R.string.gift_card_num) + 0);
+            }
 
             // 该隐藏的隐藏
             mPriceTv.setVisibility(GONE);

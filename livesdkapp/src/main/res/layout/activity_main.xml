@@ -100,6 +100,21 @@
             android:textColor="@color/color_black_trans_80"
             android:textSize="@dimen/text_size_36"/>
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/box_tv"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/corners_bg_e5e5e5_30px"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="神龙宝箱"
+            android:textColor="@color/color_black_trans_80"
+            android:textSize="@dimen/text_size_36"/>
     </LinearLayout>
 
     <TextView

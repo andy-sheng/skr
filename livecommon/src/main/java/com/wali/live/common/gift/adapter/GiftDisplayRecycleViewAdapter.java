@@ -1,11 +1,11 @@
 package com.wali.live.common.gift.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.base.log.MyLog;
 import com.jakewharton.rxbinding.view.RxView;
 import com.live.module.common.R;
 import com.wali.live.common.gift.adapter.viewHolder.GiftItemViewHolder;
@@ -29,12 +29,9 @@ public class GiftDisplayRecycleViewAdapter extends RecyclerView.Adapter<GiftItem
     public static String TAG = "GiftDisplayRecycleViewAdapter";
 
     private List<GiftMallPresenter.GiftWithCard> mDataSource = new ArrayList<>();
-
-    private Context mContext;
     private boolean mLandscape;
 
-    public GiftDisplayRecycleViewAdapter(Context context, boolean landscape, GiftItemListener giftItemListener) {
-        this.mContext = context;
+    public GiftDisplayRecycleViewAdapter(boolean landscape, GiftItemListener giftItemListener) {
         this.mLandscape = landscape;
         this.mGiftItemListener = giftItemListener;
     }
@@ -58,8 +55,8 @@ public class GiftDisplayRecycleViewAdapter extends RecyclerView.Adapter<GiftItem
         viewHolder.giftDisPlayItemView.hideContinueSendBtn();
         viewHolder.giftDisPlayItemView.setDataSource(infoWithCard);
 
-        if(!TextUtils.isEmpty(infoWithCard.gift.getGifUrl())){
-            if(!GiftMallPresenter.GiftWithCard.hashSet.contains(infoWithCard.gift.getGiftId())){
+        if (!TextUtils.isEmpty(infoWithCard.gift.getGifUrl())) {
+            if (!GiftMallPresenter.GiftWithCard.hashSet.contains(infoWithCard.gift.getGiftId())) {
                 viewHolder.giftDisPlayItemView.playSelectedGiftItemAnimator(infoWithCard.gift.getGifUrl(), false);
                 GiftMallPresenter.GiftWithCard.hashSet.add(infoWithCard.gift.getGiftId());
             }
@@ -67,18 +64,18 @@ public class GiftDisplayRecycleViewAdapter extends RecyclerView.Adapter<GiftItem
 
 
         final View finalConvertView = viewHolder.giftDisPlayItemView;
-        if (mGiftItemListener!=null && infoWithCard.gift == mGiftItemListener.getSelectedGift()) {
+        if (mGiftItemListener != null && infoWithCard.gift == mGiftItemListener.getSelectedGift()) {
             viewHolder.giftDisPlayItemView.setBackgroundResource(R.drawable.live_choice_selected);
-            if(!infoWithCard.gift.getCanContinuous()){
+            if (!infoWithCard.gift.getCanContinuous()) {
                 viewHolder.giftDisPlayItemView.changeContinueSendBtnBackGroup(true);
                 viewHolder.giftDisPlayItemView.showContinueSendBtn(false);
                 viewHolder.giftDisPlayItemView.changeCornerStatus(infoWithCard.gift.getIcon(), true);
             }
-            if(mGiftItemListener!=null){
-                mGiftItemListener.updateSelectedGiftView(finalConvertView,infoWithCard);
+            if (mGiftItemListener != null) {
+                mGiftItemListener.updateSelectedGiftView(finalConvertView, infoWithCard);
             }
         } else {
-            if(mGiftItemListener != null) {
+            if (mGiftItemListener != null) {
                 mGiftItemListener.updateContinueSend();
             }
             viewHolder.giftDisPlayItemView.setBackgroundResource(0);
@@ -96,8 +93,8 @@ public class GiftDisplayRecycleViewAdapter extends RecyclerView.Adapter<GiftItem
 
             @Override
             public void onNext(Void aVoid) {
-                if(mGiftItemListener!=null){
-                    mGiftItemListener.clickGiftItem(finalConvertView,infoWithCard, position);
+                if (mGiftItemListener != null) {
+                    mGiftItemListener.clickGiftItem(finalConvertView, infoWithCard, position);
                 }
 //                EventBus.getDefault().post(new EventClass.GiftCacheChangeEvent(EventClass.GiftCacheChangeEvent.EVENT_TYPE_CLICK_GIFT_VIEW_IN_MALL, finalConvertView, infoWithCard));
             }
@@ -110,11 +107,12 @@ public class GiftDisplayRecycleViewAdapter extends RecyclerView.Adapter<GiftItem
     }
 
     public void setData(List<GiftMallPresenter.GiftWithCard> dataList) {
+        MyLog.d(TAG, "setData dataList=" + dataList.size());
         mDataSource = dataList;
         notifyDataSetChanged();
     }
 
-    public List<GiftMallPresenter.GiftWithCard> getData(){
+    public List<GiftMallPresenter.GiftWithCard> getData() {
         return mDataSource;
     }
 

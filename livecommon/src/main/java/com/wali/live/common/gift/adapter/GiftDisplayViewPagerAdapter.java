@@ -25,9 +25,9 @@ public class GiftDisplayViewPagerAdapter extends PagerAdapter {
 
     private SoftReference<Activity> mActRef;
 
-    public GiftDisplayViewPagerAdapter(Activity activity, GiftDisplayRecycleViewAdapter.GiftItemListener l) {
-        mActRef = new SoftReference<Activity>(activity);
-        mGiftItemListener = l;
+    public GiftDisplayViewPagerAdapter(Activity activity, GiftDisplayRecycleViewAdapter.GiftItemListener giftItemListener) {
+        mActRef = new SoftReference<>(activity);
+        mGiftItemListener = giftItemListener;
     }
 
     @Override
@@ -75,26 +75,26 @@ public class GiftDisplayViewPagerAdapter extends PagerAdapter {
         notifyDataSetChanged();
     }
 
-    public List<List<GiftMallPresenter.GiftWithCard>> getDataSource(){
+    public List<List<GiftMallPresenter.GiftWithCard>> getDataSource() {
         return dataSourceList;
     }
 
-    public List<View>  getCacheListView(){
+    public List<View> getCacheListView() {
         return mCacheList;
     }
 
 
-    public void setSelectedGiftInfo(View selectedView, GiftMallPresenter.GiftWithCard info, int position, int currentViewPagerPosition){
-        MyLog.d(TAG,"setSelectedGiftInfo+mGiftDisplayView"+currentViewPagerPosition);
-        ((GiftDisplayView)mCacheList.get(currentViewPagerPosition)).setSelectedGiftInfo(selectedView, info, position);
+    public void setSelectedGiftInfo(View selectedView, GiftMallPresenter.GiftWithCard info, int position, int currentViewPagerPosition) {
+        MyLog.d(TAG, "setSelectedGiftInfo+mGiftDisplayView" + currentViewPagerPosition);
+        ((GiftDisplayView) mCacheList.get(currentViewPagerPosition)).setSelectedGiftInfo(selectedView, info, position);
 
         clearOtherPagerGiftInfoTipsStatus(currentViewPagerPosition);
     }
 
     private void clearOtherPagerGiftInfoTipsStatus(int currentViewPagerPosition) {
-        for(int i = 0; i < mCacheList.size(); i++){
-            if(i != currentViewPagerPosition){
-                ((GiftDisplayView)mCacheList.get(i)).clearGiftMallItemTips();
+        for (int i = 0; i < mCacheList.size(); i++) {
+            if (i != currentViewPagerPosition) {
+                ((GiftDisplayView) mCacheList.get(i)).clearGiftMallItemTips();
             }
         }
     }

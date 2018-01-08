@@ -1,5 +1,6 @@
 package com.wali.live.common.gift.bean;
 
+import com.base.log.MyLog;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
 
 import java.util.Iterator;
@@ -9,6 +10,8 @@ import java.util.List;
  * Created by lan on 2017/12/21.
  */
 public class GiftMallBean {
+    private static final String TAG = GiftMallBean.class.getSimpleName();
+
     //竖屏正常礼物
     private List<List<GiftMallPresenter.GiftWithCard>> mNormalGiftPortraitList;
     //竖屏包裹礼物
@@ -19,13 +22,20 @@ public class GiftMallBean {
     private List<GiftMallPresenter.GiftWithCard> mPktGiftLandscapeList;
 
     public void remove(GiftMallPresenter.GiftWithCard giftWithCard) {
+        MyLog.d(TAG, "giftWithCard giftId=" + giftWithCard.gift.getGiftId());
+
         if (mPktGiftLandscapeList != null) {
+            MyLog.d(TAG, "mPktGiftLandscapeList size before=" + mPktGiftLandscapeList.size());
             removeGift(mPktGiftLandscapeList, giftWithCard);
+            MyLog.d(TAG, "mPktGiftLandscapeList size after=" + mPktGiftLandscapeList.size());
         }
+
         if (mPktGiftPortraitList != null) {
             for (List<GiftMallPresenter.GiftWithCard> list : mPktGiftPortraitList) {
                 if (list != null) {
+                    MyLog.d(TAG, "mPktGiftPortraitList innerList size before=" + list.size());
                     if (removeGift(list, giftWithCard)) {
+                        MyLog.d(TAG, "mPktGiftPortraitList innerList size after=" + list.size());
                         break;
                     }
                 }
