@@ -404,16 +404,14 @@ public class LiveRoomChatMsgManager {
                     if (msg.getVipLevel() > 0 && !msg.isVipFrozen() && msg.isVipHide()) {
                         // vip隐身,不显示入场消息
                         return false;
-                    } else if (msg.getSender() == MyUserInfoManager.getInstance().getUuid()) {
-                        //注：助手因为是拉消息的逻辑，所以再自己的进场消息之前也会拉回来其他的进场消息，
-                        // 下面的checkMoreThanMaxCountByTime函数的丢消息逻辑，两个消息时间间隔小于5s,
-                        // 则会将后者消息扔掉。这里避免将自己消息扔掉，所以在之前单独加回来。
-                        return true;
                     }
                     try {
                         String variables = MLPreferenceUtils.getSettingString(GlobalData.app(), PreferenceKeys.PREF_KEY_CONVERGED, PreferenceKeys.CONVERGED_DEFAULT_VALUE);
                         String[] variable = variables.split("_");
-                        if (msg.getSenderLevel() >= Integer.parseInt(variable[0]) || rankTops.contains(msg.getSender())) {
+                        if (msg.getSenderLevel() >= Integer.parseInt(variable[0])
+                                || rankTops.contains(msg.getSender())
+                                || msg.getSender() == MyUserInfoManager.getInstance().getUuid()
+                                || msg.getVipLevel() >= 3) {
                             canAdd = true;
                         } else {
                             canAdd = !checkMoreThanMaxCountByTime(msg.getSentTime(), Integer.parseInt(variable[2]) * 1000, Integer.parseInt(variable[3]));

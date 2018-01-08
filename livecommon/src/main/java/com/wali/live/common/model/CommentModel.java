@@ -4,7 +4,6 @@ import android.support.annotation.DrawableRes;
 import android.text.TextUtils;
 
 import com.base.global.GlobalData;
-import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.live.module.common.R;
 import com.mi.live.data.account.UserAccountManager;
@@ -342,7 +341,7 @@ public class CommentModel implements Comparable<CommentModel> {
             break;
             case BarrageMsgType.B_MSG_TYPE_JOIN: {
                 if (!TextUtils.isEmpty(name)) {
-                    if (msg.getVipLevel() > 1 && !msg.isVipFrozen() && !msg.isVipHide()) {
+                    if (msg.getVipLevel() >= 2 && !msg.isVipFrozen() && !msg.isVipHide()) {
                         String[] tips = GlobalData.app().getResources().getStringArray(R.array.welcome_vip_enter_room_tip);
                         String body = tips[(int) (System.currentTimeMillis() % tips.length)];
                         liveComment.setBody(body, false);
