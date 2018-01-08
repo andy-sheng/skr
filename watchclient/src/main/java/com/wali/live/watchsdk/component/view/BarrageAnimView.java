@@ -65,6 +65,11 @@ public class BarrageAnimView extends RelativeLayout implements IAnimView {
     private int mCurEffectLevel = -1;
     private boolean mJoinAnimEnable = true;
     private Runnable mRunnable;
+    private BarrageControlAnimView.IAnimPlayBack mAnimPlayBack;
+
+    public void setAnimPlayBack(BarrageControlAnimView.IAnimPlayBack animPlayBack) {
+        mAnimPlayBack = animPlayBack;
+    }
 
     public void setJoinAnimEnable(boolean joinAnimEnable) {
         mJoinAnimEnable = joinAnimEnable;
@@ -201,6 +206,9 @@ public class BarrageAnimView extends RelativeLayout implements IAnimView {
                         mRunnable = new Runnable() {
                             @Override
                             public void run() {
+                                if (mAnimDv == null) {
+                                    return;
+                                }
                                 mAnimDv.setVisibility(View.INVISIBLE);
                                 mAnimContainer.removeView(mAnimDv);
                                 mAnimDv = null;
@@ -234,7 +242,8 @@ public class BarrageAnimView extends RelativeLayout implements IAnimView {
                 public void onAnimationEnd(Animation animation) {
                     MyLog.d(TAG, "startLeaveAnim onAnimationEnd");
                     setVisibility(GONE);
-                    //通知上层入场动画结束了
+                    //通知上层該弹幕消息入场动画结束了
+                    mAnimPlayBack.onPlayEnd(mCurBarrage);
                 }
 
                 @Override
@@ -309,13 +318,13 @@ public class BarrageAnimView extends RelativeLayout implements IAnimView {
     @Override
     public void reset() {
         MyLog.d(TAG, "reset");
-        removeCallbacks(mRunnable);
         mAnimContainer.removeView(mAnimDv);
         Animation animation = mContentView.getAnimation();
         if (animation != null) {
             animation.cancel();
         }
         mContentView.clearAnimation();
+        removeCallbacks(mRunnable);
         setVisibility(View.GONE);
         mAnimDv = null;
     }

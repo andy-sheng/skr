@@ -73,7 +73,7 @@ public class BarrageControlAnimView extends RelativeLayout implements IComponent
     }
 
     private void initData() {
-        mFlyBarrageControl = new AnimationPlayControlTemplate<BarrageMsg>((RxActivity) getContext(), false, 4) {
+        mFlyBarrageControl = new AnimationPlayControlTemplate<BarrageMsg>((RxActivity) getContext(), false, 1) {
             @Override
             public void onStart(BarrageMsg model) {
                 for (IAnimView animView : mAnimViews) {
@@ -102,7 +102,14 @@ public class BarrageControlAnimView extends RelativeLayout implements IComponent
     }
 
     private void initView() {
-        mAnimViews.add(new BarrageAnimView(getContext()));
+        mBarrageAnimView = new BarrageAnimView(getContext());
+        mBarrageAnimView.setAnimPlayBack(new IAnimPlayBack() {
+            @Override
+            public void onPlayEnd(BarrageMsg model) {
+                mFlyBarrageControl.endCurrent(model);
+            }
+        });
+        mAnimViews.add(mBarrageAnimView);
         for (IAnimView view : mAnimViews) {
             addView((View) view);
         }
@@ -163,5 +170,9 @@ public class BarrageControlAnimView extends RelativeLayout implements IComponent
         void setJoinEnable(boolean enable);
 
         void destroy();
+    }
+
+    public interface IAnimPlayBack {
+        void onPlayEnd(BarrageMsg model);
     }
 }
