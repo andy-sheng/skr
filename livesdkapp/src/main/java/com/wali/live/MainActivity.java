@@ -35,6 +35,7 @@ import com.wali.live.watchsdk.login.LoginPresenter;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
+import com.wali.live.watchsdk.webview.WebViewActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -205,6 +206,13 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
             @Override
             public void onClick(View v) {
                 getChannelById(201);
+            }
+        });
+
+        ($(R.id.box_tv)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WebViewActivity.open(MainActivity.this, "https://activity.zb.mi.com/tbox/index.html?actId=2016111101&version=3.0&pos=window&zuid=2199938&lid=2199938_1515139027");
             }
         });
     }

@@ -174,51 +174,19 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
 
     public void buyGift() {
         final long timestamp = System.currentTimeMillis();
-        //
+
         final GiftMallPresenter.GiftWithCard buyGiftWithCard = mGiftMallView.getSelectedGift();
         final GiftDisPlayItemView giftDisPlayItemView = mGiftMallView.getSelectedView();
-//TODO 一定记得去掉
-//TODO test-only-begin
-//        if (true && Constants.isDebugOrTestBuild) {
-//            final Gift buyGift = buyGiftWithCard.gift;
-//            Observable.just(buyGift)
-//                    .observeOn(Schedulers.from(mSingleThreadForBuyGift))
-//                    .flatMap(new Func1<Gift, Observable<?>>() {
-//                        @Override
-//                        public Observable<?> call(Gift gift) {
-//                            {
-//                                BarrageMsg pushMsg = GiftRepository.createGiftBarrageMessage(buyGift.getGiftId(), buyGift.getName(), buyGift.getCatagory(),
-//                                        "我送了" + buyGift.getName(), mContinueSend.get(), 0,
-//                                        0, continueId, mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), "111", "", 0, false);
-//                                BarrageMessageManager.getInstance().pretendPushBarrage(pushMsg);
-//                            }
-//                            mContinueSend.add();
-//                            return Observable.just(null);
-//                        }
-//                    })
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .compose(getRxActivity().bindUntilEvent(ActivityEvent.DESTROY))
-//                    .subscribe(new Action1<Object>() {
-//                        @Override
-//                        public void call(Object o) {
-//                            if (mSountDownSubscription != null) {
-//                                mSountDownSubscription.unsubscribe();
-//                            }
-//                            if (buyGift.getCanContinuous()) {
-//                                mSountDownSubscription = mGiftMallView.countDown();
-//                                giftDisPlayItemView.setContinueSendGiftNum(mContinueSend.get() - 1);
-//                            }
-//                            giftDisPlayItemView.setDataSource(buyGiftWithCard);
-//                        }
-//                    });
-//            return;
-//        }
-        final Boolean[] useGiftCard = {false};
+
         final Gift[] sendGift = {null};
-        //TODO test-only-end
+
         if (buyGiftWithCard == null) {
             return;
         }
+
+        final Boolean[] useGiftCard = {false};
+        //如果礼物卡的数量满足购买数量，则优先使用礼物卡。否则全部使用钻石
+        useGiftCard[0] = buyGiftWithCard.canUseCard();
 
         /**
          * 这个礼物送出的时间，根据送出的时间去判断要不要去改mContinueSend的num，
@@ -239,7 +207,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                             return Observable.error(new GiftException(mContext.getString(R.string.no_gift_selected)));
                         }
 
-                        if (buyGiftWithCard.card == null || buyGiftWithCard.card.getGiftCardCount() <= 0) {
+                        if (!useGiftCard[0]) {
                             if (gift.getCatagory() == GiftType.PRIVILEGE_GIFT && gift.getLowerLimitLevel() > MyUserInfoManager.getInstance().getUser().getLevel()) {
                                 //特权礼物
                                 return Observable.error(new GiftException(mContext.getResources().getQuantityString(R.plurals.verify_user_level_toast,
@@ -301,7 +269,6 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                             //设置最新continueId
                             mContinueSend.setContinueId(continueId);
                         }
-                        useGiftCard[0] = buyGiftWithCard.canUseCard();
                         //保存此次请求发出时间
                         requestTime[0] = System.currentTimeMillis();
                         //保存此次请求continuId
@@ -416,7 +383,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                                 case GiftErrorCode.GIFT_CARD_INSUFFICIENT: {
                                     MyLog.d(TAG, "gift card insufficient");
                                     // 重新加载礼物数据
-                                    loadExistedDataFromBean();
+                                    reloadForPktGift();
                                 }
                                 break;
                             }
@@ -499,10 +466,19 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                             mGiftMallBean.remove(buyGiftWithCard);
                             buyGiftWithCard.card = null;
                             ToastUtils.showToast(R.string.gift_card_insufficient);
+
+                            //避免在礼物橱窗界面打断礼物连送
+                            if (!mGiftMallView.isMallGift()) {
+                                reloadForPktGift();
+                            }
                         }
                     }
                 });
+    }
 
+    private void reloadForPktGift() {
+        mGiftMallView.resetGiftItemBtnInfo();
+        loadExistedDataFromBean();
     }
 
     public int getCurrentTotalBalance() {
@@ -536,7 +512,6 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
             if (dataSourceList == null) {
                 return false;
             }
-
             setPortraitSourceList(dataSourceList);
             return true;
         } else {
@@ -602,7 +577,8 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
 
                         @Override
                         public void onNext(List<GiftMallPresenter.GiftWithCard> giftInfos) {
-                            MyLog.d(TAG, "onNext" + giftInfos.toString());
+                            // 暂时注掉
+//                            MyLog.d(TAG, "onNext" + giftInfos.toString());
                             dataSourceList.add(giftInfos);
                         }
                     });
@@ -706,7 +682,8 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                 .filter(new Func1<Gift, Boolean>() {
                     @Override
                     public Boolean call(Gift gift) {
-                        MyLog.d(TAG, "dataSourceGiftId:" + gift.toString());
+                        // 暂时注掉
+//                        MyLog.d(TAG, "dataSourceGiftId:" + gift.toString());
                         if (!mallType) {
                             return true;
                         }
@@ -723,8 +700,8 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                         GiftWithCard giftWithCard = new GiftWithCard();
                         giftWithCard.gift = gift;
 
-                        //判断当前是否有米币礼物
-                        MyLog.d(TAG, "getMiCoinFlag:" + gift.getGiftId());
+                        //判断当前是否有米币礼物，暂时注掉
+//                        MyLog.d(TAG, "getMiCoinFlag:" + gift.getGiftId());
 
                         if (mGiftInfoForThisRoom != null) {
                             giftWithCard.card = mGiftInfoForThisRoom.getGiftCardById(gift.getGiftId());

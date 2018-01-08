@@ -159,10 +159,6 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         init(context);
     }
 
-    public String getTAG() {
-        return TAG;
-    }
-
     public void onActivityCreate() {
     }
 
@@ -188,7 +184,6 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
     }
 
     private GiftDisplayRecycleViewAdapter.GiftItemListener mGiftItemListener = new GiftDisplayRecycleViewAdapter.GiftItemListener() {
-
         @Override
         public void clickGiftItem(View v, GiftMallPresenter.GiftWithCard info, int position) {
             MyLog.d(TAG, "clickGiftItem v:" + v + ",info:" + info);
@@ -332,7 +327,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
             });
         } else {
             mGiftDisplayRecycleView = (RecyclerView) findViewById(R.id.gift_display_recycleview);
-            mGiftDisplayRecycleViewAdapter = new GiftDisplayRecycleViewAdapter(getContext(), true, mGiftItemListener);
+            mGiftDisplayRecycleViewAdapter = new GiftDisplayRecycleViewAdapter(true, mGiftItemListener);
             mGiftDisplayRecycleView.setAdapter(mGiftDisplayRecycleViewAdapter);
             mGiftDisplayRecycleView.setLayoutManager(new LinearLayoutManager(getRxActivity(), LinearLayoutManager.HORIZONTAL, false));
 //            mGiftDisplayRecycleView.addItemDecoration(new GiftDisplayDividerItemDecoration(GiftDisplayDividerItemDecoration.HORIZONTAL_LIST));
@@ -691,7 +686,6 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
     }
 
 
-
     /**
      * 五秒后然将优先使用银钻提示消失
      */
@@ -1019,6 +1013,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
      * 竖屏加载数据源
      */
     public void setGiftDisplayViewPagerAdapterDataSource(List<List<GiftMallPresenter.GiftWithCard>> dataSourceList) {
+        MyLog.d(TAG, "setGiftDisplayViewPagerAdapterDataSource=" + dataSourceList.size());
         mGiftDisplayViewPagerAdapter.setDataSource(dataSourceList);
         mEmptyIv.setVisibility(dataSourceList.isEmpty() ? VISIBLE : GONE);
     }
