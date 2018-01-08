@@ -18,6 +18,7 @@ import com.mi.live.data.account.login.LoginType;
 import com.mi.live.data.account.task.AccountCaller;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.AccountProto;
+import com.wali.live.watchsdk.R;
 import com.xiaomi.accountsdk.account.data.ExtendedAuthToken;
 
 import rx.Observable;
@@ -169,10 +170,12 @@ public class LoginPresenter extends RxLifeCyclePresenter {
                             int errCode = rsp.getRetCode();
                             MyLog.w(TAG, "oauthLoginByCode retCode=" + errCode);
                             if (errCode == ErrorCode.CODE_SUCCESS) {
-                                ToastUtils.showToast("小米账号登录成功");
+                                ToastUtils.showToast(R.string.login_success);
                                 AccountEventController.onActionLogin(AccountEventController.LoginEvent.EVENT_TYPE_LOGIN_SUCCESS);
                             } else if (errCode == ErrorCode.CODE_ACCOUT_FORBIDDEN) {
-                                ToastUtils.showToast("小米账号被禁用");
+                                ToastUtils.showToast(R.string.login_forbid);
+                            } else {
+                                ToastUtils.showToast(GlobalData.app().getString(R.string.login_fail));
                             }
                         }
                     }
@@ -286,7 +289,7 @@ public class LoginPresenter extends RxLifeCyclePresenter {
                             }
                             MyLog.w(TAG, "miSsoLogin retCode=" + miSsoLoginRsp.getRetCode());
                             if (miSsoLoginRsp.getRetCode() == ErrorCode.CODE_ACCOUT_FORBIDDEN) {
-                                ToastUtils.showToast("小米账号被禁用");
+                                ToastUtils.showToast(R.string.login_forbid);
                                 return;
                             } else if (miSsoLoginRsp.getRetCode() != ErrorCode.CODE_SUCCESS) {
                                 clearServiceToken(authToken);
@@ -297,7 +300,7 @@ public class LoginPresenter extends RxLifeCyclePresenter {
                                 MyLog.w(TAG, "miSsoLogin set userinfo");
                             } else {
                                 MyLog.w(TAG, "miSsoLogin login success");
-                                ToastUtils.showToast("小米账号登录成功");
+                                ToastUtils.showToast(R.string.login_success);
                                 AccountEventController.onActionLogin(AccountEventController.LoginEvent.EVENT_TYPE_LOGIN_SUCCESS);
                             }
                         } catch (Exception e) {

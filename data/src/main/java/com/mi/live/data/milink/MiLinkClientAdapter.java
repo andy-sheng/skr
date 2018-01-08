@@ -157,6 +157,11 @@ public class MiLinkClientAdapter {
 
     public PacketData sendDataByChannel(PacketData packet, int timeout) {
         setChannelId(packet);
+        // 注： 这里手动init一下原因是因为MilinkChannelClient在账号登录成功后会手动logoff掉sessionManager会被置空，
+        // 但是milink底层isInit并没有重置为false,因此sendDataBySimpleChannel里面根据isInit标记位为true不会调用
+        //initUseChannelMode,因而sessionManager一直会为null，导致首次登陆成功，而之后登陆会失败（rsp == null）。
+        //最好的是修改milink底层代码，重新build jar包，这里先手动初始化。
+        mMiLinkChannelClient.initUseChannelMode();
         return mMiLinkChannelClient.sendDataBySimpleChannel(packet, timeout);
     }
 

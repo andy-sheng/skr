@@ -400,4 +400,7 @@
     <string name="account_withdraw_pay_barrage_user_account_not_enough_tip">目前餘額不足,充值才可以繼續發送飄屏彈幕,是否去充值.</string>
     <string name="sns_unknown_error">不明錯誤</string>
     <string name="vip_content_enter">進入直播間</string>
+    <string name="login_success">登錄成功</string>
+    <string name="login_fail">登錄失敗</string>
+    <string name="login_forbid">賬號被禁用</string>
 </resources>
