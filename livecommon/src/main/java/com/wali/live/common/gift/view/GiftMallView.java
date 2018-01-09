@@ -1234,15 +1234,25 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         }
 
         mSendGiftTv.setVisibility(View.VISIBLE);
-        mSendGiftTv.setEnabled(false);
+        mSendGiftTv.setEnabled(mSelectedView != null);
 
         mContinueSendBtn.setVisibility(View.GONE);
     }
 
     /**
+     * 目前和{@link #switchMallType}一致，但是单独出来，先看看有没有问题
+     */
+    public void cancelPktGiftSendStatus() {
+        cancelSelectView(mSelectedView);
+        mSelectedGift = null;
+
+        clearAllGiftItemStatus();
+        resetGiftItemBtnInfo();
+    }
+
+    /**
      * 第一次inflate时候加载数据
      */
-
     private GiftMallPresenter mGiftMallPresenter;
 
     //TODO 一定记得改

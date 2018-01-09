@@ -477,7 +477,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
     }
 
     private void reloadForPktGift() {
-        mGiftMallView.resetGiftItemBtnInfo();
+        mGiftMallView.cancelPktGiftSendStatus();
         loadExistedDataFromBean();
     }
 
