@@ -6,6 +6,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.wali.live.dao.Relation;
 import com.wali.live.proto.AccountProto;
 import com.wali.live.proto.CommonChannelProto;
+import com.wali.live.proto.LiveSummitProto;
 import com.wali.live.proto.UserProto;
 
 import java.io.Serializable;
@@ -171,6 +172,16 @@ public class User implements Serializable {
 
     public User(CommonChannelProto.UserBrief protoUser) {
         parse(protoUser);
+    }
+
+    public User(LiveSummitProto.UserInfo protoUser) {
+        parse(protoUser);
+    }
+
+    public void parse(LiveSummitProto.UserInfo protoUser) {
+        this.uid = protoUser.getUuid();
+        this.avatar = protoUser.getAvatar();
+        this.nickname = protoUser.getNickname();
     }
 
     public void parse(AccountProto.UserInfo protoUser) {

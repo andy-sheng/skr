@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="@dimen/view_dimen_170"
+       android:layout_height="@dimen/view_dimen_170">
+
+    <ImageView
+        android:id="@+id/support_widget_view_txtTimeEnd"
+        android:layout_width="@dimen/view_dimen_142"
+        android:layout_height="@dimen/view_dimen_142"
+        android:layout_centerInParent="true"
+        android:src="@drawable/youle_live_answer_icon_time"/>
+
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/support_widget_view_imgSupport"
+        android:layout_width="@dimen/view_dimen_142"
+        android:layout_height="@dimen/view_dimen_142"
+        android:layout_centerInParent="true"
+        android:background="@drawable/time_counter_bg"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/support_widget_view_txtWaitingTime"
+        android:layout_width="@dimen/view_dimen_142"
+        android:layout_height="@dimen/view_dimen_142"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_72"
+        android:textStyle="bold"
+        android:visibility="gone"/>
+
+    <com.wali.live.view.TimeCounterCircle
+        android:id="@+id/support_widget_view_timer"
+        android:layout_width="@dimen/view_dimen_170"
+        android:layout_height="@dimen/view_dimen_170"
+        android:layout_centerInParent="true"/>
+</merge>

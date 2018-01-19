@@ -3,10 +3,10 @@ package com.mi.live.data.cache;
 import android.text.TextUtils;
 
 import com.base.global.GlobalData;
+import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.mi.live.data.repository.RoomStatusRepository;
 import com.mi.live.data.repository.datasource.RoomStatusStore;
-import com.base.log.MyLog;
 import com.wali.live.proto.LiveProto;
 
 import java.util.LinkedHashMap;
@@ -56,6 +56,9 @@ public class RoomInfoGlobalCache {
      */
     private String mCurrentThirdPartyLiveId = ""; //第三方app id 正在直播的id
 
+    // 是不是答题直播间
+    private boolean mIsContestRoom = false;
+
     public String getCurrentRoomId() {
         return mCurrentRoomId;
     }
@@ -82,6 +85,24 @@ public class RoomInfoGlobalCache {
             MyLog.w(TAG, "leaveThirdPartyRoom roomid:" + roomid);
             mCurrentThirdPartyLiveId = "";
         }
+    }
+
+    public void enterContestRoom(String roomid) {
+        MyLog.w(TAG, "enterContestRoom roomid:" + roomid);
+        mCurrentRoomId = roomid;
+        mIsContestRoom = true;
+    }
+
+    public void leaveContestRoom(String roomid) {
+        if (roomid != null && roomid.equals(mCurrentRoomId)) {
+            MyLog.w(TAG, "leaveContestRoom roomid:" + roomid);
+            mCurrentRoomId = "";
+        }
+        mIsContestRoom = false;
+    }
+
+    public boolean isContestRoom() {
+        return mIsContestRoom;
     }
 
     /**
@@ -111,14 +132,14 @@ public class RoomInfoGlobalCache {
 
     private RoomStatusRepository mRoomStatusRepository = new RoomStatusRepository(new RoomStatusStore());
 
-    public void sendLeaveRoomIfNeed(long anchorId,String roomId){
+    public void sendLeaveRoomIfNeed(long anchorId, String roomId) {
         //如果是这个消息是给第三方的，也不关心是否需要发离开房间请求
         if (!roomId.equals(mCurrentThirdPartyLiveId)) {
             if (!mCurrentRoomId.equals(roomId)) {
                 MyLog.w(TAG, "not match current roomid");
                 if (canSendLeaveReq(roomId)) {
                     // 发离开房间给服务器
-                    mRoomStatusRepository.leaveRooom(anchorId,roomId)
+                    mRoomStatusRepository.leaveRooom(anchorId, roomId)
                             .subscribeOn(Schedulers.io())
                             .subscribe(new Observer<LiveProto.LeaveLiveRsp>() {
                                 @Override

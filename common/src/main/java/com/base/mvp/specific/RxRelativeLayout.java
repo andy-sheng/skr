@@ -62,6 +62,12 @@ public abstract class RxRelativeLayout extends RelativeLayout implements IRxView
         return v;
     }
 
+    protected final void $click(View v, OnClickListener listener) {
+        if (v != null) {
+            v.setOnClickListener(listener);
+        }
+    }
+
     protected final <V extends View> V $rxClick(@IdRes int id, long milliSeconds, Action1 action) {
         V v = $(id);
         if (v != null) {

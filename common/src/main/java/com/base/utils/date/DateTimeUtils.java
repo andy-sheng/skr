@@ -83,6 +83,27 @@ public class DateTimeUtils {
         return bret;
     }
 
+    /**
+     * 格式化比赛时间，均为24小时制
+     */
+    public static String formatContestTimeString(final Context context, final long rowTime) {
+        // 显示今天
+        if (DateUtils.isToday(rowTime)) {
+            return DateUtils.formatDateTime(context, rowTime, DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_24HOUR);
+        }
+        // 显示昨天
+        if (isYesterday(rowTime)) {
+            return context.getString(R.string.yesterday_time,
+                    DateUtils.formatDateTime(context, rowTime, DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_24HOUR));
+        }
+        // 显示本周
+        if (isThisWeek(rowTime)) {
+            return DateUtils.formatDateTime(context, rowTime, DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_24HOUR);
+        }
+        // 显示具体日期时间
+        return DateUtils.formatDateTime(context, rowTime, DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_24HOUR);
+    }
+
     public static String formatTimeString(final Context context, final long rowTime) {
         return formatTimeString(context, rowTime, true, true);
     }
@@ -564,7 +585,7 @@ public class DateTimeUtils {
     public static long getDayDiff(long TSL, long TSR) {
         return adjustTimeZoneMillis(TSR) / MILILIS_ONE_DAY - adjustTimeZoneMillis(TSL) / MILILIS_ONE_DAY;
     }
-    
+
     /**
      * 用于补足时区
      *

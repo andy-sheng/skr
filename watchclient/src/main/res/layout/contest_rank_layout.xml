@@ -1,0 +1,90 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/main_act_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_contest_theme">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/contest_rank_bg"/>
+
+    <com.base.view.BackTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        app:is_profile_mode="true"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/my_rank_item"
+        android:layout_below="@id/title_bar"
+        android:overScrollMode="never"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_above="@+id/my_rank_item"
+        android:background="@drawable/shape_gradient_black20_up"/>
+
+    <RelativeLayout
+        android:id="@+id/my_rank_item"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/index_tv"
+            android:layout_width="@dimen/view_dimen_80"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_dimen_20"
+            android:gravity="center"
+            android:textColor="@color/color_white_trans_80"
+            android:textSize="@dimen/view_dimen_40"
+            tools:text="1"/>
+
+        <com.base.image.fresco.BaseImageView
+            android:id="@+id/avatar_iv"
+            android:layout_width="@dimen/view_dimen_120"
+            android:layout_height="@dimen/view_dimen_120"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_dimen_20"
+            android:layout_toRightOf="@id/index_tv"/>
+
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_dimen_28"
+            android:layout_toLeftOf="@+id/bonus_tv"
+            android:layout_toRightOf="@id/avatar_iv"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/view_dimen_45"
+            tools:text="12"/>
+
+        <TextView
+            android:id="@+id/bonus_tv"
+            android:layout_width="@dimen/view_dimen_210"
+            android:layout_height="@dimen/view_dimen_90"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_dimen_40"
+            android:layout_marginTop="@dimen/view_dimen_20"
+            android:background="@drawable/contest_solid_white10_r45_text_bg"
+            android:gravity="center"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/view_dimen_36"
+            tools:text="12"/>
+    </RelativeLayout>
+</RelativeLayout>

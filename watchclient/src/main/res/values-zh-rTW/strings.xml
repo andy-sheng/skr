@@ -403,4 +403,5 @@
     <string name="login_success">登錄成功</string>
     <string name="login_fail">登錄失敗</string>
     <string name="login_forbid">賬號被禁用</string>
+    <string name="num_time_wan">%s萬</string>
 </resources>

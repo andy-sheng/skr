@@ -513,4 +513,13 @@ public class MiLinkCommand {
     public static final String COMMAND_VFANS_GETNOTIFICATION = "zhibo.vfans.getnotification";
     public static final String COMMAND_VFANS_ACKNOTIFICATION = "zhibo.vfans.acknotification";
     public static final String COMMAND_VFANS_PUSHNOTIFICATION = "zhibo.push.vfansnotification";
+
+    //冲顶大会Contest
+    public static final String COMMAND_GET_CONTEST_NOTICE = "zhibo.live.getcontestnotice";
+    public static final String COMMAND_CONTEST_ALL_RANK = "zhibo.live.contestallrank";
+    public static final String COMMAND_COMMIT_CONTEST_ANSWER = "zhibo.live.commitcontestanswer";
+    public static final String COMMAND_GET_CONTEST_INVITE_CODE = "zhibo.contestcode.getinvitecode";
+    public static final String COMMAND_SET_CONTEST_INVITE_CODE = "zhibo.contestcode.setinvitecode";
+    public static final String COMMAND_CONTEST_VIEWER_INFO = "zhibo.live.contestviewerinfo";
+    public static final String COMMAND_CONTEST_AWARD_LIST = "zhibo.live.getcontestawardlist";
 }

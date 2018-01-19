@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:background="@color/color_contest_theme">
+
+    <LinearLayout
+        android:id="@+id/rank_list_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <RelativeLayout
+            android:id="@+id/rank_area2"
+            android:layout_width="0dp"
+            android:layout_height="220dp"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:id="@+id/avatar_area2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/name_tv2"
+                android:layout_centerHorizontal="true">
+
+                <com.base.image.fresco.BaseImageView
+                    android:id="@+id/avatar_iv2"
+                    android:layout_width="@dimen/view_dimen_225"
+                    android:layout_height="@dimen/view_dimen_225"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="2.9dip"
+                    tools:background="@color/color_black_trans_10"/>
+
+                <ImageView
+                    android:layout_width="@dimen/view_dimen_240"
+                    android:layout_height="@dimen/view_dimen_290"
+                    android:layout_gravity="center"
+                    android:background="@drawable/rank_picture_bg_silver"/>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/name_tv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/bonus_tv2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_dimen_20"
+                android:ellipsize="end"
+
+                android:maxWidth="@dimen/view_dimen_225"
+                android:singleLine="true"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/view_dimen_45"
+                tools:text="123"/>
+
+            <TextView
+                android:id="@+id/bonus_tv2"
+                android:layout_width="@dimen/view_dimen_260"
+                android:layout_height="@dimen/view_dimen_100"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_dimen_20"
+                android:background="@drawable/contest_solid_white10_r50_text_bg"
+                android:gravity="center"
+                android:textColor="@color/color_white"
+                tools:text="12"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rank_area1"
+            android:layout_width="0dp"
+            android:layout_height="220dp"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:id="@+id/avatar_area1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/name_tv1"
+                android:layout_centerHorizontal="true">
+
+                <com.base.image.fresco.BaseImageView
+                    android:id="@+id/avatar_iv1"
+                    android:layout_width="@dimen/view_dimen_285"
+                    android:layout_height="@dimen/view_dimen_285"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="6.33dp"
+                    tools:background="@color/color_black_trans_10"/>
+
+                <ImageView
+                    android:layout_width="@dimen/view_dimen_290"
+                    android:layout_height="@dimen/view_dimen_346"
+                    android:background="@drawable/rank_picture_bg_golden"/>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/name_tv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/bonus_tv1"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_dimen_20"
+                android:ellipsize="end"
+                android:maxWidth="@dimen/view_dimen_285"
+                android:singleLine="true"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/view_dimen_45"
+                tools:text="123"/>
+
+            <TextView
+                android:id="@+id/bonus_tv1"
+                android:layout_width="@dimen/view_dimen_260"
+                android:layout_height="@dimen/view_dimen_100"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_dimen_20"
+                android:background="@drawable/contest_solid_white10_r50_text_bg"
+                android:gravity="center"
+                android:textColor="@color/color_white"
+                tools:text="12"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rank_area3"
+            android:layout_width="0dp"
+            android:layout_height="220dp"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:id="@+id/avatar_area3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/name_tv3"
+                android:layout_centerHorizontal="true">
+
+                <com.base.image.fresco.BaseImageView
+                    android:id="@+id/avatar_iv3"
+                    android:layout_width="@dimen/view_dimen_225"
+                    android:layout_height="@dimen/view_dimen_225"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="2.9dip"
+                    tools:background="@color/color_black_trans_10"/>
+
+                <ImageView
+                    android:layout_width="@dimen/view_dimen_240"
+                    android:layout_height="@dimen/view_dimen_290"
+                    android:background="@drawable/rank_picture_bg_copper"/>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/name_tv3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/bonus_tv3"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_dimen_20"
+                android:ellipsize="end"
+                android:maxWidth="@dimen/view_dimen_225"
+                android:singleLine="true"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/view_dimen_45"
+                tools:text="123"/>
+
+            <TextView
+                android:id="@+id/bonus_tv3"
+                android:layout_width="@dimen/view_dimen_260"
+                android:layout_height="@dimen/view_dimen_100"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_dimen_20"
+                android:background="@drawable/contest_solid_white10_r50_text_bg"
+                android:gravity="center"
+                android:textColor="@color/color_white"
+                tools:text="12"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/bottom_line"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/split_line_height"
+        android:layout_below="@id/rank_list_area"
+        android:layout_marginTop="@dimen/view_dimen_40"
+        android:background="@color/color_white_trans_10"/>
+</RelativeLayout>
+
+
+

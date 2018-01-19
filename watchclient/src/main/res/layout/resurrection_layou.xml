@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/resurrection_layout_llytRoot"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_dimen_200"
+    android:background="@drawable/bg_corner_5e43d5_r30"
+    android:gravity="center"
+    android:paddingRight="@dimen/view_dimen_100"
+    android:paddingLeft="@dimen/view_dimen_100"
+    android:layout_marginLeft="@dimen/margin_34"
+    android:layout_marginRight="@dimen/margin_34"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/resurrection_layout_imgAnim"
+            android:layout_width="@dimen/view_dimen_200"
+            android:layout_height="@dimen/view_dimen_200"
+            android:layout_gravity="center"
+            android:background="@drawable/answer_icon_rebirth_bg" />
+
+        <ImageView
+            android:id="@+id/resurrection_layout_imgCard"
+            android:layout_width="@dimen/view_dimen_100"
+            android:layout_height="@dimen/view_dimen_100"
+            android:layout_gravity="center"
+            android:src="@drawable/answer_icon_rebirthcard" />
+
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="已使用复活卡,可以继续答题"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_45" />
+
+</LinearLayout>

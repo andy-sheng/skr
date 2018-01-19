@@ -45,4 +45,38 @@
 
     <color name="color_ffd8d8d8">#FFD8D8D8</color>
     <color name="color_b7b7b7">#b7b7b7</color>
+
+    <!--冲顶大会-->
+    <color name="color_7239BD">#7239BD</color>
+    <color name="color_contest_theme">#412698</color>
+    <color name="color_contest_web_theme">#412698</color>
+    <color name="color_gray">#cbcbcb</color>
+    <color name="color_5c28d0">#5c28d0</color>
+    <color name="color_7e63ff">#7e63ff</color>
+
+    <color name="color_5e43d5_trans_30">#4d5e43d5</color>
+    <color name="color_5e43d5_trans_50">#7f5e43d5</color>
+    <color name="color_5e43d5">#5e43d5</color>
+
+    <color name="color_f55a4f_trans_30">#4df55a4f</color>
+    <color name="color_f55a4f_trans_50">#7ff55a4f</color>
+    <color name="color_f55a4f">#f55a4f</color>
+
+    <color name="color_0f0026_trans_0">#000f0026</color>
+    <color name="color_0f0026_trans_60">#990f0026</color>
+    <color name="color_0f0026">#0f0026</color>
+
+    <color name="color_e5e5e5_trans_50">#7fe5e5e5</color>
+
+    <color name="color_39D4B0">#39D4B0</color>
+    <color name="color_ff7070">#ff7070</color>
+    <color name="color_6c6eD7">#6c6ed7</color>
+    <color name="color_cecddb">#CECDDB</color>
+    <color name="color_36158c">#36158c</color>
+    <color name="color_5f43d7">#5f43d7</color>
+
+    <color name="color_6c3ef5">#6c3ef5</color>
+    <color name="color_713dff">#713dff</color>
+    <color name="color_2d1d3a">#2d1d3a</color>
+    color_2D1D3A
 </resources>

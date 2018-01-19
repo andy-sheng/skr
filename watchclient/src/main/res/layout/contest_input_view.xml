@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/input_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_fafafa"
+        android:gravity="center_vertical">
+
+        <com.base.view.MLTextView
+            android:id="@+id/send_btn"
+            android:layout_width="46.67dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="6.67dip"
+            android:background="@drawable/contest_solid_5e43d5_r45_btn_bg"
+            android:enabled="false"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/send"
+            android:textColor="@color/color_white_pressed_50_disable_30"
+            android:textSize="@dimen/text_size_38"/>
+
+        <EditText
+            android:id="@+id/input_et"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_margin="6.67dip"
+            android:layout_toLeftOf="@id/send_btn"
+            android:layout_toRightOf="@id/barrage_select_btn"
+            android:background="@drawable/live_input_field_bg_3"
+            android:focusable="true"
+            android:gravity="left|center_vertical"
+            android:hint="@string/empty_edittext_hint"
+            android:imeOptions="flagNoFullscreen"
+            android:includeFontPadding="false"
+            android:inputType="text|textAutoCorrect|textCapSentences|textMultiLine"
+            android:maxLines="5"
+            android:paddingBottom="7.33dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="7.33dp"
+            android:textColor="@color/color_black_trans_90"
+            android:textColorHint="@color/color_black_trans_30"
+            android:textCursorDrawable="@drawable/edittext_color_cursor"
+            android:textSize="@dimen/text_size_40"/>
+    </RelativeLayout>
+</LinearLayout>

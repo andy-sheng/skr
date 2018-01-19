@@ -1,0 +1,164 @@
+package com.wali.live.proto;
+
+option java_package = "com.wali.live.proto";
+option java_outer_classname = "LiveSummitProto";
+
+//获取通知信息
+//zhibo.live.getcontestnotice
+message GetContestNoticeReq {
+    optional uint64 uuid = 1;
+}
+
+message GetContestNoticeRsp {
+    required uint32 ret_code = 1;
+    optional ContestNoticeInfo notice_info = 2; //通知信息
+}
+
+//提交答案
+//zhibo.live.commitcontestanswer
+message CommitContestAnswerReq {
+    optional uint64 uuid = 1;
+    optional string seq = 2; //题目号
+    optional string id = 3; //题目的选项号
+    optional uint64 zuid = 4;
+    optional string liveid = 5;
+}
+
+message CommitContestAnswerRsp {
+    required uint32 ret_code = 1;
+    optional QuestionExtraInfo extra_info = 2;
+}
+
+message ContestNoticeInfo {
+    optional uint32 status = 1; //当前状态 0：普通状态 1：答题即将开始 2：答题已开始
+    optional float bonus = 2; //奖金
+    optional uint64 start_time = 3; //开始时间
+    optional bool has_invite_code = 4; //是否已使用复活卡
+    optional uint32 revival_num = 5; //复活卡数量
+    optional float total_income = 6; //总收入
+    optional int32 rank = 7; //排名
+    optional uint64 zuid = 8;
+    optional string liveid = 9;
+    optional uint64 ts = 10; //服务器当前时间
+    optional string viewurl = 11; //流地址，status=1，或者2时下发
+}
+
+//总榜
+//zhibo.live.contestallrank
+message GetContestAllRankReq {
+    optional uint64 uuid = 1;
+    optional uint64 limit = 2;
+}
+
+message RankItem {
+    optional UserInfo user_info = 1;
+    optional float bonus = 2;
+}
+
+message GetContestAllRankRsp {
+    required uint32 ret_code = 1;
+    repeated RankItem rank_list = 2;
+}
+
+message UserInfo {
+    optional uint64 uuid = 1;
+    optional string nickname = 2;
+    optional uint64 avatar = 3;
+}
+
+message QuestionInfo {
+    optional string seq = 1; //题目号（从1开始，例：第12题，seq=2018011101_12）
+    repeated QuestionInfoItem question_infos = 2; //问题选项
+    optional string question = 3; //题目信息
+    optional bool is_last = 4; //是否最后一题
+    optional uint32 delay_time = 5; //收到push后显示题目的延迟时间
+    optional uint32 seq_id = 6; //题目顺序号（从1开始 例：1, 2, 3, ...）
+}
+
+//获取邀请码
+//zhibo.contestcode.getinvitecode
+message GetContestInviteCodeReq {
+    optional uint64 uuid = 1;
+}
+
+message GetContestInviteCodeRsp {
+    required uint32 retCode = 1;
+    optional string inviteCode = 2; //邀请码
+}
+
+//设置邀请码
+//zhibo.contestcode.setinvitecode
+message SetContestInviteCodeReq {
+    optional uint64 uuid = 1;
+    optional string inviteCode = 2; //邀请码
+}
+message SetContestInviteCodeRsp {
+    required uint32 retCode = 1;
+    optional uint32 revivalNum = 2; //复活卡数
+}
+
+//冲顶大会房间人数
+//zhibo.live.contestviewerinfo
+message GetContestViewerInfoReq {
+    required uint64 uuid = 1; //请求用户id
+    required uint64 host_id = 2; //主播id
+    required string live_id = 3; //房间id
+}
+
+message GetContestViewerInfoRsp {
+    required uint32 ret_code = 1;
+    optional uint32 viewer_num = 2; //冲顶大会房间观众人数
+}
+
+//获奖列表
+//zhibo.live.getcontestawardlist
+message GetContestAwardListReq {
+    optional uint64 uuid = 1;
+    optional uint64 limit = 2;
+    optional string contest_id = 3; //场次id
+    optional string liveid = 4; //房间id
+}
+
+message GetContestAwardListRsp {
+    required uint32 ret_code = 1;
+    repeated UserInfo user_infos = 2;
+}
+
+/************************************** 冲顶大会 push******************************************/
+message ContestQuestionMsg {
+    optional string contest_id = 1; //场次号
+    optional QuestionInfo question_infos = 2; //题目信息
+    optional uint64 stream_ts = 3; //当前视频流的时间戳
+    optional uint64 answer_num = 4; //答题人数
+}
+
+message ContestAnswerMsg {
+    optional string contest_id = 1; //场次号
+    optional QuestionInfo question_infos = 2; //题目信息
+    optional LastQuestionInfo last_question_info = 3; //最后一题信息
+    optional uint64 stream_ts = 4; //当前视频流的时间戳
+    optional uint64 answer_num = 5; //答题人数
+}
+
+message LastQuestionInfo {
+    optional uint32 total_num = 1; //总共参与答题人数
+    optional float total_bonus = 2; //总奖金
+    optional float per_bonus = 3; //每人奖金
+    optional uint32 num = 4; //中奖人数
+}
+
+message QuestionInfoItem {
+    optional string id = 1;
+    optional string text = 2;
+    optional bool is_answer = 3; //是否正确答案
+    optional uint32 num = 4; //选择人数
+}
+
+message QuestionExtraInfo {
+    optional bool is_correct = 1;
+    optional bool use_revival = 2;
+    optional uint32 revival_num = 3;
+    optional string id = 4; //提交的选项
+    optional bool is_continue = 5; //是否可以继续答题
+}
+/************************************** 冲顶大会 end******************************************/

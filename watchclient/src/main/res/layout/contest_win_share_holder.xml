@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/contest_share_bg"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/win_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_100"
+        android:layout_marginTop="312.3dp"
+        android:gravity="center"
+        android:text="@string/share_win_title"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/view_dimen_45"/>
+
+    <TextView
+        android:id="@+id/win_des_tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_56"
+        android:layout_marginBottom="@dimen/view_dimen_60"
+        android:layout_marginTop="@dimen/view_dimen_19"
+        android:gravity="center"
+        android:text="@string/share_dest"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/view_dimen_45"/>
+
+    <TextView
+        android:id="@+id/invite_code_tv"
+        android:layout_width="@dimen/view_dimen_700"
+        android:layout_height="@dimen/view_dimen_230"
+        android:layout_marginBottom="@dimen/view_dimen_114"
+        android:layout_marginTop="@dimen/view_dimen_28"
+        android:background="@drawable/corners_bg"
+        android:gravity="center"
+        android:text="QWRRRREY123"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/view_dimen_70"/>
+
+    <ImageView
+        android:id="@+id/barcode_iv"
+        android:layout_width="@dimen/view_dimen_240"
+        android:layout_height="@dimen/view_dimen_240"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/mi_play_logo"/>
+
+    <TextView
+        android:id="@+id/download_tip_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/view_dimen_94"
+        android:layout_marginLeft="38.33dp"
+        android:layout_marginRight="38.33dp"
+        android:layout_marginTop="@dimen/view_dimen_38"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:text="@string/share_download_tips"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/text_size_36"/>
+
+</LinearLayout>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_white">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_832"
+        android:layout_marginTop="@dimen/view_dimen_260"
+        android:background="@drawable/card_my_bg_shadow"/>
+
+    <View
+        android:id="@+id/top_bg_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_780"
+        android:background="@color/color_contest_theme"/>
+
+    <RelativeLayout
+        android:id="@+id/top_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_dimen_100">
+
+        <ImageView
+            android:id="@+id/back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_dimen_40"
+            android:padding="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/rank_icon_back"/>
+
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/text_size_50"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/my_info_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_752"
+        android:layout_marginLeft="@dimen/view_dimen_40"
+        android:layout_marginRight="@dimen/view_dimen_40"
+        android:layout_marginTop="@dimen/view_dimen_300"
+        android:background="@drawable/contest_pop_view_bg"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout_income"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_dimen_40"
+            android:layout_marginTop="@dimen/view_dimen_120"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_dimen_20"
+                android:text="@string/contest_prepare_total_income"
+                android:textColor="@color/text_color_black_trans_50"
+                android:textSize="@dimen/text_size_48"/>
+
+            <TextView
+                android:id="@+id/income_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_dimen_23"
+                android:text="0"
+                android:textColor="@color/color_black_trans_80"
+                android:textSize="@dimen/text_size_80"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_income"
+            android:layout_marginLeft="@dimen/view_dimen_40"
+            android:layout_marginTop="@dimen/view_dimen_80"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_dimen_20"
+                android:text="@string/contest_prepare_my_rank"
+                android:textColor="@color/text_color_black_trans_50"
+                android:textSize="@dimen/text_size_48"/>
+
+            <TextView
+                android:id="@+id/rank_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_dimen_23"
+                android:text="-"
+                android:textColor="@color/color_black_trans_80"
+                android:textSize="@dimen/text_size_48"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/withdraw_btn"
+            android:layout_width="@dimen/view_dimen_720"
+            android:layout_height="@dimen/view_dimen_140"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/view_dimen_110"
+            android:background="@drawable/contest_border_5e43d5_r70_btn_bg"
+            android:gravity="center"
+            android:text="@string/contest_prepare_withdraw"
+            android:textColor="@color/color_5e43d5_pressed_50_disable_30"
+            android:textSize="@dimen/text_size_48"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/avatar_area"
+        android:layout_width="@dimen/view_dimen_200"
+        android:layout_height="@dimen/view_dimen_200"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/view_dimen_100"
+        android:layout_marginTop="@dimen/view_dimen_200"
+        android:background="@drawable/contest_circle_200_view_bg">
+
+        <com.base.image.fresco.BaseImageView
+            android:id="@+id/avatar_iv"
+            android:layout_width="@dimen/view_dimen_180"
+            android:layout_height="@dimen/view_dimen_180"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/revive_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_350"
+        android:layout_below="@id/my_info_area"
+        android:layout_marginTop="@dimen/view_dimen_70"
+        android:background="@drawable/card_my_bg_shadow"
+        android:paddingBottom="@dimen/view_dimen_40"
+        android:paddingLeft="@dimen/view_dimen_80"
+        android:paddingRight="@dimen/view_dimen_80"
+        android:paddingTop="@dimen/view_dimen_40">
+
+        <ImageView
+            android:id="@+id/revive_icon_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/prepare_my_resurrectcard"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_dimen_20"
+            android:layout_toRightOf="@id/revive_icon_iv">
+
+            <TextView
+                android:id="@+id/revival_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/contest_prepare_revival_card"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/text_size_48"
+                android:textStyle="bold"/>
+
+            <ImageView
+                android:id="@+id/revival_multiply_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/revival_title_tv"
+                android:layout_toRightOf="@id/revival_title_tv"
+                android:baselineAlignBottom="true"
+                android:src="@drawable/prepare_my_resurrectcard_multiply"/>
+
+            <TextView
+                android:id="@+id/revival_count_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/revival_title_tv"
+                android:layout_toRightOf="@id/revival_multiply_iv"
+                android:baselineAlignBottom="true"
+                android:text="0"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/text_size_60"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/revival_title_tv"
+                android:text="@string/contest_prepare_revival_tip"
+                android:textColor="@color/color_black_trans_30"
+                android:textSize="@dimen/text_size_36"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/invite_tv"
+            android:layout_width="@dimen/view_dimen_400"
+            android:layout_height="@dimen/view_dimen_100"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/contest_solid_5e43d5_r50_btn_bg"
+            android:gravity="center"
+            android:text="@string/contest_prepare_invite_code"
+            android:textColor="@color/color_white_pressed_50_disable_30"
+            android:textSize="@dimen/text_size_40"/>
+    </RelativeLayout>
+
+    <com.wali.live.contest.view.ContestRevivalRuleView
+        android:id="@+id/revival_rule_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+</RelativeLayout>

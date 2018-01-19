@@ -61,6 +61,8 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
     public static final String EXTRA_DISPLAY_TYPE = "extra_display_type";
     public static final String EXTRA_WIDGET_ID = "extra_widget_id";
     public static final String EXTRA_RESULT_OK = "extra_result_ok";
+    public static final String EXTRA_IS_CONTEST = "extra_is_contest";
+
     public static final String GEM_EXCHANGE_H5_URL;
 
     static {
@@ -106,6 +108,9 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
     public long mAvatarTs;
 
     private View mOutView;
+
+    //是否是冲顶大会的ui
+    private boolean mIsContest = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +163,21 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
         }
     }
 
+    private void adjustToContestTheme() {
+        mTitleBar.setBackgroundColor(getResources().getColor(R.color.color_contest_web_theme));
+        mTitleBar.setCenterTitleText(R.string.contest_prepare_rule_page);
+        mTitleBar.showCenterTitle();
+        mTitleBar.hideBottomLine();
+        mTitleBar.getRightImageBtn().setVisibility(View.GONE);
+    }
+
     protected void bindViews() {
+        mTitleBar = (BackTitleBar) findViewById(R.id.title_bar);
+        mTitleBar.getBackBtn().setOnClickListener(this);
+        if (mIsContest) {
+            adjustToContestTheme();
+        }
+
         mWebViewContainer = (ViewGroup) findViewById(R.id.web_view_container);
         mWebView = new WebView(GlobalData.app());
         mWebView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -167,7 +186,6 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
         videoLayout = (ViewGroup) findViewById(R.id.videoLayout);
         mProgressBar = (ProgressBar) findViewById(R.id.web_progress);
         mProgressBar.setIndeterminateDrawable(null);
-        mTitleBar = (BackTitleBar) findViewById(R.id.title_bar);
         mMoreView = mTitleBar.getRightImageBtn();
 
         mErrorView = findViewById(R.id.errorPage);
@@ -214,14 +232,17 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
             WebView.setWebContentsDebuggingEnabled(true);
         }
 
-        mMoreView.setVisibility(View.VISIBLE);
-        mMoreView.setImageResource(R.drawable.image_close);
-        mMoreView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        //冲顶大会不要显示右侧关闭图标
+        if (!mIsContest) {
+            mMoreView.setVisibility(View.VISIBLE);
+            mMoreView.setImageResource(R.drawable.image_close);
+            mMoreView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
 
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         mWebView.clearCache(false);
@@ -267,6 +288,8 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
             mWebView.loadUrl(mUrl);
             mWebView.setBackgroundColor(0);
         }
+
+        mIsContest = intent.getBooleanExtra(EXTRA_IS_CONTEST, false);
     }
 
     private void fixWebViewSecurity() {

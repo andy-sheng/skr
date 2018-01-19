@@ -1,6 +1,9 @@
 package com.mi.live.data.push.model;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @module com.wali.live.message.data
@@ -52,6 +55,9 @@ public class BarrageMsgType {
 
     public static final int B_MSG_TYPE_ANIM = 344; // 房间动画效果消息，如进入房间消息，等级升级消息
 
+    public static final int B_MSG_TYPE_QUESTION = 358;               //冲顶大会问题push消息
+    public static final int B_MSG_TYPE_ANSWER = 359;                 //冲顶大会答案push消息
+
     public static final int B_MSG_TYPE_GLOBAL_SYS_MSG = 400;//全局系统消息
     public static final int B_MSG_TYPE_ROOM_SYS_MSG = 401;//房间系统消息
     public static final int B_MSG_TYPE_LIVE_OWNER_MSG = 402;//主播通知消息
@@ -97,5 +103,24 @@ public class BarrageMsgType {
 
     static {
         Arrays.sort(types);
+    }
+
+    private static Set<Integer> sDoNotCareRoomIdType;
+
+    public static boolean doNotCareRoomId(int barrageType) {
+        return sDoNotCareRoomIdType.contains(barrageType);
+    }
+
+    static {
+        Arrays.sort(types);
+        sDoNotCareRoomIdType = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+                B_MSG_TYPE_GLOBAL_SYS_MSG,
+                B_MSG_TYPE_LEVEL_UPGRADE_SYS_MSG,
+                B_MSG_TYPE_COMMEN_SYS_MSG,
+                B_MSG_TYPE_VIP_LEVEL_CHANGED,
+                B_MSG_TYPE_NEW_PK_START,
+                B_MSG_TYPE_NEW_PK_END,
+                B_MSG_TYPE_NEW_PK_SCORE
+        )));
     }
 }
