@@ -641,7 +641,7 @@ public class FloatInfoFragment extends BaseEventBusFragment
     }
 
     @Override
-    public <T> Observable.Transformer<T, T> bindLifecycle() {
+    public <T> Observable.Transformer<T, T> bindUntilEvent() {
         return bindUntilEvent();
     }
 

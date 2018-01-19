@@ -52,7 +52,7 @@ public class ContestInvitePresenter extends BaseRxPresenter<IContestInviteView> 
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<String>bindLifecycle())
+                .compose(mView.<String>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<String>() {
                     @Override
@@ -87,7 +87,7 @@ public class ContestInvitePresenter extends BaseRxPresenter<IContestInviteView> 
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<LiveSummitProto.SetContestInviteCodeRsp>bindLifecycle())
+                .compose(mView.<LiveSummitProto.SetContestInviteCodeRsp>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<LiveSummitProto.SetContestInviteCodeRsp>() {
                     @Override

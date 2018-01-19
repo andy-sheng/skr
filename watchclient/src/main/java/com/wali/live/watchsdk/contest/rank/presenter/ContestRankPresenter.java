@@ -44,7 +44,7 @@ public class ContestRankPresenter extends BaseRxPresenter<IContestRankView> {
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<ContestRankModel>bindLifecycle())
+                .compose(mView.<ContestRankModel>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<ContestRankModel>() {
                     @Override

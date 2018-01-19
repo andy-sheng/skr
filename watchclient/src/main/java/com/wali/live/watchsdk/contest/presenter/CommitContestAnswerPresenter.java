@@ -51,7 +51,7 @@ public class CommitContestAnswerPresenter extends BaseRxPresenter<IContestCommit
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<LiveSummitProto.CommitContestAnswerRsp>bindLifecycle())
+                .compose(mView.<LiveSummitProto.CommitContestAnswerRsp>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<LiveSummitProto.CommitContestAnswerRsp>() {
                     @Override

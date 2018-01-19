@@ -105,7 +105,7 @@ public class FloatInfoPresenter extends BaseRxPresenter<IFloatInfoView> {
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<User>bindLifecycle())
+                .compose(mView.<User>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<User>() {
                     @Override
@@ -204,7 +204,7 @@ public class FloatInfoPresenter extends BaseRxPresenter<IFloatInfoView> {
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<Boolean>bindLifecycle())
+                .compose(mView.<Boolean>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Boolean>() {
                     @Override

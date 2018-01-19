@@ -60,7 +60,7 @@ public class LongTextPresenter extends BaseRxPresenter<ILongTextView> {
                 })
                 .retryWhen(new RxRetryAssist(3, ""))
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<GetFeedInfoResponse>bindLifecycle())
+                .compose(mView.<GetFeedInfoResponse>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<GetFeedInfoResponse>() {
                     @Override

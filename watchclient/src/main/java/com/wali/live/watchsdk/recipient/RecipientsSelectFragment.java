@@ -252,7 +252,7 @@ public class RecipientsSelectFragment extends RxFragment implements View.OnClick
     }
 
     @Override
-    public <T> Observable.Transformer<T, T> bindLifecycle() {
+    public <T> Observable.Transformer<T, T> bindUntilEvent() {
         return bindUntilEvent();
     }
 

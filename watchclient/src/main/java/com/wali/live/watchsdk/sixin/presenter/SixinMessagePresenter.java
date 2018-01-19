@@ -60,7 +60,7 @@ public class SixinMessagePresenter extends BaseRxPresenter<ISixinMessageView> {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(mView.<List<SixinMessageModel>>bindLifecycle())
+                .compose(mView.<List<SixinMessageModel>>bindUntilEvent())
                 .subscribe(new Action1<List<SixinMessageModel>>() {
                     @Override
                     public void call(List<SixinMessageModel> messageModelList) {
@@ -119,7 +119,7 @@ public class SixinMessagePresenter extends BaseRxPresenter<ISixinMessageView> {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(mView.<List<SixinMessageModel>>bindLifecycle())
+                .compose(mView.<List<SixinMessageModel>>bindUntilEvent())
                 .subscribe(new Subscriber<List<SixinMessageModel>>() {
                     @Override
                     public void onCompleted() {
@@ -163,7 +163,7 @@ public class SixinMessagePresenter extends BaseRxPresenter<ISixinMessageView> {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(mView.<List<SixinMessageModel>>bindLifecycle())
+                .compose(mView.<List<SixinMessageModel>>bindUntilEvent())
                 .subscribe(new Action1<List<SixinMessageModel>>() {
                     @Override
                     public void call(List<SixinMessageModel> messageModelList) {

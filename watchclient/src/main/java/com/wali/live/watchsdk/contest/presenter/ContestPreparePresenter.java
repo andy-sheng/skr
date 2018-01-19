@@ -49,7 +49,7 @@ public class ContestPreparePresenter extends BaseRxPresenter<IContestPrepareView
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<ContestNoticeModel>bindLifecycle())
+                .compose(mView.<ContestNoticeModel>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<ContestNoticeModel>() {
                     @Override
@@ -74,7 +74,7 @@ public class ContestPreparePresenter extends BaseRxPresenter<IContestPrepareView
         mIntervalUpdateSubscription = Observable.interval(0, 5, TimeUnit.SECONDS)
                 .delay(delayTime, TimeUnit.MILLISECONDS)
                 .take(1000)
-                .compose(mView.<Long>bindLifecycle())
+                .compose(mView.<Long>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Long>() {
                     @Override

@@ -48,7 +48,7 @@ public class ApplyJoinGroupPresenter extends BaseRxPresenter<IApplyJoinGroupView
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<Boolean>bindLifecycle())
+                .compose(mView.<Boolean>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Boolean>() {
                     @Override

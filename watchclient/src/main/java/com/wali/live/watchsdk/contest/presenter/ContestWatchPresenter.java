@@ -43,7 +43,7 @@ public class ContestWatchPresenter extends BaseRxPresenter<IContestWatchView> {
         MyLog.w(TAG, "enterLiveToServer");
         ContestRoomQuery.enterContestRoom(MyUserInfoManager.getInstance().getUuid(), anchorId, roomId, null)
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<EnterRoomInfo>bindLifecycle())
+                .compose(mView.<EnterRoomInfo>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<EnterRoomInfo>() {
                     @Override
@@ -64,7 +64,7 @@ public class ContestWatchPresenter extends BaseRxPresenter<IContestWatchView> {
         MyLog.w(TAG, "pullRoomInfo");
         ContestRoomQuery.roomInfo(MyUserInfoManager.getInstance().getUuid(), anchorId, roomId)
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<LiveProto.RoomInfoRsp>bindLifecycle())
+                .compose(mView.<LiveProto.RoomInfoRsp>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<LiveProto.RoomInfoRsp>() {
                     @Override
@@ -85,7 +85,7 @@ public class ContestWatchPresenter extends BaseRxPresenter<IContestWatchView> {
         MyLog.w(TAG, "startTimerForViewers zuid=" + zuid + " roomId=" + roomId);
         Observable.interval(0, INTERVAL, TimeUnit.MILLISECONDS)
                 .observeOn(Schedulers.io())
-                .compose(mView.<Long>bindLifecycle())
+                .compose(mView.<Long>bindUntilEvent())
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long aLong) {
@@ -111,7 +111,7 @@ public class ContestWatchPresenter extends BaseRxPresenter<IContestWatchView> {
                 return new GetContestViewerInfoRequest(zuid, roomId).syncRsp();
             }
         }).subscribeOn(Schedulers.io())
-                .compose(mView.<LiveSummitProto.GetContestViewerInfoRsp>bindLifecycle())
+                .compose(mView.<LiveSummitProto.GetContestViewerInfoRsp>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<LiveSummitProto.GetContestViewerInfoRsp>() {
                     @Override
@@ -175,7 +175,7 @@ public class ContestWatchPresenter extends BaseRxPresenter<IContestWatchView> {
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<List<AwardUser>>bindLifecycle())
+                .compose(mView.<List<AwardUser>>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<AwardUser>>() {
                     @Override

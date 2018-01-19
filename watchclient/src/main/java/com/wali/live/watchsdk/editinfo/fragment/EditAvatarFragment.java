@@ -288,7 +288,7 @@ public class EditAvatarFragment extends RxFragment implements View.OnClickListen
     }
 
     @Override
-    public <T> Observable.Transformer<T, T> bindLifecycle() {
+    public <T> Observable.Transformer<T, T> bindUntilEvent() {
         return bindUntilEvent();
     }
 

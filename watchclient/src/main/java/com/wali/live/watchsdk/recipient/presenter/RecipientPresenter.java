@@ -83,7 +83,7 @@ public class RecipientPresenter extends BaseRxPresenter<RecipientPresenter.IView
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(mView.<List<Object>>bindLifecycle())
+                .compose(mView.<List<Object>>bindUntilEvent())
                 .subscribe(new Action1<List<Object>>() {
                     @Override
                     public void call(List<Object> dataList) {
@@ -163,7 +163,7 @@ public class RecipientPresenter extends BaseRxPresenter<RecipientPresenter.IView
                         }
                     })
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(mView.<List<Object>>bindLifecycle())
+                    .compose(mView.<List<Object>>bindUntilEvent())
                     .subscribe(new Action1<List<Object>>() {
                         @Override
                         public void call(List<Object> searchResultList) {

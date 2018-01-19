@@ -346,7 +346,7 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
     }
 
     @Override
-    public <T> Observable.Transformer<T, T> bindLifecycle() {
+    public <T> Observable.Transformer<T, T> bindUntilEvent() {
         return bindUntilEvent();
     }
 

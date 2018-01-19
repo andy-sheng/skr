@@ -46,7 +46,7 @@ public class GroupNotifyDetailPresenter extends BaseRxPresenter<GroupNotifyDetai
                                 model.getCandidate(), resultType, false, model.getId());
                     }
                 }).subscribeOn(Schedulers.io())
-                .compose(mView.<VFansProto.HandleJoinGroupRsp>bindLifecycle())
+                .compose(mView.<VFansProto.HandleJoinGroupRsp>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<VFansProto.HandleJoinGroupRsp>() {
                     @Override

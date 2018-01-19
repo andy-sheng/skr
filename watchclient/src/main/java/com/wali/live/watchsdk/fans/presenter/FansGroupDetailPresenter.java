@@ -49,7 +49,7 @@ public class FansGroupDetailPresenter extends BaseRxPresenter<IFansGroupDetailVi
                     }
                 })
                 .subscribeOn(Schedulers.newThread())
-                .compose(mView.<FansGroupDetailModel>bindLifecycle())
+                .compose(mView.<FansGroupDetailModel>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<FansGroupDetailModel>() {
                     @Override
@@ -85,7 +85,7 @@ public class FansGroupDetailPresenter extends BaseRxPresenter<IFansGroupDetailVi
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<List<FansMemberModel>>bindLifecycle())
+                .compose(mView.<List<FansMemberModel>>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<FansMemberModel>>() {
                     @Override
@@ -116,7 +116,7 @@ public class FansGroupDetailPresenter extends BaseRxPresenter<IFansGroupDetailVi
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(mView.<Boolean>bindLifecycle())
+                .compose(mView.<Boolean>bindUntilEvent())
                 .subscribe(new Action1<Boolean>() {
                     @Override
                     public void call(Boolean result) {

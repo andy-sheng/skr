@@ -89,7 +89,7 @@ public class RoomPreparePresenter extends BaseRxPresenter<IRoomPrepareView> {
                         subscriber.onCompleted();
                     }
                 })
-                .compose(mView.<Integer>bindLifecycle())
+                .compose(mView.<Integer>bindUntilEvent())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Integer>() {
@@ -145,7 +145,7 @@ public class RoomPreparePresenter extends BaseRxPresenter<IRoomPrepareView> {
                         subscriber.onCompleted();
                     }
                 })
-                .compose(mView.<TitleViewModel>bindLifecycle())
+                .compose(mView.<TitleViewModel>bindUntilEvent())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<TitleViewModel>() {
@@ -175,7 +175,7 @@ public class RoomPreparePresenter extends BaseRxPresenter<IRoomPrepareView> {
 
     public void loadDailyTask(int roomType) {
         WidgetPresenter.getRoomAttachment("", UserAccountManager.getInstance().getUuidAsLong(), roomType)
-                .compose(mView.<LiveProto.GetRoomAttachmentRsp>bindLifecycle())
+                .compose(mView.<LiveProto.GetRoomAttachmentRsp>bindUntilEvent())
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(new RxRetryAssist(3, 5, true)) // 重试3次，间隔5秒
                 .subscribe(new Action1<LiveProto.GetRoomAttachmentRsp>() {

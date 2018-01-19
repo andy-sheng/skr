@@ -45,7 +45,7 @@ public class FansMedalSettingPresenter extends BaseRxPresenter<IFansMedalSetting
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<List<String>>bindLifecycle())
+                .compose(mView.<List<String>>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<String>>() {
                     @Override
@@ -76,7 +76,7 @@ public class FansMedalSettingPresenter extends BaseRxPresenter<IFansMedalSetting
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<Boolean>bindLifecycle())
+                .compose(mView.<Boolean>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Boolean>() {
                     @Override

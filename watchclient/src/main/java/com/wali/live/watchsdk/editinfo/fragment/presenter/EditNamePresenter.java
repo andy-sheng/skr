@@ -42,7 +42,7 @@ public class EditNamePresenter extends BaseRxPresenter<IEditNameView> {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(mView.<UploadUserPropertiesRsp>bindLifecycle())
+                .compose(mView.<UploadUserPropertiesRsp>bindUntilEvent())
                 .subscribe(new Observer<UploadUserPropertiesRsp>() {
                     @Override
                     public void onCompleted() {

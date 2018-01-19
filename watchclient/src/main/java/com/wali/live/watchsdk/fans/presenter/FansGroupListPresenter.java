@@ -61,7 +61,7 @@ public class FansGroupListPresenter extends BaseRxPresenter<IFansGroupListView> 
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<FansGroupListModel>bindLifecycle())
+                .compose(mView.<FansGroupListModel>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<FansGroupListModel>() {
                     @Override
@@ -92,7 +92,7 @@ public class FansGroupListPresenter extends BaseRxPresenter<IFansGroupListView> 
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<Boolean>bindLifecycle())
+                .compose(mView.<Boolean>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Boolean>() {
                     @Override

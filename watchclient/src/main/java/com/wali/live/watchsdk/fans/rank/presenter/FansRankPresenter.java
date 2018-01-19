@@ -88,7 +88,7 @@ public class FansRankPresenter extends BaseRxPresenter<IFansRankView> {
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<RankListModel>bindLifecycle())
+                .compose(mView.<RankListModel>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<RankListModel>() {
                     @Override

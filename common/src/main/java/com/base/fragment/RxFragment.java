@@ -101,10 +101,6 @@ public abstract class RxFragment extends BaseFragment implements IRxView, LoadDa
         return bindUntilEvent(FragmentEvent.DESTROY_VIEW);
     }
 
-    public <T> Observable.Transformer<T, T> bindLifecycle() {
-        return bindUntilEvent();
-    }
-
     @Override
     public void showLoading() {
 

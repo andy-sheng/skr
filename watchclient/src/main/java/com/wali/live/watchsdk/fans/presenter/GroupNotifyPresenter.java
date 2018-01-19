@@ -48,7 +48,7 @@ public class GroupNotifyPresenter extends BaseRxPresenter<GroupNotifyPresenter.I
                         FansNotifyRepository.syncFansNotify();
                         return null;
                     }
-                }).compose(mView.bindLifecycle())
+                }).compose(mView.bindUntilEvent())
                 .subscribeOn(Schedulers.io())
                 .subscribe();
     }
@@ -73,7 +73,7 @@ public class GroupNotifyPresenter extends BaseRxPresenter<GroupNotifyPresenter.I
                         return list;
                     }
                 }).subscribeOn(Schedulers.io())
-                .compose(mView.<List<GroupNotifyBaseModel>>bindLifecycle())
+                .compose(mView.<List<GroupNotifyBaseModel>>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<GroupNotifyBaseModel>>() {
                     @Override
@@ -101,7 +101,7 @@ public class GroupNotifyPresenter extends BaseRxPresenter<GroupNotifyPresenter.I
                                 false, model.getId());
                     }
                 }).subscribeOn(Schedulers.io())
-                .compose(mView.<VFansProto.HandleJoinGroupRsp>bindLifecycle())
+                .compose(mView.<VFansProto.HandleJoinGroupRsp>bindUntilEvent())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<VFansProto.HandleJoinGroupRsp>() {
                     @Override
@@ -139,7 +139,7 @@ public class GroupNotifyPresenter extends BaseRxPresenter<GroupNotifyPresenter.I
                 return null;
             }
         }).subscribeOn(Schedulers.io())
-                .compose(mView.bindLifecycle())
+                .compose(mView.bindUntilEvent())
                 .subscribe();
     }
 

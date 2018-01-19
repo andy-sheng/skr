@@ -44,7 +44,7 @@ public class FansPayPresenter extends BaseRxPresenter<IFansPayView> {
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<List<FansPayModel>>bindLifecycle())
+                .compose(mView.<List<FansPayModel>>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<FansPayModel>>() {
                     @Override
@@ -78,7 +78,7 @@ public class FansPayPresenter extends BaseRxPresenter<IFansPayView> {
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<Integer>bindLifecycle())
+                .compose(mView.<Integer>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Integer>() {
                     @Override

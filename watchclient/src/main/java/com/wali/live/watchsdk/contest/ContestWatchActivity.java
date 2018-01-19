@@ -58,6 +58,7 @@ import com.wali.live.watchsdk.contest.view.ContestRevivalRuleView;
 import com.wali.live.watchsdk.contest.view.ContestSuccessView;
 import com.wali.live.watchsdk.contest.view.ContestWinRevivalRuleView;
 import com.wali.live.watchsdk.contest.view.QuestionView;
+import com.wali.live.watchsdk.contest.winner.WinerListDialog;
 import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomSystemMsgPresenter;
@@ -223,7 +224,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
     }
 
     private void initHelper() {
-        mIpSelectionHelper = WatchIpSelectionHelper.getWatchIpSelectionHelper();
+        mIpSelectionHelper = WatchIpSelectionHelper.getWatchIpSelectionHgelper();
         mRoomChatMsgManager = new LiveRoomChatMsgManager(CommentCollection.DEFAULT_MAX_SIZE);
     }
 

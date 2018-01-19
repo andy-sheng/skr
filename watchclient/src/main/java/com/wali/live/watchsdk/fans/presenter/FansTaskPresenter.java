@@ -41,7 +41,7 @@ public class FansTaskPresenter extends BaseRxPresenter<IFansTaskView> {
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<GroupJobListModel>bindLifecycle())
+                .compose(mView.<GroupJobListModel>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<GroupJobListModel>() {
                     @Override
@@ -73,7 +73,7 @@ public class FansTaskPresenter extends BaseRxPresenter<IFansTaskView> {
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<Boolean>bindLifecycle())
+                .compose(mView.<Boolean>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Boolean>() {
                     @Override

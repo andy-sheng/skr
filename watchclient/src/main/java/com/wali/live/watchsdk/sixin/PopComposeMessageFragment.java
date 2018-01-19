@@ -178,7 +178,7 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
     }
 
     @Override
-    public <T> Observable.Transformer<T, T> bindLifecycle() {
+    public <T> Observable.Transformer<T, T> bindUntilEvent() {
         return bindUntilEvent();
     }
 

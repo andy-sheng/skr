@@ -73,7 +73,7 @@ public abstract class RxDialog extends Dialog implements IRxView {
     }
 
     @Override
-    public <T> Observable.Transformer<T, T> bindLifecycle() {
+    public <T> Observable.Transformer<T, T> bindUntilEvent() {
         return PresenterEvent.bindUntilEvent(mBehaviorSubject, PresenterEvent.DESTROY);
     }
 

@@ -42,7 +42,7 @@ public class FansHomePresenter extends BaseRxPresenter<FansHomePresenter.IView> 
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<List<FansMemberModel>>bindLifecycle())
+                .compose(mView.<List<FansMemberModel>>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<FansMemberModel>>() {
                     @Override

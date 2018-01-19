@@ -48,7 +48,7 @@ public class FansPagerPresenter extends BaseRxPresenter<FansPagerPresenter.IView
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<FansGroupDetailModel>bindLifecycle())
+                .compose(mView.<FansGroupDetailModel>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<FansGroupDetailModel>() {
                     @Override
@@ -90,7 +90,7 @@ public class FansPagerPresenter extends BaseRxPresenter<FansPagerPresenter.IView
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .compose(mView.<List<RecentJobModel>>bindLifecycle())
+                .compose(mView.<List<RecentJobModel>>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<RecentJobModel>>() {
                     @Override
