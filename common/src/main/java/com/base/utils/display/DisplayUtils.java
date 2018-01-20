@@ -67,6 +67,21 @@ public class DisplayUtils {
         return sMetrics.heightPixels;
     }
 
+
+    public static int getPhoneWidth() {
+//        MyLog.v("PicViewFragment" + " getScreenWidth sMetrics == " + sMetrics.hashCode());
+        int width = getScreenWidth();
+        int height = getScreenHeight();
+        return width < height ? width : height;
+    }
+
+    public static int getPhoneHeight() {
+//        MyLog.v("PicViewFragment" + " getScreenHeight sMetrics == " + sMetrics.hashCode());
+        int width = getScreenWidth();
+        int height = getScreenHeight();
+        return width > height ? width : height;
+    }
+
     /**
      * 获取屏幕长宽比(height/width)
      *

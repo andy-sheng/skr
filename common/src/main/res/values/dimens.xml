@@ -137,6 +137,7 @@
     <dimen name="view_dimen_118">39.33dip</dimen>
     <dimen name="view_dimen_120">40dip</dimen>
     <dimen name="view_dimen_125">41.66dip</dimen>
+    <dimen name="view_dimen_126">42dip</dimen>
     <dimen name="view_dimen_130">43.34dip</dimen>
     <dimen name="view_dimen_132">44dip</dimen>
     <dimen name="view_dimen_135">44.68dip</dimen>
@@ -188,8 +189,10 @@
     <dimen name="view_dimen_342">114dp</dimen>
     <dimen name="view_dimen_350">116.67dp</dimen>
     <dimen name="view_dimen_360">120dp</dimen>
-    <dimen name="view_dimen_366">126dp</dimen>
-    <dimen name="view_dimen_370">127dp</dimen>
+    <dimen name="view_dimen_363">121dp</dimen>
+    <dimen name="view_dimen_366">122dp</dimen>
+    <dimen name="view_dimen_370">123.33dp</dimen>
+    <dimen name="view_dimen_380">126.67dp</dimen>
     <dimen name="view_dimen_384">128dp</dimen>
     <dimen name="view_dimen_393">131dp</dimen>
     <dimen name="view_dimen_400">133.33dp</dimen>
@@ -236,7 +239,13 @@
     <dimen name="view_dimen_1010">336.67dp</dimen>
     <dimen name="view_dimen_1014">338dp</dimen>
     <dimen name="view_dimen_1020">340dip</dimen>
+    <dimen name="view_dimen_1032">344dip</dimen>
+    <dimen name="view_dimen_1060">353.33dip</dimen>
+    <dimen name="view_dimen_1080">353.33dip</dimen>
+    <dimen name="view_dimen_1180">386.66dip</dimen>
+    <dimen name="view_dimen_1170">390dip</dimen>
     <dimen name="view_dimen_1260">420dp</dimen>
+    <dimen name="view_dimen_1920">640dp</dimen>
 
 
     <!--landScape-->

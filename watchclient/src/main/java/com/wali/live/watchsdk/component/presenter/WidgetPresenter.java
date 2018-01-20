@@ -336,8 +336,8 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
                                         LiveProto.GetRoomAttachmentRsp rsp = (LiveProto.GetRoomAttachmentRsp) o;
                                         setWidgetList(rsp.getNewWidgetInfo().getWidgetItemList());
                                         //粉丝团飘萍计数
-                                        if (rsp.hasGuardCounter()) {
-                                            mController.postEvent(MSG_BARRAGE_FANS, new Params().putItem(rsp.getGuardCounter()));
+                                        if (rsp.hasVfansCounter()) {
+                                            mController.postEvent(MSG_BARRAGE_FANS, new Params().putItem(rsp.hasVfansCounter()));
                                         }
                                         //管理员飘萍计数
                                         if (rsp.hasCounter()) {
