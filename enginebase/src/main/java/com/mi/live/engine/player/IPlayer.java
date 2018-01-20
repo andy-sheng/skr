@@ -27,6 +27,10 @@ public interface IPlayer {
 
     long getCurrentStreamPosition();
 
+    long getCurrentAudioTimestamp();
+
+    void setSpeedUpThreshold(long threshold);
+
     boolean isPlaying();
 
     void setBufferTimeMax(float timeInSecond);

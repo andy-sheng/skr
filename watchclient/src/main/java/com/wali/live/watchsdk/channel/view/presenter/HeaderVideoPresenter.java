@@ -52,6 +52,10 @@ public class HeaderVideoPresenter extends BasePlayerPresenter<TextureView, PullS
         mStreamerPresenter.setOriginalStreamUrl(videoUrl);
     }
 
+    public void getCurrentAudioTimestamp() {
+
+    }
+
     @Override
     protected void doStartPlay() {
     }
