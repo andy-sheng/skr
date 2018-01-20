@@ -778,10 +778,10 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
 
     @Override
     public boolean onEvent(int event, IParams params) {
-        switch(event){
+        switch (event) {
             //TODO:这里是播放器的那几个回调，前提是得注册事件，可以写入presenter里面，暂时加入activity中处理，后续优化。
-           case MSG_PLAYER_COMPLETED:
-               break;
+            case MSG_PLAYER_COMPLETED:
+                break;
 
         }
         return false;

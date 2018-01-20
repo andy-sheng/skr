@@ -25,7 +25,7 @@ import org.greenrobot.eventbus.EventBus;
 
 public class ContestSuccessView extends RxRelativeLayout implements View.OnClickListener {
     private TextView mTitleTv;
-//    private TextView mNickNameTv;
+    //    private TextView mNickNameTv;
     private TextView mDesTv;
     private TextView mMoneyTv;
     private BaseImageView mAvatarIv;

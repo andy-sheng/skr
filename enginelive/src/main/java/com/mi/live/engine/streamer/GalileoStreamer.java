@@ -125,6 +125,16 @@ public class GalileoStreamer implements IStreamer {
         public void OnMicStartFailed() {
             MyLog.w(TAG, "OnMicStartFailed");
         }
+
+        @Override
+        public void OnCameraStartFailed() {
+            MyLog.w(TAG, "OnCameraStartFailed");
+        }
+
+        @Override
+        public void OnMixDataReady(short[] shorts, int i, int i1, int i2) {
+            MyLog.w(TAG, " OnMixDataReady");
+        }
     };
 
     private BroadcastCallback mBroadcastCallback = new BroadcastCallback() {
