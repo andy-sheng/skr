@@ -35,6 +35,7 @@ import java.util.List;
  */
 public class LiveRoomChatMsgManager {
     private static final String TAG = "LiveRoomChatMsgManager";
+    public static final int DEFAULT_MAX_SIZE = 300;
 
     /**
      * 游戏直播默认的消息屏蔽值

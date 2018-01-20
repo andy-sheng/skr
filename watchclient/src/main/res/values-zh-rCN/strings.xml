@@ -426,4 +426,8 @@
     <string name="login_fail">登录失败</string>
     <string name="login_forbid">账号被禁用</string>
     <string name="num_time_wan">%s万</string>
+    <plurals name="game_comment_number">
+        <item quantity="other">%d人</item>
+    </plurals>
+    <string name="personalroom_cnt_over">私密房间邀请人数超过上限</string>
 </resources>

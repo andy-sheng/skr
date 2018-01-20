@@ -11,6 +11,7 @@ import com.mi.live.data.push.model.contest.BaseContestMsgExt;
 import com.mi.live.data.push.model.contest.ContestAnswerMsgExt;
 import com.mi.live.data.push.model.contest.ContestQuestionMsgExt;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.wali.live.watchsdk.channel.view.presenter.HeaderVideoPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class ContestMessagePresenter implements IPushMsgProcessor {
     private boolean mIsProcessing = false;
 
     private IContestCallBack mCallBack;
-    private IPlayerPresenter mPlayerPresenter;
+    private HeaderVideoPresenter mPlayerPresenter;
 
     private Handler mMainHandler = new Handler(new Handler.Callback() {
         @Override
@@ -75,7 +76,7 @@ public class ContestMessagePresenter implements IPushMsgProcessor {
      *
      * @param presenter
      */
-    public ContestMessagePresenter(IPlayerPresenter presenter) {
+    public ContestMessagePresenter(HeaderVideoPresenter presenter) {
         this.mPlayerPresenter = presenter;
     }
 
@@ -149,14 +150,15 @@ public class ContestMessagePresenter implements IPushMsgProcessor {
         mIsProcessing = true;
         long delayTime = msgExt.getQuestionInfoModel().getDelayTime();
         long maxTs = delayTime > 0 ? delayTime : DEFAULT_TIME_OUT;
-        MyLog.w(TAG, SYN_DEBUG + "playerTimestamp=" + mPlayerPresenter.getCurrentAudioTimestamp() + " msgTimestamp=" + msgExt.getStreamTs());
+//        MyLog.w(TAG, SYN_DEBUG + "playerTimestamp=" + mPlayerPresenter.getCurrentAudioTimestamp() + " msgTimestamp=" + msgExt.getStreamTs());
         mQuestionTimer = Observable.interval(0, 200, TimeUnit.MILLISECONDS)
                 .take((int) (maxTs / 200) + 1)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long aLong) {
-                        long streamerAudioTs = mPlayerPresenter.getCurrentAudioTimestamp();
+                        //TODO 引擎接口加入后再打开后面 注释
+                        long streamerAudioTs = 0 ; //mPlayerPresenter.getCurrentAudioTimestamp();
                         MyLog.v(TAG, "calculateQuestion streamerAudioTs=" + streamerAudioTs +
                                 " msgExt.getStreamTs()=" + msgExt.getStreamTs());
                         if (streamerAudioTs > 0 && msgExt.getStreamTs() > 0

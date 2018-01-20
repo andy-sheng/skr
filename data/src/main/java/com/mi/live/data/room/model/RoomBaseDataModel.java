@@ -40,6 +40,13 @@ public class RoomBaseDataModel implements Serializable {
     private boolean mHideGift;
     private long mEnterRoomTime = 0;            // 观众端进入直播房间的时间
     private int mHideIcon = 0;
+
+    //contest冲顶大会新加字段
+    boolean ableContest;//可以参加答题 true：可以
+    int revivalNum;//复活卡数量
+    boolean isLate;//是否迟到 true：是
+    String contestId;//场次id
+
     /**
      * 后续这些可以当做房间状态用另外一个类存起来
      **/
@@ -549,5 +556,37 @@ public class RoomBaseDataModel implements Serializable {
 
     public void setSupportMagicFace(boolean supportMagicFace) {
         this.mSupportMagicFace = supportMagicFace;
+    }
+
+    public boolean isAbleContest() {
+        return ableContest;
+    }
+
+    public int getRevivalNum() {
+        return revivalNum;
+    }
+
+    public boolean isLate() {
+        return isLate;
+    }
+
+    public String getContestId() {
+        return contestId;
+    }
+
+    public void setAbleContest(boolean ableContest) {
+        this.ableContest = ableContest;
+    }
+
+    public void setRevivalNum(int revivalNum) {
+        this.revivalNum = revivalNum;
+    }
+
+    public void setLate(boolean late) {
+        isLate = late;
+    }
+
+    public void setContestId(String contestId) {
+        this.contestId = contestId;
     }
 }

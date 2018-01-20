@@ -21,6 +21,11 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/shadow_0f0026_0_end_60"/>
 
+    <TextureView
+        android:id="@+id/video_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <TextView
         android:id="@+id/view_tv"
         android:layout_width="wrap_content"

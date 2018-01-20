@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Environment;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,10 +17,13 @@ import android.widget.TextView;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.preference.PreferenceUtils;
 import com.base.utils.MD5;
-import com.base.utils.image.ImageUtils;
+import com.base.utils.version.VersionManager;
+import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.push.model.contest.LastQuestionInfoModel;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.contest.util.QrcodeUtils;
 
 import java.io.File;
 
@@ -32,11 +36,14 @@ public class ContestShareHelper {
     private static String TAG = "ContestShareHelper";
     private static final String share_pic = Environment.getExternalStorageDirectory() + "/Xiaomi/WALI_LIVE/pic/";
 
+    private final static int QR_IMAG_HEIGHT = 210;
+    private final static int QR_IMAG_WIDTH = 210;
+
     private static String CONTEST_SHARE_INVITE_SUFFIX = "contest_invite_img_";
     private static String CONTEST_SHARE_WIN_SUFFIX = "contest_win_img";
     private static ContestShareHelper sInstance;
-    private QQOAuth mQQOAuth;
-    private WXOAuth mWXOAuth;
+//    private QQOAuth mQQOAuth;
+//    private WXOAuth mWXOAuth;
 
     public static ContestShareHelper getInstance() {
         if (sInstance == null) {
@@ -109,7 +116,7 @@ public class ContestShareHelper {
             if (!file.exists()) {
                 file.createNewFile();
             }
-            ImageUtils.saveBmpToFile(bitmap, file.getAbsolutePath());
+//            ImageUtils.saveBmpToFile(bitmap, file.getAbsolutePath());
             return file.getAbsolutePath();
         } catch (Exception e) {
             MyLog.e(e);
@@ -189,7 +196,7 @@ public class ContestShareHelper {
             if (!file.exists()) {
                 file.createNewFile();
             }
-            ImageUtils.saveBmpToFile(bitmap, file.getAbsolutePath());
+//            ImageUtils.saveBmpToFile(bitmap, file.getAbsolutePath());
             return file.getAbsolutePath();
         } catch (Exception e) {
             MyLog.e(e);
@@ -198,31 +205,72 @@ public class ContestShareHelper {
     }
 
     public void shareLocalPicToQQ(Activity activity, String imgLocalPath) {
-        if (mQQOAuth == null) {
-            mQQOAuth = new QQOAuth();
-        }
-        mQQOAuth.shareImgToQQ(activity, imgLocalPath, true);
+//        if (mQQOAuth == null) {
+//            mQQOAuth = new QQOAuth();
+//        }
+//        mQQOAuth.shareImgToQQ(activity, imgLocalPath, true);
     }
 
     public void shareLocalPicToQzone(Activity activity, String imgLocalPath) {
-        if (mQQOAuth == null) {
-            mQQOAuth = new QQOAuth();
-        }
-        mQQOAuth.shareImgToQQ(activity, imgLocalPath, false);
+//        if (mQQOAuth == null) {
+//            mQQOAuth = new QQOAuth();
+//        }
+//        mQQOAuth.shareImgToQQ(activity, imgLocalPath, false);
     }
 
     public void shareLocalPicToWechat(String imgLocalPath) {
-        if (mWXOAuth == null) {
-            mWXOAuth = new WXOAuth();
-        }
-        mWXOAuth.shareImgToWeixin("", "", imgLocalPath, false);
+//        if (mWXOAuth == null) {
+//            mWXOAuth = new WXOAuth();
+//        }
+//        mWXOAuth.shareImgToWeixin("", "", imgLocalPath, false);
     }
 
     public void shareLocalPicToMoment(String imgLocalPath) {
-        if (mWXOAuth == null) {
-            mWXOAuth = new WXOAuth();
+//        if (mWXOAuth == null) {
+//            mWXOAuth = new WXOAuth();
+//        }
+//        mWXOAuth.shareImgToWeixin("", "", imgLocalPath, true);
+    }
+
+    //获取二维码的图片文件地址，如果发现已经有了并且是最新则直接使用，否则自己手动的生成一个
+    public static String getQrCodeFilePath(boolean hasLogo) throws Exception {
+        String qrcodeDefaultPath = Environment.getExternalStorageDirectory() + "/Xiaomi/WALI_LIVE";
+        String qrcodePathAndVersion = PreferenceUtils.getSettingString(GlobalData.app(), PreferenceKeys.PRE_KEY_FEED_SHARE_IMG_LOCALPATH_VERSION, "");
+        String homepage = PreferenceUtils.getSettingString(GlobalData.app(), PreferenceKeys.PRE_KEY_MILIVE_HOST, "http://live.mi.com");
+        Bitmap logo = null;
+        if (hasLogo) {
+            logo = BitmapFactory.decodeResource(GlobalData.app().getResources(), R.drawable.ic_launcher);
         }
-        mWXOAuth.shareImgToWeixin("", "", imgLocalPath, true);
+        String result = "";
+        String currentVersionName = VersionManager.getVersionName(GlobalData.app());
+        if (TextUtils.isEmpty(qrcodePathAndVersion)) {
+            File qrfile = new File(qrcodeDefaultPath, "qrCode.jpg");
+            if (!qrfile.exists()) {
+                qrfile.createNewFile();
+            }
+            QrcodeUtils.createQRImage(homepage, QR_IMAG_WIDTH, QR_IMAG_HEIGHT, null, qrfile.getAbsolutePath());
+            PreferenceUtils.setSettingString(GlobalData.app(), PreferenceKeys.PRE_KEY_FEED_SHARE_IMG_LOCALPATH_VERSION, homepage + ";" + qrfile.getAbsolutePath());
+            result = qrfile.getAbsolutePath();
+        } else {
+            String[] datas = qrcodePathAndVersion.split(";");
+            if (datas.length != 3 || !datas[0].equals(homepage) || !new File(datas[1]).exists() || !datas[2].equals(currentVersionName)) {
+                File qrfile = new File(qrcodeDefaultPath, "qrCode.jpg");
+                if (!qrfile.exists()) {
+                    qrfile.createNewFile();
+                }
+                QrcodeUtils.createQRImage(homepage, QR_IMAG_WIDTH, QR_IMAG_HEIGHT, null, qrfile.getAbsolutePath());
+                PreferenceUtils.setSettingString(GlobalData.app(), PreferenceKeys.PRE_KEY_FEED_SHARE_IMG_LOCALPATH_VERSION, homepage + ";" + qrfile.getAbsolutePath() + ";" + currentVersionName);
+                result = qrfile.getAbsolutePath();
+            } else {
+                result = datas[1];
+            }
+        }
+        if (hasLogo) {
+            if (logo != null) {
+                logo.recycle();
+            }
+        }
+        return result;
     }
 }
 

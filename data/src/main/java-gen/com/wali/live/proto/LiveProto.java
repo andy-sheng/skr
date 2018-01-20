@@ -22231,6 +22231,19 @@ public final class LiveProto {
      * </pre>
      */
     com.wali.live.proto.LiveProto.GamePackInfoOrBuilder getGamepackInfoOrBuilder();
+
+    /**
+     * <code>optional .com.wali.live.proto.ContestInfo contest_info = 10;</code>
+     */
+    boolean hasContestInfo();
+    /**
+     * <code>optional .com.wali.live.proto.ContestInfo contest_info = 10;</code>
+     */
+    com.wali.live.proto.LiveProto.ContestInfo getContestInfo();
+    /**
+     * <code>optional .com.wali.live.proto.ContestInfo contest_info = 10;</code>
+     */
+    com.wali.live.proto.LiveProto.ContestInfoOrBuilder getContestInfoOrBuilder();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.RoomInfoRsp}
@@ -22347,6 +22360,19 @@ public final class LiveProto {
                 gamepackInfo_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000100;
+              break;
+            }
+            case 82: {
+              com.wali.live.proto.LiveProto.ContestInfo.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000200) == 0x00000200)) {
+                subBuilder = contestInfo_.toBuilder();
+              }
+              contestInfo_ = input.readMessage(com.wali.live.proto.LiveProto.ContestInfo.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(contestInfo_);
+                contestInfo_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000200;
               break;
             }
           }
@@ -22740,6 +22766,27 @@ public final class LiveProto {
       return gamepackInfo_;
     }
 
+    public static final int CONTEST_INFO_FIELD_NUMBER = 10;
+    private com.wali.live.proto.LiveProto.ContestInfo contestInfo_;
+    /**
+     * <code>optional .com.wali.live.proto.ContestInfo contest_info = 10;</code>
+     */
+    public boolean hasContestInfo() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.ContestInfo contest_info = 10;</code>
+     */
+    public com.wali.live.proto.LiveProto.ContestInfo getContestInfo() {
+      return contestInfo_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.ContestInfo contest_info = 10;</code>
+     */
+    public com.wali.live.proto.LiveProto.ContestInfoOrBuilder getContestInfoOrBuilder() {
+      return contestInfo_;
+    }
+
     private void initFields() {
       retCode_ = 0;
       downStreamUrl_ = "";
@@ -22750,6 +22797,7 @@ public final class LiveProto {
       type_ = 0;
       ticketStatus_ = com.wali.live.proto.Live2Proto.TicketLiveStatus.getDefaultInstance();
       gamepackInfo_ = com.wali.live.proto.LiveProto.GamePackInfo.getDefaultInstance();
+      contestInfo_ = com.wali.live.proto.LiveProto.ContestInfo.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -22795,6 +22843,9 @@ public final class LiveProto {
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         output.writeMessage(9, gamepackInfo_);
       }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeMessage(10, contestInfo_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -22839,6 +22890,10 @@ public final class LiveProto {
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(9, gamepackInfo_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, contestInfo_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -22951,6 +23006,7 @@ public final class LiveProto {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getTicketStatusFieldBuilder();
           getGamepackInfoFieldBuilder();
+          getContestInfoFieldBuilder();
         }
       }
       private static Builder create() {
@@ -22985,6 +23041,12 @@ public final class LiveProto {
           gamepackInfoBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000100);
+        if (contestInfoBuilder_ == null) {
+          contestInfo_ = com.wali.live.proto.LiveProto.ContestInfo.getDefaultInstance();
+        } else {
+          contestInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
 
@@ -23057,6 +23119,14 @@ public final class LiveProto {
         } else {
           result.gamepackInfo_ = gamepackInfoBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        if (contestInfoBuilder_ == null) {
+          result.contestInfo_ = contestInfo_;
+        } else {
+          result.contestInfo_ = contestInfoBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -23107,6 +23177,9 @@ public final class LiveProto {
         }
         if (other.hasGamepackInfo()) {
           mergeGamepackInfo(other.getGamepackInfo());
+        }
+        if (other.hasContestInfo()) {
+          mergeContestInfo(other.getContestInfo());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -23987,6 +24060,122 @@ public final class LiveProto {
         return gamepackInfoBuilder_;
       }
 
+      private com.wali.live.proto.LiveProto.ContestInfo contestInfo_ = com.wali.live.proto.LiveProto.ContestInfo.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveProto.ContestInfo, com.wali.live.proto.LiveProto.ContestInfo.Builder, com.wali.live.proto.LiveProto.ContestInfoOrBuilder> contestInfoBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.ContestInfo contest_info = 10;</code>
+       */
+      public boolean hasContestInfo() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ContestInfo contest_info = 10;</code>
+       */
+      public com.wali.live.proto.LiveProto.ContestInfo getContestInfo() {
+        if (contestInfoBuilder_ == null) {
+          return contestInfo_;
+        } else {
+          return contestInfoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ContestInfo contest_info = 10;</code>
+       */
+      public Builder setContestInfo(com.wali.live.proto.LiveProto.ContestInfo value) {
+        if (contestInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          contestInfo_ = value;
+          onChanged();
+        } else {
+          contestInfoBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000200;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ContestInfo contest_info = 10;</code>
+       */
+      public Builder setContestInfo(
+          com.wali.live.proto.LiveProto.ContestInfo.Builder builderForValue) {
+        if (contestInfoBuilder_ == null) {
+          contestInfo_ = builderForValue.build();
+          onChanged();
+        } else {
+          contestInfoBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000200;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ContestInfo contest_info = 10;</code>
+       */
+      public Builder mergeContestInfo(com.wali.live.proto.LiveProto.ContestInfo value) {
+        if (contestInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00000200) == 0x00000200) &&
+              contestInfo_ != com.wali.live.proto.LiveProto.ContestInfo.getDefaultInstance()) {
+            contestInfo_ =
+              com.wali.live.proto.LiveProto.ContestInfo.newBuilder(contestInfo_).mergeFrom(value).buildPartial();
+          } else {
+            contestInfo_ = value;
+          }
+          onChanged();
+        } else {
+          contestInfoBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000200;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ContestInfo contest_info = 10;</code>
+       */
+      public Builder clearContestInfo() {
+        if (contestInfoBuilder_ == null) {
+          contestInfo_ = com.wali.live.proto.LiveProto.ContestInfo.getDefaultInstance();
+          onChanged();
+        } else {
+          contestInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000200);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ContestInfo contest_info = 10;</code>
+       */
+      public com.wali.live.proto.LiveProto.ContestInfo.Builder getContestInfoBuilder() {
+        bitField0_ |= 0x00000200;
+        onChanged();
+        return getContestInfoFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ContestInfo contest_info = 10;</code>
+       */
+      public com.wali.live.proto.LiveProto.ContestInfoOrBuilder getContestInfoOrBuilder() {
+        if (contestInfoBuilder_ != null) {
+          return contestInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return contestInfo_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ContestInfo contest_info = 10;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveProto.ContestInfo, com.wali.live.proto.LiveProto.ContestInfo.Builder, com.wali.live.proto.LiveProto.ContestInfoOrBuilder> 
+          getContestInfoFieldBuilder() {
+        if (contestInfoBuilder_ == null) {
+          contestInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.LiveProto.ContestInfo, com.wali.live.proto.LiveProto.ContestInfo.Builder, com.wali.live.proto.LiveProto.ContestInfoOrBuilder>(
+                  getContestInfo(),
+                  getParentForChildren(),
+                  isClean());
+          contestInfo_ = null;
+        }
+        return contestInfoBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.RoomInfoRsp)
     }
 
@@ -23996,6 +24185,860 @@ public final class LiveProto {
     }
 
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.RoomInfoRsp)
+  }
+
+  public interface ContestInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ContestInfo)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional bool able_contest = 1;</code>
+     *
+     * <pre>
+     *可以参加答题 true：可以
+     * </pre>
+     */
+    boolean hasAbleContest();
+    /**
+     * <code>optional bool able_contest = 1;</code>
+     *
+     * <pre>
+     *可以参加答题 true：可以
+     * </pre>
+     */
+    boolean getAbleContest();
+
+    /**
+     * <code>optional uint32 revival_num = 2;</code>
+     *
+     * <pre>
+     *复活卡数量
+     * </pre>
+     */
+    boolean hasRevivalNum();
+    /**
+     * <code>optional uint32 revival_num = 2;</code>
+     *
+     * <pre>
+     *复活卡数量
+     * </pre>
+     */
+    int getRevivalNum();
+
+    /**
+     * <code>optional bool is_late = 3;</code>
+     *
+     * <pre>
+     *是否迟到 true：是
+     * </pre>
+     */
+    boolean hasIsLate();
+    /**
+     * <code>optional bool is_late = 3;</code>
+     *
+     * <pre>
+     *是否迟到 true：是
+     * </pre>
+     */
+    boolean getIsLate();
+
+    /**
+     * <code>optional string contest_id = 4;</code>
+     *
+     * <pre>
+     *场次id
+     * </pre>
+     */
+    boolean hasContestId();
+    /**
+     * <code>optional string contest_id = 4;</code>
+     *
+     * <pre>
+     *场次id
+     * </pre>
+     */
+    java.lang.String getContestId();
+    /**
+     * <code>optional string contest_id = 4;</code>
+     *
+     * <pre>
+     *场次id
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getContestIdBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.ContestInfo}
+   */
+  public static final class ContestInfo extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ContestInfo)
+      ContestInfoOrBuilder {
+    // Use ContestInfo.newBuilder() to construct.
+    private ContestInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ContestInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ContestInfo defaultInstance;
+    public static ContestInfo getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ContestInfo getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ContestInfo(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              ableContest_ = input.readBool();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              revivalNum_ = input.readUInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              isLate_ = input.readBool();
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              contestId_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveProto.internal_static_com_wali_live_proto_ContestInfo_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveProto.internal_static_com_wali_live_proto_ContestInfo_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveProto.ContestInfo.class, com.wali.live.proto.LiveProto.ContestInfo.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ContestInfo> PARSER =
+        new com.google.protobuf.AbstractParser<ContestInfo>() {
+      public ContestInfo parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ContestInfo(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ContestInfo> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int ABLE_CONTEST_FIELD_NUMBER = 1;
+    private boolean ableContest_;
+    /**
+     * <code>optional bool able_contest = 1;</code>
+     *
+     * <pre>
+     *可以参加答题 true：可以
+     * </pre>
+     */
+    public boolean hasAbleContest() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional bool able_contest = 1;</code>
+     *
+     * <pre>
+     *可以参加答题 true：可以
+     * </pre>
+     */
+    public boolean getAbleContest() {
+      return ableContest_;
+    }
+
+    public static final int REVIVAL_NUM_FIELD_NUMBER = 2;
+    private int revivalNum_;
+    /**
+     * <code>optional uint32 revival_num = 2;</code>
+     *
+     * <pre>
+     *复活卡数量
+     * </pre>
+     */
+    public boolean hasRevivalNum() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 revival_num = 2;</code>
+     *
+     * <pre>
+     *复活卡数量
+     * </pre>
+     */
+    public int getRevivalNum() {
+      return revivalNum_;
+    }
+
+    public static final int IS_LATE_FIELD_NUMBER = 3;
+    private boolean isLate_;
+    /**
+     * <code>optional bool is_late = 3;</code>
+     *
+     * <pre>
+     *是否迟到 true：是
+     * </pre>
+     */
+    public boolean hasIsLate() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional bool is_late = 3;</code>
+     *
+     * <pre>
+     *是否迟到 true：是
+     * </pre>
+     */
+    public boolean getIsLate() {
+      return isLate_;
+    }
+
+    public static final int CONTEST_ID_FIELD_NUMBER = 4;
+    private java.lang.Object contestId_;
+    /**
+     * <code>optional string contest_id = 4;</code>
+     *
+     * <pre>
+     *场次id
+     * </pre>
+     */
+    public boolean hasContestId() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string contest_id = 4;</code>
+     *
+     * <pre>
+     *场次id
+     * </pre>
+     */
+    public java.lang.String getContestId() {
+      java.lang.Object ref = contestId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          contestId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string contest_id = 4;</code>
+     *
+     * <pre>
+     *场次id
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getContestIdBytes() {
+      java.lang.Object ref = contestId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        contestId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      ableContest_ = false;
+      revivalNum_ = 0;
+      isLate_ = false;
+      contestId_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBool(1, ableContest_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, revivalNum_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBool(3, isLate_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getContestIdBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, ableContest_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, revivalNum_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(3, isLate_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getContestIdBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveProto.ContestInfo parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveProto.ContestInfo parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveProto.ContestInfo parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveProto.ContestInfo parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveProto.ContestInfo parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveProto.ContestInfo parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveProto.ContestInfo parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveProto.ContestInfo parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveProto.ContestInfo parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveProto.ContestInfo parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveProto.ContestInfo prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.ContestInfo}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ContestInfo)
+        com.wali.live.proto.LiveProto.ContestInfoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveProto.internal_static_com_wali_live_proto_ContestInfo_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveProto.internal_static_com_wali_live_proto_ContestInfo_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveProto.ContestInfo.class, com.wali.live.proto.LiveProto.ContestInfo.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveProto.ContestInfo.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        ableContest_ = false;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        revivalNum_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        isLate_ = false;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        contestId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveProto.internal_static_com_wali_live_proto_ContestInfo_descriptor;
+      }
+
+      public com.wali.live.proto.LiveProto.ContestInfo getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveProto.ContestInfo.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveProto.ContestInfo build() {
+        com.wali.live.proto.LiveProto.ContestInfo result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveProto.ContestInfo buildPartial() {
+        com.wali.live.proto.LiveProto.ContestInfo result = new com.wali.live.proto.LiveProto.ContestInfo(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.ableContest_ = ableContest_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.revivalNum_ = revivalNum_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.isLate_ = isLate_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.contestId_ = contestId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveProto.ContestInfo) {
+          return mergeFrom((com.wali.live.proto.LiveProto.ContestInfo)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveProto.ContestInfo other) {
+        if (other == com.wali.live.proto.LiveProto.ContestInfo.getDefaultInstance()) return this;
+        if (other.hasAbleContest()) {
+          setAbleContest(other.getAbleContest());
+        }
+        if (other.hasRevivalNum()) {
+          setRevivalNum(other.getRevivalNum());
+        }
+        if (other.hasIsLate()) {
+          setIsLate(other.getIsLate());
+        }
+        if (other.hasContestId()) {
+          bitField0_ |= 0x00000008;
+          contestId_ = other.contestId_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveProto.ContestInfo parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveProto.ContestInfo) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private boolean ableContest_ ;
+      /**
+       * <code>optional bool able_contest = 1;</code>
+       *
+       * <pre>
+       *可以参加答题 true：可以
+       * </pre>
+       */
+      public boolean hasAbleContest() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional bool able_contest = 1;</code>
+       *
+       * <pre>
+       *可以参加答题 true：可以
+       * </pre>
+       */
+      public boolean getAbleContest() {
+        return ableContest_;
+      }
+      /**
+       * <code>optional bool able_contest = 1;</code>
+       *
+       * <pre>
+       *可以参加答题 true：可以
+       * </pre>
+       */
+      public Builder setAbleContest(boolean value) {
+        bitField0_ |= 0x00000001;
+        ableContest_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool able_contest = 1;</code>
+       *
+       * <pre>
+       *可以参加答题 true：可以
+       * </pre>
+       */
+      public Builder clearAbleContest() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        ableContest_ = false;
+        onChanged();
+        return this;
+      }
+
+      private int revivalNum_ ;
+      /**
+       * <code>optional uint32 revival_num = 2;</code>
+       *
+       * <pre>
+       *复活卡数量
+       * </pre>
+       */
+      public boolean hasRevivalNum() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 revival_num = 2;</code>
+       *
+       * <pre>
+       *复活卡数量
+       * </pre>
+       */
+      public int getRevivalNum() {
+        return revivalNum_;
+      }
+      /**
+       * <code>optional uint32 revival_num = 2;</code>
+       *
+       * <pre>
+       *复活卡数量
+       * </pre>
+       */
+      public Builder setRevivalNum(int value) {
+        bitField0_ |= 0x00000002;
+        revivalNum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 revival_num = 2;</code>
+       *
+       * <pre>
+       *复活卡数量
+       * </pre>
+       */
+      public Builder clearRevivalNum() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        revivalNum_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean isLate_ ;
+      /**
+       * <code>optional bool is_late = 3;</code>
+       *
+       * <pre>
+       *是否迟到 true：是
+       * </pre>
+       */
+      public boolean hasIsLate() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional bool is_late = 3;</code>
+       *
+       * <pre>
+       *是否迟到 true：是
+       * </pre>
+       */
+      public boolean getIsLate() {
+        return isLate_;
+      }
+      /**
+       * <code>optional bool is_late = 3;</code>
+       *
+       * <pre>
+       *是否迟到 true：是
+       * </pre>
+       */
+      public Builder setIsLate(boolean value) {
+        bitField0_ |= 0x00000004;
+        isLate_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool is_late = 3;</code>
+       *
+       * <pre>
+       *是否迟到 true：是
+       * </pre>
+       */
+      public Builder clearIsLate() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        isLate_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object contestId_ = "";
+      /**
+       * <code>optional string contest_id = 4;</code>
+       *
+       * <pre>
+       *场次id
+       * </pre>
+       */
+      public boolean hasContestId() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string contest_id = 4;</code>
+       *
+       * <pre>
+       *场次id
+       * </pre>
+       */
+      public java.lang.String getContestId() {
+        java.lang.Object ref = contestId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            contestId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string contest_id = 4;</code>
+       *
+       * <pre>
+       *场次id
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getContestIdBytes() {
+        java.lang.Object ref = contestId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          contestId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string contest_id = 4;</code>
+       *
+       * <pre>
+       *场次id
+       * </pre>
+       */
+      public Builder setContestId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        contestId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string contest_id = 4;</code>
+       *
+       * <pre>
+       *场次id
+       * </pre>
+       */
+      public Builder clearContestId() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        contestId_ = getDefaultInstance().getContestId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string contest_id = 4;</code>
+       *
+       * <pre>
+       *场次id
+       * </pre>
+       */
+      public Builder setContestIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        contestId_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ContestInfo)
+    }
+
+    static {
+      defaultInstance = new ContestInfo(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ContestInfo)
   }
 
   public interface GamePackInfoOrBuilder extends
@@ -60624,29 +61667,29 @@ public final class LiveProto {
     com.wali.live.proto.LiveProto.LimitedInfoOrBuilder getVipCounterOrBuilder();
 
     /**
-     * <code>optional .com.wali.live.proto.LimitedInfo guardCounter = 10;</code>
+     * <code>optional .com.wali.live.proto.LimitedInfo vfansCounter = 10;</code>
      *
      * <pre>
-     *guard飘屏计数,add by xumin
+     *vfans飘屏计数,add by xumin
      * </pre>
      */
-    boolean hasGuardCounter();
+    boolean hasVfansCounter();
     /**
-     * <code>optional .com.wali.live.proto.LimitedInfo guardCounter = 10;</code>
+     * <code>optional .com.wali.live.proto.LimitedInfo vfansCounter = 10;</code>
      *
      * <pre>
-     *guard飘屏计数,add by xumin
+     *vfans飘屏计数,add by xumin
      * </pre>
      */
-    com.wali.live.proto.LiveProto.LimitedInfo getGuardCounter();
+    com.wali.live.proto.LiveProto.LimitedInfo getVfansCounter();
     /**
-     * <code>optional .com.wali.live.proto.LimitedInfo guardCounter = 10;</code>
+     * <code>optional .com.wali.live.proto.LimitedInfo vfansCounter = 10;</code>
      *
      * <pre>
-     *guard飘屏计数,add by xumin
+     *vfans飘屏计数,add by xumin
      * </pre>
      */
-    com.wali.live.proto.LiveProto.LimitedInfoOrBuilder getGuardCounterOrBuilder();
+    com.wali.live.proto.LiveProto.LimitedInfoOrBuilder getVfansCounterOrBuilder();
 
     /**
      * <code>optional .com.wali.live.proto.SpeedyGiftConfig speedyGiftConfig = 11;</code>
@@ -60832,12 +61875,12 @@ public final class LiveProto {
             case 82: {
               com.wali.live.proto.LiveProto.LimitedInfo.Builder subBuilder = null;
               if (((bitField0_ & 0x00000100) == 0x00000100)) {
-                subBuilder = guardCounter_.toBuilder();
+                subBuilder = vfansCounter_.toBuilder();
               }
-              guardCounter_ = input.readMessage(com.wali.live.proto.LiveProto.LimitedInfo.PARSER, extensionRegistry);
+              vfansCounter_ = input.readMessage(com.wali.live.proto.LiveProto.LimitedInfo.PARSER, extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(guardCounter_);
-                guardCounter_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom(vfansCounter_);
+                vfansCounter_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000100;
               break;
@@ -61207,37 +62250,37 @@ public final class LiveProto {
       return vipCounter_;
     }
 
-    public static final int GUARDCOUNTER_FIELD_NUMBER = 10;
-    private com.wali.live.proto.LiveProto.LimitedInfo guardCounter_;
+    public static final int VFANSCOUNTER_FIELD_NUMBER = 10;
+    private com.wali.live.proto.LiveProto.LimitedInfo vfansCounter_;
     /**
-     * <code>optional .com.wali.live.proto.LimitedInfo guardCounter = 10;</code>
+     * <code>optional .com.wali.live.proto.LimitedInfo vfansCounter = 10;</code>
      *
      * <pre>
-     *guard飘屏计数,add by xumin
+     *vfans飘屏计数,add by xumin
      * </pre>
      */
-    public boolean hasGuardCounter() {
+    public boolean hasVfansCounter() {
       return ((bitField0_ & 0x00000100) == 0x00000100);
     }
     /**
-     * <code>optional .com.wali.live.proto.LimitedInfo guardCounter = 10;</code>
+     * <code>optional .com.wali.live.proto.LimitedInfo vfansCounter = 10;</code>
      *
      * <pre>
-     *guard飘屏计数,add by xumin
+     *vfans飘屏计数,add by xumin
      * </pre>
      */
-    public com.wali.live.proto.LiveProto.LimitedInfo getGuardCounter() {
-      return guardCounter_;
+    public com.wali.live.proto.LiveProto.LimitedInfo getVfansCounter() {
+      return vfansCounter_;
     }
     /**
-     * <code>optional .com.wali.live.proto.LimitedInfo guardCounter = 10;</code>
+     * <code>optional .com.wali.live.proto.LimitedInfo vfansCounter = 10;</code>
      *
      * <pre>
-     *guard飘屏计数,add by xumin
+     *vfans飘屏计数,add by xumin
      * </pre>
      */
-    public com.wali.live.proto.LiveProto.LimitedInfoOrBuilder getGuardCounterOrBuilder() {
-      return guardCounter_;
+    public com.wali.live.proto.LiveProto.LimitedInfoOrBuilder getVfansCounterOrBuilder() {
+      return vfansCounter_;
     }
 
     public static final int SPEEDYGIFTCONFIG_FIELD_NUMBER = 11;
@@ -61283,7 +62326,7 @@ public final class LiveProto {
       ctrlInfo_ = com.wali.live.proto.LiveProto.CtrlInfo.getDefaultInstance();
       counter_ = com.wali.live.proto.LiveProto.LimitedInfo.getDefaultInstance();
       vipCounter_ = com.wali.live.proto.LiveProto.LimitedInfo.getDefaultInstance();
-      guardCounter_ = com.wali.live.proto.LiveProto.LimitedInfo.getDefaultInstance();
+      vfansCounter_ = com.wali.live.proto.LiveProto.LimitedInfo.getDefaultInstance();
       speedyGiftConfig_ = com.wali.live.proto.LiveProto.SpeedyGiftConfig.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
@@ -61349,7 +62392,7 @@ public final class LiveProto {
         output.writeMessage(9, vipCounter_);
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        output.writeMessage(10, guardCounter_);
+        output.writeMessage(10, vfansCounter_);
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
         output.writeMessage(11, speedyGiftConfig_);
@@ -61401,7 +62444,7 @@ public final class LiveProto {
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(10, guardCounter_);
+          .computeMessageSize(10, vfansCounter_);
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
         size += com.google.protobuf.CodedOutputStream
@@ -61524,7 +62567,7 @@ public final class LiveProto {
           getCtrlInfoFieldBuilder();
           getCounterFieldBuilder();
           getVipCounterFieldBuilder();
-          getGuardCounterFieldBuilder();
+          getVfansCounterFieldBuilder();
           getSpeedyGiftConfigFieldBuilder();
         }
       }
@@ -61584,10 +62627,10 @@ public final class LiveProto {
           vipCounterBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000100);
-        if (guardCounterBuilder_ == null) {
-          guardCounter_ = com.wali.live.proto.LiveProto.LimitedInfo.getDefaultInstance();
+        if (vfansCounterBuilder_ == null) {
+          vfansCounter_ = com.wali.live.proto.LiveProto.LimitedInfo.getDefaultInstance();
         } else {
-          guardCounterBuilder_.clear();
+          vfansCounterBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000200);
         if (speedyGiftConfigBuilder_ == null) {
@@ -61696,10 +62739,10 @@ public final class LiveProto {
         if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
           to_bitField0_ |= 0x00000100;
         }
-        if (guardCounterBuilder_ == null) {
-          result.guardCounter_ = guardCounter_;
+        if (vfansCounterBuilder_ == null) {
+          result.vfansCounter_ = vfansCounter_;
         } else {
-          result.guardCounter_ = guardCounterBuilder_.build();
+          result.vfansCounter_ = vfansCounterBuilder_.build();
         }
         if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
           to_bitField0_ |= 0x00000200;
@@ -61775,8 +62818,8 @@ public final class LiveProto {
         if (other.hasVipCounter()) {
           mergeVipCounter(other.getVipCounter());
         }
-        if (other.hasGuardCounter()) {
-          mergeGuardCounter(other.getGuardCounter());
+        if (other.hasVfansCounter()) {
+          mergeVfansCounter(other.getVfansCounter());
         }
         if (other.hasSpeedyGiftConfig()) {
           mergeSpeedyGiftConfig(other.getSpeedyGiftConfig());
@@ -63254,156 +64297,156 @@ public final class LiveProto {
         return vipCounterBuilder_;
       }
 
-      private com.wali.live.proto.LiveProto.LimitedInfo guardCounter_ = com.wali.live.proto.LiveProto.LimitedInfo.getDefaultInstance();
+      private com.wali.live.proto.LiveProto.LimitedInfo vfansCounter_ = com.wali.live.proto.LiveProto.LimitedInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          com.wali.live.proto.LiveProto.LimitedInfo, com.wali.live.proto.LiveProto.LimitedInfo.Builder, com.wali.live.proto.LiveProto.LimitedInfoOrBuilder> guardCounterBuilder_;
+          com.wali.live.proto.LiveProto.LimitedInfo, com.wali.live.proto.LiveProto.LimitedInfo.Builder, com.wali.live.proto.LiveProto.LimitedInfoOrBuilder> vfansCounterBuilder_;
       /**
-       * <code>optional .com.wali.live.proto.LimitedInfo guardCounter = 10;</code>
+       * <code>optional .com.wali.live.proto.LimitedInfo vfansCounter = 10;</code>
        *
        * <pre>
-       *guard飘屏计数,add by xumin
+       *vfans飘屏计数,add by xumin
        * </pre>
        */
-      public boolean hasGuardCounter() {
+      public boolean hasVfansCounter() {
         return ((bitField0_ & 0x00000200) == 0x00000200);
       }
       /**
-       * <code>optional .com.wali.live.proto.LimitedInfo guardCounter = 10;</code>
+       * <code>optional .com.wali.live.proto.LimitedInfo vfansCounter = 10;</code>
        *
        * <pre>
-       *guard飘屏计数,add by xumin
+       *vfans飘屏计数,add by xumin
        * </pre>
        */
-      public com.wali.live.proto.LiveProto.LimitedInfo getGuardCounter() {
-        if (guardCounterBuilder_ == null) {
-          return guardCounter_;
+      public com.wali.live.proto.LiveProto.LimitedInfo getVfansCounter() {
+        if (vfansCounterBuilder_ == null) {
+          return vfansCounter_;
         } else {
-          return guardCounterBuilder_.getMessage();
+          return vfansCounterBuilder_.getMessage();
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.LimitedInfo guardCounter = 10;</code>
+       * <code>optional .com.wali.live.proto.LimitedInfo vfansCounter = 10;</code>
        *
        * <pre>
-       *guard飘屏计数,add by xumin
+       *vfans飘屏计数,add by xumin
        * </pre>
        */
-      public Builder setGuardCounter(com.wali.live.proto.LiveProto.LimitedInfo value) {
-        if (guardCounterBuilder_ == null) {
+      public Builder setVfansCounter(com.wali.live.proto.LiveProto.LimitedInfo value) {
+        if (vfansCounterBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          guardCounter_ = value;
+          vfansCounter_ = value;
           onChanged();
         } else {
-          guardCounterBuilder_.setMessage(value);
+          vfansCounterBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000200;
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.LimitedInfo guardCounter = 10;</code>
+       * <code>optional .com.wali.live.proto.LimitedInfo vfansCounter = 10;</code>
        *
        * <pre>
-       *guard飘屏计数,add by xumin
+       *vfans飘屏计数,add by xumin
        * </pre>
        */
-      public Builder setGuardCounter(
+      public Builder setVfansCounter(
           com.wali.live.proto.LiveProto.LimitedInfo.Builder builderForValue) {
-        if (guardCounterBuilder_ == null) {
-          guardCounter_ = builderForValue.build();
+        if (vfansCounterBuilder_ == null) {
+          vfansCounter_ = builderForValue.build();
           onChanged();
         } else {
-          guardCounterBuilder_.setMessage(builderForValue.build());
+          vfansCounterBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000200;
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.LimitedInfo guardCounter = 10;</code>
+       * <code>optional .com.wali.live.proto.LimitedInfo vfansCounter = 10;</code>
        *
        * <pre>
-       *guard飘屏计数,add by xumin
+       *vfans飘屏计数,add by xumin
        * </pre>
        */
-      public Builder mergeGuardCounter(com.wali.live.proto.LiveProto.LimitedInfo value) {
-        if (guardCounterBuilder_ == null) {
+      public Builder mergeVfansCounter(com.wali.live.proto.LiveProto.LimitedInfo value) {
+        if (vfansCounterBuilder_ == null) {
           if (((bitField0_ & 0x00000200) == 0x00000200) &&
-              guardCounter_ != com.wali.live.proto.LiveProto.LimitedInfo.getDefaultInstance()) {
-            guardCounter_ =
-              com.wali.live.proto.LiveProto.LimitedInfo.newBuilder(guardCounter_).mergeFrom(value).buildPartial();
+              vfansCounter_ != com.wali.live.proto.LiveProto.LimitedInfo.getDefaultInstance()) {
+            vfansCounter_ =
+              com.wali.live.proto.LiveProto.LimitedInfo.newBuilder(vfansCounter_).mergeFrom(value).buildPartial();
           } else {
-            guardCounter_ = value;
+            vfansCounter_ = value;
           }
           onChanged();
         } else {
-          guardCounterBuilder_.mergeFrom(value);
+          vfansCounterBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000200;
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.LimitedInfo guardCounter = 10;</code>
+       * <code>optional .com.wali.live.proto.LimitedInfo vfansCounter = 10;</code>
        *
        * <pre>
-       *guard飘屏计数,add by xumin
+       *vfans飘屏计数,add by xumin
        * </pre>
        */
-      public Builder clearGuardCounter() {
-        if (guardCounterBuilder_ == null) {
-          guardCounter_ = com.wali.live.proto.LiveProto.LimitedInfo.getDefaultInstance();
+      public Builder clearVfansCounter() {
+        if (vfansCounterBuilder_ == null) {
+          vfansCounter_ = com.wali.live.proto.LiveProto.LimitedInfo.getDefaultInstance();
           onChanged();
         } else {
-          guardCounterBuilder_.clear();
+          vfansCounterBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.LimitedInfo guardCounter = 10;</code>
+       * <code>optional .com.wali.live.proto.LimitedInfo vfansCounter = 10;</code>
        *
        * <pre>
-       *guard飘屏计数,add by xumin
+       *vfans飘屏计数,add by xumin
        * </pre>
        */
-      public com.wali.live.proto.LiveProto.LimitedInfo.Builder getGuardCounterBuilder() {
+      public com.wali.live.proto.LiveProto.LimitedInfo.Builder getVfansCounterBuilder() {
         bitField0_ |= 0x00000200;
         onChanged();
-        return getGuardCounterFieldBuilder().getBuilder();
+        return getVfansCounterFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.wali.live.proto.LimitedInfo guardCounter = 10;</code>
+       * <code>optional .com.wali.live.proto.LimitedInfo vfansCounter = 10;</code>
        *
        * <pre>
-       *guard飘屏计数,add by xumin
+       *vfans飘屏计数,add by xumin
        * </pre>
        */
-      public com.wali.live.proto.LiveProto.LimitedInfoOrBuilder getGuardCounterOrBuilder() {
-        if (guardCounterBuilder_ != null) {
-          return guardCounterBuilder_.getMessageOrBuilder();
+      public com.wali.live.proto.LiveProto.LimitedInfoOrBuilder getVfansCounterOrBuilder() {
+        if (vfansCounterBuilder_ != null) {
+          return vfansCounterBuilder_.getMessageOrBuilder();
         } else {
-          return guardCounter_;
+          return vfansCounter_;
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.LimitedInfo guardCounter = 10;</code>
+       * <code>optional .com.wali.live.proto.LimitedInfo vfansCounter = 10;</code>
        *
        * <pre>
-       *guard飘屏计数,add by xumin
+       *vfans飘屏计数,add by xumin
        * </pre>
        */
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.LiveProto.LimitedInfo, com.wali.live.proto.LiveProto.LimitedInfo.Builder, com.wali.live.proto.LiveProto.LimitedInfoOrBuilder> 
-          getGuardCounterFieldBuilder() {
-        if (guardCounterBuilder_ == null) {
-          guardCounterBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+          getVfansCounterFieldBuilder() {
+        if (vfansCounterBuilder_ == null) {
+          vfansCounterBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.LiveProto.LimitedInfo, com.wali.live.proto.LiveProto.LimitedInfo.Builder, com.wali.live.proto.LiveProto.LimitedInfoOrBuilder>(
-                  getGuardCounter(),
+                  getVfansCounter(),
                   getParentForChildren(),
                   isClean());
-          guardCounter_ = null;
+          vfansCounter_ = null;
         }
-        return guardCounterBuilder_;
+        return vfansCounterBuilder_;
       }
 
       private com.wali.live.proto.LiveProto.SpeedyGiftConfig speedyGiftConfig_ = com.wali.live.proto.LiveProto.SpeedyGiftConfig.getDefaultInstance();
@@ -74116,6 +75159,11 @@ public final class LiveProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_RoomInfoRsp_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_ContestInfo_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_ContestInfo_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GamePackInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -74501,144 +75549,148 @@ public final class LiveProto {
       ".Viewer\"{\n\013RoomInfoReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004" +
       "zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\022\020\n\010password\030\004" +
       " \001(\t\022\025\n\rgetLatestLive\030\005 \001(\010\022\027\n\017getGameIn" +
-      "foOnly\030\006 \001(\010\"\360\001\n\013RoomInfoRsp\022\017\n\007retCode\030" +
+      "foOnly\030\006 \001(\010\"\250\002\n\013RoomInfoRsp\022\017\n\007retCode\030" +
       "\001 \002(\r\022\025\n\rdownStreamUrl\030\002 \001(\t\022\023\n\013playback" +
       "Url\030\003 \001(\t\022\020\n\010shareUrl\030\004 \001(\t\022\021\n\tbeginTime",
       "\030\005 \001(\004\022\016\n\006liveid\030\006 \001(\t\022\014\n\004type\030\007 \001(\r\022\'\n\014" +
       "ticketStatus\030\010 \001(\0132\021.TicketLiveStatus\0228\n" +
       "\rgamepack_info\030\t \001(\0132!.com.wali.live.pro" +
-      "to.GamePackInfo\"\257\002\n\014GamePackInfo\022\014\n\004zuid" +
-      "\030\001 \001(\004\022\016\n\006roomId\030\002 \001(\t\022\021\n\tcdnDomain\030\003 \001(" +
-      "\t\022\023\n\013displayName\030\004 \001(\t\022\016\n\006gameId\030\005 \001(\r\022\023" +
-      "\n\013pacakgeName\030\006 \001(\t\022\014\n\004icon\030\007 \001(\t\022\022\n\ngam" +
-      "eApkSs1\030\010 \001(\t\022\017\n\007gameApk\030\t \001(\t\022\021\n\tshortN" +
-      "ame\030\n \001(\t\0226\n\006level1\030\013 \001(\0132&.com.wali.liv" +
-      "e.proto.GameTagInfoDetail\0226\n\006level2\030\014 \001(",
-      "\0132&.com.wali.live.proto.GameTagInfoDetai" +
-      "l\"-\n\021GameTagInfoDetail\022\n\n\002id\030\001 \001(\r\022\014\n\004na" +
-      "me\030\002 \001(\t\"O\n\014LeaveLiveReq\022\014\n\004uuid\030\001 \002(\004\022\014" +
-      "\n\004zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\022\023\n\013messageM" +
-      "ode\030\004 \001(\005\"\037\n\014LeaveLiveRsp\022\017\n\007retCode\030\001 \002" +
-      "(\r\"0\n\020HistoryDeleteReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006" +
-      "liveId\030\002 \002(\t\"#\n\020HistoryDeleteRsp\022\017\n\007retC" +
-      "ode\030\001 \002(\r\"u\n\014HeartBeatReq\022\016\n\006liveId\030\001 \002(" +
-      "\t\022\r\n\005pkuid\030\002 \001(\004\022\020\n\010pkLiveId\030\003 \001(\t\022\016\n\006st" +
-      "atus\030\004 \001(\005\022\016\n\006micuid\030\005 \001(\004\022\024\n\014micuidStat",
-      "us\030\006 \001(\005\"\037\n\014HeartBeatRsp\022\017\n\007retCode\030\001 \002(" +
-      "\r\"n\n\nPKBeginReq\022\014\n\004uuid\030\001 \002(\004\022\r\n\005pkuid\030\002" +
-      " \002(\004\022\020\n\010pkLiveId\030\003 \001(\t\022\026\n\016myPkInitTicket" +
-      "\030\004 \001(\r\022\031\n\021otherPkInitTicket\030\005 \001(\r\"P\n\nPKB" +
-      "eginRsp\022\017\n\007retCode\030\001 \002(\r\022\026\n\016myPkInitTick" +
-      "et\030\002 \001(\r\022\031\n\021otherPkInitTicket\030\003 \001(\r\"9\n\010P" +
-      "KEndReq\022\014\n\004uuid\030\001 \002(\004\022\r\n\005pkuid\030\002 \002(\004\022\020\n\010" +
-      "pkLiveId\030\003 \001(\t\"\033\n\010PKEndRsp\022\017\n\007retCode\030\001 " +
-      "\002(\r\"\034\n\014GetPKInfoReq\022\014\n\004zuid\030\001 \002(\004\"\202\001\n\014Ge" +
-      "tPKInfoRsp\022\017\n\007retCode\030\001 \002(\r\022/\n\nthisPKInf",
-      "o\030\002 \001(\0132\033.com.wali.live.proto.PKInfo\0220\n\013" +
-      "otherPKInfo\030\003 \001(\0132\033.com.wali.live.proto." +
-      "PKInfo\"\036\n\014ZuidSleepReq\022\016\n\006liveId\030\001 \002(\t\"\037" +
-      "\n\014ZuidSleepRsp\022\017\n\007retCode\030\001 \002(\r\"\037\n\rZuidA" +
-      "ctiveReq\022\016\n\006liveId\030\001 \002(\t\" \n\rZuidActiveRs" +
-      "p\022\017\n\007retCode\030\001 \002(\r\"F\n\017AdminSettingReq\022\020\n" +
-      "\010adminUid\030\001 \002(\004\022\021\n\toperation\030\002 \002(\r\022\016\n\006li" +
-      "veId\030\003 \001(\t\"\"\n\017AdminSettingRsp\022\017\n\007retCode" +
-      "\030\001 \002(\r\"\036\n\014AdminListReq\022\016\n\006liveId\030\001 \002(\t\"9" +
-      "\n\014AdminListRsp\022\017\n\007retCode\030\001 \002(\r\022\030\n\005users",
-      "\030\002 \003(\0132\t.UserInfo\"R\n\020SetBanSpeakerReq\022\016\n" +
-      "\006liveId\030\001 \002(\t\022\014\n\004zuid\030\002 \002(\004\022\014\n\004uuid\030\003 \002(" +
-      "\004\022\022\n\nbanSpeaker\030\004 \003(\004\"#\n\020SetBanSpeakerRs" +
-      "p\022\017\n\007retCode\030\001 \002(\r\"G\n\023CancelBanSpeakerRe" +
-      "q\022\016\n\006liveId\030\001 \002(\t\022\014\n\004zuid\030\002 \002(\004\022\022\n\nbanSp" +
-      "eaker\030\003 \003(\004\"&\n\023CancelBanSpeakerRsp\022\017\n\007re" +
-      "tCode\030\001 \002(\r\"E\n\027GetLiveKeyPersonInfoReq\022\014" +
-      "\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002" +
-      "(\t\">\n\027GetLiveKeyPersonInfoRsp\022\017\n\007retCode" +
-      "\030\001 \002(\r\022\022\n\nbanSpeaker\030\002 \003(\004\",\n\016HistoryLiv",
-      "eReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\"s\n\016Hist" +
-      "oryLiveRsp\022\017\n\007retCode\030\001 \002(\r\022\031\n\007hisLive\030\002" +
-      " \003(\0132\010.HisLive\022\014\n\004type\030\003 \001(\r\022\'\n\014ticketSt" +
-      "atus\030\004 \001(\0132\021.TicketLiveStatus\"\353\001\n\rViewer" +
-      "InfoRsp\022\017\n\007retCode\030\001 \002(\r\022\021\n\tviewerCnt\030\002 " +
-      "\001(\r\022+\n\006viewer\030\003 \003(\0132\033.com.wali.live.prot" +
-      "o.Viewer\022/\n\010location\030\004 \001(\0132\035.com.wali.li" +
-      "ve.proto.Location\022\014\n\004type\030\005 \001(\r\022\020\n\010share" +
-      "Url\030\006 \001(\t\022\022\n\nbanSpeaker\030\007 \003(\004\022\021\n\tadminUu" +
-      "id\030\010 \003(\004\022\021\n\ttimestamp\030\t \001(\004\"\031\n\tMyRoomReq",
-      "\022\014\n\004uuid\030\001 \002(\004\"\314\002\n\tMyRoomRsp\022\017\n\007retCode\030" +
-      "\001 \002(\r\022\016\n\006liveId\030\002 \001(\t\022\020\n\010shareUrl\030\003 \001(\t\022" +
-      "\023\n\013upStreamUrl\030\004 \001(\t\022\014\n\004type\030\005 \001(\r\022\020\n\010pa" +
-      "ssword\030\006 \001(\t\022\017\n\007appType\030\007 \001(\r\022-\n\007msgRule" +
-      "\030\010 \001(\0132\034.com.wali.live.proto.MsgRule\022\017\n\007" +
-      "invitee\030\t \003(\004\022\025\n\rdownStreamUrl\030\n \001(\t\022\035\n\t" +
-      "liveCover\030\013 \001(\0132\n.LiveCover\022\026\n\016udpUpstre" +
-      "amUrl\030\014 \001(\t\0228\n\016newUpStreamUrl\030\r \003(\0132 .co" +
-      "m.wali.live.proto.UpStreamUrl\"=\n\013IsInRoo" +
-      "mReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022\020\n\010vi",
-      "ewerId\030\003 \003(\004\"0\n\013IsInRoomRsp\022\017\n\007retCode\030\001" +
-      " \002(\r\022\020\n\010viewerId\030\002 \003(\004\"?\n\017MicuidActiveRe" +
-      "q\022\016\n\006liveId\030\001 \002(\t\022\016\n\006micuid\030\002 \002(\004\022\014\n\004zui" +
-      "d\030\003 \002(\004\"\"\n\017MicuidActiveRsp\022\017\n\007retCode\030\001 " +
-      "\002(\r\">\n\016MicuidSleepReq\022\016\n\006liveId\030\001 \002(\t\022\016\n" +
-      "\006micuid\030\002 \002(\004\022\014\n\004zuid\030\003 \002(\004\"!\n\016MicuidSle" +
-      "epRsp\022\017\n\007retCode\030\001 \002(\r\"_\n\020UpdateMsgRuleR" +
-      "eq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022-\n\007msgR" +
-      "ule\030\003 \002(\0132\034.com.wali.live.proto.MsgRule\"" +
-      "#\n\020UpdateMsgRuleRsp\022\017\n\007retCode\030\001 \002(\r\"B\n\021",
-      "RoomAddInviteeReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveI" +
-      "d\030\002 \002(\t\022\017\n\007invitee\030\003 \003(\004\"$\n\021RoomAddInvit" +
-      "eeRsp\022\017\n\007retCode\030\001 \002(\r\"E\n\024RoomDeleteInvi" +
-      "teeReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022\017\n\007" +
-      "invitee\030\003 \003(\004\"\'\n\024RoomDeleteInviteeRsp\022\017\n" +
-      "\007retCode\030\001 \002(\r\"\277\001\n\024GetRoomAttachmentReq\022" +
-      "\014\n\004zuid\030\001 \002(\004\022\023\n\013isGetWidget\030\002 \001(\010\022\016\n\006li" +
-      "veid\030\003 \002(\t\022\026\n\016isGetAnimation\030\004 \001(\010\022\025\n\ris" +
-      "GetShopType\030\005 \001(\010\022\020\n\010roomType\030\006 \001(\r\022\027\n\017i" +
-      "sGetIconConfig\030\007 \001(\010\022\032\n\022isGetRoomExtraCt",
-      "rl\030\010 \001(\010\"\343\004\n\024GetRoomAttachmentRsp\022\017\n\007ret" +
-      "Code\030\001 \002(\r\0223\n\nwidgetInfo\030\002 \003(\0132\037.com.wal" +
-      "i.live.proto.WidgetInfo\022A\n\017animationConf" +
-      "ig\030\003 \001(\0132(.com.wali.live.proto.RoomAnima" +
-      "tionConfig\022;\n\016shoppingConfig\030\004 \001(\0132#.com" +
-      ".wali.live.proto.ShoppingConfig\0229\n\rnewWi" +
-      "dgetInfo\030\005 \001(\0132\".com.wali.live.proto.New" +
-      "WidgetInfo\0227\n\niconConfig\030\006 \001(\0132#.com.wal" +
-      "i.live.proto.RoomIconConfig\022/\n\010ctrlInfo\030" +
-      "\007 \001(\0132\035.com.wali.live.proto.CtrlInfo\0221\n\007",
-      "counter\030\010 \001(\0132 .com.wali.live.proto.Limi" +
-      "tedInfo\0224\n\nvipCounter\030\t \001(\0132 .com.wali.l" +
-      "ive.proto.LimitedInfo\0226\n\014guardCounter\030\n " +
-      "\001(\0132 .com.wali.live.proto.LimitedInfo\022?\n" +
-      "\020speedyGiftConfig\030\013 \001(\0132%.com.wali.live." +
-      "proto.SpeedyGiftConfig\"\"\n\020SpeedyGiftConf" +
-      "ig\022\016\n\006giftId\030\001 \001(\r\"]\n\033SmartBarrageCtrlPu" +
-      "llRequest\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \001(\004\022\017\n" +
-      "\007room_id\030\003 \001(\t\022\021\n\troom_type\030\004 \001(\r\"y\n\034Sma" +
-      "rtBarrageCtrlPullResponse\022\013\n\003ret\030\001 \002(\r\022\017",
-      "\n\007err_msg\030\002 \001(\t\022;\n\010ctrl_msg\030\003 \003(\0132).com." +
-      "wali.live.proto.RoomExtraCtrlMessage\"D\n\010" +
-      "CtrlInfo\022\032\n\022room_switch_status\030\001 \001(\010\022\034\n\024" +
-      "global_switch_status\030\002 \001(\010\"+\n\013LimitedInf" +
-      "o\022\017\n\007counter\030\001 \001(\r\022\013\n\003max\030\002 \001(\r\"<\n\024RoomE" +
-      "xtraCtrlMessage\022\021\n\ttype_info\030\001 \002(\r\022\021\n\tct" +
-      "rl_info\030\002 \001(\014\"B\n\020GetRoomWidgetReq\022\014\n\004zui" +
-      "d\030\001 \002(\004\022\016\n\006liveid\030\002 \002(\t\022\020\n\010roomType\030\003 \001(" +
-      "\r\"\262\001\n\020GetRoomWidgetRsp\022\017\n\007retCode\030\001 \002(\r\022" +
-      "9\n\rnewWidgetInfo\030\002 \001(\0132\".com.wali.live.p",
-      "roto.NewWidgetInfo\022\021\n\ttimestamp\030\003 \001(\004\022?\n" +
-      "\020speedyGiftConfig\030\004 \001(\0132%.com.wali.live." +
-      "proto.SpeedyGiftConfig\"@\n\016WidgetClickReq" +
-      "\022\020\n\010widgetID\030\001 \002(\r\022\014\n\004zuid\030\002 \001(\004\022\016\n\006live" +
-      "id\030\003 \001(\t\"Y\n\016WidgetClickRsp\022\017\n\007retCode\030\001 " +
-      "\002(\r\022\023\n\013counterText\030\002 \001(\t\022\021\n\ttimestamp\030\003 " +
-      "\001(\004\022\016\n\006giftId\030\004 \001(\r\"/\n\017GetTitleListReq\022\014" +
-      "\n\004uuid\030\001 \001(\004\022\016\n\006source\030\002 \003(\r\"V\n\017GetTitle" +
-      "ListRsp\022\017\n\007retCode\030\001 \002(\r\0222\n\ntitle_info\030\002" +
-      " \003(\0132\036.com.wali.live.proto.TitleInfo\"/\n\t",
-      "TitleInfo\022\016\n\006source\030\001 \001(\r\022\022\n\ntitle_list\030" +
-      "\002 \003(\t\"G\n\030CheckMicQualificationReq\022\014\n\004uui" +
-      "d\030\001 \002(\004\022\017\n\007live_id\030\002 \002(\t\022\014\n\004zuid\030\003 \002(\004\"," +
-      "\n\030CheckMicQualificationRsp\022\020\n\010ret_code\030\001" +
-      " \002(\rB \n\023com.wali.live.protoB\tLiveProto"
+      "to.GamePackInfo\0226\n\014contest_info\030\n \001(\0132 ." +
+      "com.wali.live.proto.ContestInfo\"]\n\013Conte" +
+      "stInfo\022\024\n\014able_contest\030\001 \001(\010\022\023\n\013revival_" +
+      "num\030\002 \001(\r\022\017\n\007is_late\030\003 \001(\010\022\022\n\ncontest_id" +
+      "\030\004 \001(\t\"\257\002\n\014GamePackInfo\022\014\n\004zuid\030\001 \001(\004\022\016\n" +
+      "\006roomId\030\002 \001(\t\022\021\n\tcdnDomain\030\003 \001(\t\022\023\n\013disp" +
+      "layName\030\004 \001(\t\022\016\n\006gameId\030\005 \001(\r\022\023\n\013pacakge",
+      "Name\030\006 \001(\t\022\014\n\004icon\030\007 \001(\t\022\022\n\ngameApkSs1\030\010" +
+      " \001(\t\022\017\n\007gameApk\030\t \001(\t\022\021\n\tshortName\030\n \001(\t" +
+      "\0226\n\006level1\030\013 \001(\0132&.com.wali.live.proto.G" +
+      "ameTagInfoDetail\0226\n\006level2\030\014 \001(\0132&.com.w" +
+      "ali.live.proto.GameTagInfoDetail\"-\n\021Game" +
+      "TagInfoDetail\022\n\n\002id\030\001 \001(\r\022\014\n\004name\030\002 \001(\t\"" +
+      "O\n\014LeaveLiveReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 " +
+      "\002(\004\022\016\n\006liveId\030\003 \002(\t\022\023\n\013messageMode\030\004 \001(\005" +
+      "\"\037\n\014LeaveLiveRsp\022\017\n\007retCode\030\001 \002(\r\"0\n\020His" +
+      "toryDeleteReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 ",
+      "\002(\t\"#\n\020HistoryDeleteRsp\022\017\n\007retCode\030\001 \002(\r" +
+      "\"u\n\014HeartBeatReq\022\016\n\006liveId\030\001 \002(\t\022\r\n\005pkui" +
+      "d\030\002 \001(\004\022\020\n\010pkLiveId\030\003 \001(\t\022\016\n\006status\030\004 \001(" +
+      "\005\022\016\n\006micuid\030\005 \001(\004\022\024\n\014micuidStatus\030\006 \001(\005\"" +
+      "\037\n\014HeartBeatRsp\022\017\n\007retCode\030\001 \002(\r\"n\n\nPKBe" +
+      "ginReq\022\014\n\004uuid\030\001 \002(\004\022\r\n\005pkuid\030\002 \002(\004\022\020\n\010p" +
+      "kLiveId\030\003 \001(\t\022\026\n\016myPkInitTicket\030\004 \001(\r\022\031\n" +
+      "\021otherPkInitTicket\030\005 \001(\r\"P\n\nPKBeginRsp\022\017" +
+      "\n\007retCode\030\001 \002(\r\022\026\n\016myPkInitTicket\030\002 \001(\r\022" +
+      "\031\n\021otherPkInitTicket\030\003 \001(\r\"9\n\010PKEndReq\022\014",
+      "\n\004uuid\030\001 \002(\004\022\r\n\005pkuid\030\002 \002(\004\022\020\n\010pkLiveId\030" +
+      "\003 \001(\t\"\033\n\010PKEndRsp\022\017\n\007retCode\030\001 \002(\r\"\034\n\014Ge" +
+      "tPKInfoReq\022\014\n\004zuid\030\001 \002(\004\"\202\001\n\014GetPKInfoRs" +
+      "p\022\017\n\007retCode\030\001 \002(\r\022/\n\nthisPKInfo\030\002 \001(\0132\033" +
+      ".com.wali.live.proto.PKInfo\0220\n\013otherPKIn" +
+      "fo\030\003 \001(\0132\033.com.wali.live.proto.PKInfo\"\036\n" +
+      "\014ZuidSleepReq\022\016\n\006liveId\030\001 \002(\t\"\037\n\014ZuidSle" +
+      "epRsp\022\017\n\007retCode\030\001 \002(\r\"\037\n\rZuidActiveReq\022" +
+      "\016\n\006liveId\030\001 \002(\t\" \n\rZuidActiveRsp\022\017\n\007retC" +
+      "ode\030\001 \002(\r\"F\n\017AdminSettingReq\022\020\n\010adminUid",
+      "\030\001 \002(\004\022\021\n\toperation\030\002 \002(\r\022\016\n\006liveId\030\003 \001(" +
+      "\t\"\"\n\017AdminSettingRsp\022\017\n\007retCode\030\001 \002(\r\"\036\n" +
+      "\014AdminListReq\022\016\n\006liveId\030\001 \002(\t\"9\n\014AdminLi" +
+      "stRsp\022\017\n\007retCode\030\001 \002(\r\022\030\n\005users\030\002 \003(\0132\t." +
+      "UserInfo\"R\n\020SetBanSpeakerReq\022\016\n\006liveId\030\001" +
+      " \002(\t\022\014\n\004zuid\030\002 \002(\004\022\014\n\004uuid\030\003 \002(\004\022\022\n\nbanS" +
+      "peaker\030\004 \003(\004\"#\n\020SetBanSpeakerRsp\022\017\n\007retC" +
+      "ode\030\001 \002(\r\"G\n\023CancelBanSpeakerReq\022\016\n\006live" +
+      "Id\030\001 \002(\t\022\014\n\004zuid\030\002 \002(\004\022\022\n\nbanSpeaker\030\003 \003" +
+      "(\004\"&\n\023CancelBanSpeakerRsp\022\017\n\007retCode\030\001 \002",
+      "(\r\"E\n\027GetLiveKeyPersonInfoReq\022\014\n\004uuid\030\001 " +
+      "\002(\004\022\014\n\004zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\">\n\027Get" +
+      "LiveKeyPersonInfoRsp\022\017\n\007retCode\030\001 \002(\r\022\022\n" +
+      "\nbanSpeaker\030\002 \003(\004\",\n\016HistoryLiveReq\022\014\n\004u" +
+      "uid\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\"s\n\016HistoryLiveRs" +
+      "p\022\017\n\007retCode\030\001 \002(\r\022\031\n\007hisLive\030\002 \003(\0132\010.Hi" +
+      "sLive\022\014\n\004type\030\003 \001(\r\022\'\n\014ticketStatus\030\004 \001(" +
+      "\0132\021.TicketLiveStatus\"\353\001\n\rViewerInfoRsp\022\017" +
+      "\n\007retCode\030\001 \002(\r\022\021\n\tviewerCnt\030\002 \001(\r\022+\n\006vi" +
+      "ewer\030\003 \003(\0132\033.com.wali.live.proto.Viewer\022",
+      "/\n\010location\030\004 \001(\0132\035.com.wali.live.proto." +
+      "Location\022\014\n\004type\030\005 \001(\r\022\020\n\010shareUrl\030\006 \001(\t" +
+      "\022\022\n\nbanSpeaker\030\007 \003(\004\022\021\n\tadminUuid\030\010 \003(\004\022" +
+      "\021\n\ttimestamp\030\t \001(\004\"\031\n\tMyRoomReq\022\014\n\004uuid\030" +
+      "\001 \002(\004\"\314\002\n\tMyRoomRsp\022\017\n\007retCode\030\001 \002(\r\022\016\n\006" +
+      "liveId\030\002 \001(\t\022\020\n\010shareUrl\030\003 \001(\t\022\023\n\013upStre" +
+      "amUrl\030\004 \001(\t\022\014\n\004type\030\005 \001(\r\022\020\n\010password\030\006 " +
+      "\001(\t\022\017\n\007appType\030\007 \001(\r\022-\n\007msgRule\030\010 \001(\0132\034." +
+      "com.wali.live.proto.MsgRule\022\017\n\007invitee\030\t" +
+      " \003(\004\022\025\n\rdownStreamUrl\030\n \001(\t\022\035\n\tliveCover",
+      "\030\013 \001(\0132\n.LiveCover\022\026\n\016udpUpstreamUrl\030\014 \001" +
+      "(\t\0228\n\016newUpStreamUrl\030\r \003(\0132 .com.wali.li" +
+      "ve.proto.UpStreamUrl\"=\n\013IsInRoomReq\022\014\n\004z" +
+      "uid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022\020\n\010viewerId\030\003 " +
+      "\003(\004\"0\n\013IsInRoomRsp\022\017\n\007retCode\030\001 \002(\r\022\020\n\010v" +
+      "iewerId\030\002 \003(\004\"?\n\017MicuidActiveReq\022\016\n\006live" +
+      "Id\030\001 \002(\t\022\016\n\006micuid\030\002 \002(\004\022\014\n\004zuid\030\003 \002(\004\"\"" +
+      "\n\017MicuidActiveRsp\022\017\n\007retCode\030\001 \002(\r\">\n\016Mi" +
+      "cuidSleepReq\022\016\n\006liveId\030\001 \002(\t\022\016\n\006micuid\030\002" +
+      " \002(\004\022\014\n\004zuid\030\003 \002(\004\"!\n\016MicuidSleepRsp\022\017\n\007",
+      "retCode\030\001 \002(\r\"_\n\020UpdateMsgRuleReq\022\014\n\004zui" +
+      "d\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022-\n\007msgRule\030\003 \002(\013" +
+      "2\034.com.wali.live.proto.MsgRule\"#\n\020Update" +
+      "MsgRuleRsp\022\017\n\007retCode\030\001 \002(\r\"B\n\021RoomAddIn" +
+      "viteeReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022\017" +
+      "\n\007invitee\030\003 \003(\004\"$\n\021RoomAddInviteeRsp\022\017\n\007" +
+      "retCode\030\001 \002(\r\"E\n\024RoomDeleteInviteeReq\022\014\n" +
+      "\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022\017\n\007invitee\030\003" +
+      " \003(\004\"\'\n\024RoomDeleteInviteeRsp\022\017\n\007retCode\030" +
+      "\001 \002(\r\"\277\001\n\024GetRoomAttachmentReq\022\014\n\004zuid\030\001",
+      " \002(\004\022\023\n\013isGetWidget\030\002 \001(\010\022\016\n\006liveid\030\003 \002(" +
+      "\t\022\026\n\016isGetAnimation\030\004 \001(\010\022\025\n\risGetShopTy" +
+      "pe\030\005 \001(\010\022\020\n\010roomType\030\006 \001(\r\022\027\n\017isGetIconC" +
+      "onfig\030\007 \001(\010\022\032\n\022isGetRoomExtraCtrl\030\010 \001(\010\"" +
+      "\343\004\n\024GetRoomAttachmentRsp\022\017\n\007retCode\030\001 \002(" +
+      "\r\0223\n\nwidgetInfo\030\002 \003(\0132\037.com.wali.live.pr" +
+      "oto.WidgetInfo\022A\n\017animationConfig\030\003 \001(\0132" +
+      "(.com.wali.live.proto.RoomAnimationConfi" +
+      "g\022;\n\016shoppingConfig\030\004 \001(\0132#.com.wali.liv" +
+      "e.proto.ShoppingConfig\0229\n\rnewWidgetInfo\030",
+      "\005 \001(\0132\".com.wali.live.proto.NewWidgetInf" +
+      "o\0227\n\niconConfig\030\006 \001(\0132#.com.wali.live.pr" +
+      "oto.RoomIconConfig\022/\n\010ctrlInfo\030\007 \001(\0132\035.c" +
+      "om.wali.live.proto.CtrlInfo\0221\n\007counter\030\010" +
+      " \001(\0132 .com.wali.live.proto.LimitedInfo\0224" +
+      "\n\nvipCounter\030\t \001(\0132 .com.wali.live.proto" +
+      ".LimitedInfo\0226\n\014vfansCounter\030\n \001(\0132 .com" +
+      ".wali.live.proto.LimitedInfo\022?\n\020speedyGi" +
+      "ftConfig\030\013 \001(\0132%.com.wali.live.proto.Spe" +
+      "edyGiftConfig\"\"\n\020SpeedyGiftConfig\022\016\n\006gif",
+      "tId\030\001 \001(\r\"]\n\033SmartBarrageCtrlPullRequest" +
+      "\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \001(\004\022\017\n\007room_id\030" +
+      "\003 \001(\t\022\021\n\troom_type\030\004 \001(\r\"y\n\034SmartBarrage" +
+      "CtrlPullResponse\022\013\n\003ret\030\001 \002(\r\022\017\n\007err_msg" +
+      "\030\002 \001(\t\022;\n\010ctrl_msg\030\003 \003(\0132).com.wali.live" +
+      ".proto.RoomExtraCtrlMessage\"D\n\010CtrlInfo\022" +
+      "\032\n\022room_switch_status\030\001 \001(\010\022\034\n\024global_sw" +
+      "itch_status\030\002 \001(\010\"+\n\013LimitedInfo\022\017\n\007coun" +
+      "ter\030\001 \001(\r\022\013\n\003max\030\002 \001(\r\"<\n\024RoomExtraCtrlM" +
+      "essage\022\021\n\ttype_info\030\001 \002(\r\022\021\n\tctrl_info\030\002",
+      " \001(\014\"B\n\020GetRoomWidgetReq\022\014\n\004zuid\030\001 \002(\004\022\016" +
+      "\n\006liveid\030\002 \002(\t\022\020\n\010roomType\030\003 \001(\r\"\262\001\n\020Get" +
+      "RoomWidgetRsp\022\017\n\007retCode\030\001 \002(\r\0229\n\rnewWid" +
+      "getInfo\030\002 \001(\0132\".com.wali.live.proto.NewW" +
+      "idgetInfo\022\021\n\ttimestamp\030\003 \001(\004\022?\n\020speedyGi" +
+      "ftConfig\030\004 \001(\0132%.com.wali.live.proto.Spe" +
+      "edyGiftConfig\"@\n\016WidgetClickReq\022\020\n\010widge" +
+      "tID\030\001 \002(\r\022\014\n\004zuid\030\002 \001(\004\022\016\n\006liveid\030\003 \001(\t\"" +
+      "Y\n\016WidgetClickRsp\022\017\n\007retCode\030\001 \002(\r\022\023\n\013co" +
+      "unterText\030\002 \001(\t\022\021\n\ttimestamp\030\003 \001(\004\022\016\n\006gi",
+      "ftId\030\004 \001(\r\"/\n\017GetTitleListReq\022\014\n\004uuid\030\001 " +
+      "\001(\004\022\016\n\006source\030\002 \003(\r\"V\n\017GetTitleListRsp\022\017" +
+      "\n\007retCode\030\001 \002(\r\0222\n\ntitle_info\030\002 \003(\0132\036.co" +
+      "m.wali.live.proto.TitleInfo\"/\n\tTitleInfo" +
+      "\022\016\n\006source\030\001 \001(\r\022\022\n\ntitle_list\030\002 \003(\t\"G\n\030" +
+      "CheckMicQualificationReq\022\014\n\004uuid\030\001 \002(\004\022\017" +
+      "\n\007live_id\030\002 \002(\t\022\014\n\004zuid\030\003 \002(\004\",\n\030CheckMi" +
+      "cQualificationRsp\022\020\n\010ret_code\030\001 \002(\rB \n\023c" +
+      "om.wali.live.protoB\tLiveProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -74753,375 +75805,381 @@ public final class LiveProto {
     internal_static_com_wali_live_proto_RoomInfoRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_RoomInfoRsp_descriptor,
-        new java.lang.String[] { "RetCode", "DownStreamUrl", "PlaybackUrl", "ShareUrl", "BeginTime", "Liveid", "Type", "TicketStatus", "GamepackInfo", });
-    internal_static_com_wali_live_proto_GamePackInfo_descriptor =
+        new java.lang.String[] { "RetCode", "DownStreamUrl", "PlaybackUrl", "ShareUrl", "BeginTime", "Liveid", "Type", "TicketStatus", "GamepackInfo", "ContestInfo", });
+    internal_static_com_wali_live_proto_ContestInfo_descriptor =
       getDescriptor().getMessageTypes().get(16);
+    internal_static_com_wali_live_proto_ContestInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_ContestInfo_descriptor,
+        new java.lang.String[] { "AbleContest", "RevivalNum", "IsLate", "ContestId", });
+    internal_static_com_wali_live_proto_GamePackInfo_descriptor =
+      getDescriptor().getMessageTypes().get(17);
     internal_static_com_wali_live_proto_GamePackInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GamePackInfo_descriptor,
         new java.lang.String[] { "Zuid", "RoomId", "CdnDomain", "DisplayName", "GameId", "PacakgeName", "Icon", "GameApkSs1", "GameApk", "ShortName", "Level1", "Level2", });
     internal_static_com_wali_live_proto_GameTagInfoDetail_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_com_wali_live_proto_GameTagInfoDetail_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GameTagInfoDetail_descriptor,
         new java.lang.String[] { "Id", "Name", });
     internal_static_com_wali_live_proto_LeaveLiveReq_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_com_wali_live_proto_LeaveLiveReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_LeaveLiveReq_descriptor,
         new java.lang.String[] { "Uuid", "Zuid", "LiveId", "MessageMode", });
     internal_static_com_wali_live_proto_LeaveLiveRsp_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(20);
     internal_static_com_wali_live_proto_LeaveLiveRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_LeaveLiveRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_HistoryDeleteReq_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(21);
     internal_static_com_wali_live_proto_HistoryDeleteReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_HistoryDeleteReq_descriptor,
         new java.lang.String[] { "Zuid", "LiveId", });
     internal_static_com_wali_live_proto_HistoryDeleteRsp_descriptor =
-      getDescriptor().getMessageTypes().get(21);
+      getDescriptor().getMessageTypes().get(22);
     internal_static_com_wali_live_proto_HistoryDeleteRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_HistoryDeleteRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_HeartBeatReq_descriptor =
-      getDescriptor().getMessageTypes().get(22);
+      getDescriptor().getMessageTypes().get(23);
     internal_static_com_wali_live_proto_HeartBeatReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_HeartBeatReq_descriptor,
         new java.lang.String[] { "LiveId", "Pkuid", "PkLiveId", "Status", "Micuid", "MicuidStatus", });
     internal_static_com_wali_live_proto_HeartBeatRsp_descriptor =
-      getDescriptor().getMessageTypes().get(23);
+      getDescriptor().getMessageTypes().get(24);
     internal_static_com_wali_live_proto_HeartBeatRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_HeartBeatRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_PKBeginReq_descriptor =
-      getDescriptor().getMessageTypes().get(24);
+      getDescriptor().getMessageTypes().get(25);
     internal_static_com_wali_live_proto_PKBeginReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_PKBeginReq_descriptor,
         new java.lang.String[] { "Uuid", "Pkuid", "PkLiveId", "MyPkInitTicket", "OtherPkInitTicket", });
     internal_static_com_wali_live_proto_PKBeginRsp_descriptor =
-      getDescriptor().getMessageTypes().get(25);
+      getDescriptor().getMessageTypes().get(26);
     internal_static_com_wali_live_proto_PKBeginRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_PKBeginRsp_descriptor,
         new java.lang.String[] { "RetCode", "MyPkInitTicket", "OtherPkInitTicket", });
     internal_static_com_wali_live_proto_PKEndReq_descriptor =
-      getDescriptor().getMessageTypes().get(26);
+      getDescriptor().getMessageTypes().get(27);
     internal_static_com_wali_live_proto_PKEndReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_PKEndReq_descriptor,
         new java.lang.String[] { "Uuid", "Pkuid", "PkLiveId", });
     internal_static_com_wali_live_proto_PKEndRsp_descriptor =
-      getDescriptor().getMessageTypes().get(27);
+      getDescriptor().getMessageTypes().get(28);
     internal_static_com_wali_live_proto_PKEndRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_PKEndRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_GetPKInfoReq_descriptor =
-      getDescriptor().getMessageTypes().get(28);
+      getDescriptor().getMessageTypes().get(29);
     internal_static_com_wali_live_proto_GetPKInfoReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetPKInfoReq_descriptor,
         new java.lang.String[] { "Zuid", });
     internal_static_com_wali_live_proto_GetPKInfoRsp_descriptor =
-      getDescriptor().getMessageTypes().get(29);
+      getDescriptor().getMessageTypes().get(30);
     internal_static_com_wali_live_proto_GetPKInfoRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetPKInfoRsp_descriptor,
         new java.lang.String[] { "RetCode", "ThisPKInfo", "OtherPKInfo", });
     internal_static_com_wali_live_proto_ZuidSleepReq_descriptor =
-      getDescriptor().getMessageTypes().get(30);
+      getDescriptor().getMessageTypes().get(31);
     internal_static_com_wali_live_proto_ZuidSleepReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ZuidSleepReq_descriptor,
         new java.lang.String[] { "LiveId", });
     internal_static_com_wali_live_proto_ZuidSleepRsp_descriptor =
-      getDescriptor().getMessageTypes().get(31);
+      getDescriptor().getMessageTypes().get(32);
     internal_static_com_wali_live_proto_ZuidSleepRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ZuidSleepRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_ZuidActiveReq_descriptor =
-      getDescriptor().getMessageTypes().get(32);
+      getDescriptor().getMessageTypes().get(33);
     internal_static_com_wali_live_proto_ZuidActiveReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ZuidActiveReq_descriptor,
         new java.lang.String[] { "LiveId", });
     internal_static_com_wali_live_proto_ZuidActiveRsp_descriptor =
-      getDescriptor().getMessageTypes().get(33);
+      getDescriptor().getMessageTypes().get(34);
     internal_static_com_wali_live_proto_ZuidActiveRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ZuidActiveRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_AdminSettingReq_descriptor =
-      getDescriptor().getMessageTypes().get(34);
+      getDescriptor().getMessageTypes().get(35);
     internal_static_com_wali_live_proto_AdminSettingReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AdminSettingReq_descriptor,
         new java.lang.String[] { "AdminUid", "Operation", "LiveId", });
     internal_static_com_wali_live_proto_AdminSettingRsp_descriptor =
-      getDescriptor().getMessageTypes().get(35);
+      getDescriptor().getMessageTypes().get(36);
     internal_static_com_wali_live_proto_AdminSettingRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AdminSettingRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_AdminListReq_descriptor =
-      getDescriptor().getMessageTypes().get(36);
+      getDescriptor().getMessageTypes().get(37);
     internal_static_com_wali_live_proto_AdminListReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AdminListReq_descriptor,
         new java.lang.String[] { "LiveId", });
     internal_static_com_wali_live_proto_AdminListRsp_descriptor =
-      getDescriptor().getMessageTypes().get(37);
+      getDescriptor().getMessageTypes().get(38);
     internal_static_com_wali_live_proto_AdminListRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AdminListRsp_descriptor,
         new java.lang.String[] { "RetCode", "Users", });
     internal_static_com_wali_live_proto_SetBanSpeakerReq_descriptor =
-      getDescriptor().getMessageTypes().get(38);
+      getDescriptor().getMessageTypes().get(39);
     internal_static_com_wali_live_proto_SetBanSpeakerReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SetBanSpeakerReq_descriptor,
         new java.lang.String[] { "LiveId", "Zuid", "Uuid", "BanSpeaker", });
     internal_static_com_wali_live_proto_SetBanSpeakerRsp_descriptor =
-      getDescriptor().getMessageTypes().get(39);
+      getDescriptor().getMessageTypes().get(40);
     internal_static_com_wali_live_proto_SetBanSpeakerRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SetBanSpeakerRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_CancelBanSpeakerReq_descriptor =
-      getDescriptor().getMessageTypes().get(40);
+      getDescriptor().getMessageTypes().get(41);
     internal_static_com_wali_live_proto_CancelBanSpeakerReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_CancelBanSpeakerReq_descriptor,
         new java.lang.String[] { "LiveId", "Zuid", "BanSpeaker", });
     internal_static_com_wali_live_proto_CancelBanSpeakerRsp_descriptor =
-      getDescriptor().getMessageTypes().get(41);
+      getDescriptor().getMessageTypes().get(42);
     internal_static_com_wali_live_proto_CancelBanSpeakerRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_CancelBanSpeakerRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_GetLiveKeyPersonInfoReq_descriptor =
-      getDescriptor().getMessageTypes().get(42);
+      getDescriptor().getMessageTypes().get(43);
     internal_static_com_wali_live_proto_GetLiveKeyPersonInfoReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetLiveKeyPersonInfoReq_descriptor,
         new java.lang.String[] { "Uuid", "Zuid", "LiveId", });
     internal_static_com_wali_live_proto_GetLiveKeyPersonInfoRsp_descriptor =
-      getDescriptor().getMessageTypes().get(43);
+      getDescriptor().getMessageTypes().get(44);
     internal_static_com_wali_live_proto_GetLiveKeyPersonInfoRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetLiveKeyPersonInfoRsp_descriptor,
         new java.lang.String[] { "RetCode", "BanSpeaker", });
     internal_static_com_wali_live_proto_HistoryLiveReq_descriptor =
-      getDescriptor().getMessageTypes().get(44);
+      getDescriptor().getMessageTypes().get(45);
     internal_static_com_wali_live_proto_HistoryLiveReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_HistoryLiveReq_descriptor,
         new java.lang.String[] { "Uuid", "Zuid", });
     internal_static_com_wali_live_proto_HistoryLiveRsp_descriptor =
-      getDescriptor().getMessageTypes().get(45);
+      getDescriptor().getMessageTypes().get(46);
     internal_static_com_wali_live_proto_HistoryLiveRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_HistoryLiveRsp_descriptor,
         new java.lang.String[] { "RetCode", "HisLive", "Type", "TicketStatus", });
     internal_static_com_wali_live_proto_ViewerInfoRsp_descriptor =
-      getDescriptor().getMessageTypes().get(46);
+      getDescriptor().getMessageTypes().get(47);
     internal_static_com_wali_live_proto_ViewerInfoRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ViewerInfoRsp_descriptor,
         new java.lang.String[] { "RetCode", "ViewerCnt", "Viewer", "Location", "Type", "ShareUrl", "BanSpeaker", "AdminUuid", "Timestamp", });
     internal_static_com_wali_live_proto_MyRoomReq_descriptor =
-      getDescriptor().getMessageTypes().get(47);
+      getDescriptor().getMessageTypes().get(48);
     internal_static_com_wali_live_proto_MyRoomReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_MyRoomReq_descriptor,
         new java.lang.String[] { "Uuid", });
     internal_static_com_wali_live_proto_MyRoomRsp_descriptor =
-      getDescriptor().getMessageTypes().get(48);
+      getDescriptor().getMessageTypes().get(49);
     internal_static_com_wali_live_proto_MyRoomRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_MyRoomRsp_descriptor,
         new java.lang.String[] { "RetCode", "LiveId", "ShareUrl", "UpStreamUrl", "Type", "Password", "AppType", "MsgRule", "Invitee", "DownStreamUrl", "LiveCover", "UdpUpstreamUrl", "NewUpStreamUrl", });
     internal_static_com_wali_live_proto_IsInRoomReq_descriptor =
-      getDescriptor().getMessageTypes().get(49);
+      getDescriptor().getMessageTypes().get(50);
     internal_static_com_wali_live_proto_IsInRoomReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_IsInRoomReq_descriptor,
         new java.lang.String[] { "Zuid", "LiveId", "ViewerId", });
     internal_static_com_wali_live_proto_IsInRoomRsp_descriptor =
-      getDescriptor().getMessageTypes().get(50);
+      getDescriptor().getMessageTypes().get(51);
     internal_static_com_wali_live_proto_IsInRoomRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_IsInRoomRsp_descriptor,
         new java.lang.String[] { "RetCode", "ViewerId", });
     internal_static_com_wali_live_proto_MicuidActiveReq_descriptor =
-      getDescriptor().getMessageTypes().get(51);
+      getDescriptor().getMessageTypes().get(52);
     internal_static_com_wali_live_proto_MicuidActiveReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_MicuidActiveReq_descriptor,
         new java.lang.String[] { "LiveId", "Micuid", "Zuid", });
     internal_static_com_wali_live_proto_MicuidActiveRsp_descriptor =
-      getDescriptor().getMessageTypes().get(52);
+      getDescriptor().getMessageTypes().get(53);
     internal_static_com_wali_live_proto_MicuidActiveRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_MicuidActiveRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_MicuidSleepReq_descriptor =
-      getDescriptor().getMessageTypes().get(53);
+      getDescriptor().getMessageTypes().get(54);
     internal_static_com_wali_live_proto_MicuidSleepReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_MicuidSleepReq_descriptor,
         new java.lang.String[] { "LiveId", "Micuid", "Zuid", });
     internal_static_com_wali_live_proto_MicuidSleepRsp_descriptor =
-      getDescriptor().getMessageTypes().get(54);
+      getDescriptor().getMessageTypes().get(55);
     internal_static_com_wali_live_proto_MicuidSleepRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_MicuidSleepRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_UpdateMsgRuleReq_descriptor =
-      getDescriptor().getMessageTypes().get(55);
+      getDescriptor().getMessageTypes().get(56);
     internal_static_com_wali_live_proto_UpdateMsgRuleReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UpdateMsgRuleReq_descriptor,
         new java.lang.String[] { "Zuid", "LiveId", "MsgRule", });
     internal_static_com_wali_live_proto_UpdateMsgRuleRsp_descriptor =
-      getDescriptor().getMessageTypes().get(56);
+      getDescriptor().getMessageTypes().get(57);
     internal_static_com_wali_live_proto_UpdateMsgRuleRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UpdateMsgRuleRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_RoomAddInviteeReq_descriptor =
-      getDescriptor().getMessageTypes().get(57);
+      getDescriptor().getMessageTypes().get(58);
     internal_static_com_wali_live_proto_RoomAddInviteeReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_RoomAddInviteeReq_descriptor,
         new java.lang.String[] { "Zuid", "LiveId", "Invitee", });
     internal_static_com_wali_live_proto_RoomAddInviteeRsp_descriptor =
-      getDescriptor().getMessageTypes().get(58);
+      getDescriptor().getMessageTypes().get(59);
     internal_static_com_wali_live_proto_RoomAddInviteeRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_RoomAddInviteeRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_RoomDeleteInviteeReq_descriptor =
-      getDescriptor().getMessageTypes().get(59);
+      getDescriptor().getMessageTypes().get(60);
     internal_static_com_wali_live_proto_RoomDeleteInviteeReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_RoomDeleteInviteeReq_descriptor,
         new java.lang.String[] { "Zuid", "LiveId", "Invitee", });
     internal_static_com_wali_live_proto_RoomDeleteInviteeRsp_descriptor =
-      getDescriptor().getMessageTypes().get(60);
+      getDescriptor().getMessageTypes().get(61);
     internal_static_com_wali_live_proto_RoomDeleteInviteeRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_RoomDeleteInviteeRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_GetRoomAttachmentReq_descriptor =
-      getDescriptor().getMessageTypes().get(61);
+      getDescriptor().getMessageTypes().get(62);
     internal_static_com_wali_live_proto_GetRoomAttachmentReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetRoomAttachmentReq_descriptor,
         new java.lang.String[] { "Zuid", "IsGetWidget", "Liveid", "IsGetAnimation", "IsGetShopType", "RoomType", "IsGetIconConfig", "IsGetRoomExtraCtrl", });
     internal_static_com_wali_live_proto_GetRoomAttachmentRsp_descriptor =
-      getDescriptor().getMessageTypes().get(62);
+      getDescriptor().getMessageTypes().get(63);
     internal_static_com_wali_live_proto_GetRoomAttachmentRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetRoomAttachmentRsp_descriptor,
-        new java.lang.String[] { "RetCode", "WidgetInfo", "AnimationConfig", "ShoppingConfig", "NewWidgetInfo", "IconConfig", "CtrlInfo", "Counter", "VipCounter", "GuardCounter", "SpeedyGiftConfig", });
+        new java.lang.String[] { "RetCode", "WidgetInfo", "AnimationConfig", "ShoppingConfig", "NewWidgetInfo", "IconConfig", "CtrlInfo", "Counter", "VipCounter", "VfansCounter", "SpeedyGiftConfig", });
     internal_static_com_wali_live_proto_SpeedyGiftConfig_descriptor =
-      getDescriptor().getMessageTypes().get(63);
+      getDescriptor().getMessageTypes().get(64);
     internal_static_com_wali_live_proto_SpeedyGiftConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SpeedyGiftConfig_descriptor,
         new java.lang.String[] { "GiftId", });
     internal_static_com_wali_live_proto_SmartBarrageCtrlPullRequest_descriptor =
-      getDescriptor().getMessageTypes().get(64);
+      getDescriptor().getMessageTypes().get(65);
     internal_static_com_wali_live_proto_SmartBarrageCtrlPullRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SmartBarrageCtrlPullRequest_descriptor,
         new java.lang.String[] { "Uuid", "Zuid", "RoomId", "RoomType", });
     internal_static_com_wali_live_proto_SmartBarrageCtrlPullResponse_descriptor =
-      getDescriptor().getMessageTypes().get(65);
+      getDescriptor().getMessageTypes().get(66);
     internal_static_com_wali_live_proto_SmartBarrageCtrlPullResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SmartBarrageCtrlPullResponse_descriptor,
         new java.lang.String[] { "Ret", "ErrMsg", "CtrlMsg", });
     internal_static_com_wali_live_proto_CtrlInfo_descriptor =
-      getDescriptor().getMessageTypes().get(66);
+      getDescriptor().getMessageTypes().get(67);
     internal_static_com_wali_live_proto_CtrlInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_CtrlInfo_descriptor,
         new java.lang.String[] { "RoomSwitchStatus", "GlobalSwitchStatus", });
     internal_static_com_wali_live_proto_LimitedInfo_descriptor =
-      getDescriptor().getMessageTypes().get(67);
+      getDescriptor().getMessageTypes().get(68);
     internal_static_com_wali_live_proto_LimitedInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_LimitedInfo_descriptor,
         new java.lang.String[] { "Counter", "Max", });
     internal_static_com_wali_live_proto_RoomExtraCtrlMessage_descriptor =
-      getDescriptor().getMessageTypes().get(68);
+      getDescriptor().getMessageTypes().get(69);
     internal_static_com_wali_live_proto_RoomExtraCtrlMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_RoomExtraCtrlMessage_descriptor,
         new java.lang.String[] { "TypeInfo", "CtrlInfo", });
     internal_static_com_wali_live_proto_GetRoomWidgetReq_descriptor =
-      getDescriptor().getMessageTypes().get(69);
+      getDescriptor().getMessageTypes().get(70);
     internal_static_com_wali_live_proto_GetRoomWidgetReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetRoomWidgetReq_descriptor,
         new java.lang.String[] { "Zuid", "Liveid", "RoomType", });
     internal_static_com_wali_live_proto_GetRoomWidgetRsp_descriptor =
-      getDescriptor().getMessageTypes().get(70);
+      getDescriptor().getMessageTypes().get(71);
     internal_static_com_wali_live_proto_GetRoomWidgetRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetRoomWidgetRsp_descriptor,
         new java.lang.String[] { "RetCode", "NewWidgetInfo", "Timestamp", "SpeedyGiftConfig", });
     internal_static_com_wali_live_proto_WidgetClickReq_descriptor =
-      getDescriptor().getMessageTypes().get(71);
+      getDescriptor().getMessageTypes().get(72);
     internal_static_com_wali_live_proto_WidgetClickReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_WidgetClickReq_descriptor,
         new java.lang.String[] { "WidgetID", "Zuid", "Liveid", });
     internal_static_com_wali_live_proto_WidgetClickRsp_descriptor =
-      getDescriptor().getMessageTypes().get(72);
+      getDescriptor().getMessageTypes().get(73);
     internal_static_com_wali_live_proto_WidgetClickRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_WidgetClickRsp_descriptor,
         new java.lang.String[] { "RetCode", "CounterText", "Timestamp", "GiftId", });
     internal_static_com_wali_live_proto_GetTitleListReq_descriptor =
-      getDescriptor().getMessageTypes().get(73);
+      getDescriptor().getMessageTypes().get(74);
     internal_static_com_wali_live_proto_GetTitleListReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetTitleListReq_descriptor,
         new java.lang.String[] { "Uuid", "Source", });
     internal_static_com_wali_live_proto_GetTitleListRsp_descriptor =
-      getDescriptor().getMessageTypes().get(74);
+      getDescriptor().getMessageTypes().get(75);
     internal_static_com_wali_live_proto_GetTitleListRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetTitleListRsp_descriptor,
         new java.lang.String[] { "RetCode", "TitleInfo", });
     internal_static_com_wali_live_proto_TitleInfo_descriptor =
-      getDescriptor().getMessageTypes().get(75);
+      getDescriptor().getMessageTypes().get(76);
     internal_static_com_wali_live_proto_TitleInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_TitleInfo_descriptor,
         new java.lang.String[] { "Source", "TitleList", });
     internal_static_com_wali_live_proto_CheckMicQualificationReq_descriptor =
-      getDescriptor().getMessageTypes().get(76);
+      getDescriptor().getMessageTypes().get(77);
     internal_static_com_wali_live_proto_CheckMicQualificationReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_CheckMicQualificationReq_descriptor,
         new java.lang.String[] { "Uuid", "LiveId", "Zuid", });
     internal_static_com_wali_live_proto_CheckMicQualificationRsp_descriptor =
-      getDescriptor().getMessageTypes().get(77);
+      getDescriptor().getMessageTypes().get(78);
     internal_static_com_wali_live_proto_CheckMicQualificationRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_CheckMicQualificationRsp_descriptor,

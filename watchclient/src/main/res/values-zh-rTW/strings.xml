@@ -404,4 +404,8 @@
     <string name="login_fail">登錄失敗</string>
     <string name="login_forbid">賬號被禁用</string>
     <string name="num_time_wan">%s萬</string>
+    <plurals name="game_comment_number">
+        <item quantity="other">%d人</item>
+    </plurals>
+    <string name="personalroom_cnt_over">私密房間邀請人數超過上限</string>
 </resources>
