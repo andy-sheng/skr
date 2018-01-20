@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.channel.view.presenter;
+package com.wali.live.watchsdk.contest.presenter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,6 +8,7 @@ import com.base.global.GlobalData;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.engine.player.GalileoPlayer;
+import com.mi.live.engine.player.IPlayer;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.wali.live.watchsdk.component.WatchComponentController;
@@ -16,13 +17,17 @@ import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
 
 /**
  * Created by zyh on 2017/10/23.
+ *
+ * @module 冲顶大会的播放器
  */
-public class HeaderVideoPresenter extends BasePlayerPresenter<TextureView, PullStreamerPresenter>
+public class ContestVideoPlayerPresenter extends BasePlayerPresenter<TextureView, PullStreamerPresenter>
         implements TextureView.SurfaceTextureListener {
+
+    private IPlayer mPlayer;
 
     @Override
     protected final String getTAG() {
-        return "HeaderVideoPresenter";
+        return "ContestVideoPlayerPresenter";
     }
 
     @Override
@@ -38,14 +43,14 @@ public class HeaderVideoPresenter extends BasePlayerPresenter<TextureView, PullS
         }
     }
 
-    public HeaderVideoPresenter(@NonNull IEventController controller, boolean isRealTime) {
+    public ContestVideoPlayerPresenter(@NonNull IEventController controller, boolean isRealTime) {
         super(controller);
         mStreamerPresenter = new PullStreamerPresenter(new WatchComponentController.EventPlayerCallback(controller));
         mStreamerPresenter.setIsRealTime(isRealTime);
-        GalileoPlayer player = new GalileoPlayer(GlobalData.app(), UserAccountManager.getInstance().getUuid(),
+        mPlayer = new GalileoPlayer(GlobalData.app(), UserAccountManager.getInstance().getUuid(),
                 MiLinkClientAdapter.getsInstance().getClientIp());
-        player.setCallback(mStreamerPresenter.getInnerPlayerCallback());
-        mStreamerPresenter.setStreamer(player);
+        mPlayer.setCallback(mStreamerPresenter.getInnerPlayerCallback());
+        mStreamerPresenter.setStreamer(mPlayer);
     }
 
     public void setOriginalStreamUrl(String videoUrl) {

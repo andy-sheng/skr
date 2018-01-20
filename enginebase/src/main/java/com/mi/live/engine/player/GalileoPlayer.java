@@ -202,6 +202,7 @@ public class GalileoPlayer implements IPlayer {
         }, "GalileoPlayer()");
     }
 
+    @Override
     public void setCallback(IPlayerCallback callback) {
         mCallback = callback;
     }

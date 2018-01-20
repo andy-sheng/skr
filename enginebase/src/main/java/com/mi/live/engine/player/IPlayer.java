@@ -17,6 +17,8 @@ public interface IPlayer {
 
     int MEDIA_ERROR_CONNECT_SERVER_FAILED = -2000;
 
+    void setCallback(IPlayerCallback callback);
+
     int getVideoWidth();
 
     int getVideoHeight();

@@ -422,7 +422,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
             mPullRoomMessagePresenter.stopWork();
             mPullRoomMessagePresenter.destroy();
         }
-//        MiLinkClientAdapter.getsInstance().setGlobalPushFlag(false);
+        MiLinkClientAdapter.getsInstance().setGlobalPushFlag(false);
     }
 
     @Override
@@ -567,7 +567,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
                 }
 //                ContestCurrentCache.getInstance().setContinue(true);
                 MyLog.w(TAG, "ENTER LIVE SUCCESS");
-//                MiLinkClientAdapter.getsInstance().setGlobalPushFlag(true);
+                MiLinkClientAdapter.getsInstance().setGlobalPushFlag(true);
                 MyLog.e(TAG, "processEnterLive:" + enterRoomInfo.getRetCode() + " mVideoUrl=" + mMyRoomData.getVideoUrl());
                 updateViewerTvByData();
                 mEnterLiveSuccess = true;

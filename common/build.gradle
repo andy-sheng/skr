@@ -90,7 +90,7 @@ dependencies {
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
 
     //compile files('libs/BaiduLBS_Android.jar')
-    compile files('libs/milinksdk-3.1.5.jar')
+    compile files('libs/milinksdk-3.2.0.jar')
     compile files('libs/protobuf-java-2.6.0.jar')
 //    compile files('libs/org.apache.http.legacy.jar')
     compile files('libs/renderscript-v8.jar')
