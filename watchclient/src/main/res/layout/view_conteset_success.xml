@@ -107,7 +107,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/view_dimen_37"
+                android:layout_marginLeft="@dimen/view_dimen_36"
                 android:layout_marginRight="@dimen/view_dimen_36"
                 android:text="@string/contest_success_share"
                 android:textColor="@color/color_black_trans_50"
@@ -123,9 +123,9 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/margin_120">
 
         <RelativeLayout
@@ -147,14 +147,14 @@
         </RelativeLayout>
 
         <TextView
-            android:text="WINNER"
             android:id="@+id/nickname_tv"
             android:layout_width="@dimen/view_dimen_300"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/margin_241"
+            android:layout_marginTop="@dimen/view_dimen_240"
             android:gravity="center"
             android:singleLine="true"
+            android:text="WINNER"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_48"
             android:textStyle="bold"/>
@@ -170,5 +170,4 @@
         android:layout_marginRight="@dimen/view_dimen_60"
         android:layout_marginTop="@dimen/view_dimen_380"
         android:src="@drawable/video_more_icon_close"/>
-
 </RelativeLayout>

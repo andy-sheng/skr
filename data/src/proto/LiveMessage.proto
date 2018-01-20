@@ -3,7 +3,7 @@ package com.wali.live.proto;
 
 option java_package = "com.wali.live.proto";
 option java_outer_classname = "LiveMessageProto";
-option java_multiple_files = true;
+//option java_multiple_files = true;
 //wiki地址：http://wiki.n.miui.com/pages/viewpage.action?pageId=18997331
 /* 发送消息请求：包括私信，礼物消息，赞消息，聊天室消息等
            消息类型：

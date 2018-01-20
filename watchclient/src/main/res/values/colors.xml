@@ -68,6 +68,9 @@
 
     <color name="color_e5e5e5_trans_50">#7fe5e5e5</color>
 
+    <color name="color_ff6699_trans50">#7FFF6699</color>
+    <color name="color_ff6699_trans20">#33FF6699</color>
+
     <color name="color_39D4B0">#39D4B0</color>
     <color name="color_ff7070">#ff7070</color>
     <color name="color_6c6eD7">#6c6ed7</color>

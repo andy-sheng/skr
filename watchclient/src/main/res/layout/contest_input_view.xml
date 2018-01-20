@@ -34,7 +34,6 @@
             android:layout_alignWithParentIfMissing="true"
             android:layout_margin="6.67dip"
             android:layout_toLeftOf="@id/send_btn"
-            android:layout_toRightOf="@id/barrage_select_btn"
             android:background="@drawable/live_input_field_bg_3"
             android:focusable="true"
             android:gravity="left|center_vertical"
