@@ -15,6 +15,9 @@ import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.component.presenter.BasePlayerPresenter;
 import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
 
+import static com.wali.live.component.BaseSdkController.MSG_ON_STREAM_RECONNECT;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_COMPLETED;
+
 /**
  * Created by zyh on 2017/10/23.
  *
@@ -22,6 +25,7 @@ import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
  */
 public class ContestVideoPlayerPresenter extends BasePlayerPresenter<TextureView, PullStreamerPresenter>
         implements TextureView.SurfaceTextureListener {
+    private static final int PLAYER_TIME_THRESHOLD = 3000;
 
     private IPlayer mPlayer;
 
@@ -57,12 +61,17 @@ public class ContestVideoPlayerPresenter extends BasePlayerPresenter<TextureView
         mStreamerPresenter.setOriginalStreamUrl(videoUrl);
     }
 
+    public long getCurrentAudioTimestamp() {
+        return mPlayer.getCurrentAudioTimestamp();
+    }
+
     @Override
     protected void doStartPlay() {
     }
 
     public void startVideo() {
         mStreamerPresenter.startWatch();
+        mPlayer.setSpeedUpThreshold(PLAYER_TIME_THRESHOLD);
     }
 
     public void pauseVideo() {
@@ -89,6 +98,12 @@ public class ContestVideoPlayerPresenter extends BasePlayerPresenter<TextureView
 
     @Override
     public boolean onEvent(int event, IParams params) {
+        switch (event) {
+            case MSG_PLAYER_COMPLETED:
+                break;
+            case MSG_ON_STREAM_RECONNECT:
+                break;
+        }
         return false;
     }
 }

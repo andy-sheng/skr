@@ -49,6 +49,7 @@ import com.wali.live.watchsdk.contest.cache.ContestCurrentCache;
 import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import com.wali.live.watchsdk.contest.model.AwardUser;
 import com.wali.live.watchsdk.contest.presenter.ContestMessagePresenter;
+import com.wali.live.watchsdk.contest.presenter.ContestVideoPlayerPresenter;
 import com.wali.live.watchsdk.contest.presenter.ContestWatchPresenter;
 import com.wali.live.watchsdk.contest.presenter.IContestWatchView;
 import com.wali.live.watchsdk.contest.view.AnswerView;
@@ -106,7 +107,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
 
     private View mPlaceholderView;
 
-    private HeaderVideoPresenter mPlayerPresenter;
+    private ContestVideoPlayerPresenter mPlayerPresenter;
     private TextureView mPlayerView;
     private final BaseSdkController mController = new BaseSdkController() {
         @Override
@@ -125,9 +126,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
     private LiveCommentView mCommentView;
     private LiveCommentPresenter mLiveCommentPresenter;
 
-    private WatchIpSelectionHelper mIpSelectionHelper;
     private Handler mHandler = new MyUIHandler(this);
-    private boolean mIsCompletion = false;
 
     //拉取enter live 信息失败后，是否需要再拉取一次
     private boolean mPullEnterLiveInfo = true;
@@ -239,7 +238,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
 
     private void initPlayerView() {
         mPlayerView = $(R.id.video_view);
-        mPlayerPresenter = new HeaderVideoPresenter(new BaseSdkController() {
+        mPlayerPresenter = new ContestVideoPlayerPresenter(new BaseSdkController() {
             @Override
             protected String getTAG() {
                 return "ContestWatchActivity";
@@ -414,9 +413,6 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
 
         if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);
-        }
-        if (mIpSelectionHelper != null) {
-            mIpSelectionHelper.destroy();
         }
         if (mPullRoomMessagePresenter != null) {
             mPullRoomMessagePresenter.stopWork();
@@ -779,9 +775,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
     @Override
     public boolean onEvent(int event, IParams params) {
         switch (event) {
-            //TODO:这里是播放器的那几个回调，前提是得注册事件，可以写入presenter里面，暂时加入activity中处理，后续优化。
-            case MSG_PLAYER_COMPLETED:
-                break;
+
 
         }
         return false;

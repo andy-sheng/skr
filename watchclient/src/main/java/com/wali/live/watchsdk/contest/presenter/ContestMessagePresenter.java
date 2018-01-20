@@ -46,7 +46,7 @@ public class ContestMessagePresenter implements IPushMsgProcessor {
     private boolean mIsProcessing = false;
 
     private IContestCallBack mCallBack;
-    private HeaderVideoPresenter mPlayerPresenter;
+    private ContestVideoPlayerPresenter mPlayerPresenter;
 
     private Handler mMainHandler = new Handler(new Handler.Callback() {
         @Override
@@ -73,10 +73,8 @@ public class ContestMessagePresenter implements IPushMsgProcessor {
 
     /**
      * 这里传进来的presenter是为了获取时间戳的
-     *
-     * @param presenter
      */
-    public ContestMessagePresenter(HeaderVideoPresenter presenter) {
+    public ContestMessagePresenter(ContestVideoPlayerPresenter presenter) {
         this.mPlayerPresenter = presenter;
     }
 
@@ -150,15 +148,14 @@ public class ContestMessagePresenter implements IPushMsgProcessor {
         mIsProcessing = true;
         long delayTime = msgExt.getQuestionInfoModel().getDelayTime();
         long maxTs = delayTime > 0 ? delayTime : DEFAULT_TIME_OUT;
-//        MyLog.w(TAG, SYN_DEBUG + "playerTimestamp=" + mPlayerPresenter.getCurrentAudioTimestamp() + " msgTimestamp=" + msgExt.getStreamTs());
+        MyLog.w(TAG, SYN_DEBUG + "playerTimestamp=" + mPlayerPresenter.getCurrentAudioTimestamp() + " msgTimestamp=" + msgExt.getStreamTs());
         mQuestionTimer = Observable.interval(0, 200, TimeUnit.MILLISECONDS)
                 .take((int) (maxTs / 200) + 1)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long aLong) {
-                        //TODO 引擎接口加入后再打开后面 注释
-                        long streamerAudioTs = 0 ; //mPlayerPresenter.getCurrentAudioTimestamp();
+                        long streamerAudioTs = mPlayerPresenter.getCurrentAudioTimestamp();
                         MyLog.v(TAG, "calculateQuestion streamerAudioTs=" + streamerAudioTs +
                                 " msgExt.getStreamTs()=" + msgExt.getStreamTs());
                         if (streamerAudioTs > 0 && msgExt.getStreamTs() > 0
