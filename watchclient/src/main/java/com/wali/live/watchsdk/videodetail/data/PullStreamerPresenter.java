@@ -332,7 +332,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         @Override
         protected void startReconnect(int code) {
             if (mStarted && !mPaused) {
-                MyLog.w(TAG, "startReconnect, code = " + code);
+                MyLog.w(TAG, "startReconnect, code = " + code + " mIsRealTime=" + mIsRealTime);
                 if (!mIpSelectionHelper.isStuttering()) {
                     mIpSelectionHelper.updateStutterStatus(true);
                 }

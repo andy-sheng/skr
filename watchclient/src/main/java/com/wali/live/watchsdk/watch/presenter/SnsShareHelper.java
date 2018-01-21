@@ -123,9 +123,9 @@ public class SnsShareHelper {
 
     /*冲顶大会分享是纯图分享
      */
-    public void shareLocalImageToSns(String localImagePath) {
+    public void shareLocalImageToSns(int type, String localImagePath) {
         //通知上层分享
-        ShareInfo shareInfo = new ShareInfo("", "", localImagePath, "");
+        ShareInfo shareInfo = new ShareInfo(type, "", "", localImagePath, "");
         MiLiveSdkBinder.getInstance().onEventShare(HostChannelManager.getInstance().getChannelId(), shareInfo);
         MyLog.w(TAG, "shareInfo=" + shareInfo.toString());
     }

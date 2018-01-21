@@ -16,6 +16,7 @@ import com.base.utils.toast.ToastUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import com.wali.live.watchsdk.contest.share.ContestShareHelper;
+import com.wali.live.watchsdk.ipc.service.ShareInfo;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 
 /**
@@ -111,19 +112,19 @@ public class ContestRevivalRuleView extends RxRelativeLayout implements View.OnC
             hide();
         } else if (id == R.id.qq_btn) {
             String imgLocalPath = ContestShareHelper.saveContestInviteSharePic(ContestGlobalCache.getRevivalCode());
-            SnsShareHelper.getInstance().shareLocalImageToSns(imgLocalPath);
+            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_QQ, imgLocalPath);
             hide();
         } else if (id == R.id.qzone_btn) {
             String imgLocalPath = ContestShareHelper.saveContestInviteSharePic(ContestGlobalCache.getRevivalCode());
-            SnsShareHelper.getInstance().shareLocalImageToSns(imgLocalPath);
+            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_QZONE, imgLocalPath);
             hide();
         } else if (id == R.id.wechat_btn) {
             String imgLocalPath = ContestShareHelper.saveContestInviteSharePic(ContestGlobalCache.getRevivalCode());
-            SnsShareHelper.getInstance().shareLocalImageToSns(imgLocalPath);
+            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_WECHAT, imgLocalPath);
             hide();
         } else if (id == R.id.moment_btn) {
             String imgLocalPath = ContestShareHelper.saveContestInviteSharePic(ContestGlobalCache.getRevivalCode());
-            SnsShareHelper.getInstance().shareLocalImageToSns(imgLocalPath);
+            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_MOMENT, imgLocalPath);
             hide();
         }
     }

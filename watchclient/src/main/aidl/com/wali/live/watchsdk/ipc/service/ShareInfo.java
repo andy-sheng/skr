@@ -6,7 +6,6 @@ import android.os.Parcelable;
 /**
  * Created by zyh on 2017/4/25.
  */
-
 public class ShareInfo implements Parcelable {
     public static final int TYPE_WECHAT = 0;
     public static final int TYPE_MOMENT = 1;
@@ -16,14 +15,23 @@ public class ShareInfo implements Parcelable {
     public static final int TYPE_MILIAO = 5;
     public static final int TYPE_MILIAO_FEEDS = 6;
 
-//    private int mPlatForm;
+    public static final int TYPE_DEFAULT = -1;
+
+    private int mSnsType = TYPE_DEFAULT;
     private String mTitle;
     private String mContent;
     private String mPicUrl;
     private String mUrl;
 
-    public ShareInfo(/*int shareType,*/ String title, String content, String picUrl, String url) {
-//        mPlatForm = shareType;
+    public ShareInfo(String title, String content, String picUrl, String url) {
+        mTitle = title;
+        mContent = content;
+        mPicUrl = picUrl;
+        mUrl = url;
+    }
+
+    public ShareInfo(int shareType, String title, String content, String picUrl, String url) {
+        mSnsType = shareType;
         mTitle = title;
         mContent = content;
         mPicUrl = picUrl;
@@ -31,7 +39,7 @@ public class ShareInfo implements Parcelable {
     }
 
     protected ShareInfo(Parcel in) {
-//        mPlatForm = in.readInt();
+        mSnsType = in.readInt();
         mTitle = in.readString();
         mContent = in.readString();
         mPicUrl = in.readString();
@@ -57,16 +65,16 @@ public class ShareInfo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-//        dest.writeInt(this.mPlatForm);
+        dest.writeInt(this.mSnsType);
         dest.writeString(this.mTitle);
         dest.writeString(this.mContent);
         dest.writeString(this.mPicUrl);
         dest.writeString(this.mUrl);
     }
 
-//    public int getPlatForm() {
-//        return mPlatForm;
-//    }
+    public int getSnsType() {
+        return mSnsType;
+    }
 
     public String getTitle() {
         return mTitle;
@@ -87,8 +95,8 @@ public class ShareInfo implements Parcelable {
     @Override
     public String toString() {
         return "ShareInfo{" +
-//                "mPlatForm=" + mPlatForm +
-                " mTitle='" + mTitle + '\'' +
+                "mSnsType=" + mSnsType +
+                ", mTitle='" + mTitle + '\'' +
                 ", mContent='" + mContent + '\'' +
                 ", mPicUrl='" + mPicUrl + '\'' +
                 ", mUrl='" + mUrl + '\'' +
