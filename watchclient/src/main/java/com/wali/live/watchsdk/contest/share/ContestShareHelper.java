@@ -42,8 +42,6 @@ public class ContestShareHelper {
     private static String CONTEST_SHARE_INVITE_SUFFIX = "contest_invite_img_";
     private static String CONTEST_SHARE_WIN_SUFFIX = "contest_win_img";
     private static ContestShareHelper sInstance;
-//    private QQOAuth mQQOAuth;
-//    private WXOAuth mWXOAuth;
 
     public static ContestShareHelper getInstance() {
         if (sInstance == null) {
@@ -202,34 +200,6 @@ public class ContestShareHelper {
             MyLog.e(e);
         }
         return "";
-    }
-
-    public void shareLocalPicToQQ(Activity activity, String imgLocalPath) {
-//        if (mQQOAuth == null) {
-//            mQQOAuth = new QQOAuth();
-//        }
-//        mQQOAuth.shareImgToQQ(activity, imgLocalPath, true);
-    }
-
-    public void shareLocalPicToQzone(Activity activity, String imgLocalPath) {
-//        if (mQQOAuth == null) {
-//            mQQOAuth = new QQOAuth();
-//        }
-//        mQQOAuth.shareImgToQQ(activity, imgLocalPath, false);
-    }
-
-    public void shareLocalPicToWechat(String imgLocalPath) {
-//        if (mWXOAuth == null) {
-//            mWXOAuth = new WXOAuth();
-//        }
-//        mWXOAuth.shareImgToWeixin("", "", imgLocalPath, false);
-    }
-
-    public void shareLocalPicToMoment(String imgLocalPath) {
-//        if (mWXOAuth == null) {
-//            mWXOAuth = new WXOAuth();
-//        }
-//        mWXOAuth.shareImgToWeixin("", "", imgLocalPath, true);
     }
 
     //获取二维码的图片文件地址，如果发现已经有了并且是最新则直接使用，否则自己手动的生成一个

@@ -38,11 +38,9 @@ import com.thornbirds.component.IEventObserver;
 import com.thornbirds.component.IParams;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.BaseSdkController;
-import com.wali.live.ipselect.WatchIpSelectionHelper;
+import com.wali.live.component.EmptyController;
 import com.wali.live.proto.LiveProto;
-import com.wali.live.receiver.NetworkReceiver;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.channel.view.presenter.HeaderVideoPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.contest.cache.ContestCurrentCache;
@@ -73,8 +71,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
-
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_COMPLETED;
 
 /**
  * Created by lan on 2018/1/10.
@@ -143,6 +139,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
 
     private LiveRoomChatMsgManager mRoomChatMsgManager;
     private RoomMessagePresenter mPullRoomMessagePresenter;
+    private final LiveCommentPresenter mCommentPresenter = new LiveCommentPresenter(new EmptyController());
 
     private String mContestId;//场次Id
     private long mPerQuestionTotalAnswer;//每题总答题人数
@@ -224,6 +221,9 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
         mCommentView.setSoundEffectsEnabled(false);
         mCommentView.setToken(mRoomChatMsgManager.toString());
         mCommentView.onOrientation(false);
+        mCommentView.setPresenter(mCommentPresenter);
+        mCommentPresenter.setView(mCommentView.getViewProxy());
+        mCommentPresenter.startPresenter();
 
         mCloseBtn = $(R.id.close_btn);
         mCloseBtn.setOnClickListener(this);
@@ -408,6 +408,8 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
 
     private void release() {
         mPlayerPresenter.releaseVideo();
+        mCommentPresenter.stopPresenter();
+        mCommentPresenter.destroy();
         mAnswerView.destroy();
         mQuestionView.destroy();
 

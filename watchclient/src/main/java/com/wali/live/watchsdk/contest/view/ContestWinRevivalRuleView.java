@@ -124,19 +124,19 @@ public class ContestWinRevivalRuleView extends RxRelativeLayout implements View.
             hide();
         } else if (id == R.id.qq_btn) {
             String imgLocalPath = saveContestWinSharePic();
-            ContestShareHelper.getInstance().shareLocalPicToQQ((Activity) getContext(), imgLocalPath);
+//            ContestShareHelper.getInstance().shareLocalPicToQQ((Activity) getContext(), imgLocalPath);
             hide();
         } else if (id == R.id.qzone_btn) {
             String imgLocalPath = saveContestWinSharePic();
-            ContestShareHelper.getInstance().shareLocalPicToQzone((Activity) getContext(), imgLocalPath);
+//            ContestShareHelper.getInstance().shareLocalPicToQzone((Activity) getContext(), imgLocalPath);
             hide();
         } else if (id == R.id.wechat_btn) {
             String imgLocalPath = saveContestWinSharePic();
-            ContestShareHelper.getInstance().shareLocalPicToWechat(imgLocalPath);
+//            ContestShareHelper.getInstance().shareLocalPicToWechat(imgLocalPath);
             hide();
         } else if (id == R.id.moment_btn) {
             String imgLocalPath = saveContestWinSharePic();
-            ContestShareHelper.getInstance().shareLocalPicToMoment(imgLocalPath);
+//            ContestShareHelper.getInstance().shareLocalPicToMoment(imgLocalPath);
             hide();
         }
     }
@@ -149,16 +149,16 @@ public class ContestWinRevivalRuleView extends RxRelativeLayout implements View.
             return true;
         } else if (i == R.id.qq_btn) {
             String imgPath = saveContestWinSharePic();
-            ContestShareHelper.getInstance().shareLocalPicToQQ((Activity) getContext(), imgPath);
+//            ContestShareHelper.getInstance().shareLocalPicToQQ((Activity) getContext(), imgPath);
         } else if (i == R.id.qzone_btn) {
             String imgPath = saveContestWinSharePic();
-            ContestShareHelper.getInstance().shareLocalPicToQzone((Activity) getContext(), imgPath);
+//            ContestShareHelper.getInstance().shareLocalPicToQzone((Activity) getContext(), imgPath);
         } else if (i == R.id.moment_btn) {
             String imgPath = saveContestWinSharePic();
-            ContestShareHelper.getInstance().shareLocalPicToMoment(imgPath);
+//            ContestShareHelper.getInstance().shareLocalPicToMoment(imgPath);
         } else if (i == R.id.wechat_btn) {
             String imgPath = saveContestWinSharePic();
-            ContestShareHelper.getInstance().shareLocalPicToWechat(imgPath);
+//            ContestShareHelper.getInstance().shareLocalPicToWechat(imgPath);
         }
         return false;
     }
