@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.base.activity.BaseActivity;
 import com.base.activity.BaseSdkActivity;
 import com.base.image.fresco.BaseImageView;
-import com.base.view.LightBackTitleBar;
+import com.base.view.BackTitleBar;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.user.User;
 import com.wali.live.utils.AvatarUtils;
@@ -26,7 +26,7 @@ import com.wali.live.watchsdk.contest.util.FormatUtils;
  * Created by lan on 2018/1/11.
  */
 public class ContestRankActivity extends BaseSdkActivity implements View.OnClickListener, IContestRankView {
-    private LightBackTitleBar mTitleBar;
+    private BackTitleBar mTitleBar;
 
     private RecyclerView mRankRv;
     private ContestRankAdapter mRankAdapter;
@@ -61,6 +61,8 @@ public class ContestRankActivity extends BaseSdkActivity implements View.OnClick
         mTitleBar.setCenterTitleText(R.string.contest_prepare_total_rank);
         mTitleBar.showCenterTitle();
         mTitleBar.hideBottomLine();
+
+        mTitleBar.adjustToLightMode();
 //        mTitleBar.getRightImageBtn().setImageResource(R.drawable.live_icon_share_btn);
 //        mTitleBar.getRightImageBtn().setOnClickListener(this);
     }

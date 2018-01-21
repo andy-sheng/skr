@@ -158,5 +158,15 @@ public class BackTitleBar extends RelativeLayout {
     public boolean IsProfileMode() {
         return mIsProfileMode;
     }
+
+    /**
+     * 由于风格和直播不一致，所以增加lightMode
+     */
+    public void adjustToLightMode() {
+        mBackBtn.setTextColor(getResources().getColor(R.color.top_bar_title_text_color));
+        mBackBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.topbar_icon_all_back_light_bg, 0, 0, 0);
+
+        mCenterTitleTv.setTextColor(getResources().getColor(R.color.top_bar_title_text_color));
+    }
 }
 
