@@ -23,9 +23,11 @@ import com.base.utils.date.DateTimeUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.api.ErrorCode;
+import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.user.User;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import com.wali.live.watchsdk.contest.fragment.MyContestInfoFragment;
 import com.wali.live.watchsdk.contest.model.ContestNoticeModel;
@@ -38,6 +40,9 @@ import com.wali.live.watchsdk.contest.util.FormatUtils;
 import com.wali.live.watchsdk.contest.view.ContestRevivalInputView;
 import com.wali.live.watchsdk.contest.view.ContestRevivalRuleView;
 import com.wali.live.watchsdk.webview.WebViewActivity;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by lan on 2018/1/10.
@@ -101,6 +106,8 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         initData();
         initView();
         initPresenter();
+
+        AccountAuthManager.triggerActionNeedAccount(this);
     }
 
     private void initData() {
@@ -319,7 +326,14 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         int id = v.getId();
         if (id == R.id.back_btn) {
             finish();
-        } else if (id == R.id.live_status_btn) {
+            return;
+        }
+
+        if (!AccountAuthManager.triggerActionNeedAccount(this)) {
+            return;
+        }
+
+        if (id == R.id.live_status_btn) {
             if (CommonUtils.isFastDoubleClick()) {
                 return;
             }
@@ -387,6 +401,20 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         mRevivalInputView.destroy();
         if (mLiveStatusDrawable.isRunning()) {
             mLiveStatusDrawable.stop();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(MiLinkEvent.StatusLogined event) {
+        MyLog.w(TAG, "receive event : statusLogin");
+        if (event != null) {
+            if (mInvitePresenter != null) {
+                mInvitePresenter.getInviteCode();
+            }
+
+            if (mPreparePresenter != null) {
+                mPreparePresenter.getContestNotice();
+            }
         }
     }
 
