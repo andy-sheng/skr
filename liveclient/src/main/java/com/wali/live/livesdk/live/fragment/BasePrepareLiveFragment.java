@@ -51,8 +51,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import rx.Observable;
-
 import static android.view.View.VISIBLE;
 
 /**
@@ -343,11 +341,6 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
             mDailyTaskSl.setVisibility(View.GONE);
             mDailyTaskArea.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public <T> Observable.Transformer<T, T> bindUntilEvent() {
-        return bindUntilEvent();
     }
 
     @Override
