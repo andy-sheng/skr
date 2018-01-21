@@ -420,13 +420,13 @@
         android:textColor="@color/color_white_pressed_white50"
         android:textSize="@dimen/text_size_36"/>
 
-    <com.wali.live.contest.view.ContestRevivalInputView
+    <com.wali.live.watchsdk.contest.view.ContestRevivalInputView
         android:id="@+id/revival_input_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
-    <com.wali.live.contest.view.ContestRevivalRuleView
+    <com.wali.live.watchsdk.contest.view.ContestRevivalRuleView
         android:id="@+id/revival_rule_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

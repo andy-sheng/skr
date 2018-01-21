@@ -19,7 +19,7 @@ import com.base.global.GlobalData;
  * Created by lan on 15-11-13.
  * 带有返回按钮的titlebar
  */
-public class BackTitleBar extends RelativeLayout {
+public class LightBackTitleBar extends RelativeLayout {
     private RelativeLayout mRootView;
 
     private TextView mBackBtn;
@@ -34,9 +34,9 @@ public class BackTitleBar extends RelativeLayout {
     /*是否设置名片页沉浸模式*/
     private boolean mIsProfileMode;
 
-    public BackTitleBar(Context context, AttributeSet attrs) {
+    public LightBackTitleBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.back_title_bar, this);
+        inflate(context, R.layout.light_back_title_bar, this);
 
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TitleBar);
         mIsProfileMode = a.getBoolean(R.styleable.TitleBar_is_profile_mode, true);
@@ -63,7 +63,7 @@ public class BackTitleBar extends RelativeLayout {
 
         mRootView = (RelativeLayout) findViewById(R.id.root_view);
         if (mIsProfileMode && BaseActivity.isProfileMode()) {
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mRootView.getLayoutParams();
+            LayoutParams lp = (LayoutParams) mRootView.getLayoutParams();
             lp.topMargin = BaseActivity.getStatusBarHeight();
         }
 

@@ -130,6 +130,22 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.wali.live.watchsdk.contest.ContestPrepareActivity"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.wali.live.watchsdk.contest.rank.ContestRankActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.wali.live.watchsdk.contest.ContestWatchActivity"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeLive"/>
+
         <service
             android:name="com.wali.live.watchsdk.service.PacketProcessService"
             android:exported="false"/>

@@ -30,6 +30,7 @@ import com.wali.live.watchsdk.channel.presenter.ChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelView;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
+import com.wali.live.watchsdk.contest.ContestPrepareActivity;
 import com.wali.live.watchsdk.cta.CTANotifyFragment;
 import com.wali.live.watchsdk.login.LoginPresenter;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
@@ -144,6 +145,12 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
         mRecyclerView.setAdapter(mRecyclerAdapter);
         mInputEditText = $(R.id.live_input_tv);
 
+        $(R.id.contest_prepare_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ContestPrepareActivity.open(MainActivity.this);
+            }
+        });
         $(R.id.watch_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

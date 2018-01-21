@@ -107,7 +107,7 @@
         android:textColorHint="@color/color_white_trans_50"
         android:textSize="@dimen/text_size_44"/>
 
-    <com.wali.live.comment.view.LiveCommentView
+    <com.wali.live.watchsdk.component.view.LiveCommentView
         android:id="@+id/comment_rv"
         android:layout_width="match_parent"
         android:layout_height="200.33dip"
@@ -123,7 +123,7 @@
         android:requiresFadingEdge="none"
         tools:background="@color/color_black_trans_20"/>
 
-    <com.wali.live.contest.view.ContestInputView
+    <com.wali.live.watchsdk.contest.view.ContestInputView
         android:id="@+id/input_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -143,50 +143,50 @@
             android:layout_height="0dp"/>
     </FrameLayout>
 
-    <com.wali.live.contest.view.AnswerView
+    <com.wali.live.watchsdk.contest.view.AnswerView
         android:id="@+id/answer_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
-    <com.wali.live.contest.view.QuestionView
+    <com.wali.live.watchsdk.contest.view.QuestionView
         android:id="@+id/question_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
-    <com.wali.live.contest.view.ContestLateView
+    <com.wali.live.watchsdk.contest.view.ContestLateView
         android:id="@+id/contest_late_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
-    <com.wali.live.contest.view.ContestSuccessView
+    <com.wali.live.watchsdk.contest.view.ContestSuccessView
         android:id="@+id/contest_success_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
-    <com.wali.live.contest.view.ContestFailView
+    <com.wali.live.watchsdk.contest.view.ContestFailView
         android:id="@+id/contest_fail_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
-    <com.wali.live.contest.view.ContestRevivalRuleView
+    <com.wali.live.watchsdk.contest.view.ContestRevivalRuleView
         android:id="@+id/revival_rule_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
-    <com.wali.live.contest.view.ContestWinRevivalRuleView
+    <com.wali.live.watchsdk.contest.view.ContestWinRevivalRuleView
         android:id="@+id/revival_win_rule_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
 
-    <com.wali.live.contest.view.ContestNoWinView
+    <com.wali.live.watchsdk.contest.view.ContestNoWinView
         android:id="@+id/contest_no_win_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

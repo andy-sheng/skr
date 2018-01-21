@@ -217,7 +217,7 @@
             android:textSize="@dimen/text_size_40"/>
     </RelativeLayout>
 
-    <com.wali.live.contest.view.ContestRevivalRuleView
+    <com.wali.live.watchsdk.contest.view.ContestRevivalRuleView
         android:id="@+id/revival_rule_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
