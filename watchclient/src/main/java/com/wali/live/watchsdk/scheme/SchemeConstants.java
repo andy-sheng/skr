@@ -47,6 +47,7 @@ public class SchemeConstants {
     public static final String PARAM_VIDEO_URL = "videourl";
     public static final String PARAM_TYPE = "type";
     public static final String PARAM_TYPE_LIVE_END = "after_live_end"; // 0: live 1:playback 2:person info fragment
+    public final static String PARAM_IS_CONTEST = "is_contest";
 
     public static final int TYPE_LIVE = 0;
     public static final int TYPE_PLAYBACK = 1;
@@ -187,6 +188,10 @@ public class SchemeConstants {
     public static final String HOST_ZHIBO_COM = "zhibo.mi.com";
     public static final String PARAM_ACTION = "action";
 
+    //冲顶大会
+    public static final String HOST_CONTEST = "contest";
+    public static final String PATH_PREPARE = "/prepare";
+
     /**
      *SchemeConstants 和 SpecificConstants 添加的scheme和host都要在這裡添加一下。否則会被过滤掉导致ui上不被显示。
      */
@@ -210,6 +215,7 @@ public class SchemeConstants {
             SchemeConstants.HOST_CHANNEL,
             SchemeConstants.HOST_RECOMMEND,
             SchemeConstants.HOST_OPEN_URL,
-            SchemeConstants.HOST_FEED
+            SchemeConstants.HOST_FEED,
+            SchemeConstants.HOST_CONTEST
     ));
 }

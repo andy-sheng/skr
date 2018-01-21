@@ -445,6 +445,13 @@
     <string name="vip_enter_hit">大咖登场</string>
     <string name="focus_no_people_update">暂无好友更新视频</string>
 
+    <string name="num_time_wan">%s万</string>
+    <plurals name="game_comment_number">
+        <item quantity="one">%d person</item>
+        <item quantity="other">%d people</item>
+    </plurals>
+    <string name="personalroom_cnt_over">Too many audiences</string>
+
     <string name="contest_result_right">答对了</string>
     <string name="contest_result_wrong">答错了</string>
     <string name="contest_game_over">已被淘汰</string>
@@ -474,6 +481,7 @@
     <string name="contest_prepare_share">分享</string>
     <string name="contest_prepare_total_income">总收入</string>
     <string name="contest_prepare_withdraw">去提现</string>
+    <string name="contest_prepare_withdraw_tip">提现奖金会有1-2天延迟，请您耐心等待</string>
     <string name="contest_prepare_invite_invalid">邀请码无效</string>
     <string name="contest_prepare_invite_myself">无法邀请自己</string>
     <string name="contest_prepare_invite_uuid_invalid">用户出了点小情况</string>
@@ -522,10 +530,4 @@
     <string name="share_get_revival">获得复活卡</string>
     <string name="share_dest">快输入我的邀请码，一起答题赢奖金吧！</string>
     <string name="share_get_relivecard">分享战绩得复活卡</string>
-    <string name="num_time_wan">%s万</string>
-    <plurals name="game_comment_number">
-        <item quantity="one">%d person</item>
-        <item quantity="other">%d people</item>
-    </plurals>
-    <string name="personalroom_cnt_over">Too many audiences</string>
 </resources>

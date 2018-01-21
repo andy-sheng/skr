@@ -46,9 +46,14 @@ import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.contest.cache.ContestCurrentCache;
 import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import com.wali.live.watchsdk.contest.model.AwardUser;
+import com.wali.live.watchsdk.contest.model.ContestNoticeModel;
+import com.wali.live.watchsdk.contest.presenter.ContestInvitePresenter;
 import com.wali.live.watchsdk.contest.presenter.ContestMessagePresenter;
+import com.wali.live.watchsdk.contest.presenter.ContestPreparePresenter;
 import com.wali.live.watchsdk.contest.presenter.ContestVideoPlayerPresenter;
 import com.wali.live.watchsdk.contest.presenter.ContestWatchPresenter;
+import com.wali.live.watchsdk.contest.presenter.IContestInviteView;
+import com.wali.live.watchsdk.contest.presenter.IContestPrepareView;
 import com.wali.live.watchsdk.contest.presenter.IContestWatchView;
 import com.wali.live.watchsdk.contest.view.AnswerView;
 import com.wali.live.watchsdk.contest.view.ContestFailView;
@@ -75,7 +80,8 @@ import java.util.List;
 /**
  * Created by lan on 2018/1/10.
  */
-public class ContestWatchActivity extends ContestComponentActivity implements View.OnClickListener, IContestWatchView, IEventObserver {
+public class ContestWatchActivity extends ContestComponentActivity implements View.OnClickListener,
+        IContestWatchView, IContestPrepareView, IContestInviteView, IEventObserver {
     private static final String EXTRA_ZUID = "extra_zuid";
     private static final String EXTRA_ROOM_ID = "extra_room_id";
     private static final String EXTRA_VIDEO_URL = "extra_video_url";
@@ -140,6 +146,9 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
     private LiveRoomChatMsgManager mRoomChatMsgManager;
     private RoomMessagePresenter mPullRoomMessagePresenter;
     private final LiveCommentPresenter mCommentPresenter = new LiveCommentPresenter(new EmptyController());
+
+    private ContestPreparePresenter mContestPreparePresenter;
+    private ContestInvitePresenter mContestInvitePresenter;
 
     private String mContestId;//场次Id
     private long mPerQuestionTotalAnswer;//每题总答题人数
@@ -233,6 +242,10 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
         mViewerCntTv = $(R.id.view_tv);
         mRevivalCntTv = $(R.id.revival_cnt_tv);
         mRevivalCntTv.setOnClickListener(this);
+        updateRevivalCount();
+    }
+
+    private void updateRevivalCount() {
         mRevivalCntTv.setText(getString(R.string.contest_prepare_revival_card) + "x" + ContestGlobalCache.getRevivalNum());
     }
 
@@ -376,6 +389,9 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
         mRoomStatusPresenter = new RoomStatusPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomStatusPresenter);
         mContestWatchPresenter = new ContestWatchPresenter(this);
+
+        mContestPreparePresenter = new ContestPreparePresenter(this);
+        mContestInvitePresenter = new ContestInvitePresenter(this);
         enterLive();
     }
 
@@ -518,8 +534,9 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    finish();
                     mQuitDialog.dismiss();
+                    KeyboardUtils.hideKeyboard(ContestWatchActivity.this);
+                    finish();
                 }
             });
             builder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -585,6 +602,13 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
                             }
                         });
                     }
+                }
+
+                if (ContestGlobalCache.needGetNoticeAgain(mMyRoomData.getRoomId())) {
+                    mContestPreparePresenter.getContestNotice();
+                }
+                if (ContestGlobalCache.needGetCodeAgain()) {
+                    mContestInvitePresenter.getInviteCode();
                 }
 
                 if (needPlayAgain) {
@@ -683,6 +707,30 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
                 MyLog.w(TAG, "lastQuestionInfo is null");
             }
         }
+    }
+
+    @Override
+    public void getInviteCodeSuccess(String code) {
+        mRevivalRuleView.updateCode();
+        updateRevivalCount();
+    }
+
+    @Override
+    public void setInviteCodeSuccess(int revivalNum) {
+        //nothing to do
+    }
+
+    @Override
+    public void setInviteCodeFailure(int errCode) {
+        //nothing to do
+    }
+
+    @Override
+    public void setContestNotice(ContestNoticeModel model) {
+        if (mQuitDialog != null) {
+            mQuitDialog.setMessage(getString(R.string.contest_room_quit_tip, ContestGlobalCache.getBonus()));
+        }
+        updateRevivalCount();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

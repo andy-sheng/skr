@@ -30,6 +30,12 @@ public class ModelHelper {
         return false;
     }
 
+    public static boolean isContestScheme(String uriStr) {
+        Uri uri = Uri.parse(uriStr);
+        boolean isContest = uri.getBooleanQueryParameter(SchemeConstants.PARAM_IS_CONTEST, false);
+        return isContest;
+    }
+
     /**
      * 判断是否是回放
      */

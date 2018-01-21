@@ -323,6 +323,8 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         protected int mDistance;
 
         protected boolean mIsEnterRoom;
+        protected boolean mIsContestRoom;
+
         protected String mCountString;
 
         protected BaseLiveItem() {
@@ -351,6 +353,10 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
 
         public boolean isEnterRoom() {
             return mIsEnterRoom;
+        }
+
+        public boolean isContestRoom() {
+            return mIsContestRoom;
         }
 
         public String getCountString() {
@@ -454,6 +460,8 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             } else {
                 mIsEnterRoom = true;
             }
+            mIsContestRoom = mIsEnterRoom && ModelHelper.isContestScheme(mSchemeUri);
+
             mDistance = protoItem.getDistance();
             mCountString = parseCountString(true, mViewerCnt);
         }

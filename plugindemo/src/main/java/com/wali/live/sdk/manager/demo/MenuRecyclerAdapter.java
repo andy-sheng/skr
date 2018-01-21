@@ -134,6 +134,42 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         });
             }
         }));
+        mDataList.add(new Bean("跳转到冲顶大会准备页(Intent)", new Runnable() {
+            @Override
+            public void run() {
+                MiLiveSdkController.getInstance().openContestPrepare(
+                        mActivity,
+                        new IMiLiveSdk.IAssistantCallback() {
+                            @Override
+                            public void notifyVersionLow() {
+                                ToastUtils.showToast("notifyVersionLow");
+                            }
+
+                            @Override
+                            public void notifyNotInstall() {
+                                ToastUtils.showToast("notifyNotInstall");
+                            }
+                        });
+            }
+        }));
+        mDataList.add(new Bean("跳转到冲顶大会直播间(Intent)", new Runnable() {
+            @Override
+            public void run() {
+                MiLiveSdkController.getInstance().openContestWatch(
+                        mActivity, 22869193l, "22869193_1480938327", "http://playback.ks.zb.mi.com/record/live/22869193_1480938327/hls/22869193_1480938327.m3u8?playui=1",
+                        new IMiLiveSdk.IAssistantCallback() {
+                            @Override
+                            public void notifyVersionLow() {
+                                ToastUtils.showToast("notifyVersionLow");
+                            }
+
+                            @Override
+                            public void notifyNotInstall() {
+                                ToastUtils.showToast("notifyNotInstall");
+                            }
+                        });
+            }
+        }));
         mDataList.add(new Bean("开启秀场直播(Intent)", new Runnable() {
             @Override
             public void run() {

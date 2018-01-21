@@ -88,11 +88,7 @@ public class ContestRankActivity extends BaseSdkActivity implements View.OnClick
         mBonusTv = $(R.id.bonus_tv);
 
         int rank = ContestGlobalCache.getRank();
-        if (rank <= 0 || rank > 100) {
-            mIndexTv.setText("-");
-        } else {
-            mIndexTv.setText(String.valueOf(rank));
-        }
+        mIndexTv.setText(FormatUtils.formatRank(rank));
 
         float totalIncome = ContestGlobalCache.getTotalIncome();
         mBonusTv.setText(FormatUtils.formatMoney(totalIncome));

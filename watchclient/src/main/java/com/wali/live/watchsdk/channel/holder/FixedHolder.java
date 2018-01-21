@@ -21,9 +21,9 @@ import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.helper.HolderHelper;
 import com.wali.live.watchsdk.channel.viewmodel.BaseJumpItem;
-import com.wali.live.watchsdk.channel.viewmodel.ChannelPageHeaderViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelNavigateViewModel;
+import com.wali.live.watchsdk.channel.viewmodel.ChannelPageHeaderViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelRankingViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelShowViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelTwoTextViewModel;
@@ -163,7 +163,9 @@ public abstract class FixedHolder extends HeadHolder {
         // 打点
         HolderHelper.sendClickCommand(item);
 
-        if (item instanceof ChannelLiveViewModel.LiveItem && (((ChannelLiveViewModel.BaseLiveItem) item).isEnterRoom())) {
+        // 增加不是答题直播间的判断
+        if (item instanceof ChannelLiveViewModel.LiveItem && (((ChannelLiveViewModel.BaseLiveItem) item).isEnterRoom())
+                && !((ChannelLiveViewModel.LiveItem) item).isContestRoom()) {
             int position = ((ChannelLiveViewModel.LiveItem) item).getListPosition();
             if (position != -1) {
                 mJumpListener.jumpWatchWithLiveList(position);

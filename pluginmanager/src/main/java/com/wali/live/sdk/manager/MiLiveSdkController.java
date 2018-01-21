@@ -64,6 +64,10 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
     private static final String ACTION_OPEN_NORMAL_LIVE = "open_normal_live";
     private static final String ACTION_OPEN_GAME_LIVE = "open_game_live";
+
+    private static final String ACTION_OPEN_CONTEST_PREPARE = "open_contest_prepare";
+    private static final String ACTION_OPEN_CONTEST_WATCH = "open_contest_watch";
+
     private static final String ACTION_GET_CHANNEL_LIVES = "get_channel_lives";
     private static final String ACTION_GET_FOLLOWING_USERS = "get_following_users";
     private static final String ACTION_NOTIFY_SHARE_SUC = "notify_share_suc";
@@ -114,6 +118,9 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
         mMinVersionMap.put(ACTION_OPEN_WATCH_ROOM, 205037);
         mMinVersionMap.put(ACTION_OPEN_WATCH_ROOM_LIST, 205037);
+
+        mMinVersionMap.put(ACTION_OPEN_CONTEST_PREPARE, 205055);
+        mMinVersionMap.put(ACTION_OPEN_CONTEST_WATCH, 205055);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -446,6 +453,31 @@ public class MiLiveSdkController implements IMiLiveSdk {
             bundle.putParcelable(EXTRA_LOCATION, location);
         }
         jumpToSdk(activity, bundle, ACTION_OPEN_GAME_LIVE, callback);
+    }
+
+    @Override
+    public void openContestPrepare(Activity activity, IAssistantCallback callback) {
+        if (!checkVersion(ACTION_OPEN_CONTEST_PREPARE, callback)) {
+            return;
+        }
+        checkHasInit();
+
+        Bundle bundle = getBasicBundle();
+        jumpToSdk(activity, bundle, ACTION_OPEN_CONTEST_PREPARE, callback);
+    }
+
+    @Override
+    public void openContestWatch(Activity activity, long playerId, String liveId, String videoUrl, IAssistantCallback callback) {
+        if (!checkVersion(ACTION_OPEN_CONTEST_WATCH, callback)) {
+            return;
+        }
+        checkHasInit();
+
+        Bundle bundle = getBasicBundle();
+        bundle.putLong(EXTRA_PLAYER_ID, playerId);
+        bundle.putString(EXTRA_LIVE_ID, liveId);
+        bundle.putString(EXTRA_VIDEO_URL, videoUrl);
+        jumpToSdk(activity, bundle, ACTION_OPEN_CONTEST_WATCH, callback);
     }
 
     @Override

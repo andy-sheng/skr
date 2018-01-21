@@ -26,6 +26,7 @@ import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.user.User;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import com.wali.live.watchsdk.contest.fragment.MyContestInfoFragment;
 import com.wali.live.watchsdk.contest.model.ContestNoticeModel;
 import com.wali.live.watchsdk.contest.presenter.ContestInvitePresenter;
@@ -212,8 +213,6 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         updateMyView();
 
         updateInputView(mNoticeModel.hasInviteCode());
-
-        mRevivalCountTv.setText(String.valueOf(mNoticeModel.getRevivalNum()));
     }
 
     private void updateMyView() {
@@ -221,11 +220,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         mMyBonusTv.setText(FormatUtils.formatMoney(totalIncome));
 
         int rank = mNoticeModel.getRank();
-        if (rank <= 0 || rank > 100) {
-            mMyRankTv.setText("-");
-        } else {
-            mMyRankTv.setText(String.valueOf(rank));
-        }
+        mMyRankTv.setText(FormatUtils.formatRank(rank));
     }
 
     private void updateAvatarView() {
@@ -278,6 +273,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
     @Override
     public void getInviteCodeSuccess(String code) {
         mRevivalRuleView.updateCode();
+        mRevivalCountTv.setText(String.valueOf(ContestGlobalCache.getRevivalNum()));
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.wali.live.watchsdk.contest.cache;
 
-import com.wali.live.watchsdk.contest.model.ContestNoticeModel;
+import android.text.TextUtils;
+
+import com.wali.live.proto.LiveSummitProto;
 
 /**
  * Created by lan on 2018/1/11.
@@ -18,6 +20,7 @@ public class ContestGlobalCache {
      * @notice 这个属性是本场次的，但是是外面准备页面获取的，还是放在这里吧，如果房间内获取到，再放在CurrentCache
      */
     private static float sBonus;                    //本场总奖金
+    private static String sLiveId;
 
     /*Get/Set方法*/
     public static String getRevivalCode() {
@@ -36,11 +39,27 @@ public class ContestGlobalCache {
         sRevivalNum = revivalNum;
     }
 
-    public static void setContestNotice(ContestNoticeModel model) {
-        sRevivalNum = model.getRevivalNum();
-        sTotalIncome = model.getTotalIncome();
-        sRank = model.getRank();
-        sBonus = model.getBonus();
+    public static void setContestNotice(LiveSummitProto.ContestNoticeInfo protoInfo) {
+        if (protoInfo.hasRevivalNum()) {
+            sRevivalNum = protoInfo.getRevivalNum();
+        }
+
+        sTotalIncome = protoInfo.getTotalIncome();
+        sRank = protoInfo.getRank();
+
+        sBonus = protoInfo.getBonus();
+        if (protoInfo.hasLiveid()) {
+            sLiveId = protoInfo.getLiveid();
+        }
+    }
+
+    public static void setContestInviteCode(LiveSummitProto.GetContestInviteCodeRsp rsp) {
+        if (rsp.hasInviteCode()) {
+            sRevivalCode = rsp.getInviteCode();
+        }
+        if (rsp.hasRevivalNum()) {
+            sRevivalNum = rsp.getRevivalNum();
+        }
     }
 
     public static float getTotalIncome() {
@@ -55,12 +74,31 @@ public class ContestGlobalCache {
         return (long) sBonus;
     }
 
+    /**
+     * 之前房间号不存在，或者不匹配，或者没有获取到奖金，房间内都重新拉一边
+     */
+    public static boolean needGetNoticeAgain(String liveId) {
+        if (TextUtils.isEmpty(sLiveId) || !liveId.equals(sLiveId)) {
+            return true;
+        }
+        if (sBonus == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean needGetCodeAgain() {
+        return TextUtils.isEmpty(sRevivalCode);
+    }
+
     public static void clear() {
         sRevivalCode = null;
         sRevivalNum = 0;
 
         sTotalIncome = 0f;
         sRank = 0;
+
         sBonus = 0;
+        sLiveId = null;
     }
 }

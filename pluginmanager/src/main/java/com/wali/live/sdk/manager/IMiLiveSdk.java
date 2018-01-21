@@ -131,6 +131,20 @@ public interface IMiLiveSdk {
     void openGameLive(Activity activity, Location location, IAssistantCallback callback);
 
     /**
+     * 打开冲顶大会准备页
+     *
+     * @version 205055
+     */
+    void openContestPrepare(Activity activity, IAssistantCallback callback);
+
+    /**
+     * 打开冲顶大会直播间
+     *
+     * @version 205055
+     */
+    void openContestWatch(Activity activity, long playerId, String liveId, String videoUrl, IAssistantCallback callback);
+
+    /**
      * 第三方登录
      *
      * @param channelId 渠道ID
