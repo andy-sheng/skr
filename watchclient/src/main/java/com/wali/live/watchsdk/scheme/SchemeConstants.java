@@ -197,7 +197,7 @@ public class SchemeConstants {
      */
 
     /**
-     * SCHEME常亮集合，用于ui显示拦截
+     * SCHEME常量集合，用于ui显示拦截
      */
     public static final HashSet<String> ALL_CHANNEL_SCHEME_TYPE = new HashSet<>(Arrays.asList(
             SchemeConstants.SCHEME_LIVESDK,
@@ -207,7 +207,7 @@ public class SchemeConstants {
             SpecificConstants.SCHEME_HTTPS
     ));
     /**
-     * HOST常亮集合，用于ui显示拦截
+     * HOST常量集合，用于ui显示拦截
      */
     public static final HashSet<String> ALL_CHANNEL_HOST_TYPE = new HashSet<>(Arrays.asList(
             SchemeConstants.HOST_ROOM,
