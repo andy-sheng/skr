@@ -23,8 +23,6 @@ import com.wali.live.watchsdk.longtext.presenter.LongTextPresenter;
 
 import java.util.List;
 
-import rx.Observable;
-
 /**
  * Created by lan on 2017/9/19.
  */
@@ -178,11 +176,6 @@ public class LongTextActivity extends BaseSdkActivity implements ILongTextView {
     @Override
     public void notifyFeedInfoFailure() {
         ToastUtils.showToast(R.string.feeds_getinfo_failed);
-    }
-
-    @Override
-    public <T> Observable.Transformer<T, T> bindUntilEvent() {
-        return bindUntilEvent();
     }
 
     public static void open(Activity activity, String feedId, long ownerId) {

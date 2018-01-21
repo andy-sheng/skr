@@ -30,8 +30,6 @@ import com.wali.live.watchsdk.editinfo.EditInfoActivity;
 import com.wali.live.watchsdk.editinfo.fragment.presenter.EditSignPresenter;
 import com.wali.live.watchsdk.editinfo.fragment.presenter.IEditSignView;
 
-import rx.Observable;
-
 /**
  * Created by lan on 2017/8/15.
  */
@@ -148,11 +146,6 @@ public class EditSignFragment extends RxFragment implements View.OnClickListener
         }
 
         mPresenter.uploadSign(sign);
-    }
-
-    @Override
-    public <T> Observable.Transformer<T, T> bindUntilEvent() {
-        return bindUntilEvent();
     }
 
     @Override

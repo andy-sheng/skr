@@ -43,8 +43,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import rx.Observable;
-
 /**
  * Created by lan on 2017/10/27.
  */
@@ -175,11 +173,6 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
         mMessagePresenter = new SixinMessagePresenter(this, mSixinTarget);
         mMessagePresenter.firstLoadDataFromDB();
         mMessagePresenter.markConversationAsRead();
-    }
-
-    @Override
-    public <T> Observable.Transformer<T, T> bindUntilEvent() {
-        return bindUntilEvent();
     }
 
     @Override
