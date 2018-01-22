@@ -581,7 +581,6 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
                 } else {
                     ContestCurrentCache.getInstance().setWatchMode(false);
                 }
-                ContestCurrentCache.getInstance().setContinue(true);
                 MyLog.w(TAG, "ENTER LIVE SUCCESS");
                 MiLinkClientAdapter.getsInstance().setGlobalPushFlag(true);
                 MyLog.e(TAG, "processEnterLive:" + enterRoomInfo.getRetCode() + " mVideoUrl=" + mMyRoomData.getVideoUrl());
