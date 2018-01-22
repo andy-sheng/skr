@@ -31,6 +31,7 @@ import com.mi.live.data.preference.PreferenceKeys;
 import com.wali.live.common.view.ItemDecorationBuidler;
 import com.wali.live.event.EventClass;
 import com.wali.live.income.Exchange;
+import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.task.ITaskCallBack;
 import com.wali.live.task.TaskCallBackWrapper;
 
@@ -75,6 +76,8 @@ public abstract class BaseExchangeActivity extends BaseActivity implements View.
     public final static int TYPE_GAME = 1;
     private TextView mNotice;
     protected int mType = 0;//判断当前时娱乐直播还是游戏直播模块
+
+    protected int mStatFromWhere = StatisticsKey.ExchangeGem.FROM_OTHER;
 
     protected int mShowTip;//判断银钻
 

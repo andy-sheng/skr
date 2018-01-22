@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/unsigned_exchangeable_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/height_380"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/color_black_trans_90"
+        android:textSize="@dimen/text_size_140"
+        tools:text="40.46"/>
+    <!--上面的数字解释-->
+    <TextView
+        android:id="@+id/tip_current_withdraw_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_60"
+        android:layout_below="@+id/unsigned_exchangeable_money"
+        android:layout_centerHorizontal="true"
+        android:maxLines="1"
+        android:text="@string/current_withdraw_money"
+        android:textColor="@color/color_black_trans_50"
+        android:textSize="@dimen/text_size_44"/>
+
+    <TextView
+        android:id="@+id/bottom_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_106"
+        android:text="@string/withdraw_bottom_tip"
+        android:textColor="@color/color_black_trans_30"
+        android:textSize="@dimen/text_size_36"/>
+
+    <LinearLayout
+        android:id="@+id/top_unsigned_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottom_tip"
+        android:layout_marginBottom="@dimen/margin_56"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible">
+        <!--票换钻-->
+        <LinearLayout
+            android:id="@+id/ticket_to_gem_btn"
+            android:layout_width="@dimen/view_dimen_800"
+            android:layout_height="@dimen/view_dimen_120"
+            android:layout_marginTop="@dimen/margin_30"
+            android:background="@drawable/exchange_gem_button"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/withdraw_icon_diamond"
+                android:drawablePadding="@dimen/margin_26"
+                android:duplicateParentState="true"
+                android:gravity="center"
+                android:text="@string/exchange_gem"
+                android:textColor="@drawable/exchange_btn_text_bg"
+                android:textSize="@dimen/text_size_40"/>
+        </LinearLayout>
+
+        <!--提现按钮区域-->
+        <include
+            android:id="@+id/withdraw_btn_container_top"
+            layout="@layout/withdraw_btn_container"
+            android:layout_width="@dimen/view_dimen_800"
+            android:layout_height="@dimen/height_120"
+            android:layout_marginTop="@dimen/margin_50"/>
+    </LinearLayout>
+
+    <!--<View-->
+        <!--android:id="@+id/unsigned_separator"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/line_height"-->
+        <!--android:background="@color/color_zhibo_btn_bg_normal"/>-->
+
+    <!--顶部非签约区域-->
+</RelativeLayout>

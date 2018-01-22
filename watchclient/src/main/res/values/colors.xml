@@ -82,4 +82,13 @@
     <color name="color_713dff">#713dff</color>
     <color name="color_2d1d3a">#2d1d3a</color>
     color_2D1D3A
+    <!--提现界面-->
+    <color name="withdraw_weixin_btn_text">#68be6d</color>
+    <color name="withdraw_weixin_btn_text_trans_50">#7f68be6d</color>
+    <color name="withdraw_paypal_btn_text">#4c82b1</color>
+    <color name="withdraw_paypal_btn_text_trans_50">#7f4c82b1</color>
+    <color name="color_d8d8d8">#d8d8d8</color>
+    <color name="color_ffa829">#ffa829</color>
+    <color name="color_acacac">#acacac</color>
+    <color name="color_depart">#f2f2f2</color>
 </resources>

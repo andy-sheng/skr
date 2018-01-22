@@ -545,6 +545,8 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
             cookieManager.setCookie(".mi.com", "zhiboQua =" + qua);
         }
 
+        cookieManager.setCookie("appid", "10008");
+
         CookieSyncManager.getInstance().sync();
     }
 

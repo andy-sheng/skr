@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.base.log.MyLog;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
+import com.wali.live.watchsdk.income.income.UserIncomeActivity;
 import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
-import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 import java.lang.ref.WeakReference;
@@ -61,6 +62,8 @@ public class JumpImpl implements JumpListener {
 
     @Override
     public void jumpWatchWithLiveList(int position) {
-        WatchSdkActivity.openActivity(mActRef.get(), mRoomList, position);
+        MyLog.d(TAG, "jumpWatchWithLiveList");
+//        WatchSdkActivity.openActivity(mActRef.get(), mRoomList, position);
+        UserIncomeActivity.openActivity(mActRef.get());
     }
 }

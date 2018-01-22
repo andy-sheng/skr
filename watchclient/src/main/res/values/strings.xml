@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="setting_dialog_black_title">attention</string>
     <string name="max_len_notice">Can enter up to 30 characters</string>
     <string name="leave_live_success">leave live success</string>
@@ -528,4 +528,205 @@
         <item quantity="other">%d people</item>
     </plurals>
     <string name="personalroom_cnt_over">Too many audiences</string>
+    <string name="mi_account_auth_invalid_tip">授权信息已过期</string>
+    <string name="get_mi_account_auth_ok_tip">取得授權成功，請繼續兌換</string>
+    <string name="get_mi_account_auth_fail_tip">取得授權失敗</string>
+    <string name="my_live_income">我的收益</string>
+    <string name="cash_records_tip">我的收益记录</string>
+
+    <string name="income_after_signed_tip">签约期间收益</string>
+    <string name="income_before_signed_tip">非签约期间收益</string>
+    <string name="income_mibi_ticket">游戏星票</string>
+    <string name="withdraw_hint_toast">如对您的当前可兑换金额有疑问，\n请资讯官方999账号</string>
+    <string name="system_tips">系统提示</string>
+    <string name="bind_account">去绑定</string>
+    <string name="change_passward">您的小米账号密码已修改,请重新确认授权</string>
+    <string name="reauthorization">重新授权</string>
+    <plurals name="recharge_exchangeable_mibi_count">
+        <item quantity="one">您当前可以兑换%1$d米币</item>
+        <item quantity="other">您当前可以兑换%1$d米币</item>
+    </plurals>
+    <plurals name="recharge_money_coda_unit">
+        <item quantity="other">%1$s IDR</item>
+    </plurals>
+    <plurals name="income_gem_ticket">
+        <item quantity="other">%1$d 钻石星票</item>
+    </plurals>
+    <plurals name="income_mibi_ticket">
+        <item quantity="other">%1$d 游戏星票</item>
+    </plurals>
+    <plurals name="mibi">
+        <item quantity="other">%1$s米币</item>
+    </plurals>
+    <plurals name="times">
+        <item quantity="other">%1$s场</item>
+    </plurals>
+    <string name="current_withdraw_money">当前可兑换金额（元）</string>
+    <string name="exchange_gem">兑换钻石</string>
+    <string name="withdraw_india_no_enough_ticket_tip">当您星票达10000时可获得奖励！加油！</string>
+    <string name="wx_re_authorize">点此领取</string>
+    <string name="wx_re_authorize_success">领取成功</string>
+    <string name="wx_re_authorize_success_msg">%s钻将在24小时内到帐，请查收</string>
+    <string name="wx_re_authorize_fail">领取失败</string>
+    <string name="wx_re_authorize_fail_msg">领取失败</string>
+    <string name="wx_exclusive">微信老用户专享</string>
+    <string name="withdraw_india_get_rewards">兑换收益</string>
+    <string name="withdraw_bottom_tip">有疑问请联系直播账号999</string>
+    <string name="signed_tip">亲爱的主播宝宝，签约期间的收益由经纪公司与您按月结算</string>
+    <string name="signed_tip_toast">亲爱的主播宝宝，签约期间的星票收益，由经纪公司与您按月结算。暂时无法兑换宝石</string>
+    <!--提现-->
+    <string name="income_account_balance">当前账户余额</string>
+    <string name="withdraw_ali">支付宝</string>
+    <string name="withdraw_weixin">微信兑换</string>
+    <string name="exchange">兑换</string>
+    <string name="exchange_ticket_to_diamond_tip">星票兑换钻石</string>
+    <string name="faq">常见问题</string>
+    <string name="tip_to_see_all_records">戳这里，看所有现金收入/支出记录~</string>
+    <string name="tip_to_see_h5_records">戳这里，体验清爽新页面！</string>
+    <!--可兑换的金额，例如：100RMB-->
+    <string name="exchangeable_money_amount_and_unit">(<xliff:g example="100" id="amount">%1$s</xliff:g><xliff:g example="CNY" id="unit">%2$s</xliff:g>)</string>
+    <string name="cur_available_cash">当前可提现金额(%s)</string>
+    <string name="today_available_cash">今日可兑换金额(%s)</string>
+    <string name="rmb_unit">元</string>
+    <string name="usd_unit">美元</string>
+    <!--withdraw-->
+    <string name="account_name">真实姓名</string>
+    <string name="alipay_account">支付宝账号</string>
+    <string name="account_cid">身份证</string>
+    <string name="account_fill_btn">提交</string>
+    <string name="account_fill">填写兑换资料</string>
+    <string name="account_name_hint_noti">请输入您的姓名</string>
+    <string name="account_alipay_hint_noti">请输入您的支付宝账号</string>
+    <string name="account_cid_hint_noti">请输入您的身份证号码</string>
+    <string name="account_fill_info_noti">请如实填写以下信息，信息匹配出错会造成兑换失败。</string>
+    <string name="account_useness_money">当前可用兑换金额</string>
+    <string name="account_withdraw_ali_noti">温馨提示：每天最多兑换收益5次 单次下限100元上限10000元</string>
+    <string name="account_withdraw_wx_noti">温馨提示：每天最多兑换收益5次 单次下限1元上限700元</string>
+    <string name="account_withdraw">兑换收益</string>
+    <string name="account_withdraw_input_hint_noti">请输入兑换金额(%s)</string>
+    <string name="account_withdraw_input_more">超过正常兑换金额</string>
+    <string name="account_withdraw_info_noti">正在提交，请稍后...</string>
+    <string name="account_withdraw_info_error">提交失败，请重新提交</string>
+    <string name="account_withdraw_warn">后续接口正在调试，功能敬请期待</string>
+    <string name="account_withdraw_pay_noti">正在兑换收益，请稍后...</string>
+    <string name="account_withdraw_pay_error">兑换收益失败，请重新提交填写</string>
+    <string name="account_withdraw_ali_pay_success">我们已经收到您的兑换申请，会尽快给您打款，请留意您的支付宝账号</string>
+    <string name="account_withdraw_wx_pay_success">我们已经收到您的兑换申请，会尽快给您打款，请留意您的微信钱包</string>
+    <string name="account_withdraw_pay_service_is_not_reponse">服务器没有返回，请检查网络或者服务</string>
+    <string name="account_withdraw_pay_success_return">返回主页</string>
+    <string name="account_withdraw_info_yet">您已經绑定</string>
+    <string name="account_withdraw_info_not_conrrect">账户信息不正确</string>
+    <string name="account_withdraw_error_incorrect_money">申请金额数量错误，请检查后重试</string>
+    <string name="withdraw_account">兑换收益账号</string>
+    <string name="wx_withdraw_name_hint">与兑换收益微信的姓名一致</string>
+    <string name="wx_withdraw_cid_hint">与兑换收益微信的身份证一致</string>
+    <string name="wx_withdraw_account_hint">(已绑定的微信账号)</string>
+    <string name="wx_withdraw_title">请填写准确的实名信息，不匹配会造成打款失败</string>
+    <string name="paypal_withdraw_title">请填写准确的实名信息，不匹配会造成打款失败</string>
+    <string name="certification_bind_title">兑换收益账户</string>
+
+    <string name="account_withdraw_record">兑换%1$.2f%2$s</string>
+    <string name="account_withdraw_bind_btn">绑定</string>
+    <string name="account_fill_wx_info_noti">收益将打款到微信零钱\n%1$s，否则将兑换失败</string>
+    <string name="account_fill_wx_info_noti_highlight">仅支持绑定过银行卡的微信</string>
+    <string name="account_fill_wx_info_first">第1步</string>
+
+    <string name="account_withdraw_input_error_0">请输入金额</string>
+    <string name="account_withdraw_input_error_min_limit">不能填写小于单笔兑换金额下限的数字</string>
+    <string name="account_withdraw_input_error_max_limit">不能填写大于单笔兑换金额上限的数字</string>
+    <string name="account_withdraw_input_error_more__today_personal_limit">不能填写超过今日可兑换金额的数字</string>
+    <string name="account_withdraw_input_error_more__personal_account">你还没有这么多钱，赶紧去直播挣钱吧</string>
+
+    <string name="account_withdraw_error_pay_type">选择兑换收益类型出错，请检查后重试</string>
+    <string name="account_withdraw_pay_yet_hanlder_not_commit_again">订单已经处理，请不要重复请求</string>
+    <string name="account_withdraw_pay_user_account_not_enough_money">用户结算账户余额不足</string>
+    <string name="account_withdraw_pay_user_account_commut_try_later_again">账户正在结算，不可兑换收益，请稍后再试</string>
+    <string name="account_withdraw_pay_user_account_item_handler">订单处理中</string>
+    <string name="account_withdraw_pay_user_account_more_than_max_day">超出每日兑换最大限额</string>
+    <string name="account_withdraw_pay_user_account_withdraw_error">兑换收益失败</string>
+    <string name="account_withdraw_pay_user_account_more_than_max_money_once">超出单笔兑换最大限额</string>
+    <string name="account_withdraw_pay_user_account_more_than_max_count_day">超出单日兑换最大次数</string>
+    <string name="account_withdraw_pay_user_account_less_than_limit_money_day">兑换金额不足最小金额</string>
+    <string name="account_withdraw_unknown_error">操作失败，请反馈相关问题。(%1$d)</string>
+    <string name="account_withdraw_pay_user_account_not_enough">余额不足</string>
+    <string name="account_cur_diamond">当前可用金钻</string>
+    <string name="account_cur_ticket">娱乐星票</string>
+    <string name="wx_withdraw_has_bind_tip">已绑定的微信账号</string>
+    <string name="bind_first_step">第1步</string>
+    <string name="bind_wx_tip">请绑定微信</string>
+    <string name="withdraw_rebind">重新绑定</string>
+    <string name="withdraw_rebind_tip">姓名或身份证与微信实名不匹配，兑换收益失败</string>
+    <string name="agreement_txt">小米直播兑换收益协议</string>
+    <string name="withdraw_agreement">已观看并同意《小米直播兑换收益协议》</string>
+    <string name="withdraw_detail_info">详细信息</string>
+    <string name="withdraw_detail_info_1">1.请填写所绑微信号对应的实名信息，将用于微信验证，不匹配将无法兑换成功。</string>
+    <string name="withdraw_detail_info_2">2.根据国家相关税务政策规定，我们将使用填写的实名信息，为您代扣缴纳相关税费。</string>
+    <string name="withdraw_detail_info_3">3.所填实名信息将严格保密，不作他用。</string>
+
+    <!--Paypal提现 begin-->
+    <string name="input_paypal_account">请输入有效的PayPal账号</string>
+    <string name="input_paypal_info_tips">与兑换收益的PayPal账号信息一致</string>
+    <string name="bind_paypal_tips">你只能绑定一个PayPal账号，并且绑定成功后不能再修改</string>
+    <string name="bind_paypal">点击绑定PayPal账号</string>
+    <string name="paypal_id_is_empty">请输入PayPal账号</string>
+    <string name="first_name_is_empty">请输入您的姓</string>
+    <string name="last_name_is_empty">请输入您的名</string>
+    <string name="paypal_bind_fail">绑定失败，请确认输入的账号是否真实有效！</string>
+    <string name="paypal_has_been_binded">此PayPal账号已绑定其它直播账号，请重新输入！</string>
+    <string name="paypal_withdraw_detail_info_1">1.请填写所绑PayPal对应的实名信息，将用于PayPal验证，不匹配将无法兑换成功。</string>
+    <string name="paypal_withdraw_detail_info_2">2.根据国家相关税务政策规定，我们将使用填写的实名信息，为您代扣缴纳相关税费。</string>
+    <string name="paypal_withdraw_detail_info_3">3.所填实名信息将严格保密，不作他用。</string>
+
+    <string name="paypal_withdraw_has_bind_tip">已绑定的PayPal账号</string>
+    <string name="withdraw_bind_fail">绑定失败</string>
+    <string name="account_withdraw_paypal_pay_success">我们已经收到您的兑换申请，会尽快给您打款，请留意您的PayPal账号</string>
+    <string name="account_withdraw_paypal_noti">温馨提示：每天最多兑换收益5次 单次下限1美元上限100美元</string>
+    <string name="paypal_account_name">PayPal账号</string>
+    <string name="first_name">你的名</string>
+    <string name="last_name">你的姓</string>
+    <string name="withdraw_paypal">PayPal</string>
+    <string name="withdraw_bind_success">已绑定</string>
+    <string name="account_has_been_binded_paypal">您已绑定其它PayPal账号</string>
+    <!--Paypal提现 end-->
+
+    <string name="earn_records_title_time">%1$d年%2$d月</string>
+    <string name="earn_records_picker_date_format">yyyy年MM月</string>
+    <string name="select_year_month">选择年月</string>
+    <string name="total_profit_this_month">本月总收益（元）</string>
+    <string name="total_cost_this_month">本月总支出（元）</string>
+    <string name="today_has_income">当日金额累加中</string>
+    <string name="my_profit_notice">公告：此处展示现金进出记录。签约后主播的收益属星票记录，请到“我的薪资单”页面查看。此页面时间为北京时间</string>
+    <string name="withdraw_data_unavailable">数据正在加载中，请稍后再试</string>
+    <string name="toast_account_not_enough_money">当前可兑换金额小于%1$d%2$s，无法兑换收益</string>
+    <string name="all_records_this_month">本月收益记录如上</string>
+    <plurals name="records_money_amount">
+        <item quantity="one">%1$s USD</item>
+        <item quantity="other">%1$s USD</item>
+    </plurals>
+    <string name="lable_day">Day</string>
+    <string name="no_profit">No income this month</string>
+    <string name="load_failed_try_again">Couldn\'t load data, tap to try again</string>
+    <string name="withdraw_fail_title">兑换收益失败</string>
+    <string name="withdraw_fail_message">姓名或身份证与微信绑定的银行卡不匹配</string>
+    <string name="withdraw_fail_info1">1.请确保您的微信已经绑定银行卡</string>
+    <string name="withdraw_fail_info2">2.请确保您输入的身份信息和微信绑定银行卡的身份信息一致</string>
+    <string name="rebind_tip">当前微信已被其他账号绑定</string>
+
+    <string name="real_name_status_fail">实名验证失败</string>
+    <string name="real_name_status_success">实名已验证</string>
+    <string name="real_name_status_not_verify">实名未验证</string>
+    <string name="today_available_money">今日可提%1$s%2$s</string>
+    <string name="withdraw_input_invalid">小数点后不超过两位</string>
+    <string name="withdraw_length_invalid">输入超出长度限制</string>
+    <string name="please_input_digits">请输入数字</string>
+    <string name="cash_records">兑换现金记录</string>
+    <string name="no_withdraw_record">暂无兑换收益记录哦</string>
+    <string name="id_identification_status">实名认证已通过</string>
+    <string name="select_birth_day">请选择出生日期</string>
+    <string name="lable_hour">时</string>
+    <string name="lable_minute">分</string>
+    <string name="lable_year">年</string>
+    <string name="lable_month">月</string>
+    <string name="logining">登录中...</string>
+    <string name="install_weixin">未安装微信客户端，请先下载安装</string>
 </resources>

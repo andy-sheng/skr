@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal">
+    <!--微信提现-->
+    <LinearLayout
+        android:id="@+id/withdraw_weixin_btn"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/withdraw_withdraw_weixin_button"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/withdraw_weixin_btn_icon"
+            android:drawablePadding="@dimen/margin_26"
+            android:duplicateParentState="true"
+            android:gravity="center"
+            android:text="@string/withdraw_weixin"
+            android:textColor="@color/withdraw_weixin_btn_text_color"
+            android:textSize="@dimen/text_size_40"/>
+    </LinearLayout>
+    <!--分隔-->
+    <View
+        android:id="@+id/withdraw_btn_divider"
+        android:layout_width="@dimen/margin_20"
+        android:layout_height="match_parent"
+        android:layout_weight="0"/>
+    <!--PayPal提现-->
+    <LinearLayout
+        android:id="@+id/withdraw_paypal_btn"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/withdraw_withdraw_paypal_button"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/withdraw_paypal_btn_icon"
+            android:drawablePadding="@dimen/margin_26"
+            android:duplicateParentState="true"
+            android:gravity="center"
+            android:text="@string/withdraw_paypal"
+            android:textColor="@color/withdraw_paypal_btn_text_color"
+            android:textSize="@dimen/text_size_40"/>
+    </LinearLayout>
+</LinearLayout>

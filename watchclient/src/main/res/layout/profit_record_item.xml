@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:textColor="@color/color_black_trans_90"
+        android:text="来自娱乐直播"
+        android:layout_marginLeft="6.67dp"
+        android:textSize="@dimen/text_size_44"/>
+
+    <TextView
+        android:id="@+id/num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_44"
+        android:text="50"
+        android:layout_marginRight="6.67dp"/>
+
+    <View
+        android:id="@+id/split_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.33dp"
+        android:background="@color/color_d8d8d8"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>
