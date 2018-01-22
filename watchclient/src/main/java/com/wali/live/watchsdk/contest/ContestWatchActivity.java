@@ -805,6 +805,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
                 }
             } else if (event.type == EventClass.ShowContestView.TYPE_WIN_SHARE_VIEW) {
                 if (event.action == EventClass.ShowContestView.ACTION_SHOW) {
+                    hideContestSuccessView();
                     showWinRevivalView();
                 }
             }

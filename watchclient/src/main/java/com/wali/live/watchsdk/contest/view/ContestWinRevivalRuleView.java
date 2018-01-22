@@ -20,6 +20,8 @@ import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import com.wali.live.watchsdk.contest.share.ContestShareHelper;
 import com.wali.live.watchsdk.ipc.service.ShareInfo;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
+import com.wali.live.eventbus.EventClass;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by lan on 2018/1/11.
@@ -137,6 +139,8 @@ public class ContestWinRevivalRuleView extends RxRelativeLayout implements View.
             String imgLocalPath = saveContestWinSharePic();
             SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_WECHAT, imgLocalPath);
         }
+        EventBus.getDefault().post(new EventClass.ShowContestView(EventClass.ShowContestView.TYPE_SUCCESS_VIEW,
+                EventClass.ShowContestView.ACTION_HIDE));
     }
 
     @Override

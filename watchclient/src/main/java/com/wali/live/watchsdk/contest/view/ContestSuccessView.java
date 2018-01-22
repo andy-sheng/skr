@@ -101,7 +101,6 @@ public class ContestSuccessView extends RxRelativeLayout implements View.OnClick
         } else if (i == R.id.share_tv) {
             EventBus.getDefault().post(new EventClass.ShowContestView(EventClass.ShowContestView.TYPE_WIN_SHARE_VIEW,
                     EventClass.ShowContestView.ACTION_SHOW));
-            setVisibility(GONE);
         }
     }
 }
