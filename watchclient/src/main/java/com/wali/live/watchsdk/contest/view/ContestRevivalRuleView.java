@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.base.log.MyLog;
 import com.base.mvp.specific.RxRelativeLayout;
 import com.base.utils.toast.ToastUtils;
 import com.wali.live.watchsdk.R;

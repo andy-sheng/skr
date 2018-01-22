@@ -40,6 +40,7 @@ import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.BaseSdkController;
 import com.wali.live.component.EmptyController;
 import com.wali.live.proto.LiveProto;
+import com.wali.live.receiver.NetworkReceiver;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
@@ -580,7 +581,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
                 } else {
                     ContestCurrentCache.getInstance().setWatchMode(false);
                 }
-//                ContestCurrentCache.getInstance().setContinue(true);
+                ContestCurrentCache.getInstance().setContinue(true);
                 MyLog.w(TAG, "ENTER LIVE SUCCESS");
                 MiLinkClientAdapter.getsInstance().setGlobalPushFlag(true);
                 MyLog.e(TAG, "processEnterLive:" + enterRoomInfo.getRetCode() + " mVideoUrl=" + mMyRoomData.getVideoUrl());
@@ -664,11 +665,17 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
                     if (!TextUtils.isEmpty(rsp.getShareUrl())) {
                         mMyRoomData.setShareUrl(rsp.getShareUrl());
                     }
-                    if (null != rsp.getContestInfo()) {
-                        mMyRoomData.setAbleContest(rsp.getContestInfo().getAbleContest());
-                        mMyRoomData.setRevivalNum(rsp.getContestInfo().getRevivalNum());
-                        ContestGlobalCache.setRevivalNum(mMyRoomData.getRevivalNum());
-                        ContestCurrentCache.getInstance().setContinue(mMyRoomData.isAbleContest());
+                    if (rsp.hasContestInfo()) {
+                        if (rsp.getContestInfo().hasAbleContest()) {
+                            MyLog.w(TAG, "rsp.getContestInfo().hasAbleContest() = " + rsp.getContestInfo().getAbleContest());
+                            mMyRoomData.setAbleContest(rsp.getContestInfo().getAbleContest());
+                            ContestCurrentCache.getInstance().setContinue(mMyRoomData.isAbleContest());
+                        }
+                        if (rsp.getContestInfo().hasRevivalNum()) {
+                            MyLog.w(TAG, "rsp.getContestInfo().getRevivalNum()=" + rsp.getContestInfo().getRevivalNum());
+                            mMyRoomData.setRevivalNum(rsp.getContestInfo().getRevivalNum());
+                            ContestGlobalCache.setRevivalNum(mMyRoomData.getRevivalNum());
+                        }
                     }
                     break;
                 case ErrorCode.CODE_ROOM_NOT_EXIST:
@@ -804,23 +811,19 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
         }
     }
 
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onEventMainThread(EventClass.NetWorkChangeEvent event) {
-//        if (null != event) {
-//            NetworkReceiver.NetState netCode = event.getNetState();
-//            if (netCode != NetworkReceiver.NetState.NET_NO) {
-//                MyLog.v(TAG, "onNetStateChanged netCode = " + netCode);
-//                mIpSelectionHelper.onNetworkStatus(true);
-//                if (!isFinishing()) {
-//                    reconnect();
-//                    // TODO: 2018/1/13 流量4g网络转化暂时去掉  请参考WatchActivity
-//                    queryRoomInfo();
-//                }
-//            } else {
-//                mIpSelectionHelper.onNetworkStatus(false);
-//            }
-//        }
-//    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(com.wali.live.event.EventClass.NetWorkChangeEvent event) {
+        if (null != event) {
+            NetworkReceiver.NetState netCode = event.getNetState();
+            if (netCode != NetworkReceiver.NetState.NET_NO) {
+                MyLog.v(TAG, "onNetStateChanged netCode = " + netCode);
+                if (!isFinishing()) {
+                    // TODO: 2018/1/13 流量4g网络转化暂时去掉  请参考WatchActivity
+                    queryRoomInfo();
+                }
+            }
+        }
+    }
 
     @Override
     public boolean onEvent(int event, IParams params) {

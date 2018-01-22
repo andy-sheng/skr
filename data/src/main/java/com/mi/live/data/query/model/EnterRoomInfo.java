@@ -33,6 +33,12 @@ public class EnterRoomInfo {
     BarrageMsgExt.MicBeginInfo micInfo;
     BarrageMsgExt.PkStartInfo pkInfo;
 
+    //contest冲顶大会新加字段
+    boolean ableContest;//可以参加答题 true：可以
+    int revivalNum;//复活卡数量
+    boolean isLate;//是否迟到 true：是
+    String contestId;//场次id
+
     public int getRetCode() {
         return retCode;
     }
@@ -183,5 +189,37 @@ public class EnterRoomInfo {
 
     public BarrageMsgExt.PkStartInfo getPkStartInfo() {
         return this.pkInfo;
+    }
+
+    public boolean isAbleContest() {
+        return ableContest;
+    }
+
+    public void setAbleContest(boolean ableContest) {
+        this.ableContest = ableContest;
+    }
+
+    public int getRevivalNum() {
+        return revivalNum;
+    }
+
+    public void setRevivalNum(int revivalNum) {
+        this.revivalNum = revivalNum;
+    }
+
+    public boolean isLate() {
+        return isLate;
+    }
+
+    public void setLate(boolean late) {
+        isLate = late;
+    }
+
+    public String getContestId() {
+        return contestId;
+    }
+
+    public void setContestId(String contestId) {
+        this.contestId = contestId;
     }
 }
