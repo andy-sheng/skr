@@ -530,4 +530,8 @@
     <string name="share_get_revival">获得复活卡</string>
     <string name="share_dest">快输入我的邀请码，一起答题赢奖金吧！</string>
     <string name="share_get_relivecard">分享战绩得复活卡</string>
+
+    <string name="income_content">下载小米直播就能马上提现全部奖金哦~</string>
+    <string name="income_think">再想想</string>
+    <string name="income_download">去下载</string>
 </resources>

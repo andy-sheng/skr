@@ -206,7 +206,7 @@ public class ContestShareHelper {
     public static String getQrCodeFilePath(boolean hasLogo) throws Exception {
         String qrcodeDefaultPath = Environment.getExternalStorageDirectory() + "/Xiaomi/WALI_LIVE";
         String qrcodePathAndVersion = PreferenceUtils.getSettingString(GlobalData.app(), PreferenceKeys.PRE_KEY_FEED_SHARE_IMG_LOCALPATH_VERSION, "");
-        String homepage = PreferenceUtils.getSettingString(GlobalData.app(), PreferenceKeys.PRE_KEY_MILIVE_HOST, "http://live.mi.com");
+        String homepage = PreferenceUtils.getSettingString(GlobalData.app(), PreferenceKeys.PRE_KEY_MILIVE_HOST, "http://app.mi.com/details?id=com.wali.live");
         Bitmap logo = null;
         if (hasLogo) {
             logo = BitmapFactory.decodeResource(GlobalData.app().getResources(), R.drawable.ic_launcher);
