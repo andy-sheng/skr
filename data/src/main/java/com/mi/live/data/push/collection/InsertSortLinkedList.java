@@ -27,6 +27,7 @@ public class InsertSortLinkedList<T extends Comparable<T>> {
 
     public InsertSortLinkedList(int maxSize, boolean needRemoveDuplicate) {
         this.maxSize = maxSize;
+
         this.needRemoveDuplicate = needRemoveDuplicate;
     }
 

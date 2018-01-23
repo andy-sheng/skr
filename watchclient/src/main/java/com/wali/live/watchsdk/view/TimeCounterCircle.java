@@ -12,7 +12,6 @@ import com.base.utils.display.DisplayUtils;
 import com.wali.live.watchsdk.R;
 
 public class TimeCounterCircle extends ProgressBar {
-
     private Paint mPaint;
     private int mRadius = DisplayUtils.dip2px(23.67f);//半径
     private int strokeWidth = DisplayUtils.dip2px(4.67f);//画笔画线的宽度

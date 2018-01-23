@@ -68,9 +68,11 @@ import com.wali.live.watchsdk.contest.view.QuestionView;
 import com.wali.live.watchsdk.contest.winner.WinerListDialog;
 import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.watch.event.LiveEndEvent;
+import com.wali.live.watchsdk.watch.presenter.VideoShowPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomSystemMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
+import com.wali.live.watchsdk.watch.view.IWatchVideoView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -83,7 +85,7 @@ import java.util.List;
  * Created by lan on 2018/1/10.
  */
 public class ContestWatchActivity extends ContestComponentActivity implements View.OnClickListener,
-        IContestWatchView, IContestPrepareView, IContestInviteView, IEventObserver {
+        IContestWatchView, IContestPrepareView, IContestInviteView, IEventObserver, IWatchVideoView {
     private static final String EXTRA_ZUID = "extra_zuid";
     private static final String EXTRA_ROOM_ID = "extra_room_id";
     private static final String EXTRA_VIDEO_URL = "extra_video_url";
@@ -108,11 +110,12 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
     private ContestRevivalRuleView mRevivalRuleView;
     private ContestWinRevivalRuleView mContestWinRevivalRuleView;
     private ContestNoWinView mNoWinView;
-
     private View mPlaceholderView;
+    private TextureView mPlayerView;
 
     private ContestVideoPlayerPresenter mPlayerPresenter;
-    private TextureView mPlayerView;
+    private VideoShowPresenter mVideoShowPresenter;
+
     private final BaseSdkController mController = new BaseSdkController() {
         @Override
         protected String getTAG() {
@@ -167,7 +170,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         }
         setContentView(R.layout.contest_watch_layout);
-
+        MiLinkClientAdapter.getsInstance().setGlobalPushFlag(true);
         initData();
         initHelper();
 
@@ -397,11 +400,23 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
         enterLive();
     }
 
+    private void getVideoUrlFromServer() {
+        if (mVideoShowPresenter == null) {
+            mVideoShowPresenter = new VideoShowPresenter(this);
+            addPresent(mVideoShowPresenter);
+        }
+        mVideoShowPresenter.getVideoUrlByRoomId(mMyRoomData.getUid(), mMyRoomData.getRoomId());
+    }
+
     private void enterLive() {
         if (isFinishing()) {
             return;
         }
-        mContestWatchPresenter.enterLiveToServer(mMyRoomData.getUid(), mMyRoomData.getRoomId());
+        if (!TextUtils.isEmpty(mMyRoomData.getRoomId())) {
+            mContestWatchPresenter.enterLiveToServer(mMyRoomData.getUid(), mMyRoomData.getRoomId());
+        } else {
+            getVideoUrlFromServer();
+        }
     }
 
     private void queryRoomInfo() {
@@ -583,7 +598,6 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
                     ContestCurrentCache.getInstance().setWatchMode(false);
                 }
                 MyLog.w(TAG, "ENTER LIVE SUCCESS");
-                MiLinkClientAdapter.getsInstance().setGlobalPushFlag(true);
                 MyLog.e(TAG, "processEnterLive:" + enterRoomInfo.getRetCode() + " mVideoUrl=" + mMyRoomData.getVideoUrl());
                 updateViewerTvByData();
                 mEnterLiveSuccess = true;
@@ -836,10 +850,29 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
     @Override
     public boolean onEvent(int event, IParams params) {
         switch (event) {
-
-
         }
         return false;
+    }
+
+    @Override
+    public void updateVideoUrl(String videoUrl) {
+        if (TextUtils.isEmpty(mMyRoomData.getVideoUrl()) && !TextUtils.isEmpty(videoUrl)) {
+            mMyRoomData.setVideoUrl(videoUrl);
+            MyLog.d(TAG, "updateVideoUrl startPlayer");
+            play(videoUrl);
+        }
+    }
+
+    @Override
+    public void updateRoomInfo(String roomId, String videoUrl) {
+        mMyRoomData.setRoomId(roomId);
+        updateVideoUrl(videoUrl);
+        enterLive();
+    }
+
+    @Override
+    public void notifyLiveEnd() {
+        currentContestEnd("notifyLiveEnd");
     }
 
     private static class MyUIHandler extends Handler {
