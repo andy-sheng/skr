@@ -1,6 +1,5 @@
 package com.wali.live.watchsdk.contest.share;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -19,6 +18,7 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.MD5;
+import com.base.utils.image.ImageUtils;
 import com.base.utils.version.VersionManager;
 import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.push.model.contest.LastQuestionInfoModel;
@@ -102,6 +102,10 @@ public class ContestShareHelper {
 //            if (hasExistsFile != null && hasExistsFile.exists()) {
 //                return hasExistsFile.getAbsolutePath();
 //            }
+            File dir = new File(share_pic);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
             String fileName = MD5.MD5_16(CONTEST_SHARE_INVITE_SUFFIX + inviteCode);
             File file = new File(share_pic, fileName + ".JPEG");
             Bitmap bitmap;
@@ -114,7 +118,7 @@ public class ContestShareHelper {
             if (!file.exists()) {
                 file.createNewFile();
             }
-//            ImageUtils.saveBmpToFile(bitmap, file.getAbsolutePath());
+            ImageUtils.saveBmpToFile(bitmap, file.getAbsolutePath());
             return file.getAbsolutePath();
         } catch (Exception e) {
             MyLog.e(e);
@@ -182,6 +186,10 @@ public class ContestShareHelper {
 //            if (hasExistsFile != null && hasExistsFile.exists()) {
 //                return hasExistsFile.getAbsolutePath();
 //            }
+            File dir = new File(share_pic);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
             String fileName = MD5.MD5_16(CONTEST_SHARE_WIN_SUFFIX + inviteCode);
             File file = new File(share_pic, fileName + ".JPEG");
             Bitmap bitmap;
@@ -194,7 +202,7 @@ public class ContestShareHelper {
             if (!file.exists()) {
                 file.createNewFile();
             }
-//            ImageUtils.saveBmpToFile(bitmap, file.getAbsolutePath());
+            ImageUtils.saveBmpToFile(bitmap, file.getAbsolutePath());
             return file.getAbsolutePath();
         } catch (Exception e) {
             MyLog.e(e);

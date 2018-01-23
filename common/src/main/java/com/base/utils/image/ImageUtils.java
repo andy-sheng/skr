@@ -7,13 +7,22 @@ import android.text.TextUtils;
 import com.base.log.MyLog;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by chengsimin on 16/9/12.
  */
 public class ImageUtils {
+    private static final String TAG = ImageUtils.class.getSimpleName();
+
     public static Bitmap getLocalBitmap(String path) {
         if (TextUtils.isEmpty(path)) {
             return null;
@@ -119,4 +128,47 @@ public class ImageUtils {
         sb.append("@style@").append(String.valueOf(dimenSize)).append("jpg");
         return sb.toString();
     }
+
+    //可以直接在ui线程调用的api
+    public static void saveBmpToFile(final Bitmap bitmap, final String path) {
+        Observable.just(0)
+                .map(new Func1<Integer, Object>() {
+                    @Override
+                    public Object call(Integer integer) {
+                        saveToFile(bitmap, path);
+                        return null;
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object o) {
+
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.w(TAG, "saveToFile failed exception=" + throwable);
+                    }
+                });
+
+    }
+
+    public static boolean saveToFile(Bitmap bitmap, String path) {
+        return saveToFile(bitmap, path, false);
+    }
+
+    public static boolean saveToFile(Bitmap bitmap, String path, boolean saveToPng) {
+        try {
+            if (bitmap != null) {
+                FileOutputStream outputStream = new FileOutputStream(path);
+                bitmap.compress(saveToPng ? Bitmap.CompressFormat.PNG : Bitmap.CompressFormat.JPEG, 100, outputStream);
+                outputStream.close();
+                return true;
+            }
+        } catch (Exception e) {
+        }
+        return false;
+    }
+
 }
