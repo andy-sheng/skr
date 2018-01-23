@@ -82,47 +82,57 @@ public class ContestMessagePresenter implements IPushMsgProcessor {
         mCallBack = callBack;
     }
 
+    private void processDataInUIThread(final BarrageMsg msg) {
+        mMainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "processDataInUIThread  type=" + msg.getMsgType() + " threadId =" + Thread.currentThread().getId());
+                switch (msg.getMsgType()) {
+                    case B_MSG_TYPE_QUESTION: {
+                        ContestQuestionMsgExt msgExt = (ContestQuestionMsgExt) msg.getMsgExt();
+                        MyLog.w(TAG, "QUESTION step0");
+                        if (msgExt != null && msgExt.getQuestionInfoModel() != null) {
+                            MyLog.w(TAG, "QUESTION step1=" + msgExt.toString());
+                            String questionId = msgExt.getQuestionInfoModel().getSeq();
+                            if (!TextUtils.isEmpty(questionId) && !mQuestionMsgExts.contains(questionId)) {
+                                mQuestionMsgExts.add(questionId);
+                                mControlQueue.offer(msgExt);
+                                MyLog.w(TAG, "QUESTION process type=" + msg.getMsgType() + "msgExt=" + msgExt.toString() + " questionId=" + questionId);
+                            } else {
+                                MyLog.w(TAG, "QUESTION step 3 questionId=" + questionId);
+                            }
+                        }
+                    }
+                    break;
+                    case B_MSG_TYPE_ANSWER: {
+                        ContestAnswerMsgExt msgExt = (ContestAnswerMsgExt) msg.getMsgExt();
+                        MyLog.w(TAG, "ANSWER step0");
+                        if (msgExt != null && msgExt.getQuestionInfoModel() != null) {
+                            MyLog.w(TAG, "ANSWER step1 msgExt=" + msgExt.toString());
+                            String questionId = msgExt.getQuestionInfoModel().getSeq();
+                            if (!TextUtils.isEmpty(questionId) && !mAnswerMsgExts.contains(questionId)) {
+                                mAnswerMsgExts.add(questionId);
+                                mControlQueue.offer(msgExt);
+                                MyLog.w(TAG, "ANSWER process type=" + msg.getMsgType() + "msgExt=" + msgExt.toString() + " questionId=" + questionId);
+                            } else {
+                                MyLog.w(TAG, "ANSWER step 3 questionId=" + questionId);
+                            }
+                        }
+                    }
+                    break;
+                }
+                next();
+            }
+        });
+    }
+
     @Override
     public void process(BarrageMsg msg, RoomBaseDataModel roomBaseDataModel) {
         if (msg == null) {
             return;
         }
         MyLog.w(TAG, "process  type=" + msg.getMsgType() + " threadId =" + Thread.currentThread().getId());
-        switch (msg.getMsgType()) {
-            case B_MSG_TYPE_QUESTION: {
-                ContestQuestionMsgExt msgExt = (ContestQuestionMsgExt) msg.getMsgExt();
-                MyLog.w(TAG, "QUESTION step0");
-                if (msgExt != null && msgExt.getQuestionInfoModel() != null) {
-                    MyLog.w(TAG, "QUESTION step1=" + msgExt.toString());
-                    String questionId = msgExt.getQuestionInfoModel().getSeq();
-                    if (!TextUtils.isEmpty(questionId) && !mQuestionMsgExts.contains(questionId)) {
-                        mQuestionMsgExts.add(questionId);
-                        mControlQueue.offer(msgExt);
-                        MyLog.w(TAG, "QUESTION process type=" + msg.getMsgType() + "msgExt=" + msgExt.toString() + " questionId=" + questionId);
-                    } else {
-                        MyLog.w(TAG, "QUESTION step 3 questionId=" + questionId);
-                    }
-                }
-            }
-            break;
-            case B_MSG_TYPE_ANSWER: {
-                ContestAnswerMsgExt msgExt = (ContestAnswerMsgExt) msg.getMsgExt();
-                MyLog.w(TAG, "ANSWER step0");
-                if (msgExt != null && msgExt.getQuestionInfoModel() != null) {
-                    MyLog.w(TAG, "ANSWER step1 msgExt=" + msgExt.toString());
-                    String questionId = msgExt.getQuestionInfoModel().getSeq();
-                    if (!TextUtils.isEmpty(questionId) && !mAnswerMsgExts.contains(questionId)) {
-                        mAnswerMsgExts.add(questionId);
-                        mControlQueue.offer(msgExt);
-                        MyLog.w(TAG, "ANSWER process type=" + msg.getMsgType() + "msgExt=" + msgExt.toString() + " questionId=" + questionId);
-                    } else {
-                        MyLog.w(TAG, "ANSWER step 3 questionId=" + questionId);
-                    }
-                }
-            }
-            break;
-        }
-        next();
+        processDataInUIThread(msg);
     }
 
     //处理队列消息
