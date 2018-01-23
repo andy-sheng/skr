@@ -26,7 +26,13 @@ public class ProfitRecordsPresenter implements Presenter {
         Observable.create(new Observable.OnSubscribe<ProfitMonthDetail>() {
             @Override
             public void call(Subscriber<? super ProfitMonthDetail> subscriber) {
-
+                ProfitMonthDetail monthDetail = mRepositroy.fetchRecords(uid, year, month);
+                if (monthDetail != null) {
+                    subscriber.onNext(monthDetail);
+                    subscriber.onCompleted();
+                } else {
+                    subscriber.onError(new Throwable("monthDetail is null"));
+                }
             }
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
