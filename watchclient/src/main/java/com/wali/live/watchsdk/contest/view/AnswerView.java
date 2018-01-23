@@ -222,7 +222,7 @@ public class AnswerView extends RxRelativeLayout {
 
     private void hideView() {
         setVisibility(GONE);
-
+        MyLog.w(TAG, "mIsLastAnswer= " + mIsLastAnswer + " ContestCurrentCache.getInstance().isCorrect()=" + ContestCurrentCache.getInstance().isCorrect());
         if (mIsLastAnswer) {
             if (ContestCurrentCache.getInstance().isCorrect()) {
                 ContestCurrentCache.getInstance().setSuccess(true);
