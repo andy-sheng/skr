@@ -67,6 +67,7 @@ import com.wali.live.watchsdk.contest.view.ContestWinRevivalRuleView;
 import com.wali.live.watchsdk.contest.view.QuestionView;
 import com.wali.live.watchsdk.contest.winner.WinerListDialog;
 import com.wali.live.watchsdk.eventbus.EventClass;
+import com.wali.live.watchsdk.watch.event.LiveEndEvent;
 import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomSystemMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
@@ -765,6 +766,13 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
         if (event != null) {
             enterLive();
         }
+    }
+
+    // 直播结束
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LiveEndEvent event) {
+        MyLog.d(TAG, "liveEndEvent");
+        currentContestEnd("LiveEndEvent");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

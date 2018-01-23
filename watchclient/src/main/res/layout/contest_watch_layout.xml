@@ -114,6 +114,7 @@
         android:layout_above="@+id/input_view"
         android:layout_alignWithParentIfMissing="true"
         android:layout_marginBottom="@dimen/view_dimen_60"
+        android:layout_marginRight="70dp"
         android:fadingEdge="none"
         android:fadingEdgeLength="0dp"
         android:overScrollMode="never"
