@@ -1,5 +1,7 @@
 package com.mi.live.data.push.collection;
 
+import com.base.log.MyLog;
+
 import java.util.ArrayList;
 
 /**
@@ -110,6 +112,7 @@ public class InsertSortLinkedList<T extends Comparable<T>> {
     }
 
     public synchronized void replaceTail(T data) {
+        MyLog.w(TAG, "replaceTail");
         if (data != null) {
             last = data;
             Node<T> current = header.next;

@@ -166,6 +166,7 @@ public class LiveRoomChatMsgManager {
 
 
     private void replaceEnterAndLike(CommentModel commentModel) {
+        MyLog.w(TAG, "replaceEnterAndLike");
         if (chatMsgList.size() > 0) {
             CommentModel lastComment = chatMsgList.getLastRough();
             if (lastComment.getMsgType() != BarrageMsgType.B_MSG_TYPE_JOIN &&
