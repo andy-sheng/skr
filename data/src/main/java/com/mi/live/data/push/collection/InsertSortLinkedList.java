@@ -15,11 +15,9 @@ import java.util.ArrayList;
  * 可以设置是否去重，如果设置去重，会先查找待插入的元素，如果找到，执行更新，否则，执行插入操作
  */
 public class InsertSortLinkedList<T extends Comparable<T>> {
-
     public static final String TAG = "InsertSortLinkedList";
 
     public static final int MAX_MAX_SIZE = 3000;
-
     public static final int DEFAULT_MAX_SIZE = 500;
 
     private Node<T> header = new Node<T>();        //头结点
@@ -88,14 +86,14 @@ public class InsertSortLinkedList<T extends Comparable<T>> {
                 }
             }
             //开始插入
-            while (size >= maxSize) {
+            while (size >= MAX_MAX_SIZE) {
                 deleteFirst();
             }
             Node<T> node = new Node<T>(data);
             Node<T> current = header.next;
             Node<T> previous = null;
             int i = 0;
-            while (current != null && i < MAX_MAX_SIZE) {
+            while (current != null && i < maxSize) {
                 i++;
                 previous = current;
                 current = current.next;
