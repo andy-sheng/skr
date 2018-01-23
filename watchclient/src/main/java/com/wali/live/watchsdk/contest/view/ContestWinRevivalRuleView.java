@@ -1,6 +1,5 @@
 package com.wali.live.watchsdk.contest.view;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -18,9 +17,10 @@ import com.mi.live.data.push.model.contest.LastQuestionInfoModel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import com.wali.live.watchsdk.contest.share.ContestShareHelper;
+import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.ipc.service.ShareInfo;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
-import com.wali.live.eventbus.EventClass;
+
 import org.greenrobot.eventbus.EventBus;
 
 /**
