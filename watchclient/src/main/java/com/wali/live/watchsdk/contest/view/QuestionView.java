@@ -178,9 +178,7 @@ public class QuestionView extends RxRelativeLayout implements View.OnClickListen
     private void setItemsStatus() {
         for (int index = 0; index < mAnswerContainer.getChildCount(); index++) {
             View view = mAnswerContainer.getChildAt(index);
-            if (!view.isSelected()) {
-                view.findViewById(R.id.content_view).setEnabled(false);
-            }
+            view.setEnabled(false);
         }
     }
 
