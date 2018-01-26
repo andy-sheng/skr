@@ -15,6 +15,7 @@ import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.contest.ContestPrepareActivity;
 import com.wali.live.watchsdk.contest.ContestWatchActivity;
 import com.wali.live.watchsdk.cta.CTANotifyFragment;
+import com.wali.live.watchsdk.income.income.UserIncomeActivity;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
@@ -34,6 +35,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
     private static final String ACTION_OPEN_GAME_LIVE = "open_game_live";
     private static final String ACTION_OPEN_CONTEST_PREPARE = "open_contest_prepare";
     private static final String ACTION_OPEN_CONTEST_WATCH = "open_contest_watch";
+    private static final String ACTION_OPEN_WITHDRAW = "open_withdraw";
 
     private static final String EXTRA_CHANNEL_ID = "extra_channel_id";
     private static final String EXTRA_PACKAGE_NAME = "extra_package_name";
@@ -216,6 +218,16 @@ public class JumpSdkActivity extends BaseSdkActivity {
                                 ContestWatchActivity.open(JumpSdkActivity.this, playerId, liveId, videoUrl);
                             }
                         }, true, ACTION_OPEN_CONTEST_WATCH);
+                break;
+            }
+            case ACTION_OPEN_WITHDRAW: {
+                MiLiveSdkBinder.getInstance().checkActivitySecure(this, channelId, packageName, channelSecret,
+                        new ICommonCallBack() {
+                            @Override
+                            public void process(Object objects) {
+                                UserIncomeActivity.openActivity(JumpSdkActivity.this);
+                            }
+                        }, true, ACTION_OPEN_WITHDRAW);
                 break;
             }
             default: {

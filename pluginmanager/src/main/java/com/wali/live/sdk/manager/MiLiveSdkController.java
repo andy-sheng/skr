@@ -67,6 +67,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
     private static final String ACTION_OPEN_CONTEST_PREPARE = "open_contest_prepare";
     private static final String ACTION_OPEN_CONTEST_WATCH = "open_contest_watch";
+    private static final String ACTION_OPEN_WITHDRAW = "open_withdraw";
 
     private static final String ACTION_GET_CHANNEL_LIVES = "get_channel_lives";
     private static final String ACTION_GET_FOLLOWING_USERS = "get_following_users";
@@ -121,6 +122,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
         mMinVersionMap.put(ACTION_OPEN_CONTEST_PREPARE, 205055);
         mMinVersionMap.put(ACTION_OPEN_CONTEST_WATCH, 205055);
+        mMinVersionMap.put(ACTION_OPEN_WITHDRAW, 205056);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -478,6 +480,17 @@ public class MiLiveSdkController implements IMiLiveSdk {
         bundle.putString(EXTRA_LIVE_ID, liveId);
         bundle.putString(EXTRA_VIDEO_URL, videoUrl);
         jumpToSdk(activity, bundle, ACTION_OPEN_CONTEST_WATCH, callback);
+    }
+
+    @Override
+    public void openContestWithdrawals(Activity activity, IAssistantCallback callback) {
+        if (!checkVersion(ACTION_OPEN_WITHDRAW, callback)) {
+            return;
+        }
+        checkHasInit();
+
+        Bundle bundle = getBasicBundle();
+        jumpToSdk(activity, bundle, ACTION_OPEN_WITHDRAW, callback);
     }
 
     @Override

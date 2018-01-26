@@ -152,6 +152,24 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         });
             }
         }));
+        mDataList.add(new Bean("跳转到提现页(Intent)", new Runnable() {
+            @Override
+            public void run() {
+                MiLiveSdkController.getInstance().openContestWithdrawals(
+                        mActivity,
+                        new IMiLiveSdk.IAssistantCallback() {
+                            @Override
+                            public void notifyVersionLow() {
+                                ToastUtils.showToast("notifyVersionLow");
+                            }
+
+                            @Override
+                            public void notifyNotInstall() {
+                                ToastUtils.showToast("notifyNotInstall");
+                            }
+                        });
+            }
+        }));
 //        mDataList.add(new Bean("跳转到冲顶大会直播间(Intent)", new Runnable() {
 //            @Override
 //            public void run() {

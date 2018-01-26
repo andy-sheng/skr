@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mi.liveassistant"
-    android:versionCode="205055"
-    android:versionName="2.5.55">
+    android:versionCode="205056"
+    android:versionName="2.5.56">
 
     <application
         android:name="com.wali.live.init.LiveSdkApplication"
@@ -28,6 +28,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
 
     </application>
 

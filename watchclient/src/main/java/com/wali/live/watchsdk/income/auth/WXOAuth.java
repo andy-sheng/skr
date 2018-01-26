@@ -14,7 +14,7 @@ import com.wali.live.watchsdk.R;
 
 public class WXOAuth {
     private static final String TAG = WXOAuth.class.getSimpleName();
-    public static final String APP_ID = "wx0b1f5dd377f1cc6c"; //现在staging环境和线上用一个app_id
+    public static final String APP_ID = "wx1359869fd0d5dae0"; //现在staging环境和线上用一个app_id
     public static final int REQUEST_CODE_WX_SHARE = 3001;
     private static final String PACKAGE_WX = "com.tencent.mm";
 

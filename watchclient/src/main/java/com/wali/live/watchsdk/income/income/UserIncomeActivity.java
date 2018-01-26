@@ -9,8 +9,13 @@ import com.base.activity.BaseSdkActivity;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.log.MyLog;
 import com.mi.live.data.account.MyUserInfoManager;
+import com.mi.live.data.milink.event.MiLinkEvent;
 import com.wali.live.proto.UserProto;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 
 /**
@@ -39,11 +44,25 @@ public class UserIncomeActivity extends BaseSdkActivity {
 
     public static final int REQUEST_CODE_PAYPAL_WITHDRAW = 1002;
 
+    private boolean mIsAddFragment = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         MyLog.v(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_income_activity);
+
+        if (AccountAuthManager.triggerActionNeedAccount(this)) {
+            addFragment();
+        }
+    }
+
+    private void addFragment() {
+        if (mIsAddFragment) {
+            return;
+        }
+        mIsAddFragment = true;
+
         UserProto.Region region = MyUserInfoManager.getInstance().getRegion();
         if (region != null && "IN".equals(region.getCountryCode())) {
             FragmentNaviUtils.addFragment(this, R.id.main_act_container, IndiaIncomeFragment.class, null, true, false, true);
@@ -68,9 +87,16 @@ public class UserIncomeActivity extends BaseSdkActivity {
         super.onDestroy();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(MiLinkEvent.StatusLogined event) {
+        MyLog.w(TAG, "receive event : statusLogin");
+        if (event != null) {
+            addFragment();
+        }
+    }
+
     public static void openActivity(Activity activity) {
         Intent intent = new Intent(activity, UserIncomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         activity.startActivity(intent);
     }
 }
