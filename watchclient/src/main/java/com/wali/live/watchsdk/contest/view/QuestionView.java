@@ -29,7 +29,6 @@ import java.util.List;
 /**
  * Created by liuyanyan on 2018/1/15.
  */
-
 public class QuestionView extends RxRelativeLayout implements View.OnClickListener, IContestCommitAnswerView {
     private final String TAG = QuestionView.class.getSimpleName() + hashCode();
 
@@ -179,9 +178,7 @@ public class QuestionView extends RxRelativeLayout implements View.OnClickListen
     private void setItemsStatus() {
         for (int index = 0; index < mAnswerContainer.getChildCount(); index++) {
             View view = mAnswerContainer.getChildAt(index);
-            if (!view.isSelected()) {
-                view.findViewById(R.id.content_view).setEnabled(false);
-            }
+            view.setEnabled(false);
         }
     }
 
@@ -241,7 +238,7 @@ public class QuestionView extends RxRelativeLayout implements View.OnClickListen
 
                     TextView optionTitleTv = (TextView) itemView.findViewById(R.id.answer_option_tv);
                     optionTitleTv.setText(item.getText());
-                    if (ContestCurrentCache.getInstance().isContinue()){
+                    if (ContestCurrentCache.getInstance().isContinue()) {
                         optionTitleTv.setEnabled(true);
                     } else {
                         optionTitleTv.setEnabled(false);

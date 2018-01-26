@@ -14,4 +14,14 @@ public class FormatUtils {
             return df.format(money);
         }
     }
+
+    public static String formatRank(int rank) {
+        if (rank == -1) {
+            return "100+";
+        } else if (rank > 0 && rank <= 100) {
+            return String.valueOf(rank);
+        } else {
+            return "-";
+        }
+    }
 }

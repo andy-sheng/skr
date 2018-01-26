@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -30,10 +31,11 @@ import com.wali.live.watchsdk.channel.presenter.ChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelView;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
+import com.wali.live.watchsdk.contest.ContestPrepareActivity;
+import com.wali.live.watchsdk.contest.ContestWatchActivity;
 import com.wali.live.watchsdk.cta.CTANotifyFragment;
 import com.wali.live.watchsdk.login.LoginPresenter;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
-import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.wali.live.watchsdk.webview.WebViewActivity;
 
@@ -46,6 +48,8 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 /**
@@ -144,6 +148,12 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
         mRecyclerView.setAdapter(mRecyclerAdapter);
         mInputEditText = $(R.id.live_input_tv);
 
+        $(R.id.contest_prepare_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ContestPrepareActivity.open(MainActivity.this);
+            }
+        });
         $(R.id.watch_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,7 +166,7 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
                     RoomInfo roomInfo = RoomInfo.Builder.newInstance(Long.parseLong(input), null, null)
                             .setLiveType(0)
                             .build();
-                    WatchSdkActivity.openActivity(MainActivity.this, roomInfo);
+                    ContestWatchActivity.open(MainActivity.this, Long.parseLong(input), "", "");
                 } else {
                     ToastUtils.showToast("主播id不是数字");
                 }

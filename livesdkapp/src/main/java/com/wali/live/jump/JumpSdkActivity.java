@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
-import com.base.preference.PreferenceUtils;
 import com.base.utils.CommonUtils;
 import com.base.utils.callback.ICommonCallBack;
 import com.mi.live.data.location.Location;
@@ -13,6 +12,8 @@ import com.mi.liveassistant.R;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.statistics.StatisticsKey;
+import com.wali.live.watchsdk.contest.ContestPrepareActivity;
+import com.wali.live.watchsdk.contest.ContestWatchActivity;
 import com.wali.live.watchsdk.cta.CTANotifyFragment;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
@@ -31,6 +32,8 @@ public class JumpSdkActivity extends BaseSdkActivity {
     private static final String ACTION_OPEN_REPLAY = "open_replay";
     private static final String ACTION_OPEN_NORMAL_LIVE = "open_normal_live";
     private static final String ACTION_OPEN_GAME_LIVE = "open_game_live";
+    private static final String ACTION_OPEN_CONTEST_PREPARE = "open_contest_prepare";
+    private static final String ACTION_OPEN_CONTEST_WATCH = "open_contest_watch";
 
     private static final String EXTRA_CHANNEL_ID = "extra_channel_id";
     private static final String EXTRA_PACKAGE_NAME = "extra_package_name";
@@ -189,6 +192,30 @@ public class JumpSdkActivity extends BaseSdkActivity {
                                 LiveSdkActivity.openActivity(JumpSdkActivity.this, location, enableShare, true);
                             }
                         }, true);
+                break;
+            }
+            case ACTION_OPEN_CONTEST_PREPARE: {
+                MiLiveSdkBinder.getInstance().checkActivitySecure(this, channelId, packageName, channelSecret,
+                        new ICommonCallBack() {
+                            @Override
+                            public void process(Object objects) {
+                                ContestPrepareActivity.open(JumpSdkActivity.this);
+                            }
+                        }, true, ACTION_OPEN_CONTEST_PREPARE);
+                break;
+            }
+            case ACTION_OPEN_CONTEST_WATCH: {
+                final long playerId = intent.getLongExtra(EXTRA_PLAYER_ID, 0);
+                final String liveId = intent.getStringExtra(EXTRA_LIVE_ID);
+                final String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
+
+                MiLiveSdkBinder.getInstance().checkActivitySecure(this, channelId, packageName, channelSecret,
+                        new ICommonCallBack() {
+                            @Override
+                            public void process(Object objects) {
+                                ContestWatchActivity.open(JumpSdkActivity.this, playerId, liveId, videoUrl);
+                            }
+                        }, true, ACTION_OPEN_CONTEST_WATCH);
                 break;
             }
             default: {

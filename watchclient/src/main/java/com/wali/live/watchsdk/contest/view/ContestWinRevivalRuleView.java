@@ -1,6 +1,5 @@
 package com.wali.live.watchsdk.contest.view;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -18,6 +17,11 @@ import com.mi.live.data.push.model.contest.LastQuestionInfoModel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import com.wali.live.watchsdk.contest.share.ContestShareHelper;
+import com.wali.live.watchsdk.eventbus.EventClass;
+import com.wali.live.watchsdk.ipc.service.ShareInfo;
+import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by lan on 2018/1/11.
@@ -124,21 +128,19 @@ public class ContestWinRevivalRuleView extends RxRelativeLayout implements View.
             hide();
         } else if (id == R.id.qq_btn) {
             String imgLocalPath = saveContestWinSharePic();
-            ContestShareHelper.getInstance().shareLocalPicToQQ((Activity) getContext(), imgLocalPath);
-            hide();
+            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_QQ, imgLocalPath);
         } else if (id == R.id.qzone_btn) {
             String imgLocalPath = saveContestWinSharePic();
-            ContestShareHelper.getInstance().shareLocalPicToQzone((Activity) getContext(), imgLocalPath);
-            hide();
-        } else if (id == R.id.wechat_btn) {
-            String imgLocalPath = saveContestWinSharePic();
-            ContestShareHelper.getInstance().shareLocalPicToWechat(imgLocalPath);
-            hide();
+            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_QZONE, imgLocalPath);
         } else if (id == R.id.moment_btn) {
             String imgLocalPath = saveContestWinSharePic();
-            ContestShareHelper.getInstance().shareLocalPicToMoment(imgLocalPath);
-            hide();
+            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_MOMENT, imgLocalPath);
+        } else if (id == R.id.wechat_btn) {
+            String imgLocalPath = saveContestWinSharePic();
+            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_WECHAT, imgLocalPath);
         }
+        EventBus.getDefault().post(new EventClass.ShowContestView(EventClass.ShowContestView.TYPE_SUCCESS_VIEW,
+                EventClass.ShowContestView.ACTION_HIDE));
     }
 
     @Override
@@ -147,18 +149,6 @@ public class ContestWinRevivalRuleView extends RxRelativeLayout implements View.
         if (i == R.id.revival_code_tv) {
             saveToClipboard();
             return true;
-        } else if (i == R.id.qq_btn) {
-            String imgPath = saveContestWinSharePic();
-            ContestShareHelper.getInstance().shareLocalPicToQQ((Activity) getContext(), imgPath);
-        } else if (i == R.id.qzone_btn) {
-            String imgPath = saveContestWinSharePic();
-            ContestShareHelper.getInstance().shareLocalPicToQzone((Activity) getContext(), imgPath);
-        } else if (i == R.id.moment_btn) {
-            String imgPath = saveContestWinSharePic();
-            ContestShareHelper.getInstance().shareLocalPicToMoment(imgPath);
-        } else if (i == R.id.wechat_btn) {
-            String imgPath = saveContestWinSharePic();
-            ContestShareHelper.getInstance().shareLocalPicToWechat(imgPath);
         }
         return false;
     }

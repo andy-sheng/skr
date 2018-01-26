@@ -38,18 +38,23 @@ import com.thornbirds.component.IEventObserver;
 import com.thornbirds.component.IParams;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.BaseSdkController;
-import com.wali.live.ipselect.WatchIpSelectionHelper;
+import com.wali.live.component.EmptyController;
 import com.wali.live.proto.LiveProto;
 import com.wali.live.receiver.NetworkReceiver;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.channel.view.presenter.HeaderVideoPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.contest.cache.ContestCurrentCache;
 import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import com.wali.live.watchsdk.contest.model.AwardUser;
+import com.wali.live.watchsdk.contest.model.ContestNoticeModel;
+import com.wali.live.watchsdk.contest.presenter.ContestInvitePresenter;
 import com.wali.live.watchsdk.contest.presenter.ContestMessagePresenter;
+import com.wali.live.watchsdk.contest.presenter.ContestPreparePresenter;
+import com.wali.live.watchsdk.contest.presenter.ContestVideoPlayerPresenter;
 import com.wali.live.watchsdk.contest.presenter.ContestWatchPresenter;
+import com.wali.live.watchsdk.contest.presenter.IContestInviteView;
+import com.wali.live.watchsdk.contest.presenter.IContestPrepareView;
 import com.wali.live.watchsdk.contest.presenter.IContestWatchView;
 import com.wali.live.watchsdk.contest.view.AnswerView;
 import com.wali.live.watchsdk.contest.view.ContestFailView;
@@ -62,9 +67,12 @@ import com.wali.live.watchsdk.contest.view.ContestWinRevivalRuleView;
 import com.wali.live.watchsdk.contest.view.QuestionView;
 import com.wali.live.watchsdk.contest.winner.WinerListDialog;
 import com.wali.live.watchsdk.eventbus.EventClass;
+import com.wali.live.watchsdk.watch.event.LiveEndEvent;
+import com.wali.live.watchsdk.watch.presenter.VideoShowPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomSystemMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
+import com.wali.live.watchsdk.watch.view.IWatchVideoView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -73,12 +81,11 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_COMPLETED;
-
 /**
  * Created by lan on 2018/1/10.
  */
-public class ContestWatchActivity extends ContestComponentActivity implements View.OnClickListener, IContestWatchView, IEventObserver {
+public class ContestWatchActivity extends ContestComponentActivity implements View.OnClickListener,
+        IContestWatchView, IContestPrepareView, IContestInviteView, IEventObserver, IWatchVideoView {
     private static final String EXTRA_ZUID = "extra_zuid";
     private static final String EXTRA_ROOM_ID = "extra_room_id";
     private static final String EXTRA_VIDEO_URL = "extra_video_url";
@@ -103,11 +110,12 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
     private ContestRevivalRuleView mRevivalRuleView;
     private ContestWinRevivalRuleView mContestWinRevivalRuleView;
     private ContestNoWinView mNoWinView;
-
     private View mPlaceholderView;
-
-    private HeaderVideoPresenter mPlayerPresenter;
     private TextureView mPlayerView;
+
+    private ContestVideoPlayerPresenter mPlayerPresenter;
+    private VideoShowPresenter mVideoShowPresenter;
+
     private final BaseSdkController mController = new BaseSdkController() {
         @Override
         protected String getTAG() {
@@ -125,9 +133,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
     private LiveCommentView mCommentView;
     private LiveCommentPresenter mLiveCommentPresenter;
 
-    private WatchIpSelectionHelper mIpSelectionHelper;
     private Handler mHandler = new MyUIHandler(this);
-    private boolean mIsCompletion = false;
 
     //拉取enter live 信息失败后，是否需要再拉取一次
     private boolean mPullEnterLiveInfo = true;
@@ -144,6 +150,10 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
 
     private LiveRoomChatMsgManager mRoomChatMsgManager;
     private RoomMessagePresenter mPullRoomMessagePresenter;
+    private final LiveCommentPresenter mCommentPresenter = new LiveCommentPresenter(new EmptyController());
+
+    private ContestPreparePresenter mContestPreparePresenter;
+    private ContestInvitePresenter mContestInvitePresenter;
 
     private String mContestId;//场次Id
     private long mPerQuestionTotalAnswer;//每题总答题人数
@@ -160,7 +170,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         }
         setContentView(R.layout.contest_watch_layout);
-
+        MiLinkClientAdapter.getsInstance().setGlobalPushFlag(true);
         initData();
         initHelper();
 
@@ -225,6 +235,9 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
         mCommentView.setSoundEffectsEnabled(false);
         mCommentView.setToken(mRoomChatMsgManager.toString());
         mCommentView.onOrientation(false);
+        mCommentView.setPresenter(mCommentPresenter);
+        mCommentPresenter.setView(mCommentView.getViewProxy());
+        mCommentPresenter.startPresenter();
 
         mCloseBtn = $(R.id.close_btn);
         mCloseBtn.setOnClickListener(this);
@@ -234,12 +247,16 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
         mViewerCntTv = $(R.id.view_tv);
         mRevivalCntTv = $(R.id.revival_cnt_tv);
         mRevivalCntTv.setOnClickListener(this);
+        updateRevivalCount();
+    }
+
+    private void updateRevivalCount() {
         mRevivalCntTv.setText(getString(R.string.contest_prepare_revival_card) + "x" + ContestGlobalCache.getRevivalNum());
     }
 
     private void initPlayerView() {
         mPlayerView = $(R.id.video_view);
-        mPlayerPresenter = new HeaderVideoPresenter(new BaseSdkController() {
+        mPlayerPresenter = new ContestVideoPlayerPresenter(new BaseSdkController() {
             @Override
             protected String getTAG() {
                 return "ContestWatchActivity";
@@ -377,14 +394,29 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
         mRoomStatusPresenter = new RoomStatusPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomStatusPresenter);
         mContestWatchPresenter = new ContestWatchPresenter(this);
+
+        mContestPreparePresenter = new ContestPreparePresenter(this);
+        mContestInvitePresenter = new ContestInvitePresenter(this);
         enterLive();
+    }
+
+    private void getVideoUrlFromServer() {
+        if (mVideoShowPresenter == null) {
+            mVideoShowPresenter = new VideoShowPresenter(this);
+            addPresent(mVideoShowPresenter);
+        }
+        mVideoShowPresenter.getVideoUrlByRoomId(mMyRoomData.getUid(), mMyRoomData.getRoomId());
     }
 
     private void enterLive() {
         if (isFinishing()) {
             return;
         }
-        mContestWatchPresenter.enterLiveToServer(mMyRoomData.getUid(), mMyRoomData.getRoomId());
+        if (!TextUtils.isEmpty(mMyRoomData.getRoomId())) {
+            mContestWatchPresenter.enterLiveToServer(mMyRoomData.getUid(), mMyRoomData.getRoomId());
+        } else {
+            getVideoUrlFromServer();
+        }
     }
 
     private void queryRoomInfo() {
@@ -409,20 +441,19 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
 
     private void release() {
         mPlayerPresenter.releaseVideo();
+        mCommentPresenter.stopPresenter();
+        mCommentPresenter.destroy();
         mAnswerView.destroy();
         mQuestionView.destroy();
 
         if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);
         }
-        if (mIpSelectionHelper != null) {
-            mIpSelectionHelper.destroy();
-        }
         if (mPullRoomMessagePresenter != null) {
             mPullRoomMessagePresenter.stopWork();
             mPullRoomMessagePresenter.destroy();
         }
-//        MiLinkClientAdapter.getsInstance().setGlobalPushFlag(false);
+        MiLinkClientAdapter.getsInstance().setGlobalPushFlag(false);
     }
 
     @Override
@@ -520,8 +551,9 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    finish();
                     mQuitDialog.dismiss();
+                    KeyboardUtils.hideKeyboard(ContestWatchActivity.this);
+                    finish();
                 }
             });
             builder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -565,9 +597,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
                 } else {
                     ContestCurrentCache.getInstance().setWatchMode(false);
                 }
-//                ContestCurrentCache.getInstance().setContinue(true);
                 MyLog.w(TAG, "ENTER LIVE SUCCESS");
-//                MiLinkClientAdapter.getsInstance().setGlobalPushFlag(true);
                 MyLog.e(TAG, "processEnterLive:" + enterRoomInfo.getRetCode() + " mVideoUrl=" + mMyRoomData.getVideoUrl());
                 updateViewerTvByData();
                 mEnterLiveSuccess = true;
@@ -587,6 +617,13 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
                             }
                         });
                     }
+                }
+
+                if (ContestGlobalCache.needGetNoticeAgain(mMyRoomData.getRoomId())) {
+                    mContestPreparePresenter.getContestNotice();
+                }
+                if (ContestGlobalCache.needGetCodeAgain()) {
+                    mContestInvitePresenter.getInviteCode();
                 }
 
                 if (needPlayAgain) {
@@ -642,11 +679,17 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
                     if (!TextUtils.isEmpty(rsp.getShareUrl())) {
                         mMyRoomData.setShareUrl(rsp.getShareUrl());
                     }
-                    if (null != rsp.getContestInfo()) {
-                        mMyRoomData.setAbleContest(rsp.getContestInfo().getAbleContest());
-                        mMyRoomData.setRevivalNum(rsp.getContestInfo().getRevivalNum());
-                        ContestGlobalCache.setRevivalNum(mMyRoomData.getRevivalNum());
-                        ContestCurrentCache.getInstance().setContinue(mMyRoomData.isAbleContest());
+                    if (rsp.hasContestInfo()) {
+                        if (rsp.getContestInfo().hasAbleContest()) {
+                            MyLog.w(TAG, "rsp.getContestInfo().hasAbleContest() = " + rsp.getContestInfo().getAbleContest());
+                            mMyRoomData.setAbleContest(rsp.getContestInfo().getAbleContest());
+                            ContestCurrentCache.getInstance().setContinue(mMyRoomData.isAbleContest());
+                        }
+                        if (rsp.getContestInfo().hasRevivalNum()) {
+                            MyLog.w(TAG, "rsp.getContestInfo().getRevivalNum()=" + rsp.getContestInfo().getRevivalNum());
+                            mMyRoomData.setRevivalNum(rsp.getContestInfo().getRevivalNum());
+                            ContestGlobalCache.setRevivalNum(mMyRoomData.getRevivalNum());
+                        }
                     }
                     break;
                 case ErrorCode.CODE_ROOM_NOT_EXIST:
@@ -687,6 +730,30 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
         }
     }
 
+    @Override
+    public void getInviteCodeSuccess(String code) {
+        mRevivalRuleView.updateCode();
+        updateRevivalCount();
+    }
+
+    @Override
+    public void setInviteCodeSuccess(int revivalNum) {
+        //nothing to do
+    }
+
+    @Override
+    public void setInviteCodeFailure(int errCode) {
+        //nothing to do
+    }
+
+    @Override
+    public void setContestNotice(ContestNoticeModel model) {
+        if (mQuitDialog != null) {
+            mQuitDialog.setMessage(getString(R.string.contest_room_quit_tip, ContestGlobalCache.getBonus()));
+        }
+        updateRevivalCount();
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(KeyboardEvent event) {
         MyLog.w(TAG, "KeyboardEvent eventType=" + event.eventType);
@@ -713,6 +780,13 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
         if (event != null) {
             enterLive();
         }
+    }
+
+    // 直播结束
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LiveEndEvent event) {
+        MyLog.d(TAG, "liveEndEvent");
+        currentContestEnd("LiveEndEvent");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -752,39 +826,53 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
                 }
             } else if (event.type == EventClass.ShowContestView.TYPE_WIN_SHARE_VIEW) {
                 if (event.action == EventClass.ShowContestView.ACTION_SHOW) {
+                    hideContestSuccessView();
                     showWinRevivalView();
                 }
             }
         }
     }
 
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onEventMainThread(EventClass.NetWorkChangeEvent event) {
-//        if (null != event) {
-//            NetworkReceiver.NetState netCode = event.getNetState();
-//            if (netCode != NetworkReceiver.NetState.NET_NO) {
-//                MyLog.v(TAG, "onNetStateChanged netCode = " + netCode);
-//                mIpSelectionHelper.onNetworkStatus(true);
-//                if (!isFinishing()) {
-//                    reconnect();
-//                    // TODO: 2018/1/13 流量4g网络转化暂时去掉  请参考WatchActivity
-//                    queryRoomInfo();
-//                }
-//            } else {
-//                mIpSelectionHelper.onNetworkStatus(false);
-//            }
-//        }
-//    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(com.wali.live.event.EventClass.NetWorkChangeEvent event) {
+        if (null != event) {
+            NetworkReceiver.NetState netCode = event.getNetState();
+            if (netCode != NetworkReceiver.NetState.NET_NO) {
+                MyLog.v(TAG, "onNetStateChanged netCode = " + netCode);
+                if (!isFinishing()) {
+                    // TODO: 2018/1/13 流量4g网络转化暂时去掉  请参考WatchActivity
+                    queryRoomInfo();
+                }
+            }
+        }
+    }
 
     @Override
     public boolean onEvent(int event, IParams params) {
-        switch(event){
-            //TODO:这里是播放器的那几个回调，前提是得注册事件，可以写入presenter里面，暂时加入activity中处理，后续优化。
-           case MSG_PLAYER_COMPLETED:
-               break;
-
+        switch (event) {
         }
         return false;
+    }
+
+    @Override
+    public void updateVideoUrl(String videoUrl) {
+        if (TextUtils.isEmpty(mMyRoomData.getVideoUrl()) && !TextUtils.isEmpty(videoUrl)) {
+            mMyRoomData.setVideoUrl(videoUrl);
+            MyLog.d(TAG, "updateVideoUrl startPlayer");
+            play(videoUrl);
+        }
+    }
+
+    @Override
+    public void updateRoomInfo(String roomId, String videoUrl) {
+        mMyRoomData.setRoomId(roomId);
+        updateVideoUrl(videoUrl);
+        enterLive();
+    }
+
+    @Override
+    public void notifyLiveEnd() {
+        currentContestEnd("notifyLiveEnd");
     }
 
     private static class MyUIHandler extends Handler {

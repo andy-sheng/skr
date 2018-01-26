@@ -130,8 +130,12 @@ public class ScreenRecordManager implements SurfaceTexture.OnFrameAvailableListe
         if (mStreamer != null && mIsLandscape != isLandscape) {
             mIsLandscape = isLandscape;
             if (isLandscape) {
+                //赵雄建议
+                mStreamer.setAngle(270, 0);
                 mStreamer.setUpOutputFrameResolution(mDisplayHeight, mDisplayWidth);
             } else {
+                //赵雄建议
+                mStreamer.setAngle(0, 0);
                 mStreamer.setUpOutputFrameResolution(mDisplayWidth, mDisplayHeight);
             }
             resetVirtualDisplay();

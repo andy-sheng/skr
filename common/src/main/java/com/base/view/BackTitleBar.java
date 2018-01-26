@@ -2,6 +2,7 @@ package com.base.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.base.activity.BaseActivity;
 import com.base.common.R;
+import com.base.global.GlobalData;
 
 
 /**
@@ -71,7 +73,7 @@ public class BackTitleBar extends RelativeLayout {
         mRightTextBtn = (TextView) findViewById(R.id.right_text_btn);
 
         mBottomLine = findViewById(R.id.bottom_line);
-        mCenterTitleTv = (TextView)findViewById(R.id.center_title_tv);
+        mCenterTitleTv = (TextView) findViewById(R.id.center_title_tv);
     }
 
     /**
@@ -89,12 +91,22 @@ public class BackTitleBar extends RelativeLayout {
         locationTv.setText(city);
     }
 
+    public void setBackImg(int drawableRes) {
+        Drawable drawable = getResources().getDrawable(drawableRes);
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+        mBackBtn.setCompoundDrawables(drawable, null, null, null);
+    }
+
     public TextView getTitleTv() {
         return mBackBtn;
     }
 
     public void hideBottomLine() {
         mBottomLine.setVisibility(View.GONE);
+    }
+
+    public void setBottomLineColor(int color) {
+        mBottomLine.setBackground(GlobalData.app().getResources().getDrawable(color));
     }
 
     public void showBottomLine() {
@@ -109,19 +121,27 @@ public class BackTitleBar extends RelativeLayout {
         mBackBtn.setText(s);
     }
 
+    public void setTitleColor(int color) {
+        mBackBtn.setTextColor(color);
+    }
+
     public TextView getBackBtn() {
         return mBackBtn;
     }
 
-    public void setCenterTitleText(int res){
-        mCenterTitleTv.setText(res);
+    public void setCenterTitleText(int resId) {
+        mCenterTitleTv.setText(resId);
     }
 
-    public void hideCenterTitle(){
+    public void setCenterTitle(String s) {
+        mCenterTitleTv.setText(s);
+    }
+
+    public void hideCenterTitle() {
         mCenterTitleTv.setVisibility(GONE);
     }
 
-    public void showCenterTitle(){
+    public void showCenterTitle() {
         mCenterTitleTv.setVisibility(VISIBLE);
     }
 
@@ -133,6 +153,20 @@ public class BackTitleBar extends RelativeLayout {
     public TextView getRightTextBtn() {
         mRightTextBtn.setVisibility(View.VISIBLE);
         return mRightTextBtn;
+    }
+
+    public boolean IsProfileMode() {
+        return mIsProfileMode;
+    }
+
+    /**
+     * 由于风格和直播不一致，所以增加lightMode
+     */
+    public void adjustToLightMode() {
+        mBackBtn.setTextColor(getResources().getColor(R.color.top_bar_title_text_color));
+        mBackBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.topbar_icon_all_back_light_bg, 0, 0, 0);
+
+        mCenterTitleTv.setTextColor(getResources().getColor(R.color.top_bar_title_text_color));
     }
 }
 

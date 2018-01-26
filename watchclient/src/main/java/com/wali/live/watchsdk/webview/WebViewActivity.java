@@ -169,6 +169,8 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
         mTitleBar.showCenterTitle();
         mTitleBar.hideBottomLine();
         mTitleBar.getRightImageBtn().setVisibility(View.GONE);
+
+        mTitleBar.adjustToLightMode();
     }
 
     protected void bindViews() {
@@ -318,7 +320,11 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
         public void onReceivedTitle(String title) {
             MyLog.w(TAG, "onReceivedTitle=" + title);
             mTitle = title;
-            mTitleBar.setTitle(mTitle);
+            if (mIsContest) {
+                mTitleBar.setCenterTitle(mTitle);
+            } else {
+                mTitleBar.setTitle(mTitle);
+            }
         }
 
         @Override

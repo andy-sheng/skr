@@ -1,6 +1,5 @@
 package com.wali.live.watchsdk.contest.share;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -19,6 +18,7 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.MD5;
+import com.base.utils.image.ImageUtils;
 import com.base.utils.version.VersionManager;
 import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.push.model.contest.LastQuestionInfoModel;
@@ -42,8 +42,6 @@ public class ContestShareHelper {
     private static String CONTEST_SHARE_INVITE_SUFFIX = "contest_invite_img_";
     private static String CONTEST_SHARE_WIN_SUFFIX = "contest_win_img";
     private static ContestShareHelper sInstance;
-//    private QQOAuth mQQOAuth;
-//    private WXOAuth mWXOAuth;
 
     public static ContestShareHelper getInstance() {
         if (sInstance == null) {
@@ -104,6 +102,10 @@ public class ContestShareHelper {
 //            if (hasExistsFile != null && hasExistsFile.exists()) {
 //                return hasExistsFile.getAbsolutePath();
 //            }
+            File dir = new File(share_pic);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
             String fileName = MD5.MD5_16(CONTEST_SHARE_INVITE_SUFFIX + inviteCode);
             File file = new File(share_pic, fileName + ".JPEG");
             Bitmap bitmap;
@@ -116,7 +118,7 @@ public class ContestShareHelper {
             if (!file.exists()) {
                 file.createNewFile();
             }
-//            ImageUtils.saveBmpToFile(bitmap, file.getAbsolutePath());
+            ImageUtils.saveBmpToFile(bitmap, file.getAbsolutePath());
             return file.getAbsolutePath();
         } catch (Exception e) {
             MyLog.e(e);
@@ -184,6 +186,10 @@ public class ContestShareHelper {
 //            if (hasExistsFile != null && hasExistsFile.exists()) {
 //                return hasExistsFile.getAbsolutePath();
 //            }
+            File dir = new File(share_pic);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
             String fileName = MD5.MD5_16(CONTEST_SHARE_WIN_SUFFIX + inviteCode);
             File file = new File(share_pic, fileName + ".JPEG");
             Bitmap bitmap;
@@ -196,40 +202,12 @@ public class ContestShareHelper {
             if (!file.exists()) {
                 file.createNewFile();
             }
-//            ImageUtils.saveBmpToFile(bitmap, file.getAbsolutePath());
+            ImageUtils.saveBmpToFile(bitmap, file.getAbsolutePath());
             return file.getAbsolutePath();
         } catch (Exception e) {
             MyLog.e(e);
         }
         return "";
-    }
-
-    public void shareLocalPicToQQ(Activity activity, String imgLocalPath) {
-//        if (mQQOAuth == null) {
-//            mQQOAuth = new QQOAuth();
-//        }
-//        mQQOAuth.shareImgToQQ(activity, imgLocalPath, true);
-    }
-
-    public void shareLocalPicToQzone(Activity activity, String imgLocalPath) {
-//        if (mQQOAuth == null) {
-//            mQQOAuth = new QQOAuth();
-//        }
-//        mQQOAuth.shareImgToQQ(activity, imgLocalPath, false);
-    }
-
-    public void shareLocalPicToWechat(String imgLocalPath) {
-//        if (mWXOAuth == null) {
-//            mWXOAuth = new WXOAuth();
-//        }
-//        mWXOAuth.shareImgToWeixin("", "", imgLocalPath, false);
-    }
-
-    public void shareLocalPicToMoment(String imgLocalPath) {
-//        if (mWXOAuth == null) {
-//            mWXOAuth = new WXOAuth();
-//        }
-//        mWXOAuth.shareImgToWeixin("", "", imgLocalPath, true);
     }
 
     //获取二维码的图片文件地址，如果发现已经有了并且是最新则直接使用，否则自己手动的生成一个

@@ -29,7 +29,7 @@
         android:textStyle="bold"
         android:visibility="gone"/>
 
-    <com.wali.live.view.TimeCounterCircle
+    <com.wali.live.watchsdk.view.TimeCounterCircle
         android:id="@+id/support_widget_view_timer"
         android:layout_width="@dimen/view_dimen_170"
         android:layout_height="@dimen/view_dimen_170"

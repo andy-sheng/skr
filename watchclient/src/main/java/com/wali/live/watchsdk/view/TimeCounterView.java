@@ -18,8 +18,10 @@ import android.widget.TextView;
 
 import com.base.activity.assist.IBindActivityLIfeCycle;
 import com.base.image.fresco.BaseImageView;
+import com.base.log.MyLog;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.contest.media.ContestMediaHelper;
+import com.wali.live.watchsdk.view.TimeCounterCircle;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,7 +36,7 @@ import rx.android.schedulers.AndroidSchedulers;
  * Created by jiyangli on 16-11-30.
  */
 public class TimeCounterView extends RelativeLayout implements View.OnTouchListener, IBindActivityLIfeCycle {
-    private static final String TAG = "SupportWidgetView";
+    private static final String TAG = "TimeCounterView";
     private static final int VISIBLE_TIME = 10;//当剩余时间小于等于该值时，显示本控件，单位：秒
     private Timer timer;
     private Context mContext;

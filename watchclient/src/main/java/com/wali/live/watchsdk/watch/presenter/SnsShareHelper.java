@@ -121,6 +121,15 @@ public class SnsShareHelper {
         MyLog.w(TAG, "shareInfo=" + (new ShareInfo(shareTitle, desText, imgUrl, shareUrl).toString()));
     }
 
+    /*冲顶大会分享是纯图分享
+     */
+    public void shareLocalImageToSns(int type, String localImagePath) {
+        //通知上层分享
+        ShareInfo shareInfo = new ShareInfo(type, "", "", localImagePath, "");
+        MiLiveSdkBinder.getInstance().onEventShare(HostChannelManager.getInstance().getChannelId(), shareInfo);
+        MyLog.w(TAG, "shareInfo=" + shareInfo.toString());
+    }
+
     public void setShareTagTailMap(List<ShareProto.TagTail> tagTailList) {
         if (tagTailList == null || tagTailList.size() <= 0) {
             return;

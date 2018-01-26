@@ -119,6 +119,17 @@
             android:textColor="@color/color_5e43d5_pressed_50_disable_30"
             android:textSize="@dimen/text_size_48"
             android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/withdraw_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/view_dimen_40"
+            android:gravity="center"
+            android:text="@string/contest_prepare_withdraw_tip"
+            android:textColor="@color/color_black_trans_60"
+            android:textSize="@dimen/text_size_40"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -217,7 +228,7 @@
             android:textSize="@dimen/text_size_40"/>
     </RelativeLayout>
 
-    <com.wali.live.contest.view.ContestRevivalRuleView
+    <com.wali.live.watchsdk.contest.view.ContestRevivalRuleView
         android:id="@+id/revival_rule_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

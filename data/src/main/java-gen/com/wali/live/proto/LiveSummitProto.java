@@ -8798,6 +8798,23 @@ public final class LiveSummitProto {
      */
     com.google.protobuf.ByteString
         getInviteCodeBytes();
+
+    /**
+     * <code>optional uint32 revivalNum = 3;</code>
+     *
+     * <pre>
+     *复活卡数
+     * </pre>
+     */
+    boolean hasRevivalNum();
+    /**
+     * <code>optional uint32 revivalNum = 3;</code>
+     *
+     * <pre>
+     *复活卡数
+     * </pre>
+     */
+    int getRevivalNum();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.GetContestInviteCodeRsp}
@@ -8860,6 +8877,11 @@ public final class LiveSummitProto {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
               inviteCode_ = bs;
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              revivalNum_ = input.readUInt32();
               break;
             }
           }
@@ -8971,9 +8993,33 @@ public final class LiveSummitProto {
       }
     }
 
+    public static final int REVIVALNUM_FIELD_NUMBER = 3;
+    private int revivalNum_;
+    /**
+     * <code>optional uint32 revivalNum = 3;</code>
+     *
+     * <pre>
+     *复活卡数
+     * </pre>
+     */
+    public boolean hasRevivalNum() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint32 revivalNum = 3;</code>
+     *
+     * <pre>
+     *复活卡数
+     * </pre>
+     */
+    public int getRevivalNum() {
+      return revivalNum_;
+    }
+
     private void initFields() {
       retCode_ = 0;
       inviteCode_ = "";
+      revivalNum_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -8998,6 +9044,9 @@ public final class LiveSummitProto {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBytes(2, getInviteCodeBytes());
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, revivalNum_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -9014,6 +9063,10 @@ public final class LiveSummitProto {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, getInviteCodeBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, revivalNum_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -9136,6 +9189,8 @@ public final class LiveSummitProto {
         bitField0_ = (bitField0_ & ~0x00000001);
         inviteCode_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
+        revivalNum_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -9172,6 +9227,10 @@ public final class LiveSummitProto {
           to_bitField0_ |= 0x00000002;
         }
         result.inviteCode_ = inviteCode_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.revivalNum_ = revivalNum_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -9195,6 +9254,9 @@ public final class LiveSummitProto {
           bitField0_ |= 0x00000002;
           inviteCode_ = other.inviteCode_;
           onChanged();
+        }
+        if (other.hasRevivalNum()) {
+          setRevivalNum(other.getRevivalNum());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -9355,6 +9417,54 @@ public final class LiveSummitProto {
   }
   bitField0_ |= 0x00000002;
         inviteCode_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int revivalNum_ ;
+      /**
+       * <code>optional uint32 revivalNum = 3;</code>
+       *
+       * <pre>
+       *复活卡数
+       * </pre>
+       */
+      public boolean hasRevivalNum() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint32 revivalNum = 3;</code>
+       *
+       * <pre>
+       *复活卡数
+       * </pre>
+       */
+      public int getRevivalNum() {
+        return revivalNum_;
+      }
+      /**
+       * <code>optional uint32 revivalNum = 3;</code>
+       *
+       * <pre>
+       *复活卡数
+       * </pre>
+       */
+      public Builder setRevivalNum(int value) {
+        bitField0_ |= 0x00000004;
+        revivalNum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 revivalNum = 3;</code>
+       *
+       * <pre>
+       *复活卡数
+       * </pre>
+       */
+      public Builder clearRevivalNum() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        revivalNum_ = 0;
         onChanged();
         return this;
       }
@@ -18323,37 +18433,38 @@ public final class LiveSummitProto {
       "s\030\002 \003(\0132%.com.wali.live.proto.QuestionIn" +
       "foItem\022\020\n\010question\030\003 \001(\t\022\017\n\007is_last\030\004 \001(" +
       "\010\022\022\n\ndelay_time\030\005 \001(\r\022\016\n\006seq_id\030\006 \001(\r\"\'\n" +
-      "\027GetContestInviteCodeReq\022\014\n\004uuid\030\001 \001(\004\">" +
+      "\027GetContestInviteCodeReq\022\014\n\004uuid\030\001 \001(\004\"R" +
       "\n\027GetContestInviteCodeRsp\022\017\n\007retCode\030\001 \002" +
-      "(\r\022\022\n\ninviteCode\030\002 \001(\t\";\n\027SetContestInvi" +
-      "teCodeReq\022\014\n\004uuid\030\001 \001(\004\022\022\n\ninviteCode\030\002 ",
-      "\001(\t\">\n\027SetContestInviteCodeRsp\022\017\n\007retCod" +
-      "e\030\001 \002(\r\022\022\n\nrevivalNum\030\002 \001(\r\"I\n\027GetContes" +
-      "tViewerInfoReq\022\014\n\004uuid\030\001 \002(\004\022\017\n\007host_id\030" +
-      "\002 \002(\004\022\017\n\007live_id\030\003 \002(\t\"?\n\027GetContestView" +
-      "erInfoRsp\022\020\n\010ret_code\030\001 \002(\r\022\022\n\nviewer_nu" +
-      "m\030\002 \001(\r\"Y\n\026GetContestAwardListReq\022\014\n\004uui" +
-      "d\030\001 \001(\004\022\r\n\005limit\030\002 \001(\004\022\022\n\ncontest_id\030\003 \001" +
-      "(\t\022\016\n\006liveid\030\004 \001(\t\"]\n\026GetContestAwardLis" +
-      "tRsp\022\020\n\010ret_code\030\001 \002(\r\0221\n\nuser_infos\030\002 \003" +
-      "(\0132\035.com.wali.live.proto.UserInfo\"\212\001\n\022Co",
-      "ntestQuestionMsg\022\022\n\ncontest_id\030\001 \001(\t\0229\n\016" +
-      "question_infos\030\002 \001(\0132!.com.wali.live.pro" +
-      "to.QuestionInfo\022\021\n\tstream_ts\030\003 \001(\004\022\022\n\nan" +
-      "swer_num\030\004 \001(\004\"\313\001\n\020ContestAnswerMsg\022\022\n\nc" +
-      "ontest_id\030\001 \001(\t\0229\n\016question_infos\030\002 \001(\0132" +
-      "!.com.wali.live.proto.QuestionInfo\022A\n\022la" +
-      "st_question_info\030\003 \001(\0132%.com.wali.live.p" +
-      "roto.LastQuestionInfo\022\021\n\tstream_ts\030\004 \001(\004" +
-      "\022\022\n\nanswer_num\030\005 \001(\004\"Z\n\020LastQuestionInfo" +
-      "\022\021\n\ttotal_num\030\001 \001(\r\022\023\n\013total_bonus\030\002 \001(\002",
-      "\022\021\n\tper_bonus\030\003 \001(\002\022\013\n\003num\030\004 \001(\r\"L\n\020Ques" +
-      "tionInfoItem\022\n\n\002id\030\001 \001(\t\022\014\n\004text\030\002 \001(\t\022\021" +
-      "\n\tis_answer\030\003 \001(\010\022\013\n\003num\030\004 \001(\r\"r\n\021Questi" +
-      "onExtraInfo\022\022\n\nis_correct\030\001 \001(\010\022\023\n\013use_r" +
-      "evival\030\002 \001(\010\022\023\n\013revival_num\030\003 \001(\r\022\n\n\002id\030" +
-      "\004 \001(\t\022\023\n\013is_continue\030\005 \001(\010B&\n\023com.wali.l" +
-      "ive.protoB\017LiveSummitProto"
+      "(\r\022\022\n\ninviteCode\030\002 \001(\t\022\022\n\nrevivalNum\030\003 \001" +
+      "(\r\";\n\027SetContestInviteCodeReq\022\014\n\004uuid\030\001 ",
+      "\001(\004\022\022\n\ninviteCode\030\002 \001(\t\">\n\027SetContestInv" +
+      "iteCodeRsp\022\017\n\007retCode\030\001 \002(\r\022\022\n\nrevivalNu" +
+      "m\030\002 \001(\r\"I\n\027GetContestViewerInfoReq\022\014\n\004uu" +
+      "id\030\001 \002(\004\022\017\n\007host_id\030\002 \002(\004\022\017\n\007live_id\030\003 \002" +
+      "(\t\"?\n\027GetContestViewerInfoRsp\022\020\n\010ret_cod" +
+      "e\030\001 \002(\r\022\022\n\nviewer_num\030\002 \001(\r\"Y\n\026GetContes" +
+      "tAwardListReq\022\014\n\004uuid\030\001 \001(\004\022\r\n\005limit\030\002 \001" +
+      "(\004\022\022\n\ncontest_id\030\003 \001(\t\022\016\n\006liveid\030\004 \001(\t\"]" +
+      "\n\026GetContestAwardListRsp\022\020\n\010ret_code\030\001 \002" +
+      "(\r\0221\n\nuser_infos\030\002 \003(\0132\035.com.wali.live.p",
+      "roto.UserInfo\"\212\001\n\022ContestQuestionMsg\022\022\n\n" +
+      "contest_id\030\001 \001(\t\0229\n\016question_infos\030\002 \001(\013" +
+      "2!.com.wali.live.proto.QuestionInfo\022\021\n\ts" +
+      "tream_ts\030\003 \001(\004\022\022\n\nanswer_num\030\004 \001(\004\"\313\001\n\020C" +
+      "ontestAnswerMsg\022\022\n\ncontest_id\030\001 \001(\t\0229\n\016q" +
+      "uestion_infos\030\002 \001(\0132!.com.wali.live.prot" +
+      "o.QuestionInfo\022A\n\022last_question_info\030\003 \001" +
+      "(\0132%.com.wali.live.proto.LastQuestionInf" +
+      "o\022\021\n\tstream_ts\030\004 \001(\004\022\022\n\nanswer_num\030\005 \001(\004" +
+      "\"Z\n\020LastQuestionInfo\022\021\n\ttotal_num\030\001 \001(\r\022",
+      "\023\n\013total_bonus\030\002 \001(\002\022\021\n\tper_bonus\030\003 \001(\002\022" +
+      "\013\n\003num\030\004 \001(\r\"L\n\020QuestionInfoItem\022\n\n\002id\030\001" +
+      " \001(\t\022\014\n\004text\030\002 \001(\t\022\021\n\tis_answer\030\003 \001(\010\022\013\n" +
+      "\003num\030\004 \001(\r\"r\n\021QuestionExtraInfo\022\022\n\nis_co" +
+      "rrect\030\001 \001(\010\022\023\n\013use_revival\030\002 \001(\010\022\023\n\013revi" +
+      "val_num\030\003 \001(\r\022\n\n\002id\030\004 \001(\t\022\023\n\013is_continue" +
+      "\030\005 \001(\010B&\n\023com.wali.live.protoB\017LiveSummi" +
+      "tProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -18438,7 +18549,7 @@ public final class LiveSummitProto {
     internal_static_com_wali_live_proto_GetContestInviteCodeRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetContestInviteCodeRsp_descriptor,
-        new java.lang.String[] { "RetCode", "InviteCode", });
+        new java.lang.String[] { "RetCode", "InviteCode", "RevivalNum", });
     internal_static_com_wali_live_proto_SetContestInviteCodeReq_descriptor =
       getDescriptor().getMessageTypes().get(12);
     internal_static_com_wali_live_proto_SetContestInviteCodeReq_fieldAccessorTable = new

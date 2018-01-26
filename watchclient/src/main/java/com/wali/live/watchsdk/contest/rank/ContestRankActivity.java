@@ -22,8 +22,6 @@ import com.wali.live.watchsdk.contest.rank.presenter.ContestRankPresenter;
 import com.wali.live.watchsdk.contest.rank.presenter.IContestRankView;
 import com.wali.live.watchsdk.contest.util.FormatUtils;
 
-import rx.Observable;
-
 /**
  * Created by lan on 2018/1/11.
  */
@@ -63,6 +61,8 @@ public class ContestRankActivity extends BaseSdkActivity implements View.OnClick
         mTitleBar.setCenterTitleText(R.string.contest_prepare_total_rank);
         mTitleBar.showCenterTitle();
         mTitleBar.hideBottomLine();
+
+        mTitleBar.adjustToLightMode();
 //        mTitleBar.getRightImageBtn().setImageResource(R.drawable.live_icon_share_btn);
 //        mTitleBar.getRightImageBtn().setOnClickListener(this);
     }
@@ -88,11 +88,7 @@ public class ContestRankActivity extends BaseSdkActivity implements View.OnClick
         mBonusTv = $(R.id.bonus_tv);
 
         int rank = ContestGlobalCache.getRank();
-        if (rank <= 0 || rank > 100) {
-            mIndexTv.setText("-");
-        } else {
-            mIndexTv.setText(String.valueOf(rank));
-        }
+        mIndexTv.setText(FormatUtils.formatRank(rank));
 
         float totalIncome = ContestGlobalCache.getTotalIncome();
         mBonusTv.setText(FormatUtils.formatMoney(totalIncome));

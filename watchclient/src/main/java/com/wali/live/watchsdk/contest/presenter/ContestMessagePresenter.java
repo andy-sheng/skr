@@ -46,7 +46,7 @@ public class ContestMessagePresenter implements IPushMsgProcessor {
     private boolean mIsProcessing = false;
 
     private IContestCallBack mCallBack;
-    private HeaderVideoPresenter mPlayerPresenter;
+    private ContestVideoPlayerPresenter mPlayerPresenter;
 
     private Handler mMainHandler = new Handler(new Handler.Callback() {
         @Override
@@ -73,15 +73,57 @@ public class ContestMessagePresenter implements IPushMsgProcessor {
 
     /**
      * 这里传进来的presenter是为了获取时间戳的
-     *
-     * @param presenter
      */
-    public ContestMessagePresenter(HeaderVideoPresenter presenter) {
+    public ContestMessagePresenter(ContestVideoPlayerPresenter presenter) {
         this.mPlayerPresenter = presenter;
     }
 
     public void setCallBack(IContestCallBack callBack) {
         mCallBack = callBack;
+    }
+
+    private void processDataInUIThread(final BarrageMsg msg) {
+        mMainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "processDataInUIThread  type=" + msg.getMsgType() + " threadId =" + Thread.currentThread().getId());
+                switch (msg.getMsgType()) {
+                    case B_MSG_TYPE_QUESTION: {
+                        ContestQuestionMsgExt msgExt = (ContestQuestionMsgExt) msg.getMsgExt();
+                        MyLog.w(TAG, "QUESTION step0");
+                        if (msgExt != null && msgExt.getQuestionInfoModel() != null) {
+                            MyLog.w(TAG, "QUESTION step1=" + msgExt.toString());
+                            String questionId = msgExt.getQuestionInfoModel().getSeq();
+                            if (!TextUtils.isEmpty(questionId) && !mQuestionMsgExts.contains(questionId)) {
+                                mQuestionMsgExts.add(questionId);
+                                mControlQueue.offer(msgExt);
+                                MyLog.w(TAG, "QUESTION process type=" + msg.getMsgType() + "msgExt=" + msgExt.toString() + " questionId=" + questionId);
+                            } else {
+                                MyLog.w(TAG, "QUESTION step 3 questionId=" + questionId);
+                            }
+                        }
+                    }
+                    break;
+                    case B_MSG_TYPE_ANSWER: {
+                        ContestAnswerMsgExt msgExt = (ContestAnswerMsgExt) msg.getMsgExt();
+                        MyLog.w(TAG, "ANSWER step0");
+                        if (msgExt != null && msgExt.getQuestionInfoModel() != null) {
+                            MyLog.w(TAG, "ANSWER step1 msgExt=" + msgExt.toString());
+                            String questionId = msgExt.getQuestionInfoModel().getSeq();
+                            if (!TextUtils.isEmpty(questionId) && !mAnswerMsgExts.contains(questionId)) {
+                                mAnswerMsgExts.add(questionId);
+                                mControlQueue.offer(msgExt);
+                                MyLog.w(TAG, "ANSWER process type=" + msg.getMsgType() + "msgExt=" + msgExt.toString() + " questionId=" + questionId);
+                            } else {
+                                MyLog.w(TAG, "ANSWER step 3 questionId=" + questionId);
+                            }
+                        }
+                    }
+                    break;
+                }
+                next();
+            }
+        });
     }
 
     @Override
@@ -90,41 +132,7 @@ public class ContestMessagePresenter implements IPushMsgProcessor {
             return;
         }
         MyLog.w(TAG, "process  type=" + msg.getMsgType() + " threadId =" + Thread.currentThread().getId());
-        switch (msg.getMsgType()) {
-            case B_MSG_TYPE_QUESTION: {
-                ContestQuestionMsgExt msgExt = (ContestQuestionMsgExt) msg.getMsgExt();
-                MyLog.w(TAG, "QUESTION step0");
-                if (msgExt != null && msgExt.getQuestionInfoModel() != null) {
-                    MyLog.w(TAG, "QUESTION step1=" + msgExt.toString());
-                    String questionId = msgExt.getQuestionInfoModel().getSeq();
-                    if (!TextUtils.isEmpty(questionId) && !mQuestionMsgExts.contains(questionId)) {
-                        mQuestionMsgExts.add(questionId);
-                        mControlQueue.offer(msgExt);
-                        MyLog.w(TAG, "QUESTION process type=" + msg.getMsgType() + "msgExt=" + msgExt.toString() + " questionId=" + questionId);
-                    } else {
-                        MyLog.w(TAG, "QUESTION step 3 questionId=" + questionId);
-                    }
-                }
-            }
-            break;
-            case B_MSG_TYPE_ANSWER: {
-                ContestAnswerMsgExt msgExt = (ContestAnswerMsgExt) msg.getMsgExt();
-                MyLog.w(TAG, "ANSWER step0");
-                if (msgExt != null && msgExt.getQuestionInfoModel() != null) {
-                    MyLog.w(TAG, "ANSWER step1 msgExt=" + msgExt.toString());
-                    String questionId = msgExt.getQuestionInfoModel().getSeq();
-                    if (!TextUtils.isEmpty(questionId) && !mAnswerMsgExts.contains(questionId)) {
-                        mAnswerMsgExts.add(questionId);
-                        mControlQueue.offer(msgExt);
-                        MyLog.w(TAG, "ANSWER process type=" + msg.getMsgType() + "msgExt=" + msgExt.toString() + " questionId=" + questionId);
-                    } else {
-                        MyLog.w(TAG, "ANSWER step 3 questionId=" + questionId);
-                    }
-                }
-            }
-            break;
-        }
-        next();
+        processDataInUIThread(msg);
     }
 
     //处理队列消息
@@ -150,15 +158,14 @@ public class ContestMessagePresenter implements IPushMsgProcessor {
         mIsProcessing = true;
         long delayTime = msgExt.getQuestionInfoModel().getDelayTime();
         long maxTs = delayTime > 0 ? delayTime : DEFAULT_TIME_OUT;
-//        MyLog.w(TAG, SYN_DEBUG + "playerTimestamp=" + mPlayerPresenter.getCurrentAudioTimestamp() + " msgTimestamp=" + msgExt.getStreamTs());
+        MyLog.w(TAG, SYN_DEBUG + "playerTimestamp=" + mPlayerPresenter.getCurrentAudioTimestamp() + " msgTimestamp=" + msgExt.getStreamTs());
         mQuestionTimer = Observable.interval(0, 200, TimeUnit.MILLISECONDS)
                 .take((int) (maxTs / 200) + 1)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long aLong) {
-                        //TODO 引擎接口加入后再打开后面 注释
-                        long streamerAudioTs = 0 ; //mPlayerPresenter.getCurrentAudioTimestamp();
+                        long streamerAudioTs = mPlayerPresenter.getCurrentAudioTimestamp();
                         MyLog.v(TAG, "calculateQuestion streamerAudioTs=" + streamerAudioTs +
                                 " msgExt.getStreamTs()=" + msgExt.getStreamTs());
                         if (streamerAudioTs > 0 && msgExt.getStreamTs() > 0

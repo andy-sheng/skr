@@ -607,6 +607,44 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         });
     }
 
+    /**
+     * @description 无特殊逻辑的打开页面，都调用该方法，其他方法也会慢慢统一
+     */
+    public void checkActivitySecure(final Activity activity, final int channelId, final String packageName, final String channelSecret,
+                                    final ICommonCallBack callback, final boolean needFinish, final String logKey) {
+        MyLog.w(TAG, logKey + " by activity channelId=" + channelId);
+
+        secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
+            @Override
+            public void postSuccess() {
+                MyLog.w(TAG, logKey + " by activity success callback");
+                // 上层回调跳转
+                if (callback != null) {
+                    callback.process(null);
+                }
+                if (needFinish) {
+                    activity.finish();
+                }
+            }
+
+            @Override
+            public void postError() {
+                MyLog.w(TAG, logKey + " by activity postError callback");
+                if (needFinish) {
+                    activity.finish();
+                }
+            }
+
+            @Override
+            public void processFailure() {
+                MyLog.w(TAG, logKey + " by activity failure callback");
+                if (needFinish) {
+                    activity.finish();
+                }
+            }
+        });
+    }
+
     public void secureOperate(final int channelId, final String packageName,
                               final String channelSecret, final ISecureCallBack callback) {
         if (callback == null) {

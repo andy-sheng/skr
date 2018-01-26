@@ -46,6 +46,7 @@ public class ContestInvitePresenter extends BaseRxPresenter<IContestInviteView> 
                         } else if (rsp.getRetCode() != ErrorCode.CODE_SUCCESS) {
                             subscriber.onError(new Exception(String.format("getInviteCode retCode = %d", rsp.getRetCode())));
                         } else {
+                            ContestGlobalCache.setContestInviteCode(rsp);
                             subscriber.onNext(rsp.getInviteCode());
                             subscriber.onCompleted();
                         }
@@ -58,7 +59,6 @@ public class ContestInvitePresenter extends BaseRxPresenter<IContestInviteView> 
                     @Override
                     public void call(String code) {
                         MyLog.w(TAG, "getInviteCode onNext");
-                        ContestGlobalCache.setRevivalCode(code);
                         mView.getInviteCodeSuccess(code);
                     }
                 }, new Action1<Throwable>() {

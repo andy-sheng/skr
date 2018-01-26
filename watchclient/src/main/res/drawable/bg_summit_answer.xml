@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/bg_corner_75px_e5e5e5_50" android:state_enabled="false"/>
-    <item android:drawable="@drawable/bg_corner_75px_5e43d5" android:state_selected="true"/>
-    <item android:drawable="@drawable/bg_corner_75px_e5e5e5"/>
+    <item android:drawable="@drawable/bg_corner_75px_white_50" android:state_enabled="false"/>
+    <item android:drawable="@drawable/bg_corner_75px_white"/>
 </selector>

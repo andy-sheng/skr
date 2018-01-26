@@ -15,7 +15,10 @@ public class ContestNoticeModel extends BaseViewModel {
     private float mBonus;           //奖金
     private long mStartTime;        //开始时间
     private boolean mHasInviteCode; //是否已使用复活卡
-    private int mRevivalNum;        //复活卡数量
+
+    @Deprecated
+    private int mRevivalNum;        //复活卡数量，已废弃，使用GetInviteCode接口
+
     private float mTotalIncome;     //用户收入
     private int mRank;              //排名
     private long mZuid;
@@ -32,7 +35,11 @@ public class ContestNoticeModel extends BaseViewModel {
         mBonus = protoInfo.getBonus();
         mStartTime = protoInfo.getStartTime();
         mHasInviteCode = protoInfo.getHasInviteCode();
-        mRevivalNum = protoInfo.getRevivalNum();
+
+        if (protoInfo.hasRevivalNum()) {
+            mRevivalNum = protoInfo.getRevivalNum();
+        }
+
         mTotalIncome = protoInfo.getTotalIncome();
         mRank = protoInfo.getRank();
         mZuid = protoInfo.getZuid();
@@ -57,6 +64,7 @@ public class ContestNoticeModel extends BaseViewModel {
         return mHasInviteCode;
     }
 
+    @Deprecated
     public int getRevivalNum() {
         return mRevivalNum;
     }

@@ -43,6 +43,7 @@ public class ContestPreparePresenter extends BaseRxPresenter<IContestPrepareView
                         } else if (rsp.getRetCode() != ErrorCode.CODE_SUCCESS) {
                             subscriber.onError(new Exception(String.format("getContestNotice retCode = %d", rsp.getRetCode())));
                         } else {
+                            ContestGlobalCache.setContestNotice(rsp.getNoticeInfo());
                             subscriber.onNext(new ContestNoticeModel(rsp.getNoticeInfo()));
                             subscriber.onCompleted();
                         }
@@ -55,7 +56,6 @@ public class ContestPreparePresenter extends BaseRxPresenter<IContestPrepareView
                     @Override
                     public void call(ContestNoticeModel model) {
                         MyLog.w(TAG, "getContestNotice onNext");
-                        ContestGlobalCache.setContestNotice(model);
                         mView.setContestNotice(model);
                     }
                 }, new Action1<Throwable>() {

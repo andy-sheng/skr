@@ -104,7 +104,7 @@ public class MiLinkClientAdapter {
      */
     public boolean isMiLinkLogined() {
         if (mIsTouristMode) {
-            return mMiLinkChannelClient.isChannelLogined();
+            return mMiLinkChannelClient.isMiLinkLogined();
         } else {
             return MiLinkClientIpc.isMiLinkLogined();
         }
@@ -315,5 +315,8 @@ public class MiLinkClientAdapter {
         return false;
     }
 
-
+    public void setGlobalPushFlag(boolean enable) {
+        MyLog.w(TAG, "setGlobalPushFlag enable=" + enable);
+        MiLinkClientIpc.setGlobalPushFlag(enable);
+    }
 }

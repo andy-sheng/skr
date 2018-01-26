@@ -202,6 +202,7 @@ public class GalileoPlayer implements IPlayer {
         }, "GalileoPlayer()");
     }
 
+    @Override
     public void setCallback(IPlayerCallback callback) {
         mCallback = callback;
     }
@@ -232,6 +233,24 @@ public class GalileoPlayer implements IPlayer {
     public long getCurrentStreamPosition() {
         final Player player = mPlayer;
         return player != null ? player.GetCurrentStreamPosition() : 0;
+    }
+
+    // TODO 这里读写没在一个线程
+    @Override
+    public long getCurrentAudioTimestamp() {
+        final Player player = mPlayer;
+        return player != null ? player.getCurrentAudioTimestamp() : 0l;
+    }
+
+    @Override
+    public void setSpeedUpThreshold(final long threshold) {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "setSpeedUpThreshold threshold=" + threshold);
+                mPlayer.setSpeedUpThreshold(threshold);
+            }
+        }, "setSpeedUpThreshold");
     }
 
     @Override

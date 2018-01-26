@@ -86,6 +86,12 @@ public class RoomDataMapper {
             enterRoomInfo.setHideGift(rsp.getHideGift());
             enterRoomInfo.setSupportMgicFace(rsp.getSupportMagicFace());
             enterRoomInfo.setEnterTs(System.currentTimeMillis());
+            if (null != rsp.getContestInfo()) {
+                enterRoomInfo.setAbleContest(rsp.getContestInfo().getAbleContest());
+                enterRoomInfo.setRevivalNum(rsp.getContestInfo().getRevivalNum());
+                enterRoomInfo.setLate(rsp.getContestInfo().getIsLate());
+                enterRoomInfo.setContestId(rsp.getContestInfo().getContestId());
+            }
         }
         return enterRoomInfo;
     }
@@ -126,5 +132,9 @@ public class RoomDataMapper {
         }
         mMyRoomData.setSupportMagicFace(enterRoomInfo.isSupportMgicFace());
         mMyRoomData.setEnterRoomTime(enterRoomInfo.getEnterTs());
+        mMyRoomData.setAbleContest(enterRoomInfo.isAbleContest());
+        mMyRoomData.setRevivalNum(enterRoomInfo.getRevivalNum());
+        mMyRoomData.setLate(enterRoomInfo.isLate());
+        mMyRoomData.setContestId(enterRoomInfo.getContestId());
     }
 }

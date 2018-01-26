@@ -43,7 +43,7 @@
                 android:layout_marginTop="@dimen/view_dimen_125"
                 android:orientation="vertical"/>
 
-            <com.wali.live.view.ResurrectionView
+            <com.wali.live.watchsdk.contest.view.ResurrectionView
                 android:id="@+id/revival_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/margin_14"/>
 
-            <com.wali.live.view.TimeCounterView
+            <com.wali.live.watchsdk.view.TimeCounterView
                 android:id="@+id/count_down"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

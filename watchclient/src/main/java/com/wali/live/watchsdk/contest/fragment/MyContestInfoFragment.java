@@ -1,6 +1,8 @@
 package com.wali.live.watchsdk.contest.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.base.activity.BaseActivity;
+import com.base.dialog.DialogUtils;
 import com.base.fragment.BaseFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.image.fresco.BaseImageView;
@@ -121,6 +124,23 @@ public class MyContestInfoFragment extends BaseFragment implements View.OnClickL
     private void enterMyIncome() {
 //        Intent intent = new Intent(getActivity(), UserIncomeActivity.class);
 //        getActivity().startActivity(intent);
+        showDialog();
+
+    }
+
+    private void showDialog() {
+        DialogUtils.showNormalDialog(getActivity(),
+                "",
+                getString(R.string.income_content), R.string.income_download, R.string.income_think,
+                new DialogUtils.IDialogCallback() {
+                    @Override
+                    public void process(DialogInterface dialogInterface, int i) {
+                        //走走浏览器下载 打开应用商店
+                        Uri uri = Uri.parse("http://app.mi.com/details?id=com.wali.live");
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                    }
+                }, null);
     }
 
     private void finish() {

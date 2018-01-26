@@ -6,6 +6,8 @@ import com.base.global.GlobalData;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.R;
+import com.mi.live.data.push.model.contest.ContestAnswerMsgExt;
+import com.mi.live.data.push.model.contest.ContestQuestionMsgExt;
 import com.mi.live.data.query.model.MessageRule;
 import com.mi.live.data.query.model.SystemMsgModel;
 import com.mi.live.data.query.model.ViewerModel;
@@ -14,6 +16,7 @@ import com.wali.live.proto.LiveMallProto;
 import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.proto.LiveMicProto;
 import com.wali.live.proto.LivePKProto;
+import com.wali.live.proto.LiveSummitProto;
 import com.wali.live.proto.RedEnvelProto;
 
 import java.io.UnsupportedEncodingException;
@@ -595,6 +598,14 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
                         msgExt = new BarrageMsgExt.PkEndInfo().parseFromPB(pkMsg);
                         break;
                     }
+                    case BarrageMsgType.B_MSG_TYPE_QUESTION:
+                        LiveSummitProto.ContestQuestionMsg contestQuestionMsg = LiveSummitProto.ContestQuestionMsg.parseFrom(data);
+                        msgExt = new ContestQuestionMsgExt(contestQuestionMsg);
+                        break;
+                    case BarrageMsgType.B_MSG_TYPE_ANSWER:
+                        LiveSummitProto.ContestAnswerMsg contestAnswerMsg = LiveSummitProto.ContestAnswerMsg.parseFrom(data);
+                        msgExt = new ContestAnswerMsgExt(contestAnswerMsg);
+                        break;
                 }
             } catch (InvalidProtocolBufferException e) {
                 e.printStackTrace();

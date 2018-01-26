@@ -219,7 +219,7 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
 
     private void refreshComment(boolean force) {
         if (mAdapter != null && mDataList != null) {
-            MyLog.d(TAG, "setLiveCommentList, dataList.size:" + mDataList.size() + ",force:" + force);
+            MyLog.w(TAG, "setLiveCommentList, dataList.size:" + mDataList.size() + ",force:" + force);
             mLastSetCommentListTs = System.currentTimeMillis();
             if (force) {
                 mAdapter.setCommentList(mDataList);
@@ -245,6 +245,7 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
 
     @Override
     public void onOrientation(boolean isLandscape) {
+        MyLog.w(TAG, "onOrientation isLandscape=" + isLandscape);
         if (mIsLandscape == isLandscape) {
             return;
         }

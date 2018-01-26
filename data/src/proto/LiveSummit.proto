@@ -84,6 +84,7 @@ message GetContestInviteCodeReq {
 message GetContestInviteCodeRsp {
     required uint32 retCode = 1;
     optional string inviteCode = 2; //邀请码
+    optional uint32 revivalNum = 3; //复活卡数
 }
 
 //设置邀请码
