@@ -36,8 +36,6 @@ import com.wali.live.watchsdk.editinfo.EditInfoActivity;
 import com.wali.live.watchsdk.editinfo.fragment.presenter.EditAvatarPresenter;
 import com.wali.live.watchsdk.editinfo.fragment.presenter.IEditAvatarView;
 
-import rx.Observable;
-
 /**
  * Created by wangmengjie on 17-8-16.
  *
@@ -285,11 +283,6 @@ public class EditAvatarFragment extends RxFragment implements View.OnClickListen
     public void editFailure() {
         MyLog.d(TAG, "editFailure");
         ToastUtils.showToast(R.string.change_avatar_failed);
-    }
-
-    @Override
-    public <T> Observable.Transformer<T, T> bindUntilEvent() {
-        return bindUntilEvent();
     }
 
     private void closeFragment() {

@@ -25,8 +25,6 @@ import com.wali.live.watchsdk.editinfo.EditInfoActivity;
 import com.wali.live.watchsdk.editinfo.fragment.presenter.EditGenderPresenter;
 import com.wali.live.watchsdk.editinfo.fragment.presenter.IEditGenderView;
 
-import rx.Observable;
-
 import static com.wali.live.watchsdk.R.string.gender;
 
 /**
@@ -123,11 +121,6 @@ public class EditGenderFragment extends RxFragment implements View.OnClickListen
         } else {
             closeFragment();
         }
-    }
-
-    @Override
-    public <T> Observable.Transformer<T, T> bindUntilEvent() {
-        return bindUntilEvent();
     }
 
     @Override

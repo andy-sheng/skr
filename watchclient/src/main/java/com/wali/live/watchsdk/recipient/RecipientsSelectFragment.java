@@ -31,8 +31,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
-import rx.Observable;
-
 /**
  * Created by zhangyuehuan on 06/11/17.
  *
@@ -249,11 +247,6 @@ public class RecipientsSelectFragment extends RxFragment implements View.OnClick
     @Override
     public boolean isOverrideStatusBar() {
         return true;
-    }
-
-    @Override
-    public <T> Observable.Transformer<T, T> bindUntilEvent() {
-        return bindUntilEvent();
     }
 
     @Override

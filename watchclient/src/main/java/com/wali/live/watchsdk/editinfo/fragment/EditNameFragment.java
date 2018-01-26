@@ -29,8 +29,6 @@ import com.wali.live.watchsdk.editinfo.EditInfoActivity;
 import com.wali.live.watchsdk.editinfo.fragment.presenter.EditNamePresenter;
 import com.wali.live.watchsdk.editinfo.fragment.presenter.IEditNameView;
 
-import rx.Observable;
-
 /**
  * Created by lan on 2017/8/15.
  */
@@ -138,11 +136,6 @@ public class EditNameFragment extends RxFragment implements View.OnClickListener
         name = name.replaceAll("\\s+", " ");
 
         mPresenter.uploadName(name);
-    }
-
-    @Override
-    public <T> Observable.Transformer<T, T> bindUntilEvent() {
-        return bindUntilEvent();
     }
 
     @Override

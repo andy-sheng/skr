@@ -640,11 +640,6 @@ public class FloatInfoFragment extends BaseEventBusFragment
         }
     }
 
-    @Override
-    public <T> Observable.Transformer<T, T> bindUntilEvent() {
-        return bindUntilEvent();
-    }
-
     public static FloatInfoFragment openFragment(
             BaseActivity activity,
             long fromUuid,
