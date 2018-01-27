@@ -19,7 +19,7 @@
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_margin="6.67dip"
-            android:background="@drawable/contest_solid_5e43d5_r45_btn_bg"
+            android:background="@drawable/contest_theme_solid_r45_btn_bg"
             android:enabled="false"
             android:gravity="center"
             android:singleLine="true"

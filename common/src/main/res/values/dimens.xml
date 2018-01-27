@@ -116,6 +116,7 @@
     <dimen name="view_dimen_70">23.33dp</dimen>
     <dimen name="view_dimen_72">24dip</dimen>
     <dimen name="view_dimen_75">25dip</dimen>
+    <dimen name="view_dimen_76">25.33dip</dimen>
     <dimen name="view_dimen_80">26.67dp</dimen>
     <dimen name="view_dimen_81">27dp</dimen>
     <dimen name="view_dimen_84">28dp</dimen>

@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text="@string/contest_prepare_input_title"
-            android:textColor="@color/color_5e43d5"
+            android:textColor="@color/color_contest_theme"
             android:textSize="@dimen/text_size_48"/>
 
         <TextView
@@ -46,7 +46,7 @@
             android:layout_below="@id/input_tip_tv"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/view_dimen_80"
-            android:background="@drawable/contest_border_5e43d5_r70_btn_bg"
+            android:background="@drawable/contest_theme_border_r70_btn_bg"
             android:gravity="center"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"

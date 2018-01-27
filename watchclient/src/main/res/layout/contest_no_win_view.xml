@@ -52,7 +52,7 @@
             android:layout_below="@id/tip_tv"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/view_dimen_40"
-            android:background="@drawable/contest_solid_5e43d5_r70_btn_bg"
+            android:background="@drawable/contest_theme_solid_r70_btn_bg"
             android:enabled="true"
             android:gravity="center"
             android:text="@string/contest_continue"

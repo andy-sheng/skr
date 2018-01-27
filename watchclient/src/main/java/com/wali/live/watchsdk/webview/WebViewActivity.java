@@ -164,7 +164,7 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
     }
 
     private void adjustToContestTheme() {
-        mTitleBar.setBackgroundColor(getResources().getColor(R.color.color_contest_web_theme));
+        mTitleBar.setBackgroundColor(getResources().getColor(R.color.color_contest_theme));
         mTitleBar.setCenterTitleText(R.string.contest_prepare_rule_page);
         mTitleBar.showCenterTitle();
         mTitleBar.hideBottomLine();

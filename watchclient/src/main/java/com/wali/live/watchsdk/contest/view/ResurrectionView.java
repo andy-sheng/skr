@@ -39,7 +39,7 @@ public class ResurrectionView extends LinearLayout {
     }
 
     private void init(Context context) {
-        View view = LayoutInflater.from(context).inflate(R.layout.resurrection_layou, (ViewGroup) getParent(), false);
+        View view = LayoutInflater.from(context).inflate(R.layout.resurrection_layout, (ViewGroup) getParent(), false);
 
         imgAnim = (ImageView) view.findViewById(R.id.resurrection_layout_imgAnim);
         llytRoot = (LinearLayout) view.findViewById(R.id.resurrection_layout_llytRoot);
