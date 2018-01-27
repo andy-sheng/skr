@@ -119,10 +119,6 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
         this.senderMsgId = System.currentTimeMillis();
     }
 
-    public BarrageMsg(int i) {
-        this.senderMsgId = System.currentTimeMillis() + i;
-    }
-
     public long getToUserId() {
         return toUserId;
     }
