@@ -191,6 +191,7 @@ public class SchemeConstants {
     //冲顶大会
     public static final String HOST_CONTEST = "contest";
     public static final String PATH_PREPARE = "/prepare";
+    public static final String PARAM_ZUID = "zuid";
 
     /**
      *SchemeConstants 和 SpecificConstants 添加的scheme和host都要在這裡添加一下。否則会被过滤掉导致ui上不被显示。

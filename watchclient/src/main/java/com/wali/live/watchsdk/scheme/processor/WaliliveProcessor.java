@@ -1,24 +1,23 @@
 package com.wali.live.watchsdk.scheme.processor;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.base.activity.RxActivity;
+import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
 import com.mi.live.data.api.LiveManager;
 import com.wali.live.event.EventClass;
 import com.wali.live.pay.activity.RechargeActivity;
+import com.wali.live.watchsdk.contest.ContestPrepareActivity;
+import com.wali.live.watchsdk.contest.ContestWatchActivity;
 import com.wali.live.watchsdk.longtext.LongTextActivity;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeUtils;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
-import com.wali.live.watchsdk.webview.HalfWebViewActivity;
-import com.wali.live.watchsdk.webview.WebViewActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -31,7 +30,7 @@ import org.greenrobot.eventbus.EventBus;
 public class WaliliveProcessor extends CommonProcessor {
     private static final String TAG = SchemeConstants.LOG_PREFIX + WaliliveProcessor.class.getSimpleName();
 
-    public static boolean process(@NonNull Uri uri, String host, @NonNull RxActivity activity, boolean finishActivity) {
+    public static boolean process(@NonNull Uri uri, String host, @NonNull BaseActivity activity, boolean finishActivity) {
         if (TextUtils.isEmpty(host)) {
             host = uri.getHost();
             if (TextUtils.isEmpty(host)) {
@@ -70,6 +69,9 @@ public class WaliliveProcessor extends CommonProcessor {
             case SchemeConstants.HOST_RECHARGE:
                 jumpToRechargeActivity(activity);
                 break;
+            case SchemeConstants.HOST_CONTEST:
+                jumpToContestPrepare(uri, activity);
+                break;
             default:
                 return false;
         }
@@ -101,7 +103,7 @@ public class WaliliveProcessor extends CommonProcessor {
     /**
      * 不使用CommonProcessor，因为walilive的room协议更复杂，这里单独处理
      */
-    protected static void processHostRoom(Uri uri, Activity activity) {
+    protected static void processHostRoom(Uri uri, BaseActivity activity) {
         if (!isLegalPath(uri, "processHostRoom", SchemeConstants.PATH_JOIN)) {
             return;
         }
@@ -111,6 +113,17 @@ public class WaliliveProcessor extends CommonProcessor {
         String videoUrl = uri.getQueryParameter(SchemeConstants.PARAM_VIDEO_URL);
         int type = SchemeUtils.getInt(uri, SchemeConstants.PARAM_TYPE, 0);
         int liveType = LiveManager.mapLiveTypeFromListToRoom(type);
+
+        /**
+         *进行冲顶大会，直接判断进入
+         * <p/>
+         *sdk查询房间，WatchActivity里有逻辑，这里和直播不一致
+         */
+        boolean isContest = uri.getBooleanQueryParameter(SchemeConstants.PARAM_IS_CONTEST, false);
+        if (isContest) {
+            ContestWatchActivity.open(activity, playerId, liveId, videoUrl);
+            return;
+        }
 
         if (TextUtils.isEmpty(videoUrl) && TextUtils.isEmpty(liveId)) {
             int liveEndType = SchemeUtils.getInt(uri, SchemeConstants.PARAM_TYPE_LIVE_END, 0);
@@ -131,5 +144,13 @@ public class WaliliveProcessor extends CommonProcessor {
      */
     public static void jumpToRechargeActivity(@NonNull Activity activity) {
         RechargeActivity.openActivity(activity, null);
+    }
+
+    private static void jumpToContestPrepare(Uri uri, BaseActivity activity) {
+        if (!isLegalPath(uri, "jumpToContestPrepare", SchemeConstants.PATH_PREPARE)) {
+            return;
+        }
+        long zuid = SchemeUtils.getLong(uri, SchemeConstants.PARAM_ZUID, 0);
+        ContestPrepareActivity.open(activity, zuid);
     }
 }

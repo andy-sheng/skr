@@ -152,6 +152,14 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         });
             }
         }));
+        mDataList.add(new Bean("跳转到冲顶大会准备页(Scheme)", new Runnable() {
+            @Override
+            public void run() {
+                String uri = "livesdk://contest/prepare?channel=50001&package_name=com.wali.live.sdk.manager.demo";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                mActivity.startActivity(intent);
+            }
+        }));
 //        mDataList.add(new Bean("跳转到冲顶大会直播间(Intent)", new Runnable() {
 //            @Override
 //            public void run() {

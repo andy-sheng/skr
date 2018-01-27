@@ -24,8 +24,11 @@ public class ContestPreparePresenter extends BaseRxPresenter<IContestPrepareView
     private Subscription mGetNoticeSubscription;
     private Subscription mIntervalUpdateSubscription;
 
-    public ContestPreparePresenter(IContestPrepareView view) {
+    private long mZuid;
+
+    public ContestPreparePresenter(IContestPrepareView view, long zuid) {
         super(view);
+        mZuid = zuid;
     }
 
     public void getContestNotice() {
@@ -37,7 +40,7 @@ public class ContestPreparePresenter extends BaseRxPresenter<IContestPrepareView
                 .create(new Observable.OnSubscribe<ContestNoticeModel>() {
                     @Override
                     public void call(Subscriber<? super ContestNoticeModel> subscriber) {
-                        LiveSummitProto.GetContestNoticeRsp rsp = new GetContestNoticeRequest().syncRsp();
+                        LiveSummitProto.GetContestNoticeRsp rsp = new GetContestNoticeRequest(mZuid).syncRsp();
                         if (rsp == null) {
                             subscriber.onError(new Exception("getContestNotice rsp is null"));
                         } else if (rsp.getRetCode() != ErrorCode.CODE_SUCCESS) {

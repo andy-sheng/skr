@@ -10,14 +10,15 @@ import com.wali.live.proto.LiveSummitProto;
  * Created by lan on 2018/1/11.
  */
 public class GetContestNoticeRequest extends BaseRequest {
-    public GetContestNoticeRequest() {
+    public GetContestNoticeRequest(long zuid) {
         super(MiLinkCommand.COMMAND_GET_CONTEST_NOTICE, "getContestNotice");
-        build();
+        build(zuid);
     }
 
-    private void build() {
+    private void build(long zuid) {
         mRequest = LiveSummitProto.GetContestNoticeReq.newBuilder()
                 .setUuid(UserAccountManager.getInstance().getUuidAsLong())
+                .setZuid(zuid)
                 .build();
     }
 

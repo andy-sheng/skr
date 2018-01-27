@@ -10,7 +10,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -48,8 +47,6 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 /**
@@ -151,7 +148,7 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
         $(R.id.contest_prepare_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ContestPrepareActivity.open(MainActivity.this);
+                ContestPrepareActivity.open(MainActivity.this, 0);
             }
         });
         $(R.id.watch_btn).setOnClickListener(new View.OnClickListener() {

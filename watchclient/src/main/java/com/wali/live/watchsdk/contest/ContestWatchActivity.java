@@ -395,7 +395,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
         addPushProcessor(mRoomStatusPresenter);
         mContestWatchPresenter = new ContestWatchPresenter(this);
 
-        mContestPreparePresenter = new ContestPreparePresenter(this);
+        mContestPreparePresenter = new ContestPreparePresenter(this, mMyRoomData.getUid());
         mContestInvitePresenter = new ContestInvitePresenter(this);
         enterLive();
     }
@@ -577,7 +577,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
     private void currentContestEnd(String from) {
         MyLog.w(TAG, "currentContestEnd from=" + from);
         ToastUtils.showToast(R.string.contest_room_end_tip);
-        ContestPrepareActivity.open(this);
+        ContestPrepareActivity.open(this, mMyRoomData.getUid());
         finish();
     }
 

@@ -199,7 +199,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                         new ICommonCallBack() {
                             @Override
                             public void process(Object objects) {
-                                ContestPrepareActivity.open(JumpSdkActivity.this);
+                                ContestPrepareActivity.open(JumpSdkActivity.this,0);
                             }
                         }, true, ACTION_OPEN_CONTEST_PREPARE);
                 break;

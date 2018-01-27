@@ -50,6 +50,8 @@ import org.greenrobot.eventbus.ThreadMode;
 public class ContestPrepareActivity extends BaseSdkActivity implements View.OnClickListener, IContestPrepareView, IContestInviteView {
     private static final String RULE_PAGE_URL = "http://activity.zb.mi.com/egg/index?id=52";
 
+    private static final String EXTRA_ZUID = "extra_zuid";
+
     private ImageView mBackBtn;
     private ImageView mShareBtn;
 
@@ -91,6 +93,8 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
     private ContestNoticeModel mNoticeModel;
     private User mMySelf;
 
+    private long mZuid;
+
     private boolean mIsInterval = false;
 
     @Override
@@ -112,6 +116,12 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
 
     private void initData() {
         mMySelf = MyUserInfoManager.getInstance().getUser();
+
+        Intent data = getIntent();
+        if (data == null) {
+            return;
+        }
+        mZuid = data.getLongExtra(EXTRA_ZUID, 0);
     }
 
     private void initView() {
@@ -173,7 +183,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
     }
 
     private void initPresenter() {
-        mPreparePresenter = new ContestPreparePresenter(this);
+        mPreparePresenter = new ContestPreparePresenter(this, mZuid);
 
         mInvitePresenter = new ContestInvitePresenter(this);
         mInvitePresenter.getInviteCode();
@@ -418,9 +428,10 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         }
     }
 
-    public static void open(BaseActivity activity) {
+    public static void open(BaseActivity activity, long zuid) {
         Intent intent = new Intent(activity, ContestPrepareActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(EXTRA_ZUID, zuid);
         activity.startActivity(intent);
     }
 }
