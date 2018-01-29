@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_80"
-            android:text=""
+            android:text="@string/share_total2_bonus"
             android:textColor="@color/color_black_trans_80"
             android:textSize="@dimen/text_size_42" />
 
@@ -47,7 +47,7 @@
             android:layout_marginTop="@dimen/view_dimen_20"
             android:gravity="center"
             android:text="@string/contest_success_des"
-            android:textColor="@color/color_black_trans_40"
+            android:textColor="@color/color_black_trans_80"
             android:textSize="@dimen/text_size_42"
             android:visibility="gone" />
 
@@ -141,7 +141,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin_100">
+        android:layout_marginTop="@dimen/margin_130">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -150,8 +150,8 @@
 
             <com.base.image.fresco.BaseImageView
                 android:id="@+id/avatar_iv"
-                android:layout_width="@dimen/view_dimen_280"
-                android:layout_height="@dimen/view_dimen_280"
+                android:layout_width="67.27dp"
+                android:layout_height="67.27dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/margin_10" />
 
@@ -172,7 +172,8 @@
             android:text="WINNER"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_48"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

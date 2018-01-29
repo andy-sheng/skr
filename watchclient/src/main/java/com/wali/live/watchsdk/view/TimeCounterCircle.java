@@ -48,6 +48,7 @@ public class TimeCounterCircle extends ProgressBar {
         mPaint.setColor(getResources().getColor(R.color.color_ff729b));
         mPaint.setStrokeWidth(strokeWidth);//覆盖线的宽度
         mPaint.setAntiAlias(true);
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
         /**
          * oval :指定圆弧的外轮廓矩形区域。计算方式看看就清楚了，核心是x、y相关的坐标
          startAngle: 圆弧起始角度，单位为度。
