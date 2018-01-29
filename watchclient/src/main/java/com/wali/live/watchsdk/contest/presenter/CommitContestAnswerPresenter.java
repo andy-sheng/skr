@@ -96,6 +96,9 @@ public class CommitContestAnswerPresenter extends BaseRxPresenter<IContestCommit
                             ToastUtils.showToast(GlobalData.app().getResources().getString(R.string.commit_answer_error_code, rsp.getRetCode()));
                             MyLog.w(TAG, "commitContestAnswer retCode = " + rsp.getRetCode());
                             setUnAbleContestData();
+                        } else if (rsp.getRetCode() == ErrorCode.CODE_CONTEST_REPEAT) {
+                            //如果返回码是重复提交 忽略此次结果
+                            MyLog.w(TAG, "commitContestAnswer retCode = " + rsp.getRetCode());
                         } else {
                             ToastUtils.showToast(GlobalData.app().getResources().getString(R.string.commit_answer_error_code, rsp.getRetCode()));
                             MyLog.w(TAG, "commitContestAnswer retCode = " + rsp.getRetCode());

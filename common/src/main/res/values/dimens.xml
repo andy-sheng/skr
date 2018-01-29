@@ -308,6 +308,7 @@
     <dimen name="margin_130">43.33dip</dimen>
     <dimen name="margin_108">36dip</dimen>
     <dimen name="margin_154">51.33dip</dimen>
+    <dimen name="margin_125">41.67dp</dimen>
     <dimen name="margin_120">40dp</dimen>
     <dimen name="margin_123">41dp</dimen>
     <dimen name="margin_114">38dp</dimen>

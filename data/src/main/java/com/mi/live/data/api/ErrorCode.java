@@ -140,4 +140,5 @@ public class ErrorCode {
     public static final int CODE_CONTEST_INVITE_UUID_INVALID = 23523; // 用户id无效
 
     public static final int CODE_CONTEST_UNABLE = 5055;//冲顶大会无资格提交答案 commitAnswer返回码
+    public static final int CODE_CONTEST_REPEAT = 5057;//冲顶大会重复提交 commitAnswer返回码
 }

@@ -6,6 +6,8 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -42,11 +44,15 @@ public class AnswerView extends RxRelativeLayout {
     private TextView mQuestionNameTv;
     private LinearLayout mAnswerContainer;
     private ResurrectionView mRevivalView;
+    private View mAnimContainer;
 
     private boolean mIsLastAnswer;
     private AnswerView.TimerHandler mTimerHandler = new AnswerView.TimerHandler(new WeakReference<AnswerView>(this));
 
     private ContestMediaHelper mMediaHelper;
+
+    private Animation mShowAnimation;
+    private Animation mHideAnimation;
 
     private static class TimerHandler extends Handler {
         private final WeakReference<AnswerView> mView;
@@ -98,12 +104,14 @@ public class AnswerView extends RxRelativeLayout {
         mNotifyIv = (ImageView) findViewById(R.id.notify_view);
         mQuestionNameTv = (TextView) findViewById(R.id.question_name);
         mAnswerContainer = (LinearLayout) findViewById(R.id.answer_container);
+        mAnimContainer = findViewById(R.id.anim_container);
 
         mMediaHelper = new ContestMediaHelper(getContext());
     }
 
     public void bindContestAnswerData(ContestAnswerMsgExt answerMsgExt) {
         MyLog.w(TAG, "bindContestAnswerData");
+//        resetData();
         QuestionInfoModel model = answerMsgExt.getQuestionInfoModel();
         bindData(model);
         if (model != null) {
@@ -153,7 +161,7 @@ public class AnswerView extends RxRelativeLayout {
                     TextView optionTitleTv = (TextView) itemView.findViewById(R.id.answer_option_tv);
                     optionTitleTv.setText(item.getText());
 
-                    itemView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    itemView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                     mAnswerContainer.addView(itemView);
                 }
                 showView();
@@ -164,9 +172,42 @@ public class AnswerView extends RxRelativeLayout {
         }
     }
 
+    private void showViewAnimation() {
+        setVisibility(VISIBLE);
+        if (mShowAnimation == null) {
+            mShowAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.contest_view_show_anim);
+        }
+        mAnimContainer.clearAnimation();
+        mAnimContainer.startAnimation(mShowAnimation);
+    }
+
+    private void hideViewAnimation() {
+        if (mHideAnimation == null) {
+            mHideAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.contest_view_hide_anim);
+            mHideAnimation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    setVisibility(GONE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+        }
+        mAnimContainer.clearAnimation();
+        mAnimContainer.startAnimation(mHideAnimation);
+    }
+
     private void showView() {
         MyLog.w(TAG, " showCacheData = " + ContestCurrentCache.getInstance().toString());
-        setVisibility(VISIBLE);
+        showViewAnimation();
         mTimerHandler.sendEmptyMessageDelayed(MSG_HIDE_VIEW, COUNT_DOWN_TOTAL_NUM);
         initNotifyView();
     }
@@ -181,14 +222,15 @@ public class AnswerView extends RxRelativeLayout {
                 mMediaHelper.playRawSource(R.raw.contest_correct);
                 setNotifyIv(R.drawable.youle_live_answer_icon_right);
             } else {
-                //答错了
-                mMediaHelper.playRawSource(R.raw.contest_wrong);
                 setNotifyIv(R.drawable.youle_live_answer_icon_wrong);
 
                 ContestCurrentCache.getInstance().getId();
                 if (ContestCurrentCache.getInstance().isUseRevival()) {
                     //复活了
                     MyLog.w(TAG, "useRevival");
+                    //答错了复活，用答错音效
+                    mMediaHelper.playRawSource(R.raw.contest_wrong);
+
                     if (mRevivalView == null) {
                         mRevivalView = (ResurrectionView) findViewById(R.id.revival_view);
                     }
@@ -199,18 +241,24 @@ public class AnswerView extends RxRelativeLayout {
                     // TODO: 2018/1/18 提示更新复活卡数量
                 } else {
                     MyLog.w(TAG, "showFailView");
+                    //答错了淘汰，用淘汰音效
+                    mMediaHelper.playRawSource(R.raw.contest_fail);
+
                     EventBus.getDefault().post(new EventClass.ShowContestView(EventClass.ShowContestView.TYPE_FAIL_VIEW, EventClass.ShowContestView.ACTION_SHOW));
                 }
             }
         } else if (ContestCurrentCache.getInstance().isWatchMode()) {
             MyLog.w(TAG, " gameOut watchMode");
             setNotifyIv(R.drawable.youle_live_answer_icon_watch);
+            mMediaHelper.playRawSource(R.raw.contest_begin_tip);
         } else if (!ContestCurrentCache.getInstance().isContinue()) {
             MyLog.w(TAG, "showAnswer gameOut");
+            mMediaHelper.playRawSource(R.raw.contest_begin_tip);
             setNotifyIv(R.drawable.youle_live_answer_icon_out);
         } else {
             MyLog.w(TAG, "showAnswer error");
             // TODO: 2018/1/13 没有结果返回的情况
+            mMediaHelper.playRawSource(R.raw.contest_begin_tip);
             mNotifyIv.setVisibility(GONE);
         }
     }
@@ -221,8 +269,8 @@ public class AnswerView extends RxRelativeLayout {
     }
 
     private void hideView() {
-        setVisibility(GONE);
-        MyLog.w(TAG, "mIsLastAnswer= " + mIsLastAnswer + " ContestCurrentCache.getInstance().isCorrect()=" + ContestCurrentCache.getInstance().isCorrect());
+        hideViewAnimation();
+
         if (mIsLastAnswer) {
             if (ContestCurrentCache.getInstance().isCorrect()) {
                 ContestCurrentCache.getInstance().setSuccess(true);
