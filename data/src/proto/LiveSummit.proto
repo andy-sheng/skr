@@ -86,6 +86,7 @@ message GetContestInviteCodeRsp {
     required uint32 retCode = 1;
     optional string inviteCode = 2; //邀请码
     optional uint32 revivalNum = 3; //复活卡数
+    optional bool canUseCode    = 4; //是否可以使用邀请码
 }
 
 //设置邀请码
@@ -94,9 +95,22 @@ message SetContestInviteCodeReq {
     optional uint64 uuid = 1;
     optional string inviteCode = 2; //邀请码
 }
+
 message SetContestInviteCodeRsp {
     required uint32 retCode = 1;
     optional uint32 revivalNum = 2; //复活卡数
+}
+
+//使用特殊邀请码
+//zhibo.contestcode.usespecialcode
+message UseSpecialCodeReq {
+    optional uint64 uuid        = 1;
+    optional string code        = 2; //邀请码
+}
+
+message UseSpecialCodeRsp {
+    required uint32 retCode     = 1;
+    optional uint32 revivalNum  = 2; //复活卡数
 }
 
 //冲顶大会房间人数

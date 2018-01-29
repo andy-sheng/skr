@@ -10,6 +10,10 @@ import com.wali.live.proto.LiveSummitProto;
  * @description 全局信息，不用清空
  */
 public class ContestGlobalCache {
+    private static final String TAG = "ContestGlobalCache";
+
+    private static boolean sCanUseCode;             //是否可以使用复活卡
+
     private static String sRevivalCode;             //复活卡，邀请码
     private static int sRevivalNum;                 //复活次数
 
@@ -23,12 +27,12 @@ public class ContestGlobalCache {
     private static String sLiveId;
 
     /*Get/Set方法*/
-    public static String getRevivalCode() {
-        return sRevivalCode;
+    public static boolean canUseCode() {
+        return sCanUseCode;
     }
 
-    public static void setRevivalCode(String revivalCode) {
-        sRevivalCode = revivalCode;
+    public static String getRevivalCode() {
+        return sRevivalCode;
     }
 
     public static int getRevivalNum() {
@@ -60,6 +64,9 @@ public class ContestGlobalCache {
         if (rsp.hasRevivalNum()) {
             sRevivalNum = rsp.getRevivalNum();
         }
+        if (rsp.hasCanUseCode()) {
+            sCanUseCode = rsp.getCanUseCode();
+        }
     }
 
     public static float getTotalIncome() {
@@ -75,10 +82,10 @@ public class ContestGlobalCache {
     }
 
     /**
-     * 之前房间号不存在，或者不匹配，或者没有获取到奖金，房间内都重新拉一边
+     * 之前房间号不存在，或者不匹配，或者没有获取到奖金，房间内都重新拉一遍
      */
     public static boolean needGetNoticeAgain(String liveId) {
-        if (TextUtils.isEmpty(sLiveId) || !liveId.equals(sLiveId)) {
+        if (TextUtils.isEmpty(sLiveId) || !sLiveId.equals(liveId)) {
             return true;
         }
         if (sBonus == 0) {
@@ -92,6 +99,8 @@ public class ContestGlobalCache {
     }
 
     public static void clear() {
+        sCanUseCode = false;
+
         sRevivalCode = null;
         sRevivalNum = 0;
 

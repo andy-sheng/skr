@@ -39,6 +39,7 @@ import com.wali.live.watchsdk.contest.rank.ContestRankActivity;
 import com.wali.live.watchsdk.contest.util.FormatUtils;
 import com.wali.live.watchsdk.contest.view.ContestRevivalInputView;
 import com.wali.live.watchsdk.contest.view.ContestRevivalRuleView;
+import com.wali.live.watchsdk.contest.view.ContestSpecialInputView;
 import com.wali.live.watchsdk.webview.WebViewActivity;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -85,6 +86,8 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
     private TextView mRuleTv;
 
     private ContestRevivalInputView mRevivalInputView;
+    private ContestSpecialInputView mSpecialInputView;
+
     private ContestRevivalRuleView mRevivalRuleView;
 
     private ContestPreparePresenter mPreparePresenter;
@@ -178,6 +181,13 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
                 mInvitePresenter.setInviteCode(revivalCode);
             }
         });
+        mSpecialInputView = $(R.id.special_input_view);
+        mSpecialInputView.setInputListener(new ContestSpecialInputView.SpecialInputListener() {
+            @Override
+            public void useSpecialCode(String code) {
+                mInvitePresenter.useSpecialCode(code);
+            }
+        });
 
         mRevivalRuleView = $(R.id.revival_rule_view);
     }
@@ -228,8 +238,6 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
     private void updateView() {
         updateStatusView();
         updateMyView();
-
-        updateInputView(mNoticeModel.hasInviteCode());
     }
 
     private void updateMyView() {
@@ -244,15 +252,16 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         AvatarUtils.loadAvatarByUidTs(mAvatarIv, mMySelf.getUid(), mMySelf.getAvatar(), true);
     }
 
-    private void updateInputView(boolean hasInviteCode) {
-        if (hasInviteCode) {
-            mInputBtn.setVisibility(View.GONE);
-            mInputShareBtn.setVisibility(View.VISIBLE);
+    private void updateInputView(boolean canUseCode) {
+        if (canUseCode) {
+            mInputBtn.setVisibility(View.VISIBLE);
+            mInputBtn.setEnabled(true);
+
+            mInputShareBtn.setVisibility(View.GONE);
             return;
         }
-        mInputBtn.setVisibility(View.VISIBLE);
-        mInputBtn.setEnabled(true);
-        mInputShareBtn.setVisibility(View.GONE);
+        mInputBtn.setVisibility(View.GONE);
+        mInputShareBtn.setVisibility(View.VISIBLE);
     }
 
     private void updateStatusView() {
@@ -291,6 +300,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
     public void getInviteCodeSuccess(String code) {
         mRevivalRuleView.updateCode();
         mRevivalCountTv.setText(String.valueOf(ContestGlobalCache.getRevivalNum()));
+        updateInputView(ContestGlobalCache.canUseCode());
     }
 
     @Override
@@ -299,12 +309,12 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         mRevivalCountTv.setText(String.valueOf(revivalNum));
 
         mRevivalInputView.hide();
-        updateInputView(true);
+        updateInputView(false);
     }
 
     @Override
     public void setInviteCodeFailure(int errCode) {
-        MyLog.w(TAG, "set invite code failure code=" + errCode);
+        MyLog.w(TAG, "set invite code failure, code=" + errCode);
         if (errCode == ErrorCode.CODE_CONTEST_INVITE_INVALID) {
             ToastUtils.showToast(R.string.contest_prepare_invite_invalid);
             mRevivalInputView.reset();
@@ -318,8 +328,35 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         }
     }
 
+    @Override
+    public void useSpecialCodeSuccess(int revivalNum) {
+        MyLog.w(TAG, "use special code success, revivalNum=" + revivalNum);
+        ToastUtils.showToast(R.string.use_special_invitenum_success);
+        mRevivalCountTv.setText(String.valueOf(revivalNum));
+    }
+
+    @Override
+    public void useSpecialCodeFailure(int errCode) {
+        MyLog.w(TAG, "use special code failure, errCode=" + errCode);
+        if (errCode == ErrorCode.CODE_CONTEST_INVITE_INVALID) {
+            ToastUtils.showToast(R.string.contest_prepare_invite_invalid);
+        } else if (errCode == ErrorCode.CODE_CONTEST_INVITE_MYSELF) {
+            ToastUtils.showToast(R.string.contest_prepare_invite_myself);
+        } else if (errCode == ErrorCode.CODE_CONTEST_INVITE_UUID_INVALID) {
+            ToastUtils.showToast(R.string.contest_prepare_invite_uuid_invalid);
+        } else if (errCode == ErrorCode.CODE_CONTEST_INVITE_CODE_USED) {
+            ToastUtils.showToast(R.string.contest_prepare_invite_code_used);
+        } else {
+            ToastUtils.showToast(R.string.contest_prepare_invite_server_error);
+        }
+    }
+
     private void showRevivalInputView() {
         mRevivalInputView.show();
+    }
+
+    private void showSpecialInputView() {
+        mSpecialInputView.show();
     }
 
     private void showRevivalRuleView() {
@@ -358,6 +395,8 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
             enterMyContestInfo();
         } else if (id == R.id.rule_tv) {
             enterRulePage();
+        } else if (id == R.id.special_code_tv) {
+            showSpecialInputView();
         }
     }
 

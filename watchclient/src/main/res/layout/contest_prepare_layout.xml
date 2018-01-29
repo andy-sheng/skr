@@ -421,8 +421,25 @@
         android:textColor="@color/color_white_pressed_white50"
         android:textSize="@dimen/text_size_36"/>
 
+    <TextView
+        android:id="@+id/special_code_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/content_area"
+        android:layout_marginLeft="@dimen/view_dimen_40"
+        android:padding="10dp"
+        android:text="@string/contest_prepare_special_code"
+        android:textColor="@color/color_white_pressed_white50"
+        android:textSize="@dimen/text_size_36"/>
+
     <com.wali.live.watchsdk.contest.view.ContestRevivalInputView
         android:id="@+id/revival_input_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+    <com.wali.live.watchsdk.contest.view.ContestSpecialInputView
+        android:id="@+id/special_input_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>

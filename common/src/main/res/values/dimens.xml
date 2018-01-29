@@ -162,6 +162,7 @@
     <dimen name="view_dimen_195">65dp</dimen>
     <dimen name="view_dimen_200">66.67dp</dimen>
     <dimen name="view_dimen_206">68.67dp</dimen>
+    <dimen name="view_dimen_208">69.33dp</dimen>
     <dimen name="view_dimen_210">70dp</dimen>
     <dimen name="view_dimen_220">73.33dp</dimen>
     <dimen name="view_dimen_230">76.67dp</dimen>

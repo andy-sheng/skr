@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    tools:background="@color/color_black_trans_20">
 
     <LinearLayout
         android:id="@+id/rank_list_area"
@@ -27,15 +28,15 @@
 
                 <com.base.image.fresco.BaseImageView
                     android:id="@+id/avatar_iv2"
-                    android:layout_width="@dimen/view_dimen_225"
-                    android:layout_height="@dimen/view_dimen_225"
+                    android:layout_width="@dimen/view_dimen_208"
+                    android:layout_height="@dimen/view_dimen_208"
                     android:layout_gravity="center"
-                    android:layout_marginTop="2.9dip"
+                    android:layout_marginTop="@dimen/view_dimen_14"
                     tools:background="@color/color_black_trans_10"/>
 
                 <ImageView
-                    android:layout_width="@dimen/view_dimen_240"
-                    android:layout_height="@dimen/view_dimen_290"
+                    android:layout_width="@dimen/view_dimen_270"
+                    android:layout_height="@dimen/view_dimen_320"
                     android:layout_gravity="center"
                     android:background="@drawable/rank_picture_bg_silver"/>
             </FrameLayout>
@@ -61,7 +62,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/view_dimen_20"
-                android:background="@drawable/contest_solid_white10_r50_text_bg"
+                android:background="@drawable/contest_solid_f6f6f6_r50_text_bg"
                 android:gravity="center"
                 android:textColor="@color/color_contest_theme_text"
                 tools:text="12"/>
@@ -82,15 +83,15 @@
 
                 <com.base.image.fresco.BaseImageView
                     android:id="@+id/avatar_iv1"
-                    android:layout_width="@dimen/view_dimen_285"
-                    android:layout_height="@dimen/view_dimen_285"
+                    android:layout_width="@dimen/view_dimen_290"
+                    android:layout_height="@dimen/view_dimen_290"
                     android:layout_gravity="center"
-                    android:layout_marginTop="6.33dp"
+                    android:layout_marginTop="@dimen/view_dimen_40"
                     tools:background="@color/color_black_trans_10"/>
 
                 <ImageView
-                    android:layout_width="@dimen/view_dimen_290"
-                    android:layout_height="@dimen/view_dimen_346"
+                    android:layout_width="@dimen/view_dimen_360"
+                    android:layout_height="@dimen/view_dimen_400"
                     android:background="@drawable/rank_picture_bg_golden"/>
             </FrameLayout>
 
@@ -115,7 +116,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/view_dimen_20"
-                android:background="@drawable/contest_solid_white10_r50_text_bg"
+                android:background="@drawable/contest_solid_f6f6f6_r50_text_bg"
                 android:gravity="center"
                 android:textColor="@color/color_contest_theme_text"
                 tools:text="12"/>
@@ -136,15 +137,15 @@
 
                 <com.base.image.fresco.BaseImageView
                     android:id="@+id/avatar_iv3"
-                    android:layout_width="@dimen/view_dimen_225"
-                    android:layout_height="@dimen/view_dimen_225"
+                    android:layout_width="@dimen/view_dimen_208"
+                    android:layout_height="@dimen/view_dimen_208"
                     android:layout_gravity="center"
-                    android:layout_marginTop="2.9dip"
+                    android:layout_marginTop="@dimen/view_dimen_14"
                     tools:background="@color/color_black_trans_10"/>
 
                 <ImageView
-                    android:layout_width="@dimen/view_dimen_240"
-                    android:layout_height="@dimen/view_dimen_290"
+                    android:layout_width="@dimen/view_dimen_270"
+                    android:layout_height="@dimen/view_dimen_320"
                     android:background="@drawable/rank_picture_bg_copper"/>
             </FrameLayout>
 
@@ -184,6 +185,3 @@
         android:layout_marginTop="@dimen/view_dimen_40"
         android:background="@color/color_black_trans_10"/>
 </RelativeLayout>
-
-
-

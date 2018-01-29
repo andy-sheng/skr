@@ -11,4 +11,8 @@ public interface IContestInviteView extends IRxView {
     void setInviteCodeSuccess(int revivalNum);
 
     void setInviteCodeFailure(int errCode);
+
+    void useSpecialCodeSuccess(int revivalNum);
+
+    void useSpecialCodeFailure(int errCode);
 }

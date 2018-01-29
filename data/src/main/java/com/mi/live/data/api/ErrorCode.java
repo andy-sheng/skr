@@ -135,9 +135,10 @@ public class ErrorCode {
     public static final int CODE_HANDEL_JOIN_NOTIFY = 22514; //已经处理了加群通知
 
     //冲顶大会
-    public static final int CODE_CONTEST_INVITE_INVALID = 23521;      // 邀请码无效
-    public static final int CODE_CONTEST_INVITE_MYSELF = 23522;       // 自己的邀请码
-    public static final int CODE_CONTEST_INVITE_UUID_INVALID = 23523; // 用户id无效
+    public static final int CODE_CONTEST_INVITE_INVALID = 23521;        // 邀请码无效
+    public static final int CODE_CONTEST_INVITE_MYSELF = 23522;         // 自己的邀请码
+    public static final int CODE_CONTEST_INVITE_UUID_INVALID = 23523;   // 用户id无效
+    public static final int CODE_CONTEST_INVITE_CODE_USED = 23524;      // 用户码已经使用
 
     public static final int CODE_CONTEST_UNABLE = 5055;//冲顶大会无资格提交答案 commitAnswer返回码
     public static final int CODE_CONTEST_REPEAT = 5057;//冲顶大会重复提交 commitAnswer返回码

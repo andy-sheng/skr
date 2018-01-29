@@ -1,0 +1,72 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       android:id="@+id/view_container_root"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/background_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_black_trans_60"/>
+
+    <RelativeLayout
+        android:id="@+id/revive_input_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/placeholder_area"
+        android:layout_margin="@dimen/view_dimen_40"
+        android:background="@drawable/contest_pop_view_bg"
+        android:padding="@dimen/view_dimen_80">
+
+        <TextView
+            android:id="@+id/input_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/contest_prepare_input_special_title"
+            android:textColor="@color/color_contest_theme"
+            android:textSize="@dimen/text_size_60"/>
+
+        <EditText
+            android:id="@+id/input_et"
+            android:layout_width="@dimen/view_dimen_720"
+            android:layout_height="@dimen/view_dimen_140"
+            android:layout_below="@id/input_title_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_dimen_80"
+            android:background="@drawable/contest_theme_border_r70_btn_bg"
+            android:gravity="center"
+            android:hint="@string/contest_prepare_input_special_title"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/color_black"
+            android:textColorHint="@color/color_black_trans_50"
+            android:textSize="@dimen/text_size_48"/>
+
+        <TextView
+            android:id="@+id/ok_btn"
+            android:layout_width="@dimen/view_dimen_408"
+            android:layout_height="@dimen/view_dimen_150"
+            android:layout_below="@id/input_et"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/contest_solid_gray_r75_btn_bg"
+            android:enabled="false"
+            android:gravity="center"
+            android:text="@string/contest_prepare_input_ok"
+            android:textColor="@color/color_white_pressed_white50"
+            android:textSize="@dimen/text_size_60"/>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/placeholder_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <View
+            android:id="@+id/placeholder_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+    </FrameLayout>
+</merge>

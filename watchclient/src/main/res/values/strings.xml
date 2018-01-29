@@ -465,43 +465,48 @@
     <string name="contest_prepare_my_bonus">我的奖金</string>
     <string name="contest_prepare_my_rank">排名</string>
     <string name="contest_prepare_input_code">输入邀请码</string>
+    <string name="contest_prepare_input_special_code">点击输入特别邀请码</string>
     <string name="contest_prepare_share_code">分享给好友</string>
+    <string name="contest_prepare_share_code_tip">分享给好友得复活卡</string>
     <string name="contest_prepare_invite_code">邀请好友得复活卡</string>
     <string name="contest_prepare_revival_card">复活卡</string>
+    <string name="contest_prepare_revival_card_x">复活卡x</string>
     <string name="contest_prepare_revival_tip">答错题不被淘汰哦</string>
     <string name="contest_prepare_enter_live">进入直播间</string>
     <string name="contest_prepare_begin_answer">答题已开始</string>
-    <string name="contest_prepare_input_title">请输入好友的复活卡邀请码</string>
-    <string name="contest_prepare_input_tip">你们都将获得一次复活机会\n轻松瓜分百万奖金</string>
+    <string name="contest_prepare_input_title">请输入邀请码</string>
+    <string name="contest_prepare_input_tip">输入好友邀请码，各得一张复活卡</string>
     <string name="contest_prepare_input_ok">确定激活</string>
+    <string name="contest_prepare_input_special_title">输入特别邀请码</string>
     <string name="contest_prepare_rule_title">复活卡规则</string>
-    <string name="contest_prepare_rule_1">新用户填写你的邀请码参加活动，双方均获得一张复活卡</string>
-    <string name="contest_prepare_rule_2">复活卡会在你回答错误后自动使用</string>
+    <string name="contest_prepare_rule_1">复活卡可以保你在答错题后而不会淘汰</string>
+    <string name="contest_prepare_rule_2">新用户填写你分享的邀请码，双方均可获得一张复活卡</string>
     <string name="contest_prepare_rule_3">每场游戏仅限使用一张复活卡</string>
     <string name="contest_prepare_share">分享</string>
+    <string name="contest_share_tip">分享得复活卡</string>
     <string name="contest_prepare_total_income">总收入</string>
     <string name="contest_prepare_withdraw">去提现</string>
     <string name="contest_prepare_withdraw_tip">提现奖金会有1-2天延迟，请您耐心等待</string>
     <string name="contest_prepare_invite_invalid">邀请码无效</string>
     <string name="contest_prepare_invite_myself">无法邀请自己</string>
     <string name="contest_prepare_invite_uuid_invalid">用户出了点小情况</string>
+    <string name="contest_prepare_invite_code_used">该邀请码已经被使用</string>
     <string name="contest_prepare_invite_server_error">服务器出现异常，稍后请重试</string>
     <string name="contest_prepare_total_rank">总榜排名</string>
     <string name="contest_prepare_revival_added">邀请码填写成功，复活机会已经增加</string>
     <string name="contest_prepare_revival_copy">邀请码复制成功，可以发给朋友们啦</string>
     <string name="contest_prepare_revival_code">邀请码</string>
+    <string name="contest_prepare_special_code">特别邀请码</string>
     <string name="contest_prepare_rule_page">官方规则说明</string>
-
-    <string name="share_invite_tip">输入邀请码获得复活卡，和我一起答题赢奖金！</string>
 
     <string name="use_revival_card_tip">已使用复活卡，可以继续答题</string>
 
     <string name="contest_success">恭喜胜利通关！</string>
     <string name="contest_success_des">共计%s人参与答题比拼</string>
-    <string name="contest_success_money">恭喜获得现金奖励：</string>
-    <string name="contest_success_share">炫耀战绩</string>
     <string name="contest_success_money_left">恭喜获得</string>
     <string name="contest_success_money_right">现金奖励</string>
+
+    <string name="contest_success_share">炫耀战绩</string>
 
     <string name="commit_answer_error_code">系统出错,错误码%d</string>
     <string name="contest_fail_title">你被淘汰了</string>
@@ -524,6 +529,11 @@
 
     <string name="share_total_bonus"><![CDATA[与%1$d人瓜分<font color="#ff6699">%2$s</font>元奖金]]></string>
     <string name="share_my_bonus"><![CDATA[我贏得了现金奖励:<font color="#ff6699"> ￥%s</font>]]></string>
+    <string name="share_win_title">我在有乐赢得现金奖励: </string>
+    <string name="share_invite_tip">快输入我的邀请码，一起答题赢奖金吧！</string>
+    <string name="share_download_tips">长按二维码下载APP，或在应用商店下载\"有乐\"，在首页点击【有乐】即可以参加</string>
+    <string name="share_dest">快输入我的邀请码，一起答题赢奖金吧！</string>
+
     <string name="copy_barrage">复制弹幕</string>
 
     <string name="contest_success_num">%s人通关</string>
@@ -732,10 +742,17 @@
     <string name="logining">登录中...</string>
     <string name="install_weixin">未安装微信客户端，请先下载安装</string>
 
+    <string name="my_card_num">我的复活卡x</string>
+
+    <string name="input_invite_num">输入邀请码</string>
+    <string name="share_to_friend">分享给好友</string>
+    <string name="click_to_input_invite_num">点击输入特别邀请码</string>
+    <string name="please_input_invite_num">请输入邀请码</string>
+    <string name="input_num_and_getcard">输入好友邀请码,各得一张复活卡</string>
+    <string name="confirm_active">确定激活</string>
+    <string name="use_special_invitenum_success">使用特别邀请码成功</string>
+
     <string name="income_content">下载小米直播就能马上提现全部奖金哦~</string>
     <string name="income_think">再想想</string>
     <string name="income_download">去下载</string>
-    <string name="share_download_tips">长按二维码下载APP，或在应用商店下载\"有乐\"，在首页点击【有乐】即可以参加</string>
-    <string name="share_win_title">我在有乐赢得现金奖励: </string>
-    <string name="share_dest">快输入我的邀请码，一起答题赢奖金吧！</string>
 </resources>

@@ -8925,6 +8925,23 @@ public final class LiveSummitProto {
      * </pre>
      */
     int getRevivalNum();
+
+    /**
+     * <code>optional bool canUseCode = 4;</code>
+     *
+     * <pre>
+     *是否可以使用邀请码
+     * </pre>
+     */
+    boolean hasCanUseCode();
+    /**
+     * <code>optional bool canUseCode = 4;</code>
+     *
+     * <pre>
+     *是否可以使用邀请码
+     * </pre>
+     */
+    boolean getCanUseCode();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.GetContestInviteCodeRsp}
@@ -8992,6 +9009,11 @@ public final class LiveSummitProto {
             case 24: {
               bitField0_ |= 0x00000004;
               revivalNum_ = input.readUInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              canUseCode_ = input.readBool();
               break;
             }
           }
@@ -9126,10 +9148,34 @@ public final class LiveSummitProto {
       return revivalNum_;
     }
 
+    public static final int CANUSECODE_FIELD_NUMBER = 4;
+    private boolean canUseCode_;
+    /**
+     * <code>optional bool canUseCode = 4;</code>
+     *
+     * <pre>
+     *是否可以使用邀请码
+     * </pre>
+     */
+    public boolean hasCanUseCode() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional bool canUseCode = 4;</code>
+     *
+     * <pre>
+     *是否可以使用邀请码
+     * </pre>
+     */
+    public boolean getCanUseCode() {
+      return canUseCode_;
+    }
+
     private void initFields() {
       retCode_ = 0;
       inviteCode_ = "";
       revivalNum_ = 0;
+      canUseCode_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -9157,6 +9203,9 @@ public final class LiveSummitProto {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeUInt32(3, revivalNum_);
       }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBool(4, canUseCode_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -9177,6 +9226,10 @@ public final class LiveSummitProto {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(3, revivalNum_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, canUseCode_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -9301,6 +9354,8 @@ public final class LiveSummitProto {
         bitField0_ = (bitField0_ & ~0x00000002);
         revivalNum_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
+        canUseCode_ = false;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -9341,6 +9396,10 @@ public final class LiveSummitProto {
           to_bitField0_ |= 0x00000004;
         }
         result.revivalNum_ = revivalNum_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.canUseCode_ = canUseCode_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -9367,6 +9426,9 @@ public final class LiveSummitProto {
         }
         if (other.hasRevivalNum()) {
           setRevivalNum(other.getRevivalNum());
+        }
+        if (other.hasCanUseCode()) {
+          setCanUseCode(other.getCanUseCode());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -9575,6 +9637,54 @@ public final class LiveSummitProto {
       public Builder clearRevivalNum() {
         bitField0_ = (bitField0_ & ~0x00000004);
         revivalNum_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean canUseCode_ ;
+      /**
+       * <code>optional bool canUseCode = 4;</code>
+       *
+       * <pre>
+       *是否可以使用邀请码
+       * </pre>
+       */
+      public boolean hasCanUseCode() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional bool canUseCode = 4;</code>
+       *
+       * <pre>
+       *是否可以使用邀请码
+       * </pre>
+       */
+      public boolean getCanUseCode() {
+        return canUseCode_;
+      }
+      /**
+       * <code>optional bool canUseCode = 4;</code>
+       *
+       * <pre>
+       *是否可以使用邀请码
+       * </pre>
+       */
+      public Builder setCanUseCode(boolean value) {
+        bitField0_ |= 0x00000008;
+        canUseCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool canUseCode = 4;</code>
+       *
+       * <pre>
+       *是否可以使用邀请码
+       * </pre>
+       */
+      public Builder clearCanUseCode() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        canUseCode_ = false;
         onChanged();
         return this;
       }
@@ -10715,6 +10825,1133 @@ public final class LiveSummitProto {
     }
 
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.SetContestInviteCodeRsp)
+  }
+
+  public interface UseSpecialCodeReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UseSpecialCodeReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    boolean hasUuid();
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    long getUuid();
+
+    /**
+     * <code>optional string code = 2;</code>
+     *
+     * <pre>
+     *邀请码
+     * </pre>
+     */
+    boolean hasCode();
+    /**
+     * <code>optional string code = 2;</code>
+     *
+     * <pre>
+     *邀请码
+     * </pre>
+     */
+    java.lang.String getCode();
+    /**
+     * <code>optional string code = 2;</code>
+     *
+     * <pre>
+     *邀请码
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getCodeBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.UseSpecialCodeReq}
+   *
+   * <pre>
+   *使用特殊邀请码
+   *zhibo.contestcode.usespecialcode
+   * </pre>
+   */
+  public static final class UseSpecialCodeReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UseSpecialCodeReq)
+      UseSpecialCodeReqOrBuilder {
+    // Use UseSpecialCodeReq.newBuilder() to construct.
+    private UseSpecialCodeReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private UseSpecialCodeReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final UseSpecialCodeReq defaultInstance;
+    public static UseSpecialCodeReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public UseSpecialCodeReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private UseSpecialCodeReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uuid_ = input.readUInt64();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              code_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_UseSpecialCodeReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_UseSpecialCodeReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq.class, com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<UseSpecialCodeReq> PARSER =
+        new com.google.protobuf.AbstractParser<UseSpecialCodeReq>() {
+      public UseSpecialCodeReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new UseSpecialCodeReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<UseSpecialCodeReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int UUID_FIELD_NUMBER = 1;
+    private long uuid_;
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    public long getUuid() {
+      return uuid_;
+    }
+
+    public static final int CODE_FIELD_NUMBER = 2;
+    private java.lang.Object code_;
+    /**
+     * <code>optional string code = 2;</code>
+     *
+     * <pre>
+     *邀请码
+     * </pre>
+     */
+    public boolean hasCode() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string code = 2;</code>
+     *
+     * <pre>
+     *邀请码
+     * </pre>
+     */
+    public java.lang.String getCode() {
+      java.lang.Object ref = code_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          code_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string code = 2;</code>
+     *
+     * <pre>
+     *邀请码
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getCodeBytes() {
+      java.lang.Object ref = code_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        code_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      uuid_ = 0L;
+      code_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getCodeBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getCodeBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.UseSpecialCodeReq}
+     *
+     * <pre>
+     *使用特殊邀请码
+     *zhibo.contestcode.usespecialcode
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UseSpecialCodeReq)
+        com.wali.live.proto.LiveSummitProto.UseSpecialCodeReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_UseSpecialCodeReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_UseSpecialCodeReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq.class, com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        code_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_UseSpecialCodeReq_descriptor;
+      }
+
+      public com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq build() {
+        com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq buildPartial() {
+        com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq result = new com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uuid_ = uuid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.code_ = code_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq) {
+          return mergeFrom((com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq other) {
+        if (other == com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq.getDefaultInstance()) return this;
+        if (other.hasUuid()) {
+          setUuid(other.getUuid());
+        }
+        if (other.hasCode()) {
+          bitField0_ |= 0x00000002;
+          code_ = other.code_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveSummitProto.UseSpecialCodeReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long uuid_ ;
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public long getUuid() {
+        return uuid_;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public Builder setUuid(long value) {
+        bitField0_ |= 0x00000001;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object code_ = "";
+      /**
+       * <code>optional string code = 2;</code>
+       *
+       * <pre>
+       *邀请码
+       * </pre>
+       */
+      public boolean hasCode() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string code = 2;</code>
+       *
+       * <pre>
+       *邀请码
+       * </pre>
+       */
+      public java.lang.String getCode() {
+        java.lang.Object ref = code_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            code_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string code = 2;</code>
+       *
+       * <pre>
+       *邀请码
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getCodeBytes() {
+        java.lang.Object ref = code_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          code_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string code = 2;</code>
+       *
+       * <pre>
+       *邀请码
+       * </pre>
+       */
+      public Builder setCode(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        code_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string code = 2;</code>
+       *
+       * <pre>
+       *邀请码
+       * </pre>
+       */
+      public Builder clearCode() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        code_ = getDefaultInstance().getCode();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string code = 2;</code>
+       *
+       * <pre>
+       *邀请码
+       * </pre>
+       */
+      public Builder setCodeBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        code_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UseSpecialCodeReq)
+    }
+
+    static {
+      defaultInstance = new UseSpecialCodeReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UseSpecialCodeReq)
+  }
+
+  public interface UseSpecialCodeRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UseSpecialCodeRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    int getRetCode();
+
+    /**
+     * <code>optional uint32 revivalNum = 2;</code>
+     *
+     * <pre>
+     *复活卡数
+     * </pre>
+     */
+    boolean hasRevivalNum();
+    /**
+     * <code>optional uint32 revivalNum = 2;</code>
+     *
+     * <pre>
+     *复活卡数
+     * </pre>
+     */
+    int getRevivalNum();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.UseSpecialCodeRsp}
+   */
+  public static final class UseSpecialCodeRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UseSpecialCodeRsp)
+      UseSpecialCodeRspOrBuilder {
+    // Use UseSpecialCodeRsp.newBuilder() to construct.
+    private UseSpecialCodeRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private UseSpecialCodeRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final UseSpecialCodeRsp defaultInstance;
+    public static UseSpecialCodeRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public UseSpecialCodeRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private UseSpecialCodeRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              revivalNum_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_UseSpecialCodeRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_UseSpecialCodeRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp.class, com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<UseSpecialCodeRsp> PARSER =
+        new com.google.protobuf.AbstractParser<UseSpecialCodeRsp>() {
+      public UseSpecialCodeRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new UseSpecialCodeRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<UseSpecialCodeRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    public static final int REVIVALNUM_FIELD_NUMBER = 2;
+    private int revivalNum_;
+    /**
+     * <code>optional uint32 revivalNum = 2;</code>
+     *
+     * <pre>
+     *复活卡数
+     * </pre>
+     */
+    public boolean hasRevivalNum() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 revivalNum = 2;</code>
+     *
+     * <pre>
+     *复活卡数
+     * </pre>
+     */
+    public int getRevivalNum() {
+      return revivalNum_;
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+      revivalNum_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, revivalNum_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, revivalNum_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.UseSpecialCodeRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UseSpecialCodeRsp)
+        com.wali.live.proto.LiveSummitProto.UseSpecialCodeRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_UseSpecialCodeRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_UseSpecialCodeRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp.class, com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        revivalNum_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_UseSpecialCodeRsp_descriptor;
+      }
+
+      public com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp build() {
+        com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp buildPartial() {
+        com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp result = new com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.revivalNum_ = revivalNum_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp) {
+          return mergeFrom((com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp other) {
+        if (other == com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        if (other.hasRevivalNum()) {
+          setRevivalNum(other.getRevivalNum());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveSummitProto.UseSpecialCodeRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int revivalNum_ ;
+      /**
+       * <code>optional uint32 revivalNum = 2;</code>
+       *
+       * <pre>
+       *复活卡数
+       * </pre>
+       */
+      public boolean hasRevivalNum() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 revivalNum = 2;</code>
+       *
+       * <pre>
+       *复活卡数
+       * </pre>
+       */
+      public int getRevivalNum() {
+        return revivalNum_;
+      }
+      /**
+       * <code>optional uint32 revivalNum = 2;</code>
+       *
+       * <pre>
+       *复活卡数
+       * </pre>
+       */
+      public Builder setRevivalNum(int value) {
+        bitField0_ |= 0x00000002;
+        revivalNum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 revivalNum = 2;</code>
+       *
+       * <pre>
+       *复活卡数
+       * </pre>
+       */
+      public Builder clearRevivalNum() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        revivalNum_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UseSpecialCodeRsp)
+    }
+
+    static {
+      defaultInstance = new UseSpecialCodeRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UseSpecialCodeRsp)
   }
 
   public interface GetContestViewerInfoReqOrBuilder extends
@@ -18464,6 +19701,16 @@ public final class LiveSummitProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_SetContestInviteCodeRsp_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_UseSpecialCodeReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_UseSpecialCodeReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_UseSpecialCodeRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_UseSpecialCodeRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetContestViewerInfoReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -18544,37 +19791,40 @@ public final class LiveSummitProto {
       "oto.QuestionInfoItem\022\020\n\010question\030\003 \001(\t\022\017" +
       "\n\007is_last\030\004 \001(\010\022\022\n\ndelay_time\030\005 \001(\r\022\016\n\006s" +
       "eq_id\030\006 \001(\r\"\'\n\027GetContestInviteCodeReq\022\014" +
-      "\n\004uuid\030\001 \001(\004\"R\n\027GetContestInviteCodeRsp\022" +
+      "\n\004uuid\030\001 \001(\004\"f\n\027GetContestInviteCodeRsp\022" +
       "\017\n\007retCode\030\001 \002(\r\022\022\n\ninviteCode\030\002 \001(\t\022\022\n\n" +
-      "revivalNum\030\003 \001(\r\";\n\027SetContestInviteCode",
-      "Req\022\014\n\004uuid\030\001 \001(\004\022\022\n\ninviteCode\030\002 \001(\t\">\n" +
-      "\027SetContestInviteCodeRsp\022\017\n\007retCode\030\001 \002(" +
-      "\r\022\022\n\nrevivalNum\030\002 \001(\r\"I\n\027GetContestViewe" +
-      "rInfoReq\022\014\n\004uuid\030\001 \002(\004\022\017\n\007host_id\030\002 \002(\004\022" +
-      "\017\n\007live_id\030\003 \002(\t\"?\n\027GetContestViewerInfo" +
-      "Rsp\022\020\n\010ret_code\030\001 \002(\r\022\022\n\nviewer_num\030\002 \001(" +
-      "\r\"Y\n\026GetContestAwardListReq\022\014\n\004uuid\030\001 \001(" +
-      "\004\022\r\n\005limit\030\002 \001(\004\022\022\n\ncontest_id\030\003 \001(\t\022\016\n\006" +
-      "liveid\030\004 \001(\t\"]\n\026GetContestAwardListRsp\022\020" +
-      "\n\010ret_code\030\001 \002(\r\0221\n\nuser_infos\030\002 \003(\0132\035.c",
-      "om.wali.live.proto.UserInfo\"\212\001\n\022ContestQ" +
-      "uestionMsg\022\022\n\ncontest_id\030\001 \001(\t\0229\n\016questi" +
-      "on_infos\030\002 \001(\0132!.com.wali.live.proto.Que" +
-      "stionInfo\022\021\n\tstream_ts\030\003 \001(\004\022\022\n\nanswer_n" +
-      "um\030\004 \001(\004\"\313\001\n\020ContestAnswerMsg\022\022\n\ncontest" +
-      "_id\030\001 \001(\t\0229\n\016question_infos\030\002 \001(\0132!.com." +
-      "wali.live.proto.QuestionInfo\022A\n\022last_que" +
-      "stion_info\030\003 \001(\0132%.com.wali.live.proto.L" +
-      "astQuestionInfo\022\021\n\tstream_ts\030\004 \001(\004\022\022\n\nan" +
-      "swer_num\030\005 \001(\004\"Z\n\020LastQuestionInfo\022\021\n\tto",
-      "tal_num\030\001 \001(\r\022\023\n\013total_bonus\030\002 \001(\002\022\021\n\tpe" +
-      "r_bonus\030\003 \001(\002\022\013\n\003num\030\004 \001(\r\"L\n\020QuestionIn" +
-      "foItem\022\n\n\002id\030\001 \001(\t\022\014\n\004text\030\002 \001(\t\022\021\n\tis_a" +
-      "nswer\030\003 \001(\010\022\013\n\003num\030\004 \001(\r\"r\n\021QuestionExtr" +
-      "aInfo\022\022\n\nis_correct\030\001 \001(\010\022\023\n\013use_revival" +
-      "\030\002 \001(\010\022\023\n\013revival_num\030\003 \001(\r\022\n\n\002id\030\004 \001(\t\022" +
-      "\023\n\013is_continue\030\005 \001(\010B&\n\023com.wali.live.pr" +
-      "otoB\017LiveSummitProto"
+      "revivalNum\030\003 \001(\r\022\022\n\ncanUseCode\030\004 \001(\010\";\n\027",
+      "SetContestInviteCodeReq\022\014\n\004uuid\030\001 \001(\004\022\022\n" +
+      "\ninviteCode\030\002 \001(\t\">\n\027SetContestInviteCod" +
+      "eRsp\022\017\n\007retCode\030\001 \002(\r\022\022\n\nrevivalNum\030\002 \001(" +
+      "\r\"/\n\021UseSpecialCodeReq\022\014\n\004uuid\030\001 \001(\004\022\014\n\004" +
+      "code\030\002 \001(\t\"8\n\021UseSpecialCodeRsp\022\017\n\007retCo" +
+      "de\030\001 \002(\r\022\022\n\nrevivalNum\030\002 \001(\r\"I\n\027GetConte" +
+      "stViewerInfoReq\022\014\n\004uuid\030\001 \002(\004\022\017\n\007host_id" +
+      "\030\002 \002(\004\022\017\n\007live_id\030\003 \002(\t\"?\n\027GetContestVie" +
+      "werInfoRsp\022\020\n\010ret_code\030\001 \002(\r\022\022\n\nviewer_n" +
+      "um\030\002 \001(\r\"Y\n\026GetContestAwardListReq\022\014\n\004uu",
+      "id\030\001 \001(\004\022\r\n\005limit\030\002 \001(\004\022\022\n\ncontest_id\030\003 " +
+      "\001(\t\022\016\n\006liveid\030\004 \001(\t\"]\n\026GetContestAwardLi" +
+      "stRsp\022\020\n\010ret_code\030\001 \002(\r\0221\n\nuser_infos\030\002 " +
+      "\003(\0132\035.com.wali.live.proto.UserInfo\"\212\001\n\022C" +
+      "ontestQuestionMsg\022\022\n\ncontest_id\030\001 \001(\t\0229\n" +
+      "\016question_infos\030\002 \001(\0132!.com.wali.live.pr" +
+      "oto.QuestionInfo\022\021\n\tstream_ts\030\003 \001(\004\022\022\n\na" +
+      "nswer_num\030\004 \001(\004\"\313\001\n\020ContestAnswerMsg\022\022\n\n" +
+      "contest_id\030\001 \001(\t\0229\n\016question_infos\030\002 \001(\013" +
+      "2!.com.wali.live.proto.QuestionInfo\022A\n\022l",
+      "ast_question_info\030\003 \001(\0132%.com.wali.live." +
+      "proto.LastQuestionInfo\022\021\n\tstream_ts\030\004 \001(" +
+      "\004\022\022\n\nanswer_num\030\005 \001(\004\"Z\n\020LastQuestionInf" +
+      "o\022\021\n\ttotal_num\030\001 \001(\r\022\023\n\013total_bonus\030\002 \001(" +
+      "\002\022\021\n\tper_bonus\030\003 \001(\002\022\013\n\003num\030\004 \001(\r\"L\n\020Que" +
+      "stionInfoItem\022\n\n\002id\030\001 \001(\t\022\014\n\004text\030\002 \001(\t\022" +
+      "\021\n\tis_answer\030\003 \001(\010\022\013\n\003num\030\004 \001(\r\"r\n\021Quest" +
+      "ionExtraInfo\022\022\n\nis_correct\030\001 \001(\010\022\023\n\013use_" +
+      "revival\030\002 \001(\010\022\023\n\013revival_num\030\003 \001(\r\022\n\n\002id" +
+      "\030\004 \001(\t\022\023\n\013is_continue\030\005 \001(\010B&\n\023com.wali.",
+      "live.protoB\017LiveSummitProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -18659,7 +19909,7 @@ public final class LiveSummitProto {
     internal_static_com_wali_live_proto_GetContestInviteCodeRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetContestInviteCodeRsp_descriptor,
-        new java.lang.String[] { "RetCode", "InviteCode", "RevivalNum", });
+        new java.lang.String[] { "RetCode", "InviteCode", "RevivalNum", "CanUseCode", });
     internal_static_com_wali_live_proto_SetContestInviteCodeReq_descriptor =
       getDescriptor().getMessageTypes().get(12);
     internal_static_com_wali_live_proto_SetContestInviteCodeReq_fieldAccessorTable = new
@@ -18672,56 +19922,68 @@ public final class LiveSummitProto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SetContestInviteCodeRsp_descriptor,
         new java.lang.String[] { "RetCode", "RevivalNum", });
-    internal_static_com_wali_live_proto_GetContestViewerInfoReq_descriptor =
+    internal_static_com_wali_live_proto_UseSpecialCodeReq_descriptor =
       getDescriptor().getMessageTypes().get(14);
+    internal_static_com_wali_live_proto_UseSpecialCodeReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_UseSpecialCodeReq_descriptor,
+        new java.lang.String[] { "Uuid", "Code", });
+    internal_static_com_wali_live_proto_UseSpecialCodeRsp_descriptor =
+      getDescriptor().getMessageTypes().get(15);
+    internal_static_com_wali_live_proto_UseSpecialCodeRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_UseSpecialCodeRsp_descriptor,
+        new java.lang.String[] { "RetCode", "RevivalNum", });
+    internal_static_com_wali_live_proto_GetContestViewerInfoReq_descriptor =
+      getDescriptor().getMessageTypes().get(16);
     internal_static_com_wali_live_proto_GetContestViewerInfoReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetContestViewerInfoReq_descriptor,
         new java.lang.String[] { "Uuid", "HostId", "LiveId", });
     internal_static_com_wali_live_proto_GetContestViewerInfoRsp_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_com_wali_live_proto_GetContestViewerInfoRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetContestViewerInfoRsp_descriptor,
         new java.lang.String[] { "RetCode", "ViewerNum", });
     internal_static_com_wali_live_proto_GetContestAwardListReq_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_com_wali_live_proto_GetContestAwardListReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetContestAwardListReq_descriptor,
         new java.lang.String[] { "Uuid", "Limit", "ContestId", "Liveid", });
     internal_static_com_wali_live_proto_GetContestAwardListRsp_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_com_wali_live_proto_GetContestAwardListRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetContestAwardListRsp_descriptor,
         new java.lang.String[] { "RetCode", "UserInfos", });
     internal_static_com_wali_live_proto_ContestQuestionMsg_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(20);
     internal_static_com_wali_live_proto_ContestQuestionMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ContestQuestionMsg_descriptor,
         new java.lang.String[] { "ContestId", "QuestionInfos", "StreamTs", "AnswerNum", });
     internal_static_com_wali_live_proto_ContestAnswerMsg_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(21);
     internal_static_com_wali_live_proto_ContestAnswerMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ContestAnswerMsg_descriptor,
         new java.lang.String[] { "ContestId", "QuestionInfos", "LastQuestionInfo", "StreamTs", "AnswerNum", });
     internal_static_com_wali_live_proto_LastQuestionInfo_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(22);
     internal_static_com_wali_live_proto_LastQuestionInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_LastQuestionInfo_descriptor,
         new java.lang.String[] { "TotalNum", "TotalBonus", "PerBonus", "Num", });
     internal_static_com_wali_live_proto_QuestionInfoItem_descriptor =
-      getDescriptor().getMessageTypes().get(21);
+      getDescriptor().getMessageTypes().get(23);
     internal_static_com_wali_live_proto_QuestionInfoItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_QuestionInfoItem_descriptor,
         new java.lang.String[] { "Id", "Text", "IsAnswer", "Num", });
     internal_static_com_wali_live_proto_QuestionExtraInfo_descriptor =
-      getDescriptor().getMessageTypes().get(22);
+      getDescriptor().getMessageTypes().get(24);
     internal_static_com_wali_live_proto_QuestionExtraInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_QuestionExtraInfo_descriptor,

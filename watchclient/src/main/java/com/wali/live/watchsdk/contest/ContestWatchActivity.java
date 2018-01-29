@@ -90,7 +90,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
     private static final String EXTRA_ROOM_ID = "extra_room_id";
     private static final String EXTRA_VIDEO_URL = "extra_video_url";
 
-    // 域名解析、重连相关
+    // 域名解析、重连相关one
     public static final int MSG_RELOAD_VIDEO = 100;             // onInfo开始buffer时，reload数据的标记。
     public static final int MAG_SHOW_SUCCESS_VIEW = 101;
 
@@ -285,30 +285,6 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
 
         mAnswerView = $(R.id.answer_view);
         mAnswerView.setVisibility(View.GONE);
-
-//        TextView showQuestion = $(R.id.test_btn);
-//        showQuestion.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                EventBus.getDefault().post(new EventClass.ShowContestView(EventClass.ShowContestView.TYPE_LATE_VIEW, EventClass.ShowContestView.ACTION_SHOW));
-//            }
-//        });
-//
-//        TextView showAnswer = $(R.id.test_btn_1);
-//        showAnswer.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                EventBus.getDefault().post(new EventClass.ShowContestView(EventClass.ShowContestView.TYPE_FAIL_VIEW, EventClass.ShowContestView.ACTION_SHOW));
-//            }
-//        });
-//
-//        TextView showAnswer1 = $(R.id.test_btn_2);
-//        showAnswer1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                EventBus.getDefault().post(new EventClass.ShowContestView(EventClass.ShowContestView.TYPE_SUCCESS_VIEW, EventClass.ShowContestView.ACTION_SHOW));
-//            }
-//        });
     }
 
     private void showContestSuccessView(LastQuestionInfoModel lastQuestionInfoModel) {
@@ -406,6 +382,8 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
 
         mContestPreparePresenter = new ContestPreparePresenter(this, mMyRoomData.getUid());
         mContestInvitePresenter = new ContestInvitePresenter(this);
+
+        getGlobalData();
         enterLive();
     }
 
@@ -415,6 +393,15 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
             addPresent(mVideoShowPresenter);
         }
         mVideoShowPresenter.getVideoUrlByRoomId(mMyRoomData.getUid(), mMyRoomData.getRoomId());
+    }
+
+    private void getGlobalData() {
+        if (mContestPreparePresenter != null && ContestGlobalCache.needGetNoticeAgain(mMyRoomData.getRoomId())) {
+            mContestPreparePresenter.getContestNotice();
+        }
+        if (mContestInvitePresenter != null && ContestGlobalCache.needGetCodeAgain()) {
+            mContestInvitePresenter.getInviteCode();
+        }
     }
 
     private void enterLive() {
@@ -762,6 +749,16 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
     }
 
     @Override
+    public void useSpecialCodeSuccess(int revivalNum) {
+        //nothing to do
+    }
+
+    @Override
+    public void useSpecialCodeFailure(int errCode) {
+        //nothing to do
+    }
+
+    @Override
     public void setContestNotice(ContestNoticeModel model) {
         if (mQuitDialog != null) {
             mQuitDialog.setMessage(getString(R.string.contest_room_quit_tip, ContestGlobalCache.getBonus()));
@@ -793,6 +790,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MiLinkEvent.StatusLogined event) {
         if (event != null) {
+            getGlobalData();
             enterLive();
         }
     }
@@ -916,6 +914,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
                     break;
             }
         }
+
     }
 
     public static void open(BaseActivity activity, long zuid, String roomId, String videoUrl) {
