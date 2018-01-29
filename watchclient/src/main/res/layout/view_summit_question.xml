@@ -61,7 +61,7 @@
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/youle_live_bg_answer_card" />
 
-                <com.wali.live.view.CountDownView
+                <com.wali.live.watchsdk.view.CountDownView
                     android:id="@+id/count_down"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
                     android:layout_marginTop="@dimen/margin_14" />
             </RelativeLayout>
 
-            <com.wali.live.view.ResurrectionView
+            <com.wali.live.watchsdk.contest.view.ResurrectionView
                 android:id="@+id/revival_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
