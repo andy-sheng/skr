@@ -8,14 +8,11 @@ import android.widget.TextView;
 
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
-import com.base.log.MyLog;
 import com.base.mvp.specific.RxRelativeLayout;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.push.model.contest.LastQuestionInfoModel;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
-import com.wali.live.watchsdk.contest.share.ContestShareHelper;
 import com.wali.live.watchsdk.eventbus.EventClass;
 
 import org.greenrobot.eventbus.EventBus;
@@ -76,7 +73,6 @@ public class ContestSuccessView extends RxRelativeLayout implements View.OnClick
     }
 
     public void bindData(LastQuestionInfoModel model) {
-        MyLog.w(TAG, "bindData");
         String totalBonus = model.getTotalBonus() > 10000 ? String.format(GlobalData.app().getString(R.string.num_time_wan),
                 String.valueOf((int) (model.getTotalBonus() / 10000))) : String.valueOf(model.getTotalBonus());
 
@@ -85,13 +81,6 @@ public class ContestSuccessView extends RxRelativeLayout implements View.OnClick
         mDesTv.setText(getResources().getString(R.string.contest_success_des, String.valueOf(model.getTotalJoinNum())));
         mMoneyTv.setText(String.valueOf(model.getMyBonus()));
         mLastQuestionInfoModel = model;
-        saveContestWinSharePic();
-    }
-
-    private String saveContestWinSharePic() {
-        return ContestShareHelper.saveContestWinSharePic(MyUserInfoManager.getInstance().getUuid(),
-                MyUserInfoManager.getInstance().getAvatar(), MyUserInfoManager.getInstance().getNickname(),
-                ContestGlobalCache.getRevivalCode(), mLastQuestionInfoModel);
     }
 
     @Override

@@ -21,7 +21,6 @@ public class ResurrectionView extends LinearLayout {
     Animation animIn;
     Animation animOut;
     ImageView imgAnim;
-    LinearLayout llytRoot;
 
     public ResurrectionView(Context context) {
         super(context);
@@ -39,12 +38,10 @@ public class ResurrectionView extends LinearLayout {
     }
 
     private void init(Context context) {
-        View view = LayoutInflater.from(context).inflate(R.layout.resurrection_layout, (ViewGroup) getParent(), false);
+        inflate(context, R.layout.resurrection_layou, this);
 
-        imgAnim = (ImageView) view.findViewById(R.id.resurrection_layout_imgAnim);
-        llytRoot = (LinearLayout) view.findViewById(R.id.resurrection_layout_llytRoot);
+        imgAnim = (ImageView) findViewById(R.id.resurrection_layout_imgAnim);
 
-        addView(view);
         animIn = (Animation) AnimationUtils.loadAnimation(context, R.anim.scale_0_to_11_to_1);
         animOut = (Animation) AnimationUtils.loadAnimation(context, R.anim.slide_top_out);
 
@@ -88,12 +85,12 @@ public class ResurrectionView extends LinearLayout {
     }
 
     private void stop() {
-        llytRoot.startAnimation(animOut);
+        startAnimation(animOut);
 
     }
 
     public void start() {
-        llytRoot.startAnimation(animIn);
+        startAnimation(animIn);
         imgAnim.startAnimation(rotate);
     }
 

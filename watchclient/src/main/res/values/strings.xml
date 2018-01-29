@@ -501,6 +501,8 @@
     <string name="contest_success_des">共计%s人参与答题比拼</string>
     <string name="contest_success_money">恭喜获得现金奖励：</string>
     <string name="contest_success_share">炫耀战绩</string>
+    <string name="contest_success_money_left">恭喜获得</string>
+    <string name="contest_success_money_right">现金奖励</string>
 
     <string name="commit_answer_error_code">系统出错,错误码%d</string>
     <string name="contest_fail_title">你被淘汰了</string>

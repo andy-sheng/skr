@@ -58,10 +58,10 @@
             android:layout_marginLeft="@dimen/margin_90"
             android:layout_marginRight="@dimen/margin_90"
             android:layout_marginTop="@dimen/margin_87"
-            android:background="@drawable/bg_gradient_purple"
+            android:background="@drawable/bg_get_revival"
             android:gravity="center"
             android:text="@string/contest_continue"
-            android:textColor="@color/color_white"
+            android:textColor="@color/color_white_pressed_white50"
             android:textSize="@dimen/text_size_45" />
 
         <TextView
@@ -74,7 +74,7 @@
             android:layout_marginTop="@dimen/margin_48"
             android:gravity="center"
             android:text="@string/share_get_revival"
-            android:textColor="@color/color_6c3ef5"
+            android:textColor="@color/color_contest_get_revival_num"
             android:textSize="@dimen/text_size_48" />
     </RelativeLayout>
 
