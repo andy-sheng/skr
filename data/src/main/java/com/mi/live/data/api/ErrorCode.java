@@ -140,4 +140,13 @@ public class ErrorCode {
     public static final int CODE_CONTEST_INVITE_UUID_INVALID = 23523; // 用户id无效
 
     public static final int CODE_CONTEST_UNABLE = 5055;//冲顶大会无资格提交答案 commitAnswer返回码
+
+    public interface MiAccount {
+        int NOT_MIBI_USER = 11352;// 非米币用户
+        int MI_ACCOUNT_NEED_RELOGIN = 11357;//
+        int MI_ACCESS_TOKEN_EXPIRED = 11358;//accessToken过期
+        int THRIFT_VERIFY_AT_ERROR = 11359;
+        int UUID_NOT_MATCHED = 11360;     //请求中的uuid和存储中的uuid不匹配
+        int MI_REFRESH_TOKEN_EXPIRED = 11361;//refreshToken过期
+    }
 }

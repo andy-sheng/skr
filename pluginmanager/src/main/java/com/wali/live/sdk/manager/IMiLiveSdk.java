@@ -145,6 +145,13 @@ public interface IMiLiveSdk {
     void openContestWatch(Activity activity, long playerId, String liveId, String videoUrl, IAssistantCallback callback);
 
     /**
+     * 打开提现页
+     *
+     * @version 205056
+     */
+    void openContestWithdrawals(Activity activity, IAssistantCallback callback);
+
+    /**
      * 第三方登录
      *
      * @param channelId 渠道ID

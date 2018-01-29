@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_tab_background"
+    android:orientation="vertical"
+    tools:context=".income.FillPayPalAccountActivity">
+
+            <com.base.view.BackTitleBar
+                android:id="@+id/title_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:is_profile_mode="true" />
+
+    <!--
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="73.33dip"
+        android:layout_marginTop="16.67dip"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/margin_40"
+        android:paddingLeft="@dimen/margin_40"
+        android:paddingRight="@dimen/margin_40"
+        android:paddingTop="@dimen/margin_40"
+        android:gravity="center_vertical">
+
+        <com.wali.live.fresco.BaseImageView
+            android:id="@+id/bind_account_avatar"
+            android:layout_width="@dimen/bind_account_avatar"
+            android:layout_height="@dimen/bind_account_avatar"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_30" />
+
+        <TextView
+            android:id="@+id/bind_account_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip"
+            android:layout_toRightOf="@id/bind_account_avatar"
+            android:textColor="@color/color_2b2b2b"
+            android:textSize="@dimen/text_size_48"
+            android:text="张西西"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+-->
+
+    <TextView
+        android:id="@+id/withdraw_warn_info"
+        android:layout_width="wrap_content"
+        android:layout_height="66.67dip"
+        android:paddingLeft="@dimen/margin_40"
+        android:paddingRight="@dimen/margin_40"
+        android:layout_gravity="center_horizontal"
+        android:drawablePadding="5dip"
+        android:drawableRight="@drawable/icon_xiangqingclick"
+        android:gravity="center_vertical|left"
+        android:text="@string/paypal_withdraw_title"
+        android:textColor="@color/cash_color"
+        android:textSize="@dimen/text_size_38" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/certification_item_height"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/margin_40"
+        android:paddingRight="@dimen/margin_40">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginRight="28dip"
+            android:gravity="left|center_vertical"
+            android:text="@string/paypal_account_name"
+            android:textColor="@color/color_2b2b2b_trans_90"
+            android:textSize="@dimen/text_size_46" />
+
+        <com.base.view.NoLeakEditText
+            android:id="@+id/bind_paypal_id"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="left|center_vertical"
+            android:hint="@string/input_paypal_account"
+            android:textColor="@color/color_black_trans_50"
+            android:textColorHint="@color/color_black_trans_30"
+            android:textSize="12.66dp"
+            android:singleLine="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/certification_item_height"
+        android:layout_marginTop="8dip"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/margin_40"
+        android:paddingRight="@dimen/margin_40">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="28dip"
+            android:gravity="center"
+            android:text="@string/last_name"
+            android:textColor="@color/color_2b2b2b_trans_90"
+            android:textSize="@dimen/text_size_46" />
+        <com.base.view.NoLeakEditText
+            android:id="@+id/bind_last_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="left|center_vertical"
+            android:hint="@string/input_paypal_info_tips"
+            android:textColor="@color/color_black_trans_50"
+            android:textColorHint="@color/color_black_trans_30"
+            android:textSize="12.66dp"
+            android:singleLine="true"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/certification_item_height"
+        android:layout_marginTop="8dip"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/margin_40"
+        android:paddingRight="@dimen/margin_40">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="28dip"
+            android:gravity="center"
+            android:text="@string/first_name"
+            android:textColor="@color/color_2b2b2b_trans_90"
+            android:textSize="@dimen/text_size_46" />
+        <com.base.view.NoLeakEditText
+            android:id="@+id/bind_first_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="left|center_vertical"
+            android:hint="@string/input_paypal_info_tips"
+            android:textColor="@color/color_black_trans_50"
+            android:textColorHint="@color/color_black_trans_30"
+            android:textSize="12.66dp"
+            android:singleLine="true"/>
+
+    </LinearLayout>
+
+    <CheckedTextView
+        android:id="@+id/agreement_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="8dip"
+        android:drawableLeft="@drawable/withdraw_checkbox"
+        android:drawablePadding="6dip"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/margin_40"
+        android:text="@string/withdraw_agreement"
+        android:textColor="@color/color_acacac"
+        android:textSize="@dimen/text_size_34" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/bind_submit"
+            android:layout_width="match_parent"
+            android:layout_height="43.33dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/margin_40"
+            android:layout_marginRight="@dimen/margin_40"
+            android:background="@drawable/withdraw_withdraw_button"
+            android:gravity="center"
+            android:text="@string/account_withdraw_bind_btn"
+            android:textColor="@color/color_white_pressed_white50"
+            android:textSize="13.33dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dip"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/bind_paypal_tips"
+            android:textColor="@color/color_black_trans_30"
+            android:textSize="11.33dp" />
+    </LinearLayout>
+</LinearLayout>

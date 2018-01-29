@@ -76,6 +76,14 @@ public abstract class PreferenceUtils {
 
     public static final String PREF_KEY_NEED_SHOW_CTA = "pref_key_need_show_cta";
 
+    public static final String SP_MI_ACCOUNT_CONFIG = "mi_account_config";
+    public static final String PREF_KEY_ACCESS_TOKEN = "key_access_token";
+    public static final String PREF_KEY_REFRESH_TOKEN = "key_refresh_token";
+
+    public static final String PREF_KEY_FIRST_POP_INCOME_TIP1 = "pref_key_first_pop_income_tip1";
+
+    public static final String PREF_KEY_FIRST_POP_INCOME_TIP2 = "pref_key_first_pop_income_tip2";
+
     public interface PrefObserver {
         void notifyPrefChange(final String key, Object value);
     }

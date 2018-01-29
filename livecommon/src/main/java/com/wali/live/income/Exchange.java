@@ -10,6 +10,8 @@ public class Exchange {
     private int diamondNum;//兑换钻数量
     private int ticketNum;//需要尚票数量
     private int extraDiamondNum;//赠送钻数量
+    private int goldGemCnt;
+    private int silverGemCnt;
 
     public Exchange(int id, int diamondNum, int ticketNum, int extraDiamondNum) {
         this.id = id;
@@ -75,5 +77,21 @@ public class Exchange {
 
     public void setExtraDiamondNum(int extraDiamondNum) {
         this.extraDiamondNum = extraDiamondNum;
+    }
+
+    public int getGoldGemCnt() {
+        return goldGemCnt;
+    }
+
+    public void setGoldGemCnt(int goldGemCnt) {
+        this.goldGemCnt = goldGemCnt;
+    }
+
+    public int getSilverGemCnt() {
+        return silverGemCnt;
+    }
+
+    public void setSilverGemCnt(int silverGemCnt) {
+        this.silverGemCnt = silverGemCnt;
     }
 }

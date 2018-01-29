@@ -95,6 +95,9 @@ public class GetConfigManager {
     private static final String CONFIG_PAYPAL_H5_WITHDRAW_URL = "ppalTXUrl";
     private static final String CONFIG_ROOT_ZHIBO_COMMON = "zhibo_comm"; // 和zhibo_biz 同一级
     private static final String CONFIG_GAME_FOLLOW_TS = "game_follow_start_time"; //游戏直播房间内引导关注时机
+    private static final String CONFIG_INDIA_WITHDRAW_ENABLE = "inTxEn";
+    private static final String CINFIG_INDIA_WITHDRAW_THRESHOLD = "inTxThreshold";
+    private static final String CONFIG_INDIA_WITHDRAW_URL = "inTxUrl";
 
     private static GetConfigManager sInstance;
 
@@ -129,6 +132,7 @@ public class GetConfigManager {
     private Set<String> whiteListUrlForWebView;
     // 提现配置
     private WithdrawConfig mWithdrawConfig = new WithdrawConfig();
+    private volatile IndiaWithdrawConfig mIndiaWithdrawConfig;
 
     private GetConfigManager() {
         lvlDataList = new ArrayList<>();
@@ -472,6 +476,12 @@ public class GetConfigManager {
                         String weChatH5WithdrawUrl = disStr.optString(CONFIG_WECHAT_H5_WITHDRAW_URL, null);
                         String payPalH5WithdrawUrl = disStr.optString(CONFIG_PAYPAL_H5_WITHDRAW_URL, null);
                         mWithdrawConfig = new WithdrawConfig(withdrawEnable, h5WithdrawEnable, weChatH5WithdrawUrl, payPalH5WithdrawUrl);
+
+                        boolean indiaWithdrawEnable = disStr.optInt(CONFIG_INDIA_WITHDRAW_ENABLE) != 0;
+                        int indiaWithdrawThreshold = Math.max(disStr.optInt(CINFIG_INDIA_WITHDRAW_THRESHOLD), 0);
+                        String indiaWithdrawUrl = disStr.optString(CONFIG_INDIA_WITHDRAW_URL);
+                        mIndiaWithdrawConfig = new IndiaWithdrawConfig(indiaWithdrawEnable, indiaWithdrawThreshold, indiaWithdrawUrl);
+
 
                         StringBuilder convergedData = new StringBuilder();
                         convergedData.append(disStr.optInt(CONFIG_CONVERGED_LEVEL, 10)).append("_").append(disStr.optInt(CONFIG_CONVERGED_RANKING, 10)).append("_")
@@ -844,6 +854,31 @@ public class GetConfigManager {
         }
     }
 
+    public static class IndiaWithdrawConfig {
+        private boolean mWithdrawEnable;
+        private int mWithdrawThreshold;// 可提现星票阈值
+        private String mWithdrawUrl;
+
+        public IndiaWithdrawConfig(boolean withdrawEnable, int withdrawThreshold, String withdrawUrl) {
+            mWithdrawEnable = withdrawEnable;
+            mWithdrawThreshold = withdrawThreshold;
+            mWithdrawUrl = withdrawUrl;
+        }
+
+        public boolean isWithdrawEnable() {
+            return mWithdrawEnable;
+        }
+
+        public int getWithdrawThreshold() {
+            return mWithdrawThreshold;
+        }
+
+        @Nullable
+        public String getWithdrawUrl() {
+            return mWithdrawUrl;
+        }
+    }
+
     public static class CertificationItem {
         public int certificationType;
         public Drawable certificationDrawable;
@@ -1050,4 +1085,7 @@ public class GetConfigManager {
         return mWithdrawConfig;
     }
 
+    public IndiaWithdrawConfig getIndiaWithdrawConfig(){
+        return mIndiaWithdrawConfig;
+    }
 }

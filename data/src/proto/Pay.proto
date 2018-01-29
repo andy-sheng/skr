@@ -240,9 +240,14 @@ message GetExchangeRequest {
 }
 message GemExchange {
     required uint32 exchange_id = 1;
-    required uint32 gem_cnt = 2;
+    required uint32 gem_cnt = 2;//服务器不做配置。为了保证旧版客户端能够兼容，value = gold_gem_cnt + virtual_gem_cnt
     required uint32 ticket_cnt = 3;
     optional uint32 give_gem_cnt = 4;
+    optional string subtitle = 5;// 副标题
+    optional uint64 begin_time = 6;//限时商品，开始时间
+    optional uint64 end_time = 7;//限时商品，结束时间
+    optional uint32 gold_gem_cnt = 8; //兑换金钻数
+    optional uint32 virtual_gem_cnt = 9;//兑换银钻数
 }
 message GetExchangeResponse {
     required uint32      ret_code           = 1;
@@ -502,6 +507,43 @@ message RechargeRecordRequest {
     required uint64 uuid = 1;
     optional Platform platform = 4; //充值平台
 }
+
+message ProfitRecordResponse {
+    optional uint32 retCode                             = 1;
+    optional int64  incomeProfitRMB                     = 2;//总收益人民币单位描述，单位为分
+    optional int64  incomeProfitDollar                  = 3;//总收益美元单位描述，单位为美分
+    optional int64  costProfitRMB                       = 4;//总支出人民币单位描述，单位为分
+    optional int64  costProfitDollar                    = 5;//总支出美元单位描述，单位为美分
+    repeated ProfitDayDetail profitDayDetails           = 6;//收益详情，以天为单位倒排
+}
+
+// 拉取收益记录请求
+// 命令字：zhibo.bank.getProfitList
+message ProfitRecordRequest {
+    optional uint64 uuid                    = 1;
+    optional uint32 year                    = 2;
+    optional uint32 month                   = 3;
+}
+
+// 封装一日收益的描述
+message ProfitDayDetail {
+    optional uint32     day                                     = 1;//第几天
+    repeated ProfitDayDetailInfo   profitDayDetailInfo          = 2;//每一类的收入详情，按规定顺序排列
+}
+
+message ProfitDayDetailInfo {
+    optional uint32     source_type                     = 1;//来源类型
+    optional uint32     profitType                      = 2;//收益类型，收入/支出
+    optional int64      profitChangeRMB                 = 3;//人民币单位描述的资产变动数字，单位为分
+    optional int64      profitChangeDollar              = 4;//美元单位描述的资产变动数字，单位为美分
+    repeated Languages   language                        = 5;//多语言描述
+}
+
+message Languages {
+    optional uint32 language_code                       = 1;//语言代号客户端的语言，0:中文简体，1:英文，2:繁体中文
+    optional string text                                = 2;//对应文案，如"来自互娱直播"、"from live"
+}
+
 message RechargeRecord {
     optional string item_id = 1;
     optional uint32 gem_cnt = 2; //获得多少钻

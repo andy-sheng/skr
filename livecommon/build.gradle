@@ -102,7 +102,7 @@ dependencies {
     livesdkaarCompile files('libs/HyAlipay_release_20161202.jar')
     livesdkaarCompile files('libs/HyUcashierpay_release_20161202.jar')
     livesdkaarCompile files('libs/HyWxWappay_release_20170307.jar')
-    livesdkaarCompile files('libs/libammsdk.jar')
+    compile files('libs/libammsdk.jar')
     livesdkaarCompile files('libs/reporter.jar')
     livesdkaarCompile files('libs/volley-1.0.19.jar')
     livesdkaarCompile files('libs/zxingcore-3.1.0.jar')

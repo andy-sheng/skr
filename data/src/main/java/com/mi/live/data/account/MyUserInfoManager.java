@@ -1,5 +1,6 @@
 package com.mi.live.data.account;
 
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.base.log.MyLog;
@@ -43,6 +44,24 @@ public class MyUserInfoManager {
 
     public static MyUserInfoManager getInstance() {
         return sInstance;
+    }
+
+    @Nullable
+    public synchronized UserProto.Region getRegion() {
+        if (mMyInfo != null) {
+            return mMyInfo.getRegion();
+        } else {
+            /*if (LocaleUtil.getSelectedLanguageIndexFromPreference() == LocaleUtil.INDEX_ENGLISH) {
+                return UserProto.Region.newBuilder().setCountry("China").setCountryCode("en").build();
+            } else {
+                return UserProto.Region.newBuilder().setCountry("中国").setCountryCode("cn").build();
+            }*/
+            return null;
+        }
+    }
+
+    public synchronized void setRegion(UserProto.Region region) {
+        mMyInfo.setRegion(region);
     }
 
     /**

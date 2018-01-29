@@ -21028,10 +21028,18 @@ public final class PayProto {
     // required uint32 gem_cnt = 2;
     /**
      * <code>required uint32 gem_cnt = 2;</code>
+     *
+     * <pre>
+     *服务器不做配置。为了保证旧版客户端能够兼容，value = gold_gem_cnt + virtual_gem_cnt
+     * </pre>
      */
     boolean hasGemCnt();
     /**
      * <code>required uint32 gem_cnt = 2;</code>
+     *
+     * <pre>
+     *服务器不做配置。为了保证旧版客户端能够兼容，value = gold_gem_cnt + virtual_gem_cnt
+     * </pre>
      */
     int getGemCnt();
 
@@ -21054,6 +21062,105 @@ public final class PayProto {
      * <code>optional uint32 give_gem_cnt = 4;</code>
      */
     int getGiveGemCnt();
+
+    // optional string subtitle = 5;
+    /**
+     * <code>optional string subtitle = 5;</code>
+     *
+     * <pre>
+     * 副标题
+     * </pre>
+     */
+    boolean hasSubtitle();
+    /**
+     * <code>optional string subtitle = 5;</code>
+     *
+     * <pre>
+     * 副标题
+     * </pre>
+     */
+    java.lang.String getSubtitle();
+    /**
+     * <code>optional string subtitle = 5;</code>
+     *
+     * <pre>
+     * 副标题
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getSubtitleBytes();
+
+    // optional uint64 begin_time = 6;
+    /**
+     * <code>optional uint64 begin_time = 6;</code>
+     *
+     * <pre>
+     *限时商品，开始时间
+     * </pre>
+     */
+    boolean hasBeginTime();
+    /**
+     * <code>optional uint64 begin_time = 6;</code>
+     *
+     * <pre>
+     *限时商品，开始时间
+     * </pre>
+     */
+    long getBeginTime();
+
+    // optional uint64 end_time = 7;
+    /**
+     * <code>optional uint64 end_time = 7;</code>
+     *
+     * <pre>
+     *限时商品，结束时间
+     * </pre>
+     */
+    boolean hasEndTime();
+    /**
+     * <code>optional uint64 end_time = 7;</code>
+     *
+     * <pre>
+     *限时商品，结束时间
+     * </pre>
+     */
+    long getEndTime();
+
+    // optional uint32 gold_gem_cnt = 8;
+    /**
+     * <code>optional uint32 gold_gem_cnt = 8;</code>
+     *
+     * <pre>
+     *兑换金钻数
+     * </pre>
+     */
+    boolean hasGoldGemCnt();
+    /**
+     * <code>optional uint32 gold_gem_cnt = 8;</code>
+     *
+     * <pre>
+     *兑换金钻数
+     * </pre>
+     */
+    int getGoldGemCnt();
+
+    // optional uint32 virtual_gem_cnt = 9;
+    /**
+     * <code>optional uint32 virtual_gem_cnt = 9;</code>
+     *
+     * <pre>
+     *兑换银钻数
+     * </pre>
+     */
+    boolean hasVirtualGemCnt();
+    /**
+     * <code>optional uint32 virtual_gem_cnt = 9;</code>
+     *
+     * <pre>
+     *兑换银钻数
+     * </pre>
+     */
+    int getVirtualGemCnt();
   }
   /**
    * Protobuf type {@code GemExchange}
@@ -21126,6 +21233,31 @@ public final class PayProto {
               giveGemCnt_ = input.readUInt32();
               break;
             }
+            case 42: {
+              bitField0_ |= 0x00000010;
+              subtitle_ = input.readBytes();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              beginTime_ = input.readUInt64();
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000040;
+              endTime_ = input.readUInt64();
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000080;
+              goldGemCnt_ = input.readUInt32();
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000100;
+              virtualGemCnt_ = input.readUInt32();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -21187,12 +21319,20 @@ public final class PayProto {
     private int gemCnt_;
     /**
      * <code>required uint32 gem_cnt = 2;</code>
+     *
+     * <pre>
+     *服务器不做配置。为了保证旧版客户端能够兼容，value = gold_gem_cnt + virtual_gem_cnt
+     * </pre>
      */
     public boolean hasGemCnt() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
      * <code>required uint32 gem_cnt = 2;</code>
+     *
+     * <pre>
+     *服务器不做配置。为了保证旧版客户端能够兼容，value = gold_gem_cnt + virtual_gem_cnt
+     * </pre>
      */
     public int getGemCnt() {
       return gemCnt_;
@@ -21230,11 +21370,167 @@ public final class PayProto {
       return giveGemCnt_;
     }
 
+    // optional string subtitle = 5;
+    public static final int SUBTITLE_FIELD_NUMBER = 5;
+    private java.lang.Object subtitle_;
+    /**
+     * <code>optional string subtitle = 5;</code>
+     *
+     * <pre>
+     * 副标题
+     * </pre>
+     */
+    public boolean hasSubtitle() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional string subtitle = 5;</code>
+     *
+     * <pre>
+     * 副标题
+     * </pre>
+     */
+    public java.lang.String getSubtitle() {
+      java.lang.Object ref = subtitle_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          subtitle_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string subtitle = 5;</code>
+     *
+     * <pre>
+     * 副标题
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getSubtitleBytes() {
+      java.lang.Object ref = subtitle_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        subtitle_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // optional uint64 begin_time = 6;
+    public static final int BEGIN_TIME_FIELD_NUMBER = 6;
+    private long beginTime_;
+    /**
+     * <code>optional uint64 begin_time = 6;</code>
+     *
+     * <pre>
+     *限时商品，开始时间
+     * </pre>
+     */
+    public boolean hasBeginTime() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional uint64 begin_time = 6;</code>
+     *
+     * <pre>
+     *限时商品，开始时间
+     * </pre>
+     */
+    public long getBeginTime() {
+      return beginTime_;
+    }
+
+    // optional uint64 end_time = 7;
+    public static final int END_TIME_FIELD_NUMBER = 7;
+    private long endTime_;
+    /**
+     * <code>optional uint64 end_time = 7;</code>
+     *
+     * <pre>
+     *限时商品，结束时间
+     * </pre>
+     */
+    public boolean hasEndTime() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional uint64 end_time = 7;</code>
+     *
+     * <pre>
+     *限时商品，结束时间
+     * </pre>
+     */
+    public long getEndTime() {
+      return endTime_;
+    }
+
+    // optional uint32 gold_gem_cnt = 8;
+    public static final int GOLD_GEM_CNT_FIELD_NUMBER = 8;
+    private int goldGemCnt_;
+    /**
+     * <code>optional uint32 gold_gem_cnt = 8;</code>
+     *
+     * <pre>
+     *兑换金钻数
+     * </pre>
+     */
+    public boolean hasGoldGemCnt() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional uint32 gold_gem_cnt = 8;</code>
+     *
+     * <pre>
+     *兑换金钻数
+     * </pre>
+     */
+    public int getGoldGemCnt() {
+      return goldGemCnt_;
+    }
+
+    // optional uint32 virtual_gem_cnt = 9;
+    public static final int VIRTUAL_GEM_CNT_FIELD_NUMBER = 9;
+    private int virtualGemCnt_;
+    /**
+     * <code>optional uint32 virtual_gem_cnt = 9;</code>
+     *
+     * <pre>
+     *兑换银钻数
+     * </pre>
+     */
+    public boolean hasVirtualGemCnt() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional uint32 virtual_gem_cnt = 9;</code>
+     *
+     * <pre>
+     *兑换银钻数
+     * </pre>
+     */
+    public int getVirtualGemCnt() {
+      return virtualGemCnt_;
+    }
+
     private void initFields() {
       exchangeId_ = 0;
       gemCnt_ = 0;
       ticketCnt_ = 0;
       giveGemCnt_ = 0;
+      subtitle_ = "";
+      beginTime_ = 0L;
+      endTime_ = 0L;
+      goldGemCnt_ = 0;
+      virtualGemCnt_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -21272,6 +21568,21 @@ public final class PayProto {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeUInt32(4, giveGemCnt_);
       }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, getSubtitleBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeUInt64(6, beginTime_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeUInt64(7, endTime_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeUInt32(8, goldGemCnt_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeUInt32(9, virtualGemCnt_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -21296,6 +21607,26 @@ public final class PayProto {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(4, giveGemCnt_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getSubtitleBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(6, beginTime_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(7, endTime_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(8, goldGemCnt_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(9, virtualGemCnt_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -21421,6 +21752,16 @@ public final class PayProto {
         bitField0_ = (bitField0_ & ~0x00000004);
         giveGemCnt_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
+        subtitle_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        beginTime_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        endTime_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        goldGemCnt_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        virtualGemCnt_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
@@ -21465,6 +21806,26 @@ public final class PayProto {
           to_bitField0_ |= 0x00000008;
         }
         result.giveGemCnt_ = giveGemCnt_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.subtitle_ = subtitle_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.beginTime_ = beginTime_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.endTime_ = endTime_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.goldGemCnt_ = goldGemCnt_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.virtualGemCnt_ = virtualGemCnt_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -21492,6 +21853,23 @@ public final class PayProto {
         }
         if (other.hasGiveGemCnt()) {
           setGiveGemCnt(other.getGiveGemCnt());
+        }
+        if (other.hasSubtitle()) {
+          bitField0_ |= 0x00000010;
+          subtitle_ = other.subtitle_;
+          onChanged();
+        }
+        if (other.hasBeginTime()) {
+          setBeginTime(other.getBeginTime());
+        }
+        if (other.hasEndTime()) {
+          setEndTime(other.getEndTime());
+        }
+        if (other.hasGoldGemCnt()) {
+          setGoldGemCnt(other.getGoldGemCnt());
+        }
+        if (other.hasVirtualGemCnt()) {
+          setVirtualGemCnt(other.getVirtualGemCnt());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -21569,18 +21947,30 @@ public final class PayProto {
       private int gemCnt_ ;
       /**
        * <code>required uint32 gem_cnt = 2;</code>
+       *
+       * <pre>
+       *服务器不做配置。为了保证旧版客户端能够兼容，value = gold_gem_cnt + virtual_gem_cnt
+       * </pre>
        */
       public boolean hasGemCnt() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
        * <code>required uint32 gem_cnt = 2;</code>
+       *
+       * <pre>
+       *服务器不做配置。为了保证旧版客户端能够兼容，value = gold_gem_cnt + virtual_gem_cnt
+       * </pre>
        */
       public int getGemCnt() {
         return gemCnt_;
       }
       /**
        * <code>required uint32 gem_cnt = 2;</code>
+       *
+       * <pre>
+       *服务器不做配置。为了保证旧版客户端能够兼容，value = gold_gem_cnt + virtual_gem_cnt
+       * </pre>
        */
       public Builder setGemCnt(int value) {
         bitField0_ |= 0x00000002;
@@ -21590,6 +21980,10 @@ public final class PayProto {
       }
       /**
        * <code>required uint32 gem_cnt = 2;</code>
+       *
+       * <pre>
+       *服务器不做配置。为了保证旧版客户端能够兼容，value = gold_gem_cnt + virtual_gem_cnt
+       * </pre>
        */
       public Builder clearGemCnt() {
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -21660,6 +22054,300 @@ public final class PayProto {
       public Builder clearGiveGemCnt() {
         bitField0_ = (bitField0_ & ~0x00000008);
         giveGemCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // optional string subtitle = 5;
+      private java.lang.Object subtitle_ = "";
+      /**
+       * <code>optional string subtitle = 5;</code>
+       *
+       * <pre>
+       * 副标题
+       * </pre>
+       */
+      public boolean hasSubtitle() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string subtitle = 5;</code>
+       *
+       * <pre>
+       * 副标题
+       * </pre>
+       */
+      public java.lang.String getSubtitle() {
+        java.lang.Object ref = subtitle_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          subtitle_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string subtitle = 5;</code>
+       *
+       * <pre>
+       * 副标题
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getSubtitleBytes() {
+        java.lang.Object ref = subtitle_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          subtitle_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string subtitle = 5;</code>
+       *
+       * <pre>
+       * 副标题
+       * </pre>
+       */
+      public Builder setSubtitle(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        subtitle_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string subtitle = 5;</code>
+       *
+       * <pre>
+       * 副标题
+       * </pre>
+       */
+      public Builder clearSubtitle() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        subtitle_ = getDefaultInstance().getSubtitle();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string subtitle = 5;</code>
+       *
+       * <pre>
+       * 副标题
+       * </pre>
+       */
+      public Builder setSubtitleBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        subtitle_ = value;
+        onChanged();
+        return this;
+      }
+
+      // optional uint64 begin_time = 6;
+      private long beginTime_ ;
+      /**
+       * <code>optional uint64 begin_time = 6;</code>
+       *
+       * <pre>
+       *限时商品，开始时间
+       * </pre>
+       */
+      public boolean hasBeginTime() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional uint64 begin_time = 6;</code>
+       *
+       * <pre>
+       *限时商品，开始时间
+       * </pre>
+       */
+      public long getBeginTime() {
+        return beginTime_;
+      }
+      /**
+       * <code>optional uint64 begin_time = 6;</code>
+       *
+       * <pre>
+       *限时商品，开始时间
+       * </pre>
+       */
+      public Builder setBeginTime(long value) {
+        bitField0_ |= 0x00000020;
+        beginTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 begin_time = 6;</code>
+       *
+       * <pre>
+       *限时商品，开始时间
+       * </pre>
+       */
+      public Builder clearBeginTime() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        beginTime_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // optional uint64 end_time = 7;
+      private long endTime_ ;
+      /**
+       * <code>optional uint64 end_time = 7;</code>
+       *
+       * <pre>
+       *限时商品，结束时间
+       * </pre>
+       */
+      public boolean hasEndTime() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional uint64 end_time = 7;</code>
+       *
+       * <pre>
+       *限时商品，结束时间
+       * </pre>
+       */
+      public long getEndTime() {
+        return endTime_;
+      }
+      /**
+       * <code>optional uint64 end_time = 7;</code>
+       *
+       * <pre>
+       *限时商品，结束时间
+       * </pre>
+       */
+      public Builder setEndTime(long value) {
+        bitField0_ |= 0x00000040;
+        endTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 end_time = 7;</code>
+       *
+       * <pre>
+       *限时商品，结束时间
+       * </pre>
+       */
+      public Builder clearEndTime() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        endTime_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // optional uint32 gold_gem_cnt = 8;
+      private int goldGemCnt_ ;
+      /**
+       * <code>optional uint32 gold_gem_cnt = 8;</code>
+       *
+       * <pre>
+       *兑换金钻数
+       * </pre>
+       */
+      public boolean hasGoldGemCnt() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional uint32 gold_gem_cnt = 8;</code>
+       *
+       * <pre>
+       *兑换金钻数
+       * </pre>
+       */
+      public int getGoldGemCnt() {
+        return goldGemCnt_;
+      }
+      /**
+       * <code>optional uint32 gold_gem_cnt = 8;</code>
+       *
+       * <pre>
+       *兑换金钻数
+       * </pre>
+       */
+      public Builder setGoldGemCnt(int value) {
+        bitField0_ |= 0x00000080;
+        goldGemCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 gold_gem_cnt = 8;</code>
+       *
+       * <pre>
+       *兑换金钻数
+       * </pre>
+       */
+      public Builder clearGoldGemCnt() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        goldGemCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // optional uint32 virtual_gem_cnt = 9;
+      private int virtualGemCnt_ ;
+      /**
+       * <code>optional uint32 virtual_gem_cnt = 9;</code>
+       *
+       * <pre>
+       *兑换银钻数
+       * </pre>
+       */
+      public boolean hasVirtualGemCnt() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional uint32 virtual_gem_cnt = 9;</code>
+       *
+       * <pre>
+       *兑换银钻数
+       * </pre>
+       */
+      public int getVirtualGemCnt() {
+        return virtualGemCnt_;
+      }
+      /**
+       * <code>optional uint32 virtual_gem_cnt = 9;</code>
+       *
+       * <pre>
+       *兑换银钻数
+       * </pre>
+       */
+      public Builder setVirtualGemCnt(int value) {
+        bitField0_ |= 0x00000100;
+        virtualGemCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 virtual_gem_cnt = 9;</code>
+       *
+       * <pre>
+       *兑换银钻数
+       * </pre>
+       */
+      public Builder clearVirtualGemCnt() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        virtualGemCnt_ = 0;
         onChanged();
         return this;
       }
@@ -50824,6 +51512,4679 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:RechargeRecordRequest)
   }
 
+  public interface ProfitRecordResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // optional uint32 retCode = 1;
+    /**
+     * <code>optional uint32 retCode = 1;</code>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>optional uint32 retCode = 1;</code>
+     */
+    int getRetCode();
+
+    // optional int64 incomeProfitRMB = 2;
+    /**
+     * <code>optional int64 incomeProfitRMB = 2;</code>
+     *
+     * <pre>
+     *总收益人民币单位描述，单位为分
+     * </pre>
+     */
+    boolean hasIncomeProfitRMB();
+    /**
+     * <code>optional int64 incomeProfitRMB = 2;</code>
+     *
+     * <pre>
+     *总收益人民币单位描述，单位为分
+     * </pre>
+     */
+    long getIncomeProfitRMB();
+
+    // optional int64 incomeProfitDollar = 3;
+    /**
+     * <code>optional int64 incomeProfitDollar = 3;</code>
+     *
+     * <pre>
+     *总收益美元单位描述，单位为美分
+     * </pre>
+     */
+    boolean hasIncomeProfitDollar();
+    /**
+     * <code>optional int64 incomeProfitDollar = 3;</code>
+     *
+     * <pre>
+     *总收益美元单位描述，单位为美分
+     * </pre>
+     */
+    long getIncomeProfitDollar();
+
+    // optional int64 costProfitRMB = 4;
+    /**
+     * <code>optional int64 costProfitRMB = 4;</code>
+     *
+     * <pre>
+     *总支出人民币单位描述，单位为分
+     * </pre>
+     */
+    boolean hasCostProfitRMB();
+    /**
+     * <code>optional int64 costProfitRMB = 4;</code>
+     *
+     * <pre>
+     *总支出人民币单位描述，单位为分
+     * </pre>
+     */
+    long getCostProfitRMB();
+
+    // optional int64 costProfitDollar = 5;
+    /**
+     * <code>optional int64 costProfitDollar = 5;</code>
+     *
+     * <pre>
+     *总支出美元单位描述，单位为美分
+     * </pre>
+     */
+    boolean hasCostProfitDollar();
+    /**
+     * <code>optional int64 costProfitDollar = 5;</code>
+     *
+     * <pre>
+     *总支出美元单位描述，单位为美分
+     * </pre>
+     */
+    long getCostProfitDollar();
+
+    // repeated .ProfitDayDetail profitDayDetails = 6;
+    /**
+     * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+     *
+     * <pre>
+     *收益详情，以天为单位倒排
+     * </pre>
+     */
+    java.util.List<com.wali.live.proto.PayProto.ProfitDayDetail> 
+        getProfitDayDetailsList();
+    /**
+     * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+     *
+     * <pre>
+     *收益详情，以天为单位倒排
+     * </pre>
+     */
+    com.wali.live.proto.PayProto.ProfitDayDetail getProfitDayDetails(int index);
+    /**
+     * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+     *
+     * <pre>
+     *收益详情，以天为单位倒排
+     * </pre>
+     */
+    int getProfitDayDetailsCount();
+    /**
+     * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+     *
+     * <pre>
+     *收益详情，以天为单位倒排
+     * </pre>
+     */
+    java.util.List<? extends com.wali.live.proto.PayProto.ProfitDayDetailOrBuilder> 
+        getProfitDayDetailsOrBuilderList();
+    /**
+     * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+     *
+     * <pre>
+     *收益详情，以天为单位倒排
+     * </pre>
+     */
+    com.wali.live.proto.PayProto.ProfitDayDetailOrBuilder getProfitDayDetailsOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code ProfitRecordResponse}
+   */
+  public static final class ProfitRecordResponse extends
+      com.google.protobuf.GeneratedMessage
+      implements ProfitRecordResponseOrBuilder {
+    // Use ProfitRecordResponse.newBuilder() to construct.
+    private ProfitRecordResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ProfitRecordResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ProfitRecordResponse defaultInstance;
+    public static ProfitRecordResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ProfitRecordResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ProfitRecordResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              incomeProfitRMB_ = input.readInt64();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              incomeProfitDollar_ = input.readInt64();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              costProfitRMB_ = input.readInt64();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              costProfitDollar_ = input.readInt64();
+              break;
+            }
+            case 50: {
+              if (!((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+                profitDayDetails_ = new java.util.ArrayList<com.wali.live.proto.PayProto.ProfitDayDetail>();
+                mutable_bitField0_ |= 0x00000020;
+              }
+              profitDayDetails_.add(input.readMessage(com.wali.live.proto.PayProto.ProfitDayDetail.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+          profitDayDetails_ = java.util.Collections.unmodifiableList(profitDayDetails_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.PayProto.internal_static_ProfitRecordResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.PayProto.internal_static_ProfitRecordResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.PayProto.ProfitRecordResponse.class, com.wali.live.proto.PayProto.ProfitRecordResponse.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ProfitRecordResponse> PARSER =
+        new com.google.protobuf.AbstractParser<ProfitRecordResponse>() {
+      public ProfitRecordResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ProfitRecordResponse(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ProfitRecordResponse> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // optional uint32 retCode = 1;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>optional uint32 retCode = 1;</code>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint32 retCode = 1;</code>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    // optional int64 incomeProfitRMB = 2;
+    public static final int INCOMEPROFITRMB_FIELD_NUMBER = 2;
+    private long incomeProfitRMB_;
+    /**
+     * <code>optional int64 incomeProfitRMB = 2;</code>
+     *
+     * <pre>
+     *总收益人民币单位描述，单位为分
+     * </pre>
+     */
+    public boolean hasIncomeProfitRMB() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional int64 incomeProfitRMB = 2;</code>
+     *
+     * <pre>
+     *总收益人民币单位描述，单位为分
+     * </pre>
+     */
+    public long getIncomeProfitRMB() {
+      return incomeProfitRMB_;
+    }
+
+    // optional int64 incomeProfitDollar = 3;
+    public static final int INCOMEPROFITDOLLAR_FIELD_NUMBER = 3;
+    private long incomeProfitDollar_;
+    /**
+     * <code>optional int64 incomeProfitDollar = 3;</code>
+     *
+     * <pre>
+     *总收益美元单位描述，单位为美分
+     * </pre>
+     */
+    public boolean hasIncomeProfitDollar() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional int64 incomeProfitDollar = 3;</code>
+     *
+     * <pre>
+     *总收益美元单位描述，单位为美分
+     * </pre>
+     */
+    public long getIncomeProfitDollar() {
+      return incomeProfitDollar_;
+    }
+
+    // optional int64 costProfitRMB = 4;
+    public static final int COSTPROFITRMB_FIELD_NUMBER = 4;
+    private long costProfitRMB_;
+    /**
+     * <code>optional int64 costProfitRMB = 4;</code>
+     *
+     * <pre>
+     *总支出人民币单位描述，单位为分
+     * </pre>
+     */
+    public boolean hasCostProfitRMB() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional int64 costProfitRMB = 4;</code>
+     *
+     * <pre>
+     *总支出人民币单位描述，单位为分
+     * </pre>
+     */
+    public long getCostProfitRMB() {
+      return costProfitRMB_;
+    }
+
+    // optional int64 costProfitDollar = 5;
+    public static final int COSTPROFITDOLLAR_FIELD_NUMBER = 5;
+    private long costProfitDollar_;
+    /**
+     * <code>optional int64 costProfitDollar = 5;</code>
+     *
+     * <pre>
+     *总支出美元单位描述，单位为美分
+     * </pre>
+     */
+    public boolean hasCostProfitDollar() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional int64 costProfitDollar = 5;</code>
+     *
+     * <pre>
+     *总支出美元单位描述，单位为美分
+     * </pre>
+     */
+    public long getCostProfitDollar() {
+      return costProfitDollar_;
+    }
+
+    // repeated .ProfitDayDetail profitDayDetails = 6;
+    public static final int PROFITDAYDETAILS_FIELD_NUMBER = 6;
+    private java.util.List<com.wali.live.proto.PayProto.ProfitDayDetail> profitDayDetails_;
+    /**
+     * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+     *
+     * <pre>
+     *收益详情，以天为单位倒排
+     * </pre>
+     */
+    public java.util.List<com.wali.live.proto.PayProto.ProfitDayDetail> getProfitDayDetailsList() {
+      return profitDayDetails_;
+    }
+    /**
+     * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+     *
+     * <pre>
+     *收益详情，以天为单位倒排
+     * </pre>
+     */
+    public java.util.List<? extends com.wali.live.proto.PayProto.ProfitDayDetailOrBuilder> 
+        getProfitDayDetailsOrBuilderList() {
+      return profitDayDetails_;
+    }
+    /**
+     * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+     *
+     * <pre>
+     *收益详情，以天为单位倒排
+     * </pre>
+     */
+    public int getProfitDayDetailsCount() {
+      return profitDayDetails_.size();
+    }
+    /**
+     * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+     *
+     * <pre>
+     *收益详情，以天为单位倒排
+     * </pre>
+     */
+    public com.wali.live.proto.PayProto.ProfitDayDetail getProfitDayDetails(int index) {
+      return profitDayDetails_.get(index);
+    }
+    /**
+     * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+     *
+     * <pre>
+     *收益详情，以天为单位倒排
+     * </pre>
+     */
+    public com.wali.live.proto.PayProto.ProfitDayDetailOrBuilder getProfitDayDetailsOrBuilder(
+        int index) {
+      return profitDayDetails_.get(index);
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+      incomeProfitRMB_ = 0L;
+      incomeProfitDollar_ = 0L;
+      costProfitRMB_ = 0L;
+      costProfitDollar_ = 0L;
+      profitDayDetails_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt64(2, incomeProfitRMB_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt64(3, incomeProfitDollar_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt64(4, costProfitRMB_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeInt64(5, costProfitDollar_);
+      }
+      for (int i = 0; i < profitDayDetails_.size(); i++) {
+        output.writeMessage(6, profitDayDetails_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(2, incomeProfitRMB_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, incomeProfitDollar_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(4, costProfitRMB_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(5, costProfitDollar_);
+      }
+      for (int i = 0; i < profitDayDetails_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, profitDayDetails_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.PayProto.ProfitRecordResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.PayProto.ProfitRecordResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.ProfitRecordResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.PayProto.ProfitRecordResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.ProfitRecordResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.PayProto.ProfitRecordResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.ProfitRecordResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.PayProto.ProfitRecordResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.ProfitRecordResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.PayProto.ProfitRecordResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.PayProto.ProfitRecordResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ProfitRecordResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.PayProto.ProfitRecordResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.PayProto.internal_static_ProfitRecordResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.PayProto.internal_static_ProfitRecordResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.PayProto.ProfitRecordResponse.class, com.wali.live.proto.PayProto.ProfitRecordResponse.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.PayProto.ProfitRecordResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getProfitDayDetailsFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        incomeProfitRMB_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        incomeProfitDollar_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        costProfitRMB_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        costProfitDollar_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        if (profitDayDetailsBuilder_ == null) {
+          profitDayDetails_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000020);
+        } else {
+          profitDayDetailsBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.PayProto.internal_static_ProfitRecordResponse_descriptor;
+      }
+
+      public com.wali.live.proto.PayProto.ProfitRecordResponse getDefaultInstanceForType() {
+        return com.wali.live.proto.PayProto.ProfitRecordResponse.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.PayProto.ProfitRecordResponse build() {
+        com.wali.live.proto.PayProto.ProfitRecordResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.PayProto.ProfitRecordResponse buildPartial() {
+        com.wali.live.proto.PayProto.ProfitRecordResponse result = new com.wali.live.proto.PayProto.ProfitRecordResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.incomeProfitRMB_ = incomeProfitRMB_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.incomeProfitDollar_ = incomeProfitDollar_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.costProfitRMB_ = costProfitRMB_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.costProfitDollar_ = costProfitDollar_;
+        if (profitDayDetailsBuilder_ == null) {
+          if (((bitField0_ & 0x00000020) == 0x00000020)) {
+            profitDayDetails_ = java.util.Collections.unmodifiableList(profitDayDetails_);
+            bitField0_ = (bitField0_ & ~0x00000020);
+          }
+          result.profitDayDetails_ = profitDayDetails_;
+        } else {
+          result.profitDayDetails_ = profitDayDetailsBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.PayProto.ProfitRecordResponse) {
+          return mergeFrom((com.wali.live.proto.PayProto.ProfitRecordResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.PayProto.ProfitRecordResponse other) {
+        if (other == com.wali.live.proto.PayProto.ProfitRecordResponse.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        if (other.hasIncomeProfitRMB()) {
+          setIncomeProfitRMB(other.getIncomeProfitRMB());
+        }
+        if (other.hasIncomeProfitDollar()) {
+          setIncomeProfitDollar(other.getIncomeProfitDollar());
+        }
+        if (other.hasCostProfitRMB()) {
+          setCostProfitRMB(other.getCostProfitRMB());
+        }
+        if (other.hasCostProfitDollar()) {
+          setCostProfitDollar(other.getCostProfitDollar());
+        }
+        if (profitDayDetailsBuilder_ == null) {
+          if (!other.profitDayDetails_.isEmpty()) {
+            if (profitDayDetails_.isEmpty()) {
+              profitDayDetails_ = other.profitDayDetails_;
+              bitField0_ = (bitField0_ & ~0x00000020);
+            } else {
+              ensureProfitDayDetailsIsMutable();
+              profitDayDetails_.addAll(other.profitDayDetails_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.profitDayDetails_.isEmpty()) {
+            if (profitDayDetailsBuilder_.isEmpty()) {
+              profitDayDetailsBuilder_.dispose();
+              profitDayDetailsBuilder_ = null;
+              profitDayDetails_ = other.profitDayDetails_;
+              bitField0_ = (bitField0_ & ~0x00000020);
+              profitDayDetailsBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getProfitDayDetailsFieldBuilder() : null;
+            } else {
+              profitDayDetailsBuilder_.addAllMessages(other.profitDayDetails_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.PayProto.ProfitRecordResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.PayProto.ProfitRecordResponse) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // optional uint32 retCode = 1;
+      private int retCode_ ;
+      /**
+       * <code>optional uint32 retCode = 1;</code>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint32 retCode = 1;</code>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>optional uint32 retCode = 1;</code>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 retCode = 1;</code>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // optional int64 incomeProfitRMB = 2;
+      private long incomeProfitRMB_ ;
+      /**
+       * <code>optional int64 incomeProfitRMB = 2;</code>
+       *
+       * <pre>
+       *总收益人民币单位描述，单位为分
+       * </pre>
+       */
+      public boolean hasIncomeProfitRMB() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional int64 incomeProfitRMB = 2;</code>
+       *
+       * <pre>
+       *总收益人民币单位描述，单位为分
+       * </pre>
+       */
+      public long getIncomeProfitRMB() {
+        return incomeProfitRMB_;
+      }
+      /**
+       * <code>optional int64 incomeProfitRMB = 2;</code>
+       *
+       * <pre>
+       *总收益人民币单位描述，单位为分
+       * </pre>
+       */
+      public Builder setIncomeProfitRMB(long value) {
+        bitField0_ |= 0x00000002;
+        incomeProfitRMB_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 incomeProfitRMB = 2;</code>
+       *
+       * <pre>
+       *总收益人民币单位描述，单位为分
+       * </pre>
+       */
+      public Builder clearIncomeProfitRMB() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        incomeProfitRMB_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // optional int64 incomeProfitDollar = 3;
+      private long incomeProfitDollar_ ;
+      /**
+       * <code>optional int64 incomeProfitDollar = 3;</code>
+       *
+       * <pre>
+       *总收益美元单位描述，单位为美分
+       * </pre>
+       */
+      public boolean hasIncomeProfitDollar() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional int64 incomeProfitDollar = 3;</code>
+       *
+       * <pre>
+       *总收益美元单位描述，单位为美分
+       * </pre>
+       */
+      public long getIncomeProfitDollar() {
+        return incomeProfitDollar_;
+      }
+      /**
+       * <code>optional int64 incomeProfitDollar = 3;</code>
+       *
+       * <pre>
+       *总收益美元单位描述，单位为美分
+       * </pre>
+       */
+      public Builder setIncomeProfitDollar(long value) {
+        bitField0_ |= 0x00000004;
+        incomeProfitDollar_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 incomeProfitDollar = 3;</code>
+       *
+       * <pre>
+       *总收益美元单位描述，单位为美分
+       * </pre>
+       */
+      public Builder clearIncomeProfitDollar() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        incomeProfitDollar_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // optional int64 costProfitRMB = 4;
+      private long costProfitRMB_ ;
+      /**
+       * <code>optional int64 costProfitRMB = 4;</code>
+       *
+       * <pre>
+       *总支出人民币单位描述，单位为分
+       * </pre>
+       */
+      public boolean hasCostProfitRMB() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional int64 costProfitRMB = 4;</code>
+       *
+       * <pre>
+       *总支出人民币单位描述，单位为分
+       * </pre>
+       */
+      public long getCostProfitRMB() {
+        return costProfitRMB_;
+      }
+      /**
+       * <code>optional int64 costProfitRMB = 4;</code>
+       *
+       * <pre>
+       *总支出人民币单位描述，单位为分
+       * </pre>
+       */
+      public Builder setCostProfitRMB(long value) {
+        bitField0_ |= 0x00000008;
+        costProfitRMB_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 costProfitRMB = 4;</code>
+       *
+       * <pre>
+       *总支出人民币单位描述，单位为分
+       * </pre>
+       */
+      public Builder clearCostProfitRMB() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        costProfitRMB_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // optional int64 costProfitDollar = 5;
+      private long costProfitDollar_ ;
+      /**
+       * <code>optional int64 costProfitDollar = 5;</code>
+       *
+       * <pre>
+       *总支出美元单位描述，单位为美分
+       * </pre>
+       */
+      public boolean hasCostProfitDollar() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional int64 costProfitDollar = 5;</code>
+       *
+       * <pre>
+       *总支出美元单位描述，单位为美分
+       * </pre>
+       */
+      public long getCostProfitDollar() {
+        return costProfitDollar_;
+      }
+      /**
+       * <code>optional int64 costProfitDollar = 5;</code>
+       *
+       * <pre>
+       *总支出美元单位描述，单位为美分
+       * </pre>
+       */
+      public Builder setCostProfitDollar(long value) {
+        bitField0_ |= 0x00000010;
+        costProfitDollar_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 costProfitDollar = 5;</code>
+       *
+       * <pre>
+       *总支出美元单位描述，单位为美分
+       * </pre>
+       */
+      public Builder clearCostProfitDollar() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        costProfitDollar_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // repeated .ProfitDayDetail profitDayDetails = 6;
+      private java.util.List<com.wali.live.proto.PayProto.ProfitDayDetail> profitDayDetails_ =
+        java.util.Collections.emptyList();
+      private void ensureProfitDayDetailsIsMutable() {
+        if (!((bitField0_ & 0x00000020) == 0x00000020)) {
+          profitDayDetails_ = new java.util.ArrayList<com.wali.live.proto.PayProto.ProfitDayDetail>(profitDayDetails_);
+          bitField0_ |= 0x00000020;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.PayProto.ProfitDayDetail, com.wali.live.proto.PayProto.ProfitDayDetail.Builder, com.wali.live.proto.PayProto.ProfitDayDetailOrBuilder> profitDayDetailsBuilder_;
+
+      /**
+       * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+       *
+       * <pre>
+       *收益详情，以天为单位倒排
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.PayProto.ProfitDayDetail> getProfitDayDetailsList() {
+        if (profitDayDetailsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(profitDayDetails_);
+        } else {
+          return profitDayDetailsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+       *
+       * <pre>
+       *收益详情，以天为单位倒排
+       * </pre>
+       */
+      public int getProfitDayDetailsCount() {
+        if (profitDayDetailsBuilder_ == null) {
+          return profitDayDetails_.size();
+        } else {
+          return profitDayDetailsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+       *
+       * <pre>
+       *收益详情，以天为单位倒排
+       * </pre>
+       */
+      public com.wali.live.proto.PayProto.ProfitDayDetail getProfitDayDetails(int index) {
+        if (profitDayDetailsBuilder_ == null) {
+          return profitDayDetails_.get(index);
+        } else {
+          return profitDayDetailsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+       *
+       * <pre>
+       *收益详情，以天为单位倒排
+       * </pre>
+       */
+      public Builder setProfitDayDetails(
+          int index, com.wali.live.proto.PayProto.ProfitDayDetail value) {
+        if (profitDayDetailsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureProfitDayDetailsIsMutable();
+          profitDayDetails_.set(index, value);
+          onChanged();
+        } else {
+          profitDayDetailsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+       *
+       * <pre>
+       *收益详情，以天为单位倒排
+       * </pre>
+       */
+      public Builder setProfitDayDetails(
+          int index, com.wali.live.proto.PayProto.ProfitDayDetail.Builder builderForValue) {
+        if (profitDayDetailsBuilder_ == null) {
+          ensureProfitDayDetailsIsMutable();
+          profitDayDetails_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          profitDayDetailsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+       *
+       * <pre>
+       *收益详情，以天为单位倒排
+       * </pre>
+       */
+      public Builder addProfitDayDetails(com.wali.live.proto.PayProto.ProfitDayDetail value) {
+        if (profitDayDetailsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureProfitDayDetailsIsMutable();
+          profitDayDetails_.add(value);
+          onChanged();
+        } else {
+          profitDayDetailsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+       *
+       * <pre>
+       *收益详情，以天为单位倒排
+       * </pre>
+       */
+      public Builder addProfitDayDetails(
+          int index, com.wali.live.proto.PayProto.ProfitDayDetail value) {
+        if (profitDayDetailsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureProfitDayDetailsIsMutable();
+          profitDayDetails_.add(index, value);
+          onChanged();
+        } else {
+          profitDayDetailsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+       *
+       * <pre>
+       *收益详情，以天为单位倒排
+       * </pre>
+       */
+      public Builder addProfitDayDetails(
+          com.wali.live.proto.PayProto.ProfitDayDetail.Builder builderForValue) {
+        if (profitDayDetailsBuilder_ == null) {
+          ensureProfitDayDetailsIsMutable();
+          profitDayDetails_.add(builderForValue.build());
+          onChanged();
+        } else {
+          profitDayDetailsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+       *
+       * <pre>
+       *收益详情，以天为单位倒排
+       * </pre>
+       */
+      public Builder addProfitDayDetails(
+          int index, com.wali.live.proto.PayProto.ProfitDayDetail.Builder builderForValue) {
+        if (profitDayDetailsBuilder_ == null) {
+          ensureProfitDayDetailsIsMutable();
+          profitDayDetails_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          profitDayDetailsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+       *
+       * <pre>
+       *收益详情，以天为单位倒排
+       * </pre>
+       */
+      public Builder addAllProfitDayDetails(
+          java.lang.Iterable<? extends com.wali.live.proto.PayProto.ProfitDayDetail> values) {
+        if (profitDayDetailsBuilder_ == null) {
+          ensureProfitDayDetailsIsMutable();
+          super.addAll(values, profitDayDetails_);
+          onChanged();
+        } else {
+          profitDayDetailsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+       *
+       * <pre>
+       *收益详情，以天为单位倒排
+       * </pre>
+       */
+      public Builder clearProfitDayDetails() {
+        if (profitDayDetailsBuilder_ == null) {
+          profitDayDetails_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000020);
+          onChanged();
+        } else {
+          profitDayDetailsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+       *
+       * <pre>
+       *收益详情，以天为单位倒排
+       * </pre>
+       */
+      public Builder removeProfitDayDetails(int index) {
+        if (profitDayDetailsBuilder_ == null) {
+          ensureProfitDayDetailsIsMutable();
+          profitDayDetails_.remove(index);
+          onChanged();
+        } else {
+          profitDayDetailsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+       *
+       * <pre>
+       *收益详情，以天为单位倒排
+       * </pre>
+       */
+      public com.wali.live.proto.PayProto.ProfitDayDetail.Builder getProfitDayDetailsBuilder(
+          int index) {
+        return getProfitDayDetailsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+       *
+       * <pre>
+       *收益详情，以天为单位倒排
+       * </pre>
+       */
+      public com.wali.live.proto.PayProto.ProfitDayDetailOrBuilder getProfitDayDetailsOrBuilder(
+          int index) {
+        if (profitDayDetailsBuilder_ == null) {
+          return profitDayDetails_.get(index);  } else {
+          return profitDayDetailsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+       *
+       * <pre>
+       *收益详情，以天为单位倒排
+       * </pre>
+       */
+      public java.util.List<? extends com.wali.live.proto.PayProto.ProfitDayDetailOrBuilder> 
+           getProfitDayDetailsOrBuilderList() {
+        if (profitDayDetailsBuilder_ != null) {
+          return profitDayDetailsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(profitDayDetails_);
+        }
+      }
+      /**
+       * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+       *
+       * <pre>
+       *收益详情，以天为单位倒排
+       * </pre>
+       */
+      public com.wali.live.proto.PayProto.ProfitDayDetail.Builder addProfitDayDetailsBuilder() {
+        return getProfitDayDetailsFieldBuilder().addBuilder(
+            com.wali.live.proto.PayProto.ProfitDayDetail.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+       *
+       * <pre>
+       *收益详情，以天为单位倒排
+       * </pre>
+       */
+      public com.wali.live.proto.PayProto.ProfitDayDetail.Builder addProfitDayDetailsBuilder(
+          int index) {
+        return getProfitDayDetailsFieldBuilder().addBuilder(
+            index, com.wali.live.proto.PayProto.ProfitDayDetail.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
+       *
+       * <pre>
+       *收益详情，以天为单位倒排
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.PayProto.ProfitDayDetail.Builder> 
+           getProfitDayDetailsBuilderList() {
+        return getProfitDayDetailsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.PayProto.ProfitDayDetail, com.wali.live.proto.PayProto.ProfitDayDetail.Builder, com.wali.live.proto.PayProto.ProfitDayDetailOrBuilder> 
+          getProfitDayDetailsFieldBuilder() {
+        if (profitDayDetailsBuilder_ == null) {
+          profitDayDetailsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.PayProto.ProfitDayDetail, com.wali.live.proto.PayProto.ProfitDayDetail.Builder, com.wali.live.proto.PayProto.ProfitDayDetailOrBuilder>(
+                  profitDayDetails_,
+                  ((bitField0_ & 0x00000020) == 0x00000020),
+                  getParentForChildren(),
+                  isClean());
+          profitDayDetails_ = null;
+        }
+        return profitDayDetailsBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ProfitRecordResponse)
+    }
+
+    static {
+      defaultInstance = new ProfitRecordResponse(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ProfitRecordResponse)
+  }
+
+  public interface ProfitRecordRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // optional uint64 uuid = 1;
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    boolean hasUuid();
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    long getUuid();
+
+    // optional uint32 year = 2;
+    /**
+     * <code>optional uint32 year = 2;</code>
+     */
+    boolean hasYear();
+    /**
+     * <code>optional uint32 year = 2;</code>
+     */
+    int getYear();
+
+    // optional uint32 month = 3;
+    /**
+     * <code>optional uint32 month = 3;</code>
+     */
+    boolean hasMonth();
+    /**
+     * <code>optional uint32 month = 3;</code>
+     */
+    int getMonth();
+  }
+  /**
+   * Protobuf type {@code ProfitRecordRequest}
+   *
+   * <pre>
+   * 拉取收益记录请求
+   * 命令字：zhibo.bank.getProfitList
+   * </pre>
+   */
+  public static final class ProfitRecordRequest extends
+      com.google.protobuf.GeneratedMessage
+      implements ProfitRecordRequestOrBuilder {
+    // Use ProfitRecordRequest.newBuilder() to construct.
+    private ProfitRecordRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ProfitRecordRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ProfitRecordRequest defaultInstance;
+    public static ProfitRecordRequest getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ProfitRecordRequest getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ProfitRecordRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uuid_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              year_ = input.readUInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              month_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.PayProto.internal_static_ProfitRecordRequest_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.PayProto.internal_static_ProfitRecordRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.PayProto.ProfitRecordRequest.class, com.wali.live.proto.PayProto.ProfitRecordRequest.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ProfitRecordRequest> PARSER =
+        new com.google.protobuf.AbstractParser<ProfitRecordRequest>() {
+      public ProfitRecordRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ProfitRecordRequest(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ProfitRecordRequest> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // optional uint64 uuid = 1;
+    public static final int UUID_FIELD_NUMBER = 1;
+    private long uuid_;
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    public long getUuid() {
+      return uuid_;
+    }
+
+    // optional uint32 year = 2;
+    public static final int YEAR_FIELD_NUMBER = 2;
+    private int year_;
+    /**
+     * <code>optional uint32 year = 2;</code>
+     */
+    public boolean hasYear() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 year = 2;</code>
+     */
+    public int getYear() {
+      return year_;
+    }
+
+    // optional uint32 month = 3;
+    public static final int MONTH_FIELD_NUMBER = 3;
+    private int month_;
+    /**
+     * <code>optional uint32 month = 3;</code>
+     */
+    public boolean hasMonth() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint32 month = 3;</code>
+     */
+    public int getMonth() {
+      return month_;
+    }
+
+    private void initFields() {
+      uuid_ = 0L;
+      year_ = 0;
+      month_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, year_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, month_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, year_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, month_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.PayProto.ProfitRecordRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.PayProto.ProfitRecordRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.ProfitRecordRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.PayProto.ProfitRecordRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.ProfitRecordRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.PayProto.ProfitRecordRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.ProfitRecordRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.PayProto.ProfitRecordRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.ProfitRecordRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.PayProto.ProfitRecordRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.PayProto.ProfitRecordRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ProfitRecordRequest}
+     *
+     * <pre>
+     * 拉取收益记录请求
+     * 命令字：zhibo.bank.getProfitList
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.PayProto.ProfitRecordRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.PayProto.internal_static_ProfitRecordRequest_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.PayProto.internal_static_ProfitRecordRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.PayProto.ProfitRecordRequest.class, com.wali.live.proto.PayProto.ProfitRecordRequest.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.PayProto.ProfitRecordRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        year_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        month_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.PayProto.internal_static_ProfitRecordRequest_descriptor;
+      }
+
+      public com.wali.live.proto.PayProto.ProfitRecordRequest getDefaultInstanceForType() {
+        return com.wali.live.proto.PayProto.ProfitRecordRequest.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.PayProto.ProfitRecordRequest build() {
+        com.wali.live.proto.PayProto.ProfitRecordRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.PayProto.ProfitRecordRequest buildPartial() {
+        com.wali.live.proto.PayProto.ProfitRecordRequest result = new com.wali.live.proto.PayProto.ProfitRecordRequest(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uuid_ = uuid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.year_ = year_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.month_ = month_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.PayProto.ProfitRecordRequest) {
+          return mergeFrom((com.wali.live.proto.PayProto.ProfitRecordRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.PayProto.ProfitRecordRequest other) {
+        if (other == com.wali.live.proto.PayProto.ProfitRecordRequest.getDefaultInstance()) return this;
+        if (other.hasUuid()) {
+          setUuid(other.getUuid());
+        }
+        if (other.hasYear()) {
+          setYear(other.getYear());
+        }
+        if (other.hasMonth()) {
+          setMonth(other.getMonth());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.PayProto.ProfitRecordRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.PayProto.ProfitRecordRequest) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // optional uint64 uuid = 1;
+      private long uuid_ ;
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public long getUuid() {
+        return uuid_;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public Builder setUuid(long value) {
+        bitField0_ |= 0x00000001;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // optional uint32 year = 2;
+      private int year_ ;
+      /**
+       * <code>optional uint32 year = 2;</code>
+       */
+      public boolean hasYear() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 year = 2;</code>
+       */
+      public int getYear() {
+        return year_;
+      }
+      /**
+       * <code>optional uint32 year = 2;</code>
+       */
+      public Builder setYear(int value) {
+        bitField0_ |= 0x00000002;
+        year_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 year = 2;</code>
+       */
+      public Builder clearYear() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        year_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // optional uint32 month = 3;
+      private int month_ ;
+      /**
+       * <code>optional uint32 month = 3;</code>
+       */
+      public boolean hasMonth() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint32 month = 3;</code>
+       */
+      public int getMonth() {
+        return month_;
+      }
+      /**
+       * <code>optional uint32 month = 3;</code>
+       */
+      public Builder setMonth(int value) {
+        bitField0_ |= 0x00000004;
+        month_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 month = 3;</code>
+       */
+      public Builder clearMonth() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        month_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ProfitRecordRequest)
+    }
+
+    static {
+      defaultInstance = new ProfitRecordRequest(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ProfitRecordRequest)
+  }
+
+  public interface ProfitDayDetailOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // optional uint32 day = 1;
+    /**
+     * <code>optional uint32 day = 1;</code>
+     *
+     * <pre>
+     *第几天
+     * </pre>
+     */
+    boolean hasDay();
+    /**
+     * <code>optional uint32 day = 1;</code>
+     *
+     * <pre>
+     *第几天
+     * </pre>
+     */
+    int getDay();
+
+    // repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;
+    /**
+     * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+     *
+     * <pre>
+     *每一类的收入详情，按规定顺序排列
+     * </pre>
+     */
+    java.util.List<com.wali.live.proto.PayProto.ProfitDayDetailInfo> 
+        getProfitDayDetailInfoList();
+    /**
+     * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+     *
+     * <pre>
+     *每一类的收入详情，按规定顺序排列
+     * </pre>
+     */
+    com.wali.live.proto.PayProto.ProfitDayDetailInfo getProfitDayDetailInfo(int index);
+    /**
+     * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+     *
+     * <pre>
+     *每一类的收入详情，按规定顺序排列
+     * </pre>
+     */
+    int getProfitDayDetailInfoCount();
+    /**
+     * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+     *
+     * <pre>
+     *每一类的收入详情，按规定顺序排列
+     * </pre>
+     */
+    java.util.List<? extends com.wali.live.proto.PayProto.ProfitDayDetailInfoOrBuilder> 
+        getProfitDayDetailInfoOrBuilderList();
+    /**
+     * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+     *
+     * <pre>
+     *每一类的收入详情，按规定顺序排列
+     * </pre>
+     */
+    com.wali.live.proto.PayProto.ProfitDayDetailInfoOrBuilder getProfitDayDetailInfoOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code ProfitDayDetail}
+   *
+   * <pre>
+   * 封装一日收益的描述
+   * </pre>
+   */
+  public static final class ProfitDayDetail extends
+      com.google.protobuf.GeneratedMessage
+      implements ProfitDayDetailOrBuilder {
+    // Use ProfitDayDetail.newBuilder() to construct.
+    private ProfitDayDetail(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ProfitDayDetail(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ProfitDayDetail defaultInstance;
+    public static ProfitDayDetail getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ProfitDayDetail getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ProfitDayDetail(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              day_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                profitDayDetailInfo_ = new java.util.ArrayList<com.wali.live.proto.PayProto.ProfitDayDetailInfo>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              profitDayDetailInfo_.add(input.readMessage(com.wali.live.proto.PayProto.ProfitDayDetailInfo.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          profitDayDetailInfo_ = java.util.Collections.unmodifiableList(profitDayDetailInfo_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.PayProto.internal_static_ProfitDayDetail_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.PayProto.internal_static_ProfitDayDetail_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.PayProto.ProfitDayDetail.class, com.wali.live.proto.PayProto.ProfitDayDetail.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ProfitDayDetail> PARSER =
+        new com.google.protobuf.AbstractParser<ProfitDayDetail>() {
+      public ProfitDayDetail parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ProfitDayDetail(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ProfitDayDetail> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // optional uint32 day = 1;
+    public static final int DAY_FIELD_NUMBER = 1;
+    private int day_;
+    /**
+     * <code>optional uint32 day = 1;</code>
+     *
+     * <pre>
+     *第几天
+     * </pre>
+     */
+    public boolean hasDay() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint32 day = 1;</code>
+     *
+     * <pre>
+     *第几天
+     * </pre>
+     */
+    public int getDay() {
+      return day_;
+    }
+
+    // repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;
+    public static final int PROFITDAYDETAILINFO_FIELD_NUMBER = 2;
+    private java.util.List<com.wali.live.proto.PayProto.ProfitDayDetailInfo> profitDayDetailInfo_;
+    /**
+     * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+     *
+     * <pre>
+     *每一类的收入详情，按规定顺序排列
+     * </pre>
+     */
+    public java.util.List<com.wali.live.proto.PayProto.ProfitDayDetailInfo> getProfitDayDetailInfoList() {
+      return profitDayDetailInfo_;
+    }
+    /**
+     * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+     *
+     * <pre>
+     *每一类的收入详情，按规定顺序排列
+     * </pre>
+     */
+    public java.util.List<? extends com.wali.live.proto.PayProto.ProfitDayDetailInfoOrBuilder> 
+        getProfitDayDetailInfoOrBuilderList() {
+      return profitDayDetailInfo_;
+    }
+    /**
+     * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+     *
+     * <pre>
+     *每一类的收入详情，按规定顺序排列
+     * </pre>
+     */
+    public int getProfitDayDetailInfoCount() {
+      return profitDayDetailInfo_.size();
+    }
+    /**
+     * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+     *
+     * <pre>
+     *每一类的收入详情，按规定顺序排列
+     * </pre>
+     */
+    public com.wali.live.proto.PayProto.ProfitDayDetailInfo getProfitDayDetailInfo(int index) {
+      return profitDayDetailInfo_.get(index);
+    }
+    /**
+     * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+     *
+     * <pre>
+     *每一类的收入详情，按规定顺序排列
+     * </pre>
+     */
+    public com.wali.live.proto.PayProto.ProfitDayDetailInfoOrBuilder getProfitDayDetailInfoOrBuilder(
+        int index) {
+      return profitDayDetailInfo_.get(index);
+    }
+
+    private void initFields() {
+      day_ = 0;
+      profitDayDetailInfo_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, day_);
+      }
+      for (int i = 0; i < profitDayDetailInfo_.size(); i++) {
+        output.writeMessage(2, profitDayDetailInfo_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, day_);
+      }
+      for (int i = 0; i < profitDayDetailInfo_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, profitDayDetailInfo_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.PayProto.ProfitDayDetail parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.PayProto.ProfitDayDetail parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.ProfitDayDetail parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.PayProto.ProfitDayDetail parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.ProfitDayDetail parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.PayProto.ProfitDayDetail parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.ProfitDayDetail parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.PayProto.ProfitDayDetail parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.ProfitDayDetail parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.PayProto.ProfitDayDetail parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.PayProto.ProfitDayDetail prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ProfitDayDetail}
+     *
+     * <pre>
+     * 封装一日收益的描述
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.PayProto.ProfitDayDetailOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.PayProto.internal_static_ProfitDayDetail_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.PayProto.internal_static_ProfitDayDetail_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.PayProto.ProfitDayDetail.class, com.wali.live.proto.PayProto.ProfitDayDetail.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.PayProto.ProfitDayDetail.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getProfitDayDetailInfoFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        day_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (profitDayDetailInfoBuilder_ == null) {
+          profitDayDetailInfo_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          profitDayDetailInfoBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.PayProto.internal_static_ProfitDayDetail_descriptor;
+      }
+
+      public com.wali.live.proto.PayProto.ProfitDayDetail getDefaultInstanceForType() {
+        return com.wali.live.proto.PayProto.ProfitDayDetail.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.PayProto.ProfitDayDetail build() {
+        com.wali.live.proto.PayProto.ProfitDayDetail result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.PayProto.ProfitDayDetail buildPartial() {
+        com.wali.live.proto.PayProto.ProfitDayDetail result = new com.wali.live.proto.PayProto.ProfitDayDetail(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.day_ = day_;
+        if (profitDayDetailInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            profitDayDetailInfo_ = java.util.Collections.unmodifiableList(profitDayDetailInfo_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.profitDayDetailInfo_ = profitDayDetailInfo_;
+        } else {
+          result.profitDayDetailInfo_ = profitDayDetailInfoBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.PayProto.ProfitDayDetail) {
+          return mergeFrom((com.wali.live.proto.PayProto.ProfitDayDetail)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.PayProto.ProfitDayDetail other) {
+        if (other == com.wali.live.proto.PayProto.ProfitDayDetail.getDefaultInstance()) return this;
+        if (other.hasDay()) {
+          setDay(other.getDay());
+        }
+        if (profitDayDetailInfoBuilder_ == null) {
+          if (!other.profitDayDetailInfo_.isEmpty()) {
+            if (profitDayDetailInfo_.isEmpty()) {
+              profitDayDetailInfo_ = other.profitDayDetailInfo_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureProfitDayDetailInfoIsMutable();
+              profitDayDetailInfo_.addAll(other.profitDayDetailInfo_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.profitDayDetailInfo_.isEmpty()) {
+            if (profitDayDetailInfoBuilder_.isEmpty()) {
+              profitDayDetailInfoBuilder_.dispose();
+              profitDayDetailInfoBuilder_ = null;
+              profitDayDetailInfo_ = other.profitDayDetailInfo_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              profitDayDetailInfoBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getProfitDayDetailInfoFieldBuilder() : null;
+            } else {
+              profitDayDetailInfoBuilder_.addAllMessages(other.profitDayDetailInfo_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.PayProto.ProfitDayDetail parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.PayProto.ProfitDayDetail) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // optional uint32 day = 1;
+      private int day_ ;
+      /**
+       * <code>optional uint32 day = 1;</code>
+       *
+       * <pre>
+       *第几天
+       * </pre>
+       */
+      public boolean hasDay() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint32 day = 1;</code>
+       *
+       * <pre>
+       *第几天
+       * </pre>
+       */
+      public int getDay() {
+        return day_;
+      }
+      /**
+       * <code>optional uint32 day = 1;</code>
+       *
+       * <pre>
+       *第几天
+       * </pre>
+       */
+      public Builder setDay(int value) {
+        bitField0_ |= 0x00000001;
+        day_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 day = 1;</code>
+       *
+       * <pre>
+       *第几天
+       * </pre>
+       */
+      public Builder clearDay() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        day_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;
+      private java.util.List<com.wali.live.proto.PayProto.ProfitDayDetailInfo> profitDayDetailInfo_ =
+        java.util.Collections.emptyList();
+      private void ensureProfitDayDetailInfoIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          profitDayDetailInfo_ = new java.util.ArrayList<com.wali.live.proto.PayProto.ProfitDayDetailInfo>(profitDayDetailInfo_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.PayProto.ProfitDayDetailInfo, com.wali.live.proto.PayProto.ProfitDayDetailInfo.Builder, com.wali.live.proto.PayProto.ProfitDayDetailInfoOrBuilder> profitDayDetailInfoBuilder_;
+
+      /**
+       * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+       *
+       * <pre>
+       *每一类的收入详情，按规定顺序排列
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.PayProto.ProfitDayDetailInfo> getProfitDayDetailInfoList() {
+        if (profitDayDetailInfoBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(profitDayDetailInfo_);
+        } else {
+          return profitDayDetailInfoBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+       *
+       * <pre>
+       *每一类的收入详情，按规定顺序排列
+       * </pre>
+       */
+      public int getProfitDayDetailInfoCount() {
+        if (profitDayDetailInfoBuilder_ == null) {
+          return profitDayDetailInfo_.size();
+        } else {
+          return profitDayDetailInfoBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+       *
+       * <pre>
+       *每一类的收入详情，按规定顺序排列
+       * </pre>
+       */
+      public com.wali.live.proto.PayProto.ProfitDayDetailInfo getProfitDayDetailInfo(int index) {
+        if (profitDayDetailInfoBuilder_ == null) {
+          return profitDayDetailInfo_.get(index);
+        } else {
+          return profitDayDetailInfoBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+       *
+       * <pre>
+       *每一类的收入详情，按规定顺序排列
+       * </pre>
+       */
+      public Builder setProfitDayDetailInfo(
+          int index, com.wali.live.proto.PayProto.ProfitDayDetailInfo value) {
+        if (profitDayDetailInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureProfitDayDetailInfoIsMutable();
+          profitDayDetailInfo_.set(index, value);
+          onChanged();
+        } else {
+          profitDayDetailInfoBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+       *
+       * <pre>
+       *每一类的收入详情，按规定顺序排列
+       * </pre>
+       */
+      public Builder setProfitDayDetailInfo(
+          int index, com.wali.live.proto.PayProto.ProfitDayDetailInfo.Builder builderForValue) {
+        if (profitDayDetailInfoBuilder_ == null) {
+          ensureProfitDayDetailInfoIsMutable();
+          profitDayDetailInfo_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          profitDayDetailInfoBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+       *
+       * <pre>
+       *每一类的收入详情，按规定顺序排列
+       * </pre>
+       */
+      public Builder addProfitDayDetailInfo(com.wali.live.proto.PayProto.ProfitDayDetailInfo value) {
+        if (profitDayDetailInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureProfitDayDetailInfoIsMutable();
+          profitDayDetailInfo_.add(value);
+          onChanged();
+        } else {
+          profitDayDetailInfoBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+       *
+       * <pre>
+       *每一类的收入详情，按规定顺序排列
+       * </pre>
+       */
+      public Builder addProfitDayDetailInfo(
+          int index, com.wali.live.proto.PayProto.ProfitDayDetailInfo value) {
+        if (profitDayDetailInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureProfitDayDetailInfoIsMutable();
+          profitDayDetailInfo_.add(index, value);
+          onChanged();
+        } else {
+          profitDayDetailInfoBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+       *
+       * <pre>
+       *每一类的收入详情，按规定顺序排列
+       * </pre>
+       */
+      public Builder addProfitDayDetailInfo(
+          com.wali.live.proto.PayProto.ProfitDayDetailInfo.Builder builderForValue) {
+        if (profitDayDetailInfoBuilder_ == null) {
+          ensureProfitDayDetailInfoIsMutable();
+          profitDayDetailInfo_.add(builderForValue.build());
+          onChanged();
+        } else {
+          profitDayDetailInfoBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+       *
+       * <pre>
+       *每一类的收入详情，按规定顺序排列
+       * </pre>
+       */
+      public Builder addProfitDayDetailInfo(
+          int index, com.wali.live.proto.PayProto.ProfitDayDetailInfo.Builder builderForValue) {
+        if (profitDayDetailInfoBuilder_ == null) {
+          ensureProfitDayDetailInfoIsMutable();
+          profitDayDetailInfo_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          profitDayDetailInfoBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+       *
+       * <pre>
+       *每一类的收入详情，按规定顺序排列
+       * </pre>
+       */
+      public Builder addAllProfitDayDetailInfo(
+          java.lang.Iterable<? extends com.wali.live.proto.PayProto.ProfitDayDetailInfo> values) {
+        if (profitDayDetailInfoBuilder_ == null) {
+          ensureProfitDayDetailInfoIsMutable();
+          super.addAll(values, profitDayDetailInfo_);
+          onChanged();
+        } else {
+          profitDayDetailInfoBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+       *
+       * <pre>
+       *每一类的收入详情，按规定顺序排列
+       * </pre>
+       */
+      public Builder clearProfitDayDetailInfo() {
+        if (profitDayDetailInfoBuilder_ == null) {
+          profitDayDetailInfo_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          profitDayDetailInfoBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+       *
+       * <pre>
+       *每一类的收入详情，按规定顺序排列
+       * </pre>
+       */
+      public Builder removeProfitDayDetailInfo(int index) {
+        if (profitDayDetailInfoBuilder_ == null) {
+          ensureProfitDayDetailInfoIsMutable();
+          profitDayDetailInfo_.remove(index);
+          onChanged();
+        } else {
+          profitDayDetailInfoBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+       *
+       * <pre>
+       *每一类的收入详情，按规定顺序排列
+       * </pre>
+       */
+      public com.wali.live.proto.PayProto.ProfitDayDetailInfo.Builder getProfitDayDetailInfoBuilder(
+          int index) {
+        return getProfitDayDetailInfoFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+       *
+       * <pre>
+       *每一类的收入详情，按规定顺序排列
+       * </pre>
+       */
+      public com.wali.live.proto.PayProto.ProfitDayDetailInfoOrBuilder getProfitDayDetailInfoOrBuilder(
+          int index) {
+        if (profitDayDetailInfoBuilder_ == null) {
+          return profitDayDetailInfo_.get(index);  } else {
+          return profitDayDetailInfoBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+       *
+       * <pre>
+       *每一类的收入详情，按规定顺序排列
+       * </pre>
+       */
+      public java.util.List<? extends com.wali.live.proto.PayProto.ProfitDayDetailInfoOrBuilder> 
+           getProfitDayDetailInfoOrBuilderList() {
+        if (profitDayDetailInfoBuilder_ != null) {
+          return profitDayDetailInfoBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(profitDayDetailInfo_);
+        }
+      }
+      /**
+       * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+       *
+       * <pre>
+       *每一类的收入详情，按规定顺序排列
+       * </pre>
+       */
+      public com.wali.live.proto.PayProto.ProfitDayDetailInfo.Builder addProfitDayDetailInfoBuilder() {
+        return getProfitDayDetailInfoFieldBuilder().addBuilder(
+            com.wali.live.proto.PayProto.ProfitDayDetailInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+       *
+       * <pre>
+       *每一类的收入详情，按规定顺序排列
+       * </pre>
+       */
+      public com.wali.live.proto.PayProto.ProfitDayDetailInfo.Builder addProfitDayDetailInfoBuilder(
+          int index) {
+        return getProfitDayDetailInfoFieldBuilder().addBuilder(
+            index, com.wali.live.proto.PayProto.ProfitDayDetailInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
+       *
+       * <pre>
+       *每一类的收入详情，按规定顺序排列
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.PayProto.ProfitDayDetailInfo.Builder> 
+           getProfitDayDetailInfoBuilderList() {
+        return getProfitDayDetailInfoFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.PayProto.ProfitDayDetailInfo, com.wali.live.proto.PayProto.ProfitDayDetailInfo.Builder, com.wali.live.proto.PayProto.ProfitDayDetailInfoOrBuilder> 
+          getProfitDayDetailInfoFieldBuilder() {
+        if (profitDayDetailInfoBuilder_ == null) {
+          profitDayDetailInfoBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.PayProto.ProfitDayDetailInfo, com.wali.live.proto.PayProto.ProfitDayDetailInfo.Builder, com.wali.live.proto.PayProto.ProfitDayDetailInfoOrBuilder>(
+                  profitDayDetailInfo_,
+                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  getParentForChildren(),
+                  isClean());
+          profitDayDetailInfo_ = null;
+        }
+        return profitDayDetailInfoBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ProfitDayDetail)
+    }
+
+    static {
+      defaultInstance = new ProfitDayDetail(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ProfitDayDetail)
+  }
+
+  public interface ProfitDayDetailInfoOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // optional uint32 source_type = 1;
+    /**
+     * <code>optional uint32 source_type = 1;</code>
+     *
+     * <pre>
+     *来源类型
+     * </pre>
+     */
+    boolean hasSourceType();
+    /**
+     * <code>optional uint32 source_type = 1;</code>
+     *
+     * <pre>
+     *来源类型
+     * </pre>
+     */
+    int getSourceType();
+
+    // optional uint32 profitType = 2;
+    /**
+     * <code>optional uint32 profitType = 2;</code>
+     *
+     * <pre>
+     *收益类型，收入/支出
+     * </pre>
+     */
+    boolean hasProfitType();
+    /**
+     * <code>optional uint32 profitType = 2;</code>
+     *
+     * <pre>
+     *收益类型，收入/支出
+     * </pre>
+     */
+    int getProfitType();
+
+    // optional int64 profitChangeRMB = 3;
+    /**
+     * <code>optional int64 profitChangeRMB = 3;</code>
+     *
+     * <pre>
+     *人民币单位描述的资产变动数字，单位为分
+     * </pre>
+     */
+    boolean hasProfitChangeRMB();
+    /**
+     * <code>optional int64 profitChangeRMB = 3;</code>
+     *
+     * <pre>
+     *人民币单位描述的资产变动数字，单位为分
+     * </pre>
+     */
+    long getProfitChangeRMB();
+
+    // optional int64 profitChangeDollar = 4;
+    /**
+     * <code>optional int64 profitChangeDollar = 4;</code>
+     *
+     * <pre>
+     *美元单位描述的资产变动数字，单位为美分
+     * </pre>
+     */
+    boolean hasProfitChangeDollar();
+    /**
+     * <code>optional int64 profitChangeDollar = 4;</code>
+     *
+     * <pre>
+     *美元单位描述的资产变动数字，单位为美分
+     * </pre>
+     */
+    long getProfitChangeDollar();
+
+    // repeated .Languages language = 5;
+    /**
+     * <code>repeated .Languages language = 5;</code>
+     *
+     * <pre>
+     *多语言描述
+     * </pre>
+     */
+    java.util.List<com.wali.live.proto.PayProto.Languages> 
+        getLanguageList();
+    /**
+     * <code>repeated .Languages language = 5;</code>
+     *
+     * <pre>
+     *多语言描述
+     * </pre>
+     */
+    com.wali.live.proto.PayProto.Languages getLanguage(int index);
+    /**
+     * <code>repeated .Languages language = 5;</code>
+     *
+     * <pre>
+     *多语言描述
+     * </pre>
+     */
+    int getLanguageCount();
+    /**
+     * <code>repeated .Languages language = 5;</code>
+     *
+     * <pre>
+     *多语言描述
+     * </pre>
+     */
+    java.util.List<? extends com.wali.live.proto.PayProto.LanguagesOrBuilder> 
+        getLanguageOrBuilderList();
+    /**
+     * <code>repeated .Languages language = 5;</code>
+     *
+     * <pre>
+     *多语言描述
+     * </pre>
+     */
+    com.wali.live.proto.PayProto.LanguagesOrBuilder getLanguageOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code ProfitDayDetailInfo}
+   */
+  public static final class ProfitDayDetailInfo extends
+      com.google.protobuf.GeneratedMessage
+      implements ProfitDayDetailInfoOrBuilder {
+    // Use ProfitDayDetailInfo.newBuilder() to construct.
+    private ProfitDayDetailInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ProfitDayDetailInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ProfitDayDetailInfo defaultInstance;
+    public static ProfitDayDetailInfo getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ProfitDayDetailInfo getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ProfitDayDetailInfo(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              sourceType_ = input.readUInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              profitType_ = input.readUInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              profitChangeRMB_ = input.readInt64();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              profitChangeDollar_ = input.readInt64();
+              break;
+            }
+            case 42: {
+              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+                language_ = new java.util.ArrayList<com.wali.live.proto.PayProto.Languages>();
+                mutable_bitField0_ |= 0x00000010;
+              }
+              language_.add(input.readMessage(com.wali.live.proto.PayProto.Languages.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+          language_ = java.util.Collections.unmodifiableList(language_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.PayProto.internal_static_ProfitDayDetailInfo_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.PayProto.internal_static_ProfitDayDetailInfo_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.PayProto.ProfitDayDetailInfo.class, com.wali.live.proto.PayProto.ProfitDayDetailInfo.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ProfitDayDetailInfo> PARSER =
+        new com.google.protobuf.AbstractParser<ProfitDayDetailInfo>() {
+      public ProfitDayDetailInfo parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ProfitDayDetailInfo(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ProfitDayDetailInfo> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // optional uint32 source_type = 1;
+    public static final int SOURCE_TYPE_FIELD_NUMBER = 1;
+    private int sourceType_;
+    /**
+     * <code>optional uint32 source_type = 1;</code>
+     *
+     * <pre>
+     *来源类型
+     * </pre>
+     */
+    public boolean hasSourceType() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint32 source_type = 1;</code>
+     *
+     * <pre>
+     *来源类型
+     * </pre>
+     */
+    public int getSourceType() {
+      return sourceType_;
+    }
+
+    // optional uint32 profitType = 2;
+    public static final int PROFITTYPE_FIELD_NUMBER = 2;
+    private int profitType_;
+    /**
+     * <code>optional uint32 profitType = 2;</code>
+     *
+     * <pre>
+     *收益类型，收入/支出
+     * </pre>
+     */
+    public boolean hasProfitType() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 profitType = 2;</code>
+     *
+     * <pre>
+     *收益类型，收入/支出
+     * </pre>
+     */
+    public int getProfitType() {
+      return profitType_;
+    }
+
+    // optional int64 profitChangeRMB = 3;
+    public static final int PROFITCHANGERMB_FIELD_NUMBER = 3;
+    private long profitChangeRMB_;
+    /**
+     * <code>optional int64 profitChangeRMB = 3;</code>
+     *
+     * <pre>
+     *人民币单位描述的资产变动数字，单位为分
+     * </pre>
+     */
+    public boolean hasProfitChangeRMB() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional int64 profitChangeRMB = 3;</code>
+     *
+     * <pre>
+     *人民币单位描述的资产变动数字，单位为分
+     * </pre>
+     */
+    public long getProfitChangeRMB() {
+      return profitChangeRMB_;
+    }
+
+    // optional int64 profitChangeDollar = 4;
+    public static final int PROFITCHANGEDOLLAR_FIELD_NUMBER = 4;
+    private long profitChangeDollar_;
+    /**
+     * <code>optional int64 profitChangeDollar = 4;</code>
+     *
+     * <pre>
+     *美元单位描述的资产变动数字，单位为美分
+     * </pre>
+     */
+    public boolean hasProfitChangeDollar() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional int64 profitChangeDollar = 4;</code>
+     *
+     * <pre>
+     *美元单位描述的资产变动数字，单位为美分
+     * </pre>
+     */
+    public long getProfitChangeDollar() {
+      return profitChangeDollar_;
+    }
+
+    // repeated .Languages language = 5;
+    public static final int LANGUAGE_FIELD_NUMBER = 5;
+    private java.util.List<com.wali.live.proto.PayProto.Languages> language_;
+    /**
+     * <code>repeated .Languages language = 5;</code>
+     *
+     * <pre>
+     *多语言描述
+     * </pre>
+     */
+    public java.util.List<com.wali.live.proto.PayProto.Languages> getLanguageList() {
+      return language_;
+    }
+    /**
+     * <code>repeated .Languages language = 5;</code>
+     *
+     * <pre>
+     *多语言描述
+     * </pre>
+     */
+    public java.util.List<? extends com.wali.live.proto.PayProto.LanguagesOrBuilder> 
+        getLanguageOrBuilderList() {
+      return language_;
+    }
+    /**
+     * <code>repeated .Languages language = 5;</code>
+     *
+     * <pre>
+     *多语言描述
+     * </pre>
+     */
+    public int getLanguageCount() {
+      return language_.size();
+    }
+    /**
+     * <code>repeated .Languages language = 5;</code>
+     *
+     * <pre>
+     *多语言描述
+     * </pre>
+     */
+    public com.wali.live.proto.PayProto.Languages getLanguage(int index) {
+      return language_.get(index);
+    }
+    /**
+     * <code>repeated .Languages language = 5;</code>
+     *
+     * <pre>
+     *多语言描述
+     * </pre>
+     */
+    public com.wali.live.proto.PayProto.LanguagesOrBuilder getLanguageOrBuilder(
+        int index) {
+      return language_.get(index);
+    }
+
+    private void initFields() {
+      sourceType_ = 0;
+      profitType_ = 0;
+      profitChangeRMB_ = 0L;
+      profitChangeDollar_ = 0L;
+      language_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, sourceType_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, profitType_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt64(3, profitChangeRMB_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt64(4, profitChangeDollar_);
+      }
+      for (int i = 0; i < language_.size(); i++) {
+        output.writeMessage(5, language_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, sourceType_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, profitType_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, profitChangeRMB_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(4, profitChangeDollar_);
+      }
+      for (int i = 0; i < language_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, language_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.PayProto.ProfitDayDetailInfo parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.PayProto.ProfitDayDetailInfo parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.ProfitDayDetailInfo parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.PayProto.ProfitDayDetailInfo parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.ProfitDayDetailInfo parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.PayProto.ProfitDayDetailInfo parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.ProfitDayDetailInfo parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.PayProto.ProfitDayDetailInfo parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.ProfitDayDetailInfo parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.PayProto.ProfitDayDetailInfo parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.PayProto.ProfitDayDetailInfo prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ProfitDayDetailInfo}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.PayProto.ProfitDayDetailInfoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.PayProto.internal_static_ProfitDayDetailInfo_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.PayProto.internal_static_ProfitDayDetailInfo_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.PayProto.ProfitDayDetailInfo.class, com.wali.live.proto.PayProto.ProfitDayDetailInfo.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.PayProto.ProfitDayDetailInfo.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getLanguageFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        sourceType_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        profitType_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        profitChangeRMB_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        profitChangeDollar_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        if (languageBuilder_ == null) {
+          language_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000010);
+        } else {
+          languageBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.PayProto.internal_static_ProfitDayDetailInfo_descriptor;
+      }
+
+      public com.wali.live.proto.PayProto.ProfitDayDetailInfo getDefaultInstanceForType() {
+        return com.wali.live.proto.PayProto.ProfitDayDetailInfo.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.PayProto.ProfitDayDetailInfo build() {
+        com.wali.live.proto.PayProto.ProfitDayDetailInfo result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.PayProto.ProfitDayDetailInfo buildPartial() {
+        com.wali.live.proto.PayProto.ProfitDayDetailInfo result = new com.wali.live.proto.PayProto.ProfitDayDetailInfo(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.sourceType_ = sourceType_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.profitType_ = profitType_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.profitChangeRMB_ = profitChangeRMB_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.profitChangeDollar_ = profitChangeDollar_;
+        if (languageBuilder_ == null) {
+          if (((bitField0_ & 0x00000010) == 0x00000010)) {
+            language_ = java.util.Collections.unmodifiableList(language_);
+            bitField0_ = (bitField0_ & ~0x00000010);
+          }
+          result.language_ = language_;
+        } else {
+          result.language_ = languageBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.PayProto.ProfitDayDetailInfo) {
+          return mergeFrom((com.wali.live.proto.PayProto.ProfitDayDetailInfo)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.PayProto.ProfitDayDetailInfo other) {
+        if (other == com.wali.live.proto.PayProto.ProfitDayDetailInfo.getDefaultInstance()) return this;
+        if (other.hasSourceType()) {
+          setSourceType(other.getSourceType());
+        }
+        if (other.hasProfitType()) {
+          setProfitType(other.getProfitType());
+        }
+        if (other.hasProfitChangeRMB()) {
+          setProfitChangeRMB(other.getProfitChangeRMB());
+        }
+        if (other.hasProfitChangeDollar()) {
+          setProfitChangeDollar(other.getProfitChangeDollar());
+        }
+        if (languageBuilder_ == null) {
+          if (!other.language_.isEmpty()) {
+            if (language_.isEmpty()) {
+              language_ = other.language_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+            } else {
+              ensureLanguageIsMutable();
+              language_.addAll(other.language_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.language_.isEmpty()) {
+            if (languageBuilder_.isEmpty()) {
+              languageBuilder_.dispose();
+              languageBuilder_ = null;
+              language_ = other.language_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+              languageBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getLanguageFieldBuilder() : null;
+            } else {
+              languageBuilder_.addAllMessages(other.language_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.PayProto.ProfitDayDetailInfo parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.PayProto.ProfitDayDetailInfo) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // optional uint32 source_type = 1;
+      private int sourceType_ ;
+      /**
+       * <code>optional uint32 source_type = 1;</code>
+       *
+       * <pre>
+       *来源类型
+       * </pre>
+       */
+      public boolean hasSourceType() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint32 source_type = 1;</code>
+       *
+       * <pre>
+       *来源类型
+       * </pre>
+       */
+      public int getSourceType() {
+        return sourceType_;
+      }
+      /**
+       * <code>optional uint32 source_type = 1;</code>
+       *
+       * <pre>
+       *来源类型
+       * </pre>
+       */
+      public Builder setSourceType(int value) {
+        bitField0_ |= 0x00000001;
+        sourceType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 source_type = 1;</code>
+       *
+       * <pre>
+       *来源类型
+       * </pre>
+       */
+      public Builder clearSourceType() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        sourceType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // optional uint32 profitType = 2;
+      private int profitType_ ;
+      /**
+       * <code>optional uint32 profitType = 2;</code>
+       *
+       * <pre>
+       *收益类型，收入/支出
+       * </pre>
+       */
+      public boolean hasProfitType() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 profitType = 2;</code>
+       *
+       * <pre>
+       *收益类型，收入/支出
+       * </pre>
+       */
+      public int getProfitType() {
+        return profitType_;
+      }
+      /**
+       * <code>optional uint32 profitType = 2;</code>
+       *
+       * <pre>
+       *收益类型，收入/支出
+       * </pre>
+       */
+      public Builder setProfitType(int value) {
+        bitField0_ |= 0x00000002;
+        profitType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 profitType = 2;</code>
+       *
+       * <pre>
+       *收益类型，收入/支出
+       * </pre>
+       */
+      public Builder clearProfitType() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        profitType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // optional int64 profitChangeRMB = 3;
+      private long profitChangeRMB_ ;
+      /**
+       * <code>optional int64 profitChangeRMB = 3;</code>
+       *
+       * <pre>
+       *人民币单位描述的资产变动数字，单位为分
+       * </pre>
+       */
+      public boolean hasProfitChangeRMB() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional int64 profitChangeRMB = 3;</code>
+       *
+       * <pre>
+       *人民币单位描述的资产变动数字，单位为分
+       * </pre>
+       */
+      public long getProfitChangeRMB() {
+        return profitChangeRMB_;
+      }
+      /**
+       * <code>optional int64 profitChangeRMB = 3;</code>
+       *
+       * <pre>
+       *人民币单位描述的资产变动数字，单位为分
+       * </pre>
+       */
+      public Builder setProfitChangeRMB(long value) {
+        bitField0_ |= 0x00000004;
+        profitChangeRMB_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 profitChangeRMB = 3;</code>
+       *
+       * <pre>
+       *人民币单位描述的资产变动数字，单位为分
+       * </pre>
+       */
+      public Builder clearProfitChangeRMB() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        profitChangeRMB_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // optional int64 profitChangeDollar = 4;
+      private long profitChangeDollar_ ;
+      /**
+       * <code>optional int64 profitChangeDollar = 4;</code>
+       *
+       * <pre>
+       *美元单位描述的资产变动数字，单位为美分
+       * </pre>
+       */
+      public boolean hasProfitChangeDollar() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional int64 profitChangeDollar = 4;</code>
+       *
+       * <pre>
+       *美元单位描述的资产变动数字，单位为美分
+       * </pre>
+       */
+      public long getProfitChangeDollar() {
+        return profitChangeDollar_;
+      }
+      /**
+       * <code>optional int64 profitChangeDollar = 4;</code>
+       *
+       * <pre>
+       *美元单位描述的资产变动数字，单位为美分
+       * </pre>
+       */
+      public Builder setProfitChangeDollar(long value) {
+        bitField0_ |= 0x00000008;
+        profitChangeDollar_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 profitChangeDollar = 4;</code>
+       *
+       * <pre>
+       *美元单位描述的资产变动数字，单位为美分
+       * </pre>
+       */
+      public Builder clearProfitChangeDollar() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        profitChangeDollar_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // repeated .Languages language = 5;
+      private java.util.List<com.wali.live.proto.PayProto.Languages> language_ =
+        java.util.Collections.emptyList();
+      private void ensureLanguageIsMutable() {
+        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
+          language_ = new java.util.ArrayList<com.wali.live.proto.PayProto.Languages>(language_);
+          bitField0_ |= 0x00000010;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.PayProto.Languages, com.wali.live.proto.PayProto.Languages.Builder, com.wali.live.proto.PayProto.LanguagesOrBuilder> languageBuilder_;
+
+      /**
+       * <code>repeated .Languages language = 5;</code>
+       *
+       * <pre>
+       *多语言描述
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.PayProto.Languages> getLanguageList() {
+        if (languageBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(language_);
+        } else {
+          return languageBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .Languages language = 5;</code>
+       *
+       * <pre>
+       *多语言描述
+       * </pre>
+       */
+      public int getLanguageCount() {
+        if (languageBuilder_ == null) {
+          return language_.size();
+        } else {
+          return languageBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .Languages language = 5;</code>
+       *
+       * <pre>
+       *多语言描述
+       * </pre>
+       */
+      public com.wali.live.proto.PayProto.Languages getLanguage(int index) {
+        if (languageBuilder_ == null) {
+          return language_.get(index);
+        } else {
+          return languageBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .Languages language = 5;</code>
+       *
+       * <pre>
+       *多语言描述
+       * </pre>
+       */
+      public Builder setLanguage(
+          int index, com.wali.live.proto.PayProto.Languages value) {
+        if (languageBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureLanguageIsMutable();
+          language_.set(index, value);
+          onChanged();
+        } else {
+          languageBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Languages language = 5;</code>
+       *
+       * <pre>
+       *多语言描述
+       * </pre>
+       */
+      public Builder setLanguage(
+          int index, com.wali.live.proto.PayProto.Languages.Builder builderForValue) {
+        if (languageBuilder_ == null) {
+          ensureLanguageIsMutable();
+          language_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          languageBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Languages language = 5;</code>
+       *
+       * <pre>
+       *多语言描述
+       * </pre>
+       */
+      public Builder addLanguage(com.wali.live.proto.PayProto.Languages value) {
+        if (languageBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureLanguageIsMutable();
+          language_.add(value);
+          onChanged();
+        } else {
+          languageBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Languages language = 5;</code>
+       *
+       * <pre>
+       *多语言描述
+       * </pre>
+       */
+      public Builder addLanguage(
+          int index, com.wali.live.proto.PayProto.Languages value) {
+        if (languageBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureLanguageIsMutable();
+          language_.add(index, value);
+          onChanged();
+        } else {
+          languageBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Languages language = 5;</code>
+       *
+       * <pre>
+       *多语言描述
+       * </pre>
+       */
+      public Builder addLanguage(
+          com.wali.live.proto.PayProto.Languages.Builder builderForValue) {
+        if (languageBuilder_ == null) {
+          ensureLanguageIsMutable();
+          language_.add(builderForValue.build());
+          onChanged();
+        } else {
+          languageBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Languages language = 5;</code>
+       *
+       * <pre>
+       *多语言描述
+       * </pre>
+       */
+      public Builder addLanguage(
+          int index, com.wali.live.proto.PayProto.Languages.Builder builderForValue) {
+        if (languageBuilder_ == null) {
+          ensureLanguageIsMutable();
+          language_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          languageBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Languages language = 5;</code>
+       *
+       * <pre>
+       *多语言描述
+       * </pre>
+       */
+      public Builder addAllLanguage(
+          java.lang.Iterable<? extends com.wali.live.proto.PayProto.Languages> values) {
+        if (languageBuilder_ == null) {
+          ensureLanguageIsMutable();
+          super.addAll(values, language_);
+          onChanged();
+        } else {
+          languageBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Languages language = 5;</code>
+       *
+       * <pre>
+       *多语言描述
+       * </pre>
+       */
+      public Builder clearLanguage() {
+        if (languageBuilder_ == null) {
+          language_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000010);
+          onChanged();
+        } else {
+          languageBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Languages language = 5;</code>
+       *
+       * <pre>
+       *多语言描述
+       * </pre>
+       */
+      public Builder removeLanguage(int index) {
+        if (languageBuilder_ == null) {
+          ensureLanguageIsMutable();
+          language_.remove(index);
+          onChanged();
+        } else {
+          languageBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Languages language = 5;</code>
+       *
+       * <pre>
+       *多语言描述
+       * </pre>
+       */
+      public com.wali.live.proto.PayProto.Languages.Builder getLanguageBuilder(
+          int index) {
+        return getLanguageFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .Languages language = 5;</code>
+       *
+       * <pre>
+       *多语言描述
+       * </pre>
+       */
+      public com.wali.live.proto.PayProto.LanguagesOrBuilder getLanguageOrBuilder(
+          int index) {
+        if (languageBuilder_ == null) {
+          return language_.get(index);  } else {
+          return languageBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .Languages language = 5;</code>
+       *
+       * <pre>
+       *多语言描述
+       * </pre>
+       */
+      public java.util.List<? extends com.wali.live.proto.PayProto.LanguagesOrBuilder> 
+           getLanguageOrBuilderList() {
+        if (languageBuilder_ != null) {
+          return languageBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(language_);
+        }
+      }
+      /**
+       * <code>repeated .Languages language = 5;</code>
+       *
+       * <pre>
+       *多语言描述
+       * </pre>
+       */
+      public com.wali.live.proto.PayProto.Languages.Builder addLanguageBuilder() {
+        return getLanguageFieldBuilder().addBuilder(
+            com.wali.live.proto.PayProto.Languages.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .Languages language = 5;</code>
+       *
+       * <pre>
+       *多语言描述
+       * </pre>
+       */
+      public com.wali.live.proto.PayProto.Languages.Builder addLanguageBuilder(
+          int index) {
+        return getLanguageFieldBuilder().addBuilder(
+            index, com.wali.live.proto.PayProto.Languages.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .Languages language = 5;</code>
+       *
+       * <pre>
+       *多语言描述
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.PayProto.Languages.Builder> 
+           getLanguageBuilderList() {
+        return getLanguageFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.PayProto.Languages, com.wali.live.proto.PayProto.Languages.Builder, com.wali.live.proto.PayProto.LanguagesOrBuilder> 
+          getLanguageFieldBuilder() {
+        if (languageBuilder_ == null) {
+          languageBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.PayProto.Languages, com.wali.live.proto.PayProto.Languages.Builder, com.wali.live.proto.PayProto.LanguagesOrBuilder>(
+                  language_,
+                  ((bitField0_ & 0x00000010) == 0x00000010),
+                  getParentForChildren(),
+                  isClean());
+          language_ = null;
+        }
+        return languageBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ProfitDayDetailInfo)
+    }
+
+    static {
+      defaultInstance = new ProfitDayDetailInfo(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ProfitDayDetailInfo)
+  }
+
+  public interface LanguagesOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // optional uint32 language_code = 1;
+    /**
+     * <code>optional uint32 language_code = 1;</code>
+     *
+     * <pre>
+     *语言代号客户端的语言，0:中文简体，1:英文，2:繁体中文
+     * </pre>
+     */
+    boolean hasLanguageCode();
+    /**
+     * <code>optional uint32 language_code = 1;</code>
+     *
+     * <pre>
+     *语言代号客户端的语言，0:中文简体，1:英文，2:繁体中文
+     * </pre>
+     */
+    int getLanguageCode();
+
+    // optional string text = 2;
+    /**
+     * <code>optional string text = 2;</code>
+     *
+     * <pre>
+     *对应文案，如"来自互娱直播"、"from live"
+     * </pre>
+     */
+    boolean hasText();
+    /**
+     * <code>optional string text = 2;</code>
+     *
+     * <pre>
+     *对应文案，如"来自互娱直播"、"from live"
+     * </pre>
+     */
+    java.lang.String getText();
+    /**
+     * <code>optional string text = 2;</code>
+     *
+     * <pre>
+     *对应文案，如"来自互娱直播"、"from live"
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getTextBytes();
+  }
+  /**
+   * Protobuf type {@code Languages}
+   */
+  public static final class Languages extends
+      com.google.protobuf.GeneratedMessage
+      implements LanguagesOrBuilder {
+    // Use Languages.newBuilder() to construct.
+    private Languages(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private Languages(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final Languages defaultInstance;
+    public static Languages getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public Languages getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Languages(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              languageCode_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              text_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.PayProto.internal_static_Languages_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.PayProto.internal_static_Languages_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.PayProto.Languages.class, com.wali.live.proto.PayProto.Languages.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<Languages> PARSER =
+        new com.google.protobuf.AbstractParser<Languages>() {
+      public Languages parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Languages(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Languages> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // optional uint32 language_code = 1;
+    public static final int LANGUAGE_CODE_FIELD_NUMBER = 1;
+    private int languageCode_;
+    /**
+     * <code>optional uint32 language_code = 1;</code>
+     *
+     * <pre>
+     *语言代号客户端的语言，0:中文简体，1:英文，2:繁体中文
+     * </pre>
+     */
+    public boolean hasLanguageCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint32 language_code = 1;</code>
+     *
+     * <pre>
+     *语言代号客户端的语言，0:中文简体，1:英文，2:繁体中文
+     * </pre>
+     */
+    public int getLanguageCode() {
+      return languageCode_;
+    }
+
+    // optional string text = 2;
+    public static final int TEXT_FIELD_NUMBER = 2;
+    private java.lang.Object text_;
+    /**
+     * <code>optional string text = 2;</code>
+     *
+     * <pre>
+     *对应文案，如"来自互娱直播"、"from live"
+     * </pre>
+     */
+    public boolean hasText() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string text = 2;</code>
+     *
+     * <pre>
+     *对应文案，如"来自互娱直播"、"from live"
+     * </pre>
+     */
+    public java.lang.String getText() {
+      java.lang.Object ref = text_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          text_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string text = 2;</code>
+     *
+     * <pre>
+     *对应文案，如"来自互娱直播"、"from live"
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getTextBytes() {
+      java.lang.Object ref = text_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        text_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      languageCode_ = 0;
+      text_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, languageCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getTextBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, languageCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getTextBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.PayProto.Languages parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.PayProto.Languages parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.Languages parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.PayProto.Languages parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.Languages parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.PayProto.Languages parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.Languages parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.PayProto.Languages parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.Languages parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.PayProto.Languages parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.PayProto.Languages prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code Languages}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.PayProto.LanguagesOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.PayProto.internal_static_Languages_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.PayProto.internal_static_Languages_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.PayProto.Languages.class, com.wali.live.proto.PayProto.Languages.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.PayProto.Languages.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        languageCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        text_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.PayProto.internal_static_Languages_descriptor;
+      }
+
+      public com.wali.live.proto.PayProto.Languages getDefaultInstanceForType() {
+        return com.wali.live.proto.PayProto.Languages.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.PayProto.Languages build() {
+        com.wali.live.proto.PayProto.Languages result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.PayProto.Languages buildPartial() {
+        com.wali.live.proto.PayProto.Languages result = new com.wali.live.proto.PayProto.Languages(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.languageCode_ = languageCode_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.text_ = text_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.PayProto.Languages) {
+          return mergeFrom((com.wali.live.proto.PayProto.Languages)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.PayProto.Languages other) {
+        if (other == com.wali.live.proto.PayProto.Languages.getDefaultInstance()) return this;
+        if (other.hasLanguageCode()) {
+          setLanguageCode(other.getLanguageCode());
+        }
+        if (other.hasText()) {
+          bitField0_ |= 0x00000002;
+          text_ = other.text_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.PayProto.Languages parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.PayProto.Languages) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // optional uint32 language_code = 1;
+      private int languageCode_ ;
+      /**
+       * <code>optional uint32 language_code = 1;</code>
+       *
+       * <pre>
+       *语言代号客户端的语言，0:中文简体，1:英文，2:繁体中文
+       * </pre>
+       */
+      public boolean hasLanguageCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint32 language_code = 1;</code>
+       *
+       * <pre>
+       *语言代号客户端的语言，0:中文简体，1:英文，2:繁体中文
+       * </pre>
+       */
+      public int getLanguageCode() {
+        return languageCode_;
+      }
+      /**
+       * <code>optional uint32 language_code = 1;</code>
+       *
+       * <pre>
+       *语言代号客户端的语言，0:中文简体，1:英文，2:繁体中文
+       * </pre>
+       */
+      public Builder setLanguageCode(int value) {
+        bitField0_ |= 0x00000001;
+        languageCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 language_code = 1;</code>
+       *
+       * <pre>
+       *语言代号客户端的语言，0:中文简体，1:英文，2:繁体中文
+       * </pre>
+       */
+      public Builder clearLanguageCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        languageCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // optional string text = 2;
+      private java.lang.Object text_ = "";
+      /**
+       * <code>optional string text = 2;</code>
+       *
+       * <pre>
+       *对应文案，如"来自互娱直播"、"from live"
+       * </pre>
+       */
+      public boolean hasText() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string text = 2;</code>
+       *
+       * <pre>
+       *对应文案，如"来自互娱直播"、"from live"
+       * </pre>
+       */
+      public java.lang.String getText() {
+        java.lang.Object ref = text_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          text_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string text = 2;</code>
+       *
+       * <pre>
+       *对应文案，如"来自互娱直播"、"from live"
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getTextBytes() {
+        java.lang.Object ref = text_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          text_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string text = 2;</code>
+       *
+       * <pre>
+       *对应文案，如"来自互娱直播"、"from live"
+       * </pre>
+       */
+      public Builder setText(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        text_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string text = 2;</code>
+       *
+       * <pre>
+       *对应文案，如"来自互娱直播"、"from live"
+       * </pre>
+       */
+      public Builder clearText() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        text_ = getDefaultInstance().getText();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string text = 2;</code>
+       *
+       * <pre>
+       *对应文案，如"来自互娱直播"、"from live"
+       * </pre>
+       */
+      public Builder setTextBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        text_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:Languages)
+    }
+
+    static {
+      defaultInstance = new Languages(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:Languages)
+  }
+
   public interface RechargeRecordOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
@@ -53212,6 +58573,31 @@ public final class PayProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RechargeRecordRequest_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ProfitRecordResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ProfitRecordResponse_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ProfitRecordRequest_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ProfitRecordRequest_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ProfitDayDetail_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ProfitDayDetail_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ProfitDayDetailInfo_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ProfitDayDetailInfo_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_Languages_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_Languages_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_RechargeRecord_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -53306,128 +58692,144 @@ public final class PayProto {
       " \001(\r\022\034\n\024game_ticket_cash_cnt\030\035 \001(\r\022 \n\030ga" +
       "me_ticket_usd_cash_cnt\030\036 \001(\r\"?\n\022GetExcha" +
       "ngeRequest\022\014\n\004uuid\030\001 \002(\004\022\033\n\010platform\030\002 \002" +
-      "(\0162\t.Platform\"]\n\013GemExchange\022\023\n\013exchange" +
-      "_id\030\001 \002(\r\022\017\n\007gem_cnt\030\002 \002(\r\022\022\n\nticket_cnt" +
-      "\030\003 \002(\r\022\024\n\014give_gem_cnt\030\004 \001(\r\"\321\001\n\023GetExch" +
-      "angeResponse\022\020\n\010ret_code\030\001 \002(\r\022\026\n\016usable",
-      "_gem_cnt\030\002 \001(\r\022\'\n\021gem_exchange_list\030\003 \003(" +
-      "\0132\014.GemExchange\022\031\n\021uasble_ticket_cnt\030\004 \001" +
-      "(\r\022\037\n\nnotifyType\030\005 \001(\0162\013.NotifyType\022\013\n\003m" +
-      "sg\030\006 \001(\t\022\036\n\026usable_game_ticket_cnt\030\007 \001(\r" +
-      "\"\243\001\n\022ExchangeGemRequest\022\014\n\004uuid\030\001 \002(\004\022\021\n" +
-      "\tclient_id\030\002 \002(\004\022\023\n\013exchange_id\030\003 \002(\r\022\017\n" +
-      "\007gem_cnt\030\004 \002(\r\022\023\n\013tichket_cnt\030\005 \002(\r\022\024\n\014g" +
-      "ive_gem_cnt\030\006 \001(\r\022\033\n\010platform\030\007 \001(\0162\t.Pl" +
-      "atform\"Z\n\023ExchangeGemResponse\022\020\n\010ret_cod" +
-      "e\030\001 \002(\r\022\026\n\016usable_gem_cnt\030\002 \001(\r\022\031\n\021usabl",
-      "e_ticket_cnt\030\003 \001(\r\"\350\001\n\017WithdrawRequest\022\014" +
-      "\n\004uuid\030\001 \002(\004\022\021\n\tclient_id\030\002 \002(\004\022\027\n\017withd" +
-      "raw_amount\030\003 \001(\r\022\031\n\021consum_ticket_cnt\030\004 " +
-      "\001(\r\022$\n\rwithdraw_type\030\005 \002(\0162\r.WithdrawTyp" +
-      "e\022\033\n\010platform\030\006 \001(\0162\t.Platform\022\022\n\nchanne" +
-      "l_id\030\007 \001(\r\022\017\n\007unionid\030\010 \001(\t\022\030\n\020need_real" +
-      "_resule\030\t \001(\010\"\251\001\n\020WithdrawResponse\022\020\n\010re" +
-      "t_code\030\001 \002(\r\022\031\n\021usable_ticket_cnt\030\002 \001(\r\022" +
-      "\031\n\021exchange_cash_cnt\030\003 \001(\r\022\037\n\027today_exch" +
-      "ange_cash_cnt\030\004 \001(\r\022\037\n\nnotifyType\030\005 \001(\0162",
-      "\013.NotifyType\022\013\n\003msg\030\006 \001(\t\"E\n\025WithdrawRec" +
-      "ordRequest\022\014\n\004uuid\030\001 \002(\004\022\017\n\007item_id\030\002 \001(" +
-      "\t\022\r\n\005limit\030\003 \001(\r\"\300\001\n\016WithdrawRecord\022\017\n\007i" +
-      "tem_id\030\001 \001(\t\022\016\n\006amount\030\003 \001(\r\022\021\n\ttimestam" +
-      "p\030\004 \001(\004\022\016\n\006status\030\005 \001(\r\022\020\n\010item_key\030\006 \001(" +
-      "\t\022\022\n\nstatus_msg\030\007 \001(\t\022\036\n\026orther_currency" +
-      "_amount\030\010 \001(\r\022$\n\rwithdraw_type\030\t \001(\0162\r.W" +
-      "ithdrawType\"T\n\026WithdrawRecordResponse\022\020\n" +
-      "\010ret_code\030\001 \002(\r\022(\n\017withdrawRecords\030\002 \003(\013" +
-      "2\017.WithdrawRecord\"\314\001\n\013BindRequest\022\014\n\004uui",
-      "d\030\001 \002(\004\022\021\n\treal_name\030\002 \001(\t\022\017\n\007account\030\003 " +
-      "\001(\t\022\017\n\007card_id\030\004 \001(\t\022\022\n\noauth_code\030\005 \001(\t" +
-      "\022\033\n\004type\030\006 \001(\0162\r.WithdrawType\022\026\n\016paypal_" +
-      "account\030\007 \001(\t\022\030\n\020paypal_firstname\030\010 \001(\t\022" +
-      "\027\n\017paypal_lastname\030\t \001(\t\"\200\001\n\014BindRespons" +
-      "e\022\020\n\010ret_code\030\001 \002(\r\022\016\n\006openid\030\002 \001(\t\022\027\n\006a" +
-      "lipay\030\003 \001(\0132\007.AliPay\022\031\n\005wxpay\030\004 \001(\0132\n.We" +
-      "ixinPay\022\032\n\006paypal\030\005 \001(\0132\n.PaypalPay\"\251\001\n\026" +
-      "AuthAndWithdrawRequest\022\014\n\004uuid\030\001 \002(\004\022\021\n\t" +
-      "real_name\030\002 \001(\t\022\017\n\007account\030\003 \001(\t\022\017\n\007card",
-      "_id\030\004 \001(\t\022\022\n\noauth_code\030\005 \001(\t\022\033\n\004type\030\006 " +
-      "\001(\0162\r.WithdrawType\022\033\n\010platform\030\007 \001(\0162\t.P" +
-      "latform\"o\n\027AuthAndWithdrawResponse\022\020\n\010re" +
-      "t_code\030\001 \002(\r\022\016\n\006openid\030\002 \001(\t\022\027\n\006alipay\030\003" +
-      " \001(\0132\007.AliPay\022\031\n\005wxpay\030\004 \001(\0132\n.WeixinPay" +
-      "\"\024\n\022GetRankListRequest\"\025\n\023GetRankListRes" +
-      "ponse\"B\n\016RedPointConfig\022\021\n\tstartTime\030\001 \002" +
-      "(\004\022\017\n\007endTime\030\002 \002(\004\022\014\n\004uniq\030\003 \001(\t\"6\n\030Get" +
-      "RedPointConfigRequest\022\014\n\004type\030\001 \002(\t\022\014\n\004u" +
-      "niq\030\002 \001(\t\"N\n\031GetRedPointConfigResponse\022\020",
-      "\n\010ret_code\030\001 \002(\r\022\037\n\006config\030\002 \001(\0132\017.RedPo" +
-      "intConfig\"k\n\010GiftCard\022\017\n\007gift_id\030\001 \001(\r\022\025" +
-      "\n\rgift_card_cnt\030\002 \001(\r\022\022\n\nbegin_time\030\003 \001(" +
-      "\004\022\020\n\010end_time\030\004 \001(\004\022\021\n\tactive_id\030\005 \001(\r\"E" +
-      "\n\007PayPush\022\020\n\010ret_code\030\001 \002(\r\022\020\n\010order_id\030" +
-      "\002 \002(\t\022\026\n\016usable_gem_cnt\030\003 \001(\r\"\265\001\n\014GiftCa" +
-      "rdPush\022\020\n\010ret_code\030\001 \002(\r\022\035\n\ngift_cards\030\002" +
-      " \003(\0132\t.GiftCard\022\032\n\022ios_usable_gem_cnt\030\003 " +
-      "\001(\r\022\032\n\022and_usable_gem_cnt\030\004 \001(\r\022\034\n\024user_" +
-      "asset_timestamp\030\005 \001(\004\022\036\n\026usable_virtual_",
-      "gem_cnt\030\006 \001(\r\"F\n\031QueryBalanceDetailReque" +
-      "st\022\014\n\004uuid\030\001 \001(\004\022\033\n\010platform\030\002 \001(\0162\t.Pla" +
-      "tform\"\332\001\n\032QueryBalanceDetailResponse\022\020\n\010" +
-      "ret_code\030\001 \001(\r\022\024\n\014real_gem_cnt\030\002 \001(\r\022%\n\020" +
-      "virtual_gem_list\030\003 \003(\0132\013.VirtualGem\022!\n\016g" +
-      "ift_card_list\030\004 \003(\0132\t.GiftCard\022\036\n\026usable" +
-      "_virtual_gem_cnt\030\005 \001(\r\022*\n\007history\030\006 \001(\0132" +
-      "\031.ExpireOrderHistoryRecord\"K\n\nVirtualGem" +
-      "\022\027\n\017virtual_gem_cnt\030\001 \001(\r\022\022\n\nbegin_time\030" +
-      "\002 \001(\004\022\020\n\010end_time\030\003 \001(\004\"_\n\030ExpireOrderHi",
-      "storyRecord\022!\n\005cards\030\001 \003(\0132\022.ExpireOrder" +
-      "Record\022 \n\004gems\030\002 \003(\0132\022.ExpireOrderRecord" +
-      "\"\351\001\n\021ExpireOrderRecord\022\020\n\010order_id\030\001 \001(\t" +
-      "\022\014\n\004uuid\030\002 \001(\r\022\017\n\007gift_id\030\003 \001(\r\022\020\n\010gift_" +
-      "cnt\030\004 \001(\r\022\021\n\tworth_gem\030\005 \001(\r\022\022\n\nbegin_ti" +
-      "me\030\006 \001(\004\022\020\n\010end_time\030\007 \001(\004\022\023\n\013expire_typ" +
-      "e\030\010 \001(\r\022\023\n\013create_time\030\t \001(\004\022\016\n\006status\030\n" +
-      " \001(\r\022\036\n\004type\030\013 \001(\0162\n.GrantType:\004CARD\"J\n\016" +
-      "YzbGemExchange\022\023\n\013exchange_id\030\001 \002(\r\022\017\n\007g" +
-      "em_cnt\030\002 \002(\r\022\022\n\nyzb_ticket\030\003 \002(\r\"D\n\025YzbE",
-      "xchageListRequest\022\016\n\006userId\030\001 \002(\004\022\033\n\010pla" +
-      "tform\030\002 \001(\0162\t.Platform\"Q\n\026YzbExchageList" +
-      "Response\022\017\n\007retCode\030\001 \002(\r\022&\n\rgem_exchang" +
-      "es\030\002 \003(\0132\017.YzbGemExchange\"\247\001\n\022YzbExchang" +
-      "eRequest\022\024\n\014yzb_order_id\030\001 \002(\t\022\016\n\006userId" +
-      "\030\002 \002(\004\022\023\n\013exchange_id\030\003 \002(\r\022\021\n\ttimestamp" +
-      "\030\004 \002(\004\022\020\n\005count\030\005 \001(\r:\0011\022\033\n\010platform\030\006 \001" +
-      "(\0162\t.Platform\022\024\n\014package_name\030\007 \002(\t\"\200\001\n\023" +
-      "YzbExchangeResponse\022\017\n\007retCode\030\001 \002(\r\022\016\n\006" +
-      "retMsg\030\002 \001(\t\022\026\n\016usable_gem_cnt\030\003 \001(\r\022\034\n\024",
-      "user_asset_timestamp\030\004 \001(\004\022\022\n\nyzb_ticket" +
-      "\030\005 \001(\r\"B\n\025RechargeRecordRequest\022\014\n\004uuid\030" +
-      "\001 \002(\004\022\033\n\010platform\030\004 \001(\0162\t.Platform\"\257\001\n\016R" +
-      "echargeRecord\022\017\n\007item_id\030\001 \001(\t\022\017\n\007gem_cn" +
-      "t\030\002 \001(\r\022\016\n\006amount\030\003 \001(\r\022\021\n\ttimestamp\030\004 \001" +
-      "(\004\022\016\n\006status\030\005 \001(\r\022\020\n\010order_id\030\006 \001(\t\022\031\n\007" +
-      "payType\030\007 \001(\0162\010.PayType\022\033\n\010platform\030\010 \001(" +
-      "\0162\t.Platform\"T\n\026RechargeRecordResponse\022\020" +
-      "\n\010ret_code\030\001 \002(\r\022(\n\017rechargeRecords\030\002 \003(" +
-      "\0132\017.RechargeRecord* \n\010Platform\022\007\n\003IOS\020\001\022",
-      "\013\n\007ANDROID\020\002*\237\001\n\010RChannel\022\n\n\006IOS_CH\020\001\022\n\n" +
-      "\006AND_CH\020\002\022\n\n\006WEB_CH\020\003\022\013\n\007PAYU_CH\020\004\022\r\n\tPA" +
-      "YPAL_CH\020\005\022\016\n\nGO_PLAY_CH\020\006\022\013\n\007TEST_CH\020\007\022\014" +
-      "\n\010PAYTM_CH\020\010\022\023\n\017CODA_IDR_DCB_CH\020\t\022\023\n\017COD" +
-      "A_IDR_ATM_CH\020\n*\306\001\n\007PayType\022\007\n\003IAP\020\001\022\n\n\006W" +
-      "EIXIN\020\002\022\n\n\006ALIPAY\020\003\022\t\n\005MIPAY\020\004\022\n\n\006SYSTEM" +
-      "\020\005\022\013\n\007OPERATE\020\006\022\n\n\006DIRECT\020\007\022\010\n\004PAYU\020\010\022\n\n" +
-      "\006PAYPAU\020\t\022\013\n\007GO_PLAY\020\n\022\n\n\006PAYPAL\020\013\022\014\n\010MI" +
-      "WALLET\020\014\022\t\n\005PAYTM\020\r\022\020\n\014CODA_IDR_DCB\020\016\022\020\n" +
-      "\014CODA_IDR_ATM\020\017*M\n\014WithdrawType\022\023\n\017ALIPA",
-      "Y_WITHDRAW\020\001\022\023\n\017WEIXIN_WITHDRAW\020\002\022\023\n\017PAY" +
-      "PAL_WITHDRAW\020\003*c\n\007ActType\022\031\n\025NEWMAN_FIRS" +
-      "T_RECHARGE\020\001\022\026\n\022RECHARGE_CNT_LIMIT\020\002\022\031\n\025" +
-      "RECHARGE_PERIOD_LIMIT\020\003\022\n\n\006NORMAL\020\004*>\n\007A" +
-      "ppType\022\t\n\005ZHIBO\020\000\022\021\n\rZHIBO_ZHUSHOU\020\001\022\025\n\021" +
-      "ZHIBO_ZHUSHOU_AAR\020\002*\"\n\nNotifyType\022\t\n\005TOA" +
-      "ST\020\001\022\t\n\005ALERT\020\002*\036\n\tGrantType\022\010\n\004CARD\020\001\022\007" +
-      "\n\003GEM\020\002B\037\n\023com.wali.live.protoB\010PayProto"
+      "(\0162\t.Platform\"\304\001\n\013GemExchange\022\023\n\013exchang" +
+      "e_id\030\001 \002(\r\022\017\n\007gem_cnt\030\002 \002(\r\022\022\n\nticket_cn" +
+      "t\030\003 \002(\r\022\024\n\014give_gem_cnt\030\004 \001(\r\022\020\n\010subtitl" +
+      "e\030\005 \001(\t\022\022\n\nbegin_time\030\006 \001(\004\022\020\n\010end_time\030",
+      "\007 \001(\004\022\024\n\014gold_gem_cnt\030\010 \001(\r\022\027\n\017virtual_g" +
+      "em_cnt\030\t \001(\r\"\321\001\n\023GetExchangeResponse\022\020\n\010" +
+      "ret_code\030\001 \002(\r\022\026\n\016usable_gem_cnt\030\002 \001(\r\022\'" +
+      "\n\021gem_exchange_list\030\003 \003(\0132\014.GemExchange\022" +
+      "\031\n\021uasble_ticket_cnt\030\004 \001(\r\022\037\n\nnotifyType" +
+      "\030\005 \001(\0162\013.NotifyType\022\013\n\003msg\030\006 \001(\t\022\036\n\026usab" +
+      "le_game_ticket_cnt\030\007 \001(\r\"\243\001\n\022ExchangeGem" +
+      "Request\022\014\n\004uuid\030\001 \002(\004\022\021\n\tclient_id\030\002 \002(\004" +
+      "\022\023\n\013exchange_id\030\003 \002(\r\022\017\n\007gem_cnt\030\004 \002(\r\022\023" +
+      "\n\013tichket_cnt\030\005 \002(\r\022\024\n\014give_gem_cnt\030\006 \001(",
+      "\r\022\033\n\010platform\030\007 \001(\0162\t.Platform\"Z\n\023Exchan" +
+      "geGemResponse\022\020\n\010ret_code\030\001 \002(\r\022\026\n\016usabl" +
+      "e_gem_cnt\030\002 \001(\r\022\031\n\021usable_ticket_cnt\030\003 \001" +
+      "(\r\"\350\001\n\017WithdrawRequest\022\014\n\004uuid\030\001 \002(\004\022\021\n\t" +
+      "client_id\030\002 \002(\004\022\027\n\017withdraw_amount\030\003 \001(\r" +
+      "\022\031\n\021consum_ticket_cnt\030\004 \001(\r\022$\n\rwithdraw_" +
+      "type\030\005 \002(\0162\r.WithdrawType\022\033\n\010platform\030\006 " +
+      "\001(\0162\t.Platform\022\022\n\nchannel_id\030\007 \001(\r\022\017\n\007un" +
+      "ionid\030\010 \001(\t\022\030\n\020need_real_resule\030\t \001(\010\"\251\001" +
+      "\n\020WithdrawResponse\022\020\n\010ret_code\030\001 \002(\r\022\031\n\021",
+      "usable_ticket_cnt\030\002 \001(\r\022\031\n\021exchange_cash" +
+      "_cnt\030\003 \001(\r\022\037\n\027today_exchange_cash_cnt\030\004 " +
+      "\001(\r\022\037\n\nnotifyType\030\005 \001(\0162\013.NotifyType\022\013\n\003" +
+      "msg\030\006 \001(\t\"E\n\025WithdrawRecordRequest\022\014\n\004uu" +
+      "id\030\001 \002(\004\022\017\n\007item_id\030\002 \001(\t\022\r\n\005limit\030\003 \001(\r" +
+      "\"\300\001\n\016WithdrawRecord\022\017\n\007item_id\030\001 \001(\t\022\016\n\006" +
+      "amount\030\003 \001(\r\022\021\n\ttimestamp\030\004 \001(\004\022\016\n\006statu" +
+      "s\030\005 \001(\r\022\020\n\010item_key\030\006 \001(\t\022\022\n\nstatus_msg\030" +
+      "\007 \001(\t\022\036\n\026orther_currency_amount\030\010 \001(\r\022$\n" +
+      "\rwithdraw_type\030\t \001(\0162\r.WithdrawType\"T\n\026W",
+      "ithdrawRecordResponse\022\020\n\010ret_code\030\001 \002(\r\022" +
+      "(\n\017withdrawRecords\030\002 \003(\0132\017.WithdrawRecor" +
+      "d\"\314\001\n\013BindRequest\022\014\n\004uuid\030\001 \002(\004\022\021\n\treal_" +
+      "name\030\002 \001(\t\022\017\n\007account\030\003 \001(\t\022\017\n\007card_id\030\004" +
+      " \001(\t\022\022\n\noauth_code\030\005 \001(\t\022\033\n\004type\030\006 \001(\0162\r" +
+      ".WithdrawType\022\026\n\016paypal_account\030\007 \001(\t\022\030\n" +
+      "\020paypal_firstname\030\010 \001(\t\022\027\n\017paypal_lastna" +
+      "me\030\t \001(\t\"\200\001\n\014BindResponse\022\020\n\010ret_code\030\001 " +
+      "\002(\r\022\016\n\006openid\030\002 \001(\t\022\027\n\006alipay\030\003 \001(\0132\007.Al" +
+      "iPay\022\031\n\005wxpay\030\004 \001(\0132\n.WeixinPay\022\032\n\006paypa",
+      "l\030\005 \001(\0132\n.PaypalPay\"\251\001\n\026AuthAndWithdrawR" +
+      "equest\022\014\n\004uuid\030\001 \002(\004\022\021\n\treal_name\030\002 \001(\t\022" +
+      "\017\n\007account\030\003 \001(\t\022\017\n\007card_id\030\004 \001(\t\022\022\n\noau" +
+      "th_code\030\005 \001(\t\022\033\n\004type\030\006 \001(\0162\r.WithdrawTy" +
+      "pe\022\033\n\010platform\030\007 \001(\0162\t.Platform\"o\n\027AuthA" +
+      "ndWithdrawResponse\022\020\n\010ret_code\030\001 \002(\r\022\016\n\006" +
+      "openid\030\002 \001(\t\022\027\n\006alipay\030\003 \001(\0132\007.AliPay\022\031\n" +
+      "\005wxpay\030\004 \001(\0132\n.WeixinPay\"\024\n\022GetRankListR" +
+      "equest\"\025\n\023GetRankListResponse\"B\n\016RedPoin" +
+      "tConfig\022\021\n\tstartTime\030\001 \002(\004\022\017\n\007endTime\030\002 ",
+      "\002(\004\022\014\n\004uniq\030\003 \001(\t\"6\n\030GetRedPointConfigRe" +
+      "quest\022\014\n\004type\030\001 \002(\t\022\014\n\004uniq\030\002 \001(\t\"N\n\031Get" +
+      "RedPointConfigResponse\022\020\n\010ret_code\030\001 \002(\r" +
+      "\022\037\n\006config\030\002 \001(\0132\017.RedPointConfig\"k\n\010Gif" +
+      "tCard\022\017\n\007gift_id\030\001 \001(\r\022\025\n\rgift_card_cnt\030" +
+      "\002 \001(\r\022\022\n\nbegin_time\030\003 \001(\004\022\020\n\010end_time\030\004 " +
+      "\001(\004\022\021\n\tactive_id\030\005 \001(\r\"E\n\007PayPush\022\020\n\010ret" +
+      "_code\030\001 \002(\r\022\020\n\010order_id\030\002 \002(\t\022\026\n\016usable_" +
+      "gem_cnt\030\003 \001(\r\"\265\001\n\014GiftCardPush\022\020\n\010ret_co" +
+      "de\030\001 \002(\r\022\035\n\ngift_cards\030\002 \003(\0132\t.GiftCard\022",
+      "\032\n\022ios_usable_gem_cnt\030\003 \001(\r\022\032\n\022and_usabl" +
+      "e_gem_cnt\030\004 \001(\r\022\034\n\024user_asset_timestamp\030" +
+      "\005 \001(\004\022\036\n\026usable_virtual_gem_cnt\030\006 \001(\r\"F\n" +
+      "\031QueryBalanceDetailRequest\022\014\n\004uuid\030\001 \001(\004" +
+      "\022\033\n\010platform\030\002 \001(\0162\t.Platform\"\332\001\n\032QueryB" +
+      "alanceDetailResponse\022\020\n\010ret_code\030\001 \001(\r\022\024" +
+      "\n\014real_gem_cnt\030\002 \001(\r\022%\n\020virtual_gem_list" +
+      "\030\003 \003(\0132\013.VirtualGem\022!\n\016gift_card_list\030\004 " +
+      "\003(\0132\t.GiftCard\022\036\n\026usable_virtual_gem_cnt" +
+      "\030\005 \001(\r\022*\n\007history\030\006 \001(\0132\031.ExpireOrderHis",
+      "toryRecord\"K\n\nVirtualGem\022\027\n\017virtual_gem_" +
+      "cnt\030\001 \001(\r\022\022\n\nbegin_time\030\002 \001(\004\022\020\n\010end_tim" +
+      "e\030\003 \001(\004\"_\n\030ExpireOrderHistoryRecord\022!\n\005c" +
+      "ards\030\001 \003(\0132\022.ExpireOrderRecord\022 \n\004gems\030\002" +
+      " \003(\0132\022.ExpireOrderRecord\"\351\001\n\021ExpireOrder" +
+      "Record\022\020\n\010order_id\030\001 \001(\t\022\014\n\004uuid\030\002 \001(\r\022\017" +
+      "\n\007gift_id\030\003 \001(\r\022\020\n\010gift_cnt\030\004 \001(\r\022\021\n\twor" +
+      "th_gem\030\005 \001(\r\022\022\n\nbegin_time\030\006 \001(\004\022\020\n\010end_" +
+      "time\030\007 \001(\004\022\023\n\013expire_type\030\010 \001(\r\022\023\n\013creat" +
+      "e_time\030\t \001(\004\022\016\n\006status\030\n \001(\r\022\036\n\004type\030\013 \001",
+      "(\0162\n.GrantType:\004CARD\"J\n\016YzbGemExchange\022\023" +
+      "\n\013exchange_id\030\001 \002(\r\022\017\n\007gem_cnt\030\002 \002(\r\022\022\n\n" +
+      "yzb_ticket\030\003 \002(\r\"D\n\025YzbExchageListReques" +
+      "t\022\016\n\006userId\030\001 \002(\004\022\033\n\010platform\030\002 \001(\0162\t.Pl" +
+      "atform\"Q\n\026YzbExchageListResponse\022\017\n\007retC" +
+      "ode\030\001 \002(\r\022&\n\rgem_exchanges\030\002 \003(\0132\017.YzbGe" +
+      "mExchange\"\247\001\n\022YzbExchangeRequest\022\024\n\014yzb_" +
+      "order_id\030\001 \002(\t\022\016\n\006userId\030\002 \002(\004\022\023\n\013exchan" +
+      "ge_id\030\003 \002(\r\022\021\n\ttimestamp\030\004 \002(\004\022\020\n\005count\030" +
+      "\005 \001(\r:\0011\022\033\n\010platform\030\006 \001(\0162\t.Platform\022\024\n",
+      "\014package_name\030\007 \002(\t\"\200\001\n\023YzbExchangeRespo" +
+      "nse\022\017\n\007retCode\030\001 \002(\r\022\016\n\006retMsg\030\002 \001(\t\022\026\n\016" +
+      "usable_gem_cnt\030\003 \001(\r\022\034\n\024user_asset_times" +
+      "tamp\030\004 \001(\004\022\022\n\nyzb_ticket\030\005 \001(\r\"B\n\025Rechar" +
+      "geRecordRequest\022\014\n\004uuid\030\001 \002(\004\022\033\n\010platfor" +
+      "m\030\004 \001(\0162\t.Platform\"\271\001\n\024ProfitRecordRespo" +
+      "nse\022\017\n\007retCode\030\001 \001(\r\022\027\n\017incomeProfitRMB\030" +
+      "\002 \001(\003\022\032\n\022incomeProfitDollar\030\003 \001(\003\022\025\n\rcos" +
+      "tProfitRMB\030\004 \001(\003\022\030\n\020costProfitDollar\030\005 \001" +
+      "(\003\022*\n\020profitDayDetails\030\006 \003(\0132\020.ProfitDay",
+      "Detail\"@\n\023ProfitRecordRequest\022\014\n\004uuid\030\001 " +
+      "\001(\004\022\014\n\004year\030\002 \001(\r\022\r\n\005month\030\003 \001(\r\"Q\n\017Prof" +
+      "itDayDetail\022\013\n\003day\030\001 \001(\r\0221\n\023profitDayDet" +
+      "ailInfo\030\002 \003(\0132\024.ProfitDayDetailInfo\"\221\001\n\023" +
+      "ProfitDayDetailInfo\022\023\n\013source_type\030\001 \001(\r" +
+      "\022\022\n\nprofitType\030\002 \001(\r\022\027\n\017profitChangeRMB\030" +
+      "\003 \001(\003\022\032\n\022profitChangeDollar\030\004 \001(\003\022\034\n\010lan" +
+      "guage\030\005 \003(\0132\n.Languages\"0\n\tLanguages\022\025\n\r" +
+      "language_code\030\001 \001(\r\022\014\n\004text\030\002 \001(\t\"\257\001\n\016Re" +
+      "chargeRecord\022\017\n\007item_id\030\001 \001(\t\022\017\n\007gem_cnt",
+      "\030\002 \001(\r\022\016\n\006amount\030\003 \001(\r\022\021\n\ttimestamp\030\004 \001(" +
+      "\004\022\016\n\006status\030\005 \001(\r\022\020\n\010order_id\030\006 \001(\t\022\031\n\007p" +
+      "ayType\030\007 \001(\0162\010.PayType\022\033\n\010platform\030\010 \001(\016" +
+      "2\t.Platform\"T\n\026RechargeRecordResponse\022\020\n" +
+      "\010ret_code\030\001 \002(\r\022(\n\017rechargeRecords\030\002 \003(\013" +
+      "2\017.RechargeRecord* \n\010Platform\022\007\n\003IOS\020\001\022\013" +
+      "\n\007ANDROID\020\002*\237\001\n\010RChannel\022\n\n\006IOS_CH\020\001\022\n\n\006" +
+      "AND_CH\020\002\022\n\n\006WEB_CH\020\003\022\013\n\007PAYU_CH\020\004\022\r\n\tPAY" +
+      "PAL_CH\020\005\022\016\n\nGO_PLAY_CH\020\006\022\013\n\007TEST_CH\020\007\022\014\n" +
+      "\010PAYTM_CH\020\010\022\023\n\017CODA_IDR_DCB_CH\020\t\022\023\n\017CODA",
+      "_IDR_ATM_CH\020\n*\306\001\n\007PayType\022\007\n\003IAP\020\001\022\n\n\006WE" +
+      "IXIN\020\002\022\n\n\006ALIPAY\020\003\022\t\n\005MIPAY\020\004\022\n\n\006SYSTEM\020" +
+      "\005\022\013\n\007OPERATE\020\006\022\n\n\006DIRECT\020\007\022\010\n\004PAYU\020\010\022\n\n\006" +
+      "PAYPAU\020\t\022\013\n\007GO_PLAY\020\n\022\n\n\006PAYPAL\020\013\022\014\n\010MIW" +
+      "ALLET\020\014\022\t\n\005PAYTM\020\r\022\020\n\014CODA_IDR_DCB\020\016\022\020\n\014" +
+      "CODA_IDR_ATM\020\017*M\n\014WithdrawType\022\023\n\017ALIPAY" +
+      "_WITHDRAW\020\001\022\023\n\017WEIXIN_WITHDRAW\020\002\022\023\n\017PAYP" +
+      "AL_WITHDRAW\020\003*c\n\007ActType\022\031\n\025NEWMAN_FIRST" +
+      "_RECHARGE\020\001\022\026\n\022RECHARGE_CNT_LIMIT\020\002\022\031\n\025R" +
+      "ECHARGE_PERIOD_LIMIT\020\003\022\n\n\006NORMAL\020\004*>\n\007Ap",
+      "pType\022\t\n\005ZHIBO\020\000\022\021\n\rZHIBO_ZHUSHOU\020\001\022\025\n\021Z" +
+      "HIBO_ZHUSHOU_AAR\020\002*\"\n\nNotifyType\022\t\n\005TOAS" +
+      "T\020\001\022\t\n\005ALERT\020\002*\036\n\tGrantType\022\010\n\004CARD\020\001\022\007\n" +
+      "\003GEM\020\002B\037\n\023com.wali.live.protoB\010PayProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -53547,7 +58949,7 @@ public final class PayProto {
           internal_static_GemExchange_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_GemExchange_descriptor,
-              new java.lang.String[] { "ExchangeId", "GemCnt", "TicketCnt", "GiveGemCnt", });
+              new java.lang.String[] { "ExchangeId", "GemCnt", "TicketCnt", "GiveGemCnt", "Subtitle", "BeginTime", "EndTime", "GoldGemCnt", "VirtualGemCnt", });
           internal_static_GetExchangeResponse_descriptor =
             getDescriptor().getMessageTypes().get(19);
           internal_static_GetExchangeResponse_fieldAccessorTable = new
@@ -53734,14 +59136,44 @@ public final class PayProto {
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_RechargeRecordRequest_descriptor,
               new java.lang.String[] { "Uuid", "Platform", });
-          internal_static_RechargeRecord_descriptor =
+          internal_static_ProfitRecordResponse_descriptor =
             getDescriptor().getMessageTypes().get(50);
+          internal_static_ProfitRecordResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ProfitRecordResponse_descriptor,
+              new java.lang.String[] { "RetCode", "IncomeProfitRMB", "IncomeProfitDollar", "CostProfitRMB", "CostProfitDollar", "ProfitDayDetails", });
+          internal_static_ProfitRecordRequest_descriptor =
+            getDescriptor().getMessageTypes().get(51);
+          internal_static_ProfitRecordRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ProfitRecordRequest_descriptor,
+              new java.lang.String[] { "Uuid", "Year", "Month", });
+          internal_static_ProfitDayDetail_descriptor =
+            getDescriptor().getMessageTypes().get(52);
+          internal_static_ProfitDayDetail_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ProfitDayDetail_descriptor,
+              new java.lang.String[] { "Day", "ProfitDayDetailInfo", });
+          internal_static_ProfitDayDetailInfo_descriptor =
+            getDescriptor().getMessageTypes().get(53);
+          internal_static_ProfitDayDetailInfo_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ProfitDayDetailInfo_descriptor,
+              new java.lang.String[] { "SourceType", "ProfitType", "ProfitChangeRMB", "ProfitChangeDollar", "Language", });
+          internal_static_Languages_descriptor =
+            getDescriptor().getMessageTypes().get(54);
+          internal_static_Languages_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_Languages_descriptor,
+              new java.lang.String[] { "LanguageCode", "Text", });
+          internal_static_RechargeRecord_descriptor =
+            getDescriptor().getMessageTypes().get(55);
           internal_static_RechargeRecord_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_RechargeRecord_descriptor,
               new java.lang.String[] { "ItemId", "GemCnt", "Amount", "Timestamp", "Status", "OrderId", "PayType", "Platform", });
           internal_static_RechargeRecordResponse_descriptor =
-            getDescriptor().getMessageTypes().get(51);
+            getDescriptor().getMessageTypes().get(56);
           internal_static_RechargeRecordResponse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_RechargeRecordResponse_descriptor,

@@ -53,4 +53,67 @@ public class EventClass {
             this.action = action;
         }
     }
+
+    public static class OauthResultEvent {
+        public static final int EVENT_TYPE_CODE = 1;
+        public static final int EVENT_TYPE_TOKEN = 2;
+        private int eventFrom;   //区分来源
+        private int eventType;
+        private String accessToken;
+        private String refreshToken;
+        private String expiresIn;
+        private String code;
+        private String openId;
+
+        public OauthResultEvent(int _eventType) {
+            eventType = _eventType;
+        }
+
+//        public OauthResultEvent(int _eventType, String _accessToken, String _refreshToken, String _expiresIn, String _code, String _openId) {
+//            eventType = _eventType;
+//            accessToken = _accessToken;
+//            refreshToken = _refreshToken;
+//            expiresIn = _expiresIn;
+//            code = _code;
+//            openId = _openId;
+//        }
+
+        public OauthResultEvent(int _eventFrom, int _eventType, String _accessToken, String _refreshToken, String _expiresIn, String _code, String _openId) {
+            eventFrom = _eventFrom;
+            eventType = _eventType;
+            accessToken = _accessToken;
+            refreshToken = _refreshToken;
+            expiresIn = _expiresIn;
+            code = _code;
+            openId = _openId;
+        }
+
+        public int getEventFrom() {
+            return eventFrom;
+        }
+
+        public int getEventType() {
+            return eventType;
+        }
+
+        public String getAccessToken() {
+            return accessToken;
+        }
+
+        public String getRefreshToken() {
+            return refreshToken;
+        }
+
+        public String getExpiresIn() {
+            return expiresIn;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public String getOpenId() {
+            return openId;
+        }
+    }
 }

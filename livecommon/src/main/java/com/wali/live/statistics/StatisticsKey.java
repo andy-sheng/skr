@@ -864,4 +864,15 @@ public class StatisticsKey {
     public static final String KEY_SDK_FOLLOW_WINDOWS_SHOW = "follow_windows-show-%s";      //关注页面显示 %s roomId
     public static final String KEY_SDK_FOLLOW__WINDOWS_FOLLOW = "follow_windows-follow-%s"; //点击关注  %s roomId
     public static final String KEY_SDK_FOLLOW_WINDOWS_CLOSE = "follow_windows-close-%s";    //点击关闭 %s roomId
+
+    public interface ExchangeGem {
+        int FROM_OTHER = 0;
+        int FROM_MY_INCOME = 1;
+        int FROM_RECHARGE = 2;
+
+        String VISIT = "gem_exchange-view-%d";// 进入兑换钻石页面打一次
+        String SUCC = "gem_exchange-success-%d";// 选择兑换钻石数，点击并确认兑换成功一次打一次
+        String ERROR = "gem_exchange-error-%1$d-%2$d";// 用户兑换钻石失败一次记一次<errorCode, from>
+        String CANCEL = "gem_exchange-cancel-%d";// 兑换页面点击左上角返回，and物理键返回一次打一次
+    }
 }

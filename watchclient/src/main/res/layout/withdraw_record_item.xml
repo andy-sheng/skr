@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_dimen_190">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/recharge_view_margin"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/amount_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_zhibo_btn_bg_normal"
+            android:textSize="@dimen/text_size_44"/>
+
+        <TextView
+            android:id="@+id/time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
+            android:textColor="@color/color_black_trans_50"
+            android:textSize="@dimen/text_size_36"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/status_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/recharge_view_margin"
+        android:textColor="@color/color_black_trans_50"
+        android:textSize="@dimen/text_size_44"/>
+
+    <TextView
+        android:id="@+id/status_msg_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/status_tv"
+        android:layout_below="@id/status_tv"
+        android:layout_marginTop="@dimen/margin_10"
+        android:textColor="@color/color_black_trans_40"
+        android:textSize="@dimen/text_size_44"/>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/list_item_line2"/>
+
+</RelativeLayout>
