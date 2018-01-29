@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_depart"
+    android:orientation="vertical">
+
+    <com.base.view.BackTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:is_profile_mode="true" />
+
+    <TextView
+        android:id="@+id/withdraw_warn_info"
+        android:layout_width="wrap_content"
+        android:layout_height="66.67dip"
+        android:layout_gravity="center_horizontal"
+        android:drawablePadding="5dip"
+        android:drawableRight="@drawable/icon_xiangqingclick"
+        android:gravity="center"
+        android:text="@string/wx_withdraw_title"
+        android:textColor="@color/color_black_trans_50"
+        android:textSize="@dimen/text_size_38" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/certification_item_height"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/margin_40"
+        android:paddingRight="@dimen/margin_40">
+
+        <TextView
+            android:layout_width="62dip"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginRight="28dip"
+            android:gravity="left|center_vertical"
+            android:text="@string/account_name"
+            android:textColor="@color/color_2b2b2b_trans_90"
+            android:textSize="@dimen/text_size_46" />
+
+        <EditText
+            android:id="@+id/name_et"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="left|center_vertical"
+            android:hint="@string/wx_withdraw_name_hint"
+            android:maxLength="20"
+            android:singleLine="true"
+            android:textColor="@color/color_black_trans_50"
+            android:textColorHint="@color/color_black_trans_30"
+            android:textSize="@dimen/text_size_46" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/certification_item_height"
+        android:layout_marginTop="8dip"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/margin_40"
+        android:paddingRight="@dimen/margin_40">
+
+        <TextView
+            android:layout_width="62dip"
+            android:layout_height="match_parent"
+            android:layout_marginRight="28dip"
+            android:gravity="center"
+            android:text="@string/account_cid"
+            android:textColor="@color/color_2b2b2b_trans_90"
+            android:textSize="@dimen/text_size_46" />
+
+        <EditText
+            android:id="@+id/id_card_et"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="left|center_vertical"
+            android:hint="@string/wx_withdraw_cid_hint"
+            android:maxLength="18"
+            android:singleLine="true"
+            android:textColor="@color/color_black_trans_50"
+            android:textColorHint="@color/color_black_trans_30"
+            android:textSize="@dimen/text_size_46" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/certification_item_height"
+        android:layout_marginTop="8dip"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/margin_40"
+        android:paddingRight="@dimen/margin_40">
+
+        <TextView
+            android:layout_width="62dip"
+            android:layout_height="match_parent"
+            android:layout_marginRight="28dip"
+            android:gravity="center"
+            android:text="@string/withdraw_account"
+            android:textColor="@color/color_2b2b2b_trans_90"
+            android:textSize="@dimen/text_size_46" />
+
+        <TextView
+            android:id="@+id/wx_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="3dip"
+            android:gravity="center"
+            android:textColor="@color/color_black_trans_90"
+            android:textSize="@dimen/text_size_46" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/wx_withdraw_account_hint"
+            android:textColor="@color/color_acacac"
+            android:textSize="@dimen/text_size_40" />
+    </LinearLayout>
+
+    <CheckedTextView
+        android:id="@+id/agreement_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="40dip"
+        android:layout_marginTop="8dip"
+        android:drawableLeft="@drawable/withdraw_checkbox"
+        android:drawablePadding="6dip"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/margin_40"
+        android:text="@string/withdraw_agreement"
+        android:textColor="@color/color_acacac"
+        android:textSize="@dimen/text_size_34" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dip"
+        android:gravity="center"
+        android:text="@string/certification_bind_tip"
+        android:textColor="@color/color_acacac"
+        android:textSize="@dimen/text_size_38" />
+
+    <TextView
+        android:id="@+id/bind_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_40"
+        android:layout_marginRight="@dimen/margin_40"
+        android:background="@drawable/withdraw_withdraw_button"
+        android:gravity="center"
+        android:text="@string/account_withdraw_bind_btn"
+        android:textColor="@color/color_white_pressed_white50"
+        android:textSize="@dimen/text_size_52" />
+
+</LinearLayout>

@@ -113,6 +113,41 @@
             android:windowSoftInputMode="stateHidden"/>
 
         <activity
+            android:name="com.wali.live.watchsdk.income.WxCertificationActivity"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeLive"/>
+
+        <activity
+            android:name="com.wali.live.watchsdk.income.WithdrawRecordsActivity"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeLive"/>
+
+        <activity
+            android:name="com.wali.live.watchsdk.income.FillWXAccountActivity"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeLive"/>
+
+        <activity
+            android:name="com.wali.live.watchsdk.income.FillAliAccountActivity"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeLive"/>
+
+        <activity
+            android:name="com.wali.live.watchsdk.income.income.UserIncomeActivity"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeLive"/>
+
+        <activity
             android:name="com.wali.live.watchsdk.scheme.SchemeSdkActivity"
             android:excludeFromRecents="true"
             android:exported="true"

@@ -108,9 +108,10 @@
     <color name="color_4cb5ff">#4cb5ff</color>
     <color name="color_f6f6f6">#f6f6f6</color>
 
-    <color name="color_contest_get_revival">#fa7993</color>
+g    <color name="color_contest_get_revival">#fa7993</color>
     <color name="color_contest_get_revival_trans_50">#7ffa7993</color>
     <color name="color_f9a825">#f9a825</color>
+
     <!--提现界面-->
     <color name="withdraw_weixin_btn_text">#68be6d</color>
     <color name="withdraw_weixin_btn_text_trans_50">#7f68be6d</color>

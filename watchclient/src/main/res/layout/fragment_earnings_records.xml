@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f2f2f2">
+
+    <com.base.view.BackTitleBar
+        android:id="@+id/back_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    
+    <RelativeLayout
+        android:id="@+id/time_rl"
+        android:layout_width="match_parent"
+        android:layout_height="33.3dp"
+        android:background="@color/color_f2f2f2"
+        android:layout_below="@+id/notice_rl">
+
+        <TextView
+            android:id="@+id/time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_36"
+            android:textColor="@color/color_black_trans_50"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/select_tv"
+            android:background="@drawable/live_calender_normal"
+            android:layout_marginRight="6.67dp"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/select_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_36"
+            android:textColor="@color/color_black_trans_50"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:drawableRight="@drawable/more_right_arrow_bg"
+            android:text="@string/select_year_month"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/total_ll"
+        android:layout_below="@id/time_rl"
+        android:layout_width="match_parent"
+        android:layout_height="112dp"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/income_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_60"
+                android:textColor="@color/color_black_trans_70"
+                android:text="0"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/income_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_44"
+                android:textColor="@color/color_black_trans_50"
+                android:text="@string/total_profit_this_month"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0.33dp"
+            android:layout_height="match_parent"
+            android:background="@color/color_e5e5e5"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/cost_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_60"
+                android:textColor="@color/color_black_trans_70"
+                android:text="0"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/cost_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_44"
+                android:textColor="@color/color_black_trans_50"
+                android:text="@string/total_cost_this_month"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/notice_rl"
+        android:layout_width="match_parent"
+        android:layout_height="33.3dp"
+        android:paddingLeft="10dp"
+        android:background="@color/color_ff75a1"
+        android:layout_below="@id/back_title_bar"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/notice_tv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|left"
+            android:text="@string/my_profit_notice"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="-1"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_34"
+            android:layout_marginRight="26.67dp"
+            android:layout_centerVertical="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            />
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/live_comments_more_normal"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/total_ll"/>
+</RelativeLayout>

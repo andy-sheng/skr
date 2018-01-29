@@ -69,6 +69,7 @@
     <dimen name="text_size_110">36.67dip</dimen>
     <dimen name="text_size_120">40dip</dimen>
     <dimen name="text_size_130">43.333dip</dimen>
+    <dimen name="text_size_140">46.667dip</dimen>
     <dimen name="text_size_150">50dip</dimen>
     <dimen name="text_size_190">63.333dip</dimen>
 

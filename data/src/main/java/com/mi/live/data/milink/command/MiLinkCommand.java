@@ -522,4 +522,11 @@ public class MiLinkCommand {
     public static final String COMMAND_SET_CONTEST_INVITE_CODE = "zhibo.contestcode.setinvitecode";
     public static final String COMMAND_CONTEST_VIEWER_INFO = "zhibo.live.contestviewerinfo";
     public static final String COMMAND_CONTEST_AWARD_LIST = "zhibo.live.getcontestawardlist";
+
+    public static final String COMMAND_INCOME_EXCHANGE_MIBI = "zhibo.bank.exchangeMibi";
+    public static final String COMMAND_OAUTH_GET_MI_ACCESS_TOKEN = "zhibo.oauth.getMiAccessToken";  //小米账号登录授权验证
+    public static final String COMMAND_INCOME_GET_EXCHANGE_MIBI_LIST = "zhibo.bank.getExchangeMibiList";
+    public static final String COMMAND_OAUTH_REFRESH_MI_ACCESS_TOKEN = "zhibo.oauth.refreshMiAccessToken";  //更新小米账号accesstoken
+    // 拉取收益记录请求
+    public static final String COMMAND_GET_PROFITLIST = "zhibo.bank.getProfitList";
 }

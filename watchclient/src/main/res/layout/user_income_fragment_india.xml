@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <com.base.view.BackTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:is_profile_mode="true" />
+
+    <TextView
+        android:id="@+id/after_signed_balance_tip"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_80"
+        android:layout_below="@id/title_bar"
+        android:background="@color/color_f2f2f2"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/income_exchange_margin"
+        android:text="@string/income_after_signed_tip"
+        android:textColor="@color/color_black_trans_40"
+        android:textSize="@dimen/text_size_36"
+        android:visibility="gone" />
+
+    <ViewStub
+        android:id="@+id/normal_income_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar"
+        android:layout="@layout/user_income_fragment_india_normal" />
+
+    <ViewStub
+        android:id="@+id/signed_income_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar"
+        android:layout="@layout/user_income_fragment_india_signed" />
+
+    <ViewStub
+        android:layout_width="match_parent"
+        android:id="@+id/vs_guide_layout"
+        android:layout="@layout/user_income_guide_layout"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>

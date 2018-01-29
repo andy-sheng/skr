@@ -55,4 +55,5 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     compile project(':livecommon')
     provided 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    compile project(':pullToRefreshLibrary')
 }

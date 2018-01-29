@@ -21,6 +21,7 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import com.wali.live.watchsdk.contest.util.FormatUtils;
 import com.wali.live.watchsdk.contest.view.ContestRevivalRuleView;
+import com.wali.live.watchsdk.income.income.UserIncomeActivity;
 
 /**
  * Created by jiang on 18-1-13.
@@ -122,10 +123,7 @@ public class MyContestInfoFragment extends BaseFragment implements View.OnClickL
     }
 
     private void enterMyIncome() {
-//        Intent intent = new Intent(getActivity(), UserIncomeActivity.class);
-//        getActivity().startActivity(intent);
-        showDialog();
-
+        UserIncomeActivity.openActivity(getActivity());
     }
 
     private void showDialog() {

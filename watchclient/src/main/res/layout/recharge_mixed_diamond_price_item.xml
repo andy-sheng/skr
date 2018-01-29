@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/recharge_diamond_price_item_bg">
+
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/corner_icon_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/gold_diamond_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/pay_activity_golden_diamond"
+                android:drawablePadding="1dp"
+                android:maxLines="1"
+                android:text="4680"
+                android:textColor="@color/color_black_trans_90"
+                android:textSize="@dimen/text_size_40"/>
+
+            <ImageView
+                android:id="@+id/iv_add"
+                android:layout_width="@dimen/margin_20"
+                android:layout_height="@dimen/margin_20"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_12"
+                android:layout_marginRight="@dimen/margin_12"
+                android:src="@drawable/withdraw_icon_add_normal"/>
+
+            <TextView
+                android:id="@+id/silver_diamond_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/pay_activity_silver_diamond"
+                android:drawablePadding="1dp"
+                android:maxLines="1"
+                android:text="780"
+                android:textColor="@color/color_black_trans_90"
+                android:textSize="@dimen/text_size_40"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-1.33dp"
+            android:gravity="center"
+            android:text="7800票"
+            android:textColor="@color/color_black_trans_50"
+            android:textSize="@dimen/text_size_34"/>
+
+    </LinearLayout>
+</RelativeLayout>
