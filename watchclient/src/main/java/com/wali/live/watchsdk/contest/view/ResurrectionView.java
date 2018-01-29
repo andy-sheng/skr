@@ -38,7 +38,7 @@ public class ResurrectionView extends LinearLayout {
     }
 
     private void init(Context context) {
-        inflate(context, R.layout.resurrection_layou, this);
+        inflate(context, R.layout.resurrection_layout, this);
 
         imgAnim = (ImageView) findViewById(R.id.resurrection_layout_imgAnim);
 
