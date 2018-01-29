@@ -83,6 +83,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
     private TextView mRevivalCountTv;
     private TextView mInviteBtn;
 
+    private TextView mSpecialCodeTv;
     private TextView mRuleTv;
 
     private ContestRevivalInputView mRevivalInputView;
@@ -173,6 +174,9 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
 
         mRuleTv = $(R.id.rule_tv);
         mRuleTv.setOnClickListener(this);
+
+        mSpecialCodeTv = $(R.id.special_code_tv);
+        mSpecialCodeTv.setOnClickListener(this);
 
         mRevivalInputView = $(R.id.revival_input_view);
         mRevivalInputView.setInputListener(new ContestRevivalInputView.RevivalInputListener() {
