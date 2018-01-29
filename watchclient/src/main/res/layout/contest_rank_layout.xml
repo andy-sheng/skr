@@ -3,14 +3,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/main_act_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/color_contest_theme">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/contest_rank_bg"/>
+                android:layout_height="match_parent">
 
     <com.base.view.BackTitleBar
         android:id="@+id/title_bar"
@@ -42,12 +35,12 @@
 
         <TextView
             android:id="@+id/index_tv"
-            android:layout_width="@dimen/view_dimen_80"
+            android:layout_width="@dimen/view_dimen_100"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/view_dimen_20"
             android:gravity="center"
-            android:textColor="@color/color_white_trans_80"
+            android:textColor="@color/color_black_trans_80"
             android:textSize="@dimen/view_dimen_40"
             tools:text="1"/>
 
@@ -69,7 +62,7 @@
             android:layout_toRightOf="@id/avatar_iv"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textColor="@color/color_white"
+            android:textColor="@color/color_black"
             android:textSize="@dimen/view_dimen_45"
             tools:text="12"/>
 
@@ -81,9 +74,9 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/view_dimen_40"
             android:layout_marginTop="@dimen/view_dimen_20"
-            android:background="@drawable/contest_solid_white10_r45_text_bg"
+            android:background="@drawable/contest_solid_f6f6f6_r50_text_bg"
             android:gravity="center"
-            android:textColor="@color/color_white"
+            android:textColor="@color/color_contest_theme_text"
             android:textSize="@dimen/view_dimen_36"
             tools:text="12"/>
     </RelativeLayout>

@@ -1,7 +1,7 @@
 <RelativeLayout
-    android:id="@+id/main_act_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_contest_theme"
@@ -39,15 +39,61 @@
         android:textSize="@dimen/text_size_45"
         tools:text="11111111"/>
 
+    <ImageView
+        android:id="@+id/close_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/view_dimen_20"
+        android:layout_marginTop="@dimen/view_dimen_80"
+        android:src="@drawable/live_icon_close_btn"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_dimen_40"
+        android:layout_marginTop="@dimen/view_dimen_85"
+        android:layout_toLeftOf="@id/close_btn"
+        android:src="@drawable/contest_logo03"/>
+
+    <TextView
+        android:id="@+id/barrage_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_120"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="top|right"
+        android:layout_marginBottom="@dimen/view_dimen_20"
+        android:layout_marginLeft="@dimen/view_dimen_20"
+        android:layout_toLeftOf="@+id/share_container"
+        android:background="@drawable/live_bg_intelligent_barrage"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="@dimen/view_dimen_40"
+        android:paddingRight="@dimen/margin_40"
+        android:singleLine="true"
+        android:text="@string/empty_edittext_hint"
+        android:textColor="@color/color_white_trans_50"
+        android:textColorHint="@color/color_white_trans_50"
+        android:textSize="@dimen/text_size_44"/>
+
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/share_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/view_dimen_20"
+        android:layout_marginRight="@dimen/view_dimen_20"
+        android:background="@drawable/live_icon_share_btn"/>
+
     <RelativeLayout
         android:id="@+id/share_container"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_dimen_120"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_marginBottom="@dimen/view_dimen_20"
         android:layout_marginLeft="@dimen/view_dimen_20"
         android:layout_marginRight="@dimen/view_dimen_20"
+        android:layout_toLeftOf="@id/share_btn"
         android:background="@drawable/contest_solid_black25_r60_text_bg">
 
         <com.base.image.fresco.BaseImageView
@@ -71,41 +117,6 @@
             android:textSize="@dimen/text_size_36"
             tools:text="复活卡x1"/>
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/close_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/view_dimen_20"
-        android:layout_marginTop="@dimen/view_dimen_80"
-        android:src="@drawable/live_icon_close_btn"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/view_dimen_40"
-        android:layout_marginTop="@dimen/view_dimen_85"
-        android:layout_toLeftOf="@id/close_btn"
-        android:src="@drawable/contest_logo03"/>
-
-    <TextView
-        android:id="@+id/barrage_btn"
-        android:layout_width="@dimen/view_dimen_480"
-        android:layout_height="@dimen/view_dimen_120"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="top|right"
-        android:layout_marginBottom="@dimen/view_dimen_20"
-        android:layout_marginLeft="@dimen/view_dimen_20"
-        android:background="@drawable/live_bg_intelligent_barrage"
-        android:gravity="left|center_vertical"
-        android:paddingLeft="@dimen/view_dimen_40"
-        android:paddingRight="@dimen/margin_40"
-        android:singleLine="true"
-        android:text="@string/empty_edittext_hint"
-        android:textColor="@color/color_white_trans_50"
-        android:textColorHint="@color/color_white_trans_50"
-        android:textSize="@dimen/text_size_44"/>
 
     <com.wali.live.watchsdk.component.view.LiveCommentView
         android:id="@+id/comment_rv"
@@ -186,44 +197,9 @@
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
-
     <com.wali.live.watchsdk.contest.view.ContestNoWinView
         android:id="@+id/contest_no_win_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
-
-    <!--<TextView-->
-    <!--android:id="@+id/test_btn"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentBottom="true"-->
-    <!--android:layout_marginBottom="@dimen/margin_300"-->
-    <!--android:background="@color/color_white"-->
-    <!--android:gravity="center"-->
-    <!--android:text="测试1"-->
-    <!--android:textColor="@color/color_red_ff2966"/>-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/test_btn_1"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentBottom="true"-->
-    <!--android:layout_marginBottom="@dimen/margin_500"-->
-    <!--android:background="@color/color_white"-->
-    <!--android:gravity="center"-->
-    <!--android:text="测试2"-->
-    <!--android:textColor="@color/color_red_ff2966"/>-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/test_btn_2"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentBottom="true"-->
-    <!--android:layout_marginBottom="200dp"-->
-    <!--android:background="@color/color_white"-->
-    <!--android:gravity="center"-->
-    <!--android:text="测试3"-->
-    <!--android:textColor="@color/color_red_ff2966"/>-->
-
 </RelativeLayout>

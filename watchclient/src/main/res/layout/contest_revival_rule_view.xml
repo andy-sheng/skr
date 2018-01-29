@@ -46,7 +46,7 @@
                 android:layout_width="@dimen/view_dimen_14"
                 android:layout_height="@dimen/view_dimen_14"
                 android:layout_marginTop="@dimen/view_dimen_20"
-                android:background="@drawable/point_7e63ff_s14"/>
+                android:background="@drawable/point_contest_theme_s14"/>
 
             <TextView
                 android:id="@+id/rule_one_tv"
@@ -73,7 +73,7 @@
                 android:layout_width="@dimen/view_dimen_14"
                 android:layout_height="@dimen/view_dimen_14"
                 android:layout_marginTop="@dimen/view_dimen_20"
-                android:background="@drawable/point_7e63ff_s14"/>
+                android:background="@drawable/point_contest_theme_s14"/>
 
             <TextView
                 android:id="@+id/rule_two_tv"
@@ -100,7 +100,7 @@
                 android:layout_width="@dimen/view_dimen_14"
                 android:layout_height="@dimen/view_dimen_14"
                 android:layout_marginTop="@dimen/view_dimen_20"
-                android:background="@drawable/point_7e63ff_s14"/>
+                android:background="@drawable/point_contest_theme_s14"/>
 
             <TextView
                 android:id="@+id/rule_three_tv"

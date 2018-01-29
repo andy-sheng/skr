@@ -101,11 +101,14 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
     private View mTouchView;
 
     private TextView mViewerCntTv;
-    private TextView mRevivalCntTv;
-
     private ImageView mCloseBtn;
+
     private RelativeLayout mShareContainer;
+    private TextView mRevivalCntTv;
+    private ImageView mShareBtn;
+
     private TextView mBarrageBtn;
+
     private ContestInputView mInputView;
     private ContestRevivalRuleView mRevivalRuleView;
     private ContestWinRevivalRuleView mContestWinRevivalRuleView;
@@ -200,7 +203,6 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
 
     private void initView() {
         initMainView();
-        initOtherView();
         initPlayerView();
         initQuestionView();
     }
@@ -241,12 +243,19 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
 
         mCloseBtn = $(R.id.close_btn);
         mCloseBtn.setOnClickListener(this);
-    }
 
-    private void initOtherView() {
+        mShareContainer = $(R.id.share_container);
+        mShareContainer.setOnClickListener(this);
+
         mViewerCntTv = $(R.id.view_tv);
         mRevivalCntTv = $(R.id.revival_cnt_tv);
-        mRevivalCntTv.setOnClickListener(this);
+
+        mShareBtn = $(R.id.share_btn);
+        mShareBtn.setOnClickListener(this);
+
+        mBarrageBtn = $(R.id.barrage_btn);
+        mBarrageBtn.setOnClickListener(this);
+
         updateRevivalCount();
     }
 
@@ -494,8 +503,14 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.close_btn) {
-            showQuitDialog();
-        } else if (id == R.id.revival_cnt_tv) {
+            if (ContestCurrentCache.getInstance().isContinue()) {
+                showQuitDialog();
+            } else {
+                super.onBackPressed();
+            }
+        } else if (id == R.id.share_btn) {
+            showRevivalRuleView();
+        } else if (id == R.id.share_container) {
             showRevivalRuleView();
         } else if (id == R.id.barrage_btn) {
             enterInputMode();

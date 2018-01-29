@@ -57,7 +57,7 @@ public class ContestRankActivity extends BaseSdkActivity implements View.OnClick
         mTitleBar = $(R.id.title_bar);
         mTitleBar.getBackBtn().setOnClickListener(this);
 
-        mTitleBar.setBackgroundColor(getResources().getColor(R.color.color_transparent));
+        mTitleBar.setBackgroundColor(getResources().getColor(R.color.color_contest_theme));
         mTitleBar.setCenterTitleText(R.string.contest_prepare_total_rank);
         mTitleBar.showCenterTitle();
         mTitleBar.hideBottomLine();
