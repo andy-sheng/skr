@@ -493,7 +493,6 @@
     <string name="contest_prepare_rule_page">官方规则说明</string>
 
     <string name="share_invite_tip">输入邀请码获得复活卡，和我一起答题赢奖金！</string>
-    <string name="share_download_tips"><![CDATA[长按二维码下载APP，或在应用商店下载\"<font color="#ff6699">小米直播</font>\"，在首页点击【有乐】即可以参加！]]></string>
 
     <string name="use_revival_card_tip">已使用复活卡，可以继续答题</string>
 
@@ -523,17 +522,18 @@
     <string name="contest_room_no_win_tip">下场继续努力，不妨邀请好友获得复活卡，获胜几率更大哦~</string>
     <string name="share_total2_bonus">与%1$d人瓜分%2$s元奖金</string>
 
-    <string name="share_win_title"><![CDATA[我在有乐赢得现金奖励:<font color="#ff6699">￥%s</font>]]></string>
     <string name="share_total_bonus"><![CDATA[与%1$d人瓜分<font color="#ff6699">%2$s</font>元奖金]]></string>
     <string name="share_my_bonus"><![CDATA[我贏得了现金奖励:<font color="#ff6699"> ￥%s</font>]]></string>
     <string name="copy_barrage">复制弹幕</string>
 
     <string name="contest_success_num">%s人通关</string>
     <string name="share_get_revival">获得复活卡</string>
-    <string name="share_dest">快输入我的邀请码，一起答题赢奖金吧！</string>
     <string name="share_get_relivecard">分享战绩得复活卡</string>
 
     <string name="income_content">下载小米直播就能马上提现全部奖金哦~</string>
     <string name="income_think">再想想</string>
     <string name="income_download">去下载</string>
+    <string name="share_download_tips">长按二维码下载APP，或在应用商店下载\"有乐\"，在首页点击【有乐】即可以参加</string>
+    <string name="share_win_title">我在有乐赢得现金奖励: </string>
+    <string name="share_dest">快输入我的邀请码，一起答题赢奖金吧！</string>
 </resources>

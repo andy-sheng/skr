@@ -5,8 +5,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Environment;
-import android.text.Html;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +19,6 @@ import com.base.utils.MD5;
 import com.base.utils.image.ImageUtils;
 import com.base.utils.version.VersionManager;
 import com.mi.live.data.preference.PreferenceKeys;
-import com.mi.live.data.push.model.contest.LastQuestionInfoModel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.contest.util.QrcodeUtils;
 
@@ -34,10 +31,10 @@ import java.io.File;
  */
 public class ContestShareHelper {
     private static String TAG = "ContestShareHelper";
-    private static final String share_pic = Environment.getExternalStorageDirectory() + "/Xiaomi/WALI_LIVE/pic/";
+    private final static int QR_IMAGE_HEIGHT = 210;
+    private final static int QR_IMAGE_WIDTH = 210;
 
-    private final static int QR_IMAG_HEIGHT = 210;
-    private final static int QR_IMAG_WIDTH = 210;
+    private static final String share_pic = Environment.getExternalStorageDirectory() + "/Xiaomi/WALI_LIVE/pic/";
 
     private static String CONTEST_SHARE_INVITE_SUFFIX = "contest_invite_img_";
     private static String CONTEST_SHARE_WIN_SUFFIX = "contest_win_img";
@@ -52,14 +49,12 @@ public class ContestShareHelper {
 
     public static class ShareBitmapHolder {
         private View mView;
-        private TextView mShareTipTv;
         private TextView mInviteCodeTv;
         private ImageView mBarcodeIv;
         private TextView mDownloadTv;
 
         public ShareBitmapHolder(View view) {
             mView = view;
-            mShareTipTv = (TextView) mView.findViewById(R.id.share_tip_tv);
             mInviteCodeTv = (TextView) mView.findViewById(R.id.invite_code_tv);
             mBarcodeIv = (ImageView) mView.findViewById(R.id.barcode_iv);
             mDownloadTv = (TextView) mView.findViewById(R.id.download_tip_tv);
@@ -71,8 +66,6 @@ public class ContestShareHelper {
         LinearLayout sharePage = (LinearLayout) LayoutInflater.from(GlobalData.app()).inflate(R.layout.contest_share_holder, null);
         ShareBitmapHolder holder = new ShareBitmapHolder(sharePage);
         holder.mInviteCodeTv.setText(inviteCode);
-        Spanned spanned = Html.fromHtml(GlobalData.app().getString(R.string.share_download_tips));
-        holder.mDownloadTv.setText(spanned);
         try {
             Bitmap bitmap = BitmapFactory.decodeFile(getQrCodeFilePath(true));
             MyLog.w(TAG, "barCode url=" + getQrCodeFilePath(true));
@@ -104,7 +97,11 @@ public class ContestShareHelper {
 //            }
             File dir = new File(share_pic);
             if (!dir.exists()) {
-                dir.mkdirs();
+                try {
+                    dir.mkdirs();
+                } catch (Exception e) {
+                    MyLog.e(e);
+                }
             }
             String fileName = MD5.MD5_16(CONTEST_SHARE_INVITE_SUFFIX + inviteCode);
             File file = new File(share_pic, fileName + ".JPEG");
@@ -129,6 +126,7 @@ public class ContestShareHelper {
     public static class ShareWinBitmapHolder {
         private View mView;
         private TextView mWinTitleTv;
+        private TextView mMyBonusTv;
         private TextView mInviteCodeTv;
         private ImageView mBarcodeIv;
         private TextView mDownloadTv;
@@ -136,26 +134,19 @@ public class ContestShareHelper {
         public ShareWinBitmapHolder(View view) {
             mView = view;
             mWinTitleTv = (TextView) mView.findViewById(R.id.win_title_tv);
+            mMyBonusTv = (TextView) mView.findViewById(R.id.my_bonus_tv);
             mInviteCodeTv = (TextView) mView.findViewById(R.id.invite_code_tv);
             mBarcodeIv = (ImageView) mView.findViewById(R.id.barcode_iv);
             mDownloadTv = (TextView) mView.findViewById(R.id.download_tip_tv);
         }
     }
 
-    private static Bitmap generateWinPicInMainThread(long zuid, long avatarTs, String nickName,
-                                                     String inviteCode, LastQuestionInfoModel model) {
+    private static Bitmap generateWinPicInMainThread(String inviteCode, float myBonus) {
         MyLog.w(TAG, "generateWinPicInMainThread inviteCode=" + inviteCode);
-        if (model == null) {
-            MyLog.w(TAG, "generateWinPicInMainThread model is null");
-            return null;
-        }
         LinearLayout sharePage = (LinearLayout) LayoutInflater.from(GlobalData.app()).inflate(R.layout.contest_win_share_holder, null);
         ShareWinBitmapHolder holder = new ShareWinBitmapHolder(sharePage);
-        Spanned myBonus = Html.fromHtml(GlobalData.app().getString(R.string.share_win_title, String.valueOf(model.getWinNum())));
-        holder.mWinTitleTv.setText(myBonus);
+        holder.mMyBonusTv.setText(String.valueOf(myBonus));
         holder.mInviteCodeTv.setText(inviteCode);
-        Spanned spanned = Html.fromHtml(GlobalData.app().getString(R.string.share_download_tips));
-        holder.mDownloadTv.setText(spanned);
         try {
             Bitmap bitmap = BitmapFactory.decodeFile(getQrCodeFilePath(true));
             MyLog.w(TAG, "barCode url=" + getQrCodeFilePath(true));
@@ -179,8 +170,7 @@ public class ContestShareHelper {
         return bitmap;
     }
 
-    public static String saveContestWinSharePic(long zuid, long avatarTs, String nickName,
-                                                String inviteCode, LastQuestionInfoModel lastQuestionInfoModel) {
+    public static String saveContestWinSharePic(String inviteCode, float myBonus) {
         try {
 //            File hasExistsFile = AttachmentUtils.getFileByUrl(CONTEST_SHARE_WIN_SUFFIX + inviteCode);
 //            if (hasExistsFile != null && hasExistsFile.exists()) {
@@ -188,13 +178,17 @@ public class ContestShareHelper {
 //            }
             File dir = new File(share_pic);
             if (!dir.exists()) {
-                dir.mkdirs();
+                try {
+                    dir.mkdirs();
+                } catch (Exception e) {
+                    MyLog.e(e);
+                }
             }
             String fileName = MD5.MD5_16(CONTEST_SHARE_WIN_SUFFIX + inviteCode);
             File file = new File(share_pic, fileName + ".JPEG");
             Bitmap bitmap;
             try {
-                bitmap = generateWinPicInMainThread(zuid, avatarTs, nickName, inviteCode, lastQuestionInfoModel);
+                bitmap = generateWinPicInMainThread(inviteCode, myBonus);
             } catch (OutOfMemoryError error) {
                 MyLog.e(error);
                 return "";
@@ -226,7 +220,7 @@ public class ContestShareHelper {
             if (!qrfile.exists()) {
                 qrfile.createNewFile();
             }
-            QrcodeUtils.createQRImage(homepage, QR_IMAG_WIDTH, QR_IMAG_HEIGHT, null, qrfile.getAbsolutePath());
+            QrcodeUtils.createQRImage(homepage, QR_IMAGE_WIDTH, QR_IMAGE_HEIGHT, null, qrfile.getAbsolutePath());
             PreferenceUtils.setSettingString(GlobalData.app(), PreferenceKeys.PRE_KEY_FEED_SHARE_IMG_LOCALPATH_VERSION, homepage + ";" + qrfile.getAbsolutePath());
             result = qrfile.getAbsolutePath();
         } else {
@@ -236,7 +230,7 @@ public class ContestShareHelper {
                 if (!qrfile.exists()) {
                     qrfile.createNewFile();
                 }
-                QrcodeUtils.createQRImage(homepage, QR_IMAG_WIDTH, QR_IMAG_HEIGHT, null, qrfile.getAbsolutePath());
+                QrcodeUtils.createQRImage(homepage, QR_IMAGE_WIDTH, QR_IMAGE_HEIGHT, null, qrfile.getAbsolutePath());
                 PreferenceUtils.setSettingString(GlobalData.app(), PreferenceKeys.PRE_KEY_FEED_SHARE_IMG_LOCALPATH_VERSION, homepage + ";" + qrfile.getAbsolutePath() + ";" + currentVersionName);
                 result = qrfile.getAbsolutePath();
             } else {

@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.base.mvp.specific.RxRelativeLayout;
 import com.base.utils.toast.ToastUtils;
-import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.push.model.contest.LastQuestionInfoModel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
@@ -116,9 +115,8 @@ public class ContestWinRevivalRuleView extends RxRelativeLayout implements View.
     }
 
     private String saveContestWinSharePic() {
-        return ContestShareHelper.saveContestWinSharePic(MyUserInfoManager.getInstance().getUuid(),
-                MyUserInfoManager.getInstance().getAvatar(), MyUserInfoManager.getInstance().getNickname(),
-                ContestGlobalCache.getRevivalCode(), mLastQuestionInfoModel);
+        return ContestShareHelper.saveContestWinSharePic(ContestGlobalCache.getRevivalCode(),
+                mLastQuestionInfoModel.getMyBonus());
     }
 
     @Override
