@@ -94,11 +94,7 @@ public class MyContestInfoFragment extends BaseFragment implements View.OnClickL
         mIncomeTv.setText(FormatUtils.formatMoney(totalIncome));
 
         int rank = ContestGlobalCache.getRank();
-        if (rank <= 0 || rank > 100) {
-            mRankTv.setText("-");
-        } else {
-            mRankTv.setText(String.valueOf(rank));
-        }
+        mRankTv.setText(FormatUtils.formatRank(rank));
     }
 
     @Override
