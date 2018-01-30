@@ -30,10 +30,10 @@ public class UserAccountManager {
 
     // 用户当前账号
     private UserAccount mAccount;
-
     // 用户匿名账号的id,当 mAccount 为空的时候使用
     private long anonymousId;
 
+    private String mThirdUuid; //第三方账号登录的id。
     // 账户模式：标准和匿名
     private static UserAccountManager sInstance;
 
@@ -101,6 +101,7 @@ public class UserAccountManager {
             MyUserInfoManager.getInstance().deleteCache();
             // 和当前渠道一致,当前账号置为空
             mAccount = null;
+            mThirdUuid = "";
             if (!MiLinkClientAdapter.getsInstance().isTouristMode()) {
                 // 实名模式登出
                 MiLinkClientAdapter.getsInstance().logoff();
@@ -256,9 +257,17 @@ public class UserAccountManager {
         return anonymousId;
     }
 
+    public void setThirdUuid(String thirdUuid) {
+        mThirdUuid = thirdUuid;
+    }
+
+    public String getThirdUuid() {
+        return mThirdUuid;
+    }
+
     /*
-    * milink链接上的回调
-    * */
+            * milink链接上的回调
+            * */
     @Subscribe
     public void onEvent(MiLinkEvent.StatusLogined event) {
         if (event != null) {

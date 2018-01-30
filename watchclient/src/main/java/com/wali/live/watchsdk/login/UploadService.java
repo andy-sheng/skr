@@ -1,6 +1,8 @@
 package com.wali.live.watchsdk.login;
 
+import com.base.log.MyLog;
 import com.base.thread.ThreadPool;
+import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.proto.AccountProto;
 import com.wali.live.watchsdk.ipc.service.ThirdPartLoginData;
 import com.wali.live.watchsdk.task.UploadRunnable;
@@ -16,6 +18,8 @@ public class UploadService {
     private static final String TAG = UploadService.class.getSimpleName();
 
     public static void toUpload(UploadInfo uploadInfo) {
+        MyLog.w(TAG, "toUpload uploadInfo.isFirstLogin()=" + uploadInfo.isFirstLogin() +
+                " uploadInfo.hasInfoUpload()=" + uploadInfo.hasInfoUpload());
         if (!uploadInfo.isFirstLogin() && !uploadInfo.hasInfoUpload()) {
             return;
         }
@@ -75,6 +79,19 @@ public class UploadService {
             nickName = loginData.getNickname();
             gender = loginData.getSex();
             uuid = rsp.getUuid();
+            needEditUserInfo = false;
+            avatarNeedDownload = true;
+            this.channelId = loginData.getChannelId();
+        }
+
+        public UploadInfo(ThirdPartLoginData loginData) {
+            hasInnerAvatar = false;
+            hasInnerNickName = false;
+            hasInnerSex = false;
+            uuid = UserAccountManager.getInstance().getUuidAsLong();
+            avatar = loginData.getHeadUrl();
+            nickName = loginData.getNickname();
+            gender = loginData.getSex();
             needEditUserInfo = false;
             avatarNeedDownload = true;
             this.channelId = loginData.getChannelId();
