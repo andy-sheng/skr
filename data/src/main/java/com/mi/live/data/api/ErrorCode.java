@@ -135,6 +135,7 @@ public class ErrorCode {
     public static final int CODE_HANDEL_JOIN_NOTIFY = 22514; //已经处理了加群通知
 
     //冲顶大会
+    public static final int CODE_CONTEST_INVITE_PARAM_INVALID = 23502;  // 服务器接收到的邀请码参数无效
     public static final int CODE_CONTEST_INVITE_INVALID = 23521;        // 邀请码无效
     public static final int CODE_CONTEST_INVITE_MYSELF = 23522;         // 自己的邀请码
     public static final int CODE_CONTEST_INVITE_UUID_INVALID = 23523;   // 用户id无效

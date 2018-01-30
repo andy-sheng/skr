@@ -322,6 +322,9 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         if (errCode == ErrorCode.CODE_CONTEST_INVITE_INVALID) {
             ToastUtils.showToast(R.string.contest_prepare_invite_invalid);
             mRevivalInputView.reset();
+        } else if (errCode == ErrorCode.CODE_CONTEST_INVITE_PARAM_INVALID) {
+            ToastUtils.showToast(R.string.contest_prepare_invite_invalid);
+            mRevivalInputView.reset();
         } else if (errCode == ErrorCode.CODE_CONTEST_INVITE_MYSELF) {
             ToastUtils.showToast(R.string.contest_prepare_invite_myself);
             mRevivalInputView.reset();
@@ -337,6 +340,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         MyLog.w(TAG, "use special code success, revivalNum=" + revivalNum);
         ToastUtils.showToast(R.string.use_special_invitenum_success);
         mRevivalCountTv.setText(String.valueOf(revivalNum));
+        mSpecialInputView.reset();
     }
 
     @Override
@@ -344,12 +348,18 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         MyLog.w(TAG, "use special code failure, errCode=" + errCode);
         if (errCode == ErrorCode.CODE_CONTEST_INVITE_INVALID) {
             ToastUtils.showToast(R.string.contest_prepare_invite_invalid);
+            mSpecialInputView.reset();
+        } else if (errCode == ErrorCode.CODE_CONTEST_INVITE_PARAM_INVALID) {
+            ToastUtils.showToast(R.string.contest_prepare_invite_invalid);
+            mSpecialInputView.reset();
         } else if (errCode == ErrorCode.CODE_CONTEST_INVITE_MYSELF) {
             ToastUtils.showToast(R.string.contest_prepare_invite_myself);
+            mSpecialInputView.reset();
         } else if (errCode == ErrorCode.CODE_CONTEST_INVITE_UUID_INVALID) {
             ToastUtils.showToast(R.string.contest_prepare_invite_uuid_invalid);
         } else if (errCode == ErrorCode.CODE_CONTEST_INVITE_CODE_USED) {
             ToastUtils.showToast(R.string.contest_prepare_invite_code_used);
+            mSpecialInputView.reset();
         } else {
             ToastUtils.showToast(R.string.contest_prepare_invite_server_error);
         }
