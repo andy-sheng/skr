@@ -45,7 +45,7 @@ public class TimeCounterCircle extends ProgressBar {
         mPaint.setStrokeWidth(strokeWidth);//线的宽度
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, mRadius, mPaint);
 
-        mPaint.setColor(getResources().getColor(R.color.color_ff729b));
+        mPaint.setColor(getResources().getColor(R.color.color_ff2966));
         mPaint.setStrokeWidth(strokeWidth);//覆盖线的宽度
         mPaint.setAntiAlias(true);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
