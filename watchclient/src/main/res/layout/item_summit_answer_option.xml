@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:id="@+id/item_view"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_dimen_150"
         android:layout_marginTop="@dimen/margin_20"
+        android:layout_marginLeft="@dimen/margin_40"
+        android:layout_marginRight="@dimen/margin_40"
         android:background="@drawable/bg_summit_answer">
 
         <ImageView
@@ -34,16 +36,17 @@
             android:gravity="center_vertical|left"
             android:paddingLeft="@dimen/margin_50"
             android:textColor="@color/color_black_unable_trans_30"
-            android:textSize="@dimen/text_size_48"/>
+            android:textSize="@dimen/text_size_48"
+            android:textStyle="bold"/>
 
-        <TextView
+        <com.wali.live.contest.view.CustomTextView1
             android:id="@+id/answerer_num_tv"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center_vertical"
             android:paddingRight="@dimen/margin_50"
-            android:textColor="@color/color_black_trans_30"
+            android:textColor="@color/color_black_trans_20"
             android:textSize="@dimen/text_size_48"
             android:textStyle="bold"/>
     </RelativeLayout>
