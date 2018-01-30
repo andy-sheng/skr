@@ -14,6 +14,7 @@ import com.mi.live.data.user.User;
 import com.wali.live.proto.ShareProto;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.ipc.service.ShareInfo;
 
@@ -123,9 +124,11 @@ public class SnsShareHelper {
 
     /*冲顶大会分享是纯图分享
      */
-    public void shareLocalImageToSns(int type, String localImagePath) {
+    public void shareLocalImageToSns(int type, String localImagePath, String myBonus) {
         //通知上层分享
         ShareInfo shareInfo = new ShareInfo(type, "", "", localImagePath, "");
+        shareInfo.setInviteCode(ContestGlobalCache.getRevivalCode());
+        shareInfo.setMyBonus(myBonus);
         MiLiveSdkBinder.getInstance().onEventShare(HostChannelManager.getInstance().getChannelId(), shareInfo);
         MyLog.w(TAG, "shareInfo=" + shareInfo.toString());
     }

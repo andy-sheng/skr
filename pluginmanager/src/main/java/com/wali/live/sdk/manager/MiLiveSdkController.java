@@ -57,6 +57,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String ACTION_THIRD_PART_LOGIN = "third_part_login";
     private static final String ACTION_CLEAR_ACCOUNT = "clear_account";
 
+    private static final String ACTION_EDIT_USER_INFO = "edit_user_info";
+
     private static final String ACTION_OPEN_WATCH = "open_watch";
     private static final String ACTION_OPEN_WATCH_ROOM = "open_watch_room";
     private static final String ACTION_OPEN_WATCH_ROOM_LIST = "open_watch_room_list";
@@ -122,7 +124,9 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
         mMinVersionMap.put(ACTION_OPEN_CONTEST_PREPARE, 205055);
         mMinVersionMap.put(ACTION_OPEN_CONTEST_WATCH, 205055);
-        mMinVersionMap.put(ACTION_OPEN_WITHDRAW, 205056);
+
+        mMinVersionMap.put(ACTION_OPEN_WITHDRAW, 205057);
+        mMinVersionMap.put(ACTION_EDIT_USER_INFO, 205057);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -331,6 +335,15 @@ public class MiLiveSdkController implements IMiLiveSdk {
         }
         checkHasInit();
         MiLiveSdkServiceProxy.getInstance().thirdPartLogin(channelId, xuid, sex, nickname, headUrl, sign);
+    }
+
+    @Override
+    public void editUserInfo(int channelId, String xuid, int sex, String nickname, String headUrl, IAssistantCallback callback) {
+        if (!checkVersion(ACTION_EDIT_USER_INFO, callback)) {
+            return;
+        }
+        checkHasInit();
+        MiLiveSdkServiceProxy.getInstance().editUserInfo(channelId, xuid, sex, nickname, headUrl);
     }
 
     @Override

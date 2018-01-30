@@ -158,7 +158,8 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 String uri = "livesdk://contest/prepare?channel=50001&package_name=com.wali.live.sdk.manager.demo";
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                 mActivity.startActivity(intent);
-        }}));
+            }
+        }));
 
         mDataList.add(new Bean("跳转到提现页(Intent)", new Runnable() {
             @Override
@@ -245,6 +246,12 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             @Override
             public void run() {
                 thirdPartLogin();
+            }
+        }));
+        mDataList.add(new Bean("跳转到编辑资料页(AIDL)", new Runnable() {
+            @Override
+            public void run() {
+                editUserInfo();
             }
         }));
         mDataList.add(new Bean("登出当前宿主账号(AIDL)", new Runnable() {
@@ -507,6 +514,12 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void thirdPartLogin() {
         Intent intent = new Intent(mActivity, ThirdPartLoginActivity.class);
         intent.putExtra(ThirdPartLoginActivity.KEY_CHANNELID, ((MainActivity) mActivity).getCurrentChannelId());
+        mActivity.startActivity(intent);
+    }
+
+    public void editUserInfo() {
+        Intent intent = new Intent(mActivity, EditUserInfoActivity.class);
+        intent.putExtra(EditUserInfoActivity.KEY_CHANNELID, ((MainActivity) mActivity).getCurrentChannelId());
         mActivity.startActivity(intent);
     }
 

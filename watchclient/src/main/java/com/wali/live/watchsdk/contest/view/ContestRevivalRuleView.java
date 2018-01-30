@@ -113,19 +113,19 @@ public class ContestRevivalRuleView extends RxRelativeLayout implements View.OnC
             hide();
         } else if (id == R.id.qq_btn) {
             String imgLocalPath = ContestShareHelper.saveContestInviteSharePic(ContestGlobalCache.getRevivalCode());
-            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_QQ, imgLocalPath);
+            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_QQ, imgLocalPath, "");
             hide();
         } else if (id == R.id.qzone_btn) {
             String imgLocalPath = ContestShareHelper.saveContestInviteSharePic(ContestGlobalCache.getRevivalCode());
-            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_QZONE, imgLocalPath);
+            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_QZONE, imgLocalPath, "");
             hide();
         } else if (id == R.id.wechat_btn) {
             String imgLocalPath = ContestShareHelper.saveContestInviteSharePic(ContestGlobalCache.getRevivalCode());
-            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_WECHAT, imgLocalPath);
+            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_WECHAT, imgLocalPath, "");
             hide();
         } else if (id == R.id.moment_btn) {
             String imgLocalPath = ContestShareHelper.saveContestInviteSharePic(ContestGlobalCache.getRevivalCode());
-            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_MOMENT, imgLocalPath);
+            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_MOMENT, imgLocalPath, "");
             hide();
         }
     }

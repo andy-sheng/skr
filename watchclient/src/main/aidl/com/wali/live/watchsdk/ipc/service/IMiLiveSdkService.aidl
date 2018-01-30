@@ -25,4 +25,6 @@ interface IMiLiveSdkService {
     void notifyShare(int channelId, String packageName, String channelSecret, boolean success, int type);
 
     void statistic(String key, long time);
+
+    void editUserInfo(String packageName, String channelSecret, in ThirdPartLoginData loginData);
 }

@@ -259,7 +259,22 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                 mRemoteService.thirdPartLogin(GlobalData.app().getPackageName(), MiLiveSdkController.getInstance().getChannelSecret(), data);
             } catch (RemoteException e) {
                 mThirdPartLoginData = data;
-                resolveException(e, IMiLiveSdk.ICallback.LOGIN_SSO_AIDL);
+                resolveException(e, IMiLiveSdk.ICallback.THIRD_PART_LOGIN);
+            }
+        }
+    }
+
+    public void editUserInfo(int channelId, String xuid, int sex, String nickname, String headUrl) {
+        Logger.w(TAG, "editUserInfo channelId=" + channelId + ", xuid=" + xuid);
+        ThirdPartLoginData data = new ThirdPartLoginData(channelId, xuid, sex, nickname, headUrl, "");
+        if (mRemoteService == null) {
+            resolveNullService(IMiLiveSdk.ICallback.EDIT_USER_INFO);
+        } else {
+            try {
+                mRemoteService.editUserInfo(GlobalData.app().getPackageName(), MiLiveSdkController.getInstance().getChannelSecret(), data);
+            } catch (RemoteException e) {
+                mThirdPartLoginData = data;
+                resolveException(e, IMiLiveSdk.ICallback.EDIT_USER_INFO);
             }
         }
     }
@@ -320,7 +335,6 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             }
         }
     }
-
 
     public void notifyShare(boolean success, int type) {
         if (mRemoteService == null) {

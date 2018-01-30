@@ -166,6 +166,19 @@ public interface IMiLiveSdk {
     void thirdPartLogin(int channelId, String xuid, int sex, String nickname, String headUrl, String sign, IAssistantCallback callback);
 
     /**
+     * 编辑用户资料
+     *
+     * @param channelId
+     * @param xuid
+     * @param sex
+     * @param nickname
+     * @param headUrl
+     * @param sign
+     * @param callback
+     */
+    public void editUserInfo(int channelId, String xuid, int sex, String nickname, String headUrl, IAssistantCallback callback);
+
+    /**
      * 获取频道列表
      *
      * @version 205008
@@ -240,6 +253,11 @@ public interface IMiLiveSdk {
          * 分享相关接口标志
          */
         int NOTIFY_SHARE_AIDL = 1200;
+
+        /**
+         * 编辑资料相关接口
+         */
+        int EDIT_USER_INFO = 1300;
 
         /**
          * 登录相关接口的返回码

@@ -289,6 +289,32 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Override
+    public void editUserInfo(String packageName, String channelSecret, final ThirdPartLoginData loginData) throws RemoteException {
+        MyLog.w(TAG, "editUserInfo packageName=" + packageName + " loginData=" + loginData);
+        if (loginData == null || !UserAccountManager.getInstance().getThirdUuid().equals(loginData.getXuid())) {
+            MyLog.w(TAG, "参数异常 UserAccountManager.getInstance().getThirdUuid()=" + UserAccountManager.getInstance().getThirdUuid()
+                    + " loginData.getXuid()=" + loginData.getXuid());
+            return;
+        }
+        secureOperate(loginData.getChannelId(), packageName, channelSecret, new SecureCommonCallBack() {
+            @Override
+            public void postSuccess() {
+                UploadService.toUpload(new UploadService.UploadInfo(loginData));
+            }
+
+            @Override
+            public void postError() {
+
+            }
+
+            @Override
+            public void processFailure() {
+
+            }
+        });
+    }
+
+    @Override
     public void loginByMiAccountSso(final int channelId, final String packageName, final String channelSecret,
                                     final long miid, final String serviceToken) throws RemoteException {
         MyLog.w(TAG, "loginByMiAccountSso channelId=" + channelId);
@@ -921,6 +947,9 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                             public void onNext(AccountProto.ThirdPartSignLoginRsp rsp) {
                                 MyLog.w(TAG, "thirdPartLogin onNext,retCode:" + rsp.getRetCode());
                                 if (rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
+                                    if (loginData != null) {
+                                        UserAccountManager.getInstance().setThirdUuid(loginData.getXuid());
+                                    }
                                     UploadService.toUpload(new UploadService.UploadInfo(rsp, loginData));
                                 }
                                 if (rsp != null) {
