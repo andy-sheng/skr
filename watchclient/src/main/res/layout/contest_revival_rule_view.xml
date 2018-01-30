@@ -30,7 +30,7 @@
             android:layout_centerHorizontal="true"
             android:text="@string/contest_prepare_rule_title"
             android:textColor="@color/color_contest_theme"
-            android:textSize="@dimen/text_size_48"/>
+            android:textSize="@dimen/text_size_54"/>
 
         <LinearLayout
             android:id="@+id/rule_line1"

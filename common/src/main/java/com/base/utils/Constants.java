@@ -8,8 +8,8 @@ import com.base.utils.channel.ReleaseChannelUtils;
  * Created by linjinbin on 15/11/2.
  */
 public class Constants {
-//    public static final String ReleaseChannel = "@SHIP.TO.2A2FE0D7@";
-    public static final String ReleaseChannel = "TEST";
+    public static final String ReleaseChannel = "@SHIP.TO.2A2FE0D7@";
+//    public static final String ReleaseChannel = "TEST";
 
     public static final boolean isDefaultChanel = ReleaseChannel.contains("2A2FE0D7");
 

@@ -25,7 +25,7 @@
             android:layout_centerHorizontal="true"
             android:text="@string/contest_prepare_input_special_title"
             android:textColor="@color/color_contest_theme"
-            android:textSize="@dimen/text_size_60"/>
+            android:textSize="@dimen/text_size_54"/>
 
         <EditText
             android:id="@+id/input_et"
