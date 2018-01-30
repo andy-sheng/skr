@@ -128,16 +128,20 @@ public class ContestWinRevivalRuleView extends RxRelativeLayout implements View.
             hide();
         } else if (id == R.id.qq_btn) {
             String imgLocalPath = saveContestWinSharePic();
-            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_QQ, imgLocalPath);
+            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_QQ, imgLocalPath,
+                    mLastQuestionInfoModel == null ? "" : String.valueOf(mLastQuestionInfoModel.getMyBonus()));
         } else if (id == R.id.qzone_btn) {
             String imgLocalPath = saveContestWinSharePic();
-            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_QZONE, imgLocalPath);
+            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_QZONE, imgLocalPath,
+                    mLastQuestionInfoModel == null ? "" : String.valueOf(mLastQuestionInfoModel.getMyBonus()));
         } else if (id == R.id.moment_btn) {
             String imgLocalPath = saveContestWinSharePic();
-            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_MOMENT, imgLocalPath);
+            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_MOMENT, imgLocalPath,
+                    mLastQuestionInfoModel == null ? "" : String.valueOf(mLastQuestionInfoModel.getMyBonus()));
         } else if (id == R.id.wechat_btn) {
             String imgLocalPath = saveContestWinSharePic();
-            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_WECHAT, imgLocalPath);
+            SnsShareHelper.getInstance().shareLocalImageToSns(ShareInfo.TYPE_WECHAT, imgLocalPath,
+                    mLastQuestionInfoModel == null ? "" : String.valueOf(mLastQuestionInfoModel.getMyBonus()));
         }
         EventBus.getDefault().post(new EventClass.ShowContestView(EventClass.ShowContestView.TYPE_SUCCESS_VIEW,
                 EventClass.ShowContestView.ACTION_HIDE));

@@ -23,6 +23,9 @@ public class ShareInfo implements Parcelable {
     private String mPicUrl;
     private String mUrl;
 
+    private String mInviteCode;
+    private String mMyBonus;
+
     public ShareInfo(String title, String content, String picUrl, String url) {
         mTitle = title;
         mContent = content;
@@ -39,11 +42,13 @@ public class ShareInfo implements Parcelable {
     }
 
     protected ShareInfo(Parcel in) {
-        mSnsType = in.readInt();
-        mTitle = in.readString();
-        mContent = in.readString();
-        mPicUrl = in.readString();
-        mUrl = in.readString();
+        this.mSnsType = in.readInt();
+        this.mTitle = in.readString();
+        this.mContent = in.readString();
+        this.mPicUrl = in.readString();
+        this.mUrl = in.readString();
+        this.mInviteCode = in.readString();
+        this.mMyBonus = in.readString();
     }
 
     public static final Creator<ShareInfo> CREATOR = new Creator<ShareInfo>() {
@@ -70,6 +75,8 @@ public class ShareInfo implements Parcelable {
         dest.writeString(this.mContent);
         dest.writeString(this.mPicUrl);
         dest.writeString(this.mUrl);
+        dest.writeString(this.mInviteCode);
+        dest.writeString(this.mMyBonus);
     }
 
     public int getSnsType() {
@@ -92,6 +99,42 @@ public class ShareInfo implements Parcelable {
         return mUrl;
     }
 
+    public void setSnsType(int snsType) {
+        mSnsType = snsType;
+    }
+
+    public void setTitle(String title) {
+        mTitle = title;
+    }
+
+    public void setContent(String content) {
+        mContent = content;
+    }
+
+    public void setPicUrl(String picUrl) {
+        mPicUrl = picUrl;
+    }
+
+    public void setUrl(String url) {
+        mUrl = url;
+    }
+
+    public String getInviteCode() {
+        return mInviteCode;
+    }
+
+    public void setInviteCode(String inviteCode) {
+        mInviteCode = inviteCode;
+    }
+
+    public String getMyBonus() {
+        return mMyBonus;
+    }
+
+    public void setMyBonus(String myBonus) {
+        mMyBonus = myBonus;
+    }
+
     @Override
     public String toString() {
         return "ShareInfo{" +
@@ -100,6 +143,8 @@ public class ShareInfo implements Parcelable {
                 ", mContent='" + mContent + '\'' +
                 ", mPicUrl='" + mPicUrl + '\'' +
                 ", mUrl='" + mUrl + '\'' +
+                ", mInviteCode='" + mInviteCode + '\'' +
+                ", mMyBonus='" + mMyBonus + '\'' +
                 '}';
     }
 }
