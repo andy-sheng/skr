@@ -191,9 +191,9 @@
     <RelativeLayout
         android:id="@+id/content_area"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_dimen_882"
+        android:layout_height="@dimen/view_dimen_930"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/view_dimen_80"
+        android:layout_marginBottom="@dimen/view_dimen_40"
         android:layout_marginLeft="@dimen/view_dimen_40"
         android:layout_marginRight="@dimen/view_dimen_40"
         android:background="@drawable/contest_pop_view_bg">
@@ -282,10 +282,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/split_h_line"
-            android:layout_marginTop="@dimen/view_dimen_86">
+            android:layout_marginTop="@dimen/view_dimen_36">
 
             <TextView
-                android:id="@+id/input_btn"
+                android:id="@+id/input_share_btn"
                 android:layout_width="@dimen/view_dimen_700"
                 android:layout_height="@dimen/view_dimen_140"
                 android:layout_centerHorizontal="true"
@@ -295,21 +295,22 @@
                 android:text="@string/contest_prepare_input_code"
                 android:textColor="@color/color_contest_pressed_50_disable_30"
                 android:textSize="@dimen/text_size_48"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:visibility="gone"/>
 
             <TextView
-                android:id="@+id/input_share_btn"
+                android:id="@+id/input_btn"
                 android:layout_width="@dimen/view_dimen_700"
                 android:layout_height="@dimen/view_dimen_140"
-                android:layout_centerHorizontal="true"
                 android:background="@drawable/contest_theme_solid_r70_btn_bg"
                 android:enabled="true"
                 android:gravity="center"
-                android:text="@string/contest_prepare_share_code"
-                android:textColor="@color/color_white_pressed_50_disable_30"
+                android:text="@string/contest_prepare_input_code"
+                android:textColor="@color/color_5e43d5_pressed_50_disable_30"
                 android:textSize="@dimen/text_size_48"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -389,6 +390,63 @@
                 android:textColor="@color/color_white_pressed_50_disable_30"
                 android:textSize="@dimen/text_size_40"/>
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/advertising_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/revive_area"
+            android:layout_marginLeft="@dimen/view_dimen_40"
+            android:layout_marginRight="@dimen/view_dimen_40"
+            android:layout_marginTop="20dp"
+            android:background="@color/color_white">
+
+            <ImageView
+                android:id="@+id/advertising_icon_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/xmfight_90_90"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/view_dimen_20"
+                android:layout_toRightOf="@id/advertising_icon_iv">
+
+                <TextView
+                    android:id="@+id/advertising_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/contest_prepare_advertising_name"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/text_size_40"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/advertising_title_tv"
+                    android:text="@string/contest_prepare_advertising_tip"
+                    android:textColor="@color/color_black_trans_30"
+                    android:textSize="@dimen/text_size_30"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/get_revival_path_tv"
+                android:layout_width="@dimen/view_dimen_400"
+                android:layout_height="@dimen/view_dimen_100"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/contest_solid_5e43d5_r50_btn_bg"
+                android:gravity="center"
+                android:text="@string/contest_prepare_download_game_code"
+                android:textColor="@color/color_white_pressed_50_disable_30"
+                android:textSize="@dimen/text_size_40"/>
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
@@ -404,7 +462,8 @@
             android:id="@+id/avatar_iv"
             android:layout_width="@dimen/view_dimen_160"
             android:layout_height="@dimen/view_dimen_160"
-            android:layout_centerInParent="true"/>
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
     <TextView
