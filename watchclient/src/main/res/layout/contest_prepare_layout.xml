@@ -1,5 +1,5 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/main_act_container"
+<RelativeLayout android:id="@+id/main_act_container"
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -189,11 +189,72 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/advertising_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/view_dimen_30"
+        android:layout_marginLeft="@dimen/view_dimen_40"
+        android:layout_marginRight="@dimen/view_dimen_40"
+        android:background="@drawable/contest_pop_view_bg">
+
+        <ImageView
+            android:id="@+id/advertising_icon_iv"
+            android:layout_width="@dimen/view_dimen_120"
+            android:layout_height="@dimen/view_dimen_120"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_dimen_40"
+            android:src="@drawable/xmfight_90_90"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_180"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_dimen_20"
+            android:layout_toRightOf="@id/advertising_icon_iv"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/advertising_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/contest_prepare_advertising_name"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/text_size_40"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/advertising_title_tv"
+                android:text="@string/contest_prepare_advertising_tip"
+                android:textColor="@color/color_black_trans_30"
+                android:textSize="@dimen/text_size_30"
+                android:visibility="gone"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/advertising_download_tv"
+            android:layout_width="@dimen/view_dimen_400"
+            android:layout_height="@dimen/view_dimen_100"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_dimen_40"
+            android:background="@drawable/contest_theme_solid_r50_btn_bg"
+            android:gravity="center"
+            android:text="@string/contest_prepare_download_game_code"
+            android:textColor="@color/color_white_pressed_50_disable_30"
+            android:textSize="@dimen/text_size_40"/>
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/content_area"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_dimen_840"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/view_dimen_40"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/advertising_area"
+        android:layout_marginBottom="@dimen/view_dimen_30"
         android:layout_marginLeft="@dimen/view_dimen_40"
         android:layout_marginRight="@dimen/view_dimen_40"
         android:background="@drawable/contest_pop_view_bg">
@@ -210,7 +271,7 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/view_dimen_100">
+                android:paddingTop="@dimen/view_dimen_90">
 
                 <TextView
                     android:id="@+id/my_bonus_title_tv"
@@ -234,9 +295,9 @@
             <View
                 android:id="@+id/split_v_line"
                 android:layout_width="@dimen/view_dimen_2"
-                android:layout_height="@dimen/view_dimen_155"
+                android:layout_height="@dimen/view_dimen_145"
                 android:layout_marginBottom="@dimen/view_dimen_20"
-                android:layout_marginTop="@dimen/view_dimen_168"
+                android:layout_marginTop="@dimen/view_dimen_120"
                 android:background="@color/color_black_trans_10"/>
 
             <LinearLayout
@@ -246,7 +307,7 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/view_dimen_100">
+                android:paddingTop="@dimen/view_dimen_80">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -262,7 +323,7 @@
                     android:layout_marginTop="@dimen/view_dimen_8"
                     android:text="-"
                     android:textColor="@color/color_contest_theme_text"
-                    android:textSize="@dimen/text_size_80"
+                    android:textSize="@dimen/text_size_90"
                     android:textStyle="bold"/>
             </LinearLayout>
         </LinearLayout>
@@ -274,7 +335,7 @@
             android:layout_below="@id/upper_area"
             android:layout_marginLeft="@dimen/view_dimen_40"
             android:layout_marginRight="@dimen/view_dimen_40"
-            android:layout_marginTop="@dimen/view_dimen_40"
+            android:layout_marginTop="@dimen/view_dimen_20"
             android:background="@color/color_black_trans_10"/>
 
         <RelativeLayout
@@ -282,7 +343,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/split_h_line"
-            android:layout_marginTop="@dimen/view_dimen_36">
+            android:layout_marginTop="@dimen/view_dimen_40">
 
             <TextView
                 android:id="@+id/input_share_btn"
@@ -302,15 +363,15 @@
                 android:id="@+id/input_btn"
                 android:layout_width="@dimen/view_dimen_700"
                 android:layout_height="@dimen/view_dimen_140"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
                 android:background="@drawable/contest_theme_solid_r70_btn_bg"
                 android:enabled="true"
                 android:gravity="center"
                 android:text="@string/contest_prepare_input_code"
                 android:textColor="@color/color_5e43d5_pressed_50_disable_30"
                 android:textSize="@dimen/text_size_48"
-                android:textStyle="bold"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" />
+                android:textStyle="bold"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -320,7 +381,8 @@
             android:layout_below="@id/middle_area"
             android:layout_marginLeft="@dimen/view_dimen_40"
             android:layout_marginRight="@dimen/view_dimen_40"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
             android:background="@color/color_white">
 
             <ImageView
@@ -393,17 +455,18 @@
 
     </RelativeLayout>
 
-    <com.wali.live.watchsdk.contest.view.AdvertisingView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/advertising_area" />
+    <!--<com.wali.live.watchsdk.contest.view.AdvertisingView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/advertising_area" />-->
 
     <RelativeLayout
         android:id="@+id/avatar_area"
         android:layout_width="@dimen/view_dimen_170"
         android:layout_height="@dimen/view_dimen_170"
-        android:layout_above="@id/content_area"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="310dp"
         android:background="@drawable/contest_circle_view_bg"
         android:translationY="@dimen/view_dimen_85">
 
@@ -411,8 +474,8 @@
             android:id="@+id/avatar_iv"
             android:layout_width="@dimen/view_dimen_160"
             android:layout_height="@dimen/view_dimen_160"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
     </RelativeLayout>
 
     <TextView

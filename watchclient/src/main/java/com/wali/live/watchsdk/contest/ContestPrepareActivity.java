@@ -49,14 +49,11 @@ import com.wali.live.watchsdk.webview.WebViewActivity;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import static com.wali.live.watchsdk.R.id.get_revival_path_tv;
-import static com.wali.live.watchsdk.R.id.switch_animation_iv;
-
 /**
  * Created by lan on 2018/1/10.
  */
 public class ContestPrepareActivity extends BaseSdkActivity implements View.OnClickListener, IContestAdvertisingView,
-                                                                        IContestPrepareView, IContestInviteView {
+        IContestPrepareView, IContestInviteView {
     private static final String RULE_PAGE_URL = "http://activity.zb.mi.com/egg/index?id=52";
 
     private static final String EXTRA_ZUID = "extra_zuid";
@@ -195,7 +192,8 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
 
         mSpecialCodeTv = $(R.id.special_code_tv);
         mSpecialCodeTv.setOnClickListener(this);
-        mInstallTv = $(get_revival_path_tv);
+
+        mInstallTv = $(R.id.advertising_download_tv);
         mInstallTv.setOnClickListener(this);
 
         mRevivalInputView = $(R.id.revival_input_view);
@@ -433,7 +431,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
             enterRulePage();
         } else if (id == R.id.special_code_tv) {
             showSpecialInputView();
-        } else if (id == R.id.get_revival_path_tv) {
+        } else if (id == R.id.advertising_download_tv) {
             onAdvertisingClick();
         }
     }
