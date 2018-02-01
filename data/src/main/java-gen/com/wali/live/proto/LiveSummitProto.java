@@ -11954,6 +11954,4954 @@ public final class LiveSummitProto {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.UseSpecialCodeRsp)
   }
 
+  public interface AddRevivalCardActReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.AddRevivalCardActReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    boolean hasUuid();
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    long getUuid();
+
+    /**
+     * <code>optional uint32 type = 2;</code>
+     *
+     * <pre>
+     *类型 1=下载游戏，2=打开游戏
+     * </pre>
+     */
+    boolean hasType();
+    /**
+     * <code>optional uint32 type = 2;</code>
+     *
+     * <pre>
+     *类型 1=下载游戏，2=打开游戏
+     * </pre>
+     */
+    int getType();
+
+    /**
+     * <code>optional string contestId = 3;</code>
+     *
+     * <pre>
+     *场次ID
+     * </pre>
+     */
+    boolean hasContestId();
+    /**
+     * <code>optional string contestId = 3;</code>
+     *
+     * <pre>
+     *场次ID
+     * </pre>
+     */
+    java.lang.String getContestId();
+    /**
+     * <code>optional string contestId = 3;</code>
+     *
+     * <pre>
+     *场次ID
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getContestIdBytes();
+
+    /**
+     * <code>optional string gamePkgName = 4;</code>
+     *
+     * <pre>
+     *游戏包名
+     * </pre>
+     */
+    boolean hasGamePkgName();
+    /**
+     * <code>optional string gamePkgName = 4;</code>
+     *
+     * <pre>
+     *游戏包名
+     * </pre>
+     */
+    java.lang.String getGamePkgName();
+    /**
+     * <code>optional string gamePkgName = 4;</code>
+     *
+     * <pre>
+     *游戏包名
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getGamePkgNameBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.AddRevivalCardActReq}
+   *
+   * <pre>
+   *活动增加复活卡
+   *zhibo.contestcode.addrevivalcard
+   * </pre>
+   */
+  public static final class AddRevivalCardActReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.AddRevivalCardActReq)
+      AddRevivalCardActReqOrBuilder {
+    // Use AddRevivalCardActReq.newBuilder() to construct.
+    private AddRevivalCardActReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private AddRevivalCardActReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final AddRevivalCardActReq defaultInstance;
+    public static AddRevivalCardActReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public AddRevivalCardActReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private AddRevivalCardActReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uuid_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              type_ = input.readUInt32();
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              contestId_ = bs;
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              gamePkgName_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_AddRevivalCardActReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_AddRevivalCardActReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq.class, com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<AddRevivalCardActReq> PARSER =
+        new com.google.protobuf.AbstractParser<AddRevivalCardActReq>() {
+      public AddRevivalCardActReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new AddRevivalCardActReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<AddRevivalCardActReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int UUID_FIELD_NUMBER = 1;
+    private long uuid_;
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    public long getUuid() {
+      return uuid_;
+    }
+
+    public static final int TYPE_FIELD_NUMBER = 2;
+    private int type_;
+    /**
+     * <code>optional uint32 type = 2;</code>
+     *
+     * <pre>
+     *类型 1=下载游戏，2=打开游戏
+     * </pre>
+     */
+    public boolean hasType() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 type = 2;</code>
+     *
+     * <pre>
+     *类型 1=下载游戏，2=打开游戏
+     * </pre>
+     */
+    public int getType() {
+      return type_;
+    }
+
+    public static final int CONTESTID_FIELD_NUMBER = 3;
+    private java.lang.Object contestId_;
+    /**
+     * <code>optional string contestId = 3;</code>
+     *
+     * <pre>
+     *场次ID
+     * </pre>
+     */
+    public boolean hasContestId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string contestId = 3;</code>
+     *
+     * <pre>
+     *场次ID
+     * </pre>
+     */
+    public java.lang.String getContestId() {
+      java.lang.Object ref = contestId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          contestId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string contestId = 3;</code>
+     *
+     * <pre>
+     *场次ID
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getContestIdBytes() {
+      java.lang.Object ref = contestId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        contestId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int GAMEPKGNAME_FIELD_NUMBER = 4;
+    private java.lang.Object gamePkgName_;
+    /**
+     * <code>optional string gamePkgName = 4;</code>
+     *
+     * <pre>
+     *游戏包名
+     * </pre>
+     */
+    public boolean hasGamePkgName() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string gamePkgName = 4;</code>
+     *
+     * <pre>
+     *游戏包名
+     * </pre>
+     */
+    public java.lang.String getGamePkgName() {
+      java.lang.Object ref = gamePkgName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          gamePkgName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string gamePkgName = 4;</code>
+     *
+     * <pre>
+     *游戏包名
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getGamePkgNameBytes() {
+      java.lang.Object ref = gamePkgName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        gamePkgName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      uuid_ = 0L;
+      type_ = 0;
+      contestId_ = "";
+      gamePkgName_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, type_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getContestIdBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getGamePkgNameBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, type_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getContestIdBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getGamePkgNameBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.AddRevivalCardActReq}
+     *
+     * <pre>
+     *活动增加复活卡
+     *zhibo.contestcode.addrevivalcard
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.AddRevivalCardActReq)
+        com.wali.live.proto.LiveSummitProto.AddRevivalCardActReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_AddRevivalCardActReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_AddRevivalCardActReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq.class, com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        type_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        contestId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        gamePkgName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_AddRevivalCardActReq_descriptor;
+      }
+
+      public com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq build() {
+        com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq buildPartial() {
+        com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq result = new com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uuid_ = uuid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.type_ = type_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.contestId_ = contestId_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.gamePkgName_ = gamePkgName_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq) {
+          return mergeFrom((com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq other) {
+        if (other == com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq.getDefaultInstance()) return this;
+        if (other.hasUuid()) {
+          setUuid(other.getUuid());
+        }
+        if (other.hasType()) {
+          setType(other.getType());
+        }
+        if (other.hasContestId()) {
+          bitField0_ |= 0x00000004;
+          contestId_ = other.contestId_;
+          onChanged();
+        }
+        if (other.hasGamePkgName()) {
+          bitField0_ |= 0x00000008;
+          gamePkgName_ = other.gamePkgName_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveSummitProto.AddRevivalCardActReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long uuid_ ;
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public long getUuid() {
+        return uuid_;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public Builder setUuid(long value) {
+        bitField0_ |= 0x00000001;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int type_ ;
+      /**
+       * <code>optional uint32 type = 2;</code>
+       *
+       * <pre>
+       *类型 1=下载游戏，2=打开游戏
+       * </pre>
+       */
+      public boolean hasType() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 type = 2;</code>
+       *
+       * <pre>
+       *类型 1=下载游戏，2=打开游戏
+       * </pre>
+       */
+      public int getType() {
+        return type_;
+      }
+      /**
+       * <code>optional uint32 type = 2;</code>
+       *
+       * <pre>
+       *类型 1=下载游戏，2=打开游戏
+       * </pre>
+       */
+      public Builder setType(int value) {
+        bitField0_ |= 0x00000002;
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 type = 2;</code>
+       *
+       * <pre>
+       *类型 1=下载游戏，2=打开游戏
+       * </pre>
+       */
+      public Builder clearType() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        type_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object contestId_ = "";
+      /**
+       * <code>optional string contestId = 3;</code>
+       *
+       * <pre>
+       *场次ID
+       * </pre>
+       */
+      public boolean hasContestId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string contestId = 3;</code>
+       *
+       * <pre>
+       *场次ID
+       * </pre>
+       */
+      public java.lang.String getContestId() {
+        java.lang.Object ref = contestId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            contestId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string contestId = 3;</code>
+       *
+       * <pre>
+       *场次ID
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getContestIdBytes() {
+        java.lang.Object ref = contestId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          contestId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string contestId = 3;</code>
+       *
+       * <pre>
+       *场次ID
+       * </pre>
+       */
+      public Builder setContestId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        contestId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string contestId = 3;</code>
+       *
+       * <pre>
+       *场次ID
+       * </pre>
+       */
+      public Builder clearContestId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        contestId_ = getDefaultInstance().getContestId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string contestId = 3;</code>
+       *
+       * <pre>
+       *场次ID
+       * </pre>
+       */
+      public Builder setContestIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        contestId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object gamePkgName_ = "";
+      /**
+       * <code>optional string gamePkgName = 4;</code>
+       *
+       * <pre>
+       *游戏包名
+       * </pre>
+       */
+      public boolean hasGamePkgName() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string gamePkgName = 4;</code>
+       *
+       * <pre>
+       *游戏包名
+       * </pre>
+       */
+      public java.lang.String getGamePkgName() {
+        java.lang.Object ref = gamePkgName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            gamePkgName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string gamePkgName = 4;</code>
+       *
+       * <pre>
+       *游戏包名
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getGamePkgNameBytes() {
+        java.lang.Object ref = gamePkgName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          gamePkgName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string gamePkgName = 4;</code>
+       *
+       * <pre>
+       *游戏包名
+       * </pre>
+       */
+      public Builder setGamePkgName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        gamePkgName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string gamePkgName = 4;</code>
+       *
+       * <pre>
+       *游戏包名
+       * </pre>
+       */
+      public Builder clearGamePkgName() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        gamePkgName_ = getDefaultInstance().getGamePkgName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string gamePkgName = 4;</code>
+       *
+       * <pre>
+       *游戏包名
+       * </pre>
+       */
+      public Builder setGamePkgNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        gamePkgName_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.AddRevivalCardActReq)
+    }
+
+    static {
+      defaultInstance = new AddRevivalCardActReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.AddRevivalCardActReq)
+  }
+
+  public interface AddRevivalCardActRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.AddRevivalCardActRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    int getRetCode();
+
+    /**
+     * <code>optional uint32 revivalNum = 2;</code>
+     *
+     * <pre>
+     *复活卡数
+     * </pre>
+     */
+    boolean hasRevivalNum();
+    /**
+     * <code>optional uint32 revivalNum = 2;</code>
+     *
+     * <pre>
+     *复活卡数
+     * </pre>
+     */
+    int getRevivalNum();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.AddRevivalCardActRsp}
+   */
+  public static final class AddRevivalCardActRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.AddRevivalCardActRsp)
+      AddRevivalCardActRspOrBuilder {
+    // Use AddRevivalCardActRsp.newBuilder() to construct.
+    private AddRevivalCardActRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private AddRevivalCardActRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final AddRevivalCardActRsp defaultInstance;
+    public static AddRevivalCardActRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public AddRevivalCardActRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private AddRevivalCardActRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              revivalNum_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_AddRevivalCardActRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_AddRevivalCardActRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp.class, com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<AddRevivalCardActRsp> PARSER =
+        new com.google.protobuf.AbstractParser<AddRevivalCardActRsp>() {
+      public AddRevivalCardActRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new AddRevivalCardActRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<AddRevivalCardActRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    public static final int REVIVALNUM_FIELD_NUMBER = 2;
+    private int revivalNum_;
+    /**
+     * <code>optional uint32 revivalNum = 2;</code>
+     *
+     * <pre>
+     *复活卡数
+     * </pre>
+     */
+    public boolean hasRevivalNum() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 revivalNum = 2;</code>
+     *
+     * <pre>
+     *复活卡数
+     * </pre>
+     */
+    public int getRevivalNum() {
+      return revivalNum_;
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+      revivalNum_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, revivalNum_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, revivalNum_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.AddRevivalCardActRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.AddRevivalCardActRsp)
+        com.wali.live.proto.LiveSummitProto.AddRevivalCardActRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_AddRevivalCardActRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_AddRevivalCardActRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp.class, com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        revivalNum_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_AddRevivalCardActRsp_descriptor;
+      }
+
+      public com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp build() {
+        com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp buildPartial() {
+        com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp result = new com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.revivalNum_ = revivalNum_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp) {
+          return mergeFrom((com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp other) {
+        if (other == com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        if (other.hasRevivalNum()) {
+          setRevivalNum(other.getRevivalNum());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveSummitProto.AddRevivalCardActRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int revivalNum_ ;
+      /**
+       * <code>optional uint32 revivalNum = 2;</code>
+       *
+       * <pre>
+       *复活卡数
+       * </pre>
+       */
+      public boolean hasRevivalNum() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 revivalNum = 2;</code>
+       *
+       * <pre>
+       *复活卡数
+       * </pre>
+       */
+      public int getRevivalNum() {
+        return revivalNum_;
+      }
+      /**
+       * <code>optional uint32 revivalNum = 2;</code>
+       *
+       * <pre>
+       *复活卡数
+       * </pre>
+       */
+      public Builder setRevivalNum(int value) {
+        bitField0_ |= 0x00000002;
+        revivalNum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 revivalNum = 2;</code>
+       *
+       * <pre>
+       *复活卡数
+       * </pre>
+       */
+      public Builder clearRevivalNum() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        revivalNum_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.AddRevivalCardActRsp)
+    }
+
+    static {
+      defaultInstance = new AddRevivalCardActRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.AddRevivalCardActRsp)
+  }
+
+  public interface GetRevivalActivityReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetRevivalActivityReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    boolean hasUuid();
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    long getUuid();
+
+    /**
+     * <code>optional string contestId = 2;</code>
+     *
+     * <pre>
+     *场次ID
+     * </pre>
+     */
+    boolean hasContestId();
+    /**
+     * <code>optional string contestId = 2;</code>
+     *
+     * <pre>
+     *场次ID
+     * </pre>
+     */
+    java.lang.String getContestId();
+    /**
+     * <code>optional string contestId = 2;</code>
+     *
+     * <pre>
+     *场次ID
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getContestIdBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetRevivalActivityReq}
+   *
+   * <pre>
+   *获取复活卡活动数据
+   *zhibo.contestcode.getrevivalact
+   * </pre>
+   */
+  public static final class GetRevivalActivityReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetRevivalActivityReq)
+      GetRevivalActivityReqOrBuilder {
+    // Use GetRevivalActivityReq.newBuilder() to construct.
+    private GetRevivalActivityReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetRevivalActivityReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetRevivalActivityReq defaultInstance;
+    public static GetRevivalActivityReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetRevivalActivityReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetRevivalActivityReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uuid_ = input.readUInt64();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              contestId_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_GetRevivalActivityReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_GetRevivalActivityReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq.class, com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetRevivalActivityReq> PARSER =
+        new com.google.protobuf.AbstractParser<GetRevivalActivityReq>() {
+      public GetRevivalActivityReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetRevivalActivityReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetRevivalActivityReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int UUID_FIELD_NUMBER = 1;
+    private long uuid_;
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    public long getUuid() {
+      return uuid_;
+    }
+
+    public static final int CONTESTID_FIELD_NUMBER = 2;
+    private java.lang.Object contestId_;
+    /**
+     * <code>optional string contestId = 2;</code>
+     *
+     * <pre>
+     *场次ID
+     * </pre>
+     */
+    public boolean hasContestId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string contestId = 2;</code>
+     *
+     * <pre>
+     *场次ID
+     * </pre>
+     */
+    public java.lang.String getContestId() {
+      java.lang.Object ref = contestId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          contestId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string contestId = 2;</code>
+     *
+     * <pre>
+     *场次ID
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getContestIdBytes() {
+      java.lang.Object ref = contestId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        contestId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      uuid_ = 0L;
+      contestId_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getContestIdBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getContestIdBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetRevivalActivityReq}
+     *
+     * <pre>
+     *获取复活卡活动数据
+     *zhibo.contestcode.getrevivalact
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetRevivalActivityReq)
+        com.wali.live.proto.LiveSummitProto.GetRevivalActivityReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_GetRevivalActivityReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_GetRevivalActivityReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq.class, com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        contestId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_GetRevivalActivityReq_descriptor;
+      }
+
+      public com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq build() {
+        com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq buildPartial() {
+        com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq result = new com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uuid_ = uuid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.contestId_ = contestId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq) {
+          return mergeFrom((com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq other) {
+        if (other == com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq.getDefaultInstance()) return this;
+        if (other.hasUuid()) {
+          setUuid(other.getUuid());
+        }
+        if (other.hasContestId()) {
+          bitField0_ |= 0x00000002;
+          contestId_ = other.contestId_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveSummitProto.GetRevivalActivityReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long uuid_ ;
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public long getUuid() {
+        return uuid_;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public Builder setUuid(long value) {
+        bitField0_ |= 0x00000001;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object contestId_ = "";
+      /**
+       * <code>optional string contestId = 2;</code>
+       *
+       * <pre>
+       *场次ID
+       * </pre>
+       */
+      public boolean hasContestId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string contestId = 2;</code>
+       *
+       * <pre>
+       *场次ID
+       * </pre>
+       */
+      public java.lang.String getContestId() {
+        java.lang.Object ref = contestId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            contestId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string contestId = 2;</code>
+       *
+       * <pre>
+       *场次ID
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getContestIdBytes() {
+        java.lang.Object ref = contestId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          contestId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string contestId = 2;</code>
+       *
+       * <pre>
+       *场次ID
+       * </pre>
+       */
+      public Builder setContestId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        contestId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string contestId = 2;</code>
+       *
+       * <pre>
+       *场次ID
+       * </pre>
+       */
+      public Builder clearContestId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        contestId_ = getDefaultInstance().getContestId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string contestId = 2;</code>
+       *
+       * <pre>
+       *场次ID
+       * </pre>
+       */
+      public Builder setContestIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        contestId_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetRevivalActivityReq)
+    }
+
+    static {
+      defaultInstance = new GetRevivalActivityReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetRevivalActivityReq)
+  }
+
+  public interface GetRevivalActivityRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetRevivalActivityRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    int getRetCode();
+
+    /**
+     * <code>optional .com.wali.live.proto.RevivalCardActInfo revivalCardAct = 2;</code>
+     *
+     * <pre>
+     *活动详情
+     * </pre>
+     */
+    boolean hasRevivalCardAct();
+    /**
+     * <code>optional .com.wali.live.proto.RevivalCardActInfo revivalCardAct = 2;</code>
+     *
+     * <pre>
+     *活动详情
+     * </pre>
+     */
+    com.wali.live.proto.LiveSummitProto.RevivalCardActInfo getRevivalCardAct();
+    /**
+     * <code>optional .com.wali.live.proto.RevivalCardActInfo revivalCardAct = 2;</code>
+     *
+     * <pre>
+     *活动详情
+     * </pre>
+     */
+    com.wali.live.proto.LiveSummitProto.RevivalCardActInfoOrBuilder getRevivalCardActOrBuilder();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetRevivalActivityRsp}
+   */
+  public static final class GetRevivalActivityRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetRevivalActivityRsp)
+      GetRevivalActivityRspOrBuilder {
+    // Use GetRevivalActivityRsp.newBuilder() to construct.
+    private GetRevivalActivityRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetRevivalActivityRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetRevivalActivityRsp defaultInstance;
+    public static GetRevivalActivityRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetRevivalActivityRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetRevivalActivityRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = revivalCardAct_.toBuilder();
+              }
+              revivalCardAct_ = input.readMessage(com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(revivalCardAct_);
+                revivalCardAct_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_GetRevivalActivityRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_GetRevivalActivityRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp.class, com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetRevivalActivityRsp> PARSER =
+        new com.google.protobuf.AbstractParser<GetRevivalActivityRsp>() {
+      public GetRevivalActivityRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetRevivalActivityRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetRevivalActivityRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    public static final int REVIVALCARDACT_FIELD_NUMBER = 2;
+    private com.wali.live.proto.LiveSummitProto.RevivalCardActInfo revivalCardAct_;
+    /**
+     * <code>optional .com.wali.live.proto.RevivalCardActInfo revivalCardAct = 2;</code>
+     *
+     * <pre>
+     *活动详情
+     * </pre>
+     */
+    public boolean hasRevivalCardAct() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.RevivalCardActInfo revivalCardAct = 2;</code>
+     *
+     * <pre>
+     *活动详情
+     * </pre>
+     */
+    public com.wali.live.proto.LiveSummitProto.RevivalCardActInfo getRevivalCardAct() {
+      return revivalCardAct_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.RevivalCardActInfo revivalCardAct = 2;</code>
+     *
+     * <pre>
+     *活动详情
+     * </pre>
+     */
+    public com.wali.live.proto.LiveSummitProto.RevivalCardActInfoOrBuilder getRevivalCardActOrBuilder() {
+      return revivalCardAct_;
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+      revivalCardAct_ = com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, revivalCardAct_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, revivalCardAct_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetRevivalActivityRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetRevivalActivityRsp)
+        com.wali.live.proto.LiveSummitProto.GetRevivalActivityRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_GetRevivalActivityRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_GetRevivalActivityRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp.class, com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getRevivalCardActFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (revivalCardActBuilder_ == null) {
+          revivalCardAct_ = com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.getDefaultInstance();
+        } else {
+          revivalCardActBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_GetRevivalActivityRsp_descriptor;
+      }
+
+      public com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp build() {
+        com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp buildPartial() {
+        com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp result = new com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (revivalCardActBuilder_ == null) {
+          result.revivalCardAct_ = revivalCardAct_;
+        } else {
+          result.revivalCardAct_ = revivalCardActBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp) {
+          return mergeFrom((com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp other) {
+        if (other == com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        if (other.hasRevivalCardAct()) {
+          mergeRevivalCardAct(other.getRevivalCardAct());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveSummitProto.GetRevivalActivityRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.LiveSummitProto.RevivalCardActInfo revivalCardAct_ = com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveSummitProto.RevivalCardActInfo, com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.Builder, com.wali.live.proto.LiveSummitProto.RevivalCardActInfoOrBuilder> revivalCardActBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.RevivalCardActInfo revivalCardAct = 2;</code>
+       *
+       * <pre>
+       *活动详情
+       * </pre>
+       */
+      public boolean hasRevivalCardAct() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RevivalCardActInfo revivalCardAct = 2;</code>
+       *
+       * <pre>
+       *活动详情
+       * </pre>
+       */
+      public com.wali.live.proto.LiveSummitProto.RevivalCardActInfo getRevivalCardAct() {
+        if (revivalCardActBuilder_ == null) {
+          return revivalCardAct_;
+        } else {
+          return revivalCardActBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RevivalCardActInfo revivalCardAct = 2;</code>
+       *
+       * <pre>
+       *活动详情
+       * </pre>
+       */
+      public Builder setRevivalCardAct(com.wali.live.proto.LiveSummitProto.RevivalCardActInfo value) {
+        if (revivalCardActBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          revivalCardAct_ = value;
+          onChanged();
+        } else {
+          revivalCardActBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RevivalCardActInfo revivalCardAct = 2;</code>
+       *
+       * <pre>
+       *活动详情
+       * </pre>
+       */
+      public Builder setRevivalCardAct(
+          com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.Builder builderForValue) {
+        if (revivalCardActBuilder_ == null) {
+          revivalCardAct_ = builderForValue.build();
+          onChanged();
+        } else {
+          revivalCardActBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RevivalCardActInfo revivalCardAct = 2;</code>
+       *
+       * <pre>
+       *活动详情
+       * </pre>
+       */
+      public Builder mergeRevivalCardAct(com.wali.live.proto.LiveSummitProto.RevivalCardActInfo value) {
+        if (revivalCardActBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              revivalCardAct_ != com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.getDefaultInstance()) {
+            revivalCardAct_ =
+              com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.newBuilder(revivalCardAct_).mergeFrom(value).buildPartial();
+          } else {
+            revivalCardAct_ = value;
+          }
+          onChanged();
+        } else {
+          revivalCardActBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RevivalCardActInfo revivalCardAct = 2;</code>
+       *
+       * <pre>
+       *活动详情
+       * </pre>
+       */
+      public Builder clearRevivalCardAct() {
+        if (revivalCardActBuilder_ == null) {
+          revivalCardAct_ = com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.getDefaultInstance();
+          onChanged();
+        } else {
+          revivalCardActBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RevivalCardActInfo revivalCardAct = 2;</code>
+       *
+       * <pre>
+       *活动详情
+       * </pre>
+       */
+      public com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.Builder getRevivalCardActBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getRevivalCardActFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RevivalCardActInfo revivalCardAct = 2;</code>
+       *
+       * <pre>
+       *活动详情
+       * </pre>
+       */
+      public com.wali.live.proto.LiveSummitProto.RevivalCardActInfoOrBuilder getRevivalCardActOrBuilder() {
+        if (revivalCardActBuilder_ != null) {
+          return revivalCardActBuilder_.getMessageOrBuilder();
+        } else {
+          return revivalCardAct_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RevivalCardActInfo revivalCardAct = 2;</code>
+       *
+       * <pre>
+       *活动详情
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveSummitProto.RevivalCardActInfo, com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.Builder, com.wali.live.proto.LiveSummitProto.RevivalCardActInfoOrBuilder> 
+          getRevivalCardActFieldBuilder() {
+        if (revivalCardActBuilder_ == null) {
+          revivalCardActBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.LiveSummitProto.RevivalCardActInfo, com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.Builder, com.wali.live.proto.LiveSummitProto.RevivalCardActInfoOrBuilder>(
+                  getRevivalCardAct(),
+                  getParentForChildren(),
+                  isClean());
+          revivalCardAct_ = null;
+        }
+        return revivalCardActBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetRevivalActivityRsp)
+    }
+
+    static {
+      defaultInstance = new GetRevivalActivityRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetRevivalActivityRsp)
+  }
+
+  public interface RevivalCardActInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.RevivalCardActInfo)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+     */
+    java.util.List<com.wali.live.proto.LiveSummitProto.GameRevivalActInfo> 
+        getGameActList();
+    /**
+     * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+     */
+    com.wali.live.proto.LiveSummitProto.GameRevivalActInfo getGameAct(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+     */
+    int getGameActCount();
+    /**
+     * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+     */
+    java.util.List<? extends com.wali.live.proto.LiveSummitProto.GameRevivalActInfoOrBuilder> 
+        getGameActOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+     */
+    com.wali.live.proto.LiveSummitProto.GameRevivalActInfoOrBuilder getGameActOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.RevivalCardActInfo}
+   */
+  public static final class RevivalCardActInfo extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.RevivalCardActInfo)
+      RevivalCardActInfoOrBuilder {
+    // Use RevivalCardActInfo.newBuilder() to construct.
+    private RevivalCardActInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private RevivalCardActInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final RevivalCardActInfo defaultInstance;
+    public static RevivalCardActInfo getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public RevivalCardActInfo getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RevivalCardActInfo(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                gameAct_ = new java.util.ArrayList<com.wali.live.proto.LiveSummitProto.GameRevivalActInfo>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              gameAct_.add(input.readMessage(com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          gameAct_ = java.util.Collections.unmodifiableList(gameAct_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_RevivalCardActInfo_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_RevivalCardActInfo_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.class, com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<RevivalCardActInfo> PARSER =
+        new com.google.protobuf.AbstractParser<RevivalCardActInfo>() {
+      public RevivalCardActInfo parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RevivalCardActInfo(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RevivalCardActInfo> getParserForType() {
+      return PARSER;
+    }
+
+    public static final int GAMEACT_FIELD_NUMBER = 1;
+    private java.util.List<com.wali.live.proto.LiveSummitProto.GameRevivalActInfo> gameAct_;
+    /**
+     * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+     */
+    public java.util.List<com.wali.live.proto.LiveSummitProto.GameRevivalActInfo> getGameActList() {
+      return gameAct_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+     */
+    public java.util.List<? extends com.wali.live.proto.LiveSummitProto.GameRevivalActInfoOrBuilder> 
+        getGameActOrBuilderList() {
+      return gameAct_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+     */
+    public int getGameActCount() {
+      return gameAct_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+     */
+    public com.wali.live.proto.LiveSummitProto.GameRevivalActInfo getGameAct(int index) {
+      return gameAct_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+     */
+    public com.wali.live.proto.LiveSummitProto.GameRevivalActInfoOrBuilder getGameActOrBuilder(
+        int index) {
+      return gameAct_.get(index);
+    }
+
+    private void initFields() {
+      gameAct_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < gameAct_.size(); i++) {
+        output.writeMessage(1, gameAct_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < gameAct_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, gameAct_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveSummitProto.RevivalCardActInfo parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveSummitProto.RevivalCardActInfo parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.RevivalCardActInfo parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveSummitProto.RevivalCardActInfo parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.RevivalCardActInfo parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.RevivalCardActInfo parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.RevivalCardActInfo parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.RevivalCardActInfo parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.RevivalCardActInfo parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.RevivalCardActInfo parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveSummitProto.RevivalCardActInfo prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.RevivalCardActInfo}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.RevivalCardActInfo)
+        com.wali.live.proto.LiveSummitProto.RevivalCardActInfoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_RevivalCardActInfo_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_RevivalCardActInfo_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.class, com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getGameActFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (gameActBuilder_ == null) {
+          gameAct_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          gameActBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_RevivalCardActInfo_descriptor;
+      }
+
+      public com.wali.live.proto.LiveSummitProto.RevivalCardActInfo getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveSummitProto.RevivalCardActInfo build() {
+        com.wali.live.proto.LiveSummitProto.RevivalCardActInfo result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveSummitProto.RevivalCardActInfo buildPartial() {
+        com.wali.live.proto.LiveSummitProto.RevivalCardActInfo result = new com.wali.live.proto.LiveSummitProto.RevivalCardActInfo(this);
+        int from_bitField0_ = bitField0_;
+        if (gameActBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            gameAct_ = java.util.Collections.unmodifiableList(gameAct_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.gameAct_ = gameAct_;
+        } else {
+          result.gameAct_ = gameActBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveSummitProto.RevivalCardActInfo) {
+          return mergeFrom((com.wali.live.proto.LiveSummitProto.RevivalCardActInfo)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveSummitProto.RevivalCardActInfo other) {
+        if (other == com.wali.live.proto.LiveSummitProto.RevivalCardActInfo.getDefaultInstance()) return this;
+        if (gameActBuilder_ == null) {
+          if (!other.gameAct_.isEmpty()) {
+            if (gameAct_.isEmpty()) {
+              gameAct_ = other.gameAct_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureGameActIsMutable();
+              gameAct_.addAll(other.gameAct_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.gameAct_.isEmpty()) {
+            if (gameActBuilder_.isEmpty()) {
+              gameActBuilder_.dispose();
+              gameActBuilder_ = null;
+              gameAct_ = other.gameAct_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              gameActBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getGameActFieldBuilder() : null;
+            } else {
+              gameActBuilder_.addAllMessages(other.gameAct_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveSummitProto.RevivalCardActInfo parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveSummitProto.RevivalCardActInfo) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<com.wali.live.proto.LiveSummitProto.GameRevivalActInfo> gameAct_ =
+        java.util.Collections.emptyList();
+      private void ensureGameActIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          gameAct_ = new java.util.ArrayList<com.wali.live.proto.LiveSummitProto.GameRevivalActInfo>(gameAct_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.LiveSummitProto.GameRevivalActInfo, com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.Builder, com.wali.live.proto.LiveSummitProto.GameRevivalActInfoOrBuilder> gameActBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+       */
+      public java.util.List<com.wali.live.proto.LiveSummitProto.GameRevivalActInfo> getGameActList() {
+        if (gameActBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(gameAct_);
+        } else {
+          return gameActBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+       */
+      public int getGameActCount() {
+        if (gameActBuilder_ == null) {
+          return gameAct_.size();
+        } else {
+          return gameActBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+       */
+      public com.wali.live.proto.LiveSummitProto.GameRevivalActInfo getGameAct(int index) {
+        if (gameActBuilder_ == null) {
+          return gameAct_.get(index);
+        } else {
+          return gameActBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+       */
+      public Builder setGameAct(
+          int index, com.wali.live.proto.LiveSummitProto.GameRevivalActInfo value) {
+        if (gameActBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureGameActIsMutable();
+          gameAct_.set(index, value);
+          onChanged();
+        } else {
+          gameActBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+       */
+      public Builder setGameAct(
+          int index, com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.Builder builderForValue) {
+        if (gameActBuilder_ == null) {
+          ensureGameActIsMutable();
+          gameAct_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          gameActBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+       */
+      public Builder addGameAct(com.wali.live.proto.LiveSummitProto.GameRevivalActInfo value) {
+        if (gameActBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureGameActIsMutable();
+          gameAct_.add(value);
+          onChanged();
+        } else {
+          gameActBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+       */
+      public Builder addGameAct(
+          int index, com.wali.live.proto.LiveSummitProto.GameRevivalActInfo value) {
+        if (gameActBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureGameActIsMutable();
+          gameAct_.add(index, value);
+          onChanged();
+        } else {
+          gameActBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+       */
+      public Builder addGameAct(
+          com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.Builder builderForValue) {
+        if (gameActBuilder_ == null) {
+          ensureGameActIsMutable();
+          gameAct_.add(builderForValue.build());
+          onChanged();
+        } else {
+          gameActBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+       */
+      public Builder addGameAct(
+          int index, com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.Builder builderForValue) {
+        if (gameActBuilder_ == null) {
+          ensureGameActIsMutable();
+          gameAct_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          gameActBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+       */
+      public Builder addAllGameAct(
+          java.lang.Iterable<? extends com.wali.live.proto.LiveSummitProto.GameRevivalActInfo> values) {
+        if (gameActBuilder_ == null) {
+          ensureGameActIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, gameAct_);
+          onChanged();
+        } else {
+          gameActBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+       */
+      public Builder clearGameAct() {
+        if (gameActBuilder_ == null) {
+          gameAct_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          gameActBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+       */
+      public Builder removeGameAct(int index) {
+        if (gameActBuilder_ == null) {
+          ensureGameActIsMutable();
+          gameAct_.remove(index);
+          onChanged();
+        } else {
+          gameActBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+       */
+      public com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.Builder getGameActBuilder(
+          int index) {
+        return getGameActFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+       */
+      public com.wali.live.proto.LiveSummitProto.GameRevivalActInfoOrBuilder getGameActOrBuilder(
+          int index) {
+        if (gameActBuilder_ == null) {
+          return gameAct_.get(index);  } else {
+          return gameActBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+       */
+      public java.util.List<? extends com.wali.live.proto.LiveSummitProto.GameRevivalActInfoOrBuilder> 
+           getGameActOrBuilderList() {
+        if (gameActBuilder_ != null) {
+          return gameActBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(gameAct_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+       */
+      public com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.Builder addGameActBuilder() {
+        return getGameActFieldBuilder().addBuilder(
+            com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+       */
+      public com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.Builder addGameActBuilder(
+          int index) {
+        return getGameActFieldBuilder().addBuilder(
+            index, com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.GameRevivalActInfo gameAct = 1;</code>
+       */
+      public java.util.List<com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.Builder> 
+           getGameActBuilderList() {
+        return getGameActFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.LiveSummitProto.GameRevivalActInfo, com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.Builder, com.wali.live.proto.LiveSummitProto.GameRevivalActInfoOrBuilder> 
+          getGameActFieldBuilder() {
+        if (gameActBuilder_ == null) {
+          gameActBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.LiveSummitProto.GameRevivalActInfo, com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.Builder, com.wali.live.proto.LiveSummitProto.GameRevivalActInfoOrBuilder>(
+                  gameAct_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          gameAct_ = null;
+        }
+        return gameActBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.RevivalCardActInfo)
+    }
+
+    static {
+      defaultInstance = new RevivalCardActInfo(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.RevivalCardActInfo)
+  }
+
+  public interface GameRevivalActInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GameRevivalActInfo)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string icon = 1;</code>
+     *
+     * <pre>
+     *游戏图标
+     * </pre>
+     */
+    boolean hasIcon();
+    /**
+     * <code>optional string icon = 1;</code>
+     *
+     * <pre>
+     *游戏图标
+     * </pre>
+     */
+    java.lang.String getIcon();
+    /**
+     * <code>optional string icon = 1;</code>
+     *
+     * <pre>
+     *游戏图标
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getIconBytes();
+
+    /**
+     * <code>optional string gamePkgName = 2;</code>
+     *
+     * <pre>
+     *游戏包名
+     * </pre>
+     */
+    boolean hasGamePkgName();
+    /**
+     * <code>optional string gamePkgName = 2;</code>
+     *
+     * <pre>
+     *游戏包名
+     * </pre>
+     */
+    java.lang.String getGamePkgName();
+    /**
+     * <code>optional string gamePkgName = 2;</code>
+     *
+     * <pre>
+     *游戏包名
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getGamePkgNameBytes();
+
+    /**
+     * <code>optional string downloadUrl = 3;</code>
+     *
+     * <pre>
+     *下载地址
+     * </pre>
+     */
+    boolean hasDownloadUrl();
+    /**
+     * <code>optional string downloadUrl = 3;</code>
+     *
+     * <pre>
+     *下载地址
+     * </pre>
+     */
+    java.lang.String getDownloadUrl();
+    /**
+     * <code>optional string downloadUrl = 3;</code>
+     *
+     * <pre>
+     *下载地址
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getDownloadUrlBytes();
+
+    /**
+     * <code>optional string title = 4;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    boolean hasTitle();
+    /**
+     * <code>optional string title = 4;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    java.lang.String getTitle();
+    /**
+     * <code>optional string title = 4;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getTitleBytes();
+
+    /**
+     * <code>optional string subTitle = 5;</code>
+     *
+     * <pre>
+     *副标题
+     * </pre>
+     */
+    boolean hasSubTitle();
+    /**
+     * <code>optional string subTitle = 5;</code>
+     *
+     * <pre>
+     *副标题
+     * </pre>
+     */
+    java.lang.String getSubTitle();
+    /**
+     * <code>optional string subTitle = 5;</code>
+     *
+     * <pre>
+     *副标题
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getSubTitleBytes();
+
+    /**
+     * <code>optional bool canDown = 6;</code>
+     *
+     * <pre>
+     *是否可以下载获取复活卡
+     * </pre>
+     */
+    boolean hasCanDown();
+    /**
+     * <code>optional bool canDown = 6;</code>
+     *
+     * <pre>
+     *是否可以下载获取复活卡
+     * </pre>
+     */
+    boolean getCanDown();
+
+    /**
+     * <code>optional bool canOpen = 7;</code>
+     *
+     * <pre>
+     *是否可以打开获取复活卡
+     * </pre>
+     */
+    boolean hasCanOpen();
+    /**
+     * <code>optional bool canOpen = 7;</code>
+     *
+     * <pre>
+     *是否可以打开获取复活卡
+     * </pre>
+     */
+    boolean getCanOpen();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GameRevivalActInfo}
+   */
+  public static final class GameRevivalActInfo extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GameRevivalActInfo)
+      GameRevivalActInfoOrBuilder {
+    // Use GameRevivalActInfo.newBuilder() to construct.
+    private GameRevivalActInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GameRevivalActInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GameRevivalActInfo defaultInstance;
+    public static GameRevivalActInfo getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GameRevivalActInfo getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GameRevivalActInfo(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              icon_ = bs;
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              gamePkgName_ = bs;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              downloadUrl_ = bs;
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              title_ = bs;
+              break;
+            }
+            case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000010;
+              subTitle_ = bs;
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              canDown_ = input.readBool();
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000040;
+              canOpen_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_GameRevivalActInfo_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_GameRevivalActInfo_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.class, com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GameRevivalActInfo> PARSER =
+        new com.google.protobuf.AbstractParser<GameRevivalActInfo>() {
+      public GameRevivalActInfo parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GameRevivalActInfo(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GameRevivalActInfo> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int ICON_FIELD_NUMBER = 1;
+    private java.lang.Object icon_;
+    /**
+     * <code>optional string icon = 1;</code>
+     *
+     * <pre>
+     *游戏图标
+     * </pre>
+     */
+    public boolean hasIcon() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string icon = 1;</code>
+     *
+     * <pre>
+     *游戏图标
+     * </pre>
+     */
+    public java.lang.String getIcon() {
+      java.lang.Object ref = icon_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          icon_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string icon = 1;</code>
+     *
+     * <pre>
+     *游戏图标
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getIconBytes() {
+      java.lang.Object ref = icon_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        icon_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int GAMEPKGNAME_FIELD_NUMBER = 2;
+    private java.lang.Object gamePkgName_;
+    /**
+     * <code>optional string gamePkgName = 2;</code>
+     *
+     * <pre>
+     *游戏包名
+     * </pre>
+     */
+    public boolean hasGamePkgName() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string gamePkgName = 2;</code>
+     *
+     * <pre>
+     *游戏包名
+     * </pre>
+     */
+    public java.lang.String getGamePkgName() {
+      java.lang.Object ref = gamePkgName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          gamePkgName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string gamePkgName = 2;</code>
+     *
+     * <pre>
+     *游戏包名
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getGamePkgNameBytes() {
+      java.lang.Object ref = gamePkgName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        gamePkgName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int DOWNLOADURL_FIELD_NUMBER = 3;
+    private java.lang.Object downloadUrl_;
+    /**
+     * <code>optional string downloadUrl = 3;</code>
+     *
+     * <pre>
+     *下载地址
+     * </pre>
+     */
+    public boolean hasDownloadUrl() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string downloadUrl = 3;</code>
+     *
+     * <pre>
+     *下载地址
+     * </pre>
+     */
+    public java.lang.String getDownloadUrl() {
+      java.lang.Object ref = downloadUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          downloadUrl_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string downloadUrl = 3;</code>
+     *
+     * <pre>
+     *下载地址
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getDownloadUrlBytes() {
+      java.lang.Object ref = downloadUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        downloadUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TITLE_FIELD_NUMBER = 4;
+    private java.lang.Object title_;
+    /**
+     * <code>optional string title = 4;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    public boolean hasTitle() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string title = 4;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    public java.lang.String getTitle() {
+      java.lang.Object ref = title_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          title_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string title = 4;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getTitleBytes() {
+      java.lang.Object ref = title_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        title_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SUBTITLE_FIELD_NUMBER = 5;
+    private java.lang.Object subTitle_;
+    /**
+     * <code>optional string subTitle = 5;</code>
+     *
+     * <pre>
+     *副标题
+     * </pre>
+     */
+    public boolean hasSubTitle() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional string subTitle = 5;</code>
+     *
+     * <pre>
+     *副标题
+     * </pre>
+     */
+    public java.lang.String getSubTitle() {
+      java.lang.Object ref = subTitle_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          subTitle_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string subTitle = 5;</code>
+     *
+     * <pre>
+     *副标题
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getSubTitleBytes() {
+      java.lang.Object ref = subTitle_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        subTitle_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CANDOWN_FIELD_NUMBER = 6;
+    private boolean canDown_;
+    /**
+     * <code>optional bool canDown = 6;</code>
+     *
+     * <pre>
+     *是否可以下载获取复活卡
+     * </pre>
+     */
+    public boolean hasCanDown() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional bool canDown = 6;</code>
+     *
+     * <pre>
+     *是否可以下载获取复活卡
+     * </pre>
+     */
+    public boolean getCanDown() {
+      return canDown_;
+    }
+
+    public static final int CANOPEN_FIELD_NUMBER = 7;
+    private boolean canOpen_;
+    /**
+     * <code>optional bool canOpen = 7;</code>
+     *
+     * <pre>
+     *是否可以打开获取复活卡
+     * </pre>
+     */
+    public boolean hasCanOpen() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional bool canOpen = 7;</code>
+     *
+     * <pre>
+     *是否可以打开获取复活卡
+     * </pre>
+     */
+    public boolean getCanOpen() {
+      return canOpen_;
+    }
+
+    private void initFields() {
+      icon_ = "";
+      gamePkgName_ = "";
+      downloadUrl_ = "";
+      title_ = "";
+      subTitle_ = "";
+      canDown_ = false;
+      canOpen_ = false;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getIconBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getGamePkgNameBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getDownloadUrlBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getTitleBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, getSubTitleBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBool(6, canDown_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBool(7, canOpen_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getIconBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getGamePkgNameBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getDownloadUrlBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getTitleBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getSubTitleBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(6, canDown_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(7, canOpen_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveSummitProto.GameRevivalActInfo parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GameRevivalActInfo parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GameRevivalActInfo parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GameRevivalActInfo parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GameRevivalActInfo parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GameRevivalActInfo parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GameRevivalActInfo parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GameRevivalActInfo parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GameRevivalActInfo parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveSummitProto.GameRevivalActInfo parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveSummitProto.GameRevivalActInfo prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GameRevivalActInfo}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GameRevivalActInfo)
+        com.wali.live.proto.LiveSummitProto.GameRevivalActInfoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_GameRevivalActInfo_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_GameRevivalActInfo_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.class, com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        icon_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        gamePkgName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        downloadUrl_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        title_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        subTitle_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        canDown_ = false;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        canOpen_ = false;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveSummitProto.internal_static_com_wali_live_proto_GameRevivalActInfo_descriptor;
+      }
+
+      public com.wali.live.proto.LiveSummitProto.GameRevivalActInfo getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveSummitProto.GameRevivalActInfo build() {
+        com.wali.live.proto.LiveSummitProto.GameRevivalActInfo result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveSummitProto.GameRevivalActInfo buildPartial() {
+        com.wali.live.proto.LiveSummitProto.GameRevivalActInfo result = new com.wali.live.proto.LiveSummitProto.GameRevivalActInfo(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.icon_ = icon_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.gamePkgName_ = gamePkgName_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.downloadUrl_ = downloadUrl_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.title_ = title_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.subTitle_ = subTitle_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.canDown_ = canDown_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.canOpen_ = canOpen_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveSummitProto.GameRevivalActInfo) {
+          return mergeFrom((com.wali.live.proto.LiveSummitProto.GameRevivalActInfo)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveSummitProto.GameRevivalActInfo other) {
+        if (other == com.wali.live.proto.LiveSummitProto.GameRevivalActInfo.getDefaultInstance()) return this;
+        if (other.hasIcon()) {
+          bitField0_ |= 0x00000001;
+          icon_ = other.icon_;
+          onChanged();
+        }
+        if (other.hasGamePkgName()) {
+          bitField0_ |= 0x00000002;
+          gamePkgName_ = other.gamePkgName_;
+          onChanged();
+        }
+        if (other.hasDownloadUrl()) {
+          bitField0_ |= 0x00000004;
+          downloadUrl_ = other.downloadUrl_;
+          onChanged();
+        }
+        if (other.hasTitle()) {
+          bitField0_ |= 0x00000008;
+          title_ = other.title_;
+          onChanged();
+        }
+        if (other.hasSubTitle()) {
+          bitField0_ |= 0x00000010;
+          subTitle_ = other.subTitle_;
+          onChanged();
+        }
+        if (other.hasCanDown()) {
+          setCanDown(other.getCanDown());
+        }
+        if (other.hasCanOpen()) {
+          setCanOpen(other.getCanOpen());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveSummitProto.GameRevivalActInfo parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveSummitProto.GameRevivalActInfo) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object icon_ = "";
+      /**
+       * <code>optional string icon = 1;</code>
+       *
+       * <pre>
+       *游戏图标
+       * </pre>
+       */
+      public boolean hasIcon() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string icon = 1;</code>
+       *
+       * <pre>
+       *游戏图标
+       * </pre>
+       */
+      public java.lang.String getIcon() {
+        java.lang.Object ref = icon_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            icon_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string icon = 1;</code>
+       *
+       * <pre>
+       *游戏图标
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getIconBytes() {
+        java.lang.Object ref = icon_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          icon_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string icon = 1;</code>
+       *
+       * <pre>
+       *游戏图标
+       * </pre>
+       */
+      public Builder setIcon(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        icon_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string icon = 1;</code>
+       *
+       * <pre>
+       *游戏图标
+       * </pre>
+       */
+      public Builder clearIcon() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        icon_ = getDefaultInstance().getIcon();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string icon = 1;</code>
+       *
+       * <pre>
+       *游戏图标
+       * </pre>
+       */
+      public Builder setIconBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        icon_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object gamePkgName_ = "";
+      /**
+       * <code>optional string gamePkgName = 2;</code>
+       *
+       * <pre>
+       *游戏包名
+       * </pre>
+       */
+      public boolean hasGamePkgName() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string gamePkgName = 2;</code>
+       *
+       * <pre>
+       *游戏包名
+       * </pre>
+       */
+      public java.lang.String getGamePkgName() {
+        java.lang.Object ref = gamePkgName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            gamePkgName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string gamePkgName = 2;</code>
+       *
+       * <pre>
+       *游戏包名
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getGamePkgNameBytes() {
+        java.lang.Object ref = gamePkgName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          gamePkgName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string gamePkgName = 2;</code>
+       *
+       * <pre>
+       *游戏包名
+       * </pre>
+       */
+      public Builder setGamePkgName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        gamePkgName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string gamePkgName = 2;</code>
+       *
+       * <pre>
+       *游戏包名
+       * </pre>
+       */
+      public Builder clearGamePkgName() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        gamePkgName_ = getDefaultInstance().getGamePkgName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string gamePkgName = 2;</code>
+       *
+       * <pre>
+       *游戏包名
+       * </pre>
+       */
+      public Builder setGamePkgNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        gamePkgName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object downloadUrl_ = "";
+      /**
+       * <code>optional string downloadUrl = 3;</code>
+       *
+       * <pre>
+       *下载地址
+       * </pre>
+       */
+      public boolean hasDownloadUrl() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string downloadUrl = 3;</code>
+       *
+       * <pre>
+       *下载地址
+       * </pre>
+       */
+      public java.lang.String getDownloadUrl() {
+        java.lang.Object ref = downloadUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            downloadUrl_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string downloadUrl = 3;</code>
+       *
+       * <pre>
+       *下载地址
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getDownloadUrlBytes() {
+        java.lang.Object ref = downloadUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          downloadUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string downloadUrl = 3;</code>
+       *
+       * <pre>
+       *下载地址
+       * </pre>
+       */
+      public Builder setDownloadUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        downloadUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string downloadUrl = 3;</code>
+       *
+       * <pre>
+       *下载地址
+       * </pre>
+       */
+      public Builder clearDownloadUrl() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        downloadUrl_ = getDefaultInstance().getDownloadUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string downloadUrl = 3;</code>
+       *
+       * <pre>
+       *下载地址
+       * </pre>
+       */
+      public Builder setDownloadUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        downloadUrl_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object title_ = "";
+      /**
+       * <code>optional string title = 4;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public boolean hasTitle() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string title = 4;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public java.lang.String getTitle() {
+        java.lang.Object ref = title_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            title_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string title = 4;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getTitleBytes() {
+        java.lang.Object ref = title_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          title_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string title = 4;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public Builder setTitle(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        title_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string title = 4;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public Builder clearTitle() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        title_ = getDefaultInstance().getTitle();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string title = 4;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public Builder setTitleBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        title_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object subTitle_ = "";
+      /**
+       * <code>optional string subTitle = 5;</code>
+       *
+       * <pre>
+       *副标题
+       * </pre>
+       */
+      public boolean hasSubTitle() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string subTitle = 5;</code>
+       *
+       * <pre>
+       *副标题
+       * </pre>
+       */
+      public java.lang.String getSubTitle() {
+        java.lang.Object ref = subTitle_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            subTitle_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string subTitle = 5;</code>
+       *
+       * <pre>
+       *副标题
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getSubTitleBytes() {
+        java.lang.Object ref = subTitle_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          subTitle_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string subTitle = 5;</code>
+       *
+       * <pre>
+       *副标题
+       * </pre>
+       */
+      public Builder setSubTitle(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        subTitle_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string subTitle = 5;</code>
+       *
+       * <pre>
+       *副标题
+       * </pre>
+       */
+      public Builder clearSubTitle() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        subTitle_ = getDefaultInstance().getSubTitle();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string subTitle = 5;</code>
+       *
+       * <pre>
+       *副标题
+       * </pre>
+       */
+      public Builder setSubTitleBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        subTitle_ = value;
+        onChanged();
+        return this;
+      }
+
+      private boolean canDown_ ;
+      /**
+       * <code>optional bool canDown = 6;</code>
+       *
+       * <pre>
+       *是否可以下载获取复活卡
+       * </pre>
+       */
+      public boolean hasCanDown() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional bool canDown = 6;</code>
+       *
+       * <pre>
+       *是否可以下载获取复活卡
+       * </pre>
+       */
+      public boolean getCanDown() {
+        return canDown_;
+      }
+      /**
+       * <code>optional bool canDown = 6;</code>
+       *
+       * <pre>
+       *是否可以下载获取复活卡
+       * </pre>
+       */
+      public Builder setCanDown(boolean value) {
+        bitField0_ |= 0x00000020;
+        canDown_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool canDown = 6;</code>
+       *
+       * <pre>
+       *是否可以下载获取复活卡
+       * </pre>
+       */
+      public Builder clearCanDown() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        canDown_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean canOpen_ ;
+      /**
+       * <code>optional bool canOpen = 7;</code>
+       *
+       * <pre>
+       *是否可以打开获取复活卡
+       * </pre>
+       */
+      public boolean hasCanOpen() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional bool canOpen = 7;</code>
+       *
+       * <pre>
+       *是否可以打开获取复活卡
+       * </pre>
+       */
+      public boolean getCanOpen() {
+        return canOpen_;
+      }
+      /**
+       * <code>optional bool canOpen = 7;</code>
+       *
+       * <pre>
+       *是否可以打开获取复活卡
+       * </pre>
+       */
+      public Builder setCanOpen(boolean value) {
+        bitField0_ |= 0x00000040;
+        canOpen_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool canOpen = 7;</code>
+       *
+       * <pre>
+       *是否可以打开获取复活卡
+       * </pre>
+       */
+      public Builder clearCanOpen() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        canOpen_ = false;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GameRevivalActInfo)
+    }
+
+    static {
+      defaultInstance = new GameRevivalActInfo(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GameRevivalActInfo)
+  }
+
   public interface GetContestViewerInfoReqOrBuilder extends
       // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetContestViewerInfoReq)
       com.google.protobuf.MessageOrBuilder {
@@ -19711,6 +24659,36 @@ public final class LiveSummitProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_UseSpecialCodeRsp_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_AddRevivalCardActReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_AddRevivalCardActReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_AddRevivalCardActRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_AddRevivalCardActRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetRevivalActivityReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetRevivalActivityReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetRevivalActivityRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetRevivalActivityRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_RevivalCardActInfo_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_RevivalCardActInfo_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GameRevivalActInfo_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GameRevivalActInfo_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetContestViewerInfoReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -19799,32 +24777,46 @@ public final class LiveSummitProto {
       "eRsp\022\017\n\007retCode\030\001 \002(\r\022\022\n\nrevivalNum\030\002 \001(" +
       "\r\"/\n\021UseSpecialCodeReq\022\014\n\004uuid\030\001 \001(\004\022\014\n\004" +
       "code\030\002 \001(\t\"8\n\021UseSpecialCodeRsp\022\017\n\007retCo" +
-      "de\030\001 \002(\r\022\022\n\nrevivalNum\030\002 \001(\r\"I\n\027GetConte" +
-      "stViewerInfoReq\022\014\n\004uuid\030\001 \002(\004\022\017\n\007host_id" +
-      "\030\002 \002(\004\022\017\n\007live_id\030\003 \002(\t\"?\n\027GetContestVie" +
-      "werInfoRsp\022\020\n\010ret_code\030\001 \002(\r\022\022\n\nviewer_n" +
-      "um\030\002 \001(\r\"Y\n\026GetContestAwardListReq\022\014\n\004uu",
-      "id\030\001 \001(\004\022\r\n\005limit\030\002 \001(\004\022\022\n\ncontest_id\030\003 " +
-      "\001(\t\022\016\n\006liveid\030\004 \001(\t\"]\n\026GetContestAwardLi" +
-      "stRsp\022\020\n\010ret_code\030\001 \002(\r\0221\n\nuser_infos\030\002 " +
-      "\003(\0132\035.com.wali.live.proto.UserInfo\"\212\001\n\022C" +
-      "ontestQuestionMsg\022\022\n\ncontest_id\030\001 \001(\t\0229\n" +
-      "\016question_infos\030\002 \001(\0132!.com.wali.live.pr" +
-      "oto.QuestionInfo\022\021\n\tstream_ts\030\003 \001(\004\022\022\n\na" +
-      "nswer_num\030\004 \001(\004\"\313\001\n\020ContestAnswerMsg\022\022\n\n" +
-      "contest_id\030\001 \001(\t\0229\n\016question_infos\030\002 \001(\013" +
-      "2!.com.wali.live.proto.QuestionInfo\022A\n\022l",
-      "ast_question_info\030\003 \001(\0132%.com.wali.live." +
-      "proto.LastQuestionInfo\022\021\n\tstream_ts\030\004 \001(" +
-      "\004\022\022\n\nanswer_num\030\005 \001(\004\"Z\n\020LastQuestionInf" +
-      "o\022\021\n\ttotal_num\030\001 \001(\r\022\023\n\013total_bonus\030\002 \001(" +
-      "\002\022\021\n\tper_bonus\030\003 \001(\002\022\013\n\003num\030\004 \001(\r\"L\n\020Que" +
-      "stionInfoItem\022\n\n\002id\030\001 \001(\t\022\014\n\004text\030\002 \001(\t\022" +
-      "\021\n\tis_answer\030\003 \001(\010\022\013\n\003num\030\004 \001(\r\"r\n\021Quest" +
-      "ionExtraInfo\022\022\n\nis_correct\030\001 \001(\010\022\023\n\013use_" +
-      "revival\030\002 \001(\010\022\023\n\013revival_num\030\003 \001(\r\022\n\n\002id" +
-      "\030\004 \001(\t\022\023\n\013is_continue\030\005 \001(\010B&\n\023com.wali.",
-      "live.protoB\017LiveSummitProto"
+      "de\030\001 \002(\r\022\022\n\nrevivalNum\030\002 \001(\r\"Z\n\024AddReviv" +
+      "alCardActReq\022\014\n\004uuid\030\001 \001(\004\022\014\n\004type\030\002 \001(\r" +
+      "\022\021\n\tcontestId\030\003 \001(\t\022\023\n\013gamePkgName\030\004 \001(\t" +
+      "\";\n\024AddRevivalCardActRsp\022\017\n\007retCode\030\001 \002(" +
+      "\r\022\022\n\nrevivalNum\030\002 \001(\r\"8\n\025GetRevivalActiv",
+      "ityReq\022\014\n\004uuid\030\001 \001(\004\022\021\n\tcontestId\030\002 \001(\t\"" +
+      "i\n\025GetRevivalActivityRsp\022\017\n\007retCode\030\001 \002(" +
+      "\r\022?\n\016revivalCardAct\030\002 \001(\0132\'.com.wali.liv" +
+      "e.proto.RevivalCardActInfo\"N\n\022RevivalCar" +
+      "dActInfo\0228\n\007gameAct\030\001 \003(\0132\'.com.wali.liv" +
+      "e.proto.GameRevivalActInfo\"\217\001\n\022GameReviv" +
+      "alActInfo\022\014\n\004icon\030\001 \001(\t\022\023\n\013gamePkgName\030\002" +
+      " \001(\t\022\023\n\013downloadUrl\030\003 \001(\t\022\r\n\005title\030\004 \001(\t" +
+      "\022\020\n\010subTitle\030\005 \001(\t\022\017\n\007canDown\030\006 \001(\010\022\017\n\007c" +
+      "anOpen\030\007 \001(\010\"I\n\027GetContestViewerInfoReq\022",
+      "\014\n\004uuid\030\001 \002(\004\022\017\n\007host_id\030\002 \002(\004\022\017\n\007live_i" +
+      "d\030\003 \002(\t\"?\n\027GetContestViewerInfoRsp\022\020\n\010re" +
+      "t_code\030\001 \002(\r\022\022\n\nviewer_num\030\002 \001(\r\"Y\n\026GetC" +
+      "ontestAwardListReq\022\014\n\004uuid\030\001 \001(\004\022\r\n\005limi" +
+      "t\030\002 \001(\004\022\022\n\ncontest_id\030\003 \001(\t\022\016\n\006liveid\030\004 " +
+      "\001(\t\"]\n\026GetContestAwardListRsp\022\020\n\010ret_cod" +
+      "e\030\001 \002(\r\0221\n\nuser_infos\030\002 \003(\0132\035.com.wali.l" +
+      "ive.proto.UserInfo\"\212\001\n\022ContestQuestionMs" +
+      "g\022\022\n\ncontest_id\030\001 \001(\t\0229\n\016question_infos\030" +
+      "\002 \001(\0132!.com.wali.live.proto.QuestionInfo",
+      "\022\021\n\tstream_ts\030\003 \001(\004\022\022\n\nanswer_num\030\004 \001(\004\"" +
+      "\313\001\n\020ContestAnswerMsg\022\022\n\ncontest_id\030\001 \001(\t" +
+      "\0229\n\016question_infos\030\002 \001(\0132!.com.wali.live" +
+      ".proto.QuestionInfo\022A\n\022last_question_inf" +
+      "o\030\003 \001(\0132%.com.wali.live.proto.LastQuesti" +
+      "onInfo\022\021\n\tstream_ts\030\004 \001(\004\022\022\n\nanswer_num\030" +
+      "\005 \001(\004\"Z\n\020LastQuestionInfo\022\021\n\ttotal_num\030\001" +
+      " \001(\r\022\023\n\013total_bonus\030\002 \001(\002\022\021\n\tper_bonus\030\003" +
+      " \001(\002\022\013\n\003num\030\004 \001(\r\"L\n\020QuestionInfoItem\022\n\n" +
+      "\002id\030\001 \001(\t\022\014\n\004text\030\002 \001(\t\022\021\n\tis_answer\030\003 \001",
+      "(\010\022\013\n\003num\030\004 \001(\r\"r\n\021QuestionExtraInfo\022\022\n\n" +
+      "is_correct\030\001 \001(\010\022\023\n\013use_revival\030\002 \001(\010\022\023\n" +
+      "\013revival_num\030\003 \001(\r\022\n\n\002id\030\004 \001(\t\022\023\n\013is_con" +
+      "tinue\030\005 \001(\010B&\n\023com.wali.live.protoB\017Live" +
+      "SummitProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -19934,56 +24926,92 @@ public final class LiveSummitProto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UseSpecialCodeRsp_descriptor,
         new java.lang.String[] { "RetCode", "RevivalNum", });
-    internal_static_com_wali_live_proto_GetContestViewerInfoReq_descriptor =
+    internal_static_com_wali_live_proto_AddRevivalCardActReq_descriptor =
       getDescriptor().getMessageTypes().get(16);
+    internal_static_com_wali_live_proto_AddRevivalCardActReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_AddRevivalCardActReq_descriptor,
+        new java.lang.String[] { "Uuid", "Type", "ContestId", "GamePkgName", });
+    internal_static_com_wali_live_proto_AddRevivalCardActRsp_descriptor =
+      getDescriptor().getMessageTypes().get(17);
+    internal_static_com_wali_live_proto_AddRevivalCardActRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_AddRevivalCardActRsp_descriptor,
+        new java.lang.String[] { "RetCode", "RevivalNum", });
+    internal_static_com_wali_live_proto_GetRevivalActivityReq_descriptor =
+      getDescriptor().getMessageTypes().get(18);
+    internal_static_com_wali_live_proto_GetRevivalActivityReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetRevivalActivityReq_descriptor,
+        new java.lang.String[] { "Uuid", "ContestId", });
+    internal_static_com_wali_live_proto_GetRevivalActivityRsp_descriptor =
+      getDescriptor().getMessageTypes().get(19);
+    internal_static_com_wali_live_proto_GetRevivalActivityRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetRevivalActivityRsp_descriptor,
+        new java.lang.String[] { "RetCode", "RevivalCardAct", });
+    internal_static_com_wali_live_proto_RevivalCardActInfo_descriptor =
+      getDescriptor().getMessageTypes().get(20);
+    internal_static_com_wali_live_proto_RevivalCardActInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_RevivalCardActInfo_descriptor,
+        new java.lang.String[] { "GameAct", });
+    internal_static_com_wali_live_proto_GameRevivalActInfo_descriptor =
+      getDescriptor().getMessageTypes().get(21);
+    internal_static_com_wali_live_proto_GameRevivalActInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GameRevivalActInfo_descriptor,
+        new java.lang.String[] { "Icon", "GamePkgName", "DownloadUrl", "Title", "SubTitle", "CanDown", "CanOpen", });
+    internal_static_com_wali_live_proto_GetContestViewerInfoReq_descriptor =
+      getDescriptor().getMessageTypes().get(22);
     internal_static_com_wali_live_proto_GetContestViewerInfoReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetContestViewerInfoReq_descriptor,
         new java.lang.String[] { "Uuid", "HostId", "LiveId", });
     internal_static_com_wali_live_proto_GetContestViewerInfoRsp_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(23);
     internal_static_com_wali_live_proto_GetContestViewerInfoRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetContestViewerInfoRsp_descriptor,
         new java.lang.String[] { "RetCode", "ViewerNum", });
     internal_static_com_wali_live_proto_GetContestAwardListReq_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(24);
     internal_static_com_wali_live_proto_GetContestAwardListReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetContestAwardListReq_descriptor,
         new java.lang.String[] { "Uuid", "Limit", "ContestId", "Liveid", });
     internal_static_com_wali_live_proto_GetContestAwardListRsp_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(25);
     internal_static_com_wali_live_proto_GetContestAwardListRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetContestAwardListRsp_descriptor,
         new java.lang.String[] { "RetCode", "UserInfos", });
     internal_static_com_wali_live_proto_ContestQuestionMsg_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(26);
     internal_static_com_wali_live_proto_ContestQuestionMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ContestQuestionMsg_descriptor,
         new java.lang.String[] { "ContestId", "QuestionInfos", "StreamTs", "AnswerNum", });
     internal_static_com_wali_live_proto_ContestAnswerMsg_descriptor =
-      getDescriptor().getMessageTypes().get(21);
+      getDescriptor().getMessageTypes().get(27);
     internal_static_com_wali_live_proto_ContestAnswerMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ContestAnswerMsg_descriptor,
         new java.lang.String[] { "ContestId", "QuestionInfos", "LastQuestionInfo", "StreamTs", "AnswerNum", });
     internal_static_com_wali_live_proto_LastQuestionInfo_descriptor =
-      getDescriptor().getMessageTypes().get(22);
+      getDescriptor().getMessageTypes().get(28);
     internal_static_com_wali_live_proto_LastQuestionInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_LastQuestionInfo_descriptor,
         new java.lang.String[] { "TotalNum", "TotalBonus", "PerBonus", "Num", });
     internal_static_com_wali_live_proto_QuestionInfoItem_descriptor =
-      getDescriptor().getMessageTypes().get(23);
+      getDescriptor().getMessageTypes().get(29);
     internal_static_com_wali_live_proto_QuestionInfoItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_QuestionInfoItem_descriptor,
         new java.lang.String[] { "Id", "Text", "IsAnswer", "Num", });
     internal_static_com_wali_live_proto_QuestionExtraInfo_descriptor =
-      getDescriptor().getMessageTypes().get(24);
+      getDescriptor().getMessageTypes().get(30);
     internal_static_com_wali_live_proto_QuestionExtraInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_QuestionExtraInfo_descriptor,

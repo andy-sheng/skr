@@ -113,6 +113,44 @@ message UseSpecialCodeRsp {
     optional uint32 revivalNum  = 2; //复活卡数
 }
 
+//活动增加复活卡
+//zhibo.contestcode.addrevivalcard
+message AddRevivalCardActReq {
+    optional uint64 uuid        = 1;
+    optional uint32 type        = 2; //类型 1=下载游戏，2=打开游戏
+    optional string contestId   = 3; //场次ID
+    optional string gamePkgName = 4; //游戏包名
+}
+message AddRevivalCardActRsp{
+    required uint32 retCode     = 1;
+    optional uint32 revivalNum  = 2; //复活卡数
+}
+
+//获取复活卡活动数据
+//zhibo.contestcode.getrevivalact
+message GetRevivalActivityReq {
+    optional uint64 uuid        = 1;
+    optional string contestId   = 2; //场次ID
+}
+message GetRevivalActivityRsp {
+    required uint32 retCode     = 1;
+    optional RevivalCardActInfo revivalCardAct  = 2; //活动详情
+}
+
+message RevivalCardActInfo {
+    repeated GameRevivalActInfo gameAct = 1;
+}
+
+message GameRevivalActInfo {
+    optional string icon            = 1; //游戏图标
+    optional string gamePkgName     = 2; //游戏包名
+    optional string downloadUrl     = 3; //下载地址
+    optional string title           = 4; //标题
+    optional string subTitle        = 5; //副标题
+    optional bool canDown           = 6; //是否可以下载获取复活卡
+    optional bool canOpen           = 7; //是否可以打开获取复活卡
+}
+
 //冲顶大会房间人数
 //zhibo.live.contestviewerinfo
 message GetContestViewerInfoReq {
@@ -177,4 +215,6 @@ message QuestionExtraInfo {
     optional string id = 4; //提交的选项
     optional bool is_continue = 5; //是否可以继续答题
 }
+
+
 /************************************** 冲顶大会 end******************************************/

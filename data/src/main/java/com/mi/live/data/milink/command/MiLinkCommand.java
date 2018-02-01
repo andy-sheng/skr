@@ -523,6 +523,8 @@ public class MiLinkCommand {
     public static final String COMMAND_GET_CONTEST_INVITE_CODE = "zhibo.contestcode.getinvitecode";
     public static final String COMMAND_SET_CONTEST_INVITE_CODE = "zhibo.contestcode.setinvitecode";
     public static final String COMMAND_USE_SPECIAL_CODE = "zhibo.contestcode.usespecialcode";
+    public static final String COMMAND_GET_REVIVAL_ACT = "zhibo.contestcode.getrevivalact";
+    public static final String COMMAND_ADD_REVIVAL_CARD_ACT = "zhibo.contestcode.addrevivalcard";
 
     public static final String COMMAND_INCOME_EXCHANGE_MIBI = "zhibo.bank.exchangeMibi";
     public static final String COMMAND_OAUTH_GET_MI_ACCESS_TOKEN = "zhibo.oauth.getMiAccessToken";  //小米账号登录授权验证
