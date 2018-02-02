@@ -109,6 +109,10 @@ public class VideoPlayerPresenter extends BasePlayerPresenter<TextureView, PullS
         return mStreamerPresenter.isMute();
     }
 
+    public void shiftUp(float ratio, float min_layer_ratio, float max_layer_ratio, float mix_frame_ratio, float max_frame_ratio) {
+        mStreamerPresenter.shiftUp(ratio, min_layer_ratio, max_layer_ratio, mix_frame_ratio, max_frame_ratio);
+    }
+
     public void setOuterCallBack(VideoPlayerWrapperView.IOuterCallBack outerCallBack) {
         mOuterCallBack = outerCallBack;
     }
