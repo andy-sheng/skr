@@ -85,10 +85,6 @@ public class VideoPlayerWrapperView extends FrameLayout {
         return mPlayerPresenter.isMute();
     }
 
-    public final void shiftUp(float ratio) {
-        mPlayerPresenter.shiftUp(ratio);
-    }
-
     public void notifyOrientation(boolean isLandscape) {
         MyLog.w(TAG, "notifyOrientation isLandscape=" + isLandscape);
         mPlayerPresenter.notifyOrientation(isLandscape);
