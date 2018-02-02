@@ -141,6 +141,10 @@ public class ErrorCode {
     public static final int CODE_CONTEST_INVITE_UUID_INVALID = 23523;   // 用户id无效
     public static final int CODE_CONTEST_INVITE_CODE_USED = 23524;      // 用户码已经使用
 
+    public static final int CODE_CONTEST_ACT_REENTER = 23525;           // 用户重复领取
+    public static final int CODE_CONTEST_ACT_NOT_EXIST = 23526;         // 活动不存在
+    public static final int CODE_CONTEST_ACT_ERROR = 23527;             // 增加复活码出错
+
     public static final int CODE_CONTEST_UNABLE = 5055;//冲顶大会无资格提交答案 commitAnswer返回码
     public static final int CODE_CONTEST_REPEAT = 5057;//冲顶大会重复提交 commitAnswer返回码
 

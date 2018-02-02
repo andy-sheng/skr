@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.activity.BaseActivity;
@@ -20,6 +21,7 @@ import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.date.DateTimeUtils;
+import com.base.utils.display.DisplayUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.api.ErrorCode;
@@ -30,10 +32,9 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import com.wali.live.watchsdk.contest.fragment.MyContestInfoFragment;
+import com.wali.live.watchsdk.contest.manager.ContestDownloadManager;
 import com.wali.live.watchsdk.contest.model.ContestNoticeModel;
-import com.wali.live.watchsdk.contest.model.MyDownloadModel;
 import com.wali.live.watchsdk.contest.presenter.ContestAdvertisingPresenter;
-import com.wali.live.watchsdk.contest.presenter.ContestAdvertisingPresenter.State;
 import com.wali.live.watchsdk.contest.presenter.ContestInvitePresenter;
 import com.wali.live.watchsdk.contest.presenter.ContestPreparePresenter;
 import com.wali.live.watchsdk.contest.presenter.IContestAdvertisingView;
@@ -41,6 +42,7 @@ import com.wali.live.watchsdk.contest.presenter.IContestInviteView;
 import com.wali.live.watchsdk.contest.presenter.IContestPrepareView;
 import com.wali.live.watchsdk.contest.rank.ContestRankActivity;
 import com.wali.live.watchsdk.contest.util.FormatUtils;
+import com.wali.live.watchsdk.contest.view.AdvertisingView;
 import com.wali.live.watchsdk.contest.view.ContestRevivalInputView;
 import com.wali.live.watchsdk.contest.view.ContestRevivalRuleView;
 import com.wali.live.watchsdk.contest.view.ContestSpecialInputView;
@@ -52,8 +54,8 @@ import org.greenrobot.eventbus.ThreadMode;
 /**
  * Created by lan on 2018/1/10.
  */
-public class ContestPrepareActivity extends BaseSdkActivity implements View.OnClickListener, IContestAdvertisingView,
-        IContestPrepareView, IContestInviteView {
+public class ContestPrepareActivity extends BaseSdkActivity implements View.OnClickListener,
+        IContestPrepareView, IContestInviteView, IContestAdvertisingView {
     private static final String RULE_PAGE_URL = "http://activity.zb.mi.com/egg/index?id=52";
 
     private static final String EXTRA_ZUID = "extra_zuid";
@@ -76,6 +78,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
 
     private BaseImageView mAvatarIv;
 
+    private ViewGroup mContentArea;
     private ViewGroup mMyBonusArea;
     private TextView mMyBonusTv;
 
@@ -100,6 +103,8 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
     private ContestInvitePresenter mInvitePresenter;
     private ContestAdvertisingPresenter mAdvertisingPresenter;
 
+    private ContestDownloadManager mDownloadManager;
+
     private ContestNoticeModel mNoticeModel;
     private User mMySelf;
 
@@ -107,10 +112,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
 
     private boolean mIsInterval = false;
 
-    private TextView mInstallTv;
-    private boolean mInstallTvEnable = true;
-    private MyDownloadModel myDownLoadModel;
-    private State mAdvertisingState;
+    private AdvertisingView mAdvertisingView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,13 +127,9 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         initData();
         initView();
         initPresenter();
-        initManager();
         AccountAuthManager.triggerActionNeedAccount(this);
     }
 
-    public void initManager() {
-        myDownLoadModel = new MyDownloadModel();
-    }
 
     private void initData() {
         mMySelf = MyUserInfoManager.getInstance().getUser();
@@ -169,6 +167,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         mAvatarIv.setOnClickListener(this);
         updateAvatarView();
 
+        mContentArea = $(R.id.content_area);
         mMyBonusArea = $(R.id.my_bonus_area);
         mMyBonusArea.setOnClickListener(this);
         mMyBonusTv = $(R.id.my_bonus_tv);
@@ -193,9 +192,6 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         mSpecialCodeTv = $(R.id.special_code_tv);
         mSpecialCodeTv.setOnClickListener(this);
 
-        mInstallTv = $(R.id.advertising_download_tv);
-        mInstallTv.setOnClickListener(this);
-
         mRevivalInputView = $(R.id.revival_input_view);
         mRevivalInputView.setInputListener(new ContestRevivalInputView.RevivalInputListener() {
             @Override
@@ -216,11 +212,10 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
 
     private void initPresenter() {
         mPreparePresenter = new ContestPreparePresenter(this, mZuid);
-        mAdvertisingPresenter = new ContestAdvertisingPresenter(this, this);
-        mAdvertisingPresenter.initState();
         mInvitePresenter = new ContestInvitePresenter(this);
         mInvitePresenter.getInviteCode();
-
+        mAdvertisingPresenter = new ContestAdvertisingPresenter(this);
+        mAdvertisingPresenter.getRevivalAct("2");
     }
 
     @Override
@@ -233,6 +228,52 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         MyLog.w(TAG, "onNewIntent");
+    }
+
+    @Override
+    public void getRevivalActSuccess() {
+        MyLog.d(TAG, "getRevivalActSuccess");
+        if (!mAdvertisingPresenter.hasCardAct()) {
+            return;
+        }
+        mAdvertisingView = $(R.id.advertising_area);
+        mAdvertisingView.setVisibility(View.VISIBLE);
+        adjustToAdvertisingView();
+
+        mDownloadManager = new ContestDownloadManager(mAdvertisingView, this);
+        mAdvertisingView.init(mAdvertisingPresenter, mDownloadManager);
+    }
+
+    //Invoked when has adv
+    private void adjustToAdvertisingView() {
+        MyLog.d(TAG, "adjustViewLayout");
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mContentArea.getLayoutParams();
+        lp.height = DisplayUtils.dip2px(280.66f);
+        mContentArea.setLayoutParams(lp);
+    }
+
+    @Override
+    public void getRevivalActFailed() {
+        MyLog.d(TAG, "getRevivalAct failed");
+    }
+
+    @Override
+    public void addRevivalCardActSuccess(int revivalNum) {
+        MyLog.d(TAG, "addRevivalCardActSuccess num=" + revivalNum);
+        ToastUtils.showToast(R.string.contest_prepare_revival_added);
+        mRevivalCountTv.setText(String.valueOf(revivalNum));
+    }
+
+    @Override
+    public void addRevivalCardActFailed(int errCode) {
+        MyLog.d(TAG, "addRevivalCardActFailed retcode=" + errCode);
+        if (errCode == ErrorCode.CODE_CONTEST_ACT_REENTER) {
+            ToastUtils.showToast(R.string.contest_act_reenter);
+        } else if (errCode == ErrorCode.CODE_CONTEST_ACT_NOT_EXIST) {
+            ToastUtils.showToast(R.string.contest_act_not_exist);
+        } else if (errCode == ErrorCode.CODE_CONTEST_ACT_ERROR) {
+            ToastUtils.showToast(R.string.contest_act_add_revival_error);
+        }
     }
 
     @Override
@@ -431,18 +472,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
             enterRulePage();
         } else if (id == R.id.special_code_tv) {
             showSpecialInputView();
-        } else if (id == R.id.advertising_download_tv) {
-            onAdvertisingClick();
         }
-    }
-
-    private void onAdvertisingClick() {
-        //mInstallTv.setEnabled(false);
-        if (mInstallTvEnable == false) {
-            return;
-        }
-        mInstallTvEnable = false;
-        mAdvertisingPresenter.doNext();
     }
 
     private void enterMyContestInfo() {
@@ -519,44 +549,4 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         activity.startActivity(intent);
     }
 
-    @Override
-    public void processChanged(int percent) {
-        if (mAdvertisingState == State.StartDownload) {
-            mInstallTv.setText(percent + "%");
-        }
-    }
-
-    @Override
-    public void statusChanged(State state) {
-        mAdvertisingState = state;
-        if (mAdvertisingState == State.Idle) {
-            if (mAdvertisingPresenter.hasCardByDownloadApp()) {
-                mInstallTv.setText("下载游戏得复活卡");
-            } else {
-                mInstallTv.setText("下载游戏");
-            }
-            mInstallTvEnable = true;
-        } else if (mAdvertisingState == State.InstallSuccess) {
-            if (mAdvertisingPresenter.hasCardByOpenApp()) {
-                mInstallTv.setText("打开游戏得复活卡");
-            } else {
-                mInstallTv.setText("打开游戏");
-            }
-            mInstallTvEnable = true;
-        } else if (mAdvertisingState == State.DownloadSuccess) {
-            mAdvertisingPresenter.doNext();
-        } else if (mAdvertisingState == State.DownloadFailed) {
-            mInstallTv.setText("下载游戏");
-            ToastUtils.showCallToast(this, "下载失败");
-            mInstallTvEnable = true;
-        } else if (mAdvertisingState == State.InstallFailed) {
-            ToastUtils.showCallToast(this, "安装失败");
-            mInstallTv.setText("重新安装");
-            mInstallTvEnable = true;
-        } else if (mAdvertisingState == State.Launch) {
-            mInstallTv.setText("打开游戏");
-            mInstallTvEnable = true;
-        }
-
-    }
 }
