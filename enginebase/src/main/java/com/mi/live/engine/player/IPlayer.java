@@ -39,7 +39,7 @@ public interface IPlayer {
 
     void setGravity(Player.SurfaceGravity gravity, int width, int height);
 
-    void shiftUp(float ratio);
+    void shiftUp(float ratio, float min_layer_ratio, float max_layer_ratio, float mix_frame_ratio, float max_frame_ratio);
 
     void setScreenOnWhilePlaying(boolean screenOn);
 
