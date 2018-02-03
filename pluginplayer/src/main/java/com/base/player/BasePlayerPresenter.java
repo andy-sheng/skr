@@ -61,7 +61,7 @@ public abstract class BasePlayerPresenter<VIEW, STREAMER extends PullStreamerPre
             mSurfaceWidth = width;
             mSurfaceHeight = height;
             mStreamerPresenter.setSurface(mSurface);
-            mStreamerPresenter.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFit,
+            mStreamerPresenter.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFill,
                     mSurfaceWidth, mSurfaceHeight);
             updateShiftUp();
         }
