@@ -63,7 +63,7 @@ public class ContestAdvertisingPresenter extends BaseRxPresenter<IContestAdverti
                 .subscribe(new Action1<LiveSummitProto.AddRevivalCardActRsp>() {
                     @Override
                     public void call(LiveSummitProto.AddRevivalCardActRsp rsp) {
-                        MyLog.w(TAG, "setInviteCode onNext");
+                        MyLog.w(TAG, "addRevivalAct onNext");
                         if (rsp.getRetCode() != ErrorCode.CODE_SUCCESS) {
                             mView.addRevivalCardActFailed(rsp.getRetCode());
                         } else {
@@ -73,7 +73,7 @@ public class ContestAdvertisingPresenter extends BaseRxPresenter<IContestAdverti
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        MyLog.w(TAG, "setInviteCode onError=" + throwable.getMessage());
+                        MyLog.w(TAG, "addRevivalAct onError=" + throwable.getMessage());
                     }
                 });
     }

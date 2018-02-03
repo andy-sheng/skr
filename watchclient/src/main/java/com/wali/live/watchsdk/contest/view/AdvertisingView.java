@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.ImageFactory;
+import com.base.log.MyLog;
 import com.base.mvp.specific.RxRelativeLayout;
 import com.base.utils.toast.ToastUtils;
 import com.wali.live.watchsdk.R;
@@ -36,6 +37,8 @@ public class AdvertisingView extends RxRelativeLayout implements View.OnClickLis
     private ContestDownloadManager mDownloadManager;
     private ContestAdvertisingPresenter mPresenter;
     private String mContestID;
+    private final int CARD_TYPE_DOWNLOAD = 1;
+    private final int CARD_TYPE_OPEN = 2;
 
     public AdvertisingView(Context context) {
         super(context, null);
@@ -69,6 +72,7 @@ public class AdvertisingView extends RxRelativeLayout implements View.OnClickLis
         mDownloadManager = manager;
         mContestID = contestID;
         mModel = mPresenter.getRevivalCardActInfo().get(0);
+        MyLog.w(TAG, "has download card:" + mModel.hasDownloadCard() + ",has oepen card:" + mModel.hasOpenCard());
         DownloadItemInfo downloadItemInfo = new DownloadItemInfo(mModel.getDownloadUrl(), mModel.getPackageName(), mModel.getName());
         mDownloadManager.addTask(downloadItemInfo);
         mDownloadManager.initState();
@@ -86,10 +90,10 @@ public class AdvertisingView extends RxRelativeLayout implements View.OnClickLis
         if (id == R.id.status_tip_tv) {
             if (mState == State.Idle && mModel.hasDownloadCard()) {
                 mModel.setDownloadCard(false);
-                mPresenter.addRevivalCardAct(1, mContestID, mModel.getPackageName());
+                mPresenter.addRevivalCardAct(CARD_TYPE_DOWNLOAD, mContestID, mModel.getPackageName());
             } else if (mState == State.InstallSuccess && mModel.hasOpenCard()) {
                 mModel.setOpenCard(false);
-                mPresenter.addRevivalCardAct(2, mContestID, mModel.getPackageName());
+                mPresenter.addRevivalCardAct(CARD_TYPE_OPEN, mContestID, mModel.getPackageName());
             }
             mDownloadManager.doNext();
         }
@@ -104,6 +108,7 @@ public class AdvertisingView extends RxRelativeLayout implements View.OnClickLis
 
     @Override
     public void statusChanged(State state) {
+        MyLog.w(TAG, "status changed:" + mState + " -> " + state);
         mState = state;
         if (mState == State.Idle) {
             if (mModel.hasDownloadCard()) {

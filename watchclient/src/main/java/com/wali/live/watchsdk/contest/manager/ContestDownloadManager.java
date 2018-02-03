@@ -49,7 +49,7 @@ public class ContestDownloadManager extends BaseRxPresenter<IContestDownloadView
     private State mState;
 
     private int mDownloadStatus;
-    private boolean mHasRegistered;
+    private boolean mReceiverRegistered;
     private boolean mObserverRegistered;
 
     private long mDownloadId;
@@ -232,12 +232,18 @@ public class ContestDownloadManager extends BaseRxPresenter<IContestDownloadView
     }
 
     private void registerObserver() {
-        if (mObserverRegistered) {
-            return;
+        if (!mObserverRegistered) {
+            mObserverRegistered = true;
+            mParentContext.getContentResolver().
+                    registerContentObserver(Uri.parse("content://downloads/my_downloads"), true, mDownloadObserver);
         }
-        mObserverRegistered = true;
-        mParentContext.getContentResolver().
-                registerContentObserver(Uri.parse("content://downloads/my_downloads"), true, mDownloadObserver);
+    }
+
+    private void unregisterObserver() {
+        if (mObserverRegistered) {
+            mParentContext.getContentResolver().unregisterContentObserver(mDownloadObserver);
+            mObserverRegistered = false;
+        }
     }
 
     private void registerDownloadReceiver() {
@@ -286,12 +292,12 @@ public class ContestDownloadManager extends BaseRxPresenter<IContestDownloadView
     }
 
     private void registerReceiver() {
-        if (mHasRegistered) {
+        if (mReceiverRegistered) {
             return;
         }
         registerDownloadReceiver();
         registerInstallReceiver();
-        mHasRegistered = true;
+        mReceiverRegistered = true;
     }
 
     private void unregisterDownloadReceiver() {
@@ -309,13 +315,25 @@ public class ContestDownloadManager extends BaseRxPresenter<IContestDownloadView
         }
     }
 
-    public void unregisterReceiver() {
-        if (mHasRegistered == false) {
+    private void cancelSubscription() {
+        if (mDownloadSubscription != null && !mDownloadSubscription.isUnsubscribed()) {
+            mDownloadSubscription.unsubscribe();
+        }
+    }
+
+    private void unregisterReceiver() {
+        if (mReceiverRegistered == false) {
             return;
         }
         unregisterDownloadReceiver();
         unregisterInstallReceiver();
-        mHasRegistered = false;
+        mReceiverRegistered = false;
+    }
+
+    public void destroy() {
+        unregisterObserver();
+        unregisterReceiver();
+        cancelSubscription();
     }
 
     private void updateState(State state) {
