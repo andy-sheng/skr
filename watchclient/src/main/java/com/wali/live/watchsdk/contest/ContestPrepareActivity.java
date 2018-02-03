@@ -241,7 +241,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         adjustToAdvertisingView();
 
         mDownloadManager = new ContestDownloadManager(mAdvertisingView, this);
-        mAdvertisingView.init(mAdvertisingPresenter, mDownloadManager);
+        mAdvertisingView.init(mAdvertisingPresenter, mDownloadManager, mNoticeModel.getContestID());
     }
 
     //Invoked when has adv
@@ -283,7 +283,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         }
         mNoticeModel = model;
         updateView();
-
+        mAdvertisingPresenter.getRevivalAct(mNoticeModel.getContestID());
         if (mNoticeModel.getStatus() == ContestNoticeModel.STATUS_GOING) {
             mPreparePresenter.cancelIntervalUpdate();
             mIsInterval = false;

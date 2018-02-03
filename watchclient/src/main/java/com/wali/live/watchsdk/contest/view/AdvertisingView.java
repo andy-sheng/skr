@@ -34,6 +34,7 @@ public class AdvertisingView extends RxRelativeLayout implements View.OnClickLis
     private ProgressBar mDownloadBar;
     private ContestDownloadManager mDownloadManager;
     private ContestAdvertisingPresenter mPresenter;
+    private String mContestID;
 
 
     public AdvertisingView(Context context) {
@@ -60,12 +61,13 @@ public class AdvertisingView extends RxRelativeLayout implements View.OnClickLis
         mStatusTv.setOnClickListener(this);
     }
 
-    public void init(ContestAdvertisingPresenter presenter, ContestDownloadManager manager) {
+    public void init(ContestAdvertisingPresenter presenter, ContestDownloadManager manager, String contestID) {
         if (presenter == null || manager == null) {
             return;
         }
         mPresenter = presenter;
         mDownloadManager = manager;
+        mContestID = contestID;
         mModel = mPresenter.getRevivalCardActInfo().get(0);
         DownloadItemInfo downloadItemInfo = new DownloadItemInfo(mModel.getDownloadUrl(), mModel.getPackageName(),mModel.getName());
         mDownloadManager.addTask(downloadItemInfo);
@@ -84,10 +86,10 @@ public class AdvertisingView extends RxRelativeLayout implements View.OnClickLis
         if(id == R.id.status_tip_tv) {
             if (mState == State.Idle && mModel.hasDownloadCard()) {
                 mModel.setDownloadCard(false);
-                mPresenter.addRevivalCardAct(1, "2", mModel.getPackageName());
+                mPresenter.addRevivalCardAct(1, mContestID, mModel.getPackageName());
             } else if (mState == State.InstallSuccess && mModel.hasOpenCard()) {
                 mModel.setOpenCard(false);
-                mPresenter.addRevivalCardAct(2, "2", mModel.getPackageName());
+                mPresenter.addRevivalCardAct(2, mContestID, mModel.getPackageName());
             }
             mDownloadManager.doNext();
         }
