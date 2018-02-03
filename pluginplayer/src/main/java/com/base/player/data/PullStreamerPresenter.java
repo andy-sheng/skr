@@ -110,6 +110,10 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         }
     }
 
+    public void shiftUp(float ratio) {
+        shiftUp(ratio, 0.5f, 0.76f, 1.33f, 1.81f);
+    }
+
     public void shiftUp(float ratio, float min_layer_ratio, float max_layer_ratio, float mix_frame_ratio, float max_frame_ratio) {
         if (mStreamer != null) {
             mStreamer.shiftUp(ratio, min_layer_ratio, max_layer_ratio, mix_frame_ratio, max_frame_ratio);

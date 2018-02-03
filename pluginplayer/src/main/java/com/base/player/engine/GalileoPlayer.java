@@ -269,11 +269,6 @@ public class GalileoPlayer implements IPlayer {
     }
 
     @Override
-    public void shiftUp(float ratio) {
-
-    }
-
-    @Override
     public void shiftUp(final float ratio, final float min_layer_ratio, final float max_layer_ratio,
                         final float mix_frame_ratio, final float max_frame_ratio) {
         ThreadPool.runOnEngine(new Runnable() {
