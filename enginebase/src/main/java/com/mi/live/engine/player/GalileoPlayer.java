@@ -196,7 +196,12 @@ public class GalileoPlayer implements IPlayer {
                 mPlayer.constructPlayer(tag, mInternalCallback, mPlayerMode, mTransferObserver);
                 final int screenWidth = GlobalData.screenWidth, screenHeight = GlobalData.screenHeight;
                 mPlayer.setGravity(SurfaceGravityResizeAspectFit, screenWidth, screenHeight);
-                mPlayer.shiftUp((screenHeight - screenWidth * 9 / 16 - DisplayUtils.dip2px(280)) / screenHeight);
+                int curMargin = (GlobalData.screenHeight - GlobalData.screenWidth * 9 / 16) / 2;
+                int targetMargin = DisplayUtils.dip2px(140);
+                float distance = curMargin - targetMargin;
+                mPlayer.shiftUp(distance * 2 / GlobalData.screenHeight, 0.5f, 0.76f, 1.33f, 1.81f);
+
+//                mPlayer.shiftUp((screenHeight - screenWidth * 9 / 16 - DisplayUtils.dip2px(280)) / screenHeight);
                 setWakeMode(context, PowerManager.SCREEN_BRIGHT_WAKE_LOCK);
             }
         }, "GalileoPlayer()");
@@ -282,12 +287,14 @@ public class GalileoPlayer implements IPlayer {
     }
 
     @Override
-    public void shiftUp(final float ratio) {
+    public void shiftUp(final float ratio, final float min_layer_ratio,
+                        final float max_layer_ratio, final float mix_frame_ratio,
+                        final float max_frame_ratio) {
         ThreadPool.runOnEngine(new Runnable() {
             @Override
             public void run() {
                 MyLog.w(TAG, "shiftUp ratio=" + ratio);
-                mPlayer.shiftUp(ratio);
+                mPlayer.shiftUp(ratio, min_layer_ratio, max_layer_ratio, mix_frame_ratio, max_frame_ratio);
             }
         }, "shiftUp");
     }
