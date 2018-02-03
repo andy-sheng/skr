@@ -20,8 +20,6 @@ import com.wali.live.watchsdk.contest.model.AdvertisingItemInfo;
 import com.wali.live.watchsdk.contest.model.DownloadItemInfo;
 import com.wali.live.watchsdk.contest.presenter.ContestAdvertisingPresenter;
 
-import java.util.List;
-
 /**
  * Created by wanglinzhang on 2018/2/1.
  */
@@ -29,13 +27,15 @@ public class AdvertisingView extends RxRelativeLayout implements View.OnClickLis
     private TextView mTitleTv;
     private TextView mStatusTv;
     private BaseImageView mIconIv;
+
+    private ProgressBar mDownloadBar;
+
     private AdvertisingItemInfo mModel;
     private State mState;
-    private ProgressBar mDownloadBar;
+
     private ContestDownloadManager mDownloadManager;
     private ContestAdvertisingPresenter mPresenter;
     private String mContestID;
-
 
     public AdvertisingView(Context context) {
         super(context, null);
@@ -55,7 +55,7 @@ public class AdvertisingView extends RxRelativeLayout implements View.OnClickLis
     private void initView(Context context) {
         inflate(context, R.layout.advertising_show_view, this);
 
-        mTitleTv  = $(R.id.advertising_title_tv);
+        mTitleTv = $(R.id.advertising_title_tv);
         mIconIv = $(R.id.advertising_icon_iv);
         mStatusTv = $(R.id.status_tip_tv);
         mStatusTv.setOnClickListener(this);
@@ -69,13 +69,13 @@ public class AdvertisingView extends RxRelativeLayout implements View.OnClickLis
         mDownloadManager = manager;
         mContestID = contestID;
         mModel = mPresenter.getRevivalCardActInfo().get(0);
-        DownloadItemInfo downloadItemInfo = new DownloadItemInfo(mModel.getDownloadUrl(), mModel.getPackageName(),mModel.getName());
+        DownloadItemInfo downloadItemInfo = new DownloadItemInfo(mModel.getDownloadUrl(), mModel.getPackageName(), mModel.getName());
         mDownloadManager.addTask(downloadItemInfo);
         mDownloadManager.initState();
         updateView();
     }
 
-    private  void updateView() {
+    private void updateView() {
         mTitleTv.setText(mModel.getTitle());
         FrescoWorker.loadImage(mIconIv, ImageFactory.newHttpImage(mModel.getIconUrl()).build());
     }
@@ -83,7 +83,7 @@ public class AdvertisingView extends RxRelativeLayout implements View.OnClickLis
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if(id == R.id.status_tip_tv) {
+        if (id == R.id.status_tip_tv) {
             if (mState == State.Idle && mModel.hasDownloadCard()) {
                 mModel.setDownloadCard(false);
                 mPresenter.addRevivalCardAct(1, mContestID, mModel.getPackageName());

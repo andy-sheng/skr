@@ -44,19 +44,20 @@ public class ContestDownloadManager extends BaseRxPresenter<IContestDownloadView
     private BroadcastReceiver mInstallReceiver;
 
     private Subscription mDownloadSubscription;
-
     private DownloadItemInfo mDownloadInfo;
 
-    private Context mParentContext;
+    private State mState;
 
     private int mDownloadStatus;
-    private boolean hasRegistered;
+    private boolean mHasRegistered;
     private boolean mObserverRegistered;
-    private State mState;
+
     private long mDownloadId;
     private boolean mHasInstalled;
     private String mDownloadFilename;
     private int mProgress = -1;
+
+    private Context mParentContext;
 
     public ContestDownloadManager(IContestDownloadView view, Context context) {
         super(view);
@@ -231,7 +232,7 @@ public class ContestDownloadManager extends BaseRxPresenter<IContestDownloadView
     }
 
     private void registerObserver() {
-        if (mObserverRegistered == true) {
+        if (mObserverRegistered) {
             return;
         }
         mObserverRegistered = true;
@@ -285,15 +286,15 @@ public class ContestDownloadManager extends BaseRxPresenter<IContestDownloadView
     }
 
     private void registerReceiver() {
-        if (hasRegistered) {
+        if (mHasRegistered) {
             return;
         }
         registerDownloadReceiver();
         registerInstallReceiver();
-        hasRegistered = true;
+        mHasRegistered = true;
     }
 
-    private void unRegisterDownloadReceiver() {
+    private void unregisterDownloadReceiver() {
         MyLog.w(TAG, "unregisterReceiver");
         if (mDownloadReceiver != null) {
             mParentContext.unregisterReceiver(mDownloadReceiver);
@@ -301,20 +302,20 @@ public class ContestDownloadManager extends BaseRxPresenter<IContestDownloadView
         }
     }
 
-    private void unRegisterInstallReceiver() {
+    private void unregisterInstallReceiver() {
         if (mInstallReceiver != null) {
             mParentContext.unregisterReceiver(mInstallReceiver);
             mInstallReceiver = null;
         }
     }
 
-    private void unRegisterReceiver() {
-        if (hasRegistered == false) {
+    public void unregisterReceiver() {
+        if (mHasRegistered == false) {
             return;
         }
-        unRegisterDownloadReceiver();
-        unRegisterInstallReceiver();
-        hasRegistered = false;
+        unregisterDownloadReceiver();
+        unregisterInstallReceiver();
+        mHasRegistered = false;
     }
 
     private void updateState(State state) {

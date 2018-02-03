@@ -5,8 +5,8 @@ import com.base.mvp.BaseRxPresenter;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.LiveSummitProto;
 import com.wali.live.watchsdk.contest.model.AdvertisingItemInfo;
-import com.wali.live.watchsdk.contest.request.GetRevivalActRequest;
 import com.wali.live.watchsdk.contest.request.AddRevivalCardActReq;
+import com.wali.live.watchsdk.contest.request.GetRevivalActRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +21,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by wanglinzhang on 2018/1/31.
  */
-
 public class ContestAdvertisingPresenter extends BaseRxPresenter<IContestAdvertisingView> {
-
     private Subscription mCetRevivalActSubscription;
     private Subscription mAddRevivalCardActSubscription;
     private List<AdvertisingItemInfo> mRevivalCardActInfo;
@@ -41,7 +39,7 @@ public class ContestAdvertisingPresenter extends BaseRxPresenter<IContestAdverti
         return mRevivalCardActInfo.size() > 0;
     }
 
-    public  void addRevivalCardAct(final int type, final String contestId, final String pkgName) {
+    public void addRevivalCardAct(final int type, final String contestId, final String pkgName) {
         if (mAddRevivalCardActSubscription != null && !mAddRevivalCardActSubscription.isUnsubscribed()) {
             return;
         }

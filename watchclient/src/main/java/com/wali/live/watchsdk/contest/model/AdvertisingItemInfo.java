@@ -5,7 +5,6 @@ import com.wali.live.proto.LiveSummitProto;
 /**
  * Created by wanglinzhang on 2018/2/1.
  */
-
 public class AdvertisingItemInfo {
     private String mIconUrl;
     private String mTitle;
@@ -16,11 +15,6 @@ public class AdvertisingItemInfo {
     private String mDownloadUrl;
     private String mPackageName;
     private String mName;
-
-    //default constructor
-    public AdvertisingItemInfo() {
-
-    }
 
     public AdvertisingItemInfo(LiveSummitProto.GameRevivalActInfo actInfo) {
         mIconUrl = actInfo.getIcon();

@@ -94,6 +94,8 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
     private TextView mSpecialCodeTv;
     private TextView mRuleTv;
 
+    private AdvertisingView mAdvertisingView;
+
     private ContestRevivalInputView mRevivalInputView;
     private ContestSpecialInputView mSpecialInputView;
 
@@ -101,8 +103,8 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
 
     private ContestPreparePresenter mPreparePresenter;
     private ContestInvitePresenter mInvitePresenter;
-    private ContestAdvertisingPresenter mAdvertisingPresenter;
 
+    private ContestAdvertisingPresenter mAdvertisingPresenter;
     private ContestDownloadManager mDownloadManager;
 
     private ContestNoticeModel mNoticeModel;
@@ -111,8 +113,6 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
     private long mZuid;
 
     private boolean mIsInterval = false;
-
-    private AdvertisingView mAdvertisingView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
