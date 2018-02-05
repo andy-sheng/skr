@@ -465,6 +465,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         if (mLiveStatusDrawable.isRunning()) {
             mLiveStatusDrawable.stop();
         }
+        mSpecialInputView.destroy();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
