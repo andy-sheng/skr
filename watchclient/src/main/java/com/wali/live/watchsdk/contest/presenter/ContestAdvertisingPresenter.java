@@ -118,13 +118,14 @@ public class ContestAdvertisingPresenter extends BaseRxPresenter<IContestAdverti
 
     private void processActInfo(LiveSummitProto.GetRevivalActivityRsp rsp) {
         if (rsp.hasRevivalCardAct()) {
-            MyLog.d(TAG, "processActInfo");
+            MyLog.w(TAG, "processActInfo:");
             List<LiveSummitProto.GameRevivalActInfo> gameList = rsp.getRevivalCardAct().getGameActList();
             for (int i = 0; i < gameList.size(); ++i) {
                 LiveSummitProto.GameRevivalActInfo actInfo = gameList.get(i);
                 //get adAct info
                 AdvertisingItemInfo adItm = new AdvertisingItemInfo(actInfo);
                 mRevivalCardActInfo.add(adItm);
+                MyLog.w(TAG, adItm.toString());
             }
         }
         mView.getRevivalActSuccess();
