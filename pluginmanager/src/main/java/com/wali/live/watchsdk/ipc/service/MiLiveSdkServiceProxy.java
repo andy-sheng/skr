@@ -279,6 +279,22 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         }
     }
 
+    public void doFeedBack() {
+        Logger.w(TAG, "doFeedBack");
+        if (mRemoteService == null) {
+            resolveNullService(IMiLiveSdk.ICallback.DO_FEED_BACK);
+        } else {
+            try {
+                mRemoteService.doFeedBack(MiLiveSdkController.getInstance().getChannelId(),
+                        GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret());
+            } catch (RemoteException e) {
+                resolveException(e, IMiLiveSdk.ICallback.DO_FEED_BACK);
+            }
+        }
+    }
+
+
     public void getChannelLives(IMiLiveSdk.IChannelAssistantCallback channelCallback) {
         Logger.w(TAG, "getChannelLives");
         if (channelCallback == null) {

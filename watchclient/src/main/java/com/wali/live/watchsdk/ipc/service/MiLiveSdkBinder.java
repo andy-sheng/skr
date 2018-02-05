@@ -14,6 +14,7 @@ import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.login.LoginType;
 import com.mi.live.data.account.task.AccountCaller;
 import com.mi.live.data.api.ErrorCode;
+import com.mi.live.data.milink.event.MiLinkEvent;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.event.EventClass;
 import com.wali.live.proto.AccountProto;
@@ -313,6 +314,28 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             }
         });
     }
+
+    @Override
+    public void doFeedBack(int channelId, String packageName, String channelSecret) throws RemoteException {
+        MyLog.w(TAG, "doFeedBack channelId=" + channelId + " packageName=" + packageName + " channelSecret=" + channelSecret);
+        secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
+            @Override
+            public void postSuccess() {
+                EventBus.getDefault().post(new MiLinkEvent.RequestUploadLog());
+            }
+
+            @Override
+            public void postError() {
+
+            }
+
+            @Override
+            public void processFailure() {
+
+            }
+        });
+    }
+
 
     @Override
     public void loginByMiAccountSso(final int channelId, final String packageName, final String channelSecret,

@@ -25,6 +25,12 @@ public class ShareInfo implements Parcelable {
 
     private String mInviteCode;
     private String mMyBonus;
+    /**
+     * 这个预埋数据，防止以后第三方需要新加字段的时候有问题。
+     * 新加的字段以後都以key-value的形式在String里面做拼接。
+     */
+    private String mExtraData;
+
 
     public ShareInfo(String title, String content, String picUrl, String url) {
         mTitle = title;
@@ -49,6 +55,7 @@ public class ShareInfo implements Parcelable {
         this.mUrl = in.readString();
         this.mInviteCode = in.readString();
         this.mMyBonus = in.readString();
+        this.mExtraData = in.readString();
     }
 
     public static final Creator<ShareInfo> CREATOR = new Creator<ShareInfo>() {
@@ -77,6 +84,7 @@ public class ShareInfo implements Parcelable {
         dest.writeString(this.mUrl);
         dest.writeString(this.mInviteCode);
         dest.writeString(this.mMyBonus);
+        dest.writeString(this.mExtraData);
     }
 
     public int getSnsType() {
@@ -135,6 +143,14 @@ public class ShareInfo implements Parcelable {
         mMyBonus = myBonus;
     }
 
+    public String getExtraData() {
+        return mExtraData;
+    }
+
+    public void setExtraData(String extraData) {
+        mExtraData = extraData;
+    }
+
     @Override
     public String toString() {
         return "ShareInfo{" +
@@ -145,6 +161,7 @@ public class ShareInfo implements Parcelable {
                 ", mUrl='" + mUrl + '\'' +
                 ", mInviteCode='" + mInviteCode + '\'' +
                 ", mMyBonus='" + mMyBonus + '\'' +
+                ", mExtraData='" + mExtraData + '\'' +
                 '}';
     }
 }
