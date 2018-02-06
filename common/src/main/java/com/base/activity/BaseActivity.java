@@ -1,6 +1,7 @@
 package com.base.activity;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -12,6 +13,7 @@ import android.view.WindowManager;
 
 import com.base.activity.assist.IBindActivityLIfeCycle;
 import com.base.common.BuildConfig;
+import com.base.common.R;
 import com.base.dialog.MyProgressDialog;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -359,6 +361,22 @@ public abstract class BaseActivity extends RxActivity implements IStatusBarOpera
             winParams.flags &= ~bits;
         }
         win.setAttributes(winParams);
+
+        //华为手机 7.0版本以上需要单独处理
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            try {
+                Class decorViewClazz = Class.forName("com.android.internal.policy.DecorView");
+                Field field = decorViewClazz.getDeclaredField("mSemiTransparentStatusBarColor");
+                field.setAccessible(true);
+                field.setInt(win.getDecorView(), Color.TRANSPARENT);  //改为透明
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
