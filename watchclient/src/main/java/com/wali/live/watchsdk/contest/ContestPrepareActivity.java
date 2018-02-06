@@ -105,7 +105,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
     private ContestInvitePresenter mInvitePresenter;
 
     private ContestAdvertisingPresenter mAdvertisingPresenter;
-    private boolean hasGetActInfo = false;
+    private boolean mHasGetActInfo = false;
     private ContestDownloadManager mDownloadManager;
 
     private ContestNoticeModel mNoticeModel;
@@ -283,9 +283,9 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         }
         mNoticeModel = model;
         updateView();
-        if (!hasGetActInfo) {
+        if (!mHasGetActInfo) {
             mAdvertisingPresenter.getRevivalAct(mNoticeModel.getContestID());
-            hasGetActInfo = true;
+            mHasGetActInfo = true;
         }
         if (mNoticeModel.getStatus() == ContestNoticeModel.STATUS_GOING) {
             mPreparePresenter.cancelIntervalUpdate();
