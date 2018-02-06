@@ -74,4 +74,17 @@ public class AdvertisingItemInfo {
     public String getName() {
         return mName;
     }
+
+    @Override
+    public String toString() {
+        return "AdvertisingItemInfo{" +
+                "iconUrl='" + mIconUrl + '\'' +
+                ", title=" + mTitle +
+                ", subTitle=" + mSubTitle +
+                ", packageName=" + mPackageName +
+                ", downloadUrl=" + mDownloadUrl +
+                ", canDownload=" + mHasDownloadCard +
+                ", canOpen=" + mHasOpenCard +
+                '}';
+    }
 }

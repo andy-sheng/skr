@@ -90,7 +90,7 @@ public class ContestDownloadManager extends BaseRxPresenter<IContestDownloadView
         // 由于COLUMN_LOCAL_FILENAME废弃，采用提前设置路径的方案
         File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         mDownloadFilename = Uri.withAppendedPath(Uri.fromFile(file), filename).getPath();
-        MyLog.d(TAG, "mDownloadFilename=" + mDownloadFilename);
+        MyLog.w(TAG, "mDownloadFilename=" + mDownloadFilename);
 
         mDownloadId = mDownloadManager.enqueue(request);
         MyLog.w(TAG, "downloadId=" + mDownloadId);
@@ -270,7 +270,7 @@ public class ContestDownloadManager extends BaseRxPresenter<IContestDownloadView
                 if (intent != null && mDownloadInfo != null) {
                     String action = intent.getAction();
                     String packageName = intent.getData().getSchemeSpecificPart();
-                    MyLog.d(TAG, "intent packageName=" + packageName + ";modelPackageName=" + mDownloadInfo.getPackageName());
+                    MyLog.w(TAG, "intent packageName=" + packageName + ";modelPackageName=" + mDownloadInfo.getPackageName());
                     if (packageName.equals(mDownloadInfo.getPackageName())) {
                         MyLog.w(TAG, "intent action=" + action);
                         switch (action) {
@@ -337,6 +337,7 @@ public class ContestDownloadManager extends BaseRxPresenter<IContestDownloadView
     }
 
     private void updateState(State state) {
+        MyLog.w(TAG, "manager status changed: " + mState + "->" + state);
         if (mState == state) {
             return;
         }
