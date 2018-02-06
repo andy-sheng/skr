@@ -7,11 +7,13 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.base.activity.BaseActivity;
 import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
 import com.base.mvp.specific.RxRelativeLayout;
+import com.base.permission.PermissionUtils;
 import com.base.utils.toast.ToastUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.contest.manager.ContestDownloadManager;
@@ -88,15 +90,40 @@ public class AdvertisingView extends RxRelativeLayout implements View.OnClickLis
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.status_tip_tv) {
-            if (mState == State.Idle && mModel.hasDownloadCard()) {
-                mModel.setDownloadCard(false);
-                mPresenter.addRevivalCardAct(CARD_TYPE_DOWNLOAD, mContestID, mModel.getPackageName());
-            } else if (mState == State.InstallSuccess && mModel.hasOpenCard()) {
-                mModel.setOpenCard(false);
-                mPresenter.addRevivalCardAct(CARD_TYPE_OPEN, mContestID, mModel.getPackageName());
+            if (mState == State.Idle) {
+                PermissionUtils.checkPermissionByType(
+                        (BaseActivity) (getContext()),
+                        PermissionUtils.PermissionType.WRITE_EXTERNAL_STORAGE,
+                        new PermissionUtils.IPermissionCallback() {
+                            @Override
+                            public void okProcess() {
+                                MyLog.d(TAG, "advertise view, check write permission ok");
+                                try {
+                                    processIdleStatus();
+                                } catch (Exception e) {
+                                    MyLog.e(TAG, e);
+                                }
+                            }
+                        }
+                );
+            } else if (mState == State.InstallSuccess) {
+                if (mModel.hasOpenCard()) {
+                    mModel.setOpenCard(false);
+                    mPresenter.addRevivalCardAct(CARD_TYPE_OPEN, mContestID, mModel.getPackageName());
+                }
+                mDownloadManager.doNext();
+            } else {
+                mDownloadManager.doNext();
             }
-            mDownloadManager.doNext();
         }
+    }
+
+    private void processIdleStatus() {
+        if (mModel.hasDownloadCard()) {
+            mModel.setDownloadCard(false);
+            mPresenter.addRevivalCardAct(CARD_TYPE_DOWNLOAD, mContestID, mModel.getPackageName());
+        }
+        mDownloadManager.doNext();
     }
 
     @Override
