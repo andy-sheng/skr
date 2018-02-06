@@ -93,6 +93,7 @@ public class ErrorCode {
     public static final int CODE_SERVER_RESPONSE_ERROR_MORE_THAN_MAX_COUNT = 11099;
 
     public static final int CODE_SERVER_RESPONSE_ERROR_CODE_REBIND_ERROR = 11078;
+    public static final int WX_CARDID_HAS_BEEN_BINDED = 11086;//身份证号已绑定其他直播账号
 
     public static final int CODE_SERVER_RESPONSE_ERROR_CODE_PHONE_NUM_WRONG = 6019;
     public static final int CODE_SERVER_RESPONSE_ERROR_CODE_CAPTCHA_ERROR = 6013;

@@ -723,6 +723,7 @@
     <string name="withdraw_fail_info1">1.请确保您的微信已经绑定银行卡</string>
     <string name="withdraw_fail_info2">2.请确保您输入的身份信息和微信绑定银行卡的身份信息一致</string>
     <string name="rebind_tip">当前微信已被其他账号绑定</string>
+    <string name="id_card_rebind_tip">当前身份证号被其他账号绑定</string>
 
     <string name="real_name_status_fail">实名验证失败</string>
     <string name="real_name_status_success">实名已验证</string>

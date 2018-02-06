@@ -314,6 +314,9 @@ public class WxCertificationActivity extends BaseSdkActivity implements View.OnC
             case ErrorCode.CODE_SERVER_RESPONSE_ERROR_CODE_REBIND_ERROR:
                 ToastUtils.showLongToast(GlobalData.app(), R.string.rebind_tip);
                 break;
+            case ErrorCode.WX_CARDID_HAS_BEEN_BINDED:
+                ToastUtils.showLongToast(GlobalData.app(), R.string.id_card_rebind_tip);
+                break;
             default:
                 openBindFailDialog();
 //                ToastUtils.showLongToast(GlobalData.app(), R.string.account_withdraw_info_error);
