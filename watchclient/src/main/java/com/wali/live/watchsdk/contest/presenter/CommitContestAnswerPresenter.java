@@ -31,6 +31,7 @@ public class CommitContestAnswerPresenter extends BaseRxPresenter<IContestCommit
     private Subscription mCommitAnswerSubscription;
     private String MSG_ERR_TIMEOUT = "time out; rsp == null";
     private boolean mHasShowRetryToast = false;
+    private boolean mHasShowRetrySucToast = false;
 
     public CommitContestAnswerPresenter(IContestCommitAnswerView view) {
         super(view);
@@ -48,6 +49,7 @@ public class CommitContestAnswerPresenter extends BaseRxPresenter<IContestCommit
             return;
         }
         mHasShowRetryToast = false;
+        mHasShowRetrySucToast = false;
         mCommitAnswerSubscription = Observable.just(0)
                 .flatMap(new Func1<Integer, Observable<LiveSummitProto.CommitContestAnswerRsp>>() {
                     @Override
@@ -121,6 +123,11 @@ public class CommitContestAnswerPresenter extends BaseRxPresenter<IContestCommit
 
     //errorCode为0或重复提交5057时，正常返回数据的处理
     private void setNormalContestData(LiveSummitProto.CommitContestAnswerRsp rsp, String seq) {
+        if (mHasShowRetryToast && !mHasShowRetrySucToast) {
+            MyLog.w(TAG, "setNormalContestData showRetrySucToast");
+            ToastUtils.showToast(R.string.commit_answer_retry_suc);
+            mHasShowRetrySucToast = true;
+        }
         if (rsp.hasExtraInfo() && rsp.getExtraInfo() != null) {
             ContestCurrentCache.getInstance().setSeq(seq);
 
