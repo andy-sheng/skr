@@ -1,7 +1,6 @@
 package com.wali.live.watchsdk.contest.presenter;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -11,28 +10,27 @@ import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.LiveSummitProto;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.contest.ContestLog;
 import com.wali.live.watchsdk.contest.cache.ContestCurrentCache;
 import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import com.wali.live.watchsdk.contest.request.CommitContestAnswerRequest;
 
-import java.util.concurrent.TimeUnit;
-
 import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 /**
  * Created by liuyanyan on 2018/1/12.
  */
 public class CommitContestAnswerPresenter extends BaseRxPresenter<IContestCommitAnswerView> {
+    private final String TAG = ContestLog.LOG_PREFIX + CommitContestAnswerPresenter.class.getSimpleName();
+
     private Subscription mCommitAnswerSubscription;
     private String MSG_ERR_TIMEOUT = "time out; rsp == null";
-    private boolean isRetryed = false;
+    private boolean mHasShowRetryToast = false;
 
     public CommitContestAnswerPresenter(IContestCommitAnswerView view) {
         super(view);
@@ -49,6 +47,7 @@ public class CommitContestAnswerPresenter extends BaseRxPresenter<IContestCommit
         if (mCommitAnswerSubscription != null && !mCommitAnswerSubscription.isUnsubscribed()) {
             return;
         }
+        mHasShowRetryToast = false;
         mCommitAnswerSubscription = Observable.just(0)
                 .flatMap(new Func1<Integer, Observable<LiveSummitProto.CommitContestAnswerRsp>>() {
                     @Override
@@ -59,6 +58,11 @@ public class CommitContestAnswerPresenter extends BaseRxPresenter<IContestCommit
                             return Observable.just(rsp);
                         } else {
                             //重试
+                            if (!mHasShowRetryToast) {
+                                MyLog.w(TAG, "commitContestAnswer showCommitFailToast");
+                                ToastUtils.showToast(R.string.commit_answer_error_no_rsp);
+                                mHasShowRetryToast = true;
+                            }
                             MyLog.w(TAG, "commitContestAnswer flatMap rsp == null");
                             return Observable.error(new Throwable(MSG_ERR_TIMEOUT));
                         }
@@ -67,7 +71,7 @@ public class CommitContestAnswerPresenter extends BaseRxPresenter<IContestCommit
                 .subscribeOn(Schedulers.io())
                 .compose(mView.<LiveSummitProto.CommitContestAnswerRsp>bindUntilEvent())
                 .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(new RxRetryAssist(1, 0, false))
+                .retryWhen(new RxRetryAssist(4, 0, false))
                 .subscribe(new Action1<LiveSummitProto.CommitContestAnswerRsp>() {
                     @Override
                     public void call(LiveSummitProto.CommitContestAnswerRsp rsp) {
@@ -77,31 +81,18 @@ public class CommitContestAnswerPresenter extends BaseRxPresenter<IContestCommit
                             setAbleContestData();
                         } else if (rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
                             MyLog.w(TAG, "commitContestAnswer rsp = " + rsp.toString());
-                            if (rsp.getExtraInfo() != null) {
-                                ContestCurrentCache.getInstance().setSeq(seq);
-
-                                ContestCurrentCache.getInstance().setId(rsp.getExtraInfo().getId());
-                                ContestCurrentCache.getInstance().setCorrect(rsp.getExtraInfo().getIsCorrect());
-                                ContestCurrentCache.getInstance().setUseRevival(rsp.getExtraInfo().getUseRevival());
-                                ContestCurrentCache.getInstance().setContinue(rsp.getExtraInfo().getIsContinue());
-
-                                if (rsp.getExtraInfo().getUseRevival()) {
-                                    ContestGlobalCache.setRevivalNum(rsp.getExtraInfo().getRevivalNum());
-                                }
-                            } else {
-                                MyLog.w(TAG, "commitContestAnswer  extraInfo= null");
-                                setAbleContestData();
-                            }
+                            setNormalContestData(rsp, seq);
                         } else if (rsp.getRetCode() == ErrorCode.CODE_CONTEST_UNABLE) {
-                            ToastUtils.showToast(GlobalData.app().getResources().getString(R.string.commit_answer_error_code, rsp.getRetCode()));
+                            ToastUtils.showToast(R.string.commit_answer_error_5055);
                             MyLog.w(TAG, "commitContestAnswer retCode = " + rsp.getRetCode());
                             setUnAbleContestData();
                         } else if (rsp.getRetCode() == ErrorCode.CODE_CONTEST_REPEAT) {
-                            //如果返回码是重复提交 忽略此次结果
+                            //如果返回码是重复提交
                             MyLog.w(TAG, "commitContestAnswer retCode = " + rsp.getRetCode());
+                            setNormalContestData(rsp, seq);
                         } else {
-                            ToastUtils.showToast(GlobalData.app().getResources().getString(R.string.commit_answer_error_code, rsp.getRetCode()));
                             MyLog.w(TAG, "commitContestAnswer retCode = " + rsp.getRetCode());
+                            ToastUtils.showToast(GlobalData.app().getResources().getString(R.string.commit_answer_error_code, rsp.getRetCode()));
                             setAbleContestData();
                         }
                     }
@@ -109,7 +100,6 @@ public class CommitContestAnswerPresenter extends BaseRxPresenter<IContestCommit
                     @Override
                     public void call(Throwable throwable) {
                         MyLog.w(TAG, "commitContestAnswer onError=" + throwable.getMessage());
-                        ToastUtils.showToast(R.string.net_error_return);
                         setAbleContestData();
                     }
                 });
@@ -127,5 +117,24 @@ public class CommitContestAnswerPresenter extends BaseRxPresenter<IContestCommit
         //清空cache消息，下次显示答案信息时顶部状态为已淘汰
         ContestCurrentCache.getInstance().clearCache();
         ContestCurrentCache.getInstance().setContinue(false);
+    }
+
+    //errorCode为0或重复提交5057时，正常返回数据的处理
+    private void setNormalContestData(LiveSummitProto.CommitContestAnswerRsp rsp, String seq) {
+        if (rsp.hasExtraInfo() && rsp.getExtraInfo() != null) {
+            ContestCurrentCache.getInstance().setSeq(seq);
+
+            ContestCurrentCache.getInstance().setId(rsp.getExtraInfo().getId());
+            ContestCurrentCache.getInstance().setCorrect(rsp.getExtraInfo().getIsCorrect());
+            ContestCurrentCache.getInstance().setUseRevival(rsp.getExtraInfo().getUseRevival());
+            ContestCurrentCache.getInstance().setContinue(rsp.getExtraInfo().getIsContinue());
+
+            if (rsp.getExtraInfo().getUseRevival()) {
+                ContestGlobalCache.setRevivalNum(rsp.getExtraInfo().getRevivalNum());
+            }
+        } else {
+            MyLog.w(TAG, "commitContestAnswer  extraInfo= null");
+            setAbleContestData();
+        }
     }
 }

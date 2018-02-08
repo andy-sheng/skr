@@ -79,6 +79,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -328,19 +329,16 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
         mContestMessagePresenter.setCallBack(new ContestMessagePresenter.IContestCallBack() {
             @Override
             public void onQuestion(final ContestQuestionMsgExt msgExt) {
-                MyLog.w(TAG, "showContestView Question = " + msgExt.toString());
-//                if (!(mContestQuestionView.getVisibility() == View.VISIBLE)) {
-//                    mContestQuestionView.bindContestQuestionData(msgExt);
-//                }
-//                if (!(mQuestionView.getVisibility() == View.VISIBLE)) {
+                MyLog.w(ContestLog.LOG_PREFIX + TAG, "showContestView Question = " + msgExt.toString());
+                if(mQuestionView.getVisibility() == View.VISIBLE){
+                    mQuestionView.commitDefaultAnswer();
+                }
                 mQuestionView.bindContestQuestionData(msgExt);
-//                }
             }
 
             @Override
             public void onAnswer(final ContestAnswerMsgExt msgExt) {
-                MyLog.w(TAG, "showContestView Answer = " + msgExt.toString());
-//                if (!(mAnswerView.getVisibility() == View.VISIBLE)) {
+                MyLog.w(ContestLog.LOG_PREFIX + TAG, "showContestView Answer = " + msgExt.toString());
                 mRevivalCntTv.setText(getString(R.string.contest_prepare_revival_card) + "x" + ContestGlobalCache.getRevivalNum());
                 if (mQuestionView.getVisibility() == View.VISIBLE) {
                     mHandler.postDelayed(new Runnable() {
@@ -368,7 +366,6 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
                         mLastQuestionInfoModel = msgExt.getLastQuestionInfoModel();
                     }
                 }
-//                }
             }
         });
 
@@ -495,6 +492,19 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
             } else {
                 super.onBackPressed();
             }
+            //            先别删测试
+//            ContestQuestionMsgExt msgExt = new ContestQuestionMsgExt();
+//            QuestionInfoModel.QuestionInfoItem questionInfoItem = new QuestionInfoModel.QuestionInfoItem("1", "jdksjskdjks", true, 0);
+//            QuestionInfoModel.QuestionInfoItem questionInfoItem1 = new QuestionInfoModel.QuestionInfoItem("1", "jdksjskdjks", true, 0);
+//            QuestionInfoModel.QuestionInfoItem questionInfoItem2 = new QuestionInfoModel.QuestionInfoItem("1", "jdksjskdjks", true, 0);
+//
+//            ArrayList<QuestionInfoModel.QuestionInfoItem> items = new ArrayList<>();
+//            items.add(questionInfoItem);
+//            items.add(questionInfoItem1);
+//            items.add(questionInfoItem2);
+//
+//            msgExt.setQuestionInfoModel(new QuestionInfoModel("ds", items, "nishishui", false, 0, 0));
+//            mQuestionView.bindContestQuestionData(msgExt);
         } else if (id == R.id.share_btn) {
             showRevivalRuleView();
         } else if (id == R.id.share_container) {
