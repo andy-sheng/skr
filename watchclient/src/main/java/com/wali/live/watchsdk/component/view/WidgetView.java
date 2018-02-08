@@ -10,12 +10,15 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.RelativeLayout;
 
+import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.webview.InjectedWebViewClient;
+import com.wali.live.watchsdk.webview.WebViewListener;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +44,8 @@ public class WidgetView extends RelativeLayout
     private WidgetItemView mRightTopWiv;
     private WidgetItemView mLeftBottomWiv;
     private WidgetItemView mRightBottomWiv;
+
+    private InjectedWebViewClient mWebViewClient;
 
     private boolean mNeedShow = true;
     private Map<Integer, Integer> mWidgetIDs = new HashMap<>();
@@ -86,6 +91,11 @@ public class WidgetView extends RelativeLayout
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.widget_view, this);
         setPadding(PADDING, PADDING >> 1, PADDING, PADDING_PORTRAIT_BOTTOM);
+
+        if (mWebViewClient == null) {
+            mWebViewClient = new InjectedWebViewClient(new WebViewListener() {
+            }, (BaseSdkActivity) getContext());
+        }
     }
 
     private void showWidgetView(@NonNull List<LiveCommonProto.NewWidgetItem> list) {
@@ -116,6 +126,7 @@ public class WidgetView extends RelativeLayout
         if (mLeftTopWiv == null) {
             mLeftTopWiv = $$(R.id.left_top_vs);
             mLeftTopWiv.setWidgetPos(WidgetItemView.POS_LEFT_TOP);
+            mLeftTopWiv.setWebViewClient(mWebViewClient);
             mLeftTopWiv.setPresenter(mPresenter);
         }
         mLeftTopWiv.showWidgetItem(info, mNeedShow);
@@ -128,6 +139,7 @@ public class WidgetView extends RelativeLayout
         if (mRightTopWiv == null) {
             mRightTopWiv = $$(R.id.right_top_vs);
             mRightTopWiv.setWidgetPos(WidgetItemView.POS_RIGHT_TOP);
+            mRightTopWiv.setWebViewClient(mWebViewClient);
             mRightTopWiv.setPresenter(mPresenter);
         }
         mRightTopWiv.showWidgetItem(info, mNeedShow);
@@ -140,6 +152,7 @@ public class WidgetView extends RelativeLayout
         if (mLeftBottomWiv == null) {
             mLeftBottomWiv = $$(R.id.left_bottom_vs);
             mLeftBottomWiv.setWidgetPos(WidgetItemView.POS_LEFT_BOTTOM);
+            mLeftBottomWiv.setWebViewClient(mWebViewClient);
             mLeftBottomWiv.setPresenter(mPresenter);
 
             if (mIsLandscape) {
@@ -160,6 +173,7 @@ public class WidgetView extends RelativeLayout
         if (mRightBottomWiv == null) {
             mRightBottomWiv = $$(R.id.right_bottom_vs);
             mRightBottomWiv.setWidgetPos(WidgetItemView.POS_RIGHT_BOTTOM);
+            mRightBottomWiv.setWebViewClient(mWebViewClient);
             mRightBottomWiv.setPresenter(mPresenter);
         }
         mRightBottomWiv.showWidgetItem(info, mNeedShow);
