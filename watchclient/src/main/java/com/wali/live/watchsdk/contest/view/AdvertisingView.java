@@ -4,59 +4,161 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.base.activity.BaseActivity;
 import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.ImageFactory;
+import com.base.log.MyLog;
 import com.base.mvp.specific.RxRelativeLayout;
+import com.base.permission.PermissionUtils;
+import com.base.utils.toast.ToastUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.contest.manager.ContestDownloadManager;
+import com.wali.live.watchsdk.contest.manager.ContestDownloadManager.State;
+import com.wali.live.watchsdk.contest.manager.IContestDownloadView;
+import com.wali.live.watchsdk.contest.model.AdvertisingItemInfo;
+import com.wali.live.watchsdk.contest.model.DownloadItemInfo;
+import com.wali.live.watchsdk.contest.presenter.ContestAdvertisingPresenter;
 
 /**
  * Created by wanglinzhang on 2018/2/1.
  */
-public class AdvertisingView extends RxRelativeLayout implements View.OnClickListener {
+public class AdvertisingView extends RxRelativeLayout implements View.OnClickListener, IContestDownloadView {
     private TextView mTitleTv;
-    private TextView mStatus;
+    private TextView mStatusTv;
     private BaseImageView mIconIv;
+
+    private ProgressBar mDownloadBar;
+
+    private AdvertisingItemInfo mModel;
+    private State mState;
+
+    private ContestDownloadManager mDownloadManager;
+    private ContestAdvertisingPresenter mPresenter;
+    private String mContestID;
+    private final int CARD_TYPE_DOWNLOAD = 1;
+    private final int CARD_TYPE_OPEN = 2;
 
     public AdvertisingView(Context context) {
         super(context, null);
-        init(context);
+        initView(context);
     }
 
     public AdvertisingView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs, 0);
-        init(context);
+        initView(context);
     }
 
     public AdvertisingView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        initView(context);
     }
 
-    private void init(Context context) {
+    private void initView(Context context) {
         inflate(context, R.layout.advertising_show_view, this);
 
-        mTitleTv  = $(R.id.advertising_title_tv);
+        mTitleTv = $(R.id.advertising_title_tv);
         mIconIv = $(R.id.advertising_icon_iv);
-        mStatus = $(R.id.status_tv);
+        mStatusTv = $(R.id.status_tip_tv);
+        mStatusTv.setOnClickListener(this);
     }
 
-    public void setTitle(String title) {
-        mTitleTv.setText(title);
+    public void init(ContestAdvertisingPresenter presenter, ContestDownloadManager manager, String contestID) {
+        if (presenter == null || manager == null) {
+            return;
+        }
+        mPresenter = presenter;
+        mDownloadManager = manager;
+        mContestID = contestID;
+        mModel = mPresenter.getRevivalCardActInfo().get(0);
+        MyLog.w(TAG, "has download card:" + mModel.hasDownloadCard() + ",has oepen card:" + mModel.hasOpenCard());
+        DownloadItemInfo downloadItemInfo = new DownloadItemInfo(mModel.getDownloadUrl(), mModel.getPackageName(), mModel.getName());
+        mDownloadManager.addTask(downloadItemInfo);
+        mDownloadManager.initState();
+        updateView();
     }
 
-    public void setIcon(String iconUrl) {
-        FrescoWorker.loadImage(mIconIv, ImageFactory.newHttpImage(iconUrl).build());
-    }
-
-    public void updateStatus(String status){
-        mStatus.setText(status);
+    private void updateView() {
+        mTitleTv.setText(mModel.getTitle());
+        FrescoWorker.loadImage(mIconIv, ImageFactory.newHttpImage(mModel.getIconUrl()).build());
     }
 
     @Override
     public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.status_tip_tv) {
+            if (mState == State.Idle) {
+                PermissionUtils.checkPermissionByType(
+                        (BaseActivity) (getContext()),
+                        PermissionUtils.PermissionType.WRITE_EXTERNAL_STORAGE,
+                        new PermissionUtils.IPermissionCallback() {
+                            @Override
+                            public void okProcess() {
+                                MyLog.d(TAG, "advertise view, check write permission ok");
+                                try {
+                                    processIdleStatus();
+                                } catch (Exception e) {
+                                    MyLog.e(TAG, e);
+                                }
+                            }
+                        }
+                );
+            } else if (mState == State.InstallSuccess) {
+                if (mModel.hasOpenCard()) {
+                    mModel.setOpenCard(false);
+                    mPresenter.addRevivalCardAct(CARD_TYPE_OPEN, mContestID, mModel.getPackageName());
+                }
+                mDownloadManager.doNext();
+            } else {
+                mDownloadManager.doNext();
+            }
+        }
+    }
 
+    private void processIdleStatus() {
+        if (mModel.hasDownloadCard()) {
+            mModel.setDownloadCard(false);
+            mPresenter.addRevivalCardAct(CARD_TYPE_DOWNLOAD, mContestID, mModel.getPackageName());
+        }
+        mDownloadManager.doNext();
+    }
+
+    @Override
+    public void processChanged(int percent) {
+        if (mState == State.StartDownload) {
+            mStatusTv.setText(percent + "%");
+        }
+    }
+
+    @Override
+    public void statusChanged(State state) {
+        MyLog.w(TAG, "status changed:" + mState + " -> " + state);
+        mState = state;
+        if (mState == State.Idle) {
+            if (mModel.hasDownloadCard()) {
+                mStatusTv.setText(R.string.contest_advertising_download_with_card);
+            } else {
+                mStatusTv.setText(R.string.contest_advertising_download);
+            }
+        } else if (mState == State.InstallSuccess) {
+            if (mModel.hasOpenCard()) {
+                mStatusTv.setText(R.string.contest_advertising_open_with_card);
+            } else {
+                mStatusTv.setText(R.string.contest_advertising_open);
+            }
+        } else if (mState == State.DownloadSuccess) {
+            mStatusTv.setText(R.string.contest_advertising_install);
+            mDownloadManager.doNext();
+        } else if (mState == State.DownloadFailed) {
+            mStatusTv.setText(R.string.contest_advertising_download);
+            ToastUtils.showCallToast(this.getContext(), "下载失败");
+        } else if (mState == State.InstallFailed) {
+            ToastUtils.showCallToast(this.getContext(), "安装失败");
+        } else if (mState == State.Launch) {
+            mStatusTv.setText(R.string.contest_advertising_open);
+        }
     }
 }

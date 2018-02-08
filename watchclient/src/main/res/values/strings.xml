@@ -469,9 +469,12 @@
     <string name="contest_prepare_share_code">分享给好友</string>
     <string name="contest_prepare_share_code_tip">分享给好友得复活卡</string>
     <string name="contest_prepare_invite_code">邀请好友得复活卡</string>
-    <string name="contest_prepare_download_game_code">下载游戏得复活卡</string>
-    <string name="contest_prepare_advertising_name">小米枪战</string>
-    <string name="contest_prepare_advertising_tip">只有在本页面下载才能得复活卡哦</string>
+    <string name="contest_advertising_download_with_card">下载游戏得复活卡</string>
+    <string name="contest_advertising_download">下载游戏</string>
+    <string name="contest_advertising_install">安装游戏</string>
+    <string name="contest_advertising_open_with_card">打开游戏得复活卡</string>
+    <string name="contest_advertising_open">打开游戏</string>
+
     <string name="contest_prepare_revival_card">复活卡</string>
     <string name="contest_prepare_revival_card_x">复活卡x</string>
     <string name="contest_prepare_revival_tip">答错题不被淘汰哦</string>
@@ -491,6 +494,10 @@
     <string name="contest_prepare_withdraw">去提现</string>
     <string name="contest_prepare_withdraw_tip">提现奖金会有1-2天延迟，请您耐心等待</string>
     <string name="contest_prepare_invite_invalid">邀请码无效</string>
+    <string name="contest_act_reenter">您以领取该类型复活码</string>
+    <string name="contest_act_not_exist">该活动不存在</string>
+    <string name="contest_act_add_revival_error">领取复活卡失败</string>
+    <string name="contest_act_add_revival_success">领取复活卡成功</string>
     <string name="contest_prepare_invite_myself">无法邀请自己</string>
     <string name="contest_prepare_invite_uuid_invalid">用户出了点小情况</string>
     <string name="contest_prepare_invite_code_used">该邀请码已经被使用</string>

@@ -3,12 +3,13 @@ package com.wali.live.watchsdk.contest.presenter;
 import com.base.mvp.IRxView;
 
 /**
- * Created by wanglinzhang on 2018/1/30.
+ * Created by wanglinzhang on 2018/1/31.
  */
 
 public interface IContestAdvertisingView extends IRxView {
+    void getRevivalActSuccess();
+    void getRevivalActFailed();
+    void addRevivalCardActSuccess(int revivalNum);
+    void addRevivalCardActFailed(int retCode);
 
-    void processChanged(int percent);
-
-    void statusChanged(ContestAdvertisingPresenter.State status);
 }

@@ -26,6 +26,7 @@ public class ContestNoticeModel extends BaseViewModel {
     private String mLiveId;
     private long mServerTime;       //服务器时间
     private String mVideoUrl;       //流地址
+    private String mContestID;      //场次id
 
     public ContestNoticeModel(LiveSummitProto.ContestNoticeInfo protoInfo) {
         parse(protoInfo);
@@ -49,6 +50,7 @@ public class ContestNoticeModel extends BaseViewModel {
         mLiveId = protoInfo.getLiveid();
         mServerTime = protoInfo.getTs();
         mVideoUrl = protoInfo.getViewurl();
+        mContestID = protoInfo.getContestId();
     }
 
     public int getStatus() {
@@ -98,5 +100,9 @@ public class ContestNoticeModel extends BaseViewModel {
             return 0;
         }
         return mStartTime - mServerTime;
+    }
+
+    public String getContestID() {
+        return mContestID;
     }
 }

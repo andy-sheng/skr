@@ -148,7 +148,13 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
         $(R.id.contest_prepare_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ContestPrepareActivity.open(MainActivity.this, 0);
+                String input = mInputEditText.getText().toString();
+                if (CommonUtils.isNumeric(input)) {
+                    ContestPrepareActivity.open(MainActivity.this, Long.parseLong(input));
+                } else {
+                    ContestPrepareActivity.open(MainActivity.this, 0);
+                }
+
             }
         });
         $(R.id.watch_btn).setOnClickListener(new View.OnClickListener() {
