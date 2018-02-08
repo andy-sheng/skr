@@ -31,10 +31,10 @@ import com.wali.live.watchsdk.channel.presenter.IChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelView;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
 import com.wali.live.watchsdk.contest.ContestPrepareActivity;
-import com.wali.live.watchsdk.contest.ContestWatchActivity;
 import com.wali.live.watchsdk.cta.CTANotifyFragment;
 import com.wali.live.watchsdk.login.LoginPresenter;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
+import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.wali.live.watchsdk.webview.WebViewActivity;
 
@@ -163,7 +163,7 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
                     RoomInfo roomInfo = RoomInfo.Builder.newInstance(Long.parseLong(input), null, null)
                             .setLiveType(0)
                             .build();
-                    ContestWatchActivity.open(MainActivity.this, Long.parseLong(input), "", "");
+                    WatchSdkActivity.openActivity(MainActivity.this, roomInfo);
                 } else {
                     ToastUtils.showToast("主播id不是数字");
                 }
