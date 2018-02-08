@@ -508,6 +508,7 @@
 
     <string name="contest_success_share">炫耀战绩</string>
     <string name="commit_answer_error_no_rsp">您的网络异常，答案尚未提交成功</string>
+    <string name="commit_answer_retry_suc">努力重试后，答案终于提交成功啦</string>
     <string name="commit_answer_error_5055">您已被淘汰，没有答题资格</string>
     <string name="commit_answer_error_code">系统出错,错误码%d</string>
     <string name="contest_fail_title">你被淘汰了</string>
