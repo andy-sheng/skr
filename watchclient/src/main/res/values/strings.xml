@@ -496,7 +496,8 @@
     <string name="contest_prepare_invite_invalid">邀请码无效</string>
     <string name="contest_act_reenter">您以领取该类型复活码</string>
     <string name="contest_act_not_exist">该活动不存在</string>
-    <string name="contest_act_add_revival_error">领取复活码错误</string>
+    <string name="contest_act_add_revival_error">领取复活卡失败</string>
+    <string name="contest_act_add_revival_success">领取复活卡成功</string>
     <string name="contest_prepare_invite_myself">无法邀请自己</string>
     <string name="contest_prepare_invite_uuid_invalid">用户出了点小情况</string>
     <string name="contest_prepare_invite_code_used">该邀请码已经被使用</string>
@@ -516,7 +517,8 @@
     <string name="contest_success_money_right">现金奖励</string>
 
     <string name="contest_success_share">炫耀战绩</string>
-
+    <string name="commit_answer_error_no_rsp">您的网络异常，答案尚未提交成功</string>
+    <string name="commit_answer_error_5055">您已被淘汰，没有答题资格</string>
     <string name="commit_answer_error_code">系统出错,错误码%d</string>
     <string name="contest_fail_title">你被淘汰了</string>
     <string name="contest_fail_des">快去邀请好友参加，获得复活卡,赢的几率就更大哦！</string>
@@ -732,6 +734,7 @@
     <string name="withdraw_fail_info1">1.请确保您的微信已经绑定银行卡</string>
     <string name="withdraw_fail_info2">2.请确保您输入的身份信息和微信绑定银行卡的身份信息一致</string>
     <string name="rebind_tip">当前微信已被其他账号绑定</string>
+    <string name="id_card_rebind_tip">当前身份证号被其他账号绑定</string>
 
     <string name="real_name_status_fail">实名验证失败</string>
     <string name="real_name_status_success">实名已验证</string>

@@ -11,7 +11,8 @@
         android:layout_marginLeft="@dimen/margin_40"
         android:layout_marginRight="@dimen/margin_40"
         android:layout_marginTop="@dimen/margin_20"
-        android:background="@drawable/bg_summit_question">
+        android:background="@drawable/bg_summit_question"
+        android:duplicateParentState="true">
 
         <TextView
             android:id="@+id/answer_option_tv"
@@ -23,6 +24,6 @@
             android:paddingLeft="@dimen/margin_50"
             android:textColor="@color/color_black_selected_white_disable_black40"
             android:textSize="@dimen/text_size_48"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </RelativeLayout>
 </RelativeLayout>

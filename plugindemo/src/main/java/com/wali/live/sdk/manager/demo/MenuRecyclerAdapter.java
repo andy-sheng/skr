@@ -454,6 +454,23 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 mActivity.startActivity(intent);
             }
         }));
+
+        mDataList.add(new Bean("用户反馈测试入口", new Runnable() {
+            @Override
+            public void run() {
+                MiLiveSdkController.getInstance().doFeedBack(new IMiLiveSdk.IAssistantCallback() {
+                    @Override
+                    public void notifyVersionLow() {
+                        ToastUtils.showToast("版本过低");
+                    }
+
+                    @Override
+                    public void notifyNotInstall() {
+                        ToastUtils.showToast("没有安装sdk");
+                    }
+                });
+            }
+        }));
     }
 
     public void oauthLogin() {

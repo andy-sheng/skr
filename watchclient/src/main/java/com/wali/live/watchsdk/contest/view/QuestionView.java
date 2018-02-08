@@ -20,6 +20,7 @@ import com.base.utils.CommonUtils;
 import com.mi.live.data.push.model.contest.ContestQuestionMsgExt;
 import com.mi.live.data.push.model.contest.QuestionInfoModel;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.contest.ContestLog;
 import com.wali.live.watchsdk.contest.cache.ContestCurrentCache;
 import com.wali.live.watchsdk.contest.media.ContestMediaHelper;
 import com.wali.live.watchsdk.contest.presenter.CommitContestAnswerPresenter;
@@ -33,7 +34,7 @@ import java.util.List;
  * Created by liuyanyan on 2018/1/15.
  */
 public class QuestionView extends RxRelativeLayout implements View.OnClickListener, IContestCommitAnswerView {
-    private final String TAG = QuestionView.class.getSimpleName() + hashCode();
+    private final String TAG = ContestLog.LOG_PREFIX + QuestionView.class.getSimpleName() + hashCode();
 
     public static final int MSG_HIDE_VIEW = 101;
     public static final int MSG_HIDE_NOTIFY_VIEW = 102;
@@ -202,7 +203,14 @@ public class QuestionView extends RxRelativeLayout implements View.OnClickListen
     private void hideView() {
         MyLog.w(TAG, "hideView");
         hideViewAnimation();
+        commitDefaultAnswer();
+    }
 
+    /*
+    * 提交默认答案
+    * */
+    public void commitDefaultAnswer() {
+        MyLog.w(TAG, "commitDefaultAnswer");
         if (TextUtils.isEmpty(mSelectId) && ContestCurrentCache.getInstance().isContinue()) {
             MyLog.w(TAG, "hideView commitContestAnswer ");
             ContestCurrentCache.getInstance().setContinue(false);
@@ -226,9 +234,6 @@ public class QuestionView extends RxRelativeLayout implements View.OnClickListen
     private void setItemsStatus() {
         for (int index = 0; index < mAnswerContainer.getChildCount(); index++) {
             View view = mAnswerContainer.getChildAt(index);
-            if (!view.isSelected()) {
-                view.findViewById(R.id.content_view).setEnabled(false);
-            }
             view.setEnabled(false);
         }
     }
@@ -344,6 +349,9 @@ public class QuestionView extends RxRelativeLayout implements View.OnClickListen
     public void destroy() {
         super.destroy();
         MyLog.w(TAG, " destroy");
+        if (getVisibility() == VISIBLE) {
+            commitDefaultAnswer();
+        }
         mTimerHandler.removeCallbacksAndMessages(null);
         mTimeCounterView.stop();
         if (mMediaHelper != null) {

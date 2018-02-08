@@ -27,4 +27,6 @@ interface IMiLiveSdkService {
     void statistic(String key, long time);
 
     void editUserInfo(String packageName, String channelSecret, in ThirdPartLoginData loginData);
+
+    void doFeedBack(int channelId, String packageName, String channelSecret);
 }

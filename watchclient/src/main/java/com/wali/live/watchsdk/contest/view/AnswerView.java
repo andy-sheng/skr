@@ -19,6 +19,7 @@ import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.push.model.contest.ContestAnswerMsgExt;
 import com.mi.live.data.push.model.contest.QuestionInfoModel;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.contest.ContestLog;
 import com.wali.live.watchsdk.contest.cache.ContestCurrentCache;
 import com.wali.live.watchsdk.contest.media.ContestMediaHelper;
 import com.wali.live.watchsdk.eventbus.EventClass;
@@ -32,7 +33,7 @@ import java.util.List;
  * Created by liuyanyan on 2018/1/15.
  */
 public class AnswerView extends RxRelativeLayout {
-    private final String TAG = AnswerView.class.getSimpleName() + hashCode();
+    private final String TAG = ContestLog.LOG_PREFIX + AnswerView.class.getSimpleName() + hashCode();
 
     private final float RESULT_ITEM_WIDTH = 333;
     public final int COUNT_DOWN_TOTAL_NUM = 10 * 1000;//答题倒计时总时长
@@ -111,7 +112,6 @@ public class AnswerView extends RxRelativeLayout {
 
     public void bindContestAnswerData(ContestAnswerMsgExt answerMsgExt) {
         MyLog.w(TAG, "bindContestAnswerData");
-//        resetData();
         QuestionInfoModel model = answerMsgExt.getQuestionInfoModel();
         bindData(model);
         if (model != null) {

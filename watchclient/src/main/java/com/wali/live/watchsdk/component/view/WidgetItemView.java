@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.text.TextPaint;
@@ -12,7 +13,10 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewStub;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.activity.RxActivity;
@@ -20,10 +24,14 @@ import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.IFrescoCallBack;
 import com.base.log.MyLog;
 import com.base.thread.ThreadPool;
+import com.base.utils.Constants;
 import com.base.utils.display.DisplayUtils;
+import com.base.utils.language.LocaleUtil;
 import com.base.utils.network.Network;
 import com.base.utils.toast.ToastUtils;
 import com.base.utils.ui.ColorFormatter;
+import com.base.utils.version.VersionManager;
+import com.base.view.NonLeakingWebView;
 import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.datasource.DataSource;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -44,6 +52,9 @@ import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
+import com.wali.live.watchsdk.webview.InjectedWebViewClient;
+import com.wali.live.watchsdk.webview.LiveWebViewClient;
+import com.wali.live.watchsdk.webview.WebViewActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -85,6 +96,9 @@ public class WidgetItemView extends LinearLayout {
     private SupportWidgetView mSupportWv;
     private int mLastWidgetID;
     private boolean mIsCanClick = true;
+
+    private NonLeakingWebView mWebView;
+    private InjectedWebViewClient mWebViewClient;
 
     public WidgetItemView(Context context) {
         super(context);
@@ -129,6 +143,10 @@ public class WidgetItemView extends LinearLayout {
             setGravity(Gravity.RIGHT);
             mItemTv.setGravity(Gravity.RIGHT);
         }
+    }
+
+    public void setWebViewClient(InjectedWebViewClient webViewClient) {
+        mWebViewClient = webViewClient;
     }
 
     public void setPresenter(WidgetView.IPresenter presenter) {
@@ -270,8 +288,8 @@ public class WidgetItemView extends LinearLayout {
      * @param posFlag 位置标识
      */
     private void initWidget(int type, final LiveCommonProto.NewWidgetItem info,
-                            final BaseImageView iv, final TextView tv, BaseImageView iv2, final LinearLayout layout,
-                            final int posFlag) {
+                            final BaseImageView iv, final TextView tv, BaseImageView iv2,
+                            final LinearLayout layout, final int posFlag) {
         MyLog.i(TAG, "initWidget position = " + info.getPosition() + ",widget id:" + info.getWidgetID());
 
         iv.setVisibility(GONE);
@@ -284,11 +302,19 @@ public class WidgetItemView extends LinearLayout {
         iv2.setImageBitmap(null);
         iv2.setBackground(null);
 
+        if (mWebView != null) {
+            mWebView.setVisibility(GONE);
+        }
+
         final List<LiveCommonProto.NewWidgetUnit> data = info.getWidgetUintList();
 
         // 第一张图片
         if (data != null && data.size() > 0) {
             final LiveCommonProto.NewWidgetUnit unit = data.get(0);
+            if (unit.hasH5Config()) {
+                initH5Setting(unit.getH5Config().getH5Url());
+                return;
+            }
 
             if (unit.hasLinkUrl()) {
                 // 如果有
@@ -480,6 +506,50 @@ public class WidgetItemView extends LinearLayout {
                         });
             }
         }
+    }
+
+    private void initH5Setting(String url) {
+        MyLog.w(TAG, "widget loadUrl=" + url);
+
+        if (mWebView == null) {
+            mWebView = new NonLeakingWebView(getContext());
+            mWebView.setLayoutParams(new RelativeLayout.LayoutParams(DisplayUtils.dip2px(66.67f), DisplayUtils.dip2px(110)));
+            addView(mWebView);
+        }
+
+        mWebView.setVisibility(VISIBLE);
+        mWebView.setWebViewClient(mWebViewClient);
+
+        boolean urlValid = LiveWebViewClient.isValidUrl(url);
+        if (!urlValid) {
+            url = LiveWebViewClient.getCheckedUrl(url);
+        }
+        mWebView.setBackgroundColor(0);
+        WebSettings settings = mWebView.getSettings();
+        WebViewActivity.setCookies();
+        String userAgent = settings.getUserAgentString();
+        userAgent += " mizhiBo-a-" + VersionManager.getVersionName(getContext().getApplicationContext()) + "-" +
+                LocaleUtil.getLanguageCode().toLowerCase();
+        MyLog.w(TAG, "userAgent=" + userAgent);
+        settings.setUserAgentString(userAgent);
+        settings.setJavaScriptEnabled(true);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        settings.setPluginState(WebSettings.PluginState.ON);
+        settings.setSupportZoom(true);
+        settings.setBuiltInZoomControls(false);
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setDomStorageEnabled(true);
+        settings.setGeolocationEnabled(true);
+        settings.setGeolocationDatabasePath(getContext().getFilesDir().getPath());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            settings.setAllowUniversalAccessFromFileURLs(true);
+        }
+        if (Constants.isDebugBuild && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
+        mWebView.loadUrl(url);
     }
 
     /**

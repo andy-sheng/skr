@@ -12,6 +12,7 @@ import com.mi.live.data.push.model.contest.ContestAnswerMsgExt;
 import com.mi.live.data.push.model.contest.ContestQuestionMsgExt;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.watchsdk.channel.view.presenter.HeaderVideoPresenter;
+import com.wali.live.watchsdk.contest.ContestLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,14 +91,14 @@ public class ContestMessagePresenter implements IPushMsgProcessor {
                 switch (msg.getMsgType()) {
                     case B_MSG_TYPE_QUESTION: {
                         ContestQuestionMsgExt msgExt = (ContestQuestionMsgExt) msg.getMsgExt();
-                        MyLog.w(TAG, "QUESTION step0");
+                        MyLog.w(ContestLog.LOG_PREFIX + TAG, "QUESTION step0");
                         if (msgExt != null && msgExt.getQuestionInfoModel() != null) {
                             MyLog.w(TAG, "QUESTION step1=" + msgExt.toString());
                             String questionId = msgExt.getQuestionInfoModel().getSeq();
                             if (!TextUtils.isEmpty(questionId) && !mQuestionMsgExts.contains(questionId)) {
                                 mQuestionMsgExts.add(questionId);
                                 mControlQueue.offer(msgExt);
-                                MyLog.w(TAG, "QUESTION process type=" + msg.getMsgType() + "msgExt=" + msgExt.toString() + " questionId=" + questionId);
+                                MyLog.w(ContestLog.LOG_PREFIX + TAG, "QUESTION process type=" + msg.getMsgType() + "msgExt=" + msgExt.toString() + " questionId=" + questionId);
                             } else {
                                 MyLog.w(TAG, "QUESTION step 3 questionId=" + questionId);
                             }
@@ -106,14 +107,14 @@ public class ContestMessagePresenter implements IPushMsgProcessor {
                     break;
                     case B_MSG_TYPE_ANSWER: {
                         ContestAnswerMsgExt msgExt = (ContestAnswerMsgExt) msg.getMsgExt();
-                        MyLog.w(TAG, "ANSWER step0");
+                        MyLog.w(ContestLog.LOG_PREFIX + TAG, "ANSWER step0");
                         if (msgExt != null && msgExt.getQuestionInfoModel() != null) {
                             MyLog.w(TAG, "ANSWER step1 msgExt=" + msgExt.toString());
                             String questionId = msgExt.getQuestionInfoModel().getSeq();
                             if (!TextUtils.isEmpty(questionId) && !mAnswerMsgExts.contains(questionId)) {
                                 mAnswerMsgExts.add(questionId);
                                 mControlQueue.offer(msgExt);
-                                MyLog.w(TAG, "ANSWER process type=" + msg.getMsgType() + "msgExt=" + msgExt.toString() + " questionId=" + questionId);
+                                MyLog.w(ContestLog.LOG_PREFIX + TAG, "ANSWER process type=" + msg.getMsgType() + "msgExt=" + msgExt.toString() + " questionId=" + questionId);
                             } else {
                                 MyLog.w(TAG, "ANSWER step 3 questionId=" + questionId);
                             }

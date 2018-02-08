@@ -24,6 +24,7 @@ import com.base.utils.date.DateTimeUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.MyUserInfoManager;
+import com.mi.live.data.account.event.UserInfoEvent;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.user.User;
@@ -260,7 +261,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
     @Override
     public void addRevivalCardActSuccess(int revivalNum) {
         MyLog.d(TAG, "addRevivalCardActSuccess num=" + revivalNum);
-        ToastUtils.showToast(R.string.contest_prepare_revival_added);
+        ToastUtils.showToast(R.string.contest_act_add_revival_success);
         mRevivalCountTv.setText(String.valueOf(revivalNum));
     }
 
@@ -311,7 +312,6 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
     private void updateMyView() {
         float totalIncome = mNoticeModel.getTotalIncome();
         mMyBonusTv.setText(FormatUtils.formatMoney(totalIncome));
-
         int rank = mNoticeModel.getRank();
         mMyRankTv.setText(FormatUtils.formatRank(rank));
     }
@@ -532,6 +532,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         if(mDownloadManager!=null){
             mDownloadManager.destroy();
         }
+        mSpecialInputView.destroy();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -541,10 +542,18 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
             if (mInvitePresenter != null) {
                 mInvitePresenter.getInviteCode();
             }
-
             if (mPreparePresenter != null) {
                 mPreparePresenter.getContestNotice();
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(UserInfoEvent userInfoEvent) {
+        MyLog.w(TAG, "userInfoEvent");
+        if (mMySelf != null && mMySelf.getUid() != MyUserInfoManager.getInstance().getUuid()) {
+            mMySelf = MyUserInfoManager.getInstance().getUser();
+            updateAvatarView();
         }
     }
 

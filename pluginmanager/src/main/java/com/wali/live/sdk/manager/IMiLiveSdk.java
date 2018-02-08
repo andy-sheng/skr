@@ -173,10 +173,14 @@ public interface IMiLiveSdk {
      * @param sex
      * @param nickname
      * @param headUrl
-     * @param sign
      * @param callback
      */
     public void editUserInfo(int channelId, String xuid, int sex, String nickname, String headUrl, IAssistantCallback callback);
+
+    /**
+     * 用户反馈
+     */
+    public void doFeedBack(IAssistantCallback callback);
 
     /**
      * 获取频道列表
@@ -258,6 +262,11 @@ public interface IMiLiveSdk {
          * 编辑资料相关接口
          */
         int EDIT_USER_INFO = 1300;
+
+        /**
+         * 用户反馈接口
+         */
+        int DO_FEED_BACK = 1301;
 
         /**
          * 登录相关接口的返回码
