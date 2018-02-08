@@ -32,8 +32,12 @@ import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import com.wali.live.watchsdk.contest.fragment.MyContestInfoFragment;
 import com.wali.live.watchsdk.contest.model.ContestNoticeModel;
+import com.wali.live.watchsdk.contest.model.MyDownloadModel;
+import com.wali.live.watchsdk.contest.presenter.ContestAdvertisingPresenter;
+import com.wali.live.watchsdk.contest.presenter.ContestAdvertisingPresenter.State;
 import com.wali.live.watchsdk.contest.presenter.ContestInvitePresenter;
 import com.wali.live.watchsdk.contest.presenter.ContestPreparePresenter;
+import com.wali.live.watchsdk.contest.presenter.IContestAdvertisingView;
 import com.wali.live.watchsdk.contest.presenter.IContestInviteView;
 import com.wali.live.watchsdk.contest.presenter.IContestPrepareView;
 import com.wali.live.watchsdk.contest.rank.ContestRankActivity;
@@ -49,7 +53,8 @@ import org.greenrobot.eventbus.ThreadMode;
 /**
  * Created by lan on 2018/1/10.
  */
-public class ContestPrepareActivity extends BaseSdkActivity implements View.OnClickListener, IContestPrepareView, IContestInviteView {
+public class ContestPrepareActivity extends BaseSdkActivity implements View.OnClickListener, IContestAdvertisingView,
+        IContestPrepareView, IContestInviteView {
     private static final String RULE_PAGE_URL = "http://activity.zb.mi.com/egg/index?id=52";
 
     private static final String EXTRA_ZUID = "extra_zuid";
@@ -94,6 +99,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
 
     private ContestPreparePresenter mPreparePresenter;
     private ContestInvitePresenter mInvitePresenter;
+    private ContestAdvertisingPresenter mAdvertisingPresenter;
 
     private ContestNoticeModel mNoticeModel;
     private User mMySelf;
@@ -101,6 +107,11 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
     private long mZuid;
 
     private boolean mIsInterval = false;
+
+    private TextView mInstallTv;
+    private boolean mInstallTvEnable = true;
+    private MyDownloadModel myDownLoadModel;
+    private State mAdvertisingState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,8 +126,12 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         initData();
         initView();
         initPresenter();
-
+        initManager();
         AccountAuthManager.triggerActionNeedAccount(this);
+    }
+
+    public void initManager() {
+        myDownLoadModel = new MyDownloadModel();
     }
 
     private void initData() {
@@ -179,6 +194,9 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         mSpecialCodeTv = $(R.id.special_code_tv);
         mSpecialCodeTv.setOnClickListener(this);
 
+        mInstallTv = $(R.id.advertising_download_tv);
+        mInstallTv.setOnClickListener(this);
+
         mRevivalInputView = $(R.id.revival_input_view);
         mRevivalInputView.setInputListener(new ContestRevivalInputView.RevivalInputListener() {
             @Override
@@ -199,9 +217,11 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
 
     private void initPresenter() {
         mPreparePresenter = new ContestPreparePresenter(this, mZuid);
-
+        mAdvertisingPresenter = new ContestAdvertisingPresenter(this, this);
+        mAdvertisingPresenter.initState();
         mInvitePresenter = new ContestInvitePresenter(this);
         mInvitePresenter.getInviteCode();
+
     }
 
     @Override
@@ -411,7 +431,18 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
             enterRulePage();
         } else if (id == R.id.special_code_tv) {
             showSpecialInputView();
+        } else if (id == R.id.advertising_download_tv) {
+            onAdvertisingClick();
         }
+    }
+
+    private void onAdvertisingClick() {
+        //mInstallTv.setEnabled(false);
+        if (mInstallTvEnable == false) {
+            return;
+        }
+        mInstallTvEnable = false;
+        mAdvertisingPresenter.doNext();
     }
 
     private void enterMyContestInfo() {
@@ -495,5 +526,46 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(EXTRA_ZUID, zuid);
         activity.startActivity(intent);
+    }
+
+    @Override
+    public void processChanged(int percent) {
+        if (mAdvertisingState == State.StartDownload) {
+            mInstallTv.setText(percent + "%");
+        }
+    }
+
+    @Override
+    public void statusChanged(State state) {
+        mAdvertisingState = state;
+        if (mAdvertisingState == State.Idle) {
+            if (mAdvertisingPresenter.hasCardByDownloadApp()) {
+                mInstallTv.setText("下载游戏得复活卡");
+            } else {
+                mInstallTv.setText("下载游戏");
+            }
+            mInstallTvEnable = true;
+        } else if (mAdvertisingState == State.InstallSuccess) {
+            if (mAdvertisingPresenter.hasCardByOpenApp()) {
+                mInstallTv.setText("打开游戏得复活卡");
+            } else {
+                mInstallTv.setText("打开游戏");
+            }
+            mInstallTvEnable = true;
+        } else if (mAdvertisingState == State.DownloadSuccess) {
+            mAdvertisingPresenter.doNext();
+        } else if (mAdvertisingState == State.DownloadFailed) {
+            mInstallTv.setText("下载游戏");
+            ToastUtils.showCallToast(this, "下载失败");
+            mInstallTvEnable = true;
+        } else if (mAdvertisingState == State.InstallFailed) {
+            ToastUtils.showCallToast(this, "安装失败");
+            mInstallTv.setText("重新安装");
+            mInstallTvEnable = true;
+        } else if (mAdvertisingState == State.Launch) {
+            mInstallTv.setText("打开游戏");
+            mInstallTvEnable = true;
+        }
+
     }
 }

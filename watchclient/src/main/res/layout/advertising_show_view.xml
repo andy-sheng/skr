@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/advertising_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_dimen_40"
+        android:layout_marginRight="@dimen/view_dimen_40"
+        android:layout_marginTop="20dp"
+        android:background="@color/color_white">
+
+        <com.base.image.fresco.BaseImageView
+            android:id="@+id/advertising_icon_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/xmfight_90_90"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_dimen_20"
+            android:layout_toRightOf="@id/advertising_icon_iv">
+
+            <TextView
+                android:id="@+id/advertising_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/contest_prepare_advertising_name"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/text_size_40"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/advertising_title_tv"
+                android:text="@string/contest_prepare_advertising_tip"
+                android:textColor="@color/color_black_trans_30"
+                android:textSize="@dimen/text_size_30"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/status_tv"
+            android:layout_width="@dimen/view_dimen_400"
+            android:layout_height="@dimen/view_dimen_100"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/contest_solid_5e43d5_r50_btn_bg"
+            android:gravity="center"
+            android:text="@string/contest_prepare_download_game_code"
+            android:textColor="@color/color_white_pressed_50_disable_30"
+            android:textSize="@dimen/text_size_40"/>
+    </RelativeLayout>
+</RelativeLayout>
