@@ -248,7 +248,10 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
     //Invoked when has adv
     private void adjustToAdvertisingView() {
         MyLog.d(TAG, "adjustViewLayout");
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mContentArea.getLayoutParams();
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mTitleIv.getLayoutParams();
+        lp.height = DisplayUtils.dip2px(64f);
+
+        lp = (RelativeLayout.LayoutParams) mContentArea.getLayoutParams();
         lp.height = DisplayUtils.dip2px(280.66f);
         mContentArea.setLayoutParams(lp);
     }
