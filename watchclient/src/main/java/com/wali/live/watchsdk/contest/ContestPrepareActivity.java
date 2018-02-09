@@ -532,7 +532,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
         if (mLiveStatusDrawable.isRunning()) {
             mLiveStatusDrawable.stop();
         }
-        if(mDownloadManager!=null){
+        if (mDownloadManager != null) {
             mDownloadManager.destroy();
         }
         mSpecialInputView.destroy();
@@ -548,6 +548,7 @@ public class ContestPrepareActivity extends BaseSdkActivity implements View.OnCl
             if (mPreparePresenter != null) {
                 mPreparePresenter.getContestNotice();
             }
+            updateAvatarView();
         }
     }
 
