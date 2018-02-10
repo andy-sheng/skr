@@ -79,7 +79,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -330,7 +329,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
             @Override
             public void onQuestion(final ContestQuestionMsgExt msgExt) {
                 MyLog.w(ContestLog.LOG_PREFIX + TAG, "showContestView Question = " + msgExt.toString());
-                if(mQuestionView.getVisibility() == View.VISIBLE){
+                if (mQuestionView.getVisibility() == View.VISIBLE) {
                     mQuestionView.commitDefaultAnswer();
                 }
                 mQuestionView.bindContestQuestionData(msgExt);
@@ -930,6 +929,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
     public static void open(BaseActivity activity, long zuid, String roomId, String videoUrl) {
         if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
             ToastUtils.showToast(R.string.contest_login_tip);
+            ContestPrepareActivity.open(activity, zuid);
             return;
         }
         Intent intent = new Intent(activity, ContestWatchActivity.class);
