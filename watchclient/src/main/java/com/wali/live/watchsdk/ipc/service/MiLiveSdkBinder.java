@@ -293,11 +293,14 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     @Override
     public void editUserInfo(String packageName, String channelSecret, final ThirdPartLoginData loginData) throws RemoteException {
         MyLog.w(TAG, "editUserInfo packageName=" + packageName + " loginData=" + loginData);
+        if (loginData == null) {
+            MyLog.w(TAG, "loginData == null return");
+            return;
+        }
         String thirdUuid = UserAccountManager.getInstance().getThirdUuid();
-        if (loginData == null || TextUtils.isEmpty(thirdUuid)
+        if (TextUtils.isEmpty(thirdUuid)
                 || !thirdUuid.equals(loginData.getXuid())) {
-            MyLog.w(TAG, "参数异常 UserAccountManager.getInstance().getThirdUuid()=" + UserAccountManager.getInstance().getThirdUuid()
-                    + " loginData.getXuid()=" + loginData.getXuid());
+            MyLog.w(TAG, "参数异常 thirdUuid=" + thirdUuid + " loginData.getXuid=" + loginData.getXuid());
             return;
         }
         secureOperate(loginData.getChannelId(), packageName, channelSecret, new SecureCommonCallBack() {
