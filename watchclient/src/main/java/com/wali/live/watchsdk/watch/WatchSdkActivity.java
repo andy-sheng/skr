@@ -428,7 +428,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         super.onDestroy();
         leaveLiveToServer();
         unregisterReceiver();
-
+        mAction.unregisterAction();
         if (mController != null) {
             mController.release();
             mController = null;
