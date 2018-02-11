@@ -89,11 +89,17 @@ public class KeyboardUtils {
 
     //注释：这个函数是 如果有软键盘，那么隐藏它；反之，把它显示出来。 不是强制隐藏键盘的api.
     public static void toggleKeyboard(Context context) {
+        if (context == null) {
+            return;
+        }
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     public static void hideKeyboardImmediately(Activity activity) {
+        if (activity == null) {
+            return;
+        }
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm.isActive()) {
             boolean isHide = imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getApplicationWindowToken(), 0);
