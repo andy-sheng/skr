@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
+import android.text.TextUtils;
 
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
@@ -292,7 +293,9 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     @Override
     public void editUserInfo(String packageName, String channelSecret, final ThirdPartLoginData loginData) throws RemoteException {
         MyLog.w(TAG, "editUserInfo packageName=" + packageName + " loginData=" + loginData);
-        if (loginData == null || !UserAccountManager.getInstance().getThirdUuid().equals(loginData.getXuid())) {
+        String thirdUuid = UserAccountManager.getInstance().getThirdUuid();
+        if (loginData == null || TextUtils.isEmpty(thirdUuid)
+                || !thirdUuid.equals(loginData.getXuid())) {
             MyLog.w(TAG, "参数异常 UserAccountManager.getInstance().getThirdUuid()=" + UserAccountManager.getInstance().getThirdUuid()
                     + " loginData.getXuid()=" + loginData.getXuid());
             return;
