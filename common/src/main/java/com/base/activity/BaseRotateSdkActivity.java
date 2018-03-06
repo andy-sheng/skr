@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import com.base.event.SdkEventClass;
 import com.base.fragment.IRotateActivity;
 import com.base.keyboard.KeyboardUtils;
+import com.base.utils.CommonUtils;
 
 /**
  * Created by lan on 16/7/4.
@@ -104,7 +105,7 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
         } else if (orientation >= ORIENTATION_ARRAY[2] && orientation < ORIENTATION_ARRAY[3]) {
             screenOrientation = ORIENTATION_LANDSCAPE_REVERSED;
         } else if (orientation >= ORIENTATION_ARRAY[4] && orientation < ORIENTATION_ARRAY[5]) {
-            screenOrientation = ORIENTATION_PORTRAIT_REVERSED;
+            screenOrientation = CommonUtils.isNotchPhone() ? mScreenOrientation : ORIENTATION_PORTRAIT_REVERSED;
         } else if (orientation >= ORIENTATION_ARRAY[6] && orientation < ORIENTATION_ARRAY[7]) {
             screenOrientation = ORIENTATION_LANDSCAPE_NORMAL;
         }

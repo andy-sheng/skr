@@ -13,7 +13,6 @@ import android.view.WindowManager;
 
 import com.base.activity.assist.IBindActivityLIfeCycle;
 import com.base.common.BuildConfig;
-import com.base.common.R;
 import com.base.dialog.MyProgressDialog;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -49,6 +48,9 @@ public abstract class BaseActivity extends RxActivity implements IStatusBarOpera
     protected static boolean sIsMIUIV6 = true;
     /*记录系统状态栏的高度*/
     private static int sStatusBarHeight;
+
+    /*记录虚拟键盘的高度*/
+    private static int sNavigationBarHeight;
 
     protected MyProgressDialog mDialog;
 
@@ -330,6 +332,22 @@ public abstract class BaseActivity extends RxActivity implements IStatusBarOpera
             }
         }
         return sStatusBarHeight;
+    }
+
+    public static int getNavigationBarHeight() {
+        if (sNavigationBarHeight == 0) {
+            try {
+                Class<?> c = Class.forName("com.android.internal.R$dimen");
+                Object o = c.newInstance();
+                Field field = c.getField("navigation_bar_height");
+                int x = (Integer) field.get(o);
+
+                sNavigationBarHeight = GlobalData.app().getResources().getDimensionPixelSize(x);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return sNavigationBarHeight;
     }
 
     /**

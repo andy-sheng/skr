@@ -55,6 +55,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.base.activity.BaseActivity;
 import com.base.dialog.MyAlertDialog;
 import com.base.global.GlobalData;
 import com.base.image.fresco.FrescoWorker;
@@ -79,6 +80,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -1938,5 +1940,87 @@ public abstract class CommonUtils {
      */
     public static boolean isNeedShowCtaDialog() {
         return PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceUtils.PREF_KEY_NEED_SHOW_CTA, true);
+    }
+
+    private static float MAX_CUT_RATE = 0.2f;
+
+    public static boolean isNeedFill(int layoutWidth, int layoutHeight, int videoWidth, int videoHeight) {
+        if (videoHeight == 0 || layoutHeight == 0) {
+            return false;
+        }
+
+        float cutRate = 0;//全屏播放截掉画面占比
+        if (layoutWidth > layoutHeight) {
+            //横屏的
+            if (videoWidth > videoHeight) {
+                float videoRate = videoWidth / (float) videoHeight;
+                float viewRate = layoutWidth / (float) layoutHeight;
+                if (viewRate > videoRate) {//需要截高,                                                                                      /
+                    float targetLayoutHeight = layoutWidth / videoRate;
+                    cutRate = (targetLayoutHeight - layoutHeight) / targetLayoutHeight;
+                } else {//需要截宽
+                    float targetLayoutWidth = layoutHeight * videoRate;
+                    cutRate = (targetLayoutWidth - layoutWidth) / targetLayoutWidth;
+                }
+                if (cutRate >= MAX_CUT_RATE) {
+                    return false;
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            //竖屏的
+            if (videoWidth < videoHeight) {
+                float videoRate = videoWidth / (float) videoHeight;
+                float viewRate = layoutWidth / (float) layoutHeight;
+                if (viewRate < videoRate) {//需要截宽
+                    float targetLayoutWidth = layoutHeight * videoRate;
+                    cutRate = (targetLayoutWidth - layoutWidth) / targetLayoutWidth;
+                } else {//需要截高
+                    float targetLayoutHeight = layoutWidth / videoRate;
+                    cutRate = (targetLayoutHeight - layoutHeight) / targetLayoutHeight;
+                }
+                if (cutRate >= MAX_CUT_RATE) {
+                    return false;
+                }
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    /*
+ * 判断是否开启全面屏
+ * */
+    public static boolean isOpenForceFullScreen() {
+        return Settings.Global.getInt(GlobalData.app().getContentResolver(), "force_fsg_nav_bar", 0) != 0;
+    }
+
+    public static boolean isNotchPhone() {
+        int ret = getSystemIntProperties("ro.miui.notch");
+        MyLog.w(TAG, "isNotchPhone ret=" + ret);
+        return getSystemIntProperties("ro.miui.notch") == 1;
+    }
+
+    private static int getSystemIntProperties(String prop) {
+        int output = 0;
+        try {
+            Class<?> sp = Class.forName("android.os.SystemProperties");
+            Method get = sp.getMethod("getInt", String.class, int.class);
+            output = (Integer) get.invoke(null, prop, 0);
+        } catch (Exception e) {
+            Log.w(TAG, e);
+        }
+        return output;
+    }
+
+    public static int getStatusBarHeight() {
+        int topMargin = BaseActivity.getStatusBarHeight();
+        if (CommonUtils.isNotchPhone()) {
+            topMargin += 20;
+        }
+        return topMargin;
     }
 }

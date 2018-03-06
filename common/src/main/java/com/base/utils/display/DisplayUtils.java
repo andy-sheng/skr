@@ -5,8 +5,10 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.Pair;
 
+import com.base.activity.BaseActivity;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.utils.CommonUtils;
 
 
 /**
@@ -67,19 +69,18 @@ public class DisplayUtils {
         return sMetrics.heightPixels;
     }
 
-
     public static int getPhoneWidth() {
 //        MyLog.v("PicViewFragment" + " getScreenWidth sMetrics == " + sMetrics.hashCode());
-        int width = getScreenWidth();
-        int height = getScreenHeight();
-        return width < height ? width : height;
+        return GlobalData.screenWidth;
     }
 
     public static int getPhoneHeight() {
 //        MyLog.v("PicViewFragment" + " getScreenHeight sMetrics == " + sMetrics.hashCode());
-        int width = getScreenWidth();
-        int height = getScreenHeight();
-        return width > height ? width : height;
+        int height = GlobalData.screenHeight;
+        if (CommonUtils.isOpenForceFullScreen()) {
+            height += BaseActivity.getNavigationBarHeight();
+        }
+        return height;
     }
 
     /**

@@ -8,8 +8,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.base.global.GlobalData;
 import com.base.image.fresco.view.TransferImageView;
+import com.base.utils.display.DisplayUtils;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.utils.AvatarUtils;
@@ -75,8 +75,9 @@ public class ImagePagerView extends RelativeLayout
         bindLayoutParam(mCenterDv);
         bindLayoutParam(mNextDv);
 
-        mLastDv.provideInitTranslationY(-GlobalData.screenHeight);
-        mNextDv.provideInitTranslationY(GlobalData.screenHeight);
+        int phoneHeight = DisplayUtils.getPhoneHeight();
+        mLastDv.provideInitTranslationY(-phoneHeight);
+        mNextDv.provideInitTranslationY(phoneHeight);
     }
 
     public void setVerticalList(List<RoomInfo> list, int position) {
@@ -96,11 +97,12 @@ public class ImagePagerView extends RelativeLayout
     }
 
     private void bindLayoutParam(TransferImageView iv) {
+        int phoneHeight = DisplayUtils.getPhoneHeight();
         LayoutParams lp = (LayoutParams) iv.getLayoutParams();
         if (lp == null) {
-            lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, GlobalData.screenHeight);
+            lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, phoneHeight);
         } else {
-            lp.height = GlobalData.screenHeight;
+            lp.height = phoneHeight;
         }
         iv.setLayoutParams(lp);
     }
@@ -114,8 +116,8 @@ public class ImagePagerView extends RelativeLayout
     }
 
     public void switchNext(int position) {
-        mLastDv.provideInitTranslationY(GlobalData.screenHeight);
-        mCenterDv.provideInitTranslationY(-GlobalData.screenHeight);
+        mLastDv.provideInitTranslationY(DisplayUtils.getPhoneHeight());
+        mCenterDv.provideInitTranslationY(DisplayUtils.getPhoneHeight());
         if (mCenterDv.getVisibility() == View.GONE) {
             mCenterDv.setVisibility(View.VISIBLE);
         }
@@ -135,11 +137,11 @@ public class ImagePagerView extends RelativeLayout
 
     public void switchLast(int position) {
         mLastDv.provideInitTranslationY(0);
-        mCenterDv.provideInitTranslationY(GlobalData.screenHeight);
+        mCenterDv.provideInitTranslationY(DisplayUtils.getPhoneHeight());
         if (mCenterDv.getVisibility() == View.GONE) {
             mCenterDv.setVisibility(View.VISIBLE);
         }
-        mNextDv.provideInitTranslationY(-GlobalData.screenHeight);
+        mNextDv.provideInitTranslationY(-DisplayUtils.getPhoneHeight());
 
         TransferImageView temp = mNextDv;
         mNextDv = mCenterDv;
