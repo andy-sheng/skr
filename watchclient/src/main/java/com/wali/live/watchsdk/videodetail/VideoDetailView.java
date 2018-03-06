@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
+import com.base.utils.CommonUtils;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
@@ -57,7 +58,12 @@ public class VideoDetailView extends BaseSdkView<View, VideoDetailController> {
     public void setupView() {
         mParentView.setBackgroundColor(Color.BLACK);
         mContentView = mParentView.findViewById(R.id.main_act_container);
-
+        {
+            View statusBar = $(R.id.status_bar);
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) statusBar.getLayoutParams();
+            lp.height = CommonUtils.getStatusBarHeight();
+            statusBar.setLayoutParams(lp);
+        }
         // 信息区域
         {
             View contentView = $(R.id.info_area);

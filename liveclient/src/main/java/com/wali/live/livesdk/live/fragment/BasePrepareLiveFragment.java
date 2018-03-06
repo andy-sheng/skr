@@ -19,8 +19,10 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.activity.BaseActivity;
 import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.FragmentListener;
@@ -29,6 +31,7 @@ import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
+import com.base.utils.CommonUtils;
 import com.base.utils.network.Network;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
@@ -264,6 +267,10 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
         $click(mClearTitleTv, this);
 
         mTopContainer = $(R.id.top_container);
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mTopContainer.getLayoutParams();
+        layoutParams.topMargin = BaseActivity.getStatusBarHeight() + 20;
+        mTopContainer.setLayoutParams(layoutParams);
+
         mTitleContainer = $(R.id.title_container);
         mMiddleContainer = $(R.id.middle_container);
     }

@@ -18,7 +18,8 @@
         android:id="@+id/back_iv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_dimen_80"
-        android:layout_marginTop="@dimen/margin_70"
+        android:layout_marginTop="@dimen/margin_20"
+        android:layout_below="@+id/status_bar"
         android:paddingLeft="@dimen/margin_30"
         android:src="@drawable/topbar_icon_all_back_white_bg" />
 
