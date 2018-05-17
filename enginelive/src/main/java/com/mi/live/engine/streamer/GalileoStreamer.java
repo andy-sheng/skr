@@ -97,7 +97,7 @@ public class GalileoStreamer implements IStreamer {
     private boolean mIsDestroyed;
     private Lock mLock = new ReentrantLock();
 
-    private class MixVideoModel {
+    private static class MixVideoModel {
         long streamId = 0;
         float locationX = 0;
         float locationY = 0;

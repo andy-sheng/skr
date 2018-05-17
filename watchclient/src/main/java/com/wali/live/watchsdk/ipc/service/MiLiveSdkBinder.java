@@ -54,6 +54,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
     private final HashMap<Integer, String> mAuthMap;
     private final HashMap<Integer, RemoteCallbackList<IMiLiveSdkEventCallback>> mEventCallBackListMap;
+
+    // 是AAR的方式接入，就不需要IPC了。
     private AarCallback mAARCallback;
     private Handler mHandler;
     private HandlerThread mHandlerThread;
