@@ -11,6 +11,7 @@ import com.mi.live.data.account.event.UserInfoEvent;
 import com.mi.live.data.api.request.GetOwnInfoRequest;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.constant.MiLinkConstant;
+import com.mi.live.data.region.Region;
 import com.mi.live.data.repository.datasource.MyUserInfoLocalStore;
 import com.mi.live.data.user.User;
 import com.wali.live.dao.OwnUserInfo;
@@ -47,7 +48,7 @@ public class MyUserInfoManager {
     }
 
     @Nullable
-    public synchronized UserProto.Region getRegion() {
+    public synchronized Region getRegion() {
         if (mMyInfo != null) {
             return mMyInfo.getRegion();
         } else {
@@ -60,7 +61,7 @@ public class MyUserInfoManager {
         }
     }
 
-    public synchronized void setRegion(UserProto.Region region) {
+    public synchronized void setRegion(Region region) {
         mMyInfo.setRegion(region);
     }
 
@@ -118,7 +119,7 @@ public class MyUserInfoManager {
             user.coverPhotoJson = ownUserInfo.getCoverPhotoJson();
             try {
                 if (ownUserInfo.getRegion() != null) {
-                    user.setRegion(UserProto.Region.parseFrom(ownUserInfo.getRegion()));
+                    user.setRegion(new Region(UserProto.Region.parseFrom(ownUserInfo.getRegion())));
                 } else {
                     user.setRegion(null);
                 }
@@ -292,6 +293,30 @@ public class MyUserInfoManager {
         mMyInfo.setLevel(level);
     }
 
+    public int getCertificationType() {
+        if (mMyInfo != null) {
+            return mMyInfo.getCertificationType();
+        } else {
+            return 0;
+        }
+    }
+
+    public boolean isRedName() {
+        if (mMyInfo != null) {
+            return mMyInfo.isRedName();
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isInspector() {
+        if (mMyInfo != null) {
+            return mMyInfo.isInspector();
+        } else {
+            return false;
+        }
+    }
+
     public int getLevel() {
         return mMyInfo != null ? mMyInfo.getLevel() : 0;
     }
@@ -336,6 +361,14 @@ public class MyUserInfoManager {
         MyLog.w(TAG, "set virtual diamond to:" + vDiamondNum);
         mMyInfo.setVirtualDiamondNum(vDiamondNum);
         EventBus.getDefault().post(new UserInfoEvent()); //发送event
+    }
+
+    public synchronized int getNobleLevel() {
+        return mMyInfo != null ? mMyInfo.getNobleLevel() : 0;
+    }
+
+    public synchronized void setNobelLevel(int nobelLevel) {
+        mMyInfo.setNobleLevel(nobelLevel);
     }
 
     public int getVipLevel() {

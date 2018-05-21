@@ -25058,6 +25058,91 @@ public final class LiveMessageProto {
      * </pre>
      */
     boolean getVipHidden();
+
+    /**
+     * <code>optional uint32 real_name_certification_status = 27;</code>
+     *
+     * <pre>
+     *实名认证状态,1:审核中,2:实名认证已通过,3:实名认证未通过
+     * </pre>
+     */
+    boolean hasRealNameCertificationStatus();
+    /**
+     * <code>optional uint32 real_name_certification_status = 27;</code>
+     *
+     * <pre>
+     *实名认证状态,1:审核中,2:实名认证已通过,3:实名认证未通过
+     * </pre>
+     */
+    int getRealNameCertificationStatus();
+
+    /**
+     * <code>optional bool is_push_self = 28;</code>
+     *
+     * <pre>
+     *飘屏(306)弹幕push：粉丝团开通的飘屏要给自己push(设置true)，其他飘屏消息不需要给自己push
+     * </pre>
+     */
+    boolean hasIsPushSelf();
+    /**
+     * <code>optional bool is_push_self = 28;</code>
+     *
+     * <pre>
+     *飘屏(306)弹幕push：粉丝团开通的飘屏要给自己push(设置true)，其他飘屏消息不需要给自己push
+     * </pre>
+     */
+    boolean getIsPushSelf();
+
+    /**
+     * <code>optional uint32 from_effect_id = 29;</code>
+     *
+     * <pre>
+     *发送者的特效id
+     * </pre>
+     */
+    boolean hasFromEffectId();
+    /**
+     * <code>optional uint32 from_effect_id = 29;</code>
+     *
+     * <pre>
+     *发送者的特效id
+     * </pre>
+     */
+    int getFromEffectId();
+
+    /**
+     * <code>optional uint32 noble_level = 30;</code>
+     *
+     * <pre>
+     * 贵族等级
+     * </pre>
+     */
+    boolean hasNobleLevel();
+    /**
+     * <code>optional uint32 noble_level = 30;</code>
+     *
+     * <pre>
+     * 贵族等级
+     * </pre>
+     */
+    int getNobleLevel();
+
+    /**
+     * <code>optional uint32 special_effect_id = 31;</code>
+     *
+     * <pre>
+     *发送者的特效id兼容已发版本bug
+     * </pre>
+     */
+    boolean hasSpecialEffectId();
+    /**
+     * <code>optional uint32 special_effect_id = 31;</code>
+     *
+     * <pre>
+     *发送者的特效id兼容已发版本bug
+     * </pre>
+     */
+    int getSpecialEffectId();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.Message}
@@ -25266,6 +25351,31 @@ public final class LiveMessageProto {
             case 208: {
               bitField0_ |= 0x02000000;
               vipHidden_ = input.readBool();
+              break;
+            }
+            case 216: {
+              bitField0_ |= 0x04000000;
+              realNameCertificationStatus_ = input.readUInt32();
+              break;
+            }
+            case 224: {
+              bitField0_ |= 0x08000000;
+              isPushSelf_ = input.readBool();
+              break;
+            }
+            case 232: {
+              bitField0_ |= 0x10000000;
+              fromEffectId_ = input.readUInt32();
+              break;
+            }
+            case 240: {
+              bitField0_ |= 0x20000000;
+              nobleLevel_ = input.readUInt32();
+              break;
+            }
+            case 248: {
+              bitField0_ |= 0x40000000;
+              specialEffectId_ = input.readUInt32();
               break;
             }
           }
@@ -26143,6 +26253,121 @@ public final class LiveMessageProto {
       return vipHidden_;
     }
 
+    public static final int REAL_NAME_CERTIFICATION_STATUS_FIELD_NUMBER = 27;
+    private int realNameCertificationStatus_;
+    /**
+     * <code>optional uint32 real_name_certification_status = 27;</code>
+     *
+     * <pre>
+     *实名认证状态,1:审核中,2:实名认证已通过,3:实名认证未通过
+     * </pre>
+     */
+    public boolean hasRealNameCertificationStatus() {
+      return ((bitField0_ & 0x04000000) == 0x04000000);
+    }
+    /**
+     * <code>optional uint32 real_name_certification_status = 27;</code>
+     *
+     * <pre>
+     *实名认证状态,1:审核中,2:实名认证已通过,3:实名认证未通过
+     * </pre>
+     */
+    public int getRealNameCertificationStatus() {
+      return realNameCertificationStatus_;
+    }
+
+    public static final int IS_PUSH_SELF_FIELD_NUMBER = 28;
+    private boolean isPushSelf_;
+    /**
+     * <code>optional bool is_push_self = 28;</code>
+     *
+     * <pre>
+     *飘屏(306)弹幕push：粉丝团开通的飘屏要给自己push(设置true)，其他飘屏消息不需要给自己push
+     * </pre>
+     */
+    public boolean hasIsPushSelf() {
+      return ((bitField0_ & 0x08000000) == 0x08000000);
+    }
+    /**
+     * <code>optional bool is_push_self = 28;</code>
+     *
+     * <pre>
+     *飘屏(306)弹幕push：粉丝团开通的飘屏要给自己push(设置true)，其他飘屏消息不需要给自己push
+     * </pre>
+     */
+    public boolean getIsPushSelf() {
+      return isPushSelf_;
+    }
+
+    public static final int FROM_EFFECT_ID_FIELD_NUMBER = 29;
+    private int fromEffectId_;
+    /**
+     * <code>optional uint32 from_effect_id = 29;</code>
+     *
+     * <pre>
+     *发送者的特效id
+     * </pre>
+     */
+    public boolean hasFromEffectId() {
+      return ((bitField0_ & 0x10000000) == 0x10000000);
+    }
+    /**
+     * <code>optional uint32 from_effect_id = 29;</code>
+     *
+     * <pre>
+     *发送者的特效id
+     * </pre>
+     */
+    public int getFromEffectId() {
+      return fromEffectId_;
+    }
+
+    public static final int NOBLE_LEVEL_FIELD_NUMBER = 30;
+    private int nobleLevel_;
+    /**
+     * <code>optional uint32 noble_level = 30;</code>
+     *
+     * <pre>
+     * 贵族等级
+     * </pre>
+     */
+    public boolean hasNobleLevel() {
+      return ((bitField0_ & 0x20000000) == 0x20000000);
+    }
+    /**
+     * <code>optional uint32 noble_level = 30;</code>
+     *
+     * <pre>
+     * 贵族等级
+     * </pre>
+     */
+    public int getNobleLevel() {
+      return nobleLevel_;
+    }
+
+    public static final int SPECIAL_EFFECT_ID_FIELD_NUMBER = 31;
+    private int specialEffectId_;
+    /**
+     * <code>optional uint32 special_effect_id = 31;</code>
+     *
+     * <pre>
+     *发送者的特效id兼容已发版本bug
+     * </pre>
+     */
+    public boolean hasSpecialEffectId() {
+      return ((bitField0_ & 0x40000000) == 0x40000000);
+    }
+    /**
+     * <code>optional uint32 special_effect_id = 31;</code>
+     *
+     * <pre>
+     *发送者的特效id兼容已发版本bug
+     * </pre>
+     */
+    public int getSpecialEffectId() {
+      return specialEffectId_;
+    }
+
     private void initFields() {
       fromUser_ = 0L;
       toUser_ = 0L;
@@ -26170,6 +26395,11 @@ public final class LiveMessageProto {
       vipLevel_ = 0;
       vipDisable_ = false;
       vipHidden_ = false;
+      realNameCertificationStatus_ = 0;
+      isPushSelf_ = false;
+      fromEffectId_ = 0;
+      nobleLevel_ = 0;
+      specialEffectId_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -26265,6 +26495,21 @@ public final class LiveMessageProto {
       }
       if (((bitField0_ & 0x02000000) == 0x02000000)) {
         output.writeBool(26, vipHidden_);
+      }
+      if (((bitField0_ & 0x04000000) == 0x04000000)) {
+        output.writeUInt32(27, realNameCertificationStatus_);
+      }
+      if (((bitField0_ & 0x08000000) == 0x08000000)) {
+        output.writeBool(28, isPushSelf_);
+      }
+      if (((bitField0_ & 0x10000000) == 0x10000000)) {
+        output.writeUInt32(29, fromEffectId_);
+      }
+      if (((bitField0_ & 0x20000000) == 0x20000000)) {
+        output.writeUInt32(30, nobleLevel_);
+      }
+      if (((bitField0_ & 0x40000000) == 0x40000000)) {
+        output.writeUInt32(31, specialEffectId_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -26378,6 +26623,26 @@ public final class LiveMessageProto {
       if (((bitField0_ & 0x02000000) == 0x02000000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(26, vipHidden_);
+      }
+      if (((bitField0_ & 0x04000000) == 0x04000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(27, realNameCertificationStatus_);
+      }
+      if (((bitField0_ & 0x08000000) == 0x08000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(28, isPushSelf_);
+      }
+      if (((bitField0_ & 0x10000000) == 0x10000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(29, fromEffectId_);
+      }
+      if (((bitField0_ & 0x20000000) == 0x20000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(30, nobleLevel_);
+      }
+      if (((bitField0_ & 0x40000000) == 0x40000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(31, specialEffectId_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -26562,6 +26827,16 @@ public final class LiveMessageProto {
         bitField0_ = (bitField0_ & ~0x01000000);
         vipHidden_ = false;
         bitField0_ = (bitField0_ & ~0x02000000);
+        realNameCertificationStatus_ = 0;
+        bitField0_ = (bitField0_ & ~0x04000000);
+        isPushSelf_ = false;
+        bitField0_ = (bitField0_ & ~0x08000000);
+        fromEffectId_ = 0;
+        bitField0_ = (bitField0_ & ~0x10000000);
+        nobleLevel_ = 0;
+        bitField0_ = (bitField0_ & ~0x20000000);
+        specialEffectId_ = 0;
+        bitField0_ = (bitField0_ & ~0x40000000);
         return this;
       }
 
@@ -26702,6 +26977,26 @@ public final class LiveMessageProto {
           to_bitField0_ |= 0x02000000;
         }
         result.vipHidden_ = vipHidden_;
+        if (((from_bitField0_ & 0x04000000) == 0x04000000)) {
+          to_bitField0_ |= 0x04000000;
+        }
+        result.realNameCertificationStatus_ = realNameCertificationStatus_;
+        if (((from_bitField0_ & 0x08000000) == 0x08000000)) {
+          to_bitField0_ |= 0x08000000;
+        }
+        result.isPushSelf_ = isPushSelf_;
+        if (((from_bitField0_ & 0x10000000) == 0x10000000)) {
+          to_bitField0_ |= 0x10000000;
+        }
+        result.fromEffectId_ = fromEffectId_;
+        if (((from_bitField0_ & 0x20000000) == 0x20000000)) {
+          to_bitField0_ |= 0x20000000;
+        }
+        result.nobleLevel_ = nobleLevel_;
+        if (((from_bitField0_ & 0x40000000) == 0x40000000)) {
+          to_bitField0_ |= 0x40000000;
+        }
+        result.specialEffectId_ = specialEffectId_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -26809,6 +27104,21 @@ public final class LiveMessageProto {
         }
         if (other.hasVipHidden()) {
           setVipHidden(other.getVipHidden());
+        }
+        if (other.hasRealNameCertificationStatus()) {
+          setRealNameCertificationStatus(other.getRealNameCertificationStatus());
+        }
+        if (other.hasIsPushSelf()) {
+          setIsPushSelf(other.getIsPushSelf());
+        }
+        if (other.hasFromEffectId()) {
+          setFromEffectId(other.getFromEffectId());
+        }
+        if (other.hasNobleLevel()) {
+          setNobleLevel(other.getNobleLevel());
+        }
+        if (other.hasSpecialEffectId()) {
+          setSpecialEffectId(other.getSpecialEffectId());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -28660,6 +28970,246 @@ public final class LiveMessageProto {
       public Builder clearVipHidden() {
         bitField0_ = (bitField0_ & ~0x02000000);
         vipHidden_ = false;
+        onChanged();
+        return this;
+      }
+
+      private int realNameCertificationStatus_ ;
+      /**
+       * <code>optional uint32 real_name_certification_status = 27;</code>
+       *
+       * <pre>
+       *实名认证状态,1:审核中,2:实名认证已通过,3:实名认证未通过
+       * </pre>
+       */
+      public boolean hasRealNameCertificationStatus() {
+        return ((bitField0_ & 0x04000000) == 0x04000000);
+      }
+      /**
+       * <code>optional uint32 real_name_certification_status = 27;</code>
+       *
+       * <pre>
+       *实名认证状态,1:审核中,2:实名认证已通过,3:实名认证未通过
+       * </pre>
+       */
+      public int getRealNameCertificationStatus() {
+        return realNameCertificationStatus_;
+      }
+      /**
+       * <code>optional uint32 real_name_certification_status = 27;</code>
+       *
+       * <pre>
+       *实名认证状态,1:审核中,2:实名认证已通过,3:实名认证未通过
+       * </pre>
+       */
+      public Builder setRealNameCertificationStatus(int value) {
+        bitField0_ |= 0x04000000;
+        realNameCertificationStatus_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 real_name_certification_status = 27;</code>
+       *
+       * <pre>
+       *实名认证状态,1:审核中,2:实名认证已通过,3:实名认证未通过
+       * </pre>
+       */
+      public Builder clearRealNameCertificationStatus() {
+        bitField0_ = (bitField0_ & ~0x04000000);
+        realNameCertificationStatus_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean isPushSelf_ ;
+      /**
+       * <code>optional bool is_push_self = 28;</code>
+       *
+       * <pre>
+       *飘屏(306)弹幕push：粉丝团开通的飘屏要给自己push(设置true)，其他飘屏消息不需要给自己push
+       * </pre>
+       */
+      public boolean hasIsPushSelf() {
+        return ((bitField0_ & 0x08000000) == 0x08000000);
+      }
+      /**
+       * <code>optional bool is_push_self = 28;</code>
+       *
+       * <pre>
+       *飘屏(306)弹幕push：粉丝团开通的飘屏要给自己push(设置true)，其他飘屏消息不需要给自己push
+       * </pre>
+       */
+      public boolean getIsPushSelf() {
+        return isPushSelf_;
+      }
+      /**
+       * <code>optional bool is_push_self = 28;</code>
+       *
+       * <pre>
+       *飘屏(306)弹幕push：粉丝团开通的飘屏要给自己push(设置true)，其他飘屏消息不需要给自己push
+       * </pre>
+       */
+      public Builder setIsPushSelf(boolean value) {
+        bitField0_ |= 0x08000000;
+        isPushSelf_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool is_push_self = 28;</code>
+       *
+       * <pre>
+       *飘屏(306)弹幕push：粉丝团开通的飘屏要给自己push(设置true)，其他飘屏消息不需要给自己push
+       * </pre>
+       */
+      public Builder clearIsPushSelf() {
+        bitField0_ = (bitField0_ & ~0x08000000);
+        isPushSelf_ = false;
+        onChanged();
+        return this;
+      }
+
+      private int fromEffectId_ ;
+      /**
+       * <code>optional uint32 from_effect_id = 29;</code>
+       *
+       * <pre>
+       *发送者的特效id
+       * </pre>
+       */
+      public boolean hasFromEffectId() {
+        return ((bitField0_ & 0x10000000) == 0x10000000);
+      }
+      /**
+       * <code>optional uint32 from_effect_id = 29;</code>
+       *
+       * <pre>
+       *发送者的特效id
+       * </pre>
+       */
+      public int getFromEffectId() {
+        return fromEffectId_;
+      }
+      /**
+       * <code>optional uint32 from_effect_id = 29;</code>
+       *
+       * <pre>
+       *发送者的特效id
+       * </pre>
+       */
+      public Builder setFromEffectId(int value) {
+        bitField0_ |= 0x10000000;
+        fromEffectId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 from_effect_id = 29;</code>
+       *
+       * <pre>
+       *发送者的特效id
+       * </pre>
+       */
+      public Builder clearFromEffectId() {
+        bitField0_ = (bitField0_ & ~0x10000000);
+        fromEffectId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int nobleLevel_ ;
+      /**
+       * <code>optional uint32 noble_level = 30;</code>
+       *
+       * <pre>
+       * 贵族等级
+       * </pre>
+       */
+      public boolean hasNobleLevel() {
+        return ((bitField0_ & 0x20000000) == 0x20000000);
+      }
+      /**
+       * <code>optional uint32 noble_level = 30;</code>
+       *
+       * <pre>
+       * 贵族等级
+       * </pre>
+       */
+      public int getNobleLevel() {
+        return nobleLevel_;
+      }
+      /**
+       * <code>optional uint32 noble_level = 30;</code>
+       *
+       * <pre>
+       * 贵族等级
+       * </pre>
+       */
+      public Builder setNobleLevel(int value) {
+        bitField0_ |= 0x20000000;
+        nobleLevel_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 noble_level = 30;</code>
+       *
+       * <pre>
+       * 贵族等级
+       * </pre>
+       */
+      public Builder clearNobleLevel() {
+        bitField0_ = (bitField0_ & ~0x20000000);
+        nobleLevel_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int specialEffectId_ ;
+      /**
+       * <code>optional uint32 special_effect_id = 31;</code>
+       *
+       * <pre>
+       *发送者的特效id兼容已发版本bug
+       * </pre>
+       */
+      public boolean hasSpecialEffectId() {
+        return ((bitField0_ & 0x40000000) == 0x40000000);
+      }
+      /**
+       * <code>optional uint32 special_effect_id = 31;</code>
+       *
+       * <pre>
+       *发送者的特效id兼容已发版本bug
+       * </pre>
+       */
+      public int getSpecialEffectId() {
+        return specialEffectId_;
+      }
+      /**
+       * <code>optional uint32 special_effect_id = 31;</code>
+       *
+       * <pre>
+       *发送者的特效id兼容已发版本bug
+       * </pre>
+       */
+      public Builder setSpecialEffectId(int value) {
+        bitField0_ |= 0x40000000;
+        specialEffectId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 special_effect_id = 31;</code>
+       *
+       * <pre>
+       *发送者的特效id兼容已发版本bug
+       * </pre>
+       */
+      public Builder clearSpecialEffectId() {
+        bitField0_ = (bitField0_ & ~0x40000000);
+        specialEffectId_ = 0;
         onChanged();
         return this;
       }
@@ -86701,7 +87251,7 @@ public final class LiveMessageProto {
       "o\030\002 \001(\0132\033.com.wali.live.proto.PKInfo\"_\n\021" +
       "LiveInfoChangeMsg\022\020\n\010mod_flag\030\001 \001(\004\022\014\n\004z" +
       "uid\030\002 \001(\004\022\017\n\007live_id\030\003 \001(\t\022\031\n\021enable_vie" +
-      "wer_mic\030\004 \001(\010\"\214\005\n\007Message\022\021\n\tfrom_user\030\001" +
+      "wer_mic\030\004 \001(\010\"\222\006\n\007Message\022\021\n\tfrom_user\030\001" +
       " \002(\004\022\017\n\007to_user\030\002 \001(\004\022\017\n\007room_id\030\003 \001(\t\022\013" +
       "\n\003cid\030\004 \001(\004\022\017\n\007msg_seq\030\005 \001(\r\022\021\n\ttimestam" +
       "p\030\006 \001(\004\022\020\n\010msg_type\030\007 \001(\r\022\020\n\010msg_body\030\010 " +
@@ -86717,180 +87267,184 @@ public final class LiveMessageProto {
       "er_redname\030\026 \001(\010\022F\n\023global_room_msg_ext\030" +
       "\027 \001(\0132).com.wali.live.proto.GlobalRoomMe",
       "ssageExt\022\021\n\tvip_level\030\030 \001(\r\022\023\n\013vip_disab" +
-      "le\030\031 \001(\010\022\022\n\nvip_hidden\030\032 \001(\010\"/\n\010Language" +
-      "\022\025\n\rlanguage_code\030\001 \001(\r\022\014\n\004text\030\002 \001(\t\"@\n" +
-      "\rMultiLanguage\022/\n\010language\030\001 \003(\0132\035.com.w" +
-      "ali.live.proto.Language\"D\n\021SyncSysMsgReq" +
-      "uest\022\021\n\tfrom_user\030\001 \002(\004\022\017\n\007room_id\030\002 \001(\t" +
-      "\022\013\n\003cid\030\003 \001(\004\"\203\001\n\022SyncSysMsgResponse\022\013\n\003" +
-      "ret\030\001 \001(\r\022\021\n\terror_msg\030\002 \001(\t\022\013\n\003cid\030\003 \001(" +
-      "\004\022\021\n\ttimestamp\030\004 \001(\004\022-\n\007message\030\005 \003(\0132\034." +
-      "com.wali.live.proto.Message\"h\n\021SyncUnrea",
-      "dRequest\022\021\n\tfrom_user\030\001 \001(\004\022\013\n\003cid\030\002 \001(\004" +
-      "\022\017\n\007page_id\030\003 \001(\t\022\r\n\005limit\030\004 \001(\r\022\023\n\013foll" +
-      "ow_type\030\005 \001(\r\"\233\001\n\022SyncUnreadResponse\022\013\n\003" +
-      "ret\030\001 \001(\r\022\021\n\terror_msg\030\002 \001(\t\022+\n\006unread\030\003" +
-      " \003(\0132\033.com.wali.live.proto.Unread\022\032\n\022tot" +
-      "al_unread_count\030\004 \001(\r\022\013\n\003cid\030\005 \001(\004\022\017\n\007pa" +
-      "ge_id\030\006 \001(\t\"o\n\006Unread\022\024\n\014unread_count\030\001 " +
-      "\001(\r\022\026\n\016max_unread_seq\030\002 \001(\r\022)\n\003msg\030\003 \003(\013" +
-      "2\034.com.wali.live.proto.Message\022\014\n\004user\030\004" +
-      " \001(\004\"A\n\031SyncHistoryMessageReuqest\022\021\n\tfro",
-      "m_user\030\001 \001(\004\022\021\n\tsync_user\030\002 \001(\004\"i\n\032SyncH" +
-      "istoryMessageResponse\022\013\n\003ret\030\001 \001(\r\022\021\n\ter" +
-      "ror_msg\030\002 \001(\t\022+\n\006unread\030\003 \001(\0132\033.com.wali" +
-      ".live.proto.Unread\"~\n\017JoinRoomMessage\022\024\n" +
-      "\014viewer_count\030\001 \001(\r\022,\n\007viewers\030\002 \003(\0132\033.c" +
-      "om.wali.live.proto.Viewer\022\014\n\004type\030\003 \001(\r\022" +
-      "\031\n\021showSpecialEffect\030\004 \001(\010\"V\n\020LeaveRoomM" +
-      "essage\022\024\n\014viewer_count\030\001 \001(\r\022,\n\007viewers\030" +
-      "\002 \003(\0132\033.com.wali.live.proto.Viewer\"S\n\rVi" +
-      "ewerMessage\022\024\n\014viewer_count\030\001 \001(\r\022,\n\007vie",
-      "wers\030\002 \003(\0132\033.com.wali.live.proto.Viewer\"" +
-      "\027\n\025AnchorJoinRoomMessage\"\030\n\026AnchorLeaveR" +
-      "oomMessage\"<\n\013PushMessage\022-\n\007message\030\001 \003" +
-      "(\0132\034.com.wali.live.proto.Message\"(\n\021Chat" +
-      "NotifyMessage\022\023\n\013follow_type\030\001 \001(\r\"|\n\014Im" +
-      "ageBodyExt\022\020\n\010mimeType\030\001 \002(\t\022\013\n\003url\030\002 \002(" +
-      "\t\022\r\n\005width\030\003 \002(\r\022\016\n\006height\030\004 \002(\r\022\014\n\004size" +
-      "\030\005 \002(\r\022\023\n\013is_original\030\006 \001(\010\022\013\n\003md5\030\007 \001(\t" +
-      "\" \n\tProbeArgs\022\023\n\013domain_name\030\001 \001(\t\"x\n\022Fe" +
-      "edMessageRequest\022\021\n\tfrom_user\030\001 \002(\004\022\017\n\007r",
-      "oom_id\030\002 \001(\t\022\017\n\007page_id\030\003 \001(\t\022\r\n\005limit\030\004" +
-      " \001(\r\022\013\n\003cid\030\005 \001(\004\022\021\n\ttimestamp\030\006 \001(\004\"\207\001\n" +
-      "\023FeedMessageResponse\022\013\n\003ret\030\001 \002(\r\022\021\n\terr" +
-      "or_msg\030\002 \001(\t\0222\n\014feed_message\030\003 \003(\0132\034.com" +
-      ".wali.live.proto.Message\022\013\n\003cid\030\004 \001(\004\022\017\n" +
-      "\007page_id\030\005 \001(\t\"y\n\026SyncRoomMessageRequest" +
-      "\022\021\n\tfrom_user\030\001 \002(\004\022\017\n\007room_id\030\002 \002(\t\022\036\n\026" +
-      "last_sync_important_ts\030\003 \001(\004\022\033\n\023last_syn" +
-      "c_normal_ts\030\004 \001(\004\"\204\002\n\027SyncRoomMessageRes" +
-      "ponse\022\013\n\003ret\030\001 \002(\r\022\021\n\terror_msg\030\002 \001(\t\0228\n",
-      "\022important_room_msg\030\003 \003(\0132\034.com.wali.liv" +
-      "e.proto.Message\0225\n\017normal_room_msg\030\004 \003(\013" +
-      "2\034.com.wali.live.proto.Message\022!\n\031curren" +
-      "t_sync_important_ts\030\005 \001(\004\022\036\n\026current_syn" +
-      "c_normal_ts\030\006 \001(\004\022\025\n\rsync_interval\030\007 \001(\r" +
-      "\"E\n\024MsgRuleChangeMessage\022-\n\007msgRule\030\001 \001(" +
-      "\0132\034.com.wali.live.proto.MsgRule\"\217\001\n\013Kick" +
-      "Message\022\014\n\004zuid\030\001 \001(\004\022\016\n\006liveid\030\002 \001(\t\022\r\n" +
-      "\005op_id\030\003 \001(\004\022\017\n\007op_type\030\004 \001(\r\022\021\n\tkicked_" +
-      "id\030\005 \001(\004\022\026\n\016operation_type\030\006 \001(\r\022\027\n\017kick",
-      "ed_nickname\030\007 \001(\t\"7\n\023TapToSellPushMsgExt" +
-      "\022\016\n\006isShop\030\001 \001(\010\022\020\n\010hideGift\030\002 \001(\010\"\230\001\n\rW" +
-      "idgetMessage\022\014\n\004zuid\030\001 \002(\004\0227\n\007msgItem\030\002 " +
-      "\003(\0132&.com.wali.live.proto.WidgetMessageI" +
-      "tem\022@\n\rnewWidgetItem\030\003 \003(\0132).com.wali.li" +
-      "ve.proto.NewWidgetMessageItem\"e\n\021WidgetM" +
-      "essageItem\022\020\n\010link_url\030\001 \002(\t\022\020\n\010position" +
-      "\030\002 \002(\r\022\014\n\004icon\030\003 \001(\t\022\014\n\004text\030\004 \001(\t\022\020\n\010sh" +
-      "owType\030\005 \001(\r\"u\n\024NewWidgetMessageItem\0229\n\r" +
-      "newWidgetItem\030\001 \002(\0132\".com.wali.live.prot",
-      "o.NewWidgetItem\022\020\n\010isDelete\030\002 \001(\010\022\020\n\010sho" +
-      "wType\030\003 \001(\r\"b\n\024RoomAnimationMessage\022\030\n\020a" +
-      "nimation_effect\030\001 \001(\r\022\030\n\020animationConten" +
-      "t\030\002 \001(\t\022\026\n\016animation_type\030\003 \001(\r\"P\n\014Shopp" +
-      "ingInfo\022\014\n\004name\030\001 \002(\t\022\r\n\005price\030\002 \002(\001\022\022\n\n" +
-      "product_id\030\003 \002(\003\022\017\n\007img_url\030\004 \001(\t\"R\n\026Pus" +
-      "hShoppingInfoMsgExt\0228\n\rshopping_info\030\001 \003" +
-      "(\0132!.com.wali.live.proto.ShoppingInfo\"$\n" +
-      "\016UpgradeMessage\022\022\n\nuser_level\030\001 \001(\r\"<\n\022W" +
-      "idgetClickMessage\022\020\n\010widgetID\030\001 \002(\r\022\024\n\014c",
-      "ounterValue\030\002 \001(\t\"\"\n\rRedNameStatus\022\021\n\tis" +
-      "Redname\030\001 \001(\010\"\263\001\n\016InviteGroupExt\022\017\n\007invi" +
-      "ter\030\001 \001(\004\022\030\n\020inviter_nickname\030\002 \001(\t\022\025\n\rf" +
-      "ans_group_id\030\003 \001(\004\022\027\n\017fans_group_icon\030\004 " +
-      "\001(\t\022\027\n\017fans_group_name\030\005 \001(\t\022\021\n\tto_frien" +
-      "d\030\006 \001(\004\022\032\n\022to_friend_nickname\030\007 \001(\t\"i\n\024G" +
-      "lobalRoomMessageExt\022Q\n\031inner_global_room" +
-      "_msg_ext\030\001 \003(\0132..com.wali.live.proto.Inn" +
-      "erGlobalRoomMessageExt\"6\n\031InnerGlobalRoo" +
-      "mMessageExt\022\014\n\004type\030\001 \001(\r\022\013\n\003ext\030\002 \001(\014\"\'",
-      "\n\024ShareJoinRoomMessage\022\017\n\007content\030\001 \001(\t\"" +
-      "\254\002\n\022MedalConfigMessage\022E\n\026before_nicknam" +
-      "e_config\030\001 \003(\0132%.com.wali.live.proto.Inn" +
-      "erMedalConfig\022D\n\025after_nickname_config\030\002" +
-      " \003(\0132%.com.wali.live.proto.InnerMedalCon" +
-      "fig\022D\n\025before_content_config\030\003 \003(\0132%.com" +
-      ".wali.live.proto.InnerMedalConfig\022C\n\024aft" +
-      "er_content_config\030\004 \003(\0132%.com.wali.live." +
-      "proto.InnerMedalConfig\"\"\n\020InnerMedalConf" +
-      "ig\022\016\n\006pic_id\030\001 \001(\t\"&\n\020TxtSchemeMessage\022\022",
-      "\n\nscheme_url\030\001 \001(\t\"\'\n\030GetLiveNotifyMsgCo" +
-      "untReq\022\013\n\003uid\030\001 \001(\004\"I\n\030GetLiveNotifyMsgC" +
-      "ountRsp\022\013\n\003ret\030\001 \001(\r\022\021\n\terror_msg\030\002 \001(\t\022" +
-      "\r\n\005count\030\003 \001(\r\")\n\032ClearLiveNotifyMsgCoun" +
-      "tReq\022\013\n\003uid\030\001 \001(\004\"<\n\032ClearLiveNotifyMsgC" +
-      "ountRsp\022\013\n\003ret\030\001 \001(\r\022\021\n\terror_msg\030\002 \001(\t\"" +
-      "x\n\022UnreadNotification\022\024\n\014unread_count\030\001 " +
-      "\001(\r\022\017\n\007max_idx\030\002 \001(\r\022)\n\003msg\030\003 \003(\0132\034.com." +
-      "wali.live.proto.Message\022\020\n\010sys_user\030\004 \001(" +
-      "\004\":\n\035SyncSystemNotificationRequest\022\014\n\004fr",
-      "om\030\001 \001(\004\022\013\n\003cid\030\002 \001(\004\"\216\001\n\036SyncSystemNoti" +
-      "ficationResponse\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_msg" +
-      "\030\002 \001(\t\022A\n\020sys_notification\030\003 \003(\0132\'.com.w" +
-      "ali.live.proto.UnreadNotification\022\013\n\003cid" +
-      "\030\004 \001(\004\"\\\n#GetHistorySystemNotificationRe" +
-      "quest\022\014\n\004from\030\001 \001(\004\022\013\n\003idx\030\002 \001(\r\022\r\n\005limi" +
-      "t\030\003 \001(\r\022\013\n\003cid\030\004 \001(\004\"\211\001\n$GetHistorySyste" +
-      "mNotificationResponse\022\013\n\003ret\030\001 \001(\r\022\017\n\007er" +
-      "r_msg\030\002 \001(\t\0226\n\020sys_notification\030\003 \003(\0132\034." +
-      "com.wali.live.proto.Message\022\013\n\003cid\030\004 \001(\004",
-      "\"R\n\034AckSystemNotificationRequest\022\014\n\004from" +
-      "\030\001 \001(\004\022\n\n\002to\030\002 \001(\004\022\013\n\003idx\030\003 \001(\r\022\013\n\003cid\030\004" +
-      " \001(\004\"=\n\035AckSystemNotificationResponse\022\013\n" +
-      "\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(\t\"[\n\035SyncFollo" +
-      "wNotificationRequest\022\014\n\004from\030\001 \001(\004\022\020\n\010la" +
-      "st_idx\030\002 \001(\r\022\r\n\005limit\030\003 \001(\r\022\013\n\003cid\030\004 \001(\004" +
-      "\"\221\001\n\036SyncFollowNotificationResponse\022\013\n\003r" +
-      "et\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(\t\022D\n\023follow_noti" +
-      "fication\030\003 \003(\0132\'.com.wali.live.proto.Fol" +
-      "lowNotification\022\013\n\003cid\030\004 \001(\004\"9\n\034AckFollo",
-      "wNotificationRequest\022\014\n\004from\030\001 \001(\004\022\013\n\003ci" +
-      "d\030\002 \001(\004\"=\n\035AckFollowNotificationResponse" +
-      "\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(\t\"L\n\010RichTe" +
-      "xt\022\r\n\005brief\030\001 \001(\t\022\016\n\006poster\030\002 \001(\t\022\022\n\ndet" +
-      "ail_url\030\003 \001(\t\022\r\n\005title\030\004 \001(\t\"\217\001\n\022FollowN" +
-      "otification\022\013\n\003uid\030\001 \001(\004\022\020\n\010nickname\030\002 \001" +
-      "(\t\022\016\n\006avatar\030\003 \001(\004\022\n\n\002ts\030\004 \001(\004\022\016\n\006gender" +
-      "\030\005 \001(\r\022\r\n\005level\030\006 \001(\r\022\022\n\nis_bothway\030\007 \001(" +
-      "\010\022\013\n\003idx\030\010 \001(\r\"f\n\031NotificationNotifyMess" +
-      "age\0223\n\004type\030\001 \001(\0162%.com.wali.live.proto.",
-      "NotificationType\022\024\n\014notification\030\002 \001(\014\"{" +
-      "\n\035SendSystemNotificationRequest\022\014\n\004from\030" +
-      "\001 \001(\004\022\n\n\002to\030\002 \001(\004\022\020\n\010msg_type\030\003 \001(\r\022\020\n\010m" +
-      "sg_body\030\004 \001(\t\022\017\n\007msg_ext\030\005 \001(\014\022\013\n\003cid\030\006 " +
-      "\001(\004\"K\n\036SendSystemNotificationResponse\022\013\n" +
-      "\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(\t\022\013\n\003cid\030\003 \001(\004" +
-      "\"{\n\nBarMessage\0220\n\003bmt\030\001 \001(\0162#.com.wali.l" +
-      "ive.proto.BarMessageType\022\017\n\007content\030\002 \001(" +
-      "\t\022\016\n\006schema\030\003 \001(\t\022\r\n\005start\030\004 \001(\004\022\013\n\003end\030" +
-      "\005 \001(\004\"$\n\024GetBarMessageRequest\022\014\n\004from\030\001 ",
-      "\001(\004\"g\n\025GetBarMessageResponse\022\013\n\003ret\030\001 \001(" +
-      "\r\022\017\n\007err_msg\030\002 \001(\t\0220\n\007bar_msg\030\003 \003(\0132\037.co" +
-      "m.wali.live.proto.BarMessage\"\030\n\tNormalTa" +
-      "b\022\013\n\003url\030\001 \001(\t\"2\n\013ListTabItem\022\021\n\titem_na" +
-      "me\030\001 \001(\t\022\020\n\010item_url\030\002 \001(\t\"L\n\007ListTab\022\021\n" +
-      "\tlist_name\030\001 \001(\t\022.\n\004item\030\002 \003(\0132 .com.wal" +
-      "i.live.proto.ListTabItem\"q\n\025VipCustomerS" +
-      "erviceTab\022\r\n\005title\030\001 \001(\t\022<\n\004type\030\002 \001(\0162." +
-      ".com.wali.live.proto.VipCustomerServiceT" +
-      "abType\022\013\n\003tab\030\003 \001(\014\"P\n\025VipCustomerServic",
-      "eBar\0227\n\003tab\030\001 \003(\0132*.com.wali.live.proto." +
-      "VipCustomerServiceTab\"/\n\037GetVipCustomerS" +
-      "erviceBarRequest\022\014\n\004from\030\001 \001(\004\"y\n GetVip" +
-      "CustomerServiceBarResponse\022\013\n\003ret\030\001 \001(\r\022" +
-      "\017\n\007err_msg\030\002 \001(\t\0227\n\003bar\030\003 \001(\0132*.com.wali" +
-      ".live.proto.VipCustomerServiceBar\"\034\n\tAtM" +
-      "essage\022\017\n\007at_user\030\001 \001(\004\"\202\001\n\024VFansMemberB" +
-      "riefInfo\022\021\n\tpet_level\030\001 \001(\005\022\023\n\013medal_val" +
-      "ue\030\002 \001(\t\022\024\n\014is_use_medal\030\003 \001(\010\022\025\n\ris_vip" +
-      "_expire\030\004 \001(\010\022\025\n\rbarrage_color\030\005 \001(\t**\n\020",
-      "NotificationType\022\n\n\006SYSTEM\020\001\022\n\n\006FOLLOW\020\002" +
-      "**\n\016BarMessageType\022\006\n\002OP\020\001\022\007\n\003SYS\020\002\022\007\n\003N" +
-      "TF\020\003*=\n\031VipCustomerServiceTabType\022\020\n\014VCS" +
-      "TT_NORMAL\020\001\022\016\n\nVCSTT_LIST\020\002B\'\n\023com.wali." +
-      "live.protoB\020LiveMessageProto"
+      "le\030\031 \001(\010\022\022\n\nvip_hidden\030\032 \001(\010\022&\n\036real_nam" +
+      "e_certification_status\030\033 \001(\r\022\024\n\014is_push_" +
+      "self\030\034 \001(\010\022\026\n\016from_effect_id\030\035 \001(\r\022\023\n\013no" +
+      "ble_level\030\036 \001(\r\022\031\n\021special_effect_id\030\037 \001" +
+      "(\r\"/\n\010Language\022\025\n\rlanguage_code\030\001 \001(\r\022\014\n" +
+      "\004text\030\002 \001(\t\"@\n\rMultiLanguage\022/\n\010language" +
+      "\030\001 \003(\0132\035.com.wali.live.proto.Language\"D\n" +
+      "\021SyncSysMsgRequest\022\021\n\tfrom_user\030\001 \002(\004\022\017\n" +
+      "\007room_id\030\002 \001(\t\022\013\n\003cid\030\003 \001(\004\"\203\001\n\022SyncSysM",
+      "sgResponse\022\013\n\003ret\030\001 \001(\r\022\021\n\terror_msg\030\002 \001" +
+      "(\t\022\013\n\003cid\030\003 \001(\004\022\021\n\ttimestamp\030\004 \001(\004\022-\n\007me" +
+      "ssage\030\005 \003(\0132\034.com.wali.live.proto.Messag" +
+      "e\"h\n\021SyncUnreadRequest\022\021\n\tfrom_user\030\001 \001(" +
+      "\004\022\013\n\003cid\030\002 \001(\004\022\017\n\007page_id\030\003 \001(\t\022\r\n\005limit" +
+      "\030\004 \001(\r\022\023\n\013follow_type\030\005 \001(\r\"\233\001\n\022SyncUnre" +
+      "adResponse\022\013\n\003ret\030\001 \001(\r\022\021\n\terror_msg\030\002 \001" +
+      "(\t\022+\n\006unread\030\003 \003(\0132\033.com.wali.live.proto" +
+      ".Unread\022\032\n\022total_unread_count\030\004 \001(\r\022\013\n\003c" +
+      "id\030\005 \001(\004\022\017\n\007page_id\030\006 \001(\t\"o\n\006Unread\022\024\n\014u",
+      "nread_count\030\001 \001(\r\022\026\n\016max_unread_seq\030\002 \001(" +
+      "\r\022)\n\003msg\030\003 \003(\0132\034.com.wali.live.proto.Mes" +
+      "sage\022\014\n\004user\030\004 \001(\004\"A\n\031SyncHistoryMessage" +
+      "Reuqest\022\021\n\tfrom_user\030\001 \001(\004\022\021\n\tsync_user\030" +
+      "\002 \001(\004\"i\n\032SyncHistoryMessageResponse\022\013\n\003r" +
+      "et\030\001 \001(\r\022\021\n\terror_msg\030\002 \001(\t\022+\n\006unread\030\003 " +
+      "\001(\0132\033.com.wali.live.proto.Unread\"~\n\017Join" +
+      "RoomMessage\022\024\n\014viewer_count\030\001 \001(\r\022,\n\007vie" +
+      "wers\030\002 \003(\0132\033.com.wali.live.proto.Viewer\022" +
+      "\014\n\004type\030\003 \001(\r\022\031\n\021showSpecialEffect\030\004 \001(\010",
+      "\"V\n\020LeaveRoomMessage\022\024\n\014viewer_count\030\001 \001" +
+      "(\r\022,\n\007viewers\030\002 \003(\0132\033.com.wali.live.prot" +
+      "o.Viewer\"S\n\rViewerMessage\022\024\n\014viewer_coun" +
+      "t\030\001 \001(\r\022,\n\007viewers\030\002 \003(\0132\033.com.wali.live" +
+      ".proto.Viewer\"\027\n\025AnchorJoinRoomMessage\"\030" +
+      "\n\026AnchorLeaveRoomMessage\"<\n\013PushMessage\022" +
+      "-\n\007message\030\001 \003(\0132\034.com.wali.live.proto.M" +
+      "essage\"(\n\021ChatNotifyMessage\022\023\n\013follow_ty" +
+      "pe\030\001 \001(\r\"|\n\014ImageBodyExt\022\020\n\010mimeType\030\001 \002" +
+      "(\t\022\013\n\003url\030\002 \002(\t\022\r\n\005width\030\003 \002(\r\022\016\n\006height",
+      "\030\004 \002(\r\022\014\n\004size\030\005 \002(\r\022\023\n\013is_original\030\006 \001(" +
+      "\010\022\013\n\003md5\030\007 \001(\t\" \n\tProbeArgs\022\023\n\013domain_na" +
+      "me\030\001 \001(\t\"x\n\022FeedMessageRequest\022\021\n\tfrom_u" +
+      "ser\030\001 \002(\004\022\017\n\007room_id\030\002 \001(\t\022\017\n\007page_id\030\003 " +
+      "\001(\t\022\r\n\005limit\030\004 \001(\r\022\013\n\003cid\030\005 \001(\004\022\021\n\ttimes" +
+      "tamp\030\006 \001(\004\"\207\001\n\023FeedMessageResponse\022\013\n\003re" +
+      "t\030\001 \002(\r\022\021\n\terror_msg\030\002 \001(\t\0222\n\014feed_messa" +
+      "ge\030\003 \003(\0132\034.com.wali.live.proto.Message\022\013" +
+      "\n\003cid\030\004 \001(\004\022\017\n\007page_id\030\005 \001(\t\"y\n\026SyncRoom" +
+      "MessageRequest\022\021\n\tfrom_user\030\001 \002(\004\022\017\n\007roo",
+      "m_id\030\002 \002(\t\022\036\n\026last_sync_important_ts\030\003 \001" +
+      "(\004\022\033\n\023last_sync_normal_ts\030\004 \001(\004\"\204\002\n\027Sync" +
+      "RoomMessageResponse\022\013\n\003ret\030\001 \002(\r\022\021\n\terro" +
+      "r_msg\030\002 \001(\t\0228\n\022important_room_msg\030\003 \003(\0132" +
+      "\034.com.wali.live.proto.Message\0225\n\017normal_" +
+      "room_msg\030\004 \003(\0132\034.com.wali.live.proto.Mes" +
+      "sage\022!\n\031current_sync_important_ts\030\005 \001(\004\022" +
+      "\036\n\026current_sync_normal_ts\030\006 \001(\004\022\025\n\rsync_" +
+      "interval\030\007 \001(\r\"E\n\024MsgRuleChangeMessage\022-" +
+      "\n\007msgRule\030\001 \001(\0132\034.com.wali.live.proto.Ms",
+      "gRule\"\217\001\n\013KickMessage\022\014\n\004zuid\030\001 \001(\004\022\016\n\006l" +
+      "iveid\030\002 \001(\t\022\r\n\005op_id\030\003 \001(\004\022\017\n\007op_type\030\004 " +
+      "\001(\r\022\021\n\tkicked_id\030\005 \001(\004\022\026\n\016operation_type" +
+      "\030\006 \001(\r\022\027\n\017kicked_nickname\030\007 \001(\t\"7\n\023TapTo" +
+      "SellPushMsgExt\022\016\n\006isShop\030\001 \001(\010\022\020\n\010hideGi" +
+      "ft\030\002 \001(\010\"\230\001\n\rWidgetMessage\022\014\n\004zuid\030\001 \002(\004" +
+      "\0227\n\007msgItem\030\002 \003(\0132&.com.wali.live.proto." +
+      "WidgetMessageItem\022@\n\rnewWidgetItem\030\003 \003(\013" +
+      "2).com.wali.live.proto.NewWidgetMessageI" +
+      "tem\"e\n\021WidgetMessageItem\022\020\n\010link_url\030\001 \002",
+      "(\t\022\020\n\010position\030\002 \002(\r\022\014\n\004icon\030\003 \001(\t\022\014\n\004te" +
+      "xt\030\004 \001(\t\022\020\n\010showType\030\005 \001(\r\"u\n\024NewWidgetM" +
+      "essageItem\0229\n\rnewWidgetItem\030\001 \002(\0132\".com." +
+      "wali.live.proto.NewWidgetItem\022\020\n\010isDelet" +
+      "e\030\002 \001(\010\022\020\n\010showType\030\003 \001(\r\"b\n\024RoomAnimati" +
+      "onMessage\022\030\n\020animation_effect\030\001 \001(\r\022\030\n\020a" +
+      "nimationContent\030\002 \001(\t\022\026\n\016animation_type\030" +
+      "\003 \001(\r\"P\n\014ShoppingInfo\022\014\n\004name\030\001 \002(\t\022\r\n\005p" +
+      "rice\030\002 \002(\001\022\022\n\nproduct_id\030\003 \002(\003\022\017\n\007img_ur" +
+      "l\030\004 \001(\t\"R\n\026PushShoppingInfoMsgExt\0228\n\rsho",
+      "pping_info\030\001 \003(\0132!.com.wali.live.proto.S" +
+      "hoppingInfo\"$\n\016UpgradeMessage\022\022\n\nuser_le" +
+      "vel\030\001 \001(\r\"<\n\022WidgetClickMessage\022\020\n\010widge" +
+      "tID\030\001 \002(\r\022\024\n\014counterValue\030\002 \001(\t\"\"\n\rRedNa" +
+      "meStatus\022\021\n\tisRedname\030\001 \001(\010\"\263\001\n\016InviteGr" +
+      "oupExt\022\017\n\007inviter\030\001 \001(\004\022\030\n\020inviter_nickn" +
+      "ame\030\002 \001(\t\022\025\n\rfans_group_id\030\003 \001(\004\022\027\n\017fans" +
+      "_group_icon\030\004 \001(\t\022\027\n\017fans_group_name\030\005 \001" +
+      "(\t\022\021\n\tto_friend\030\006 \001(\004\022\032\n\022to_friend_nickn" +
+      "ame\030\007 \001(\t\"i\n\024GlobalRoomMessageExt\022Q\n\031inn",
+      "er_global_room_msg_ext\030\001 \003(\0132..com.wali." +
+      "live.proto.InnerGlobalRoomMessageExt\"6\n\031" +
+      "InnerGlobalRoomMessageExt\022\014\n\004type\030\001 \001(\r\022" +
+      "\013\n\003ext\030\002 \001(\014\"\'\n\024ShareJoinRoomMessage\022\017\n\007" +
+      "content\030\001 \001(\t\"\254\002\n\022MedalConfigMessage\022E\n\026" +
+      "before_nickname_config\030\001 \003(\0132%.com.wali." +
+      "live.proto.InnerMedalConfig\022D\n\025after_nic" +
+      "kname_config\030\002 \003(\0132%.com.wali.live.proto" +
+      ".InnerMedalConfig\022D\n\025before_content_conf" +
+      "ig\030\003 \003(\0132%.com.wali.live.proto.InnerMeda",
+      "lConfig\022C\n\024after_content_config\030\004 \003(\0132%." +
+      "com.wali.live.proto.InnerMedalConfig\"\"\n\020" +
+      "InnerMedalConfig\022\016\n\006pic_id\030\001 \001(\t\"&\n\020TxtS" +
+      "chemeMessage\022\022\n\nscheme_url\030\001 \001(\t\"\'\n\030GetL" +
+      "iveNotifyMsgCountReq\022\013\n\003uid\030\001 \001(\004\"I\n\030Get" +
+      "LiveNotifyMsgCountRsp\022\013\n\003ret\030\001 \001(\r\022\021\n\ter" +
+      "ror_msg\030\002 \001(\t\022\r\n\005count\030\003 \001(\r\")\n\032ClearLiv" +
+      "eNotifyMsgCountReq\022\013\n\003uid\030\001 \001(\004\"<\n\032Clear" +
+      "LiveNotifyMsgCountRsp\022\013\n\003ret\030\001 \001(\r\022\021\n\ter" +
+      "ror_msg\030\002 \001(\t\"x\n\022UnreadNotification\022\024\n\014u",
+      "nread_count\030\001 \001(\r\022\017\n\007max_idx\030\002 \001(\r\022)\n\003ms" +
+      "g\030\003 \003(\0132\034.com.wali.live.proto.Message\022\020\n" +
+      "\010sys_user\030\004 \001(\004\":\n\035SyncSystemNotificatio" +
+      "nRequest\022\014\n\004from\030\001 \001(\004\022\013\n\003cid\030\002 \001(\004\"\216\001\n\036" +
+      "SyncSystemNotificationResponse\022\013\n\003ret\030\001 " +
+      "\001(\r\022\017\n\007err_msg\030\002 \001(\t\022A\n\020sys_notification" +
+      "\030\003 \003(\0132\'.com.wali.live.proto.UnreadNotif" +
+      "ication\022\013\n\003cid\030\004 \001(\004\"\\\n#GetHistorySystem" +
+      "NotificationRequest\022\014\n\004from\030\001 \001(\004\022\013\n\003idx" +
+      "\030\002 \001(\r\022\r\n\005limit\030\003 \001(\r\022\013\n\003cid\030\004 \001(\004\"\211\001\n$G",
+      "etHistorySystemNotificationResponse\022\013\n\003r" +
+      "et\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(\t\0226\n\020sys_notific" +
+      "ation\030\003 \003(\0132\034.com.wali.live.proto.Messag" +
+      "e\022\013\n\003cid\030\004 \001(\004\"R\n\034AckSystemNotificationR" +
+      "equest\022\014\n\004from\030\001 \001(\004\022\n\n\002to\030\002 \001(\004\022\013\n\003idx\030" +
+      "\003 \001(\r\022\013\n\003cid\030\004 \001(\004\"=\n\035AckSystemNotificat" +
+      "ionResponse\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(" +
+      "\t\"[\n\035SyncFollowNotificationRequest\022\014\n\004fr" +
+      "om\030\001 \001(\004\022\020\n\010last_idx\030\002 \001(\r\022\r\n\005limit\030\003 \001(" +
+      "\r\022\013\n\003cid\030\004 \001(\004\"\221\001\n\036SyncFollowNotificatio",
+      "nResponse\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(\t\022" +
+      "D\n\023follow_notification\030\003 \003(\0132\'.com.wali." +
+      "live.proto.FollowNotification\022\013\n\003cid\030\004 \001" +
+      "(\004\"9\n\034AckFollowNotificationRequest\022\014\n\004fr" +
+      "om\030\001 \001(\004\022\013\n\003cid\030\002 \001(\004\"=\n\035AckFollowNotifi" +
+      "cationResponse\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002" +
+      " \001(\t\"L\n\010RichText\022\r\n\005brief\030\001 \001(\t\022\016\n\006poste" +
+      "r\030\002 \001(\t\022\022\n\ndetail_url\030\003 \001(\t\022\r\n\005title\030\004 \001" +
+      "(\t\"\217\001\n\022FollowNotification\022\013\n\003uid\030\001 \001(\004\022\020" +
+      "\n\010nickname\030\002 \001(\t\022\016\n\006avatar\030\003 \001(\004\022\n\n\002ts\030\004",
+      " \001(\004\022\016\n\006gender\030\005 \001(\r\022\r\n\005level\030\006 \001(\r\022\022\n\ni" +
+      "s_bothway\030\007 \001(\010\022\013\n\003idx\030\010 \001(\r\"f\n\031Notifica" +
+      "tionNotifyMessage\0223\n\004type\030\001 \001(\0162%.com.wa" +
+      "li.live.proto.NotificationType\022\024\n\014notifi" +
+      "cation\030\002 \001(\014\"{\n\035SendSystemNotificationRe" +
+      "quest\022\014\n\004from\030\001 \001(\004\022\n\n\002to\030\002 \001(\004\022\020\n\010msg_t" +
+      "ype\030\003 \001(\r\022\020\n\010msg_body\030\004 \001(\t\022\017\n\007msg_ext\030\005" +
+      " \001(\014\022\013\n\003cid\030\006 \001(\004\"K\n\036SendSystemNotificat" +
+      "ionResponse\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(" +
+      "\t\022\013\n\003cid\030\003 \001(\004\"{\n\nBarMessage\0220\n\003bmt\030\001 \001(",
+      "\0162#.com.wali.live.proto.BarMessageType\022\017" +
+      "\n\007content\030\002 \001(\t\022\016\n\006schema\030\003 \001(\t\022\r\n\005start" +
+      "\030\004 \001(\004\022\013\n\003end\030\005 \001(\004\"$\n\024GetBarMessageRequ" +
+      "est\022\014\n\004from\030\001 \001(\004\"g\n\025GetBarMessageRespon" +
+      "se\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(\t\0220\n\007bar_" +
+      "msg\030\003 \003(\0132\037.com.wali.live.proto.BarMessa" +
+      "ge\"\030\n\tNormalTab\022\013\n\003url\030\001 \001(\t\"2\n\013ListTabI" +
+      "tem\022\021\n\titem_name\030\001 \001(\t\022\020\n\010item_url\030\002 \001(\t" +
+      "\"L\n\007ListTab\022\021\n\tlist_name\030\001 \001(\t\022.\n\004item\030\002" +
+      " \003(\0132 .com.wali.live.proto.ListTabItem\"q",
+      "\n\025VipCustomerServiceTab\022\r\n\005title\030\001 \001(\t\022<" +
+      "\n\004type\030\002 \001(\0162..com.wali.live.proto.VipCu" +
+      "stomerServiceTabType\022\013\n\003tab\030\003 \001(\014\"P\n\025Vip" +
+      "CustomerServiceBar\0227\n\003tab\030\001 \003(\0132*.com.wa" +
+      "li.live.proto.VipCustomerServiceTab\"/\n\037G" +
+      "etVipCustomerServiceBarRequest\022\014\n\004from\030\001" +
+      " \001(\004\"y\n GetVipCustomerServiceBarResponse" +
+      "\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(\t\0227\n\003bar\030\003 " +
+      "\001(\0132*.com.wali.live.proto.VipCustomerSer" +
+      "viceBar\"\034\n\tAtMessage\022\017\n\007at_user\030\001 \001(\004\"\202\001",
+      "\n\024VFansMemberBriefInfo\022\021\n\tpet_level\030\001 \001(" +
+      "\005\022\023\n\013medal_value\030\002 \001(\t\022\024\n\014is_use_medal\030\003" +
+      " \001(\010\022\025\n\ris_vip_expire\030\004 \001(\010\022\025\n\rbarrage_c" +
+      "olor\030\005 \001(\t**\n\020NotificationType\022\n\n\006SYSTEM" +
+      "\020\001\022\n\n\006FOLLOW\020\002**\n\016BarMessageType\022\006\n\002OP\020\001" +
+      "\022\007\n\003SYS\020\002\022\007\n\003NTF\020\003*=\n\031VipCustomerService" +
+      "TabType\022\020\n\014VCSTT_NORMAL\020\001\022\016\n\nVCSTT_LIST\020" +
+      "\002B\'\n\023com.wali.live.protoB\020LiveMessagePro" +
+      "to"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -87066,7 +87620,7 @@ public final class LiveMessageProto {
     internal_static_com_wali_live_proto_Message_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_Message_descriptor,
-        new java.lang.String[] { "FromUser", "ToUser", "RoomId", "Cid", "MsgSeq", "Timestamp", "MsgType", "MsgBody", "MsgStatus", "MsgExt", "FromUserNickName", "FromUserLevel", "FromUserGender", "Certification", "CertificationType", "SupportTxt", "RoomType", "OriginRoomId", "MsgCatetory", "MultiLanguage", "FromUserShowName", "IsFromUserRedname", "GlobalRoomMsgExt", "VipLevel", "VipDisable", "VipHidden", });
+        new java.lang.String[] { "FromUser", "ToUser", "RoomId", "Cid", "MsgSeq", "Timestamp", "MsgType", "MsgBody", "MsgStatus", "MsgExt", "FromUserNickName", "FromUserLevel", "FromUserGender", "Certification", "CertificationType", "SupportTxt", "RoomType", "OriginRoomId", "MsgCatetory", "MultiLanguage", "FromUserShowName", "IsFromUserRedname", "GlobalRoomMsgExt", "VipLevel", "VipDisable", "VipHidden", "RealNameCertificationStatus", "IsPushSelf", "FromEffectId", "NobleLevel", "SpecialEffectId", });
     internal_static_com_wali_live_proto_Language_descriptor =
       getDescriptor().getMessageTypes().get(27);
     internal_static_com_wali_live_proto_Language_fieldAccessorTable = new

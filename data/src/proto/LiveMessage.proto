@@ -260,6 +260,11 @@ message Message {
     optional uint32 vip_level = 24; //财富等级
     optional bool vip_disable = 25; //财富等级是否被冻结
     optional bool vip_hidden = 26; //是否VIP隐身
+    optional uint32 real_name_certification_status = 27; //实名认证状态,1:审核中,2:实名认证已通过,3:实名认证未通过
+    optional bool is_push_self = 28; //飘屏(306)弹幕push：粉丝团开通的飘屏要给自己push(设置true)，其他飘屏消息不需要给自己push
+    optional uint32 from_effect_id = 29; //发送者的特效id
+    optional uint32 noble_level = 30; // 贵族等级
+    optional uint32 special_effect_id = 31; //发送者的特效id兼容已发版本bug
 }
 
 

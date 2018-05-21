@@ -10,6 +10,7 @@ import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.log.MyLog;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.milink.event.MiLinkEvent;
+import com.mi.live.data.region.Region;
 import com.wali.live.proto.UserProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
@@ -63,7 +64,7 @@ public class UserIncomeActivity extends BaseSdkActivity {
         }
         mIsAddFragment = true;
 
-        UserProto.Region region = MyUserInfoManager.getInstance().getRegion();
+        Region region = MyUserInfoManager.getInstance().getRegion();
         if (region != null && "IN".equals(region.getCountryCode())) {
             FragmentNaviUtils.addFragment(this, R.id.main_act_container, IndiaIncomeFragment.class, null, true, false, true);
         } else {

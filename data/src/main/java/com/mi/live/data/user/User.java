@@ -3,6 +3,7 @@ package com.mi.live.data.user;
 import com.base.log.MyLog;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.mi.live.data.region.Region;
 import com.wali.live.dao.Relation;
 import com.wali.live.proto.AccountProto;
 import com.wali.live.proto.CommonChannelProto;
@@ -19,8 +20,6 @@ import java.util.List;
 public class User implements Serializable {
     private String TAG = User.class.getSimpleName();
 
-    public static final int CERT_TYPE_PGC = 5;
-
     public static final int GENDER_MAN = 1;
     public static final int GENDER_WOMAN = 2;
 
@@ -33,6 +32,7 @@ public class User implements Serializable {
     public static final int CERTIFICATION_OFFICIAL = 2;
     public static final int CERTIFICATION_RECOMMEND = 3;
     public static final int CERTIFICATION_XIAOMI = 4; //官微认证
+    public static final int CERT_TYPE_PGC = 5;      //pgc 用户
     public static final int CERTIFICATION_TV = 6; //电视台认证
 
     public static final int WAITING_CERTIFICATION_XIAOMI = 4;
@@ -41,6 +41,13 @@ public class User implements Serializable {
     public static final int REALNAME_STATUS_WAITING = 1;
     public static final int REALNAME_STATUS_FAILURE = 3;
     public static final int REALNAME_STATUS_SUCCESS = 2;
+
+    //贵族特权等级类型
+    public static final int NOBLE_LEVEL_TOP = 500;//王者
+    public static final int NOBLE_LEVEL_SECOND = 400;//公爵
+    public static final int NOBLE_LEVEL_THIRD = 300;//侯爵
+    public static final int NOBLE_LEVEL_FOURTH = 200;//伯爵
+    public static final int NOBLE_LEVEL_FIFTH = 100;//子爵
 
     /*以下是用户基础信息*/
     private long uid = 0;
@@ -83,9 +90,11 @@ public class User implements Serializable {
     private int vodNum;             //点播数
     private int earnNum;            //收益数
     private int diamondNum;         //钻石数
+    private int goldCoinNum;         //金币数
     private int sendDiamondNum;     //送出钻石数
     private int sentVirtualDiamondNum;//送出虚拟钻石数
     private int virtualDiamondNum;  //虚拟钻数
+    private boolean isLive = false;
 
     /* 这个用户对应的付费弹幕礼物id，确定这个用户开的直播的付费弹幕价格*/
     private int payBarrageGiftId = -1;
@@ -96,49 +105,28 @@ public class User implements Serializable {
     private String mTVRoomId = null;                               //正在播放的电视台房间id
     private int mRoomType;
 
+    private boolean mOnline;  //是否在线，这个只有在添加管理员的时候使用了。
     private int mAppType;                                          // app类型 4代表一直播
     private boolean certificationChanged;
     private boolean mRedName;                                      //是否被社区红名了
 
+    private Region mRegion = new Region();//地区信息
+    private List<Medal> beforeNickNameMedalList;
+    private List<Medal> afterNickNameMedalList;
+    private List<Medal> userCardMedalList;
+
+    private String mNorbleMedal = null;
     // vip相关
     private int mVipLevel;                                         //vip等级
     private boolean mIsVipFrozen;                                  //vip是否被冻结
     private boolean mIsVipHide;                                    //该vip用户最后一次的隐身状态
 
-    public int getAppType() {
-        return mAppType;
-    }
+    //贵族特权等级
+    private int mNobleLevel;          //贵族特权
 
-    public void setAppType(int mAppType) {
-        this.mAppType = mAppType;
-    }
-
-    public void setTVRoomId(String tvRoomId) {
-        mTVRoomId = tvRoomId;
-    }
-
-    public String getTVRoomId() {
-        return mTVRoomId;
-    }
-
-    public UserProto.Region getRegion() {
-        if (mRegion != null) {
-            return mRegion;
-        } else {
-            return null;
-            /*if (LocaleUtil.getSelectedLanguageIndexFromPreference() == LocaleUtil.INDEX_ENGLISH) {
-                return UserProto.Region.newBuilder().setCountry("China").setCountryCode("en").build();
-            } else {
-                return UserProto.Region.newBuilder().setCountry("中国").setCountryCode("cn").build();
-            }*/
-        }
-    }
-
-    public void setRegion(UserProto.Region mRegion) {
-        this.mRegion = mRegion;
-    }
-
-    private UserProto.Region mRegion;//地区信息
+    //实名：手机绑定
+    private boolean mIsNeedBindPhone;
+    private String mPhoneNum;
 
     public User() {
     }
@@ -225,7 +213,7 @@ public class User implements Serializable {
         if (protoUser.getBusinessUserInfo() != null) {
             mBusinessInfo = new BusinessInfo(protoUser.getBusinessUserInfo());
         }
-        this.mRegion = protoUser.getRegion();
+        this.mRegion = new Region(protoUser.getRegion());
 
         if (protoUser.getAdminUidsList() != null) {
             List<Long> list = new ArrayList<>();
@@ -669,5 +657,68 @@ public class User implements Serializable {
 
     public void setVipHide(boolean vipHide) {
         mIsVipHide = vipHide;
+    }
+
+    public int getAppType() {
+        return mAppType;
+    }
+
+    public void setAppType(int mAppType) {
+        this.mAppType = mAppType;
+    }
+
+    public void setTVRoomId(String tvRoomId) {
+        mTVRoomId = tvRoomId;
+    }
+
+    public String getTVRoomId() {
+        return mTVRoomId;
+    }
+
+    public Region getRegion() {
+        if (mRegion != null) {
+            return mRegion;
+        } else {
+            return null;
+            /*if (LocaleUtil.getSelectedLanguageIndexFromPreference() == LocaleUtil.INDEX_ENGLISH) {
+                return UserProto.Region.newBuilder().setCountry("China").setCountryCode("en").build();
+            } else {
+                return UserProto.Region.newBuilder().setCountry("中国").setCountryCode("cn").build();
+            }*/
+        }
+    }
+
+    public void setRegion(Region mRegion) {
+        this.mRegion = mRegion;
+    }
+
+    public int getNobleLevel() {
+        return mNobleLevel;
+    }
+
+    public void setNobleLevel(int nobleLevel) {
+        mNobleLevel = nobleLevel;
+    }
+
+    public boolean isNoble() {
+        return this.mNobleLevel == User.NOBLE_LEVEL_FIFTH || this.mNobleLevel == User.NOBLE_LEVEL_FOURTH
+                || this.mNobleLevel == User.NOBLE_LEVEL_THIRD || this.mNobleLevel == User.NOBLE_LEVEL_SECOND
+                || this.mNobleLevel == User.NOBLE_LEVEL_TOP;
+    }
+
+    public boolean ismIsNeedBindPhone() {
+        return mIsNeedBindPhone;
+    }
+
+    public void setmIsNeedBindPhone(boolean mIsNeedBindPhone) {
+        this.mIsNeedBindPhone = mIsNeedBindPhone;
+    }
+
+    public String getmPhoneNum() {
+        return mPhoneNum;
+    }
+
+    public void setmPhoneNum(String mPhoneNum) {
+        this.mPhoneNum = mPhoneNum;
     }
 }

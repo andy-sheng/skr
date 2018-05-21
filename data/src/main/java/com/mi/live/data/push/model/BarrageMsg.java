@@ -6,6 +6,7 @@ import com.base.global.GlobalData;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.R;
+import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.push.model.contest.ContestAnswerMsgExt;
 import com.mi.live.data.push.model.contest.ContestQuestionMsgExt;
 import com.mi.live.data.query.model.MessageRule;
@@ -76,6 +77,7 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
         barrageMsg.setVipFrozen(msg.getVipDisable());
         barrageMsg.setVipLevel(msg.getVipLevel());
         barrageMsg.setVipHide(msg.getVipHidden());
+        barrageMsg.setNobleLevel(msg.getNobleLevel());
         return barrageMsg;
     }
 
@@ -114,6 +116,7 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
     private int vipLevel;                              //vip等级
     private boolean isVipFrozen;                       //vip是否被冻结
     private boolean isVipHide;                         //vip用户是否设置隐身
+    private int nobleLevel;
 
     public BarrageMsg() {
         this.senderMsgId = System.currentTimeMillis();
@@ -140,6 +143,13 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
 //            return String.valueOf(sender);
 //        }
         return senderName;
+    }
+
+    public void appendCommonInfo() {
+        setVipLevel(MyUserInfoManager.getInstance().getVipLevel());
+        setVipFrozen(MyUserInfoManager.getInstance().isVipFrozen());
+        setVipHide(MyUserInfoManager.getInstance().isVipHide());
+        setNobleLevel(MyUserInfoManager.getInstance().getNobleLevel());
     }
 
     @Override
@@ -333,6 +343,14 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
 
     public void setVipHide(boolean vipHide) {
         isVipHide = vipHide;
+    }
+
+    public int getNobleLevel() {
+        return nobleLevel;
+    }
+
+    public void setNobleLevel(int nobleLevel) {
+        this.nobleLevel = nobleLevel;
     }
 
     /*
