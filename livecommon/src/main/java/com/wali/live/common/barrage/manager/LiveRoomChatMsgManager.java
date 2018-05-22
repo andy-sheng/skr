@@ -1,5 +1,7 @@
 package com.wali.live.common.barrage.manager;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
 
 import com.base.global.GlobalData;
@@ -9,11 +11,12 @@ import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.preference.MLPreferenceUtils;
 import com.mi.live.data.preference.PreferenceKeys;
-import com.mi.live.data.push.collection.InsertSortLinkedList;
+import com.mi.live.data.push.collection.CommentCollection;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.push.model.GlobalRoomMsgExt;
 import com.mi.live.data.room.model.FansPrivilegeModel;
+import com.mi.live.data.user.User;
 import com.wali.live.common.barrage.event.CommentRefreshEvent;
 import com.wali.live.common.model.CommentModel;
 import com.wali.live.common.smiley.SmileyParser;
@@ -26,6 +29,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import rx.Observable;
+import rx.Subscriber;
+import rx.schedulers.Schedulers;
+
 /**
  * @module com.wali.live.video.widget
  * <p/>
@@ -35,7 +42,6 @@ import java.util.List;
  */
 public class LiveRoomChatMsgManager {
     private static final String TAG = "LiveRoomChatMsgManager";
-    public static final int DEFAULT_MAX_SIZE = 300;
 
     /**
      * 游戏直播默认的消息屏蔽值
@@ -44,8 +50,7 @@ public class LiveRoomChatMsgManager {
     public static final boolean DEFAULT_FORBID_SYS = false;
     public static final boolean DEFAULT_FORBID_CHAT = false;
 
-    protected InsertSortLinkedList<CommentModel> setTopMsgList; //需要置顶的消息列表
-    protected InsertSortLinkedList<CommentModel> chatMsgList; //房间聊天消息的列表
+    protected CommentCollection<CommentModel> chatMsgList; //房间聊天消息的列表
     protected MsgAcceptFilter msgTypeFilter; //消息过滤器
     protected HashSet<String> mLikeIdSet = new HashSet<>(); //房间部分弹幕去重列表
     List<Long> rankTops = new ArrayList<>();
@@ -53,7 +58,7 @@ public class LiveRoomChatMsgManager {
     private boolean mHideLikeMsg = false;
     private boolean mHideGiftMsg = false;
     private boolean mHideShareMsg = false;
-    private boolean mHideCommentMsg = false;
+    private int initMaxSize = CommentCollection.DEFAULT_MAX_SIZE;
 
     /**
      * 以下两个参数，目前只在游戏直播有效
@@ -64,7 +69,7 @@ public class LiveRoomChatMsgManager {
     private boolean mHideSysMsg = false;
     private boolean mHideChatMsg = false;
 
-    private boolean mIsGameLiveMode = false;
+    private volatile boolean mIsGameLiveMode = false;
 
     public void setHideLikeMsg(boolean hideLikeMsg) {
         mHideLikeMsg = hideLikeMsg;
@@ -80,10 +85,6 @@ public class LiveRoomChatMsgManager {
 
     public void setHideChatMsg(boolean hideChatMsg) {
         mHideChatMsg = hideChatMsg;
-    }
-
-    public void setHideCommentMsg(boolean hideCommentMsg) {
-        mHideCommentMsg = hideCommentMsg;
     }
 
     public void setHideShareMsg(boolean hideShareMsg) {
@@ -117,10 +118,9 @@ public class LiveRoomChatMsgManager {
     }
 
     public LiveRoomChatMsgManager(int maxChatMsgSize, MsgAcceptFilter filter) {
-        maxChatMsgSize = Integer.MAX_VALUE;
-        setTopMsgList = new InsertSortLinkedList<CommentModel>(maxChatMsgSize); //需要置顶的消息列表
-        chatMsgList = new InsertSortLinkedList<CommentModel>(maxChatMsgSize); //房间聊天消息的列表
+        chatMsgList = new CommentCollection<CommentModel>(maxChatMsgSize); //房间聊天消息的列表
         msgTypeFilter = filter;
+        initMaxSize = maxChatMsgSize;
     }
 
     // isInBound 是否是收到的
@@ -130,7 +130,7 @@ public class LiveRoomChatMsgManager {
         }
         CommentModel commentModel = CommentModel.loadFromBarrage(msg);
 //        chatMsgList.insert(commentModel);
-        replaceEnterAndLike(commentModel);
+        newInsert(commentModel);
         EventBus.getDefault().post(new CommentRefreshEvent(getMsgList(), !isInBound, this.toString()));
         if (mIsGameLiveMode) {
             EventBus.getDefault().post(new EventClass.RefreshGameLiveCommentEvent(commentModel, this.toString()));
@@ -164,10 +164,33 @@ public class LiveRoomChatMsgManager {
         }
     }
 
+    private long mLastEnterTime = -1;
+
+    //新增进入房间离开房间l的消息刷屏限制
+    @WorkerThread
+    private void newInsert(CommentModel commentModel) {
+        if (commentModel.getMsgType() == BarrageMsgType.B_MSG_TYPE_JOIN
+                || commentModel.getMsgType() == BarrageMsgType.B_MSG_TYPE_LEAVE) {
+            long time = System.currentTimeMillis();
+            if (mLastEnterTime > 0 && time - mLastEnterTime < 3_000) {// 3秒内连续进入和离开房间的弹幕被聚合
+                mLastEnterTime = time;
+                chatMsgList.replaceTail(commentModel);
+                return;
+            }
+            mLastEnterTime = time;
+        } else {
+            mLastEnterTime = -1;
+        }
+
+        //进入房间 点亮 二期逻辑
+        replaceEnterAndLike(commentModel);
+
+//        EventBus.getDefault().post(new EventClass.SmartBarrageEvent(commentModel));
+    }
 
     private void replaceEnterAndLike(CommentModel commentModel) {
         MyLog.w(TAG, "replaceEnterAndLike");
-        if (chatMsgList.size() > 0) {
+        if (chatMsgList.getDatasource().size() > 0) {
             CommentModel lastComment = chatMsgList.getLastRough();
             if (lastComment.getMsgType() != BarrageMsgType.B_MSG_TYPE_JOIN &&
                     lastComment.getMsgType() != BarrageMsgType.B_MSG_TYPE_LIKE) {
@@ -188,16 +211,10 @@ public class LiveRoomChatMsgManager {
     }
 
     public ArrayList<CommentModel> getMsgList() {
-        ArrayList<CommentModel> list = new ArrayList<>(setTopMsgList.size() + chatMsgList.size());
-        list.addAll(setTopMsgList.toArrayList());
-        list.addAll(chatMsgList.toArrayList());
-        return list;
+        return chatMsgList.getDatasource();
     }
 
     public void clear() {
-        if (setTopMsgList != null) {
-            setTopMsgList.clear();
-        }
         if (chatMsgList != null) {
             chatMsgList.clear();
         }
@@ -220,43 +237,17 @@ public class LiveRoomChatMsgManager {
      * @param anchorId
      * @param pkExt
      */
-    public void sendBarrageMessageAsync(String msgBody, int msgType, String roomid, long anchorId,
-                                        BarrageMsg.PkMessageExt pkExt, BarrageMsg.MsgExt ext,
-                                        GlobalRoomMsgExt globalRoomMsgExt) {
-        if (MyUserInfoManager.getInstance().getUser().getLevel() == 0) {
-            MyUserInfoManager.getInstance().syncSelfDetailInfo();
+    public void sendBarrageMessageAsync(String msgBody, int msgType, String roomid, long anchorId, BarrageMsg.PkMessageExt pkExt, BarrageMsg.MsgExt ext, GlobalRoomMsgExt globalRoomMessageExt) {
+        MyLog.d(TAG, "sendBarrageMessageAsync");
+        if (MyUserInfoManager.getInstance().getLevel() == 0) {
+            MyLog.d(TAG, "user level is zero, vipLevel:" + MyUserInfoManager.getInstance().getVipLevel());
+            MyUserInfoManager.getInstance().syncSelfDetailInfo();//TODO 请求使用LiveSyncManager.getInstance().asyncOwnUserInfo();
         }
         if (!TextUtils.isEmpty(msgBody) && !TextUtils.isEmpty(roomid)) {
             String globalMes = SmileyParser.getInstance()
                     .convertString(msgBody, SmileyParser.TYPE_LOCAL_TO_GLOBAL).toString();
-            BarrageMsg msg = new BarrageMsg();
-            msg.setMsgType(msgType);
-            msg.setSender(UserAccountManager.getInstance().getUuidAsLong());
-            String nickname = MyUserInfoManager.getInstance().getUser().getNickname();
-            if (nickname == null) {
-                nickname = String.valueOf(UserAccountManager.getInstance().getUuidAsLong());
-            }
-            msg.setSenderName(nickname);
-            msg.setSenderLevel(MyUserInfoManager.getInstance().getUser().getLevel());
-            msg.setRoomId(roomid);
-            msg.setBody(globalMes);
-            msg.setAnchorId(anchorId);
-            msg.setSentTime(getLastBarrageMsgSentTime());
-            if (MyUserInfoManager.getInstance().getUser() != null) {
-                msg.setCertificationType(MyUserInfoManager.getInstance().getUser().getCertificationType());
-            }
-            if (pkExt != null) {
-                msg.setRoomType(BarrageMsg.ROOM_TYPE_PK);
-                msg.setOpponentAnchorId(pkExt.zuid);
-                msg.setOpponentRoomId(pkExt.roomId);
-            }
-            if (ext != null) {
-                msg.setMsgExt(ext);
-            }
-            if (globalRoomMsgExt != null) {
-                msg.setGlobalRoomMsgExt(globalRoomMsgExt);
-            }
-            msg.setRedName(MyUserInfoManager.getInstance().getUser().isRedName());
+            BarrageMsg msg = getBarrageMsg(msgType, roomid, anchorId, pkExt, ext, globalRoomMessageExt, globalMes, MyUserInfoManager.getInstance().getVipLevel(), MyUserInfoManager.getInstance().isVipFrozen());
+
             BarrageMessageManager.getInstance().sendBarrageMessageAsync(msg, true);
             //假装是个push过去
             BarrageMessageManager.getInstance().pretendPushBarrage(msg);
@@ -264,11 +255,52 @@ public class LiveRoomChatMsgManager {
         }
     }
 
+    @NonNull
+    public BarrageMsg getBarrageMsg(int msgType, String roomid, long anchorId, BarrageMsg.PkMessageExt pkExt,
+                                    BarrageMsg.MsgExt ext, GlobalRoomMsgExt globalRoomMsgExt,
+                                    String globalMes, int vipLevel, boolean isVipForzen) {
+        BarrageMsg msg = new BarrageMsg();
+        msg.setMsgType(msgType);
+        msg.setSender(UserAccountManager.getInstance().getUuidAsLong());
+        String nickname = MyUserInfoManager.getInstance().getNickname();
+        if (nickname == null) {
+            nickname = String.valueOf(UserAccountManager.getInstance().getUuidAsLong());
+        }
+        msg.setNobleLevel(MyUserInfoManager.getInstance().getNobleLevel());
+        msg.setVipFrozen(isVipForzen);
+        msg.setVipLevel(vipLevel);
+        msg.setSenderName(nickname);
+        msg.setSenderLevel(MyUserInfoManager.getInstance().getLevel());
+        msg.setRoomId(roomid);
+        msg.setBody(globalMes);
+        msg.setAnchorId(anchorId);
+        msg.setSentTime(getLastBarrageMsgSentTime());
+        if (MyUserInfoManager.getInstance().getUser() != null) {
+            msg.setCertificationType(MyUserInfoManager.getInstance().getUser().getCertificationType());
+        }
+        if (pkExt != null) {
+            msg.setRoomType(BarrageMsg.ROOM_TYPE_PK);
+            msg.setOpponentAnchorId(pkExt.zuid);
+            msg.setOpponentRoomId(pkExt.roomId);
+        }
+        if (ext != null) {
+            msg.setMsgExt(ext);
+        }
+
+        if (globalRoomMsgExt != null) {
+            msg.setGlobalRoomMsgExt(globalRoomMsgExt);
+        }
+
+        msg.setRedName(MyUserInfoManager.getInstance().isRedName());
+        msg.appendCommonInfo();
+        return msg;
+    }
+
     public void sendTextBarrageMessageAsync(String body, String liveId, long anchorId, BarrageMsg.PkMessageExt pkExt) {
         sendBarrageMessageAsync(body, BarrageMsgType.B_MSG_TYPE_TEXT, liveId, anchorId, pkExt, null, null);
     }
 
-
+    //管理员飘屏或付费飘屏
     public void sendFlyBarrageMessageAsync(String body, String liveId, long anchorId, int flyBarrageType,
                                            BarrageMsg.PkMessageExt pkExt, FansPrivilegeModel fansPrivilegeModel) {
         BarrageMsg.GiftMsgExt msgExt = new BarrageMsg.GiftMsgExt();
@@ -403,8 +435,8 @@ public class LiveRoomChatMsgManager {
         if (null != msg) {
             switch (msg.getMsgType()) {
                 case BarrageMsgType.B_MSG_TYPE_JOIN: {
-                    if (msg.getVipLevel() > 0 && !msg.isVipFrozen() && msg.isVipHide()) {
-                        // vip隐身,不显示入场消息
+                    // vip隐身
+                    if (hideEnabled(msg)) {
                         return false;
                     }
                     try {
@@ -480,17 +512,30 @@ public class LiveRoomChatMsgManager {
         return canAdd;
     }
 
+    private Boolean hideEnabled(BarrageMsg msg) {
+        if (msg != null) {
+            boolean vipHide = msg.getVipLevel() > 0 && !msg.isVipFrozen() && msg.isVipHide();
+            boolean nobleHide = msg.getNobleLevel() >= User.NOBLE_LEVEL_FOURTH && msg.isVipHide();
+            return (vipHide || nobleHide);
+        }
+        return false;
+    }
+
     public void clearAllCache() {
-        if (setTopMsgList != null) {
-            setTopMsgList.clear();
-        }
-        if (chatMsgList != null) {
-            chatMsgList.clear();
-        }
-        if (mLikeIdSet != null) {
-            mLikeIdSet.clear();
-        }
-        BarrageMessageManager.mSendingMsgCache.clear();
+        Observable.create(new Observable.OnSubscribe<Void>() {
+            @Override
+            public void call(Subscriber<? super Void> subscriber) {
+                if (chatMsgList != null) {
+                    chatMsgList.clear();
+                }
+                if (mLikeIdSet != null) {
+                    mLikeIdSet.clear();
+                }
+                BarrageMessageManager.mSendingMsgCache.clear();
+                subscriber.onNext(null);
+                subscriber.onCompleted();
+            }
+        }).subscribeOn(Schedulers.io()).subscribe();
     }
 
     // TODO
@@ -526,10 +571,12 @@ public class LiveRoomChatMsgManager {
         chatMsgList.updateMaxSize(maxSize);
     }
 
+    public int getInitMaxSize() {
+        return initMaxSize;
+    }
+
     public void cleanMsgData() {
         chatMsgList.clear();
-        setTopMsgList.clear();
-
     }
 
 }
