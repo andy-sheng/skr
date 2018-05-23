@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clipChildren="false">
+    
+    <ImageView
+        android:id="@+id/x_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/lianfa_number_x_s"
+        android:scaleType="centerCrop"/>
+
+    <ImageView
+        android:id="@+id/num0_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/lianfa_number_1_s"
+        android:scaleType="centerCrop"/>
+
+    <ImageView
+        android:id="@+id/num1_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/lianfa_number_2_s"
+        android:scaleType="centerCrop"/>
+
+    <ImageView
+        android:id="@+id/num2_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/lianfa_number_3_s"
+        android:scaleType="centerCrop"/>
+
+    <ImageView
+        android:id="@+id/num3_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/lianfa_number_4_s"
+        android:scaleType="centerCrop"/>
+
+
+</LinearLayout>

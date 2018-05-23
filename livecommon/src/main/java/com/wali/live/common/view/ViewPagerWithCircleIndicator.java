@@ -2,6 +2,7 @@ package com.wali.live.common.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -19,12 +20,12 @@ public class ViewPagerWithCircleIndicator extends ViewPager {
 
     private int mMode = MODE_CENTER;
 
-    private int mSelectedColor = 0xffe5aa1e, mUnSelectedColor = 0xffe5e5e5;
+    private int mSelectedColor = Color.WHITE, mUnSelectedColor = 0x80ffffff;
 
     private int mItemWidth = 20;
     private int mItemHeight = 20;
 
-    private int mLimitHeight = 20;
+    private int mLimitHeight = 30;
 
     private int mItemIntever = 8; //item的间距8像素
 

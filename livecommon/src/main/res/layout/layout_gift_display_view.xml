@@ -4,6 +4,7 @@
        android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="@dimen/view_dimen_150"
         android:id="@+id/gift_display_recycleview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

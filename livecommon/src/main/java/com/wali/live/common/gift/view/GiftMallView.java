@@ -10,9 +10,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,14 +39,15 @@ import com.base.utils.toast.ToastUtils;
 import com.jakewharton.rxbinding.view.RxView;
 import com.live.module.common.R;
 import com.mi.live.data.account.MyUserInfoManager;
+import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.GiftEventClass;
+import com.mi.live.data.gift.model.BuyGiftType;
 import com.mi.live.data.gift.model.GiftType;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.common.gift.adapter.GiftDisplayRecycleViewAdapter;
 import com.wali.live.common.gift.adapter.GiftDisplayViewPagerAdapter;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
-import com.wali.live.common.gift.utils.MyAnimationUtils;
 import com.wali.live.common.view.ErrorView;
 import com.wali.live.common.view.ViewPagerWithCircleIndicator;
 import com.wali.live.dao.Gift;
@@ -56,7 +58,9 @@ import com.wali.live.proto.PayProto;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
@@ -144,6 +148,10 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
     //标记当前的选择的礼物状态
     private boolean mIsMallGift = true;
 
+    IGiftSendController currentGiftSendController;
+
+    private int mSelectedPos = -1; //选中的 giftview 的位置
+
     public GiftMallView(Context context) {
         super(context);
         init(context);
@@ -171,8 +179,10 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
     private void init(Context context) {
         if (!mIsLandscape) {
             inflate(context, R.layout.gift_mall_view, this);
+            currentGiftSendController = mPortraitStateController;
         } else {
             inflate(context, R.layout.gift_mall_landscape_view, this);
+            currentGiftSendController = mLandScapeStateController;
         }
         bindView();
         mHasLoadView = true;
@@ -182,6 +192,8 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
     public void resetStatus() {
         mHasLoadView = false;
     }
+
+    private Handler mHandler = new Handler();
 
     private GiftDisplayRecycleViewAdapter.GiftItemListener mGiftItemListener = new GiftDisplayRecycleViewAdapter.GiftItemListener() {
         @Override
@@ -195,11 +207,13 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
             if (info.gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
                 getRxActivity().onBackPressed();
                 mGiftMallPresenter.showSendEnvelopeView();
+            } else if(info.gift.getCatagory() == GiftType.OPERATION_GIFT){
+                //TODO 运营位，VIP包月礼物,后续补充
+
             } else {
                 if (v != mSelectedView) {
                     if (mSelectedView != null) {
                         clearAllGiftItemStatus();
-                        mSelectedView.hideContinueSendBtn();
                         mSelectedView.changeCornerStatus(mSelectedGift.gift.getIcon(), false);
                         mSendGiftTv.setVisibility(View.VISIBLE);
                         mContinueSendBtn.setVisibility(View.GONE);
@@ -212,9 +226,19 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
 
                 if (v != null) {
                     MyLog.d(TAG, "clickGiftItem");
-                    cancelSelectView(mSelectedView);
                     mSelectedGift = info;
-                    selectView(v, true);
+                    if (mIsLandscape) {
+                        //mSelectedPos是0  position也是0的时候不走里面的逻辑  加一个判断
+                        if ((mSelectedPos == 0 && position == 0) || mSelectedPos != position) {
+                            cancelSelectView(mSelectedView);
+                            mSelectedPos = position;
+                            selectView(v, true);
+                        }
+                    }else{
+                        cancelSelectView(mSelectedView);
+                        selectView(v, true);
+                    }
+
                     // 设置按钮可点击
                     mSendGiftTv.setEnabled(true);
                 }
@@ -231,56 +255,23 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
 
                 MyLog.d(TAG, "mSelectedGift.gift" + mSelectedGift.gift.toString());
                 MyLog.d(TAG, "mSelectedGift.gift.getCanContinuous():" + mSelectedGift.gift.getCanContinuous() + " mIsBigGiftBtnShowFlag" + mIsBigGiftBtnShowFlag);
-                if (mSelectedGift.gift.getCanContinuous() || mIsBigGiftBtnShowFlag) {
+                if (mSelectedGift != null && mSelectedGift.gift != null && mSelectedGift.gift.getCanContinuous() || mIsBigGiftBtnShowFlag) {
                     //引入
 
                     if (!judgeBuyGiftCondition()) {
-                        mSelectedView.hideContinueSendBtn();
                         return;
-                    }
-                    if (mSelectedGift.gift.getCanContinuous()) {
-                        mSelectedView.showContinueSendBtn(true);
                     }
 
                     //是否显示角标
                     mSelectedView.changeCornerStatus(mSelectedGift.gift.getIcon(), true);
 
                     mIsBuyGiftBySendBtn = false;
-                    mGiftMallPresenter.buyGift();
+//                    mGiftMallPresenter.buyGift(1);
                 } else {
                     mSelectedView.changeContinueSendBtnBackGroup(true);
-
-                    mSelectedView.showContinueSendBtn(false);
                     mIsBigGiftBtnShowFlag = true;
                 }
             }
-        }
-
-        /**
-         * 判断当前是否符合购买礼物
-         * @return false 条件不符合, true 可以发起购买
-         */
-        private boolean judgeBuyGiftCondition() {
-            if (mSelectedGift.gift.getCatagory() == GiftType.MAGIC_GIFT && !mMyRoomData.isSupportMagicFace()) {
-                ToastUtils.showToast(getResources().getString(R.string.no_support_magic_gift_tips));
-                return false;
-            }
-
-            if (mSelectedGift.card == null || mSelectedGift.card.getGiftCardCount() <= 0) {
-                int limitLevel = mSelectedGift.gift.getLowerLimitLevel();
-                if (mSelectedGift.gift.getCatagory() == GiftType.PRIVILEGE_GIFT && limitLevel > MyUserInfoManager.getInstance().getUser().getLevel()) {
-                    //特权礼物
-                    Toast.makeText(getContext(), getResources().getQuantityString(R.plurals.verify_user_level_toast, limitLevel, limitLevel), Toast.LENGTH_SHORT).show();
-                    return false;
-                } else if ((mSelectedGift.gift.getCatagory() == GiftType.Mi_COIN_GIFT && (mSelectedGift.gift.getPrice() / 10) > mGiftMallPresenter.getCurrentTotalBalance())
-                        || (mSelectedGift.gift.getCatagory() != GiftType.Mi_COIN_GIFT && mSelectedGift.gift.getPrice() > mGiftMallPresenter.getCurrentTotalBalance())) {
-//                    showInsufficientBalanceTips();
-                    EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_GO_RECHARGE));
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         @Override
@@ -292,12 +283,23 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         }
 
         @Override
-        public void updateSelectedGiftView(View v, GiftMallPresenter.GiftWithCard info) {
+        public void updateSelectedGiftView(final View v, final GiftMallPresenter.GiftWithCard info) {
             // 选中的v因为刷新改变了
             if (v != mSelectedView) {
-                cancelSelectView(mSelectedView);
-                selectView(v, false);
-                mSelectedGift = info;
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!mIsLandscape) {
+//                            cancelSelectView(mSelectedView);
+//                            selectView(v, false);
+                            //模拟再次被点击事件，变成
+                            v.callOnClick();
+                            MyLog.d(TAG, "updateSelectedGiftView");
+                        }
+                        mSelectedView = (GiftDisPlayItemView) v;
+                        mSelectedGift = info;
+                    }
+                });
                 // 设置按钮可点击
                 mSendGiftTv.setEnabled(true);
             }
@@ -307,6 +309,16 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         public void updateContinueSend() {
             MyLog.d(TAG, "updateContinueSend");
             mGiftMallPresenter.resetContinueSend();
+        }
+
+        @Override
+        public boolean getMallType() {
+            return mIsMallGift;
+        }
+
+        @Override
+        public Set getAllowedPktGiftId() {
+            return mGiftMallPresenter.getPktGiftId();
         }
     };
 
@@ -318,6 +330,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
             mGiftDisplayViewPager.setAdapter(mGiftDisplayViewPagerAdapter);
             mGiftDisplayViewPager.setItemWidth(12);
             mGiftDisplayViewPager.setItemHeight(3);
+            mGiftDisplayViewPager.setLimitHeight(60);
             mGiftListErrorView = (ErrorView) findViewById(R.id.gift_list_error_view);
             mGiftListErrorView.setRetryOnClickListener(new OnClickListener() {
                 @Override
@@ -331,7 +344,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
             mGiftDisplayRecycleView.setAdapter(mGiftDisplayRecycleViewAdapter);
             mGiftDisplayRecycleView.setLayoutManager(new LinearLayoutManager(getRxActivity(), LinearLayoutManager.HORIZONTAL, false));
 //            mGiftDisplayRecycleView.addItemDecoration(new GiftDisplayDividerItemDecoration(GiftDisplayDividerItemDecoration.HORIZONTAL_LIST));
-            mGiftDisplayRecycleView.setHasFixedSize(true);
+            mGiftDisplayRecycleView.setHasFixedSize(false);
         }
         mGiftBottomPanel = (RelativeLayout) findViewById(R.id.gift_bottom_panel);
         mGiftMallGuidePageViewStub = (ViewStub) findViewById(R.id.gift_mall_guide_page_viewstub);
@@ -392,7 +405,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
                     }
                 }
                 mIsBuyGiftBySendBtn = true;
-                mGiftMallPresenter.buyGift();
+                mGiftMallPresenter.buyGift(1);
             }
         });
         mSendGiftTv.setEnabled(mSelectedGift != null);
@@ -404,7 +417,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
                     @Override
                     public void call(Void aVoid) {
                         mIsBuyGiftBySendBtn = true;
-                        mGiftMallPresenter.buyGift();
+//                        mGiftMallPresenter.buyGift();
                     }
                 });
 
@@ -478,6 +491,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
      * 选择花钱礼物，默认选中花钱礼物
      */
     private void clickMallGift() {
+        currentGiftSendController.giftSwichPacket();
         mIsMallGift = true;
         setGiftTabBackground();
         switchMallType();
@@ -491,6 +505,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
      * 选择背包礼物
      */
     private void clickPktGift() {
+        currentGiftSendController.giftSwichPacket();
         mIsMallGift = false;
         setGiftTabBackground();
         switchMallType();
@@ -506,8 +521,8 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
             mPktGiftTv.setSelected(false);
             mMallGiftTv.setBackgroundColor(Color.TRANSPARENT);
 
-            mSlideGift.setVisibility(View.VISIBLE);
-            mSlidePkt.setVisibility(View.GONE);
+//            mSlideGift.setVisibility(View.VISIBLE);
+//            mSlidePkt.setVisibility(View.GONE);
 
             mBalanceTv.setVisibility(View.VISIBLE);
             mSiliverDiamond.setVisibility(View.VISIBLE);
@@ -519,8 +534,8 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
             mPktGiftTv.setSelected(true);
             mPktGiftTv.setBackgroundColor(Color.TRANSPARENT);
 
-            mSlideGift.setVisibility(View.GONE);
-            mSlidePkt.setVisibility(View.VISIBLE);
+//            mSlideGift.setVisibility(View.GONE);
+//            mSlidePkt.setVisibility(View.VISIBLE);
 
             mBalanceTv.setVisibility(View.GONE);
             mSiliverDiamond.setVisibility(View.GONE);
@@ -754,15 +769,9 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
                             mSendGiftTv.setVisibility(View.INVISIBLE);
                             mContinueSendBtn.setVisibility(View.VISIBLE);
 
-                            mSelectedView.hideContinueSendBtn();
                             mSelectedView.changeCornerStatus(mSelectedGift.gift.getIcon(), false);
                             mIsBigGiftBtnShowFlag = false;
                         } else {
-                            if (mSelectedGift.gift.getCanContinuous()) {
-                                mSelectedView.showContinueSendBtn(true);
-                            } else {
-                                mSelectedView.showContinueSendBtn(false);
-                            }
 
                             mSelectedView.changeCornerStatus(mSelectedGift.gift.getIcon(), true);
 
@@ -787,7 +796,6 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
                             mSendGiftTv.setVisibility(View.VISIBLE);
                             mContinueSendBtn.setVisibility(View.GONE);
                         } else {
-                            mSelectedView.hideContinueSendBtn();
                             mSelectedView.changeCornerStatus(mSelectedGift.gift.getIcon(), false);
                             mIsBigGiftBtnShowFlag = false;
                         }
@@ -806,9 +814,6 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
                     public void onNext(Long aLong) {
                         if (mIsBuyGiftBySendBtn) {
                             mContinueSendBtn.setCountDown(50 - aLong.intValue());
-                        } else {
-                            repeatTimes[0]++;
-                            mSelectedView.changeContinueSendBtnProgressBarProgress(100 - repeatTimes[0] * 2);
                         }
                     }
                 });
@@ -911,6 +916,34 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         } else {
             selectGiftByIdLandScape(id);
         }
+    }
+
+
+    /**
+     * 判断当前是否符合购买礼物
+     * @return false 条件不符合, true 可以发起购买
+     */
+    private boolean judgeBuyGiftCondition() {
+        if (mSelectedGift.gift.getCatagory() == GiftType.MAGIC_GIFT && !mMyRoomData.isSupportMagicFace()) {
+            ToastUtils.showToast(getResources().getString(R.string.no_support_magic_gift_tips));
+            return false;
+        }
+
+        if (mSelectedGift.card == null || mSelectedGift.card.getGiftCardCount() <= 0) {
+            int limitLevel = mSelectedGift.gift.getLowerLimitLevel();
+            if (mSelectedGift.gift.getCatagory() == GiftType.PRIVILEGE_GIFT && limitLevel > MyUserInfoManager.getInstance().getUser().getLevel()) {
+                //特权礼物
+                Toast.makeText(getContext(), getResources().getQuantityString(R.plurals.verify_user_level_toast, limitLevel, limitLevel), Toast.LENGTH_SHORT).show();
+                return false;
+            } else if ((mSelectedGift.gift.getCatagory() == GiftType.Mi_COIN_GIFT && (mSelectedGift.gift.getPrice() / 10) > mGiftMallPresenter.getCurrentTotalBalance())
+                    || (mSelectedGift.gift.getCatagory() != GiftType.Mi_COIN_GIFT && mSelectedGift.gift.getPrice() > mGiftMallPresenter.getCurrentTotalBalance())) {
+//                    showInsufficientBalanceTips();
+                EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_GO_RECHARGE));
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -1220,7 +1253,6 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
 
     public void resetGiftItemBtnInfo() {
         if (mSelectedView != null) {
-            mSelectedView.hideContinueSendBtn();
             mSelectedView.changeCornerStatus(mSelectedGift.gift.getInternationalIcon(), false);
             mGiftMallPresenter.resetContinueSend();
 //            mContinueSend.reset();
@@ -1243,6 +1275,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
      * 目前和{@link #switchMallType}一致，但是单独出来，先看看有没有问题
      */
     public void cancelPktGiftSendStatus() {
+        currentGiftSendController.packetGiftUsedUp();
         cancelSelectView(mSelectedView);
         mSelectedGift = null;
 
@@ -1290,6 +1323,8 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
     }
 
     private void cancelSelectView(View v) {
+        currentGiftSendController.giftSelectedCancel();
+        mSelectedPos = -1;
         if (mNormalBuyAnimationSet != null) {
             mNormalBuyAnimationSet.cancel();
         }
@@ -1316,7 +1351,6 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         if (v != null) {
             MyLog.d(TAG, "v != null" + shake);
             mSelectedView = (GiftDisPlayItemView) v;
-            v.setBackgroundResource(R.drawable.live_choice_selected);
 
             Gift gift = mSelectedGift.gift;
             MyLog.d(TAG, "gift.toString:" + gift.toString());
@@ -1325,28 +1359,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
             MyLog.d(TAG, "gift.getGiftId():" + gift.getGiftId() + " gift.getComment():" + gift.getComment() + "gift.getGifUrl():" + gift.getGifUrl());
             MyLog.d(TAG, "gifUrl:" + gifUrl);
 
-            View giftIv = v.findViewById(R.id.gift_iv);
-            if (shake) {
-
-                if (TextUtils.isEmpty(gifUrl)) {
-                    if (mSelectedShakeAnimation != null) {
-                        mSelectedShakeAnimation.cancel();
-                        mSelectedShakeAnimation = null;
-                    }
-                    mSelectedShakeAnimation = MyAnimationUtils.shake(giftIv, 1);
-                    mSelectedShakeAnimation.start();
-                } else {
-                    //礼物item动画入口
-                    mSelectedView.playSelectedGiftItemAnimator(gifUrl, true);
-                }
-                if (mSelectViewClickedFlag && !mSelectedView.isContinueSendBtnShow()) {
-                    if (mSelectedGift.gift.getPrice() > mGiftMallPresenter.getCurrentTotalBalance() || mSelectedGift.gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
-//                        showInsufficientBalanceTips();
-                        return;
-                    }
-                    mSelectedView.showContinueSendBtn(true);
-                }
-            }
+            currentGiftSendController.giftSelected(gift, shake, mSelectedView);
         }
     }
 
@@ -1359,54 +1372,54 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         }
     }
 
-    @Override
-    public void setVisibility(int visibility) {
-        if (this.getVisibility() != GONE && visibility == GONE) {
-            GiftMallView.super.setVisibility(GONE);
-            Animation animation = onCreateAnimation(false);
-            animation.setDuration(500);
-            animation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    MyLog.d(TAG, "animation hide start");
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    MyLog.d(TAG, "animation hide end");
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            this.startAnimation(animation);
-            return;
-        }
-        if (this.getVisibility() != VISIBLE && visibility == VISIBLE) {
-            GiftMallView.super.setVisibility(VISIBLE);
-            Animation animation = onCreateAnimation(true);
-            animation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    MyLog.d(TAG, "animation show start");
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    MyLog.d(TAG, "animation show end");
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            this.startAnimation(animation);
-            return;
-        }
-    }
+//    @Override
+//    public void setVisibility(int visibility) {
+//        if (this.getVisibility() != GONE && visibility == GONE) {
+//            GiftMallView.super.setVisibility(GONE);
+//            Animation animation = onCreateAnimation(false);
+//            animation.setDuration(500);
+//            animation.setAnimationListener(new Animation.AnimationListener() {
+//                @Override
+//                public void onAnimationStart(Animation animation) {
+//                    MyLog.d(TAG, "animation hide start");
+//                }
+//
+//                @Override
+//                public void onAnimationEnd(Animation animation) {
+//                    MyLog.d(TAG, "animation hide end");
+//                }
+//
+//                @Override
+//                public void onAnimationRepeat(Animation animation) {
+//
+//                }
+//            });
+//            this.startAnimation(animation);
+//            return;
+//        }
+//        if (this.getVisibility() != VISIBLE && visibility == VISIBLE) {
+//            GiftMallView.super.setVisibility(VISIBLE);
+//            Animation animation = onCreateAnimation(true);
+//            animation.setAnimationListener(new Animation.AnimationListener() {
+//                @Override
+//                public void onAnimationStart(Animation animation) {
+//                    MyLog.d(TAG, "animation show start");
+//                }
+//
+//                @Override
+//                public void onAnimationEnd(Animation animation) {
+//                    MyLog.d(TAG, "animation show end");
+//                }
+//
+//                @Override
+//                public void onAnimationRepeat(Animation animation) {
+//
+//                }
+//            });
+//            this.startAnimation(animation);
+//            return;
+//        }
+//    }
 
     public Animation onCreateAnimation(boolean enter) {
         if (enter) {
@@ -1419,5 +1432,396 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return true;
+    }
+
+    //礼物被选中的DisplayView
+    GiftDisplayView currentView = null;
+    //被选中时添加进去的view
+    private GiftSelectedView mClickedView;
+
+    private void addSelectedView(Gift gift) {
+        if (mClickedView != null && mClickedView.getParent() != null && currentView != null) {
+            currentView.removeView(mClickedView);
+        }
+
+        //数组为2, 第一个是第几页，第二个是第几个
+        int pp[] = mGiftMallPresenter.getGiftIndex(gift, false, !mIsMallGift);
+        int index = pp[1];
+
+        currentView = (GiftDisplayView) mGiftDisplayViewPager.findViewWithTag(pp[0]);
+        MyLog.d(TAG, "current view item" + mGiftDisplayViewPager.getCurrentItem());
+        mClickedView = new GiftSelectedView(getContext(), sendGiftCallBack);
+        mClickedView.setGiftInfo(gift, true);
+
+        int itemWidth = DisplayUtils.getScreenWidth() / 4;
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        if (index % 4 == 0) {
+            layoutParams.setMargins((itemWidth * (index % 4)) + DisplayUtils.dip2px(3.33f), index > 3 ? DisplayUtils.dip2px(91) : DisplayUtils.dip2px(1), 0, 0);
+        } else if (index % 4 == 3) {
+            layoutParams.setMargins((itemWidth * (index % 4)) - (DisplayUtils.dip2px(100) - itemWidth), index > 3 ? DisplayUtils.dip2px(91) : DisplayUtils.dip2px(1), DisplayUtils.dip2px(3.33f), 0);
+        } else {
+            layoutParams.setMargins((itemWidth * (index % 4)) - (DisplayUtils.dip2px(100) - itemWidth) / 2, index > 3 ? DisplayUtils.dip2px(91) : DisplayUtils.dip2px(1), 0, 0);
+        }
+
+        mClickedView.setLayoutParams(layoutParams);
+        currentView.addView(mClickedView, layoutParams);
+
+        MyLog.d(TAG, "addSelectedView addView");
+    }
+
+    private void addSendCircleGift(Gift gift, SelectedViewInfo info) {
+        if (isNeedSendcircle(gift) && mSelectedView != null) {
+
+            mGiftSendView = new GiftSendView(getContext(), gift, info, new GiftSendView.BuyGiftCallBack() {
+                @Override
+                public void buy(Gift gift, int buyCount) {
+                    if (mSelectedGift != null && mSelectedGift.gift != null) {
+                        if (!judgeBuyGiftCondition()) {
+                            return;
+                        }
+                        if (mIsMallGift) {
+                            mGiftMallPresenter.buyGift(buyCount);
+                            return;
+                        }
+
+                        if ((mSelectedGift != null && mSelectedGift.card != null
+                                && mSelectedGift.card.getGiftCardCount() >= buyCount)) {
+                            mGiftMallPresenter.buyGift(buyCount);
+                        } else {
+                            ToastUtils.showToast(GlobalData.app().getResources().getString(R.string.packet_count_not_enough));
+                        }
+                    }
+                }
+
+                @Override
+                public void resetContinueSend(Gift gift) {
+                    mGiftMallPresenter.resetContinueSend();
+                }
+
+                @Override
+                public void isRemoved(Gift selecedGift) {
+                    currentGiftSendController.isSendViewRemoved(selecedGift);
+                }
+
+                @Override
+                public int getFace(Gift gift) {
+                    return currentGiftSendController.getCircleFace(gift);
+                }
+            });
+
+            RelativeLayout.LayoutParams layoutParams =
+                    new RelativeLayout.LayoutParams(DisplayUtils.dip2px(2000), ViewGroup.LayoutParams.MATCH_PARENT);
+            mGiftSendView.setLayoutParams(layoutParams);
+            addView(mGiftSendView);
+            currentGiftSendController.giftSendType();
+        }
+    }
+
+    private boolean isNeedSendcircle(Gift gift) {
+        int giftPrice = 0;
+        if (gift.getCatagory() == GiftType.Mi_COIN_GIFT || gift.getBuyType() == BuyGiftType.BUY_GIFT_BY_MI_COIN) {
+            giftPrice = gift.getPrice() / 10;
+        } else {
+            giftPrice = gift.getPrice();
+        }
+        return giftPrice <= GiftSendView.BIGGEST_SMALLGIFT_PIRCE;
+    }
+
+    public static class SelectedViewInfo {
+        int width = 0;
+        int height = 0;
+        int[] position = {0, 0};
+
+        public SelectedViewInfo(int width, int height, int[] position) {
+            this.height = height;
+            this.width = width;
+            this.position = position;
+        }
+    }
+
+    //赠送状态的View
+    GiftSendView mGiftSendView;
+
+    private GiftSelectedView.SendGiftCallBack sendGiftCallBack = new GiftSelectedView.SendGiftCallBack() {
+        @Override
+        public void onClickSend(Gift gift, View giftSelectedView) {
+            MyLog.d(TAG, "sendGiftCallBack onClickSend gift:" + gift);
+            if (!judgeBuyGiftCondition()) {
+                return;
+            }
+
+            if (!mIsMallGift && mSelectedGift != null
+                    && mSelectedGift.card != null
+                    && mSelectedGift.card.getGiftCardCount() == 1) {
+                mGiftMallPresenter.buyGift(1);
+                return;
+            }
+
+            int giftPrice = 0;
+
+            if (gift.getCatagory() == GiftType.Mi_COIN_GIFT || gift.getBuyType() == BuyGiftType.BUY_GIFT_BY_MI_COIN) {
+                giftPrice = gift.getPrice() / 10;
+            } else {
+                giftPrice = gift.getPrice();
+            }
+
+            if (giftPrice <= GiftSendView.BIGGEST_SMALLGIFT_PIRCE) {
+                currentGiftSendController.addSendCircleView(gift, giftSelectedView);
+            }
+
+            mGiftMallPresenter.buyGift(1);
+        }
+    };
+
+    /*
+    竖屏时候新的礼物选中发送操作
+    */
+    private IGiftSendController mPortraitStateController = new IGiftSendController() {
+        @Override
+        public void giftSelected(Gift gift, boolean shake, View selected) {
+            MyLog.d(TAG, "mPortraitStateController giftSelected " + gift);
+            if (shake) {
+                selected.setVisibility(GONE);
+                addSelectedView(gift);
+            }
+
+        }
+
+        @Override
+        public void giftSendType() {
+            MyLog.d(TAG, "mPortraitStateController giftSendType ");
+            if (mSelectedView != null) {
+                mSelectedView.setVisibility(VISIBLE);
+            }
+
+            if (mClickedView != null){
+                mClickedView.setVisibility(INVISIBLE);
+            }
+
+        }
+
+        @Override
+        public void giftSwichPacket() {
+            MyLog.d(TAG, "mPortraitStateController giftSwichPacket ");
+            if (mSelectedView != null){
+                mSelectedView.setVisibility(VISIBLE);
+            }
+
+            if(mClickedView != null && mClickedView.getParent() != null && currentView != null){
+                currentView.removeView(mClickedView);
+            }
+
+            if (mSelectedGift != null) {
+                mSelectedGift.selectStatus = GiftMallPresenter.GiftWithCard.TYPE_NORMAL;
+            }
+            currentView = null;
+
+        }
+
+        @Override
+        public int getCircleFace(Gift gift) {
+            MyLog.d(TAG, "mPortraitStateController getCircleFace ");
+            int index = mGiftMallPresenter.getGiftIndex(gift, false, !mIsMallGift)[1];
+            if (index % 4 >= 2){
+                return SmallSendGiftBtn.leftFace;
+            } else {
+                return SmallSendGiftBtn.rightFace;
+            }
+        }
+
+        @Override
+        public void giftSelectedCancel() {
+            MyLog.d(TAG, "mPortraitStateController giftSelectedCancel ");
+            if (mSelectedView != null) {
+                mSelectedView.setVisibility(VISIBLE);
+            }
+
+            if (mClickedView != null && mClickedView.getParent() != null && currentView != null) {
+                currentView.removeView(mClickedView);
+            }
+
+            if (mGiftSendView != null && mGiftSendView.getParent() != null) {
+                removeView(mGiftSendView);
+            }
+        }
+
+        @Override
+        public void isSendViewRemoved(Gift gift) {
+            MyLog.d(TAG, "mPortraitStateController isSendViewRemoved ");
+            if (mClickedView != null) {
+                mClickedView.setVisibility(VISIBLE);
+                if (mSelectedView != null) {
+                    mSelectedView.setVisibility(GONE);
+                }
+            }
+
+        }
+
+        @Override
+        public void addSendCircleView(Gift gift, View selectedView) {
+            MyLog.d(TAG, "mPortraitStateController addSendCircleView " + gift);
+            int[] pocation = new int[2];
+            selectedView.getLocationOnScreen(pocation);
+            pocation[1] += DisplayUtils.dip2px(52.67f);
+
+            int width = selectedView.getWidth();
+            int height = DisplayUtils.dip2px(56.67f);
+            MyLog.d(TAG, pocation[0] + "," + pocation[1] + " width:" + width + " height:" + height);
+
+            addSendCircleGift(gift, new SelectedViewInfo(width, height, pocation));
+        }
+
+        @Override
+        public void packetGiftUsedUp() {
+            MyLog.d(TAG, "mPortraitStateController packetGiftUsedUp ");
+            if (mGiftSendView != null) {
+                mGiftSendView.setRemovedByPacket();
+            }
+            giftSelectedCancel();
+            mSelectedGift = null;
+        }
+    };
+
+
+    /*
+    横屏时候新的礼物选中发送操作
+     */
+    private IGiftSendController mLandScapeStateController = new IGiftSendController() {
+        @Override
+        public void giftSelected(Gift gift, boolean shake, View selected) {
+            MyLog.d(TAG, "mLandScapeStateController giftSelected" + gift);
+
+            mGiftDisplayRecycleViewAdapter.changeSelectState(mSelectedPos, GiftMallPresenter.GiftWithCard.TYPE_SELECTED, sendGiftCallBack);
+            LinearLayoutManager manager = (LinearLayoutManager) mGiftDisplayRecycleView.getLayoutManager();
+            final int first = manager.findFirstVisibleItemPosition();
+            final int last = manager.findLastVisibleItemPosition();
+            final int index = mGiftDisplayRecycleView.getChildAdapterPosition(selected);
+            if (index == first || index == last) {
+                mGiftDisplayRecycleView.smoothScrollToPosition(index);
+                if (index == last) {
+                    mGiftDisplayRecycleView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mGiftDisplayRecycleView.scrollBy(DisplayUtils.dip2px(3.33f), 0);
+                        }
+                    });
+                }
+            }
+
+            Observable.just(0)
+                    .compose(getRxActivity().bindToLifecycle())
+                    .delay(100, TimeUnit.MILLISECONDS)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<Object>() {
+                        @Override
+                        public void call(Object object) {
+                            List<Animator> animators = new ArrayList<>();
+                            for (int i = first; i <= last; i++) {
+                                View view = mGiftDisplayRecycleView.findViewHolderForAdapterPosition(i).itemView;
+                                if (view != null && i != index) {
+                                    ObjectAnimator animatorX = ObjectAnimator.ofFloat(view, "translationX", 0, i < index ? -30 : 30, 0);
+                                    animators.add(animatorX);
+                                }
+                            }
+                            AnimatorSet smallBtnAddAnimation = new AnimatorSet();//组合动画
+                            smallBtnAddAnimation.setDuration(1000);
+                            smallBtnAddAnimation.setInterpolator(new OvershootInterpolator());
+                            smallBtnAddAnimation.playTogether(animators);
+                            smallBtnAddAnimation.start();
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            MyLog.w(TAG, "error in giftSelected: " + throwable.getMessage());
+                        }
+                    });
+        }
+
+        @Override
+        public void giftSendType() {
+
+        }
+
+        @Override
+        public void giftSwichPacket() {
+            MyLog.d(TAG, "mLandScapeStateController giftSwichPacket");
+            if (mSelectedGift != null && mSelectedGift.gift != null) {
+                mGiftDisplayRecycleViewAdapter.changeSelectState(mSelectedPos, GiftMallPresenter.GiftWithCard.TYPE_NORMAL, null);
+            }
+        }
+
+        @Override
+        public int getCircleFace(Gift gift) {
+            int index = mGiftMallPresenter.getGiftIndex(gift, true, !mIsMallGift)[1];
+            //防止游戏直播间横屏时第一个被遮挡住
+            if (index == 0 && mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME) {
+                return SmallSendGiftBtn.rightFace;
+            }
+            //横屏默认向右
+            return SmallSendGiftBtn.leftFace;
+        }
+
+        @Override
+        public void giftSelectedCancel() {
+            MyLog.d(TAG, "mLandScapeStateController giftSelectedCancel");
+            if (mGiftDisplayRecycleViewAdapter != null) {
+                mGiftDisplayRecycleViewAdapter.changeSelectState(mSelectedPos, GiftMallPresenter.GiftWithCard.TYPE_NORMAL, null);
+            }
+        }
+
+        @Override
+        public void isSendViewRemoved(Gift gift) {
+            MyLog.d(TAG, "mLandScapeStateController isSendViewRemoved");
+            mGiftDisplayRecycleViewAdapter.changeSelectState(mSelectedPos, GiftMallPresenter.GiftWithCard.TYPE_SELECTED, sendGiftCallBack);
+        }
+
+        @Override
+        public void addSendCircleView(Gift gift, View selectedView) {
+            MyLog.d(TAG, "mLandScapeStateController addSendCircleView");
+            int[] pocation = new int[2];
+            selectedView.getLocationOnScreen(pocation);
+            pocation[1] += DisplayUtils.dip2px(52.67f);
+
+            int width = selectedView.getWidth();
+            int height = DisplayUtils.dip2px(56.67f);
+            MyLog.d(TAG, pocation[0] + "," + pocation[1] + " width:" + width + " height:" + height);
+
+            mGiftDisplayRecycleViewAdapter.changeSelectState(mSelectedPos, GiftMallPresenter.GiftWithCard.TYPE_SEND, sendGiftCallBack);
+            addSendCircleGift(gift, new SelectedViewInfo(width, height, pocation));
+        }
+
+        @Override
+        public void packetGiftUsedUp() {
+            MyLog.d(TAG, "mLandScapeStateController packetGiftUsedUp");
+            MyLog.d(TAG, "mLandScapeStateController packetGiftUsedUp");
+            if (mGiftSendView != null && mGiftSendView.getParent() != null) {
+                mSelectedPos = -1;
+                if (mGiftSendView != null) {
+                    mGiftSendView.setRemovedByPacket();
+                }
+                removeView(mGiftSendView);
+            }
+        }
+    };
+
+    interface IGiftSendController {
+        void giftSelected(Gift gift, boolean shake, View selected);
+
+        void giftSendType();
+
+        void giftSwichPacket();
+
+        int getCircleFace(Gift gift);
+
+        void giftSelectedCancel();
+
+        void isSendViewRemoved(Gift gift);
+
+        void addSendCircleView(Gift gift, View selectedView);
+
+        //一个背包礼物用完之后调用
+        void packetGiftUsedUp();
     }
 }

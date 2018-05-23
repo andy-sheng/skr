@@ -12,6 +12,7 @@ import com.base.activity.BaseRotateSdkActivity;
 import com.base.activity.RxActivity;
 import com.base.activity.assist.IBindActivityLIfeCycle;
 import com.base.event.SdkEventClass;
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.thread.ThreadPool;
 import com.base.utils.Constants;
@@ -21,6 +22,7 @@ import com.base.utils.toast.ToastUtils;
 import com.live.module.common.R;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.event.UserInfoEvent;
+import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.gift.model.BuyGiftType;
 import com.mi.live.data.gift.model.GiftCard;
@@ -52,6 +54,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -100,6 +103,8 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
             new ThreadPool.NamedThreadFactory("GiftMallPresenter")); // 送礼的线程池
 
     private Subscription mSountDownSubscription; // 倒计时的订阅
+
+    private HashSet<Integer> mPktGiftIds = new HashSet<>();      //包裹礼物id
     //房间花费星票数，结束页显示
     private int mSpendTicket = 0;
 
@@ -151,6 +156,27 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         mGiftMallView.selectGiftViewById(id);
     }
 
+    public void setPktGiftId(List pktGiftIds) {
+        if (pktGiftIds != null && !pktGiftIds.isEmpty()) {
+            mPktGiftIds.clear();
+
+            if (mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_RADIO) {//在电台房间里面过滤掉大礼物
+                for (int i = 0; i < pktGiftIds.size(); i++) {
+                    Integer id = (Integer) pktGiftIds.get(i);
+                    if (mGiftInfoForThisRoom.needShow(id)) {
+                        mPktGiftIds.add(id);
+                    }
+                }
+            } else {
+                mPktGiftIds.addAll(pktGiftIds);
+            }
+        }
+    }
+
+    public Set getPktGiftId() {
+        return mPktGiftIds;
+    }
+
     public boolean isGiftMallViewVisibility() {
         if (mGiftMallView != null && mGiftMallView.getVisibility() == View.VISIBLE) {
             return true;
@@ -172,11 +198,19 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         mRandomGift = null;
     }
 
-    public void buyGift() {
+    public void buyGift(final int giftCount) {
         final long timestamp = System.currentTimeMillis();
 
         final GiftMallPresenter.GiftWithCard buyGiftWithCard = mGiftMallView.getSelectedGift();
         final GiftDisPlayItemView giftDisPlayItemView = mGiftMallView.getSelectedView();
+
+        final Boolean[] useGiftCard = {false};
+        //如果礼物卡的数量满足购买数量，则优先使用礼物卡。否则全部使用钻石
+        if (buyGiftWithCard.card == null || buyGiftWithCard.card.getGiftCardCount() < giftCount) {
+            useGiftCard[0] = false;
+        } else {
+            useGiftCard[0] = true;
+        }
 
         final Gift[] sendGift = {null};
 
@@ -184,9 +218,6 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
             return;
         }
 
-        final Boolean[] useGiftCard = {false};
-        //如果礼物卡的数量满足购买数量，则优先使用礼物卡。否则全部使用钻石
-        useGiftCard[0] = buyGiftWithCard.canUseCard();
 
         /**
          * 这个礼物送出的时间，根据送出的时间去判断要不要去改mContinueSend的num，
@@ -208,12 +239,14 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                         }
 
                         if (!useGiftCard[0]) {
+                            //走花钱送礼物
+                            //等级限定高于购买方式
                             if (gift.getCatagory() == GiftType.PRIVILEGE_GIFT && gift.getLowerLimitLevel() > MyUserInfoManager.getInstance().getUser().getLevel()) {
                                 //特权礼物
                                 return Observable.error(new GiftException(mContext.getResources().getQuantityString(R.plurals.verify_user_level_toast,
                                         gift.getLowerLimitLevel(), gift.getLowerLimitLevel())));
-                            } else if ((gift.getCatagory() == GiftType.Mi_COIN_GIFT && (gift.getPrice() / 10) > getCurrentTotalBalance()) ||
-                                    (gift.getCatagory() != GiftType.Mi_COIN_GIFT && gift.getPrice() > getCurrentTotalBalance())) {
+                            } else if ((gift.getCatagory() == GiftType.Mi_COIN_GIFT || gift.getBuyType() == BuyGiftType.BUY_GIFT_BY_MI_COIN)&& (gift.getPrice() / 10) > getCurrentTotalBalance() ||
+                                    (gift.getCatagory() != GiftType.Mi_COIN_GIFT && gift.getPrice() > getCurrentTotalBalance())){
                                 return Observable.error(new GiftException(GiftErrorCode.GIFT_INSUFFICIENT_BALANCE, mContext.getString(R.string.insufficient_balance)));
                             }
                         }
@@ -221,11 +254,11 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                             case GiftType.PECK_OF_GIFT: {
                                 if (!mGiftMallView.getIsContinueSendFlag()) {
                                     mGiftMallView.setIsContinueSendFlag(true);
-                                    sendGift[0] = getRandomPeckOfGift((PeckOfGift) gift);
-                                    mRandomGift = sendGift[0];
-                                } else {
-                                    sendGift[0] = mRandomGift;
                                 }
+
+                                sendGift[0] = getRandomPeckOfGift((PeckOfGift) gift);
+                                mRandomGift = sendGift[0];
+
                                 if (sendGift[0] == null) {
                                     mGiftMallView.setIsContinueSendFlag(false);
                                     return Observable.error(new GiftException(mContext.getString(R.string.old_gift_version)));
@@ -242,7 +275,8 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                             case GiftType.HIGH_VALUE_GIFT:
                             case GiftType.BIG_PACK_OF_GIFT:
                             case GiftType.Mi_COIN_GIFT:
-                            case GiftType.PRIVILEGE_GIFT: {
+                            case GiftType.PRIVILEGE_GIFT:
+                            case GiftType.MAGIC_GIFT:{
                                 return Observable.just(gift);
                             }
                             default: {
@@ -267,17 +301,30 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                         if (mContinueSend.get() == 1) {
                             continueId = System.currentTimeMillis();
                             //设置最新continueId
-                            mContinueSend.setContinueId(continueId);
+                            mContinueSend.setContinueId(continueId, gift.getGiftId());
+                        } else if (gift.getGiftId() != mContinueSend.giftId) {
+                            // TODO: 18-3-24 连送的时候continueid和count没变，但是giftid变了，这个有点难复现，加一个保护
+                            mContinueSend.reset();
+                            return null;
                         }
                         //保存此次请求发出时间
                         requestTime[0] = System.currentTimeMillis();
                         //保存此次请求continuId
                         requestContinueId[0] = continueId;
 
-                        if (buyGiftWithCard.gift.getCatagory() == GiftType.Mi_COIN_GIFT || gift.getBuyType() == BuyGiftType.BUY_GAME_ROOM_GIFT) {
-                            return GiftRepository.bugGiftSync(gift, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mContinueSend.get(requestContinueId[0]), timestamp, requestContinueId[0], null, mRoomType, useGiftCard[0], true);
+                        // todo 电台直播间礼物面板。待补充
+//                        long receiveId;
+//                        if (selectedRadioUser != null && mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_RADIO) {
+//
+//                            receiveId = selectedRadioUser.getZuid();
+//                        } else {
+//                            receiveId = mMyRoomData.getUid();
+//                        }
+
+                        if (buyGiftWithCard.gift.getCatagory() == GiftType.Mi_COIN_GIFT || gift.getBuyType() == BuyGiftType.BUY_GIFT_BY_MI_COIN) {
+                            return GiftRepository.bugGiftSync(gift, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mContinueSend.get(requestContinueId[0]), timestamp, requestContinueId[0], null, mRoomType, useGiftCard[0], true, giftCount);
                         } else {
-                            return GiftRepository.bugGiftSync(gift, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mContinueSend.get(requestContinueId[0]), timestamp, requestContinueId[0], null, mRoomType, useGiftCard[0], false);
+                            return GiftRepository.bugGiftSync(gift, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mContinueSend.get(requestContinueId[0]), timestamp, requestContinueId[0], null, mRoomType, useGiftCard[0], false, giftCount);
                         }
                     }
                 })
@@ -336,8 +383,32 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                         if (buyGift.getCatagory() == GiftType.PECK_OF_GIFT) {
                             buyGift = sendGift[0];
                         }
+
+                        /**
+                         * 需要找一个 int java.lang.Integer.intValue() exception
+                         */
+                        //加上连送的数量
+                        String msgContent = "";
+                        try {
+                            msgContent = buyGift.getSendDescribe() + (giftCount > 1 ? ("X" + giftCount) : "");
+                        } catch (NullPointerException e) {
+                            MyLog.w(TAG, "first NullPointerException" + e.getMessage());
+                        }
+
+                        //TODO 电台代码待补充哦
+//                        if (selectedRadioUser != null
+//                                && mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_RADIO
+//                                && selectedRadioUser.getZuid() != mMyRoomData.getUid()) {
+//                            // 如果不是给电台的主播送的，只是给嘉宾送的，不更新星票和人气值
+//                            popularityTs = 0;
+//                            totalTickets = 0;
+//                            msgContent = String.format(GlobalData.app().getResources().getString(R.string.radio_gift_des)
+//                                    , (selectedRadioUser.getNickname().isEmpty() ? String.valueOf(selectedRadioUser.getZuid()) : selectedRadioUser.getNickname())
+//                                    , String.valueOf(giftCount), buyGift == null ? GlobalData.app().getResources().getString(R.string.gift) : buyGift.getName());
+//                        }
+
                         BarrageMsg pushMsg = GiftRepository.createGiftBarrageMessage(buyGift.getGiftId(), buyGift.getName(), buyGift.getCatagory(),
-                                buyGift.getSendDescribe(), mContinueSend.get(requestContinueId[0]), buyGiftRsp.getReceiverTotalTickets(),
+                                msgContent, mContinueSend.get(requestContinueId[0]), buyGiftRsp.getReceiverTotalTickets(),
                                 buyGiftRsp.getTicketUpdateTime(), requestContinueId[0], mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), buyGiftRsp.getRedPacketId(), "", 0);
                         BarrageMessageManager.getInstance().pretendPushBarrage(pushMsg);
                         mContinueSend.add(requestTime[0], requestContinueId[0]);
@@ -397,7 +468,6 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                             if (mGiftMallView.getIsBigGiftBtnShowFlag()) {
                                 return;
                             }
-                            giftDisPlayItemView.hideContinueSendBtn();
                             giftDisPlayItemView.changeCornerStatus(buyGiftWithCard.gift.getIcon(), false);
                         }
 
@@ -410,7 +480,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                         MyLog.v(TAG, "sendGift onNext " + Thread.currentThread().getName());
                         MyLog.w(TAG, "buyGiftRsp:" + buyGiftRsp.toString());
                         if (buyGiftWithCard.gift.getCatagory() == GiftType.Mi_COIN_GIFT
-                                || buyGiftWithCard.gift.getBuyType() == BuyGiftType.BUY_GAME_ROOM_GIFT) {
+                                || buyGiftWithCard.gift.getBuyType() == BuyGiftType.BUY_GIFT_BY_MI_COIN) {
                             mSpendTicket += (int) ((float) buyGiftWithCard.gift.getPrice() / 10f);
                         } else {
                             mSpendTicket += buyGiftWithCard.gift.getPrice();
@@ -433,7 +503,6 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                                 }
                                 mSountDownSubscription = mGiftMallView.countDown();
                             } else {
-                                giftDisPlayItemView.hideContinueSendBtn();
                                 giftDisPlayItemView.changeCornerStatus(buyGiftWithCard.gift.getIcon(), false);
                                 mGiftMallView.setIsBigGiftBtnShowFlag(false);
                             }
@@ -443,7 +512,6 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
 
                                 mSountDownSubscription = mGiftMallView.countDown();
                             } else {
-                                giftDisPlayItemView.showContinueSendBtn(false);
                                 giftDisPlayItemView.changeCornerStatus(buyGiftWithCard.gift.getIcon(), true);
                             }
 
@@ -495,6 +563,10 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
 
     // 多加一层缓存，跟直播一致
     private GiftMallBean mGiftMallBean = new GiftMallBean();
+
+    public int[] getGiftIndex(Gift gift, boolean isLandscape, boolean isPacket) {
+        return mGiftMallBean.getGiftIndex(gift, isLandscape, isPacket);
+    }
 
     /**
      * 防止每次切换（正常礼物/包裹礼物）都要去筛选数据
@@ -747,6 +819,9 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
      */
     private Gift getRandomPeckOfGift(PeckOfGift peckGift) {
         List<PeckOfGift.PeckOfGiftInfo> peckOfGiftInfoList = peckGift.getPeckOfGiftInfoList();
+        if(peckOfGiftInfoList == null || peckOfGiftInfoList.size() ==0){
+            GiftRepository.checkOneAnimationRes(peckGift);
+        }
         if (peckOfGiftInfoList == null || peckOfGiftInfoList.isEmpty()) {
             return null;
         }
@@ -1052,10 +1127,13 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
 
     public static class GiftWithCard {
         public Gift gift;
-
-
         public GiftCard card;
         public static HashSet<Integer> hashSet = new HashSet<>();
+        public int selectStatus = TYPE_NORMAL; //礼物 view 选中的状态，分为三种
+
+        public static final int TYPE_NORMAL = 100;
+        public static final int TYPE_SELECTED = 101;
+        public static final int TYPE_SEND = 102;
 
         @Override
         public String toString() {
@@ -1076,6 +1154,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         private volatile int num = 1;
         private long lastResetTime = System.currentTimeMillis();
         private long currentContinueId = 0l;
+        private volatile int giftId = 0;
 
         //记录最后一个reset的时间，以防reset完之后有上一个reset的数据更改num
         public synchronized void reset() {
@@ -1099,8 +1178,9 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
             num = 1;
         }
 
-        public synchronized void setContinueId(long continueId) {
+        public synchronized void setContinueId(long continueId, int giftId) {
             currentContinueId = continueId;
+            this.giftId = giftId;
         }
 
         public synchronized long getCurrentContinueId() {

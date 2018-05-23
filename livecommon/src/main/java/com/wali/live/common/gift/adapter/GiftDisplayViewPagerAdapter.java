@@ -56,6 +56,7 @@ public class GiftDisplayViewPagerAdapter extends PagerAdapter {
         MyLog.d(TAG, "position:" + position + ",data:" + data.size());
         GiftDisplayView giftDisplayView = (GiftDisplayView) mCacheList.get(position);
         giftDisplayView.setDataSource(data);
+        giftDisplayView.setTag(position);
         container.addView(giftDisplayView);
         return giftDisplayView;
     }

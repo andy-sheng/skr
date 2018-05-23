@@ -2,6 +2,7 @@ package com.wali.live.common.gift.bean;
 
 import com.base.log.MyLog;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
+import com.wali.live.dao.Gift;
 
 import java.util.Iterator;
 import java.util.List;
@@ -77,5 +78,42 @@ public class GiftMallBean {
 
     public void setPktGiftLandscapeList(List<GiftMallPresenter.GiftWithCard> pktGiftLandscapeList) {
         mPktGiftLandscapeList = pktGiftLandscapeList;
+    }
+
+    public int[] getGiftIndex(Gift gift, boolean isLandscape, boolean isPacket) {
+        //第几页和第几个位置
+        int[] pp = new int[]{-1, -1};
+        if (!isLandscape) {
+            List<List<GiftMallPresenter.GiftWithCard>> list;
+            if (isPacket) {
+                list = mPktGiftPortraitList;
+            } else {
+                list = mNormalGiftPortraitList;
+            }
+            for (int i = 0; i < list.size(); i++) {
+                for (int j = 0; j < list.get(i).size(); j++) {
+                    if (list.get(i).get(j).gift.getGiftId() == gift.getGiftId()) {
+                        pp[0] = i;
+                        pp[1] = j;
+                    }
+                }
+            }
+        } else {
+            List<GiftMallPresenter.GiftWithCard> list;
+            if (isPacket) {
+                list = mPktGiftLandscapeList;
+            } else {
+                list = mNormalGiftLandscapeList;
+            }
+
+            for (int j = 0; j < list.size(); j++) {
+                if (list.get(j).gift.getGiftId() == gift.getGiftId()) {
+                    pp[0] = 0;
+                    pp[1] = j;
+                }
+            }
+        }
+
+        return pp;
     }
 }

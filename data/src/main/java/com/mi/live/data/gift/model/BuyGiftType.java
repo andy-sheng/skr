@@ -5,5 +5,5 @@ package com.mi.live.data.gift.model;
  */
 public class BuyGiftType {
     public static final int BUY_NORMAL_GIFT = 0;
-    public static final int BUY_GAME_ROOM_GIFT = 1;
+    public static final int BUY_GIFT_BY_MI_COIN = 1;
 }
