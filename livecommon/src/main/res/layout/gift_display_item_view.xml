@@ -7,8 +7,8 @@
 
     <com.base.image.fresco.BaseImageView
         android:id="@+id/gift_iv"
-        android:layout_width="48.33dp"
-        android:layout_height="48.33dp"
+        android:layout_width="@dimen/view_dimen_170"
+        android:layout_height="@dimen/view_dimen_170"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         app:roundAsCircle="false" />
@@ -22,7 +22,7 @@
         android:ellipsize="end"
         android:gravity="center"
         android:singleLine="true"
-        android:textColor="@color/color_white_trans_50"
+        android:textColor="@color/color_white_trans_80"
         android:textSize="10sp" />
 
     <RelativeLayout
@@ -40,8 +40,8 @@
             android:drawableRight="@drawable/live_icon_golden_diamond_small"
             android:gravity="center"
             android:text="99"
-            android:textColor="@color/color_white"
-            android:textSize="12sp" />
+            android:textColor="@color/color_white_trans_50"
+            android:textSize="@dimen/text_size_26" />
 
         <TextView
             android:id="@+id/text_tv"
@@ -54,7 +54,7 @@
             android:gravity="center"
             android:text="@string/origin_for_gift_item"
             android:textColor="@color/color_white_trans_60"
-            android:textSize="8sp" />
+            android:textSize="@dimen/text_size_24" />
 
         <TextView
             android:id="@+id/origin_price_tv"
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/gift_free_color"
-            android:textSize="12sp"
+            android:textSize="@dimen/text_size_26"
             android:visibility="gone" />
     </RelativeLayout>
 
@@ -125,29 +125,6 @@
         android:text="@string/continue_normal_send_text"
         android:textColor="@color/white"
         android:textSize="16sp"
-        android:visibility="gone" />
-
-    <com.wali.live.common.gift.view.CircularProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="61dp"
-        android:layout_height="61dp"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        app:cpb_background_progressbar_color="@color/transparent"
-        app:cpb_background_progressbar_width="0dp"
-        app:cpb_progressbar_color="@color/color_white"
-        app:cpb_progressbar_width="2dp" />
-
-    <com.wali.live.common.view.StrokeTextView
-        android:id="@+id/continue_gift_num"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:textSize="16sp"
-        android:textStyle="italic"
         android:visibility="gone" />
 
 </RelativeLayout>

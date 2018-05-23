@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.BaseImage;
@@ -20,9 +19,9 @@ import com.live.module.common.R;
 import com.mi.live.data.gift.model.BuyGiftType;
 import com.mi.live.data.gift.model.GiftCard;
 import com.mi.live.data.gift.model.GiftType;
+import com.wali.live.common.gift.adapter.GiftDisplayRecycleViewAdapter;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
 import com.wali.live.common.gift.utils.NumTranformation;
-import com.wali.live.common.view.StrokeTextView;
 import com.wali.live.dao.Gift;
 
 /**
@@ -47,17 +46,9 @@ public class GiftDisPlayItemView extends RelativeLayout {
 
     private TextView mFreeGiftTv;
 
-//    private TextView mExepTv;
-//
-//    private ImageView mLianIv;
-
     private BaseImageView mCornerIv;
 
     private TextView mContinueSendBtn;
-
-    private StrokeTextView mContinueSendGiftNum;
-
-    private CircularProgressBar mGiftProgressBar;
 
     private TextView mContinueSendText;
 
@@ -69,12 +60,8 @@ public class GiftDisPlayItemView extends RelativeLayout {
         mTextTv = (TextView) findViewById(R.id.text_tv);
         mOriginalPrice = (TextView) findViewById(R.id.origin_price_tv);
         mFreeGiftTv = (TextView) findViewById(R.id.free_tv);
-//        mExepTv = (TextView) findViewById(R.id.exep_tv);
-//        mLianIv = (ImageView) findViewById(R.id.lian_iv);
         mCornerIv = (BaseImageView) findViewById(R.id.superscript_iv);
         mContinueSendBtn = (TextView) findViewById(R.id.continue_tv);
-        mContinueSendGiftNum = (StrokeTextView) findViewById(R.id.continue_gift_num);
-        mGiftProgressBar = (CircularProgressBar) findViewById(R.id.progress_bar);
         mContinueSendText = (TextView) findViewById(R.id.send_tv);
         mGiftName = (TextView) findViewById(R.id.gift_name);
     }
@@ -109,8 +96,6 @@ public class GiftDisPlayItemView extends RelativeLayout {
     protected void init(Context context) {
         inflate(context, R.layout.gift_display_item_view, this);
         bindView();
-
-        mGiftProgressBar.setProgress(INIT_PROGRESS);
     }
 
     /**
@@ -157,7 +142,10 @@ public class GiftDisPlayItemView extends RelativeLayout {
         GiftCard card = infoWithCard.card;
 
         // 免费卡
-        if (card != null && card.getGiftCardCount() > 0) {
+//        if (card != null && card.getGiftCardCount() > 0) {
+        //新的判断逻辑，以前是上面的逻辑，现在直接判断当前礼物tab的状态
+        if (mGiftItemListener != null && !mGiftItemListener.getMallType()
+                    || card != null && card.getGiftCardCount() > 0) {
             MyLog.d(TAG, "免费卡");
             // 显示免费卡
             mFreeGiftTv.setVisibility(VISIBLE);
@@ -206,7 +194,7 @@ public class GiftDisPlayItemView extends RelativeLayout {
 //                    mPriceTv.setText(spannableString);
 //                }
 
-                if (gift.getCatagory() == GiftType.Mi_COIN_GIFT || gift.getBuyType() == BuyGiftType.BUY_GAME_ROOM_GIFT) {
+                if (gift.getCatagory() == GiftType.Mi_COIN_GIFT || gift.getBuyType() == BuyGiftType.BUY_GIFT_BY_MI_COIN) {
                     mPriceTv.setText(NumTranformation.getShowValues((float) price / 10));
                 } else {
                     mPriceTv.setText(String.valueOf(price));
@@ -245,37 +233,45 @@ public class GiftDisPlayItemView extends RelativeLayout {
             mCornerIv.setVisibility(VISIBLE);
             FrescoWorker.loadImage(mCornerIv, ImageFactory.newHttpImage(connerIcon).build());
         }
+
+
+    }
+
+    private GiftDisplayRecycleViewAdapter.GiftItemListener mGiftItemListener;
+
+    public void setGiftItemListener(GiftDisplayRecycleViewAdapter.GiftItemListener giftItemListener) {
+        this.mGiftItemListener = giftItemListener;
     }
 
     public void setContinueSendGiftNum(int giftNum) {
-        mContinueSendGiftNum.setVisibility(VISIBLE);
-        mContinueSendGiftNum.setText(" x" + String.valueOf(giftNum));
-        selectNumTextColor(giftNum);
+//        mContinueSendGiftNum.setVisibility(GONE);
+//        mContinueSendGiftNum.setText(" x" + String.valueOf(giftNum));
+//        selectNumTextColor(giftNum);
     }
 
     private int[] mFlag = {
             19, 49, 98, 298, 519, 998, Integer.MAX_VALUE
     };
 
-    private void selectNumTextColor(int number) {
-        int index = 0;
-        for (int i = 0; i < mFlag.length; i++) {
-            if (number > mFlag[i]) {
-                index++;
-            } else {
-                break;
-            }
-        }
-        if (index >= mNumberColors.length) {
-            index = mNumberColors.length - 1;
-        }
-        if (index != mIndex) {
-            mIndex = index;
-            mContinueSendGiftNum.setTextColor(GlobalData.app().getResources().getColorStateList(mNumberColors[mIndex]));
-            //字体描边
-            mContinueSendGiftNum.setOutTextColor(R.color.color_white);
-        }
-    }
+//    private void selectNumTextColor(int number) {
+//        int index = 0;
+//        for (int i = 0; i < mFlag.length; i++) {
+//            if (number > mFlag[i]) {
+//                index++;
+//            } else {
+//                break;
+//            }
+//        }
+//        if (index >= mNumberColors.length) {
+//            index = mNumberColors.length - 1;
+//        }
+//        if (index != mIndex) {
+//            mIndex = index;
+//            mContinueSendGiftNum.setTextColor(GlobalData.app().getResources().getColorStateList(mNumberColors[mIndex]));
+//            //字体描边
+//            mContinueSendGiftNum.setOutTextColor(R.color.color_white);
+//        }
+//    }
 
     public boolean isContinueSendBtnShow() {
         if (mContinueSendBtn.getVisibility() == VISIBLE) {
@@ -284,23 +280,23 @@ public class GiftDisPlayItemView extends RelativeLayout {
         return false;
     }
 
-    public void showContinueSendBtn(boolean isShowProgressBar) {
-        if (isShowProgressBar) {
-            mGiftProgressBar.setProgress(INIT_PROGRESS);
-            mGiftProgressBar.setVisibility(VISIBLE);
-        } else {
-            mGiftProgressBar.setVisibility(GONE);
-        }
-        mContinueSendBtn.setVisibility(VISIBLE);
-        mContinueSendText.setVisibility(VISIBLE);
-    }
+//    public void showContinueSendBtn(boolean isShowProgressBar) {
+//        if (isShowProgressBar) {
+//            mGiftProgressBar.setProgress(INIT_PROGRESS);
+//            mGiftProgressBar.setVisibility(VISIBLE);
+//        } else {
+//            mGiftProgressBar.setVisibility(GONE);
+//        }
+//        mContinueSendBtn.setVisibility(VISIBLE);
+//        mContinueSendText.setVisibility(VISIBLE);
+//    }
 
-    public void hideContinueSendBtn() {
-        mGiftProgressBar.setVisibility(GONE);
-        mContinueSendGiftNum.setVisibility(GONE);
-        mContinueSendBtn.setVisibility(GONE);
-        mContinueSendText.setVisibility(GONE);
-    }
+//    public void hideContinueSendBtn() {
+//        mGiftProgressBar.setVisibility(GONE);
+//        mContinueSendGiftNum.setVisibility(GONE);
+//        mContinueSendBtn.setVisibility(GONE);
+//        mContinueSendText.setVisibility(GONE);
+//    }
 
     public void changeCornerStatus(String cornerIcon, boolean isHide) {
         if (!TextUtils.isEmpty(cornerIcon)) {
@@ -312,11 +308,11 @@ public class GiftDisPlayItemView extends RelativeLayout {
         }
     }
 
-    public void changeContinueSendBtnProgressBarProgress(float progress) {
-        if (mGiftProgressBar.getVisibility() == VISIBLE) {
-            mGiftProgressBar.setProgress(progress);
-        }
-    }
+//    public void changeContinueSendBtnProgressBarProgress(float progress) {
+//        if (mGiftProgressBar.getVisibility() == VISIBLE) {
+//            mGiftProgressBar.setProgress(progress);
+//        }
+//    }
 
     public void changeContinueSendBtnBackGroup(boolean isBigGiftFlag) {
         if (isBigGiftFlag) {

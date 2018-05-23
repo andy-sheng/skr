@@ -294,6 +294,13 @@ public class GiftRepository {
                 }).subscribeOn(Schedulers.io());
     }
 
+    //默认购买礼物方法
+    public static GiftProto.BuyGiftRsp bugGiftSync(Gift gift, long receiveId, String roomid, int continueCount, long timestamp,
+                                                   long continueId, String msgBody, int roomType, boolean useGiftCard, boolean isFromGameRoom) {
+        return bugGiftSync(gift, receiveId, roomid, continueCount, timestamp,
+                continueId, msgBody, roomType, useGiftCard, isFromGameRoom, 1);
+    }
+
     /**
      * 同步购买礼物
      *
@@ -305,7 +312,7 @@ public class GiftRepository {
      * @return
      */
     public static GiftProto.BuyGiftRsp bugGiftSync(Gift gift, long receiveId, String roomid, int continueCount, long timestamp,
-                                                   long continueId, String msgBody, int roomType, boolean useGiftCard, boolean isFromGameRoom) {
+                                                   long continueId, String msgBody, int roomType, boolean useGiftCard, boolean isFromGameRoom, int giftCount) {
         GiftProto.BuyGiftReq.Builder reqBuilder = GiftProto.BuyGiftReq.newBuilder()
                 .setUserId(MyUserInfoManager.getInstance().getUser().getUid())
                 .setReceiverId(receiveId)
@@ -316,6 +323,7 @@ public class GiftRepository {
                 .setContinueId(continueId)
                 .setRoomType(roomType)
                 .setUseGiftCard(useGiftCard)
+                .setGiftCount(giftCount)
                 .setPlatform(GiftProto.Platform.ANDROID);
         if (!TextUtils.isEmpty(msgBody)) {
             reqBuilder.setMsgBody(msgBody);

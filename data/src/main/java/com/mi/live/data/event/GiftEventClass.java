@@ -105,4 +105,20 @@ public class GiftEventClass {
         }
     }
 
+    public static class ContinueGiftSendNum {
+        //连送数量
+        public int num;
+        public int buyCount;
+
+        public ContinueGiftSendNum(int num) {
+            this.num = num;
+        }
+
+        public ContinueGiftSendNum(int num, int buyCount) {
+            this.num = num;
+            this.buyCount = buyCount;
+        }
+    }
+
+
 }

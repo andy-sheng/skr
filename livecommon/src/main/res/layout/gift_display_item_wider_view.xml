@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="@dimen/view_dimen_200"
-    android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/margin_146">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/margin_146">
 
     <com.base.image.fresco.BaseImageView
         android:id="@+id/gift_iv"
-        android:layout_width="48.33dp"
-        android:layout_height="48.33dp"
+        android:layout_width="@dimen/view_dimen_170"
+        android:layout_height="@dimen/view_dimen_170"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
-        app:roundAsCircle="false" />
+        app:roundAsCircle="false"/>
 
     <TextView
         android:id="@+id/gift_name"
@@ -22,8 +22,8 @@
         android:ellipsize="end"
         android:gravity="center"
         android:singleLine="true"
-        android:textColor="@color/color_white_trans_50"
-        android:textSize="10sp" />
+        android:textColor="@color/color_white_trans_80"
+        android:textSize="10sp"/>
 
     <RelativeLayout
         android:id="@+id/price_rl"
@@ -36,12 +36,12 @@
             android:id="@+id/price_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/live_icon_golden_diamond_small"
             android:drawablePadding="3.33dp"
-            android:drawableRight="@drawable/live_icon_golden_diamond_small"
             android:gravity="center"
-            android:textColor="@color/color_white"
-            android:textSize="12sp"
-            android:visibility="gone" />
+            android:textColor="@color/color_white_trans_50"
+            android:textSize="@dimen/text_size_26"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/text_tv"
@@ -54,8 +54,7 @@
             android:text="原 "
             android:textColor="@color/color_white_trans_60"
             android:textSize="8sp"
-            android:visibility="gone" />
-
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/origin_price_tv"
             android:layout_width="wrap_content"
@@ -66,18 +65,18 @@
             android:text="原价"
             android:textColor="@color/color_white_trans_60"
             android:textSize="8sp"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
-        <TextView
-            android:id="@+id/free_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/gift_free_color"
-            android:textSize="12sp"
-            android:visibility="gone" />
+        <TextView android:id="@+id/free_tv"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:gravity="center"
+                  android:textColor="@color/gift_free_color"
+                  android:textSize="@dimen/text_size_26"
+                  android:visibility="gone"/>
     </RelativeLayout>
 
+    <!--#################先别去了防止后面设计产品改来改去#####################-->
     <!--<TextView-->
     <!--android:id="@+id/exep_tv"-->
     <!--android:layout_width="wrap_content"-->
@@ -108,7 +107,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:visibility="gone"
-        app:roundAsCircle="false" />
+        app:roundAsCircle="false"/>
 
     <TextView
         android:id="@+id/continue_tv"
@@ -116,7 +115,7 @@
         android:layout_height="55dp"
         android:layout_centerInParent="true"
         android:background="@drawable/live_anchor_presented_bg"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/send_tv"
@@ -126,12 +125,12 @@
         android:text="@string/continue_normal_send_text"
         android:textColor="@color/white"
         android:textSize="16sp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.33dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/color_white_trans_20" />
+    <!--<View-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="0.33dp"-->
+    <!--android:background="@color/color_white_trans_20"-->
+    <!--android:layout_alignParentBottom="true"/>-->
 
 </RelativeLayout>

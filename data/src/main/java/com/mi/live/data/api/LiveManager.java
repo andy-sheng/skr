@@ -37,6 +37,7 @@ public class LiveManager {
     public static final int TYPE_LIVE_TICKET = 3;
     public static final int TYPE_LIVE_VR = 5;
     public static final int TYPE_LIVE_GAME = 6;
+    public static final int TYPE_LIVE_RADIO = 8; //电台
 
     /**
      * MiLinkCommand : zhibo.live.historydelete

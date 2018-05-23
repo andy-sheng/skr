@@ -760,6 +760,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                             // 这个房间的的礼物橱窗信息交付
 //                            mGiftMallView.setGiftInfoForEnterRoom(giftInfoForEnterRoom.getmGiftInfoForThisRoom());
                             mGiftMallPresenter.setGiftInfoForEnterRoom(giftInfoForEnterRoom.getmGiftInfoForThisRoom());
+                            mGiftMallPresenter.setPktGiftId(giftInfoForEnterRoom.getPktGiftId());
 
                             // 星票前10，以及禁言权限
                             List<Long> Top10RankList = giftInfoForEnterRoom.getEnterRoomTicketTop10lList();

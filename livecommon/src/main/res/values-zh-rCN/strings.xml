@@ -320,4 +320,6 @@
 
     <string name="gift_packet_text">背包</string>
     <string name="pkt_gift_detail">详情</string>
+
+    <string name="packet_count_not_enough">超过背包内礼物数量</string>
 </resources>

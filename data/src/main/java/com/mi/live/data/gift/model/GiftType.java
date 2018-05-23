@@ -25,6 +25,7 @@ public class GiftType {
      */
     public static final int TICKET_GIFT = 13;
     public static final int MAGIC_GIFT = 15;
+    public static final int OPERATION_GIFT = 16;
 
     /**
      * @notice type=16  {@link com.mi.live.data.repository.GiftRepository#GIFT_CATEGORY_VFANS_PRIVILEGE}.
