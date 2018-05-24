@@ -666,6 +666,8 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
         public String redEnvelopeId; // 红包id
         public String orderId;
         public String liveStreamUrl; //全局大礼物推流地址
+        public boolean isPrivilegeGift;
+        public int batch_count;//批量送的礼物的个数
 
         public String getGiftName() {
             return giftName;
@@ -737,6 +739,22 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
 
         public void setAvatarTimestamp(long avatarTimestamp) {
             this.avatarTimestamp = avatarTimestamp;
+        }
+
+        public boolean isPrivilegeGift() {
+            return isPrivilegeGift;
+        }
+
+        public void setPrivilegeGift(boolean privilegeGift) {
+            isPrivilegeGift = privilegeGift;
+        }
+
+        public int getBatch_count() {
+            return batch_count;
+        }
+
+        public void setBatch_count(int batch_count) {
+            this.batch_count = batch_count;
         }
 
         @Override
