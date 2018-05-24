@@ -1,5 +1,12 @@
 apply plugin: 'java'
+apply plugin: 'application'
 
+/**
+ * 提醒，直接在main方法 run 已经不行了，
+ * 要运行该module 下的 application run方法
+ * 要生成哪个数据库，在这动态修改。
+ */
+mainClassName = "com.wali.live.generator.GreenDaoGenerator"
 dependencies {
-    compile('de.greenrobot:DaoGenerator:1.3.0')
+    compile 'de.greenrobot:DaoGenerator:1.3.0'
 }

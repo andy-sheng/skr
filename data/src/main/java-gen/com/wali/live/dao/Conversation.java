@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import com.base.log.MyLog;
 import org.json.JSONObject;
 // KEEP INCLUDES END
-
 /**
  * Entity mapped to table CONVERSATION.
  */

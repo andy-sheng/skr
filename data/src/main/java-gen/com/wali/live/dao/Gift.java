@@ -42,6 +42,10 @@ public class Gift {
     private Integer lowerLimitLevel;
     private Integer originGiftType;
     private Integer buyType;
+    private Boolean displayInGiftArea;
+    private Boolean displayInSubTitle;
+    private Integer costType;
+    private String ext;
 
     // KEEP FIELDS - put your custom fields here
     public static final String TAG = "Gift";
@@ -55,7 +59,7 @@ public class Gift {
         this.id = id;
     }
 
-    public Gift(Long id, int giftId, Integer sortId, String name, Integer price, Integer empiricValue, String picture, Boolean canContinuous, String languageStr, String resourceUrl, Boolean canSale, Integer catagory, String isAllowActivitySet, Integer originalPrice, String icon, String comment, String gifUrl, Integer lowerLimitLevel, Integer originGiftType, Integer buyType) {
+    public Gift(Long id, int giftId, Integer sortId, String name, Integer price, Integer empiricValue, String picture, Boolean canContinuous, String languageStr, String resourceUrl, Boolean canSale, Integer catagory, String isAllowActivitySet, Integer originalPrice, String icon, String comment, String gifUrl, Integer lowerLimitLevel, Integer originGiftType, Integer buyType, Boolean displayInGiftArea, Boolean displayInSubTitle, Integer costType, String ext) {
         this.id = id;
         this.giftId = giftId;
         this.sortId = sortId;
@@ -76,6 +80,10 @@ public class Gift {
         this.lowerLimitLevel = lowerLimitLevel;
         this.originGiftType = originGiftType;
         this.buyType = buyType;
+        this.displayInGiftArea = displayInGiftArea;
+        this.displayInSubTitle = displayInSubTitle;
+        this.costType = costType;
+        this.ext = ext;
     }
 
     public Long getId() {
@@ -234,6 +242,38 @@ public class Gift {
         this.buyType = buyType;
     }
 
+    public Boolean getDisplayInGiftArea() {
+        return displayInGiftArea;
+    }
+
+    public void setDisplayInGiftArea(Boolean displayInGiftArea) {
+        this.displayInGiftArea = displayInGiftArea;
+    }
+
+    public Boolean getDisplayInSubTitle() {
+        return displayInSubTitle;
+    }
+
+    public void setDisplayInSubTitle(Boolean displayInSubTitle) {
+        this.displayInSubTitle = displayInSubTitle;
+    }
+
+    public Integer getCostType() {
+        return costType;
+    }
+
+    public void setCostType(Integer costType) {
+        this.costType = costType;
+    }
+
+    public String getExt() {
+        return ext;
+    }
+
+    public void setExt(String ext) {
+        this.ext = ext;
+    }
+
     // KEEP METHODS - put your custom methods here
 
 
@@ -260,6 +300,8 @@ public class Gift {
                 ", lowerLimitLevel=" + lowerLimitLevel +
                 ", originGiftType=" + originGiftType +
                 ", buyType=" + buyType +
+                ", displayInGiftArea" + displayInGiftArea +
+                ", displayInSubTitle" + displayInSubTitle +
                 '}';
     }
 

@@ -43,6 +43,10 @@ public class GiftDao extends AbstractDao<Gift, Long> {
         public final static Property LowerLimitLevel = new Property(17, Integer.class, "lowerLimitLevel", false, "LOWER_LIMIT_LEVEL");
         public final static Property OriginGiftType = new Property(18, Integer.class, "originGiftType", false, "ORIGIN_GIFT_TYPE");
         public final static Property BuyType = new Property(19, Integer.class, "buyType", false, "BUY_TYPE");
+        public final static Property DisplayInGiftArea = new Property(20, Boolean.class, "displayInGiftArea", false, "DISPLAY_IN_GIFT_AREA");
+        public final static Property DisplayInSubTitle = new Property(21, Boolean.class, "displayInSubTitle", false, "DISPLAY_IN_SUB_TITLE");
+        public final static Property CostType = new Property(22, Integer.class, "costType", false, "COST_TYPE");
+        public final static Property Ext = new Property(23, String.class, "ext", false, "EXT");
     };
 
 
@@ -77,7 +81,11 @@ public class GiftDao extends AbstractDao<Gift, Long> {
                 "'GIF_URL' TEXT," + // 16: gifUrl
                 "'LOWER_LIMIT_LEVEL' INTEGER," + // 17: lowerLimitLevel
                 "'ORIGIN_GIFT_TYPE' INTEGER," + // 18: originGiftType
-                "'BUY_TYPE' INTEGER);"); // 19: buyType
+                "'BUY_TYPE' INTEGER," + // 19: buyType
+                "'DISPLAY_IN_GIFT_AREA' INTEGER," + // 20: displayInGiftArea
+                "'DISPLAY_IN_SUB_TITLE' INTEGER," + // 21: displayInSubTitle
+                "'COST_TYPE' INTEGER," + // 22: costType
+                "'EXT' TEXT);"); // 23: ext
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_GIFT_GIFT_ID ON GIFT" +
                 " (GIFT_ID);");
@@ -189,6 +197,26 @@ public class GiftDao extends AbstractDao<Gift, Long> {
         if (buyType != null) {
             stmt.bindLong(20, buyType);
         }
+ 
+        Boolean displayInGiftArea = entity.getDisplayInGiftArea();
+        if (displayInGiftArea != null) {
+            stmt.bindLong(21, displayInGiftArea ? 1l: 0l);
+        }
+ 
+        Boolean displayInSubTitle = entity.getDisplayInSubTitle();
+        if (displayInSubTitle != null) {
+            stmt.bindLong(22, displayInSubTitle ? 1l: 0l);
+        }
+ 
+        Integer costType = entity.getCostType();
+        if (costType != null) {
+            stmt.bindLong(23, costType);
+        }
+ 
+        String ext = entity.getExt();
+        if (ext != null) {
+            stmt.bindString(24, ext);
+        }
     }
 
     /** @inheritdoc */
@@ -220,7 +248,11 @@ public class GiftDao extends AbstractDao<Gift, Long> {
             cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // gifUrl
             cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17), // lowerLimitLevel
             cursor.isNull(offset + 18) ? null : cursor.getInt(offset + 18), // originGiftType
-            cursor.isNull(offset + 19) ? null : cursor.getInt(offset + 19) // buyType
+            cursor.isNull(offset + 19) ? null : cursor.getInt(offset + 19), // buyType
+            cursor.isNull(offset + 20) ? null : cursor.getShort(offset + 20) != 0, // displayInGiftArea
+            cursor.isNull(offset + 21) ? null : cursor.getShort(offset + 21) != 0, // displayInSubTitle
+            cursor.isNull(offset + 22) ? null : cursor.getInt(offset + 22), // costType
+            cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23) // ext
         );
         return entity;
     }
@@ -248,6 +280,10 @@ public class GiftDao extends AbstractDao<Gift, Long> {
         entity.setLowerLimitLevel(cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17));
         entity.setOriginGiftType(cursor.isNull(offset + 18) ? null : cursor.getInt(offset + 18));
         entity.setBuyType(cursor.isNull(offset + 19) ? null : cursor.getInt(offset + 19));
+        entity.setDisplayInGiftArea(cursor.isNull(offset + 20) ? null : cursor.getShort(offset + 20) != 0);
+        entity.setDisplayInSubTitle(cursor.isNull(offset + 21) ? null : cursor.getShort(offset + 21) != 0);
+        entity.setCostType(cursor.isNull(offset + 22) ? null : cursor.getInt(offset + 22));
+        entity.setExt(cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23));
      }
     
     /** @inheritdoc */

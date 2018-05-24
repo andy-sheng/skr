@@ -4,6 +4,7 @@ import com.base.log.MyLog;
 import com.mi.live.data.gift.model.GiftType;
 import com.mi.live.data.gift.model.giftEntity.BigAnimationGift;
 import com.mi.live.data.gift.model.giftEntity.BigPackOfGift;
+import com.mi.live.data.gift.model.giftEntity.ExpressionGift;
 import com.mi.live.data.gift.model.giftEntity.LightUpGift;
 import com.mi.live.data.gift.model.giftEntity.NormalEffectGift;
 import com.mi.live.data.gift.model.giftEntity.NormalGift;
@@ -56,6 +57,10 @@ public class GiftTypeMapper {
                 gift = new BigPackOfGift();
             }
             break;
+            case GiftType.MAGIC_GIFT:{
+                gift = new ExpressionGift();
+            }
+            break;
             //特权礼物和米币礼物同样处理，getOriginGiftType是真正的type。
             case GiftType.Mi_COIN_GIFT:
             case GiftType.PRIVILEGE_GIFT: {
@@ -88,6 +93,10 @@ public class GiftTypeMapper {
                         gift = new BigPackOfGift();
                     }
                     break;
+                    case GiftType.MAGIC_GIFT:{
+                        gift = new ExpressionGift();
+                    }
+                    break;
                     default: {
                         gift = new NormalGift();
                     }
@@ -118,6 +127,9 @@ public class GiftTypeMapper {
         gift.setLowerLimitLevel(baseGift.getLowerLimitLevel());
         gift.setOriginGiftType(baseGift.getOriginGiftType());
         gift.setBuyType(baseGift.getBuyType());
+        gift.setDisplayInGiftArea(baseGift.getDisplayInGiftArea());
+        gift.setDisplayInSubTitle(baseGift.getDisplayInSubTitle());
+        gift.setCostType(baseGift.getCostType());
         return gift;
     }
 
@@ -153,6 +165,10 @@ public class GiftTypeMapper {
                 gift = new BigPackOfGift();
             }
             break;
+            case GiftType.MAGIC_GIFT:{
+                gift = new ExpressionGift();
+            }
+            break;
             //特权礼物和米币礼物同样处理，getOriginGiftType是真正的type。
             case GiftType.Mi_COIN_GIFT:
             case GiftType.PRIVILEGE_GIFT: {
@@ -185,6 +201,10 @@ public class GiftTypeMapper {
                         gift = new BigPackOfGift();
                     }
                     break;
+                    case GiftType.MAGIC_GIFT: {
+                        gift = new ExpressionGift();
+                    }
+                    break;
                     default: {
                         gift = new NormalGift();
                     }
@@ -215,6 +235,8 @@ public class GiftTypeMapper {
         gift.setLowerLimitLevel(giftInfo.getLowerLimitLevel());
         gift.setOriginGiftType(giftInfo.getOriginGiftType());
         gift.setBuyType(giftInfo.getBuyType());
+        gift.setDisplayInGiftArea(giftInfo.getDisplayInGiftArea());
+        gift.setDisplayInSubTitle(giftInfo.getDisplayInSubtitleArea());
         List<GiftProto.Language> list = giftInfo.getMultiLanguageList();
         JSONArray languageModels = new JSONArray();
         if (list != null) {
@@ -224,6 +246,7 @@ public class GiftTypeMapper {
             }
         }
         gift.setLanguageStr(languageModels.toString());
+        gift.setCostType(giftInfo.getCostType());
         return gift;
     }
 
