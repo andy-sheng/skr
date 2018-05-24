@@ -9,17 +9,21 @@ import com.base.utils.language.LocaleUtil;
 import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.account.event.UserInfoEvent;
 import com.mi.live.data.api.request.GetOwnInfoRequest;
+import com.mi.live.data.event.VipUpdateEvent;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.live.data.region.Region;
 import com.mi.live.data.repository.datasource.MyUserInfoLocalStore;
+import com.mi.live.data.user.Medal;
 import com.mi.live.data.user.User;
 import com.wali.live.dao.OwnUserInfo;
 import com.wali.live.proto.UserProto;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import rx.Observable;
@@ -435,5 +439,56 @@ public class MyUserInfoManager {
 
     public void deleteCache() {
         mMyInfo = new User();
+    }
+
+    public List<String> getBeforeNickNameMedalList() {
+        if (mMyInfo != null) {
+            ArrayList<String> list = new ArrayList<>();
+            List<Medal> beforeNickNameMedalList = mMyInfo.getBeforeNickNameMedalList();
+            if (beforeNickNameMedalList != null && !beforeNickNameMedalList.isEmpty()) {
+                for (int i = 0; i < beforeNickNameMedalList.size(); i++) {
+                    list.add(beforeNickNameMedalList.get(i).getPicId());
+                }
+                return list;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public List<String> getAfterNickNameMedalList() {
+        if (mMyInfo != null) {
+            ArrayList<String> list = new ArrayList<>();
+            List<Medal> afterNickNameMedalList = mMyInfo.getAfterNickNameMedalList();
+            if (afterNickNameMedalList != null && !afterNickNameMedalList.isEmpty()) {
+                for (int i = 0; i < afterNickNameMedalList.size(); i++) {
+                    list.add(afterNickNameMedalList.get(i).getPicId());
+                }
+                return list;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    private synchronized void ensureMyInfoNotNull() {
+        if (mMyInfo == null) {
+            MyLog.d(TAG, "ensureMyInfoNotNull");
+            mMyInfo = new User();
+        }
+    }
+
+    public synchronized void setVipInfo(int vipLevel, boolean isFrozen, boolean isHide) {
+        MyLog.d(TAG, String.format("set vip info, level:%d, isFrozen:%b, isHide:%b", vipLevel, isFrozen, isHide));
+        ensureMyInfoNotNull();
+        mMyInfo.setVipLevel(vipLevel);
+        mMyInfo.setVipFrozen(isFrozen);
+        mMyInfo.setVipHide(isHide);
+        EventBus.getDefault().post(new UserInfoEvent());
+        EventBus.getDefault().post(new VipUpdateEvent());
     }
 }

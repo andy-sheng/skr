@@ -283,7 +283,7 @@ public class BarrageAnimView extends RelativeLayout implements IAnimView {
         }
         BarrageMsg.MsgExt ext = mCurBarrage.getMsgExt();
         if (ext instanceof BarrageMsg.JoinRoomMsgExt
-                && !((BarrageMsg.JoinRoomMsgExt) ext).vipJoinEnable) {
+                && !((BarrageMsg.JoinRoomMsgExt) ext).showVipEnterRoomEffect) {
             return false;
         }
         if (mCurBarrage.isVipHide() || mCurBarrage.isVipFrozen()) {

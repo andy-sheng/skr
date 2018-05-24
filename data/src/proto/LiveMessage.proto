@@ -67,11 +67,11 @@ message RoomMessageRequest {
     optional PKRoomInfo pk_room_info = 10; //PK房间信息,房间发送弹幕使用
     optional MultiLanguage multi_language = 11; // 多语言文案
     optional uint64 request_ts = 12; // 进出房间时间戳支持
-    optional GlobalRoomMessageExt  global_room_msg_ext = 13; // 所有类型弹幕扩展字段(针对多种类型的弹幕)
+    optional GlobalRoomMessageExt global_room_msg_ext = 13; // 所有类型弹幕扩展字段(针对多种类型的弹幕)
     optional string union_room_id = 14; // 工会房间ID
 }
 
-message RoomTxtMessageExt{
+message RoomTxtMessageExt {
     optional uint32 type = 1; // type =1: @消息;type=2:智能弹幕;type=3:管理员飘屏;type=4:大喇叭飘屏
     optional bytes ext = 2;
 }
@@ -86,10 +86,10 @@ message RoomMessageResponse {
     optional string error_msg = 2; //
     optional uint64 timestamp = 3; // 客户端排序使用
     optional uint64 cid = 4;
-    optional uint32 fltbr_cnt = 5;//飘屏弹幕当前计数
-    optional uint32 admin_br_cnt = 6;//管理员飘屏弹幕当前计数
-    optional uint32 vip_br_cnt = 7;//VIP用户飘屏弹幕当前计数
-    optional uint32 guard_br_cnt = 8;//守护团用户飘屏弹幕当前计数
+    optional uint32 fltbr_cnt = 5; //飘屏弹幕当前计数
+    optional uint32 admin_br_cnt = 6; //管理员飘屏弹幕当前计数
+    optional uint32 vip_br_cnt = 7; //VIP用户飘屏弹幕当前计数
+    optional uint32 guard_br_cnt = 8; //守护团用户飘屏弹幕当前计数
 }
 
 message ChatMessageReadRequest {
@@ -118,9 +118,9 @@ message LiveStartMessage {
 // 直播结束消息
 message LiveEndMessage {
     optional uint32 hisViewerCnt = 1; //历史房间观众数
-       optional uint64 hisBeginLiveCnt = 2;//历史开播次数
-       optional uint64 duration      = 3;//开播时长（ms）
-       optional uint64 newFollowerCnt  = 4;//新增关注数
+    optional uint64 hisBeginLiveCnt = 2; //历史开播次数
+    optional uint64 duration = 3; //开播时长（ms）
+    optional uint64 newFollowerCnt = 4; //新增关注数
 }
 
 // 后台运营设置系统弹幕消息请求接口
@@ -174,6 +174,11 @@ message LikeMessage {
     optional uint32 id = 1;
 }
 
+/* 半价礼物活动开始 msgType = 901 */
+message AnchorDiscountAging {
+    optional uint64 leftTime = 1;//party剩余时间 毫秒数
+}
+
 /* 礼物消息 */
 message GiftMessage {
     optional uint32 giftId = 1; // 礼物id
@@ -190,7 +195,10 @@ message GiftMessage {
     optional string red_envelop_id = 12; // 红包id
     optional string order_id = 13; // 订单号，retcode非0时必有
     optional string live_stream_url = 14; // 全局礼物的直播流地址
-    optional uint32 batch_count = 15;// 批量购买个数，对应于客户端的gift_count，由于此处第三个字段已经使用，故改名
+    optional uint32 batch_count = 15; // 批量购买个数，对应于客户端的gift_count，由于此处第三个字段已经使用，故改名
+    optional uint32 popularity                  = 16;// 人气值
+    optional uint64 popularity_timestamp        = 17;// 人气值时间戳
+    optional uint32 incr_popularity             = 19;// 本次增长的人气值
 }
 
 /* 回放直播消息请求 */
@@ -214,14 +222,32 @@ message ReplayMessageResponse {
 
 //pk开始消息
 message PKBeginMessage {
-    optional PKInfo thisPKInfo = 1; //所在用户房间信息
-    optional PKInfo otherPKInfo = 2; //对应pk的房间信息
+    optional LiveCommon.PKInfo thisPKInfo = 1; //所在用户房间信息
+    optional LiveCommon.PKInfo otherPKInfo = 2; //对应pk的房间信息
 }
 
 //pk结束消息
 message PKEndMessage {
-    optional PKInfo thisPKInfo = 1; //所在用户房间信息
-    optional PKInfo otherPKInfo = 2; //对应pk的房间信息
+    optional LiveCommon.PKInfo thisPKInfo = 1; //所在用户房间信息
+    optional LiveCommon.PKInfo otherPKInfo = 2; //对应pk的房间信息
+}
+
+//mic开始消息
+message MicBeginMessage {
+    required uint64 zuid = 1; //主播用户id
+    required string liveId = 2; //房间号
+    required LiveCommon.MicInfo micInfo = 3; //连麦的信息
+    optional bool enableViewerMic = 4; //是否允许观众端发起连麦（true：允许）
+    optional uint32 type = 5; //0:主播与观众连麦 1：主播与主播连麦
+}
+
+//mic结束消息
+message MicEndMessage {
+    required uint64 zuid = 1; //主播用户id
+    required string liveId = 2; //房间号
+    required LiveCommon.MicInfo micInfo = 3; //连麦的信息
+    optional bool enableViewerMic = 4; //是否允许观众端发起连麦（true：允许）
+    optional uint32 type = 5; //0:主播与观众连麦 1：主播与主播连麦
 }
 
 // 修改房间信息消息
@@ -230,6 +256,7 @@ message LiveInfoChangeMsg {
     optional uint64 zuid = 2; //主播id
     optional string live_id = 3; //房间号
     optional bool enable_viewer_mic = 4; //是否允许观众端发起连麦（true：允许）
+    optional string title = 5; //房间标题
 }
 
 /* 消息存储以及push消息结构 */
@@ -255,8 +282,8 @@ message Message {
     optional uint32 msg_catetory = 19; // 1:普通私信消息 目前只提供私信使用
     optional MultiLanguage multi_language = 20; // 多语言文案
     optional string from_user_show_name = 21; // 兼容老版本，展示用户名字
-    optional bool is_from_user_redname = 22  ; //发送方是否红名
-    optional GlobalRoomMessageExt  global_room_msg_ext = 23; // 所有类型弹幕扩展字段(针对多种类型的弹幕)
+    optional bool is_from_user_redname = 22; //发送方是否红名
+    optional GlobalRoomMessageExt global_room_msg_ext = 23; // 所有类型弹幕扩展字段(针对多种类型的弹幕)
     optional uint32 vip_level = 24; //财富等级
     optional bool vip_disable = 25; //财富等级是否被冻结
     optional bool vip_hidden = 26; //是否VIP隐身
@@ -266,7 +293,6 @@ message Message {
     optional uint32 noble_level = 30; // 贵族等级
     optional uint32 special_effect_id = 31; //发送者的特效id兼容已发版本bug
 }
-
 
 message Language {
     optional uint32 language_code = 1; // 语言代号客户端的语言，0:中文简体，1:英文
@@ -333,21 +359,21 @@ message SyncHistoryMessageResponse {
 /* 加入房间 */
 message JoinRoomMessage {
     optional uint32 viewer_count = 1;
-    repeated Viewer viewers = 2; //观众
-    optional uint32 type         = 3; //0：默认 1：通过附近频道进入
-    optional bool   showSpecialEffect = 4; //进场特效 true:显示
+    repeated LiveCommon.Viewer viewers = 2; //观众
+    optional uint32 type = 3; //0：默认 1：通过附近频道进入
+    optional bool showSpecialEffect = 4; //进场特效 true:显示
 }
 
 /* 离开房间 */
 message LeaveRoomMessage {
     optional uint32 viewer_count = 1;
-    repeated Viewer viewers      = 2; //观众
+    repeated LiveCommon.Viewer viewers = 2; //观众
 }
 
 /* 观众变化的push */
 message ViewerMessage {
     optional uint32 viewer_count = 1;
-    repeated Viewer viewers = 2; //观众
+    repeated LiveCommon.Viewer viewers = 2; //观众
 }
 
 /* 主播回到房间 */
@@ -426,7 +452,7 @@ message SyncRoomMessageResponse {
 
 /* 房间内规则变化push内容 */
 message MsgRuleChangeMessage {
-    optional MsgRule msgRule = 1; //房间的发消息的规则 ，如果没有设置表示清空（恢复初始值）
+    optional LiveCommon.MsgRule msgRule = 1; //房间的发消息的规则 ，如果没有设置表示清空（恢复初始值）
 }
 
 //踢人消息
@@ -460,7 +486,7 @@ message WidgetMessageItem {
     optional uint32 showType = 5; //展示的类型。0：主播和观众都展示，1主播不展示观众展示，2:主播展示观众不展示
 }
 message NewWidgetMessageItem {
-    required NewWidgetItem newWidgetItem = 1; //新版运营位push内容
+    required LiveCommon.NewWidgetItem newWidgetItem = 1; //新版运营位push内容
     optional bool isDelete = 2; //是否为不显示该运营位
     optional uint32 showType = 3; //展示的类型 0：都展示，1 观众展示，2 主播展示
 }
@@ -497,9 +523,8 @@ message RedNameStatus {
     optional bool isRedname = 1; //是否红名
 }
 
-
 /*邀请入群消息协议*/
-message InviteGroupExt{
+message InviteGroupExt {
     optional uint64 inviter = 1; // 邀请人id
     optional string inviter_nickname = 2; // 邀请人昵称
     optional uint64 fans_group_id = 3; //邀请的群id
@@ -528,6 +553,7 @@ message MedalConfigMessage {
     repeated InnerMedalConfig after_nickname_config = 2;
     repeated InnerMedalConfig before_content_config = 3;
     repeated InnerMedalConfig after_content_config = 4;
+    repeated InnerMedalConfig effect_config = 5;
 }
 message InnerMedalConfig {
     optional string pic_id = 1;
@@ -556,11 +582,10 @@ message ClearLiveNotifyMsgCountRsp {
     optional string error_msg = 2;
 }
 
-
 //////  新增通知相关 ///////
 // 同步通知
 message UnreadNotification {
-    optional uint32 unread_count   = 1; //未读消息总条数
+    optional uint32 unread_count = 1; //未读消息总条数
     optional uint32 max_idx = 2; // 当前未读消息中最的idx
     repeated Message msg = 3; //未读消息内容,server需要排序
     optional uint64 sys_user = 4;
@@ -641,8 +666,8 @@ message FollowNotification {
     optional string nickname = 2;
     optional uint64 avatar = 3;
     optional uint64 ts = 4;
-    optional uint32 gender=5;//性别
-    optional uint32 level=6;//等级
+    optional uint32 gender = 5; //性别
+    optional uint32 level = 6; //等级
     optional bool is_bothway = 7;
     optional uint32 idx = 8;
 }
@@ -736,4 +761,66 @@ message VFansMemberBriefInfo {
     optional bool is_use_medal = 3; // 是否佩戴勋章
     optional bool is_vip_expire = 4; // 宠爱团会员过期时间 默认0,绝对时间戳
     optional string barrage_color = 5; //彩色弹幕
+}
+
+//未关注人消息接收设置
+//cmd: zhibo.get.chatMsgSetting
+message SetChatMsgSettingRequest {
+    optional uint64 uuid = 1;
+    optional ChatMsgSetting setting = 2;
+}
+message SetChatMsgSettingResponse {
+    optional uint32 ret = 1;
+    optional ChatMsgSetting setting = 2;
+}
+
+
+message GetChatMsgSettingRequest {
+    optional uint64 uuid = 1;
+}
+
+message GetChatMsgSettingResponse {
+    optional uint32 ret = 1;
+    optional ChatMsgSetting setting = 2;
+}
+
+//未关注人消息接收设置
+message ChatMsgSetting {
+    optional bool recv_unfollow_enable = 1 [default = true]; //是否接收未关注人的消息,默认接收
+    optional uint32 recv_unfollow_level = 2; //接收未关注人消息最低等级
+    optional bool interaction_notify = 3 [default = true]; //互动通知提醒,默认接收
+    optional bool befollowed_notify = 4 [default = true]; //新增关注提醒,默认接收
+}
+
+message NobleUserInfo {
+    optional uint64 avatar = 1; //头像
+    optional string nickname = 2; //昵称
+    optional uint32 gender = 3; //性别
+    optional uint32 level = 4; //等级
+    optional uint32 nobleLevel = 5; //贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+    optional uint64 uuid = 6; //用户id
+}
+
+message NobleMsg {
+    optional uint32 msg_type = 1; // 0 当前的贵族消息
+    optional string msg_content = 2;
+    optional NobleUserInfo noble_user_info = 3;
+}
+
+//zhibo.huya.sendmsg
+//发送弹幕
+message HuyaSendMessageReq {
+    required uint64 fromUid = 1; //弹幕发送者的直播id
+    optional uint64 anchorHuyaUid = 2; //主播的虎牙id
+    optional uint32 msgType = 3 [default = 1]; //消息类型:1弹幕消息
+    optional string msgContent = 4; //消息内容
+    optional uint64 sendTimestamp = 5; //弹幕发送时间戳，单位:毫秒
+    optional uint64 zuid = 6; //主播的小米直播id
+    optional string roomId = 7; //房间id
+    optional uint32 roomType = 8; //9:虎牙
+    optional uint32 source = 9; //第三方来源 0:虎牙
+}
+
+message HuyaSendMessageRsp {
+    required uint32 retCode = 1;
 }

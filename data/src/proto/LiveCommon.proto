@@ -1,3 +1,4 @@
+import "User.proto";
 package com.wali.live.proto;
 
 option java_package = "com.wali.live.proto";
@@ -6,7 +7,7 @@ option java_outer_classname = "LiveCommonProto";
 // wiki地址：http://wiki.n.miui.com/pages/viewpage.action?pageId=18996762
 
 message UpStreamUrl {
-    optional string url    = 1; //完整推流url(带wsHost)
+    optional string url = 1; //完整推流url(带wsHost)
     optional uint32 weight = 2; //权重
 }
 
@@ -15,15 +16,32 @@ message MsgRule {
     optional uint32 speakPeriod = 2; //发言频率周期,单位s,不设置或者0代表没有限制
 }
 
+message MicSubViewPos {
+    required float topXScale = 1; //子视图左上角X在实际推流视频中的比例
+    required float topYScale = 2; //子视图左上角Y在实际推流视频中的比例
+    required float widthScale = 3; //子视图宽度在实际推流视频中的比例
+    required float heightScale = 4; //子视图高度左上角在推流视频中的比例
+}
+
+message MicInfo {
+    required uint64 micuid = 1; //连麦的观众id
+    optional MicSubViewPos subViewPos = 2; //子视图的比例位置
+    optional string mic_liveid = 3; //连麦对方房间号
+    optional uint32 type = 4; //0:主播与观众连麦 1：主播与主播连麦
+}
+
 message Viewer {
     required uint64 uuid = 1; //用户id
     optional uint32 level = 2; //等级
     optional uint64 avatar = 3; //头像
     optional uint32 certification_type = 4; //认证类型
     optional bool redName = 5; //社区红名
-    optional uint32 vip_level = 6;//财富（VIP）等级
-    optional bool vip_disable = 7;//vip是否处于冻结状态
-    optional uint32 ticket = 8;//本场对主播贡献的星票数
+    optional uint32 vip_level = 6; //财富（VIP）等级
+    optional bool vip_disable = 7; //vip是否处于冻结状态
+    optional uint32 ticket = 8; //本场对主播贡献的星票数
+    optional uint32 appid = 9; //appid
+    optional uint32 nobleLevel = 10; //贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王 0不是贵族
+    optional User.Medal userNobleMedal = 11;
 }
 
 message PKInfo {
@@ -48,7 +66,7 @@ message UserRoomInfo {
 
 message WidgetInfo {
     required string link_url = 1; //跳转地址，支持native和h5跳转
-    required uint32 position = 2; //坐标：0:左上角，1:右上角，2:左下角，3：右下角
+    required uint32 position = 2; //坐标：0:左上角，1:右上角，2:左下角，3：右下角，4：橱窗左上角，5：橱窗右上角，6:礼物左下角,7:快捷礼物位置,8:橱窗标题栏右侧第二位
     optional string icon = 3; //图标地址
     optional string text = 4; //文字内容
 }
@@ -72,7 +90,7 @@ message ClickItem {
     optional uint32 giftId = 4; //礼物id,点击类型为选中礼物时使用
     optional string clickWaitingImageUrl = 5; //点击按钮等待背景图
     optional string warningText = 6; //未到时间点击显示的提示文本
-    optional string pushSendSuccText = 7;//成功发出后显示的提示文本
+    optional string pushSendSuccText = 7; //成功发出后显示的提示文本
     optional uint32 pkInterval = 8; //pk间隔,单位:秒, 默认30s
 }
 
@@ -94,17 +112,38 @@ message H5Config {
 
 message NewWidgetItem {
     required uint32 widgetID = 1; //运营位ID
-    required uint32 position = 2; //坐标：0:左上角，1:右上角，2:左下角，3：右下角
+    required uint32 position = 2; //坐标：0:左上角，1:右上角，2:左下角，3：右下角 4：橱窗左上角，5：橱窗右上角，6:礼物左下角,7:快捷礼物位置,8:橱窗标题栏右侧第二位
     optional uint32 displayType = 3; //运营位展示类型: 0:常驻式, 1:一次性显示, 2:轮播式
     repeated NewWidgetUnit widgetUint = 4; //运营位展示单元
     optional uint32 displayTime = 5; //运营位单元展示间隔时间,单位:秒
     optional CounterItem counterItem = 6; //计数组件
     optional ClickItem clickItem = 7; //点击组件
+    repeated SuperGiftInfo superGiftInfo = 8; //礼物的扩展信息
 }
 
+//挂件的延迟礼物扩展
+message SuperGiftInfo {
+    optional string roomId = 1; //房间id
+    optional uint64 giftBeginTime = 2; //礼物的生效时间，秒
+    optional uint64 giftEndTime = 3; //礼物过期时间，秒
+    optional bytes giftExt = 4; //礼物扩展 ，用WidgetGift解析
+    optional uint64 currentTime = 5;
+}
+
+//挂件礼物
+message WidgetGift {
+    optional uint64 uuid = 1; //发红包的人的用户id
+    optional string redEnvelopId = 2; //红包id
+    optional uint32 gemcnt = 3; //红包钻数
+    optional string msg_body = 4; //描述，如“发了一个XX钻的大红包”
+    optional string nickname = 5; //用户昵称
+    optional uint32 level = 6; //用户等级
+    optional uint64 avatar = 7; //头像
+    optional uint32 gift_id = 8; //本次购买的礼物id
+}
 message NewWidgetInfo {
     repeated NewWidgetItem widgetItem = 1;
-    optional uint32 pullInterval = 2;//更新间隔
+    optional uint32 pullInterval = 2; //更新间隔
 }
 
 message ShoppingConfig {

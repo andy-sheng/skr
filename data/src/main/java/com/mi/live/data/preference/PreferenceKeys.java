@@ -122,8 +122,28 @@ public class PreferenceKeys {
 
     public static final String PRE_KEY_FEEDS_RECOM_HAS_TOAST = "pre_key_feeds_recom_has_toast";
 
+    //通知开关限制
+    public static final String PRE_KEY_PERMIT_TIMES = "pre_key_permit_times";
+    public static final String PRE_KEY_PERMIT_LONG = "pre_key_permit_long";
+    public static final String PRE_KEY_PERMIT_TIMES_NOTIFY = "pre_key_permit_times_notify";
+    public static final String PER_KEY_PERMIT_TIMES_BACKLIVE = "pre_key_permit_times_backlive";
+    public static final String PER_KEY_PERMIT_LONG_BACKLIVE = "pre_key_permit_popup_long_backlive";
+    public static final String PER_KEY_PERMIT_LONG_NOTIFY = "pre_key_permit_popup_long_notify";
+
+    public static final String PER_KEY_ENDLIVE_RECOMMEND_TIME = "per_key_endlive_recommend_time";
+
     public static final String PER_KEY_TICKET_EXCHANGE_TYPE = "per_key_ticket_exchange_type";//提现图标显示1银钻，2金钻
     public static final String PER_KEY_TICKET_EXCHANGE_NOTICE = "per_key_ticket_exchange_notice";//是否显示文案 0关，1开
+
+    public static final String PRE_KEY_STATISTICS_TRIGGER_SUM = "zhibo_ai_trigger_sum"; // MILINK recommend 打点, 累计数量到sum时，开始上传给服务器
+    public static final String PRE_KEY_STATISTICS_TRIGGER_TIME = "zhibo_ai_trigger_time"; // MILINK RECOMMEND 打点 每隔一段时间开始上传给服务器
+
+    public static final String PRE_KEY_FANS_GROUP_GLOBAL_OPEN = "pre_key_fans_group_global_open"; //群聊是否全部展示
+    public static final String PRE_KEY_FANS_GROUP_WHITE_LIST = "pre_key_fans_group_white_list"; //群聊白名单
+
+    public static final String PRE_KEY_UPGRADE_FLAG = "pref_key_upgrade_flag"; // 升级选用哪个升级系统
+    public static final String PRE_KEY_EXCHANGE_USE_H5_FLAG = "pref_exchange_use_h5"; // 重值页面使用h5
+    public static final String PRE_KEY_EXCHANGE_H5_URL = "pref_exchange_h5_url";
 
     public static final String PRE_KEY_GAME_LIST = "pre_key_game_list";
     public static final String PRE_KEY_GAME_LIST_TIME = "pre_key_game_list_time";
@@ -132,4 +152,7 @@ public class PreferenceKeys {
     public static final String PRE_KEY_EDIT_INFO_TIME = "pre_key_edit_info_time";
     public static final String PRE_KEY_EDIT_INFO_COUNT = "pre_key_edit_info_count";
     public static final String PRE_KEY_RECORDS_SHOW_NOTICE = "pre_key_has_show_notice"; //收益记录页面 是否已经出现过notice
+
+    public static final String PER_KEY_GAME_SHOW_TIME = "per_key_game_show_time";//游戏直播引导关注页显示延迟
+    public static final String PRE_KEY_HOME_PAGE_GUIDE_COIN = "pref_home_page_guide_guide_coin";
 }

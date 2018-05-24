@@ -1,52 +1,37 @@
 package com.wali.live.common.model;
 
-import android.support.annotation.DrawableRes;
+import android.support.annotation.ColorRes;
 import android.text.TextUtils;
 
 import com.base.global.GlobalData;
+import com.base.log.MyLog;
+import com.base.utils.StringUtils;
 import com.base.utils.display.DisplayUtils;
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.live.module.common.R;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
-import com.mi.live.data.push.model.GlobalRoomMsgExt;
-import com.mi.live.data.room.model.FansPrivilegeModel;
+import com.mi.live.data.room.model.VfansPrivilegeModel;
+import com.mi.live.data.user.User;
 import com.wali.live.common.smiley.SmileyParser;
+import com.wali.live.proto.LiveMessageProto;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static com.mi.live.data.push.model.BarrageMsg.RoomTxtMessageExt.MSG_SMART_NORMAL;
 
 /**
  * Created by chengsimin on 16/7/18.
  */
 public class CommentModel implements Comparable<CommentModel> {
+    private static final String TAG = CommentModel.class.getSimpleName();
+
     private String shopName;
     private double shopPrice;
     private long productId;
     private String shopUrl;
-    private long giftId;
-    private int msgType;
-    private long sentTime;
-    private long senderMsgId;
-    private int level = -1;
-    private String name;
-    private int certificationType = -1;
-    private long senderId;
-    //去掉换行，已经转换为表情的
-    private CharSequence body;
-    private int commentColor = R.color.color_white;
-    private boolean canClickable = true;
-    private int backGround;
-    private int nameColor = R.color.ffd267;
-    private int likeId;
-    private String likePath;
-    private boolean redName;
-
-    private int fansLevel;                            // 宠爱团等级
-    private String fansMedal;                         // 宠爱团勋章
-
-    private int vipLevel;                             //vip等级
-    private boolean isVipFrozen;                      //vip是否被冻结
-    private boolean isVipHide;                        //vip用户是否设置隐身
 
     public String getShopName() {
         return shopName;
@@ -80,6 +65,18 @@ public class CommentModel implements Comparable<CommentModel> {
         this.shopUrl = shopUrl;
     }
 
+    private long giftId;
+
+    public int getGiftCount() {
+        return giftCount;
+    }
+
+    public void setGiftCount(int giftCount) {
+        this.giftCount = giftCount;
+    }
+
+    private int giftCount = 1;
+
     public long getGiftId() {
         return giftId;
     }
@@ -87,6 +84,8 @@ public class CommentModel implements Comparable<CommentModel> {
     public void setGiftId(long giftId) {
         this.giftId = giftId;
     }
+
+    private int msgType;
 
     public long getSenderMsgId() {
         return senderMsgId;
@@ -96,13 +95,57 @@ public class CommentModel implements Comparable<CommentModel> {
         this.senderMsgId = senderMsgId;
     }
 
+    private long senderMsgId;
+    private int level = -1;
+    private String name;
+    private int certificationType = -1;
+    private long senderId;
+    //去掉换行，已经转换为表情的
+    private CharSequence body;
+    @ColorRes
+    private int commentColor = R.color.color_white;
+
+    private boolean canClickable = true;
+
     public int getBackGround() {
         return backGround;
     }
 
-    public void setBackGround(@DrawableRes int backGround) {
+    public void setBackGround(int backGround) {
         this.backGround = backGround;
     }
+
+    private int backGround;
+    @ColorRes
+    private int nameColor = R.color.ffd267;
+
+
+    private String likePath;
+
+    private boolean redName;
+
+    private List<Integer> innerGlobalRoomMessageTypeList;
+
+    private String innerGlobalRoomMessageSchemaUrl;
+
+    private List<String> beforeNickNameConfigList;
+
+    private List<String> afterNickNameConfigList;
+
+    private List<String> beforeContentConfigList;
+
+    private List<String> afterContentConfigList;
+
+    private List<String> effectConfigList;
+
+    private int vipLevel;//vip等级
+    private boolean isVipFrozen;//vip是否被冻结
+    private boolean isVipHide;//vip用户是否设置隐身
+
+    private int nobleLevel;
+
+    private int vfansLevel; // 宠爱团等级
+    private String vfansMedal;// 宠爱团勋章
 
     public long getSentTime() {
         return sentTime;
@@ -112,6 +155,8 @@ public class CommentModel implements Comparable<CommentModel> {
         this.sentTime = sentTime;
     }
 
+    private long sentTime;
+
     public int getLikeId() {
         return likeId;
     }
@@ -120,15 +165,16 @@ public class CommentModel implements Comparable<CommentModel> {
         this.likeId = likeId;
     }
 
-    public void setCommentColor(int commentColor) {
+    public void setCommentColor(@ColorRes int commentColor) {
         this.commentColor = commentColor;
     }
 
+    @ColorRes
     public int getNameColor() {
         return nameColor;
     }
 
-    public void setNameColor(int nameColor) {
+    public void setNameColor(@ColorRes int nameColor) {
         this.nameColor = nameColor;
     }
 
@@ -136,6 +182,9 @@ public class CommentModel implements Comparable<CommentModel> {
         this.msgType = msgType;
     }
 
+    private int likeId;
+
+    @ColorRes
     public int getCommentColor() {
         return commentColor;
     }
@@ -148,7 +197,7 @@ public class CommentModel implements Comparable<CommentModel> {
         if (parser) {
             String commentTrim = body == null ? "" : body.replaceAll("\n", " ");
             this.body = SmileyParser.getInstance().addSmileySpans(GlobalData.app(), commentTrim,
-                    DisplayUtils.dip2px(14), true, false, true);
+                    DisplayUtils.dip2px(13.33f), true, false, true);
         } else {
             this.body = body;
         }
@@ -214,20 +263,60 @@ public class CommentModel implements Comparable<CommentModel> {
         this.redName = redName;
     }
 
-    public void setFansLevel(int fansLevel) {
-        this.fansLevel = fansLevel;
+    public List<Integer> getInnerGlobalRoomMessageTypeList() {
+        return innerGlobalRoomMessageTypeList;
     }
 
-    public void setFansMedal(String fansMedal) {
-        this.fansMedal = fansMedal;
+    public void setInnerGlobalRoomMessageTypeList(List<Integer> innerGlobalRoomMessageTypeList) {
+        this.innerGlobalRoomMessageTypeList = innerGlobalRoomMessageTypeList;
     }
 
-    public int getFansLevel() {
-        return fansLevel;
+    public String getInnerGlobalRoomMessageSchemaUrl() {
+        return innerGlobalRoomMessageSchemaUrl;
     }
 
-    public String getFansMedal() {
-        return fansMedal;
+    public void setInnerGlobalRoomMessageSchemaUrl(String innerGlobalRoomMessageSchemaUrl) {
+        this.innerGlobalRoomMessageSchemaUrl = innerGlobalRoomMessageSchemaUrl;
+    }
+
+    public List<String> getBeforeNickNameConfigList() {
+        return beforeNickNameConfigList;
+    }
+
+    public void setBeforeNickNameConfigList(List<String> beforeNickNameConfigList) {
+        this.beforeNickNameConfigList = beforeNickNameConfigList;
+    }
+
+    public List<String> getAfterNickNameConfigList() {
+        return afterNickNameConfigList;
+    }
+
+    public void setAfterNickNameConfigList(List<String> afterNickNameConfigList) {
+        this.afterNickNameConfigList = afterNickNameConfigList;
+    }
+
+    public List<String> getBeforeContentConfigList() {
+        return beforeContentConfigList;
+    }
+
+    public void setBeforeContentConfigList(List<String> beforeContentConfigList) {
+        this.beforeContentConfigList = beforeContentConfigList;
+    }
+
+    public List<String> getAfterContentConfigList() {
+        return afterContentConfigList;
+    }
+
+    public void setAfterContentConfigList(List<String> afterContentConfigList) {
+        this.afterContentConfigList = afterContentConfigList;
+    }
+
+    public List<String> getEffectConfigList() {
+        return effectConfigList;
+    }
+
+    public void setEffectConfigList(List<String> effectConfigList) {
+        this.effectConfigList = effectConfigList;
     }
 
     public int getVipLevel() {
@@ -254,6 +343,37 @@ public class CommentModel implements Comparable<CommentModel> {
         isVipHide = vipHide;
     }
 
+
+    public int getVfansLevel() {
+        return vfansLevel;
+    }
+
+    public void setVfansLevel(int vfansLevel) {
+        this.vfansLevel = vfansLevel;
+    }
+
+    public String getVfansMedal() {
+        return vfansMedal;
+    }
+
+    public void setVfansMedal(String vfansMedal) {
+        this.vfansMedal = vfansMedal;
+    }
+
+    public int getNobleLevel() {
+        return nobleLevel;
+    }
+
+    public void setNobleLevel(int nobleLevel) {
+        this.nobleLevel = nobleLevel;
+    }
+
+    public boolean isNoble() {
+        return this.nobleLevel == User.NOBLE_LEVEL_FIFTH || this.nobleLevel == User.NOBLE_LEVEL_FOURTH
+                || this.nobleLevel == User.NOBLE_LEVEL_THIRD || this.nobleLevel == User.NOBLE_LEVEL_SECOND
+                || this.nobleLevel == User.NOBLE_LEVEL_TOP;
+    }
+
     public static CommentModel loadFromBarrage(BarrageMsg msg) {
         CommentModel liveComment = new CommentModel();
         liveComment.setSenderId(msg.getSender());
@@ -268,10 +388,11 @@ public class CommentModel implements Comparable<CommentModel> {
         }
         liveComment.setSentTime(msg.getSentTime());
         liveComment.setSenderMsgId(msg.getSenderMsgId());
-        liveComment.setCommentColor(R.color.f7a66b);
-        liveComment.setNameColor(R.color.ffd267);
+        liveComment.setCommentColor(R.color.white);
+        liveComment.setNameColor(R.color.color_f0d388);
         liveComment.setRedName(msg.isRedName());
         liveComment.setVipLevel(msg.getVipLevel());
+        liveComment.setNobleLevel(msg.getNobleLevel());
         liveComment.setVipFrozen(msg.isVipFrozen());
         liveComment.setVipHide(msg.isVipHide());
 
@@ -303,23 +424,31 @@ public class CommentModel implements Comparable<CommentModel> {
                 liveComment.setName(null);
             }
             break;
-            case BarrageMsgType.B_MSG_TYPE_LIVE_END:
-            case BarrageMsgType.B_MSG_TYPE_ANIM:
+            case BarrageMsgType.B_MSG_TYPE_ANCHOR_LEAVE:
+            case BarrageMsgType.B_MSG_TYPE_ANCHOR_JOIN:
             case BarrageMsgType.B_MSG_TYPE_GLOBAL_SYS_MSG:
             case BarrageMsgType.B_MSG_TYPE_ROOM_SYS_MSG:
+            case BarrageMsgType.B_MSG_TYPE_LIVE_END:
+            case BarrageMsgType.B_MSG_TYPE_ANIM:
             case BarrageMsgType.B_MSG_TYPE_TOP_GET:
             case BarrageMsgType.B_MSG_TYPE_TOP_LOSE:
             case BarrageMsgType.B_MSG_TYPE_LIVE_OWNER_MSG:
-            case BarrageMsgType.B_MSG_TYPE_ANCHOR_LEAVE:
-            case BarrageMsgType.B_MSG_TYPE_ANCHOR_JOIN:
             case BarrageMsgType.B_MSG_TYPE_LINE_VIEWER_BACK:
-            case BarrageMsgType.B_MSG_TYPE_LINE_VIEWER_LEAVE: {
+            case BarrageMsgType.B_MSG_TYPE_LINE_VIEWER_LEAVE:
+            case BarrageMsgType.B_MSG_TYPE_COMMEN_SYS_MSG: {
                 liveComment.setBody(msg.getBody(), false);
                 liveComment.setLevel(0);
                 liveComment.setCertificationType(0);
                 liveComment.setName(null);
             }
             break;
+            case BarrageMsgType.B_MSG_TYPE_ANNOUNCEMENT:
+                liveComment.setCommentColor(R.color.color_2b2b2b);
+                liveComment.setBody(msg.getBody(), false);
+                liveComment.setLevel(0);
+                liveComment.setCertificationType(0);
+                liveComment.setName(null);
+                break;
             //用户行为类 显示名字和级别
             case BarrageMsgType.B_MSG_TYPE_ROOM_FOUCES_ANCHOR: {
                 if (!TextUtils.isEmpty(name)) {
@@ -328,6 +457,7 @@ public class CommentModel implements Comparable<CommentModel> {
                     liveComment.setName(null);
                     liveComment.setBody(msg.getBody(), false);
                 }
+                liveComment.setCommentColor(R.color.color_7eeeff);
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_LEAVE: {
@@ -341,17 +471,28 @@ public class CommentModel implements Comparable<CommentModel> {
             break;
             case BarrageMsgType.B_MSG_TYPE_JOIN: {
                 if (!TextUtils.isEmpty(name)) {
+                    // 一个没被冻结、没隐身的VIP2以上(含)用户进入了直播间
                     if (msg.getVipLevel() >= 2 && !msg.isVipFrozen() && !msg.isVipHide()) {
-                        String[] tips = GlobalData.app().getResources().getStringArray(R.array.welcome_vip_enter_room_tip);
-                        String body = tips[(int) (System.currentTimeMillis() % tips.length)];
-                        liveComment.setBody(body, false);
-                    } else {
-                        liveComment.setBody(GlobalData.app().getString(R.string.barrage_enter_live_body), false);
+                        String welcomeVipEnterRoomTip = getWelcomeVipEnterRoomTip();
+                        if (!TextUtils.isEmpty(welcomeVipEnterRoomTip)) {
+                            liveComment.setBody(welcomeVipEnterRoomTip, false);
+                            break;
+                        }
                     }
+
+                    String s = GlobalData.app().getString(R.string.barrage_enter_live_body);
+                    if (msg.getMsgExt() instanceof BarrageMsg.JoinRoomMsgExt) {
+                        BarrageMsg.JoinRoomMsgExt ext = ((BarrageMsg.JoinRoomMsgExt) msg.getMsgExt());
+                        if (ext.type == BarrageMsg.JoinRoomMsgExt.TYPE_NEARBY) {
+                            s = GlobalData.app().getString(R.string.barrage_enter_live_by_near_body);
+                        }
+                    }
+                    liveComment.setBody(s, false);
                 } else {
                     liveComment.setName(null);
                     liveComment.setBody(msg.getBody(), false);
                 }
+                liveComment.setCommentColor(R.color.color_f0d388);
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_LIKE: {
@@ -361,6 +502,12 @@ public class CommentModel implements Comparable<CommentModel> {
                     liveComment.setName(null);
                     liveComment.setBody(msg.getBody(), false);
                 }
+                liveComment.setCommentColor(R.color.color_f0d388);
+            }
+            break;
+            case BarrageMsgType.B_MSG_TYPE_RECORD_SHARE: {
+                liveComment.setBody(msg.getBody(), false);
+                liveComment.setCommentColor(R.color.color_7eeeff);
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_SHARE: {
@@ -370,75 +517,226 @@ public class CommentModel implements Comparable<CommentModel> {
                     liveComment.setName(null);
                     liveComment.setBody(msg.getBody(), false);
                 }
+                liveComment.setCommentColor(R.color.color_7eeeff);
             }
             break;
-            case BarrageMsgType.B_MSG_TYPE_ADD_SHOP:
+            case BarrageMsgType.B_MSG_TYPE_ADD_SHOP: {
                 BarrageMsg.ShopMessageExt ext = (BarrageMsg.ShopMessageExt) msg.getMsgExt();
                 if (ext.shop_type == 3) {
-                    liveComment.setCommentColor(R.color.f7a66b);
+                    liveComment.setCommentColor(R.color.color_7eeeff);
                     liveComment.setBody(String.valueOf(ext.shop_content), false);
                 }
-                break;
+            }
+            break;
             case BarrageMsgType.B_MSG_TYPE_GIFT:
             case BarrageMsgType.B_MSG_TYPE_RED_ENVELOPE:
             case BarrageMsgType.B_MSG_TYPE_GLABAL_MSG:
-            case BarrageMsgType.B_MSG_TYPE_LIGHT_UP_GIFT:
             case BarrageMsgType.B_MSG_TYPE_ROOM_BACKGROUND_GIFT: {
                 liveComment.setBody(msg.getBody(), false);
                 if (liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_GIFT || liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_GLABAL_MSG) {
                     BarrageMsg.GiftMsgExt giftExt = (BarrageMsg.GiftMsgExt) msg.getMsgExt();
                     liveComment.setGiftId(giftExt.giftId);
+                    liveComment.setGiftCount(giftExt.batch_count);
                 }
+                liveComment.setCommentColor(R.color.color_7eeeff);
+                break;
             }
-
-            break;
-            default: {
-                liveComment.setName(name + ": ");
+            case BarrageMsgType.B_MSG_TYPE_LIGHT_UP_GIFT:
+                liveComment.setBody(msg.getBody(), false);
+                if (liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_GIFT || liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_GLABAL_MSG) {
+                    BarrageMsg.GiftMsgExt giftExt = (BarrageMsg.GiftMsgExt) msg.getMsgExt();
+                    liveComment.setGiftId(giftExt.giftId);
+                }
+                liveComment.setCommentColor(R.color.color_f0d388);
+                break;
+            case BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE:
+            case BarrageMsgType.B_MSG_TYPE_TEXT: {
+                String body = msg.getBody();
                 if (msg.isRedName()) {
                     liveComment.setCommentColor(R.color.ccccccc);
-                    liveComment.setNameColor(R.color.ccccccc);
+                    liveComment.setLevel(0);
+                } else if (msg.getMsgExt() instanceof BarrageMsg.RoomTxtMessageExt) {// @信息解析
+                    BarrageMsg.RoomTxtMessageExt ext = (BarrageMsg.RoomTxtMessageExt) msg.getMsgExt();
+                    switch (ext.getType()) {
+                        case BarrageMsg.RoomTxtMessageExt.MSG_TYPE_NORMAL:
+                            try {
+                                LiveMessageProto.AtMessage atMessage = LiveMessageProto.AtMessage.parseFrom(ext.getExt());
+                                if (atMessage.hasAtUser()
+                                        && atMessage.getAtUser() == UserAccountManager.getInstance().getUuidAsLong()) {
+                                    liveComment.setCommentColor(R.color.color_at_comment);// TODO: 17-6-5
+                                }
+                            } catch (InvalidProtocolBufferException e) {
+                                MyLog.e(TAG, "parse AtMessage fail, type:" + ext.getType());
+                            }
+                            break;
+                    }
+                } else if (msg.getMsgExt() instanceof BarrageMsg.GiftMsgExt) {//飘屏弹幕
+                    long atTargetUserId = StringUtils.getAtTargetUserId(msg.getBody());
+                    if (atTargetUserId != 0) {
+                        if (atTargetUserId == UserAccountManager.getInstance().getUuidAsLong()) {
+                            liveComment.setCommentColor(R.color.color_at_comment);// TODO: 17-6-5
+                        }
+                        body = msg.getBody().replace("<" + atTargetUserId + ">", "");
+                    }
+                } else {
+                    liveComment.setCommentColor(R.color.white);
+                }
+                if (msg.getNobleLevel() >= User.NOBLE_LEVEL_FOURTH) {
+                    liveComment.setNameColor(R.color.noble_comment_nick_color);
+                }
+                if (msg.getNobleLevel() >= User.NOBLE_LEVEL_FIFTH) {
+                    liveComment.setBackGround(R.drawable.live_bg_comment_noble);
+                }
+                liveComment.setBody(body, true);
+            }
+            break;
+            //case BarrageMsgType.B_MSG_TYPE_VIP_LEVEL_CHANGED: {
+            //    BarrageMsg.VipLevelChangedExt msgExt = (BarrageMsg.VipLevelChangedExt) msg.getMsgExt();
+            //    String body = CommonUtils.getString(R.string.vip_level_upgrade_tip, name, msgExt.newVipLevel).toString();
+            //    String schema = msg.getBody();
+            //    MyLog.d(TAG, "vip level upgrade schema:" + schema);
+            //    liveComment.setInnerGlobalRoomMessageSchemaUrl(schema);
+            //    liveComment.setBody(body, false);
+            //}
+            //break;
+            default: {
+//                liveComment.setName(name + ": ");
+                liveComment.setName(name);
+                if (msg.isRedName()) {
+                    liveComment.setCommentColor(R.color.ccccccc);
                     liveComment.setLevel(0);
                 } else {
                     liveComment.setCommentColor(R.color.white);
-                    liveComment.setNameColor(R.color.ffd267);
                 }
                 liveComment.setBody(msg.getBody(), true);
             }
             break;
         }
+
         if (liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_LIKE) {
             BarrageMsg.LikeMsgExt ext = (BarrageMsg.LikeMsgExt) msg.getMsgExt();
             liveComment.setLikeId(ext.id);
             liveComment.setLikePath(ext.bitmapPath);
         }
-        GlobalRoomMsgExt globalRoomMsgExt = msg.getGlobalRoomMsgExt();
-        if (globalRoomMsgExt != null && globalRoomMsgExt.getRoomMsgExtList() != null
-                && !globalRoomMsgExt.getRoomMsgExtList().isEmpty()) {
-            ArrayList<GlobalRoomMsgExt.BaseRoomMessageExt> msgExtList
-                    = globalRoomMsgExt.getRoomMsgExtList();
-            for (GlobalRoomMsgExt.BaseRoomMessageExt msgExt : msgExtList) {
-                switch (msgExt.getType()) {
-                    case GlobalRoomMsgExt.INNER_GLOBAL_VFAN:
-                        GlobalRoomMsgExt.FansMemberMsgExt fansMemberMsgExt = (GlobalRoomMsgExt.FansMemberMsgExt) msgExt;
-                        if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_TEXT || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE
-                               /* || msg.getMsgType() == MSG_SMART_NORMAL*/) {
-                            //TODO zyh 飘萍弹幕之后加（智能弹幕相关）
-                            if (!fansMemberMsgExt.isVipExpire() && fansMemberMsgExt.getPetLevel() >= FansPrivilegeModel.SEND_COLOR_BARRAGE_VIP_LEVEL) {
-                                liveComment.setBackGround(R.drawable.live_bg_comment_pink);
+
+        if (msg.getGlobalRoomMessageExt() != null) {
+            BarrageMsg.GlobalRoomMessageExt globalRoomMessageExt = msg.getGlobalRoomMessageExt();
+            if (globalRoomMessageExt != null) {
+                //一个InnerGlobalRoomMessageExt仅有一个子类型,不然代码要改--现在需求
+                List<BarrageMsg.InnerGlobalRoomMessageExt> innerGlobalRoomMessageExtList = globalRoomMessageExt.getInnerGlobalRoomMessageExtList();
+                if (innerGlobalRoomMessageExtList != null && !innerGlobalRoomMessageExtList.isEmpty()) {
+                    ArrayList<Integer> typeList = new ArrayList<>();
+                    for (int i = 0; i < innerGlobalRoomMessageExtList.size(); i++) {
+                        BarrageMsg.InnerGlobalRoomMessageExt innerGlobalRoomMessageExt = innerGlobalRoomMessageExtList.get(i);
+
+                        if (innerGlobalRoomMessageExt != null) {
+                            int type = innerGlobalRoomMessageExt.getType();
+                            typeList.add(i, innerGlobalRoomMessageExt.getType());
+                            if (type == BarrageMsg.INNER_GLOBAL_MEDAL_TYPE) {
+                                BarrageMsg.MedalConfigMessage medalConfigMessage = innerGlobalRoomMessageExt.getMedalConfigMessage();
+
+                                if (medalConfigMessage != null) {
+                                    List<BarrageMsg.InnerMedalConfig> beforeNickNameCofigList = medalConfigMessage.getBeforeNickNameCofigList();
+                                    setMedalList(beforeNickNameCofigList, BEFOER_NICKNAME_CONFIG_LIST_TYPE, liveComment);
+
+                                    List<BarrageMsg.InnerMedalConfig> afterNickNameCofigList = medalConfigMessage.getAfterNickNameCofigList();
+                                    setMedalList(afterNickNameCofigList, AFTER_NICKNAME_CONFIG_LIST_TYPE, liveComment);
+
+
+                                    List<BarrageMsg.InnerMedalConfig> beforeContentCofigList = medalConfigMessage.getBeforeContentCofigList();
+                                    setMedalList(beforeContentCofigList, BEFORE_CONTENT_CONFIG_LIST_TYPE, liveComment);
+
+                                    List<BarrageMsg.InnerMedalConfig> afterContentCofigList = medalConfigMessage.getAfterContentCofigList();
+                                    setMedalList(afterContentCofigList, AFTER_CONTENT_CONFIG_LIST_TYPE, liveComment);
+                                    List<BarrageMsg.InnerMedalConfig> effectTemList = medalConfigMessage.getAfterContentCofigList();
+                                    setMedalList(effectTemList, EFFECT_CONFIG_LIST_TYPE, liveComment);
+                                }
+                            } else if (type == BarrageMsg.INNER_GLOBAL_SCHEME_TYPE) {
+                                BarrageMsg.TxtSchemeMessage txtSchemeMessage = innerGlobalRoomMessageExt.getTxtSchemeMessage();
+                                if (txtSchemeMessage != null) {
+                                    liveComment.setInnerGlobalRoomMessageSchemaUrl(txtSchemeMessage.getSchemeUrl());
+                                }
+                            } else if (type == BarrageMsg.INNER_GLOBAL_SHARE_JOIN_ROME_TYPE) {
+                                BarrageMsg.ShareJoinRoomMessage shareJoinRoomMessage = innerGlobalRoomMessageExt.getShareJoinRoomMessage();
+                                if (shareJoinRoomMessage != null && !TextUtils.isEmpty(shareJoinRoomMessage.getContent())) {
+                                    liveComment.setBody(shareJoinRoomMessage.getContent(), false);
+                                }
+                            } else if (type == BarrageMsg.INNER_GLOBAL_VFAN) {
+                                if (msg.getSender() != msg.getAnchorId()) {
+                                    BarrageMsg.VFansMemberBriefInfo fansMemberBriefInfo = innerGlobalRoomMessageExt.getvFansMemberBriefInfo();
+
+                                    if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_TEXT || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE
+                                            || msg.getMsgType() == MSG_SMART_NORMAL) {
+                                        if (!fansMemberBriefInfo.isVipExpire() &&
+                                                fansMemberBriefInfo.getPetLevel() >= VfansPrivilegeModel.SEND_COLOR_BARRAGE_VIP_LEVEL &&
+                                                msg.getNobleLevel() <= 0) {
+                                            liveComment.setBackGround(R.drawable.live_bg_comment_pink);
+                                        }
+                                        liveComment.setVfansLevel(fansMemberBriefInfo.getPetLevel());
+                                        liveComment.setVfansMedal(fansMemberBriefInfo.getMedalValue());
+                                    }
+
+
+                                    if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_GIFT || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_RED_ENVELOPE
+                                            || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_ROOM_BACKGROUND_GIFT || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_LIGHT_UP_GIFT) {
+                                        liveComment.setVfansLevel(fansMemberBriefInfo.getPetLevel());
+                                        liveComment.setVfansMedal(fansMemberBriefInfo.getMedalValue());
+                                    }
+                                }
                             }
-                            liveComment.setFansLevel(fansMemberMsgExt.getPetLevel());
-                            liveComment.setFansMedal(fansMemberMsgExt.getMedalValue());
                         }
-                        if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_GIFT || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_RED_ENVELOPE
-                                || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_ROOM_BACKGROUND_GIFT || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_LIGHT_UP_GIFT) {
-                            liveComment.setFansLevel(fansMemberMsgExt.getPetLevel());
-                            liveComment.setFansMedal(fansMemberMsgExt.getMedalValue());
-                        }
-                        break;
+                    }
+
+                    liveComment.setInnerGlobalRoomMessageTypeList(typeList);
                 }
             }
         }
+
         return liveComment;
+    }
+
+    private static String getWelcomeVipEnterRoomTip() {
+        String[] tips = GlobalData.app().getResources().getStringArray(R.array.welcome_vip_enter_room_tip);
+        return tips[(int) (System.currentTimeMillis() % tips.length)];
+    }
+
+    private static final int BEFOER_NICKNAME_CONFIG_LIST_TYPE = 1;
+    private static final int AFTER_NICKNAME_CONFIG_LIST_TYPE = 2;
+    private static final int BEFORE_CONTENT_CONFIG_LIST_TYPE = 3;
+    private static final int AFTER_CONTENT_CONFIG_LIST_TYPE = 4;
+    private static final int EFFECT_CONFIG_LIST_TYPE = 5;
+
+
+    private static void setMedalList(List<BarrageMsg.InnerMedalConfig> list, int type, CommentModel liveComment) {
+        if (list != null && !list.isEmpty()) {
+            ArrayList<String> addList = new ArrayList<>();
+            for (int index0 = 0; index0 < list.size(); index0++) {
+                addList.add(list.get(index0).getPicId());
+            }
+
+            switch (type) {
+                case BEFOER_NICKNAME_CONFIG_LIST_TYPE: {
+                    liveComment.setBeforeNickNameConfigList(addList);
+                }
+                break;
+                case AFTER_NICKNAME_CONFIG_LIST_TYPE: {
+                    liveComment.setAfterNickNameConfigList(addList);
+                }
+                break;
+                case BEFORE_CONTENT_CONFIG_LIST_TYPE: {
+                    liveComment.setBeforeContentConfigList(addList);
+                }
+                break;
+                case AFTER_CONTENT_CONFIG_LIST_TYPE: {
+                    liveComment.setAfterContentConfigList(addList);
+                }
+                break;
+                case EFFECT_CONFIG_LIST_TYPE: {
+                    liveComment.setEffectConfigList(addList);
+                }
+                break;
+            }
+        }
     }
 
     @Override

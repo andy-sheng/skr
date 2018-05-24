@@ -1181,6 +1181,1810 @@ public final class LiveCommonProto {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.MsgRule)
   }
 
+  public interface MicSubViewPosOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.MicSubViewPos)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required float topXScale = 1;</code>
+     *
+     * <pre>
+     *子视图左上角X在实际推流视频中的比例
+     * </pre>
+     */
+    boolean hasTopXScale();
+    /**
+     * <code>required float topXScale = 1;</code>
+     *
+     * <pre>
+     *子视图左上角X在实际推流视频中的比例
+     * </pre>
+     */
+    float getTopXScale();
+
+    /**
+     * <code>required float topYScale = 2;</code>
+     *
+     * <pre>
+     *子视图左上角Y在实际推流视频中的比例
+     * </pre>
+     */
+    boolean hasTopYScale();
+    /**
+     * <code>required float topYScale = 2;</code>
+     *
+     * <pre>
+     *子视图左上角Y在实际推流视频中的比例
+     * </pre>
+     */
+    float getTopYScale();
+
+    /**
+     * <code>required float widthScale = 3;</code>
+     *
+     * <pre>
+     *子视图宽度在实际推流视频中的比例
+     * </pre>
+     */
+    boolean hasWidthScale();
+    /**
+     * <code>required float widthScale = 3;</code>
+     *
+     * <pre>
+     *子视图宽度在实际推流视频中的比例
+     * </pre>
+     */
+    float getWidthScale();
+
+    /**
+     * <code>required float heightScale = 4;</code>
+     *
+     * <pre>
+     *子视图高度左上角在推流视频中的比例
+     * </pre>
+     */
+    boolean hasHeightScale();
+    /**
+     * <code>required float heightScale = 4;</code>
+     *
+     * <pre>
+     *子视图高度左上角在推流视频中的比例
+     * </pre>
+     */
+    float getHeightScale();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.MicSubViewPos}
+   */
+  public static final class MicSubViewPos extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.MicSubViewPos)
+      MicSubViewPosOrBuilder {
+    // Use MicSubViewPos.newBuilder() to construct.
+    private MicSubViewPos(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private MicSubViewPos(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final MicSubViewPos defaultInstance;
+    public static MicSubViewPos getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public MicSubViewPos getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private MicSubViewPos(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 13: {
+              bitField0_ |= 0x00000001;
+              topXScale_ = input.readFloat();
+              break;
+            }
+            case 21: {
+              bitField0_ |= 0x00000002;
+              topYScale_ = input.readFloat();
+              break;
+            }
+            case 29: {
+              bitField0_ |= 0x00000004;
+              widthScale_ = input.readFloat();
+              break;
+            }
+            case 37: {
+              bitField0_ |= 0x00000008;
+              heightScale_ = input.readFloat();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicSubViewPos_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicSubViewPos_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveCommonProto.MicSubViewPos.class, com.wali.live.proto.LiveCommonProto.MicSubViewPos.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<MicSubViewPos> PARSER =
+        new com.google.protobuf.AbstractParser<MicSubViewPos>() {
+      public MicSubViewPos parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new MicSubViewPos(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<MicSubViewPos> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int TOPXSCALE_FIELD_NUMBER = 1;
+    private float topXScale_;
+    /**
+     * <code>required float topXScale = 1;</code>
+     *
+     * <pre>
+     *子视图左上角X在实际推流视频中的比例
+     * </pre>
+     */
+    public boolean hasTopXScale() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required float topXScale = 1;</code>
+     *
+     * <pre>
+     *子视图左上角X在实际推流视频中的比例
+     * </pre>
+     */
+    public float getTopXScale() {
+      return topXScale_;
+    }
+
+    public static final int TOPYSCALE_FIELD_NUMBER = 2;
+    private float topYScale_;
+    /**
+     * <code>required float topYScale = 2;</code>
+     *
+     * <pre>
+     *子视图左上角Y在实际推流视频中的比例
+     * </pre>
+     */
+    public boolean hasTopYScale() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required float topYScale = 2;</code>
+     *
+     * <pre>
+     *子视图左上角Y在实际推流视频中的比例
+     * </pre>
+     */
+    public float getTopYScale() {
+      return topYScale_;
+    }
+
+    public static final int WIDTHSCALE_FIELD_NUMBER = 3;
+    private float widthScale_;
+    /**
+     * <code>required float widthScale = 3;</code>
+     *
+     * <pre>
+     *子视图宽度在实际推流视频中的比例
+     * </pre>
+     */
+    public boolean hasWidthScale() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required float widthScale = 3;</code>
+     *
+     * <pre>
+     *子视图宽度在实际推流视频中的比例
+     * </pre>
+     */
+    public float getWidthScale() {
+      return widthScale_;
+    }
+
+    public static final int HEIGHTSCALE_FIELD_NUMBER = 4;
+    private float heightScale_;
+    /**
+     * <code>required float heightScale = 4;</code>
+     *
+     * <pre>
+     *子视图高度左上角在推流视频中的比例
+     * </pre>
+     */
+    public boolean hasHeightScale() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>required float heightScale = 4;</code>
+     *
+     * <pre>
+     *子视图高度左上角在推流视频中的比例
+     * </pre>
+     */
+    public float getHeightScale() {
+      return heightScale_;
+    }
+
+    private void initFields() {
+      topXScale_ = 0F;
+      topYScale_ = 0F;
+      widthScale_ = 0F;
+      heightScale_ = 0F;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasTopXScale()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasTopYScale()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasWidthScale()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasHeightScale()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeFloat(1, topXScale_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeFloat(2, topYScale_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeFloat(3, widthScale_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeFloat(4, heightScale_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(1, topXScale_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(2, topYScale_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(3, widthScale_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(4, heightScale_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveCommonProto.MicSubViewPos parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveCommonProto.MicSubViewPos prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.MicSubViewPos}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.MicSubViewPos)
+        com.wali.live.proto.LiveCommonProto.MicSubViewPosOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicSubViewPos_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicSubViewPos_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveCommonProto.MicSubViewPos.class, com.wali.live.proto.LiveCommonProto.MicSubViewPos.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveCommonProto.MicSubViewPos.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        topXScale_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        topYScale_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        widthScale_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        heightScale_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicSubViewPos_descriptor;
+      }
+
+      public com.wali.live.proto.LiveCommonProto.MicSubViewPos getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveCommonProto.MicSubViewPos.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveCommonProto.MicSubViewPos build() {
+        com.wali.live.proto.LiveCommonProto.MicSubViewPos result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveCommonProto.MicSubViewPos buildPartial() {
+        com.wali.live.proto.LiveCommonProto.MicSubViewPos result = new com.wali.live.proto.LiveCommonProto.MicSubViewPos(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.topXScale_ = topXScale_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.topYScale_ = topYScale_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.widthScale_ = widthScale_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.heightScale_ = heightScale_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveCommonProto.MicSubViewPos) {
+          return mergeFrom((com.wali.live.proto.LiveCommonProto.MicSubViewPos)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveCommonProto.MicSubViewPos other) {
+        if (other == com.wali.live.proto.LiveCommonProto.MicSubViewPos.getDefaultInstance()) return this;
+        if (other.hasTopXScale()) {
+          setTopXScale(other.getTopXScale());
+        }
+        if (other.hasTopYScale()) {
+          setTopYScale(other.getTopYScale());
+        }
+        if (other.hasWidthScale()) {
+          setWidthScale(other.getWidthScale());
+        }
+        if (other.hasHeightScale()) {
+          setHeightScale(other.getHeightScale());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasTopXScale()) {
+          
+          return false;
+        }
+        if (!hasTopYScale()) {
+          
+          return false;
+        }
+        if (!hasWidthScale()) {
+          
+          return false;
+        }
+        if (!hasHeightScale()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveCommonProto.MicSubViewPos parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveCommonProto.MicSubViewPos) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private float topXScale_ ;
+      /**
+       * <code>required float topXScale = 1;</code>
+       *
+       * <pre>
+       *子视图左上角X在实际推流视频中的比例
+       * </pre>
+       */
+      public boolean hasTopXScale() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required float topXScale = 1;</code>
+       *
+       * <pre>
+       *子视图左上角X在实际推流视频中的比例
+       * </pre>
+       */
+      public float getTopXScale() {
+        return topXScale_;
+      }
+      /**
+       * <code>required float topXScale = 1;</code>
+       *
+       * <pre>
+       *子视图左上角X在实际推流视频中的比例
+       * </pre>
+       */
+      public Builder setTopXScale(float value) {
+        bitField0_ |= 0x00000001;
+        topXScale_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required float topXScale = 1;</code>
+       *
+       * <pre>
+       *子视图左上角X在实际推流视频中的比例
+       * </pre>
+       */
+      public Builder clearTopXScale() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        topXScale_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float topYScale_ ;
+      /**
+       * <code>required float topYScale = 2;</code>
+       *
+       * <pre>
+       *子视图左上角Y在实际推流视频中的比例
+       * </pre>
+       */
+      public boolean hasTopYScale() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required float topYScale = 2;</code>
+       *
+       * <pre>
+       *子视图左上角Y在实际推流视频中的比例
+       * </pre>
+       */
+      public float getTopYScale() {
+        return topYScale_;
+      }
+      /**
+       * <code>required float topYScale = 2;</code>
+       *
+       * <pre>
+       *子视图左上角Y在实际推流视频中的比例
+       * </pre>
+       */
+      public Builder setTopYScale(float value) {
+        bitField0_ |= 0x00000002;
+        topYScale_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required float topYScale = 2;</code>
+       *
+       * <pre>
+       *子视图左上角Y在实际推流视频中的比例
+       * </pre>
+       */
+      public Builder clearTopYScale() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        topYScale_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float widthScale_ ;
+      /**
+       * <code>required float widthScale = 3;</code>
+       *
+       * <pre>
+       *子视图宽度在实际推流视频中的比例
+       * </pre>
+       */
+      public boolean hasWidthScale() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required float widthScale = 3;</code>
+       *
+       * <pre>
+       *子视图宽度在实际推流视频中的比例
+       * </pre>
+       */
+      public float getWidthScale() {
+        return widthScale_;
+      }
+      /**
+       * <code>required float widthScale = 3;</code>
+       *
+       * <pre>
+       *子视图宽度在实际推流视频中的比例
+       * </pre>
+       */
+      public Builder setWidthScale(float value) {
+        bitField0_ |= 0x00000004;
+        widthScale_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required float widthScale = 3;</code>
+       *
+       * <pre>
+       *子视图宽度在实际推流视频中的比例
+       * </pre>
+       */
+      public Builder clearWidthScale() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        widthScale_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float heightScale_ ;
+      /**
+       * <code>required float heightScale = 4;</code>
+       *
+       * <pre>
+       *子视图高度左上角在推流视频中的比例
+       * </pre>
+       */
+      public boolean hasHeightScale() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>required float heightScale = 4;</code>
+       *
+       * <pre>
+       *子视图高度左上角在推流视频中的比例
+       * </pre>
+       */
+      public float getHeightScale() {
+        return heightScale_;
+      }
+      /**
+       * <code>required float heightScale = 4;</code>
+       *
+       * <pre>
+       *子视图高度左上角在推流视频中的比例
+       * </pre>
+       */
+      public Builder setHeightScale(float value) {
+        bitField0_ |= 0x00000008;
+        heightScale_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required float heightScale = 4;</code>
+       *
+       * <pre>
+       *子视图高度左上角在推流视频中的比例
+       * </pre>
+       */
+      public Builder clearHeightScale() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        heightScale_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.MicSubViewPos)
+    }
+
+    static {
+      defaultInstance = new MicSubViewPos(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.MicSubViewPos)
+  }
+
+  public interface MicInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.MicInfo)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 micuid = 1;</code>
+     *
+     * <pre>
+     *连麦的观众id
+     * </pre>
+     */
+    boolean hasMicuid();
+    /**
+     * <code>required uint64 micuid = 1;</code>
+     *
+     * <pre>
+     *连麦的观众id
+     * </pre>
+     */
+    long getMicuid();
+
+    /**
+     * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
+     *
+     * <pre>
+     *子视图的比例位置
+     * </pre>
+     */
+    boolean hasSubViewPos();
+    /**
+     * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
+     *
+     * <pre>
+     *子视图的比例位置
+     * </pre>
+     */
+    com.wali.live.proto.LiveCommonProto.MicSubViewPos getSubViewPos();
+    /**
+     * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
+     *
+     * <pre>
+     *子视图的比例位置
+     * </pre>
+     */
+    com.wali.live.proto.LiveCommonProto.MicSubViewPosOrBuilder getSubViewPosOrBuilder();
+
+    /**
+     * <code>optional string mic_liveid = 3;</code>
+     *
+     * <pre>
+     *连麦对方房间号
+     * </pre>
+     */
+    boolean hasMicLiveid();
+    /**
+     * <code>optional string mic_liveid = 3;</code>
+     *
+     * <pre>
+     *连麦对方房间号
+     * </pre>
+     */
+    java.lang.String getMicLiveid();
+    /**
+     * <code>optional string mic_liveid = 3;</code>
+     *
+     * <pre>
+     *连麦对方房间号
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getMicLiveidBytes();
+
+    /**
+     * <code>optional uint32 type = 4;</code>
+     *
+     * <pre>
+     *0:主播与观众连麦 1：主播与主播连麦
+     * </pre>
+     */
+    boolean hasType();
+    /**
+     * <code>optional uint32 type = 4;</code>
+     *
+     * <pre>
+     *0:主播与观众连麦 1：主播与主播连麦
+     * </pre>
+     */
+    int getType();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.MicInfo}
+   */
+  public static final class MicInfo extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.MicInfo)
+      MicInfoOrBuilder {
+    // Use MicInfo.newBuilder() to construct.
+    private MicInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private MicInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final MicInfo defaultInstance;
+    public static MicInfo getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public MicInfo getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private MicInfo(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              micuid_ = input.readUInt64();
+              break;
+            }
+            case 18: {
+              com.wali.live.proto.LiveCommonProto.MicSubViewPos.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = subViewPos_.toBuilder();
+              }
+              subViewPos_ = input.readMessage(com.wali.live.proto.LiveCommonProto.MicSubViewPos.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(subViewPos_);
+                subViewPos_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              micLiveid_ = bs;
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              type_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicInfo_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicInfo_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveCommonProto.MicInfo.class, com.wali.live.proto.LiveCommonProto.MicInfo.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<MicInfo> PARSER =
+        new com.google.protobuf.AbstractParser<MicInfo>() {
+      public MicInfo parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new MicInfo(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<MicInfo> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int MICUID_FIELD_NUMBER = 1;
+    private long micuid_;
+    /**
+     * <code>required uint64 micuid = 1;</code>
+     *
+     * <pre>
+     *连麦的观众id
+     * </pre>
+     */
+    public boolean hasMicuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 micuid = 1;</code>
+     *
+     * <pre>
+     *连麦的观众id
+     * </pre>
+     */
+    public long getMicuid() {
+      return micuid_;
+    }
+
+    public static final int SUBVIEWPOS_FIELD_NUMBER = 2;
+    private com.wali.live.proto.LiveCommonProto.MicSubViewPos subViewPos_;
+    /**
+     * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
+     *
+     * <pre>
+     *子视图的比例位置
+     * </pre>
+     */
+    public boolean hasSubViewPos() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
+     *
+     * <pre>
+     *子视图的比例位置
+     * </pre>
+     */
+    public com.wali.live.proto.LiveCommonProto.MicSubViewPos getSubViewPos() {
+      return subViewPos_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
+     *
+     * <pre>
+     *子视图的比例位置
+     * </pre>
+     */
+    public com.wali.live.proto.LiveCommonProto.MicSubViewPosOrBuilder getSubViewPosOrBuilder() {
+      return subViewPos_;
+    }
+
+    public static final int MIC_LIVEID_FIELD_NUMBER = 3;
+    private java.lang.Object micLiveid_;
+    /**
+     * <code>optional string mic_liveid = 3;</code>
+     *
+     * <pre>
+     *连麦对方房间号
+     * </pre>
+     */
+    public boolean hasMicLiveid() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string mic_liveid = 3;</code>
+     *
+     * <pre>
+     *连麦对方房间号
+     * </pre>
+     */
+    public java.lang.String getMicLiveid() {
+      java.lang.Object ref = micLiveid_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          micLiveid_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string mic_liveid = 3;</code>
+     *
+     * <pre>
+     *连麦对方房间号
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getMicLiveidBytes() {
+      java.lang.Object ref = micLiveid_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        micLiveid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TYPE_FIELD_NUMBER = 4;
+    private int type_;
+    /**
+     * <code>optional uint32 type = 4;</code>
+     *
+     * <pre>
+     *0:主播与观众连麦 1：主播与主播连麦
+     * </pre>
+     */
+    public boolean hasType() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint32 type = 4;</code>
+     *
+     * <pre>
+     *0:主播与观众连麦 1：主播与主播连麦
+     * </pre>
+     */
+    public int getType() {
+      return type_;
+    }
+
+    private void initFields() {
+      micuid_ = 0L;
+      subViewPos_ = com.wali.live.proto.LiveCommonProto.MicSubViewPos.getDefaultInstance();
+      micLiveid_ = "";
+      type_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasMicuid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (hasSubViewPos()) {
+        if (!getSubViewPos().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, micuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, subViewPos_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getMicLiveidBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt32(4, type_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, micuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, subViewPos_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getMicLiveidBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(4, type_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveCommonProto.MicInfo parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveCommonProto.MicInfo parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveCommonProto.MicInfo parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveCommonProto.MicInfo parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveCommonProto.MicInfo parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveCommonProto.MicInfo parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveCommonProto.MicInfo parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveCommonProto.MicInfo parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveCommonProto.MicInfo parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveCommonProto.MicInfo parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveCommonProto.MicInfo prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.MicInfo}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.MicInfo)
+        com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicInfo_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicInfo_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveCommonProto.MicInfo.class, com.wali.live.proto.LiveCommonProto.MicInfo.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveCommonProto.MicInfo.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getSubViewPosFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        micuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (subViewPosBuilder_ == null) {
+          subViewPos_ = com.wali.live.proto.LiveCommonProto.MicSubViewPos.getDefaultInstance();
+        } else {
+          subViewPosBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        micLiveid_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        type_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_MicInfo_descriptor;
+      }
+
+      public com.wali.live.proto.LiveCommonProto.MicInfo getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveCommonProto.MicInfo build() {
+        com.wali.live.proto.LiveCommonProto.MicInfo result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveCommonProto.MicInfo buildPartial() {
+        com.wali.live.proto.LiveCommonProto.MicInfo result = new com.wali.live.proto.LiveCommonProto.MicInfo(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.micuid_ = micuid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (subViewPosBuilder_ == null) {
+          result.subViewPos_ = subViewPos_;
+        } else {
+          result.subViewPos_ = subViewPosBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.micLiveid_ = micLiveid_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.type_ = type_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveCommonProto.MicInfo) {
+          return mergeFrom((com.wali.live.proto.LiveCommonProto.MicInfo)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveCommonProto.MicInfo other) {
+        if (other == com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance()) return this;
+        if (other.hasMicuid()) {
+          setMicuid(other.getMicuid());
+        }
+        if (other.hasSubViewPos()) {
+          mergeSubViewPos(other.getSubViewPos());
+        }
+        if (other.hasMicLiveid()) {
+          bitField0_ |= 0x00000004;
+          micLiveid_ = other.micLiveid_;
+          onChanged();
+        }
+        if (other.hasType()) {
+          setType(other.getType());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasMicuid()) {
+          
+          return false;
+        }
+        if (hasSubViewPos()) {
+          if (!getSubViewPos().isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveCommonProto.MicInfo parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveCommonProto.MicInfo) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long micuid_ ;
+      /**
+       * <code>required uint64 micuid = 1;</code>
+       *
+       * <pre>
+       *连麦的观众id
+       * </pre>
+       */
+      public boolean hasMicuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 micuid = 1;</code>
+       *
+       * <pre>
+       *连麦的观众id
+       * </pre>
+       */
+      public long getMicuid() {
+        return micuid_;
+      }
+      /**
+       * <code>required uint64 micuid = 1;</code>
+       *
+       * <pre>
+       *连麦的观众id
+       * </pre>
+       */
+      public Builder setMicuid(long value) {
+        bitField0_ |= 0x00000001;
+        micuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 micuid = 1;</code>
+       *
+       * <pre>
+       *连麦的观众id
+       * </pre>
+       */
+      public Builder clearMicuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        micuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.LiveCommonProto.MicSubViewPos subViewPos_ = com.wali.live.proto.LiveCommonProto.MicSubViewPos.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveCommonProto.MicSubViewPos, com.wali.live.proto.LiveCommonProto.MicSubViewPos.Builder, com.wali.live.proto.LiveCommonProto.MicSubViewPosOrBuilder> subViewPosBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
+       *
+       * <pre>
+       *子视图的比例位置
+       * </pre>
+       */
+      public boolean hasSubViewPos() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
+       *
+       * <pre>
+       *子视图的比例位置
+       * </pre>
+       */
+      public com.wali.live.proto.LiveCommonProto.MicSubViewPos getSubViewPos() {
+        if (subViewPosBuilder_ == null) {
+          return subViewPos_;
+        } else {
+          return subViewPosBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
+       *
+       * <pre>
+       *子视图的比例位置
+       * </pre>
+       */
+      public Builder setSubViewPos(com.wali.live.proto.LiveCommonProto.MicSubViewPos value) {
+        if (subViewPosBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          subViewPos_ = value;
+          onChanged();
+        } else {
+          subViewPosBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
+       *
+       * <pre>
+       *子视图的比例位置
+       * </pre>
+       */
+      public Builder setSubViewPos(
+          com.wali.live.proto.LiveCommonProto.MicSubViewPos.Builder builderForValue) {
+        if (subViewPosBuilder_ == null) {
+          subViewPos_ = builderForValue.build();
+          onChanged();
+        } else {
+          subViewPosBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
+       *
+       * <pre>
+       *子视图的比例位置
+       * </pre>
+       */
+      public Builder mergeSubViewPos(com.wali.live.proto.LiveCommonProto.MicSubViewPos value) {
+        if (subViewPosBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              subViewPos_ != com.wali.live.proto.LiveCommonProto.MicSubViewPos.getDefaultInstance()) {
+            subViewPos_ =
+              com.wali.live.proto.LiveCommonProto.MicSubViewPos.newBuilder(subViewPos_).mergeFrom(value).buildPartial();
+          } else {
+            subViewPos_ = value;
+          }
+          onChanged();
+        } else {
+          subViewPosBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
+       *
+       * <pre>
+       *子视图的比例位置
+       * </pre>
+       */
+      public Builder clearSubViewPos() {
+        if (subViewPosBuilder_ == null) {
+          subViewPos_ = com.wali.live.proto.LiveCommonProto.MicSubViewPos.getDefaultInstance();
+          onChanged();
+        } else {
+          subViewPosBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
+       *
+       * <pre>
+       *子视图的比例位置
+       * </pre>
+       */
+      public com.wali.live.proto.LiveCommonProto.MicSubViewPos.Builder getSubViewPosBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getSubViewPosFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
+       *
+       * <pre>
+       *子视图的比例位置
+       * </pre>
+       */
+      public com.wali.live.proto.LiveCommonProto.MicSubViewPosOrBuilder getSubViewPosOrBuilder() {
+        if (subViewPosBuilder_ != null) {
+          return subViewPosBuilder_.getMessageOrBuilder();
+        } else {
+          return subViewPos_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.MicSubViewPos subViewPos = 2;</code>
+       *
+       * <pre>
+       *子视图的比例位置
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveCommonProto.MicSubViewPos, com.wali.live.proto.LiveCommonProto.MicSubViewPos.Builder, com.wali.live.proto.LiveCommonProto.MicSubViewPosOrBuilder> 
+          getSubViewPosFieldBuilder() {
+        if (subViewPosBuilder_ == null) {
+          subViewPosBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.LiveCommonProto.MicSubViewPos, com.wali.live.proto.LiveCommonProto.MicSubViewPos.Builder, com.wali.live.proto.LiveCommonProto.MicSubViewPosOrBuilder>(
+                  getSubViewPos(),
+                  getParentForChildren(),
+                  isClean());
+          subViewPos_ = null;
+        }
+        return subViewPosBuilder_;
+      }
+
+      private java.lang.Object micLiveid_ = "";
+      /**
+       * <code>optional string mic_liveid = 3;</code>
+       *
+       * <pre>
+       *连麦对方房间号
+       * </pre>
+       */
+      public boolean hasMicLiveid() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string mic_liveid = 3;</code>
+       *
+       * <pre>
+       *连麦对方房间号
+       * </pre>
+       */
+      public java.lang.String getMicLiveid() {
+        java.lang.Object ref = micLiveid_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            micLiveid_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string mic_liveid = 3;</code>
+       *
+       * <pre>
+       *连麦对方房间号
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getMicLiveidBytes() {
+        java.lang.Object ref = micLiveid_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          micLiveid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string mic_liveid = 3;</code>
+       *
+       * <pre>
+       *连麦对方房间号
+       * </pre>
+       */
+      public Builder setMicLiveid(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        micLiveid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string mic_liveid = 3;</code>
+       *
+       * <pre>
+       *连麦对方房间号
+       * </pre>
+       */
+      public Builder clearMicLiveid() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        micLiveid_ = getDefaultInstance().getMicLiveid();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string mic_liveid = 3;</code>
+       *
+       * <pre>
+       *连麦对方房间号
+       * </pre>
+       */
+      public Builder setMicLiveidBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        micLiveid_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int type_ ;
+      /**
+       * <code>optional uint32 type = 4;</code>
+       *
+       * <pre>
+       *0:主播与观众连麦 1：主播与主播连麦
+       * </pre>
+       */
+      public boolean hasType() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint32 type = 4;</code>
+       *
+       * <pre>
+       *0:主播与观众连麦 1：主播与主播连麦
+       * </pre>
+       */
+      public int getType() {
+        return type_;
+      }
+      /**
+       * <code>optional uint32 type = 4;</code>
+       *
+       * <pre>
+       *0:主播与观众连麦 1：主播与主播连麦
+       * </pre>
+       */
+      public Builder setType(int value) {
+        bitField0_ |= 0x00000008;
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 type = 4;</code>
+       *
+       * <pre>
+       *0:主播与观众连麦 1：主播与主播连麦
+       * </pre>
+       */
+      public Builder clearType() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        type_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.MicInfo)
+    }
+
+    static {
+      defaultInstance = new MicInfo(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.MicInfo)
+  }
+
   public interface ViewerOrBuilder extends
       // @@protoc_insertion_point(interface_extends:com.wali.live.proto.Viewer)
       com.google.protobuf.MessageOrBuilder {
@@ -1320,6 +3124,53 @@ public final class LiveCommonProto {
      * </pre>
      */
     int getTicket();
+
+    /**
+     * <code>optional uint32 appid = 9;</code>
+     *
+     * <pre>
+     *appid
+     * </pre>
+     */
+    boolean hasAppid();
+    /**
+     * <code>optional uint32 appid = 9;</code>
+     *
+     * <pre>
+     *appid
+     * </pre>
+     */
+    int getAppid();
+
+    /**
+     * <code>optional uint32 nobleLevel = 10;</code>
+     *
+     * <pre>
+     *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王 0不是贵族
+     * </pre>
+     */
+    boolean hasNobleLevel();
+    /**
+     * <code>optional uint32 nobleLevel = 10;</code>
+     *
+     * <pre>
+     *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王 0不是贵族
+     * </pre>
+     */
+    int getNobleLevel();
+
+    /**
+     * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+     */
+    boolean hasUserNobleMedal();
+    /**
+     * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+     */
+    com.wali.live.proto.User.UserProto.Medal getUserNobleMedal();
+    /**
+     * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+     */
+    com.wali.live.proto.User.UserProto.MedalOrBuilder getUserNobleMedalOrBuilder();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.Viewer}
@@ -1411,6 +3262,29 @@ public final class LiveCommonProto {
             case 64: {
               bitField0_ |= 0x00000080;
               ticket_ = input.readUInt32();
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000100;
+              appid_ = input.readUInt32();
+              break;
+            }
+            case 80: {
+              bitField0_ |= 0x00000200;
+              nobleLevel_ = input.readUInt32();
+              break;
+            }
+            case 90: {
+              com.wali.live.proto.User.UserProto.Medal.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000400) == 0x00000400)) {
+                subBuilder = userNobleMedal_.toBuilder();
+              }
+              userNobleMedal_ = input.readMessage(com.wali.live.proto.User.UserProto.Medal.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(userNobleMedal_);
+                userNobleMedal_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000400;
               break;
             }
           }
@@ -1637,6 +3511,73 @@ public final class LiveCommonProto {
       return ticket_;
     }
 
+    public static final int APPID_FIELD_NUMBER = 9;
+    private int appid_;
+    /**
+     * <code>optional uint32 appid = 9;</code>
+     *
+     * <pre>
+     *appid
+     * </pre>
+     */
+    public boolean hasAppid() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional uint32 appid = 9;</code>
+     *
+     * <pre>
+     *appid
+     * </pre>
+     */
+    public int getAppid() {
+      return appid_;
+    }
+
+    public static final int NOBLELEVEL_FIELD_NUMBER = 10;
+    private int nobleLevel_;
+    /**
+     * <code>optional uint32 nobleLevel = 10;</code>
+     *
+     * <pre>
+     *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王 0不是贵族
+     * </pre>
+     */
+    public boolean hasNobleLevel() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional uint32 nobleLevel = 10;</code>
+     *
+     * <pre>
+     *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王 0不是贵族
+     * </pre>
+     */
+    public int getNobleLevel() {
+      return nobleLevel_;
+    }
+
+    public static final int USERNOBLEMEDAL_FIELD_NUMBER = 11;
+    private com.wali.live.proto.User.UserProto.Medal userNobleMedal_;
+    /**
+     * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+     */
+    public boolean hasUserNobleMedal() {
+      return ((bitField0_ & 0x00000400) == 0x00000400);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+     */
+    public com.wali.live.proto.User.UserProto.Medal getUserNobleMedal() {
+      return userNobleMedal_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+     */
+    public com.wali.live.proto.User.UserProto.MedalOrBuilder getUserNobleMedalOrBuilder() {
+      return userNobleMedal_;
+    }
+
     private void initFields() {
       uuid_ = 0L;
       level_ = 0;
@@ -1646,6 +3587,9 @@ public final class LiveCommonProto {
       vipLevel_ = 0;
       vipDisable_ = false;
       ticket_ = 0;
+      appid_ = 0;
+      nobleLevel_ = 0;
+      userNobleMedal_ = com.wali.live.proto.User.UserProto.Medal.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1688,6 +3632,15 @@ public final class LiveCommonProto {
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         output.writeUInt32(8, ticket_);
       }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeUInt32(9, appid_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeUInt32(10, nobleLevel_);
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        output.writeMessage(11, userNobleMedal_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1728,6 +3681,18 @@ public final class LiveCommonProto {
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(8, ticket_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(9, appid_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(10, nobleLevel_);
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(11, userNobleMedal_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1838,6 +3803,7 @@ public final class LiveCommonProto {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getUserNobleMedalFieldBuilder();
         }
       }
       private static Builder create() {
@@ -1862,6 +3828,16 @@ public final class LiveCommonProto {
         bitField0_ = (bitField0_ & ~0x00000040);
         ticket_ = 0;
         bitField0_ = (bitField0_ & ~0x00000080);
+        appid_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000100);
+        nobleLevel_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000200);
+        if (userNobleMedalBuilder_ == null) {
+          userNobleMedal_ = com.wali.live.proto.User.UserProto.Medal.getDefaultInstance();
+        } else {
+          userNobleMedalBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
 
@@ -1922,6 +3898,22 @@ public final class LiveCommonProto {
           to_bitField0_ |= 0x00000080;
         }
         result.ticket_ = ticket_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.appid_ = appid_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        result.nobleLevel_ = nobleLevel_;
+        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+          to_bitField0_ |= 0x00000400;
+        }
+        if (userNobleMedalBuilder_ == null) {
+          result.userNobleMedal_ = userNobleMedal_;
+        } else {
+          result.userNobleMedal_ = userNobleMedalBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1961,6 +3953,15 @@ public final class LiveCommonProto {
         }
         if (other.hasTicket()) {
           setTicket(other.getTicket());
+        }
+        if (other.hasAppid()) {
+          setAppid(other.getAppid());
+        }
+        if (other.hasNobleLevel()) {
+          setNobleLevel(other.getNobleLevel());
+        }
+        if (other.hasUserNobleMedal()) {
+          mergeUserNobleMedal(other.getUserNobleMedal());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -2375,6 +4376,218 @@ public final class LiveCommonProto {
         ticket_ = 0;
         onChanged();
         return this;
+      }
+
+      private int appid_ ;
+      /**
+       * <code>optional uint32 appid = 9;</code>
+       *
+       * <pre>
+       *appid
+       * </pre>
+       */
+      public boolean hasAppid() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional uint32 appid = 9;</code>
+       *
+       * <pre>
+       *appid
+       * </pre>
+       */
+      public int getAppid() {
+        return appid_;
+      }
+      /**
+       * <code>optional uint32 appid = 9;</code>
+       *
+       * <pre>
+       *appid
+       * </pre>
+       */
+      public Builder setAppid(int value) {
+        bitField0_ |= 0x00000100;
+        appid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 appid = 9;</code>
+       *
+       * <pre>
+       *appid
+       * </pre>
+       */
+      public Builder clearAppid() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        appid_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int nobleLevel_ ;
+      /**
+       * <code>optional uint32 nobleLevel = 10;</code>
+       *
+       * <pre>
+       *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王 0不是贵族
+       * </pre>
+       */
+      public boolean hasNobleLevel() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional uint32 nobleLevel = 10;</code>
+       *
+       * <pre>
+       *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王 0不是贵族
+       * </pre>
+       */
+      public int getNobleLevel() {
+        return nobleLevel_;
+      }
+      /**
+       * <code>optional uint32 nobleLevel = 10;</code>
+       *
+       * <pre>
+       *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王 0不是贵族
+       * </pre>
+       */
+      public Builder setNobleLevel(int value) {
+        bitField0_ |= 0x00000200;
+        nobleLevel_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 nobleLevel = 10;</code>
+       *
+       * <pre>
+       *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王 0不是贵族
+       * </pre>
+       */
+      public Builder clearNobleLevel() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        nobleLevel_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.User.UserProto.Medal userNobleMedal_ = com.wali.live.proto.User.UserProto.Medal.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.User.UserProto.Medal, com.wali.live.proto.User.UserProto.Medal.Builder, com.wali.live.proto.User.UserProto.MedalOrBuilder> userNobleMedalBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+       */
+      public boolean hasUserNobleMedal() {
+        return ((bitField0_ & 0x00000400) == 0x00000400);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+       */
+      public com.wali.live.proto.User.UserProto.Medal getUserNobleMedal() {
+        if (userNobleMedalBuilder_ == null) {
+          return userNobleMedal_;
+        } else {
+          return userNobleMedalBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+       */
+      public Builder setUserNobleMedal(com.wali.live.proto.User.UserProto.Medal value) {
+        if (userNobleMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          userNobleMedal_ = value;
+          onChanged();
+        } else {
+          userNobleMedalBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000400;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+       */
+      public Builder setUserNobleMedal(
+          com.wali.live.proto.User.UserProto.Medal.Builder builderForValue) {
+        if (userNobleMedalBuilder_ == null) {
+          userNobleMedal_ = builderForValue.build();
+          onChanged();
+        } else {
+          userNobleMedalBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000400;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+       */
+      public Builder mergeUserNobleMedal(com.wali.live.proto.User.UserProto.Medal value) {
+        if (userNobleMedalBuilder_ == null) {
+          if (((bitField0_ & 0x00000400) == 0x00000400) &&
+              userNobleMedal_ != com.wali.live.proto.User.UserProto.Medal.getDefaultInstance()) {
+            userNobleMedal_ =
+              com.wali.live.proto.User.UserProto.Medal.newBuilder(userNobleMedal_).mergeFrom(value).buildPartial();
+          } else {
+            userNobleMedal_ = value;
+          }
+          onChanged();
+        } else {
+          userNobleMedalBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000400;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+       */
+      public Builder clearUserNobleMedal() {
+        if (userNobleMedalBuilder_ == null) {
+          userNobleMedal_ = com.wali.live.proto.User.UserProto.Medal.getDefaultInstance();
+          onChanged();
+        } else {
+          userNobleMedalBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000400);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+       */
+      public com.wali.live.proto.User.UserProto.Medal.Builder getUserNobleMedalBuilder() {
+        bitField0_ |= 0x00000400;
+        onChanged();
+        return getUserNobleMedalFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+       */
+      public com.wali.live.proto.User.UserProto.MedalOrBuilder getUserNobleMedalOrBuilder() {
+        if (userNobleMedalBuilder_ != null) {
+          return userNobleMedalBuilder_.getMessageOrBuilder();
+        } else {
+          return userNobleMedal_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.User.UserProto.Medal, com.wali.live.proto.User.UserProto.Medal.Builder, com.wali.live.proto.User.UserProto.MedalOrBuilder> 
+          getUserNobleMedalFieldBuilder() {
+        if (userNobleMedalBuilder_ == null) {
+          userNobleMedalBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.User.UserProto.Medal, com.wali.live.proto.User.UserProto.Medal.Builder, com.wali.live.proto.User.UserProto.MedalOrBuilder>(
+                  getUserNobleMedal(),
+                  getParentForChildren(),
+                  isClean());
+          userNobleMedal_ = null;
+        }
+        return userNobleMedalBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.Viewer)
@@ -4640,7 +6853,7 @@ public final class LiveCommonProto {
      * <code>required uint32 position = 2;</code>
      *
      * <pre>
-     *坐标：0:左上角，1:右上角，2:左下角，3：右下角
+     *坐标：0:左上角，1:右上角，2:左下角，3：右下角，4：橱窗左上角，5：橱窗右上角，6:礼物左下角,7:快捷礼物位置,8:橱窗标题栏右侧第二位
      * </pre>
      */
     boolean hasPosition();
@@ -4648,7 +6861,7 @@ public final class LiveCommonProto {
      * <code>required uint32 position = 2;</code>
      *
      * <pre>
-     *坐标：0:左上角，1:右上角，2:左下角，3：右下角
+     *坐标：0:左上角，1:右上角，2:左下角，3：右下角，4：橱窗左上角，5：橱窗右上角，6:礼物左下角,7:快捷礼物位置,8:橱窗标题栏右侧第二位
      * </pre>
      */
     int getPosition();
@@ -4880,7 +7093,7 @@ public final class LiveCommonProto {
      * <code>required uint32 position = 2;</code>
      *
      * <pre>
-     *坐标：0:左上角，1:右上角，2:左下角，3：右下角
+     *坐标：0:左上角，1:右上角，2:左下角，3：右下角，4：橱窗左上角，5：橱窗右上角，6:礼物左下角,7:快捷礼物位置,8:橱窗标题栏右侧第二位
      * </pre>
      */
     public boolean hasPosition() {
@@ -4890,7 +7103,7 @@ public final class LiveCommonProto {
      * <code>required uint32 position = 2;</code>
      *
      * <pre>
-     *坐标：0:左上角，1:右上角，2:左下角，3：右下角
+     *坐标：0:左上角，1:右上角，2:左下角，3：右下角，4：橱窗左上角，5：橱窗右上角，6:礼物左下角,7:快捷礼物位置,8:橱窗标题栏右侧第二位
      * </pre>
      */
     public int getPosition() {
@@ -5412,7 +7625,7 @@ public final class LiveCommonProto {
        * <code>required uint32 position = 2;</code>
        *
        * <pre>
-       *坐标：0:左上角，1:右上角，2:左下角，3：右下角
+       *坐标：0:左上角，1:右上角，2:左下角，3：右下角，4：橱窗左上角，5：橱窗右上角，6:礼物左下角,7:快捷礼物位置,8:橱窗标题栏右侧第二位
        * </pre>
        */
       public boolean hasPosition() {
@@ -5422,7 +7635,7 @@ public final class LiveCommonProto {
        * <code>required uint32 position = 2;</code>
        *
        * <pre>
-       *坐标：0:左上角，1:右上角，2:左下角，3：右下角
+       *坐标：0:左上角，1:右上角，2:左下角，3：右下角，4：橱窗左上角，5：橱窗右上角，6:礼物左下角,7:快捷礼物位置,8:橱窗标题栏右侧第二位
        * </pre>
        */
       public int getPosition() {
@@ -5432,7 +7645,7 @@ public final class LiveCommonProto {
        * <code>required uint32 position = 2;</code>
        *
        * <pre>
-       *坐标：0:左上角，1:右上角，2:左下角，3：右下角
+       *坐标：0:左上角，1:右上角，2:左下角，3：右下角，4：橱窗左上角，5：橱窗右上角，6:礼物左下角,7:快捷礼物位置,8:橱窗标题栏右侧第二位
        * </pre>
        */
       public Builder setPosition(int value) {
@@ -5445,7 +7658,7 @@ public final class LiveCommonProto {
        * <code>required uint32 position = 2;</code>
        *
        * <pre>
-       *坐标：0:左上角，1:右上角，2:左下角，3：右下角
+       *坐标：0:左上角，1:右上角，2:左下角，3：右下角，4：橱窗左上角，5：橱窗右上角，6:礼物左下角,7:快捷礼物位置,8:橱窗标题栏右侧第二位
        * </pre>
        */
       public Builder clearPosition() {
@@ -11578,7 +13791,7 @@ public final class LiveCommonProto {
      * <code>required uint32 position = 2;</code>
      *
      * <pre>
-     *坐标：0:左上角，1:右上角，2:左下角，3：右下角
+     *坐标：0:左上角，1:右上角，2:左下角，3：右下角 4：橱窗左上角，5：橱窗右上角，6:礼物左下角,7:快捷礼物位置,8:橱窗标题栏右侧第二位
      * </pre>
      */
     boolean hasPosition();
@@ -11586,7 +13799,7 @@ public final class LiveCommonProto {
      * <code>required uint32 position = 2;</code>
      *
      * <pre>
-     *坐标：0:左上角，1:右上角，2:左下角，3：右下角
+     *坐标：0:左上角，1:右上角，2:左下角，3：右下角 4：橱窗左上角，5：橱窗右上角，6:礼物左下角,7:快捷礼物位置,8:橱窗标题栏右侧第二位
      * </pre>
      */
     int getPosition();
@@ -11718,6 +13931,50 @@ public final class LiveCommonProto {
      * </pre>
      */
     com.wali.live.proto.LiveCommonProto.ClickItemOrBuilder getClickItemOrBuilder();
+
+    /**
+     * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+     *
+     * <pre>
+     *礼物的扩展信息
+     * </pre>
+     */
+    java.util.List<com.wali.live.proto.LiveCommonProto.SuperGiftInfo> 
+        getSuperGiftInfoList();
+    /**
+     * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+     *
+     * <pre>
+     *礼物的扩展信息
+     * </pre>
+     */
+    com.wali.live.proto.LiveCommonProto.SuperGiftInfo getSuperGiftInfo(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+     *
+     * <pre>
+     *礼物的扩展信息
+     * </pre>
+     */
+    int getSuperGiftInfoCount();
+    /**
+     * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+     *
+     * <pre>
+     *礼物的扩展信息
+     * </pre>
+     */
+    java.util.List<? extends com.wali.live.proto.LiveCommonProto.SuperGiftInfoOrBuilder> 
+        getSuperGiftInfoOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+     *
+     * <pre>
+     *礼物的扩展信息
+     * </pre>
+     */
+    com.wali.live.proto.LiveCommonProto.SuperGiftInfoOrBuilder getSuperGiftInfoOrBuilder(
+        int index);
   }
   /**
    * Protobuf type {@code com.wali.live.proto.NewWidgetItem}
@@ -11825,6 +14082,14 @@ public final class LiveCommonProto {
               bitField0_ |= 0x00000020;
               break;
             }
+            case 66: {
+              if (!((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
+                superGiftInfo_ = new java.util.ArrayList<com.wali.live.proto.LiveCommonProto.SuperGiftInfo>();
+                mutable_bitField0_ |= 0x00000080;
+              }
+              superGiftInfo_.add(input.readMessage(com.wali.live.proto.LiveCommonProto.SuperGiftInfo.PARSER, extensionRegistry));
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -11835,6 +14100,9 @@ public final class LiveCommonProto {
       } finally {
         if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
           widgetUint_ = java.util.Collections.unmodifiableList(widgetUint_);
+        }
+        if (((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
+          superGiftInfo_ = java.util.Collections.unmodifiableList(superGiftInfo_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -11897,7 +14165,7 @@ public final class LiveCommonProto {
      * <code>required uint32 position = 2;</code>
      *
      * <pre>
-     *坐标：0:左上角，1:右上角，2:左下角，3：右下角
+     *坐标：0:左上角，1:右上角，2:左下角，3：右下角 4：橱窗左上角，5：橱窗右上角，6:礼物左下角,7:快捷礼物位置,8:橱窗标题栏右侧第二位
      * </pre>
      */
     public boolean hasPosition() {
@@ -11907,7 +14175,7 @@ public final class LiveCommonProto {
      * <code>required uint32 position = 2;</code>
      *
      * <pre>
-     *坐标：0:左上角，1:右上角，2:左下角，3：右下角
+     *坐标：0:左上角，1:右上角，2:左下角，3：右下角 4：橱窗左上角，5：橱窗右上角，6:礼物左下角,7:快捷礼物位置,8:橱窗标题栏右侧第二位
      * </pre>
      */
     public int getPosition() {
@@ -12081,6 +14349,61 @@ public final class LiveCommonProto {
       return clickItem_;
     }
 
+    public static final int SUPERGIFTINFO_FIELD_NUMBER = 8;
+    private java.util.List<com.wali.live.proto.LiveCommonProto.SuperGiftInfo> superGiftInfo_;
+    /**
+     * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+     *
+     * <pre>
+     *礼物的扩展信息
+     * </pre>
+     */
+    public java.util.List<com.wali.live.proto.LiveCommonProto.SuperGiftInfo> getSuperGiftInfoList() {
+      return superGiftInfo_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+     *
+     * <pre>
+     *礼物的扩展信息
+     * </pre>
+     */
+    public java.util.List<? extends com.wali.live.proto.LiveCommonProto.SuperGiftInfoOrBuilder> 
+        getSuperGiftInfoOrBuilderList() {
+      return superGiftInfo_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+     *
+     * <pre>
+     *礼物的扩展信息
+     * </pre>
+     */
+    public int getSuperGiftInfoCount() {
+      return superGiftInfo_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+     *
+     * <pre>
+     *礼物的扩展信息
+     * </pre>
+     */
+    public com.wali.live.proto.LiveCommonProto.SuperGiftInfo getSuperGiftInfo(int index) {
+      return superGiftInfo_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+     *
+     * <pre>
+     *礼物的扩展信息
+     * </pre>
+     */
+    public com.wali.live.proto.LiveCommonProto.SuperGiftInfoOrBuilder getSuperGiftInfoOrBuilder(
+        int index) {
+      return superGiftInfo_.get(index);
+    }
+
     private void initFields() {
       widgetID_ = 0;
       position_ = 0;
@@ -12089,6 +14412,7 @@ public final class LiveCommonProto {
       displayTime_ = 0;
       counterItem_ = com.wali.live.proto.LiveCommonProto.CounterItem.getDefaultInstance();
       clickItem_ = com.wali.live.proto.LiveCommonProto.ClickItem.getDefaultInstance();
+      superGiftInfo_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -12150,6 +14474,9 @@ public final class LiveCommonProto {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         output.writeMessage(7, clickItem_);
       }
+      for (int i = 0; i < superGiftInfo_.size(); i++) {
+        output.writeMessage(8, superGiftInfo_.get(i));
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -12186,6 +14513,10 @@ public final class LiveCommonProto {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(7, clickItem_);
+      }
+      for (int i = 0; i < superGiftInfo_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(8, superGiftInfo_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -12299,6 +14630,7 @@ public final class LiveCommonProto {
           getWidgetUintFieldBuilder();
           getCounterItemFieldBuilder();
           getClickItemFieldBuilder();
+          getSuperGiftInfoFieldBuilder();
         }
       }
       private static Builder create() {
@@ -12333,6 +14665,12 @@ public final class LiveCommonProto {
           clickItemBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000040);
+        if (superGiftInfoBuilder_ == null) {
+          superGiftInfo_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000080);
+        } else {
+          superGiftInfoBuilder_.clear();
+        }
         return this;
       }
 
@@ -12402,6 +14740,15 @@ public final class LiveCommonProto {
         } else {
           result.clickItem_ = clickItemBuilder_.build();
         }
+        if (superGiftInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00000080) == 0x00000080)) {
+            superGiftInfo_ = java.util.Collections.unmodifiableList(superGiftInfo_);
+            bitField0_ = (bitField0_ & ~0x00000080);
+          }
+          result.superGiftInfo_ = superGiftInfo_;
+        } else {
+          result.superGiftInfo_ = superGiftInfoBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -12461,6 +14808,32 @@ public final class LiveCommonProto {
         }
         if (other.hasClickItem()) {
           mergeClickItem(other.getClickItem());
+        }
+        if (superGiftInfoBuilder_ == null) {
+          if (!other.superGiftInfo_.isEmpty()) {
+            if (superGiftInfo_.isEmpty()) {
+              superGiftInfo_ = other.superGiftInfo_;
+              bitField0_ = (bitField0_ & ~0x00000080);
+            } else {
+              ensureSuperGiftInfoIsMutable();
+              superGiftInfo_.addAll(other.superGiftInfo_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.superGiftInfo_.isEmpty()) {
+            if (superGiftInfoBuilder_.isEmpty()) {
+              superGiftInfoBuilder_.dispose();
+              superGiftInfoBuilder_ = null;
+              superGiftInfo_ = other.superGiftInfo_;
+              bitField0_ = (bitField0_ & ~0x00000080);
+              superGiftInfoBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getSuperGiftInfoFieldBuilder() : null;
+            } else {
+              superGiftInfoBuilder_.addAllMessages(other.superGiftInfo_);
+            }
+          }
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -12568,7 +14941,7 @@ public final class LiveCommonProto {
        * <code>required uint32 position = 2;</code>
        *
        * <pre>
-       *坐标：0:左上角，1:右上角，2:左下角，3：右下角
+       *坐标：0:左上角，1:右上角，2:左下角，3：右下角 4：橱窗左上角，5：橱窗右上角，6:礼物左下角,7:快捷礼物位置,8:橱窗标题栏右侧第二位
        * </pre>
        */
       public boolean hasPosition() {
@@ -12578,7 +14951,7 @@ public final class LiveCommonProto {
        * <code>required uint32 position = 2;</code>
        *
        * <pre>
-       *坐标：0:左上角，1:右上角，2:左下角，3：右下角
+       *坐标：0:左上角，1:右上角，2:左下角，3：右下角 4：橱窗左上角，5：橱窗右上角，6:礼物左下角,7:快捷礼物位置,8:橱窗标题栏右侧第二位
        * </pre>
        */
       public int getPosition() {
@@ -12588,7 +14961,7 @@ public final class LiveCommonProto {
        * <code>required uint32 position = 2;</code>
        *
        * <pre>
-       *坐标：0:左上角，1:右上角，2:左下角，3：右下角
+       *坐标：0:左上角，1:右上角，2:左下角，3：右下角 4：橱窗左上角，5：橱窗右上角，6:礼物左下角,7:快捷礼物位置,8:橱窗标题栏右侧第二位
        * </pre>
        */
       public Builder setPosition(int value) {
@@ -12601,7 +14974,7 @@ public final class LiveCommonProto {
        * <code>required uint32 position = 2;</code>
        *
        * <pre>
-       *坐标：0:左上角，1:右上角，2:左下角，3：右下角
+       *坐标：0:左上角，1:右上角，2:左下角，3：右下角 4：橱窗左上角，5：橱窗右上角，6:礼物左下角,7:快捷礼物位置,8:橱窗标题栏右侧第二位
        * </pre>
        */
       public Builder clearPosition() {
@@ -13323,6 +15696,318 @@ public final class LiveCommonProto {
         return clickItemBuilder_;
       }
 
+      private java.util.List<com.wali.live.proto.LiveCommonProto.SuperGiftInfo> superGiftInfo_ =
+        java.util.Collections.emptyList();
+      private void ensureSuperGiftInfoIsMutable() {
+        if (!((bitField0_ & 0x00000080) == 0x00000080)) {
+          superGiftInfo_ = new java.util.ArrayList<com.wali.live.proto.LiveCommonProto.SuperGiftInfo>(superGiftInfo_);
+          bitField0_ |= 0x00000080;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.LiveCommonProto.SuperGiftInfo, com.wali.live.proto.LiveCommonProto.SuperGiftInfo.Builder, com.wali.live.proto.LiveCommonProto.SuperGiftInfoOrBuilder> superGiftInfoBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+       *
+       * <pre>
+       *礼物的扩展信息
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.LiveCommonProto.SuperGiftInfo> getSuperGiftInfoList() {
+        if (superGiftInfoBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(superGiftInfo_);
+        } else {
+          return superGiftInfoBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+       *
+       * <pre>
+       *礼物的扩展信息
+       * </pre>
+       */
+      public int getSuperGiftInfoCount() {
+        if (superGiftInfoBuilder_ == null) {
+          return superGiftInfo_.size();
+        } else {
+          return superGiftInfoBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+       *
+       * <pre>
+       *礼物的扩展信息
+       * </pre>
+       */
+      public com.wali.live.proto.LiveCommonProto.SuperGiftInfo getSuperGiftInfo(int index) {
+        if (superGiftInfoBuilder_ == null) {
+          return superGiftInfo_.get(index);
+        } else {
+          return superGiftInfoBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+       *
+       * <pre>
+       *礼物的扩展信息
+       * </pre>
+       */
+      public Builder setSuperGiftInfo(
+          int index, com.wali.live.proto.LiveCommonProto.SuperGiftInfo value) {
+        if (superGiftInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureSuperGiftInfoIsMutable();
+          superGiftInfo_.set(index, value);
+          onChanged();
+        } else {
+          superGiftInfoBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+       *
+       * <pre>
+       *礼物的扩展信息
+       * </pre>
+       */
+      public Builder setSuperGiftInfo(
+          int index, com.wali.live.proto.LiveCommonProto.SuperGiftInfo.Builder builderForValue) {
+        if (superGiftInfoBuilder_ == null) {
+          ensureSuperGiftInfoIsMutable();
+          superGiftInfo_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          superGiftInfoBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+       *
+       * <pre>
+       *礼物的扩展信息
+       * </pre>
+       */
+      public Builder addSuperGiftInfo(com.wali.live.proto.LiveCommonProto.SuperGiftInfo value) {
+        if (superGiftInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureSuperGiftInfoIsMutable();
+          superGiftInfo_.add(value);
+          onChanged();
+        } else {
+          superGiftInfoBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+       *
+       * <pre>
+       *礼物的扩展信息
+       * </pre>
+       */
+      public Builder addSuperGiftInfo(
+          int index, com.wali.live.proto.LiveCommonProto.SuperGiftInfo value) {
+        if (superGiftInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureSuperGiftInfoIsMutable();
+          superGiftInfo_.add(index, value);
+          onChanged();
+        } else {
+          superGiftInfoBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+       *
+       * <pre>
+       *礼物的扩展信息
+       * </pre>
+       */
+      public Builder addSuperGiftInfo(
+          com.wali.live.proto.LiveCommonProto.SuperGiftInfo.Builder builderForValue) {
+        if (superGiftInfoBuilder_ == null) {
+          ensureSuperGiftInfoIsMutable();
+          superGiftInfo_.add(builderForValue.build());
+          onChanged();
+        } else {
+          superGiftInfoBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+       *
+       * <pre>
+       *礼物的扩展信息
+       * </pre>
+       */
+      public Builder addSuperGiftInfo(
+          int index, com.wali.live.proto.LiveCommonProto.SuperGiftInfo.Builder builderForValue) {
+        if (superGiftInfoBuilder_ == null) {
+          ensureSuperGiftInfoIsMutable();
+          superGiftInfo_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          superGiftInfoBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+       *
+       * <pre>
+       *礼物的扩展信息
+       * </pre>
+       */
+      public Builder addAllSuperGiftInfo(
+          java.lang.Iterable<? extends com.wali.live.proto.LiveCommonProto.SuperGiftInfo> values) {
+        if (superGiftInfoBuilder_ == null) {
+          ensureSuperGiftInfoIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, superGiftInfo_);
+          onChanged();
+        } else {
+          superGiftInfoBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+       *
+       * <pre>
+       *礼物的扩展信息
+       * </pre>
+       */
+      public Builder clearSuperGiftInfo() {
+        if (superGiftInfoBuilder_ == null) {
+          superGiftInfo_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000080);
+          onChanged();
+        } else {
+          superGiftInfoBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+       *
+       * <pre>
+       *礼物的扩展信息
+       * </pre>
+       */
+      public Builder removeSuperGiftInfo(int index) {
+        if (superGiftInfoBuilder_ == null) {
+          ensureSuperGiftInfoIsMutable();
+          superGiftInfo_.remove(index);
+          onChanged();
+        } else {
+          superGiftInfoBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+       *
+       * <pre>
+       *礼物的扩展信息
+       * </pre>
+       */
+      public com.wali.live.proto.LiveCommonProto.SuperGiftInfo.Builder getSuperGiftInfoBuilder(
+          int index) {
+        return getSuperGiftInfoFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+       *
+       * <pre>
+       *礼物的扩展信息
+       * </pre>
+       */
+      public com.wali.live.proto.LiveCommonProto.SuperGiftInfoOrBuilder getSuperGiftInfoOrBuilder(
+          int index) {
+        if (superGiftInfoBuilder_ == null) {
+          return superGiftInfo_.get(index);  } else {
+          return superGiftInfoBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+       *
+       * <pre>
+       *礼物的扩展信息
+       * </pre>
+       */
+      public java.util.List<? extends com.wali.live.proto.LiveCommonProto.SuperGiftInfoOrBuilder> 
+           getSuperGiftInfoOrBuilderList() {
+        if (superGiftInfoBuilder_ != null) {
+          return superGiftInfoBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(superGiftInfo_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+       *
+       * <pre>
+       *礼物的扩展信息
+       * </pre>
+       */
+      public com.wali.live.proto.LiveCommonProto.SuperGiftInfo.Builder addSuperGiftInfoBuilder() {
+        return getSuperGiftInfoFieldBuilder().addBuilder(
+            com.wali.live.proto.LiveCommonProto.SuperGiftInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+       *
+       * <pre>
+       *礼物的扩展信息
+       * </pre>
+       */
+      public com.wali.live.proto.LiveCommonProto.SuperGiftInfo.Builder addSuperGiftInfoBuilder(
+          int index) {
+        return getSuperGiftInfoFieldBuilder().addBuilder(
+            index, com.wali.live.proto.LiveCommonProto.SuperGiftInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.SuperGiftInfo superGiftInfo = 8;</code>
+       *
+       * <pre>
+       *礼物的扩展信息
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.LiveCommonProto.SuperGiftInfo.Builder> 
+           getSuperGiftInfoBuilderList() {
+        return getSuperGiftInfoFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.LiveCommonProto.SuperGiftInfo, com.wali.live.proto.LiveCommonProto.SuperGiftInfo.Builder, com.wali.live.proto.LiveCommonProto.SuperGiftInfoOrBuilder> 
+          getSuperGiftInfoFieldBuilder() {
+        if (superGiftInfoBuilder_ == null) {
+          superGiftInfoBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.LiveCommonProto.SuperGiftInfo, com.wali.live.proto.LiveCommonProto.SuperGiftInfo.Builder, com.wali.live.proto.LiveCommonProto.SuperGiftInfoOrBuilder>(
+                  superGiftInfo_,
+                  ((bitField0_ & 0x00000080) == 0x00000080),
+                  getParentForChildren(),
+                  isClean());
+          superGiftInfo_ = null;
+        }
+        return superGiftInfoBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.NewWidgetItem)
     }
 
@@ -13332,6 +16017,2441 @@ public final class LiveCommonProto {
     }
 
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.NewWidgetItem)
+  }
+
+  public interface SuperGiftInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.SuperGiftInfo)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string roomId = 1;</code>
+     *
+     * <pre>
+     *房间id
+     * </pre>
+     */
+    boolean hasRoomId();
+    /**
+     * <code>optional string roomId = 1;</code>
+     *
+     * <pre>
+     *房间id
+     * </pre>
+     */
+    java.lang.String getRoomId();
+    /**
+     * <code>optional string roomId = 1;</code>
+     *
+     * <pre>
+     *房间id
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getRoomIdBytes();
+
+    /**
+     * <code>optional uint64 giftBeginTime = 2;</code>
+     *
+     * <pre>
+     *礼物的生效时间，秒
+     * </pre>
+     */
+    boolean hasGiftBeginTime();
+    /**
+     * <code>optional uint64 giftBeginTime = 2;</code>
+     *
+     * <pre>
+     *礼物的生效时间，秒
+     * </pre>
+     */
+    long getGiftBeginTime();
+
+    /**
+     * <code>optional uint64 giftEndTime = 3;</code>
+     *
+     * <pre>
+     *礼物过期时间，秒
+     * </pre>
+     */
+    boolean hasGiftEndTime();
+    /**
+     * <code>optional uint64 giftEndTime = 3;</code>
+     *
+     * <pre>
+     *礼物过期时间，秒
+     * </pre>
+     */
+    long getGiftEndTime();
+
+    /**
+     * <code>optional bytes giftExt = 4;</code>
+     *
+     * <pre>
+     *礼物扩展 ，用WidgetGift解析
+     * </pre>
+     */
+    boolean hasGiftExt();
+    /**
+     * <code>optional bytes giftExt = 4;</code>
+     *
+     * <pre>
+     *礼物扩展 ，用WidgetGift解析
+     * </pre>
+     */
+    com.google.protobuf.ByteString getGiftExt();
+
+    /**
+     * <code>optional uint64 currentTime = 5;</code>
+     */
+    boolean hasCurrentTime();
+    /**
+     * <code>optional uint64 currentTime = 5;</code>
+     */
+    long getCurrentTime();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.SuperGiftInfo}
+   *
+   * <pre>
+   *挂件的延迟礼物扩展
+   * </pre>
+   */
+  public static final class SuperGiftInfo extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.SuperGiftInfo)
+      SuperGiftInfoOrBuilder {
+    // Use SuperGiftInfo.newBuilder() to construct.
+    private SuperGiftInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private SuperGiftInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final SuperGiftInfo defaultInstance;
+    public static SuperGiftInfo getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public SuperGiftInfo getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private SuperGiftInfo(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              roomId_ = bs;
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              giftBeginTime_ = input.readUInt64();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              giftEndTime_ = input.readUInt64();
+              break;
+            }
+            case 34: {
+              bitField0_ |= 0x00000008;
+              giftExt_ = input.readBytes();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              currentTime_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_SuperGiftInfo_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_SuperGiftInfo_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveCommonProto.SuperGiftInfo.class, com.wali.live.proto.LiveCommonProto.SuperGiftInfo.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<SuperGiftInfo> PARSER =
+        new com.google.protobuf.AbstractParser<SuperGiftInfo>() {
+      public SuperGiftInfo parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new SuperGiftInfo(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SuperGiftInfo> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int ROOMID_FIELD_NUMBER = 1;
+    private java.lang.Object roomId_;
+    /**
+     * <code>optional string roomId = 1;</code>
+     *
+     * <pre>
+     *房间id
+     * </pre>
+     */
+    public boolean hasRoomId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string roomId = 1;</code>
+     *
+     * <pre>
+     *房间id
+     * </pre>
+     */
+    public java.lang.String getRoomId() {
+      java.lang.Object ref = roomId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          roomId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string roomId = 1;</code>
+     *
+     * <pre>
+     *房间id
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getRoomIdBytes() {
+      java.lang.Object ref = roomId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        roomId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int GIFTBEGINTIME_FIELD_NUMBER = 2;
+    private long giftBeginTime_;
+    /**
+     * <code>optional uint64 giftBeginTime = 2;</code>
+     *
+     * <pre>
+     *礼物的生效时间，秒
+     * </pre>
+     */
+    public boolean hasGiftBeginTime() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint64 giftBeginTime = 2;</code>
+     *
+     * <pre>
+     *礼物的生效时间，秒
+     * </pre>
+     */
+    public long getGiftBeginTime() {
+      return giftBeginTime_;
+    }
+
+    public static final int GIFTENDTIME_FIELD_NUMBER = 3;
+    private long giftEndTime_;
+    /**
+     * <code>optional uint64 giftEndTime = 3;</code>
+     *
+     * <pre>
+     *礼物过期时间，秒
+     * </pre>
+     */
+    public boolean hasGiftEndTime() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint64 giftEndTime = 3;</code>
+     *
+     * <pre>
+     *礼物过期时间，秒
+     * </pre>
+     */
+    public long getGiftEndTime() {
+      return giftEndTime_;
+    }
+
+    public static final int GIFTEXT_FIELD_NUMBER = 4;
+    private com.google.protobuf.ByteString giftExt_;
+    /**
+     * <code>optional bytes giftExt = 4;</code>
+     *
+     * <pre>
+     *礼物扩展 ，用WidgetGift解析
+     * </pre>
+     */
+    public boolean hasGiftExt() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional bytes giftExt = 4;</code>
+     *
+     * <pre>
+     *礼物扩展 ，用WidgetGift解析
+     * </pre>
+     */
+    public com.google.protobuf.ByteString getGiftExt() {
+      return giftExt_;
+    }
+
+    public static final int CURRENTTIME_FIELD_NUMBER = 5;
+    private long currentTime_;
+    /**
+     * <code>optional uint64 currentTime = 5;</code>
+     */
+    public boolean hasCurrentTime() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional uint64 currentTime = 5;</code>
+     */
+    public long getCurrentTime() {
+      return currentTime_;
+    }
+
+    private void initFields() {
+      roomId_ = "";
+      giftBeginTime_ = 0L;
+      giftEndTime_ = 0L;
+      giftExt_ = com.google.protobuf.ByteString.EMPTY;
+      currentTime_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getRoomIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, giftBeginTime_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt64(3, giftEndTime_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, giftExt_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeUInt64(5, currentTime_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getRoomIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, giftBeginTime_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(3, giftEndTime_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, giftExt_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(5, currentTime_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveCommonProto.SuperGiftInfo parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveCommonProto.SuperGiftInfo parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveCommonProto.SuperGiftInfo parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveCommonProto.SuperGiftInfo parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveCommonProto.SuperGiftInfo parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveCommonProto.SuperGiftInfo parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveCommonProto.SuperGiftInfo parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveCommonProto.SuperGiftInfo parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveCommonProto.SuperGiftInfo parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveCommonProto.SuperGiftInfo parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveCommonProto.SuperGiftInfo prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.SuperGiftInfo}
+     *
+     * <pre>
+     *挂件的延迟礼物扩展
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.SuperGiftInfo)
+        com.wali.live.proto.LiveCommonProto.SuperGiftInfoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_SuperGiftInfo_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_SuperGiftInfo_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveCommonProto.SuperGiftInfo.class, com.wali.live.proto.LiveCommonProto.SuperGiftInfo.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveCommonProto.SuperGiftInfo.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        roomId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        giftBeginTime_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        giftEndTime_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        giftExt_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        currentTime_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_SuperGiftInfo_descriptor;
+      }
+
+      public com.wali.live.proto.LiveCommonProto.SuperGiftInfo getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveCommonProto.SuperGiftInfo.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveCommonProto.SuperGiftInfo build() {
+        com.wali.live.proto.LiveCommonProto.SuperGiftInfo result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveCommonProto.SuperGiftInfo buildPartial() {
+        com.wali.live.proto.LiveCommonProto.SuperGiftInfo result = new com.wali.live.proto.LiveCommonProto.SuperGiftInfo(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.roomId_ = roomId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.giftBeginTime_ = giftBeginTime_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.giftEndTime_ = giftEndTime_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.giftExt_ = giftExt_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.currentTime_ = currentTime_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveCommonProto.SuperGiftInfo) {
+          return mergeFrom((com.wali.live.proto.LiveCommonProto.SuperGiftInfo)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveCommonProto.SuperGiftInfo other) {
+        if (other == com.wali.live.proto.LiveCommonProto.SuperGiftInfo.getDefaultInstance()) return this;
+        if (other.hasRoomId()) {
+          bitField0_ |= 0x00000001;
+          roomId_ = other.roomId_;
+          onChanged();
+        }
+        if (other.hasGiftBeginTime()) {
+          setGiftBeginTime(other.getGiftBeginTime());
+        }
+        if (other.hasGiftEndTime()) {
+          setGiftEndTime(other.getGiftEndTime());
+        }
+        if (other.hasGiftExt()) {
+          setGiftExt(other.getGiftExt());
+        }
+        if (other.hasCurrentTime()) {
+          setCurrentTime(other.getCurrentTime());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveCommonProto.SuperGiftInfo parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveCommonProto.SuperGiftInfo) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object roomId_ = "";
+      /**
+       * <code>optional string roomId = 1;</code>
+       *
+       * <pre>
+       *房间id
+       * </pre>
+       */
+      public boolean hasRoomId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string roomId = 1;</code>
+       *
+       * <pre>
+       *房间id
+       * </pre>
+       */
+      public java.lang.String getRoomId() {
+        java.lang.Object ref = roomId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            roomId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string roomId = 1;</code>
+       *
+       * <pre>
+       *房间id
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getRoomIdBytes() {
+        java.lang.Object ref = roomId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          roomId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string roomId = 1;</code>
+       *
+       * <pre>
+       *房间id
+       * </pre>
+       */
+      public Builder setRoomId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        roomId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string roomId = 1;</code>
+       *
+       * <pre>
+       *房间id
+       * </pre>
+       */
+      public Builder clearRoomId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        roomId_ = getDefaultInstance().getRoomId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string roomId = 1;</code>
+       *
+       * <pre>
+       *房间id
+       * </pre>
+       */
+      public Builder setRoomIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        roomId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long giftBeginTime_ ;
+      /**
+       * <code>optional uint64 giftBeginTime = 2;</code>
+       *
+       * <pre>
+       *礼物的生效时间，秒
+       * </pre>
+       */
+      public boolean hasGiftBeginTime() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint64 giftBeginTime = 2;</code>
+       *
+       * <pre>
+       *礼物的生效时间，秒
+       * </pre>
+       */
+      public long getGiftBeginTime() {
+        return giftBeginTime_;
+      }
+      /**
+       * <code>optional uint64 giftBeginTime = 2;</code>
+       *
+       * <pre>
+       *礼物的生效时间，秒
+       * </pre>
+       */
+      public Builder setGiftBeginTime(long value) {
+        bitField0_ |= 0x00000002;
+        giftBeginTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 giftBeginTime = 2;</code>
+       *
+       * <pre>
+       *礼物的生效时间，秒
+       * </pre>
+       */
+      public Builder clearGiftBeginTime() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        giftBeginTime_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long giftEndTime_ ;
+      /**
+       * <code>optional uint64 giftEndTime = 3;</code>
+       *
+       * <pre>
+       *礼物过期时间，秒
+       * </pre>
+       */
+      public boolean hasGiftEndTime() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint64 giftEndTime = 3;</code>
+       *
+       * <pre>
+       *礼物过期时间，秒
+       * </pre>
+       */
+      public long getGiftEndTime() {
+        return giftEndTime_;
+      }
+      /**
+       * <code>optional uint64 giftEndTime = 3;</code>
+       *
+       * <pre>
+       *礼物过期时间，秒
+       * </pre>
+       */
+      public Builder setGiftEndTime(long value) {
+        bitField0_ |= 0x00000004;
+        giftEndTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 giftEndTime = 3;</code>
+       *
+       * <pre>
+       *礼物过期时间，秒
+       * </pre>
+       */
+      public Builder clearGiftEndTime() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        giftEndTime_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString giftExt_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes giftExt = 4;</code>
+       *
+       * <pre>
+       *礼物扩展 ，用WidgetGift解析
+       * </pre>
+       */
+      public boolean hasGiftExt() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional bytes giftExt = 4;</code>
+       *
+       * <pre>
+       *礼物扩展 ，用WidgetGift解析
+       * </pre>
+       */
+      public com.google.protobuf.ByteString getGiftExt() {
+        return giftExt_;
+      }
+      /**
+       * <code>optional bytes giftExt = 4;</code>
+       *
+       * <pre>
+       *礼物扩展 ，用WidgetGift解析
+       * </pre>
+       */
+      public Builder setGiftExt(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        giftExt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes giftExt = 4;</code>
+       *
+       * <pre>
+       *礼物扩展 ，用WidgetGift解析
+       * </pre>
+       */
+      public Builder clearGiftExt() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        giftExt_ = getDefaultInstance().getGiftExt();
+        onChanged();
+        return this;
+      }
+
+      private long currentTime_ ;
+      /**
+       * <code>optional uint64 currentTime = 5;</code>
+       */
+      public boolean hasCurrentTime() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional uint64 currentTime = 5;</code>
+       */
+      public long getCurrentTime() {
+        return currentTime_;
+      }
+      /**
+       * <code>optional uint64 currentTime = 5;</code>
+       */
+      public Builder setCurrentTime(long value) {
+        bitField0_ |= 0x00000010;
+        currentTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 currentTime = 5;</code>
+       */
+      public Builder clearCurrentTime() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        currentTime_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.SuperGiftInfo)
+    }
+
+    static {
+      defaultInstance = new SuperGiftInfo(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.SuperGiftInfo)
+  }
+
+  public interface WidgetGiftOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.WidgetGift)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     *
+     * <pre>
+     *发红包的人的用户id
+     * </pre>
+     */
+    boolean hasUuid();
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     *
+     * <pre>
+     *发红包的人的用户id
+     * </pre>
+     */
+    long getUuid();
+
+    /**
+     * <code>optional string redEnvelopId = 2;</code>
+     *
+     * <pre>
+     *红包id
+     * </pre>
+     */
+    boolean hasRedEnvelopId();
+    /**
+     * <code>optional string redEnvelopId = 2;</code>
+     *
+     * <pre>
+     *红包id
+     * </pre>
+     */
+    java.lang.String getRedEnvelopId();
+    /**
+     * <code>optional string redEnvelopId = 2;</code>
+     *
+     * <pre>
+     *红包id
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getRedEnvelopIdBytes();
+
+    /**
+     * <code>optional uint32 gemcnt = 3;</code>
+     *
+     * <pre>
+     *红包钻数
+     * </pre>
+     */
+    boolean hasGemcnt();
+    /**
+     * <code>optional uint32 gemcnt = 3;</code>
+     *
+     * <pre>
+     *红包钻数
+     * </pre>
+     */
+    int getGemcnt();
+
+    /**
+     * <code>optional string msg_body = 4;</code>
+     *
+     * <pre>
+     *描述，如“发了一个XX钻的大红包”
+     * </pre>
+     */
+    boolean hasMsgBody();
+    /**
+     * <code>optional string msg_body = 4;</code>
+     *
+     * <pre>
+     *描述，如“发了一个XX钻的大红包”
+     * </pre>
+     */
+    java.lang.String getMsgBody();
+    /**
+     * <code>optional string msg_body = 4;</code>
+     *
+     * <pre>
+     *描述，如“发了一个XX钻的大红包”
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getMsgBodyBytes();
+
+    /**
+     * <code>optional string nickname = 5;</code>
+     *
+     * <pre>
+     *用户昵称
+     * </pre>
+     */
+    boolean hasNickname();
+    /**
+     * <code>optional string nickname = 5;</code>
+     *
+     * <pre>
+     *用户昵称
+     * </pre>
+     */
+    java.lang.String getNickname();
+    /**
+     * <code>optional string nickname = 5;</code>
+     *
+     * <pre>
+     *用户昵称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getNicknameBytes();
+
+    /**
+     * <code>optional uint32 level = 6;</code>
+     *
+     * <pre>
+     *用户等级
+     * </pre>
+     */
+    boolean hasLevel();
+    /**
+     * <code>optional uint32 level = 6;</code>
+     *
+     * <pre>
+     *用户等级
+     * </pre>
+     */
+    int getLevel();
+
+    /**
+     * <code>optional uint64 avatar = 7;</code>
+     *
+     * <pre>
+     *头像
+     * </pre>
+     */
+    boolean hasAvatar();
+    /**
+     * <code>optional uint64 avatar = 7;</code>
+     *
+     * <pre>
+     *头像
+     * </pre>
+     */
+    long getAvatar();
+
+    /**
+     * <code>optional uint32 gift_id = 8;</code>
+     *
+     * <pre>
+     *本次购买的礼物id
+     * </pre>
+     */
+    boolean hasGiftId();
+    /**
+     * <code>optional uint32 gift_id = 8;</code>
+     *
+     * <pre>
+     *本次购买的礼物id
+     * </pre>
+     */
+    int getGiftId();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.WidgetGift}
+   *
+   * <pre>
+   *挂件礼物
+   * </pre>
+   */
+  public static final class WidgetGift extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.WidgetGift)
+      WidgetGiftOrBuilder {
+    // Use WidgetGift.newBuilder() to construct.
+    private WidgetGift(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private WidgetGift(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final WidgetGift defaultInstance;
+    public static WidgetGift getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public WidgetGift getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private WidgetGift(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uuid_ = input.readUInt64();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              redEnvelopId_ = bs;
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              gemcnt_ = input.readUInt32();
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              msgBody_ = bs;
+              break;
+            }
+            case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000010;
+              nickname_ = bs;
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              level_ = input.readUInt32();
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000040;
+              avatar_ = input.readUInt64();
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000080;
+              giftId_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_WidgetGift_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_WidgetGift_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveCommonProto.WidgetGift.class, com.wali.live.proto.LiveCommonProto.WidgetGift.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<WidgetGift> PARSER =
+        new com.google.protobuf.AbstractParser<WidgetGift>() {
+      public WidgetGift parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new WidgetGift(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<WidgetGift> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int UUID_FIELD_NUMBER = 1;
+    private long uuid_;
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     *
+     * <pre>
+     *发红包的人的用户id
+     * </pre>
+     */
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     *
+     * <pre>
+     *发红包的人的用户id
+     * </pre>
+     */
+    public long getUuid() {
+      return uuid_;
+    }
+
+    public static final int REDENVELOPID_FIELD_NUMBER = 2;
+    private java.lang.Object redEnvelopId_;
+    /**
+     * <code>optional string redEnvelopId = 2;</code>
+     *
+     * <pre>
+     *红包id
+     * </pre>
+     */
+    public boolean hasRedEnvelopId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string redEnvelopId = 2;</code>
+     *
+     * <pre>
+     *红包id
+     * </pre>
+     */
+    public java.lang.String getRedEnvelopId() {
+      java.lang.Object ref = redEnvelopId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          redEnvelopId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string redEnvelopId = 2;</code>
+     *
+     * <pre>
+     *红包id
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getRedEnvelopIdBytes() {
+      java.lang.Object ref = redEnvelopId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        redEnvelopId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int GEMCNT_FIELD_NUMBER = 3;
+    private int gemcnt_;
+    /**
+     * <code>optional uint32 gemcnt = 3;</code>
+     *
+     * <pre>
+     *红包钻数
+     * </pre>
+     */
+    public boolean hasGemcnt() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint32 gemcnt = 3;</code>
+     *
+     * <pre>
+     *红包钻数
+     * </pre>
+     */
+    public int getGemcnt() {
+      return gemcnt_;
+    }
+
+    public static final int MSG_BODY_FIELD_NUMBER = 4;
+    private java.lang.Object msgBody_;
+    /**
+     * <code>optional string msg_body = 4;</code>
+     *
+     * <pre>
+     *描述，如“发了一个XX钻的大红包”
+     * </pre>
+     */
+    public boolean hasMsgBody() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string msg_body = 4;</code>
+     *
+     * <pre>
+     *描述，如“发了一个XX钻的大红包”
+     * </pre>
+     */
+    public java.lang.String getMsgBody() {
+      java.lang.Object ref = msgBody_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          msgBody_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string msg_body = 4;</code>
+     *
+     * <pre>
+     *描述，如“发了一个XX钻的大红包”
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getMsgBodyBytes() {
+      java.lang.Object ref = msgBody_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msgBody_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int NICKNAME_FIELD_NUMBER = 5;
+    private java.lang.Object nickname_;
+    /**
+     * <code>optional string nickname = 5;</code>
+     *
+     * <pre>
+     *用户昵称
+     * </pre>
+     */
+    public boolean hasNickname() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional string nickname = 5;</code>
+     *
+     * <pre>
+     *用户昵称
+     * </pre>
+     */
+    public java.lang.String getNickname() {
+      java.lang.Object ref = nickname_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          nickname_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string nickname = 5;</code>
+     *
+     * <pre>
+     *用户昵称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getNicknameBytes() {
+      java.lang.Object ref = nickname_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        nickname_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int LEVEL_FIELD_NUMBER = 6;
+    private int level_;
+    /**
+     * <code>optional uint32 level = 6;</code>
+     *
+     * <pre>
+     *用户等级
+     * </pre>
+     */
+    public boolean hasLevel() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional uint32 level = 6;</code>
+     *
+     * <pre>
+     *用户等级
+     * </pre>
+     */
+    public int getLevel() {
+      return level_;
+    }
+
+    public static final int AVATAR_FIELD_NUMBER = 7;
+    private long avatar_;
+    /**
+     * <code>optional uint64 avatar = 7;</code>
+     *
+     * <pre>
+     *头像
+     * </pre>
+     */
+    public boolean hasAvatar() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional uint64 avatar = 7;</code>
+     *
+     * <pre>
+     *头像
+     * </pre>
+     */
+    public long getAvatar() {
+      return avatar_;
+    }
+
+    public static final int GIFT_ID_FIELD_NUMBER = 8;
+    private int giftId_;
+    /**
+     * <code>optional uint32 gift_id = 8;</code>
+     *
+     * <pre>
+     *本次购买的礼物id
+     * </pre>
+     */
+    public boolean hasGiftId() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional uint32 gift_id = 8;</code>
+     *
+     * <pre>
+     *本次购买的礼物id
+     * </pre>
+     */
+    public int getGiftId() {
+      return giftId_;
+    }
+
+    private void initFields() {
+      uuid_ = 0L;
+      redEnvelopId_ = "";
+      gemcnt_ = 0;
+      msgBody_ = "";
+      nickname_ = "";
+      level_ = 0;
+      avatar_ = 0L;
+      giftId_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getRedEnvelopIdBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, gemcnt_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getMsgBodyBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, getNicknameBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeUInt32(6, level_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeUInt64(7, avatar_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeUInt32(8, giftId_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getRedEnvelopIdBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, gemcnt_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getMsgBodyBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getNicknameBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(6, level_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(7, avatar_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(8, giftId_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveCommonProto.WidgetGift parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveCommonProto.WidgetGift parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveCommonProto.WidgetGift parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveCommonProto.WidgetGift parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveCommonProto.WidgetGift parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveCommonProto.WidgetGift parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveCommonProto.WidgetGift parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveCommonProto.WidgetGift parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveCommonProto.WidgetGift parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveCommonProto.WidgetGift parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveCommonProto.WidgetGift prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.WidgetGift}
+     *
+     * <pre>
+     *挂件礼物
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.WidgetGift)
+        com.wali.live.proto.LiveCommonProto.WidgetGiftOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_WidgetGift_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_WidgetGift_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveCommonProto.WidgetGift.class, com.wali.live.proto.LiveCommonProto.WidgetGift.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveCommonProto.WidgetGift.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        redEnvelopId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        gemcnt_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        msgBody_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        nickname_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        level_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        avatar_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        giftId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveCommonProto.internal_static_com_wali_live_proto_WidgetGift_descriptor;
+      }
+
+      public com.wali.live.proto.LiveCommonProto.WidgetGift getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveCommonProto.WidgetGift.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveCommonProto.WidgetGift build() {
+        com.wali.live.proto.LiveCommonProto.WidgetGift result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveCommonProto.WidgetGift buildPartial() {
+        com.wali.live.proto.LiveCommonProto.WidgetGift result = new com.wali.live.proto.LiveCommonProto.WidgetGift(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uuid_ = uuid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.redEnvelopId_ = redEnvelopId_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.gemcnt_ = gemcnt_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.msgBody_ = msgBody_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.nickname_ = nickname_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.level_ = level_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.avatar_ = avatar_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.giftId_ = giftId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveCommonProto.WidgetGift) {
+          return mergeFrom((com.wali.live.proto.LiveCommonProto.WidgetGift)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveCommonProto.WidgetGift other) {
+        if (other == com.wali.live.proto.LiveCommonProto.WidgetGift.getDefaultInstance()) return this;
+        if (other.hasUuid()) {
+          setUuid(other.getUuid());
+        }
+        if (other.hasRedEnvelopId()) {
+          bitField0_ |= 0x00000002;
+          redEnvelopId_ = other.redEnvelopId_;
+          onChanged();
+        }
+        if (other.hasGemcnt()) {
+          setGemcnt(other.getGemcnt());
+        }
+        if (other.hasMsgBody()) {
+          bitField0_ |= 0x00000008;
+          msgBody_ = other.msgBody_;
+          onChanged();
+        }
+        if (other.hasNickname()) {
+          bitField0_ |= 0x00000010;
+          nickname_ = other.nickname_;
+          onChanged();
+        }
+        if (other.hasLevel()) {
+          setLevel(other.getLevel());
+        }
+        if (other.hasAvatar()) {
+          setAvatar(other.getAvatar());
+        }
+        if (other.hasGiftId()) {
+          setGiftId(other.getGiftId());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveCommonProto.WidgetGift parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveCommonProto.WidgetGift) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long uuid_ ;
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       *
+       * <pre>
+       *发红包的人的用户id
+       * </pre>
+       */
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       *
+       * <pre>
+       *发红包的人的用户id
+       * </pre>
+       */
+      public long getUuid() {
+        return uuid_;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       *
+       * <pre>
+       *发红包的人的用户id
+       * </pre>
+       */
+      public Builder setUuid(long value) {
+        bitField0_ |= 0x00000001;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       *
+       * <pre>
+       *发红包的人的用户id
+       * </pre>
+       */
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object redEnvelopId_ = "";
+      /**
+       * <code>optional string redEnvelopId = 2;</code>
+       *
+       * <pre>
+       *红包id
+       * </pre>
+       */
+      public boolean hasRedEnvelopId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string redEnvelopId = 2;</code>
+       *
+       * <pre>
+       *红包id
+       * </pre>
+       */
+      public java.lang.String getRedEnvelopId() {
+        java.lang.Object ref = redEnvelopId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            redEnvelopId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string redEnvelopId = 2;</code>
+       *
+       * <pre>
+       *红包id
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getRedEnvelopIdBytes() {
+        java.lang.Object ref = redEnvelopId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          redEnvelopId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string redEnvelopId = 2;</code>
+       *
+       * <pre>
+       *红包id
+       * </pre>
+       */
+      public Builder setRedEnvelopId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        redEnvelopId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string redEnvelopId = 2;</code>
+       *
+       * <pre>
+       *红包id
+       * </pre>
+       */
+      public Builder clearRedEnvelopId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        redEnvelopId_ = getDefaultInstance().getRedEnvelopId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string redEnvelopId = 2;</code>
+       *
+       * <pre>
+       *红包id
+       * </pre>
+       */
+      public Builder setRedEnvelopIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        redEnvelopId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int gemcnt_ ;
+      /**
+       * <code>optional uint32 gemcnt = 3;</code>
+       *
+       * <pre>
+       *红包钻数
+       * </pre>
+       */
+      public boolean hasGemcnt() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint32 gemcnt = 3;</code>
+       *
+       * <pre>
+       *红包钻数
+       * </pre>
+       */
+      public int getGemcnt() {
+        return gemcnt_;
+      }
+      /**
+       * <code>optional uint32 gemcnt = 3;</code>
+       *
+       * <pre>
+       *红包钻数
+       * </pre>
+       */
+      public Builder setGemcnt(int value) {
+        bitField0_ |= 0x00000004;
+        gemcnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 gemcnt = 3;</code>
+       *
+       * <pre>
+       *红包钻数
+       * </pre>
+       */
+      public Builder clearGemcnt() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        gemcnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object msgBody_ = "";
+      /**
+       * <code>optional string msg_body = 4;</code>
+       *
+       * <pre>
+       *描述，如“发了一个XX钻的大红包”
+       * </pre>
+       */
+      public boolean hasMsgBody() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string msg_body = 4;</code>
+       *
+       * <pre>
+       *描述，如“发了一个XX钻的大红包”
+       * </pre>
+       */
+      public java.lang.String getMsgBody() {
+        java.lang.Object ref = msgBody_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msgBody_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string msg_body = 4;</code>
+       *
+       * <pre>
+       *描述，如“发了一个XX钻的大红包”
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getMsgBodyBytes() {
+        java.lang.Object ref = msgBody_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msgBody_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string msg_body = 4;</code>
+       *
+       * <pre>
+       *描述，如“发了一个XX钻的大红包”
+       * </pre>
+       */
+      public Builder setMsgBody(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        msgBody_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg_body = 4;</code>
+       *
+       * <pre>
+       *描述，如“发了一个XX钻的大红包”
+       * </pre>
+       */
+      public Builder clearMsgBody() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        msgBody_ = getDefaultInstance().getMsgBody();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg_body = 4;</code>
+       *
+       * <pre>
+       *描述，如“发了一个XX钻的大红包”
+       * </pre>
+       */
+      public Builder setMsgBodyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        msgBody_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object nickname_ = "";
+      /**
+       * <code>optional string nickname = 5;</code>
+       *
+       * <pre>
+       *用户昵称
+       * </pre>
+       */
+      public boolean hasNickname() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string nickname = 5;</code>
+       *
+       * <pre>
+       *用户昵称
+       * </pre>
+       */
+      public java.lang.String getNickname() {
+        java.lang.Object ref = nickname_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string nickname = 5;</code>
+       *
+       * <pre>
+       *用户昵称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getNicknameBytes() {
+        java.lang.Object ref = nickname_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          nickname_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string nickname = 5;</code>
+       *
+       * <pre>
+       *用户昵称
+       * </pre>
+       */
+      public Builder setNickname(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        nickname_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string nickname = 5;</code>
+       *
+       * <pre>
+       *用户昵称
+       * </pre>
+       */
+      public Builder clearNickname() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        nickname_ = getDefaultInstance().getNickname();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string nickname = 5;</code>
+       *
+       * <pre>
+       *用户昵称
+       * </pre>
+       */
+      public Builder setNicknameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        nickname_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int level_ ;
+      /**
+       * <code>optional uint32 level = 6;</code>
+       *
+       * <pre>
+       *用户等级
+       * </pre>
+       */
+      public boolean hasLevel() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional uint32 level = 6;</code>
+       *
+       * <pre>
+       *用户等级
+       * </pre>
+       */
+      public int getLevel() {
+        return level_;
+      }
+      /**
+       * <code>optional uint32 level = 6;</code>
+       *
+       * <pre>
+       *用户等级
+       * </pre>
+       */
+      public Builder setLevel(int value) {
+        bitField0_ |= 0x00000020;
+        level_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 level = 6;</code>
+       *
+       * <pre>
+       *用户等级
+       * </pre>
+       */
+      public Builder clearLevel() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        level_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private long avatar_ ;
+      /**
+       * <code>optional uint64 avatar = 7;</code>
+       *
+       * <pre>
+       *头像
+       * </pre>
+       */
+      public boolean hasAvatar() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional uint64 avatar = 7;</code>
+       *
+       * <pre>
+       *头像
+       * </pre>
+       */
+      public long getAvatar() {
+        return avatar_;
+      }
+      /**
+       * <code>optional uint64 avatar = 7;</code>
+       *
+       * <pre>
+       *头像
+       * </pre>
+       */
+      public Builder setAvatar(long value) {
+        bitField0_ |= 0x00000040;
+        avatar_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 avatar = 7;</code>
+       *
+       * <pre>
+       *头像
+       * </pre>
+       */
+      public Builder clearAvatar() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        avatar_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int giftId_ ;
+      /**
+       * <code>optional uint32 gift_id = 8;</code>
+       *
+       * <pre>
+       *本次购买的礼物id
+       * </pre>
+       */
+      public boolean hasGiftId() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional uint32 gift_id = 8;</code>
+       *
+       * <pre>
+       *本次购买的礼物id
+       * </pre>
+       */
+      public int getGiftId() {
+        return giftId_;
+      }
+      /**
+       * <code>optional uint32 gift_id = 8;</code>
+       *
+       * <pre>
+       *本次购买的礼物id
+       * </pre>
+       */
+      public Builder setGiftId(int value) {
+        bitField0_ |= 0x00000080;
+        giftId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 gift_id = 8;</code>
+       *
+       * <pre>
+       *本次购买的礼物id
+       * </pre>
+       */
+      public Builder clearGiftId() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        giftId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.WidgetGift)
+    }
+
+    static {
+      defaultInstance = new WidgetGift(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.WidgetGift)
   }
 
   public interface NewWidgetInfoOrBuilder extends
@@ -20481,6 +25601,16 @@ public final class LiveCommonProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_MsgRule_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_MicSubViewPos_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_MicSubViewPos_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_MicInfo_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_MicInfo_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_Viewer_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -20535,6 +25665,16 @@ public final class LiveCommonProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_NewWidgetItem_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_SuperGiftInfo_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_SuperGiftInfo_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_WidgetGift_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_WidgetGift_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_NewWidgetInfo_descriptor;
   private static
@@ -20594,70 +25734,86 @@ public final class LiveCommonProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020LiveCommon.proto\022\023com.wali.live.proto\"" +
-      "*\n\013UpStreamUrl\022\013\n\003url\030\001 \001(\t\022\016\n\006weight\030\002 " +
-      "\001(\r\"4\n\007MsgRule\022\024\n\014unrepeatable\030\001 \001(\010\022\023\n\013" +
-      "speakPeriod\030\002 \001(\r\"\232\001\n\006Viewer\022\014\n\004uuid\030\001 \002" +
-      "(\004\022\r\n\005level\030\002 \001(\r\022\016\n\006avatar\030\003 \001(\004\022\032\n\022cer" +
-      "tification_type\030\004 \001(\r\022\017\n\007redName\030\005 \001(\010\022\021" +
-      "\n\tvip_level\030\006 \001(\r\022\023\n\013vip_disable\030\007 \001(\010\022\016" +
-      "\n\006ticket\030\010 \001(\r\"<\n\006PKInfo\022\014\n\004uuid\030\001 \001(\004\022\016" +
-      "\n\006liveId\030\002 \001(\t\022\024\n\014pkInitTicket\030\003 \001(\r\";\n\r" +
-      "ViewerInfoReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \002(",
-      "\004\022\016\n\006liveId\030\003 \002(\t\"?\n\014UserRoomInfo\022\014\n\004typ" +
-      "e\030\001 \001(\r\022\017\n\007appType\030\002 \001(\r\022\020\n\010tvRoomid\030\003 \001" +
-      "(\t\"L\n\nWidgetInfo\022\020\n\010link_url\030\001 \002(\t\022\020\n\010po" +
-      "sition\030\002 \002(\r\022\014\n\004icon\030\003 \001(\t\022\014\n\004text\030\004 \001(\t" +
-      "\"\032\n\013ColorConfig\022\013\n\003rgb\030\001 \002(\r\"\262\001\n\013Counter" +
-      "Item\022\020\n\010imageUrl\030\001 \001(\t\022\023\n\013counterText\030\002 " +
-      "\001(\t\0223\n\ttextColor\030\003 \001(\0132 .com.wali.live.p" +
-      "roto.ColorConfig\0227\n\rtextEdgeColor\030\004 \001(\0132" +
-      " .com.wali.live.proto.ColorConfig\022\016\n\006isB" +
-      "old\030\005 \001(\010\"\275\001\n\tClickItem\022\021\n\tclickType\030\001 \002",
-      "(\r\022\025\n\rclickImageUrl\030\002 \001(\t\022\025\n\rclickInterv" +
-      "al\030\003 \001(\r\022\016\n\006giftId\030\004 \001(\r\022\034\n\024clickWaiting" +
-      "ImageUrl\030\005 \001(\t\022\023\n\013warningText\030\006 \001(\t\022\030\n\020p" +
-      "ushSendSuccText\030\007 \001(\t\022\022\n\npkInterval\030\010 \001(" +
-      "\r\"\370\001\n\rNewWidgetUnit\022\020\n\010link_url\030\001 \001(\t\022\014\n" +
-      "\004icon\030\002 \001(\t\022\014\n\004text\030\003 \001(\t\0223\n\ttextColor\030\004" +
-      " \001(\0132 .com.wali.live.proto.ColorConfig\022\024" +
-      "\n\014urlNeedParam\030\005 \001(\010\022\024\n\014schemaPrefix\030\006 \001" +
-      "(\t\022\025\n\rschemaPostfix\030\007 \001(\t\022\020\n\010openType\030\010 " +
-      "\001(\r\022/\n\010h5Config\030\t \001(\0132\035.com.wali.live.pr",
-      "oto.H5Config\"\031\n\010H5Config\022\r\n\005h5Url\030\001 \001(\t\"" +
-      "\377\001\n\rNewWidgetItem\022\020\n\010widgetID\030\001 \002(\r\022\020\n\010p" +
-      "osition\030\002 \002(\r\022\023\n\013displayType\030\003 \001(\r\0226\n\nwi" +
-      "dgetUint\030\004 \003(\0132\".com.wali.live.proto.New" +
-      "WidgetUnit\022\023\n\013displayTime\030\005 \001(\r\0225\n\013count" +
-      "erItem\030\006 \001(\0132 .com.wali.live.proto.Count" +
-      "erItem\0221\n\tclickItem\030\007 \001(\0132\036.com.wali.liv" +
-      "e.proto.ClickItem\"]\n\rNewWidgetInfo\0226\n\nwi" +
-      "dgetItem\030\001 \003(\0132\".com.wali.live.proto.New" +
-      "WidgetItem\022\024\n\014pullInterval\030\002 \001(\r\"\'\n\016Shop",
-      "pingConfig\022\025\n\tshop_type\030\001 \002(\005:\002-1\"\300\001\n\016Ro" +
-      "omIconConfig\022\r\n\005noMic\030\001 \001(\010\022\r\n\005noPic\030\002 \001" +
-      "(\010\022\017\n\007noVideo\030\003 \001(\010\022\032\n\022noScreenProjectio" +
-      "n\030\004 \001(\010\022\024\n\014noAtmosphere\030\005 \001(\010\022\017\n\007noMusic" +
-      "\030\006 \001(\010\022\022\n\nnoEmoticon\030\007 \001(\010\022\021\n\tnoHongBao\030" +
-      "\010 \001(\010\022\025\n\rnoConsumeTask\030\t \001(\010\";\n\021WidgetCo" +
-      "unterPush\022\020\n\010widgetID\030\001 \002(\r\022\024\n\014counterVa" +
-      "lue\030\002 \001(\003\"[\n\nViewerPush\022+\n\006viewer\030\001 \002(\0132" +
-      "\033.com.wali.live.proto.Viewer\022\r\n\005leave\030\002 " +
-      "\001(\010\022\021\n\tviewerCnt\030\003 \001(\r\"(\n\nLevelRange\022\r\n\005",
-      "start\030\001 \001(\r\022\013\n\003end\030\002 \001(\r\"Y\n\027JoinRoomAnim" +
-      "ationConfig\022>\n\020animation_config\030\001 \003(\0132$." +
-      "com.wali.live.proto.AnimationConfig\"X\n\026U" +
-      "pgradeAnimationConfig\022>\n\020animation_confi" +
-      "g\030\001 \003(\0132$.com.wali.live.proto.AnimationC" +
-      "onfig\"a\n\017AnimationConfig\022\030\n\020animation_ef" +
-      "fect\030\001 \001(\r\0224\n\013level_range\030\002 \001(\0132\037.com.wa" +
-      "li.live.proto.LevelRange\"\317\001\n\023RoomAnimati" +
-      "onConfig\022P\n\032join_room_animation_config\030\001" +
-      " \001(\0132,.com.wali.live.proto.JoinRoomAnima",
-      "tionConfig\022M\n\030upgrade_animation_config\030\002" +
-      " \001(\0132+.com.wali.live.proto.UpgradeAnimat" +
-      "ionConfig\022\027\n\017noJoinAnimation\030\003 \001(\rB&\n\023co" +
-      "m.wali.live.protoB\017LiveCommonProto"
+      "\n\020LiveCommon.proto\022\023com.wali.live.proto\032" +
+      "\nUser.proto\"*\n\013UpStreamUrl\022\013\n\003url\030\001 \001(\t\022" +
+      "\016\n\006weight\030\002 \001(\r\"4\n\007MsgRule\022\024\n\014unrepeatab" +
+      "le\030\001 \001(\010\022\023\n\013speakPeriod\030\002 \001(\r\"^\n\rMicSubV" +
+      "iewPos\022\021\n\ttopXScale\030\001 \002(\002\022\021\n\ttopYScale\030\002" +
+      " \002(\002\022\022\n\nwidthScale\030\003 \002(\002\022\023\n\013heightScale\030" +
+      "\004 \002(\002\"s\n\007MicInfo\022\016\n\006micuid\030\001 \002(\004\0226\n\nsubV" +
+      "iewPos\030\002 \001(\0132\".com.wali.live.proto.MicSu" +
+      "bViewPos\022\022\n\nmic_liveid\030\003 \001(\t\022\014\n\004type\030\004 \001" +
+      "(\r\"\366\001\n\006Viewer\022\014\n\004uuid\030\001 \002(\004\022\r\n\005level\030\002 \001",
+      "(\r\022\016\n\006avatar\030\003 \001(\004\022\032\n\022certification_type" +
+      "\030\004 \001(\r\022\017\n\007redName\030\005 \001(\010\022\021\n\tvip_level\030\006 \001" +
+      "(\r\022\023\n\013vip_disable\030\007 \001(\010\022\016\n\006ticket\030\010 \001(\r\022" +
+      "\r\n\005appid\030\t \001(\r\022\022\n\nnobleLevel\030\n \001(\r\0227\n\016us" +
+      "erNobleMedal\030\013 \001(\0132\037.com.wali.live.proto" +
+      ".User.Medal\"<\n\006PKInfo\022\014\n\004uuid\030\001 \001(\004\022\016\n\006l" +
+      "iveId\030\002 \001(\t\022\024\n\014pkInitTicket\030\003 \001(\r\";\n\rVie" +
+      "werInfoReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\022\016" +
+      "\n\006liveId\030\003 \002(\t\"?\n\014UserRoomInfo\022\014\n\004type\030\001" +
+      " \001(\r\022\017\n\007appType\030\002 \001(\r\022\020\n\010tvRoomid\030\003 \001(\t\"",
+      "L\n\nWidgetInfo\022\020\n\010link_url\030\001 \002(\t\022\020\n\010posit" +
+      "ion\030\002 \002(\r\022\014\n\004icon\030\003 \001(\t\022\014\n\004text\030\004 \001(\t\"\032\n" +
+      "\013ColorConfig\022\013\n\003rgb\030\001 \002(\r\"\262\001\n\013CounterIte" +
+      "m\022\020\n\010imageUrl\030\001 \001(\t\022\023\n\013counterText\030\002 \001(\t" +
+      "\0223\n\ttextColor\030\003 \001(\0132 .com.wali.live.prot" +
+      "o.ColorConfig\0227\n\rtextEdgeColor\030\004 \001(\0132 .c" +
+      "om.wali.live.proto.ColorConfig\022\016\n\006isBold" +
+      "\030\005 \001(\010\"\275\001\n\tClickItem\022\021\n\tclickType\030\001 \002(\r\022" +
+      "\025\n\rclickImageUrl\030\002 \001(\t\022\025\n\rclickInterval\030" +
+      "\003 \001(\r\022\016\n\006giftId\030\004 \001(\r\022\034\n\024clickWaitingIma",
+      "geUrl\030\005 \001(\t\022\023\n\013warningText\030\006 \001(\t\022\030\n\020push" +
+      "SendSuccText\030\007 \001(\t\022\022\n\npkInterval\030\010 \001(\r\"\370" +
+      "\001\n\rNewWidgetUnit\022\020\n\010link_url\030\001 \001(\t\022\014\n\004ic" +
+      "on\030\002 \001(\t\022\014\n\004text\030\003 \001(\t\0223\n\ttextColor\030\004 \001(" +
+      "\0132 .com.wali.live.proto.ColorConfig\022\024\n\014u" +
+      "rlNeedParam\030\005 \001(\010\022\024\n\014schemaPrefix\030\006 \001(\t\022" +
+      "\025\n\rschemaPostfix\030\007 \001(\t\022\020\n\010openType\030\010 \001(\r" +
+      "\022/\n\010h5Config\030\t \001(\0132\035.com.wali.live.proto" +
+      ".H5Config\"\031\n\010H5Config\022\r\n\005h5Url\030\001 \001(\t\"\272\002\n" +
+      "\rNewWidgetItem\022\020\n\010widgetID\030\001 \002(\r\022\020\n\010posi",
+      "tion\030\002 \002(\r\022\023\n\013displayType\030\003 \001(\r\0226\n\nwidge" +
+      "tUint\030\004 \003(\0132\".com.wali.live.proto.NewWid" +
+      "getUnit\022\023\n\013displayTime\030\005 \001(\r\0225\n\013counterI" +
+      "tem\030\006 \001(\0132 .com.wali.live.proto.CounterI" +
+      "tem\0221\n\tclickItem\030\007 \001(\0132\036.com.wali.live.p" +
+      "roto.ClickItem\0229\n\rsuperGiftInfo\030\010 \003(\0132\"." +
+      "com.wali.live.proto.SuperGiftInfo\"q\n\rSup" +
+      "erGiftInfo\022\016\n\006roomId\030\001 \001(\t\022\025\n\rgiftBeginT" +
+      "ime\030\002 \001(\004\022\023\n\013giftEndTime\030\003 \001(\004\022\017\n\007giftEx" +
+      "t\030\004 \001(\014\022\023\n\013currentTime\030\005 \001(\004\"\224\001\n\nWidgetG",
+      "ift\022\014\n\004uuid\030\001 \001(\004\022\024\n\014redEnvelopId\030\002 \001(\t\022" +
+      "\016\n\006gemcnt\030\003 \001(\r\022\020\n\010msg_body\030\004 \001(\t\022\020\n\010nic" +
+      "kname\030\005 \001(\t\022\r\n\005level\030\006 \001(\r\022\016\n\006avatar\030\007 \001" +
+      "(\004\022\017\n\007gift_id\030\010 \001(\r\"]\n\rNewWidgetInfo\0226\n\n" +
+      "widgetItem\030\001 \003(\0132\".com.wali.live.proto.N" +
+      "ewWidgetItem\022\024\n\014pullInterval\030\002 \001(\r\"\'\n\016Sh" +
+      "oppingConfig\022\025\n\tshop_type\030\001 \002(\005:\002-1\"\300\001\n\016" +
+      "RoomIconConfig\022\r\n\005noMic\030\001 \001(\010\022\r\n\005noPic\030\002" +
+      " \001(\010\022\017\n\007noVideo\030\003 \001(\010\022\032\n\022noScreenProject" +
+      "ion\030\004 \001(\010\022\024\n\014noAtmosphere\030\005 \001(\010\022\017\n\007noMus",
+      "ic\030\006 \001(\010\022\022\n\nnoEmoticon\030\007 \001(\010\022\021\n\tnoHongBa" +
+      "o\030\010 \001(\010\022\025\n\rnoConsumeTask\030\t \001(\010\";\n\021Widget" +
+      "CounterPush\022\020\n\010widgetID\030\001 \002(\r\022\024\n\014counter" +
+      "Value\030\002 \001(\003\"[\n\nViewerPush\022+\n\006viewer\030\001 \002(" +
+      "\0132\033.com.wali.live.proto.Viewer\022\r\n\005leave\030" +
+      "\002 \001(\010\022\021\n\tviewerCnt\030\003 \001(\r\"(\n\nLevelRange\022\r" +
+      "\n\005start\030\001 \001(\r\022\013\n\003end\030\002 \001(\r\"Y\n\027JoinRoomAn" +
+      "imationConfig\022>\n\020animation_config\030\001 \003(\0132" +
+      "$.com.wali.live.proto.AnimationConfig\"X\n" +
+      "\026UpgradeAnimationConfig\022>\n\020animation_con",
+      "fig\030\001 \003(\0132$.com.wali.live.proto.Animatio" +
+      "nConfig\"a\n\017AnimationConfig\022\030\n\020animation_" +
+      "effect\030\001 \001(\r\0224\n\013level_range\030\002 \001(\0132\037.com." +
+      "wali.live.proto.LevelRange\"\317\001\n\023RoomAnima" +
+      "tionConfig\022P\n\032join_room_animation_config" +
+      "\030\001 \001(\0132,.com.wali.live.proto.JoinRoomAni" +
+      "mationConfig\022M\n\030upgrade_animation_config" +
+      "\030\002 \001(\0132+.com.wali.live.proto.UpgradeAnim" +
+      "ationConfig\022\027\n\017noJoinAnimation\030\003 \001(\rB&\n\023" +
+      "com.wali.live.protoB\017LiveCommonProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -20670,6 +25826,7 @@ public final class LiveCommonProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.wali.live.proto.User.UserProto.getDescriptor(),
         }, assigner);
     internal_static_com_wali_live_proto_UpStreamUrl_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -20683,132 +25840,157 @@ public final class LiveCommonProto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_MsgRule_descriptor,
         new java.lang.String[] { "Unrepeatable", "SpeakPeriod", });
-    internal_static_com_wali_live_proto_Viewer_descriptor =
+    internal_static_com_wali_live_proto_MicSubViewPos_descriptor =
       getDescriptor().getMessageTypes().get(2);
+    internal_static_com_wali_live_proto_MicSubViewPos_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_MicSubViewPos_descriptor,
+        new java.lang.String[] { "TopXScale", "TopYScale", "WidthScale", "HeightScale", });
+    internal_static_com_wali_live_proto_MicInfo_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_com_wali_live_proto_MicInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_MicInfo_descriptor,
+        new java.lang.String[] { "Micuid", "SubViewPos", "MicLiveid", "Type", });
+    internal_static_com_wali_live_proto_Viewer_descriptor =
+      getDescriptor().getMessageTypes().get(4);
     internal_static_com_wali_live_proto_Viewer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_Viewer_descriptor,
-        new java.lang.String[] { "Uuid", "Level", "Avatar", "CertificationType", "RedName", "VipLevel", "VipDisable", "Ticket", });
+        new java.lang.String[] { "Uuid", "Level", "Avatar", "CertificationType", "RedName", "VipLevel", "VipDisable", "Ticket", "Appid", "NobleLevel", "UserNobleMedal", });
     internal_static_com_wali_live_proto_PKInfo_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_com_wali_live_proto_PKInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_PKInfo_descriptor,
         new java.lang.String[] { "Uuid", "LiveId", "PkInitTicket", });
     internal_static_com_wali_live_proto_ViewerInfoReq_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_com_wali_live_proto_ViewerInfoReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ViewerInfoReq_descriptor,
         new java.lang.String[] { "Uuid", "Zuid", "LiveId", });
     internal_static_com_wali_live_proto_UserRoomInfo_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_com_wali_live_proto_UserRoomInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UserRoomInfo_descriptor,
         new java.lang.String[] { "Type", "AppType", "TvRoomid", });
     internal_static_com_wali_live_proto_WidgetInfo_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_com_wali_live_proto_WidgetInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_WidgetInfo_descriptor,
         new java.lang.String[] { "LinkUrl", "Position", "Icon", "Text", });
     internal_static_com_wali_live_proto_ColorConfig_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_com_wali_live_proto_ColorConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ColorConfig_descriptor,
         new java.lang.String[] { "Rgb", });
     internal_static_com_wali_live_proto_CounterItem_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_com_wali_live_proto_CounterItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_CounterItem_descriptor,
         new java.lang.String[] { "ImageUrl", "CounterText", "TextColor", "TextEdgeColor", "IsBold", });
     internal_static_com_wali_live_proto_ClickItem_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_com_wali_live_proto_ClickItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ClickItem_descriptor,
         new java.lang.String[] { "ClickType", "ClickImageUrl", "ClickInterval", "GiftId", "ClickWaitingImageUrl", "WarningText", "PushSendSuccText", "PkInterval", });
     internal_static_com_wali_live_proto_NewWidgetUnit_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_com_wali_live_proto_NewWidgetUnit_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_NewWidgetUnit_descriptor,
         new java.lang.String[] { "LinkUrl", "Icon", "Text", "TextColor", "UrlNeedParam", "SchemaPrefix", "SchemaPostfix", "OpenType", "H5Config", });
     internal_static_com_wali_live_proto_H5Config_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_com_wali_live_proto_H5Config_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_H5Config_descriptor,
         new java.lang.String[] { "H5Url", });
     internal_static_com_wali_live_proto_NewWidgetItem_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_com_wali_live_proto_NewWidgetItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_NewWidgetItem_descriptor,
-        new java.lang.String[] { "WidgetID", "Position", "DisplayType", "WidgetUint", "DisplayTime", "CounterItem", "ClickItem", });
+        new java.lang.String[] { "WidgetID", "Position", "DisplayType", "WidgetUint", "DisplayTime", "CounterItem", "ClickItem", "SuperGiftInfo", });
+    internal_static_com_wali_live_proto_SuperGiftInfo_descriptor =
+      getDescriptor().getMessageTypes().get(15);
+    internal_static_com_wali_live_proto_SuperGiftInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_SuperGiftInfo_descriptor,
+        new java.lang.String[] { "RoomId", "GiftBeginTime", "GiftEndTime", "GiftExt", "CurrentTime", });
+    internal_static_com_wali_live_proto_WidgetGift_descriptor =
+      getDescriptor().getMessageTypes().get(16);
+    internal_static_com_wali_live_proto_WidgetGift_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_WidgetGift_descriptor,
+        new java.lang.String[] { "Uuid", "RedEnvelopId", "Gemcnt", "MsgBody", "Nickname", "Level", "Avatar", "GiftId", });
     internal_static_com_wali_live_proto_NewWidgetInfo_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_com_wali_live_proto_NewWidgetInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_NewWidgetInfo_descriptor,
         new java.lang.String[] { "WidgetItem", "PullInterval", });
     internal_static_com_wali_live_proto_ShoppingConfig_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_com_wali_live_proto_ShoppingConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ShoppingConfig_descriptor,
         new java.lang.String[] { "ShopType", });
     internal_static_com_wali_live_proto_RoomIconConfig_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_com_wali_live_proto_RoomIconConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_RoomIconConfig_descriptor,
         new java.lang.String[] { "NoMic", "NoPic", "NoVideo", "NoScreenProjection", "NoAtmosphere", "NoMusic", "NoEmoticon", "NoHongBao", "NoConsumeTask", });
     internal_static_com_wali_live_proto_WidgetCounterPush_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(20);
     internal_static_com_wali_live_proto_WidgetCounterPush_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_WidgetCounterPush_descriptor,
         new java.lang.String[] { "WidgetID", "CounterValue", });
     internal_static_com_wali_live_proto_ViewerPush_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(21);
     internal_static_com_wali_live_proto_ViewerPush_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ViewerPush_descriptor,
         new java.lang.String[] { "Viewer", "Leave", "ViewerCnt", });
     internal_static_com_wali_live_proto_LevelRange_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(22);
     internal_static_com_wali_live_proto_LevelRange_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_LevelRange_descriptor,
         new java.lang.String[] { "Start", "End", });
     internal_static_com_wali_live_proto_JoinRoomAnimationConfig_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(23);
     internal_static_com_wali_live_proto_JoinRoomAnimationConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_JoinRoomAnimationConfig_descriptor,
         new java.lang.String[] { "AnimationConfig", });
     internal_static_com_wali_live_proto_UpgradeAnimationConfig_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(24);
     internal_static_com_wali_live_proto_UpgradeAnimationConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UpgradeAnimationConfig_descriptor,
         new java.lang.String[] { "AnimationConfig", });
     internal_static_com_wali_live_proto_AnimationConfig_descriptor =
-      getDescriptor().getMessageTypes().get(21);
+      getDescriptor().getMessageTypes().get(25);
     internal_static_com_wali_live_proto_AnimationConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AnimationConfig_descriptor,
         new java.lang.String[] { "AnimationEffect", "LevelRange", });
     internal_static_com_wali_live_proto_RoomAnimationConfig_descriptor =
-      getDescriptor().getMessageTypes().get(22);
+      getDescriptor().getMessageTypes().get(26);
     internal_static_com_wali_live_proto_RoomAnimationConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_RoomAnimationConfig_descriptor,
         new java.lang.String[] { "JoinRoomAnimationConfig", "UpgradeAnimationConfig", "NoJoinAnimation", });
+    com.wali.live.proto.User.UserProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

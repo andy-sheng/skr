@@ -635,6 +635,22 @@ public class User implements Serializable {
         this.certificationChanged = certificationChanged;
     }
 
+    public List<Medal> getBeforeNickNameMedalList() {
+        return beforeNickNameMedalList;
+    }
+
+    public void setBeforeNickNameMedal(List<Medal> beforeNickNameMedalList) {
+        this.beforeNickNameMedalList = beforeNickNameMedalList;
+    }
+
+    public List<Medal> getAfterNickNameMedalList() {
+        return afterNickNameMedalList;
+    }
+
+    public void setAfterNickNameMedalList(List<Medal> afterNickNameMedalList) {
+        this.afterNickNameMedalList = afterNickNameMedalList;
+    }
+
     public int getVipLevel() {
         return mVipLevel;
     }

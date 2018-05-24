@@ -23,7 +23,6 @@ import com.mi.live.data.data.LastBarrage;
 import com.mi.live.data.push.event.BarrageMsgEvent;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
-import com.mi.live.data.push.model.GlobalRoomMsgExt;
 import com.mi.live.data.query.model.MessageRule;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.room.model.FansPrivilegeModel;
@@ -61,7 +60,6 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.mi.live.data.push.model.GlobalRoomMsgExt.INNER_GLOBAL_PAY_HORN;
 import static com.wali.live.watchsdk.component.viewmodel.BarrageState.BARRAGE_MANAGE;
 import static com.wali.live.watchsdk.component.viewmodel.BarrageState.BARRAGE_NORMAL;
 import static com.wali.live.watchsdk.component.viewmodel.BarrageState.BARRAGE_NOTIFY;
@@ -197,7 +195,7 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
                             switch (rsp.getRetCode()) {
                                 case GiftErrorCode.SUCC:
                                     mLiveRoomChatMsgManager.sendFlyBarrageMessageAsync(msg, mMyRoomData.getRoomId(),
-                                            mMyRoomData.getUid(), INNER_GLOBAL_PAY_HORN, null, mFansPrivilegeModel);
+                                            mMyRoomData.getUid(), BarrageMsg.INNER_GLOBAL_PAY_HORN, null, mFansPrivilegeModel);
                                     MyUserInfoManager.getInstance().setDiamonds(rsp.getUsableGemCnt(), rsp.getUsableVirtualGemCnt());
                                     break;
                                 case GiftErrorCode.GIFT_PAY_BARRAGE:
@@ -295,12 +293,12 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
         switch (mBarrageState) {
             case BARRAGE_MANAGE:
                 mLiveRoomChatMsgManager.sendFlyBarrageMessageAsync(msg, mMyRoomData.getRoomId(),
-                        mMyRoomData.getUid(), GlobalRoomMsgExt.INNER_GLOBAL_ADMIN_FLY, null, mFansPrivilegeModel);
+                        mMyRoomData.getUid(), BarrageMsg.INNER_GLOBAL_ADMIN_FLY, null, mFansPrivilegeModel);
                 break;
             case BARRAGE_NOTIFY:
                 if (mVipCurCnt < mVipMaxCnt && !MyUserInfoManager.getInstance().isVipFrozen()) {
                     mLiveRoomChatMsgManager.sendFlyBarrageMessageAsync(msg, mMyRoomData.getRoomId(),
-                            mMyRoomData.getUid(), INNER_GLOBAL_PAY_HORN, null, mFansPrivilegeModel);
+                            mMyRoomData.getUid(), BarrageMsg.INNER_GLOBAL_PAY_HORN, null, mFansPrivilegeModel);
                 } else {
                     buyCostBarrage(msg);
                 }
@@ -313,14 +311,17 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
 
     private void sendBarrageByType(String msg, int type) {
         FansPrivilegeModel fansPrivilegeModel = mFansPrivilegeModel;
-        GlobalRoomMsgExt globalRoomMsgExt = null;
+        BarrageMsg.GlobalRoomMessageExt globalRoomMsgExt = null;
         if (fansPrivilegeModel != null && fansPrivilegeModel.getMemType() != VFansCommonProto.GroupMemType.NONE.getNumber()) {
-            globalRoomMsgExt = new GlobalRoomMsgExt();
-            GlobalRoomMsgExt.FansMemberMsgExt fansMemberMsgExt = new GlobalRoomMsgExt.FansMemberMsgExt();
-            fansMemberMsgExt.setPetLevel(fansPrivilegeModel.getPetLevel());
-            fansMemberMsgExt.setVipExpire(System.currentTimeMillis() > fansPrivilegeModel.getExpireTime() * 1000);
-            fansMemberMsgExt.setMedalValue(fansPrivilegeModel.getMedal());
-            globalRoomMsgExt.addMsgExt(fansMemberMsgExt);
+            globalRoomMsgExt = new BarrageMsg.GlobalRoomMessageExt();
+            BarrageMsg.InnerGlobalRoomMessageExt ext = new BarrageMsg.InnerGlobalRoomMessageExt();
+            ext.setType(BarrageMsg.INNER_GLOBAL_VFAN);
+            BarrageMsg.VFansMemberBriefInfo vFansMemberBriefInfo = new BarrageMsg.VFansMemberBriefInfo();
+            vFansMemberBriefInfo.setPetLevel(fansPrivilegeModel.getPetLevel());
+            vFansMemberBriefInfo.setVipExpire(System.currentTimeMillis() > fansPrivilegeModel.getExpireTime() * 1000);
+            vFansMemberBriefInfo.setMedalValue(fansPrivilegeModel.getMedal());
+            ext.setvFansMemberBriefInfo(vFansMemberBriefInfo);
+            globalRoomMsgExt.getInnerGlobalRoomMessageExtList().add(ext);
         }
         mLiveRoomChatMsgManager.sendBarrageMessageAsync(msg, type,
                 mMyRoomData.getRoomId(), mMyRoomData.getUid(), null, null, globalRoomMsgExt);

@@ -34,7 +34,7 @@ public class UserActionEvent {
     public Object obj3;
     public Object obj4;
 
-    private UserActionEvent(int type, Object obj1, Object obj2) {
+    public UserActionEvent(int type, Object obj1, Object obj2) {
         this.type = type;
         this.obj1 = obj1;
         this.obj2 = obj2;

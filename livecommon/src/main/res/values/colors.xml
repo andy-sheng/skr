@@ -39,6 +39,11 @@
 
     <color name="color_ffaa00">#FFAA00</color>
     <color name="color_ff7700">#FF7700</color>
+    <color name="color_f0d388">#f0d388</color>
+    <color name="color_ff879d">#ff879d</color>
+    <color name="color_7eeeff">#7eeeff</color>
+    <color name="color_at_comment">#bef194</color>
+    <color name="noble_comment_nick_color">#FFEA4C</color>
 
     <color name="outer_stroketextview">#8df9ff</color>
     <!-- 礼物连送数字的变化 -->

@@ -19,9 +19,8 @@
 *************************************************************************/
 // wiki地址： http://wiki.n.miui.com/pages/viewpage.action?pageId=18999640
 
-package com.wali.live.proto;
+package com.wali.live.proto.User;
 
-option java_package = "com.wali.live.proto";
 option java_outer_classname = "UserProto";
 
 //商铺类型用户的扩展信息
@@ -66,7 +65,19 @@ message PersonalInfo {
     optional bool vip_disable = 30; //财富等级是否被冻结
     optional bool vip_hidden = 31; //是否VIP隐身
     optional bool is_live = 32; //是否正在直播
+    optional ZhiboExt zhibo_ext = 38; //直播用户扩展信息
 }
+
+///////////////////////这里有历史原因米聊和直播共用pb所以32 到38之间有米聊字段暂时不需要，没加入/////////////
+message ZhiboExt {
+    optional UserNobleInfo noble_info = 1;
+}
+
+message UserNobleInfo {
+    required uint32 nobleLevel = 1; //贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 message PersonalData {
     required uint64 zuid = 1;
     optional uint32 mliveTicketNum = 9; //星票数
@@ -78,6 +89,8 @@ message PersonalData {
     optional uint32 diamondNum = 15; //钻石数
     optional bytes user_eco_attr = 16; //用户的经济金融属性
     optional uint32 usable_mibi_ticket_cnt = 17; //可用米币星票数量
+
+    optional bytes gcoin_user_eco_attr = 19;//金币余额，GetOwnInfoReq 设置为true可拉取，默认为false
 }
 
 message UserEcoAttr {
@@ -102,6 +115,7 @@ message GetUserInfoByIdRsp {
 message GetOwnInfoReq {
     required uint64 zuid = 1;
     optional bool getLiveInfo = 2 [default = true]; //是否拉取直播回放数、直播URL、直播roomid等直播房间信息，在一些用不到房间信息的调用入口请传false
+    optional bool getGcoinInfo=3 [default=false];//是否拉取金币信息,默认fals
 }
 
 message GetOwnInfoRsp {
@@ -114,6 +128,7 @@ message GetOwnInfoRsp {
     repeated Medal user_card_medal = 10;
     optional bool need_bind_phone = 11; // 是否需要绑定手机号 true 需要绑定弹窗 false 不需要弹窗
     optional string phoneNum = 12 [deprecated = true]; // 绑定的手机号码 新版废弃 移植到GetBindPhoneNumInfoReq
+    optional Medal user_nobel_mmedal = 13;
 }
 
 message Medal {
@@ -148,6 +163,7 @@ message GetHomepageResp {
     repeated Medal before_nickname_medal = 9;
     repeated Medal after_nickname_medal = 10;
     repeated Medal user_card_medal = 11;
+    optional Medal user_noble_medal = 13;
 }
 
 //上传设置
@@ -426,4 +442,27 @@ message GetBindPhoneNumRsp {
     optional string err_msg = 2; //错误提示文案, 非空时显示，否则显示客户端默认文案
     optional uint32 bindStatus = 3; // 绑定状态 0 没绑定 1 已经绑定
     optional string bindPhoneNum = 4; // 如果已经绑定 则显示绑定的手机号码
+}
+//cmd:zhibo.user.applyzhimacertification
+message ApplyZhimaCertificationReq {
+    required uint64 zuid = 1; //用户ID
+    optional string certName = 2; //姓名
+    optional string certNo = 3; //身份证
+    optional string retUrl = 4; //回调url
+}
+
+message ApplyZhimCertificationRsp {
+    required uint32 retCode = 1;
+    optional string certUrl = 2; //zhima返回的url
+}
+//cmd:zhibo.user.queryzhimaCertification
+
+message QueryZhimaCertReq {
+    required uint64 zuid = 1;
+}
+
+message QueryZhimaCertRsp {
+    required uint32 retCode = 1;
+    optional bool pass = 2;
+    optional string failedReason = 3; //zhima返回的提示语
 }

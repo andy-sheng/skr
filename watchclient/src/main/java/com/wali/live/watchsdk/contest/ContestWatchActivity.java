@@ -25,6 +25,7 @@ import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.event.MiLinkEvent;
+import com.mi.live.data.push.collection.CommentCollection;
 import com.mi.live.data.push.model.contest.ContestAnswerMsgExt;
 import com.mi.live.data.push.model.contest.ContestQuestionMsgExt;
 import com.mi.live.data.push.model.contest.LastQuestionInfoModel;
@@ -198,7 +199,7 @@ public class ContestWatchActivity extends ContestComponentActivity implements Vi
     }
 
     private void initHelper() {
-        mRoomChatMsgManager = new LiveRoomChatMsgManager(LiveRoomChatMsgManager.DEFAULT_MAX_SIZE);
+        mRoomChatMsgManager = new LiveRoomChatMsgManager(CommentCollection.DEFAULT_MAX_SIZE);
     }
 
     private void initView() {

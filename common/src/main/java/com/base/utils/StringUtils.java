@@ -1,12 +1,14 @@
 package com.base.utils;
 
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 
 import com.base.global.GlobalData;
+import com.base.log.MyLog;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -17,6 +19,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtils {
     public static CharSequence getGettingString(String str, int dotCount) {
@@ -525,5 +529,23 @@ public class StringUtils {
         } catch (final UnsupportedEncodingException e) {
             return s.getBytes();
         }
+    }
+
+    private static final Pattern sAtPattern = Pattern.compile("@<(\\d+)>");
+    public static long getAtTargetUserId(@Nullable String body) {
+        if (TextUtils.isEmpty(body)) {
+            return 0;
+        }
+        Matcher matcher = sAtPattern.matcher(body);
+        if (matcher.find()) {
+            String atTargetUserId = matcher.group(1);
+            try {
+                return Long.parseLong(atTargetUserId);
+            } catch (Exception e) {
+                MyLog.e("StringUtils", "parse Long fail, str:" + matcher.group(1));
+                return 0;
+            }
+        }
+        return 0;
     }
 }

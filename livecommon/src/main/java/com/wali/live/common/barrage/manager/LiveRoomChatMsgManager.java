@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
-import com.live.module.common.R;
+import com.mi.live.data.R;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.preference.MLPreferenceUtils;
@@ -14,14 +14,13 @@ import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.push.collection.CommentCollection;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
-import com.mi.live.data.push.model.GlobalRoomMsgExt;
+import com.mi.live.data.repository.model.GroupMemType;
 import com.mi.live.data.room.model.FansPrivilegeModel;
 import com.mi.live.data.user.User;
 import com.wali.live.common.barrage.event.CommentRefreshEvent;
 import com.wali.live.common.model.CommentModel;
 import com.wali.live.common.smiley.SmileyParser;
 import com.wali.live.event.EventClass;
-import com.wali.live.proto.VFansCommonProto;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -32,6 +31,8 @@ import java.util.List;
 import rx.Observable;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
+
+import static com.mi.live.data.push.model.BarrageMsg.INNER_GLOBAL_VFAN;
 
 /**
  * @module com.wali.live.video.widget
@@ -237,7 +238,7 @@ public class LiveRoomChatMsgManager {
      * @param anchorId
      * @param pkExt
      */
-    public void sendBarrageMessageAsync(String msgBody, int msgType, String roomid, long anchorId, BarrageMsg.PkMessageExt pkExt, BarrageMsg.MsgExt ext, GlobalRoomMsgExt globalRoomMessageExt) {
+    public void sendBarrageMessageAsync(String msgBody, int msgType, String roomid, long anchorId, BarrageMsg.PkMessageExt pkExt, BarrageMsg.MsgExt ext, BarrageMsg.GlobalRoomMessageExt globalRoomMessageExt) {
         MyLog.d(TAG, "sendBarrageMessageAsync");
         if (MyUserInfoManager.getInstance().getLevel() == 0) {
             MyLog.d(TAG, "user level is zero, vipLevel:" + MyUserInfoManager.getInstance().getVipLevel());
@@ -257,7 +258,7 @@ public class LiveRoomChatMsgManager {
 
     @NonNull
     public BarrageMsg getBarrageMsg(int msgType, String roomid, long anchorId, BarrageMsg.PkMessageExt pkExt,
-                                    BarrageMsg.MsgExt ext, GlobalRoomMsgExt globalRoomMsgExt,
+                                    BarrageMsg.MsgExt ext, BarrageMsg.GlobalRoomMessageExt globalRoomMsgExt,
                                     String globalMes, int vipLevel, boolean isVipForzen) {
         BarrageMsg msg = new BarrageMsg();
         msg.setMsgType(msgType);
@@ -288,7 +289,7 @@ public class LiveRoomChatMsgManager {
         }
 
         if (globalRoomMsgExt != null) {
-            msg.setGlobalRoomMsgExt(globalRoomMsgExt);
+            msg.setGlobalRoomMessageExt(globalRoomMsgExt);
         }
 
         msg.setRedName(MyUserInfoManager.getInstance().isRedName());
@@ -302,24 +303,27 @@ public class LiveRoomChatMsgManager {
 
     //管理员飘屏或付费飘屏
     public void sendFlyBarrageMessageAsync(String body, String liveId, long anchorId, int flyBarrageType,
-                                           BarrageMsg.PkMessageExt pkExt, FansPrivilegeModel fansPrivilegeModel) {
-        BarrageMsg.GiftMsgExt msgExt = new BarrageMsg.GiftMsgExt();
-        msgExt.msgBody = SmileyParser.getInstance().convertString(body, SmileyParser.TYPE_LOCAL_TO_GLOBAL).toString();
+                                           BarrageMsg.PkMessageExt pkExt, FansPrivilegeModel vfansPrivilegeModel) {
+        BarrageMsg.GlobalRoomMessageExt globalRoomMessageExt = getGlobalRoomMessageExt(flyBarrageType);
 
-        GlobalRoomMsgExt globalRoomMsgExt = new GlobalRoomMsgExt();
-        GlobalRoomMsgExt.BaseRoomMessageExt flyTypeExt = new GlobalRoomMsgExt.BaseRoomMessageExt();
-        flyTypeExt.setType(flyBarrageType);
-        globalRoomMsgExt.addMsgExt(flyTypeExt);
+        if (vfansPrivilegeModel != null && vfansPrivilegeModel.getMemType() != GroupMemType.GROUP_MEM_TYPE_NONE) {
 
-        if (fansPrivilegeModel != null && fansPrivilegeModel.getMemType() != VFansCommonProto.GroupMemType.NONE.getNumber()) {
-            GlobalRoomMsgExt.FansMemberMsgExt fansMemberMsgExt = new GlobalRoomMsgExt.FansMemberMsgExt();
-            fansMemberMsgExt.setMedalValue(fansPrivilegeModel.getMedal());
-            fansMemberMsgExt.setVipExpire(System.currentTimeMillis() > fansPrivilegeModel.getExpireTime() * 1000);
-            fansMemberMsgExt.setPetLevel(fansPrivilegeModel.getPetLevel());
-            globalRoomMsgExt.addMsgExt(fansMemberMsgExt);
+            BarrageMsg.InnerGlobalRoomMessageExt ext = new BarrageMsg.InnerGlobalRoomMessageExt();
+            ext.setType(INNER_GLOBAL_VFAN);
+            BarrageMsg.VFansMemberBriefInfo vFansMemberBriefInfo = new BarrageMsg.VFansMemberBriefInfo();
+            vFansMemberBriefInfo.setPetLevel(vfansPrivilegeModel.getPetLevel());
+            vFansMemberBriefInfo.setVipExpire(System.currentTimeMillis() > vfansPrivilegeModel.getExpireTime() * 1000);
+            vFansMemberBriefInfo.setMedalValue(vfansPrivilegeModel.getMedal());
+
+            ext.setvFansMemberBriefInfo(vFansMemberBriefInfo);
+            globalRoomMessageExt.getInnerGlobalRoomMessageExtList().add(ext);
         }
 
-        sendBarrageMessageAsync(body, BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE, liveId, anchorId, pkExt, msgExt, globalRoomMsgExt);
+        BarrageMsg.GiftMsgExt msgExt = new BarrageMsg.GiftMsgExt();
+        msgExt.msgBody = SmileyParser.getInstance().convertString(body, SmileyParser.TYPE_LOCAL_TO_GLOBAL).toString();
+        MyLog.w(TAG, "sendFlyBarrageMessageAsync 2");
+
+        sendBarrageMessageAsync(body, BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE, liveId, anchorId, pkExt, msgExt, globalRoomMessageExt);
     }
 
 
@@ -330,6 +334,16 @@ public class LiveRoomChatMsgManager {
         sendBarrageMessageAsync(GlobalData.app().getString(R.string.live_start_light), BarrageMsgType.B_MSG_TYPE_LIKE, liveId, anchorId, null, msgExt, null);
     }
 
+    @NonNull
+    public BarrageMsg.GlobalRoomMessageExt getGlobalRoomMessageExt(int flyBarrageType) {
+        BarrageMsg.GlobalRoomMessageExt globalRoomMessageExt = new BarrageMsg.GlobalRoomMessageExt();
+        BarrageMsg.InnerGlobalRoomMessageExt innerGlobalRoomMessageExt = new BarrageMsg.InnerGlobalRoomMessageExt();
+        innerGlobalRoomMessageExt.setType(flyBarrageType);
+        ArrayList<BarrageMsg.InnerGlobalRoomMessageExt> innerGlobalRoomMessageExtList = new ArrayList<>();
+        innerGlobalRoomMessageExtList.add(innerGlobalRoomMessageExt);
+        globalRoomMessageExt.setInnerGlobalRoomMessageExtList(innerGlobalRoomMessageExtList);
+        return globalRoomMessageExt;
+    }
 
     //只有自己能看到的提示消息
     public void sendLocalSystemMsg(String name, String message, String liveId, long anchorId) {

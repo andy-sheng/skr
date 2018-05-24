@@ -20,4 +20,10 @@
     <string name="sixin_conversation_photo">Image</string>
     <string name="sixin_conversation_vedio">Video</string>
     <string name="i_sent">I\'ve sent</string>
+    <string name="barrage_nobel_nickname">小米直播贵族</string>
+    <string name="live_start_light">我点亮了</string>
+    <string name="barrage_share_body">分享了直播</string>
+    <string name="high_level_brrage_level_upgrade">升至%s级</string>
+    <string name="brrage_level_upgrade" formatted="false">%s升至%s級,擁有更多特權</string>
+    <string name="barrage_enter_live_by_near_body">通过附近发现了主播~</string>
 </resources>

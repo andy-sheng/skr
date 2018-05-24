@@ -9,11 +9,9 @@ import java.util.List;
  * @moudle 域名预解析
  */
 public class DomainListUpdateEvent {
-    public List<String> domainList = new ArrayList<>();
     public List<String> domainPortList = new ArrayList<>();
 
-    public DomainListUpdateEvent(List<String> domainList, List<String> domainPortList) {
-        this.domainList = domainList;
+    public DomainListUpdateEvent(List<String> domainPortList) {
         this.domainPortList = domainPortList;
     }
 }

@@ -308,4 +308,6 @@
 
     <string name="gift_packet_text">背包</string>
     <string name="pkt_gift_detail">詳細資料</string>
+    <string name="copy_link">複製連結</string>
+    <string name="copied_to_clipboard">已複製到剪貼簿</string>
 </resources>

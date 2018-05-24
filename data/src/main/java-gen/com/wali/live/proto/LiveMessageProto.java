@@ -16881,6 +16881,443 @@ public final class LiveMessageProto {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.LikeMessage)
   }
 
+  public interface AnchorDiscountAgingOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.AnchorDiscountAging)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 leftTime = 1;</code>
+     *
+     * <pre>
+     *party剩余时间 毫秒数
+     * </pre>
+     */
+    boolean hasLeftTime();
+    /**
+     * <code>optional uint64 leftTime = 1;</code>
+     *
+     * <pre>
+     *party剩余时间 毫秒数
+     * </pre>
+     */
+    long getLeftTime();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.AnchorDiscountAging}
+   *
+   * <pre>
+   * 半价礼物活动开始 msgType = 901 
+   * </pre>
+   */
+  public static final class AnchorDiscountAging extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.AnchorDiscountAging)
+      AnchorDiscountAgingOrBuilder {
+    // Use AnchorDiscountAging.newBuilder() to construct.
+    private AnchorDiscountAging(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private AnchorDiscountAging(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final AnchorDiscountAging defaultInstance;
+    public static AnchorDiscountAging getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public AnchorDiscountAging getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private AnchorDiscountAging(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              leftTime_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_AnchorDiscountAging_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_AnchorDiscountAging_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveMessageProto.AnchorDiscountAging.class, com.wali.live.proto.LiveMessageProto.AnchorDiscountAging.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<AnchorDiscountAging> PARSER =
+        new com.google.protobuf.AbstractParser<AnchorDiscountAging>() {
+      public AnchorDiscountAging parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new AnchorDiscountAging(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<AnchorDiscountAging> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int LEFTTIME_FIELD_NUMBER = 1;
+    private long leftTime_;
+    /**
+     * <code>optional uint64 leftTime = 1;</code>
+     *
+     * <pre>
+     *party剩余时间 毫秒数
+     * </pre>
+     */
+    public boolean hasLeftTime() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint64 leftTime = 1;</code>
+     *
+     * <pre>
+     *party剩余时间 毫秒数
+     * </pre>
+     */
+    public long getLeftTime() {
+      return leftTime_;
+    }
+
+    private void initFields() {
+      leftTime_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, leftTime_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, leftTime_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveMessageProto.AnchorDiscountAging parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.AnchorDiscountAging parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.AnchorDiscountAging parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.AnchorDiscountAging parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.AnchorDiscountAging parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.AnchorDiscountAging parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.AnchorDiscountAging parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.AnchorDiscountAging parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.AnchorDiscountAging parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.AnchorDiscountAging parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveMessageProto.AnchorDiscountAging prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.AnchorDiscountAging}
+     *
+     * <pre>
+     * 半价礼物活动开始 msgType = 901 
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.AnchorDiscountAging)
+        com.wali.live.proto.LiveMessageProto.AnchorDiscountAgingOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_AnchorDiscountAging_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_AnchorDiscountAging_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveMessageProto.AnchorDiscountAging.class, com.wali.live.proto.LiveMessageProto.AnchorDiscountAging.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveMessageProto.AnchorDiscountAging.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        leftTime_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_AnchorDiscountAging_descriptor;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.AnchorDiscountAging getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveMessageProto.AnchorDiscountAging.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveMessageProto.AnchorDiscountAging build() {
+        com.wali.live.proto.LiveMessageProto.AnchorDiscountAging result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.AnchorDiscountAging buildPartial() {
+        com.wali.live.proto.LiveMessageProto.AnchorDiscountAging result = new com.wali.live.proto.LiveMessageProto.AnchorDiscountAging(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.leftTime_ = leftTime_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveMessageProto.AnchorDiscountAging) {
+          return mergeFrom((com.wali.live.proto.LiveMessageProto.AnchorDiscountAging)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveMessageProto.AnchorDiscountAging other) {
+        if (other == com.wali.live.proto.LiveMessageProto.AnchorDiscountAging.getDefaultInstance()) return this;
+        if (other.hasLeftTime()) {
+          setLeftTime(other.getLeftTime());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveMessageProto.AnchorDiscountAging parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveMessageProto.AnchorDiscountAging) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long leftTime_ ;
+      /**
+       * <code>optional uint64 leftTime = 1;</code>
+       *
+       * <pre>
+       *party剩余时间 毫秒数
+       * </pre>
+       */
+      public boolean hasLeftTime() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint64 leftTime = 1;</code>
+       *
+       * <pre>
+       *party剩余时间 毫秒数
+       * </pre>
+       */
+      public long getLeftTime() {
+        return leftTime_;
+      }
+      /**
+       * <code>optional uint64 leftTime = 1;</code>
+       *
+       * <pre>
+       *party剩余时间 毫秒数
+       * </pre>
+       */
+      public Builder setLeftTime(long value) {
+        bitField0_ |= 0x00000001;
+        leftTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 leftTime = 1;</code>
+       *
+       * <pre>
+       *party剩余时间 毫秒数
+       * </pre>
+       */
+      public Builder clearLeftTime() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        leftTime_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.AnchorDiscountAging)
+    }
+
+    static {
+      defaultInstance = new AnchorDiscountAging(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.AnchorDiscountAging)
+  }
+
   public interface GiftMessageOrBuilder extends
       // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GiftMessage)
       com.google.protobuf.MessageOrBuilder {
@@ -17193,6 +17630,57 @@ public final class LiveMessageProto {
      * </pre>
      */
     int getBatchCount();
+
+    /**
+     * <code>optional uint32 popularity = 16;</code>
+     *
+     * <pre>
+     * 人气值
+     * </pre>
+     */
+    boolean hasPopularity();
+    /**
+     * <code>optional uint32 popularity = 16;</code>
+     *
+     * <pre>
+     * 人气值
+     * </pre>
+     */
+    int getPopularity();
+
+    /**
+     * <code>optional uint64 popularity_timestamp = 17;</code>
+     *
+     * <pre>
+     * 人气值时间戳
+     * </pre>
+     */
+    boolean hasPopularityTimestamp();
+    /**
+     * <code>optional uint64 popularity_timestamp = 17;</code>
+     *
+     * <pre>
+     * 人气值时间戳
+     * </pre>
+     */
+    long getPopularityTimestamp();
+
+    /**
+     * <code>optional uint32 incr_popularity = 19;</code>
+     *
+     * <pre>
+     * 本次增长的人气值
+     * </pre>
+     */
+    boolean hasIncrPopularity();
+    /**
+     * <code>optional uint32 incr_popularity = 19;</code>
+     *
+     * <pre>
+     * 本次增长的人气值
+     * </pre>
+     */
+    int getIncrPopularity();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.GiftMessage}
@@ -17329,6 +17817,21 @@ public final class LiveMessageProto {
             case 120: {
               bitField0_ |= 0x00004000;
               batchCount_ = input.readUInt32();
+              break;
+            }
+            case 128: {
+              bitField0_ |= 0x00008000;
+              popularity_ = input.readUInt32();
+              break;
+            }
+            case 136: {
+              bitField0_ |= 0x00010000;
+              popularityTimestamp_ = input.readUInt64();
+              break;
+            }
+            case 152: {
+              bitField0_ |= 0x00020000;
+              incrPopularity_ = input.readUInt32();
               break;
             }
           }
@@ -17902,6 +18405,75 @@ public final class LiveMessageProto {
       return batchCount_;
     }
 
+    public static final int POPULARITY_FIELD_NUMBER = 16;
+    private int popularity_;
+    /**
+     * <code>optional uint32 popularity = 16;</code>
+     *
+     * <pre>
+     * 人气值
+     * </pre>
+     */
+    public boolean hasPopularity() {
+      return ((bitField0_ & 0x00008000) == 0x00008000);
+    }
+    /**
+     * <code>optional uint32 popularity = 16;</code>
+     *
+     * <pre>
+     * 人气值
+     * </pre>
+     */
+    public int getPopularity() {
+      return popularity_;
+    }
+
+    public static final int POPULARITY_TIMESTAMP_FIELD_NUMBER = 17;
+    private long popularityTimestamp_;
+    /**
+     * <code>optional uint64 popularity_timestamp = 17;</code>
+     *
+     * <pre>
+     * 人气值时间戳
+     * </pre>
+     */
+    public boolean hasPopularityTimestamp() {
+      return ((bitField0_ & 0x00010000) == 0x00010000);
+    }
+    /**
+     * <code>optional uint64 popularity_timestamp = 17;</code>
+     *
+     * <pre>
+     * 人气值时间戳
+     * </pre>
+     */
+    public long getPopularityTimestamp() {
+      return popularityTimestamp_;
+    }
+
+    public static final int INCR_POPULARITY_FIELD_NUMBER = 19;
+    private int incrPopularity_;
+    /**
+     * <code>optional uint32 incr_popularity = 19;</code>
+     *
+     * <pre>
+     * 本次增长的人气值
+     * </pre>
+     */
+    public boolean hasIncrPopularity() {
+      return ((bitField0_ & 0x00020000) == 0x00020000);
+    }
+    /**
+     * <code>optional uint32 incr_popularity = 19;</code>
+     *
+     * <pre>
+     * 本次增长的人气值
+     * </pre>
+     */
+    public int getIncrPopularity() {
+      return incrPopularity_;
+    }
+
     private void initFields() {
       giftId_ = 0;
       giftName_ = "";
@@ -17918,6 +18490,9 @@ public final class LiveMessageProto {
       orderId_ = "";
       liveStreamUrl_ = "";
       batchCount_ = 0;
+      popularity_ = 0;
+      popularityTimestamp_ = 0L;
+      incrPopularity_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -17976,6 +18551,15 @@ public final class LiveMessageProto {
       }
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
         output.writeUInt32(15, batchCount_);
+      }
+      if (((bitField0_ & 0x00008000) == 0x00008000)) {
+        output.writeUInt32(16, popularity_);
+      }
+      if (((bitField0_ & 0x00010000) == 0x00010000)) {
+        output.writeUInt64(17, popularityTimestamp_);
+      }
+      if (((bitField0_ & 0x00020000) == 0x00020000)) {
+        output.writeUInt32(19, incrPopularity_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -18045,6 +18629,18 @@ public final class LiveMessageProto {
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(15, batchCount_);
+      }
+      if (((bitField0_ & 0x00008000) == 0x00008000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(16, popularity_);
+      }
+      if (((bitField0_ & 0x00010000) == 0x00010000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(17, popularityTimestamp_);
+      }
+      if (((bitField0_ & 0x00020000) == 0x00020000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(19, incrPopularity_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -18197,6 +18793,12 @@ public final class LiveMessageProto {
         bitField0_ = (bitField0_ & ~0x00002000);
         batchCount_ = 0;
         bitField0_ = (bitField0_ & ~0x00004000);
+        popularity_ = 0;
+        bitField0_ = (bitField0_ & ~0x00008000);
+        popularityTimestamp_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00010000);
+        incrPopularity_ = 0;
+        bitField0_ = (bitField0_ & ~0x00020000);
         return this;
       }
 
@@ -18285,6 +18887,18 @@ public final class LiveMessageProto {
           to_bitField0_ |= 0x00004000;
         }
         result.batchCount_ = batchCount_;
+        if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
+          to_bitField0_ |= 0x00008000;
+        }
+        result.popularity_ = popularity_;
+        if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
+          to_bitField0_ |= 0x00010000;
+        }
+        result.popularityTimestamp_ = popularityTimestamp_;
+        if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
+          to_bitField0_ |= 0x00020000;
+        }
+        result.incrPopularity_ = incrPopularity_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -18357,6 +18971,15 @@ public final class LiveMessageProto {
         }
         if (other.hasBatchCount()) {
           setBatchCount(other.getBatchCount());
+        }
+        if (other.hasPopularity()) {
+          setPopularity(other.getPopularity());
+        }
+        if (other.hasPopularityTimestamp()) {
+          setPopularityTimestamp(other.getPopularityTimestamp());
+        }
+        if (other.hasIncrPopularity()) {
+          setIncrPopularity(other.getIncrPopularity());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -19413,6 +20036,150 @@ public final class LiveMessageProto {
       public Builder clearBatchCount() {
         bitField0_ = (bitField0_ & ~0x00004000);
         batchCount_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int popularity_ ;
+      /**
+       * <code>optional uint32 popularity = 16;</code>
+       *
+       * <pre>
+       * 人气值
+       * </pre>
+       */
+      public boolean hasPopularity() {
+        return ((bitField0_ & 0x00008000) == 0x00008000);
+      }
+      /**
+       * <code>optional uint32 popularity = 16;</code>
+       *
+       * <pre>
+       * 人气值
+       * </pre>
+       */
+      public int getPopularity() {
+        return popularity_;
+      }
+      /**
+       * <code>optional uint32 popularity = 16;</code>
+       *
+       * <pre>
+       * 人气值
+       * </pre>
+       */
+      public Builder setPopularity(int value) {
+        bitField0_ |= 0x00008000;
+        popularity_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 popularity = 16;</code>
+       *
+       * <pre>
+       * 人气值
+       * </pre>
+       */
+      public Builder clearPopularity() {
+        bitField0_ = (bitField0_ & ~0x00008000);
+        popularity_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private long popularityTimestamp_ ;
+      /**
+       * <code>optional uint64 popularity_timestamp = 17;</code>
+       *
+       * <pre>
+       * 人气值时间戳
+       * </pre>
+       */
+      public boolean hasPopularityTimestamp() {
+        return ((bitField0_ & 0x00010000) == 0x00010000);
+      }
+      /**
+       * <code>optional uint64 popularity_timestamp = 17;</code>
+       *
+       * <pre>
+       * 人气值时间戳
+       * </pre>
+       */
+      public long getPopularityTimestamp() {
+        return popularityTimestamp_;
+      }
+      /**
+       * <code>optional uint64 popularity_timestamp = 17;</code>
+       *
+       * <pre>
+       * 人气值时间戳
+       * </pre>
+       */
+      public Builder setPopularityTimestamp(long value) {
+        bitField0_ |= 0x00010000;
+        popularityTimestamp_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 popularity_timestamp = 17;</code>
+       *
+       * <pre>
+       * 人气值时间戳
+       * </pre>
+       */
+      public Builder clearPopularityTimestamp() {
+        bitField0_ = (bitField0_ & ~0x00010000);
+        popularityTimestamp_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int incrPopularity_ ;
+      /**
+       * <code>optional uint32 incr_popularity = 19;</code>
+       *
+       * <pre>
+       * 本次增长的人气值
+       * </pre>
+       */
+      public boolean hasIncrPopularity() {
+        return ((bitField0_ & 0x00020000) == 0x00020000);
+      }
+      /**
+       * <code>optional uint32 incr_popularity = 19;</code>
+       *
+       * <pre>
+       * 本次增长的人气值
+       * </pre>
+       */
+      public int getIncrPopularity() {
+        return incrPopularity_;
+      }
+      /**
+       * <code>optional uint32 incr_popularity = 19;</code>
+       *
+       * <pre>
+       * 本次增长的人气值
+       * </pre>
+       */
+      public Builder setIncrPopularity(int value) {
+        bitField0_ |= 0x00020000;
+        incrPopularity_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 incr_popularity = 19;</code>
+       *
+       * <pre>
+       * 本次增长的人气值
+       * </pre>
+       */
+      public Builder clearIncrPopularity() {
+        bitField0_ = (bitField0_ & ~0x00020000);
+        incrPopularity_ = 0;
         onChanged();
         return this;
       }
@@ -23672,6 +24439,2292 @@ public final class LiveMessageProto {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.PKEndMessage)
   }
 
+  public interface MicBeginMessageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.MicBeginMessage)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     *
+     * <pre>
+     *主播用户id
+     * </pre>
+     */
+    boolean hasZuid();
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     *
+     * <pre>
+     *主播用户id
+     * </pre>
+     */
+    long getZuid();
+
+    /**
+     * <code>required string liveId = 2;</code>
+     *
+     * <pre>
+     *房间号
+     * </pre>
+     */
+    boolean hasLiveId();
+    /**
+     * <code>required string liveId = 2;</code>
+     *
+     * <pre>
+     *房间号
+     * </pre>
+     */
+    java.lang.String getLiveId();
+    /**
+     * <code>required string liveId = 2;</code>
+     *
+     * <pre>
+     *房间号
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getLiveIdBytes();
+
+    /**
+     * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+     *
+     * <pre>
+     *连麦的信息
+     * </pre>
+     */
+    boolean hasMicInfo();
+    /**
+     * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+     *
+     * <pre>
+     *连麦的信息
+     * </pre>
+     */
+    com.wali.live.proto.LiveCommonProto.MicInfo getMicInfo();
+    /**
+     * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+     *
+     * <pre>
+     *连麦的信息
+     * </pre>
+     */
+    com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder getMicInfoOrBuilder();
+
+    /**
+     * <code>optional bool enableViewerMic = 4;</code>
+     *
+     * <pre>
+     *是否允许观众端发起连麦（true：允许）
+     * </pre>
+     */
+    boolean hasEnableViewerMic();
+    /**
+     * <code>optional bool enableViewerMic = 4;</code>
+     *
+     * <pre>
+     *是否允许观众端发起连麦（true：允许）
+     * </pre>
+     */
+    boolean getEnableViewerMic();
+
+    /**
+     * <code>optional uint32 type = 5;</code>
+     *
+     * <pre>
+     *0:主播与观众连麦 1：主播与主播连麦
+     * </pre>
+     */
+    boolean hasType();
+    /**
+     * <code>optional uint32 type = 5;</code>
+     *
+     * <pre>
+     *0:主播与观众连麦 1：主播与主播连麦
+     * </pre>
+     */
+    int getType();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.MicBeginMessage}
+   *
+   * <pre>
+   *mic开始消息
+   * </pre>
+   */
+  public static final class MicBeginMessage extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.MicBeginMessage)
+      MicBeginMessageOrBuilder {
+    // Use MicBeginMessage.newBuilder() to construct.
+    private MicBeginMessage(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private MicBeginMessage(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final MicBeginMessage defaultInstance;
+    public static MicBeginMessage getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public MicBeginMessage getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private MicBeginMessage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              zuid_ = input.readUInt64();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              liveId_ = bs;
+              break;
+            }
+            case 26: {
+              com.wali.live.proto.LiveCommonProto.MicInfo.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                subBuilder = micInfo_.toBuilder();
+              }
+              micInfo_ = input.readMessage(com.wali.live.proto.LiveCommonProto.MicInfo.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(micInfo_);
+                micInfo_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000004;
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              enableViewerMic_ = input.readBool();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              type_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_MicBeginMessage_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_MicBeginMessage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveMessageProto.MicBeginMessage.class, com.wali.live.proto.LiveMessageProto.MicBeginMessage.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<MicBeginMessage> PARSER =
+        new com.google.protobuf.AbstractParser<MicBeginMessage>() {
+      public MicBeginMessage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new MicBeginMessage(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<MicBeginMessage> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int ZUID_FIELD_NUMBER = 1;
+    private long zuid_;
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     *
+     * <pre>
+     *主播用户id
+     * </pre>
+     */
+    public boolean hasZuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     *
+     * <pre>
+     *主播用户id
+     * </pre>
+     */
+    public long getZuid() {
+      return zuid_;
+    }
+
+    public static final int LIVEID_FIELD_NUMBER = 2;
+    private java.lang.Object liveId_;
+    /**
+     * <code>required string liveId = 2;</code>
+     *
+     * <pre>
+     *房间号
+     * </pre>
+     */
+    public boolean hasLiveId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string liveId = 2;</code>
+     *
+     * <pre>
+     *房间号
+     * </pre>
+     */
+    public java.lang.String getLiveId() {
+      java.lang.Object ref = liveId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          liveId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string liveId = 2;</code>
+     *
+     * <pre>
+     *房间号
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getLiveIdBytes() {
+      java.lang.Object ref = liveId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        liveId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int MICINFO_FIELD_NUMBER = 3;
+    private com.wali.live.proto.LiveCommonProto.MicInfo micInfo_;
+    /**
+     * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+     *
+     * <pre>
+     *连麦的信息
+     * </pre>
+     */
+    public boolean hasMicInfo() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+     *
+     * <pre>
+     *连麦的信息
+     * </pre>
+     */
+    public com.wali.live.proto.LiveCommonProto.MicInfo getMicInfo() {
+      return micInfo_;
+    }
+    /**
+     * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+     *
+     * <pre>
+     *连麦的信息
+     * </pre>
+     */
+    public com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder getMicInfoOrBuilder() {
+      return micInfo_;
+    }
+
+    public static final int ENABLEVIEWERMIC_FIELD_NUMBER = 4;
+    private boolean enableViewerMic_;
+    /**
+     * <code>optional bool enableViewerMic = 4;</code>
+     *
+     * <pre>
+     *是否允许观众端发起连麦（true：允许）
+     * </pre>
+     */
+    public boolean hasEnableViewerMic() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional bool enableViewerMic = 4;</code>
+     *
+     * <pre>
+     *是否允许观众端发起连麦（true：允许）
+     * </pre>
+     */
+    public boolean getEnableViewerMic() {
+      return enableViewerMic_;
+    }
+
+    public static final int TYPE_FIELD_NUMBER = 5;
+    private int type_;
+    /**
+     * <code>optional uint32 type = 5;</code>
+     *
+     * <pre>
+     *0:主播与观众连麦 1：主播与主播连麦
+     * </pre>
+     */
+    public boolean hasType() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional uint32 type = 5;</code>
+     *
+     * <pre>
+     *0:主播与观众连麦 1：主播与主播连麦
+     * </pre>
+     */
+    public int getType() {
+      return type_;
+    }
+
+    private void initFields() {
+      zuid_ = 0L;
+      liveId_ = "";
+      micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
+      enableViewerMic_ = false;
+      type_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasZuid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasLiveId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasMicInfo()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getMicInfo().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, zuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getLiveIdBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeMessage(3, micInfo_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBool(4, enableViewerMic_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeUInt32(5, type_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, zuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getLiveIdBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, micInfo_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, enableViewerMic_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(5, type_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveMessageProto.MicBeginMessage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.MicBeginMessage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.MicBeginMessage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.MicBeginMessage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.MicBeginMessage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.MicBeginMessage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.MicBeginMessage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.MicBeginMessage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.MicBeginMessage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.MicBeginMessage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveMessageProto.MicBeginMessage prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.MicBeginMessage}
+     *
+     * <pre>
+     *mic开始消息
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.MicBeginMessage)
+        com.wali.live.proto.LiveMessageProto.MicBeginMessageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_MicBeginMessage_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_MicBeginMessage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveMessageProto.MicBeginMessage.class, com.wali.live.proto.LiveMessageProto.MicBeginMessage.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveMessageProto.MicBeginMessage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getMicInfoFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        zuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        liveId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        if (micInfoBuilder_ == null) {
+          micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
+        } else {
+          micInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        enableViewerMic_ = false;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        type_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_MicBeginMessage_descriptor;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.MicBeginMessage getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveMessageProto.MicBeginMessage.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveMessageProto.MicBeginMessage build() {
+        com.wali.live.proto.LiveMessageProto.MicBeginMessage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.MicBeginMessage buildPartial() {
+        com.wali.live.proto.LiveMessageProto.MicBeginMessage result = new com.wali.live.proto.LiveMessageProto.MicBeginMessage(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.zuid_ = zuid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.liveId_ = liveId_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        if (micInfoBuilder_ == null) {
+          result.micInfo_ = micInfo_;
+        } else {
+          result.micInfo_ = micInfoBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.enableViewerMic_ = enableViewerMic_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.type_ = type_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveMessageProto.MicBeginMessage) {
+          return mergeFrom((com.wali.live.proto.LiveMessageProto.MicBeginMessage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveMessageProto.MicBeginMessage other) {
+        if (other == com.wali.live.proto.LiveMessageProto.MicBeginMessage.getDefaultInstance()) return this;
+        if (other.hasZuid()) {
+          setZuid(other.getZuid());
+        }
+        if (other.hasLiveId()) {
+          bitField0_ |= 0x00000002;
+          liveId_ = other.liveId_;
+          onChanged();
+        }
+        if (other.hasMicInfo()) {
+          mergeMicInfo(other.getMicInfo());
+        }
+        if (other.hasEnableViewerMic()) {
+          setEnableViewerMic(other.getEnableViewerMic());
+        }
+        if (other.hasType()) {
+          setType(other.getType());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasZuid()) {
+          
+          return false;
+        }
+        if (!hasLiveId()) {
+          
+          return false;
+        }
+        if (!hasMicInfo()) {
+          
+          return false;
+        }
+        if (!getMicInfo().isInitialized()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveMessageProto.MicBeginMessage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveMessageProto.MicBeginMessage) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long zuid_ ;
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       *
+       * <pre>
+       *主播用户id
+       * </pre>
+       */
+      public boolean hasZuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       *
+       * <pre>
+       *主播用户id
+       * </pre>
+       */
+      public long getZuid() {
+        return zuid_;
+      }
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       *
+       * <pre>
+       *主播用户id
+       * </pre>
+       */
+      public Builder setZuid(long value) {
+        bitField0_ |= 0x00000001;
+        zuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       *
+       * <pre>
+       *主播用户id
+       * </pre>
+       */
+      public Builder clearZuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        zuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object liveId_ = "";
+      /**
+       * <code>required string liveId = 2;</code>
+       *
+       * <pre>
+       *房间号
+       * </pre>
+       */
+      public boolean hasLiveId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string liveId = 2;</code>
+       *
+       * <pre>
+       *房间号
+       * </pre>
+       */
+      public java.lang.String getLiveId() {
+        java.lang.Object ref = liveId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            liveId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string liveId = 2;</code>
+       *
+       * <pre>
+       *房间号
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getLiveIdBytes() {
+        java.lang.Object ref = liveId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          liveId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string liveId = 2;</code>
+       *
+       * <pre>
+       *房间号
+       * </pre>
+       */
+      public Builder setLiveId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        liveId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string liveId = 2;</code>
+       *
+       * <pre>
+       *房间号
+       * </pre>
+       */
+      public Builder clearLiveId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        liveId_ = getDefaultInstance().getLiveId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string liveId = 2;</code>
+       *
+       * <pre>
+       *房间号
+       * </pre>
+       */
+      public Builder setLiveIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        liveId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.LiveCommonProto.MicInfo micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveCommonProto.MicInfo, com.wali.live.proto.LiveCommonProto.MicInfo.Builder, com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder> micInfoBuilder_;
+      /**
+       * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+       *
+       * <pre>
+       *连麦的信息
+       * </pre>
+       */
+      public boolean hasMicInfo() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+       *
+       * <pre>
+       *连麦的信息
+       * </pre>
+       */
+      public com.wali.live.proto.LiveCommonProto.MicInfo getMicInfo() {
+        if (micInfoBuilder_ == null) {
+          return micInfo_;
+        } else {
+          return micInfoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+       *
+       * <pre>
+       *连麦的信息
+       * </pre>
+       */
+      public Builder setMicInfo(com.wali.live.proto.LiveCommonProto.MicInfo value) {
+        if (micInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          micInfo_ = value;
+          onChanged();
+        } else {
+          micInfoBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+       *
+       * <pre>
+       *连麦的信息
+       * </pre>
+       */
+      public Builder setMicInfo(
+          com.wali.live.proto.LiveCommonProto.MicInfo.Builder builderForValue) {
+        if (micInfoBuilder_ == null) {
+          micInfo_ = builderForValue.build();
+          onChanged();
+        } else {
+          micInfoBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+       *
+       * <pre>
+       *连麦的信息
+       * </pre>
+       */
+      public Builder mergeMicInfo(com.wali.live.proto.LiveCommonProto.MicInfo value) {
+        if (micInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004) &&
+              micInfo_ != com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance()) {
+            micInfo_ =
+              com.wali.live.proto.LiveCommonProto.MicInfo.newBuilder(micInfo_).mergeFrom(value).buildPartial();
+          } else {
+            micInfo_ = value;
+          }
+          onChanged();
+        } else {
+          micInfoBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+       *
+       * <pre>
+       *连麦的信息
+       * </pre>
+       */
+      public Builder clearMicInfo() {
+        if (micInfoBuilder_ == null) {
+          micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
+          onChanged();
+        } else {
+          micInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+      /**
+       * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+       *
+       * <pre>
+       *连麦的信息
+       * </pre>
+       */
+      public com.wali.live.proto.LiveCommonProto.MicInfo.Builder getMicInfoBuilder() {
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return getMicInfoFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+       *
+       * <pre>
+       *连麦的信息
+       * </pre>
+       */
+      public com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder getMicInfoOrBuilder() {
+        if (micInfoBuilder_ != null) {
+          return micInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return micInfo_;
+        }
+      }
+      /**
+       * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+       *
+       * <pre>
+       *连麦的信息
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveCommonProto.MicInfo, com.wali.live.proto.LiveCommonProto.MicInfo.Builder, com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder> 
+          getMicInfoFieldBuilder() {
+        if (micInfoBuilder_ == null) {
+          micInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.LiveCommonProto.MicInfo, com.wali.live.proto.LiveCommonProto.MicInfo.Builder, com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder>(
+                  getMicInfo(),
+                  getParentForChildren(),
+                  isClean());
+          micInfo_ = null;
+        }
+        return micInfoBuilder_;
+      }
+
+      private boolean enableViewerMic_ ;
+      /**
+       * <code>optional bool enableViewerMic = 4;</code>
+       *
+       * <pre>
+       *是否允许观众端发起连麦（true：允许）
+       * </pre>
+       */
+      public boolean hasEnableViewerMic() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional bool enableViewerMic = 4;</code>
+       *
+       * <pre>
+       *是否允许观众端发起连麦（true：允许）
+       * </pre>
+       */
+      public boolean getEnableViewerMic() {
+        return enableViewerMic_;
+      }
+      /**
+       * <code>optional bool enableViewerMic = 4;</code>
+       *
+       * <pre>
+       *是否允许观众端发起连麦（true：允许）
+       * </pre>
+       */
+      public Builder setEnableViewerMic(boolean value) {
+        bitField0_ |= 0x00000008;
+        enableViewerMic_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool enableViewerMic = 4;</code>
+       *
+       * <pre>
+       *是否允许观众端发起连麦（true：允许）
+       * </pre>
+       */
+      public Builder clearEnableViewerMic() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        enableViewerMic_ = false;
+        onChanged();
+        return this;
+      }
+
+      private int type_ ;
+      /**
+       * <code>optional uint32 type = 5;</code>
+       *
+       * <pre>
+       *0:主播与观众连麦 1：主播与主播连麦
+       * </pre>
+       */
+      public boolean hasType() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional uint32 type = 5;</code>
+       *
+       * <pre>
+       *0:主播与观众连麦 1：主播与主播连麦
+       * </pre>
+       */
+      public int getType() {
+        return type_;
+      }
+      /**
+       * <code>optional uint32 type = 5;</code>
+       *
+       * <pre>
+       *0:主播与观众连麦 1：主播与主播连麦
+       * </pre>
+       */
+      public Builder setType(int value) {
+        bitField0_ |= 0x00000010;
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 type = 5;</code>
+       *
+       * <pre>
+       *0:主播与观众连麦 1：主播与主播连麦
+       * </pre>
+       */
+      public Builder clearType() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        type_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.MicBeginMessage)
+    }
+
+    static {
+      defaultInstance = new MicBeginMessage(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.MicBeginMessage)
+  }
+
+  public interface MicEndMessageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.MicEndMessage)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     *
+     * <pre>
+     *主播用户id
+     * </pre>
+     */
+    boolean hasZuid();
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     *
+     * <pre>
+     *主播用户id
+     * </pre>
+     */
+    long getZuid();
+
+    /**
+     * <code>required string liveId = 2;</code>
+     *
+     * <pre>
+     *房间号
+     * </pre>
+     */
+    boolean hasLiveId();
+    /**
+     * <code>required string liveId = 2;</code>
+     *
+     * <pre>
+     *房间号
+     * </pre>
+     */
+    java.lang.String getLiveId();
+    /**
+     * <code>required string liveId = 2;</code>
+     *
+     * <pre>
+     *房间号
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getLiveIdBytes();
+
+    /**
+     * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+     *
+     * <pre>
+     *连麦的信息
+     * </pre>
+     */
+    boolean hasMicInfo();
+    /**
+     * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+     *
+     * <pre>
+     *连麦的信息
+     * </pre>
+     */
+    com.wali.live.proto.LiveCommonProto.MicInfo getMicInfo();
+    /**
+     * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+     *
+     * <pre>
+     *连麦的信息
+     * </pre>
+     */
+    com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder getMicInfoOrBuilder();
+
+    /**
+     * <code>optional bool enableViewerMic = 4;</code>
+     *
+     * <pre>
+     *是否允许观众端发起连麦（true：允许）
+     * </pre>
+     */
+    boolean hasEnableViewerMic();
+    /**
+     * <code>optional bool enableViewerMic = 4;</code>
+     *
+     * <pre>
+     *是否允许观众端发起连麦（true：允许）
+     * </pre>
+     */
+    boolean getEnableViewerMic();
+
+    /**
+     * <code>optional uint32 type = 5;</code>
+     *
+     * <pre>
+     *0:主播与观众连麦 1：主播与主播连麦
+     * </pre>
+     */
+    boolean hasType();
+    /**
+     * <code>optional uint32 type = 5;</code>
+     *
+     * <pre>
+     *0:主播与观众连麦 1：主播与主播连麦
+     * </pre>
+     */
+    int getType();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.MicEndMessage}
+   *
+   * <pre>
+   *mic结束消息
+   * </pre>
+   */
+  public static final class MicEndMessage extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.MicEndMessage)
+      MicEndMessageOrBuilder {
+    // Use MicEndMessage.newBuilder() to construct.
+    private MicEndMessage(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private MicEndMessage(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final MicEndMessage defaultInstance;
+    public static MicEndMessage getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public MicEndMessage getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private MicEndMessage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              zuid_ = input.readUInt64();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              liveId_ = bs;
+              break;
+            }
+            case 26: {
+              com.wali.live.proto.LiveCommonProto.MicInfo.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                subBuilder = micInfo_.toBuilder();
+              }
+              micInfo_ = input.readMessage(com.wali.live.proto.LiveCommonProto.MicInfo.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(micInfo_);
+                micInfo_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000004;
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              enableViewerMic_ = input.readBool();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              type_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_MicEndMessage_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_MicEndMessage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveMessageProto.MicEndMessage.class, com.wali.live.proto.LiveMessageProto.MicEndMessage.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<MicEndMessage> PARSER =
+        new com.google.protobuf.AbstractParser<MicEndMessage>() {
+      public MicEndMessage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new MicEndMessage(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<MicEndMessage> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int ZUID_FIELD_NUMBER = 1;
+    private long zuid_;
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     *
+     * <pre>
+     *主播用户id
+     * </pre>
+     */
+    public boolean hasZuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     *
+     * <pre>
+     *主播用户id
+     * </pre>
+     */
+    public long getZuid() {
+      return zuid_;
+    }
+
+    public static final int LIVEID_FIELD_NUMBER = 2;
+    private java.lang.Object liveId_;
+    /**
+     * <code>required string liveId = 2;</code>
+     *
+     * <pre>
+     *房间号
+     * </pre>
+     */
+    public boolean hasLiveId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string liveId = 2;</code>
+     *
+     * <pre>
+     *房间号
+     * </pre>
+     */
+    public java.lang.String getLiveId() {
+      java.lang.Object ref = liveId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          liveId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string liveId = 2;</code>
+     *
+     * <pre>
+     *房间号
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getLiveIdBytes() {
+      java.lang.Object ref = liveId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        liveId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int MICINFO_FIELD_NUMBER = 3;
+    private com.wali.live.proto.LiveCommonProto.MicInfo micInfo_;
+    /**
+     * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+     *
+     * <pre>
+     *连麦的信息
+     * </pre>
+     */
+    public boolean hasMicInfo() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+     *
+     * <pre>
+     *连麦的信息
+     * </pre>
+     */
+    public com.wali.live.proto.LiveCommonProto.MicInfo getMicInfo() {
+      return micInfo_;
+    }
+    /**
+     * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+     *
+     * <pre>
+     *连麦的信息
+     * </pre>
+     */
+    public com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder getMicInfoOrBuilder() {
+      return micInfo_;
+    }
+
+    public static final int ENABLEVIEWERMIC_FIELD_NUMBER = 4;
+    private boolean enableViewerMic_;
+    /**
+     * <code>optional bool enableViewerMic = 4;</code>
+     *
+     * <pre>
+     *是否允许观众端发起连麦（true：允许）
+     * </pre>
+     */
+    public boolean hasEnableViewerMic() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional bool enableViewerMic = 4;</code>
+     *
+     * <pre>
+     *是否允许观众端发起连麦（true：允许）
+     * </pre>
+     */
+    public boolean getEnableViewerMic() {
+      return enableViewerMic_;
+    }
+
+    public static final int TYPE_FIELD_NUMBER = 5;
+    private int type_;
+    /**
+     * <code>optional uint32 type = 5;</code>
+     *
+     * <pre>
+     *0:主播与观众连麦 1：主播与主播连麦
+     * </pre>
+     */
+    public boolean hasType() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional uint32 type = 5;</code>
+     *
+     * <pre>
+     *0:主播与观众连麦 1：主播与主播连麦
+     * </pre>
+     */
+    public int getType() {
+      return type_;
+    }
+
+    private void initFields() {
+      zuid_ = 0L;
+      liveId_ = "";
+      micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
+      enableViewerMic_ = false;
+      type_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasZuid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasLiveId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasMicInfo()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getMicInfo().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, zuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getLiveIdBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeMessage(3, micInfo_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBool(4, enableViewerMic_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeUInt32(5, type_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, zuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getLiveIdBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, micInfo_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, enableViewerMic_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(5, type_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveMessageProto.MicEndMessage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.MicEndMessage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.MicEndMessage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.MicEndMessage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.MicEndMessage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.MicEndMessage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.MicEndMessage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.MicEndMessage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.MicEndMessage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.MicEndMessage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveMessageProto.MicEndMessage prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.MicEndMessage}
+     *
+     * <pre>
+     *mic结束消息
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.MicEndMessage)
+        com.wali.live.proto.LiveMessageProto.MicEndMessageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_MicEndMessage_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_MicEndMessage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveMessageProto.MicEndMessage.class, com.wali.live.proto.LiveMessageProto.MicEndMessage.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveMessageProto.MicEndMessage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getMicInfoFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        zuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        liveId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        if (micInfoBuilder_ == null) {
+          micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
+        } else {
+          micInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        enableViewerMic_ = false;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        type_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_MicEndMessage_descriptor;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.MicEndMessage getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveMessageProto.MicEndMessage.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveMessageProto.MicEndMessage build() {
+        com.wali.live.proto.LiveMessageProto.MicEndMessage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.MicEndMessage buildPartial() {
+        com.wali.live.proto.LiveMessageProto.MicEndMessage result = new com.wali.live.proto.LiveMessageProto.MicEndMessage(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.zuid_ = zuid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.liveId_ = liveId_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        if (micInfoBuilder_ == null) {
+          result.micInfo_ = micInfo_;
+        } else {
+          result.micInfo_ = micInfoBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.enableViewerMic_ = enableViewerMic_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.type_ = type_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveMessageProto.MicEndMessage) {
+          return mergeFrom((com.wali.live.proto.LiveMessageProto.MicEndMessage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveMessageProto.MicEndMessage other) {
+        if (other == com.wali.live.proto.LiveMessageProto.MicEndMessage.getDefaultInstance()) return this;
+        if (other.hasZuid()) {
+          setZuid(other.getZuid());
+        }
+        if (other.hasLiveId()) {
+          bitField0_ |= 0x00000002;
+          liveId_ = other.liveId_;
+          onChanged();
+        }
+        if (other.hasMicInfo()) {
+          mergeMicInfo(other.getMicInfo());
+        }
+        if (other.hasEnableViewerMic()) {
+          setEnableViewerMic(other.getEnableViewerMic());
+        }
+        if (other.hasType()) {
+          setType(other.getType());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasZuid()) {
+          
+          return false;
+        }
+        if (!hasLiveId()) {
+          
+          return false;
+        }
+        if (!hasMicInfo()) {
+          
+          return false;
+        }
+        if (!getMicInfo().isInitialized()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveMessageProto.MicEndMessage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveMessageProto.MicEndMessage) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long zuid_ ;
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       *
+       * <pre>
+       *主播用户id
+       * </pre>
+       */
+      public boolean hasZuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       *
+       * <pre>
+       *主播用户id
+       * </pre>
+       */
+      public long getZuid() {
+        return zuid_;
+      }
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       *
+       * <pre>
+       *主播用户id
+       * </pre>
+       */
+      public Builder setZuid(long value) {
+        bitField0_ |= 0x00000001;
+        zuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       *
+       * <pre>
+       *主播用户id
+       * </pre>
+       */
+      public Builder clearZuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        zuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object liveId_ = "";
+      /**
+       * <code>required string liveId = 2;</code>
+       *
+       * <pre>
+       *房间号
+       * </pre>
+       */
+      public boolean hasLiveId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string liveId = 2;</code>
+       *
+       * <pre>
+       *房间号
+       * </pre>
+       */
+      public java.lang.String getLiveId() {
+        java.lang.Object ref = liveId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            liveId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string liveId = 2;</code>
+       *
+       * <pre>
+       *房间号
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getLiveIdBytes() {
+        java.lang.Object ref = liveId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          liveId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string liveId = 2;</code>
+       *
+       * <pre>
+       *房间号
+       * </pre>
+       */
+      public Builder setLiveId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        liveId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string liveId = 2;</code>
+       *
+       * <pre>
+       *房间号
+       * </pre>
+       */
+      public Builder clearLiveId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        liveId_ = getDefaultInstance().getLiveId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string liveId = 2;</code>
+       *
+       * <pre>
+       *房间号
+       * </pre>
+       */
+      public Builder setLiveIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        liveId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.LiveCommonProto.MicInfo micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveCommonProto.MicInfo, com.wali.live.proto.LiveCommonProto.MicInfo.Builder, com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder> micInfoBuilder_;
+      /**
+       * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+       *
+       * <pre>
+       *连麦的信息
+       * </pre>
+       */
+      public boolean hasMicInfo() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+       *
+       * <pre>
+       *连麦的信息
+       * </pre>
+       */
+      public com.wali.live.proto.LiveCommonProto.MicInfo getMicInfo() {
+        if (micInfoBuilder_ == null) {
+          return micInfo_;
+        } else {
+          return micInfoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+       *
+       * <pre>
+       *连麦的信息
+       * </pre>
+       */
+      public Builder setMicInfo(com.wali.live.proto.LiveCommonProto.MicInfo value) {
+        if (micInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          micInfo_ = value;
+          onChanged();
+        } else {
+          micInfoBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+       *
+       * <pre>
+       *连麦的信息
+       * </pre>
+       */
+      public Builder setMicInfo(
+          com.wali.live.proto.LiveCommonProto.MicInfo.Builder builderForValue) {
+        if (micInfoBuilder_ == null) {
+          micInfo_ = builderForValue.build();
+          onChanged();
+        } else {
+          micInfoBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+       *
+       * <pre>
+       *连麦的信息
+       * </pre>
+       */
+      public Builder mergeMicInfo(com.wali.live.proto.LiveCommonProto.MicInfo value) {
+        if (micInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004) &&
+              micInfo_ != com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance()) {
+            micInfo_ =
+              com.wali.live.proto.LiveCommonProto.MicInfo.newBuilder(micInfo_).mergeFrom(value).buildPartial();
+          } else {
+            micInfo_ = value;
+          }
+          onChanged();
+        } else {
+          micInfoBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+       *
+       * <pre>
+       *连麦的信息
+       * </pre>
+       */
+      public Builder clearMicInfo() {
+        if (micInfoBuilder_ == null) {
+          micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
+          onChanged();
+        } else {
+          micInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+      /**
+       * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+       *
+       * <pre>
+       *连麦的信息
+       * </pre>
+       */
+      public com.wali.live.proto.LiveCommonProto.MicInfo.Builder getMicInfoBuilder() {
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return getMicInfoFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+       *
+       * <pre>
+       *连麦的信息
+       * </pre>
+       */
+      public com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder getMicInfoOrBuilder() {
+        if (micInfoBuilder_ != null) {
+          return micInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return micInfo_;
+        }
+      }
+      /**
+       * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
+       *
+       * <pre>
+       *连麦的信息
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveCommonProto.MicInfo, com.wali.live.proto.LiveCommonProto.MicInfo.Builder, com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder> 
+          getMicInfoFieldBuilder() {
+        if (micInfoBuilder_ == null) {
+          micInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.LiveCommonProto.MicInfo, com.wali.live.proto.LiveCommonProto.MicInfo.Builder, com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder>(
+                  getMicInfo(),
+                  getParentForChildren(),
+                  isClean());
+          micInfo_ = null;
+        }
+        return micInfoBuilder_;
+      }
+
+      private boolean enableViewerMic_ ;
+      /**
+       * <code>optional bool enableViewerMic = 4;</code>
+       *
+       * <pre>
+       *是否允许观众端发起连麦（true：允许）
+       * </pre>
+       */
+      public boolean hasEnableViewerMic() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional bool enableViewerMic = 4;</code>
+       *
+       * <pre>
+       *是否允许观众端发起连麦（true：允许）
+       * </pre>
+       */
+      public boolean getEnableViewerMic() {
+        return enableViewerMic_;
+      }
+      /**
+       * <code>optional bool enableViewerMic = 4;</code>
+       *
+       * <pre>
+       *是否允许观众端发起连麦（true：允许）
+       * </pre>
+       */
+      public Builder setEnableViewerMic(boolean value) {
+        bitField0_ |= 0x00000008;
+        enableViewerMic_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool enableViewerMic = 4;</code>
+       *
+       * <pre>
+       *是否允许观众端发起连麦（true：允许）
+       * </pre>
+       */
+      public Builder clearEnableViewerMic() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        enableViewerMic_ = false;
+        onChanged();
+        return this;
+      }
+
+      private int type_ ;
+      /**
+       * <code>optional uint32 type = 5;</code>
+       *
+       * <pre>
+       *0:主播与观众连麦 1：主播与主播连麦
+       * </pre>
+       */
+      public boolean hasType() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional uint32 type = 5;</code>
+       *
+       * <pre>
+       *0:主播与观众连麦 1：主播与主播连麦
+       * </pre>
+       */
+      public int getType() {
+        return type_;
+      }
+      /**
+       * <code>optional uint32 type = 5;</code>
+       *
+       * <pre>
+       *0:主播与观众连麦 1：主播与主播连麦
+       * </pre>
+       */
+      public Builder setType(int value) {
+        bitField0_ |= 0x00000010;
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 type = 5;</code>
+       *
+       * <pre>
+       *0:主播与观众连麦 1：主播与主播连麦
+       * </pre>
+       */
+      public Builder clearType() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        type_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.MicEndMessage)
+    }
+
+    static {
+      defaultInstance = new MicEndMessage(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.MicEndMessage)
+  }
+
   public interface LiveInfoChangeMsgOrBuilder extends
       // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LiveInfoChangeMsg)
       com.google.protobuf.MessageOrBuilder {
@@ -23752,6 +26805,32 @@ public final class LiveMessageProto {
      * </pre>
      */
     boolean getEnableViewerMic();
+
+    /**
+     * <code>optional string title = 5;</code>
+     *
+     * <pre>
+     *房间标题
+     * </pre>
+     */
+    boolean hasTitle();
+    /**
+     * <code>optional string title = 5;</code>
+     *
+     * <pre>
+     *房间标题
+     * </pre>
+     */
+    java.lang.String getTitle();
+    /**
+     * <code>optional string title = 5;</code>
+     *
+     * <pre>
+     *房间标题
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getTitleBytes();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.LiveInfoChangeMsg}
@@ -23828,6 +26907,12 @@ public final class LiveMessageProto {
             case 32: {
               bitField0_ |= 0x00000008;
               enableViewerMic_ = input.readBool();
+              break;
+            }
+            case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000010;
+              title_ = bs;
               break;
             }
           }
@@ -23993,11 +27078,66 @@ public final class LiveMessageProto {
       return enableViewerMic_;
     }
 
+    public static final int TITLE_FIELD_NUMBER = 5;
+    private java.lang.Object title_;
+    /**
+     * <code>optional string title = 5;</code>
+     *
+     * <pre>
+     *房间标题
+     * </pre>
+     */
+    public boolean hasTitle() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional string title = 5;</code>
+     *
+     * <pre>
+     *房间标题
+     * </pre>
+     */
+    public java.lang.String getTitle() {
+      java.lang.Object ref = title_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          title_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string title = 5;</code>
+     *
+     * <pre>
+     *房间标题
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getTitleBytes() {
+      java.lang.Object ref = title_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        title_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       modFlag_ = 0L;
       zuid_ = 0L;
       liveId_ = "";
       enableViewerMic_ = false;
+      title_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -24024,6 +27164,9 @@ public final class LiveMessageProto {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeBool(4, enableViewerMic_);
       }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, getTitleBytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -24048,6 +27191,10 @@ public final class LiveMessageProto {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(4, enableViewerMic_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getTitleBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -24178,6 +27325,8 @@ public final class LiveMessageProto {
         bitField0_ = (bitField0_ & ~0x00000004);
         enableViewerMic_ = false;
         bitField0_ = (bitField0_ & ~0x00000008);
+        title_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -24222,6 +27371,10 @@ public final class LiveMessageProto {
           to_bitField0_ |= 0x00000008;
         }
         result.enableViewerMic_ = enableViewerMic_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.title_ = title_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -24251,6 +27404,11 @@ public final class LiveMessageProto {
         }
         if (other.hasEnableViewerMic()) {
           setEnableViewerMic(other.getEnableViewerMic());
+        }
+        if (other.hasTitle()) {
+          bitField0_ |= 0x00000010;
+          title_ = other.title_;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -24519,6 +27677,106 @@ public final class LiveMessageProto {
       public Builder clearEnableViewerMic() {
         bitField0_ = (bitField0_ & ~0x00000008);
         enableViewerMic_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object title_ = "";
+      /**
+       * <code>optional string title = 5;</code>
+       *
+       * <pre>
+       *房间标题
+       * </pre>
+       */
+      public boolean hasTitle() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string title = 5;</code>
+       *
+       * <pre>
+       *房间标题
+       * </pre>
+       */
+      public java.lang.String getTitle() {
+        java.lang.Object ref = title_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            title_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string title = 5;</code>
+       *
+       * <pre>
+       *房间标题
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getTitleBytes() {
+        java.lang.Object ref = title_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          title_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string title = 5;</code>
+       *
+       * <pre>
+       *房间标题
+       * </pre>
+       */
+      public Builder setTitle(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        title_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string title = 5;</code>
+       *
+       * <pre>
+       *房间标题
+       * </pre>
+       */
+      public Builder clearTitle() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        title_ = getDefaultInstance().getTitle();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string title = 5;</code>
+       *
+       * <pre>
+       *房间标题
+       * </pre>
+       */
+      public Builder setTitleBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        title_ = value;
         onChanged();
         return this;
       }
@@ -61691,6 +64949,30 @@ public final class LiveMessageProto {
      */
     com.wali.live.proto.LiveMessageProto.InnerMedalConfigOrBuilder getAfterContentConfigOrBuilder(
         int index);
+
+    /**
+     * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+     */
+    java.util.List<com.wali.live.proto.LiveMessageProto.InnerMedalConfig> 
+        getEffectConfigList();
+    /**
+     * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+     */
+    com.wali.live.proto.LiveMessageProto.InnerMedalConfig getEffectConfig(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+     */
+    int getEffectConfigCount();
+    /**
+     * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+     */
+    java.util.List<? extends com.wali.live.proto.LiveMessageProto.InnerMedalConfigOrBuilder> 
+        getEffectConfigOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+     */
+    com.wali.live.proto.LiveMessageProto.InnerMedalConfigOrBuilder getEffectConfigOrBuilder(
+        int index);
   }
   /**
    * Protobuf type {@code com.wali.live.proto.MedalConfigMessage}
@@ -61776,6 +65058,14 @@ public final class LiveMessageProto {
               afterContentConfig_.add(input.readMessage(com.wali.live.proto.LiveMessageProto.InnerMedalConfig.PARSER, extensionRegistry));
               break;
             }
+            case 42: {
+              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+                effectConfig_ = new java.util.ArrayList<com.wali.live.proto.LiveMessageProto.InnerMedalConfig>();
+                mutable_bitField0_ |= 0x00000010;
+              }
+              effectConfig_.add(input.readMessage(com.wali.live.proto.LiveMessageProto.InnerMedalConfig.PARSER, extensionRegistry));
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -61795,6 +65085,9 @@ public final class LiveMessageProto {
         }
         if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
           afterContentConfig_ = java.util.Collections.unmodifiableList(afterContentConfig_);
+        }
+        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+          effectConfig_ = java.util.Collections.unmodifiableList(effectConfig_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -61967,11 +65260,47 @@ public final class LiveMessageProto {
       return afterContentConfig_.get(index);
     }
 
+    public static final int EFFECT_CONFIG_FIELD_NUMBER = 5;
+    private java.util.List<com.wali.live.proto.LiveMessageProto.InnerMedalConfig> effectConfig_;
+    /**
+     * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+     */
+    public java.util.List<com.wali.live.proto.LiveMessageProto.InnerMedalConfig> getEffectConfigList() {
+      return effectConfig_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+     */
+    public java.util.List<? extends com.wali.live.proto.LiveMessageProto.InnerMedalConfigOrBuilder> 
+        getEffectConfigOrBuilderList() {
+      return effectConfig_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+     */
+    public int getEffectConfigCount() {
+      return effectConfig_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+     */
+    public com.wali.live.proto.LiveMessageProto.InnerMedalConfig getEffectConfig(int index) {
+      return effectConfig_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+     */
+    public com.wali.live.proto.LiveMessageProto.InnerMedalConfigOrBuilder getEffectConfigOrBuilder(
+        int index) {
+      return effectConfig_.get(index);
+    }
+
     private void initFields() {
       beforeNicknameConfig_ = java.util.Collections.emptyList();
       afterNicknameConfig_ = java.util.Collections.emptyList();
       beforeContentConfig_ = java.util.Collections.emptyList();
       afterContentConfig_ = java.util.Collections.emptyList();
+      effectConfig_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -61998,6 +65327,9 @@ public final class LiveMessageProto {
       for (int i = 0; i < afterContentConfig_.size(); i++) {
         output.writeMessage(4, afterContentConfig_.get(i));
       }
+      for (int i = 0; i < effectConfig_.size(); i++) {
+        output.writeMessage(5, effectConfig_.get(i));
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -62022,6 +65354,10 @@ public final class LiveMessageProto {
       for (int i = 0; i < afterContentConfig_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, afterContentConfig_.get(i));
+      }
+      for (int i = 0; i < effectConfig_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, effectConfig_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -62136,6 +65472,7 @@ public final class LiveMessageProto {
           getAfterNicknameConfigFieldBuilder();
           getBeforeContentConfigFieldBuilder();
           getAfterContentConfigFieldBuilder();
+          getEffectConfigFieldBuilder();
         }
       }
       private static Builder create() {
@@ -62167,6 +65504,12 @@ public final class LiveMessageProto {
           bitField0_ = (bitField0_ & ~0x00000008);
         } else {
           afterContentConfigBuilder_.clear();
+        }
+        if (effectConfigBuilder_ == null) {
+          effectConfig_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000010);
+        } else {
+          effectConfigBuilder_.clear();
         }
         return this;
       }
@@ -62230,6 +65573,15 @@ public final class LiveMessageProto {
           result.afterContentConfig_ = afterContentConfig_;
         } else {
           result.afterContentConfig_ = afterContentConfigBuilder_.build();
+        }
+        if (effectConfigBuilder_ == null) {
+          if (((bitField0_ & 0x00000010) == 0x00000010)) {
+            effectConfig_ = java.util.Collections.unmodifiableList(effectConfig_);
+            bitField0_ = (bitField0_ & ~0x00000010);
+          }
+          result.effectConfig_ = effectConfig_;
+        } else {
+          result.effectConfig_ = effectConfigBuilder_.build();
         }
         onBuilt();
         return result;
@@ -62347,6 +65699,32 @@ public final class LiveMessageProto {
                    getAfterContentConfigFieldBuilder() : null;
             } else {
               afterContentConfigBuilder_.addAllMessages(other.afterContentConfig_);
+            }
+          }
+        }
+        if (effectConfigBuilder_ == null) {
+          if (!other.effectConfig_.isEmpty()) {
+            if (effectConfig_.isEmpty()) {
+              effectConfig_ = other.effectConfig_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+            } else {
+              ensureEffectConfigIsMutable();
+              effectConfig_.addAll(other.effectConfig_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.effectConfig_.isEmpty()) {
+            if (effectConfigBuilder_.isEmpty()) {
+              effectConfigBuilder_.dispose();
+              effectConfigBuilder_ = null;
+              effectConfig_ = other.effectConfig_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+              effectConfigBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getEffectConfigFieldBuilder() : null;
+            } else {
+              effectConfigBuilder_.addAllMessages(other.effectConfig_);
             }
           }
         }
@@ -63335,6 +66713,246 @@ public final class LiveMessageProto {
           afterContentConfig_ = null;
         }
         return afterContentConfigBuilder_;
+      }
+
+      private java.util.List<com.wali.live.proto.LiveMessageProto.InnerMedalConfig> effectConfig_ =
+        java.util.Collections.emptyList();
+      private void ensureEffectConfigIsMutable() {
+        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
+          effectConfig_ = new java.util.ArrayList<com.wali.live.proto.LiveMessageProto.InnerMedalConfig>(effectConfig_);
+          bitField0_ |= 0x00000010;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.LiveMessageProto.InnerMedalConfig, com.wali.live.proto.LiveMessageProto.InnerMedalConfig.Builder, com.wali.live.proto.LiveMessageProto.InnerMedalConfigOrBuilder> effectConfigBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+       */
+      public java.util.List<com.wali.live.proto.LiveMessageProto.InnerMedalConfig> getEffectConfigList() {
+        if (effectConfigBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(effectConfig_);
+        } else {
+          return effectConfigBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+       */
+      public int getEffectConfigCount() {
+        if (effectConfigBuilder_ == null) {
+          return effectConfig_.size();
+        } else {
+          return effectConfigBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+       */
+      public com.wali.live.proto.LiveMessageProto.InnerMedalConfig getEffectConfig(int index) {
+        if (effectConfigBuilder_ == null) {
+          return effectConfig_.get(index);
+        } else {
+          return effectConfigBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+       */
+      public Builder setEffectConfig(
+          int index, com.wali.live.proto.LiveMessageProto.InnerMedalConfig value) {
+        if (effectConfigBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureEffectConfigIsMutable();
+          effectConfig_.set(index, value);
+          onChanged();
+        } else {
+          effectConfigBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+       */
+      public Builder setEffectConfig(
+          int index, com.wali.live.proto.LiveMessageProto.InnerMedalConfig.Builder builderForValue) {
+        if (effectConfigBuilder_ == null) {
+          ensureEffectConfigIsMutable();
+          effectConfig_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          effectConfigBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+       */
+      public Builder addEffectConfig(com.wali.live.proto.LiveMessageProto.InnerMedalConfig value) {
+        if (effectConfigBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureEffectConfigIsMutable();
+          effectConfig_.add(value);
+          onChanged();
+        } else {
+          effectConfigBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+       */
+      public Builder addEffectConfig(
+          int index, com.wali.live.proto.LiveMessageProto.InnerMedalConfig value) {
+        if (effectConfigBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureEffectConfigIsMutable();
+          effectConfig_.add(index, value);
+          onChanged();
+        } else {
+          effectConfigBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+       */
+      public Builder addEffectConfig(
+          com.wali.live.proto.LiveMessageProto.InnerMedalConfig.Builder builderForValue) {
+        if (effectConfigBuilder_ == null) {
+          ensureEffectConfigIsMutable();
+          effectConfig_.add(builderForValue.build());
+          onChanged();
+        } else {
+          effectConfigBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+       */
+      public Builder addEffectConfig(
+          int index, com.wali.live.proto.LiveMessageProto.InnerMedalConfig.Builder builderForValue) {
+        if (effectConfigBuilder_ == null) {
+          ensureEffectConfigIsMutable();
+          effectConfig_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          effectConfigBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+       */
+      public Builder addAllEffectConfig(
+          java.lang.Iterable<? extends com.wali.live.proto.LiveMessageProto.InnerMedalConfig> values) {
+        if (effectConfigBuilder_ == null) {
+          ensureEffectConfigIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, effectConfig_);
+          onChanged();
+        } else {
+          effectConfigBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+       */
+      public Builder clearEffectConfig() {
+        if (effectConfigBuilder_ == null) {
+          effectConfig_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000010);
+          onChanged();
+        } else {
+          effectConfigBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+       */
+      public Builder removeEffectConfig(int index) {
+        if (effectConfigBuilder_ == null) {
+          ensureEffectConfigIsMutable();
+          effectConfig_.remove(index);
+          onChanged();
+        } else {
+          effectConfigBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+       */
+      public com.wali.live.proto.LiveMessageProto.InnerMedalConfig.Builder getEffectConfigBuilder(
+          int index) {
+        return getEffectConfigFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+       */
+      public com.wali.live.proto.LiveMessageProto.InnerMedalConfigOrBuilder getEffectConfigOrBuilder(
+          int index) {
+        if (effectConfigBuilder_ == null) {
+          return effectConfig_.get(index);  } else {
+          return effectConfigBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+       */
+      public java.util.List<? extends com.wali.live.proto.LiveMessageProto.InnerMedalConfigOrBuilder> 
+           getEffectConfigOrBuilderList() {
+        if (effectConfigBuilder_ != null) {
+          return effectConfigBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(effectConfig_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+       */
+      public com.wali.live.proto.LiveMessageProto.InnerMedalConfig.Builder addEffectConfigBuilder() {
+        return getEffectConfigFieldBuilder().addBuilder(
+            com.wali.live.proto.LiveMessageProto.InnerMedalConfig.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+       */
+      public com.wali.live.proto.LiveMessageProto.InnerMedalConfig.Builder addEffectConfigBuilder(
+          int index) {
+        return getEffectConfigFieldBuilder().addBuilder(
+            index, com.wali.live.proto.LiveMessageProto.InnerMedalConfig.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.InnerMedalConfig effect_config = 5;</code>
+       */
+      public java.util.List<com.wali.live.proto.LiveMessageProto.InnerMedalConfig.Builder> 
+           getEffectConfigBuilderList() {
+        return getEffectConfigFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.LiveMessageProto.InnerMedalConfig, com.wali.live.proto.LiveMessageProto.InnerMedalConfig.Builder, com.wali.live.proto.LiveMessageProto.InnerMedalConfigOrBuilder> 
+          getEffectConfigFieldBuilder() {
+        if (effectConfigBuilder_ == null) {
+          effectConfigBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.LiveMessageProto.InnerMedalConfig, com.wali.live.proto.LiveMessageProto.InnerMedalConfig.Builder, com.wali.live.proto.LiveMessageProto.InnerMedalConfigOrBuilder>(
+                  effectConfig_,
+                  ((bitField0_ & 0x00000010) == 0x00000010),
+                  getParentForChildren(),
+                  isClean());
+          effectConfig_ = null;
+        }
+        return effectConfigBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.MedalConfigMessage)
@@ -86667,6 +90285,6709 @@ public final class LiveMessageProto {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.VFansMemberBriefInfo)
   }
 
+  public interface SetChatMsgSettingRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.SetChatMsgSettingRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    boolean hasUuid();
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    long getUuid();
+
+    /**
+     * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+     */
+    boolean hasSetting();
+    /**
+     * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+     */
+    com.wali.live.proto.LiveMessageProto.ChatMsgSetting getSetting();
+    /**
+     * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+     */
+    com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder getSettingOrBuilder();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.SetChatMsgSettingRequest}
+   *
+   * <pre>
+   *未关注人消息接收设置
+   *cmd: zhibo.get.chatMsgSetting
+   * </pre>
+   */
+  public static final class SetChatMsgSettingRequest extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.SetChatMsgSettingRequest)
+      SetChatMsgSettingRequestOrBuilder {
+    // Use SetChatMsgSettingRequest.newBuilder() to construct.
+    private SetChatMsgSettingRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private SetChatMsgSettingRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final SetChatMsgSettingRequest defaultInstance;
+    public static SetChatMsgSettingRequest getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public SetChatMsgSettingRequest getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private SetChatMsgSettingRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uuid_ = input.readUInt64();
+              break;
+            }
+            case 18: {
+              com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = setting_.toBuilder();
+              }
+              setting_ = input.readMessage(com.wali.live.proto.LiveMessageProto.ChatMsgSetting.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(setting_);
+                setting_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_SetChatMsgSettingRequest_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_SetChatMsgSettingRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest.class, com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<SetChatMsgSettingRequest> PARSER =
+        new com.google.protobuf.AbstractParser<SetChatMsgSettingRequest>() {
+      public SetChatMsgSettingRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new SetChatMsgSettingRequest(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SetChatMsgSettingRequest> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int UUID_FIELD_NUMBER = 1;
+    private long uuid_;
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    public long getUuid() {
+      return uuid_;
+    }
+
+    public static final int SETTING_FIELD_NUMBER = 2;
+    private com.wali.live.proto.LiveMessageProto.ChatMsgSetting setting_;
+    /**
+     * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+     */
+    public boolean hasSetting() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+     */
+    public com.wali.live.proto.LiveMessageProto.ChatMsgSetting getSetting() {
+      return setting_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+     */
+    public com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder getSettingOrBuilder() {
+      return setting_;
+    }
+
+    private void initFields() {
+      uuid_ = 0L;
+      setting_ = com.wali.live.proto.LiveMessageProto.ChatMsgSetting.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, setting_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, setting_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.SetChatMsgSettingRequest}
+     *
+     * <pre>
+     *未关注人消息接收设置
+     *cmd: zhibo.get.chatMsgSetting
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.SetChatMsgSettingRequest)
+        com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_SetChatMsgSettingRequest_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_SetChatMsgSettingRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest.class, com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getSettingFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (settingBuilder_ == null) {
+          setting_ = com.wali.live.proto.LiveMessageProto.ChatMsgSetting.getDefaultInstance();
+        } else {
+          settingBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_SetChatMsgSettingRequest_descriptor;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest build() {
+        com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest buildPartial() {
+        com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest result = new com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uuid_ = uuid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (settingBuilder_ == null) {
+          result.setting_ = setting_;
+        } else {
+          result.setting_ = settingBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest) {
+          return mergeFrom((com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest other) {
+        if (other == com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest.getDefaultInstance()) return this;
+        if (other.hasUuid()) {
+          setUuid(other.getUuid());
+        }
+        if (other.hasSetting()) {
+          mergeSetting(other.getSetting());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveMessageProto.SetChatMsgSettingRequest) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long uuid_ ;
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public long getUuid() {
+        return uuid_;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public Builder setUuid(long value) {
+        bitField0_ |= 0x00000001;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.LiveMessageProto.ChatMsgSetting setting_ = com.wali.live.proto.LiveMessageProto.ChatMsgSetting.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveMessageProto.ChatMsgSetting, com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder, com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder> settingBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public boolean hasSetting() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public com.wali.live.proto.LiveMessageProto.ChatMsgSetting getSetting() {
+        if (settingBuilder_ == null) {
+          return setting_;
+        } else {
+          return settingBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public Builder setSetting(com.wali.live.proto.LiveMessageProto.ChatMsgSetting value) {
+        if (settingBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          setting_ = value;
+          onChanged();
+        } else {
+          settingBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public Builder setSetting(
+          com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder builderForValue) {
+        if (settingBuilder_ == null) {
+          setting_ = builderForValue.build();
+          onChanged();
+        } else {
+          settingBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public Builder mergeSetting(com.wali.live.proto.LiveMessageProto.ChatMsgSetting value) {
+        if (settingBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              setting_ != com.wali.live.proto.LiveMessageProto.ChatMsgSetting.getDefaultInstance()) {
+            setting_ =
+              com.wali.live.proto.LiveMessageProto.ChatMsgSetting.newBuilder(setting_).mergeFrom(value).buildPartial();
+          } else {
+            setting_ = value;
+          }
+          onChanged();
+        } else {
+          settingBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public Builder clearSetting() {
+        if (settingBuilder_ == null) {
+          setting_ = com.wali.live.proto.LiveMessageProto.ChatMsgSetting.getDefaultInstance();
+          onChanged();
+        } else {
+          settingBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder getSettingBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getSettingFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder getSettingOrBuilder() {
+        if (settingBuilder_ != null) {
+          return settingBuilder_.getMessageOrBuilder();
+        } else {
+          return setting_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveMessageProto.ChatMsgSetting, com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder, com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder> 
+          getSettingFieldBuilder() {
+        if (settingBuilder_ == null) {
+          settingBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.LiveMessageProto.ChatMsgSetting, com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder, com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder>(
+                  getSetting(),
+                  getParentForChildren(),
+                  isClean());
+          setting_ = null;
+        }
+        return settingBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.SetChatMsgSettingRequest)
+    }
+
+    static {
+      defaultInstance = new SetChatMsgSettingRequest(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.SetChatMsgSettingRequest)
+  }
+
+  public interface SetChatMsgSettingResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.SetChatMsgSettingResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint32 ret = 1;</code>
+     */
+    boolean hasRet();
+    /**
+     * <code>optional uint32 ret = 1;</code>
+     */
+    int getRet();
+
+    /**
+     * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+     */
+    boolean hasSetting();
+    /**
+     * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+     */
+    com.wali.live.proto.LiveMessageProto.ChatMsgSetting getSetting();
+    /**
+     * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+     */
+    com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder getSettingOrBuilder();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.SetChatMsgSettingResponse}
+   */
+  public static final class SetChatMsgSettingResponse extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.SetChatMsgSettingResponse)
+      SetChatMsgSettingResponseOrBuilder {
+    // Use SetChatMsgSettingResponse.newBuilder() to construct.
+    private SetChatMsgSettingResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private SetChatMsgSettingResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final SetChatMsgSettingResponse defaultInstance;
+    public static SetChatMsgSettingResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public SetChatMsgSettingResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private SetChatMsgSettingResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              ret_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = setting_.toBuilder();
+              }
+              setting_ = input.readMessage(com.wali.live.proto.LiveMessageProto.ChatMsgSetting.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(setting_);
+                setting_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_SetChatMsgSettingResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_SetChatMsgSettingResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse.class, com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<SetChatMsgSettingResponse> PARSER =
+        new com.google.protobuf.AbstractParser<SetChatMsgSettingResponse>() {
+      public SetChatMsgSettingResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new SetChatMsgSettingResponse(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SetChatMsgSettingResponse> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RET_FIELD_NUMBER = 1;
+    private int ret_;
+    /**
+     * <code>optional uint32 ret = 1;</code>
+     */
+    public boolean hasRet() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint32 ret = 1;</code>
+     */
+    public int getRet() {
+      return ret_;
+    }
+
+    public static final int SETTING_FIELD_NUMBER = 2;
+    private com.wali.live.proto.LiveMessageProto.ChatMsgSetting setting_;
+    /**
+     * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+     */
+    public boolean hasSetting() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+     */
+    public com.wali.live.proto.LiveMessageProto.ChatMsgSetting getSetting() {
+      return setting_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+     */
+    public com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder getSettingOrBuilder() {
+      return setting_;
+    }
+
+    private void initFields() {
+      ret_ = 0;
+      setting_ = com.wali.live.proto.LiveMessageProto.ChatMsgSetting.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, ret_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, setting_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, ret_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, setting_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.SetChatMsgSettingResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.SetChatMsgSettingResponse)
+        com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_SetChatMsgSettingResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_SetChatMsgSettingResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse.class, com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getSettingFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        ret_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (settingBuilder_ == null) {
+          setting_ = com.wali.live.proto.LiveMessageProto.ChatMsgSetting.getDefaultInstance();
+        } else {
+          settingBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_SetChatMsgSettingResponse_descriptor;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse build() {
+        com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse buildPartial() {
+        com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse result = new com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.ret_ = ret_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (settingBuilder_ == null) {
+          result.setting_ = setting_;
+        } else {
+          result.setting_ = settingBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse) {
+          return mergeFrom((com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse other) {
+        if (other == com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse.getDefaultInstance()) return this;
+        if (other.hasRet()) {
+          setRet(other.getRet());
+        }
+        if (other.hasSetting()) {
+          mergeSetting(other.getSetting());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveMessageProto.SetChatMsgSettingResponse) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int ret_ ;
+      /**
+       * <code>optional uint32 ret = 1;</code>
+       */
+      public boolean hasRet() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint32 ret = 1;</code>
+       */
+      public int getRet() {
+        return ret_;
+      }
+      /**
+       * <code>optional uint32 ret = 1;</code>
+       */
+      public Builder setRet(int value) {
+        bitField0_ |= 0x00000001;
+        ret_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 ret = 1;</code>
+       */
+      public Builder clearRet() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        ret_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.LiveMessageProto.ChatMsgSetting setting_ = com.wali.live.proto.LiveMessageProto.ChatMsgSetting.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveMessageProto.ChatMsgSetting, com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder, com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder> settingBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public boolean hasSetting() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public com.wali.live.proto.LiveMessageProto.ChatMsgSetting getSetting() {
+        if (settingBuilder_ == null) {
+          return setting_;
+        } else {
+          return settingBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public Builder setSetting(com.wali.live.proto.LiveMessageProto.ChatMsgSetting value) {
+        if (settingBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          setting_ = value;
+          onChanged();
+        } else {
+          settingBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public Builder setSetting(
+          com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder builderForValue) {
+        if (settingBuilder_ == null) {
+          setting_ = builderForValue.build();
+          onChanged();
+        } else {
+          settingBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public Builder mergeSetting(com.wali.live.proto.LiveMessageProto.ChatMsgSetting value) {
+        if (settingBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              setting_ != com.wali.live.proto.LiveMessageProto.ChatMsgSetting.getDefaultInstance()) {
+            setting_ =
+              com.wali.live.proto.LiveMessageProto.ChatMsgSetting.newBuilder(setting_).mergeFrom(value).buildPartial();
+          } else {
+            setting_ = value;
+          }
+          onChanged();
+        } else {
+          settingBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public Builder clearSetting() {
+        if (settingBuilder_ == null) {
+          setting_ = com.wali.live.proto.LiveMessageProto.ChatMsgSetting.getDefaultInstance();
+          onChanged();
+        } else {
+          settingBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder getSettingBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getSettingFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder getSettingOrBuilder() {
+        if (settingBuilder_ != null) {
+          return settingBuilder_.getMessageOrBuilder();
+        } else {
+          return setting_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveMessageProto.ChatMsgSetting, com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder, com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder> 
+          getSettingFieldBuilder() {
+        if (settingBuilder_ == null) {
+          settingBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.LiveMessageProto.ChatMsgSetting, com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder, com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder>(
+                  getSetting(),
+                  getParentForChildren(),
+                  isClean());
+          setting_ = null;
+        }
+        return settingBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.SetChatMsgSettingResponse)
+    }
+
+    static {
+      defaultInstance = new SetChatMsgSettingResponse(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.SetChatMsgSettingResponse)
+  }
+
+  public interface GetChatMsgSettingRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetChatMsgSettingRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    boolean hasUuid();
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    long getUuid();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetChatMsgSettingRequest}
+   */
+  public static final class GetChatMsgSettingRequest extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetChatMsgSettingRequest)
+      GetChatMsgSettingRequestOrBuilder {
+    // Use GetChatMsgSettingRequest.newBuilder() to construct.
+    private GetChatMsgSettingRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetChatMsgSettingRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetChatMsgSettingRequest defaultInstance;
+    public static GetChatMsgSettingRequest getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetChatMsgSettingRequest getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetChatMsgSettingRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uuid_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_GetChatMsgSettingRequest_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_GetChatMsgSettingRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest.class, com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetChatMsgSettingRequest> PARSER =
+        new com.google.protobuf.AbstractParser<GetChatMsgSettingRequest>() {
+      public GetChatMsgSettingRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetChatMsgSettingRequest(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetChatMsgSettingRequest> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int UUID_FIELD_NUMBER = 1;
+    private long uuid_;
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    public long getUuid() {
+      return uuid_;
+    }
+
+    private void initFields() {
+      uuid_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uuid_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uuid_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetChatMsgSettingRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetChatMsgSettingRequest)
+        com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_GetChatMsgSettingRequest_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_GetChatMsgSettingRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest.class, com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_GetChatMsgSettingRequest_descriptor;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest build() {
+        com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest buildPartial() {
+        com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest result = new com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uuid_ = uuid_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest) {
+          return mergeFrom((com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest other) {
+        if (other == com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest.getDefaultInstance()) return this;
+        if (other.hasUuid()) {
+          setUuid(other.getUuid());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveMessageProto.GetChatMsgSettingRequest) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long uuid_ ;
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public long getUuid() {
+        return uuid_;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public Builder setUuid(long value) {
+        bitField0_ |= 0x00000001;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetChatMsgSettingRequest)
+    }
+
+    static {
+      defaultInstance = new GetChatMsgSettingRequest(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetChatMsgSettingRequest)
+  }
+
+  public interface GetChatMsgSettingResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetChatMsgSettingResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint32 ret = 1;</code>
+     */
+    boolean hasRet();
+    /**
+     * <code>optional uint32 ret = 1;</code>
+     */
+    int getRet();
+
+    /**
+     * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+     */
+    boolean hasSetting();
+    /**
+     * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+     */
+    com.wali.live.proto.LiveMessageProto.ChatMsgSetting getSetting();
+    /**
+     * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+     */
+    com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder getSettingOrBuilder();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetChatMsgSettingResponse}
+   */
+  public static final class GetChatMsgSettingResponse extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetChatMsgSettingResponse)
+      GetChatMsgSettingResponseOrBuilder {
+    // Use GetChatMsgSettingResponse.newBuilder() to construct.
+    private GetChatMsgSettingResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetChatMsgSettingResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetChatMsgSettingResponse defaultInstance;
+    public static GetChatMsgSettingResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetChatMsgSettingResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetChatMsgSettingResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              ret_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = setting_.toBuilder();
+              }
+              setting_ = input.readMessage(com.wali.live.proto.LiveMessageProto.ChatMsgSetting.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(setting_);
+                setting_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_GetChatMsgSettingResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_GetChatMsgSettingResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse.class, com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetChatMsgSettingResponse> PARSER =
+        new com.google.protobuf.AbstractParser<GetChatMsgSettingResponse>() {
+      public GetChatMsgSettingResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetChatMsgSettingResponse(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetChatMsgSettingResponse> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RET_FIELD_NUMBER = 1;
+    private int ret_;
+    /**
+     * <code>optional uint32 ret = 1;</code>
+     */
+    public boolean hasRet() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint32 ret = 1;</code>
+     */
+    public int getRet() {
+      return ret_;
+    }
+
+    public static final int SETTING_FIELD_NUMBER = 2;
+    private com.wali.live.proto.LiveMessageProto.ChatMsgSetting setting_;
+    /**
+     * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+     */
+    public boolean hasSetting() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+     */
+    public com.wali.live.proto.LiveMessageProto.ChatMsgSetting getSetting() {
+      return setting_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+     */
+    public com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder getSettingOrBuilder() {
+      return setting_;
+    }
+
+    private void initFields() {
+      ret_ = 0;
+      setting_ = com.wali.live.proto.LiveMessageProto.ChatMsgSetting.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, ret_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, setting_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, ret_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, setting_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetChatMsgSettingResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetChatMsgSettingResponse)
+        com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_GetChatMsgSettingResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_GetChatMsgSettingResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse.class, com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getSettingFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        ret_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (settingBuilder_ == null) {
+          setting_ = com.wali.live.proto.LiveMessageProto.ChatMsgSetting.getDefaultInstance();
+        } else {
+          settingBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_GetChatMsgSettingResponse_descriptor;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse build() {
+        com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse buildPartial() {
+        com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse result = new com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.ret_ = ret_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (settingBuilder_ == null) {
+          result.setting_ = setting_;
+        } else {
+          result.setting_ = settingBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse) {
+          return mergeFrom((com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse other) {
+        if (other == com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse.getDefaultInstance()) return this;
+        if (other.hasRet()) {
+          setRet(other.getRet());
+        }
+        if (other.hasSetting()) {
+          mergeSetting(other.getSetting());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveMessageProto.GetChatMsgSettingResponse) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int ret_ ;
+      /**
+       * <code>optional uint32 ret = 1;</code>
+       */
+      public boolean hasRet() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint32 ret = 1;</code>
+       */
+      public int getRet() {
+        return ret_;
+      }
+      /**
+       * <code>optional uint32 ret = 1;</code>
+       */
+      public Builder setRet(int value) {
+        bitField0_ |= 0x00000001;
+        ret_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 ret = 1;</code>
+       */
+      public Builder clearRet() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        ret_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.LiveMessageProto.ChatMsgSetting setting_ = com.wali.live.proto.LiveMessageProto.ChatMsgSetting.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveMessageProto.ChatMsgSetting, com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder, com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder> settingBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public boolean hasSetting() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public com.wali.live.proto.LiveMessageProto.ChatMsgSetting getSetting() {
+        if (settingBuilder_ == null) {
+          return setting_;
+        } else {
+          return settingBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public Builder setSetting(com.wali.live.proto.LiveMessageProto.ChatMsgSetting value) {
+        if (settingBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          setting_ = value;
+          onChanged();
+        } else {
+          settingBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public Builder setSetting(
+          com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder builderForValue) {
+        if (settingBuilder_ == null) {
+          setting_ = builderForValue.build();
+          onChanged();
+        } else {
+          settingBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public Builder mergeSetting(com.wali.live.proto.LiveMessageProto.ChatMsgSetting value) {
+        if (settingBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              setting_ != com.wali.live.proto.LiveMessageProto.ChatMsgSetting.getDefaultInstance()) {
+            setting_ =
+              com.wali.live.proto.LiveMessageProto.ChatMsgSetting.newBuilder(setting_).mergeFrom(value).buildPartial();
+          } else {
+            setting_ = value;
+          }
+          onChanged();
+        } else {
+          settingBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public Builder clearSetting() {
+        if (settingBuilder_ == null) {
+          setting_ = com.wali.live.proto.LiveMessageProto.ChatMsgSetting.getDefaultInstance();
+          onChanged();
+        } else {
+          settingBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder getSettingBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getSettingFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      public com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder getSettingOrBuilder() {
+        if (settingBuilder_ != null) {
+          return settingBuilder_.getMessageOrBuilder();
+        } else {
+          return setting_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChatMsgSetting setting = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveMessageProto.ChatMsgSetting, com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder, com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder> 
+          getSettingFieldBuilder() {
+        if (settingBuilder_ == null) {
+          settingBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.LiveMessageProto.ChatMsgSetting, com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder, com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder>(
+                  getSetting(),
+                  getParentForChildren(),
+                  isClean());
+          setting_ = null;
+        }
+        return settingBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetChatMsgSettingResponse)
+    }
+
+    static {
+      defaultInstance = new GetChatMsgSettingResponse(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetChatMsgSettingResponse)
+  }
+
+  public interface ChatMsgSettingOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ChatMsgSetting)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional bool recv_unfollow_enable = 1 [default = true];</code>
+     *
+     * <pre>
+     *是否接收未关注人的消息,默认接收
+     * </pre>
+     */
+    boolean hasRecvUnfollowEnable();
+    /**
+     * <code>optional bool recv_unfollow_enable = 1 [default = true];</code>
+     *
+     * <pre>
+     *是否接收未关注人的消息,默认接收
+     * </pre>
+     */
+    boolean getRecvUnfollowEnable();
+
+    /**
+     * <code>optional uint32 recv_unfollow_level = 2;</code>
+     *
+     * <pre>
+     *接收未关注人消息最低等级
+     * </pre>
+     */
+    boolean hasRecvUnfollowLevel();
+    /**
+     * <code>optional uint32 recv_unfollow_level = 2;</code>
+     *
+     * <pre>
+     *接收未关注人消息最低等级
+     * </pre>
+     */
+    int getRecvUnfollowLevel();
+
+    /**
+     * <code>optional bool interaction_notify = 3 [default = true];</code>
+     *
+     * <pre>
+     *互动通知提醒,默认接收
+     * </pre>
+     */
+    boolean hasInteractionNotify();
+    /**
+     * <code>optional bool interaction_notify = 3 [default = true];</code>
+     *
+     * <pre>
+     *互动通知提醒,默认接收
+     * </pre>
+     */
+    boolean getInteractionNotify();
+
+    /**
+     * <code>optional bool befollowed_notify = 4 [default = true];</code>
+     *
+     * <pre>
+     *新增关注提醒,默认接收
+     * </pre>
+     */
+    boolean hasBefollowedNotify();
+    /**
+     * <code>optional bool befollowed_notify = 4 [default = true];</code>
+     *
+     * <pre>
+     *新增关注提醒,默认接收
+     * </pre>
+     */
+    boolean getBefollowedNotify();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.ChatMsgSetting}
+   *
+   * <pre>
+   *未关注人消息接收设置
+   * </pre>
+   */
+  public static final class ChatMsgSetting extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ChatMsgSetting)
+      ChatMsgSettingOrBuilder {
+    // Use ChatMsgSetting.newBuilder() to construct.
+    private ChatMsgSetting(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ChatMsgSetting(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ChatMsgSetting defaultInstance;
+    public static ChatMsgSetting getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ChatMsgSetting getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ChatMsgSetting(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              recvUnfollowEnable_ = input.readBool();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              recvUnfollowLevel_ = input.readUInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              interactionNotify_ = input.readBool();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              befollowedNotify_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_ChatMsgSetting_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_ChatMsgSetting_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveMessageProto.ChatMsgSetting.class, com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ChatMsgSetting> PARSER =
+        new com.google.protobuf.AbstractParser<ChatMsgSetting>() {
+      public ChatMsgSetting parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ChatMsgSetting(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ChatMsgSetting> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RECV_UNFOLLOW_ENABLE_FIELD_NUMBER = 1;
+    private boolean recvUnfollowEnable_;
+    /**
+     * <code>optional bool recv_unfollow_enable = 1 [default = true];</code>
+     *
+     * <pre>
+     *是否接收未关注人的消息,默认接收
+     * </pre>
+     */
+    public boolean hasRecvUnfollowEnable() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional bool recv_unfollow_enable = 1 [default = true];</code>
+     *
+     * <pre>
+     *是否接收未关注人的消息,默认接收
+     * </pre>
+     */
+    public boolean getRecvUnfollowEnable() {
+      return recvUnfollowEnable_;
+    }
+
+    public static final int RECV_UNFOLLOW_LEVEL_FIELD_NUMBER = 2;
+    private int recvUnfollowLevel_;
+    /**
+     * <code>optional uint32 recv_unfollow_level = 2;</code>
+     *
+     * <pre>
+     *接收未关注人消息最低等级
+     * </pre>
+     */
+    public boolean hasRecvUnfollowLevel() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 recv_unfollow_level = 2;</code>
+     *
+     * <pre>
+     *接收未关注人消息最低等级
+     * </pre>
+     */
+    public int getRecvUnfollowLevel() {
+      return recvUnfollowLevel_;
+    }
+
+    public static final int INTERACTION_NOTIFY_FIELD_NUMBER = 3;
+    private boolean interactionNotify_;
+    /**
+     * <code>optional bool interaction_notify = 3 [default = true];</code>
+     *
+     * <pre>
+     *互动通知提醒,默认接收
+     * </pre>
+     */
+    public boolean hasInteractionNotify() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional bool interaction_notify = 3 [default = true];</code>
+     *
+     * <pre>
+     *互动通知提醒,默认接收
+     * </pre>
+     */
+    public boolean getInteractionNotify() {
+      return interactionNotify_;
+    }
+
+    public static final int BEFOLLOWED_NOTIFY_FIELD_NUMBER = 4;
+    private boolean befollowedNotify_;
+    /**
+     * <code>optional bool befollowed_notify = 4 [default = true];</code>
+     *
+     * <pre>
+     *新增关注提醒,默认接收
+     * </pre>
+     */
+    public boolean hasBefollowedNotify() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional bool befollowed_notify = 4 [default = true];</code>
+     *
+     * <pre>
+     *新增关注提醒,默认接收
+     * </pre>
+     */
+    public boolean getBefollowedNotify() {
+      return befollowedNotify_;
+    }
+
+    private void initFields() {
+      recvUnfollowEnable_ = true;
+      recvUnfollowLevel_ = 0;
+      interactionNotify_ = true;
+      befollowedNotify_ = true;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBool(1, recvUnfollowEnable_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, recvUnfollowLevel_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBool(3, interactionNotify_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBool(4, befollowedNotify_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, recvUnfollowEnable_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, recvUnfollowLevel_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(3, interactionNotify_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, befollowedNotify_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveMessageProto.ChatMsgSetting parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.ChatMsgSetting parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.ChatMsgSetting parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.ChatMsgSetting parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.ChatMsgSetting parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.ChatMsgSetting parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.ChatMsgSetting parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.ChatMsgSetting parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.ChatMsgSetting parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.ChatMsgSetting parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveMessageProto.ChatMsgSetting prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.ChatMsgSetting}
+     *
+     * <pre>
+     *未关注人消息接收设置
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ChatMsgSetting)
+        com.wali.live.proto.LiveMessageProto.ChatMsgSettingOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_ChatMsgSetting_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_ChatMsgSetting_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveMessageProto.ChatMsgSetting.class, com.wali.live.proto.LiveMessageProto.ChatMsgSetting.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveMessageProto.ChatMsgSetting.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        recvUnfollowEnable_ = true;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        recvUnfollowLevel_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        interactionNotify_ = true;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        befollowedNotify_ = true;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_ChatMsgSetting_descriptor;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.ChatMsgSetting getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveMessageProto.ChatMsgSetting.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveMessageProto.ChatMsgSetting build() {
+        com.wali.live.proto.LiveMessageProto.ChatMsgSetting result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.ChatMsgSetting buildPartial() {
+        com.wali.live.proto.LiveMessageProto.ChatMsgSetting result = new com.wali.live.proto.LiveMessageProto.ChatMsgSetting(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.recvUnfollowEnable_ = recvUnfollowEnable_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.recvUnfollowLevel_ = recvUnfollowLevel_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.interactionNotify_ = interactionNotify_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.befollowedNotify_ = befollowedNotify_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveMessageProto.ChatMsgSetting) {
+          return mergeFrom((com.wali.live.proto.LiveMessageProto.ChatMsgSetting)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveMessageProto.ChatMsgSetting other) {
+        if (other == com.wali.live.proto.LiveMessageProto.ChatMsgSetting.getDefaultInstance()) return this;
+        if (other.hasRecvUnfollowEnable()) {
+          setRecvUnfollowEnable(other.getRecvUnfollowEnable());
+        }
+        if (other.hasRecvUnfollowLevel()) {
+          setRecvUnfollowLevel(other.getRecvUnfollowLevel());
+        }
+        if (other.hasInteractionNotify()) {
+          setInteractionNotify(other.getInteractionNotify());
+        }
+        if (other.hasBefollowedNotify()) {
+          setBefollowedNotify(other.getBefollowedNotify());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveMessageProto.ChatMsgSetting parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveMessageProto.ChatMsgSetting) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private boolean recvUnfollowEnable_ = true;
+      /**
+       * <code>optional bool recv_unfollow_enable = 1 [default = true];</code>
+       *
+       * <pre>
+       *是否接收未关注人的消息,默认接收
+       * </pre>
+       */
+      public boolean hasRecvUnfollowEnable() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional bool recv_unfollow_enable = 1 [default = true];</code>
+       *
+       * <pre>
+       *是否接收未关注人的消息,默认接收
+       * </pre>
+       */
+      public boolean getRecvUnfollowEnable() {
+        return recvUnfollowEnable_;
+      }
+      /**
+       * <code>optional bool recv_unfollow_enable = 1 [default = true];</code>
+       *
+       * <pre>
+       *是否接收未关注人的消息,默认接收
+       * </pre>
+       */
+      public Builder setRecvUnfollowEnable(boolean value) {
+        bitField0_ |= 0x00000001;
+        recvUnfollowEnable_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool recv_unfollow_enable = 1 [default = true];</code>
+       *
+       * <pre>
+       *是否接收未关注人的消息,默认接收
+       * </pre>
+       */
+      public Builder clearRecvUnfollowEnable() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        recvUnfollowEnable_ = true;
+        onChanged();
+        return this;
+      }
+
+      private int recvUnfollowLevel_ ;
+      /**
+       * <code>optional uint32 recv_unfollow_level = 2;</code>
+       *
+       * <pre>
+       *接收未关注人消息最低等级
+       * </pre>
+       */
+      public boolean hasRecvUnfollowLevel() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 recv_unfollow_level = 2;</code>
+       *
+       * <pre>
+       *接收未关注人消息最低等级
+       * </pre>
+       */
+      public int getRecvUnfollowLevel() {
+        return recvUnfollowLevel_;
+      }
+      /**
+       * <code>optional uint32 recv_unfollow_level = 2;</code>
+       *
+       * <pre>
+       *接收未关注人消息最低等级
+       * </pre>
+       */
+      public Builder setRecvUnfollowLevel(int value) {
+        bitField0_ |= 0x00000002;
+        recvUnfollowLevel_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 recv_unfollow_level = 2;</code>
+       *
+       * <pre>
+       *接收未关注人消息最低等级
+       * </pre>
+       */
+      public Builder clearRecvUnfollowLevel() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        recvUnfollowLevel_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean interactionNotify_ = true;
+      /**
+       * <code>optional bool interaction_notify = 3 [default = true];</code>
+       *
+       * <pre>
+       *互动通知提醒,默认接收
+       * </pre>
+       */
+      public boolean hasInteractionNotify() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional bool interaction_notify = 3 [default = true];</code>
+       *
+       * <pre>
+       *互动通知提醒,默认接收
+       * </pre>
+       */
+      public boolean getInteractionNotify() {
+        return interactionNotify_;
+      }
+      /**
+       * <code>optional bool interaction_notify = 3 [default = true];</code>
+       *
+       * <pre>
+       *互动通知提醒,默认接收
+       * </pre>
+       */
+      public Builder setInteractionNotify(boolean value) {
+        bitField0_ |= 0x00000004;
+        interactionNotify_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool interaction_notify = 3 [default = true];</code>
+       *
+       * <pre>
+       *互动通知提醒,默认接收
+       * </pre>
+       */
+      public Builder clearInteractionNotify() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        interactionNotify_ = true;
+        onChanged();
+        return this;
+      }
+
+      private boolean befollowedNotify_ = true;
+      /**
+       * <code>optional bool befollowed_notify = 4 [default = true];</code>
+       *
+       * <pre>
+       *新增关注提醒,默认接收
+       * </pre>
+       */
+      public boolean hasBefollowedNotify() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional bool befollowed_notify = 4 [default = true];</code>
+       *
+       * <pre>
+       *新增关注提醒,默认接收
+       * </pre>
+       */
+      public boolean getBefollowedNotify() {
+        return befollowedNotify_;
+      }
+      /**
+       * <code>optional bool befollowed_notify = 4 [default = true];</code>
+       *
+       * <pre>
+       *新增关注提醒,默认接收
+       * </pre>
+       */
+      public Builder setBefollowedNotify(boolean value) {
+        bitField0_ |= 0x00000008;
+        befollowedNotify_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool befollowed_notify = 4 [default = true];</code>
+       *
+       * <pre>
+       *新增关注提醒,默认接收
+       * </pre>
+       */
+      public Builder clearBefollowedNotify() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        befollowedNotify_ = true;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ChatMsgSetting)
+    }
+
+    static {
+      defaultInstance = new ChatMsgSetting(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ChatMsgSetting)
+  }
+
+  public interface NobleUserInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.NobleUserInfo)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 avatar = 1;</code>
+     *
+     * <pre>
+     *头像
+     * </pre>
+     */
+    boolean hasAvatar();
+    /**
+     * <code>optional uint64 avatar = 1;</code>
+     *
+     * <pre>
+     *头像
+     * </pre>
+     */
+    long getAvatar();
+
+    /**
+     * <code>optional string nickname = 2;</code>
+     *
+     * <pre>
+     *昵称
+     * </pre>
+     */
+    boolean hasNickname();
+    /**
+     * <code>optional string nickname = 2;</code>
+     *
+     * <pre>
+     *昵称
+     * </pre>
+     */
+    java.lang.String getNickname();
+    /**
+     * <code>optional string nickname = 2;</code>
+     *
+     * <pre>
+     *昵称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getNicknameBytes();
+
+    /**
+     * <code>optional uint32 gender = 3;</code>
+     *
+     * <pre>
+     *性别
+     * </pre>
+     */
+    boolean hasGender();
+    /**
+     * <code>optional uint32 gender = 3;</code>
+     *
+     * <pre>
+     *性别
+     * </pre>
+     */
+    int getGender();
+
+    /**
+     * <code>optional uint32 level = 4;</code>
+     *
+     * <pre>
+     *等级
+     * </pre>
+     */
+    boolean hasLevel();
+    /**
+     * <code>optional uint32 level = 4;</code>
+     *
+     * <pre>
+     *等级
+     * </pre>
+     */
+    int getLevel();
+
+    /**
+     * <code>optional uint32 nobleLevel = 5;</code>
+     *
+     * <pre>
+     *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+     * </pre>
+     */
+    boolean hasNobleLevel();
+    /**
+     * <code>optional uint32 nobleLevel = 5;</code>
+     *
+     * <pre>
+     *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+     * </pre>
+     */
+    int getNobleLevel();
+
+    /**
+     * <code>optional uint64 uuid = 6;</code>
+     *
+     * <pre>
+     *用户id
+     * </pre>
+     */
+    boolean hasUuid();
+    /**
+     * <code>optional uint64 uuid = 6;</code>
+     *
+     * <pre>
+     *用户id
+     * </pre>
+     */
+    long getUuid();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.NobleUserInfo}
+   */
+  public static final class NobleUserInfo extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.NobleUserInfo)
+      NobleUserInfoOrBuilder {
+    // Use NobleUserInfo.newBuilder() to construct.
+    private NobleUserInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private NobleUserInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final NobleUserInfo defaultInstance;
+    public static NobleUserInfo getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public NobleUserInfo getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private NobleUserInfo(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              avatar_ = input.readUInt64();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              nickname_ = bs;
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              gender_ = input.readUInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              level_ = input.readUInt32();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              nobleLevel_ = input.readUInt32();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              uuid_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_NobleUserInfo_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_NobleUserInfo_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveMessageProto.NobleUserInfo.class, com.wali.live.proto.LiveMessageProto.NobleUserInfo.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<NobleUserInfo> PARSER =
+        new com.google.protobuf.AbstractParser<NobleUserInfo>() {
+      public NobleUserInfo parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new NobleUserInfo(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<NobleUserInfo> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int AVATAR_FIELD_NUMBER = 1;
+    private long avatar_;
+    /**
+     * <code>optional uint64 avatar = 1;</code>
+     *
+     * <pre>
+     *头像
+     * </pre>
+     */
+    public boolean hasAvatar() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint64 avatar = 1;</code>
+     *
+     * <pre>
+     *头像
+     * </pre>
+     */
+    public long getAvatar() {
+      return avatar_;
+    }
+
+    public static final int NICKNAME_FIELD_NUMBER = 2;
+    private java.lang.Object nickname_;
+    /**
+     * <code>optional string nickname = 2;</code>
+     *
+     * <pre>
+     *昵称
+     * </pre>
+     */
+    public boolean hasNickname() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string nickname = 2;</code>
+     *
+     * <pre>
+     *昵称
+     * </pre>
+     */
+    public java.lang.String getNickname() {
+      java.lang.Object ref = nickname_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          nickname_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string nickname = 2;</code>
+     *
+     * <pre>
+     *昵称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getNicknameBytes() {
+      java.lang.Object ref = nickname_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        nickname_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int GENDER_FIELD_NUMBER = 3;
+    private int gender_;
+    /**
+     * <code>optional uint32 gender = 3;</code>
+     *
+     * <pre>
+     *性别
+     * </pre>
+     */
+    public boolean hasGender() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint32 gender = 3;</code>
+     *
+     * <pre>
+     *性别
+     * </pre>
+     */
+    public int getGender() {
+      return gender_;
+    }
+
+    public static final int LEVEL_FIELD_NUMBER = 4;
+    private int level_;
+    /**
+     * <code>optional uint32 level = 4;</code>
+     *
+     * <pre>
+     *等级
+     * </pre>
+     */
+    public boolean hasLevel() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint32 level = 4;</code>
+     *
+     * <pre>
+     *等级
+     * </pre>
+     */
+    public int getLevel() {
+      return level_;
+    }
+
+    public static final int NOBLELEVEL_FIELD_NUMBER = 5;
+    private int nobleLevel_;
+    /**
+     * <code>optional uint32 nobleLevel = 5;</code>
+     *
+     * <pre>
+     *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+     * </pre>
+     */
+    public boolean hasNobleLevel() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional uint32 nobleLevel = 5;</code>
+     *
+     * <pre>
+     *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+     * </pre>
+     */
+    public int getNobleLevel() {
+      return nobleLevel_;
+    }
+
+    public static final int UUID_FIELD_NUMBER = 6;
+    private long uuid_;
+    /**
+     * <code>optional uint64 uuid = 6;</code>
+     *
+     * <pre>
+     *用户id
+     * </pre>
+     */
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional uint64 uuid = 6;</code>
+     *
+     * <pre>
+     *用户id
+     * </pre>
+     */
+    public long getUuid() {
+      return uuid_;
+    }
+
+    private void initFields() {
+      avatar_ = 0L;
+      nickname_ = "";
+      gender_ = 0;
+      level_ = 0;
+      nobleLevel_ = 0;
+      uuid_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, avatar_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getNicknameBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, gender_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt32(4, level_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeUInt32(5, nobleLevel_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeUInt64(6, uuid_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, avatar_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getNicknameBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, gender_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(4, level_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(5, nobleLevel_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(6, uuid_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveMessageProto.NobleUserInfo parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.NobleUserInfo parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.NobleUserInfo parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.NobleUserInfo parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.NobleUserInfo parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.NobleUserInfo parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.NobleUserInfo parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.NobleUserInfo parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.NobleUserInfo parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.NobleUserInfo parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveMessageProto.NobleUserInfo prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.NobleUserInfo}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.NobleUserInfo)
+        com.wali.live.proto.LiveMessageProto.NobleUserInfoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_NobleUserInfo_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_NobleUserInfo_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveMessageProto.NobleUserInfo.class, com.wali.live.proto.LiveMessageProto.NobleUserInfo.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveMessageProto.NobleUserInfo.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        avatar_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        nickname_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        gender_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        level_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        nobleLevel_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        uuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_NobleUserInfo_descriptor;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.NobleUserInfo getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveMessageProto.NobleUserInfo.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveMessageProto.NobleUserInfo build() {
+        com.wali.live.proto.LiveMessageProto.NobleUserInfo result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.NobleUserInfo buildPartial() {
+        com.wali.live.proto.LiveMessageProto.NobleUserInfo result = new com.wali.live.proto.LiveMessageProto.NobleUserInfo(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.avatar_ = avatar_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.nickname_ = nickname_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.gender_ = gender_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.level_ = level_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.nobleLevel_ = nobleLevel_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.uuid_ = uuid_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveMessageProto.NobleUserInfo) {
+          return mergeFrom((com.wali.live.proto.LiveMessageProto.NobleUserInfo)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveMessageProto.NobleUserInfo other) {
+        if (other == com.wali.live.proto.LiveMessageProto.NobleUserInfo.getDefaultInstance()) return this;
+        if (other.hasAvatar()) {
+          setAvatar(other.getAvatar());
+        }
+        if (other.hasNickname()) {
+          bitField0_ |= 0x00000002;
+          nickname_ = other.nickname_;
+          onChanged();
+        }
+        if (other.hasGender()) {
+          setGender(other.getGender());
+        }
+        if (other.hasLevel()) {
+          setLevel(other.getLevel());
+        }
+        if (other.hasNobleLevel()) {
+          setNobleLevel(other.getNobleLevel());
+        }
+        if (other.hasUuid()) {
+          setUuid(other.getUuid());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveMessageProto.NobleUserInfo parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveMessageProto.NobleUserInfo) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long avatar_ ;
+      /**
+       * <code>optional uint64 avatar = 1;</code>
+       *
+       * <pre>
+       *头像
+       * </pre>
+       */
+      public boolean hasAvatar() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint64 avatar = 1;</code>
+       *
+       * <pre>
+       *头像
+       * </pre>
+       */
+      public long getAvatar() {
+        return avatar_;
+      }
+      /**
+       * <code>optional uint64 avatar = 1;</code>
+       *
+       * <pre>
+       *头像
+       * </pre>
+       */
+      public Builder setAvatar(long value) {
+        bitField0_ |= 0x00000001;
+        avatar_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 avatar = 1;</code>
+       *
+       * <pre>
+       *头像
+       * </pre>
+       */
+      public Builder clearAvatar() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        avatar_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object nickname_ = "";
+      /**
+       * <code>optional string nickname = 2;</code>
+       *
+       * <pre>
+       *昵称
+       * </pre>
+       */
+      public boolean hasNickname() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string nickname = 2;</code>
+       *
+       * <pre>
+       *昵称
+       * </pre>
+       */
+      public java.lang.String getNickname() {
+        java.lang.Object ref = nickname_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string nickname = 2;</code>
+       *
+       * <pre>
+       *昵称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getNicknameBytes() {
+        java.lang.Object ref = nickname_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          nickname_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string nickname = 2;</code>
+       *
+       * <pre>
+       *昵称
+       * </pre>
+       */
+      public Builder setNickname(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        nickname_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string nickname = 2;</code>
+       *
+       * <pre>
+       *昵称
+       * </pre>
+       */
+      public Builder clearNickname() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        nickname_ = getDefaultInstance().getNickname();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string nickname = 2;</code>
+       *
+       * <pre>
+       *昵称
+       * </pre>
+       */
+      public Builder setNicknameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        nickname_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int gender_ ;
+      /**
+       * <code>optional uint32 gender = 3;</code>
+       *
+       * <pre>
+       *性别
+       * </pre>
+       */
+      public boolean hasGender() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint32 gender = 3;</code>
+       *
+       * <pre>
+       *性别
+       * </pre>
+       */
+      public int getGender() {
+        return gender_;
+      }
+      /**
+       * <code>optional uint32 gender = 3;</code>
+       *
+       * <pre>
+       *性别
+       * </pre>
+       */
+      public Builder setGender(int value) {
+        bitField0_ |= 0x00000004;
+        gender_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 gender = 3;</code>
+       *
+       * <pre>
+       *性别
+       * </pre>
+       */
+      public Builder clearGender() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        gender_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int level_ ;
+      /**
+       * <code>optional uint32 level = 4;</code>
+       *
+       * <pre>
+       *等级
+       * </pre>
+       */
+      public boolean hasLevel() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint32 level = 4;</code>
+       *
+       * <pre>
+       *等级
+       * </pre>
+       */
+      public int getLevel() {
+        return level_;
+      }
+      /**
+       * <code>optional uint32 level = 4;</code>
+       *
+       * <pre>
+       *等级
+       * </pre>
+       */
+      public Builder setLevel(int value) {
+        bitField0_ |= 0x00000008;
+        level_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 level = 4;</code>
+       *
+       * <pre>
+       *等级
+       * </pre>
+       */
+      public Builder clearLevel() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        level_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int nobleLevel_ ;
+      /**
+       * <code>optional uint32 nobleLevel = 5;</code>
+       *
+       * <pre>
+       *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+       * </pre>
+       */
+      public boolean hasNobleLevel() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional uint32 nobleLevel = 5;</code>
+       *
+       * <pre>
+       *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+       * </pre>
+       */
+      public int getNobleLevel() {
+        return nobleLevel_;
+      }
+      /**
+       * <code>optional uint32 nobleLevel = 5;</code>
+       *
+       * <pre>
+       *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+       * </pre>
+       */
+      public Builder setNobleLevel(int value) {
+        bitField0_ |= 0x00000010;
+        nobleLevel_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 nobleLevel = 5;</code>
+       *
+       * <pre>
+       *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+       * </pre>
+       */
+      public Builder clearNobleLevel() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        nobleLevel_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private long uuid_ ;
+      /**
+       * <code>optional uint64 uuid = 6;</code>
+       *
+       * <pre>
+       *用户id
+       * </pre>
+       */
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional uint64 uuid = 6;</code>
+       *
+       * <pre>
+       *用户id
+       * </pre>
+       */
+      public long getUuid() {
+        return uuid_;
+      }
+      /**
+       * <code>optional uint64 uuid = 6;</code>
+       *
+       * <pre>
+       *用户id
+       * </pre>
+       */
+      public Builder setUuid(long value) {
+        bitField0_ |= 0x00000020;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 uuid = 6;</code>
+       *
+       * <pre>
+       *用户id
+       * </pre>
+       */
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        uuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.NobleUserInfo)
+    }
+
+    static {
+      defaultInstance = new NobleUserInfo(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.NobleUserInfo)
+  }
+
+  public interface NobleMsgOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.NobleMsg)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint32 msg_type = 1;</code>
+     *
+     * <pre>
+     * 0 当前的贵族消息
+     * </pre>
+     */
+    boolean hasMsgType();
+    /**
+     * <code>optional uint32 msg_type = 1;</code>
+     *
+     * <pre>
+     * 0 当前的贵族消息
+     * </pre>
+     */
+    int getMsgType();
+
+    /**
+     * <code>optional string msg_content = 2;</code>
+     */
+    boolean hasMsgContent();
+    /**
+     * <code>optional string msg_content = 2;</code>
+     */
+    java.lang.String getMsgContent();
+    /**
+     * <code>optional string msg_content = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getMsgContentBytes();
+
+    /**
+     * <code>optional .com.wali.live.proto.NobleUserInfo noble_user_info = 3;</code>
+     */
+    boolean hasNobleUserInfo();
+    /**
+     * <code>optional .com.wali.live.proto.NobleUserInfo noble_user_info = 3;</code>
+     */
+    com.wali.live.proto.LiveMessageProto.NobleUserInfo getNobleUserInfo();
+    /**
+     * <code>optional .com.wali.live.proto.NobleUserInfo noble_user_info = 3;</code>
+     */
+    com.wali.live.proto.LiveMessageProto.NobleUserInfoOrBuilder getNobleUserInfoOrBuilder();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.NobleMsg}
+   */
+  public static final class NobleMsg extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.NobleMsg)
+      NobleMsgOrBuilder {
+    // Use NobleMsg.newBuilder() to construct.
+    private NobleMsg(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private NobleMsg(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final NobleMsg defaultInstance;
+    public static NobleMsg getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public NobleMsg getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private NobleMsg(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              msgType_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              msgContent_ = bs;
+              break;
+            }
+            case 26: {
+              com.wali.live.proto.LiveMessageProto.NobleUserInfo.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                subBuilder = nobleUserInfo_.toBuilder();
+              }
+              nobleUserInfo_ = input.readMessage(com.wali.live.proto.LiveMessageProto.NobleUserInfo.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(nobleUserInfo_);
+                nobleUserInfo_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000004;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_NobleMsg_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_NobleMsg_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveMessageProto.NobleMsg.class, com.wali.live.proto.LiveMessageProto.NobleMsg.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<NobleMsg> PARSER =
+        new com.google.protobuf.AbstractParser<NobleMsg>() {
+      public NobleMsg parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new NobleMsg(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<NobleMsg> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int MSG_TYPE_FIELD_NUMBER = 1;
+    private int msgType_;
+    /**
+     * <code>optional uint32 msg_type = 1;</code>
+     *
+     * <pre>
+     * 0 当前的贵族消息
+     * </pre>
+     */
+    public boolean hasMsgType() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint32 msg_type = 1;</code>
+     *
+     * <pre>
+     * 0 当前的贵族消息
+     * </pre>
+     */
+    public int getMsgType() {
+      return msgType_;
+    }
+
+    public static final int MSG_CONTENT_FIELD_NUMBER = 2;
+    private java.lang.Object msgContent_;
+    /**
+     * <code>optional string msg_content = 2;</code>
+     */
+    public boolean hasMsgContent() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string msg_content = 2;</code>
+     */
+    public java.lang.String getMsgContent() {
+      java.lang.Object ref = msgContent_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          msgContent_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string msg_content = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getMsgContentBytes() {
+      java.lang.Object ref = msgContent_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msgContent_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int NOBLE_USER_INFO_FIELD_NUMBER = 3;
+    private com.wali.live.proto.LiveMessageProto.NobleUserInfo nobleUserInfo_;
+    /**
+     * <code>optional .com.wali.live.proto.NobleUserInfo noble_user_info = 3;</code>
+     */
+    public boolean hasNobleUserInfo() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.NobleUserInfo noble_user_info = 3;</code>
+     */
+    public com.wali.live.proto.LiveMessageProto.NobleUserInfo getNobleUserInfo() {
+      return nobleUserInfo_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.NobleUserInfo noble_user_info = 3;</code>
+     */
+    public com.wali.live.proto.LiveMessageProto.NobleUserInfoOrBuilder getNobleUserInfoOrBuilder() {
+      return nobleUserInfo_;
+    }
+
+    private void initFields() {
+      msgType_ = 0;
+      msgContent_ = "";
+      nobleUserInfo_ = com.wali.live.proto.LiveMessageProto.NobleUserInfo.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, msgType_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getMsgContentBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeMessage(3, nobleUserInfo_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, msgType_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getMsgContentBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, nobleUserInfo_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveMessageProto.NobleMsg parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.NobleMsg parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.NobleMsg parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.NobleMsg parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.NobleMsg parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.NobleMsg parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.NobleMsg parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.NobleMsg parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.NobleMsg parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.NobleMsg parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveMessageProto.NobleMsg prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.NobleMsg}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.NobleMsg)
+        com.wali.live.proto.LiveMessageProto.NobleMsgOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_NobleMsg_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_NobleMsg_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveMessageProto.NobleMsg.class, com.wali.live.proto.LiveMessageProto.NobleMsg.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveMessageProto.NobleMsg.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getNobleUserInfoFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        msgType_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        msgContent_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        if (nobleUserInfoBuilder_ == null) {
+          nobleUserInfo_ = com.wali.live.proto.LiveMessageProto.NobleUserInfo.getDefaultInstance();
+        } else {
+          nobleUserInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_NobleMsg_descriptor;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.NobleMsg getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveMessageProto.NobleMsg.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveMessageProto.NobleMsg build() {
+        com.wali.live.proto.LiveMessageProto.NobleMsg result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.NobleMsg buildPartial() {
+        com.wali.live.proto.LiveMessageProto.NobleMsg result = new com.wali.live.proto.LiveMessageProto.NobleMsg(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.msgType_ = msgType_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.msgContent_ = msgContent_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        if (nobleUserInfoBuilder_ == null) {
+          result.nobleUserInfo_ = nobleUserInfo_;
+        } else {
+          result.nobleUserInfo_ = nobleUserInfoBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveMessageProto.NobleMsg) {
+          return mergeFrom((com.wali.live.proto.LiveMessageProto.NobleMsg)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveMessageProto.NobleMsg other) {
+        if (other == com.wali.live.proto.LiveMessageProto.NobleMsg.getDefaultInstance()) return this;
+        if (other.hasMsgType()) {
+          setMsgType(other.getMsgType());
+        }
+        if (other.hasMsgContent()) {
+          bitField0_ |= 0x00000002;
+          msgContent_ = other.msgContent_;
+          onChanged();
+        }
+        if (other.hasNobleUserInfo()) {
+          mergeNobleUserInfo(other.getNobleUserInfo());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveMessageProto.NobleMsg parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveMessageProto.NobleMsg) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int msgType_ ;
+      /**
+       * <code>optional uint32 msg_type = 1;</code>
+       *
+       * <pre>
+       * 0 当前的贵族消息
+       * </pre>
+       */
+      public boolean hasMsgType() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint32 msg_type = 1;</code>
+       *
+       * <pre>
+       * 0 当前的贵族消息
+       * </pre>
+       */
+      public int getMsgType() {
+        return msgType_;
+      }
+      /**
+       * <code>optional uint32 msg_type = 1;</code>
+       *
+       * <pre>
+       * 0 当前的贵族消息
+       * </pre>
+       */
+      public Builder setMsgType(int value) {
+        bitField0_ |= 0x00000001;
+        msgType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 msg_type = 1;</code>
+       *
+       * <pre>
+       * 0 当前的贵族消息
+       * </pre>
+       */
+      public Builder clearMsgType() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        msgType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object msgContent_ = "";
+      /**
+       * <code>optional string msg_content = 2;</code>
+       */
+      public boolean hasMsgContent() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string msg_content = 2;</code>
+       */
+      public java.lang.String getMsgContent() {
+        java.lang.Object ref = msgContent_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msgContent_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string msg_content = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getMsgContentBytes() {
+        java.lang.Object ref = msgContent_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msgContent_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string msg_content = 2;</code>
+       */
+      public Builder setMsgContent(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        msgContent_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg_content = 2;</code>
+       */
+      public Builder clearMsgContent() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        msgContent_ = getDefaultInstance().getMsgContent();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg_content = 2;</code>
+       */
+      public Builder setMsgContentBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        msgContent_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.LiveMessageProto.NobleUserInfo nobleUserInfo_ = com.wali.live.proto.LiveMessageProto.NobleUserInfo.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveMessageProto.NobleUserInfo, com.wali.live.proto.LiveMessageProto.NobleUserInfo.Builder, com.wali.live.proto.LiveMessageProto.NobleUserInfoOrBuilder> nobleUserInfoBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.NobleUserInfo noble_user_info = 3;</code>
+       */
+      public boolean hasNobleUserInfo() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.NobleUserInfo noble_user_info = 3;</code>
+       */
+      public com.wali.live.proto.LiveMessageProto.NobleUserInfo getNobleUserInfo() {
+        if (nobleUserInfoBuilder_ == null) {
+          return nobleUserInfo_;
+        } else {
+          return nobleUserInfoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.NobleUserInfo noble_user_info = 3;</code>
+       */
+      public Builder setNobleUserInfo(com.wali.live.proto.LiveMessageProto.NobleUserInfo value) {
+        if (nobleUserInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          nobleUserInfo_ = value;
+          onChanged();
+        } else {
+          nobleUserInfoBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.NobleUserInfo noble_user_info = 3;</code>
+       */
+      public Builder setNobleUserInfo(
+          com.wali.live.proto.LiveMessageProto.NobleUserInfo.Builder builderForValue) {
+        if (nobleUserInfoBuilder_ == null) {
+          nobleUserInfo_ = builderForValue.build();
+          onChanged();
+        } else {
+          nobleUserInfoBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.NobleUserInfo noble_user_info = 3;</code>
+       */
+      public Builder mergeNobleUserInfo(com.wali.live.proto.LiveMessageProto.NobleUserInfo value) {
+        if (nobleUserInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004) &&
+              nobleUserInfo_ != com.wali.live.proto.LiveMessageProto.NobleUserInfo.getDefaultInstance()) {
+            nobleUserInfo_ =
+              com.wali.live.proto.LiveMessageProto.NobleUserInfo.newBuilder(nobleUserInfo_).mergeFrom(value).buildPartial();
+          } else {
+            nobleUserInfo_ = value;
+          }
+          onChanged();
+        } else {
+          nobleUserInfoBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.NobleUserInfo noble_user_info = 3;</code>
+       */
+      public Builder clearNobleUserInfo() {
+        if (nobleUserInfoBuilder_ == null) {
+          nobleUserInfo_ = com.wali.live.proto.LiveMessageProto.NobleUserInfo.getDefaultInstance();
+          onChanged();
+        } else {
+          nobleUserInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.NobleUserInfo noble_user_info = 3;</code>
+       */
+      public com.wali.live.proto.LiveMessageProto.NobleUserInfo.Builder getNobleUserInfoBuilder() {
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return getNobleUserInfoFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.NobleUserInfo noble_user_info = 3;</code>
+       */
+      public com.wali.live.proto.LiveMessageProto.NobleUserInfoOrBuilder getNobleUserInfoOrBuilder() {
+        if (nobleUserInfoBuilder_ != null) {
+          return nobleUserInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return nobleUserInfo_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.NobleUserInfo noble_user_info = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveMessageProto.NobleUserInfo, com.wali.live.proto.LiveMessageProto.NobleUserInfo.Builder, com.wali.live.proto.LiveMessageProto.NobleUserInfoOrBuilder> 
+          getNobleUserInfoFieldBuilder() {
+        if (nobleUserInfoBuilder_ == null) {
+          nobleUserInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.LiveMessageProto.NobleUserInfo, com.wali.live.proto.LiveMessageProto.NobleUserInfo.Builder, com.wali.live.proto.LiveMessageProto.NobleUserInfoOrBuilder>(
+                  getNobleUserInfo(),
+                  getParentForChildren(),
+                  isClean());
+          nobleUserInfo_ = null;
+        }
+        return nobleUserInfoBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.NobleMsg)
+    }
+
+    static {
+      defaultInstance = new NobleMsg(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.NobleMsg)
+  }
+
+  public interface HuyaSendMessageReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.HuyaSendMessageReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 fromUid = 1;</code>
+     *
+     * <pre>
+     *弹幕发送者的直播id
+     * </pre>
+     */
+    boolean hasFromUid();
+    /**
+     * <code>required uint64 fromUid = 1;</code>
+     *
+     * <pre>
+     *弹幕发送者的直播id
+     * </pre>
+     */
+    long getFromUid();
+
+    /**
+     * <code>optional uint64 anchorHuyaUid = 2;</code>
+     *
+     * <pre>
+     *主播的虎牙id
+     * </pre>
+     */
+    boolean hasAnchorHuyaUid();
+    /**
+     * <code>optional uint64 anchorHuyaUid = 2;</code>
+     *
+     * <pre>
+     *主播的虎牙id
+     * </pre>
+     */
+    long getAnchorHuyaUid();
+
+    /**
+     * <code>optional uint32 msgType = 3 [default = 1];</code>
+     *
+     * <pre>
+     *消息类型:1弹幕消息
+     * </pre>
+     */
+    boolean hasMsgType();
+    /**
+     * <code>optional uint32 msgType = 3 [default = 1];</code>
+     *
+     * <pre>
+     *消息类型:1弹幕消息
+     * </pre>
+     */
+    int getMsgType();
+
+    /**
+     * <code>optional string msgContent = 4;</code>
+     *
+     * <pre>
+     *消息内容
+     * </pre>
+     */
+    boolean hasMsgContent();
+    /**
+     * <code>optional string msgContent = 4;</code>
+     *
+     * <pre>
+     *消息内容
+     * </pre>
+     */
+    java.lang.String getMsgContent();
+    /**
+     * <code>optional string msgContent = 4;</code>
+     *
+     * <pre>
+     *消息内容
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getMsgContentBytes();
+
+    /**
+     * <code>optional uint64 sendTimestamp = 5;</code>
+     *
+     * <pre>
+     *弹幕发送时间戳，单位:毫秒
+     * </pre>
+     */
+    boolean hasSendTimestamp();
+    /**
+     * <code>optional uint64 sendTimestamp = 5;</code>
+     *
+     * <pre>
+     *弹幕发送时间戳，单位:毫秒
+     * </pre>
+     */
+    long getSendTimestamp();
+
+    /**
+     * <code>optional uint64 zuid = 6;</code>
+     *
+     * <pre>
+     *主播的小米直播id
+     * </pre>
+     */
+    boolean hasZuid();
+    /**
+     * <code>optional uint64 zuid = 6;</code>
+     *
+     * <pre>
+     *主播的小米直播id
+     * </pre>
+     */
+    long getZuid();
+
+    /**
+     * <code>optional string roomId = 7;</code>
+     *
+     * <pre>
+     *房间id
+     * </pre>
+     */
+    boolean hasRoomId();
+    /**
+     * <code>optional string roomId = 7;</code>
+     *
+     * <pre>
+     *房间id
+     * </pre>
+     */
+    java.lang.String getRoomId();
+    /**
+     * <code>optional string roomId = 7;</code>
+     *
+     * <pre>
+     *房间id
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getRoomIdBytes();
+
+    /**
+     * <code>optional uint32 roomType = 8;</code>
+     *
+     * <pre>
+     *9:虎牙
+     * </pre>
+     */
+    boolean hasRoomType();
+    /**
+     * <code>optional uint32 roomType = 8;</code>
+     *
+     * <pre>
+     *9:虎牙
+     * </pre>
+     */
+    int getRoomType();
+
+    /**
+     * <code>optional uint32 source = 9;</code>
+     *
+     * <pre>
+     *第三方来源 0:虎牙
+     * </pre>
+     */
+    boolean hasSource();
+    /**
+     * <code>optional uint32 source = 9;</code>
+     *
+     * <pre>
+     *第三方来源 0:虎牙
+     * </pre>
+     */
+    int getSource();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.HuyaSendMessageReq}
+   *
+   * <pre>
+   *zhibo.huya.sendmsg
+   *发送弹幕
+   * </pre>
+   */
+  public static final class HuyaSendMessageReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.HuyaSendMessageReq)
+      HuyaSendMessageReqOrBuilder {
+    // Use HuyaSendMessageReq.newBuilder() to construct.
+    private HuyaSendMessageReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private HuyaSendMessageReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final HuyaSendMessageReq defaultInstance;
+    public static HuyaSendMessageReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public HuyaSendMessageReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private HuyaSendMessageReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              fromUid_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              anchorHuyaUid_ = input.readUInt64();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              msgType_ = input.readUInt32();
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              msgContent_ = bs;
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              sendTimestamp_ = input.readUInt64();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              zuid_ = input.readUInt64();
+              break;
+            }
+            case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000040;
+              roomId_ = bs;
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000080;
+              roomType_ = input.readUInt32();
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000100;
+              source_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq.class, com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<HuyaSendMessageReq> PARSER =
+        new com.google.protobuf.AbstractParser<HuyaSendMessageReq>() {
+      public HuyaSendMessageReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new HuyaSendMessageReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<HuyaSendMessageReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int FROMUID_FIELD_NUMBER = 1;
+    private long fromUid_;
+    /**
+     * <code>required uint64 fromUid = 1;</code>
+     *
+     * <pre>
+     *弹幕发送者的直播id
+     * </pre>
+     */
+    public boolean hasFromUid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 fromUid = 1;</code>
+     *
+     * <pre>
+     *弹幕发送者的直播id
+     * </pre>
+     */
+    public long getFromUid() {
+      return fromUid_;
+    }
+
+    public static final int ANCHORHUYAUID_FIELD_NUMBER = 2;
+    private long anchorHuyaUid_;
+    /**
+     * <code>optional uint64 anchorHuyaUid = 2;</code>
+     *
+     * <pre>
+     *主播的虎牙id
+     * </pre>
+     */
+    public boolean hasAnchorHuyaUid() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint64 anchorHuyaUid = 2;</code>
+     *
+     * <pre>
+     *主播的虎牙id
+     * </pre>
+     */
+    public long getAnchorHuyaUid() {
+      return anchorHuyaUid_;
+    }
+
+    public static final int MSGTYPE_FIELD_NUMBER = 3;
+    private int msgType_;
+    /**
+     * <code>optional uint32 msgType = 3 [default = 1];</code>
+     *
+     * <pre>
+     *消息类型:1弹幕消息
+     * </pre>
+     */
+    public boolean hasMsgType() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint32 msgType = 3 [default = 1];</code>
+     *
+     * <pre>
+     *消息类型:1弹幕消息
+     * </pre>
+     */
+    public int getMsgType() {
+      return msgType_;
+    }
+
+    public static final int MSGCONTENT_FIELD_NUMBER = 4;
+    private java.lang.Object msgContent_;
+    /**
+     * <code>optional string msgContent = 4;</code>
+     *
+     * <pre>
+     *消息内容
+     * </pre>
+     */
+    public boolean hasMsgContent() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string msgContent = 4;</code>
+     *
+     * <pre>
+     *消息内容
+     * </pre>
+     */
+    public java.lang.String getMsgContent() {
+      java.lang.Object ref = msgContent_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          msgContent_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string msgContent = 4;</code>
+     *
+     * <pre>
+     *消息内容
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getMsgContentBytes() {
+      java.lang.Object ref = msgContent_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msgContent_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SENDTIMESTAMP_FIELD_NUMBER = 5;
+    private long sendTimestamp_;
+    /**
+     * <code>optional uint64 sendTimestamp = 5;</code>
+     *
+     * <pre>
+     *弹幕发送时间戳，单位:毫秒
+     * </pre>
+     */
+    public boolean hasSendTimestamp() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional uint64 sendTimestamp = 5;</code>
+     *
+     * <pre>
+     *弹幕发送时间戳，单位:毫秒
+     * </pre>
+     */
+    public long getSendTimestamp() {
+      return sendTimestamp_;
+    }
+
+    public static final int ZUID_FIELD_NUMBER = 6;
+    private long zuid_;
+    /**
+     * <code>optional uint64 zuid = 6;</code>
+     *
+     * <pre>
+     *主播的小米直播id
+     * </pre>
+     */
+    public boolean hasZuid() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional uint64 zuid = 6;</code>
+     *
+     * <pre>
+     *主播的小米直播id
+     * </pre>
+     */
+    public long getZuid() {
+      return zuid_;
+    }
+
+    public static final int ROOMID_FIELD_NUMBER = 7;
+    private java.lang.Object roomId_;
+    /**
+     * <code>optional string roomId = 7;</code>
+     *
+     * <pre>
+     *房间id
+     * </pre>
+     */
+    public boolean hasRoomId() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional string roomId = 7;</code>
+     *
+     * <pre>
+     *房间id
+     * </pre>
+     */
+    public java.lang.String getRoomId() {
+      java.lang.Object ref = roomId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          roomId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string roomId = 7;</code>
+     *
+     * <pre>
+     *房间id
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getRoomIdBytes() {
+      java.lang.Object ref = roomId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        roomId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ROOMTYPE_FIELD_NUMBER = 8;
+    private int roomType_;
+    /**
+     * <code>optional uint32 roomType = 8;</code>
+     *
+     * <pre>
+     *9:虎牙
+     * </pre>
+     */
+    public boolean hasRoomType() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional uint32 roomType = 8;</code>
+     *
+     * <pre>
+     *9:虎牙
+     * </pre>
+     */
+    public int getRoomType() {
+      return roomType_;
+    }
+
+    public static final int SOURCE_FIELD_NUMBER = 9;
+    private int source_;
+    /**
+     * <code>optional uint32 source = 9;</code>
+     *
+     * <pre>
+     *第三方来源 0:虎牙
+     * </pre>
+     */
+    public boolean hasSource() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional uint32 source = 9;</code>
+     *
+     * <pre>
+     *第三方来源 0:虎牙
+     * </pre>
+     */
+    public int getSource() {
+      return source_;
+    }
+
+    private void initFields() {
+      fromUid_ = 0L;
+      anchorHuyaUid_ = 0L;
+      msgType_ = 1;
+      msgContent_ = "";
+      sendTimestamp_ = 0L;
+      zuid_ = 0L;
+      roomId_ = "";
+      roomType_ = 0;
+      source_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasFromUid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, fromUid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, anchorHuyaUid_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, msgType_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getMsgContentBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeUInt64(5, sendTimestamp_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeUInt64(6, zuid_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBytes(7, getRoomIdBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeUInt32(8, roomType_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeUInt32(9, source_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, fromUid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, anchorHuyaUid_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, msgType_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getMsgContentBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(5, sendTimestamp_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(6, zuid_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, getRoomIdBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(8, roomType_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(9, source_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.HuyaSendMessageReq}
+     *
+     * <pre>
+     *zhibo.huya.sendmsg
+     *发送弹幕
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.HuyaSendMessageReq)
+        com.wali.live.proto.LiveMessageProto.HuyaSendMessageReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq.class, com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        fromUid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        anchorHuyaUid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        msgType_ = 1;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        msgContent_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        sendTimestamp_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        zuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        roomId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
+        roomType_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        source_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000100);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageReq_descriptor;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq build() {
+        com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq buildPartial() {
+        com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq result = new com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.fromUid_ = fromUid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.anchorHuyaUid_ = anchorHuyaUid_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.msgType_ = msgType_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.msgContent_ = msgContent_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.sendTimestamp_ = sendTimestamp_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.zuid_ = zuid_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.roomId_ = roomId_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.roomType_ = roomType_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.source_ = source_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq) {
+          return mergeFrom((com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq other) {
+        if (other == com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq.getDefaultInstance()) return this;
+        if (other.hasFromUid()) {
+          setFromUid(other.getFromUid());
+        }
+        if (other.hasAnchorHuyaUid()) {
+          setAnchorHuyaUid(other.getAnchorHuyaUid());
+        }
+        if (other.hasMsgType()) {
+          setMsgType(other.getMsgType());
+        }
+        if (other.hasMsgContent()) {
+          bitField0_ |= 0x00000008;
+          msgContent_ = other.msgContent_;
+          onChanged();
+        }
+        if (other.hasSendTimestamp()) {
+          setSendTimestamp(other.getSendTimestamp());
+        }
+        if (other.hasZuid()) {
+          setZuid(other.getZuid());
+        }
+        if (other.hasRoomId()) {
+          bitField0_ |= 0x00000040;
+          roomId_ = other.roomId_;
+          onChanged();
+        }
+        if (other.hasRoomType()) {
+          setRoomType(other.getRoomType());
+        }
+        if (other.hasSource()) {
+          setSource(other.getSource());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasFromUid()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long fromUid_ ;
+      /**
+       * <code>required uint64 fromUid = 1;</code>
+       *
+       * <pre>
+       *弹幕发送者的直播id
+       * </pre>
+       */
+      public boolean hasFromUid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 fromUid = 1;</code>
+       *
+       * <pre>
+       *弹幕发送者的直播id
+       * </pre>
+       */
+      public long getFromUid() {
+        return fromUid_;
+      }
+      /**
+       * <code>required uint64 fromUid = 1;</code>
+       *
+       * <pre>
+       *弹幕发送者的直播id
+       * </pre>
+       */
+      public Builder setFromUid(long value) {
+        bitField0_ |= 0x00000001;
+        fromUid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 fromUid = 1;</code>
+       *
+       * <pre>
+       *弹幕发送者的直播id
+       * </pre>
+       */
+      public Builder clearFromUid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        fromUid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long anchorHuyaUid_ ;
+      /**
+       * <code>optional uint64 anchorHuyaUid = 2;</code>
+       *
+       * <pre>
+       *主播的虎牙id
+       * </pre>
+       */
+      public boolean hasAnchorHuyaUid() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint64 anchorHuyaUid = 2;</code>
+       *
+       * <pre>
+       *主播的虎牙id
+       * </pre>
+       */
+      public long getAnchorHuyaUid() {
+        return anchorHuyaUid_;
+      }
+      /**
+       * <code>optional uint64 anchorHuyaUid = 2;</code>
+       *
+       * <pre>
+       *主播的虎牙id
+       * </pre>
+       */
+      public Builder setAnchorHuyaUid(long value) {
+        bitField0_ |= 0x00000002;
+        anchorHuyaUid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 anchorHuyaUid = 2;</code>
+       *
+       * <pre>
+       *主播的虎牙id
+       * </pre>
+       */
+      public Builder clearAnchorHuyaUid() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        anchorHuyaUid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int msgType_ = 1;
+      /**
+       * <code>optional uint32 msgType = 3 [default = 1];</code>
+       *
+       * <pre>
+       *消息类型:1弹幕消息
+       * </pre>
+       */
+      public boolean hasMsgType() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint32 msgType = 3 [default = 1];</code>
+       *
+       * <pre>
+       *消息类型:1弹幕消息
+       * </pre>
+       */
+      public int getMsgType() {
+        return msgType_;
+      }
+      /**
+       * <code>optional uint32 msgType = 3 [default = 1];</code>
+       *
+       * <pre>
+       *消息类型:1弹幕消息
+       * </pre>
+       */
+      public Builder setMsgType(int value) {
+        bitField0_ |= 0x00000004;
+        msgType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 msgType = 3 [default = 1];</code>
+       *
+       * <pre>
+       *消息类型:1弹幕消息
+       * </pre>
+       */
+      public Builder clearMsgType() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        msgType_ = 1;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object msgContent_ = "";
+      /**
+       * <code>optional string msgContent = 4;</code>
+       *
+       * <pre>
+       *消息内容
+       * </pre>
+       */
+      public boolean hasMsgContent() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string msgContent = 4;</code>
+       *
+       * <pre>
+       *消息内容
+       * </pre>
+       */
+      public java.lang.String getMsgContent() {
+        java.lang.Object ref = msgContent_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msgContent_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string msgContent = 4;</code>
+       *
+       * <pre>
+       *消息内容
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getMsgContentBytes() {
+        java.lang.Object ref = msgContent_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msgContent_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string msgContent = 4;</code>
+       *
+       * <pre>
+       *消息内容
+       * </pre>
+       */
+      public Builder setMsgContent(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        msgContent_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msgContent = 4;</code>
+       *
+       * <pre>
+       *消息内容
+       * </pre>
+       */
+      public Builder clearMsgContent() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        msgContent_ = getDefaultInstance().getMsgContent();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msgContent = 4;</code>
+       *
+       * <pre>
+       *消息内容
+       * </pre>
+       */
+      public Builder setMsgContentBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        msgContent_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long sendTimestamp_ ;
+      /**
+       * <code>optional uint64 sendTimestamp = 5;</code>
+       *
+       * <pre>
+       *弹幕发送时间戳，单位:毫秒
+       * </pre>
+       */
+      public boolean hasSendTimestamp() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional uint64 sendTimestamp = 5;</code>
+       *
+       * <pre>
+       *弹幕发送时间戳，单位:毫秒
+       * </pre>
+       */
+      public long getSendTimestamp() {
+        return sendTimestamp_;
+      }
+      /**
+       * <code>optional uint64 sendTimestamp = 5;</code>
+       *
+       * <pre>
+       *弹幕发送时间戳，单位:毫秒
+       * </pre>
+       */
+      public Builder setSendTimestamp(long value) {
+        bitField0_ |= 0x00000010;
+        sendTimestamp_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 sendTimestamp = 5;</code>
+       *
+       * <pre>
+       *弹幕发送时间戳，单位:毫秒
+       * </pre>
+       */
+      public Builder clearSendTimestamp() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        sendTimestamp_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long zuid_ ;
+      /**
+       * <code>optional uint64 zuid = 6;</code>
+       *
+       * <pre>
+       *主播的小米直播id
+       * </pre>
+       */
+      public boolean hasZuid() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional uint64 zuid = 6;</code>
+       *
+       * <pre>
+       *主播的小米直播id
+       * </pre>
+       */
+      public long getZuid() {
+        return zuid_;
+      }
+      /**
+       * <code>optional uint64 zuid = 6;</code>
+       *
+       * <pre>
+       *主播的小米直播id
+       * </pre>
+       */
+      public Builder setZuid(long value) {
+        bitField0_ |= 0x00000020;
+        zuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 zuid = 6;</code>
+       *
+       * <pre>
+       *主播的小米直播id
+       * </pre>
+       */
+      public Builder clearZuid() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        zuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object roomId_ = "";
+      /**
+       * <code>optional string roomId = 7;</code>
+       *
+       * <pre>
+       *房间id
+       * </pre>
+       */
+      public boolean hasRoomId() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional string roomId = 7;</code>
+       *
+       * <pre>
+       *房间id
+       * </pre>
+       */
+      public java.lang.String getRoomId() {
+        java.lang.Object ref = roomId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            roomId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string roomId = 7;</code>
+       *
+       * <pre>
+       *房间id
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getRoomIdBytes() {
+        java.lang.Object ref = roomId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          roomId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string roomId = 7;</code>
+       *
+       * <pre>
+       *房间id
+       * </pre>
+       */
+      public Builder setRoomId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        roomId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string roomId = 7;</code>
+       *
+       * <pre>
+       *房间id
+       * </pre>
+       */
+      public Builder clearRoomId() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        roomId_ = getDefaultInstance().getRoomId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string roomId = 7;</code>
+       *
+       * <pre>
+       *房间id
+       * </pre>
+       */
+      public Builder setRoomIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        roomId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int roomType_ ;
+      /**
+       * <code>optional uint32 roomType = 8;</code>
+       *
+       * <pre>
+       *9:虎牙
+       * </pre>
+       */
+      public boolean hasRoomType() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional uint32 roomType = 8;</code>
+       *
+       * <pre>
+       *9:虎牙
+       * </pre>
+       */
+      public int getRoomType() {
+        return roomType_;
+      }
+      /**
+       * <code>optional uint32 roomType = 8;</code>
+       *
+       * <pre>
+       *9:虎牙
+       * </pre>
+       */
+      public Builder setRoomType(int value) {
+        bitField0_ |= 0x00000080;
+        roomType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 roomType = 8;</code>
+       *
+       * <pre>
+       *9:虎牙
+       * </pre>
+       */
+      public Builder clearRoomType() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        roomType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int source_ ;
+      /**
+       * <code>optional uint32 source = 9;</code>
+       *
+       * <pre>
+       *第三方来源 0:虎牙
+       * </pre>
+       */
+      public boolean hasSource() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional uint32 source = 9;</code>
+       *
+       * <pre>
+       *第三方来源 0:虎牙
+       * </pre>
+       */
+      public int getSource() {
+        return source_;
+      }
+      /**
+       * <code>optional uint32 source = 9;</code>
+       *
+       * <pre>
+       *第三方来源 0:虎牙
+       * </pre>
+       */
+      public Builder setSource(int value) {
+        bitField0_ |= 0x00000100;
+        source_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 source = 9;</code>
+       *
+       * <pre>
+       *第三方来源 0:虎牙
+       * </pre>
+       */
+      public Builder clearSource() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        source_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.HuyaSendMessageReq)
+    }
+
+    static {
+      defaultInstance = new HuyaSendMessageReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.HuyaSendMessageReq)
+  }
+
+  public interface HuyaSendMessageRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.HuyaSendMessageRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    int getRetCode();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.HuyaSendMessageRsp}
+   */
+  public static final class HuyaSendMessageRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.HuyaSendMessageRsp)
+      HuyaSendMessageRspOrBuilder {
+    // Use HuyaSendMessageRsp.newBuilder() to construct.
+    private HuyaSendMessageRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private HuyaSendMessageRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final HuyaSendMessageRsp defaultInstance;
+    public static HuyaSendMessageRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public HuyaSendMessageRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private HuyaSendMessageRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp.class, com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<HuyaSendMessageRsp> PARSER =
+        new com.google.protobuf.AbstractParser<HuyaSendMessageRsp>() {
+      public HuyaSendMessageRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new HuyaSendMessageRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<HuyaSendMessageRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.HuyaSendMessageRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.HuyaSendMessageRsp)
+        com.wali.live.proto.LiveMessageProto.HuyaSendMessageRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp.class, com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageRsp_descriptor;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp build() {
+        com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp buildPartial() {
+        com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp result = new com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp) {
+          return mergeFrom((com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp other) {
+        if (other == com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.HuyaSendMessageRsp)
+    }
+
+    static {
+      defaultInstance = new HuyaSendMessageRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.HuyaSendMessageRsp)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_ChatMessageRequest_descriptor;
   private static
@@ -86768,6 +97089,11 @@ public final class LiveMessageProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_LikeMessage_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_AnchorDiscountAging_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_AnchorDiscountAging_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GiftMessage_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -86792,6 +97118,16 @@ public final class LiveMessageProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_PKEndMessage_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_MicBeginMessage_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_MicBeginMessage_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_MicEndMessage_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_MicEndMessage_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_LiveInfoChangeMsg_descriptor;
   private static
@@ -87167,6 +97503,51 @@ public final class LiveMessageProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_VFansMemberBriefInfo_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_SetChatMsgSettingRequest_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_SetChatMsgSettingRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_SetChatMsgSettingResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_SetChatMsgSettingResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetChatMsgSettingRequest_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetChatMsgSettingRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetChatMsgSettingResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetChatMsgSettingResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_ChatMsgSetting_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_ChatMsgSetting_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_NobleUserInfo_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_NobleUserInfo_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_NobleMsg_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_NobleMsg_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_HuyaSendMessageReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_HuyaSendMessageReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_HuyaSendMessageRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_HuyaSendMessageRsp_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -87228,223 +97609,258 @@ public final class LiveMessageProto {
       "AnchorMessage\022\017\n\007content\030\001 \001(\t\"I\n\020Forbid",
       "denMessage\022\016\n\006userId\030\001 \001(\004\022\017\n\007op_type\030\002 " +
       "\001(\r\022\024\n\014ban_nickname\030\003 \001(\t\"\031\n\013LikeMessage" +
-      "\022\n\n\002id\030\001 \001(\r\"\303\002\n\013GiftMessage\022\016\n\006giftId\030\001" +
-      " \001(\r\022\021\n\tgift_name\030\002 \001(\t\022\022\n\ngift_count\030\003 " +
-      "\001(\r\022\023\n\013zhubo_asset\030\004 \001(\r\022\035\n\025zhubo_asset_" +
-      "timestamp\030\005 \001(\004\022\022\n\ngift_value\030\006 \001(\r\022\030\n\020a" +
-      "vatar_timestamp\030\007 \001(\004\022\n\n\002ip\030\010 \001(\t\022\022\n\ncon" +
-      "tinueId\030\t \001(\004\022\021\n\tgift_type\030\n \001(\r\022\020\n\010msg_" +
-      "body\030\013 \001(\t\022\026\n\016red_envelop_id\030\014 \001(\t\022\020\n\010or" +
-      "der_id\030\r \001(\t\022\027\n\017live_stream_url\030\016 \001(\t\022\023\n",
-      "\013batch_count\030\017 \001(\r\"z\n\024ReplayMessageReque" +
-      "st\022\021\n\tfrom_user\030\001 \002(\004\022\017\n\007room_id\030\002 \001(\t\022\017" +
-      "\n\007page_id\030\003 \001(\t\022\r\n\005limit\030\004 \001(\r\022\013\n\003cid\030\005 " +
-      "\001(\004\022\021\n\ttimestamp\030\006 \001(\004\"\213\001\n\025ReplayMessage" +
-      "Response\022\013\n\003ret\030\001 \002(\r\022\021\n\terror_msg\030\002 \001(\t" +
-      "\0224\n\016replay_message\030\003 \003(\0132\034.com.wali.live" +
-      ".proto.Message\022\013\n\003cid\030\004 \001(\004\022\017\n\007page_id\030\005" +
-      " \001(\t\"s\n\016PKBeginMessage\022/\n\nthisPKInfo\030\001 \001" +
-      "(\0132\033.com.wali.live.proto.PKInfo\0220\n\013other" +
-      "PKInfo\030\002 \001(\0132\033.com.wali.live.proto.PKInf",
-      "o\"q\n\014PKEndMessage\022/\n\nthisPKInfo\030\001 \001(\0132\033." +
-      "com.wali.live.proto.PKInfo\0220\n\013otherPKInf" +
-      "o\030\002 \001(\0132\033.com.wali.live.proto.PKInfo\"_\n\021" +
-      "LiveInfoChangeMsg\022\020\n\010mod_flag\030\001 \001(\004\022\014\n\004z" +
-      "uid\030\002 \001(\004\022\017\n\007live_id\030\003 \001(\t\022\031\n\021enable_vie" +
-      "wer_mic\030\004 \001(\010\"\222\006\n\007Message\022\021\n\tfrom_user\030\001" +
-      " \002(\004\022\017\n\007to_user\030\002 \001(\004\022\017\n\007room_id\030\003 \001(\t\022\013" +
-      "\n\003cid\030\004 \001(\004\022\017\n\007msg_seq\030\005 \001(\r\022\021\n\ttimestam" +
-      "p\030\006 \001(\004\022\020\n\010msg_type\030\007 \001(\r\022\020\n\010msg_body\030\010 " +
-      "\001(\t\022\022\n\nmsg_status\030\t \001(\r\022\017\n\007msg_ext\030\n \001(\014",
-      "\022\033\n\023from_user_nick_name\030\013 \001(\t\022\027\n\017from_us" +
-      "er_level\030\014 \001(\r\022\030\n\020from_user_gender\030\r \001(\r" +
-      "\022\025\n\rcertification\030\016 \001(\t\022\032\n\022certification" +
-      "_type\030\017 \001(\r\022\023\n\013support_txt\030\020 \001(\t\022\021\n\troom" +
-      "_type\030\021 \001(\r\022\026\n\016origin_room_id\030\022 \001(\t\022\024\n\014m" +
-      "sg_catetory\030\023 \001(\r\022:\n\016multi_language\030\024 \001(" +
-      "\0132\".com.wali.live.proto.MultiLanguage\022\033\n" +
-      "\023from_user_show_name\030\025 \001(\t\022\034\n\024is_from_us" +
-      "er_redname\030\026 \001(\010\022F\n\023global_room_msg_ext\030" +
-      "\027 \001(\0132).com.wali.live.proto.GlobalRoomMe",
-      "ssageExt\022\021\n\tvip_level\030\030 \001(\r\022\023\n\013vip_disab" +
-      "le\030\031 \001(\010\022\022\n\nvip_hidden\030\032 \001(\010\022&\n\036real_nam" +
-      "e_certification_status\030\033 \001(\r\022\024\n\014is_push_" +
-      "self\030\034 \001(\010\022\026\n\016from_effect_id\030\035 \001(\r\022\023\n\013no" +
-      "ble_level\030\036 \001(\r\022\031\n\021special_effect_id\030\037 \001" +
-      "(\r\"/\n\010Language\022\025\n\rlanguage_code\030\001 \001(\r\022\014\n" +
-      "\004text\030\002 \001(\t\"@\n\rMultiLanguage\022/\n\010language" +
-      "\030\001 \003(\0132\035.com.wali.live.proto.Language\"D\n" +
-      "\021SyncSysMsgRequest\022\021\n\tfrom_user\030\001 \002(\004\022\017\n" +
-      "\007room_id\030\002 \001(\t\022\013\n\003cid\030\003 \001(\004\"\203\001\n\022SyncSysM",
-      "sgResponse\022\013\n\003ret\030\001 \001(\r\022\021\n\terror_msg\030\002 \001" +
-      "(\t\022\013\n\003cid\030\003 \001(\004\022\021\n\ttimestamp\030\004 \001(\004\022-\n\007me" +
-      "ssage\030\005 \003(\0132\034.com.wali.live.proto.Messag" +
-      "e\"h\n\021SyncUnreadRequest\022\021\n\tfrom_user\030\001 \001(" +
-      "\004\022\013\n\003cid\030\002 \001(\004\022\017\n\007page_id\030\003 \001(\t\022\r\n\005limit" +
-      "\030\004 \001(\r\022\023\n\013follow_type\030\005 \001(\r\"\233\001\n\022SyncUnre" +
-      "adResponse\022\013\n\003ret\030\001 \001(\r\022\021\n\terror_msg\030\002 \001" +
-      "(\t\022+\n\006unread\030\003 \003(\0132\033.com.wali.live.proto" +
-      ".Unread\022\032\n\022total_unread_count\030\004 \001(\r\022\013\n\003c" +
-      "id\030\005 \001(\004\022\017\n\007page_id\030\006 \001(\t\"o\n\006Unread\022\024\n\014u",
-      "nread_count\030\001 \001(\r\022\026\n\016max_unread_seq\030\002 \001(" +
-      "\r\022)\n\003msg\030\003 \003(\0132\034.com.wali.live.proto.Mes" +
-      "sage\022\014\n\004user\030\004 \001(\004\"A\n\031SyncHistoryMessage" +
-      "Reuqest\022\021\n\tfrom_user\030\001 \001(\004\022\021\n\tsync_user\030" +
-      "\002 \001(\004\"i\n\032SyncHistoryMessageResponse\022\013\n\003r" +
-      "et\030\001 \001(\r\022\021\n\terror_msg\030\002 \001(\t\022+\n\006unread\030\003 " +
-      "\001(\0132\033.com.wali.live.proto.Unread\"~\n\017Join" +
-      "RoomMessage\022\024\n\014viewer_count\030\001 \001(\r\022,\n\007vie" +
-      "wers\030\002 \003(\0132\033.com.wali.live.proto.Viewer\022" +
-      "\014\n\004type\030\003 \001(\r\022\031\n\021showSpecialEffect\030\004 \001(\010",
-      "\"V\n\020LeaveRoomMessage\022\024\n\014viewer_count\030\001 \001" +
-      "(\r\022,\n\007viewers\030\002 \003(\0132\033.com.wali.live.prot" +
-      "o.Viewer\"S\n\rViewerMessage\022\024\n\014viewer_coun" +
-      "t\030\001 \001(\r\022,\n\007viewers\030\002 \003(\0132\033.com.wali.live" +
-      ".proto.Viewer\"\027\n\025AnchorJoinRoomMessage\"\030" +
-      "\n\026AnchorLeaveRoomMessage\"<\n\013PushMessage\022" +
-      "-\n\007message\030\001 \003(\0132\034.com.wali.live.proto.M" +
-      "essage\"(\n\021ChatNotifyMessage\022\023\n\013follow_ty" +
-      "pe\030\001 \001(\r\"|\n\014ImageBodyExt\022\020\n\010mimeType\030\001 \002" +
-      "(\t\022\013\n\003url\030\002 \002(\t\022\r\n\005width\030\003 \002(\r\022\016\n\006height",
-      "\030\004 \002(\r\022\014\n\004size\030\005 \002(\r\022\023\n\013is_original\030\006 \001(" +
-      "\010\022\013\n\003md5\030\007 \001(\t\" \n\tProbeArgs\022\023\n\013domain_na" +
-      "me\030\001 \001(\t\"x\n\022FeedMessageRequest\022\021\n\tfrom_u" +
-      "ser\030\001 \002(\004\022\017\n\007room_id\030\002 \001(\t\022\017\n\007page_id\030\003 " +
-      "\001(\t\022\r\n\005limit\030\004 \001(\r\022\013\n\003cid\030\005 \001(\004\022\021\n\ttimes" +
-      "tamp\030\006 \001(\004\"\207\001\n\023FeedMessageResponse\022\013\n\003re" +
-      "t\030\001 \002(\r\022\021\n\terror_msg\030\002 \001(\t\0222\n\014feed_messa" +
-      "ge\030\003 \003(\0132\034.com.wali.live.proto.Message\022\013" +
-      "\n\003cid\030\004 \001(\004\022\017\n\007page_id\030\005 \001(\t\"y\n\026SyncRoom" +
-      "MessageRequest\022\021\n\tfrom_user\030\001 \002(\004\022\017\n\007roo",
-      "m_id\030\002 \002(\t\022\036\n\026last_sync_important_ts\030\003 \001" +
-      "(\004\022\033\n\023last_sync_normal_ts\030\004 \001(\004\"\204\002\n\027Sync" +
-      "RoomMessageResponse\022\013\n\003ret\030\001 \002(\r\022\021\n\terro" +
-      "r_msg\030\002 \001(\t\0228\n\022important_room_msg\030\003 \003(\0132" +
-      "\034.com.wali.live.proto.Message\0225\n\017normal_" +
-      "room_msg\030\004 \003(\0132\034.com.wali.live.proto.Mes" +
-      "sage\022!\n\031current_sync_important_ts\030\005 \001(\004\022" +
-      "\036\n\026current_sync_normal_ts\030\006 \001(\004\022\025\n\rsync_" +
-      "interval\030\007 \001(\r\"E\n\024MsgRuleChangeMessage\022-" +
-      "\n\007msgRule\030\001 \001(\0132\034.com.wali.live.proto.Ms",
-      "gRule\"\217\001\n\013KickMessage\022\014\n\004zuid\030\001 \001(\004\022\016\n\006l" +
-      "iveid\030\002 \001(\t\022\r\n\005op_id\030\003 \001(\004\022\017\n\007op_type\030\004 " +
-      "\001(\r\022\021\n\tkicked_id\030\005 \001(\004\022\026\n\016operation_type" +
-      "\030\006 \001(\r\022\027\n\017kicked_nickname\030\007 \001(\t\"7\n\023TapTo" +
-      "SellPushMsgExt\022\016\n\006isShop\030\001 \001(\010\022\020\n\010hideGi" +
-      "ft\030\002 \001(\010\"\230\001\n\rWidgetMessage\022\014\n\004zuid\030\001 \002(\004" +
-      "\0227\n\007msgItem\030\002 \003(\0132&.com.wali.live.proto." +
-      "WidgetMessageItem\022@\n\rnewWidgetItem\030\003 \003(\013" +
-      "2).com.wali.live.proto.NewWidgetMessageI" +
-      "tem\"e\n\021WidgetMessageItem\022\020\n\010link_url\030\001 \002",
-      "(\t\022\020\n\010position\030\002 \002(\r\022\014\n\004icon\030\003 \001(\t\022\014\n\004te" +
-      "xt\030\004 \001(\t\022\020\n\010showType\030\005 \001(\r\"u\n\024NewWidgetM" +
-      "essageItem\0229\n\rnewWidgetItem\030\001 \002(\0132\".com." +
-      "wali.live.proto.NewWidgetItem\022\020\n\010isDelet" +
-      "e\030\002 \001(\010\022\020\n\010showType\030\003 \001(\r\"b\n\024RoomAnimati" +
-      "onMessage\022\030\n\020animation_effect\030\001 \001(\r\022\030\n\020a" +
-      "nimationContent\030\002 \001(\t\022\026\n\016animation_type\030" +
-      "\003 \001(\r\"P\n\014ShoppingInfo\022\014\n\004name\030\001 \002(\t\022\r\n\005p" +
-      "rice\030\002 \002(\001\022\022\n\nproduct_id\030\003 \002(\003\022\017\n\007img_ur" +
-      "l\030\004 \001(\t\"R\n\026PushShoppingInfoMsgExt\0228\n\rsho",
-      "pping_info\030\001 \003(\0132!.com.wali.live.proto.S" +
-      "hoppingInfo\"$\n\016UpgradeMessage\022\022\n\nuser_le" +
-      "vel\030\001 \001(\r\"<\n\022WidgetClickMessage\022\020\n\010widge" +
-      "tID\030\001 \002(\r\022\024\n\014counterValue\030\002 \001(\t\"\"\n\rRedNa" +
-      "meStatus\022\021\n\tisRedname\030\001 \001(\010\"\263\001\n\016InviteGr" +
-      "oupExt\022\017\n\007inviter\030\001 \001(\004\022\030\n\020inviter_nickn" +
-      "ame\030\002 \001(\t\022\025\n\rfans_group_id\030\003 \001(\004\022\027\n\017fans" +
-      "_group_icon\030\004 \001(\t\022\027\n\017fans_group_name\030\005 \001" +
-      "(\t\022\021\n\tto_friend\030\006 \001(\004\022\032\n\022to_friend_nickn" +
-      "ame\030\007 \001(\t\"i\n\024GlobalRoomMessageExt\022Q\n\031inn",
-      "er_global_room_msg_ext\030\001 \003(\0132..com.wali." +
-      "live.proto.InnerGlobalRoomMessageExt\"6\n\031" +
-      "InnerGlobalRoomMessageExt\022\014\n\004type\030\001 \001(\r\022" +
-      "\013\n\003ext\030\002 \001(\014\"\'\n\024ShareJoinRoomMessage\022\017\n\007" +
-      "content\030\001 \001(\t\"\254\002\n\022MedalConfigMessage\022E\n\026" +
-      "before_nickname_config\030\001 \003(\0132%.com.wali." +
-      "live.proto.InnerMedalConfig\022D\n\025after_nic" +
-      "kname_config\030\002 \003(\0132%.com.wali.live.proto" +
-      ".InnerMedalConfig\022D\n\025before_content_conf" +
-      "ig\030\003 \003(\0132%.com.wali.live.proto.InnerMeda",
-      "lConfig\022C\n\024after_content_config\030\004 \003(\0132%." +
-      "com.wali.live.proto.InnerMedalConfig\"\"\n\020" +
-      "InnerMedalConfig\022\016\n\006pic_id\030\001 \001(\t\"&\n\020TxtS" +
-      "chemeMessage\022\022\n\nscheme_url\030\001 \001(\t\"\'\n\030GetL" +
-      "iveNotifyMsgCountReq\022\013\n\003uid\030\001 \001(\004\"I\n\030Get" +
-      "LiveNotifyMsgCountRsp\022\013\n\003ret\030\001 \001(\r\022\021\n\ter" +
-      "ror_msg\030\002 \001(\t\022\r\n\005count\030\003 \001(\r\")\n\032ClearLiv" +
-      "eNotifyMsgCountReq\022\013\n\003uid\030\001 \001(\004\"<\n\032Clear" +
-      "LiveNotifyMsgCountRsp\022\013\n\003ret\030\001 \001(\r\022\021\n\ter" +
-      "ror_msg\030\002 \001(\t\"x\n\022UnreadNotification\022\024\n\014u",
-      "nread_count\030\001 \001(\r\022\017\n\007max_idx\030\002 \001(\r\022)\n\003ms" +
-      "g\030\003 \003(\0132\034.com.wali.live.proto.Message\022\020\n" +
-      "\010sys_user\030\004 \001(\004\":\n\035SyncSystemNotificatio" +
-      "nRequest\022\014\n\004from\030\001 \001(\004\022\013\n\003cid\030\002 \001(\004\"\216\001\n\036" +
-      "SyncSystemNotificationResponse\022\013\n\003ret\030\001 " +
-      "\001(\r\022\017\n\007err_msg\030\002 \001(\t\022A\n\020sys_notification" +
-      "\030\003 \003(\0132\'.com.wali.live.proto.UnreadNotif" +
-      "ication\022\013\n\003cid\030\004 \001(\004\"\\\n#GetHistorySystem" +
-      "NotificationRequest\022\014\n\004from\030\001 \001(\004\022\013\n\003idx" +
-      "\030\002 \001(\r\022\r\n\005limit\030\003 \001(\r\022\013\n\003cid\030\004 \001(\004\"\211\001\n$G",
-      "etHistorySystemNotificationResponse\022\013\n\003r" +
-      "et\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(\t\0226\n\020sys_notific" +
-      "ation\030\003 \003(\0132\034.com.wali.live.proto.Messag" +
-      "e\022\013\n\003cid\030\004 \001(\004\"R\n\034AckSystemNotificationR" +
-      "equest\022\014\n\004from\030\001 \001(\004\022\n\n\002to\030\002 \001(\004\022\013\n\003idx\030" +
-      "\003 \001(\r\022\013\n\003cid\030\004 \001(\004\"=\n\035AckSystemNotificat" +
-      "ionResponse\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(" +
-      "\t\"[\n\035SyncFollowNotificationRequest\022\014\n\004fr" +
-      "om\030\001 \001(\004\022\020\n\010last_idx\030\002 \001(\r\022\r\n\005limit\030\003 \001(" +
-      "\r\022\013\n\003cid\030\004 \001(\004\"\221\001\n\036SyncFollowNotificatio",
-      "nResponse\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(\t\022" +
-      "D\n\023follow_notification\030\003 \003(\0132\'.com.wali." +
-      "live.proto.FollowNotification\022\013\n\003cid\030\004 \001" +
-      "(\004\"9\n\034AckFollowNotificationRequest\022\014\n\004fr" +
-      "om\030\001 \001(\004\022\013\n\003cid\030\002 \001(\004\"=\n\035AckFollowNotifi" +
-      "cationResponse\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002" +
-      " \001(\t\"L\n\010RichText\022\r\n\005brief\030\001 \001(\t\022\016\n\006poste" +
-      "r\030\002 \001(\t\022\022\n\ndetail_url\030\003 \001(\t\022\r\n\005title\030\004 \001" +
-      "(\t\"\217\001\n\022FollowNotification\022\013\n\003uid\030\001 \001(\004\022\020" +
-      "\n\010nickname\030\002 \001(\t\022\016\n\006avatar\030\003 \001(\004\022\n\n\002ts\030\004",
-      " \001(\004\022\016\n\006gender\030\005 \001(\r\022\r\n\005level\030\006 \001(\r\022\022\n\ni" +
-      "s_bothway\030\007 \001(\010\022\013\n\003idx\030\010 \001(\r\"f\n\031Notifica" +
-      "tionNotifyMessage\0223\n\004type\030\001 \001(\0162%.com.wa" +
-      "li.live.proto.NotificationType\022\024\n\014notifi" +
-      "cation\030\002 \001(\014\"{\n\035SendSystemNotificationRe" +
-      "quest\022\014\n\004from\030\001 \001(\004\022\n\n\002to\030\002 \001(\004\022\020\n\010msg_t" +
-      "ype\030\003 \001(\r\022\020\n\010msg_body\030\004 \001(\t\022\017\n\007msg_ext\030\005" +
-      " \001(\014\022\013\n\003cid\030\006 \001(\004\"K\n\036SendSystemNotificat" +
-      "ionResponse\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(" +
-      "\t\022\013\n\003cid\030\003 \001(\004\"{\n\nBarMessage\0220\n\003bmt\030\001 \001(",
-      "\0162#.com.wali.live.proto.BarMessageType\022\017" +
-      "\n\007content\030\002 \001(\t\022\016\n\006schema\030\003 \001(\t\022\r\n\005start" +
-      "\030\004 \001(\004\022\013\n\003end\030\005 \001(\004\"$\n\024GetBarMessageRequ" +
-      "est\022\014\n\004from\030\001 \001(\004\"g\n\025GetBarMessageRespon" +
-      "se\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(\t\0220\n\007bar_" +
-      "msg\030\003 \003(\0132\037.com.wali.live.proto.BarMessa" +
-      "ge\"\030\n\tNormalTab\022\013\n\003url\030\001 \001(\t\"2\n\013ListTabI" +
-      "tem\022\021\n\titem_name\030\001 \001(\t\022\020\n\010item_url\030\002 \001(\t" +
-      "\"L\n\007ListTab\022\021\n\tlist_name\030\001 \001(\t\022.\n\004item\030\002" +
-      " \003(\0132 .com.wali.live.proto.ListTabItem\"q",
-      "\n\025VipCustomerServiceTab\022\r\n\005title\030\001 \001(\t\022<" +
-      "\n\004type\030\002 \001(\0162..com.wali.live.proto.VipCu" +
-      "stomerServiceTabType\022\013\n\003tab\030\003 \001(\014\"P\n\025Vip" +
-      "CustomerServiceBar\0227\n\003tab\030\001 \003(\0132*.com.wa" +
-      "li.live.proto.VipCustomerServiceTab\"/\n\037G" +
-      "etVipCustomerServiceBarRequest\022\014\n\004from\030\001" +
-      " \001(\004\"y\n GetVipCustomerServiceBarResponse" +
-      "\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(\t\0227\n\003bar\030\003 " +
-      "\001(\0132*.com.wali.live.proto.VipCustomerSer" +
-      "viceBar\"\034\n\tAtMessage\022\017\n\007at_user\030\001 \001(\004\"\202\001",
-      "\n\024VFansMemberBriefInfo\022\021\n\tpet_level\030\001 \001(" +
-      "\005\022\023\n\013medal_value\030\002 \001(\t\022\024\n\014is_use_medal\030\003" +
-      " \001(\010\022\025\n\ris_vip_expire\030\004 \001(\010\022\025\n\rbarrage_c" +
-      "olor\030\005 \001(\t**\n\020NotificationType\022\n\n\006SYSTEM" +
-      "\020\001\022\n\n\006FOLLOW\020\002**\n\016BarMessageType\022\006\n\002OP\020\001" +
-      "\022\007\n\003SYS\020\002\022\007\n\003NTF\020\003*=\n\031VipCustomerService" +
-      "TabType\022\020\n\014VCSTT_NORMAL\020\001\022\016\n\nVCSTT_LIST\020" +
-      "\002B\'\n\023com.wali.live.protoB\020LiveMessagePro" +
-      "to"
+      "\022\n\n\002id\030\001 \001(\r\"\'\n\023AnchorDiscountAging\022\020\n\010l" +
+      "eftTime\030\001 \001(\004\"\216\003\n\013GiftMessage\022\016\n\006giftId\030" +
+      "\001 \001(\r\022\021\n\tgift_name\030\002 \001(\t\022\022\n\ngift_count\030\003" +
+      " \001(\r\022\023\n\013zhubo_asset\030\004 \001(\r\022\035\n\025zhubo_asset" +
+      "_timestamp\030\005 \001(\004\022\022\n\ngift_value\030\006 \001(\r\022\030\n\020" +
+      "avatar_timestamp\030\007 \001(\004\022\n\n\002ip\030\010 \001(\t\022\022\n\nco" +
+      "ntinueId\030\t \001(\004\022\021\n\tgift_type\030\n \001(\r\022\020\n\010msg" +
+      "_body\030\013 \001(\t\022\026\n\016red_envelop_id\030\014 \001(\t\022\020\n\010o",
+      "rder_id\030\r \001(\t\022\027\n\017live_stream_url\030\016 \001(\t\022\023" +
+      "\n\013batch_count\030\017 \001(\r\022\022\n\npopularity\030\020 \001(\r\022" +
+      "\034\n\024popularity_timestamp\030\021 \001(\004\022\027\n\017incr_po" +
+      "pularity\030\023 \001(\r\"z\n\024ReplayMessageRequest\022\021" +
+      "\n\tfrom_user\030\001 \002(\004\022\017\n\007room_id\030\002 \001(\t\022\017\n\007pa" +
+      "ge_id\030\003 \001(\t\022\r\n\005limit\030\004 \001(\r\022\013\n\003cid\030\005 \001(\004\022" +
+      "\021\n\ttimestamp\030\006 \001(\004\"\213\001\n\025ReplayMessageResp" +
+      "onse\022\013\n\003ret\030\001 \002(\r\022\021\n\terror_msg\030\002 \001(\t\0224\n\016" +
+      "replay_message\030\003 \003(\0132\034.com.wali.live.pro" +
+      "to.Message\022\013\n\003cid\030\004 \001(\004\022\017\n\007page_id\030\005 \001(\t",
+      "\"s\n\016PKBeginMessage\022/\n\nthisPKInfo\030\001 \001(\0132\033" +
+      ".com.wali.live.proto.PKInfo\0220\n\013otherPKIn" +
+      "fo\030\002 \001(\0132\033.com.wali.live.proto.PKInfo\"q\n" +
+      "\014PKEndMessage\022/\n\nthisPKInfo\030\001 \001(\0132\033.com." +
+      "wali.live.proto.PKInfo\0220\n\013otherPKInfo\030\002 " +
+      "\001(\0132\033.com.wali.live.proto.PKInfo\"\205\001\n\017Mic" +
+      "BeginMessage\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002" +
+      "(\t\022-\n\007micInfo\030\003 \002(\0132\034.com.wali.live.prot" +
+      "o.MicInfo\022\027\n\017enableViewerMic\030\004 \001(\010\022\014\n\004ty" +
+      "pe\030\005 \001(\r\"\203\001\n\rMicEndMessage\022\014\n\004zuid\030\001 \002(\004",
+      "\022\016\n\006liveId\030\002 \002(\t\022-\n\007micInfo\030\003 \002(\0132\034.com." +
+      "wali.live.proto.MicInfo\022\027\n\017enableViewerM" +
+      "ic\030\004 \001(\010\022\014\n\004type\030\005 \001(\r\"n\n\021LiveInfoChange" +
+      "Msg\022\020\n\010mod_flag\030\001 \001(\004\022\014\n\004zuid\030\002 \001(\004\022\017\n\007l" +
+      "ive_id\030\003 \001(\t\022\031\n\021enable_viewer_mic\030\004 \001(\010\022" +
+      "\r\n\005title\030\005 \001(\t\"\222\006\n\007Message\022\021\n\tfrom_user\030" +
+      "\001 \002(\004\022\017\n\007to_user\030\002 \001(\004\022\017\n\007room_id\030\003 \001(\t\022" +
+      "\013\n\003cid\030\004 \001(\004\022\017\n\007msg_seq\030\005 \001(\r\022\021\n\ttimesta" +
+      "mp\030\006 \001(\004\022\020\n\010msg_type\030\007 \001(\r\022\020\n\010msg_body\030\010" +
+      " \001(\t\022\022\n\nmsg_status\030\t \001(\r\022\017\n\007msg_ext\030\n \001(",
+      "\014\022\033\n\023from_user_nick_name\030\013 \001(\t\022\027\n\017from_u" +
+      "ser_level\030\014 \001(\r\022\030\n\020from_user_gender\030\r \001(" +
+      "\r\022\025\n\rcertification\030\016 \001(\t\022\032\n\022certificatio" +
+      "n_type\030\017 \001(\r\022\023\n\013support_txt\030\020 \001(\t\022\021\n\troo" +
+      "m_type\030\021 \001(\r\022\026\n\016origin_room_id\030\022 \001(\t\022\024\n\014" +
+      "msg_catetory\030\023 \001(\r\022:\n\016multi_language\030\024 \001" +
+      "(\0132\".com.wali.live.proto.MultiLanguage\022\033" +
+      "\n\023from_user_show_name\030\025 \001(\t\022\034\n\024is_from_u" +
+      "ser_redname\030\026 \001(\010\022F\n\023global_room_msg_ext" +
+      "\030\027 \001(\0132).com.wali.live.proto.GlobalRoomM",
+      "essageExt\022\021\n\tvip_level\030\030 \001(\r\022\023\n\013vip_disa" +
+      "ble\030\031 \001(\010\022\022\n\nvip_hidden\030\032 \001(\010\022&\n\036real_na" +
+      "me_certification_status\030\033 \001(\r\022\024\n\014is_push" +
+      "_self\030\034 \001(\010\022\026\n\016from_effect_id\030\035 \001(\r\022\023\n\013n" +
+      "oble_level\030\036 \001(\r\022\031\n\021special_effect_id\030\037 " +
+      "\001(\r\"/\n\010Language\022\025\n\rlanguage_code\030\001 \001(\r\022\014" +
+      "\n\004text\030\002 \001(\t\"@\n\rMultiLanguage\022/\n\010languag" +
+      "e\030\001 \003(\0132\035.com.wali.live.proto.Language\"D" +
+      "\n\021SyncSysMsgRequest\022\021\n\tfrom_user\030\001 \002(\004\022\017" +
+      "\n\007room_id\030\002 \001(\t\022\013\n\003cid\030\003 \001(\004\"\203\001\n\022SyncSys",
+      "MsgResponse\022\013\n\003ret\030\001 \001(\r\022\021\n\terror_msg\030\002 " +
+      "\001(\t\022\013\n\003cid\030\003 \001(\004\022\021\n\ttimestamp\030\004 \001(\004\022-\n\007m" +
+      "essage\030\005 \003(\0132\034.com.wali.live.proto.Messa" +
+      "ge\"h\n\021SyncUnreadRequest\022\021\n\tfrom_user\030\001 \001" +
+      "(\004\022\013\n\003cid\030\002 \001(\004\022\017\n\007page_id\030\003 \001(\t\022\r\n\005limi" +
+      "t\030\004 \001(\r\022\023\n\013follow_type\030\005 \001(\r\"\233\001\n\022SyncUnr" +
+      "eadResponse\022\013\n\003ret\030\001 \001(\r\022\021\n\terror_msg\030\002 " +
+      "\001(\t\022+\n\006unread\030\003 \003(\0132\033.com.wali.live.prot" +
+      "o.Unread\022\032\n\022total_unread_count\030\004 \001(\r\022\013\n\003" +
+      "cid\030\005 \001(\004\022\017\n\007page_id\030\006 \001(\t\"o\n\006Unread\022\024\n\014",
+      "unread_count\030\001 \001(\r\022\026\n\016max_unread_seq\030\002 \001" +
+      "(\r\022)\n\003msg\030\003 \003(\0132\034.com.wali.live.proto.Me" +
+      "ssage\022\014\n\004user\030\004 \001(\004\"A\n\031SyncHistoryMessag" +
+      "eReuqest\022\021\n\tfrom_user\030\001 \001(\004\022\021\n\tsync_user" +
+      "\030\002 \001(\004\"i\n\032SyncHistoryMessageResponse\022\013\n\003" +
+      "ret\030\001 \001(\r\022\021\n\terror_msg\030\002 \001(\t\022+\n\006unread\030\003" +
+      " \001(\0132\033.com.wali.live.proto.Unread\"~\n\017Joi" +
+      "nRoomMessage\022\024\n\014viewer_count\030\001 \001(\r\022,\n\007vi" +
+      "ewers\030\002 \003(\0132\033.com.wali.live.proto.Viewer" +
+      "\022\014\n\004type\030\003 \001(\r\022\031\n\021showSpecialEffect\030\004 \001(",
+      "\010\"V\n\020LeaveRoomMessage\022\024\n\014viewer_count\030\001 " +
+      "\001(\r\022,\n\007viewers\030\002 \003(\0132\033.com.wali.live.pro" +
+      "to.Viewer\"S\n\rViewerMessage\022\024\n\014viewer_cou" +
+      "nt\030\001 \001(\r\022,\n\007viewers\030\002 \003(\0132\033.com.wali.liv" +
+      "e.proto.Viewer\"\027\n\025AnchorJoinRoomMessage\"" +
+      "\030\n\026AnchorLeaveRoomMessage\"<\n\013PushMessage" +
+      "\022-\n\007message\030\001 \003(\0132\034.com.wali.live.proto." +
+      "Message\"(\n\021ChatNotifyMessage\022\023\n\013follow_t" +
+      "ype\030\001 \001(\r\"|\n\014ImageBodyExt\022\020\n\010mimeType\030\001 " +
+      "\002(\t\022\013\n\003url\030\002 \002(\t\022\r\n\005width\030\003 \002(\r\022\016\n\006heigh",
+      "t\030\004 \002(\r\022\014\n\004size\030\005 \002(\r\022\023\n\013is_original\030\006 \001" +
+      "(\010\022\013\n\003md5\030\007 \001(\t\" \n\tProbeArgs\022\023\n\013domain_n" +
+      "ame\030\001 \001(\t\"x\n\022FeedMessageRequest\022\021\n\tfrom_" +
+      "user\030\001 \002(\004\022\017\n\007room_id\030\002 \001(\t\022\017\n\007page_id\030\003" +
+      " \001(\t\022\r\n\005limit\030\004 \001(\r\022\013\n\003cid\030\005 \001(\004\022\021\n\ttime" +
+      "stamp\030\006 \001(\004\"\207\001\n\023FeedMessageResponse\022\013\n\003r" +
+      "et\030\001 \002(\r\022\021\n\terror_msg\030\002 \001(\t\0222\n\014feed_mess" +
+      "age\030\003 \003(\0132\034.com.wali.live.proto.Message\022" +
+      "\013\n\003cid\030\004 \001(\004\022\017\n\007page_id\030\005 \001(\t\"y\n\026SyncRoo" +
+      "mMessageRequest\022\021\n\tfrom_user\030\001 \002(\004\022\017\n\007ro",
+      "om_id\030\002 \002(\t\022\036\n\026last_sync_important_ts\030\003 " +
+      "\001(\004\022\033\n\023last_sync_normal_ts\030\004 \001(\004\"\204\002\n\027Syn" +
+      "cRoomMessageResponse\022\013\n\003ret\030\001 \002(\r\022\021\n\terr" +
+      "or_msg\030\002 \001(\t\0228\n\022important_room_msg\030\003 \003(\013" +
+      "2\034.com.wali.live.proto.Message\0225\n\017normal" +
+      "_room_msg\030\004 \003(\0132\034.com.wali.live.proto.Me" +
+      "ssage\022!\n\031current_sync_important_ts\030\005 \001(\004" +
+      "\022\036\n\026current_sync_normal_ts\030\006 \001(\004\022\025\n\rsync" +
+      "_interval\030\007 \001(\r\"E\n\024MsgRuleChangeMessage\022" +
+      "-\n\007msgRule\030\001 \001(\0132\034.com.wali.live.proto.M",
+      "sgRule\"\217\001\n\013KickMessage\022\014\n\004zuid\030\001 \001(\004\022\016\n\006" +
+      "liveid\030\002 \001(\t\022\r\n\005op_id\030\003 \001(\004\022\017\n\007op_type\030\004" +
+      " \001(\r\022\021\n\tkicked_id\030\005 \001(\004\022\026\n\016operation_typ" +
+      "e\030\006 \001(\r\022\027\n\017kicked_nickname\030\007 \001(\t\"7\n\023TapT" +
+      "oSellPushMsgExt\022\016\n\006isShop\030\001 \001(\010\022\020\n\010hideG" +
+      "ift\030\002 \001(\010\"\230\001\n\rWidgetMessage\022\014\n\004zuid\030\001 \002(" +
+      "\004\0227\n\007msgItem\030\002 \003(\0132&.com.wali.live.proto" +
+      ".WidgetMessageItem\022@\n\rnewWidgetItem\030\003 \003(" +
+      "\0132).com.wali.live.proto.NewWidgetMessage" +
+      "Item\"e\n\021WidgetMessageItem\022\020\n\010link_url\030\001 ",
+      "\002(\t\022\020\n\010position\030\002 \002(\r\022\014\n\004icon\030\003 \001(\t\022\014\n\004t" +
+      "ext\030\004 \001(\t\022\020\n\010showType\030\005 \001(\r\"u\n\024NewWidget" +
+      "MessageItem\0229\n\rnewWidgetItem\030\001 \002(\0132\".com" +
+      ".wali.live.proto.NewWidgetItem\022\020\n\010isDele" +
+      "te\030\002 \001(\010\022\020\n\010showType\030\003 \001(\r\"b\n\024RoomAnimat" +
+      "ionMessage\022\030\n\020animation_effect\030\001 \001(\r\022\030\n\020" +
+      "animationContent\030\002 \001(\t\022\026\n\016animation_type" +
+      "\030\003 \001(\r\"P\n\014ShoppingInfo\022\014\n\004name\030\001 \002(\t\022\r\n\005" +
+      "price\030\002 \002(\001\022\022\n\nproduct_id\030\003 \002(\003\022\017\n\007img_u" +
+      "rl\030\004 \001(\t\"R\n\026PushShoppingInfoMsgExt\0228\n\rsh",
+      "opping_info\030\001 \003(\0132!.com.wali.live.proto." +
+      "ShoppingInfo\"$\n\016UpgradeMessage\022\022\n\nuser_l" +
+      "evel\030\001 \001(\r\"<\n\022WidgetClickMessage\022\020\n\010widg" +
+      "etID\030\001 \002(\r\022\024\n\014counterValue\030\002 \001(\t\"\"\n\rRedN" +
+      "ameStatus\022\021\n\tisRedname\030\001 \001(\010\"\263\001\n\016InviteG" +
+      "roupExt\022\017\n\007inviter\030\001 \001(\004\022\030\n\020inviter_nick" +
+      "name\030\002 \001(\t\022\025\n\rfans_group_id\030\003 \001(\004\022\027\n\017fan" +
+      "s_group_icon\030\004 \001(\t\022\027\n\017fans_group_name\030\005 " +
+      "\001(\t\022\021\n\tto_friend\030\006 \001(\004\022\032\n\022to_friend_nick" +
+      "name\030\007 \001(\t\"i\n\024GlobalRoomMessageExt\022Q\n\031in",
+      "ner_global_room_msg_ext\030\001 \003(\0132..com.wali" +
+      ".live.proto.InnerGlobalRoomMessageExt\"6\n" +
+      "\031InnerGlobalRoomMessageExt\022\014\n\004type\030\001 \001(\r" +
+      "\022\013\n\003ext\030\002 \001(\014\"\'\n\024ShareJoinRoomMessage\022\017\n" +
+      "\007content\030\001 \001(\t\"\352\002\n\022MedalConfigMessage\022E\n" +
+      "\026before_nickname_config\030\001 \003(\0132%.com.wali" +
+      ".live.proto.InnerMedalConfig\022D\n\025after_ni" +
+      "ckname_config\030\002 \003(\0132%.com.wali.live.prot" +
+      "o.InnerMedalConfig\022D\n\025before_content_con" +
+      "fig\030\003 \003(\0132%.com.wali.live.proto.InnerMed",
+      "alConfig\022C\n\024after_content_config\030\004 \003(\0132%" +
+      ".com.wali.live.proto.InnerMedalConfig\022<\n" +
+      "\reffect_config\030\005 \003(\0132%.com.wali.live.pro" +
+      "to.InnerMedalConfig\"\"\n\020InnerMedalConfig\022" +
+      "\016\n\006pic_id\030\001 \001(\t\"&\n\020TxtSchemeMessage\022\022\n\ns" +
+      "cheme_url\030\001 \001(\t\"\'\n\030GetLiveNotifyMsgCount" +
+      "Req\022\013\n\003uid\030\001 \001(\004\"I\n\030GetLiveNotifyMsgCoun" +
+      "tRsp\022\013\n\003ret\030\001 \001(\r\022\021\n\terror_msg\030\002 \001(\t\022\r\n\005" +
+      "count\030\003 \001(\r\")\n\032ClearLiveNotifyMsgCountRe" +
+      "q\022\013\n\003uid\030\001 \001(\004\"<\n\032ClearLiveNotifyMsgCoun",
+      "tRsp\022\013\n\003ret\030\001 \001(\r\022\021\n\terror_msg\030\002 \001(\t\"x\n\022" +
+      "UnreadNotification\022\024\n\014unread_count\030\001 \001(\r" +
+      "\022\017\n\007max_idx\030\002 \001(\r\022)\n\003msg\030\003 \003(\0132\034.com.wal" +
+      "i.live.proto.Message\022\020\n\010sys_user\030\004 \001(\004\":" +
+      "\n\035SyncSystemNotificationRequest\022\014\n\004from\030" +
+      "\001 \001(\004\022\013\n\003cid\030\002 \001(\004\"\216\001\n\036SyncSystemNotific" +
+      "ationResponse\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002 " +
+      "\001(\t\022A\n\020sys_notification\030\003 \003(\0132\'.com.wali" +
+      ".live.proto.UnreadNotification\022\013\n\003cid\030\004 " +
+      "\001(\004\"\\\n#GetHistorySystemNotificationReque",
+      "st\022\014\n\004from\030\001 \001(\004\022\013\n\003idx\030\002 \001(\r\022\r\n\005limit\030\003" +
+      " \001(\r\022\013\n\003cid\030\004 \001(\004\"\211\001\n$GetHistorySystemNo" +
+      "tificationResponse\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_m" +
+      "sg\030\002 \001(\t\0226\n\020sys_notification\030\003 \003(\0132\034.com" +
+      ".wali.live.proto.Message\022\013\n\003cid\030\004 \001(\004\"R\n" +
+      "\034AckSystemNotificationRequest\022\014\n\004from\030\001 " +
+      "\001(\004\022\n\n\002to\030\002 \001(\004\022\013\n\003idx\030\003 \001(\r\022\013\n\003cid\030\004 \001(" +
+      "\004\"=\n\035AckSystemNotificationResponse\022\013\n\003re" +
+      "t\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(\t\"[\n\035SyncFollowNo" +
+      "tificationRequest\022\014\n\004from\030\001 \001(\004\022\020\n\010last_",
+      "idx\030\002 \001(\r\022\r\n\005limit\030\003 \001(\r\022\013\n\003cid\030\004 \001(\004\"\221\001" +
+      "\n\036SyncFollowNotificationResponse\022\013\n\003ret\030" +
+      "\001 \001(\r\022\017\n\007err_msg\030\002 \001(\t\022D\n\023follow_notific" +
+      "ation\030\003 \003(\0132\'.com.wali.live.proto.Follow" +
+      "Notification\022\013\n\003cid\030\004 \001(\004\"9\n\034AckFollowNo" +
+      "tificationRequest\022\014\n\004from\030\001 \001(\004\022\013\n\003cid\030\002" +
+      " \001(\004\"=\n\035AckFollowNotificationResponse\022\013\n" +
+      "\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(\t\"L\n\010RichText\022" +
+      "\r\n\005brief\030\001 \001(\t\022\016\n\006poster\030\002 \001(\t\022\022\n\ndetail" +
+      "_url\030\003 \001(\t\022\r\n\005title\030\004 \001(\t\"\217\001\n\022FollowNoti",
+      "fication\022\013\n\003uid\030\001 \001(\004\022\020\n\010nickname\030\002 \001(\t\022" +
+      "\016\n\006avatar\030\003 \001(\004\022\n\n\002ts\030\004 \001(\004\022\016\n\006gender\030\005 " +
+      "\001(\r\022\r\n\005level\030\006 \001(\r\022\022\n\nis_bothway\030\007 \001(\010\022\013" +
+      "\n\003idx\030\010 \001(\r\"f\n\031NotificationNotifyMessage" +
+      "\0223\n\004type\030\001 \001(\0162%.com.wali.live.proto.Not" +
+      "ificationType\022\024\n\014notification\030\002 \001(\014\"{\n\035S" +
+      "endSystemNotificationRequest\022\014\n\004from\030\001 \001" +
+      "(\004\022\n\n\002to\030\002 \001(\004\022\020\n\010msg_type\030\003 \001(\r\022\020\n\010msg_" +
+      "body\030\004 \001(\t\022\017\n\007msg_ext\030\005 \001(\014\022\013\n\003cid\030\006 \001(\004" +
+      "\"K\n\036SendSystemNotificationResponse\022\013\n\003re",
+      "t\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(\t\022\013\n\003cid\030\003 \001(\004\"{\n" +
+      "\nBarMessage\0220\n\003bmt\030\001 \001(\0162#.com.wali.live" +
+      ".proto.BarMessageType\022\017\n\007content\030\002 \001(\t\022\016" +
+      "\n\006schema\030\003 \001(\t\022\r\n\005start\030\004 \001(\004\022\013\n\003end\030\005 \001" +
+      "(\004\"$\n\024GetBarMessageRequest\022\014\n\004from\030\001 \001(\004" +
+      "\"g\n\025GetBarMessageResponse\022\013\n\003ret\030\001 \001(\r\022\017" +
+      "\n\007err_msg\030\002 \001(\t\0220\n\007bar_msg\030\003 \003(\0132\037.com.w" +
+      "ali.live.proto.BarMessage\"\030\n\tNormalTab\022\013" +
+      "\n\003url\030\001 \001(\t\"2\n\013ListTabItem\022\021\n\titem_name\030" +
+      "\001 \001(\t\022\020\n\010item_url\030\002 \001(\t\"L\n\007ListTab\022\021\n\tli",
+      "st_name\030\001 \001(\t\022.\n\004item\030\002 \003(\0132 .com.wali.l" +
+      "ive.proto.ListTabItem\"q\n\025VipCustomerServ" +
+      "iceTab\022\r\n\005title\030\001 \001(\t\022<\n\004type\030\002 \001(\0162..co" +
+      "m.wali.live.proto.VipCustomerServiceTabT" +
+      "ype\022\013\n\003tab\030\003 \001(\014\"P\n\025VipCustomerServiceBa" +
+      "r\0227\n\003tab\030\001 \003(\0132*.com.wali.live.proto.Vip" +
+      "CustomerServiceTab\"/\n\037GetVipCustomerServ" +
+      "iceBarRequest\022\014\n\004from\030\001 \001(\004\"y\n GetVipCus" +
+      "tomerServiceBarResponse\022\013\n\003ret\030\001 \001(\r\022\017\n\007" +
+      "err_msg\030\002 \001(\t\0227\n\003bar\030\003 \001(\0132*.com.wali.li",
+      "ve.proto.VipCustomerServiceBar\"\034\n\tAtMess" +
+      "age\022\017\n\007at_user\030\001 \001(\004\"\202\001\n\024VFansMemberBrie" +
+      "fInfo\022\021\n\tpet_level\030\001 \001(\005\022\023\n\013medal_value\030" +
+      "\002 \001(\t\022\024\n\014is_use_medal\030\003 \001(\010\022\025\n\ris_vip_ex" +
+      "pire\030\004 \001(\010\022\025\n\rbarrage_color\030\005 \001(\t\"^\n\030Set" +
+      "ChatMsgSettingRequest\022\014\n\004uuid\030\001 \001(\004\0224\n\007s" +
+      "etting\030\002 \001(\0132#.com.wali.live.proto.ChatM" +
+      "sgSetting\"^\n\031SetChatMsgSettingResponse\022\013" +
+      "\n\003ret\030\001 \001(\r\0224\n\007setting\030\002 \001(\0132#.com.wali." +
+      "live.proto.ChatMsgSetting\"(\n\030GetChatMsgS",
+      "ettingRequest\022\014\n\004uuid\030\001 \001(\004\"^\n\031GetChatMs" +
+      "gSettingResponse\022\013\n\003ret\030\001 \001(\r\0224\n\007setting" +
+      "\030\002 \001(\0132#.com.wali.live.proto.ChatMsgSett" +
+      "ing\"\224\001\n\016ChatMsgSetting\022\"\n\024recv_unfollow_" +
+      "enable\030\001 \001(\010:\004true\022\033\n\023recv_unfollow_leve" +
+      "l\030\002 \001(\r\022 \n\022interaction_notify\030\003 \001(\010:\004tru" +
+      "e\022\037\n\021befollowed_notify\030\004 \001(\010:\004true\"r\n\rNo" +
+      "bleUserInfo\022\016\n\006avatar\030\001 \001(\004\022\020\n\010nickname\030" +
+      "\002 \001(\t\022\016\n\006gender\030\003 \001(\r\022\r\n\005level\030\004 \001(\r\022\022\n\n" +
+      "nobleLevel\030\005 \001(\r\022\014\n\004uuid\030\006 \001(\004\"n\n\010NobleM",
+      "sg\022\020\n\010msg_type\030\001 \001(\r\022\023\n\013msg_content\030\002 \001(" +
+      "\t\022;\n\017noble_user_info\030\003 \001(\0132\".com.wali.li" +
+      "ve.proto.NobleUserInfo\"\273\001\n\022HuyaSendMessa" +
+      "geReq\022\017\n\007fromUid\030\001 \002(\004\022\025\n\ranchorHuyaUid\030" +
+      "\002 \001(\004\022\022\n\007msgType\030\003 \001(\r:\0011\022\022\n\nmsgContent\030" +
+      "\004 \001(\t\022\025\n\rsendTimestamp\030\005 \001(\004\022\014\n\004zuid\030\006 \001" +
+      "(\004\022\016\n\006roomId\030\007 \001(\t\022\020\n\010roomType\030\010 \001(\r\022\016\n\006" +
+      "source\030\t \001(\r\"%\n\022HuyaSendMessageRsp\022\017\n\007re" +
+      "tCode\030\001 \002(\r**\n\020NotificationType\022\n\n\006SYSTE" +
+      "M\020\001\022\n\n\006FOLLOW\020\002**\n\016BarMessageType\022\006\n\002OP\020",
+      "\001\022\007\n\003SYS\020\002\022\007\n\003NTF\020\003*=\n\031VipCustomerServic" +
+      "eTabType\022\020\n\014VCSTT_NORMAL\020\001\022\016\n\nVCSTT_LIST" +
+      "\020\002B\'\n\023com.wali.live.protoB\020LiveMessagePr" +
+      "oto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -87579,486 +97995,558 @@ public final class LiveMessageProto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_LikeMessage_descriptor,
         new java.lang.String[] { "Id", });
-    internal_static_com_wali_live_proto_GiftMessage_descriptor =
+    internal_static_com_wali_live_proto_AnchorDiscountAging_descriptor =
       getDescriptor().getMessageTypes().get(20);
+    internal_static_com_wali_live_proto_AnchorDiscountAging_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_AnchorDiscountAging_descriptor,
+        new java.lang.String[] { "LeftTime", });
+    internal_static_com_wali_live_proto_GiftMessage_descriptor =
+      getDescriptor().getMessageTypes().get(21);
     internal_static_com_wali_live_proto_GiftMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GiftMessage_descriptor,
-        new java.lang.String[] { "GiftId", "GiftName", "GiftCount", "ZhuboAsset", "ZhuboAssetTimestamp", "GiftValue", "AvatarTimestamp", "Ip", "ContinueId", "GiftType", "MsgBody", "RedEnvelopId", "OrderId", "LiveStreamUrl", "BatchCount", });
+        new java.lang.String[] { "GiftId", "GiftName", "GiftCount", "ZhuboAsset", "ZhuboAssetTimestamp", "GiftValue", "AvatarTimestamp", "Ip", "ContinueId", "GiftType", "MsgBody", "RedEnvelopId", "OrderId", "LiveStreamUrl", "BatchCount", "Popularity", "PopularityTimestamp", "IncrPopularity", });
     internal_static_com_wali_live_proto_ReplayMessageRequest_descriptor =
-      getDescriptor().getMessageTypes().get(21);
+      getDescriptor().getMessageTypes().get(22);
     internal_static_com_wali_live_proto_ReplayMessageRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ReplayMessageRequest_descriptor,
         new java.lang.String[] { "FromUser", "RoomId", "PageId", "Limit", "Cid", "Timestamp", });
     internal_static_com_wali_live_proto_ReplayMessageResponse_descriptor =
-      getDescriptor().getMessageTypes().get(22);
+      getDescriptor().getMessageTypes().get(23);
     internal_static_com_wali_live_proto_ReplayMessageResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ReplayMessageResponse_descriptor,
         new java.lang.String[] { "Ret", "ErrorMsg", "ReplayMessage", "Cid", "PageId", });
     internal_static_com_wali_live_proto_PKBeginMessage_descriptor =
-      getDescriptor().getMessageTypes().get(23);
+      getDescriptor().getMessageTypes().get(24);
     internal_static_com_wali_live_proto_PKBeginMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_PKBeginMessage_descriptor,
         new java.lang.String[] { "ThisPKInfo", "OtherPKInfo", });
     internal_static_com_wali_live_proto_PKEndMessage_descriptor =
-      getDescriptor().getMessageTypes().get(24);
+      getDescriptor().getMessageTypes().get(25);
     internal_static_com_wali_live_proto_PKEndMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_PKEndMessage_descriptor,
         new java.lang.String[] { "ThisPKInfo", "OtherPKInfo", });
+    internal_static_com_wali_live_proto_MicBeginMessage_descriptor =
+      getDescriptor().getMessageTypes().get(26);
+    internal_static_com_wali_live_proto_MicBeginMessage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_MicBeginMessage_descriptor,
+        new java.lang.String[] { "Zuid", "LiveId", "MicInfo", "EnableViewerMic", "Type", });
+    internal_static_com_wali_live_proto_MicEndMessage_descriptor =
+      getDescriptor().getMessageTypes().get(27);
+    internal_static_com_wali_live_proto_MicEndMessage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_MicEndMessage_descriptor,
+        new java.lang.String[] { "Zuid", "LiveId", "MicInfo", "EnableViewerMic", "Type", });
     internal_static_com_wali_live_proto_LiveInfoChangeMsg_descriptor =
-      getDescriptor().getMessageTypes().get(25);
+      getDescriptor().getMessageTypes().get(28);
     internal_static_com_wali_live_proto_LiveInfoChangeMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_LiveInfoChangeMsg_descriptor,
-        new java.lang.String[] { "ModFlag", "Zuid", "LiveId", "EnableViewerMic", });
+        new java.lang.String[] { "ModFlag", "Zuid", "LiveId", "EnableViewerMic", "Title", });
     internal_static_com_wali_live_proto_Message_descriptor =
-      getDescriptor().getMessageTypes().get(26);
+      getDescriptor().getMessageTypes().get(29);
     internal_static_com_wali_live_proto_Message_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_Message_descriptor,
         new java.lang.String[] { "FromUser", "ToUser", "RoomId", "Cid", "MsgSeq", "Timestamp", "MsgType", "MsgBody", "MsgStatus", "MsgExt", "FromUserNickName", "FromUserLevel", "FromUserGender", "Certification", "CertificationType", "SupportTxt", "RoomType", "OriginRoomId", "MsgCatetory", "MultiLanguage", "FromUserShowName", "IsFromUserRedname", "GlobalRoomMsgExt", "VipLevel", "VipDisable", "VipHidden", "RealNameCertificationStatus", "IsPushSelf", "FromEffectId", "NobleLevel", "SpecialEffectId", });
     internal_static_com_wali_live_proto_Language_descriptor =
-      getDescriptor().getMessageTypes().get(27);
+      getDescriptor().getMessageTypes().get(30);
     internal_static_com_wali_live_proto_Language_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_Language_descriptor,
         new java.lang.String[] { "LanguageCode", "Text", });
     internal_static_com_wali_live_proto_MultiLanguage_descriptor =
-      getDescriptor().getMessageTypes().get(28);
+      getDescriptor().getMessageTypes().get(31);
     internal_static_com_wali_live_proto_MultiLanguage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_MultiLanguage_descriptor,
         new java.lang.String[] { "Language", });
     internal_static_com_wali_live_proto_SyncSysMsgRequest_descriptor =
-      getDescriptor().getMessageTypes().get(29);
+      getDescriptor().getMessageTypes().get(32);
     internal_static_com_wali_live_proto_SyncSysMsgRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SyncSysMsgRequest_descriptor,
         new java.lang.String[] { "FromUser", "RoomId", "Cid", });
     internal_static_com_wali_live_proto_SyncSysMsgResponse_descriptor =
-      getDescriptor().getMessageTypes().get(30);
+      getDescriptor().getMessageTypes().get(33);
     internal_static_com_wali_live_proto_SyncSysMsgResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SyncSysMsgResponse_descriptor,
         new java.lang.String[] { "Ret", "ErrorMsg", "Cid", "Timestamp", "Message", });
     internal_static_com_wali_live_proto_SyncUnreadRequest_descriptor =
-      getDescriptor().getMessageTypes().get(31);
+      getDescriptor().getMessageTypes().get(34);
     internal_static_com_wali_live_proto_SyncUnreadRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SyncUnreadRequest_descriptor,
         new java.lang.String[] { "FromUser", "Cid", "PageId", "Limit", "FollowType", });
     internal_static_com_wali_live_proto_SyncUnreadResponse_descriptor =
-      getDescriptor().getMessageTypes().get(32);
+      getDescriptor().getMessageTypes().get(35);
     internal_static_com_wali_live_proto_SyncUnreadResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SyncUnreadResponse_descriptor,
         new java.lang.String[] { "Ret", "ErrorMsg", "Unread", "TotalUnreadCount", "Cid", "PageId", });
     internal_static_com_wali_live_proto_Unread_descriptor =
-      getDescriptor().getMessageTypes().get(33);
+      getDescriptor().getMessageTypes().get(36);
     internal_static_com_wali_live_proto_Unread_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_Unread_descriptor,
         new java.lang.String[] { "UnreadCount", "MaxUnreadSeq", "Msg", "User", });
     internal_static_com_wali_live_proto_SyncHistoryMessageReuqest_descriptor =
-      getDescriptor().getMessageTypes().get(34);
+      getDescriptor().getMessageTypes().get(37);
     internal_static_com_wali_live_proto_SyncHistoryMessageReuqest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SyncHistoryMessageReuqest_descriptor,
         new java.lang.String[] { "FromUser", "SyncUser", });
     internal_static_com_wali_live_proto_SyncHistoryMessageResponse_descriptor =
-      getDescriptor().getMessageTypes().get(35);
+      getDescriptor().getMessageTypes().get(38);
     internal_static_com_wali_live_proto_SyncHistoryMessageResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SyncHistoryMessageResponse_descriptor,
         new java.lang.String[] { "Ret", "ErrorMsg", "Unread", });
     internal_static_com_wali_live_proto_JoinRoomMessage_descriptor =
-      getDescriptor().getMessageTypes().get(36);
+      getDescriptor().getMessageTypes().get(39);
     internal_static_com_wali_live_proto_JoinRoomMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_JoinRoomMessage_descriptor,
         new java.lang.String[] { "ViewerCount", "Viewers", "Type", "ShowSpecialEffect", });
     internal_static_com_wali_live_proto_LeaveRoomMessage_descriptor =
-      getDescriptor().getMessageTypes().get(37);
+      getDescriptor().getMessageTypes().get(40);
     internal_static_com_wali_live_proto_LeaveRoomMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_LeaveRoomMessage_descriptor,
         new java.lang.String[] { "ViewerCount", "Viewers", });
     internal_static_com_wali_live_proto_ViewerMessage_descriptor =
-      getDescriptor().getMessageTypes().get(38);
+      getDescriptor().getMessageTypes().get(41);
     internal_static_com_wali_live_proto_ViewerMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ViewerMessage_descriptor,
         new java.lang.String[] { "ViewerCount", "Viewers", });
     internal_static_com_wali_live_proto_AnchorJoinRoomMessage_descriptor =
-      getDescriptor().getMessageTypes().get(39);
+      getDescriptor().getMessageTypes().get(42);
     internal_static_com_wali_live_proto_AnchorJoinRoomMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AnchorJoinRoomMessage_descriptor,
         new java.lang.String[] { });
     internal_static_com_wali_live_proto_AnchorLeaveRoomMessage_descriptor =
-      getDescriptor().getMessageTypes().get(40);
+      getDescriptor().getMessageTypes().get(43);
     internal_static_com_wali_live_proto_AnchorLeaveRoomMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AnchorLeaveRoomMessage_descriptor,
         new java.lang.String[] { });
     internal_static_com_wali_live_proto_PushMessage_descriptor =
-      getDescriptor().getMessageTypes().get(41);
+      getDescriptor().getMessageTypes().get(44);
     internal_static_com_wali_live_proto_PushMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_PushMessage_descriptor,
         new java.lang.String[] { "Message", });
     internal_static_com_wali_live_proto_ChatNotifyMessage_descriptor =
-      getDescriptor().getMessageTypes().get(42);
+      getDescriptor().getMessageTypes().get(45);
     internal_static_com_wali_live_proto_ChatNotifyMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ChatNotifyMessage_descriptor,
         new java.lang.String[] { "FollowType", });
     internal_static_com_wali_live_proto_ImageBodyExt_descriptor =
-      getDescriptor().getMessageTypes().get(43);
+      getDescriptor().getMessageTypes().get(46);
     internal_static_com_wali_live_proto_ImageBodyExt_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ImageBodyExt_descriptor,
         new java.lang.String[] { "MimeType", "Url", "Width", "Height", "Size", "IsOriginal", "Md5", });
     internal_static_com_wali_live_proto_ProbeArgs_descriptor =
-      getDescriptor().getMessageTypes().get(44);
+      getDescriptor().getMessageTypes().get(47);
     internal_static_com_wali_live_proto_ProbeArgs_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ProbeArgs_descriptor,
         new java.lang.String[] { "DomainName", });
     internal_static_com_wali_live_proto_FeedMessageRequest_descriptor =
-      getDescriptor().getMessageTypes().get(45);
+      getDescriptor().getMessageTypes().get(48);
     internal_static_com_wali_live_proto_FeedMessageRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_FeedMessageRequest_descriptor,
         new java.lang.String[] { "FromUser", "RoomId", "PageId", "Limit", "Cid", "Timestamp", });
     internal_static_com_wali_live_proto_FeedMessageResponse_descriptor =
-      getDescriptor().getMessageTypes().get(46);
+      getDescriptor().getMessageTypes().get(49);
     internal_static_com_wali_live_proto_FeedMessageResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_FeedMessageResponse_descriptor,
         new java.lang.String[] { "Ret", "ErrorMsg", "FeedMessage", "Cid", "PageId", });
     internal_static_com_wali_live_proto_SyncRoomMessageRequest_descriptor =
-      getDescriptor().getMessageTypes().get(47);
+      getDescriptor().getMessageTypes().get(50);
     internal_static_com_wali_live_proto_SyncRoomMessageRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SyncRoomMessageRequest_descriptor,
         new java.lang.String[] { "FromUser", "RoomId", "LastSyncImportantTs", "LastSyncNormalTs", });
     internal_static_com_wali_live_proto_SyncRoomMessageResponse_descriptor =
-      getDescriptor().getMessageTypes().get(48);
+      getDescriptor().getMessageTypes().get(51);
     internal_static_com_wali_live_proto_SyncRoomMessageResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SyncRoomMessageResponse_descriptor,
         new java.lang.String[] { "Ret", "ErrorMsg", "ImportantRoomMsg", "NormalRoomMsg", "CurrentSyncImportantTs", "CurrentSyncNormalTs", "SyncInterval", });
     internal_static_com_wali_live_proto_MsgRuleChangeMessage_descriptor =
-      getDescriptor().getMessageTypes().get(49);
+      getDescriptor().getMessageTypes().get(52);
     internal_static_com_wali_live_proto_MsgRuleChangeMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_MsgRuleChangeMessage_descriptor,
         new java.lang.String[] { "MsgRule", });
     internal_static_com_wali_live_proto_KickMessage_descriptor =
-      getDescriptor().getMessageTypes().get(50);
+      getDescriptor().getMessageTypes().get(53);
     internal_static_com_wali_live_proto_KickMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_KickMessage_descriptor,
         new java.lang.String[] { "Zuid", "Liveid", "OpId", "OpType", "KickedId", "OperationType", "KickedNickname", });
     internal_static_com_wali_live_proto_TapToSellPushMsgExt_descriptor =
-      getDescriptor().getMessageTypes().get(51);
+      getDescriptor().getMessageTypes().get(54);
     internal_static_com_wali_live_proto_TapToSellPushMsgExt_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_TapToSellPushMsgExt_descriptor,
         new java.lang.String[] { "IsShop", "HideGift", });
     internal_static_com_wali_live_proto_WidgetMessage_descriptor =
-      getDescriptor().getMessageTypes().get(52);
+      getDescriptor().getMessageTypes().get(55);
     internal_static_com_wali_live_proto_WidgetMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_WidgetMessage_descriptor,
         new java.lang.String[] { "Zuid", "MsgItem", "NewWidgetItem", });
     internal_static_com_wali_live_proto_WidgetMessageItem_descriptor =
-      getDescriptor().getMessageTypes().get(53);
+      getDescriptor().getMessageTypes().get(56);
     internal_static_com_wali_live_proto_WidgetMessageItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_WidgetMessageItem_descriptor,
         new java.lang.String[] { "LinkUrl", "Position", "Icon", "Text", "ShowType", });
     internal_static_com_wali_live_proto_NewWidgetMessageItem_descriptor =
-      getDescriptor().getMessageTypes().get(54);
+      getDescriptor().getMessageTypes().get(57);
     internal_static_com_wali_live_proto_NewWidgetMessageItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_NewWidgetMessageItem_descriptor,
         new java.lang.String[] { "NewWidgetItem", "IsDelete", "ShowType", });
     internal_static_com_wali_live_proto_RoomAnimationMessage_descriptor =
-      getDescriptor().getMessageTypes().get(55);
+      getDescriptor().getMessageTypes().get(58);
     internal_static_com_wali_live_proto_RoomAnimationMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_RoomAnimationMessage_descriptor,
         new java.lang.String[] { "AnimationEffect", "AnimationContent", "AnimationType", });
     internal_static_com_wali_live_proto_ShoppingInfo_descriptor =
-      getDescriptor().getMessageTypes().get(56);
+      getDescriptor().getMessageTypes().get(59);
     internal_static_com_wali_live_proto_ShoppingInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ShoppingInfo_descriptor,
         new java.lang.String[] { "Name", "Price", "ProductId", "ImgUrl", });
     internal_static_com_wali_live_proto_PushShoppingInfoMsgExt_descriptor =
-      getDescriptor().getMessageTypes().get(57);
+      getDescriptor().getMessageTypes().get(60);
     internal_static_com_wali_live_proto_PushShoppingInfoMsgExt_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_PushShoppingInfoMsgExt_descriptor,
         new java.lang.String[] { "ShoppingInfo", });
     internal_static_com_wali_live_proto_UpgradeMessage_descriptor =
-      getDescriptor().getMessageTypes().get(58);
+      getDescriptor().getMessageTypes().get(61);
     internal_static_com_wali_live_proto_UpgradeMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UpgradeMessage_descriptor,
         new java.lang.String[] { "UserLevel", });
     internal_static_com_wali_live_proto_WidgetClickMessage_descriptor =
-      getDescriptor().getMessageTypes().get(59);
+      getDescriptor().getMessageTypes().get(62);
     internal_static_com_wali_live_proto_WidgetClickMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_WidgetClickMessage_descriptor,
         new java.lang.String[] { "WidgetID", "CounterValue", });
     internal_static_com_wali_live_proto_RedNameStatus_descriptor =
-      getDescriptor().getMessageTypes().get(60);
+      getDescriptor().getMessageTypes().get(63);
     internal_static_com_wali_live_proto_RedNameStatus_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_RedNameStatus_descriptor,
         new java.lang.String[] { "IsRedname", });
     internal_static_com_wali_live_proto_InviteGroupExt_descriptor =
-      getDescriptor().getMessageTypes().get(61);
+      getDescriptor().getMessageTypes().get(64);
     internal_static_com_wali_live_proto_InviteGroupExt_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_InviteGroupExt_descriptor,
         new java.lang.String[] { "Inviter", "InviterNickname", "FansGroupId", "FansGroupIcon", "FansGroupName", "ToFriend", "ToFriendNickname", });
     internal_static_com_wali_live_proto_GlobalRoomMessageExt_descriptor =
-      getDescriptor().getMessageTypes().get(62);
+      getDescriptor().getMessageTypes().get(65);
     internal_static_com_wali_live_proto_GlobalRoomMessageExt_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GlobalRoomMessageExt_descriptor,
         new java.lang.String[] { "InnerGlobalRoomMsgExt", });
     internal_static_com_wali_live_proto_InnerGlobalRoomMessageExt_descriptor =
-      getDescriptor().getMessageTypes().get(63);
+      getDescriptor().getMessageTypes().get(66);
     internal_static_com_wali_live_proto_InnerGlobalRoomMessageExt_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_InnerGlobalRoomMessageExt_descriptor,
         new java.lang.String[] { "Type", "Ext", });
     internal_static_com_wali_live_proto_ShareJoinRoomMessage_descriptor =
-      getDescriptor().getMessageTypes().get(64);
+      getDescriptor().getMessageTypes().get(67);
     internal_static_com_wali_live_proto_ShareJoinRoomMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ShareJoinRoomMessage_descriptor,
         new java.lang.String[] { "Content", });
     internal_static_com_wali_live_proto_MedalConfigMessage_descriptor =
-      getDescriptor().getMessageTypes().get(65);
+      getDescriptor().getMessageTypes().get(68);
     internal_static_com_wali_live_proto_MedalConfigMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_MedalConfigMessage_descriptor,
-        new java.lang.String[] { "BeforeNicknameConfig", "AfterNicknameConfig", "BeforeContentConfig", "AfterContentConfig", });
+        new java.lang.String[] { "BeforeNicknameConfig", "AfterNicknameConfig", "BeforeContentConfig", "AfterContentConfig", "EffectConfig", });
     internal_static_com_wali_live_proto_InnerMedalConfig_descriptor =
-      getDescriptor().getMessageTypes().get(66);
+      getDescriptor().getMessageTypes().get(69);
     internal_static_com_wali_live_proto_InnerMedalConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_InnerMedalConfig_descriptor,
         new java.lang.String[] { "PicId", });
     internal_static_com_wali_live_proto_TxtSchemeMessage_descriptor =
-      getDescriptor().getMessageTypes().get(67);
+      getDescriptor().getMessageTypes().get(70);
     internal_static_com_wali_live_proto_TxtSchemeMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_TxtSchemeMessage_descriptor,
         new java.lang.String[] { "SchemeUrl", });
     internal_static_com_wali_live_proto_GetLiveNotifyMsgCountReq_descriptor =
-      getDescriptor().getMessageTypes().get(68);
+      getDescriptor().getMessageTypes().get(71);
     internal_static_com_wali_live_proto_GetLiveNotifyMsgCountReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetLiveNotifyMsgCountReq_descriptor,
         new java.lang.String[] { "Uid", });
     internal_static_com_wali_live_proto_GetLiveNotifyMsgCountRsp_descriptor =
-      getDescriptor().getMessageTypes().get(69);
+      getDescriptor().getMessageTypes().get(72);
     internal_static_com_wali_live_proto_GetLiveNotifyMsgCountRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetLiveNotifyMsgCountRsp_descriptor,
         new java.lang.String[] { "Ret", "ErrorMsg", "Count", });
     internal_static_com_wali_live_proto_ClearLiveNotifyMsgCountReq_descriptor =
-      getDescriptor().getMessageTypes().get(70);
+      getDescriptor().getMessageTypes().get(73);
     internal_static_com_wali_live_proto_ClearLiveNotifyMsgCountReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ClearLiveNotifyMsgCountReq_descriptor,
         new java.lang.String[] { "Uid", });
     internal_static_com_wali_live_proto_ClearLiveNotifyMsgCountRsp_descriptor =
-      getDescriptor().getMessageTypes().get(71);
+      getDescriptor().getMessageTypes().get(74);
     internal_static_com_wali_live_proto_ClearLiveNotifyMsgCountRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ClearLiveNotifyMsgCountRsp_descriptor,
         new java.lang.String[] { "Ret", "ErrorMsg", });
     internal_static_com_wali_live_proto_UnreadNotification_descriptor =
-      getDescriptor().getMessageTypes().get(72);
+      getDescriptor().getMessageTypes().get(75);
     internal_static_com_wali_live_proto_UnreadNotification_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UnreadNotification_descriptor,
         new java.lang.String[] { "UnreadCount", "MaxIdx", "Msg", "SysUser", });
     internal_static_com_wali_live_proto_SyncSystemNotificationRequest_descriptor =
-      getDescriptor().getMessageTypes().get(73);
+      getDescriptor().getMessageTypes().get(76);
     internal_static_com_wali_live_proto_SyncSystemNotificationRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SyncSystemNotificationRequest_descriptor,
         new java.lang.String[] { "From", "Cid", });
     internal_static_com_wali_live_proto_SyncSystemNotificationResponse_descriptor =
-      getDescriptor().getMessageTypes().get(74);
+      getDescriptor().getMessageTypes().get(77);
     internal_static_com_wali_live_proto_SyncSystemNotificationResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SyncSystemNotificationResponse_descriptor,
         new java.lang.String[] { "Ret", "ErrMsg", "SysNotification", "Cid", });
     internal_static_com_wali_live_proto_GetHistorySystemNotificationRequest_descriptor =
-      getDescriptor().getMessageTypes().get(75);
+      getDescriptor().getMessageTypes().get(78);
     internal_static_com_wali_live_proto_GetHistorySystemNotificationRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetHistorySystemNotificationRequest_descriptor,
         new java.lang.String[] { "From", "Idx", "Limit", "Cid", });
     internal_static_com_wali_live_proto_GetHistorySystemNotificationResponse_descriptor =
-      getDescriptor().getMessageTypes().get(76);
+      getDescriptor().getMessageTypes().get(79);
     internal_static_com_wali_live_proto_GetHistorySystemNotificationResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetHistorySystemNotificationResponse_descriptor,
         new java.lang.String[] { "Ret", "ErrMsg", "SysNotification", "Cid", });
     internal_static_com_wali_live_proto_AckSystemNotificationRequest_descriptor =
-      getDescriptor().getMessageTypes().get(77);
+      getDescriptor().getMessageTypes().get(80);
     internal_static_com_wali_live_proto_AckSystemNotificationRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AckSystemNotificationRequest_descriptor,
         new java.lang.String[] { "From", "To", "Idx", "Cid", });
     internal_static_com_wali_live_proto_AckSystemNotificationResponse_descriptor =
-      getDescriptor().getMessageTypes().get(78);
+      getDescriptor().getMessageTypes().get(81);
     internal_static_com_wali_live_proto_AckSystemNotificationResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AckSystemNotificationResponse_descriptor,
         new java.lang.String[] { "Ret", "ErrMsg", });
     internal_static_com_wali_live_proto_SyncFollowNotificationRequest_descriptor =
-      getDescriptor().getMessageTypes().get(79);
+      getDescriptor().getMessageTypes().get(82);
     internal_static_com_wali_live_proto_SyncFollowNotificationRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SyncFollowNotificationRequest_descriptor,
         new java.lang.String[] { "From", "LastIdx", "Limit", "Cid", });
     internal_static_com_wali_live_proto_SyncFollowNotificationResponse_descriptor =
-      getDescriptor().getMessageTypes().get(80);
+      getDescriptor().getMessageTypes().get(83);
     internal_static_com_wali_live_proto_SyncFollowNotificationResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SyncFollowNotificationResponse_descriptor,
         new java.lang.String[] { "Ret", "ErrMsg", "FollowNotification", "Cid", });
     internal_static_com_wali_live_proto_AckFollowNotificationRequest_descriptor =
-      getDescriptor().getMessageTypes().get(81);
+      getDescriptor().getMessageTypes().get(84);
     internal_static_com_wali_live_proto_AckFollowNotificationRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AckFollowNotificationRequest_descriptor,
         new java.lang.String[] { "From", "Cid", });
     internal_static_com_wali_live_proto_AckFollowNotificationResponse_descriptor =
-      getDescriptor().getMessageTypes().get(82);
+      getDescriptor().getMessageTypes().get(85);
     internal_static_com_wali_live_proto_AckFollowNotificationResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AckFollowNotificationResponse_descriptor,
         new java.lang.String[] { "Ret", "ErrMsg", });
     internal_static_com_wali_live_proto_RichText_descriptor =
-      getDescriptor().getMessageTypes().get(83);
+      getDescriptor().getMessageTypes().get(86);
     internal_static_com_wali_live_proto_RichText_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_RichText_descriptor,
         new java.lang.String[] { "Brief", "Poster", "DetailUrl", "Title", });
     internal_static_com_wali_live_proto_FollowNotification_descriptor =
-      getDescriptor().getMessageTypes().get(84);
+      getDescriptor().getMessageTypes().get(87);
     internal_static_com_wali_live_proto_FollowNotification_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_FollowNotification_descriptor,
         new java.lang.String[] { "Uid", "Nickname", "Avatar", "Ts", "Gender", "Level", "IsBothway", "Idx", });
     internal_static_com_wali_live_proto_NotificationNotifyMessage_descriptor =
-      getDescriptor().getMessageTypes().get(85);
+      getDescriptor().getMessageTypes().get(88);
     internal_static_com_wali_live_proto_NotificationNotifyMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_NotificationNotifyMessage_descriptor,
         new java.lang.String[] { "Type", "Notification", });
     internal_static_com_wali_live_proto_SendSystemNotificationRequest_descriptor =
-      getDescriptor().getMessageTypes().get(86);
+      getDescriptor().getMessageTypes().get(89);
     internal_static_com_wali_live_proto_SendSystemNotificationRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SendSystemNotificationRequest_descriptor,
         new java.lang.String[] { "From", "To", "MsgType", "MsgBody", "MsgExt", "Cid", });
     internal_static_com_wali_live_proto_SendSystemNotificationResponse_descriptor =
-      getDescriptor().getMessageTypes().get(87);
+      getDescriptor().getMessageTypes().get(90);
     internal_static_com_wali_live_proto_SendSystemNotificationResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SendSystemNotificationResponse_descriptor,
         new java.lang.String[] { "Ret", "ErrMsg", "Cid", });
     internal_static_com_wali_live_proto_BarMessage_descriptor =
-      getDescriptor().getMessageTypes().get(88);
+      getDescriptor().getMessageTypes().get(91);
     internal_static_com_wali_live_proto_BarMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_BarMessage_descriptor,
         new java.lang.String[] { "Bmt", "Content", "Schema", "Start", "End", });
     internal_static_com_wali_live_proto_GetBarMessageRequest_descriptor =
-      getDescriptor().getMessageTypes().get(89);
+      getDescriptor().getMessageTypes().get(92);
     internal_static_com_wali_live_proto_GetBarMessageRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetBarMessageRequest_descriptor,
         new java.lang.String[] { "From", });
     internal_static_com_wali_live_proto_GetBarMessageResponse_descriptor =
-      getDescriptor().getMessageTypes().get(90);
+      getDescriptor().getMessageTypes().get(93);
     internal_static_com_wali_live_proto_GetBarMessageResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetBarMessageResponse_descriptor,
         new java.lang.String[] { "Ret", "ErrMsg", "BarMsg", });
     internal_static_com_wali_live_proto_NormalTab_descriptor =
-      getDescriptor().getMessageTypes().get(91);
+      getDescriptor().getMessageTypes().get(94);
     internal_static_com_wali_live_proto_NormalTab_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_NormalTab_descriptor,
         new java.lang.String[] { "Url", });
     internal_static_com_wali_live_proto_ListTabItem_descriptor =
-      getDescriptor().getMessageTypes().get(92);
+      getDescriptor().getMessageTypes().get(95);
     internal_static_com_wali_live_proto_ListTabItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ListTabItem_descriptor,
         new java.lang.String[] { "ItemName", "ItemUrl", });
     internal_static_com_wali_live_proto_ListTab_descriptor =
-      getDescriptor().getMessageTypes().get(93);
+      getDescriptor().getMessageTypes().get(96);
     internal_static_com_wali_live_proto_ListTab_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ListTab_descriptor,
         new java.lang.String[] { "ListName", "Item", });
     internal_static_com_wali_live_proto_VipCustomerServiceTab_descriptor =
-      getDescriptor().getMessageTypes().get(94);
+      getDescriptor().getMessageTypes().get(97);
     internal_static_com_wali_live_proto_VipCustomerServiceTab_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_VipCustomerServiceTab_descriptor,
         new java.lang.String[] { "Title", "Type", "Tab", });
     internal_static_com_wali_live_proto_VipCustomerServiceBar_descriptor =
-      getDescriptor().getMessageTypes().get(95);
+      getDescriptor().getMessageTypes().get(98);
     internal_static_com_wali_live_proto_VipCustomerServiceBar_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_VipCustomerServiceBar_descriptor,
         new java.lang.String[] { "Tab", });
     internal_static_com_wali_live_proto_GetVipCustomerServiceBarRequest_descriptor =
-      getDescriptor().getMessageTypes().get(96);
+      getDescriptor().getMessageTypes().get(99);
     internal_static_com_wali_live_proto_GetVipCustomerServiceBarRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetVipCustomerServiceBarRequest_descriptor,
         new java.lang.String[] { "From", });
     internal_static_com_wali_live_proto_GetVipCustomerServiceBarResponse_descriptor =
-      getDescriptor().getMessageTypes().get(97);
+      getDescriptor().getMessageTypes().get(100);
     internal_static_com_wali_live_proto_GetVipCustomerServiceBarResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetVipCustomerServiceBarResponse_descriptor,
         new java.lang.String[] { "Ret", "ErrMsg", "Bar", });
     internal_static_com_wali_live_proto_AtMessage_descriptor =
-      getDescriptor().getMessageTypes().get(98);
+      getDescriptor().getMessageTypes().get(101);
     internal_static_com_wali_live_proto_AtMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AtMessage_descriptor,
         new java.lang.String[] { "AtUser", });
     internal_static_com_wali_live_proto_VFansMemberBriefInfo_descriptor =
-      getDescriptor().getMessageTypes().get(99);
+      getDescriptor().getMessageTypes().get(102);
     internal_static_com_wali_live_proto_VFansMemberBriefInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_VFansMemberBriefInfo_descriptor,
         new java.lang.String[] { "PetLevel", "MedalValue", "IsUseMedal", "IsVipExpire", "BarrageColor", });
+    internal_static_com_wali_live_proto_SetChatMsgSettingRequest_descriptor =
+      getDescriptor().getMessageTypes().get(103);
+    internal_static_com_wali_live_proto_SetChatMsgSettingRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_SetChatMsgSettingRequest_descriptor,
+        new java.lang.String[] { "Uuid", "Setting", });
+    internal_static_com_wali_live_proto_SetChatMsgSettingResponse_descriptor =
+      getDescriptor().getMessageTypes().get(104);
+    internal_static_com_wali_live_proto_SetChatMsgSettingResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_SetChatMsgSettingResponse_descriptor,
+        new java.lang.String[] { "Ret", "Setting", });
+    internal_static_com_wali_live_proto_GetChatMsgSettingRequest_descriptor =
+      getDescriptor().getMessageTypes().get(105);
+    internal_static_com_wali_live_proto_GetChatMsgSettingRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetChatMsgSettingRequest_descriptor,
+        new java.lang.String[] { "Uuid", });
+    internal_static_com_wali_live_proto_GetChatMsgSettingResponse_descriptor =
+      getDescriptor().getMessageTypes().get(106);
+    internal_static_com_wali_live_proto_GetChatMsgSettingResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetChatMsgSettingResponse_descriptor,
+        new java.lang.String[] { "Ret", "Setting", });
+    internal_static_com_wali_live_proto_ChatMsgSetting_descriptor =
+      getDescriptor().getMessageTypes().get(107);
+    internal_static_com_wali_live_proto_ChatMsgSetting_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_ChatMsgSetting_descriptor,
+        new java.lang.String[] { "RecvUnfollowEnable", "RecvUnfollowLevel", "InteractionNotify", "BefollowedNotify", });
+    internal_static_com_wali_live_proto_NobleUserInfo_descriptor =
+      getDescriptor().getMessageTypes().get(108);
+    internal_static_com_wali_live_proto_NobleUserInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_NobleUserInfo_descriptor,
+        new java.lang.String[] { "Avatar", "Nickname", "Gender", "Level", "NobleLevel", "Uuid", });
+    internal_static_com_wali_live_proto_NobleMsg_descriptor =
+      getDescriptor().getMessageTypes().get(109);
+    internal_static_com_wali_live_proto_NobleMsg_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_NobleMsg_descriptor,
+        new java.lang.String[] { "MsgType", "MsgContent", "NobleUserInfo", });
+    internal_static_com_wali_live_proto_HuyaSendMessageReq_descriptor =
+      getDescriptor().getMessageTypes().get(110);
+    internal_static_com_wali_live_proto_HuyaSendMessageReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_HuyaSendMessageReq_descriptor,
+        new java.lang.String[] { "FromUid", "AnchorHuyaUid", "MsgType", "MsgContent", "SendTimestamp", "Zuid", "RoomId", "RoomType", "Source", });
+    internal_static_com_wali_live_proto_HuyaSendMessageRsp_descriptor =
+      getDescriptor().getMessageTypes().get(111);
+    internal_static_com_wali_live_proto_HuyaSendMessageRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_HuyaSendMessageRsp_descriptor,
+        new java.lang.String[] { "RetCode", });
     com.wali.live.proto.LiveCommonProto.getDescriptor();
   }
 

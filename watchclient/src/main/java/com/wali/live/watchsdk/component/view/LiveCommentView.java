@@ -1,7 +1,8 @@
 package com.wali.live.watchsdk.component.view;
 
 import android.content.Context;
-import android.support.annotation.IdRes;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,198 +10,295 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AbsListView;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.base.global.GlobalData;
+import com.base.activity.assist.IBindActivityLIfeCycle;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
+import com.mi.live.data.config.GetConfigManager;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IOrientationListener;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.common.barrage.event.CommentRefreshEvent;
+import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.common.barrage.view.adapter.LiveCommentRecyclerAdapter;
+import com.wali.live.common.barrage.view.utils.CommentLevelOrLikeCache;
+import com.wali.live.common.barrage.view.utils.CommentVfansLevelCache;
+import com.wali.live.common.barrage.view.utils.CommentVipLevelIconCache;
 import com.wali.live.common.model.CommentModel;
+import com.wali.live.event.JumpSchemeEvent;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.watchsdk.R;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import static com.wali.live.component.view.Utils.$click;
-
 /**
- * Created by yangli on 2017/03/02.
- *
- * @module 弹幕区视图
+ * @module 直播间弹幕评论
  */
-public class LiveCommentView extends RelativeLayout implements View.OnClickListener,
-        IComponentView<LiveCommentView.IPresenter, LiveCommentView.IView>, IOrientationListener {
-    private static final String TAG = "LiveCommentView1";
+public class LiveCommentView extends RelativeLayout implements IBindActivityLIfeCycle, IComponentView<LiveCommentView.IPresenter, LiveCommentView.IView> {
+    private static final String TAG = LiveCommentView.class.getSimpleName();
+    private static final int IDLE_STATUS_MAX_TIME = 30 * 1000;
 
     // this value should be adjust when ui design is changed
-    private static final int WIDTH_LANDSCAPE = GlobalData.screenHeight >> 1; // 弹幕区域尺寸
-    private static final int HEIGHT_PORTRAIT = DisplayUtils.dip2px(160.33f);
-    private static final int HEIGHT_LANDSCAPE = DisplayUtils.dip2px(115f);
+    private static final int COMMENT_WIDTH_LANDSCAPE = DisplayUtils.getPhoneHeight() / 2;
+    private static final int COMMENT_HEIGHT_PORTRAIT = DisplayUtils.dip2px(130.33f); // 弹幕区域高度
+    private static final int COMMENT_HEIGHT_LANDSCAPE = DisplayUtils.dip2px(133.33f);
+    private static final int COMMENT_MARGIN_PORTRAIT = DisplayUtils.dip2px(75f); // 弹幕区域右边距
 
-    public static final int LARGE_MARGIN_PORTRAIT = DisplayUtils.dip2px(110.67f);  // 连麦小窗存在时，弹幕区域右边距
-    public static final int NORMAL_MARGIN_PORTRAIT = DisplayUtils.dip2px(70f);     // 连麦小窗不存在时，弹幕区域右边距
+    private static final int COMMENT_PADDING_LEFT = DisplayUtils.dip2px(6);
+    private static final int COMMENT_PADDING_RIGHT = DisplayUtils.dip2px(6.67f);
+    private static final int LANDSPACE_COMMENT_PADDING_BOTTOM = DisplayUtils.dip2px(43.33f);
+    private static final int PORTRAIT_COMMENT_PADDING_BOTTOM = DisplayUtils.dip2px(6.66f);
+
+    private boolean mIsLandscape = false;
+    private int mExtraRightMargin = 0;
+
+    private int mHasMore = 0;
+
+    private LiveCommentRecyclerAdapter mAdapter;
+    private boolean mOnBottom = true;
+    private boolean mHasDataUpdate = false; // 时候有数据可更新
+
+    private String mToken;
+
+    private int[] mLocation = new int[2];
+    private int[] mItemLocation = new int[2];
+
+
+    public TextView mMoveToLastItemIv;  //点击回到最底部
 
     @Nullable
     protected IPresenter mPresenter;
-    private LiveCommentRecyclerAdapter.NameClickListener mNameViewClickListener = null;
 
-    private LiveCommentRecyclerAdapter mAdapter;
-    private LinearLayoutManager mLayoutManager;
-    private RecyclerView.OnScrollListener mOnScrollListener;
+    public RecyclerView mCommentRv;
 
-    private String mToken;
-    private boolean mDragging = false;
-    private boolean mOnBottom = true;
-    private boolean mHasDataUpdate = false; // 时候有数据可更新
-    private boolean mIsLandscape = false;
+//    @Bind(R.id.barrage_comment_txt_vip_join)
+//    public EnterRoomView mEnterRoom;
 
-    private ImageView mMoveToLastItemIv;     //点击回到最底部
-    private RecyclerView mCommentRv;
+    private LiveCommentRecyclerAdapter.LiveCommentNameClickListener mNameViewClickListener = null;
 
-    protected final <T extends View> T $(@IdRes int resId) {
-        return (T) findViewById(resId);
-    }
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        if (id == R.id.ctrl_btn) {
-            setOnBottom("mMoveToLastItemIv", true);
-        }
-    }
-
-    public void setIsGameLive(boolean isGameLive) {
-        mAdapter.setIsGameLive(isGameLive);
-    }
-
-    public void setNameViewClickListener(
-            LiveCommentRecyclerAdapter.NameClickListener nameViewClickListener) {
-        mNameViewClickListener = nameViewClickListener;
-    }
-
-    public final void setToken(String token) {
-        mToken = token;
-    }
-
-    @Override
-    public void setPresenter(@Nullable IPresenter iPresenter) {
-        mPresenter = iPresenter;
-    }
+    private boolean mDraging = false;
 
     public LiveCommentView(Context context) {
-        this(context, null);
+        super(context);
+        initContentView(context);
     }
 
     public LiveCommentView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        initContentView(context);
     }
 
-    public LiveCommentView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(context, attrs, defStyleAttr);
+    public LiveCommentView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        initContentView(context);
     }
 
-    private void init(Context context, AttributeSet attrs, int defStyleAttr) {
-        inflate(context, R.layout.live_comment_view, this);
+    private LinearLayoutManager mLayoutManager;
 
-        mMoveToLastItemIv = $(R.id.ctrl_btn);
-        mCommentRv = $(R.id.my_list_view);
+    private RecyclerView.OnScrollListener mOnScrollListener;
 
-        $click(mMoveToLastItemIv, this);
 
-        setupCommentView();
+    private LiveRoomChatMsgManager mRoomChatMsgManager;
+
+    /**
+     * 捕获一些 Recycler View Inconsistency Detected error 的异常
+     */
+    public static class WrapContentLinearLayoutManager extends LinearLayoutManager {
+
+        public WrapContentLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
+            super(context, orientation, reverseLayout);
+        }
+
+        @Override
+        public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+            try {
+                super.onLayoutChildren(recycler, state);
+            } catch (IndexOutOfBoundsException e) {
+                MyLog.e("Error", "IndexOutOfBoundsException in RecyclerView happens");
+            }
+        }
+
+        @Override
+        public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler, RecyclerView.State state) {
+            int result = 0;
+            try {
+                result = super.scrollVerticallyBy(dy, recycler, state);
+            } catch (Exception e) {
+                MyLog.w(TAG + e);
+            }
+            return result;
+        }
     }
 
-    private void setupCommentView() {
-        mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+    private void initContentView(Context context) {
+        inflate(context, R.layout.livecomment_recycler_layout, this);
+        mMoveToLastItemIv = (TextView) this.findViewById(R.id.moveTolastIv);
+        mCommentRv = (RecyclerView) this.findViewById(R.id.barrage_comment_list_view);
+        mLayoutManager = new WrapContentLinearLayoutManager(context, LinearLayoutManager.VERTICAL, true);
         mCommentRv.setLayoutManager(mLayoutManager);
         mCommentRv.setItemAnimator(null);
         mCommentRv.setVerticalFadingEdgeEnabled(true);
         mCommentRv.setFadingEdgeLength(25);
-        mCommentRv.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                        UserActionEvent.post(UserActionEvent.EVENT_TYPE_TOUCH_DOWN_COMMENT_RC, 0, 0);
-                        break;
-                    default:
-                        break;
-                }
-                return false;
-            }
-        });
+//        resetHeight();
+        mCommentRv.setOnTouchListener(
+                new OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent event) {
+                        //            MyLog.d(TAG, "setOnTouchListener,event:" + event.getAction());
+                        switch (event.getActionMasked()) {
+                            case MotionEvent.ACTION_DOWN:
+                                UserActionEvent userActionEvent = new UserActionEvent(UserActionEvent.EVENT_TYPE_TOUCH_DOWN_COMMENT_RC, 0, 0);
+                                EventBus.getDefault().post(userActionEvent);
+                                break;
+                            case MotionEvent.ACTION_MOVE:
+                                break;
+                            case MotionEvent.ACTION_UP:
+                                break;
+                        }
+                        return false;
+                    }
+                });
         mOnScrollListener = new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                MyLog.d(TAG, "onScrollStateChanged, newState:" + newState + ", mOnBottom:" + mOnBottom);
+                MyLog.d(TAG, "onScrollStateChangd,newState:" + newState + ",mOnBottom:" + mOnBottom);
                 if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                    mDragging = false;
-                    // 停下来判断是否是最后一个
-                    int bottomVisiblePosition = mLayoutManager.findLastVisibleItemPosition();
-                    MyLog.d(TAG, "onScrollStateChanged bottomVisiblePosition :" + bottomVisiblePosition);
-                    if (bottomVisiblePosition == mAdapter.getItemCount() - 1) {
+                    // 闲置状态
+                    mDraging = false;
+                    // 停下来判断是否是最后一个,这里忽然有次不能到底了会有bug
+                    // 如果最后一个可见的元素==列表中最后一个元素，则认为到底了,
+                    int firstVisiblePosition = mLayoutManager.findFirstVisibleItemPosition();
+                    MyLog.d(TAG, "onScrollStateChangd firstVisiblePosition :" + firstVisiblePosition);
+                    if (firstVisiblePosition == 0) {
                         setOnBottom("onScrollStateChanged", true);
                     } else {
                         setOnBottom("onScrollStateChanged", false);
                     }
-                } else if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) { //用户滑动的话则动态跟新maxSize
-                    mDragging = true;
+//                    if (!ViewCompat.canScrollVertically(recyclerView, 1)) {
+//                        setOnBottom("onScrollStateChanged", true);
+//                    } else {
+//                        mOnBottom = false;
+//                    }
+                } else if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    // 手动拖着滑动
+                    mDraging = true;
+                } else {
+                    // 自动滑动
                 }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                changeAlpha();
             }
         };
         mCommentRv.addOnScrollListener(mOnScrollListener);
         mCommentRv.setHasFixedSize(true);
-        mAdapter = new LiveCommentRecyclerAdapter(getContext());
+        mAdapter = new LiveCommentRecyclerAdapter(context);
         mCommentRv.setAdapter(mAdapter);
-        mAdapter.setLiveCommentNameClickListener(new LiveCommentRecyclerAdapter.NameClickListener() {
+        mAdapter.setLiveCommentNameClickListener(new LiveCommentRecyclerAdapter.LiveCommentNameClickListener() {
             @Override
             public void onClickName(long uid) {
-                if (mNameViewClickListener != null) {
+                if (null != mNameViewClickListener) {
                     mNameViewClickListener.onClickName(uid);
                 } else {
                     if (CommonUtils.isFastDoubleClick(200)) {
                         return;
                     }
-                    UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, uid, uid);
+                    UserActionEvent userActionEvent = new UserActionEvent(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, uid, uid);
+                    EventBus.getDefault().post(userActionEvent);
                 }
+            }
+
+            @Override
+            public void onClickComment(String schemaUrl) {
+                EventBus.getDefault().post(new JumpSchemeEvent(schemaUrl));
+            }
+        });
+//        mAdapter.setLiveCommentNameClickListener(uid -> {
+//            if (null != mNameViewClickListener) {
+//                mNameViewClickListener.onClickName(uid);
+//            } else {
+//                if (CommonUtils.isFastDoubleClick(200)) {
+//                    return;
+//                }
+//                EventClass.UserActionEvent userActionEvent = new EventClass.UserActionEvent(EventClass.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, uid, uid);
+//                EventBus.getDefault().post(userActionEvent);
+//            }
+//        });
+
+        mMoveToLastItemIv.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setOnBottom("mMoveToLastItemIv", true);
             }
         });
     }
 
+    private void changeAlpha() {
+        int visibleItemCount = mLayoutManager.getChildCount();
+        View first = mCommentRv.getChildAt(visibleItemCount - 1);
+        if (visibleItemCount > 1) {
+            for (int i = 0; i < visibleItemCount; ++i) {
+                View itemView = mCommentRv.getChildAt(i);
+                mCommentRv.getLocationOnScreen(mLocation);
+                itemView.getLocationOnScreen(mItemLocation);
+                float alpha = 1;
+                if (i == visibleItemCount - 1) {
+                    alpha = 1 - (mLocation[1] - mItemLocation[1]) / ((float) first.getHeight());
+                    alpha *= 0.7f;
+                }
+                itemView.setAlpha(alpha);
+            }
+        }
+
+    }
+
+//TODO 弹幕底部不完整平滑滑动，日后做
+  /*  private void changeLastItem() {
+        int last = mLayoutManager.findLastVisibleItemPosition();
+        int lastComplete = mLayoutManager.findLastCompletelyVisibleItemPosition();
+        if (lastComplete != last) {
+            mCommentRv.smoothScrollToPosition(last);
+        }
+    }*/
+
     private void setOnBottom(String from, boolean onBottom) {
         MyLog.d(TAG, "onBottom:" + this.mOnBottom + "-->" + onBottom + " from:" + from);
-        if (mOnBottom != onBottom) {
-            mOnBottom = onBottom;
+        if (this.mOnBottom != onBottom) {
+            this.mOnBottom = onBottom;
             if (mOnBottom) {
                 if (mHasDataUpdate) {
                     refreshComment(true);
                 }
-                mLayoutManager.scrollToPosition(mAdapter.getItemCount() - 1);
-                mMoveToLastItemIv.setVisibility(INVISIBLE); // INVISIBLE占位
-                EventBus.getDefault().post(new LiveCommentView.LiveCommentStateEvent(
-                        LiveCommentView.LiveCommentStateEvent.TYPE_UPDATE_TO_DEFAULT_SIZE));
-            } else {
-                // 不在底部不需要更新数据
-                mMoveToLastItemIv.setVisibility(VISIBLE);
+                mCommentRv.smoothScrollToPosition(0);
+                mMoveToLastItemIv.setVisibility(GONE);
+                mHasMore = 0;
+                if (mRoomChatMsgManager != null) {
+                    mRoomChatMsgManager.updateMaxSize(mRoomChatMsgManager.getInitMaxSize());
+                }
             }
+            // 不在底部不需要更新数据
         }
     }
 
     // 上一次设定列表数据的时间
     private long mLastSetCommentListTs = 0;
+
     private List<CommentModel> mDataList;
 
-    // 如果是之前是到底了，则我们自动也滚到底
+    //如果是之前是到底了，则我们自动也滚到底
     public void setDataSourceOnMainThread(List<CommentModel> dataList) {
         if (mAdapter != null && dataList != null) {
             // 优化一下，不要每次都remove message
@@ -217,18 +315,36 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
         refreshComment(false);
     }
 
+    private Runnable afterRefresh = new Runnable() {
+        @Override
+        public void run() {
+            mHasDataUpdate = false;
+            mCommentRv.smoothScrollToPosition(0);
+            mHandler.removeCallbacks(changeAlphaRunnable);
+            mHandler.postDelayed(changeAlphaRunnable, 100);
+//            postDelayed(() -> changeAlpha(), 100);//解决底部alpha复用问题
+        }
+    };
+
+    Runnable changeAlphaRunnable = new Runnable() {
+        @Override
+        public void run() {
+            changeAlpha();
+        }
+    };
+
     private void refreshComment(boolean force) {
         if (mAdapter != null && mDataList != null) {
-            MyLog.w(TAG, "setLiveCommentList, dataList.size:" + mDataList.size() + ",force:" + force);
+            MyLog.d(TAG, "setLiveCommentList, dataList.size:" + mDataList.size() + ",force:" + force);
             mLastSetCommentListTs = System.currentTimeMillis();
-            if (force) {
-                mAdapter.setCommentList(mDataList);
-                mHasDataUpdate = false;
-                mLayoutManager.scrollToPosition(mAdapter.getItemCount() - 1);
-            } else if (mOnBottom && this.getVisibility() == VISIBLE && !mDragging) {
-                mAdapter.setCommentList(mDataList);
-                mHasDataUpdate = false;
-                mLayoutManager.scrollToPosition(mAdapter.getItemCount() - 1);
+            if (!mCommentRv.isComputingLayout()) {
+                if (force) {
+                    mAdapter.setLiveCommentList(mDataList, afterRefresh);
+                } else if (mOnBottom && this.getVisibility() == VISIBLE && !mDraging) {
+                    mAdapter.setLiveCommentList(mDataList, afterRefresh);
+                } else {
+
+                }
             }
         }
     }
@@ -244,35 +360,110 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
     }
 
     @Override
-    public void onOrientation(boolean isLandscape) {
-        MyLog.w(TAG, "onOrientation isLandscape=" + isLandscape);
-        if (mIsLandscape == isLandscape) {
-            return;
+    public void onActivityDestroy() {
+        this.mToken = "";
+        mHandler.removeCallbacksAndMessages(null);
+        EventBus.getDefault().unregister(this);
+        mCommentRv.removeOnScrollListener(mOnScrollListener);
+        GetConfigManager.getInstance().clearMedalMap();
+        CommentLevelOrLikeCache.clear();
+        CommentVipLevelIconCache.clear();
+        CommentVfansLevelCache.clear();
+    }
+
+    @Override
+    public void onActivityCreate() {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
         }
-        mIsLandscape = isLandscape;
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) this.getLayoutParams();
+    }
+
+    public LiveRoomChatMsgManager getmRoomChatMsgManager() {
+        return mRoomChatMsgManager;
+    }
+
+    public void setRoomChatMsgManager(LiveRoomChatMsgManager mRoomChatMsgManager) {
+        this.mRoomChatMsgManager = mRoomChatMsgManager;
+    }
+
+    public void setIsGameLive(boolean isGameLive) {
+        mAdapter.setIsGameLive(isGameLive);
+//        mEnterRoom.setIsGameLive(isGameLive);
+    }
+
+    public void setNameViewClickListener(LiveCommentRecyclerAdapter.LiveCommentNameClickListener nameViewClickListener) {
+        mNameViewClickListener = nameViewClickListener;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(CommentRefreshEvent event) {
+        if (event != null && event.barrageMsgs != null && event.token.equals(mToken)) {
+            setDataSourceOnMainThread(event.barrageMsgs);
+            if (event.needManualMoveToLast) {
+                setOnBottom("onEventMainThread", true);
+            }
+            if (!mOnBottom) {
+                mHasMore++;
+                mMoveToLastItemIv.setVisibility(VISIBLE);
+                String s = mHasMore > 99 ? "99+" : String.valueOf(mHasMore);
+                mMoveToLastItemIv.setText(getResources().getQuantityString(R.plurals.more_comment_text, mHasMore, s));
+                if (mRoomChatMsgManager != null) {
+                    mRoomChatMsgManager.updateMaxSize(Integer.MAX_VALUE);
+                }
+            }
+        }
+    }
+
+    public void setToken(String token) {
+        this.mToken = token;
+    }
+
+    private void adjustLayoutForOrient() {
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
         if (mIsLandscape) {
-            layoutParams.width = WIDTH_LANDSCAPE;
-            layoutParams.height = HEIGHT_LANDSCAPE;
+            layoutParams.width = COMMENT_WIDTH_LANDSCAPE;
+            layoutParams.height = COMMENT_HEIGHT_LANDSCAPE;
+            layoutParams.rightMargin = 0;
+            setPadding(COMMENT_PADDING_LEFT, 0, COMMENT_PADDING_RIGHT, LANDSPACE_COMMENT_PADDING_BOTTOM);
         } else {
-            layoutParams.width = LayoutParams.MATCH_PARENT;
-            layoutParams.height = HEIGHT_PORTRAIT;
+            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+            layoutParams.height = COMMENT_HEIGHT_PORTRAIT;
+            layoutParams.rightMargin = Math.max(mExtraRightMargin, COMMENT_MARGIN_PORTRAIT);
+            setPadding(COMMENT_PADDING_LEFT, 0, COMMENT_PADDING_RIGHT, PORTRAIT_COMMENT_PADDING_BOTTOM);
         }
         setLayoutParams(layoutParams);
+    }
+
+    public void setExtraRightMargin(int extraMargin) {
+        if (mExtraRightMargin == extraMargin) {
+            return;
+        }
+        MyLog.d(TAG, "setExtraRightMargin extraMargin=" + extraMargin);
+        mExtraRightMargin = extraMargin;
+        adjustLayoutForOrient();
+        if (!mIsLandscape && mExtraRightMargin == 0 && !mCommentRv.isComputingLayout()) {
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void onOrientation(boolean isLandscape) {
+        mIsLandscape = isLandscape;
+        adjustLayoutForOrient();
     }
 
     public void reset() {
         mLastSetCommentListTs = 0;
         mOnBottom = true;
         mHasDataUpdate = false;
-        if (mMoveToLastItemIv != null && mMoveToLastItemIv.getVisibility() == View.VISIBLE) {
-            mMoveToLastItemIv.setVisibility(View.INVISIBLE);
+        if (mMoveToLastItemIv != null && mMoveToLastItemIv.getVisibility() != View.GONE) {
+            mMoveToLastItemIv.setVisibility(View.GONE);
+            mHasMore = 0;
         }
-        if (mDataList != null) {
-            mDataList.clear();
-        }
+        mDataList.clear();
+        CommentVfansLevelCache.clear();
         refreshComment();
     }
+
 
     @Override
     public IView getViewProxy() {
@@ -328,6 +519,12 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
         return new ComponentView();
     }
 
+
+    @Override
+    public void setPresenter(@Nullable IPresenter iPresenter) {
+        mPresenter = iPresenter;
+    }
+
     public interface IPresenter {
     }
 
@@ -353,13 +550,4 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
         void destroy();
     }
 
-    public static class LiveCommentStateEvent {
-        public static final int TYPE_UPDATE_TO_MAX_SIZE = 1;
-        public static final int TYPE_UPDATE_TO_DEFAULT_SIZE = 2;
-        public int type;
-
-        public LiveCommentStateEvent(int type) {
-            this.type = type;
-        }
-    }
 }
