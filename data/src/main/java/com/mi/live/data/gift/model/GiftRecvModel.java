@@ -21,14 +21,8 @@ public class GiftRecvModel<T extends Gift> {
     String senderName;
     int startNumber = 1; // 开始数量
     int endNumber = 1; // 结束数量
-
-    public int getRoomStartTicket() {
-        return roomStartTicket;
-    }
-
-    public void setRoomStartTicket(int roomStartTicket) {
-        this.roomStartTicket = roomStartTicket;
-    }
+    int batchCount ; //批量赠送数量
+    int mainOrbitId=1;  //若是组合礼物，则需要一个主要播放的轨道ID
 
     int roomStartTicket;
     private boolean isLeft = true;
@@ -41,6 +35,11 @@ public class GiftRecvModel<T extends Gift> {
 
     private long leftTime;//剩余时间
     private String orderId;
+
+    //是否为组合礼物
+    public boolean isBatchGift(){
+        return batchCount>1;
+    }
 
     public GiftRecvModel() {
     }
@@ -198,6 +197,31 @@ public class GiftRecvModel<T extends Gift> {
         return orderId;
     }
 
+
+    public int getBatchCount() {
+        return batchCount;
+    }
+
+    public void setBatchCount(int batchCount) {
+        this.batchCount = batchCount;
+    }
+
+    public int getMainOrbitId() {
+        return mainOrbitId;
+    }
+
+    public void setMainOrbitId(int mainOrbitId) {
+        this.mainOrbitId = mainOrbitId;
+    }
+
+    public int getRoomStartTicket() {
+        return roomStartTicket;
+    }
+
+    public void setRoomStartTicket(int roomStartTicket) {
+        this.roomStartTicket = roomStartTicket;
+    }
+
     @Override
     public String toString() {
         return "GiftRecvModel{" +
@@ -209,12 +233,14 @@ public class GiftRecvModel<T extends Gift> {
                 ", senderName='" + senderName + '\'' +
                 ", startNumber=" + startNumber +
                 ", endNumber=" + endNumber +
+                ", batchCount=" + batchCount +
                 ", isLeft=" + isLeft +
                 ", certificationType=" + certificationType +
                 ", level=" + level +
                 ", avatarTimestamp=" + avatarTimestamp +
                 ", fromSelf=" + fromSelf +
                 ", leftTime=" + leftTime +
+                ", ifBatchGift="+isBatchGift()+
                 ", orderId='" + orderId + '\'' +
                 '}';
     }
@@ -252,6 +278,7 @@ public class GiftRecvModel<T extends Gift> {
             model.setLevel(msg.getSenderLevel());
             model.setFromSelf(msg.getSender() == MyUserInfoManager.getInstance().getUser().getUid());
             model.setOrderId(ext.orderId);
+            model.setBatchCount(ext.batch_count);
             GiftRepository.fillGiftEntityById(model);
         }
         return model;
