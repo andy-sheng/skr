@@ -144,29 +144,16 @@
                 android:id="@+id/recharge_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/diamond_siliver_tv"
-                android:drawablePadding="5dp"
-                android:drawableRight="@drawable/live_icon_more_big_normal"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/recharge"
-                android:textColor="@color/color_fed533"
-                android:textSize="@dimen/text_size_36"/>
-
-            <TextView
-                android:id="@+id/send_gift"
-                android:layout_width="62dp"
-                android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="14dp"
-                android:background="@drawable/gift_send_btn_bg"
-                android:enabled="false"
+                android:layout_marginRight="@dimen/margin_35"
+                android:background="@drawable/live_icon_gift_recharge"
                 android:gravity="center"
-                android:text="@string/send_gift"
-                android:textColor="@color/gift_send_btn_bg_color"
-                android:textSize="@dimen/text_size_36"/>
+                android:paddingLeft="@dimen/margin_30"
+                android:paddingRight="@dimen/margin_50"
+                android:text="@string/recharge"
+                android:textColor="@color/color_ff2966"
+                android:textSize="@dimen/text_size_36" />
 
             <TextView
                 android:id="@+id/pkt_detail_tv"
@@ -178,7 +165,7 @@
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="@string/pkt_gift_detail"
-                android:textColor="@color/color_fed533"
+                android:textColor="@color/color_ff2966"
                 android:textSize="@dimen/text_size_36"
                 android:visibility="gone"/>
         </RelativeLayout>

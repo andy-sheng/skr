@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.base.log.MyLog;
 import com.wali.live.dao.ConversationDao;
 import com.wali.live.dao.DaoMaster;
+import com.wali.live.dao.GiftDao;
 import com.wali.live.dao.GroupNotifyDao;
 import com.wali.live.dao.SixinMessageDao;
 import com.wali.live.dao.UserAccountDao;
@@ -31,6 +32,16 @@ public class GreenOpenHelper extends DaoMaster.OpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         MyLog.w(TAG, "Upgrading schema from version " + oldVersion + " to " + newVersion);
+
+        try {
+            if (oldVersion < 61 && newVersion >= 61) {
+                GiftDao.dropTable(db,true);
+                GiftDao.createTable(db,false);
+            }
+        } catch (Exception e){
+
+        }
+
         try {
             if (oldVersion < 57 && newVersion >= 57) {
                 upgradeAccountFrom56To57(db);

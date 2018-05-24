@@ -94,6 +94,92 @@ public final class GiftProto {
     // @@protoc_insertion_point(enum_scope:com.wali.live.proto.Platform)
   }
 
+  /**
+   * Protobuf enum {@code com.wali.live.proto.BuyGiftSource}
+   *
+   * <pre>
+   *平台类型
+   * </pre>
+   */
+  public enum BuyGiftSource
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>COMMON_LIVE_ROOM = 0;</code>
+     */
+    COMMON_LIVE_ROOM(0, 0),
+    /**
+     * <code>RADIO_LIVE_ROOM = 1;</code>
+     */
+    RADIO_LIVE_ROOM(1, 1),
+    ;
+
+    /**
+     * <code>COMMON_LIVE_ROOM = 0;</code>
+     */
+    public static final int COMMON_LIVE_ROOM_VALUE = 0;
+    /**
+     * <code>RADIO_LIVE_ROOM = 1;</code>
+     */
+    public static final int RADIO_LIVE_ROOM_VALUE = 1;
+
+
+    public final int getNumber() { return value; }
+
+    public static BuyGiftSource valueOf(int value) {
+      switch (value) {
+        case 0: return COMMON_LIVE_ROOM;
+        case 1: return RADIO_LIVE_ROOM;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<BuyGiftSource>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static com.google.protobuf.Internal.EnumLiteMap<BuyGiftSource>
+        internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<BuyGiftSource>() {
+            public BuyGiftSource findValueByNumber(int number) {
+              return BuyGiftSource.valueOf(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(index);
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.wali.live.proto.GiftProto.getDescriptor().getEnumTypes().get(1);
+    }
+
+    private static final BuyGiftSource[] VALUES = values();
+
+    public static BuyGiftSource valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int index;
+    private final int value;
+
+    private BuyGiftSource(int index, int value) {
+      this.index = index;
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:com.wali.live.proto.BuyGiftSource)
+  }
+
   public interface GiftInfoOrBuilder extends
       // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GiftInfo)
       com.google.protobuf.MessageOrBuilder {
@@ -588,6 +674,23 @@ public final class GiftProto {
      * </pre>
      */
     boolean getDisplayInSubtitleArea();
+
+    /**
+     * <code>optional uint32 cost_type = 40 [default = 3];</code>
+     *
+     * <pre>
+     *花费类型，1=金钻，2=银钻，3=金钻+银钻 4=金币
+     * </pre>
+     */
+    boolean hasCostType();
+    /**
+     * <code>optional uint32 cost_type = 40 [default = 3];</code>
+     *
+     * <pre>
+     *花费类型，1=金钻，2=银钻，3=金钻+银钻 4=金币
+     * </pre>
+     */
+    int getCostType();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.GiftInfo}
@@ -768,6 +871,11 @@ public final class GiftProto {
             case 296: {
               bitField0_ |= 0x00100000;
               buyType_ = input.readUInt32();
+              break;
+            }
+            case 320: {
+              bitField0_ |= 0x00800000;
+              costType_ = input.readUInt32();
               break;
             }
           }
@@ -1585,6 +1693,29 @@ public final class GiftProto {
       return displayInSubtitleArea_;
     }
 
+    public static final int COST_TYPE_FIELD_NUMBER = 40;
+    private int costType_;
+    /**
+     * <code>optional uint32 cost_type = 40 [default = 3];</code>
+     *
+     * <pre>
+     *花费类型，1=金钻，2=银钻，3=金钻+银钻 4=金币
+     * </pre>
+     */
+    public boolean hasCostType() {
+      return ((bitField0_ & 0x00800000) == 0x00800000);
+    }
+    /**
+     * <code>optional uint32 cost_type = 40 [default = 3];</code>
+     *
+     * <pre>
+     *花费类型，1=金钻，2=银钻，3=金钻+银钻 4=金币
+     * </pre>
+     */
+    public int getCostType() {
+      return costType_;
+    }
+
     private void initFields() {
       giftId_ = 0;
       sortId_ = 0;
@@ -1610,6 +1741,7 @@ public final class GiftProto {
       buyType_ = 0;
       displayInGiftArea_ = true;
       displayInSubtitleArea_ = true;
+      costType_ = 3;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1699,6 +1831,9 @@ public final class GiftProto {
       }
       if (((bitField0_ & 0x00100000) == 0x00100000)) {
         output.writeUInt32(37, buyType_);
+      }
+      if (((bitField0_ & 0x00800000) == 0x00800000)) {
+        output.writeUInt32(40, costType_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -1804,6 +1939,10 @@ public final class GiftProto {
       if (((bitField0_ & 0x00100000) == 0x00100000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(37, buyType_);
+      }
+      if (((bitField0_ & 0x00800000) == 0x00800000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(40, costType_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1975,6 +2114,8 @@ public final class GiftProto {
         bitField0_ = (bitField0_ & ~0x00400000);
         displayInSubtitleArea_ = true;
         bitField0_ = (bitField0_ & ~0x00800000);
+        costType_ = 3;
+        bitField0_ = (bitField0_ & ~0x01000000);
         return this;
       }
 
@@ -2104,6 +2245,10 @@ public final class GiftProto {
           to_bitField0_ |= 0x00400000;
         }
         result.displayInSubtitleArea_ = displayInSubtitleArea_;
+        if (((from_bitField0_ & 0x01000000) == 0x01000000)) {
+          to_bitField0_ |= 0x00800000;
+        }
+        result.costType_ = costType_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2226,6 +2371,9 @@ public final class GiftProto {
         }
         if (other.hasDisplayInSubtitleArea()) {
           setDisplayInSubtitleArea(other.getDisplayInSubtitleArea());
+        }
+        if (other.hasCostType()) {
+          setCostType(other.getCostType());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -3986,6 +4134,54 @@ public final class GiftProto {
       public Builder clearDisplayInSubtitleArea() {
         bitField0_ = (bitField0_ & ~0x00800000);
         displayInSubtitleArea_ = true;
+        onChanged();
+        return this;
+      }
+
+      private int costType_ = 3;
+      /**
+       * <code>optional uint32 cost_type = 40 [default = 3];</code>
+       *
+       * <pre>
+       *花费类型，1=金钻，2=银钻，3=金钻+银钻 4=金币
+       * </pre>
+       */
+      public boolean hasCostType() {
+        return ((bitField0_ & 0x01000000) == 0x01000000);
+      }
+      /**
+       * <code>optional uint32 cost_type = 40 [default = 3];</code>
+       *
+       * <pre>
+       *花费类型，1=金钻，2=银钻，3=金钻+银钻 4=金币
+       * </pre>
+       */
+      public int getCostType() {
+        return costType_;
+      }
+      /**
+       * <code>optional uint32 cost_type = 40 [default = 3];</code>
+       *
+       * <pre>
+       *花费类型，1=金钻，2=银钻，3=金钻+银钻 4=金币
+       * </pre>
+       */
+      public Builder setCostType(int value) {
+        bitField0_ |= 0x01000000;
+        costType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 cost_type = 40 [default = 3];</code>
+       *
+       * <pre>
+       *花费类型，1=金钻，2=银钻，3=金钻+银钻 4=金币
+       * </pre>
+       */
+      public Builder clearCostType() {
+        bitField0_ = (bitField0_ & ~0x01000000);
+        costType_ = 3;
         onChanged();
         return this;
       }
@@ -8414,6 +8610,23 @@ public final class GiftProto {
      */
     com.google.protobuf.ByteString
         getAccessTokenBytes();
+
+    /**
+     * <code>optional uint32 source = 17 [default = 0];</code>
+     *
+     * <pre>
+     * 对应BuyGiftSource
+     * </pre>
+     */
+    boolean hasSource();
+    /**
+     * <code>optional uint32 source = 17 [default = 0];</code>
+     *
+     * <pre>
+     * 对应BuyGiftSource
+     * </pre>
+     */
+    int getSource();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.BuyGiftReq}
@@ -8543,6 +8756,11 @@ public final class GiftProto {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00001000;
               accessToken_ = bs;
+              break;
+            }
+            case 136: {
+              bitField0_ |= 0x00002000;
+              source_ = input.readUInt32();
               break;
             }
           }
@@ -8977,6 +9195,29 @@ public final class GiftProto {
       }
     }
 
+    public static final int SOURCE_FIELD_NUMBER = 17;
+    private int source_;
+    /**
+     * <code>optional uint32 source = 17 [default = 0];</code>
+     *
+     * <pre>
+     * 对应BuyGiftSource
+     * </pre>
+     */
+    public boolean hasSource() {
+      return ((bitField0_ & 0x00002000) == 0x00002000);
+    }
+    /**
+     * <code>optional uint32 source = 17 [default = 0];</code>
+     *
+     * <pre>
+     * 对应BuyGiftSource
+     * </pre>
+     */
+    public int getSource() {
+      return source_;
+    }
+
     private void initFields() {
       userId_ = 0L;
       receiverId_ = 0L;
@@ -8991,6 +9232,7 @@ public final class GiftProto {
       useGiftCard_ = false;
       platform_ = com.wali.live.proto.GiftProto.Platform.IOS;
       accessToken_ = "";
+      source_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -9064,6 +9306,9 @@ public final class GiftProto {
       if (((bitField0_ & 0x00001000) == 0x00001000)) {
         output.writeBytes(15, getAccessTokenBytes());
       }
+      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+        output.writeUInt32(17, source_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -9124,6 +9369,10 @@ public final class GiftProto {
       if (((bitField0_ & 0x00001000) == 0x00001000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(15, getAccessTokenBytes());
+      }
+      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(17, source_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -9272,6 +9521,8 @@ public final class GiftProto {
         bitField0_ = (bitField0_ & ~0x00000800);
         accessToken_ = "";
         bitField0_ = (bitField0_ & ~0x00001000);
+        source_ = 0;
+        bitField0_ = (bitField0_ & ~0x00002000);
         return this;
       }
 
@@ -9352,6 +9603,10 @@ public final class GiftProto {
           to_bitField0_ |= 0x00001000;
         }
         result.accessToken_ = accessToken_;
+        if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
+          to_bitField0_ |= 0x00002000;
+        }
+        result.source_ = source_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -9412,6 +9667,9 @@ public final class GiftProto {
           bitField0_ |= 0x00001000;
           accessToken_ = other.accessToken_;
           onChanged();
+        }
+        if (other.hasSource()) {
+          setSource(other.getSource());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -10239,6 +10497,54 @@ public final class GiftProto {
   }
   bitField0_ |= 0x00001000;
         accessToken_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int source_ ;
+      /**
+       * <code>optional uint32 source = 17 [default = 0];</code>
+       *
+       * <pre>
+       * 对应BuyGiftSource
+       * </pre>
+       */
+      public boolean hasSource() {
+        return ((bitField0_ & 0x00002000) == 0x00002000);
+      }
+      /**
+       * <code>optional uint32 source = 17 [default = 0];</code>
+       *
+       * <pre>
+       * 对应BuyGiftSource
+       * </pre>
+       */
+      public int getSource() {
+        return source_;
+      }
+      /**
+       * <code>optional uint32 source = 17 [default = 0];</code>
+       *
+       * <pre>
+       * 对应BuyGiftSource
+       * </pre>
+       */
+      public Builder setSource(int value) {
+        bitField0_ |= 0x00002000;
+        source_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 source = 17 [default = 0];</code>
+       *
+       * <pre>
+       * 对应BuyGiftSource
+       * </pre>
+       */
+      public Builder clearSource() {
+        bitField0_ = (bitField0_ & ~0x00002000);
+        source_ = 0;
         onChanged();
         return this;
       }
@@ -18354,7 +18660,7 @@ public final class GiftProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\nGift.proto\022\023com.wali.live.proto\"\224\004\n\010Gi" +
+      "\n\nGift.proto\022\023com.wali.live.proto\"\252\004\n\010Gi" +
       "ftInfo\022\016\n\006giftId\030\001 \002(\r\022\016\n\006sortId\030\002 \001(\r\022\014" +
       "\n\004name\030\003 \001(\t\022\r\n\005price\030\004 \001(\r\022\025\n\rempiric_v" +
       "alue\030\006 \001(\r\022\017\n\007picture\030\007 \001(\t\022\025\n\rcanContin" +
@@ -18368,52 +18674,55 @@ public final class GiftProto {
       "! \001(\r\022\030\n\020origin_gift_type\030\" \001(\r\022\023\n\010buy_t" +
       "ype\030% \001(\r:\0010\022\"\n\024display_in_gift_area\030# \001" +
       "(\010:\004true\022&\n\030display_in_subtitle_area\030$ \001" +
-      "(\010:\004true\"_\n\010Language\022\016\n\006region\030\001 \001(\t\022\014\n\004" +
-      "name\030\002 \001(\t\022\014\n\004text\030\003 \001(\t\022\021\n\ticon_text\030\004 " +
-      "\001(\t\022\024\n\014comment_text\030\005 \001(\t\"<\n\010GiftList\0220\n" +
-      "\tgiftInfos\030\001 \003(\0132\035.com.wali.live.proto.G" +
-      "iftInfo\"4\n\016GetGiftListReq\022\021\n\ttimestamp\030\001" +
-      " \001(\004\022\017\n\007version\030\002 \001(\r\"e\n\016GetGiftListRsp\022",
-      "\017\n\007retCode\030\001 \001(\r\022/\n\010giftList\030\002 \001(\0132\035.com" +
-      ".wali.live.proto.GiftList\022\021\n\ttimestamp\030\003" +
-      " \001(\004\"E\n\tVGiftCard\022\017\n\007gift_id\030\001 \001(\r\022\025\n\rgi" +
-      "ft_card_cnt\030\002 \001(\r\022\020\n\010end_time\030\003 \001(\004\"\242\002\n\n" +
-      "BuyGiftReq\022\016\n\006userId\030\001 \002(\004\022\022\n\nreceiverId" +
-      "\030\002 \002(\004\022\016\n\006roomId\030\003 \002(\t\022\016\n\006giftId\030\004 \002(\r\022\021" +
-      "\n\ttimestamp\030\005 \002(\004\022\020\n\005count\030\010 \001(\r:\0011\022\024\n\tg" +
-      "iftCount\030\t \001(\r:\0011\022\022\n\ncontinueId\030\n \001(\004\022\020\n" +
-      "\010msg_body\030\013 \001(\t\022\021\n\troom_type\030\014 \001(\r\022\025\n\rus" +
-      "e_gift_card\030\r \001(\010\022/\n\010platform\030\016 \001(\0162\035.co",
-      "m.wali.live.proto.Platform\022\024\n\014access_tok" +
-      "en\030\017 \001(\t\"\342\002\n\nBuyGiftRsp\022\017\n\007retCode\030\001 \002(\r" +
-      "\022\016\n\006retMsg\030\002 \001(\t\022\026\n\016usable_gem_cnt\030\003 \001(\r" +
-      "\022\034\n\024user_asset_timestamp\030\004 \001(\004\022\020\n\010sequen" +
-      "ce\030\005 \001(\004\022\036\n\026receiver_total_tickets\030\006 \001(\r" +
-      "\022\032\n\022ticket_update_time\030\007 \001(\004\022\025\n\rred_pack" +
-      "et_id\030\010 \001(\t\022\020\n\010order_id\030\t \001(\t\0226\n\016gift_ca" +
-      "rd_list\030\n \003(\0132\036.com.wali.live.proto.VGif" +
-      "tCard\022\036\n\026usable_virtual_gem_cnt\030\013 \001(\r\022\024\n" +
-      "\014mibi_balance\030\014 \001(\r\022\030\n\020mibi_update_time\030",
-      "\r \001(\004\"%\n\025GetMibiBalanceRequest\022\014\n\004uuid\030\001" +
-      " \002(\004\"o\n\026GetMibiBalanceResponse\022\020\n\010ret_co" +
-      "de\030\001 \002(\r\022\017\n\007balance\030\002 \001(\r\022\023\n\013balanceTime" +
-      "\030\003 \001(\r\022\035\n\025exchangeable_mibi_cnt\030\004 \001(\r\"%\n" +
-      "\025GetConsumeTaskListReq\022\014\n\004uuid\030\001 \001(\004\"y\n\025" +
-      "GetConsumeTaskListRsp\022\017\n\007retCode\030\001 \002(\r\022\024" +
-      "\n\014bannerImgUrl\030\002 \001(\t\0229\n\013consumeTask\030\003 \003(" +
-      "\0132$.com.wali.live.proto.ConsumeTaskItem\"" +
-      "\346\001\n\017ConsumeTaskItem\022\016\n\006taskId\030\001 \001(\r\022\014\n\004u" +
-      "uid\030\002 \001(\004\022\020\n\010taskType\030\003 \001(\t\022\020\n\010taskDesc\030",
-      "\004 \001(\t\022\020\n\010progress\030\005 \001(\r\022\023\n\013taskNeedNum\030\006" +
-      " \001(\r\022\022\n\nrewardDesc\030\007 \001(\t\022\030\n\020rewardAvailT" +
-      "imes\030\010 \001(\t\022\022\n\nrewardType\030\t \001(\r\022\024\n\014reward" +
-      "GiftId\030\n \001(\r\022\022\n\ntaskStatus\030\013 \001(\r\"7\n\027GetC" +
-      "onsumeTaskRewardReq\022\014\n\004uuid\030\001 \001(\004\022\016\n\006tas" +
-      "kId\030\002 \001(\r\"g\n\027GetConsumeTaskRewardRsp\022\017\n\007" +
-      "retCode\030\001 \002(\r\022\022\n\nrewardType\030\002 \001(\r\022\021\n\trew" +
-      "ardCnt\030\003 \001(\r\022\024\n\014rewardGiftId\030\004 \001(\r* \n\010Pl" +
-      "atform\022\007\n\003IOS\020\001\022\013\n\007ANDROID\020\002B \n\023com.wali" +
-      ".live.protoB\tGiftProto"
+      "(\010:\004true\022\024\n\tcost_type\030( \001(\r:\0013\"_\n\010Langua" +
+      "ge\022\016\n\006region\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\014\n\004text" +
+      "\030\003 \001(\t\022\021\n\ticon_text\030\004 \001(\t\022\024\n\014comment_tex" +
+      "t\030\005 \001(\t\"<\n\010GiftList\0220\n\tgiftInfos\030\001 \003(\0132\035" +
+      ".com.wali.live.proto.GiftInfo\"4\n\016GetGift" +
+      "ListReq\022\021\n\ttimestamp\030\001 \001(\004\022\017\n\007version\030\002 ",
+      "\001(\r\"e\n\016GetGiftListRsp\022\017\n\007retCode\030\001 \001(\r\022/" +
+      "\n\010giftList\030\002 \001(\0132\035.com.wali.live.proto.G" +
+      "iftList\022\021\n\ttimestamp\030\003 \001(\004\"E\n\tVGiftCard\022" +
+      "\017\n\007gift_id\030\001 \001(\r\022\025\n\rgift_card_cnt\030\002 \001(\r\022" +
+      "\020\n\010end_time\030\003 \001(\004\"\265\002\n\nBuyGiftReq\022\016\n\006user" +
+      "Id\030\001 \002(\004\022\022\n\nreceiverId\030\002 \002(\004\022\016\n\006roomId\030\003" +
+      " \002(\t\022\016\n\006giftId\030\004 \002(\r\022\021\n\ttimestamp\030\005 \002(\004\022" +
+      "\020\n\005count\030\010 \001(\r:\0011\022\024\n\tgiftCount\030\t \001(\r:\0011\022" +
+      "\022\n\ncontinueId\030\n \001(\004\022\020\n\010msg_body\030\013 \001(\t\022\021\n" +
+      "\troom_type\030\014 \001(\r\022\025\n\ruse_gift_card\030\r \001(\010\022",
+      "/\n\010platform\030\016 \001(\0162\035.com.wali.live.proto." +
+      "Platform\022\024\n\014access_token\030\017 \001(\t\022\021\n\006source" +
+      "\030\021 \001(\r:\0010\"\342\002\n\nBuyGiftRsp\022\017\n\007retCode\030\001 \002(" +
+      "\r\022\016\n\006retMsg\030\002 \001(\t\022\026\n\016usable_gem_cnt\030\003 \001(" +
+      "\r\022\034\n\024user_asset_timestamp\030\004 \001(\004\022\020\n\010seque" +
+      "nce\030\005 \001(\004\022\036\n\026receiver_total_tickets\030\006 \001(" +
+      "\r\022\032\n\022ticket_update_time\030\007 \001(\004\022\025\n\rred_pac" +
+      "ket_id\030\010 \001(\t\022\020\n\010order_id\030\t \001(\t\0226\n\016gift_c" +
+      "ard_list\030\n \003(\0132\036.com.wali.live.proto.VGi" +
+      "ftCard\022\036\n\026usable_virtual_gem_cnt\030\013 \001(\r\022\024",
+      "\n\014mibi_balance\030\014 \001(\r\022\030\n\020mibi_update_time" +
+      "\030\r \001(\004\"%\n\025GetMibiBalanceRequest\022\014\n\004uuid\030" +
+      "\001 \002(\004\"o\n\026GetMibiBalanceResponse\022\020\n\010ret_c" +
+      "ode\030\001 \002(\r\022\017\n\007balance\030\002 \001(\r\022\023\n\013balanceTim" +
+      "e\030\003 \001(\r\022\035\n\025exchangeable_mibi_cnt\030\004 \001(\r\"%" +
+      "\n\025GetConsumeTaskListReq\022\014\n\004uuid\030\001 \001(\004\"y\n" +
+      "\025GetConsumeTaskListRsp\022\017\n\007retCode\030\001 \002(\r\022" +
+      "\024\n\014bannerImgUrl\030\002 \001(\t\0229\n\013consumeTask\030\003 \003" +
+      "(\0132$.com.wali.live.proto.ConsumeTaskItem" +
+      "\"\346\001\n\017ConsumeTaskItem\022\016\n\006taskId\030\001 \001(\r\022\014\n\004",
+      "uuid\030\002 \001(\004\022\020\n\010taskType\030\003 \001(\t\022\020\n\010taskDesc" +
+      "\030\004 \001(\t\022\020\n\010progress\030\005 \001(\r\022\023\n\013taskNeedNum\030" +
+      "\006 \001(\r\022\022\n\nrewardDesc\030\007 \001(\t\022\030\n\020rewardAvail" +
+      "Times\030\010 \001(\t\022\022\n\nrewardType\030\t \001(\r\022\024\n\014rewar" +
+      "dGiftId\030\n \001(\r\022\022\n\ntaskStatus\030\013 \001(\r\"7\n\027Get" +
+      "ConsumeTaskRewardReq\022\014\n\004uuid\030\001 \001(\004\022\016\n\006ta" +
+      "skId\030\002 \001(\r\"g\n\027GetConsumeTaskRewardRsp\022\017\n" +
+      "\007retCode\030\001 \002(\r\022\022\n\nrewardType\030\002 \001(\r\022\021\n\tre" +
+      "wardCnt\030\003 \001(\r\022\024\n\014rewardGiftId\030\004 \001(\r* \n\010P" +
+      "latform\022\007\n\003IOS\020\001\022\013\n\007ANDROID\020\002*:\n\rBuyGift",
+      "Source\022\024\n\020COMMON_LIVE_ROOM\020\000\022\023\n\017RADIO_LI" +
+      "VE_ROOM\020\001B \n\023com.wali.live.protoB\tGiftPr" +
+      "oto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -18432,7 +18741,7 @@ public final class GiftProto {
     internal_static_com_wali_live_proto_GiftInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GiftInfo_descriptor,
-        new java.lang.String[] { "GiftId", "SortId", "Name", "Price", "EmpiricValue", "Picture", "CanContinuous", "MultiLanguage", "Detail", "IphSale", "AndSale", "Catagory", "OriginalPrice", "Icon", "Comment", "Ticket", "Status", "PlayTime", "GifUrl", "LowerLimitLevel", "OriginGiftType", "BuyType", "DisplayInGiftArea", "DisplayInSubtitleArea", });
+        new java.lang.String[] { "GiftId", "SortId", "Name", "Price", "EmpiricValue", "Picture", "CanContinuous", "MultiLanguage", "Detail", "IphSale", "AndSale", "Catagory", "OriginalPrice", "Icon", "Comment", "Ticket", "Status", "PlayTime", "GifUrl", "LowerLimitLevel", "OriginGiftType", "BuyType", "DisplayInGiftArea", "DisplayInSubtitleArea", "CostType", });
     internal_static_com_wali_live_proto_Language_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_com_wali_live_proto_Language_fieldAccessorTable = new
@@ -18468,7 +18777,7 @@ public final class GiftProto {
     internal_static_com_wali_live_proto_BuyGiftReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_BuyGiftReq_descriptor,
-        new java.lang.String[] { "UserId", "ReceiverId", "RoomId", "GiftId", "Timestamp", "Count", "GiftCount", "ContinueId", "MsgBody", "RoomType", "UseGiftCard", "Platform", "AccessToken", });
+        new java.lang.String[] { "UserId", "ReceiverId", "RoomId", "GiftId", "Timestamp", "Count", "GiftCount", "ContinueId", "MsgBody", "RoomType", "UseGiftCard", "Platform", "AccessToken", "Source", });
     internal_static_com_wali_live_proto_BuyGiftRsp_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_com_wali_live_proto_BuyGiftRsp_fieldAccessorTable = new
