@@ -1,6 +1,8 @@
 package com.wali.live.common.flybarrage.manager;
 
+import com.base.utils.StringUtils;
 import com.mi.live.data.account.MyUserInfoManager;
+import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
@@ -53,6 +55,12 @@ public class FlyBarrageManager {
                 FlyBarrageInfo model = new FlyBarrageInfo();
                 model.setName(msg.getSenderName());
                 model.setSenderId(msg.getSender());
+                long atTargetUserId = StringUtils.getAtTargetUserId(ext.msgBody);
+                if (atTargetUserId != 0) {
+                    if (atTargetUserId == UserAccountManager.getInstance().getUuidAsLong()) {
+                    }
+                    ext.msgBody = msg.getBody().replace("<" + atTargetUserId + ">", "");
+                }
                 model.setContent(ext.msgBody);
                 model.setAvatarTimestamp(ext.avatarTimestamp);
                 model.setCertificationType(msg.getCertificationType());
