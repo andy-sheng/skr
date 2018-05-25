@@ -363,7 +363,7 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
     public void onActivityDestroy() {
         this.mToken = "";
         mHandler.removeCallbacksAndMessages(null);
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
         mCommentRv.removeOnScrollListener(mOnScrollListener);
         GetConfigManager.getInstance().clearMedalMap();
         CommentLevelOrLikeCache.clear();
@@ -373,9 +373,9 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
 
     @Override
     public void onActivityCreate() {
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
+//        if (!EventBus.getDefault().isRegistered(this)) {
+//            EventBus.getDefault().register(this);
+//        }
     }
 
     public LiveRoomChatMsgManager getmRoomChatMsgManager() {
@@ -393,25 +393,6 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
 
     public void setNameViewClickListener(LiveCommentRecyclerAdapter.LiveCommentNameClickListener nameViewClickListener) {
         mNameViewClickListener = nameViewClickListener;
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(CommentRefreshEvent event) {
-        if (event != null && event.barrageMsgs != null && event.token.equals(mToken)) {
-            setDataSourceOnMainThread(event.barrageMsgs);
-            if (event.needManualMoveToLast) {
-                setOnBottom("onEventMainThread", true);
-            }
-            if (!mOnBottom) {
-                mHasMore++;
-                mMoveToLastItemIv.setVisibility(VISIBLE);
-                String s = mHasMore > 99 ? "99+" : String.valueOf(mHasMore);
-                mMoveToLastItemIv.setText(getResources().getQuantityString(R.plurals.more_comment_text, mHasMore, s));
-                if (mRoomChatMsgManager != null) {
-                    mRoomChatMsgManager.updateMaxSize(Integer.MAX_VALUE);
-                }
-            }
-        }
     }
 
     public void setToken(String token) {
@@ -488,6 +469,15 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
                     setDataSourceOnMainThread(event.barrageMsgs);
                     if (event.needManualMoveToLast) {
                         setOnBottom("onEventMainThread", true);
+                    }
+                    if (!mOnBottom) {
+                        mHasMore++;
+                        mMoveToLastItemIv.setVisibility(VISIBLE);
+                        String s = mHasMore > 99 ? "99+" : String.valueOf(mHasMore);
+                        mMoveToLastItemIv.setText(getResources().getQuantityString(R.plurals.more_comment_text, mHasMore, s));
+                        if (mRoomChatMsgManager != null) {
+                            mRoomChatMsgManager.updateMaxSize(Integer.MAX_VALUE);
+                        }
                     }
                 }
             }
