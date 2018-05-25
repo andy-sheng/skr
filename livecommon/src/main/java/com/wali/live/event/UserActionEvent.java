@@ -40,14 +40,14 @@ public class UserActionEvent {
         this.obj2 = obj2;
     }
 
-    private UserActionEvent(int type, Object obj1, Object obj2, Object obj3) {
+    public UserActionEvent(int type, Object obj1, Object obj2, Object obj3) {
         this.type = type;
         this.obj1 = obj1;
         this.obj2 = obj2;
         this.obj3 = obj3;
     }
 
-    private UserActionEvent(int type, Object obj1, Object obj2, Object obj3, Object obj4) {
+    public UserActionEvent(int type, Object obj1, Object obj2, Object obj3, Object obj4) {
         this.type = type;
         this.obj1 = obj1;
         this.obj2 = obj2;
@@ -65,6 +65,15 @@ public class UserActionEvent {
 
     public static void post(int type, Object obj1, Object obj2, Object obj3, Object obj4) {
         EventBus.getDefault().post(new UserActionEvent(type, obj1, obj2, obj3, obj4));
+    }
+
+    public static class SwitchAnchor {
+        public long anchorId;
+
+        public SwitchAnchor(long anchorId) {
+            this.anchorId = anchorId;
+        }
+
     }
 }
 

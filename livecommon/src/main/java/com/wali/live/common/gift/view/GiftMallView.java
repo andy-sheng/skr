@@ -210,7 +210,6 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
                 if (v != mSelectedView) {
                     if (mSelectedView != null) {
                         clearAllGiftItemStatus();
-                        mSelectedView.changeCornerStatus(mSelectedGift.gift.getIcon(), false);
                         mContinueSendBtn.setVisibility(View.GONE);
                     }
 
@@ -712,13 +711,8 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
                     public void call() {
                         if (mIsBuyGiftBySendBtn) {
                             mContinueSendBtn.setVisibility(View.VISIBLE);
-
-                            mSelectedView.changeCornerStatus(mSelectedGift.gift.getIcon(), false);
                             mIsBigGiftBtnShowFlag = false;
                         } else {
-
-                            mSelectedView.changeCornerStatus(mSelectedGift.gift.getIcon(), true);
-
                             mContinueSendBtn.setVisibility(View.GONE);
                         }
                     }
@@ -737,7 +731,6 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
                         if (mIsBuyGiftBySendBtn) {
                             mContinueSendBtn.setVisibility(View.GONE);
                         } else {
-                            mSelectedView.changeCornerStatus(mSelectedGift.gift.getIcon(), false);
                             mIsBigGiftBtnShowFlag = false;
                         }
 
@@ -1194,7 +1187,6 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
 
     public void resetGiftItemBtnInfo() {
         if (mSelectedView != null) {
-            mSelectedView.changeCornerStatus(mSelectedGift.gift.getInternationalIcon(), false);
             mGiftMallPresenter.resetContinueSend();
 //            mContinueSend.reset();
             mIsBigGiftBtnShowFlag = false;

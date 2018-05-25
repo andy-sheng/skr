@@ -94,6 +94,7 @@ public class GiftNumberAnimationView extends RelativeLayout {
         inflate(context, R.layout.gift_number_animation_layout, this);
         bindView();
         mNumberBgIv.setImageResource(mResourceId[mIndex]);
+        mNumberBgIv.setVisibility(INVISIBLE);
         mNumberTv.setTextColor(GlobalData.app().getResources().getColorStateList(mNumberColors[0]));
         mNumberTv.setOutTextColor(R.color.color_white);
     }
@@ -126,6 +127,13 @@ public class GiftNumberAnimationView extends RelativeLayout {
             selectPic(num);
         }
     }
+
+    public void hideNumberBgIcon() {
+        if (mNumberBgIv != null) {
+            mNumberBgIv.setVisibility(GONE);
+        }
+    }
+
 
     public void setSpeedMode(int speedMode) {
 
@@ -245,6 +253,7 @@ public class GiftNumberAnimationView extends RelativeLayout {
             mPlayTextScaleOnlyNumAnimSet = null;
             mCurrentNumFlag = mIsSpecialNumFlag;
         }
+        mPlayTextScaleOnlyNumAnimSet = null;
         if (mPlayTextScaleWithBackGroupAnimSet == null) {
             ObjectAnimator scaleX;
             ObjectAnimator scaleY;
@@ -297,6 +306,7 @@ public class GiftNumberAnimationView extends RelativeLayout {
                 @Override
                 public void onAnimationCancel(Animator animation) {
                     mNumberTv.setLayerType(View.LAYER_TYPE_NONE, null);
+                    l.onAnimationCancel(animation);
                 }
 
                 @Override
@@ -309,6 +319,8 @@ public class GiftNumberAnimationView extends RelativeLayout {
 
         if (!mPlayTextScaleWithBackGroupAnimSet.isRunning()) {
             mPlayTextScaleWithBackGroupAnimSet.start();
+        }else{
+            l.onAnimationCancel(null);
         }
     }
 
@@ -318,6 +330,7 @@ public class GiftNumberAnimationView extends RelativeLayout {
             mPlayTextScaleWithBackGroupAnimSet = null;
             mCurrentNumFlag = mIsSpecialNumFlag;
         }
+        mPlayTextScaleOnlyNumAnimSet = null;
         if (mPlayTextScaleOnlyNumAnimSet == null) {
             ObjectAnimator scaleX;
             ObjectAnimator scaleY;
@@ -356,6 +369,7 @@ public class GiftNumberAnimationView extends RelativeLayout {
 
                 @Override
                 public void onAnimationCancel(Animator animation) {
+                    l.onAnimationCancel(animation);
                     mNumberTv.setLayerType(View.LAYER_TYPE_NONE, null);
                 }
 
@@ -369,6 +383,8 @@ public class GiftNumberAnimationView extends RelativeLayout {
 
         if (!mPlayTextScaleOnlyNumAnimSet.isRunning()) {
             mPlayTextScaleOnlyNumAnimSet.start();
+        }else{
+            l.onAnimationCancel(null);
         }
     }
 
@@ -417,6 +433,33 @@ public class GiftNumberAnimationView extends RelativeLayout {
                 }
             }
             break;
+        }
+    }
+
+
+    public void destroy() {
+        if (mPlayTextScaleOnlyNumAnimSet != null) {
+            mPlayTextScaleOnlyNumAnimSet.removeAllListeners();
+            if (mPlayTextScaleOnlyNumAnimSet.isRunning()) {
+                mPlayTextScaleOnlyNumAnimSet.cancel();
+                mPlayTextScaleOnlyNumAnimSet = null;
+            }
+        }
+
+        if (mStartBackGroupAnimatorSet != null) {
+            mStartBackGroupAnimatorSet.removeAllListeners();
+            if (mStartBackGroupAnimatorSet.isRunning()) {
+                mStartBackGroupAnimatorSet.cancel();
+                mStartBackGroupAnimatorSet = null;
+            }
+        }
+
+        if (mPlayTextScaleWithBackGroupAnimSet != null) {
+            mPlayTextScaleWithBackGroupAnimSet.removeAllListeners();
+            if (mPlayTextScaleWithBackGroupAnimSet.isRunning()) {
+                mPlayTextScaleWithBackGroupAnimSet.cancel();
+                mPlayTextScaleWithBackGroupAnimSet = null;
+            }
         }
     }
 }

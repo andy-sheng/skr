@@ -13,19 +13,20 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.base.image.fresco.BaseImageView;
+import com.base.image.fresco.FrescoWorker;
+import com.base.image.fresco.image.BaseImage;
+import com.base.image.fresco.image.ImageFactory;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.live.module.common.R;
 import com.mi.live.data.gift.model.giftEntity.NormalEffectGift;
-import com.base.image.fresco.BaseImageView;
-import com.base.image.fresco.FrescoWorker;
-import com.base.image.fresco.image.BaseImage;
-import com.base.image.fresco.image.ImageFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * @Module 连送的图片区域动画
@@ -34,9 +35,10 @@ import java.util.List;
 public class GiftPictureAnimationView extends RelativeLayout {
     private static final java.lang.String TAG = "GiftPictureAnimationView";
 
-    private ImageView mSwitchAnimationIv;
+    ImageView mSwitchAnimationIv;
 
-    private BaseImageView mGiftPictureIv;
+
+    BaseImageView mGiftPictureIv;
 
     private AnimationDrawable resources;
     private String mImagePath; //当前的图片路径
@@ -59,13 +61,9 @@ public class GiftPictureAnimationView extends RelativeLayout {
 
     private void init(Context context) {
         inflate(context, R.layout.gift_picture_animation_layout, this);
-        initView();
+        mSwitchAnimationIv = (ImageView) this.findViewById(R.id.switch_animation_iv);
+        mGiftPictureIv = (BaseImageView) this.findViewById(R.id.gift_picture_iv);
 
-    }
-
-    private void initView() {
-        mSwitchAnimationIv = (ImageView) findViewById(R.id.switch_animation_iv);
-        mGiftPictureIv = (BaseImageView) findViewById(R.id.gift_picture_iv);
     }
 
     public void fillPictureByNumber(String picturePath, int number) {
@@ -190,15 +188,23 @@ public class GiftPictureAnimationView extends RelativeLayout {
         mStartBgAnimatorSet.start();
     }
 
-    public void tryPlayIfNeed(int mCurNumber) {
+    public void tryPlayIfNeed(int mCurNumber,boolean isBatchGift) {
         for (NormalEffectGift.Flag f : mFlags) {
             if (mCurNumber < f.startCount) {
                 break;
             }
-            if (mCurNumber == f.startCount && f.startCount != 1) {
-                tryPlay(f.giftImage);
-                break;
+            if(!isBatchGift){
+                if (mCurNumber == f.startCount && f.startCount != 1) {
+                    tryPlay(f.giftImage);
+                    break;
+                }
+            }else{
+                if ((mCurNumber == f.startCount||mCurNumber == f.startCount+1) && f.startCount != 1) {
+                    tryPlay(f.giftImage);
+                    break;
+                }
             }
+
         }
     }
 
@@ -217,6 +223,24 @@ public class GiftPictureAnimationView extends RelativeLayout {
         if (l != null) {
             bigCons.clear();
             bigCons.addAll(l);
+        }
+    }
+
+    public void destroy() {
+        if (mZoomOutAnimatorSet != null) {
+            mZoomOutAnimatorSet.removeAllListeners();
+            if (mZoomOutAnimatorSet.isRunning()) {
+                mZoomOutAnimatorSet.cancel();
+                mZoomOutAnimatorSet = null;
+            }
+        }
+
+        if (mStartBgAnimatorSet != null) {
+            mStartBgAnimatorSet.removeAllListeners();
+            if (mStartBgAnimatorSet.isRunning()) {
+                mStartBgAnimatorSet.cancel();
+                mStartBgAnimatorSet = null;
+            }
         }
     }
 }

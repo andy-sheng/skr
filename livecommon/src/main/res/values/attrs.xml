@@ -8,7 +8,7 @@
         <attr name="cpb_background_progressbar_width" format="dimension" />
     </declare-styleable>
 
-    <declare-styleable name="GiftContinueView">
+    <declare-styleable name="GiftContinuousView">
         <attr name="left" format="boolean" />
     </declare-styleable>
 </resources>

@@ -44,6 +44,30 @@ public class GiftRecvModel<T extends Gift> {
     public GiftRecvModel() {
     }
 
+    public GiftRecvModel copy(){
+        GiftRecvModel model=new GiftRecvModel();
+        model.setGift(gift);
+        model.setGiftId(giftId);
+        model.setContinueId(continueId);
+        model.setUserId(userId);
+        model.setTime(time);
+        model.setSenderName(senderName);
+        model.setStartNumber(startNumber);
+        model.setEndNumber(endNumber);
+        model.setBatchCount(batchCount);
+        model.setRoomStartTicket(roomStartTicket);
+        model.setIsLeft(isLeft);
+        model.setCertificationType(certificationType);
+        model.setLevel(level);
+        model.setAvatarTimestamp(avatarTimestamp);
+        model.setFromSelf(fromSelf);
+        model.setLeftTime(leftTime);
+        model.setOrderId(orderId);
+        model.setMainOrbitId(mainOrbitId);
+        return model;
+    }
+
+
     public long getLeftTime() {
         return leftTime;
     }

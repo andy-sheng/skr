@@ -1,21 +1,18 @@
 package com.wali.live.common.gift.view;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.base.activity.BaseRotateSdkActivity;
 import com.base.activity.assist.IBindActivityLIfeCycle;
 import com.base.event.SdkEventClass;
 import com.base.log.MyLog;
-import com.base.thread.ThreadPool;
 import com.base.utils.display.DisplayUtils;
 import com.live.module.common.R;
-import com.mi.live.data.event.GiftEventClass;
-import com.mi.live.data.gift.model.GiftContinueStrategyQueue;
-import com.mi.live.data.gift.model.GiftRecvModel;
+import com.wali.live.event.UserActionEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -23,14 +20,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import rx.Observable;
-import rx.Subscriber;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by chengsimin on 16/2/20.
@@ -40,13 +29,11 @@ import rx.schedulers.Schedulers;
 public class GiftContinueViewGroup extends RelativeLayout implements IBindActivityLIfeCycle {
     public static String TAG = GiftContinueViewGroup.class.getSimpleName();
 
-    private List<GiftContinueView> mFeedGiftContinueViews = new ArrayList<GiftContinueView>(2);
+    private List<GiftContinuousView> mFeedGiftContinueViews;
 
-    private GiftContinueStrategyQueue mQueue = new GiftContinueStrategyQueue();
+    private List<GiftContinuousView> mSingleFeedViewList;
 
-    private List<GiftContinueView> mFeedGiftContinueRightViews = new ArrayList<GiftContinueView>(2);
-
-    private GiftContinueStrategyQueue mRightQueue = new GiftContinueStrategyQueue();
+    private IGiftScheduler giftScheduler=new GiftScheduler();
 
 
     public GiftContinueViewGroup(Context context) {
@@ -71,26 +58,16 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
     }
 
     protected void bindView() {
-        {
-            GiftContinueView v1 = (GiftContinueView) findViewById(R.id.gift_continue_view1);
-            v1.setMyId(1);
-            mFeedGiftContinueViews.add(v1);
-        }
-        {
-            GiftContinueView v2 = (GiftContinueView) findViewById(R.id.gift_continue_view2);
-            v2.setMyId(2);
-            mFeedGiftContinueViews.add(v2);
-        }
-//        {
-//            GiftContinueView v3 = (GiftContinueView) findViewById(R.id.gift_continue_right_view1);
-//            v3.setMyId(3);
-//            mFeedGiftContinueRightViews.add(v3);
-//        }
-//        {
-//            GiftContinueView v4 = (GiftContinueView) findViewById(R.id.gift_continue_right_view2);
-//            v4.setMyId(4);
-//            mFeedGiftContinueRightViews.add(v4);
-//        }
+        GiftContinuousView v1 = (GiftContinuousView) findViewById(R.id.gift_continue_view1);
+        v1.setMyId(1);
+        getFeedGiftContinueViews().add(v1);
+        getSingleFeedGiftContinueView().add(v1);
+
+        GiftContinuousView v2 = (GiftContinuousView) findViewById(R.id.gift_continue_view2);
+        v2.setMyId(2);
+        getFeedGiftContinueViews().add(v2);
+
+        giftScheduler.setGiftContinuousViews(getFeedViews());
     }
 
     public void onActivityCreate() {
@@ -100,195 +77,27 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
     }
 
     public void onActivityDestroy() {
-        for (GiftContinueView v : mFeedGiftContinueViews) {
+        for (GiftContinuousView v : getFeedGiftContinueViews()) {
             v.onDestroy();
         }
+        giftScheduler.onDestroy();
         EventBus.getDefault().unregister(this);
-        if (singleThreadForBuyGift != null) {
-            singleThreadForBuyGift.shutdown();
-        }
     }
 
-    /**
-     * 目前主要用来切换房间时，重置内部状态
-     */
-    public void reset() {
-        mQueue.clear();
-        mRightQueue.clear();
-        for (GiftContinueView v : mFeedGiftContinueViews) {
-            v.setVisibility(View.GONE);
-            v.switchAnchor();
-        }
-        for (GiftContinueView v : mFeedGiftContinueRightViews) {
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(UserActionEvent.SwitchAnchor event) {
+        giftScheduler.clearQueue();
+        for (GiftContinuousView v : getFeedGiftContinueViews()) {
             v.setVisibility(View.GONE);
             v.switchAnchor();
         }
     }
 
-    private final ExecutorService singleThreadForBuyGift = Executors.newSingleThreadExecutor(
-            new ThreadPool.NamedThreadFactory("GiftContinueViewGroup"));
+
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(GiftEventClass.GiftAttrMessage.Normal event) {
-        Observable.just((GiftRecvModel) event.obj1)
-                .filter(new Func1<GiftRecvModel, Boolean>() {
-                    @Override
-                    public Boolean call(GiftRecvModel giftRecvModel) {
-                        return giftRecvModel != null;
-                    }
-                })
-                .filter(new Func1<GiftRecvModel, Boolean>() {
-                    @Override
-                    public Boolean call(GiftRecvModel model) {
-                        return !TextUtils.isEmpty(model.getPicPath());
-                    }
-                })
-                .subscribeOn(Schedulers.from(singleThreadForBuyGift))
-                .subscribe(new Action1<GiftRecvModel>() {
-                    @Override
-                    public void call(GiftRecvModel model) {
-                        if (model.isLeft()) {
-                            process(model, mQueue, mFeedGiftContinueViews);
-                        } else {
-                            process(model, mRightQueue, mFeedGiftContinueRightViews);
-                        }
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        MyLog.e(TAG, "GiftEventClass.GiftAttrMessage.Normal failed: " + throwable);
-                    }
-                });
-    }
-
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(final GiftEventClass.GiftMallEvent event) {
-
-        switch (event.eventType) {
-            case GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_PLAY_COMPLETE: {
-                Observable.create(new Observable.OnSubscribe<Object>() {
-                    @Override
-                    public void call(Subscriber<? super Object> subscriber) {
-                        GiftContinueView v = (GiftContinueView) event.obj1;
-                        if (v.isLeft()) {
-                            // 左边结束
-                            GiftRecvModel data = mQueue.poll();
-                            if (data != null) {
-                                MyLog.d(TAG, "v" + v.getMyid() + "已经完成，取" + data);
-                                // 如果view不接受这个data，重回队列
-                                v.addGiftContinueMode(data, mQueue.size());
-                            }
-                        } else {
-                            // 右边结束
-                            GiftRecvModel data = mRightQueue.poll();
-                            if (data != null) {
-                                MyLog.d(TAG, "v" + v.getMyid() + "已经完成，取" + data);
-                                // 如果view不接受这个data，重回队列
-                                if (!v.addGiftContinueMode(data, mRightQueue.size())) {
-                                    mRightQueue.offer(data);
-                                }
-                            }
-                        }
-                        subscriber.onCompleted();
-                    }
-                }).subscribeOn(Schedulers.from(singleThreadForBuyGift))
-                        .subscribe(new Action1<Object>() {
-                            @Override
-                            public void call(Object o) {
-
-                            }
-                        }, new Action1<Throwable>() {
-                            @Override
-                            public void call(Throwable throwable) {
-                                MyLog.e(TAG, "GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_PLAY_COMPLETE failed: " + throwable);
-                            }
-                        });
-            }
-            break;
-            case GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_PLAY_BREAK: {
-                Observable.create(new Observable.OnSubscribe<Object>() {
-                    @Override
-                    public void call(Subscriber<? super Object> subscriber) {
-                        GiftContinueView v = (GiftContinueView) event.obj1;
-                        if (v.isLeft()) {
-                            // 左边结束
-                            mQueue.offerToBreakQueue((GiftRecvModel) event.obj2);
-                        } else {
-                            // 右边结束
-                        }
-                        subscriber.onCompleted();
-                    }
-                }).subscribeOn(Schedulers.from(singleThreadForBuyGift))
-                        .subscribe(new Action1<Object>() {
-                            @Override
-                            public void call(Object o) {
-
-                            }
-                        }, new Action1<Throwable>() {
-                            @Override
-                            public void call(Throwable throwable) {
-                                MyLog.e(TAG, "GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_PLAY_BREAK failed: " + throwable);
-                            }
-                        });
-            }
-            break;
-        }
-    }
-
-    private void process(GiftRecvModel model, GiftContinueStrategyQueue queue, List<GiftContinueView> views) {
-        MyLog.d(TAG, "get a model:" + model);
-        //如果是自己的礼物肯定要找个加进去
-        //优先，找到能合并的
-        for (GiftContinueView v : views) {
-            if (v.canMerge(model)) {
-                return;
-            }
-        }
-        // 如果是自己的，先看看有没有空位
-        if (model.isFromSelf()) {
-            for (GiftContinueView v : views) {
-                if (v.isIdle()) {
-                    //自己的优先加入队头
-                    if (v.addGiftContinueMode(model, mQueue.size())) {
-                        return;
-                    }
-                }
-            }
-            //空闲的也没有，找个不是自己的强制替代
-            for (GiftContinueView v : views) {
-                if (v.setForceReplaceFlag(model)) {
-                    // 替代成功
-                    return;
-                }
-            }
-        }
-        //没人收留这个model
-        queue.offer(model);
-        for (GiftContinueView v : views) {
-            if (v.isIdle()) {
-                GiftRecvModel data = queue.poll();
-                if (data != null) {
-                    MyLog.d(TAG, "有空闲，添加" + data + "到v" + v.getMyid());
-                    // 如果view不接受这个data，重回队列
-                    if (!v.addGiftContinueMode(data, mQueue.size())) {
-                        queue.offer(data);
-                    }
-                }
-            }
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(SdkEventClass.OrientEvent event) {
-        boolean isLandscape = false;
-        if (event.orientation == BaseRotateSdkActivity.ORIENTATION_DEFAULT) {
-            return;
-        } else if (event.orientation == BaseRotateSdkActivity.ORIENTATION_LANDSCAPE_NORMAL || event.orientation == BaseRotateSdkActivity.ORIENTATION_LANDSCAPE_REVERSED) {
-            isLandscape = true;
-        } else if (event.orientation == BaseRotateSdkActivity.ORIENTATION_PORTRAIT_NORMAL || event.orientation == BaseRotateSdkActivity.ORIENTATION_PORTRAIT_REVERSED) {
-            isLandscape = false;
-        }
-        orient(isLandscape);
+    public void onEvent(SdkEventClass.OrientEvent event) {
+        orient(event.isLandscape());
     }
 
     private boolean mIsLandscape = false;
@@ -298,13 +107,21 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
 
     private void orient(boolean isLandscape) {
         mIsLandscape = isLandscape;
+        giftScheduler.setGiftContinuousViews(getFeedViews());
         MyLog.d(TAG, "isLandscape:" + isLandscape);
         if (isLandscape) {
-            LayoutParams lp = (LayoutParams) this.getLayoutParams();
-            lp.bottomMargin = mLandscapeMarginBottom;
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) this.getLayoutParams();
+            lp.height = DisplayUtils.dip2px(100);
+            lp.gravity = Gravity.BOTTOM;
+//            lp.bottomMargin = mLandscapeMarginBottom;
         } else {
-            LayoutParams lp = (LayoutParams) this.getLayoutParams();
-            lp.bottomMargin = mGiftViewMarginBottom;
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) this.getLayoutParams();
+            lp.height = DisplayUtils.dip2px(150);
+            lp.gravity = Gravity.TOP;
+//            lp.bottomMargin = mGiftViewMarginBottom;
+            for(GiftContinuousView v:getFeedViews()){
+                v.tryAwake();
+            }
         }
     }
 
@@ -314,31 +131,71 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
 
     public void onShowInputView() {
 
-        RelativeLayout.LayoutParams middleLayout = (RelativeLayout.LayoutParams) this.getLayoutParams();
+        FrameLayout.LayoutParams middleLayout = (FrameLayout.LayoutParams) this.getLayoutParams();
         if (!mIsLandscape) {
-            middleLayout.bottomMargin = DisplayUtils.dip2px(10);
+//            middleLayout.bottomMargin = DisplayUtils.dip2px(10);
         } else {
 
             this.setVisibility(View.INVISIBLE);
-            middleLayout.bottomMargin = mLandscapeMarginBottom;
+//            middleLayout.bottomMargin = mLandscapeMarginBottom;
             //middleLayout.height=LayoutParams.WRAP_CONTENT;
-            middleLayout.height = mGiftViewHeight / 2;
+//            middleLayout.height = mGiftViewHeight / 2;
         }
         setLayoutParams(middleLayout);
     }
 
     public void onHideInputView() {
-        RelativeLayout.LayoutParams middleLayout = (RelativeLayout.LayoutParams) this.getLayoutParams();
+        FrameLayout.LayoutParams middleLayout = (FrameLayout.LayoutParams) this.getLayoutParams();
         if (!mIsLandscape) {
-            middleLayout.bottomMargin = mGiftViewMarginBottom;
-            middleLayout.height = mGiftViewHeight;
+//            middleLayout.bottomMargin = mGiftViewMarginBottom;
+//            middleLayout.height = mGiftViewHeight;
         } else {
-            middleLayout.bottomMargin = mLandscapeMarginBottom;
-            middleLayout.height = mGiftViewHeight;
+//            middleLayout.bottomMargin = mLandscapeMarginBottom;
+//            middleLayout.height = mGiftViewHeight;
         }
         setLayoutParams(middleLayout);
         if (this.getVisibility() != View.VISIBLE) {
             this.setVisibility(View.VISIBLE);
         }
+    }
+
+    private List<GiftContinuousView> getFeedGiftContinueViews() {
+        if (mFeedGiftContinueViews == null) {
+            mFeedGiftContinueViews = new ArrayList<>(2);
+        }
+        return mFeedGiftContinueViews;
+    }
+
+    private List<GiftContinuousView> getSingleFeedGiftContinueView() {
+        if (mSingleFeedViewList == null) {
+            mSingleFeedViewList = new ArrayList<>(1);
+        }
+        return mSingleFeedViewList;
+    }
+
+    public List<GiftContinuousView> getFeedViews() {
+        //当横屏时要防止上面的continueView遮挡运营位，故上面的continueView不显示
+        if (mIsLandscape) {
+            return getSingleFeedGiftContinueView();
+        } else {
+            return getFeedGiftContinueViews();
+        }
+    }
+
+    /**
+     * 目前主要用来切换房间时，重置内部状态
+     */
+    public void reset() {
+        giftScheduler.onDestroy();
+        for (GiftContinuousView v : mFeedGiftContinueViews) {
+            v.setVisibility(View.GONE);
+            v.switchAnchor();
+        }
+        mFeedGiftContinueViews.clear();
+        for (GiftContinuousView v : mSingleFeedViewList) {
+            v.setVisibility(View.GONE);
+            v.switchAnchor();
+        }
+        mSingleFeedViewList.clear();
     }
 }
