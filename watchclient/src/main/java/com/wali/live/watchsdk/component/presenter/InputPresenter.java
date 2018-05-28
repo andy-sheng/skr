@@ -19,6 +19,7 @@ import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
+import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.data.LastBarrage;
 import com.mi.live.data.push.event.BarrageMsgEvent;
 import com.mi.live.data.push.model.BarrageMsg;
@@ -322,8 +323,16 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
             fansMemberMsgExt.setMedalValue(fansPrivilegeModel.getMedal());
             globalRoomMsgExt.addMsgExt(fansMemberMsgExt);
         }
-        mLiveRoomChatMsgManager.sendBarrageMessageAsync(msg, type,
-                mMyRoomData.getRoomId(), mMyRoomData.getUid(), null, null, globalRoomMsgExt);
+
+        if(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_HUYA){
+            long huyaAnchorId = mMyRoomData.getHuyaInfo() == null ? 0 : mMyRoomData.getHuyaInfo().getUuid();
+            mLiveRoomChatMsgManager.sendHuyaBarrageMessageAsync(msg, type,
+                    mMyRoomData.getRoomId(), huyaAnchorId , mMyRoomData.getUid(), null, null, mMyRoomData.getLiveType(), globalRoomMsgExt, mMyRoomData.getHuyaInfo().getSource());
+        }else{
+            mLiveRoomChatMsgManager.sendBarrageMessageAsync(msg, type,
+                    mMyRoomData.getRoomId(), mMyRoomData.getUid(), null, null, globalRoomMsgExt);
+        }
+
     }
 
     /**

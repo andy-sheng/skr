@@ -350,6 +350,19 @@ public class BarrageMessageManager implements MiLinkPacketDispatcher.PacketDataH
     }
 
 
+    public void sendHuYaBarrageMessage(LiveMessageProto.HuyaSendMessageReq huyaSendMessageReq) {
+        if (huyaSendMessageReq != null) {
+            if (huyaSendMessageReq.getFromUid() <= 0 || huyaSendMessageReq.getAnchorHuyaUid() <= 0) {
+                MyLog.w(TAG, "send chaMessageReadRequest from or to or cid is null,so cancel");
+                return;
+            }
+            PacketData packetData = new PacketData();
+            packetData.setCommand(MiLinkCommand.COMMAND_HUYA_MSG);
+            packetData.setData(huyaSendMessageReq.toByteArray());
+            MiLinkClientAdapter.getsInstance().sendAsync(packetData);
+        }
+    }
+
     public void sendSyncSystemMessage(LiveMessageProto.SyncSysMsgRequest syncSystemMessageRequest) {
         if (syncSystemMessageRequest != null) {
             if (syncSystemMessageRequest.getFromUser() <= 0 || TextUtils.isEmpty(syncSystemMessageRequest.getRoomId()) || syncSystemMessageRequest.getCid() <= 0) {

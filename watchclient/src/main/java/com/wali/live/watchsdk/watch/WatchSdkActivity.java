@@ -337,7 +337,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         mController.setVerticalList(mRoomInfoList, mRoomInfoPosition);
 
         mSdkView = new WatchSdkView(this, mController);
-        mSdkView.setupView(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
+        mSdkView.setupView((mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME) || (mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_HUYA), mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_HUYA);
         mSdkView.startView();
 
         mAction.registerAction();
@@ -654,7 +654,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
             MyLog.d(TAG, "enterLive success");
             if (roomInfo != null) {
                 updateVideoUrl(roomInfo.getDownStreamUrl());
+                mMyRoomData.setHuyaInfo(roomInfo.getThirdPartyInfo());
             }
+
             //TODO 这段代码迁移到了switchRoom
             //WatchRoomCharactorManager.getInstance().clear();
             syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);

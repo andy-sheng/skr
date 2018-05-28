@@ -732,3 +732,21 @@ message VFansMemberBriefInfo {
     optional bool is_vip_expire = 4; // 宠爱团会员过期时间 默认0,绝对时间戳
     optional string barrage_color = 5; //彩色弹幕
 }
+
+//zhibo.huya.sendmsg
+//发送弹幕
+message HuyaSendMessageReq {
+    required uint64 fromUid = 1; //弹幕发送者的直播id
+    optional uint64 anchorHuyaUid = 2; //主播的虎牙id
+    optional uint32 msgType = 3 [default = 1]; //消息类型:1弹幕消息
+    optional string msgContent = 4; //消息内容
+    optional uint64 sendTimestamp = 5; //弹幕发送时间戳，单位:毫秒
+    optional uint64 zuid = 6; //主播的小米直播id
+    optional string roomId = 7; //房间id
+    optional uint32 roomType = 8; //9:虎牙
+    optional uint32 source = 9; //第三方来源 0:虎牙
+}
+
+message HuyaSendMessageRsp {
+    required uint32 retCode = 1;
+}

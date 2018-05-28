@@ -37,6 +37,7 @@ public class LiveManager {
     public static final int TYPE_LIVE_TICKET = 3;
     public static final int TYPE_LIVE_VR = 5;
     public static final int TYPE_LIVE_GAME = 6;
+    public static final int TYPE_LIVE_HUYA = 9;  //虎牙直播
 
     /**
      * MiLinkCommand : zhibo.live.historydelete
@@ -373,6 +374,8 @@ public class LiveManager {
                 return LiveManager.TYPE_LIVE_VR;
             case LiveShow.LIVETYPE_GAME:
                 return LiveManager.TYPE_LIVE_GAME;
+            case LiveShow.LIVETYPE_HUYA:
+                return LiveManager.TYPE_LIVE_HUYA;
             default:
                 return LiveManager.TYPE_LIVE_PUBLIC;
         }
@@ -398,6 +401,8 @@ public class LiveManager {
                 return LiveShow.LIVETYPE_VR;
             case LiveManager.TYPE_LIVE_GAME:
                 return LiveShow.LIVETYPE_GAME;
+            case LiveManager.TYPE_LIVE_HUYA:
+                return LiveShow.LIVETYPE_HUYA;
             default:
                 return LiveShow.LIVETYPE_PUBLIC;
         }

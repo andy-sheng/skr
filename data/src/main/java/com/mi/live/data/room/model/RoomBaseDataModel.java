@@ -7,6 +7,7 @@ import com.mi.live.data.push.presenter.RoomMessagePresenter;
 import com.mi.live.data.query.model.MessageRule;
 import com.mi.live.data.query.model.ViewerModel;
 import com.mi.live.data.user.User;
+import com.wali.live.proto.LiveProto;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -142,6 +143,8 @@ public class RoomBaseDataModel implements Serializable {
 
     private boolean mSupportMagicFace;
 
+    LiveProto.ThirdPartyInfo huyaInfo;
+
     public RoomBaseDataModel(String name) {
         MyLog.d("RoomBaseDataModel", "name:" + name + ",new NO:" + NO++);
     }
@@ -155,6 +158,15 @@ public class RoomBaseDataModel implements Serializable {
 
         mOwner.setLiveTicketNum(0);
     }
+
+    public LiveProto.ThirdPartyInfo getHuyaInfo() {
+        return huyaInfo;
+    }
+
+    public void setHuyaInfo(LiveProto.ThirdPartyInfo huyaInfo) {
+        this.huyaInfo = huyaInfo;
+    }
+
 
     public String getShareUrl() {
         return mShareUrl;

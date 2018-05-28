@@ -86117,6 +86117,1928 @@ public final class LiveMessageProto {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.VFansMemberBriefInfo)
   }
 
+  public interface HuyaSendMessageReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.HuyaSendMessageReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 fromUid = 1;</code>
+     *
+     * <pre>
+     *弹幕发送者的直播id
+     * </pre>
+     */
+    boolean hasFromUid();
+    /**
+     * <code>required uint64 fromUid = 1;</code>
+     *
+     * <pre>
+     *弹幕发送者的直播id
+     * </pre>
+     */
+    long getFromUid();
+
+    /**
+     * <code>optional uint64 anchorHuyaUid = 2;</code>
+     *
+     * <pre>
+     *主播的虎牙id
+     * </pre>
+     */
+    boolean hasAnchorHuyaUid();
+    /**
+     * <code>optional uint64 anchorHuyaUid = 2;</code>
+     *
+     * <pre>
+     *主播的虎牙id
+     * </pre>
+     */
+    long getAnchorHuyaUid();
+
+    /**
+     * <code>optional uint32 msgType = 3 [default = 1];</code>
+     *
+     * <pre>
+     *消息类型:1弹幕消息
+     * </pre>
+     */
+    boolean hasMsgType();
+    /**
+     * <code>optional uint32 msgType = 3 [default = 1];</code>
+     *
+     * <pre>
+     *消息类型:1弹幕消息
+     * </pre>
+     */
+    int getMsgType();
+
+    /**
+     * <code>optional string msgContent = 4;</code>
+     *
+     * <pre>
+     *消息内容
+     * </pre>
+     */
+    boolean hasMsgContent();
+    /**
+     * <code>optional string msgContent = 4;</code>
+     *
+     * <pre>
+     *消息内容
+     * </pre>
+     */
+    java.lang.String getMsgContent();
+    /**
+     * <code>optional string msgContent = 4;</code>
+     *
+     * <pre>
+     *消息内容
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getMsgContentBytes();
+
+    /**
+     * <code>optional uint64 sendTimestamp = 5;</code>
+     *
+     * <pre>
+     *弹幕发送时间戳，单位:毫秒
+     * </pre>
+     */
+    boolean hasSendTimestamp();
+    /**
+     * <code>optional uint64 sendTimestamp = 5;</code>
+     *
+     * <pre>
+     *弹幕发送时间戳，单位:毫秒
+     * </pre>
+     */
+    long getSendTimestamp();
+
+    /**
+     * <code>optional uint64 zuid = 6;</code>
+     *
+     * <pre>
+     *主播的小米直播id
+     * </pre>
+     */
+    boolean hasZuid();
+    /**
+     * <code>optional uint64 zuid = 6;</code>
+     *
+     * <pre>
+     *主播的小米直播id
+     * </pre>
+     */
+    long getZuid();
+
+    /**
+     * <code>optional string roomId = 7;</code>
+     *
+     * <pre>
+     *房间id
+     * </pre>
+     */
+    boolean hasRoomId();
+    /**
+     * <code>optional string roomId = 7;</code>
+     *
+     * <pre>
+     *房间id
+     * </pre>
+     */
+    java.lang.String getRoomId();
+    /**
+     * <code>optional string roomId = 7;</code>
+     *
+     * <pre>
+     *房间id
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getRoomIdBytes();
+
+    /**
+     * <code>optional uint32 roomType = 8;</code>
+     *
+     * <pre>
+     *9:虎牙
+     * </pre>
+     */
+    boolean hasRoomType();
+    /**
+     * <code>optional uint32 roomType = 8;</code>
+     *
+     * <pre>
+     *9:虎牙
+     * </pre>
+     */
+    int getRoomType();
+
+    /**
+     * <code>optional uint32 source = 9;</code>
+     *
+     * <pre>
+     *第三方来源 0:虎牙
+     * </pre>
+     */
+    boolean hasSource();
+    /**
+     * <code>optional uint32 source = 9;</code>
+     *
+     * <pre>
+     *第三方来源 0:虎牙
+     * </pre>
+     */
+    int getSource();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.HuyaSendMessageReq}
+   *
+   * <pre>
+   *zhibo.huya.sendmsg
+   *发送弹幕
+   * </pre>
+   */
+  public static final class HuyaSendMessageReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.HuyaSendMessageReq)
+      HuyaSendMessageReqOrBuilder {
+    // Use HuyaSendMessageReq.newBuilder() to construct.
+    private HuyaSendMessageReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private HuyaSendMessageReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final HuyaSendMessageReq defaultInstance;
+    public static HuyaSendMessageReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public HuyaSendMessageReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private HuyaSendMessageReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              fromUid_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              anchorHuyaUid_ = input.readUInt64();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              msgType_ = input.readUInt32();
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              msgContent_ = bs;
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              sendTimestamp_ = input.readUInt64();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              zuid_ = input.readUInt64();
+              break;
+            }
+            case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000040;
+              roomId_ = bs;
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000080;
+              roomType_ = input.readUInt32();
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000100;
+              source_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq.class, com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<HuyaSendMessageReq> PARSER =
+        new com.google.protobuf.AbstractParser<HuyaSendMessageReq>() {
+      public HuyaSendMessageReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new HuyaSendMessageReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<HuyaSendMessageReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int FROMUID_FIELD_NUMBER = 1;
+    private long fromUid_;
+    /**
+     * <code>required uint64 fromUid = 1;</code>
+     *
+     * <pre>
+     *弹幕发送者的直播id
+     * </pre>
+     */
+    public boolean hasFromUid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 fromUid = 1;</code>
+     *
+     * <pre>
+     *弹幕发送者的直播id
+     * </pre>
+     */
+    public long getFromUid() {
+      return fromUid_;
+    }
+
+    public static final int ANCHORHUYAUID_FIELD_NUMBER = 2;
+    private long anchorHuyaUid_;
+    /**
+     * <code>optional uint64 anchorHuyaUid = 2;</code>
+     *
+     * <pre>
+     *主播的虎牙id
+     * </pre>
+     */
+    public boolean hasAnchorHuyaUid() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint64 anchorHuyaUid = 2;</code>
+     *
+     * <pre>
+     *主播的虎牙id
+     * </pre>
+     */
+    public long getAnchorHuyaUid() {
+      return anchorHuyaUid_;
+    }
+
+    public static final int MSGTYPE_FIELD_NUMBER = 3;
+    private int msgType_;
+    /**
+     * <code>optional uint32 msgType = 3 [default = 1];</code>
+     *
+     * <pre>
+     *消息类型:1弹幕消息
+     * </pre>
+     */
+    public boolean hasMsgType() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint32 msgType = 3 [default = 1];</code>
+     *
+     * <pre>
+     *消息类型:1弹幕消息
+     * </pre>
+     */
+    public int getMsgType() {
+      return msgType_;
+    }
+
+    public static final int MSGCONTENT_FIELD_NUMBER = 4;
+    private java.lang.Object msgContent_;
+    /**
+     * <code>optional string msgContent = 4;</code>
+     *
+     * <pre>
+     *消息内容
+     * </pre>
+     */
+    public boolean hasMsgContent() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string msgContent = 4;</code>
+     *
+     * <pre>
+     *消息内容
+     * </pre>
+     */
+    public java.lang.String getMsgContent() {
+      java.lang.Object ref = msgContent_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          msgContent_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string msgContent = 4;</code>
+     *
+     * <pre>
+     *消息内容
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getMsgContentBytes() {
+      java.lang.Object ref = msgContent_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msgContent_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SENDTIMESTAMP_FIELD_NUMBER = 5;
+    private long sendTimestamp_;
+    /**
+     * <code>optional uint64 sendTimestamp = 5;</code>
+     *
+     * <pre>
+     *弹幕发送时间戳，单位:毫秒
+     * </pre>
+     */
+    public boolean hasSendTimestamp() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional uint64 sendTimestamp = 5;</code>
+     *
+     * <pre>
+     *弹幕发送时间戳，单位:毫秒
+     * </pre>
+     */
+    public long getSendTimestamp() {
+      return sendTimestamp_;
+    }
+
+    public static final int ZUID_FIELD_NUMBER = 6;
+    private long zuid_;
+    /**
+     * <code>optional uint64 zuid = 6;</code>
+     *
+     * <pre>
+     *主播的小米直播id
+     * </pre>
+     */
+    public boolean hasZuid() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional uint64 zuid = 6;</code>
+     *
+     * <pre>
+     *主播的小米直播id
+     * </pre>
+     */
+    public long getZuid() {
+      return zuid_;
+    }
+
+    public static final int ROOMID_FIELD_NUMBER = 7;
+    private java.lang.Object roomId_;
+    /**
+     * <code>optional string roomId = 7;</code>
+     *
+     * <pre>
+     *房间id
+     * </pre>
+     */
+    public boolean hasRoomId() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional string roomId = 7;</code>
+     *
+     * <pre>
+     *房间id
+     * </pre>
+     */
+    public java.lang.String getRoomId() {
+      java.lang.Object ref = roomId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          roomId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string roomId = 7;</code>
+     *
+     * <pre>
+     *房间id
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getRoomIdBytes() {
+      java.lang.Object ref = roomId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        roomId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ROOMTYPE_FIELD_NUMBER = 8;
+    private int roomType_;
+    /**
+     * <code>optional uint32 roomType = 8;</code>
+     *
+     * <pre>
+     *9:虎牙
+     * </pre>
+     */
+    public boolean hasRoomType() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional uint32 roomType = 8;</code>
+     *
+     * <pre>
+     *9:虎牙
+     * </pre>
+     */
+    public int getRoomType() {
+      return roomType_;
+    }
+
+    public static final int SOURCE_FIELD_NUMBER = 9;
+    private int source_;
+    /**
+     * <code>optional uint32 source = 9;</code>
+     *
+     * <pre>
+     *第三方来源 0:虎牙
+     * </pre>
+     */
+    public boolean hasSource() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional uint32 source = 9;</code>
+     *
+     * <pre>
+     *第三方来源 0:虎牙
+     * </pre>
+     */
+    public int getSource() {
+      return source_;
+    }
+
+    private void initFields() {
+      fromUid_ = 0L;
+      anchorHuyaUid_ = 0L;
+      msgType_ = 1;
+      msgContent_ = "";
+      sendTimestamp_ = 0L;
+      zuid_ = 0L;
+      roomId_ = "";
+      roomType_ = 0;
+      source_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasFromUid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, fromUid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, anchorHuyaUid_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, msgType_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getMsgContentBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeUInt64(5, sendTimestamp_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeUInt64(6, zuid_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBytes(7, getRoomIdBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeUInt32(8, roomType_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeUInt32(9, source_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, fromUid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, anchorHuyaUid_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, msgType_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getMsgContentBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(5, sendTimestamp_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(6, zuid_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, getRoomIdBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(8, roomType_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(9, source_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.HuyaSendMessageReq}
+     *
+     * <pre>
+     *zhibo.huya.sendmsg
+     *发送弹幕
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.HuyaSendMessageReq)
+        com.wali.live.proto.LiveMessageProto.HuyaSendMessageReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq.class, com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        fromUid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        anchorHuyaUid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        msgType_ = 1;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        msgContent_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        sendTimestamp_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        zuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        roomId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
+        roomType_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        source_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000100);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageReq_descriptor;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq build() {
+        com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq buildPartial() {
+        com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq result = new com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.fromUid_ = fromUid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.anchorHuyaUid_ = anchorHuyaUid_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.msgType_ = msgType_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.msgContent_ = msgContent_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.sendTimestamp_ = sendTimestamp_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.zuid_ = zuid_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.roomId_ = roomId_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.roomType_ = roomType_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.source_ = source_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq) {
+          return mergeFrom((com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq other) {
+        if (other == com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq.getDefaultInstance()) return this;
+        if (other.hasFromUid()) {
+          setFromUid(other.getFromUid());
+        }
+        if (other.hasAnchorHuyaUid()) {
+          setAnchorHuyaUid(other.getAnchorHuyaUid());
+        }
+        if (other.hasMsgType()) {
+          setMsgType(other.getMsgType());
+        }
+        if (other.hasMsgContent()) {
+          bitField0_ |= 0x00000008;
+          msgContent_ = other.msgContent_;
+          onChanged();
+        }
+        if (other.hasSendTimestamp()) {
+          setSendTimestamp(other.getSendTimestamp());
+        }
+        if (other.hasZuid()) {
+          setZuid(other.getZuid());
+        }
+        if (other.hasRoomId()) {
+          bitField0_ |= 0x00000040;
+          roomId_ = other.roomId_;
+          onChanged();
+        }
+        if (other.hasRoomType()) {
+          setRoomType(other.getRoomType());
+        }
+        if (other.hasSource()) {
+          setSource(other.getSource());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasFromUid()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveMessageProto.HuyaSendMessageReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long fromUid_ ;
+      /**
+       * <code>required uint64 fromUid = 1;</code>
+       *
+       * <pre>
+       *弹幕发送者的直播id
+       * </pre>
+       */
+      public boolean hasFromUid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 fromUid = 1;</code>
+       *
+       * <pre>
+       *弹幕发送者的直播id
+       * </pre>
+       */
+      public long getFromUid() {
+        return fromUid_;
+      }
+      /**
+       * <code>required uint64 fromUid = 1;</code>
+       *
+       * <pre>
+       *弹幕发送者的直播id
+       * </pre>
+       */
+      public Builder setFromUid(long value) {
+        bitField0_ |= 0x00000001;
+        fromUid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 fromUid = 1;</code>
+       *
+       * <pre>
+       *弹幕发送者的直播id
+       * </pre>
+       */
+      public Builder clearFromUid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        fromUid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long anchorHuyaUid_ ;
+      /**
+       * <code>optional uint64 anchorHuyaUid = 2;</code>
+       *
+       * <pre>
+       *主播的虎牙id
+       * </pre>
+       */
+      public boolean hasAnchorHuyaUid() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint64 anchorHuyaUid = 2;</code>
+       *
+       * <pre>
+       *主播的虎牙id
+       * </pre>
+       */
+      public long getAnchorHuyaUid() {
+        return anchorHuyaUid_;
+      }
+      /**
+       * <code>optional uint64 anchorHuyaUid = 2;</code>
+       *
+       * <pre>
+       *主播的虎牙id
+       * </pre>
+       */
+      public Builder setAnchorHuyaUid(long value) {
+        bitField0_ |= 0x00000002;
+        anchorHuyaUid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 anchorHuyaUid = 2;</code>
+       *
+       * <pre>
+       *主播的虎牙id
+       * </pre>
+       */
+      public Builder clearAnchorHuyaUid() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        anchorHuyaUid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int msgType_ = 1;
+      /**
+       * <code>optional uint32 msgType = 3 [default = 1];</code>
+       *
+       * <pre>
+       *消息类型:1弹幕消息
+       * </pre>
+       */
+      public boolean hasMsgType() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint32 msgType = 3 [default = 1];</code>
+       *
+       * <pre>
+       *消息类型:1弹幕消息
+       * </pre>
+       */
+      public int getMsgType() {
+        return msgType_;
+      }
+      /**
+       * <code>optional uint32 msgType = 3 [default = 1];</code>
+       *
+       * <pre>
+       *消息类型:1弹幕消息
+       * </pre>
+       */
+      public Builder setMsgType(int value) {
+        bitField0_ |= 0x00000004;
+        msgType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 msgType = 3 [default = 1];</code>
+       *
+       * <pre>
+       *消息类型:1弹幕消息
+       * </pre>
+       */
+      public Builder clearMsgType() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        msgType_ = 1;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object msgContent_ = "";
+      /**
+       * <code>optional string msgContent = 4;</code>
+       *
+       * <pre>
+       *消息内容
+       * </pre>
+       */
+      public boolean hasMsgContent() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string msgContent = 4;</code>
+       *
+       * <pre>
+       *消息内容
+       * </pre>
+       */
+      public java.lang.String getMsgContent() {
+        java.lang.Object ref = msgContent_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msgContent_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string msgContent = 4;</code>
+       *
+       * <pre>
+       *消息内容
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getMsgContentBytes() {
+        java.lang.Object ref = msgContent_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msgContent_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string msgContent = 4;</code>
+       *
+       * <pre>
+       *消息内容
+       * </pre>
+       */
+      public Builder setMsgContent(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        msgContent_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msgContent = 4;</code>
+       *
+       * <pre>
+       *消息内容
+       * </pre>
+       */
+      public Builder clearMsgContent() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        msgContent_ = getDefaultInstance().getMsgContent();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msgContent = 4;</code>
+       *
+       * <pre>
+       *消息内容
+       * </pre>
+       */
+      public Builder setMsgContentBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        msgContent_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long sendTimestamp_ ;
+      /**
+       * <code>optional uint64 sendTimestamp = 5;</code>
+       *
+       * <pre>
+       *弹幕发送时间戳，单位:毫秒
+       * </pre>
+       */
+      public boolean hasSendTimestamp() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional uint64 sendTimestamp = 5;</code>
+       *
+       * <pre>
+       *弹幕发送时间戳，单位:毫秒
+       * </pre>
+       */
+      public long getSendTimestamp() {
+        return sendTimestamp_;
+      }
+      /**
+       * <code>optional uint64 sendTimestamp = 5;</code>
+       *
+       * <pre>
+       *弹幕发送时间戳，单位:毫秒
+       * </pre>
+       */
+      public Builder setSendTimestamp(long value) {
+        bitField0_ |= 0x00000010;
+        sendTimestamp_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 sendTimestamp = 5;</code>
+       *
+       * <pre>
+       *弹幕发送时间戳，单位:毫秒
+       * </pre>
+       */
+      public Builder clearSendTimestamp() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        sendTimestamp_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long zuid_ ;
+      /**
+       * <code>optional uint64 zuid = 6;</code>
+       *
+       * <pre>
+       *主播的小米直播id
+       * </pre>
+       */
+      public boolean hasZuid() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional uint64 zuid = 6;</code>
+       *
+       * <pre>
+       *主播的小米直播id
+       * </pre>
+       */
+      public long getZuid() {
+        return zuid_;
+      }
+      /**
+       * <code>optional uint64 zuid = 6;</code>
+       *
+       * <pre>
+       *主播的小米直播id
+       * </pre>
+       */
+      public Builder setZuid(long value) {
+        bitField0_ |= 0x00000020;
+        zuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 zuid = 6;</code>
+       *
+       * <pre>
+       *主播的小米直播id
+       * </pre>
+       */
+      public Builder clearZuid() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        zuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object roomId_ = "";
+      /**
+       * <code>optional string roomId = 7;</code>
+       *
+       * <pre>
+       *房间id
+       * </pre>
+       */
+      public boolean hasRoomId() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional string roomId = 7;</code>
+       *
+       * <pre>
+       *房间id
+       * </pre>
+       */
+      public java.lang.String getRoomId() {
+        java.lang.Object ref = roomId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            roomId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string roomId = 7;</code>
+       *
+       * <pre>
+       *房间id
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getRoomIdBytes() {
+        java.lang.Object ref = roomId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          roomId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string roomId = 7;</code>
+       *
+       * <pre>
+       *房间id
+       * </pre>
+       */
+      public Builder setRoomId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        roomId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string roomId = 7;</code>
+       *
+       * <pre>
+       *房间id
+       * </pre>
+       */
+      public Builder clearRoomId() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        roomId_ = getDefaultInstance().getRoomId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string roomId = 7;</code>
+       *
+       * <pre>
+       *房间id
+       * </pre>
+       */
+      public Builder setRoomIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        roomId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int roomType_ ;
+      /**
+       * <code>optional uint32 roomType = 8;</code>
+       *
+       * <pre>
+       *9:虎牙
+       * </pre>
+       */
+      public boolean hasRoomType() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional uint32 roomType = 8;</code>
+       *
+       * <pre>
+       *9:虎牙
+       * </pre>
+       */
+      public int getRoomType() {
+        return roomType_;
+      }
+      /**
+       * <code>optional uint32 roomType = 8;</code>
+       *
+       * <pre>
+       *9:虎牙
+       * </pre>
+       */
+      public Builder setRoomType(int value) {
+        bitField0_ |= 0x00000080;
+        roomType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 roomType = 8;</code>
+       *
+       * <pre>
+       *9:虎牙
+       * </pre>
+       */
+      public Builder clearRoomType() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        roomType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int source_ ;
+      /**
+       * <code>optional uint32 source = 9;</code>
+       *
+       * <pre>
+       *第三方来源 0:虎牙
+       * </pre>
+       */
+      public boolean hasSource() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional uint32 source = 9;</code>
+       *
+       * <pre>
+       *第三方来源 0:虎牙
+       * </pre>
+       */
+      public int getSource() {
+        return source_;
+      }
+      /**
+       * <code>optional uint32 source = 9;</code>
+       *
+       * <pre>
+       *第三方来源 0:虎牙
+       * </pre>
+       */
+      public Builder setSource(int value) {
+        bitField0_ |= 0x00000100;
+        source_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 source = 9;</code>
+       *
+       * <pre>
+       *第三方来源 0:虎牙
+       * </pre>
+       */
+      public Builder clearSource() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        source_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.HuyaSendMessageReq)
+    }
+
+    static {
+      defaultInstance = new HuyaSendMessageReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.HuyaSendMessageReq)
+  }
+
+  public interface HuyaSendMessageRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.HuyaSendMessageRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    int getRetCode();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.HuyaSendMessageRsp}
+   */
+  public static final class HuyaSendMessageRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.HuyaSendMessageRsp)
+      HuyaSendMessageRspOrBuilder {
+    // Use HuyaSendMessageRsp.newBuilder() to construct.
+    private HuyaSendMessageRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private HuyaSendMessageRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final HuyaSendMessageRsp defaultInstance;
+    public static HuyaSendMessageRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public HuyaSendMessageRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private HuyaSendMessageRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp.class, com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<HuyaSendMessageRsp> PARSER =
+        new com.google.protobuf.AbstractParser<HuyaSendMessageRsp>() {
+      public HuyaSendMessageRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new HuyaSendMessageRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<HuyaSendMessageRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.HuyaSendMessageRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.HuyaSendMessageRsp)
+        com.wali.live.proto.LiveMessageProto.HuyaSendMessageRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp.class, com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveMessageProto.internal_static_com_wali_live_proto_HuyaSendMessageRsp_descriptor;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp build() {
+        com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp buildPartial() {
+        com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp result = new com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp) {
+          return mergeFrom((com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp other) {
+        if (other == com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveMessageProto.HuyaSendMessageRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.HuyaSendMessageRsp)
+    }
+
+    static {
+      defaultInstance = new HuyaSendMessageRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.HuyaSendMessageRsp)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_ChatMessageRequest_descriptor;
   private static
@@ -86617,6 +88539,16 @@ public final class LiveMessageProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_VFansMemberBriefInfo_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_HuyaSendMessageReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_HuyaSendMessageReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_HuyaSendMessageRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_HuyaSendMessageRsp_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -86885,12 +88817,18 @@ public final class LiveMessageProto {
       "essage\022\017\n\007at_user\030\001 \001(\004\"\202\001\n\024VFansMemberB" +
       "riefInfo\022\021\n\tpet_level\030\001 \001(\005\022\023\n\013medal_val" +
       "ue\030\002 \001(\t\022\024\n\014is_use_medal\030\003 \001(\010\022\025\n\ris_vip" +
-      "_expire\030\004 \001(\010\022\025\n\rbarrage_color\030\005 \001(\t**\n\020",
-      "NotificationType\022\n\n\006SYSTEM\020\001\022\n\n\006FOLLOW\020\002" +
-      "**\n\016BarMessageType\022\006\n\002OP\020\001\022\007\n\003SYS\020\002\022\007\n\003N" +
-      "TF\020\003*=\n\031VipCustomerServiceTabType\022\020\n\014VCS" +
-      "TT_NORMAL\020\001\022\016\n\nVCSTT_LIST\020\002B\'\n\023com.wali." +
-      "live.protoB\020LiveMessageProto"
+      "_expire\030\004 \001(\010\022\025\n\rbarrage_color\030\005 \001(\t\"\273\001\n",
+      "\022HuyaSendMessageReq\022\017\n\007fromUid\030\001 \002(\004\022\025\n\r" +
+      "anchorHuyaUid\030\002 \001(\004\022\022\n\007msgType\030\003 \001(\r:\0011\022" +
+      "\022\n\nmsgContent\030\004 \001(\t\022\025\n\rsendTimestamp\030\005 \001" +
+      "(\004\022\014\n\004zuid\030\006 \001(\004\022\016\n\006roomId\030\007 \001(\t\022\020\n\010room" +
+      "Type\030\010 \001(\r\022\016\n\006source\030\t \001(\r\"%\n\022HuyaSendMe" +
+      "ssageRsp\022\017\n\007retCode\030\001 \002(\r**\n\020Notificatio" +
+      "nType\022\n\n\006SYSTEM\020\001\022\n\n\006FOLLOW\020\002**\n\016BarMess" +
+      "ageType\022\006\n\002OP\020\001\022\007\n\003SYS\020\002\022\007\n\003NTF\020\003*=\n\031Vip" +
+      "CustomerServiceTabType\022\020\n\014VCSTT_NORMAL\020\001" +
+      "\022\016\n\nVCSTT_LIST\020\002B\'\n\023com.wali.live.protoB",
+      "\020LiveMessageProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -87505,6 +89443,18 @@ public final class LiveMessageProto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_VFansMemberBriefInfo_descriptor,
         new java.lang.String[] { "PetLevel", "MedalValue", "IsUseMedal", "IsVipExpire", "BarrageColor", });
+    internal_static_com_wali_live_proto_HuyaSendMessageReq_descriptor =
+      getDescriptor().getMessageTypes().get(100);
+    internal_static_com_wali_live_proto_HuyaSendMessageReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_HuyaSendMessageReq_descriptor,
+        new java.lang.String[] { "FromUid", "AnchorHuyaUid", "MsgType", "MsgContent", "SendTimestamp", "Zuid", "RoomId", "RoomType", "Source", });
+    internal_static_com_wali_live_proto_HuyaSendMessageRsp_descriptor =
+      getDescriptor().getMessageTypes().get(101);
+    internal_static_com_wali_live_proto_HuyaSendMessageRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_HuyaSendMessageRsp_descriptor,
+        new java.lang.String[] { "RetCode", });
     com.wali.live.proto.LiveCommonProto.getDescriptor();
   }
 

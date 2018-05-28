@@ -115,6 +115,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
     protected ImageView mRotateBtn;
 
     protected boolean mIsGameMode = false;
+    protected boolean mIsHuYaLive = false;
     protected boolean mIsLandscape = false;
     protected boolean mIsVideoLandscape = false;
 
@@ -137,8 +138,9 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
         super(activity, (ViewGroup) activity.findViewById(android.R.id.content), controller);
     }
 
-    public void setupView(boolean isGameMode) {
+    public void setupView(boolean isGameMode, boolean isHuYaLive) {
         mIsGameMode = isGameMode;
+        mIsHuYaLive = isHuYaLive;
         setupView();
         if (mIsGameMode) {
             setupGameView();
@@ -313,7 +315,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 return;
             }
             relativeLayout.setVisibility(View.VISIBLE);
-            mWatchBottomButton = new WatchBottomButton(relativeLayout, mIsGameMode);
+            mWatchBottomButton = new WatchBottomButton(relativeLayout, mIsGameMode , mIsHuYaLive);
             BottomButtonPresenter presenter = new BottomButtonPresenter(
                     mController, mController.mMyRoomData);
             registerComponent(mWatchBottomButton, presenter);

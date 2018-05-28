@@ -532,4 +532,6 @@ public class MiLinkCommand {
     public static final String COMMAND_OAUTH_REFRESH_MI_ACCESS_TOKEN = "zhibo.oauth.refreshMiAccessToken";  //更新小米账号accesstoken
     // 拉取收益记录请求
     public static final String COMMAND_GET_PROFITLIST = "zhibo.bank.getProfitList";
+
+    public static final String COMMAND_HUYA_MSG = "zhibo.huya.sendmsg";
 }
