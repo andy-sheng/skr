@@ -15,21 +15,36 @@ public class ReleaseChannelUtils {
     private static String curChannel;
 
     public static String getReleaseChannel() {
+
         if (TextUtils.isEmpty(curChannel)) {
+
             if (!Constants.ReleaseChannel.equals(DEFAULT_CHANNEL)) {
                 if (Constants.isDefaultChanel) {
                     curChannel = Constants.DEBUG_CHANNEL;
                 } else {
                     curChannel = Constants.ReleaseChannel;
                 }
+
+                if (curChannel.equals("meng_1254_48_android")) {
+                    //如果当前的渠道是应用商店
+                    String oldChannel = "";
+                    if (GlobalData.app() != null) {
+                        oldChannel = PreferenceUtils.getSettingString(GlobalData.app(),
+                                PreferenceUtils.KEY_RELEASE_CHANNEL, DEFAULT_CHANNEL);
+                    }
+                    if ("5005_1_android".equals(oldChannel)) {
+                        // 老的渠道是厂包,则渠道号不变，继续cta
+                        curChannel = oldChannel;
+                    }
+                }
                 if (GlobalData.app() != null) {
                     PreferenceUtils.setSettingString(GlobalData.app(),
-                            PreferenceUtils.KEY_RELEASE_CHANNEL, Constants.ReleaseChannel);
+                            PreferenceUtils.KEY_RELEASE_CHANNEL, curChannel);
                 }
             } else {
+                // 保持原来的渠道号，自升级的
                 if (GlobalData.app() != null) {
-                    curChannel =  DEFAULT_CHANNEL;
-                    PreferenceUtils.setSettingString(GlobalData.app(),
+                    curChannel = PreferenceUtils.getSettingString(GlobalData.app(),
                             PreferenceUtils.KEY_RELEASE_CHANNEL, DEFAULT_CHANNEL);
                 }
             }
@@ -50,7 +65,7 @@ public class ReleaseChannelUtils {
      * @return
      */
     public static boolean isMIUICTAPkg() {
-        return "5005_1_android".equalsIgnoreCase(Constants.ReleaseChannel) || "meng_1332_1_android".equalsIgnoreCase(Constants.ReleaseChannel);
+        return "5005_1_android".equalsIgnoreCase(Constants.ReleaseChannel) /*|| "meng_1332_1_android".equalsIgnoreCase(Constants.ReleaseChannel)*/;
     }
 
 }

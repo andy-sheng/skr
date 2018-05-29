@@ -241,7 +241,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
         return pref.getLong(PREF_FORCE_CHECK_TIME, 0);
     }
 
-    private void getApkVersion() {
+    private void  getApkVersion() {
         try {
             PackageInfo packageInfo = GlobalData.app().getPackageManager().getPackageInfo(
                     VersionCheckManager.PACKAGE_NAME, PackageManager.GET_META_DATA);

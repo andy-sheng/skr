@@ -62,6 +62,7 @@ import com.base.image.fresco.FrescoWorker;
 import com.base.log.MyLog;
 import com.base.pinyin.HanziToPinyin;
 import com.base.preference.PreferenceUtils;
+import com.base.utils.channel.ReleaseChannelUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.language.LocaleUtil;
 import com.base.utils.sdcard.SDCardUtils;
@@ -592,8 +593,8 @@ public abstract class CommonUtils {
     }
 
     /*
-    * 由于某些机器的proximity.getresolution获得的值永远小于sensor event value， 无法使用距离感应器。本地机器是否应该使用距离感应器。
-    */
+     * 由于某些机器的proximity.getresolution获得的值永远小于sensor event value， 无法使用距离感应器。本地机器是否应该使用距离感应器。
+     */
     public static boolean shouldAvoidProximitySensor() {
         final String[] unsupportedDeviceModels = new String[]{
                 "MB525", "ME525", "ME525+", "ME722", "ME811", "MotoA953", "HS-U8", "HS-E910", "S8600", "EG900",
@@ -1939,7 +1940,11 @@ public abstract class CommonUtils {
      * "5005_1_android".equalsIgnoreCase(Constants.ReleaseChannel)
      */
     public static boolean isNeedShowCtaDialog() {
-        return PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceUtils.PREF_KEY_NEED_SHOW_CTA, true);
+        if (ReleaseChannelUtils.isMIUICTAPkg()) {
+            return PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceUtils.PREF_KEY_NEED_SHOW_CTA, true);
+        }
+        return false;
+
     }
 
     private static float MAX_CUT_RATE = 0.2f;
@@ -1992,8 +1997,8 @@ public abstract class CommonUtils {
     }
 
     /*
- * 判断是否开启全面屏
- * */
+     * 判断是否开启全面屏
+     * */
     public static boolean isOpenForceFullScreen() {
         return Settings.Global.getInt(GlobalData.app().getContentResolver(), "force_fsg_nav_bar", 0) != 0;
     }
