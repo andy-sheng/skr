@@ -67,6 +67,7 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
     //星票
     private TextView mTicketNumTv;
     //管理
+    private View mTicketArea;
     private View mManagerArea;
     private View mFansArea;
 
@@ -120,6 +121,7 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
         mAvatarRv = $(R.id.avatar_rv);
         mTicketNumTv = $(R.id.ticket_num_tv);
         mGuestIv = $(R.id.guest_iv);
+        mTicketArea= $(R.id.ticket_area);
         mLinkArea = $(R.id.link_guest_area);
         mManagerArea = $(R.id.manager_area);
         mFansArea = $(R.id.vfans_area);
@@ -184,6 +186,10 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
     public void setFollowBtnShow(boolean isFollowGone) {
         mEnableFollow = isFollowGone;
         mFollowTv.setVisibility(mEnableFollow ? VISIBLE : GONE);
+    }
+
+    public void setTicketAreaShow(boolean isHuYaLive){
+        mTicketArea.setVisibility( isHuYaLive ? GONE : VISIBLE);
     }
 
     @Override

@@ -54,6 +54,7 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
     private static final String EXTRA_ENTER_TYPE = "extra_enter_type";
     private static final String EXTRA_ENTER_NICK_NAME = "extra_enter_nick_name";
     private static final String EXTRA_HAS_ROOM_LIST = "extra_has_room_list";
+    private static final String EXTRA_ENABLE_FOLLOW = "extra_enable_follow";
 
     public static final String ENTER_TYPE_LIVE_END = "enter_type_live_end";     //进入房间后，正常直播结束
     public static final String ENTER_TYPE_LATE = "enter_type_late";             //进入房间时 已结束
@@ -91,6 +92,7 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
     private User mOwner;
     private int mViewerCnt;
     private boolean mHasRoomList;
+    private boolean mEnableRelationChain = true;
 
     private UserEndLivePresenter mUserEndLivePresenter;
 
@@ -187,6 +189,7 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
             mViewerCnt = arguments.getInt(EXTRA_VIEWER, 0);
             mLiveType = arguments.getInt(EXTRA_LIVE_TYPE, 0);
             mHasRoomList = arguments.getBoolean(EXTRA_HAS_ROOM_LIST, false);
+            mEnableRelationChain = arguments.getBoolean(EXTRA_ENABLE_FOLLOW, true);
         }
     }
 
@@ -256,12 +259,19 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
             mViewerTv.setText(getResources().getQuantityString(R.plurals.live_end_viewer_cnt,
                     mViewerCnt, mViewerCnt));
         }
-        if (UserAccountManager.getInstance().getUuidAsLong() == mOwnerId) {
-            mFollowTv.setVisibility(View.GONE);
-            mFollowHintTv.setVisibility(View.INVISIBLE);
+
+        if( mEnableRelationChain){
+            if (UserAccountManager.getInstance().getUuidAsLong() == mOwnerId) {
+                mFollowTv.setVisibility(View.GONE);
+                mFollowHintTv.setVisibility(View.INVISIBLE);
+            } else {
+                followResult(mOwner.isFocused());
+            }
         } else {
-            followResult(mOwner.isFocused());
+            mFollowTv.setVisibility(View.GONE);
+            mFollowHintTv.setVisibility(View.GONE);
         }
+
 
         if (mHasRoomList) {
             mNextRoomContainer.setVisibility(View.VISIBLE);
@@ -369,20 +379,20 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
      */
     public static UserEndLiveFragment openFragment(FragmentActivity activity, long ownerId, String roomId,
                                                    long avatarTs, User owner, int viewer, int liveType, int ticket,
-                                                   long time, String type, String nickName, boolean hasRoomList) {
+                                                   long time, String type, String nickName, boolean hasRoomList, boolean mEnableRelationChain) {
         if (activity == null || activity.isFinishing()) {
             MyLog.d(TAG, "openFragment activity state is illegal");
             return null;
         }
         Bundle bundle = getBundle(ownerId, roomId, avatarTs, owner, viewer,
-                liveType, ticket, time, type, nickName, hasRoomList);
+                liveType, ticket, time, type, nickName, hasRoomList , mEnableRelationChain);
         UserEndLiveFragment userEndLiveFragment = (UserEndLiveFragment) FragmentNaviUtils.addFragment(activity, R.id.main_act_container,
                 UserEndLiveFragment.class, bundle, true, false, true);
         return userEndLiveFragment;
     }
 
     public static Bundle getBundle(long ownerId, String roomId, long avatarTs, User owner, int viewer, int liveType,
-                                   int ticket, long time, String type, String nickName, boolean hasRoomList) {
+                                   int ticket, long time, String type, String nickName, boolean hasRoomList, boolean mEnableRelationChain) {
         Bundle bundle = new Bundle();
         bundle.putLong(EXTRA_OWNER_ID, ownerId);
         bundle.putString(EXTRA_ROOM_ID, roomId);
@@ -396,6 +406,7 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
         bundle.putString(EXTRA_ENTER_TYPE, type);
         bundle.putString(EXTRA_ENTER_NICK_NAME, nickName);
         bundle.putBoolean(EXTRA_HAS_ROOM_LIST, hasRoomList);
+        bundle.putBoolean(EXTRA_ENABLE_FOLLOW, mEnableRelationChain);
         return bundle;
     }
 }

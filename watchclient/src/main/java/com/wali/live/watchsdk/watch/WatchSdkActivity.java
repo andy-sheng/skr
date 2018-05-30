@@ -479,7 +479,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                     mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getAvatarTs(),
                     mMyRoomData.getUser(), mMyRoomData.getViewerCnt(), mMyRoomData.getLiveType(),
                     mGiftMallPresenter.getSpendTicket(), System.currentTimeMillis() - mMyRoomData.getEnterRoomTime(), type,
-                    mMyRoomData.getNickName(), hasRoomList);
+                    mMyRoomData.getNickName(), hasRoomList , mMyRoomData.isEnableRelationChain());
         }
     }
 

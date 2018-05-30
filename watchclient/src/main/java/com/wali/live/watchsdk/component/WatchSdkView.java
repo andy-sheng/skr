@@ -241,6 +241,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 return;
             }
             mTopAreaView.setFollowBtnShow(mController.mMyRoomData.isEnableRelationChain());
+            mTopAreaView.setTicketAreaShow(mIsHuYaLive);
             TopAreaPresenter topAreaPresenter = new TopAreaPresenter(mController,
                     mController.mMyRoomData, false);
             registerComponent(mTopAreaView, topAreaPresenter);
@@ -320,6 +321,10 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             BottomButtonPresenter presenter = new BottomButtonPresenter(
                     mController, mController.mMyRoomData);
             registerComponent(mWatchBottomButton, presenter);
+            // 判断是否支持分享和关系链
+            if (!mController.mMyRoomData.isEnableRelationChain() && !mController.mMyRoomData.getEnableShare()){
+                mWatchBottomButton.setMoreBtnShow(false);
+            }
         }
         // 抢红包
         {

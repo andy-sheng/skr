@@ -166,6 +166,10 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         clearAnimator();
     }
 
+    public void setMoreBtnShow(boolean isShow){
+        mMoreBtn.setVisibility( isShow ? View.VISIBLE : View.GONE);
+    }
+
     public void reset() {
         clearAnimator();
         if (mGameBtn != null) {
