@@ -342,21 +342,16 @@ public class VersionCheckManager {
             Logger.w("VersionCheckManager", "the apk file packageName is " + packageInfo.packageName);
             Logger.w("VersionCheckManager", "the apk file packageName is com.wali.live");
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            Uri uri;
-            if (auth != null) {
-                uri = FileProvider.getUriForFile(GlobalData.app().getApplicationContext(), auth, newFile);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if (null != auth) {
+                Uri uri = FileProvider.getUriForFile(GlobalData.app().getApplicationContext(), auth, newFile);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.setDataAndType(uri, "application/vnd.android.package-archive");
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                GlobalData.app().getApplicationContext().startActivity(intent);
-                return true;
             } else {
-                uri = Uri.fromFile(newFile);
-                intent.setDataAndType(uri, "application/vnd.android.package-archive");
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                GlobalData.app().getApplicationContext().startActivity(intent);
-                return true;
+                intent.setDataAndType(Uri.fromFile(newFile), "application/vnd.android.package-archive");
             }
+            GlobalData.app().getApplicationContext().startActivity(intent);
+            return true;
 
         }
         Logger.w("VersionCheckManager", "the apk file packageName is not com.wali.live");
