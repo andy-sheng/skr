@@ -74,6 +74,14 @@ public interface IMiLiveSdk {
     void clearAccount(IAssistantCallback callback);
 
     /**
+     * 尝试schema跳转
+     * @param activity
+     * @param schema
+     * @param callback
+     * @return
+     */
+    boolean tryJumpBySchema(Activity activity, String schema, IAssistantCallback callback);
+    /**
      * 打开直播观看页面
      *
      * @notice 不带gameId

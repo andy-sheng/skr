@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -17,6 +18,7 @@ import com.wali.live.sdk.manager.http.HttpUtils;
 import com.wali.live.sdk.manager.http.SimpleRequest;
 import com.wali.live.sdk.manager.log.Logger;
 import com.wali.live.sdk.manager.utils.CommonUtils;
+import com.wali.live.sdk.manager.utils.SchemeUtils;
 import com.wali.live.sdk.manager.version.VersionCheckManager;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkServiceProxy;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
@@ -376,6 +378,44 @@ public class MiLiveSdkController implements IMiLiveSdk {
         }
         checkHasInit();
         MiLiveSdkServiceProxy.getInstance().clearAccount();
+    }
+
+    /**
+     * migamecenter://room/join?liveid=4431273_1527670977&playerid=4431273
+     * &videourl=http%3A%2F%2Fv2.zb.mi.com%2Flive%2F4431273_1527670977.flv%3Fplayui%3D0&type=8&recommend=r-0-0-4431273-4431273_1527670977-2001-8240-1527685008-1-1-1-0-1-56
+     *
+     * @param schema
+     * @return
+     */
+    public boolean tryJumpBySchema(Activity activity, String schema, IAssistantCallback callback) {
+        //尝试使用schema跳转
+        Uri uri = Uri.parse(schema);
+        String host = uri.getHost();
+        String path = uri.getPath();
+        if ("room".equals(host)) {
+            if ("/join".equals(path)) {
+                String liveId = SchemeUtils.getString(uri, "liveid");
+                long playerId = SchemeUtils.getLong(uri, "playerid", 0);
+                String videoUrl = SchemeUtils.getString(uri, "videourl");
+                int liveType = SchemeUtils.getInt(uri, "type", 0);
+                if (!TextUtils.isEmpty(liveId) && !TextUtils.isEmpty(videoUrl)) {
+                    openWatch(activity, playerId, liveId, videoUrl, liveType, callback);
+                    return true;
+                }
+            }
+        } else if ("playback".equals(host)) {
+            if ("/join".equals(path)) {
+                String liveId = SchemeUtils.getString(uri, "liveid");
+                long playerId = SchemeUtils.getLong(uri, "playerid", 0);
+                String videoUrl = SchemeUtils.getString(uri, "videourl");
+                int liveType = SchemeUtils.getInt(uri, "type", 0);
+                if (!TextUtils.isEmpty(liveId) && !TextUtils.isEmpty(videoUrl)) {
+                    openReplay(activity, playerId, liveId, videoUrl, liveType, callback);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
