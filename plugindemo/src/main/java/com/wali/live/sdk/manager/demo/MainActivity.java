@@ -2,6 +2,7 @@ package com.wali.live.sdk.manager.demo;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IntRange;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.wali.live.sdk.manager.IMiLiveSdk;
 import com.wali.live.sdk.manager.MiLiveSdkController;
 import com.wali.live.sdk.manager.SdkUpdateHelper;
+import com.wali.live.sdk.manager.aardemo.BuildConfig;
 import com.wali.live.sdk.manager.aardemo.R;
 import com.wali.live.sdk.manager.demo.global.GlobalData;
 import com.wali.live.sdk.manager.demo.notification.NotificationManger;
@@ -91,7 +93,12 @@ public class MainActivity extends AppCompatActivity {
                 Log.w(TAG, "onDownloadSuccess");
                 NotificationManger.getInstance().removeNotification(NotificationManger.UPDATE_DOWNLOADING);
                 ToastUtils.showToast(GlobalData.app().getApplicationContext(), R.string.download_update_succeed);
-                mSdkUpdateHelper.installUpdate();
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                    mSdkUpdateHelper.installUpdateN("com.wali.live.sdk.manager.fileprovider");
+                }else{
+                    mSdkUpdateHelper.installUpdate();
+                }
+
             }
 
             @Override

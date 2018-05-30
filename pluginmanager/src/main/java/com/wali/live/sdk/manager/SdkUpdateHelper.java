@@ -143,4 +143,20 @@ public class SdkUpdateHelper {
             }
         });
     }
+
+    public void installUpdateN(final String auth){
+        if (mExecutor == null) {
+            return;
+        }
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mVersionManager.installLocalPackageN(auth);
+            }
+        });
+    }
+
+    public void installUpdateSyncN(final String auth){
+        mVersionManager.installLocalPackageN(auth);
+    }
 }
