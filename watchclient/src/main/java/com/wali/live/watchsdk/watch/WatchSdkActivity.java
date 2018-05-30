@@ -298,7 +298,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         mMyRoomData.setLiveType(mRoomInfo.getLiveType());
         mMyRoomData.setGameId(mRoomInfo.getGameId());
         mMyRoomData.setEnableShare(mRoomInfo.isEnableShare());
-        mMyRoomData.setEnableFollow(mRoomInfo.isEnableFollow());
+        mMyRoomData.setEnableRelationChain(mRoomInfo.isEnableRelationChain());
         return true;
     }
 
@@ -490,7 +490,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         if (uid <= 0) {
             return;
         }
-        FloatInfoFragment.openFragment(this, uid, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this, mMyRoomData.getEnterRoomTime(), mMyRoomData.isEnableFollow());
+        FloatInfoFragment.openFragment(this, uid, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this, mMyRoomData.getEnterRoomTime(), mMyRoomData.isEnableRelationChain());
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
@@ -543,7 +543,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                 String liveId = (String) event.obj3;
                 RankingPagerFragment.openFragment(this, ticket, mMyRoomData.getInitTicket(), uid, liveId,
                         mMyRoomData.isTicketing() ? RankingPagerFragment.PARAM_FROM_CURRENT : RankingPagerFragment.PARAM_FROM_TOTAL,
-                        true, isDisplayLandscape(), mMyRoomData.isEnableFollow());
+                        true, isDisplayLandscape(), mMyRoomData.isEnableRelationChain());
             }
             break;
             case UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER: {

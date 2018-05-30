@@ -240,7 +240,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 MyLog.e(TAG, "missing R.id.top_area_view");
                 return;
             }
-            mTopAreaView.setFollowBtnShow(mController.mMyRoomData.isEnableFollow());
+            mTopAreaView.setFollowBtnShow(mController.mMyRoomData.isEnableRelationChain());
             TopAreaPresenter topAreaPresenter = new TopAreaPresenter(mController,
                     mController.mMyRoomData, false);
             registerComponent(mTopAreaView, topAreaPresenter);
@@ -546,7 +546,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 }
                 break;
             case MSG_FOLLOW_COUNT_DOWN:
-                if (mController.mMyRoomData.isEnableFollow()) {
+                if (mController.mMyRoomData.isEnableRelationChain()) {
                     if (mFollowGuidePresenter != null ||
                             TextUtils.isEmpty(RoomInfoGlobalCache.getsInstance().getCurrentRoomId())) {
                         return false;
@@ -558,7 +558,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 }
                 break;
             case MSG_SHOW_FOLLOW_GUIDE: {
-                if (mController.mMyRoomData.isEnableFollow()) {
+                if (mController.mMyRoomData.isEnableRelationChain()) {
                     if (mFollowGuidePresenter == null || mFollowGuideView != null
                             || TextUtils.isEmpty(RoomInfoGlobalCache.getsInstance().getCurrentRoomId())) {
                         return false;

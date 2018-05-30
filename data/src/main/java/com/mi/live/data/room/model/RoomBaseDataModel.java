@@ -138,7 +138,7 @@ public class RoomBaseDataModel implements Serializable {
     /**
      * 关注类型
      */
-    private boolean mEnableFollow = true;
+    private boolean mEnableRelationChain = true;
 
     /**
      * 房间id，重要属性
@@ -567,9 +567,9 @@ public class RoomBaseDataModel implements Serializable {
         mEnableShare = enableShare;
     }
 
-    public boolean isEnableFollow() { return mEnableFollow; }
+    public boolean isEnableRelationChain() { return mEnableRelationChain; }
 
-    public void setEnableFollow(boolean enableFollow) { mEnableFollow = enableFollow; }
+    public void setEnableRelationChain(boolean enableFollow) { mEnableRelationChain = enableFollow; }
 
     public boolean isSupportMagicFace() {
         return mSupportMagicFace;

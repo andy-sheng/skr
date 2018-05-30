@@ -50,7 +50,7 @@ public interface IMiLiveSdk {
     /**
      * 上层应用设置是否支持关注
      */
-    void enableFollow(boolean enable);
+    void enableRelationChain(boolean enable);
 
     /**
      * OAuth登录

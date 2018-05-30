@@ -113,7 +113,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                                         .setLiveType(liveType)
                                         .setGameId(gameId)
                                         .setEnableShare(enableShare)
-                                        .setEnableFollow(enableFollow)
+                                        .setEnableRelationChain(enableFollow)
                                         .build();
                                 WatchSdkActivity.openActivity(JumpSdkActivity.this, roomInfo);
                             }
@@ -128,7 +128,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                             public void process(Object objects) {
                                 if (roomInfo != null) {
                                     roomInfo.setEnableShare(enableShare);
-                                    roomInfo.setEnableFollow(enableFollow);
+                                    roomInfo.setEnableRelationChain(enableFollow);
                                 }
                                 WatchSdkActivity.openActivity(JumpSdkActivity.this, roomInfo);
                             }
@@ -146,7 +146,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                                 for (RoomInfo roomInfo : list) {
                                     if (roomInfo != null) {
                                         roomInfo.setEnableShare(enableShare);
-                                        roomInfo.setEnableFollow(enableFollow);
+                                        roomInfo.setEnableRelationChain(enableFollow);
                                     }
                                 }
                                 WatchSdkActivity.openActivity(JumpSdkActivity.this, list, position);
@@ -171,7 +171,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                                         .setLiveType(liveType)
                                         .setGameId(gameId)
                                         .setEnableShare(enableShare)
-                                        .setEnableFollow(enableFollow)
+                                        .setEnableRelationChain(enableFollow)
                                         .build();
                                 VideoDetailSdkActivity.openActivity(JumpSdkActivity.this, roomInfo);
                             }

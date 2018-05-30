@@ -99,7 +99,11 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private String mChannelSecret;
 
     private boolean mEnableShare;
-    private boolean mEnableFollow = true;
+    /**
+     * 是否隐藏关系链，无法关注，无法私信
+     */
+    private boolean mEnableRelationChain = true;
+
 
     private ICallback mCallback;
 
@@ -243,7 +247,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
         return pref.getLong(PREF_FORCE_CHECK_TIME, 0);
     }
 
-    private void  getApkVersion() {
+    private void getApkVersion() {
         try {
             PackageInfo packageInfo = GlobalData.app().getPackageManager().getPackageInfo(
                     VersionCheckManager.PACKAGE_NAME, PackageManager.GET_META_DATA);
@@ -306,8 +310,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void enableFollow(boolean enable) {
-        mEnableFollow = enable;
+    public void enableRelationChain(boolean enable) {
+        mEnableRelationChain = enable;
     }
 
     @Override
@@ -614,8 +618,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
         if (mEnableShare) {
             bundle.putBoolean(EXTRA_ENABLE_SHARE, mEnableShare);
         }
-        if (mEnableFollow) {
-            bundle.putBoolean(EXTRA_ENABLE_FOLLOW, mEnableFollow);
+        if (mEnableRelationChain) {
+            bundle.putBoolean(EXTRA_ENABLE_FOLLOW, mEnableRelationChain);
         }
         return bundle;
     }
