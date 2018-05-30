@@ -240,7 +240,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 MyLog.e(TAG, "missing R.id.top_area_view");
                 return;
             }
-            mTopAreaView.isShowFollowBtn(mController.mMyRoomData.isEnableFollow());
+            mTopAreaView.setFollowBtnShow(mController.mMyRoomData.isEnableFollow());
             TopAreaPresenter topAreaPresenter = new TopAreaPresenter(mController,
                     mController.mMyRoomData, false);
             registerComponent(mTopAreaView, topAreaPresenter);

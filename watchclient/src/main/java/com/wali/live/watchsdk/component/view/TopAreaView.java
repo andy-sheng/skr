@@ -181,7 +181,7 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
         }
     }
 
-    public void isShowFollowBtn(boolean isFollowGone) {
+    public void setFollowBtnShow(boolean isFollowGone) {
         mEnableFollow = isFollowGone;
         mFollowTv.setVisibility(mEnableFollow ? VISIBLE : GONE);
     }
@@ -275,9 +275,8 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
             public void setFansGroupModel(FansGroupDetailModel model) {
                 MyLog.v(TAG, "setFansGroupModel model=" + model);
                 mFansGroupDetailModel = model;
-                if (mFansGroupDetailModel != null && mFollowTv.getVisibility() != View.VISIBLE) {
-//                    mFansArea.setVisibility(View.VISIBLE);
-                    mFansArea.setVisibility(GONE);
+                if (mFansGroupDetailModel != null && mFollowTv.getVisibility() != View.VISIBLE && mEnableFollow) {
+                    mFansArea.setVisibility(View.VISIBLE);
                 } else {
                     mFansArea.setVisibility(View.GONE);
                 }

@@ -138,7 +138,7 @@ public class RoomBaseDataModel implements Serializable {
     /**
      * 关注类型
      */
-    private boolean mEnableFollow = false;
+    private boolean mEnableFollow = true;
 
     /**
      * 房间id，重要属性

@@ -94,7 +94,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
         String channelSecret = intent.getStringExtra(EXTRA_CHANNEL_SECRET);
 
         final boolean enableShare = intent.getBooleanExtra(EXTRA_ENABLE_SHARE, false);
-        final boolean enableFollow = intent.getBooleanExtra(EXTRA_ENABLE_FOLLOW, false);
+        final boolean enableFollow = intent.getBooleanExtra(EXTRA_ENABLE_FOLLOW, true);
 
         MyLog.d(TAG, action + " enableShare=" + enableShare);
         switch (action) {

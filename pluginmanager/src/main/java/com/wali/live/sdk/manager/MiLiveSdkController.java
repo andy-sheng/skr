@@ -99,7 +99,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private String mChannelSecret;
 
     private boolean mEnableShare;
-    private boolean mEnableFollow;
+    private boolean mEnableFollow = true;
 
     private ICallback mCallback;
 

@@ -26,7 +26,7 @@ public class RoomInfo implements Parcelable {
     private boolean mEnableShare;
 
     // 是否支持分享
-    private boolean mEnableFollow;
+    private boolean mEnableFollow = true;
 
     // 以下与ui相关的信息
     private String mCoverUrl;

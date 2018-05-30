@@ -51,7 +51,7 @@ public class FloatInfoPresenter extends BaseRxPresenter<IFloatInfoView> {
     private String mLiveUrl;
 
     //是否展示关注
-    private boolean mEnableFollow;
+    private boolean mEnableFollow = true;
 
     private User mUser;
     private RankProto.RankUser mTopOneUser;

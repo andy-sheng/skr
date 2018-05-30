@@ -321,12 +321,12 @@ public class FloatInfoFragment extends BaseEventBusFragment
         mUser = user;
         mTopOneUser = topOneUser;
         initView();
-        isShowFollowArea(enableFollow);
+        setFollowAreaShow(enableFollow);
         refreshAvatar();
         refreshUserInfo();
     }
 
-    private void isShowFollowArea(boolean enableFollow) {
+    private void setFollowAreaShow(boolean enableFollow) {
         if (!enableFollow){
             mFollowContainer.setVisibility(View.GONE);
             mForbidContainer.setVisibility(View.GONE);
