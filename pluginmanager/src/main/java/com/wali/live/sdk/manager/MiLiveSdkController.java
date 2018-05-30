@@ -618,7 +618,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
         if (mEnableShare) {
             bundle.putBoolean(EXTRA_ENABLE_SHARE, mEnableShare);
         }
-        if (mEnableRelationChain) {
+        if (!mEnableRelationChain) {
             bundle.putBoolean(EXTRA_ENABLE_FOLLOW, mEnableRelationChain);
         }
         return bundle;
