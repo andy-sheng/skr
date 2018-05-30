@@ -315,15 +315,15 @@ public class VersionCheckManager {
     }
 
     public boolean installLocalPackage() {
-        return installPackage(null);
+        return installLocalPackageInner(null);
     }
 
 
     public boolean installLocalPackageN(String auth) {
-        return installPackage(auth);
+        return installLocalPackageInner(auth);
     }
 
-    public boolean installPackage(String auth){
+    private boolean installLocalPackageInner(String auth) {
         // 首先将本地文件重命名，这样在下次检查的时候就会把这个文件删除，
         // 防止这次下载的是一个错误的包，安装失败后，下次继续会安装失败。
         String localFileName = getCachePath(String.format("%s_%d.apk",
@@ -343,16 +343,16 @@ public class VersionCheckManager {
             Logger.w("VersionCheckManager", "the apk file packageName is com.wali.live");
             Intent intent = new Intent(Intent.ACTION_VIEW);
             Uri uri;
-            if(auth != null){
-                uri = FileProvider.getUriForFile(GlobalData.app().getApplicationContext(),auth,newFile);
-                intent.setDataAndType(uri,"application/vnd.android.package-archive");
+            if (auth != null) {
+                uri = FileProvider.getUriForFile(GlobalData.app().getApplicationContext(), auth, newFile);
+                intent.setDataAndType(uri, "application/vnd.android.package-archive");
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 GlobalData.app().getApplicationContext().startActivity(intent);
                 return true;
-            }else {
+            } else {
                 uri = Uri.fromFile(newFile);
-                intent.setDataAndType(uri,"application/vnd.android.package-archive");
+                intent.setDataAndType(uri, "application/vnd.android.package-archive");
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 GlobalData.app().getApplicationContext().startActivity(intent);
                 return true;
