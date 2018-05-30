@@ -207,7 +207,7 @@ public class RoomInfo implements Parcelable {
         }
 
         public Builder setEnableFollow(boolean enableFollow){
-            mRoomInfo.setmEnableFollow(enableFollow);
+            mRoomInfo.setEnableFollow(enableFollow);
             return this;
         }
 
