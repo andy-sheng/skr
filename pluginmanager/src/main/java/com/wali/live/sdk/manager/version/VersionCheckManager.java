@@ -10,6 +10,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 
 import com.wali.live.sdk.manager.IMiLiveSdk;
@@ -314,6 +315,15 @@ public class VersionCheckManager {
     }
 
     public boolean installLocalPackage() {
+        return installPackage(null);
+    }
+
+
+    public boolean installLocalPackageN(String auth) {
+        return installPackage(auth);
+    }
+
+    public boolean installPackage(String auth){
         // 首先将本地文件重命名，这样在下次检查的时候就会把这个文件删除，
         // 防止这次下载的是一个错误的包，安装失败后，下次继续会安装失败。
         String localFileName = getCachePath(String.format("%s_%d.apk",
@@ -332,11 +342,22 @@ public class VersionCheckManager {
             Logger.w("VersionCheckManager", "the apk file packageName is " + packageInfo.packageName);
             Logger.w("VersionCheckManager", "the apk file packageName is com.wali.live");
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(Uri.fromFile(newFile),
-                    "application/vnd.android.package-archive");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            GlobalData.app().getApplicationContext().startActivity(intent);
-            return true;
+            Uri uri;
+            if(auth != null){
+                uri = FileProvider.getUriForFile(GlobalData.app().getApplicationContext(),auth,newFile);
+                intent.setDataAndType(uri,"application/vnd.android.package-archive");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                GlobalData.app().getApplicationContext().startActivity(intent);
+                return true;
+            }else {
+                uri = Uri.fromFile(newFile);
+                intent.setDataAndType(uri,"application/vnd.android.package-archive");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                GlobalData.app().getApplicationContext().startActivity(intent);
+                return true;
+            }
+
         }
         Logger.w("VersionCheckManager", "the apk file packageName is not com.wali.live");
         return false;
