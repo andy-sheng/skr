@@ -9,7 +9,7 @@ import com.wali.live.proto.RankProto;
  */
 
 public interface IFloatInfoView extends IRxView {
-    void refreshAllViews(User mUser, RankProto.RankUser mTopOneUser);
+    void refreshAllViews(User mUser, RankProto.RankUser mTopOneUser, boolean enableFollow);
 
     void refreshUserInfo();
 

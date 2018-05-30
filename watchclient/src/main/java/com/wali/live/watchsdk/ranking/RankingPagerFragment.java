@@ -48,6 +48,7 @@ public class RankingPagerFragment extends BaseFragment {
     public static final String EXTRA_LIVEID = "extra_live_id";
     public static final String EXTRA_IS_LANDSCAPE = "extra_is_landscape";
     public static final String EXTRA_FROM_TYPE = "extra_type";
+    public static final String EXTRA_ENABLE_FOLLOW = "extra_enable_follow";
 
     private List<Fragment> mTabContents = new ArrayList();
 
@@ -65,6 +66,8 @@ public class RankingPagerFragment extends BaseFragment {
     private boolean isShowCurrent;
     private boolean isLandSpace;
     private String mLiveId;
+
+    private boolean mEnableFollow = true;
 
     @Override
     public int getRequestCode() {
@@ -90,6 +93,7 @@ public class RankingPagerFragment extends BaseFragment {
             mFromType = bundle.getString(EXTRA_FROM_TYPE);
             isShowCurrent = bundle.getBoolean(IS_SHOW_CURRENT);
             isLandSpace = bundle.getBoolean(EXTRA_IS_LANDSCAPE);
+            mEnableFollow = bundle.getBoolean(EXTRA_ENABLE_FOLLOW);
         }
         if (mUuid == 0) {
             mUuid = UserAccountManager.getInstance().getUuidAsLong();
@@ -149,6 +153,7 @@ public class RankingPagerFragment extends BaseFragment {
             bundle.putInt(BaseRankingFragment.EXTRA_TICKET_NUM, mTicketNum);
             bundle.putLong(BaseRankingFragment.EXTRA_UUID, mUuid);
             bundle.putString(BaseRankingFragment.EXTRA_LIVE_ID, mLiveId);
+            bundle.putBoolean(BaseRankingFragment.EXTRA_ENABLE_FOLLOW, mEnableFollow);
             totalFragment.setArguments(bundle);
             mTabContents.add(totalFragment);
         }
@@ -160,6 +165,7 @@ public class RankingPagerFragment extends BaseFragment {
             bundle.putInt(BaseRankingFragment.EXTRA_TICKET_START, mTicketStartNum);
             bundle.putLong(BaseRankingFragment.EXTRA_UUID, mUuid);
             bundle.putString(BaseRankingFragment.EXTRA_LIVE_ID, mLiveId);
+            bundle.putBoolean(BaseRankingFragment.EXTRA_ENABLE_FOLLOW, mEnableFollow);
             currentFragment.setArguments(bundle);
             mTabContents.add(currentFragment);
         }
@@ -256,7 +262,7 @@ public class RankingPagerFragment extends BaseFragment {
         return true;
     }
 
-    public static void openFragment(BaseActivity activity, int ticket, int startTicket, long ownerId, String roomId, String type, boolean isSHow, boolean isLandspace) {
+    public static void openFragment(BaseActivity activity, int ticket, int startTicket, long ownerId, String roomId, String type, boolean isSHow, boolean isLandspace, boolean enableFollow) {
         if (activity == null || activity.isFinishing()) {
             return;
         }
@@ -268,6 +274,7 @@ public class RankingPagerFragment extends BaseFragment {
         bundle.putBoolean(BaseFragment.PARAM_FORCE_PORTRAIT, true);
         bundle.putString(RankingPagerFragment.EXTRA_FROM_TYPE, type);
         bundle.putBoolean(RankingPagerFragment.IS_SHOW_CURRENT, isSHow);
+        bundle.putBoolean(EXTRA_ENABLE_FOLLOW, enableFollow);
 
         bundle.putBoolean(RankingPagerFragment.EXTRA_IS_LANDSCAPE, isLandspace);
         FragmentNaviUtils.addFragment(activity, R.id.main_act_container, RankingPagerFragment.class, bundle, true, false, true);

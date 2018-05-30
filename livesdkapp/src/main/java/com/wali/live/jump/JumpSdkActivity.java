@@ -47,6 +47,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
     private static final String EXTRA_LIVE_TYPE = "extra_live_type";
     private static final String EXTRA_GAME_ID = "extra_game_id";
     private static final String EXTRA_ENABLE_SHARE = "extra_enable_share";
+    private static final String EXTRA_ENABLE_FOLLOW = "extra_enable_follow";
 
     private static final String EXTRA_LOCATION = "extra_location";
 
@@ -93,6 +94,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
         String channelSecret = intent.getStringExtra(EXTRA_CHANNEL_SECRET);
 
         final boolean enableShare = intent.getBooleanExtra(EXTRA_ENABLE_SHARE, false);
+        final boolean enableFollow = intent.getBooleanExtra(EXTRA_ENABLE_FOLLOW, false);
 
         MyLog.d(TAG, action + " enableShare=" + enableShare);
         switch (action) {
@@ -111,6 +113,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                                         .setLiveType(liveType)
                                         .setGameId(gameId)
                                         .setEnableShare(enableShare)
+                                        .setEnableFollow(enableFollow)
                                         .build();
                                 WatchSdkActivity.openActivity(JumpSdkActivity.this, roomInfo);
                             }
@@ -125,6 +128,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                             public void process(Object objects) {
                                 if (roomInfo != null) {
                                     roomInfo.setEnableShare(enableShare);
+                                    roomInfo.setEnableFollow(enableFollow);
                                 }
                                 WatchSdkActivity.openActivity(JumpSdkActivity.this, roomInfo);
                             }
@@ -142,6 +146,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                                 for (RoomInfo roomInfo : list) {
                                     if (roomInfo != null) {
                                         roomInfo.setEnableShare(enableShare);
+                                        roomInfo.setEnableFollow(enableFollow);
                                     }
                                 }
                                 WatchSdkActivity.openActivity(JumpSdkActivity.this, list, position);
@@ -166,6 +171,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                                         .setLiveType(liveType)
                                         .setGameId(gameId)
                                         .setEnableShare(enableShare)
+                                        .setEnableFollow(enableFollow)
                                         .build();
                                 VideoDetailSdkActivity.openActivity(JumpSdkActivity.this, roomInfo);
                             }

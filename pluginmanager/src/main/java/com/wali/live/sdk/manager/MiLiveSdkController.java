@@ -39,6 +39,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String EXTRA_PACKAGE_NAME = "extra_package_name";
     private static final String EXTRA_CHANNEL_SECRET = "extra_channel_secret";
     private static final String EXTRA_ENABLE_SHARE = "extra_enable_share";
+    private static final String EXTRA_ENABLE_FOLLOW = "extra_enable_follow";
 
     private static final String EXTRA_PLAYER_ID = "extra_player_id";
     private static final String EXTRA_LIVE_ID = "extra_live_id";
@@ -98,6 +99,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private String mChannelSecret;
 
     private boolean mEnableShare;
+    private boolean mEnableFollow;
 
     private ICallback mCallback;
 
@@ -301,6 +303,11 @@ public class MiLiveSdkController implements IMiLiveSdk {
     @Override
     public void enableShare(boolean enable) {
         mEnableShare = enable;
+    }
+
+    @Override
+    public void enableFollow(boolean enable) {
+        mEnableFollow = enable;
     }
 
     @Override
@@ -606,6 +613,9 @@ public class MiLiveSdkController implements IMiLiveSdk {
         bundle.putString(EXTRA_CHANNEL_SECRET, mChannelSecret);
         if (mEnableShare) {
             bundle.putBoolean(EXTRA_ENABLE_SHARE, mEnableShare);
+        }
+        if (mEnableFollow) {
+            bundle.putBoolean(EXTRA_ENABLE_FOLLOW, mEnableFollow);
         }
         return bundle;
     }

@@ -240,6 +240,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 MyLog.e(TAG, "missing R.id.top_area_view");
                 return;
             }
+            mTopAreaView.isShowFollowBtn(mController.mMyRoomData.isEnableFollow());
             TopAreaPresenter topAreaPresenter = new TopAreaPresenter(mController,
                     mController.mMyRoomData, false);
             registerComponent(mTopAreaView, topAreaPresenter);
@@ -315,7 +316,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 return;
             }
             relativeLayout.setVisibility(View.VISIBLE);
-            mWatchBottomButton = new WatchBottomButton(relativeLayout, mIsGameMode , mIsHuYaLive);
+            mWatchBottomButton = new WatchBottomButton(relativeLayout, mIsGameMode, mIsHuYaLive);
             BottomButtonPresenter presenter = new BottomButtonPresenter(
                     mController, mController.mMyRoomData);
             registerComponent(mWatchBottomButton, presenter);
@@ -545,44 +546,48 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 }
                 break;
             case MSG_FOLLOW_COUNT_DOWN:
-                if (mFollowGuidePresenter != null ||
-                        TextUtils.isEmpty(RoomInfoGlobalCache.getsInstance().getCurrentRoomId())) {
-                    return false;
+                if (mController.mMyRoomData.isEnableFollow()) {
+                    if (mFollowGuidePresenter != null ||
+                            TextUtils.isEmpty(RoomInfoGlobalCache.getsInstance().getCurrentRoomId())) {
+                        return false;
+                    }
+                    int countTs = params.getItem(0);
+                    mFollowGuidePresenter = new FollowGuidePresenter(mController,
+                            mController.mMyRoomData);
+                    mFollowGuidePresenter.countDownOut(countTs);
                 }
-                int countTs = params.getItem(0);
-                mFollowGuidePresenter = new FollowGuidePresenter(mController,
-                        mController.mMyRoomData);
-                mFollowGuidePresenter.countDownOut(countTs);
                 break;
             case MSG_SHOW_FOLLOW_GUIDE: {
-                if (mFollowGuidePresenter == null || mFollowGuideView != null
-                        || TextUtils.isEmpty(RoomInfoGlobalCache.getsInstance().getCurrentRoomId())) {
-                    return false;
-                }
-                mFollowGuideView = new FollowGuideView(mActivity);
-                mFollowGuideView.setVisibility(View.INVISIBLE);
-                registerComponent(mFollowGuideView, mFollowGuidePresenter);
-
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-
-                ViewGroup rootView = (ViewGroup) mActivity.findViewById(R.id.main_act_container);
-                rootView.addView(mFollowGuideView, layoutParams);
-
-                mFollowGuideView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mFollowGuideView.setMyRoomData(mController.mMyRoomData);
-                        mFollowGuideView.onOrientation(mIsLandscape);
+                if (mController.mMyRoomData.isEnableFollow()) {
+                    if (mFollowGuidePresenter == null || mFollowGuideView != null
+                            || TextUtils.isEmpty(RoomInfoGlobalCache.getsInstance().getCurrentRoomId())) {
+                        return false;
                     }
-                });
+                    mFollowGuideView = new FollowGuideView(mActivity);
+                    mFollowGuideView.setVisibility(View.INVISIBLE);
+                    registerComponent(mFollowGuideView, mFollowGuidePresenter);
 
-                // 出来关注，让关注一起移动
-                mVerticalMoveSet.add(mFollowGuideView);
+                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                    layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+                    ViewGroup rootView = (ViewGroup) mActivity.findViewById(R.id.main_act_container);
+                    rootView.addView(mFollowGuideView, layoutParams);
+
+                    mFollowGuideView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mFollowGuideView.setMyRoomData(mController.mMyRoomData);
+                            mFollowGuideView.onOrientation(mIsLandscape);
+                        }
+                    });
+
+                    // 出来关注，让关注一起移动
+                    mVerticalMoveSet.add(mFollowGuideView);
+                }
             }
-            break;
+                break;
             case MSG_SHOW_SEND_ENVELOPE:
                 SendEnvelopeFragment.openFragment((BaseActivity) mActivity, mController.mMyRoomData);
                 return true;

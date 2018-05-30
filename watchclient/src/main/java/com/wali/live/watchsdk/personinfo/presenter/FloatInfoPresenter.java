@@ -41,6 +41,7 @@ public class FloatInfoPresenter extends BaseRxPresenter<IFloatInfoView> {
     public static final String EXTRA_IN_LIVE_ENTER_TIME = "live_enter_time";
     public static final String EXTRA_IN_ROOM_ID = "room_id";
     public static final String EXTRA_IN_LIVE_URL = "live_url";
+    public static final String EXTRA_ENABLE_FOLLOW = "extra_enable_follow";
 
     //从其他页面bundle传递过来的
     private long mUserUid;
@@ -48,6 +49,9 @@ public class FloatInfoPresenter extends BaseRxPresenter<IFloatInfoView> {
     private long mEnterTime;
     private String mRoomId;
     private String mLiveUrl;
+
+    //是否展示关注
+    private boolean mEnableFollow;
 
     private User mUser;
     private RankProto.RankUser mTopOneUser;
@@ -72,6 +76,7 @@ public class FloatInfoPresenter extends BaseRxPresenter<IFloatInfoView> {
             mEnterTime = bundle.getLong(FloatInfoPresenter.EXTRA_IN_LIVE_ENTER_TIME);
             mRoomId = bundle.getString(FloatInfoPresenter.EXTRA_IN_ROOM_ID);
             mLiveUrl = bundle.getString(FloatInfoPresenter.EXTRA_IN_LIVE_URL);
+            mEnableFollow = bundle.getBoolean(FloatInfoPresenter.EXTRA_ENABLE_FOLLOW);
         }
         if (mGetUserInfoSubscription != null && !mGetUserInfoSubscription.isUnsubscribed()) {
             mGetUserInfoSubscription.unsubscribe();
@@ -115,7 +120,7 @@ public class FloatInfoPresenter extends BaseRxPresenter<IFloatInfoView> {
                             MyLog.w(TAG, "user == null");
                             return;
                         }
-                        mView.refreshAllViews(mUser, mTopOneUser);
+                        mView.refreshAllViews(mUser, mTopOneUser, mEnableFollow);
                     }
                 }, new Action1<Throwable>() {
                     @Override

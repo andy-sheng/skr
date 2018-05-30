@@ -317,7 +317,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
         }
         FloatInfoFragment.openFragment(VideoDetailSdkActivity.this,
                 uid, mMyRoomData.getUid(), mMyRoomData.getRoomId(),
-                mMyRoomData.getVideoUrl(), null, mMyRoomData.getEnterRoomTime());
+                mMyRoomData.getVideoUrl(), null, mMyRoomData.getEnterRoomTime(), mMyRoomData.isEnableFollow());
     }
 
 
@@ -339,7 +339,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
                 String liveId = (String) event.obj3;
                 RankingPagerFragment.openFragment(this, ticket, mMyRoomData.getInitTicket(), uid, liveId,
                         mMyRoomData.isTicketing() ? RankingPagerFragment.PARAM_FROM_CURRENT : RankingPagerFragment.PARAM_FROM_TOTAL,
-                        true, isDisplayLandscape());
+                        true, isDisplayLandscape(), mMyRoomData.isEnableFollow());
             }
             break;
         }

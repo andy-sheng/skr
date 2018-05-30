@@ -70,6 +70,8 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
     private View mManagerArea;
     private View mFansArea;
 
+    private boolean mEnableFollow = true;
+
     private UserAvatarRecyclerAdapter mAvatarRvAdapter;
     private final LinearLayoutManager mAvatarLayoutManager = new LinearLayoutManager(getContext());
 
@@ -179,6 +181,11 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
         }
     }
 
+    public void isShowFollowBtn(boolean isFollowGone) {
+        mEnableFollow = isFollowGone;
+        mFollowTv.setVisibility(mEnableFollow ? VISIBLE : GONE);
+    }
+
     @Override
     public IView getViewProxy() {
         /**
@@ -193,30 +200,36 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
             @Override
             public void onFollowResult(int resultCode) {
                 MyLog.v(TAG, "onFollowResult result=" + resultCode);
-                if (resultCode == ErrorCode.CODE_RELATION_BLACK) {
-                    ToastUtils.showToast(getResources().getString(R.string.setting_black_follow_hint));
-                } else if (resultCode == 0) {
-                    ToastUtils.showToast(getResources().getString(R.string.follow_success));
-                    mAnimationHelper.startFollowAnim(false);
-                } else if (resultCode == -1) {
-                    ToastUtils.showToast(getResources().getString(R.string.follow_failed));
+                if (mEnableFollow) {
+                    if (resultCode == ErrorCode.CODE_RELATION_BLACK) {
+                        ToastUtils.showToast(getResources().getString(R.string.setting_black_follow_hint));
+                    } else if (resultCode == 0) {
+                        ToastUtils.showToast(getResources().getString(R.string.follow_success));
+                        mAnimationHelper.startFollowAnim(false);
+                    } else if (resultCode == -1) {
+                        ToastUtils.showToast(getResources().getString(R.string.follow_failed));
+                    }
                 }
             }
 
             @Override
             public void showFollowBtn(boolean needShow, boolean useAnim) {
                 MyLog.v(TAG, "showFollowBtn needShow=" + needShow);
-                if (mIsLinking) {
-                    mIsFollowGone = needShow;
-                } else {
-                    if (useAnim) {
-                        mAnimationHelper.startFollowAnim(needShow);
+                if (mEnableFollow) {
+                    if (mIsLinking) {
+                        mIsFollowGone = needShow;
                     } else {
-                        mFollowTv.setVisibility(needShow ? View.VISIBLE : View.GONE);
-                        if (!needShow && mFansGroupDetailModel != null) {
-                            mFansArea.setVisibility(VISIBLE);
+                        if (useAnim) {
+                            mAnimationHelper.startFollowAnim(needShow);
                         } else {
-                            mFansArea.setVisibility(GONE);
+                            if (mEnableFollow) {
+                                mFollowTv.setVisibility(needShow ? View.VISIBLE : View.GONE);
+                            }
+                            if (!needShow && mFansGroupDetailModel != null) {
+                                mFansArea.setVisibility(VISIBLE);
+                            } else {
+                                mFansArea.setVisibility(GONE);
+                            }
                         }
                     }
                 }
@@ -263,7 +276,8 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
                 MyLog.v(TAG, "setFansGroupModel model=" + model);
                 mFansGroupDetailModel = model;
                 if (mFansGroupDetailModel != null && mFollowTv.getVisibility() != View.VISIBLE) {
-                    mFansArea.setVisibility(View.VISIBLE);
+//                    mFansArea.setVisibility(View.VISIBLE);
+                    mFansArea.setVisibility(GONE);
                 } else {
                     mFansArea.setVisibility(View.GONE);
                 }
@@ -301,7 +315,7 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
                 }
                 mIsLinking = false;
                 mLinkArea.setVisibility(View.GONE);
-                if (mIsFollowGone) {
+                if (mIsFollowGone && mEnableFollow) {
                     MyLog.d(TAG, "link to follow");
                     mFollowTv.setVisibility(View.VISIBLE);
                     mIsFollowGone = false;

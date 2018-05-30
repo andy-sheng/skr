@@ -77,6 +77,8 @@ public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
     private String type;
     private RxActivity mAct;
 
+    private boolean mEnableFollow = true;
+
     private List<UserListData> mRankUserList = new ArrayList<>();
 
     private int mTotalNum;      // 总的星票数
@@ -184,6 +186,10 @@ public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
         mRankUserList.addAll(rankUserList);
         mShowTopThreeHeader = mRankUserList.size() > 3;
         notifyDataSetChanged();
+    }
+
+    public void isShowFollowBtn(boolean enableFollow) {
+        mEnableFollow = enableFollow;
     }
 
     public void setTotalNum(int totalNum) {
@@ -319,7 +325,7 @@ public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private static class AnchorRankingTopHolder extends RecyclerView.ViewHolder {
+    private class AnchorRankingTopHolder extends RecyclerView.ViewHolder {
         private static final int CARD_NUM = 3;
 
         public BaseImageView imgFirst;
@@ -373,7 +379,12 @@ public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
                 rlytClickAreas[i] = (RelativeLayout) (infoContents[i].findViewById(R.id.current_rank_rlytClickArea));
                 iconAreas[i] = (infoContents[i].findViewById(R.id.live_icon));
                 expTitleTvs[i] = (TextView) infoContents[i].findViewById(R.id.my_exp_title);
+
+                if (!mEnableFollow) {
+                    rlytClickAreas[i].setVisibility(View.GONE);
+                }
             }
+
         }
     }
 
@@ -439,6 +450,11 @@ public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
             liveIcon = (View) itemView.findViewById(R.id.live_icon);
             nameAreaRl = (RelativeLayout) itemView.findViewById(R.id.name_gender_level);
             expTitleTv = (TextView) itemView.findViewById(R.id.my_exp_title);
+
+            if (!mEnableFollow) {
+                clickArea.setVisibility(View.GONE);
+            }
+
         }
 
         public void bind(final UserListData item, final int position) {
@@ -465,30 +481,32 @@ public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
                 rankNum.setText(String.valueOf(position + positionOffset - (mShowTotalNumHeader ? 1 : 0)));
             }
 
-            if (UserAccountManager.getInstance().getUuidAsLong() == item.userId) {
-                followState.setVisibility(View.GONE);
-                clickArea.setVisibility(View.GONE);
-            } else {
-                clickArea.setVisibility(View.VISIBLE);
-                followState.setVisibility(View.VISIBLE);
-                if (item.isBothway) {
-                    clickArea.setEnabled(false);
-                    followState.setText(R.string.follow_both);
+            if (mEnableFollow) {
+                if (UserAccountManager.getInstance().getUuidAsLong() == item.userId) {
+                    followState.setVisibility(View.GONE);
+                    clickArea.setVisibility(View.GONE);
                 } else {
-                    if (item.isFollowing) {
+                    clickArea.setVisibility(View.VISIBLE);
+                    followState.setVisibility(View.VISIBLE);
+                    if (item.isBothway) {
                         clickArea.setEnabled(false);
-                        followState.setText(R.string.already_followed);
+                        followState.setText(R.string.follow_both);
                     } else {
-                        clickArea.setEnabled(true);
-                        followState.setText(R.string.follow);
+                        if (item.isFollowing) {
+                            clickArea.setEnabled(false);
+                            followState.setText(R.string.already_followed);
+                        } else {
+                            clickArea.setEnabled(true);
+                            followState.setText(R.string.follow);
+                        }
                     }
+                    clickArea.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            clickRelation(item, followState);
+                        }
+                    });
                 }
-                clickArea.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        clickRelation(item, followState);
-                    }
-                });
             }
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -584,30 +602,32 @@ public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
             final int finalI = i;
             holder.txtNames[i].setText(userData.userNickname);
 
-            if (UserAccountManager.getInstance().getUuidAsLong() == userData.userId) {
-                holder.txtFollowStates[i].setVisibility(View.INVISIBLE);
-                holder.rlytClickAreas[i].setVisibility(View.INVISIBLE);
-            } else {
-                holder.rlytClickAreas[i].setVisibility(View.VISIBLE);
-                holder.txtFollowStates[i].setVisibility(View.VISIBLE);
-                if (userData.isBothway) {
-                    holder.rlytClickAreas[i].setEnabled(false);
-                    holder.txtFollowStates[i].setText(R.string.follow_both);
+            if (mEnableFollow) {
+                if (UserAccountManager.getInstance().getUuidAsLong() == userData.userId) {
+                    holder.txtFollowStates[i].setVisibility(View.INVISIBLE);
+                    holder.rlytClickAreas[i].setVisibility(View.INVISIBLE);
                 } else {
-                    if (userData.isFollowing) {
+                    holder.rlytClickAreas[i].setVisibility(View.VISIBLE);
+                    holder.txtFollowStates[i].setVisibility(View.VISIBLE);
+                    if (userData.isBothway) {
                         holder.rlytClickAreas[i].setEnabled(false);
-                        holder.txtFollowStates[i].setText(R.string.already_followed);
+                        holder.txtFollowStates[i].setText(R.string.follow_both);
                     } else {
-                        holder.rlytClickAreas[i].setEnabled(true);
-                        holder.txtFollowStates[i].setText(R.string.follow);
+                        if (userData.isFollowing) {
+                            holder.rlytClickAreas[i].setEnabled(false);
+                            holder.txtFollowStates[i].setText(R.string.already_followed);
+                        } else {
+                            holder.rlytClickAreas[i].setEnabled(true);
+                            holder.txtFollowStates[i].setText(R.string.follow);
+                        }
                     }
+                    holder.rlytClickAreas[i].setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            clickRelation(userData, holder.txtFollowStates[finalI]);
+                        }
+                    });
                 }
-                holder.rlytClickAreas[i].setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        clickRelation(userData, holder.txtFollowStates[finalI]);
-                    }
-                });
             }
 
             if (userData.mIsShowing) {

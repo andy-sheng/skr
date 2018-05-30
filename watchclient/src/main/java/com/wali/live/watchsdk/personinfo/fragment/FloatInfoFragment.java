@@ -316,13 +316,22 @@ public class FloatInfoFragment extends BaseEventBusFragment
     }
 
     @Override
-    public void refreshAllViews(User user, RankProto.RankUser topOneUser) {
+    public void refreshAllViews(User user, RankProto.RankUser topOneUser, boolean enableFollow) {
         MyLog.d(TAG, "refreshAllViews");
         mUser = user;
         mTopOneUser = topOneUser;
         initView();
+        isShowFollowArea(enableFollow);
         refreshAvatar();
         refreshUserInfo();
+    }
+
+    private void isShowFollowArea(boolean enableFollow) {
+        if (!enableFollow){
+            mFollowContainer.setVisibility(View.GONE);
+            mForbidContainer.setVisibility(View.GONE);
+            mMessageContainer.setVisibility(View.GONE);
+        }
     }
 
     private void refreshAvatar() {
@@ -646,8 +655,9 @@ public class FloatInfoFragment extends BaseEventBusFragment
             long ownerUuid,
             String roomId,
             String url,
+            boolean enableFollow,
             FloatInfoFragment.FloatInfoClickListener listener) {
-        return openFragment(activity, fromUuid, ownerUuid, roomId, url, listener, -1);
+        return openFragment(activity, fromUuid, ownerUuid, roomId, url, listener, -1, enableFollow);
     }
 
 
@@ -658,13 +668,15 @@ public class FloatInfoFragment extends BaseEventBusFragment
             String roomId,
             String url,
             FloatInfoFragment.FloatInfoClickListener listener,
-            long enterTime) {
+            long enterTime,
+            boolean enableFollow) {
         Bundle bundle = new Bundle();
         bundle.putLong(FloatInfoPresenter.EXTRA_IN_UUID, fromUuid);
         bundle.putLong(FloatInfoPresenter.EXTRA_IN_OWNER_UUID, ownerUuid);
         bundle.putString(FloatInfoPresenter.EXTRA_IN_ROOM_ID, roomId);
         bundle.putString(FloatInfoPresenter.EXTRA_IN_LIVE_URL, url);
         bundle.putLong(FloatInfoPresenter.EXTRA_IN_LIVE_ENTER_TIME, enterTime);
+        bundle.putBoolean(FloatInfoPresenter.EXTRA_ENABLE_FOLLOW, enableFollow);
         bundle.putString(EXTRA_SCREEN_ORIENTATION, BaseFragment.PARAM_FOLLOW_SYS);
 
         FloatInfoFragment fragment = (FloatInfoFragment) FragmentNaviUtils

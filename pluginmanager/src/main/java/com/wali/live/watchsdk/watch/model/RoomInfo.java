@@ -27,6 +27,9 @@ public class RoomInfo implements Parcelable {
     // 是否支持分享
     private boolean mEnableShare;
 
+    // 是否支持关注
+    private boolean mEnableFollow;
+
     // 以下与ui相关的信息
     private String mCoverUrl;
 
@@ -46,6 +49,7 @@ public class RoomInfo implements Parcelable {
         mLiveType = in.readInt();
         mGameId = in.readString();
         mEnableShare = in.readByte() != 0;
+        mEnableFollow = in.readByte() != 0;
     }
 
     public static final Creator<RoomInfo> CREATOR = new Creator<RoomInfo>() {
@@ -76,6 +80,7 @@ public class RoomInfo implements Parcelable {
         parcel.writeInt(mLiveType);
         parcel.writeString(mGameId);
         parcel.writeByte((byte) (this.mEnableShare ? 1 : 0));
+        parcel.writeByte((byte) (this.mEnableFollow ? 1: 0));
     }
 
     public long getStartTime() {
@@ -150,6 +155,14 @@ public class RoomInfo implements Parcelable {
         mEnableShare = enableShare;
     }
 
+    public boolean isEnableFollow() {
+        return mEnableFollow;
+    }
+
+    public void setEnableFollow(boolean enableFollow) {
+        mEnableFollow = enableFollow;
+    }
+
     @Keep
     public static class Builder {
         private RoomInfo mRoomInfo;
@@ -193,6 +206,11 @@ public class RoomInfo implements Parcelable {
             return this;
         }
 
+        public Builder setEnableFollow(boolean enableFollow){
+            mRoomInfo.setmEnableFollow(enableFollow);
+            return this;
+        }
+
         public RoomInfo build() {
             return mRoomInfo;
         }
@@ -209,6 +227,7 @@ public class RoomInfo implements Parcelable {
                 ", mAvatar=" + mAvatar +
                 ", mGameId='" + mGameId + '\'' +
                 ", mEnableShare=" + mEnableShare +
+                ", mEnableFollow=" + mEnableFollow +
                 ", mCoverUrl='" + mCoverUrl + '\'' +
                 '}';
     }
