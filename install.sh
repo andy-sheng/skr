@@ -3,7 +3,8 @@ if [[ $1 == "debug" ]]; then
 	adb install -r  livesdkapp/build/outputs/apk/livesdkapp-debug.apk
 else
 	./gradlew :livesdkapp:assembleRelease
-adb install -r  livesdkapp/build/outputs/apk/livesdkapp-release.apk
+	cp livesdkapp/build/outputs/apk/livesdkapp-release.apk ~/Downloads/
+	adb install -r  livesdkapp/build/outputs/apk/livesdkapp-release.apk
 fi
 
 
