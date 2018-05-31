@@ -2,14 +2,18 @@ package com.wali.live.watchsdk.watch.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.Keep;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
+ * ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+ * 注意write/read一定不要新增，以免发送方和接收方版本不一致造成的崩溃，
+ * 特别是传List<RoomInfo>的时候
  * Created by lan on 16/11/29.
  *
  * @notice 采取小设计，不需要的属性不要加
  */
-@Keep
 public class RoomInfo implements Parcelable {
     private long mPlayerId;
     private String mLiveId;
@@ -20,18 +24,21 @@ public class RoomInfo implements Parcelable {
     private int mLiveType;
     // 以下是user内的非直播必须的信息，如果需要完整的信息，以后直接传User进来
     private long mAvatar;
+    // 是否支持分享
+    private boolean mEnableShare;
 
     // 游戏直播相关的，表明对应的游戏
     private String mGameId;
 
-    // 是否支持分享
-    private boolean mEnableShare;
 
-    // 是否支持关注
+    // 是否支持分享
     private boolean mEnableRelationChain = true;
 
     // 以下与ui相关的信息
     private String mCoverUrl;
+
+    static final String JSON_KEY_GAME_ID = "game_id";
+    static final String JSON_KEY_ENABLE_RELATION_CHAIN = "enable_relation_chain";
 
     private RoomInfo(long playerId, String liveId, String videoUrl) {
         mPlayerId = playerId;
@@ -47,9 +54,27 @@ public class RoomInfo implements Parcelable {
         mCoverUrl = in.readString();
         mStartTime = in.readLong();
         mLiveType = in.readInt();
-        mGameId = in.readString();
+
+        /**
+         * 老版本的这个字段是游戏id，为了不扩充 read/write的字段（否则传list新老会因为字节流对不上会崩溃）
+         * 复用这个字段传json
+         */
+        String ext = in.readString();
+        {
+            if (ext != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(ext);
+                    mGameId = jsonObject.optString(JSON_KEY_GAME_ID);
+                    mEnableRelationChain = jsonObject.optBoolean(JSON_KEY_ENABLE_RELATION_CHAIN);
+                } catch (JSONException e) {
+                    // 如果传的不是json
+                    mGameId = ext;
+                }
+            }
+        }
+
         mEnableShare = in.readByte() != 0;
-        mEnableRelationChain = in.readByte() != 0;
+
     }
 
     public static final Creator<RoomInfo> CREATOR = new Creator<RoomInfo>() {
@@ -78,9 +103,16 @@ public class RoomInfo implements Parcelable {
         parcel.writeString(mCoverUrl);
         parcel.writeLong(mStartTime);
         parcel.writeInt(mLiveType);
-        parcel.writeString(mGameId);
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(JSON_KEY_GAME_ID, mGameId);
+            jsonObject.put(JSON_KEY_ENABLE_RELATION_CHAIN, mEnableRelationChain);
+        } catch (JSONException e) {
+        }
+        parcel.writeString(jsonObject.toString());
+
         parcel.writeByte((byte) (this.mEnableShare ? 1 : 0));
-        parcel.writeByte((byte) (this.mEnableRelationChain ? 1: 0));
     }
 
     public long getStartTime() {
@@ -163,7 +195,6 @@ public class RoomInfo implements Parcelable {
         mEnableRelationChain = enableRelationChain;
     }
 
-    @Keep
     public static class Builder {
         private RoomInfo mRoomInfo;
 
@@ -206,7 +237,7 @@ public class RoomInfo implements Parcelable {
             return this;
         }
 
-        public Builder setEnableRelationChain(boolean enableFollow){
+        public Builder setEnableRelationChain(boolean enableFollow) {
             mRoomInfo.setEnableRelationChain(enableFollow);
             return this;
         }
@@ -227,7 +258,6 @@ public class RoomInfo implements Parcelable {
                 ", mAvatar=" + mAvatar +
                 ", mGameId='" + mGameId + '\'' +
                 ", mEnableShare=" + mEnableShare +
-                ", mEnableFollow=" + mEnableRelationChain +
                 ", mCoverUrl='" + mCoverUrl + '\'' +
                 '}';
     }
