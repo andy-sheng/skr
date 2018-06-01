@@ -80,6 +80,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String ACTION_NOTIFY_SHARE_SUC = "notify_share_suc";
     private static final String ACTION_GET_FOLLOWING_LIVES = "get_following_lives";
 
+    private static final String ACTION_DISABLE_RELATION_CHAIN = "disable_relation_chain";
     private static final String ACTION_STATISTIC = "statistic";
 
     /*SharedPreferences File & Key*/
@@ -138,6 +139,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mMinVersionMap.put(ACTION_EDIT_USER_INFO, 205057);
 
         mMinVersionMap.put(ACTION_DO_FEED_BACK, 205058);
+        mMinVersionMap.put(ACTION_DISABLE_RELATION_CHAIN, 205061);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -312,8 +314,14 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void enableRelationChain(boolean enable) {
+    public boolean enableRelationChain(boolean enable,IAssistantCallback callback) {
+        if(!enable){
+            if (!checkVersion(ACTION_DISABLE_RELATION_CHAIN, callback)) {
+                return false;
+            }
+        }
         mEnableRelationChain = enable;
+        return true;
     }
 
     @Override

@@ -5,6 +5,7 @@ import de.greenrobot.daogenerator.Entity;
 import de.greenrobot.daogenerator.Schema;
 
 public class GreenDaoGenerator {
+    // 修改account属性
     //添加GroupNotify     59变为60
     //添加sixinMessage    58变为59
     //更新私信Conversation  57变为58
@@ -24,7 +25,7 @@ public class GreenDaoGenerator {
     //新增虚拟钻，版本号变为43
     //新增红名，版本号变为42
     //新增聊天模块用户微博认证，版本号变为40
-    public static final int DB_VERSION = 60;
+    public static final int DB_VERSION = 61;
 
     public static final String PACKAGE_DAO_NAME = "com.wali.live.dao";
 
@@ -70,7 +71,7 @@ public class GreenDaoGenerator {
         //群聊的通知
         addGroupNotify(schema);
 
-        new DaoGenerator().generateAll(schema, "data/src/main/java-gen");
+        new DaoGenerator().generateAll(schema, "../data/src/main/java-gen");
     }
 
     private static void addAccount(final Schema schema) {
@@ -100,7 +101,8 @@ public class GreenDaoGenerator {
         //账号退出和登录中的标志位
         account.addBooleanProperty("isLogOff");
         account.addLongProperty("miid");   //sso 添加miid存儲
-
+        account.addStringProperty("thirdId");
+        account.addStringProperty("ext");
     }
 
     /**

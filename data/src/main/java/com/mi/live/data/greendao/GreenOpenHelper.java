@@ -31,10 +31,13 @@ public class GreenOpenHelper extends DaoMaster.OpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         MyLog.w(TAG, "Upgrading schema from version " + oldVersion + " to " + newVersion);
+        if (oldVersion < 57) {
+            upgradeAccountTo57(db);
+        }
+        if (oldVersion < 61) {
+            upgradeAccountTo61(db);
+        }
         try {
-            if (oldVersion < 57 && newVersion >= 57) {
-                upgradeAccountFrom56To57(db);
-            }
             if (oldVersion < 58 && newVersion >= 58) {
                 ConversationDao.dropTable(db, true);
                 ConversationDao.createTable(db, false);
@@ -52,9 +55,20 @@ public class GreenOpenHelper extends DaoMaster.OpenHelper {
         }
     }
 
-    public static void upgradeAccountFrom56To57(SQLiteDatabase db) {
+    public static void upgradeAccountTo57(SQLiteDatabase db) {
         try {
             String sql = "alter table USER_ACCOUNT add column miid LONG";
+            db.execSQL(sql);
+        } catch (Exception e) {
+            MyLog.e(e);
+            UserAccountDao.dropTable(db, true);
+            UserAccountDao.createTable(db, true);
+        }
+    }
+
+    public static void upgradeAccountTo61(SQLiteDatabase db) {
+        try {
+            String sql = "alter table USER_ACCOUNT add column thirdId LONG , add column ext TEXT";
             db.execSQL(sql);
         } catch (Exception e) {
             MyLog.e(e);

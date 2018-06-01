@@ -978,9 +978,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                             public void onNext(AccountProto.ThirdPartSignLoginRsp rsp) {
                                 MyLog.w(TAG, "thirdPartLogin onNext,retCode:" + rsp.getRetCode());
                                 if (rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
-                                    if (loginData != null) {
-                                        UserAccountManager.getInstance().setThirdUuid(loginData.getXuid());
-                                    }
                                     UploadService.toUpload(new UploadService.UploadInfo(rsp, loginData));
                                 }
                                 if (rsp != null) {

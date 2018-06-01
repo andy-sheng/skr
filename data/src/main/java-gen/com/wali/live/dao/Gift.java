@@ -146,6 +146,7 @@ public class Gift {
         return languageStr;
     }
 
+
     public String getResourceUrl() {
         return resourceUrl;
     }

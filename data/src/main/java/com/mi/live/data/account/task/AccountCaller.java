@@ -139,6 +139,7 @@ public class AccountCaller {
                     userAccount.setServiceToken(rsp.getServiceToken());
                     userAccount.setSSecurity(rsp.getSecurityKey());
                     userAccount.setNeedEditUserInfo(false);
+                    userAccount.setThirdId(xuid);
 
                     UserAccountManager.getInstance().login(userAccount);
                 }

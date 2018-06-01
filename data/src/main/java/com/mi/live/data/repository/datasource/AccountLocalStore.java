@@ -46,9 +46,11 @@ public class AccountLocalStore {
     }
 
     public void replaceAccount(UserAccount account) {
+        // 删除该渠道的所有数据
         deleteAccount(account.getChannelid());
+        // 写入新的账号
         mUserAccountDao.insertOrReplaceInTx(account);
-
+        // 更新该账号的其他渠道的信息
         String sql = String.format("update %s set %s='%s', %s='%s',%s='%s' where %s='%s' and %s!=%s",
                 mUserAccountDao.getTablename(),
                 UserAccountDao.Properties.PassToken.columnName,
