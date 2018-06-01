@@ -22,6 +22,7 @@ import com.wali.live.sdk.manager.http.bean.NameValuePair;
 import com.wali.live.sdk.manager.http.utils.IOUtils;
 import com.wali.live.sdk.manager.http.utils.StringUtils;
 import com.wali.live.sdk.manager.log.Logger;
+import com.wali.live.sdk.manager.utils.CommonUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +35,7 @@ import java.util.List;
 
 public class VersionCheckManager {
     public final static String TAG = VersionCheckManager.class.getSimpleName();
+    public final static long CHECKTIME = 2 * 60 * 1000;
 
     public static final int HAS_UPGRADE = 1;
     public static final int NO_UPGRADE = 2;
@@ -261,57 +263,74 @@ public class VersionCheckManager {
         }
         mIsUpgrading = true;
 
-        final String localFileName = String.format("%s_%d.apk", PACKAGE_NAME, mRemoteAppVersion);
-        if (updateListener != null) {
-            updateListener.onDownloadStart();
-        }
-        File destFile = new File(getCachePath(localFileName));
+        final String localFileName = String.format("%s_%d.apk", PACKAGE_NAME, mRemoteAppVersion);//下载完成的文件
+        final String downFileName = String.format("%s_%d_down.apk", PACKAGE_NAME, mRemoteAppVersion);//下载中的文件
 
-        Logger.e(TAG, "startDownload onDownloadStart");
-        HttpUtils.downloadFile(mRemoteApkUrl, destFile,
-                new HttpUtils.OnDownloadProgress() {
-                    long lastNotifyTime = 0;
-                    final int NOTIFY_GAP = 500;// 刷通知栏时间间隔
+        if (checkLocalPackage(localFileName)) {
+            if (updateListener != null) {
+                updateListener.onDownloadSuccess(localFileName);
+                mIsUpgrading = false;
+            }
+            return;
+        } else {
+            if (updateListener != null) {
+                updateListener.onDownloadStart();
+            }
+            File destFile = new File(getCachePath(downFileName));
 
-                    @Override
-                    public void onFailed() {
-                        mIsUpgrading = false;
-                        if (updateListener != null) {
-                            updateListener.onDownloadFailed(-1);
-                        }
-                    }
+            Logger.e(TAG, "startDownload onDownloadStart");
+            HttpUtils.downloadFile(mRemoteApkUrl, destFile,
+                    new HttpUtils.OnDownloadProgress() {
+                        long lastNotifyTime = 0;
+                        final int NOTIFY_GAP = 500;// 刷通知栏时间间隔
 
-                    @Override
-                    public void onDownloaded(long downloaded, long totalLength) {
-                        if (totalLength <= 0) {
-                            return;
-                        }
-                        int percentage = (int) (downloaded * 100 / totalLength);
-                        long now = System.currentTimeMillis();
-                        if (now - lastNotifyTime >= NOTIFY_GAP) {
-                            lastNotifyTime = now;
+                        @Override
+                        public void onFailed() {
+                            mIsUpgrading = false;
                             if (updateListener != null) {
-                                updateListener.onDownloadProgress(percentage);
+                                updateListener.onDownloadFailed(-1);
                             }
                         }
-                    }
 
-                    @Override
-                    public void onCompleted(String localPath) {
-                        mIsUpgrading = false;
-                        if (updateListener != null) {
-                            updateListener.onDownloadSuccess(localPath);
+                        @Override
+                        public void onDownloaded(long downloaded, long totalLength) {
+                            if (totalLength <= 0) {
+                                return;
+                            }
+                            int percentage = (int) (downloaded * 100 / totalLength);
+                            long now = System.currentTimeMillis();
+                            if (now - lastNotifyTime >= NOTIFY_GAP) {
+                                lastNotifyTime = now;
+                                if (updateListener != null) {
+                                    updateListener.onDownloadProgress(percentage);
+                                }
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onCanceled() {
-                        mIsUpgrading = false;
-                        if (updateListener != null) {
-                            updateListener.onDownloadFailed(0);
+                        @Override
+                        public void onCompleted(String localPath) {
+                            mIsUpgrading = false;
+                            if (updateListener != null) {
+                                File downFile = new File(localPath);
+                                File newFile = new File(getCachePath(localFileName));
+                                if (newFile.exists()) {
+                                    newFile.delete();
+                                }
+                                downFile.renameTo(newFile);
+                                updateListener.onDownloadSuccess(localFileName);
+                            }
                         }
-                    }
-                });
+
+                        @Override
+                        public void onCanceled() {
+                            mIsUpgrading = false;
+                            if (updateListener != null) {
+                                updateListener.onDownloadFailed(0);
+                            }
+                        }
+                    });
+        }
+
     }
 
     public boolean installLocalPackage() {
@@ -327,15 +346,15 @@ public class VersionCheckManager {
         // 首先将本地文件重命名，这样在下次检查的时候就会把这个文件删除，
         // 防止这次下载的是一个错误的包，安装失败后，下次继续会安装失败。
         String localFileName = getCachePath(String.format("%s_%d.apk",
-                PACKAGE_NAME, mRemoteAppVersion));
+                PACKAGE_NAME, mRemoteAppVersion)); //下载完成的安装包
         String newFileName = getCachePath(String.format("%s_%d_local.apk",
-                PACKAGE_NAME, mRemoteAppVersion));
+                PACKAGE_NAME, mRemoteAppVersion)); //最终的安装包
         File f = new File(localFileName);
         File newFile = new File(newFileName);
         if (newFile.exists()) {
             newFile.delete();
         }
-        f.renameTo(newFile);
+        CommonUtils.copyFile(localFileName, newFileName);
         PackageInfo packageInfo = GlobalData.app().getApplicationContext().getPackageManager()
                 .getPackageArchiveInfo(newFile.getAbsolutePath(), PackageManager.GET_ACTIVITIES);
         if (null != packageInfo) {
@@ -356,6 +375,36 @@ public class VersionCheckManager {
         }
         Logger.w("VersionCheckManager", "the apk file packageName is not com.wali.live");
         return false;
+    }
+
+    private boolean checkLocalPackage(String oldLocalFile) {
+        File file = new File(getCachePath(oldLocalFile));
+        if (!file.exists()) {
+            return false;
+        }
+
+        long now = System.currentTimeMillis();
+        long last = file.lastModified();
+        Logger.w("VersionCheckManager", " now " + now);
+        Logger.w("VersionCheckManager", " last " + last);
+        if (now > (CHECKTIME + last)) {
+            return false;
+        }
+
+        try {
+            PackageManager pm = GlobalData.app().getApplicationContext().getPackageManager();
+            PackageInfo packageInfo = pm.getPackageArchiveInfo(getCachePath(oldLocalFile), PackageManager.GET_ACTIVITIES);
+            if (packageInfo == null) {
+                return false;
+            }
+            if (packageInfo.versionCode != mRemoteAppVersion) {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
     }
 
     private static String getCachePath(String name) {
