@@ -1,6 +1,7 @@
 package com.wali.live.utils;
 
 import android.os.Build;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.LruCache;
@@ -36,6 +37,7 @@ public class AvatarUtils {
     public static final int SIZE_TYPE_AVATAR_XLARGE = 4;         //超大：640
 
     public static final String IMG_URL_POSTFIX = "@style@"; //img  url 的后缀,如果有后缀,不再去拼接@style
+    public final static int AVATAR_SIZE = 480;
 
     final static int MAX_CACHE_SIZE = 500;
     private static final LruCache<Long, Long> mAvatarTimeCache = new LruCache<>(MAX_CACHE_SIZE);
@@ -64,6 +66,10 @@ public class AvatarUtils {
         loadAvatarByUidTsNoLoading(draweeView, uid, avatarTs, sizeType, isCircle, false);
     }
 
+    public static void loadPicNoLoad(SimpleDraweeView draweeView, String url, boolean isCircle, ScalingUtils.ScaleType scaleType) {
+        loadPic(draweeView, url, 0, isCircle, 0, false, scaleType);
+    }
+
     public static void loadAvatarByUidTs(final SimpleDraweeView draweeView, final long uid, final long avatarTs, final int sizeType, final boolean isCircle, final boolean isBlur) {
         // 加0保护,采用默认头像
         if (uid == 0) {
@@ -84,6 +90,32 @@ public class AvatarUtils {
         }
         String url = getAvatarUrlByUidTs(uid, sizeType, avatarTs);
         loadAvatarByUrl(draweeView, url, isCircle, isBlur, 0);
+    }
+
+    public static void loadPic(SimpleDraweeView draweeView, String url, @DrawableRes int loadingAvatarResId, boolean isCircle, int radius, boolean isBlur, ScalingUtils.ScaleType scaleType) {
+        BaseImage avatarImg;
+        if (TextUtils.isEmpty(url)) {
+            avatarImg = ImageFactory.newResImage(loadingAvatarResId).build();
+        } else {
+            avatarImg = ImageFactory.newHttpImage(url).setWidth(AVATAR_SIZE).setHeight(AVATAR_SIZE)
+                    .setIsCircle(isCircle).setCornerRadius(radius)
+                    .setFailureDrawable(loadingAvatarResId > 0 ? GlobalData.app().getResources().getDrawable(
+                            loadingAvatarResId) : null)
+                    .setFailureScaleType(
+                            isCircle ? ScalingUtils.ScaleType.CENTER_INSIDE : ScalingUtils.ScaleType.CENTER_CROP)
+                    .build();
+        }
+        // 设置模糊,模糊效果不设置加载图
+        if (isBlur) {
+            avatarImg.setPostprocessor(new BlurPostprocessor());
+        } else {
+            avatarImg.setLoadingDrawable(loadingAvatarResId > 0 ? GlobalData.app().getResources().getDrawable(
+                    loadingAvatarResId) : null);
+            avatarImg.setLoadingScaleType(
+                    isCircle ? ScalingUtils.ScaleType.CENTER_INSIDE : ScalingUtils.ScaleType.CENTER_CROP);
+        }
+        avatarImg.setScaleType(scaleType);
+        FrescoWorker.loadImage(draweeView, avatarImg);
     }
 
     public static void loadLiveShowLargeAvatar(final SimpleDraweeView draweeView, final long uid, final long avatarTs, final int sizeType, final boolean isCircle, final boolean isBlur) {

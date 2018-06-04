@@ -162,7 +162,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/margin_20"
+        android:paddingTop="@dimen/margin_25"
+        android:paddingRight="@dimen/margin_45"
         android:src="@drawable/live_icon_close_btn"
         android:visibility="gone"/>
 

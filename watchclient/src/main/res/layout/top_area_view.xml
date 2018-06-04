@@ -89,7 +89,7 @@
             android:paddingLeft="@dimen/margin_24"
             android:paddingRight="@dimen/margin_24"
             android:text="@string/follow"
-            android:textColor="@color/black"
+            android:textColor="@color/color_white"
             android:textSize="@dimen/text_size_36"/>
 
         <RelativeLayout

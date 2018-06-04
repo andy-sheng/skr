@@ -170,7 +170,7 @@ public class FansPagerFragment extends BaseEventBusFragment implements View.OnCl
 
         mTabLayout = $(R.id.vfan_tab);
         mTabLayout.setCustomTabView(R.layout.fans_tab_view, R.id.tab_tv);
-        mTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.color_e5aa1e));
+        mTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.color_ff2966));
         mTabLayout.setDistributeMode(3);
         mTabLayout.setIndicatorWidth(DisplayUtils.dip2px(12));
         mTabLayout.setIndicatorBottomMargin(DisplayUtils.dip2px(6));
