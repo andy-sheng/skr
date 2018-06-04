@@ -11,6 +11,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.live.module.common.R;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.push.model.BarrageMsg;
+import com.mi.live.data.push.model.BarrageMsgExt;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.room.model.VfansPrivilegeModel;
 import com.mi.live.data.user.User;
@@ -633,22 +634,22 @@ public class CommentModel implements Comparable<CommentModel> {
                             int type = innerGlobalRoomMessageExt.getType();
                             typeList.add(i, innerGlobalRoomMessageExt.getType());
                             if (type == BarrageMsg.INNER_GLOBAL_MEDAL_TYPE) {
-                                BarrageMsg.MedalConfigMessage medalConfigMessage = innerGlobalRoomMessageExt.getMedalConfigMessage();
+                                BarrageMsgExt.MedalConfigMessage medalConfigMessage = innerGlobalRoomMessageExt.getMedalConfigMessage();
 
                                 if (medalConfigMessage != null) {
-                                    List<BarrageMsg.InnerMedalConfig> beforeNickNameCofigList = medalConfigMessage.getBeforeNickNameCofigList();
+                                    List<BarrageMsgExt.InnerMedalConfig> beforeNickNameCofigList = medalConfigMessage.getBeforeNickNameCofigList();
                                     setMedalList(beforeNickNameCofigList, BEFOER_NICKNAME_CONFIG_LIST_TYPE, liveComment);
 
-                                    List<BarrageMsg.InnerMedalConfig> afterNickNameCofigList = medalConfigMessage.getAfterNickNameCofigList();
+                                    List<BarrageMsgExt.InnerMedalConfig> afterNickNameCofigList = medalConfigMessage.getAfterNickNameCofigList();
                                     setMedalList(afterNickNameCofigList, AFTER_NICKNAME_CONFIG_LIST_TYPE, liveComment);
 
 
-                                    List<BarrageMsg.InnerMedalConfig> beforeContentCofigList = medalConfigMessage.getBeforeContentCofigList();
+                                    List<BarrageMsgExt.InnerMedalConfig> beforeContentCofigList = medalConfigMessage.getBeforeContentCofigList();
                                     setMedalList(beforeContentCofigList, BEFORE_CONTENT_CONFIG_LIST_TYPE, liveComment);
 
-                                    List<BarrageMsg.InnerMedalConfig> afterContentCofigList = medalConfigMessage.getAfterContentCofigList();
+                                    List<BarrageMsgExt.InnerMedalConfig> afterContentCofigList = medalConfigMessage.getAfterContentCofigList();
                                     setMedalList(afterContentCofigList, AFTER_CONTENT_CONFIG_LIST_TYPE, liveComment);
-                                    List<BarrageMsg.InnerMedalConfig> effectTemList = medalConfigMessage.getAfterContentCofigList();
+                                    List<BarrageMsgExt.InnerMedalConfig> effectTemList = medalConfigMessage.getAfterContentCofigList();
                                     setMedalList(effectTemList, EFFECT_CONFIG_LIST_TYPE, liveComment);
                                 }
                             } else if (type == BarrageMsg.INNER_GLOBAL_SCHEME_TYPE) {
@@ -707,7 +708,7 @@ public class CommentModel implements Comparable<CommentModel> {
     private static final int EFFECT_CONFIG_LIST_TYPE = 5;
 
 
-    private static void setMedalList(List<BarrageMsg.InnerMedalConfig> list, int type, CommentModel liveComment) {
+    private static void setMedalList(List<BarrageMsgExt.InnerMedalConfig> list, int type, CommentModel liveComment) {
         if (list != null && !list.isEmpty()) {
             ArrayList<String> addList = new ArrayList<>();
             for (int index0 = 0; index0 < list.size(); index0++) {

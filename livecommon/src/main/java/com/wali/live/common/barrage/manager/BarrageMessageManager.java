@@ -17,6 +17,7 @@ import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.live.data.push.event.BarrageMsgEvent;
 import com.mi.live.data.push.model.BarrageMsg;
+import com.mi.live.data.push.model.BarrageMsgExt;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.query.model.SystemMsgModel;
 import com.mi.milink.sdk.aidl.PacketData;
@@ -177,7 +178,7 @@ public class BarrageMessageManager implements MiLinkPacketDispatcher.PacketDataH
                 }
 
                 if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_OPEN_TURN_TABLE) {
-                    EventBus.getDefault().post(new TurnTableEvent(((BarrageMsg.TurnTableMessageExt) barrageMsg.getMsgExt()).getTurnTableConfigModel()));
+                    EventBus.getDefault().post(new TurnTableEvent(((BarrageMsgExt.TurnTableMessageExt) barrageMsg.getMsgExt()).getTurnTableConfigModel()));
                 }
                 // 如果是大金龙消息
                 if (command.equals(MiLinkCommand.COMMAND_PUSH_GLOBAL_MSG)) {
@@ -294,22 +295,22 @@ public class BarrageMessageManager implements MiLinkPacketDispatcher.PacketDataH
         //设置用户勋章-
         if ((MyUserInfoManager.getInstance().getBeforeNickNameMedalList() != null && !MyUserInfoManager.getInstance().getBeforeNickNameMedalList().isEmpty()) ||
                 (MyUserInfoManager.getInstance().getAfterNickNameMedalList() != null && !MyUserInfoManager.getInstance().getAfterNickNameMedalList().isEmpty())) {
-            ArrayList<BarrageMsg.InnerMedalConfig> beforeNickNameConfigList = new ArrayList<>();
-            ArrayList<BarrageMsg.InnerMedalConfig> afterNickNameConfigList = new ArrayList<>();
-            BarrageMsg.MedalConfigMessage medalConfigMessage = new BarrageMsg.MedalConfigMessage();
+            ArrayList<BarrageMsgExt.InnerMedalConfig> beforeNickNameConfigList = new ArrayList<>();
+            ArrayList<BarrageMsgExt.InnerMedalConfig> afterNickNameConfigList = new ArrayList<>();
+            BarrageMsgExt.MedalConfigMessage medalConfigMessage = new BarrageMsgExt.MedalConfigMessage();
 
             List<String> beforeNickNameMedalList = MyUserInfoManager.getInstance().getBeforeNickNameMedalList();
             List<String> afterNickNameMedalList = MyUserInfoManager.getInstance().getAfterNickNameMedalList();
             if (beforeNickNameMedalList != null && !beforeNickNameMedalList.isEmpty()) {
                 for (int i = 0; i < beforeNickNameMedalList.size(); i++) {
-                    BarrageMsg.InnerMedalConfig innerMedalConfig = new BarrageMsg.InnerMedalConfig();
+                    BarrageMsgExt.InnerMedalConfig innerMedalConfig = new BarrageMsgExt.InnerMedalConfig();
                     innerMedalConfig.setPicId(beforeNickNameMedalList.get(i));
                     beforeNickNameConfigList.add(innerMedalConfig);
                 }
             }
             if (afterNickNameMedalList != null && !afterNickNameMedalList.isEmpty()) {
                 for (int i = 0; i < afterNickNameMedalList.size(); i++) {
-                    BarrageMsg.InnerMedalConfig innerMedalConfig = new BarrageMsg.InnerMedalConfig();
+                    BarrageMsgExt.InnerMedalConfig innerMedalConfig = new BarrageMsgExt.InnerMedalConfig();
                     innerMedalConfig.setPicId(afterNickNameMedalList.get(i));
                     afterNickNameConfigList.add(innerMedalConfig);
                 }

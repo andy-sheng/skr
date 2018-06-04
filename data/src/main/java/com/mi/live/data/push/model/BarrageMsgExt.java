@@ -4,9 +4,15 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.protobuf.ByteString;
+import com.mi.live.data.repository.model.turntable.TurnTableConfigModel;
 import com.mi.live.data.user.User;
+import com.wali.live.proto.BigTurnTableProto;
+import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.proto.LiveMicProto;
 import com.wali.live.proto.LivePKProto;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yangli on 2017/9/15.
@@ -220,6 +226,21 @@ public class BarrageMsgExt {
         }
     }
 
+    public static class PKNoHeartBeatMsg implements BarrageMsg.MsgExt {
+        public LivePKProto.NewPKInfo pkinfo;
+        public long crash_id;
+
+        public PKNoHeartBeatMsg(LivePKProto.PKNoHeartBeatMsg pKNoHeartBeatMsg) {
+            pkinfo = pKNoHeartBeatMsg.getPkInfo();
+            crash_id = pKNoHeartBeatMsg.getCrashUuid();
+        }
+
+        @Override
+        public ByteString toByteString() {
+            return null;
+        }
+    }
+
     /**
      * PK结束信息
      */
@@ -251,4 +272,282 @@ public class BarrageMsgExt {
             }
         }
     }
+
+    public static class PKSysMsg implements BarrageMsg.MsgExt {
+        public ByteString bytes;
+        public int type;
+
+        public PKSysMsg(LivePKProto.PKSysMsg pkSysMsg) {
+            type = pkSysMsg.getType();
+            bytes = pkSysMsg.getExtMsg();
+        }
+
+        @Override
+        public ByteString toByteString() {
+            return null;
+        }
+    }
+
+    public static class PKInviteMsg implements BarrageMsg.MsgExt {
+        public long uuid;
+        public String roomId;
+        public long pkUid;
+        public int type;
+        public String time;
+        public String nickName;
+        public String pkType;
+        public String punish;
+
+        public LivePKProto.PKSetting pkSetting;
+        public String anchorName;
+        public long adminId;
+        public String adminNickName;
+        public String pkNickName;
+
+        public PKInviteMsg(LivePKProto.PKInviteMsg pKInviteMsg) {
+            uuid = pKInviteMsg.getUuid();
+            roomId = pKInviteMsg.getLiveid();
+            pkUid = pKInviteMsg.getPkUuid();
+            type = pKInviteMsg.getType();
+            nickName = pKInviteMsg.getNickname();
+            pkSetting = pKInviteMsg.getSetting();
+            if (pKInviteMsg.getSetting().hasContent()) {
+                pkType = pKInviteMsg.getSetting().getContent().getName();
+            }
+            if (pKInviteMsg.getSetting().hasDuration()) {
+                time = pKInviteMsg.getSetting().getDuration().getName();
+            }
+
+            if (pKInviteMsg.hasAdminUuid()) {
+                adminId = pKInviteMsg.getAdminUuid();
+            }
+            if (pKInviteMsg.getSetting().hasPunish()) {
+                if (pKInviteMsg.getSetting().getPunish().getType() == 2) {
+                    punish = "";
+                } else {
+                    punish = pKInviteMsg.getSetting().getPunish().getName();
+                }
+            }
+            adminNickName = pKInviteMsg.getAdminNickname();
+            pkNickName = pKInviteMsg.getPkNickname();
+        }
+
+        @Override
+        public ByteString toByteString() {
+            return null;
+        }
+    }
+
+    public static class PKAcceptMsg implements BarrageMsg.MsgExt {
+        public long uuid;
+        public long pkUid;
+        public String pkRoomId;
+        public int type;
+
+        public long adminId;
+        public String adminNickName;
+        public String pkNickName;
+        public String nickName;
+
+
+        public PKAcceptMsg(LivePKProto.PKAcceptMsg pKAcceptMsg) {
+            uuid = pKAcceptMsg.getUuid();
+            pkRoomId = pKAcceptMsg.getPkLiveid();
+            pkUid = pKAcceptMsg.getPkUuid();
+            type = pKAcceptMsg.getType();
+
+
+            if (pKAcceptMsg.hasAdminUuid()) {
+                adminId = pKAcceptMsg.getAdminUuid();
+            }
+            adminNickName = pKAcceptMsg.getAdminNickname();
+            pkNickName = pKAcceptMsg.getPkNickname();
+            nickName = pKAcceptMsg.getNickname();
+        }
+
+        @Override
+        public ByteString toByteString() {
+            return null;
+        }
+    }
+
+    public static class PKDeclineMsg implements BarrageMsg.MsgExt {
+        public long uuid;
+        public long pkUid;
+        public String pkRoomId;
+        public int type;
+
+        public long adminId;
+        public String adminNickName;
+        public String pkNickName;
+        public String nickName;
+
+        public PKDeclineMsg(LivePKProto.PKDeclineMsg pKDeclineMsg) {
+            uuid = pKDeclineMsg.getUuid();
+            pkRoomId = pKDeclineMsg.getPkLiveid();
+            pkUid = pKDeclineMsg.getPkUuid();
+            type = pKDeclineMsg.getType();
+
+            if (pKDeclineMsg.hasAdminUuid()) {
+                adminId = pKDeclineMsg.getAdminUuid();
+            }
+            adminNickName = pKDeclineMsg.getAdminNickname();
+            pkNickName = pKDeclineMsg.getPkNickname();
+            nickName = pKDeclineMsg.getNickname();
+        }
+
+        @Override
+        public ByteString toByteString() {
+            return null;
+        }
+    }
+
+    public static class PKCancelMsg implements BarrageMsg.MsgExt {
+        public long uuid;
+        public long pkUid;
+        public String pkRoomId;
+        public int type;
+
+        public long adminId;
+        public String adminNickName;
+        public String pkNickName;
+        public String nickName;
+
+        public PKCancelMsg(LivePKProto.PKCancelInviteMsg pkCancelInviteMsg) {
+            uuid = pkCancelInviteMsg.getUuid();
+            pkRoomId = pkCancelInviteMsg.getLiveid();
+            pkUid = pkCancelInviteMsg.getPkUuid();
+            type = pkCancelInviteMsg.getType();
+
+            if (pkCancelInviteMsg.hasAdminUuid()) {
+                adminId = pkCancelInviteMsg.getAdminUuid();
+            }
+            adminNickName = pkCancelInviteMsg.getAdminNickname();
+            pkNickName = pkCancelInviteMsg.getPkNickname();
+            nickName = pkCancelInviteMsg.getNickname();
+        }
+
+        @Override
+        public ByteString toByteString() {
+            return null;
+        }
+    }
+
+    public static class MedalConfigMessage {
+        private List<InnerMedalConfig> beforeNickNameCofigList;
+        private List<InnerMedalConfig> afterNickNameCofigList;
+        private List<InnerMedalConfig> beforeContentCofigList;
+        private List<InnerMedalConfig> AfterContentCofigList;
+
+        public static MedalConfigMessage loadFromPB(LiveMessageProto.MedalConfigMessage message) {
+            MedalConfigMessage medalConfigMessage = new MedalConfigMessage();
+            List<LiveMessageProto.InnerMedalConfig> beforeContentConfigList = message.getBeforeContentConfigList();
+            if (beforeContentConfigList != null && !beforeContentConfigList.isEmpty()) {
+                medalConfigMessage.beforeContentCofigList = new ArrayList<>();
+                for (LiveMessageProto.InnerMedalConfig config : beforeContentConfigList) {
+                    InnerMedalConfig innerMedalConfig = InnerMedalConfig.loadFromPB(config);
+                    medalConfigMessage.beforeContentCofigList.add(innerMedalConfig);
+                }
+            }
+
+            List<LiveMessageProto.InnerMedalConfig> afterContentConfigList = message.getAfterContentConfigList();
+            if (afterContentConfigList != null && !afterContentConfigList.isEmpty()) {
+                medalConfigMessage.AfterContentCofigList = new ArrayList<>();
+                for (LiveMessageProto.InnerMedalConfig config : afterContentConfigList) {
+                    InnerMedalConfig innerMedalConfig = InnerMedalConfig.loadFromPB(config);
+                    medalConfigMessage.AfterContentCofigList.add(innerMedalConfig);
+                }
+            }
+
+            List<LiveMessageProto.InnerMedalConfig> beforeNicknameConfigList = message.getBeforeNicknameConfigList();
+            if (beforeNicknameConfigList != null && !beforeNicknameConfigList.isEmpty()) {
+                medalConfigMessage.beforeNickNameCofigList = new ArrayList<>();
+                for (LiveMessageProto.InnerMedalConfig config : beforeNicknameConfigList) {
+                    InnerMedalConfig innerMedalConfig = InnerMedalConfig.loadFromPB(config);
+                    medalConfigMessage.beforeNickNameCofigList.add(innerMedalConfig);
+                }
+            }
+
+            List<LiveMessageProto.InnerMedalConfig> afterNicknameConfigList = message.getAfterNicknameConfigList();
+            if (afterNicknameConfigList != null && !afterNicknameConfigList.isEmpty()) {
+                medalConfigMessage.afterNickNameCofigList = new ArrayList<>();
+                for (LiveMessageProto.InnerMedalConfig config : afterNicknameConfigList) {
+                    InnerMedalConfig innerMedalConfig = InnerMedalConfig.loadFromPB(config);
+                    medalConfigMessage.afterNickNameCofigList.add(innerMedalConfig);
+                }
+            }
+
+            return medalConfigMessage;
+        }
+
+        public List<InnerMedalConfig> getBeforeNickNameCofigList() {
+            return beforeNickNameCofigList;
+        }
+
+        public void setBeforeNickNameCofigList(List<InnerMedalConfig> beforeNickNameCofigList) {
+            this.beforeNickNameCofigList = beforeNickNameCofigList;
+        }
+
+        public List<InnerMedalConfig> getAfterNickNameCofigList() {
+            return afterNickNameCofigList;
+        }
+
+        public void setAfterNickNameCofigList(List<InnerMedalConfig> afterNickNameCofigList) {
+            this.afterNickNameCofigList = afterNickNameCofigList;
+        }
+
+        public List<InnerMedalConfig> getBeforeContentCofigList() {
+            return beforeContentCofigList;
+        }
+
+        public List<InnerMedalConfig> getAfterContentCofigList() {
+            return AfterContentCofigList;
+        }
+    }
+
+    public static class InnerMedalConfig {
+        private String picId;
+
+        public static InnerMedalConfig loadFromPB(LiveMessageProto.InnerMedalConfig config) {
+            InnerMedalConfig innerMedalConfig = new InnerMedalConfig();
+            innerMedalConfig.picId = config.getPicId();
+            return innerMedalConfig;
+        }
+
+        public String getPicId() {
+            return picId;
+        }
+
+        public void setPicId(String picId) {
+            this.picId = picId;
+        }
+    }
+
+    public static class TurnTableMessageExt implements BarrageMsg.MsgExt {
+
+        private TurnTableConfigModel turnTableConfigModel;
+
+        public TurnTableMessageExt(BigTurnTableProto.TurntablePush turntablePush) {
+            if (turntablePush == null) {
+                return;
+            }
+
+            BigTurnTableProto.TurntableConfig turntableConfig = turntablePush.getTurntableConfig();
+            turnTableConfigModel = new TurnTableConfigModel(turntableConfig);
+        }
+
+        public TurnTableConfigModel getTurnTableConfigModel() {
+            return turnTableConfigModel;
+        }
+
+        public void setTurnTableConfigModel(TurnTableConfigModel turnTableConfigModel) {
+            this.turnTableConfigModel = turnTableConfigModel;
+        }
+
+        @Override
+        public ByteString toByteString() {
+            return null;
+        }
+    }
+
 }
