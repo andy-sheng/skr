@@ -7,9 +7,12 @@ import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.text.TextUtils;
 
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.callback.ICommonCallBack;
+import com.base.utils.network.NetworkUtils;
+import com.base.utils.toast.ToastUtils;
 import com.google.protobuf.ByteString;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.login.LoginType;
@@ -28,6 +31,7 @@ import com.wali.live.watchsdk.AarCallback;
 import com.wali.live.watchsdk.callback.ISecureCallBack;
 import com.wali.live.watchsdk.callback.SecureCommonCallBack;
 import com.wali.live.watchsdk.callback.SecureLoginCallback;
+import com.wali.live.watchsdk.ipc.auth.SecurityVerifyCacheManager;
 import com.wali.live.watchsdk.list.ChannelLiveCaller;
 import com.wali.live.watchsdk.list.RelationCaller;
 import com.wali.live.watchsdk.login.UploadService;
@@ -718,44 +722,56 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             callback.process(channelId, packageName);
             return;
         }
-        rx.Observable.just(0)
-                .map(new Func1<Object, Integer>() {
-                    @Override
-                    public Integer call(Object o) {
-                        SecurityProto.VerifyAssistantRsp rsp = new VerifyRequest(channelId, packageName, channelSecret).syncRsp();
-                        if (rsp == null) {
-                            MyLog.e(TAG, "verify rsp is null");
-                            return null;
-                        }
-                        MyLog.e(TAG, "errMsg=" + rsp.getErrMsg() + " errCode=" + rsp.getRetCode());
-                        return rsp.getRetCode();
-                    }
-                }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Integer>() {
-                    @Override
-                    public void onCompleted() {
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        MyLog.e(TAG, "verify failure", e);
-                        onEventVerifyFailure(channelId, -1);
-                        callback.processFailure();
-                    }
-
-                    @Override
-                    public void onNext(Integer integer) {
-                        MyLog.w(TAG, "onNext integer=" + integer);
-                        if (integer != null && integer == 0) {
-                            callback.process(channelId, packageName);
-                            mAuthMap.put(channelId, packageName);
-                            return;
+        if (SecurityVerifyCacheManager.checkSPreferences(channelId, packageName)){
+            callback.process(channelId, packageName);
+            mAuthMap.put(channelId, packageName);
+            //更新时间
+            SecurityVerifyCacheManager.saveSPreferences(channelId, packageName, System.currentTimeMillis());
+        } else if (!NetworkUtils.hasNetwork(GlobalData.app().getApplicationContext())) {
+            ToastUtils.showToast("请检查网络链接");
+        } else {
+            rx.Observable.just(0)
+                    .map(new Func1<Object, Integer>() {
+                        @Override
+                        public Integer call(Object o) {
+                            SecurityProto.VerifyAssistantRsp rsp = new VerifyRequest(channelId, packageName, channelSecret).syncRsp();
+                            if (rsp == null) {
+                                MyLog.e(TAG, "verify rsp is null");
+                                return null;
+                            }
+                            MyLog.e(TAG, "errMsg=" + rsp.getErrMsg() + " errCode=" + rsp.getRetCode());
+                            return rsp.getRetCode();
                         }
-                        onEventVerifyFailure(channelId, integer == null ? -1 : integer);
-                        callback.processFailure();
-                    }
-                });
+                    }).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Integer>() {
+                        @Override
+                        public void onCompleted() {
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            MyLog.e(TAG, "verify failure", e);
+                            onEventVerifyFailure(channelId, -1);
+                            callback.processFailure();
+                        }
+
+                        @Override
+                        public void onNext(Integer integer) {
+                            MyLog.w(TAG, "onNext integer=" + integer);
+                            if (integer != null && integer == 0) {
+                                callback.process(channelId, packageName);
+                                mAuthMap.put(channelId, packageName);
+                                SecurityVerifyCacheManager.saveSPreferences(channelId, packageName, System.currentTimeMillis());
+                                return;
+                            }
+                            onEventVerifyFailure(channelId, integer == null ? -1 : integer);
+                            callback.processFailure();
+                        }
+                    });
+        }
+
     }
 
     /**
