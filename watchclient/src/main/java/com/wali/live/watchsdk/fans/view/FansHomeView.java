@@ -131,7 +131,6 @@ public class FansHomeView extends RxRelativeLayout implements View.OnClickListen
         $click(R.id.color_barrage_area, this);
         $click(R.id.fly_barrage_privilege_area, this);
         $click(R.id.forbidden_privilege_area, this);
-        $click(R.id.group_rank_area, this);
 
         initPresenter();
     }
@@ -235,8 +234,6 @@ public class FansHomeView extends RxRelativeLayout implements View.OnClickListen
             if (type != -1) {
                 FansPrivilegeFragment.openFragment((BaseSdkActivity) getContext(), type);
             }
-        } else if (i == R.id.group_rank_area) {
-
         }
     }
 
