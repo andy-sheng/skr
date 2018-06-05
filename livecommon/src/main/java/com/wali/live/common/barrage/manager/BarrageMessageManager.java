@@ -462,7 +462,6 @@ public class BarrageMessageManager implements MiLinkPacketDispatcher.PacketDataH
         }
     }
 
-
     public void sendSyncSystemMessage(LiveMessageProto.SyncSysMsgRequest syncSystemMessageRequest) {
         if (syncSystemMessageRequest != null) {
             if (syncSystemMessageRequest.getFromUser() <= 0 || TextUtils.isEmpty(syncSystemMessageRequest.getRoomId()) || syncSystemMessageRequest.getCid() <= 0) {

@@ -42,6 +42,7 @@ public abstract class BaseRankingFragment extends RxFragment {
     public static final String EXTRA_TICKET_START = "extra_ticket_start";
     public static final String EXTRA_UUID = "extra_uuid";
     public static final String EXTRA_LIVE_ID = "extra_live_id";
+    public static final String EXTRA_ENABLE_FOLLOW = "extra_enable_follow";
 
     protected final int PAGE_COUNT = 20;
 
@@ -60,6 +61,8 @@ public abstract class BaseRankingFragment extends RxFragment {
 
     protected String mFragmentType;
     protected Subscription mSubscription;
+
+    protected boolean mEnableFollow = true;
 
     @Override
     public int getRequestCode() {
@@ -89,6 +92,7 @@ public abstract class BaseRankingFragment extends RxFragment {
     protected void initData(Bundle bundle) {
         mUuid = bundle.getLong(EXTRA_UUID);
         mLiveId = bundle.getString(EXTRA_LIVE_ID);
+        mEnableFollow = bundle.getBoolean(EXTRA_ENABLE_FOLLOW);
 
         if (mUuid == 0) {
             this.mUuid = UserAccountManager.getInstance().getUuidAsLong();
@@ -113,6 +117,7 @@ public abstract class BaseRankingFragment extends RxFragment {
         mVoteRankingAdapter = new RankRecyclerViewAdapter((RxActivity) getActivity(), mFragmentType);
         mVoteRankingAdapter.setShowTotalNumHeader(true);
         mVoteRankingAdapter.setTotalNum(mTicketNum);
+        mVoteRankingAdapter.isShowFollowBtn(mEnableFollow);
         mRecyclerView.setAdapter(mVoteRankingAdapter);
         mVoteRankingAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override

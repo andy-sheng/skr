@@ -27,6 +27,7 @@
 -keep class com.wali.live.watchsdk.ipc.service.LiveInfo {*;}
 -keep class com.wali.live.watchsdk.ipc.service.UserInfo {*;}
 -keep class com.wali.live.watchsdk.ipc.service.ShareInfo {*;}
+-keep class com.wali.live.watchsdk.watch.model.** {*;}
 
 # Keep native methods
 -keepclassmembers class * {

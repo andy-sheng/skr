@@ -17,6 +17,7 @@ import com.wali.live.component.view.BaseBottomButton;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
+import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 /**
  * Created by yangli on 16-8-29.
@@ -35,6 +36,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
     private Runnable mAnimatorRunnable;
     private ValueAnimator mShakeAnimator;
+
+    boolean mIsHuYaLive = false;
 
     @Override
     protected final String getTAG() {
@@ -64,9 +67,10 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
     public WatchBottomButton(
             @NonNull RelativeLayout contentContainer,
-            boolean isGameMode) {
+            boolean isGameMode, boolean isHuYaLive) {
         super(contentContainer);
         mIsGameMode = isGameMode;
+        mIsHuYaLive = isHuYaLive;
         initView();
     }
 
@@ -74,14 +78,22 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         mGiftBtn = createImageView(R.drawable.live_icon_gift_btn);
         addCreatedView(mGiftBtn, R.id.gift_btn);
 
+        if(mIsHuYaLive){
+            mGiftBtn.setVisibility(View.GONE);
+        }
+
         mMoreBtn = new WatchMenuIconView(getContext());
         addCreatedView(mMoreBtn, R.id.more_btn);
 
         // 横竖屏时按钮排列顺序
-        mRightBtnSetPort.add(mGiftBtn);
+        if(!mIsHuYaLive){
+            mRightBtnSetPort.add(mGiftBtn);
+        }
         mRightBtnSetPort.add(mMoreBtn);
 
-        mBottomBtnSetLand.add(mGiftBtn);
+        if(!mIsHuYaLive){
+            mBottomBtnSetLand.add(mGiftBtn);
+        }
         mBottomBtnSetLand.add(mMoreBtn);
 
         orientChild();
@@ -152,6 +164,10 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
     private final void destroyView() {
         clearAnimator();
+    }
+
+    public void setMoreBtnShow(boolean isShow){
+        mMoreBtn.setVisibility( isShow ? View.VISIBLE : View.GONE);
     }
 
     public void reset() {

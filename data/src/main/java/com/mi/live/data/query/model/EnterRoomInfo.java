@@ -2,6 +2,7 @@ package com.mi.live.data.query.model;
 
 import com.mi.live.data.location.Location;
 import com.mi.live.data.push.model.BarrageMsgExt;
+import com.wali.live.proto.LiveProto;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class EnterRoomInfo {
 
     BarrageMsgExt.MicBeginInfo micInfo;
     BarrageMsgExt.PkStartInfo pkInfo;
+    LiveProto.ThirdPartyInfo thirdPartyInfo;
 
     //contest冲顶大会新加字段
     boolean ableContest;//可以参加答题 true：可以
@@ -173,6 +175,14 @@ public class EnterRoomInfo {
 
     public void setSupportMgicFace(boolean supportMgicFace) {
         this.supportMgicFace = supportMgicFace;
+    }
+
+    public LiveProto.ThirdPartyInfo getThirdPartyInfo() {
+        return thirdPartyInfo;
+    }
+
+    public void setThirdPartyInfo(LiveProto.ThirdPartyInfo thirdPartyInfo) {
+        this.thirdPartyInfo = thirdPartyInfo;
     }
 
     public void setMicBeginInfo(BarrageMsgExt.MicBeginInfo micBeginInfo) {

@@ -18,6 +18,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -28,12 +30,16 @@ import rx.schedulers.Schedulers;
 public class UserAccountManager {
     private static final String TAG = UserAccountManager.class.getSimpleName();
 
-    // 用户当前账号
-    private UserAccount mAccount;
+//    private static String PREF_KEY_LAST_CHANNEL_ID = "last_channel_id";
+
+    private ConcurrentHashMap<Integer,UserAccount> mAccountMap = new ConcurrentHashMap<>();
+
+//     用户当前账号
+//    private UserAccount mAccount;
     // 用户匿名账号的id,当 mAccount 为空的时候使用
     private long anonymousId;
 
-    private String mThirdUuid; //第三方账号登录的id。
+//    private String mThirdUuid; //第三方账号登录的id。
     // 账户模式：标准和匿名
     private static UserAccountManager sInstance;
 
@@ -42,7 +48,7 @@ public class UserAccountManager {
     }
 
     public UserAccount getAccount() {
-        return mAccount;
+        return mAccountMap.get(HostChannelManager.getInstance().getChannelId());
     }
 
     public static UserAccountManager getInstance() {
@@ -82,7 +88,7 @@ public class UserAccountManager {
         if (channelid == HostChannelManager.getInstance().getChannelId()) {
             // 和当前渠道一致,当前账号置为空
             MyUserInfoManager.getInstance().deleteUser();
-            mAccount = null;
+            mAccountMap.remove(channelid);
             if (!MiLinkClientAdapter.getsInstance().isTouristMode()) {
                 // 实名模式登出
                 MiLinkClientAdapter.getsInstance().logoff();
@@ -100,8 +106,7 @@ public class UserAccountManager {
         if (channelId == HostChannelManager.getInstance().getChannelId()) {
             MyUserInfoManager.getInstance().deleteCache();
             // 和当前渠道一致,当前账号置为空
-            mAccount = null;
-            mThirdUuid = "";
+            mAccountMap.remove(channelId);
             if (!MiLinkClientAdapter.getsInstance().isTouristMode()) {
                 // 实名模式登出
                 MiLinkClientAdapter.getsInstance().logoff();
@@ -115,9 +120,9 @@ public class UserAccountManager {
     }
 
     public void setAccount(UserAccount account) {
-        this.mAccount = account;
+        mAccountMap.put(account.getChannelid(),account);
         // 只有非游客模式才发已有账号的事件
-        if (!MiLinkClientAdapter.getsInstance().isTouristMode() && mAccount != null) {
+        if (!MiLinkClientAdapter.getsInstance().isTouristMode() && account != null) {
             EventBus.getDefault().post(new SetUserAccountEvent());
         }
     }
@@ -127,7 +132,7 @@ public class UserAccountManager {
      */
     public synchronized void initAnonymous() {
         MyLog.d(TAG, "initAnonymous()");
-        if (mAccount == null) {
+        if (getAccount() == null) {
             MiLinkClientAdapter.getsInstance().setIsTouristMode(true);
         }
     }
@@ -137,9 +142,9 @@ public class UserAccountManager {
      * token等信息获取完成，初始化一下milink。
      */
     public void completeToken() {
-        if (mAccount != null) {
+        if (getAccount() != null) {
             //先把这个账号写到数据库里
-            AccountLocalStore.getInstance().replaceAccount(mAccount);
+            AccountLocalStore.getInstance().replaceAccount(getAccount());
             // 取消匿名模式
             MiLinkClientAdapter.getsInstance().setIsTouristMode(false);
             // 进入实名模式
@@ -148,8 +153,8 @@ public class UserAccountManager {
     }
 
     public boolean hasAccount() {
-        MyLog.d(TAG, "null != mAccount : " + (null != mAccount));
-        return null != mAccount && ((mAccount.getIsLogOff() == null) || !mAccount.getIsLogOff().booleanValue());
+        MyLog.d(TAG, "null != mAccount : " + (null != getAccount()));
+        return null != getAccount() && ((getAccount().getIsLogOff() == null) || !getAccount().getIsLogOff().booleanValue());
     }
 
     public String getUuid() {
@@ -159,8 +164,8 @@ public class UserAccountManager {
             }
             return String.valueOf(anonymousId);
         }
-        if (null != mAccount) {
-            return mAccount.getUuid();
+        if (null != getAccount()) {
+            return getAccount().getUuid();
         }
         return "";
     }
@@ -173,77 +178,84 @@ public class UserAccountManager {
             }
             return anonymousId;
         }
-        if (null != mAccount) {
-            return Long.parseLong(mAccount.getUuid());
+        if (null != getAccount()) {
+            return Long.parseLong(getAccount().getUuid());
         }
         return 0;
     }
 
     public long getMiId() {
-        if (null != mAccount) {
-            return mAccount.getMiid() == null ? 0 : mAccount.getMiid();
+        if (null != getAccount()) {
+            return getAccount().getMiid() == null ? 0 : getAccount().getMiid();
         }
         return 0;
     }
 
     public String getServiceToken() {
-        if (null != mAccount) {
-            return mAccount.getServiceToken();
+        if (null != getAccount()) {
+            return getAccount().getServiceToken();
         }
         return "";
     }
 
     public void setServiceToken(String serviceToken) {
-        if (null != mAccount) {
-            mAccount.setServiceToken(serviceToken);
+        if (null != getAccount()) {
+            getAccount().setServiceToken(serviceToken);
         }
     }
 
     public String getSSecurity() {
-        if (null != mAccount) {
-            return mAccount.getSSecurity();
+        if (null != getAccount()) {
+            return getAccount().getSSecurity();
         }
         return "";
     }
 
     public void setSSecurity(String sSecurity) {
-        if (null != mAccount) {
-            mAccount.setSSecurity(sSecurity);
+        if (null != getAccount()) {
+            getAccount().setSSecurity(sSecurity);
         }
     }
 
     public String getPassToken() {
-        if (null != mAccount) {
-            return mAccount.getPassToken();
+        if (null != getAccount()) {
+            return getAccount().getPassToken();
         }
         return "";
     }
 
     public void setPassToken(String passToken) {
-        if (null != mAccount) {
-            mAccount.setPassToken(passToken);
+        if (null != getAccount()) {
+            getAccount().setPassToken(passToken);
         }
     }
 
     public String getNickname() {
-        if (null != mAccount) {
-            return mAccount.getNickName();
+        if (null != getAccount()) {
+            return getAccount().getNickName();
+        }
+        return "";
+    }
+
+    public String getThirdUuid() {
+        if (null != getAccount()) {
+            return getAccount().getThirdId();
         }
         return "";
     }
 
     public void setNeedEditUserInfo(boolean needEditUserInfo) {
-        if (null != mAccount) {
-            mAccount.setNeedEditUserInfo(needEditUserInfo);
+        if (null != getAccount()) {
+            getAccount().setNeedEditUserInfo(needEditUserInfo);
         }
     }
 
     public boolean getNeedEditUserInfo() {
-        if (null != mAccount) {
-            if (mAccount.getNeedEditUserInfo() == null) {
+        if (null != getAccount()) {
+            if (getAccount().getNeedEditUserInfo() == null) {
                 return false;
             } else {
-                return mAccount.getNeedEditUserInfo();
+                return getAccount().getNeedEditUserInfo();
             }
         }
         return false;
@@ -255,14 +267,6 @@ public class UserAccountManager {
 
     public long getAnonymousId() {
         return anonymousId;
-    }
-
-    public void setThirdUuid(String thirdUuid) {
-        mThirdUuid = thirdUuid;
-    }
-
-    public String getThirdUuid() {
-        return mThirdUuid;
     }
 
     /*
@@ -339,4 +343,6 @@ public class UserAccountManager {
             break;
         }
     }
+
+
 }

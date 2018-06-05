@@ -32,6 +32,8 @@ public class LiveShow implements Serializable, JSONable {
     public static final int LIVETYPE_VR = 7;
     public static final int LIVETYPE_GAME = 8;
 
+    public static final int LIVETYPE_HUYA = 11; //虎牙
+
     private String liveId;      //直播id
 
     private String location;    //地点

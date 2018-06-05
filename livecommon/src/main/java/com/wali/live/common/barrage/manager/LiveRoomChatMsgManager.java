@@ -21,6 +21,7 @@ import com.wali.live.common.barrage.event.CommentRefreshEvent;
 import com.wali.live.common.model.CommentModel;
 import com.wali.live.common.smiley.SmileyParser;
 import com.wali.live.event.EventClass;
+import com.wali.live.proto.LiveMessageProto;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -33,6 +34,7 @@ import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
 import static com.mi.live.data.push.model.BarrageMsg.INNER_GLOBAL_VFAN;
+
 
 /**
  * @module com.wali.live.video.widget
@@ -301,7 +303,63 @@ public class LiveRoomChatMsgManager {
         sendBarrageMessageAsync(body, BarrageMsgType.B_MSG_TYPE_TEXT, liveId, anchorId, pkExt, null, null);
     }
 
+
     //管理员飘屏或付费飘屏
+    public void sendHuyaBarrageMessageAsync(String body,int msgType, String roomid,long anchorId, long huyaAnchorId, BarrageMsg.PkMessageExt pkExt, BarrageMsg.MsgExt ext, int roomType, BarrageMsg.GlobalRoomMessageExt globalRoomMsgExt, int source) {
+        MyLog.d(TAG, "sendHuyaBarrageMessageAsync");
+
+
+        LiveMessageProto.HuyaSendMessageReq.Builder huyaSendMessageReq = LiveMessageProto.HuyaSendMessageReq.newBuilder()
+                .setMsgContent(body)
+                .setFromUid(MyUserInfoManager.getInstance().getUuid())
+                .setAnchorHuyaUid(huyaAnchorId)
+                .setSendTimestamp(System.currentTimeMillis())
+                .setZuid(anchorId)
+                .setRoomId(roomid)
+                .setRoomType(roomType)
+                .setSource(source)
+                .setMsgType(1);
+
+        BarrageMessageManager.getInstance().sendHuYaBarrageMessage(huyaSendMessageReq.build());
+
+        if (!TextUtils.isEmpty(body) && !TextUtils.isEmpty(roomid)) {
+            String globalMes = SmileyParser.getInstance()
+                    .convertString(body, SmileyParser.TYPE_LOCAL_TO_GLOBAL).toString();
+
+            BarrageMsg msg = new BarrageMsg();
+            msg.setMsgType(msgType);
+            msg.setSender(UserAccountManager.getInstance().getUuidAsLong());
+            String nickname = MyUserInfoManager.getInstance().getUser().getNickname();
+            if (nickname == null) {
+                nickname = String.valueOf(UserAccountManager.getInstance().getUuidAsLong());
+            }
+            msg.setSenderName(nickname);
+            msg.setSenderLevel(MyUserInfoManager.getInstance().getUser().getLevel());
+            msg.setRoomId(roomid);
+            msg.setBody(globalMes);
+            msg.setAnchorId(anchorId);
+            msg.setSentTime(getLastBarrageMsgSentTime());
+            if (MyUserInfoManager.getInstance().getUser() != null) {
+                msg.setCertificationType(MyUserInfoManager.getInstance().getUser().getCertificationType());
+            }
+            if (pkExt != null) {
+                msg.setRoomType(BarrageMsg.ROOM_TYPE_PK);
+                msg.setOpponentAnchorId(pkExt.zuid);
+                msg.setOpponentRoomId(pkExt.roomId);
+            }
+            if (ext != null) {
+                msg.setMsgExt(ext);
+            }
+            if (globalRoomMsgExt != null) {
+                msg.setGlobalRoomMessageExt(globalRoomMsgExt);
+            }
+            msg.setRedName(MyUserInfoManager.getInstance().getUser().isRedName());
+            //假装是个push过去
+            BarrageMessageManager.getInstance().pretendPushBarrage(msg);
+//            addChatMsg(msg, false);
+        }
+    }
+
     public void sendFlyBarrageMessageAsync(String body, String liveId, long anchorId, int flyBarrageType,
                                            BarrageMsg.PkMessageExt pkExt, FansPrivilegeModel vfansPrivilegeModel) {
         BarrageMsg.GlobalRoomMessageExt globalRoomMessageExt = getGlobalRoomMessageExt(flyBarrageType);

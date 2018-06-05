@@ -129,6 +129,15 @@ message EnterLiveRsp {
     optional bool is_pk_admin = 28; //是否pk场控
     optional NewPKInfo new_pk_info = 29; //pk状态传
     optional ContestInfo contest_info = 32;
+    optional ThirdPartyInfo thirdPartyInfo = 35; //第三方直播相关信息
+}
+
+message ThirdPartyInfo
+{
+    optional uint64 uuid = 1; //第三方id
+    optional string downStreamUrl = 2; //第三方直播拉流地址
+    optional string logoUrl = 3; //logo url
+    optional uint32 source = 4; //第三方来源 0：虎牙
 }
 
 //上麦开始，主播发起

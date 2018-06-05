@@ -88,6 +88,8 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
                     }
                     mInputView.setText("");
                 }
+            }else{
+                KeyboardUtils.hideKeyboard((Activity) getContext());
             }
         } else if (id == R.id.show_smiley_btn) { // 显示表情
             if (mIsInputMode) {

@@ -29,6 +29,8 @@ public class UserAccount {
     private Boolean needEditUserInfo;
     private Boolean isLogOff;
     private Long miid;
+    private String thirdId;
+    private String ext;
 
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
@@ -36,7 +38,7 @@ public class UserAccount {
     public UserAccount() {
     }
 
-    public UserAccount(Integer channelid, String uuid, String serviceToken, String securityKey, String passToken, String nickName, String imgUrl, Integer sex, String slogan, String userName, String password, String oldPwd, String deviceId, String pSecurity, String sSecurity, Integer isReset, Integer isNew, Boolean needEditUserInfo, Boolean isLogOff, Long miid) {
+    public UserAccount(Integer channelid, String uuid, String serviceToken, String securityKey, String passToken, String nickName, String imgUrl, Integer sex, String slogan, String userName, String password, String oldPwd, String deviceId, String pSecurity, String sSecurity, Integer isReset, Integer isNew, Boolean needEditUserInfo, Boolean isLogOff, Long miid, String thirdId, String ext) {
         this.channelid = channelid;
         this.uuid = uuid;
         this.serviceToken = serviceToken;
@@ -57,6 +59,8 @@ public class UserAccount {
         this.needEditUserInfo = needEditUserInfo;
         this.isLogOff = isLogOff;
         this.miid = miid;
+        this.thirdId = thirdId;
+        this.ext = ext;
     }
 
     public Integer getChannelid() {
@@ -217,6 +221,22 @@ public class UserAccount {
 
     public void setMiid(Long miid) {
         this.miid = miid;
+    }
+
+    public String getThirdId() {
+        return thirdId;
+    }
+
+    public void setThirdId(String thirdId) {
+        this.thirdId = thirdId;
+    }
+
+    public String getExt() {
+        return ext;
+    }
+
+    public void setExt(String ext) {
+        this.ext = ext;
     }
 
     // KEEP METHODS - put your custom methods here

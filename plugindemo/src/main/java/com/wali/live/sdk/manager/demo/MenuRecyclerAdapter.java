@@ -281,7 +281,12 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             @Override
             public void run() {
                 if (mSdkUpdateHelper != null) {
-                    mSdkUpdateHelper.checkUpdate();
+                    if( PackageManager.PERMISSION_GRANTED == GlobalData.app().getApplicationContext().getPackageManager().checkPermission("android.permission.WRITE_EXTERNAL_STORAGE",GlobalData.app().getApplicationContext().getPackageName())){
+                        mSdkUpdateHelper.checkUpdate();
+                    }else{
+                        ToastUtils.showToast("缺少SD卡读写权限");
+                    }
+
                 }
             }
         }));

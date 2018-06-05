@@ -48,6 +48,11 @@ public interface IMiLiveSdk {
     void enableShare(boolean enable);
 
     /**
+     * 上层应用设置是否支持关注
+     */
+    boolean enableRelationChain(boolean enable, IAssistantCallback callback);
+
+    /**
      * OAuth登录
      *
      * @version 204000
@@ -67,6 +72,16 @@ public interface IMiLiveSdk {
      * @version 204000
      */
     void clearAccount(IAssistantCallback callback);
+
+    /**
+     * 尝试schema跳转
+     *
+     * @param activity
+     * @param schema
+     * @param callback
+     * @return
+     */
+    boolean tryJumpBySchema(Activity activity, String schema, IAssistantCallback callback);
 
     /**
      * 打开直播观看页面
@@ -227,7 +242,6 @@ public interface IMiLiveSdk {
      */
     void setChannelId(int channelId);
 
-
     /**
      * sdk 上层应用回调
      */
@@ -244,6 +258,7 @@ public interface IMiLiveSdk {
 
         int THIRD_PART_LOGIN = 1004;
 
+        int LOGIN_OFF = 1005;
         /**
          * 列表相关的接口
          */

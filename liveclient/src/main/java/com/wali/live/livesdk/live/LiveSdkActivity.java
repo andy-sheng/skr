@@ -536,7 +536,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 //        FloatPersonInfoFragment.openFragment(this, uid, mMyRoomData.getUid(),
 //                mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this);
         FloatInfoFragment.openFragment(this, uid, mMyRoomData.getUid(),
-                mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this);
+                mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), mMyRoomData.isEnableRelationChain(), this);
     }
 
     @Override
@@ -1219,7 +1219,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 String liveId = (String) event.obj3;
                 RankingPagerFragment.openFragment(this, ticket, mMyRoomData.getInitTicket(), uid, liveId,
                         mMyRoomData.isTicketing() ? RankingPagerFragment.PARAM_FROM_CURRENT : RankingPagerFragment.PARAM_FROM_TOTAL,
-                        true, isDisplayLandscape());
+                        true, isDisplayLandscape(), mMyRoomData.isEnableRelationChain());
             }
             break;
             case UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER: {

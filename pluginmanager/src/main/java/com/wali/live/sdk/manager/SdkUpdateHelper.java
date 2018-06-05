@@ -143,4 +143,24 @@ public class SdkUpdateHelper {
             }
         });
     }
+
+    /**
+     * 针对android N系统，Uri.from(File file) 权限问题新增的接口
+     * @param auth
+     */
+    public void installUpdateN(final String auth){
+        if (mExecutor == null) {
+            return;
+        }
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mVersionManager.installLocalPackageN(auth);
+            }
+        });
+    }
+
+    public void installUpdateSyncN(final String auth){
+        mVersionManager.installLocalPackageN(auth);
+    }
 }

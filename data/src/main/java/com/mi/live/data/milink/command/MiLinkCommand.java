@@ -535,4 +535,5 @@ public class MiLinkCommand {
 
     public static final String COMMAND_HUYA_MSG = "zhibo.thirdparty.sendmsg";
     public static final String COMMAND_RADIO_SIGNAL_PUSH = "zhibo.diantai.signal_push";
+
 }

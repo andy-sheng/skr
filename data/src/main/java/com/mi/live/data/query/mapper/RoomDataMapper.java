@@ -92,6 +92,7 @@ public class RoomDataMapper {
                 enterRoomInfo.setLate(rsp.getContestInfo().getIsLate());
                 enterRoomInfo.setContestId(rsp.getContestInfo().getContestId());
             }
+            enterRoomInfo.setThirdPartyInfo(rsp.getThirdPartyInfo());
         }
         return enterRoomInfo;
     }

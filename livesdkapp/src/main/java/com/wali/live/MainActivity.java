@@ -168,6 +168,7 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
                 if (CommonUtils.isNumeric(input)) {
                     RoomInfo roomInfo = RoomInfo.Builder.newInstance(Long.parseLong(input), null, null)
                             .setLiveType(0)
+                            .setEnableRelationChain(false)
                             .build();
                     WatchSdkActivity.openActivity(MainActivity.this, roomInfo);
                 } else {

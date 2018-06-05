@@ -28,6 +28,16 @@
         <activity android:name="com.xiaomi.account.openauth.AuthorizeActivity"/>
         <activity android:name="com.wali.live.sdk.manager.demo.ThirdPartLoginActivity"></activity>
         <activity android:name="com.wali.live.sdk.manager.demo.EditUserInfoActivity"></activity>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.wali.live.sdk.manager.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -17,6 +18,7 @@ import com.wali.live.sdk.manager.http.HttpUtils;
 import com.wali.live.sdk.manager.http.SimpleRequest;
 import com.wali.live.sdk.manager.log.Logger;
 import com.wali.live.sdk.manager.utils.CommonUtils;
+import com.wali.live.sdk.manager.utils.SchemeUtils;
 import com.wali.live.sdk.manager.version.VersionCheckManager;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkServiceProxy;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
@@ -39,6 +41,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String EXTRA_PACKAGE_NAME = "extra_package_name";
     private static final String EXTRA_CHANNEL_SECRET = "extra_channel_secret";
     private static final String EXTRA_ENABLE_SHARE = "extra_enable_share";
+    private static final String EXTRA_ENABLE_FOLLOW = "extra_enable_follow";
 
     private static final String EXTRA_PLAYER_ID = "extra_player_id";
     private static final String EXTRA_LIVE_ID = "extra_live_id";
@@ -77,6 +80,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String ACTION_NOTIFY_SHARE_SUC = "notify_share_suc";
     private static final String ACTION_GET_FOLLOWING_LIVES = "get_following_lives";
 
+    private static final String ACTION_DISABLE_RELATION_CHAIN = "disable_relation_chain";
     private static final String ACTION_STATISTIC = "statistic";
 
     /*SharedPreferences File & Key*/
@@ -98,6 +102,11 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private String mChannelSecret;
 
     private boolean mEnableShare;
+    /**
+     * 是否隐藏关系链，无法关注，无法私信
+     */
+    private boolean mEnableRelationChain = true;
+
 
     private ICallback mCallback;
 
@@ -130,6 +139,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mMinVersionMap.put(ACTION_EDIT_USER_INFO, 205057);
 
         mMinVersionMap.put(ACTION_DO_FEED_BACK, 205058);
+        mMinVersionMap.put(ACTION_DISABLE_RELATION_CHAIN, 205061);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -304,6 +314,17 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
+    public boolean enableRelationChain(boolean enable,IAssistantCallback callback) {
+        if(!enable){
+            if (!checkVersion(ACTION_DISABLE_RELATION_CHAIN, callback)) {
+                return false;
+            }
+        }
+        mEnableRelationChain = enable;
+        return true;
+    }
+
+    @Override
     public int getChannelId() {
         return mChannelId;
     }
@@ -365,6 +386,44 @@ public class MiLiveSdkController implements IMiLiveSdk {
         }
         checkHasInit();
         MiLiveSdkServiceProxy.getInstance().clearAccount();
+    }
+
+    /**
+     * migamecenter://room/join?liveid=4431273_1527670977&playerid=4431273
+     * &videourl=http%3A%2F%2Fv2.zb.mi.com%2Flive%2F4431273_1527670977.flv%3Fplayui%3D0&type=8&recommend=r-0-0-4431273-4431273_1527670977-2001-8240-1527685008-1-1-1-0-1-56
+     *
+     * @param schema
+     * @return
+     */
+    public boolean tryJumpBySchema(Activity activity, String schema, IAssistantCallback callback) {
+        //尝试使用schema跳转
+        Uri uri = Uri.parse(schema);
+        String host = uri.getHost();
+        String path = uri.getPath();
+        if ("room".equals(host)) {
+            if ("/join".equals(path)) {
+                String liveId = SchemeUtils.getString(uri, "liveid");
+                long playerId = SchemeUtils.getLong(uri, "playerid", 0);
+                String videoUrl = SchemeUtils.getString(uri, "videourl");
+                int liveType = SchemeUtils.getInt(uri, "type", 0);
+                if (!TextUtils.isEmpty(liveId) && !TextUtils.isEmpty(videoUrl)) {
+                    openWatch(activity, playerId, liveId, videoUrl, liveType, callback);
+                    return true;
+                }
+            }
+        } else if ("playback".equals(host)) {
+            if ("/join".equals(path)) {
+                String liveId = SchemeUtils.getString(uri, "liveid");
+                long playerId = SchemeUtils.getLong(uri, "playerid", 0);
+                String videoUrl = SchemeUtils.getString(uri, "videourl");
+                int liveType = SchemeUtils.getInt(uri, "type", 0);
+                if (!TextUtils.isEmpty(liveId) && !TextUtils.isEmpty(videoUrl)) {
+                    openReplay(activity, playerId, liveId, videoUrl, liveType, callback);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
@@ -606,6 +665,9 @@ public class MiLiveSdkController implements IMiLiveSdk {
         bundle.putString(EXTRA_CHANNEL_SECRET, mChannelSecret);
         if (mEnableShare) {
             bundle.putBoolean(EXTRA_ENABLE_SHARE, mEnableShare);
+        }
+        if (!mEnableRelationChain) {
+            bundle.putBoolean(EXTRA_ENABLE_FOLLOW, mEnableRelationChain);
         }
         return bundle;
     }
