@@ -19,6 +19,7 @@ import com.mi.live.data.account.login.LoginType;
 import com.mi.live.data.account.task.AccountCaller;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.milink.event.MiLinkEvent;
+import com.mi.live.data.push.presenter.RoomMessagePresenter;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.event.EventClass;
 import com.wali.live.proto.AccountProto;
@@ -32,6 +33,7 @@ import com.wali.live.watchsdk.callback.ISecureCallBack;
 import com.wali.live.watchsdk.callback.SecureCommonCallBack;
 import com.wali.live.watchsdk.callback.SecureLoginCallback;
 import com.wali.live.watchsdk.ipc.auth.SecurityVerifyCacheManager;
+import com.wali.live.watchsdk.ipc.api.BarragePullManager;
 import com.wali.live.watchsdk.list.ChannelLiveCaller;
 import com.wali.live.watchsdk.list.RelationCaller;
 import com.wali.live.watchsdk.login.UploadService;
@@ -260,6 +262,42 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void processFailure() {
 
+            }
+        });
+    }
+
+    @Override
+    public void startBarragePull(final int channelId, String packageName, String channelSecret, final String roomId) {
+        secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
+            @Override
+            public void postSuccess() {
+                BarragePullManager.getInstance().startWork(channelId, roomId);
+            }
+
+            @Override
+            public void postError() {
+            }
+
+            @Override
+            public void processFailure() {
+            }
+        });
+    }
+
+    @Override
+    public void stopBarragePull(final int channelId, String packageName, String channelSecret) {
+        secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
+            @Override
+            public void postSuccess() {
+                BarragePullManager.getInstance().stopWork();
+            }
+
+            @Override
+            public void postError() {
+            }
+
+            @Override
+            public void processFailure() {
             }
         });
     }
@@ -723,7 +761,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             return;
         }
 
-        if (SecurityVerifyCacheManager.checkSPreferences(channelId, packageName)){
+        if (SecurityVerifyCacheManager.checkSPreferences(channelId, packageName)) {
             callback.process(channelId, packageName);
             mAuthMap.put(channelId, packageName);
             //更新时间
@@ -1169,6 +1207,42 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                     }
                 }
                 MyLog.w(TAG, "onEventShare aidl success=" + aidlSuccess);
+            }
+        });
+    }
+
+    public void onEventRecvBarrage(final int channelId, final List<BarrageInfo> liveInfos) {
+        MyLog.w(TAG, "onEventGetFollowingLiveList ");
+//        if (mAARCallback != null) {
+//            mAARCallback.notifyGetFollowingLiveList(liveInfos);
+//            return;
+//        }
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
+                boolean aidlSuccess = false;
+                RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
+                if (callbackList != null) {
+                    MyLog.w(TAG, "callbackList != null");
+                    int n = callbackList.beginBroadcast();
+                    for (int i = 0; i < n; i++) {
+                        IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
+                        try {
+                            callback.onEventRecvBarrage(liveInfos);
+                            aidlSuccess = true;
+                        } catch (Exception e) {
+                            MyLog.v(TAG, "dead callback.");
+                            deadCallback.add(callback);
+                        }
+                    }
+                    callbackList.finishBroadcast();
+                    for (IMiLiveSdkEventCallback callback : deadCallback) {
+                        MyLog.v(TAG, "unregister event callback.");
+                        callbackList.unregister(callback);
+                    }
+                }
+                MyLog.w(TAG, "onEventGetFollowingLiveList aidl success=" + aidlSuccess);
             }
         });
     }

@@ -81,6 +81,9 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String ACTION_GET_FOLLOWING_LIVES = "get_following_lives";
 
     private static final String ACTION_DISABLE_RELATION_CHAIN = "disable_relation_chain";
+
+    private static final String ACTION_OP_GET_BARRAGE = "get_barrage";
+            ;
     private static final String ACTION_STATISTIC = "statistic";
 
     /*SharedPreferences File & Key*/
@@ -140,6 +143,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
         mMinVersionMap.put(ACTION_DO_FEED_BACK, 205058);
         mMinVersionMap.put(ACTION_DISABLE_RELATION_CHAIN, 205061);
+        mMinVersionMap.put(ACTION_OP_GET_BARRAGE, 206003);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -306,6 +310,25 @@ public class MiLiveSdkController implements IMiLiveSdk {
     @Override
     public void setChannelId(int channelId) {
         mChannelId = channelId;
+    }
+
+    @Override
+    public void startBarragePull(String roomId, IGetBarrageCallback callback) {
+        Logger.d(TAG, "beginBarragePull roomId:"+roomId);
+        if (!checkVersion(ACTION_OP_GET_BARRAGE, callback)) {
+            return;
+        }
+        checkHasInit();
+        MiLiveSdkServiceProxy.getInstance().startBarragePull(roomId,callback);
+    }
+
+    @Override
+    public void stopBarragePull(IAssistantCallback callback) {
+        if (!checkVersion(ACTION_OP_GET_BARRAGE, callback)) {
+            return;
+        }
+        checkHasInit();
+        MiLiveSdkServiceProxy.getInstance().stopBarragePull();
     }
 
     @Override

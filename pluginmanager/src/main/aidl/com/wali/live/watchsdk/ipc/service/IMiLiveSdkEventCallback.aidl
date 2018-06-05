@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.ipc.service;
 import com.wali.live.watchsdk.ipc.service.LiveInfo;
 import com.wali.live.watchsdk.ipc.service.UserInfo;
 import com.wali.live.watchsdk.ipc.service.ShareInfo;
+import com.wali.live.watchsdk.ipc.service.BarrageInfo;
 
 interface IMiLiveSdkEventCallback {
     void onEventLogin(int code);
@@ -21,4 +22,6 @@ interface IMiLiveSdkEventCallback {
     void onEventGetFollowingLiveList(int errCode, in List<LiveInfo> liveInfos);
 
     void onEventShare(in ShareInfo shareInfo);
+
+    void onEventRecvBarrage(in List<BarrageInfo> barrageInfos);
 }

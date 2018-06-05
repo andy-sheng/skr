@@ -40,6 +40,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     private IMiLiveSdk.IChannelAssistantCallback mChannelCallback;
     private IMiLiveSdk.IFollowingUsersCallback mFollowingListCallback;
     private IMiLiveSdk.IFollowingLivesCallback mFollowingLivesCallback;
+    private IMiLiveSdk.IGetBarrageCallback mGetBarrageCallback;
 
     private IMiLiveSdkEventCallback mLiveSdkEventCallback = new IMiLiveSdkEventCallback.Stub() {
         @Override
@@ -116,6 +117,15 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                 mCallback.notifyWantShare(shareInfo);
             }
         }
+
+        @Override
+        public void onEventRecvBarrage(List<BarrageInfo> barrageInfos) throws RemoteException {
+            Logger.w(TAG, "onEventVerifyFailure");
+            if (mGetBarrageCallback != null) {
+                mGetBarrageCallback.notifyGetBarrageList(barrageInfos);
+            }
+        }
+
     };
 
     private static MiLiveSdkServiceProxy sInstance;
@@ -348,6 +358,40 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                         MiLiveSdkController.getInstance().getChannelSecret());
             } catch (RemoteException e) {
                 resolveException(e, IMiLiveSdk.ICallback.GET_FOLLOWING_LIVES);
+            }
+        }
+    }
+
+    public void startBarragePull(String roomId, IMiLiveSdk.IGetBarrageCallback getBarrageCallback) {
+        Logger.w(TAG, "startBarragePull");
+        if (getBarrageCallback == null) {
+            Logger.w(TAG, "startBarragePull callback is null");
+            return;
+        }
+        mGetBarrageCallback = getBarrageCallback;
+        if (mRemoteService == null) {
+            resolveNullService(IMiLiveSdk.ICallback.GET_BARRAGE);
+        } else {
+            try {
+                mRemoteService.startBarragePull(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret(), roomId);
+            } catch (RemoteException e) {
+                resolveException(e, IMiLiveSdk.ICallback.GET_BARRAGE);
+            }
+        }
+    }
+
+    public void stopBarragePull() {
+        Logger.w(TAG, "stopBarragePull");
+        mGetBarrageCallback = null;
+        if (mRemoteService == null) {
+            resolveNullService(IMiLiveSdk.ICallback.GET_BARRAGE);
+        } else {
+            try {
+                mRemoteService.stopBarragePull(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret());
+            } catch (RemoteException e) {
+                resolveException(e, IMiLiveSdk.ICallback.GET_BARRAGE);
             }
         }
     }

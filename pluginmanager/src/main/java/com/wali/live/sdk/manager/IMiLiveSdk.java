@@ -6,6 +6,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.Keep;
 
 import com.mi.live.data.location.Location;
+import com.wali.live.watchsdk.ipc.service.BarrageInfo;
 import com.wali.live.watchsdk.ipc.service.LiveInfo;
 import com.wali.live.watchsdk.ipc.service.ShareInfo;
 import com.wali.live.watchsdk.ipc.service.UserInfo;
@@ -242,6 +243,9 @@ public interface IMiLiveSdk {
      */
     void setChannelId(int channelId);
 
+    void startBarragePull(String roomId, IGetBarrageCallback callback);
+
+    void stopBarragePull(IAssistantCallback assistantCallback);
     /**
      * sdk 上层应用回调
      */
@@ -268,6 +272,7 @@ public interface IMiLiveSdk {
 
         int GET_FOLLOWING_LIVES = 1102;
 
+        int GET_BARRAGE = 1103;
         /**
          * 分享相关接口标志
          */
@@ -361,6 +366,11 @@ public interface IMiLiveSdk {
     @Keep
     interface IFollowingLivesCallback extends IAssistantCallback {
         void notifyGetFollowingLiveList(int errCode, List<LiveInfo> liveInfos);
+    }
+
+    @Keep
+    interface IGetBarrageCallback extends IAssistantCallback {
+        void notifyGetBarrageList(List<BarrageInfo> barrageInfoList);
     }
 
     @Keep
