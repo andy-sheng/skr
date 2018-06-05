@@ -268,6 +268,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
     @Override
     public void startBarragePull(final int channelId, String packageName, String channelSecret, final String roomId) {
+        MyLog.d(TAG, "startBarragePull" + " channelId=" + channelId + " packageName=" + packageName + " channelSecret=" + channelSecret + " roomId=" + roomId);
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
             @Override
             public void postSuccess() {
@@ -286,6 +287,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
     @Override
     public void stopBarragePull(final int channelId, String packageName, String channelSecret) {
+        MyLog.d(TAG, "stopBarragePull" + " channelId=" + channelId + " packageName=" + packageName + " channelSecret=" + channelSecret);
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
             @Override
             public void postSuccess() {
@@ -1212,7 +1214,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void onEventRecvBarrage(final int channelId, final List<BarrageInfo> liveInfos) {
-        MyLog.w(TAG, "onEventGetFollowingLiveList ");
+        MyLog.w(TAG, "onEventRecvBarrage ");
 //        if (mAARCallback != null) {
 //            mAARCallback.notifyGetFollowingLiveList(liveInfos);
 //            return;

@@ -20,6 +20,7 @@
 -keep public class * extends android.app.backup.BackupAgentHelper
 -keep public class * extends android.preference.Preference
 -keep public class * extends android.view.View
+-keep public class * implements android.os.Parcelable
 -keep public class com.android.vending.licensing.ILicensingService
 -keep class android.support.v8.renderscript.** {*;}
 -keep class android.support.** {*;}
@@ -54,3 +55,4 @@
 -keep class com.wali.live.sdk.manager.global.GlobalData{
     public *;
 }
+
