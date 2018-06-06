@@ -268,7 +268,7 @@ public class VersionCheckManager {
 
         if (checkLocalPackage(localFileName)) {
             if (updateListener != null) {
-                updateListener.onDownloadSuccess(localFileName);
+                updateListener.onDownloadSuccess(getCachePath(localFileName));
                 mIsUpgrading = false;
             }
             return;
@@ -317,7 +317,7 @@ public class VersionCheckManager {
                                     newFile.delete();
                                 }
                                 downFile.renameTo(newFile);
-                                updateListener.onDownloadSuccess(localFileName);
+                                updateListener.onDownloadSuccess(getCachePath(localFileName));
                             }
                         }
 
