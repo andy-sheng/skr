@@ -2003,10 +2003,21 @@ public abstract class CommonUtils {
         return Settings.Global.getInt(GlobalData.app().getContentResolver(), "force_fsg_nav_bar", 0) != 0;
     }
 
+    /*
+     * 判断是否是刘海屏幕
+     * */
     public static boolean isNotchPhone() {
         int ret = getSystemIntProperties("ro.miui.notch");
         MyLog.w(TAG, "isNotchPhone ret=" + ret);
         return getSystemIntProperties("ro.miui.notch") == 1;
+    }
+
+    /*
+     * 判断是否开启刘海屏幕隐藏
+     * */
+    public static boolean isOpenHideNotch(){
+        int ret = Settings.Global.getInt(GlobalData.app().getContentResolver(),"force_black",0);
+        return ret == 1;
     }
 
     private static int getSystemIntProperties(String prop) {
