@@ -4,15 +4,18 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.base.activity.BaseActivity;
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.Constants;
 import com.base.utils.display.DisplayUtils;
@@ -58,6 +61,8 @@ import com.wali.live.watchsdk.watch.presenter.PanelContainerPresenter;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
+import ch.qos.logback.core.android.SystemPropertiesProxy;
 
 import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
 import static com.wali.live.component.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
@@ -486,6 +491,20 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
         if (!mIsVideoLandscape && !mIsLandscape) {
             mRotateBtn.setVisibility(View.GONE);
         } else {
+            //miui判断是否是刘海屏,notch值为1是刘海屏
+            String notch = SystemPropertiesProxy.getInstance().get("ro.miui.notch",null);
+            //miui判断隐藏刘海屏功能是否开启
+            boolean noNotch = (Settings.Global.getInt(GlobalData.app().getContentResolver(),"force_black",0) == 1);
+            if( String.valueOf(1).equals(notch) && !noNotch){
+                int resourceId = GlobalData.app().getResources().getIdentifier("status_bar_height", "dimen", "android");
+                int toRight = 0;
+                if (resourceId > 0) {
+                    toRight = GlobalData.app().getResources().getDimensionPixelSize(resourceId);
+                }
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)mRotateBtn.getLayoutParams();
+                layoutParams.setMargins(0,0, toRight,0);
+                mRotateBtn.setLayoutParams(layoutParams);
+            }
             mRotateBtn.setVisibility(View.VISIBLE);
         }
     }
