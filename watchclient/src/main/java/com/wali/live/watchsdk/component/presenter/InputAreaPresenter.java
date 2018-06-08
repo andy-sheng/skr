@@ -22,6 +22,7 @@ import static com.wali.live.component.BaseSdkController.MSG_BARRAGE_FANS;
 import static com.wali.live.component.BaseSdkController.MSG_BARRAGE_VIP;
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_INPUT_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
@@ -90,6 +91,7 @@ public class InputAreaPresenter extends InputPresenter<InputAreaView.IView>
 
     @Override
     public void notifyInputViewShowed() {
+        postEvent(MSG_INPUT_VIEW_SHOWED);
         updateManagerView();
     }
 

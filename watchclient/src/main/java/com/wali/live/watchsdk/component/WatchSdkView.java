@@ -544,6 +544,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                     mGiftContinueViewGroup.onShowInputView();
                 }
                 mAnimationHelper.startInputAnimator(true);
+                mTopAreaView.setVisibility(View.GONE);
                 return true;
             case MSG_INPUT_VIEW_HIDDEN:
                 if (!mIsGameMode || !mIsLandscape) { // 游戏直播横屏不需左右滑
@@ -553,6 +554,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                     mGiftContinueViewGroup.onHideInputView();
                 }
                 mAnimationHelper.startInputAnimator(false);
+                mTopAreaView.setVisibility(View.VISIBLE);
                 return true;
             case MSG_BACKGROUND_CLICK:
                 if (mController.postEvent(MSG_HIDE_INPUT_VIEW)) {
