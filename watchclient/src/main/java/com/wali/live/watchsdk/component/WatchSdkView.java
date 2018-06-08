@@ -260,6 +260,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 return;
             }
             LiveCommentPresenter presenter = new LiveCommentPresenter(mController);
+            presenter.setGameMode(mIsGameMode);
             registerComponent(view, presenter);
             view.setToken(mController.mRoomChatMsgManager.toString());
             mLiveCommentView = view;

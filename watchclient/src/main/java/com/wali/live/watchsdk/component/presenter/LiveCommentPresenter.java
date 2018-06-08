@@ -28,6 +28,9 @@ public class LiveCommentPresenter extends ComponentPresenter<LiveCommentView.IVi
         implements LiveCommentView.IPresenter {
     private static final String TAG = "LiveCommentPresenter";
 
+    private boolean mIsGameMode;
+    private boolean mIsLandscape = false;// 是否是横屏
+
     @Override
     protected final String getTAG() {
         return TAG;
@@ -52,6 +55,10 @@ public class LiveCommentPresenter extends ComponentPresenter<LiveCommentView.IVi
 //                    public void call(Throwable throwable) {
 //                    }
 //                });
+    }
+
+    public void setGameMode(boolean mIsGameMode){
+        this.mIsGameMode = mIsGameMode;
     }
 
     @Override
@@ -100,15 +107,22 @@ public class LiveCommentPresenter extends ComponentPresenter<LiveCommentView.IVi
         switch (event) {
             case MSG_ON_ORIENT_PORTRAIT:
                 mView.onOrientation(false);
+                mIsLandscape = false;
                 return true;
             case MSG_ON_ORIENT_LANDSCAPE:
                 mView.onOrientation(true);
+                mIsLandscape = true;
                 return true;
             case MSG_BOTTOM_POPUP_SHOWED:
                 mView.getRealView().setVisibility(View.INVISIBLE);
                 return true;
             case MSG_BOTTOM_POPUP_HIDDEN:
-                mView.getRealView().setVisibility(View.VISIBLE);
+                if ( mIsGameMode && mIsLandscape){
+                    mView.getRealView().setVisibility(View.GONE);
+                }else{
+                    mView.getRealView().setVisibility(View.VISIBLE);
+                }
+
                 return true;
             default:
                 break;

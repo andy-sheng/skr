@@ -68,6 +68,8 @@ import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_GAME_INPUT;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_INPUT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
 
 /**
@@ -147,6 +149,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         if (mGiftMallView.getVisibility() == View.VISIBLE) {
             mGiftMallView.setVisibility(View.GONE);
             if (mController != null) {
+                mController.postEvent(MSG_SHOW_GAME_INPUT);
                 mController.postEvent(MSG_BOTTOM_POPUP_HIDDEN);
             }
         }
@@ -907,6 +910,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         if (mGiftMallView.getVisibility() != View.VISIBLE) {
             mGiftMallView.setVisibility(View.VISIBLE);
             if (mController != null) {
+                mController.postEvent(MSG_HIDE_GAME_INPUT);
                 mController.postEvent(MSG_BOTTOM_POPUP_SHOWED);
             }
         }

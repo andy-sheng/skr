@@ -29,21 +29,57 @@
         android:layout_marginEnd="@dimen/margin_20"
         android:layout_marginStart="@dimen/margin_20"/>
 
-    <!--评论栏-->
-    <com.wali.live.watchsdk.component.view.LiveCommentView
-        android:id="@+id/live_comment_view"
+    <!--输入框-->
+    <com.wali.live.watchsdk.component.view.InputAreaView
+        android:id="@+id/input_area_view"
         android:layout_width="match_parent"
-        android:layout_height="150.33dip"
-        android:layout_above="@+id/input_area_view"
-        android:layout_alignWithParentIfMissing="true"
-        android:layout_marginRight="70dp"
-        android:fadingEdge="none"
-        android:fadingEdgeLength="0dp"
-        android:overScrollMode="never"
-        android:paddingBottom="@dimen/margin_30"
-        android:paddingLeft="6dip"
-        android:paddingRight="6.67dip"
-        android:requiresFadingEdge="none"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:visibility="invisible"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/input_area_view">
+
+        <!--礼物展示需要-->
+        <include
+            layout="@layout/component_gift_continue_view_group"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_450" />
+
+        <com.wali.live.common.flybarrage.view.FlyBarrageViewGroup
+            android:id="@+id/fly_barrage_viewgroup"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_200"
+            android:layout_below="@+id/gift_continue_vg"
+            android:layout_marginBottom="@dimen/view_dimen_90"/>
+
+        <com.wali.live.watchsdk.component.view.BarrageControlAnimView
+            android:id="@+id/msg_anim_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/live_comment_view"
+            android:layout_marginBottom="-23.66dip"/>
+
+        <!--评论栏-->
+        <com.wali.live.watchsdk.component.view.LiveCommentView
+            android:id="@+id/live_comment_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_450"
+            android:layout_below="@+id/fly_barrage_viewgroup"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_marginRight="70dp"
+            android:fadingEdge="none"
+            android:fadingEdgeLength="0dp"
+            android:overScrollMode="never"
+            android:paddingBottom="@dimen/margin_30"
+            android:paddingLeft="6dip"
+            android:paddingRight="6.67dip"
+            android:requiresFadingEdge="none"/>
+
+    </RelativeLayout>
 
     <com.wali.live.watchsdk.component.view.WidgetView
         android:id="@+id/widget_view"
@@ -63,14 +99,6 @@
         android:layout_marginRight="@dimen/margin_168"
         android:inflatedId="@+id/game_barrage_view"
         android:layout="@layout/view_game_barrage"/>
-
-
-    <com.wali.live.watchsdk.component.view.BarrageControlAnimView
-        android:id="@+id/msg_anim_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/live_comment_view"
-        android:layout_marginBottom="-23.66dip"/>
 
     <!--<ViewStub-->
     <!--android:id="@+id/game_bottom_viewstub"-->
@@ -103,20 +131,6 @@
         android:id="@+id/extra_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
-    <!--礼物展示需要-->
-    <include
-        layout="@layout/component_gift_continue_view_group"
-        android:layout_width="wrap_content"
-        android:layout_height="140dp"
-        android:layout_above="@id/live_comment_view"
-        android:layout_marginBottom="61.33dip"/>
-
-    <com.wali.live.common.flybarrage.view.FlyBarrageViewGroup
-        android:id="@+id/fly_barrage_viewgroup"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_alignBottom="@+id/gift_continue_vg"/>
 
     <!--房间特效礼物-->
     <com.wali.live.common.gift.view.GiftRoomEffectView
@@ -175,15 +189,6 @@
         android:layout_height="match_parent"
         android:background="@color/transparent"
         android:visibility="gone"/>
-
-    <!--输入框-->
-    <com.wali.live.watchsdk.component.view.InputAreaView
-        android:id="@+id/input_area_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        android:visibility="invisible"/>
 
     <!--红包容器-->
     <RelativeLayout
