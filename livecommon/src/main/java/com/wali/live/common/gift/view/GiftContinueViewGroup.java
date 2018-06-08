@@ -110,14 +110,14 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
         giftScheduler.setGiftContinuousViews(getFeedViews());
         MyLog.d(TAG, "isLandscape:" + isLandscape);
         if (isLandscape) {
-            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) this.getLayoutParams();
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) this.getLayoutParams();
             lp.height = DisplayUtils.dip2px(100);
-            lp.gravity = Gravity.BOTTOM;
+            lp.alignWithParent = true;
 //            lp.bottomMargin = mLandscapeMarginBottom;
         } else {
-            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) this.getLayoutParams();
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) this.getLayoutParams();
             lp.height = DisplayUtils.dip2px(150);
-            lp.gravity = Gravity.TOP;
+            lp.alignWithParent = true;
 //            lp.bottomMargin = mGiftViewMarginBottom;
             for(GiftContinuousView v:getFeedViews()){
                 v.tryAwake();
@@ -131,7 +131,7 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
 
     public void onShowInputView() {
 
-        FrameLayout.LayoutParams middleLayout = (FrameLayout.LayoutParams) this.getLayoutParams();
+        RelativeLayout.LayoutParams middleLayout = (RelativeLayout.LayoutParams) this.getLayoutParams();
         if (!mIsLandscape) {
 //            middleLayout.bottomMargin = DisplayUtils.dip2px(10);
         } else {
@@ -145,7 +145,7 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
     }
 
     public void onHideInputView() {
-        FrameLayout.LayoutParams middleLayout = (FrameLayout.LayoutParams) this.getLayoutParams();
+        RelativeLayout.LayoutParams middleLayout = (RelativeLayout.LayoutParams) this.getLayoutParams();
         if (!mIsLandscape) {
 //            middleLayout.bottomMargin = mGiftViewMarginBottom;
 //            middleLayout.height = mGiftViewHeight;

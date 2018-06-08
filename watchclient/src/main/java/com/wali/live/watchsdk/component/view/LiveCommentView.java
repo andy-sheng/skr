@@ -405,7 +405,7 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
             layoutParams.width = COMMENT_WIDTH_LANDSCAPE;
             layoutParams.height = COMMENT_HEIGHT_LANDSCAPE;
             layoutParams.rightMargin = 0;
-            setPadding(COMMENT_PADDING_LEFT, 0, COMMENT_PADDING_RIGHT, LANDSPACE_COMMENT_PADDING_BOTTOM);
+            setPadding(COMMENT_PADDING_LEFT, 0, COMMENT_PADDING_RIGHT, PORTRAIT_COMMENT_PADDING_BOTTOM);
         } else {
             layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
             layoutParams.height = COMMENT_HEIGHT_PORTRAIT;

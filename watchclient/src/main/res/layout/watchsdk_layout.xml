@@ -33,14 +33,14 @@
     <com.wali.live.watchsdk.component.view.LiveCommentView
         android:id="@+id/live_comment_view"
         android:layout_width="match_parent"
-        android:layout_height="160.33dip"
+        android:layout_height="150.33dip"
         android:layout_above="@+id/input_area_view"
         android:layout_alignWithParentIfMissing="true"
         android:layout_marginRight="70dp"
         android:fadingEdge="none"
         android:fadingEdgeLength="0dp"
         android:overScrollMode="never"
-        android:paddingBottom="13.33dp"
+        android:paddingBottom="@dimen/margin_30"
         android:paddingLeft="6dip"
         android:paddingRight="6.67dip"
         android:requiresFadingEdge="none"/>

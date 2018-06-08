@@ -108,6 +108,90 @@
             android:layout_below="@id/gift_display_area"
             android:background="@color/color_white_trans_20"/>
 
+        <!-- 真实用于相应operate_root区域点击事件的view -->
+        <RelativeLayout
+            android:id="@+id/operate_root_real"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_109"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="@dimen/margin_41">
+
+            <TextView
+                android:id="@+id/tv_pkt_detail_real"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="-1.33dp"
+                android:layout_marginRight="@dimen/margin_90"
+                android:alpha="0"
+                android:drawablePadding="6.66dp"
+                android:drawableRight="@drawable/live_icon_more_big_normal"
+                android:gravity="center"
+                android:paddingLeft="@dimen/margin_30"
+                android:text="@string/pkt_gift_detail"
+                android:textColor="@color/color_ff2966"
+                android:textSize="@dimen/text_size_36"
+                android:visibility="gone"/>
+
+
+            <TextView
+                android:id="@+id/diamond_max_tv_real"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_dimen_108"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/margin_30"
+                android:alpha="0"
+                android:drawableLeft="@drawable/live_icon_golden_diamond_big"
+                android:drawablePadding="6.66dp"
+                android:gravity="center"
+                android:text="10"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/text_size_34"/>
+
+            <TextView
+                android:id="@+id/diamond_siliver_tv_real"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_dimen_108"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="13.33dp"
+                android:layout_toRightOf="@id/diamond_max_tv_real"
+                android:alpha="0"
+                android:drawableLeft="@drawable/live_icon_argentum_diamond_big"
+                android:drawablePadding="6.66dp"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/text_size_34"/>
+
+            <TextView
+                android:id="@+id/recharge_tv_real"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="-1.33dp"
+                android:layout_marginRight="@dimen/margin_30"
+                android:alpha="0"
+                android:background="@drawable/live_icon_gift_recharge"
+                android:gravity="center"
+                android:paddingLeft="@dimen/margin_30"
+                android:paddingRight="@dimen/margin_50"
+                android:text="@string/recharge"
+                android:textColor="@color/color_ff2966"
+                android:textSize="@dimen/text_size_36"/>
+
+            <com.base.image.fresco.BaseImageView
+                android:id="@+id/top_right_widget_real"
+                android:layout_width="@dimen/view_dimen_210"
+                android:layout_height="@dimen/view_dimen_60"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/view_dimen_30"
+                android:layout_toLeftOf="@id/recharge_tv_real"
+                android:alpha="0"
+                android:visibility="gone"/>
+        </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/bottom_tab"
             android:layout_width="wrap_content"

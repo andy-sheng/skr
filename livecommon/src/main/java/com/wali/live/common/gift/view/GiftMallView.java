@@ -337,8 +337,8 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         }
         mGiftBottomPanel = (RelativeLayout) findViewById(R.id.gift_bottom_panel);
         mGiftMallGuidePageViewStub = (ViewStub) findViewById(R.id.gift_mall_guide_page_viewstub);
-        mBalanceTv = (TextView) findViewById(R.id.diamond_max_tv);
-        mSiliverDiamond = (TextView) findViewById(R.id.diamond_siliver_tv);
+        mBalanceTv = (TextView) findViewById(R.id.diamond_max_tv_real);
+        mSiliverDiamond = (TextView) findViewById(R.id.diamond_siliver_tv_real);
 
         setBalanceInfo();
         mContinueSendBtn = (ContinueSendBtn) findViewById(R.id.continue_send_btn);
@@ -366,7 +366,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
                 });
 
         // 充值按钮的点击
-        mRechargeTv = $rxClick(R.id.recharge_tv, 500, new Action1<Void>() {
+        mRechargeTv = $rxClick(R.id.recharge_tv_real, 500, new Action1<Void>() {
             @Override
             public void call(Void aVoid) {
                 //TODO 一定记得加上
@@ -375,7 +375,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         });
 
         //金钻银钻点击事件处理一样
-        RxView.clicks(mBalanceTv)
+        RxView.clicks(findViewById(R.id.diamond_max_tv_real))
                 .throttleFirst(200, TimeUnit.MILLISECONDS)
                 .subscribe(new Action1<Void>() {
                     @Override
@@ -384,7 +384,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
                     }
                 });
 
-        RxView.clicks(mSiliverDiamond)
+        RxView.clicks(findViewById(R.id.diamond_siliver_tv_real))
                 .throttleFirst(200, TimeUnit.MILLISECONDS)
                 .subscribe(new Action1<Void>() {
                     @Override
@@ -393,7 +393,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
                     }
                 });
 
-        mPktDetailTv = $rxClick(R.id.pkt_detail_tv, 300, new Action1<Void>() {
+        mPktDetailTv = $rxClick(R.id.tv_pkt_detail_real, 300, new Action1<Void>() {
             @Override
             public void call(Void aVoid) {
                 if (!mIsMallGift) {
@@ -629,8 +629,14 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
                 left = DisplayUtils.dip2px(getContext(), 13.33f);
             }
 
-            layoutParams.setMargins(left, 0, 0, bottom);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            if (mIsLandscape) {
+                layoutParams.setMargins(left, 0, 0, bottom);
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            } else {
+                layoutParams.setMargins(left, 0, 0, bottom);
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            }
+
             mGiftBottomPanel.addView(mDiamondTips, layoutParams);
         }
 

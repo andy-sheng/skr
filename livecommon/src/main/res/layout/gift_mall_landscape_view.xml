@@ -124,7 +124,8 @@
                 android:gravity="center"
                 android:text="10"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/text_size_34"/>
+                android:textSize="@dimen/text_size_34"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/diamond_siliver_tv"
@@ -138,7 +139,8 @@
                 android:gravity="center"
                 android:text="0"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/text_size_36"/>
+                android:textSize="@dimen/text_size_36"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/recharge_tv"
@@ -153,10 +155,74 @@
                 android:paddingRight="@dimen/margin_50"
                 android:text="@string/recharge"
                 android:textColor="@color/color_ff2966"
+                android:textSize="@dimen/text_size_36"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_pkt_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:drawablePadding="5dp"
+                android:drawableRight="@drawable/live_icon_more_big_normal"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/pkt_gift_detail"
+                android:textColor="@color/color_ff2966"
+                android:textSize="@dimen/text_size_36"
+                android:visibility="gone"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/gift_display_area_real"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true">
+
+            <TextView
+                android:id="@+id/diamond_max_tv_real"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="13.33dp"
+                android:drawableLeft="@drawable/live_icon_golden_diamond_big"
+                android:drawablePadding="6.66dp"
+                android:gravity="center"
+                android:text="10"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/text_size_34"/>
+
+            <TextView
+                android:id="@+id/diamond_siliver_tv_real"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="13.33dp"
+                android:layout_toRightOf="@id/diamond_max_tv_real"
+                android:drawableLeft="@drawable/live_icon_argentum_diamond_big"
+                android:drawablePadding="6.66dp"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/text_size_36"/>
+
+            <TextView
+                android:id="@+id/recharge_tv_real"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin_35"
+                android:background="@drawable/live_icon_gift_recharge"
+                android:gravity="center"
+                android:paddingLeft="@dimen/margin_30"
+                android:paddingRight="@dimen/margin_50"
+                android:text="@string/recharge"
+                android:textColor="@color/color_ff2966"
                 android:textSize="@dimen/text_size_36" />
 
             <TextView
-                android:id="@+id/pkt_detail_tv"
+                android:id="@+id/tv_pkt_detail_real"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"

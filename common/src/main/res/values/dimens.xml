@@ -144,6 +144,7 @@
     <dimen name="view_dimen_132">44dip</dimen>
     <dimen name="view_dimen_135">44.68dip</dimen>
     <dimen name="view_dimen_136">45.33dip</dimen>
+    <dimen name="view_dimen_138">46dip</dimen>
     <dimen name="view_dimen_140">46.67dp</dimen>
     <dimen name="view_dimen_144">48dp</dimen>
     <dimen name="view_dimen_148">49.33dp</dimen>
@@ -201,6 +202,7 @@
     <dimen name="view_dimen_400">133.33dp</dimen>
     <dimen name="view_dimen_408">136dp</dimen>
     <dimen name="view_dimen_420">140dp</dimen>
+    <dimen name="view_dimen_425">141.67dp</dimen>
     <dimen name="view_dimen_440">146.67dp</dimen>
     <dimen name="view_dimen_442">147.33dp</dimen>
     <dimen name="view_dimen_450">150dp</dimen>
