@@ -362,7 +362,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         }
     }
 
-    public void startBarragePull(String roomId, IMiLiveSdk.IGetBarrageCallback getBarrageCallback) {
+    public void startBarragePull(String roomId,int[]msgType, IMiLiveSdk.IGetBarrageCallback getBarrageCallback) {
         Logger.w(TAG, "startBarragePull");
         if (getBarrageCallback == null) {
             Logger.w(TAG, "startBarragePull callback is null");
@@ -374,14 +374,14 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         } else {
             try {
                 mRemoteService.startBarragePull(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
-                        MiLiveSdkController.getInstance().getChannelSecret(), roomId);
+                        MiLiveSdkController.getInstance().getChannelSecret(), roomId,msgType);
             } catch (RemoteException e) {
                 resolveException(e, IMiLiveSdk.ICallback.GET_BARRAGE);
             }
         }
     }
 
-    public void stopBarragePull() {
+    public void stopBarragePull(String roomId) {
         Logger.w(TAG, "stopBarragePull");
         mGetBarrageCallback = null;
         if (mRemoteService == null) {
@@ -389,7 +389,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         } else {
             try {
                 mRemoteService.stopBarragePull(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
-                        MiLiveSdkController.getInstance().getChannelSecret());
+                        MiLiveSdkController.getInstance().getChannelSecret(),roomId);
             } catch (RemoteException e) {
                 resolveException(e, IMiLiveSdk.ICallback.GET_BARRAGE);
             }

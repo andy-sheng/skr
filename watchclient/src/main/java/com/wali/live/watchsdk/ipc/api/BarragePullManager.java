@@ -1,5 +1,7 @@
 package com.wali.live.watchsdk.ipc.api;
 
+import android.text.TextUtils;
+
 import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.channel.HostChannelManager;
@@ -10,6 +12,7 @@ import com.wali.live.watchsdk.ipc.service.BarrageInfo;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +33,7 @@ public class BarragePullManager {
     private long mLastSyncNormalTs = 0;
     private long mSyncInterval = 5000;
     private String mRoomId;
+    private HashSet<Integer> mMsgTypeSet = new HashSet<>();
     private boolean mCanRunning = false;
     private int mChannelId;
 
@@ -49,13 +53,16 @@ public class BarragePullManager {
      * 开始拉取
      * 如何保护避免进入死循环
      */
-    public void startWork(int channelId,String roomId) {
+    public void startWork(int channelId, String roomId, int[] msgType) {
         mChannelId = channelId;
         mLastSyncImportantTs = 0;
         mLastSyncNormalTs = 0;
         mCanRunning = true;
         mRoomId = roomId;
-
+        mMsgTypeSet.clear();
+        for (int type : msgType) {
+            mMsgTypeSet.add(type);
+        }
         startWorkInternal();
     }
 
@@ -63,7 +70,7 @@ public class BarragePullManager {
 
     private void startWorkInternal() {
         MyLog.d(TAG, "startWorkInternal");
-        if(mChannelId != HostChannelManager.getInstance().getChannelId()){
+        if (mChannelId != HostChannelManager.getInstance().getChannelId()) {
             return;
         }
         if (!mCanRunning) {
@@ -83,10 +90,14 @@ public class BarragePullManager {
                         mSyncInterval = rsp.getSyncInterval() * 1000;
                         List<BarrageInfo> result = new ArrayList<>();
                         for (LiveMessageProto.Message m : rsp.getImportantRoomMsgList()) {
-                            result.add(toBarrageInfo(m));
+                            if (mMsgTypeSet.contains(m.getMsgType())) {
+                                result.add(toBarrageInfo(m));
+                            }
                         }
                         for (LiveMessageProto.Message m : rsp.getNormalRoomMsgList()) {
-                            result.add(toBarrageInfo(m));
+                            if (mMsgTypeSet.contains(m.getMsgType())) {
+                                result.add(toBarrageInfo(m));
+                            }
                         }
                         return Observable.just(result);
                     }
@@ -109,7 +120,7 @@ public class BarragePullManager {
                     @Override
                     public void onNext(List<BarrageInfo> temp) {
                         // 进队列
-                        MiLiveSdkBinder.getInstance().onEventRecvBarrage(mChannelId,temp);
+                        MiLiveSdkBinder.getInstance().onEventRecvBarrage(mChannelId, temp);
                     }
                 });
     }
@@ -130,15 +141,17 @@ public class BarragePullManager {
     /**
      * 停止拉取
      */
-    public void stopWork() {
-        MyLog.d(TAG, "stopWork");
-        if (mPullRoomMessageSubscription != null) {
-            mPullRoomMessageSubscription.unsubscribe();
+    public void stopWork(String roomid) {
+        if (TextUtils.isEmpty(mRoomId) && mRoomId.equals(roomid)) {
+            MyLog.d(TAG, "stopWork");
+            if (mPullRoomMessageSubscription != null) {
+                mPullRoomMessageSubscription.unsubscribe();
+            }
+            if (mDelayPullSubscriber != null) {
+                mDelayPullSubscriber.unsubscribe();
+            }
+            mCanRunning = false;
         }
-        if (mDelayPullSubscriber != null) {
-            mDelayPullSubscriber.unsubscribe();
-        }
-        mCanRunning = false;
     }
 
     private Subscription mDelayPullSubscriber;

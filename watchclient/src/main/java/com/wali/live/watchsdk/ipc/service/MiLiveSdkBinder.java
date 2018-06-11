@@ -267,12 +267,12 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Override
-    public void startBarragePull(final int channelId, String packageName, String channelSecret, final String roomId) {
+    public void startBarragePull(final int channelId, String packageName, String channelSecret, final String roomId,final int[] msgType) {
         MyLog.d(TAG, "startBarragePull" + " channelId=" + channelId + " packageName=" + packageName + " channelSecret=" + channelSecret + " roomId=" + roomId);
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
             @Override
             public void postSuccess() {
-                BarragePullManager.getInstance().startWork(channelId, roomId);
+                BarragePullManager.getInstance().startWork(channelId, roomId,msgType);
             }
 
             @Override
@@ -286,12 +286,12 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Override
-    public void stopBarragePull(final int channelId, String packageName, String channelSecret) {
+    public void stopBarragePull(final int channelId, String packageName, String channelSecret,final String roomId) {
         MyLog.d(TAG, "stopBarragePull" + " channelId=" + channelId + " packageName=" + packageName + " channelSecret=" + channelSecret);
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
             @Override
             public void postSuccess() {
-                BarragePullManager.getInstance().stopWork();
+                BarragePullManager.getInstance().stopWork(roomId);
             }
 
             @Override
