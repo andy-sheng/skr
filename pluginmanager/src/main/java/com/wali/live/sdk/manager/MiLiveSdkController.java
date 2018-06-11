@@ -314,7 +314,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
     @Override
     public void startBarragePull(String roomId,int []msgType, IGetBarrageCallback callback) {
-        Logger.d(TAG, "beginBarragePull roomId:"+roomId);
+        Logger.d(TAG, "beginBarragePull roomId:"+roomId+" msgtype:"+msgType);
         if (!checkVersion(ACTION_OP_GET_BARRAGE, callback)) {
             return;
         }
@@ -324,6 +324,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
     @Override
     public void stopBarragePull(String roomId,IAssistantCallback callback) {
+        Logger.d(TAG,"stopBarragePull" + " roomId=" + roomId);
         if (!checkVersion(ACTION_OP_GET_BARRAGE, callback)) {
             return;
         }

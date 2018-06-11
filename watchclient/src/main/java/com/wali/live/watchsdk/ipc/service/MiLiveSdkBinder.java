@@ -287,7 +287,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
     @Override
     public void stopBarragePull(final int channelId, String packageName, String channelSecret,final String roomId) {
-        MyLog.d(TAG, "stopBarragePull" + " channelId=" + channelId + " packageName=" + packageName + " channelSecret=" + channelSecret);
+        MyLog.d(TAG, "stopBarragePull" + " channelId=" + channelId + " packageName=" + packageName + " channelSecret=" + channelSecret+" roomId:"+roomId);
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
             @Override
             public void postSuccess() {
@@ -1244,7 +1244,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                         callbackList.unregister(callback);
                     }
                 }
-                MyLog.w(TAG, "onEventGetFollowingLiveList aidl success=" + aidlSuccess);
+                MyLog.w(TAG, "onEventRecvBarrage aidl success=" + aidlSuccess);
             }
         });
     }

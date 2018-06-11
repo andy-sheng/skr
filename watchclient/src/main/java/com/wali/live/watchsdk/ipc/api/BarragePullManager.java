@@ -25,7 +25,7 @@ import rx.schedulers.Schedulers;
 
 public class BarragePullManager {
 
-    public static final String TAG = "RoomMessagePresenter";
+    public static final String TAG = "BarragePullManager";
 
     private final RoomMessageRepository mRoomMessageRepository;
 
@@ -119,8 +119,10 @@ public class BarragePullManager {
 
                     @Override
                     public void onNext(List<BarrageInfo> temp) {
-                        // 进队列
-                        MiLiveSdkBinder.getInstance().onEventRecvBarrage(mChannelId, temp);
+                        if (!temp.isEmpty()) {
+                            // 进队列
+                            MiLiveSdkBinder.getInstance().onEventRecvBarrage(mChannelId, temp);
+                        }
                     }
                 });
     }
