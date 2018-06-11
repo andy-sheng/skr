@@ -30,6 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+
 /**
  * Created by yangli on 2017/03/02.
  *
@@ -158,7 +162,28 @@ public class GameBarrageView extends RelativeLayout
 
     CopyOnWriteArrayList<ObjectAnimator> mAnimatorSet = new CopyOnWriteArrayList<>();
 
-    private void playFly(final FlyBarrageViewWithExtraInfo fbViewInfo) {
+    private void playFly(FlyBarrageViewWithExtraInfo fbViewInfo){
+        Observable
+                .just(fbViewInfo)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<FlyBarrageViewWithExtraInfo>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(FlyBarrageViewWithExtraInfo fbViewInfo) {
+                        playFlyPart1(fbViewInfo);
+                    }
+                });
+    }
+    private void playFlyPart1(final FlyBarrageViewWithExtraInfo fbViewInfo) {
         final TextView fbView = fbViewInfo.view;
         int width = fbView.getWidth();
         int part1 = width + PLAYER_SPACING;
