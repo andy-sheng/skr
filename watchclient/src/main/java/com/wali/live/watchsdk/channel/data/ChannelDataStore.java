@@ -3,6 +3,8 @@ package com.wali.live.watchsdk.channel.data;
 import com.base.log.MyLog;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.HotChannelProto;
+import com.wali.live.proto.LiveShowProto;
+import com.wali.live.watchsdk.channel.list.request.ChannelListRequest;
 import com.wali.live.watchsdk.channel.request.GetChannelRequest;
 
 import rx.Observable;
@@ -16,6 +18,23 @@ import rx.Subscriber;
  */
 public class ChannelDataStore {
     public static final String TAG = ChannelDataStore.class.getSimpleName();
+
+    public Observable<LiveShowProto.GetChannelsRsp> getChannelListObservable(final long fcId) {
+        return Observable.create(new Observable.OnSubscribe<LiveShowProto.GetChannelsRsp>() {
+                                     @Override
+                                     public void call(Subscriber<? super LiveShowProto.GetChannelsRsp> subscriber) {
+                                         LiveShowProto.GetChannelsRsp rsp = new ChannelListRequest(fcId).syncRsp();
+                                         if (rsp == null) {
+                                             subscriber.onError(new Exception("getChannelListObservable is null"));
+                                         } else {
+                                             MyLog.d(TAG, "getChannelListObservable rsp= " + rsp.toString());
+                                             subscriber.onNext(rsp);
+                                             subscriber.onCompleted();
+                                         }
+                                     }
+                                 }
+        );
+    }
 
     public Observable<HotChannelProto.GetRecommendListRsp> getHotChannelObservable(final long channelId) {
         return Observable.create(new Observable.OnSubscribe<HotChannelProto.GetRecommendListRsp>() {

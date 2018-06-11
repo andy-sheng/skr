@@ -1,6 +1,8 @@
 package com.wali.live;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -26,9 +29,13 @@ import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.channel.adapter.ChannelRecyclerAdapter;
+import com.wali.live.watchsdk.channel.list.model.ChannelShow;
+import com.wali.live.watchsdk.channel.list.presenter.ChannelListPresenter;
+import com.wali.live.watchsdk.channel.list.presenter.IChannelListView;
 import com.wali.live.watchsdk.channel.presenter.ChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelView;
+import com.wali.live.watchsdk.channel.list.request.ChannelListRequest;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
 import com.wali.live.watchsdk.contest.ContestPrepareActivity;
 import com.wali.live.watchsdk.cta.CTANotifyFragment;
@@ -53,15 +60,16 @@ import rx.schedulers.Schedulers;
  * Created by lan on 16/11/25.
  */
 @Deprecated
-public class MainActivity extends BaseSdkActivity implements IChannelView {
+public class MainActivity extends BaseSdkActivity implements IChannelView, IChannelListView {
     protected SwipeRefreshLayout mRefreshLayout;
     protected RecyclerView mRecyclerView;
     protected LinearLayoutManager mLayoutManager;
     protected ChannelRecyclerAdapter mRecyclerAdapter;
     protected EditText mInputEditText;
 
-    protected IChannelPresenter mPresenter;
-    protected long mChannelId = 20;
+    protected ChannelListPresenter mChannelListPresenter;
+    protected IChannelPresenter mChannelPresenter;
+    //    protected long mChannelId = 20;
     protected LoginPresenter mLoginPresenter;
 
     @Override
@@ -132,6 +140,7 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                ChannelListRequest channelListRequest = new ChannelListRequest(0);
                 doRefresh();
             }
         });
@@ -141,8 +150,6 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mRecyclerAdapter = new ChannelRecyclerAdapter(this, mChannelId);
-        mRecyclerView.setAdapter(mRecyclerAdapter);
         mInputEditText = $(R.id.live_input_tv);
 
         $(R.id.contest_prepare_btn).setOnClickListener(new View.OnClickListener() {
@@ -219,7 +226,34 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
         ($(R.id.channel_tv)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getChannelById(201);
+                syncDataFromServer();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("input channelId");
+                final EditText input = new EditText(MainActivity.this);
+                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                builder.setView(input);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String text = input.getText().toString();
+                        try {
+                            int channelId = Integer.parseInt(text);
+                            getChannelById(channelId);
+                        } catch (Exception e) {
+
+                        }
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+
             }
         });
 
@@ -232,18 +266,34 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
     }
 
     private void initPresenters() {
-        mPresenter = new ChannelPresenter(this, this);
-        mPresenter.setChannelId(mChannelId);
+        mChannelListPresenter = new ChannelListPresenter(this, this);
+        mChannelListPresenter.setFcId(0);
+        mChannelPresenter = new ChannelPresenter(this, this);
+//        mChannelPresenter.setChannelId(mChannelId);
     }
 
     private void getChannelFromServer() {
-        mPresenter.start();
+        mChannelListPresenter.start();
+    }
+
+    @Override
+    public void listUpdateView(List<? extends ChannelShow> models) {
+        for (ChannelShow show : models) {
+            if (show.getChannelName().equals("推荐")) {
+                long channelId = show.getChannelId();
+                mChannelPresenter.setChannelId(channelId);
+                mRecyclerAdapter = new ChannelRecyclerAdapter(this, channelId);
+                mRecyclerView.setAdapter(mRecyclerAdapter);
+                mChannelPresenter.start();
+            }
+        }
     }
 
     @Override
     public void updateView(List<? extends BaseViewModel> models) {
         mRecyclerAdapter.setData(models);
     }
+
 
     @Override
     public void finishRefresh() {
@@ -259,8 +309,8 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mPresenter != null) {
-            mPresenter.stop();
+        if (mChannelPresenter != null) {
+            mChannelPresenter.stop();
         }
     }
 

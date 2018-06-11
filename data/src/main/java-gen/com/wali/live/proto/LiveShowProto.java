@@ -10695,6 +10695,57 @@ public final class LiveShowProto {
      * </pre>
      */
     int getFlag();
+
+    /**
+     * <code>optional string iconUrl = 9;</code>
+     *
+     * <pre>
+     *频道图标地址[子频道]
+     * </pre>
+     */
+    boolean hasIconUrl();
+    /**
+     * <code>optional string iconUrl = 9;</code>
+     *
+     * <pre>
+     *频道图标地址[子频道]
+     * </pre>
+     */
+    java.lang.String getIconUrl();
+    /**
+     * <code>optional string iconUrl = 9;</code>
+     *
+     * <pre>
+     *频道图标地址[子频道]
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getIconUrlBytes();
+
+    /**
+     * <code>optional .com.wali.live.proto.ChannelStyle style = 10;</code>
+     *
+     * <pre>
+     *频道主题风格
+     * </pre>
+     */
+    boolean hasStyle();
+    /**
+     * <code>optional .com.wali.live.proto.ChannelStyle style = 10;</code>
+     *
+     * <pre>
+     *频道主题风格
+     * </pre>
+     */
+    com.wali.live.proto.LiveShowProto.ChannelStyle getStyle();
+    /**
+     * <code>optional .com.wali.live.proto.ChannelStyle style = 10;</code>
+     *
+     * <pre>
+     *频道主题风格
+     * </pre>
+     */
+    com.wali.live.proto.LiveShowProto.ChannelStyleOrBuilder getStyleOrBuilder();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.ChannelShow}
@@ -10796,6 +10847,25 @@ public final class LiveShowProto {
             case 64: {
               bitField0_ |= 0x00000080;
               flag_ = input.readUInt32();
+              break;
+            }
+            case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000100;
+              iconUrl_ = bs;
+              break;
+            }
+            case 82: {
+              com.wali.live.proto.LiveShowProto.ChannelStyle.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000200) == 0x00000200)) {
+                subBuilder = style_.toBuilder();
+              }
+              style_ = input.readMessage(com.wali.live.proto.LiveShowProto.ChannelStyle.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(style_);
+                style_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000200;
               break;
             }
           }
@@ -11094,6 +11164,93 @@ public final class LiveShowProto {
       return flag_;
     }
 
+    public static final int ICONURL_FIELD_NUMBER = 9;
+    private java.lang.Object iconUrl_;
+    /**
+     * <code>optional string iconUrl = 9;</code>
+     *
+     * <pre>
+     *频道图标地址[子频道]
+     * </pre>
+     */
+    public boolean hasIconUrl() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional string iconUrl = 9;</code>
+     *
+     * <pre>
+     *频道图标地址[子频道]
+     * </pre>
+     */
+    public java.lang.String getIconUrl() {
+      java.lang.Object ref = iconUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          iconUrl_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string iconUrl = 9;</code>
+     *
+     * <pre>
+     *频道图标地址[子频道]
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getIconUrlBytes() {
+      java.lang.Object ref = iconUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        iconUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int STYLE_FIELD_NUMBER = 10;
+    private com.wali.live.proto.LiveShowProto.ChannelStyle style_;
+    /**
+     * <code>optional .com.wali.live.proto.ChannelStyle style = 10;</code>
+     *
+     * <pre>
+     *频道主题风格
+     * </pre>
+     */
+    public boolean hasStyle() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.ChannelStyle style = 10;</code>
+     *
+     * <pre>
+     *频道主题风格
+     * </pre>
+     */
+    public com.wali.live.proto.LiveShowProto.ChannelStyle getStyle() {
+      return style_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.ChannelStyle style = 10;</code>
+     *
+     * <pre>
+     *频道主题风格
+     * </pre>
+     */
+    public com.wali.live.proto.LiveShowProto.ChannelStyleOrBuilder getStyleOrBuilder() {
+      return style_;
+    }
+
     private void initFields() {
       cId_ = 0L;
       cName_ = "";
@@ -11103,6 +11260,8 @@ public final class LiveShowProto {
       fresh_ = com.wali.live.proto.LiveShowProto.FreshInfo.getDefaultInstance();
       url_ = "";
       flag_ = 0;
+      iconUrl_ = "";
+      style_ = com.wali.live.proto.LiveShowProto.ChannelStyle.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -11149,6 +11308,12 @@ public final class LiveShowProto {
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         output.writeUInt32(8, flag_);
       }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeBytes(9, getIconUrlBytes());
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeMessage(10, style_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -11189,6 +11354,14 @@ public final class LiveShowProto {
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(8, flag_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(9, getIconUrlBytes());
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, style_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -11300,6 +11473,7 @@ public final class LiveShowProto {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getFreshFieldBuilder();
+          getStyleFieldBuilder();
         }
       }
       private static Builder create() {
@@ -11328,6 +11502,14 @@ public final class LiveShowProto {
         bitField0_ = (bitField0_ & ~0x00000040);
         flag_ = 0;
         bitField0_ = (bitField0_ & ~0x00000080);
+        iconUrl_ = "";
+        bitField0_ = (bitField0_ & ~0x00000100);
+        if (styleBuilder_ == null) {
+          style_ = com.wali.live.proto.LiveShowProto.ChannelStyle.getDefaultInstance();
+        } else {
+          styleBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
 
@@ -11392,6 +11574,18 @@ public final class LiveShowProto {
           to_bitField0_ |= 0x00000080;
         }
         result.flag_ = flag_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.iconUrl_ = iconUrl_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        if (styleBuilder_ == null) {
+          result.style_ = style_;
+        } else {
+          result.style_ = styleBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -11435,6 +11629,14 @@ public final class LiveShowProto {
         }
         if (other.hasFlag()) {
           setFlag(other.getFlag());
+        }
+        if (other.hasIconUrl()) {
+          bitField0_ |= 0x00000100;
+          iconUrl_ = other.iconUrl_;
+          onChanged();
+        }
+        if (other.hasStyle()) {
+          mergeStyle(other.getStyle());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -12063,6 +12265,258 @@ public final class LiveShowProto {
         return this;
       }
 
+      private java.lang.Object iconUrl_ = "";
+      /**
+       * <code>optional string iconUrl = 9;</code>
+       *
+       * <pre>
+       *频道图标地址[子频道]
+       * </pre>
+       */
+      public boolean hasIconUrl() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional string iconUrl = 9;</code>
+       *
+       * <pre>
+       *频道图标地址[子频道]
+       * </pre>
+       */
+      public java.lang.String getIconUrl() {
+        java.lang.Object ref = iconUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            iconUrl_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string iconUrl = 9;</code>
+       *
+       * <pre>
+       *频道图标地址[子频道]
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getIconUrlBytes() {
+        java.lang.Object ref = iconUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          iconUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string iconUrl = 9;</code>
+       *
+       * <pre>
+       *频道图标地址[子频道]
+       * </pre>
+       */
+      public Builder setIconUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        iconUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string iconUrl = 9;</code>
+       *
+       * <pre>
+       *频道图标地址[子频道]
+       * </pre>
+       */
+      public Builder clearIconUrl() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        iconUrl_ = getDefaultInstance().getIconUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string iconUrl = 9;</code>
+       *
+       * <pre>
+       *频道图标地址[子频道]
+       * </pre>
+       */
+      public Builder setIconUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        iconUrl_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.LiveShowProto.ChannelStyle style_ = com.wali.live.proto.LiveShowProto.ChannelStyle.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveShowProto.ChannelStyle, com.wali.live.proto.LiveShowProto.ChannelStyle.Builder, com.wali.live.proto.LiveShowProto.ChannelStyleOrBuilder> styleBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.ChannelStyle style = 10;</code>
+       *
+       * <pre>
+       *频道主题风格
+       * </pre>
+       */
+      public boolean hasStyle() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChannelStyle style = 10;</code>
+       *
+       * <pre>
+       *频道主题风格
+       * </pre>
+       */
+      public com.wali.live.proto.LiveShowProto.ChannelStyle getStyle() {
+        if (styleBuilder_ == null) {
+          return style_;
+        } else {
+          return styleBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChannelStyle style = 10;</code>
+       *
+       * <pre>
+       *频道主题风格
+       * </pre>
+       */
+      public Builder setStyle(com.wali.live.proto.LiveShowProto.ChannelStyle value) {
+        if (styleBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          style_ = value;
+          onChanged();
+        } else {
+          styleBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000200;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChannelStyle style = 10;</code>
+       *
+       * <pre>
+       *频道主题风格
+       * </pre>
+       */
+      public Builder setStyle(
+          com.wali.live.proto.LiveShowProto.ChannelStyle.Builder builderForValue) {
+        if (styleBuilder_ == null) {
+          style_ = builderForValue.build();
+          onChanged();
+        } else {
+          styleBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000200;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChannelStyle style = 10;</code>
+       *
+       * <pre>
+       *频道主题风格
+       * </pre>
+       */
+      public Builder mergeStyle(com.wali.live.proto.LiveShowProto.ChannelStyle value) {
+        if (styleBuilder_ == null) {
+          if (((bitField0_ & 0x00000200) == 0x00000200) &&
+              style_ != com.wali.live.proto.LiveShowProto.ChannelStyle.getDefaultInstance()) {
+            style_ =
+              com.wali.live.proto.LiveShowProto.ChannelStyle.newBuilder(style_).mergeFrom(value).buildPartial();
+          } else {
+            style_ = value;
+          }
+          onChanged();
+        } else {
+          styleBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000200;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChannelStyle style = 10;</code>
+       *
+       * <pre>
+       *频道主题风格
+       * </pre>
+       */
+      public Builder clearStyle() {
+        if (styleBuilder_ == null) {
+          style_ = com.wali.live.proto.LiveShowProto.ChannelStyle.getDefaultInstance();
+          onChanged();
+        } else {
+          styleBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000200);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChannelStyle style = 10;</code>
+       *
+       * <pre>
+       *频道主题风格
+       * </pre>
+       */
+      public com.wali.live.proto.LiveShowProto.ChannelStyle.Builder getStyleBuilder() {
+        bitField0_ |= 0x00000200;
+        onChanged();
+        return getStyleFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChannelStyle style = 10;</code>
+       *
+       * <pre>
+       *频道主题风格
+       * </pre>
+       */
+      public com.wali.live.proto.LiveShowProto.ChannelStyleOrBuilder getStyleOrBuilder() {
+        if (styleBuilder_ != null) {
+          return styleBuilder_.getMessageOrBuilder();
+        } else {
+          return style_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ChannelStyle style = 10;</code>
+       *
+       * <pre>
+       *频道主题风格
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.LiveShowProto.ChannelStyle, com.wali.live.proto.LiveShowProto.ChannelStyle.Builder, com.wali.live.proto.LiveShowProto.ChannelStyleOrBuilder> 
+          getStyleFieldBuilder() {
+        if (styleBuilder_ == null) {
+          styleBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.LiveShowProto.ChannelStyle, com.wali.live.proto.LiveShowProto.ChannelStyle.Builder, com.wali.live.proto.LiveShowProto.ChannelStyleOrBuilder>(
+                  getStyle(),
+                  getParentForChildren(),
+                  isClean());
+          style_ = null;
+        }
+        return styleBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ChannelShow)
     }
 
@@ -12072,6 +12526,1145 @@ public final class LiveShowProto {
     }
 
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.ChannelShow)
+  }
+
+  public interface ChannelStyleOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ChannelStyle)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string bg_color = 1;</code>
+     *
+     * <pre>
+     *导航栏底色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    boolean hasBgColor();
+    /**
+     * <code>optional string bg_color = 1;</code>
+     *
+     * <pre>
+     *导航栏底色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    java.lang.String getBgColor();
+    /**
+     * <code>optional string bg_color = 1;</code>
+     *
+     * <pre>
+     *导航栏底色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getBgColorBytes();
+
+    /**
+     * <code>optional string highlight_color = 2;</code>
+     *
+     * <pre>
+     *频道高亮选中的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    boolean hasHighlightColor();
+    /**
+     * <code>optional string highlight_color = 2;</code>
+     *
+     * <pre>
+     *频道高亮选中的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    java.lang.String getHighlightColor();
+    /**
+     * <code>optional string highlight_color = 2;</code>
+     *
+     * <pre>
+     *频道高亮选中的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getHighlightColorBytes();
+
+    /**
+     * <code>optional string normal_color = 3;</code>
+     *
+     * <pre>
+     *频道正常的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    boolean hasNormalColor();
+    /**
+     * <code>optional string normal_color = 3;</code>
+     *
+     * <pre>
+     *频道正常的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    java.lang.String getNormalColor();
+    /**
+     * <code>optional string normal_color = 3;</code>
+     *
+     * <pre>
+     *频道正常的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getNormalColorBytes();
+
+    /**
+     * <code>optional string status_bar_color = 4;</code>
+     *
+     * <pre>
+     *系统状态栏字体颜色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    boolean hasStatusBarColor();
+    /**
+     * <code>optional string status_bar_color = 4;</code>
+     *
+     * <pre>
+     *系统状态栏字体颜色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    java.lang.String getStatusBarColor();
+    /**
+     * <code>optional string status_bar_color = 4;</code>
+     *
+     * <pre>
+     *系统状态栏字体颜色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getStatusBarColorBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.ChannelStyle}
+   */
+  public static final class ChannelStyle extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ChannelStyle)
+      ChannelStyleOrBuilder {
+    // Use ChannelStyle.newBuilder() to construct.
+    private ChannelStyle(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ChannelStyle(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ChannelStyle defaultInstance;
+    public static ChannelStyle getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ChannelStyle getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ChannelStyle(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              bgColor_ = bs;
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              highlightColor_ = bs;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              normalColor_ = bs;
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              statusBarColor_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.LiveShowProto.internal_static_com_wali_live_proto_ChannelStyle_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.LiveShowProto.internal_static_com_wali_live_proto_ChannelStyle_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.LiveShowProto.ChannelStyle.class, com.wali.live.proto.LiveShowProto.ChannelStyle.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ChannelStyle> PARSER =
+        new com.google.protobuf.AbstractParser<ChannelStyle>() {
+      public ChannelStyle parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ChannelStyle(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ChannelStyle> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int BG_COLOR_FIELD_NUMBER = 1;
+    private java.lang.Object bgColor_;
+    /**
+     * <code>optional string bg_color = 1;</code>
+     *
+     * <pre>
+     *导航栏底色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    public boolean hasBgColor() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string bg_color = 1;</code>
+     *
+     * <pre>
+     *导航栏底色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    public java.lang.String getBgColor() {
+      java.lang.Object ref = bgColor_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          bgColor_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string bg_color = 1;</code>
+     *
+     * <pre>
+     *导航栏底色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getBgColorBytes() {
+      java.lang.Object ref = bgColor_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        bgColor_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int HIGHLIGHT_COLOR_FIELD_NUMBER = 2;
+    private java.lang.Object highlightColor_;
+    /**
+     * <code>optional string highlight_color = 2;</code>
+     *
+     * <pre>
+     *频道高亮选中的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    public boolean hasHighlightColor() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string highlight_color = 2;</code>
+     *
+     * <pre>
+     *频道高亮选中的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    public java.lang.String getHighlightColor() {
+      java.lang.Object ref = highlightColor_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          highlightColor_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string highlight_color = 2;</code>
+     *
+     * <pre>
+     *频道高亮选中的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getHighlightColorBytes() {
+      java.lang.Object ref = highlightColor_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        highlightColor_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int NORMAL_COLOR_FIELD_NUMBER = 3;
+    private java.lang.Object normalColor_;
+    /**
+     * <code>optional string normal_color = 3;</code>
+     *
+     * <pre>
+     *频道正常的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    public boolean hasNormalColor() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string normal_color = 3;</code>
+     *
+     * <pre>
+     *频道正常的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    public java.lang.String getNormalColor() {
+      java.lang.Object ref = normalColor_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          normalColor_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string normal_color = 3;</code>
+     *
+     * <pre>
+     *频道正常的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getNormalColorBytes() {
+      java.lang.Object ref = normalColor_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        normalColor_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int STATUS_BAR_COLOR_FIELD_NUMBER = 4;
+    private java.lang.Object statusBarColor_;
+    /**
+     * <code>optional string status_bar_color = 4;</code>
+     *
+     * <pre>
+     *系统状态栏字体颜色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    public boolean hasStatusBarColor() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string status_bar_color = 4;</code>
+     *
+     * <pre>
+     *系统状态栏字体颜色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    public java.lang.String getStatusBarColor() {
+      java.lang.Object ref = statusBarColor_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          statusBarColor_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string status_bar_color = 4;</code>
+     *
+     * <pre>
+     *系统状态栏字体颜色，十六进制颜色码, 如 #FFFFFF = 白色
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getStatusBarColorBytes() {
+      java.lang.Object ref = statusBarColor_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        statusBarColor_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      bgColor_ = "";
+      highlightColor_ = "";
+      normalColor_ = "";
+      statusBarColor_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getBgColorBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getHighlightColorBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getNormalColorBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getStatusBarColorBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getBgColorBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getHighlightColorBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getNormalColorBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getStatusBarColorBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.LiveShowProto.ChannelStyle parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveShowProto.ChannelStyle parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveShowProto.ChannelStyle parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.LiveShowProto.ChannelStyle parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveShowProto.ChannelStyle parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveShowProto.ChannelStyle parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveShowProto.ChannelStyle parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.LiveShowProto.ChannelStyle parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.LiveShowProto.ChannelStyle parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.LiveShowProto.ChannelStyle parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.LiveShowProto.ChannelStyle prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.ChannelStyle}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ChannelStyle)
+        com.wali.live.proto.LiveShowProto.ChannelStyleOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.LiveShowProto.internal_static_com_wali_live_proto_ChannelStyle_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.LiveShowProto.internal_static_com_wali_live_proto_ChannelStyle_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.LiveShowProto.ChannelStyle.class, com.wali.live.proto.LiveShowProto.ChannelStyle.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.LiveShowProto.ChannelStyle.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        bgColor_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        highlightColor_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        normalColor_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        statusBarColor_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.LiveShowProto.internal_static_com_wali_live_proto_ChannelStyle_descriptor;
+      }
+
+      public com.wali.live.proto.LiveShowProto.ChannelStyle getDefaultInstanceForType() {
+        return com.wali.live.proto.LiveShowProto.ChannelStyle.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.LiveShowProto.ChannelStyle build() {
+        com.wali.live.proto.LiveShowProto.ChannelStyle result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.LiveShowProto.ChannelStyle buildPartial() {
+        com.wali.live.proto.LiveShowProto.ChannelStyle result = new com.wali.live.proto.LiveShowProto.ChannelStyle(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.bgColor_ = bgColor_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.highlightColor_ = highlightColor_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.normalColor_ = normalColor_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.statusBarColor_ = statusBarColor_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.LiveShowProto.ChannelStyle) {
+          return mergeFrom((com.wali.live.proto.LiveShowProto.ChannelStyle)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.LiveShowProto.ChannelStyle other) {
+        if (other == com.wali.live.proto.LiveShowProto.ChannelStyle.getDefaultInstance()) return this;
+        if (other.hasBgColor()) {
+          bitField0_ |= 0x00000001;
+          bgColor_ = other.bgColor_;
+          onChanged();
+        }
+        if (other.hasHighlightColor()) {
+          bitField0_ |= 0x00000002;
+          highlightColor_ = other.highlightColor_;
+          onChanged();
+        }
+        if (other.hasNormalColor()) {
+          bitField0_ |= 0x00000004;
+          normalColor_ = other.normalColor_;
+          onChanged();
+        }
+        if (other.hasStatusBarColor()) {
+          bitField0_ |= 0x00000008;
+          statusBarColor_ = other.statusBarColor_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.LiveShowProto.ChannelStyle parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.LiveShowProto.ChannelStyle) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object bgColor_ = "";
+      /**
+       * <code>optional string bg_color = 1;</code>
+       *
+       * <pre>
+       *导航栏底色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public boolean hasBgColor() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string bg_color = 1;</code>
+       *
+       * <pre>
+       *导航栏底色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public java.lang.String getBgColor() {
+        java.lang.Object ref = bgColor_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            bgColor_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string bg_color = 1;</code>
+       *
+       * <pre>
+       *导航栏底色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getBgColorBytes() {
+        java.lang.Object ref = bgColor_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          bgColor_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string bg_color = 1;</code>
+       *
+       * <pre>
+       *导航栏底色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public Builder setBgColor(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        bgColor_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string bg_color = 1;</code>
+       *
+       * <pre>
+       *导航栏底色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public Builder clearBgColor() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        bgColor_ = getDefaultInstance().getBgColor();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string bg_color = 1;</code>
+       *
+       * <pre>
+       *导航栏底色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public Builder setBgColorBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        bgColor_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object highlightColor_ = "";
+      /**
+       * <code>optional string highlight_color = 2;</code>
+       *
+       * <pre>
+       *频道高亮选中的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public boolean hasHighlightColor() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string highlight_color = 2;</code>
+       *
+       * <pre>
+       *频道高亮选中的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public java.lang.String getHighlightColor() {
+        java.lang.Object ref = highlightColor_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            highlightColor_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string highlight_color = 2;</code>
+       *
+       * <pre>
+       *频道高亮选中的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getHighlightColorBytes() {
+        java.lang.Object ref = highlightColor_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          highlightColor_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string highlight_color = 2;</code>
+       *
+       * <pre>
+       *频道高亮选中的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public Builder setHighlightColor(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        highlightColor_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string highlight_color = 2;</code>
+       *
+       * <pre>
+       *频道高亮选中的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public Builder clearHighlightColor() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        highlightColor_ = getDefaultInstance().getHighlightColor();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string highlight_color = 2;</code>
+       *
+       * <pre>
+       *频道高亮选中的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public Builder setHighlightColorBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        highlightColor_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object normalColor_ = "";
+      /**
+       * <code>optional string normal_color = 3;</code>
+       *
+       * <pre>
+       *频道正常的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public boolean hasNormalColor() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string normal_color = 3;</code>
+       *
+       * <pre>
+       *频道正常的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public java.lang.String getNormalColor() {
+        java.lang.Object ref = normalColor_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            normalColor_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string normal_color = 3;</code>
+       *
+       * <pre>
+       *频道正常的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getNormalColorBytes() {
+        java.lang.Object ref = normalColor_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          normalColor_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string normal_color = 3;</code>
+       *
+       * <pre>
+       *频道正常的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public Builder setNormalColor(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        normalColor_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string normal_color = 3;</code>
+       *
+       * <pre>
+       *频道正常的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public Builder clearNormalColor() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        normalColor_ = getDefaultInstance().getNormalColor();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string normal_color = 3;</code>
+       *
+       * <pre>
+       *频道正常的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public Builder setNormalColorBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        normalColor_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object statusBarColor_ = "";
+      /**
+       * <code>optional string status_bar_color = 4;</code>
+       *
+       * <pre>
+       *系统状态栏字体颜色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public boolean hasStatusBarColor() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string status_bar_color = 4;</code>
+       *
+       * <pre>
+       *系统状态栏字体颜色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public java.lang.String getStatusBarColor() {
+        java.lang.Object ref = statusBarColor_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            statusBarColor_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string status_bar_color = 4;</code>
+       *
+       * <pre>
+       *系统状态栏字体颜色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getStatusBarColorBytes() {
+        java.lang.Object ref = statusBarColor_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          statusBarColor_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string status_bar_color = 4;</code>
+       *
+       * <pre>
+       *系统状态栏字体颜色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public Builder setStatusBarColor(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        statusBarColor_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string status_bar_color = 4;</code>
+       *
+       * <pre>
+       *系统状态栏字体颜色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public Builder clearStatusBarColor() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        statusBarColor_ = getDefaultInstance().getStatusBarColor();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string status_bar_color = 4;</code>
+       *
+       * <pre>
+       *系统状态栏字体颜色，十六进制颜色码, 如 #FFFFFF = 白色
+       * </pre>
+       */
+      public Builder setStatusBarColorBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        statusBarColor_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ChannelStyle)
+    }
+
+    static {
+      defaultInstance = new ChannelStyle(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ChannelStyle)
   }
 
   public interface GetConcernsReqOrBuilder extends
@@ -14054,6 +15647,40 @@ public final class LiveShowProto {
      * </pre>
      */
     long getFcId();
+
+    /**
+     * <code>optional uint32 appType = 2;</code>
+     *
+     * <pre>
+     *默认0=小米直播,1=电视接入,2=米聊接入,3=新米聊
+     * </pre>
+     */
+    boolean hasAppType();
+    /**
+     * <code>optional uint32 appType = 2;</code>
+     *
+     * <pre>
+     *默认0=小米直播,1=电视接入,2=米聊接入,3=新米聊
+     * </pre>
+     */
+    int getAppType();
+
+    /**
+     * <code>optional uint32 channel_version = 3;</code>
+     *
+     * <pre>
+     *频道列表版本,4.8及以上版本必填字段,服务器通过这个字段取不同的列表存储
+     * </pre>
+     */
+    boolean hasChannelVersion();
+    /**
+     * <code>optional uint32 channel_version = 3;</code>
+     *
+     * <pre>
+     *频道列表版本,4.8及以上版本必填字段,服务器通过这个字段取不同的列表存储
+     * </pre>
+     */
+    int getChannelVersion();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.GetChannelsReq}
@@ -14114,6 +15741,16 @@ public final class LiveShowProto {
             case 8: {
               bitField0_ |= 0x00000001;
               fcId_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              appType_ = input.readUInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              channelVersion_ = input.readUInt32();
               break;
             }
           }
@@ -14179,8 +15816,56 @@ public final class LiveShowProto {
       return fcId_;
     }
 
+    public static final int APPTYPE_FIELD_NUMBER = 2;
+    private int appType_;
+    /**
+     * <code>optional uint32 appType = 2;</code>
+     *
+     * <pre>
+     *默认0=小米直播,1=电视接入,2=米聊接入,3=新米聊
+     * </pre>
+     */
+    public boolean hasAppType() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 appType = 2;</code>
+     *
+     * <pre>
+     *默认0=小米直播,1=电视接入,2=米聊接入,3=新米聊
+     * </pre>
+     */
+    public int getAppType() {
+      return appType_;
+    }
+
+    public static final int CHANNEL_VERSION_FIELD_NUMBER = 3;
+    private int channelVersion_;
+    /**
+     * <code>optional uint32 channel_version = 3;</code>
+     *
+     * <pre>
+     *频道列表版本,4.8及以上版本必填字段,服务器通过这个字段取不同的列表存储
+     * </pre>
+     */
+    public boolean hasChannelVersion() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint32 channel_version = 3;</code>
+     *
+     * <pre>
+     *频道列表版本,4.8及以上版本必填字段,服务器通过这个字段取不同的列表存储
+     * </pre>
+     */
+    public int getChannelVersion() {
+      return channelVersion_;
+    }
+
     private void initFields() {
       fcId_ = 0L;
+      appType_ = 0;
+      channelVersion_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -14202,6 +15887,12 @@ public final class LiveShowProto {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeUInt64(1, fcId_);
       }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, appType_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, channelVersion_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -14214,6 +15905,14 @@ public final class LiveShowProto {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt64Size(1, fcId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, appType_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, channelVersion_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -14338,6 +16037,10 @@ public final class LiveShowProto {
         super.clear();
         fcId_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000001);
+        appType_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        channelVersion_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -14370,6 +16073,14 @@ public final class LiveShowProto {
           to_bitField0_ |= 0x00000001;
         }
         result.fcId_ = fcId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.appType_ = appType_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.channelVersion_ = channelVersion_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -14388,6 +16099,12 @@ public final class LiveShowProto {
         if (other == com.wali.live.proto.LiveShowProto.GetChannelsReq.getDefaultInstance()) return this;
         if (other.hasFcId()) {
           setFcId(other.getFcId());
+        }
+        if (other.hasAppType()) {
+          setAppType(other.getAppType());
+        }
+        if (other.hasChannelVersion()) {
+          setChannelVersion(other.getChannelVersion());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -14464,6 +16181,102 @@ public final class LiveShowProto {
       public Builder clearFcId() {
         bitField0_ = (bitField0_ & ~0x00000001);
         fcId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int appType_ ;
+      /**
+       * <code>optional uint32 appType = 2;</code>
+       *
+       * <pre>
+       *默认0=小米直播,1=电视接入,2=米聊接入,3=新米聊
+       * </pre>
+       */
+      public boolean hasAppType() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 appType = 2;</code>
+       *
+       * <pre>
+       *默认0=小米直播,1=电视接入,2=米聊接入,3=新米聊
+       * </pre>
+       */
+      public int getAppType() {
+        return appType_;
+      }
+      /**
+       * <code>optional uint32 appType = 2;</code>
+       *
+       * <pre>
+       *默认0=小米直播,1=电视接入,2=米聊接入,3=新米聊
+       * </pre>
+       */
+      public Builder setAppType(int value) {
+        bitField0_ |= 0x00000002;
+        appType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 appType = 2;</code>
+       *
+       * <pre>
+       *默认0=小米直播,1=电视接入,2=米聊接入,3=新米聊
+       * </pre>
+       */
+      public Builder clearAppType() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        appType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int channelVersion_ ;
+      /**
+       * <code>optional uint32 channel_version = 3;</code>
+       *
+       * <pre>
+       *频道列表版本,4.8及以上版本必填字段,服务器通过这个字段取不同的列表存储
+       * </pre>
+       */
+      public boolean hasChannelVersion() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint32 channel_version = 3;</code>
+       *
+       * <pre>
+       *频道列表版本,4.8及以上版本必填字段,服务器通过这个字段取不同的列表存储
+       * </pre>
+       */
+      public int getChannelVersion() {
+        return channelVersion_;
+      }
+      /**
+       * <code>optional uint32 channel_version = 3;</code>
+       *
+       * <pre>
+       *频道列表版本,4.8及以上版本必填字段,服务器通过这个字段取不同的列表存储
+       * </pre>
+       */
+      public Builder setChannelVersion(int value) {
+        bitField0_ |= 0x00000004;
+        channelVersion_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 channel_version = 3;</code>
+       *
+       * <pre>
+       *频道列表版本,4.8及以上版本必填字段,服务器通过这个字段取不同的列表存储
+       * </pre>
+       */
+      public Builder clearChannelVersion() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        channelVersion_ = 0;
         onChanged();
         return this;
       }
@@ -26809,6 +28622,11 @@ public final class LiveShowProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_ChannelShow_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_ChannelStyle_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_ChannelStyle_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetConcernsReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -26933,45 +28751,50 @@ public final class LiveShowProto {
       "\004user\030\001 \002(\0132\035.com.wali.live.proto.UserSh" +
       "ow\022+\n\004back\030\002 \002(\0132\035.com.wali.live.proto.B" +
       "ackInfo\"-\n\tFreshInfo\022\016\n\006isAuto\030\001 \001(\010\022\020\n\010" +
-      "interval\030\002 \001(\004\"\246\001\n\013ChannelShow\022\013\n\003cId\030\001 " +
+      "interval\030\002 \001(\004\"\351\001\n\013ChannelShow\022\013\n\003cId\030\001 " +
       "\002(\004\022\r\n\005cName\030\002 \002(\t\022\020\n\010hasChild\030\003 \001(\010\022\017\n\007" +
       "liveCnt\030\004 \001(\r\022\016\n\006uiType\030\005 \001(\r\022-\n\005fresh\030\006" +
       " \001(\0132\036.com.wali.live.proto.FreshInfo\022\013\n\003",
-      "url\030\007 \001(\t\022\014\n\004flag\030\010 \001(\r\"\035\n\016GetConcernsRe" +
-      "q\022\013\n\003uId\030\001 \002(\004\"\206\001\n\016GetConcernsRsp\022\013\n\003ret" +
-      "\030\001 \002(\r\022\013\n\003uId\030\002 \001(\004\022,\n\005lives\030\003 \003(\0132\035.com" +
-      ".wali.live.proto.LiveShow\022,\n\005backs\030\004 \003(\013" +
-      "2\035.com.wali.live.proto.BackShow\"\036\n\016GetCh" +
-      "annelsReq\022\014\n\004fcId\030\001 \002(\004\"u\n\016GetChannelsRs" +
-      "p\022\013\n\003ret\030\001 \002(\r\022\014\n\004fcId\030\002 \001(\004\0222\n\010channels" +
-      "\030\003 \003(\0132 .com.wali.live.proto.ChannelShow" +
-      "\022\024\n\014defChannelId\030\004 \001(\004\"*\n\013GetLivesReq\022\013\n" +
-      "\003cId\030\001 \002(\004\022\016\n\006gender\030\002 \001(\r\"U\n\013GetLivesRs",
-      "p\022\013\n\003ret\030\001 \002(\r\022\013\n\003cId\030\002 \001(\004\022,\n\005lives\030\003 \003" +
-      "(\0132\035.com.wali.live.proto.LiveShow\"\032\n\013Get" +
-      "BacksReq\022\013\n\003uId\030\001 \002(\004\"T\n\013GetBacksRsp\022\013\n\003" +
-      "ret\030\001 \002(\r\022\013\n\003uId\030\002 \001(\004\022+\n\004back\030\003 \001(\0132\035.c" +
-      "om.wali.live.proto.BackShow\"\035\n\016GetConcBa" +
-      "ckReq\022\013\n\003uId\030\001 \002(\004\"W\n\016GetConcBackRsp\022\013\n\003" +
-      "ret\030\001 \002(\r\022\013\n\003uId\030\002 \001(\004\022+\n\004back\030\003 \003(\0132\035.c" +
-      "om.wali.live.proto.BackShow\"\'\n\nDelBackRe" +
-      "q\022\013\n\003uId\030\001 \002(\004\022\014\n\004baId\030\002 \003(\t\"&\n\nDelBackR" +
-      "sp\022\013\n\003ret\030\001 \002(\r\022\013\n\003uId\030\002 \001(\004\"-\n\016GetTagLi",
-      "vesReq\022\013\n\003cId\030\001 \002(\004\022\016\n\006gender\030\002 \001(\r\"V\n\016G" +
-      "etTagLivesRsp\022\013\n\003ret\030\001 \002(\r\022\013\n\003cId\030\002 \001(\004\022" +
-      "*\n\004tags\030\003 \003(\0132\034.com.wali.live.proto.TagS" +
-      "how\"U\n\017GetTopicLiveReq\022\r\n\005topic\030\001 \002(\t\022\020\n" +
-      "\010liveType\030\002 \001(\r\022\017\n\007pageNum\030\003 \001(\r\022\020\n\010sort" +
-      "Type\030\004 \001(\r\"\240\001\n\017GetTopicLiveRsp\022\013\n\003ret\030\001 " +
-      "\002(\r\022\r\n\005topic\030\002 \001(\t\022,\n\005lives\030\003 \003(\0132\035.com." +
-      "wali.live.proto.LiveShow\0222\n\005backs\030\004 \003(\0132" +
-      "#.com.wali.live.proto.SingleBackShow\022\017\n\007" +
-      "pageCnt\030\005 \001(\r\"\"\n\022GetSignInStatusReq\022\014\n\004u",
-      "uid\030\001 \002(\004\"|\n\022GetSignInStatusRsp\022\017\n\007retCo" +
-      "de\030\001 \002(\r\022\025\n\rdisplayStatus\030\002 \001(\r\022\024\n\014signI" +
-      "nStatus\030\003 \001(\r\022\021\n\tsignInUrl\030\004 \001(\t\022\025\n\rquer" +
-      "yInterval\030\005 \001(\rB$\n\023com.wali.live.protoB\r" +
-      "LiveShowProto"
+      "url\030\007 \001(\t\022\014\n\004flag\030\010 \001(\r\022\017\n\007iconUrl\030\t \001(\t" +
+      "\0220\n\005style\030\n \001(\0132!.com.wali.live.proto.Ch" +
+      "annelStyle\"i\n\014ChannelStyle\022\020\n\010bg_color\030\001" +
+      " \001(\t\022\027\n\017highlight_color\030\002 \001(\t\022\024\n\014normal_" +
+      "color\030\003 \001(\t\022\030\n\020status_bar_color\030\004 \001(\t\"\035\n" +
+      "\016GetConcernsReq\022\013\n\003uId\030\001 \002(\004\"\206\001\n\016GetConc" +
+      "ernsRsp\022\013\n\003ret\030\001 \002(\r\022\013\n\003uId\030\002 \001(\004\022,\n\005liv" +
+      "es\030\003 \003(\0132\035.com.wali.live.proto.LiveShow\022" +
+      ",\n\005backs\030\004 \003(\0132\035.com.wali.live.proto.Bac" +
+      "kShow\"H\n\016GetChannelsReq\022\014\n\004fcId\030\001 \002(\004\022\017\n",
+      "\007appType\030\002 \001(\r\022\027\n\017channel_version\030\003 \001(\r\"" +
+      "u\n\016GetChannelsRsp\022\013\n\003ret\030\001 \002(\r\022\014\n\004fcId\030\002" +
+      " \001(\004\0222\n\010channels\030\003 \003(\0132 .com.wali.live.p" +
+      "roto.ChannelShow\022\024\n\014defChannelId\030\004 \001(\004\"*" +
+      "\n\013GetLivesReq\022\013\n\003cId\030\001 \002(\004\022\016\n\006gender\030\002 \001" +
+      "(\r\"U\n\013GetLivesRsp\022\013\n\003ret\030\001 \002(\r\022\013\n\003cId\030\002 " +
+      "\001(\004\022,\n\005lives\030\003 \003(\0132\035.com.wali.live.proto" +
+      ".LiveShow\"\032\n\013GetBacksReq\022\013\n\003uId\030\001 \002(\004\"T\n" +
+      "\013GetBacksRsp\022\013\n\003ret\030\001 \002(\r\022\013\n\003uId\030\002 \001(\004\022+" +
+      "\n\004back\030\003 \001(\0132\035.com.wali.live.proto.BackS",
+      "how\"\035\n\016GetConcBackReq\022\013\n\003uId\030\001 \002(\004\"W\n\016Ge" +
+      "tConcBackRsp\022\013\n\003ret\030\001 \002(\r\022\013\n\003uId\030\002 \001(\004\022+" +
+      "\n\004back\030\003 \003(\0132\035.com.wali.live.proto.BackS" +
+      "how\"\'\n\nDelBackReq\022\013\n\003uId\030\001 \002(\004\022\014\n\004baId\030\002" +
+      " \003(\t\"&\n\nDelBackRsp\022\013\n\003ret\030\001 \002(\r\022\013\n\003uId\030\002" +
+      " \001(\004\"-\n\016GetTagLivesReq\022\013\n\003cId\030\001 \002(\004\022\016\n\006g" +
+      "ender\030\002 \001(\r\"V\n\016GetTagLivesRsp\022\013\n\003ret\030\001 \002" +
+      "(\r\022\013\n\003cId\030\002 \001(\004\022*\n\004tags\030\003 \003(\0132\034.com.wali" +
+      ".live.proto.TagShow\"U\n\017GetTopicLiveReq\022\r" +
+      "\n\005topic\030\001 \002(\t\022\020\n\010liveType\030\002 \001(\r\022\017\n\007pageN",
+      "um\030\003 \001(\r\022\020\n\010sortType\030\004 \001(\r\"\240\001\n\017GetTopicL" +
+      "iveRsp\022\013\n\003ret\030\001 \002(\r\022\r\n\005topic\030\002 \001(\t\022,\n\005li" +
+      "ves\030\003 \003(\0132\035.com.wali.live.proto.LiveShow" +
+      "\0222\n\005backs\030\004 \003(\0132#.com.wali.live.proto.Si" +
+      "ngleBackShow\022\017\n\007pageCnt\030\005 \001(\r\"\"\n\022GetSign" +
+      "InStatusReq\022\014\n\004uuid\030\001 \002(\004\"|\n\022GetSignInSt" +
+      "atusRsp\022\017\n\007retCode\030\001 \002(\r\022\025\n\rdisplayStatu" +
+      "s\030\002 \001(\r\022\024\n\014signInStatus\030\003 \001(\r\022\021\n\tsignInU" +
+      "rl\030\004 \001(\t\022\025\n\rqueryInterval\030\005 \001(\rB$\n\023com.w" +
+      "ali.live.protoB\rLiveShowProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -27038,111 +28861,117 @@ public final class LiveShowProto {
     internal_static_com_wali_live_proto_ChannelShow_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ChannelShow_descriptor,
-        new java.lang.String[] { "CId", "CName", "HasChild", "LiveCnt", "UiType", "Fresh", "Url", "Flag", });
-    internal_static_com_wali_live_proto_GetConcernsReq_descriptor =
+        new java.lang.String[] { "CId", "CName", "HasChild", "LiveCnt", "UiType", "Fresh", "Url", "Flag", "IconUrl", "Style", });
+    internal_static_com_wali_live_proto_ChannelStyle_descriptor =
       getDescriptor().getMessageTypes().get(9);
+    internal_static_com_wali_live_proto_ChannelStyle_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_ChannelStyle_descriptor,
+        new java.lang.String[] { "BgColor", "HighlightColor", "NormalColor", "StatusBarColor", });
+    internal_static_com_wali_live_proto_GetConcernsReq_descriptor =
+      getDescriptor().getMessageTypes().get(10);
     internal_static_com_wali_live_proto_GetConcernsReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetConcernsReq_descriptor,
         new java.lang.String[] { "UId", });
     internal_static_com_wali_live_proto_GetConcernsRsp_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_com_wali_live_proto_GetConcernsRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetConcernsRsp_descriptor,
         new java.lang.String[] { "Ret", "UId", "Lives", "Backs", });
     internal_static_com_wali_live_proto_GetChannelsReq_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_com_wali_live_proto_GetChannelsReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetChannelsReq_descriptor,
-        new java.lang.String[] { "FcId", });
+        new java.lang.String[] { "FcId", "AppType", "ChannelVersion", });
     internal_static_com_wali_live_proto_GetChannelsRsp_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_com_wali_live_proto_GetChannelsRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetChannelsRsp_descriptor,
         new java.lang.String[] { "Ret", "FcId", "Channels", "DefChannelId", });
     internal_static_com_wali_live_proto_GetLivesReq_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_com_wali_live_proto_GetLivesReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetLivesReq_descriptor,
         new java.lang.String[] { "CId", "Gender", });
     internal_static_com_wali_live_proto_GetLivesRsp_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_com_wali_live_proto_GetLivesRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetLivesRsp_descriptor,
         new java.lang.String[] { "Ret", "CId", "Lives", });
     internal_static_com_wali_live_proto_GetBacksReq_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_com_wali_live_proto_GetBacksReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetBacksReq_descriptor,
         new java.lang.String[] { "UId", });
     internal_static_com_wali_live_proto_GetBacksRsp_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_com_wali_live_proto_GetBacksRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetBacksRsp_descriptor,
         new java.lang.String[] { "Ret", "UId", "Back", });
     internal_static_com_wali_live_proto_GetConcBackReq_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_com_wali_live_proto_GetConcBackReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetConcBackReq_descriptor,
         new java.lang.String[] { "UId", });
     internal_static_com_wali_live_proto_GetConcBackRsp_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_com_wali_live_proto_GetConcBackRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetConcBackRsp_descriptor,
         new java.lang.String[] { "Ret", "UId", "Back", });
     internal_static_com_wali_live_proto_DelBackReq_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(20);
     internal_static_com_wali_live_proto_DelBackReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_DelBackReq_descriptor,
         new java.lang.String[] { "UId", "BaId", });
     internal_static_com_wali_live_proto_DelBackRsp_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(21);
     internal_static_com_wali_live_proto_DelBackRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_DelBackRsp_descriptor,
         new java.lang.String[] { "Ret", "UId", });
     internal_static_com_wali_live_proto_GetTagLivesReq_descriptor =
-      getDescriptor().getMessageTypes().get(21);
+      getDescriptor().getMessageTypes().get(22);
     internal_static_com_wali_live_proto_GetTagLivesReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetTagLivesReq_descriptor,
         new java.lang.String[] { "CId", "Gender", });
     internal_static_com_wali_live_proto_GetTagLivesRsp_descriptor =
-      getDescriptor().getMessageTypes().get(22);
+      getDescriptor().getMessageTypes().get(23);
     internal_static_com_wali_live_proto_GetTagLivesRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetTagLivesRsp_descriptor,
         new java.lang.String[] { "Ret", "CId", "Tags", });
     internal_static_com_wali_live_proto_GetTopicLiveReq_descriptor =
-      getDescriptor().getMessageTypes().get(23);
+      getDescriptor().getMessageTypes().get(24);
     internal_static_com_wali_live_proto_GetTopicLiveReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetTopicLiveReq_descriptor,
         new java.lang.String[] { "Topic", "LiveType", "PageNum", "SortType", });
     internal_static_com_wali_live_proto_GetTopicLiveRsp_descriptor =
-      getDescriptor().getMessageTypes().get(24);
+      getDescriptor().getMessageTypes().get(25);
     internal_static_com_wali_live_proto_GetTopicLiveRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetTopicLiveRsp_descriptor,
         new java.lang.String[] { "Ret", "Topic", "Lives", "Backs", "PageCnt", });
     internal_static_com_wali_live_proto_GetSignInStatusReq_descriptor =
-      getDescriptor().getMessageTypes().get(25);
+      getDescriptor().getMessageTypes().get(26);
     internal_static_com_wali_live_proto_GetSignInStatusReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetSignInStatusReq_descriptor,
         new java.lang.String[] { "Uuid", });
     internal_static_com_wali_live_proto_GetSignInStatusRsp_descriptor =
-      getDescriptor().getMessageTypes().get(26);
+      getDescriptor().getMessageTypes().get(27);
     internal_static_com_wali_live_proto_GetSignInStatusRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetSignInStatusRsp_descriptor,

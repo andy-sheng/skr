@@ -87,6 +87,15 @@ message ChannelShow {
     optional FreshInfo fresh = 6; //刷新信息
     optional string url = 7; //类型是6的时候必须
     optional uint32 flag = 8; //控制位,第1位表示是否有搜索框
+    optional string iconUrl  = 9;  //频道图标地址[子频道]
+    optional ChannelStyle style = 10; //频道主题风格
+}
+
+message ChannelStyle {
+    optional string bg_color        = 1; //导航栏底色，十六进制颜色码, 如 #FFFFFF = 白色
+    optional string highlight_color = 2; //频道高亮选中的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+    optional string normal_color    = 3; //频道正常的颜色，十六进制颜色码, 如 #FFFFFF = 白色
+    optional string status_bar_color= 4; //系统状态栏字体颜色，十六进制颜色码, 如 #FFFFFF = 白色
 }
 
 /* 1 拉关注列表 请求和返回 */
@@ -104,6 +113,8 @@ message GetConcernsRsp {
 /* 2 拉取子频道列表 请求和返回 */
 message GetChannelsReq {
     required uint64 fcId = 1; //父频道id,默认为0,拉取一级频道列表
+    optional uint32 appType = 2; //默认0=小米直播,1=电视接入,2=米聊接入,3=新米聊
+    optional uint32 channel_version = 3; //频道列表版本,4.8及以上版本必填字段,服务器通过这个字段取不同的列表存储
 }
 message GetChannelsRsp {
     required uint32 ret = 1;            //返回码
