@@ -30,7 +30,7 @@ interface IMiLiveSdkService {
 
     void doFeedBack(int channelId, String packageName, String channelSecret);
 
-    void startBarragePull(int channelId, String packageName, String channelSecret,String roomId);
+    void startBarragePull(int channelId, String packageName, String channelSecret,String roomId,in int[] msgType);
 
-    void stopBarragePull(int channelId, String packageName, String channelSecret);
+    void stopBarragePull(int channelId, String packageName, String channelSecret,String roomId);
 }

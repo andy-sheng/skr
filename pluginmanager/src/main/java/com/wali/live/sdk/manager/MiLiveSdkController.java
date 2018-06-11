@@ -313,22 +313,22 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void startBarragePull(String roomId, IGetBarrageCallback callback) {
+    public void startBarragePull(String roomId,int []msgType, IGetBarrageCallback callback) {
         Logger.d(TAG, "beginBarragePull roomId:"+roomId);
         if (!checkVersion(ACTION_OP_GET_BARRAGE, callback)) {
             return;
         }
         checkHasInit();
-        MiLiveSdkServiceProxy.getInstance().startBarragePull(roomId,callback);
+        MiLiveSdkServiceProxy.getInstance().startBarragePull(roomId,msgType,callback);
     }
 
     @Override
-    public void stopBarragePull(IAssistantCallback callback) {
+    public void stopBarragePull(String roomId,IAssistantCallback callback) {
         if (!checkVersion(ACTION_OP_GET_BARRAGE, callback)) {
             return;
         }
         checkHasInit();
-        MiLiveSdkServiceProxy.getInstance().stopBarragePull();
+        MiLiveSdkServiceProxy.getInstance().stopBarragePull(roomId);
     }
 
     @Override

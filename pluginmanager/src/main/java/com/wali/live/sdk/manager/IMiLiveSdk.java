@@ -243,9 +243,10 @@ public interface IMiLiveSdk {
      */
     void setChannelId(int channelId);
 
-    void startBarragePull(String roomId, IGetBarrageCallback callback);
+    void startBarragePull(String roomId, int[] msgType, IGetBarrageCallback callback);
 
-    void stopBarragePull(IAssistantCallback assistantCallback);
+    void stopBarragePull(String roomId, IAssistantCallback assistantCallback);
+
     /**
      * sdk 上层应用回调
      */
