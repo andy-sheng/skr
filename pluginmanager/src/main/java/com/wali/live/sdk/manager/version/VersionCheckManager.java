@@ -23,6 +23,7 @@ import com.wali.live.sdk.manager.http.utils.IOUtils;
 import com.wali.live.sdk.manager.http.utils.StringUtils;
 import com.wali.live.sdk.manager.log.Logger;
 import com.wali.live.sdk.manager.utils.CommonUtils;
+import com.wali.live.sdk.manager.utils.FileUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -160,7 +161,7 @@ public class VersionCheckManager {
         }
         try {
             JSONObject resultObj = new JSONObject(jsonString);
-            if (!resultObj.has("result") || !"ok".equalsIgnoreCase(resultObj.getString("result"))) {
+            if (!resultObj.has("result") || !"ok" .equalsIgnoreCase(resultObj.getString("result"))) {
                 return CHECK_FAILED;
             }
             Logger.w(TAG, "updateResult" + resultObj.toString());
@@ -268,7 +269,8 @@ public class VersionCheckManager {
 
         if (checkLocalPackage(localFileName)) {
             if (updateListener != null) {
-                updateListener.onDownloadSuccess(getCachePath(localFileName));
+                String path = getCachePath(localFileName);
+                updateListener.onDownloadSuccess(path);
                 mIsUpgrading = false;
             }
             return;
@@ -316,7 +318,15 @@ public class VersionCheckManager {
                                 if (newFile.exists()) {
                                     newFile.delete();
                                 }
-                                downFile.renameTo(newFile);
+                                boolean r = downFile.renameTo(newFile);
+                                if (!r) {
+                                    try {
+                                        FileUtils.copyFileUsingStream(downFile, newFile);
+                                    } catch (IOException e) {
+                                        updateListener.onDownloadSuccess(localPath);
+                                        return;
+                                    }
+                                }
                                 updateListener.onDownloadSuccess(getCachePath(localFileName));
                             }
                         }
@@ -378,7 +388,8 @@ public class VersionCheckManager {
     }
 
     private boolean checkLocalPackage(String oldLocalFile) {
-        File file = new File(getCachePath(oldLocalFile));
+        String cachePath = getCachePath(oldLocalFile);
+        File file = new File(cachePath);
         if (!file.exists()) {
             return false;
         }
@@ -418,7 +429,8 @@ public class VersionCheckManager {
             tempPath = GlobalData.app().getCacheDir();
         }
         Logger.w("VersionCheckManager", "getCachePath=" + tempPath.getAbsolutePath());
-        return new File(tempPath.getAbsolutePath(), name).getAbsolutePath();
+        String path = new File(tempPath.getAbsolutePath(), name).getAbsolutePath();
+        return path;
     }
 
     public void setShowUpgradeDialog(boolean shown) {
