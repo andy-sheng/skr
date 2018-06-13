@@ -15,6 +15,8 @@ import static com.wali.live.component.BaseSdkController.MSG_HIDE_INPUT_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_BARRAGE;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_INPUT;
 
@@ -26,6 +28,8 @@ import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_INPUT;
 public class GameInputPresenter extends InputPresenter<GameInputView.IView>
         implements GameInputView.IPresenter {
     private static final String TAG = "GameInputPresenter";
+
+    private boolean isLandscape = false;
 
     @Override
     protected String getTAG() {
@@ -46,6 +50,8 @@ public class GameInputPresenter extends InputPresenter<GameInputView.IView>
         registerAction(MSG_HIDE_INPUT_VIEW);
         registerAction(MSG_SHOW_GAME_INPUT);
         registerAction(MSG_HIDE_GAME_INPUT);
+        registerAction(MSG_ON_ORIENT_PORTRAIT);
+        registerAction(MSG_ON_ORIENT_LANDSCAPE);
     }
 
     @Override
@@ -80,8 +86,16 @@ public class GameInputPresenter extends InputPresenter<GameInputView.IView>
             return false;
         }
         switch (event) {
+            case MSG_ON_ORIENT_PORTRAIT:
+                isLandscape = false;
+                break;
+            case MSG_ON_ORIENT_LANDSCAPE:
+                isLandscape = true;
+                break;
             case MSG_SHOW_GAME_INPUT:
-                mView.showSelf();
+                if(isLandscape){
+                    mView.showSelf();
+                }
                 return true;
             case MSG_HIDE_GAME_INPUT:
                 mView.hideSelf();

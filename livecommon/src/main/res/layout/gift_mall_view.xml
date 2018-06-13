@@ -66,7 +66,8 @@
                 android:paddingRight="@dimen/margin_50"
                 android:text="@string/recharge"
                 android:textColor="@color/color_ff2966"
-                android:textSize="@dimen/text_size_36" />
+                android:textSize="@dimen/text_size_36"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/pkt_detail_tv"
@@ -124,7 +125,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="-1.33dp"
                 android:layout_marginRight="@dimen/margin_90"
-                android:alpha="0"
                 android:drawablePadding="6.66dp"
                 android:drawableRight="@drawable/live_icon_more_big_normal"
                 android:gravity="center"
@@ -172,7 +172,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="-1.33dp"
                 android:layout_marginRight="@dimen/margin_30"
-                android:alpha="0"
                 android:background="@drawable/live_icon_gift_recharge"
                 android:gravity="center"
                 android:paddingLeft="@dimen/margin_30"

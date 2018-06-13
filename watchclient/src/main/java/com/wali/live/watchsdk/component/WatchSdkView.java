@@ -313,6 +313,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 return;
             }
             BarrageBtnPresenter presenter = new BarrageBtnPresenter(mController);
+            presenter.setGameMode(mIsGameMode);
             registerComponent(view, presenter);
             mBarrageBtnView = view;
         }

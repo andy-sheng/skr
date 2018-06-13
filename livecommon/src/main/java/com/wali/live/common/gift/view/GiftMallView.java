@@ -228,7 +228,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
                             mSelectedPos = position;
                             selectView(v, true);
                         }
-                    }else{
+                    } else {
                         cancelSelectView(mSelectedView);
                         selectView(v, true);
                     }
@@ -337,8 +337,8 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         }
         mGiftBottomPanel = (RelativeLayout) findViewById(R.id.gift_bottom_panel);
         mGiftMallGuidePageViewStub = (ViewStub) findViewById(R.id.gift_mall_guide_page_viewstub);
-        mBalanceTv = (TextView) findViewById(R.id.diamond_max_tv_real);
-        mSiliverDiamond = (TextView) findViewById(R.id.diamond_siliver_tv_real);
+        mBalanceTv = (TextView) findViewById(R.id.diamond_max_tv);
+        mSiliverDiamond = (TextView) findViewById(R.id.diamond_siliver_tv);
 
         setBalanceInfo();
         mContinueSendBtn = (ContinueSendBtn) findViewById(R.id.continue_send_btn);
@@ -384,7 +384,25 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
                     }
                 });
 
+        RxView.clicks(mBalanceTv)
+                .throttleFirst(200, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        showDiamondTips(TIPS_TYPE_BALANCE);
+                    }
+                });
+
         RxView.clicks(findViewById(R.id.diamond_siliver_tv_real))
+                .throttleFirst(200, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        showDiamondTips(TIPS_TYPE_SILIVER_DIAMOND);
+                    }
+                });
+
+        RxView.clicks(mSiliverDiamond)
                 .throttleFirst(200, TimeUnit.MILLISECONDS)
                 .subscribe(new Action1<Void>() {
                     @Override
@@ -401,6 +419,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
                 }
             }
         });
+
 
         mMallGiftTv = $rxClick(R.id.tv_gift, 300, new Action1() {
             @Override
@@ -476,7 +495,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         } else {
             mMallGiftTv.setSelected(false);
             mPktGiftTv.setSelected(true);
-            mPktGiftTv.setBackgroundColor(Color.TRANSPARENT);
+//            mPktGiftTv.setBackgroundColor(Color.TRANSPARENT);
 
 //            mSlideGift.setVisibility(View.GONE);
 //            mSlidePkt.setVisibility(View.VISIBLE);
@@ -861,6 +880,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
 
     /**
      * 判断当前是否符合购买礼物
+     *
      * @return false 条件不符合, true 可以发起购买
      */
     private boolean judgeBuyGiftCondition() {
@@ -1531,7 +1551,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
                 mSelectedView.setVisibility(VISIBLE);
             }
 
-            if (mClickedView != null){
+            if (mClickedView != null) {
                 mClickedView.setVisibility(INVISIBLE);
             }
 
@@ -1540,11 +1560,11 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         @Override
         public void giftSwichPacket() {
             MyLog.d(TAG, "mPortraitStateController giftSwichPacket ");
-            if (mSelectedView != null){
+            if (mSelectedView != null) {
                 mSelectedView.setVisibility(VISIBLE);
             }
 
-            if(mClickedView != null && mClickedView.getParent() != null && currentView != null){
+            if (mClickedView != null && mClickedView.getParent() != null && currentView != null) {
                 currentView.removeView(mClickedView);
             }
 
@@ -1559,7 +1579,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         public int getCircleFace(Gift gift) {
             MyLog.d(TAG, "mPortraitStateController getCircleFace ");
             int index = mGiftMallPresenter.getGiftIndex(gift, false, !mIsMallGift)[1];
-            if (index % 4 >= 2){
+            if (index % 4 >= 2) {
                 return SmallSendGiftBtn.leftFace;
             } else {
                 return SmallSendGiftBtn.rightFace;
