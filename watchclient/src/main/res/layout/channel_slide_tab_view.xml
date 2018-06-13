@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <com.base.view.MLTextView
+        android:id="@+id/tab_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:maxLines="1"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textColor="@drawable/color_channel_tab_text"
+        android:textSize="@dimen/text_size_54" />
+</RelativeLayout>

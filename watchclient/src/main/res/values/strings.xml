@@ -772,4 +772,7 @@
     <string name="income_download">去下载</string>
 
     <string name="live_number_id">ID: %s</string>
+
+    <string name="empty_page_tip">页面暂时为空</string>
+
 </resources>

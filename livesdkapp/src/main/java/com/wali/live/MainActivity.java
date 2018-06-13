@@ -28,6 +28,7 @@ import com.mi.liveassistant.R;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
+import com.wali.live.watchsdk.channel.ChannelListSdkActivity;
 import com.wali.live.watchsdk.channel.adapter.ChannelRecyclerAdapter;
 import com.wali.live.watchsdk.channel.list.model.ChannelShow;
 import com.wali.live.watchsdk.channel.list.presenter.ChannelListPresenter;
@@ -263,6 +264,13 @@ public class MainActivity extends BaseSdkActivity implements IChannelView, IChan
                 WebViewActivity.open(MainActivity.this, "https://activity.zb.mi.com/tbox/index.html?actId=2016111101&version=3.0&pos=window&zuid=2199938&lid=2199938_1515139027");
             }
         });
+
+        $(R.id.channel_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChannelListSdkActivity.openActivity(MainActivity.this);
+            }
+        });
     }
 
     private void initPresenters() {
@@ -273,7 +281,7 @@ public class MainActivity extends BaseSdkActivity implements IChannelView, IChan
     }
 
     private void getChannelFromServer() {
-        mChannelListPresenter.start();
+      //  mChannelListPresenter.start();
     }
 
     @Override

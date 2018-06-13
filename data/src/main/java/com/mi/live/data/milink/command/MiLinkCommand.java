@@ -343,6 +343,7 @@ public class MiLinkCommand {
     public static final String COMMAND_SEARCh_RELATION_KEYWORD = "zhibo.user.relation_keyword";
 
     /*频道相关*/
+    public static final String COMMAND_FEEDS_HOMEPAGE_LIST = "zhibo.feed.getHomePageFeedList"; // 关注频道
     public static final String COMMAND_HOT_CHANNEL_LIST = "zhibo.recommend.list";
     public static final String COMMAND_HOT_CHANNEL_SUB_LIST = "zhibo.recommend.sublist";
     public static final String COMMAND_MI_CHANNEL_GET_MJ = "zhibo.michannel.getmj";

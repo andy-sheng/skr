@@ -3,13 +3,23 @@ package com.wali.live.watchsdk.channel.list.model;
 import com.wali.live.proto.LiveShowProto;
 
 public class ChannelShow {
+    /* 以下是下发的频道类型 现在只会有类型8下发 根据命令字配置 */
+    public static final int UI_TYPE_DEFAULT = 1;
+    public static final int UI_TYPE_TAG = 2;
+    public static final int UI_TYPE_THREE_GRID = 3;
+    public static final int UI_TYPE_TWO_GRID = 4;
+    public static final int UI_TYPE_FEEDS = 5;
+    public static final int UI_TYPE_WEBVIEW = 6;
+    public static final int UI_TYPE_ESPORT = 7;
+    public static final int UI_TYPE_COMMAND = 8;
+
     long channelId;
     String channelName;
     boolean hasChild;
-    int uiType;//客户端UI展示类型, 默认=1,分类=2,三列=3,二列=4,动态页样式:5,网页:6
+    int uiType;//客户端UI展示类型, 默认=1,分类=2,三列=3,二列=4,动态页样式=5,网页=6,()=7,模板命令字=8;
     boolean autoFresh;
     long freshInterval;
-    String url;//类型是6的时候必须
+    String url;//类型是6、8的时候必须
     int flag;//控制位,第1位表示是否有搜索框
     String iconUrl;//频道图标地址[子频道]
     ChannelStyle channelStyle;//频道主题风格
