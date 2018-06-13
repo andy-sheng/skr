@@ -66,6 +66,8 @@ import java.util.List;
 import ch.qos.logback.core.android.SystemPropertiesProxy;
 
 import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
+import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
+import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_ENABLE_MOVE_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_FOLLOW_COUNT_DOWN;

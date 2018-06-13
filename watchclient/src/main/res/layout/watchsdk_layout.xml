@@ -29,15 +29,6 @@
         android:layout_marginEnd="@dimen/margin_20"
         android:layout_marginStart="@dimen/margin_20"/>
 
-    <!--输入框-->
-    <com.wali.live.watchsdk.component.view.InputAreaView
-        android:id="@+id/input_area_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        android:visibility="invisible"/>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,15 +51,15 @@
             android:id="@+id/msg_anim_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/live_comment_view"
-            android:layout_marginBottom="-23.66dip"/>
+            android:layout_below="@+id/fly_barrage_viewgroup"
+            android:layout_marginBottom="@dimen/view_dimen_70" />
 
         <!--评论栏-->
         <com.wali.live.watchsdk.component.view.LiveCommentView
             android:id="@+id/live_comment_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_dimen_450"
-            android:layout_below="@+id/fly_barrage_viewgroup"
+            android:layout_below="@+id/msg_anim_view"
             android:layout_alignWithParentIfMissing="true"
             android:layout_marginRight="70dp"
             android:fadingEdge="none"
@@ -189,6 +180,15 @@
         android:layout_height="match_parent"
         android:background="@color/transparent"
         android:visibility="gone"/>
+
+    <!--输入框-->
+    <com.wali.live.watchsdk.component.view.InputAreaView
+        android:id="@+id/input_area_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:visibility="invisible"/>
 
     <!--红包容器-->
     <RelativeLayout

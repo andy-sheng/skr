@@ -11,6 +11,7 @@ import com.wali.live.watchsdk.component.view.GameInputView;
 
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_GAME_BARRAGE;
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_GAME_INPUT;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_GIFT_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_INPUT_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
@@ -19,6 +20,7 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_BARRAGE;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_INPUT;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_GIFT_PANEL;
 
 /**
  * Created by yangli on 2017/02/28.
@@ -30,6 +32,7 @@ public class GameInputPresenter extends InputPresenter<GameInputView.IView>
     private static final String TAG = "GameInputPresenter";
 
     private boolean isLandscape = false;
+    private boolean isGiftMallShow = false;
 
     @Override
     protected String getTAG() {
@@ -52,6 +55,8 @@ public class GameInputPresenter extends InputPresenter<GameInputView.IView>
         registerAction(MSG_HIDE_GAME_INPUT);
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(MSG_SHOW_GIFT_PANEL);
+        registerAction(MSG_HIDE_GIFT_PANEL);
     }
 
     @Override
@@ -86,6 +91,12 @@ public class GameInputPresenter extends InputPresenter<GameInputView.IView>
             return false;
         }
         switch (event) {
+            case MSG_SHOW_GIFT_PANEL:
+                isGiftMallShow = true;
+                break;
+            case MSG_HIDE_GIFT_PANEL:
+                isGiftMallShow = false;
+                break;
             case MSG_ON_ORIENT_PORTRAIT:
                 isLandscape = false;
                 break;
@@ -93,7 +104,7 @@ public class GameInputPresenter extends InputPresenter<GameInputView.IView>
                 isLandscape = true;
                 break;
             case MSG_SHOW_GAME_INPUT:
-                if(isLandscape){
+                if(isLandscape && !isGiftMallShow){
                     mView.showSelf();
                 }
                 return true;
