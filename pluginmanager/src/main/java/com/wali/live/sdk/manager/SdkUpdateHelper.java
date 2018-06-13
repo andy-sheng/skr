@@ -1,11 +1,16 @@
 package com.wali.live.sdk.manager;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.wali.live.sdk.manager.global.GlobalData;
 import com.wali.live.sdk.manager.http.HttpUtils;
+import com.wali.live.sdk.manager.log.Logger;
 import com.wali.live.sdk.manager.version.VersionCheckManager;
+import com.wali.live.watchsdk.ipc.service.MiLiveSdkServiceProxy;
 
 import java.util.concurrent.ExecutorService;
 
@@ -34,6 +39,17 @@ public class SdkUpdateHelper {
     public SdkUpdateHelper(IMiLiveSdk.IUpdateListener updateListener) {
         mUpdateListener = updateListener;
         mExecutor = HttpUtils.ONLINE_FILE_TASK_EXECUTOR;
+    }
+
+    public int getLocalInstallApkVersion() {
+        try {
+            PackageInfo packageInfo = GlobalData.app().getPackageManager().getPackageInfo(
+                    VersionCheckManager.PACKAGE_NAME, PackageManager.GET_META_DATA);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+        // 如果版本为0，置空服务，防止下次apk重装出问题
+        return 0;
     }
 
     public String getVersionNumber() {
@@ -146,9 +162,10 @@ public class SdkUpdateHelper {
 
     /**
      * 针对android N系统，Uri.from(File file) 权限问题新增的接口
+     *
      * @param auth
      */
-    public void installUpdateN(final String auth){
+    public void installUpdateN(final String auth) {
         if (mExecutor == null) {
             return;
         }
@@ -160,7 +177,7 @@ public class SdkUpdateHelper {
         });
     }
 
-    public void installUpdateSyncN(final String auth){
+    public void installUpdateSyncN(final String auth) {
         mVersionManager.installLocalPackageN(auth);
     }
 }
