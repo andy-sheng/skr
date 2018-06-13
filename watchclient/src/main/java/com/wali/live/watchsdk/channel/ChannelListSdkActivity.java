@@ -24,6 +24,7 @@ import java.util.List;
  * Created by lan on 16/11/25.
  */
 public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelListView {
+
     private SlidingTabLayout mSlidingTabLayout;
     private NestViewPager mViewPager;
     private EmptyView mEmptyView;
@@ -31,6 +32,7 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
     private ChannelTabPagerAdapter mPagerAdapter;
 
     private ChannelListPresenter mChannelListPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

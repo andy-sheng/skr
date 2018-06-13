@@ -33,6 +33,7 @@ import com.base.utils.toast.ToastUtils;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
@@ -297,8 +298,16 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         mMyRoomData.setVideoUrl(mRoomInfo.getVideoUrl());
         mMyRoomData.setLiveType(mRoomInfo.getLiveType());
         mMyRoomData.setGameId(mRoomInfo.getGameId());
-        mMyRoomData.setEnableShare(mRoomInfo.isEnableShare());
-        mMyRoomData.setEnableRelationChain(mRoomInfo.isEnableRelationChain());
+        Boolean enableShare = (Boolean) HostChannelManager.getInstance().get(HostChannelManager.KEY_SHARE_ENABLE);
+        if (enableShare == null) {
+            enableShare = false;
+        }
+        mMyRoomData.setEnableShare(enableShare);
+        Boolean enableFollow = (Boolean) HostChannelManager.getInstance().get(HostChannelManager.KEY_FOLLOW_ENABLE);
+        if (enableFollow == null) {
+            enableFollow = false;
+        }
+        mMyRoomData.setEnableRelationChain(enableFollow);
         return true;
     }
 
@@ -479,7 +488,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                     mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getAvatarTs(),
                     mMyRoomData.getUser(), mMyRoomData.getViewerCnt(), mMyRoomData.getLiveType(),
                     mGiftMallPresenter.getSpendTicket(), System.currentTimeMillis() - mMyRoomData.getEnterRoomTime(), type,
-                    mMyRoomData.getNickName(), hasRoomList , mMyRoomData.isEnableRelationChain());
+                    mMyRoomData.getNickName(), hasRoomList, mMyRoomData.isEnableRelationChain());
         }
     }
 

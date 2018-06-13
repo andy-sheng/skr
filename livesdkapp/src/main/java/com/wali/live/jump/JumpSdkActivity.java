@@ -7,11 +7,13 @@ import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.callback.ICommonCallBack;
+import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.location.Location;
 import com.mi.liveassistant.R;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.statistics.StatisticsKey;
+import com.wali.live.watchsdk.channel.ChannelListSdkActivity;
 import com.wali.live.watchsdk.contest.ContestPrepareActivity;
 import com.wali.live.watchsdk.contest.ContestWatchActivity;
 import com.wali.live.watchsdk.cta.CTANotifyFragment;
@@ -36,6 +38,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
     private static final String ACTION_OPEN_CONTEST_PREPARE = "open_contest_prepare";
     private static final String ACTION_OPEN_CONTEST_WATCH = "open_contest_watch";
     private static final String ACTION_OPEN_WITHDRAW = "open_withdraw";
+    private static final String ACTION_OPEN_CHANNEL_LIST = "open_channel_list";
 
     private static final String EXTRA_CHANNEL_ID = "extra_channel_id";
     private static final String EXTRA_PACKAGE_NAME = "extra_package_name";
@@ -81,7 +84,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
     }
 
     protected void processIntent() {
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         if (intent == null) {
             MyLog.w(TAG, "processIntent intent is null");
             finish();
@@ -95,6 +98,8 @@ public class JumpSdkActivity extends BaseSdkActivity {
 
         final boolean enableShare = intent.getBooleanExtra(EXTRA_ENABLE_SHARE, false);
         final boolean enableFollow = intent.getBooleanExtra(EXTRA_ENABLE_FOLLOW, true);
+        HostChannelManager.getInstance().put(channelId,HostChannelManager.KEY_SHARE_ENABLE,enableShare);
+        HostChannelManager.getInstance().put(channelId,HostChannelManager.KEY_FOLLOW_ENABLE,enableFollow);
 
         MyLog.d(TAG, action + " enableShare=" + enableShare);
         switch (action) {
@@ -234,6 +239,16 @@ public class JumpSdkActivity extends BaseSdkActivity {
                                 UserIncomeActivity.openActivity(JumpSdkActivity.this);
                             }
                         }, true, ACTION_OPEN_WITHDRAW);
+                break;
+            }
+            case ACTION_OPEN_CHANNEL_LIST: {
+                MiLiveSdkBinder.getInstance().checkActivitySecure(this, channelId, packageName, channelSecret,
+                        new ICommonCallBack() {
+                            @Override
+                            public void process(Object objects) {
+                                ChannelListSdkActivity.openActivity(JumpSdkActivity.this);
+                            }
+                        }, true, ACTION_OPEN_CHANNEL_LIST);
                 break;
             }
             default: {

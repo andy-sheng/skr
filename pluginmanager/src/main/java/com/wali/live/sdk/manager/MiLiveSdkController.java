@@ -83,7 +83,9 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String ACTION_DISABLE_RELATION_CHAIN = "disable_relation_chain";
 
     private static final String ACTION_OP_GET_BARRAGE = "get_barrage";
-            ;
+
+    private static final String ACTION_OPEN_CHANNEL_LIST = "open_channel_list";
+    ;
     private static final String ACTION_STATISTIC = "statistic";
 
     /*SharedPreferences File & Key*/
@@ -144,6 +146,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mMinVersionMap.put(ACTION_DO_FEED_BACK, 205058);
         mMinVersionMap.put(ACTION_DISABLE_RELATION_CHAIN, 205061);
         mMinVersionMap.put(ACTION_OP_GET_BARRAGE, 206003);
+        mMinVersionMap.put(ACTION_OPEN_CHANNEL_LIST,207001);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -330,6 +333,19 @@ public class MiLiveSdkController implements IMiLiveSdk {
         }
         checkHasInit();
         MiLiveSdkServiceProxy.getInstance().stopBarragePull(roomId);
+    }
+
+    @Override
+    public boolean openChannelList(Activity activity,IAssistantCallback callback) {
+        Logger.d(TAG,"openChannelList");
+        if (!checkVersion(ACTION_OPEN_CHANNEL_LIST, callback)) {
+            return false;
+        }
+        checkHasInit();
+
+        Bundle bundle = getBasicBundle();
+        jumpToSdk(activity, bundle, ACTION_OPEN_CHANNEL_LIST, callback);
+        return false;
     }
 
     @Override

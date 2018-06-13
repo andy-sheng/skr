@@ -281,9 +281,9 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             @Override
             public void run() {
                 if (mSdkUpdateHelper != null) {
-                    if( PackageManager.PERMISSION_GRANTED == GlobalData.app().getApplicationContext().getPackageManager().checkPermission("android.permission.WRITE_EXTERNAL_STORAGE",GlobalData.app().getApplicationContext().getPackageName())){
+                    if (PackageManager.PERMISSION_GRANTED == GlobalData.app().getApplicationContext().getPackageManager().checkPermission("android.permission.WRITE_EXTERNAL_STORAGE", GlobalData.app().getApplicationContext().getPackageName())) {
                         mSdkUpdateHelper.checkUpdate();
-                    }else{
+                    } else {
                         ToastUtils.showToast("缺少SD卡读写权限");
                     }
 
@@ -457,6 +457,27 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 String uri = "livesdk://channel?channel=50014&package_name=com.miui.video&title=%e5%85%b3%e6%b3%a8&channel_id=18";
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                 mActivity.startActivity(intent);
+            }
+        }));
+
+        mDataList.add(new Bean("频道:主页viewpager", new Runnable() {
+            @Override
+            public void run() {
+
+                MiLiveSdkController.getInstance().openChannelList(
+                        mActivity,
+                        new IMiLiveSdk.IAssistantCallback() {
+                            @Override
+                            public void notifyVersionLow() {
+                                ToastUtils.showToast("notifyVersionLow");
+                            }
+
+                            @Override
+                            public void notifyNotInstall() {
+                                ToastUtils.showToast("notifyNotInstall");
+                            }
+                        });
+
             }
         }));
 

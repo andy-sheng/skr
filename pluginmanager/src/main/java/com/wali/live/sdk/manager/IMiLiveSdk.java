@@ -247,6 +247,8 @@ public interface IMiLiveSdk {
 
     void stopBarragePull(String roomId, IAssistantCallback assistantCallback);
 
+    boolean openChannelList(Activity activity,IAssistantCallback assistantCallback);
+
     /**
      * sdk 上层应用回调
      */

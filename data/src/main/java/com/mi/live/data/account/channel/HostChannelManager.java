@@ -5,6 +5,8 @@ import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.repository.datasource.AccountLocalStore;
 import com.wali.live.dao.UserAccount;
 
+import java.util.HashMap;
+
 import rx.Observable;
 import rx.Subscriber;
 
@@ -15,6 +17,9 @@ import rx.Subscriber;
 
 public class HostChannelManager {
     public final static String TAG = HostChannelManager.class.getSimpleName();
+    public final static String KEY_SHARE_ENABLE = "key_share_enable";
+    public final static String KEY_FOLLOW_ENABLE = "key_follow_enable";
+
     // 当前账号的渠道
     private final static int NO_CHANNEL = 0;
     private volatile int mChannelId = NO_CHANNEL;
@@ -22,6 +27,9 @@ public class HostChannelManager {
 
     // 账户模式：标准和匿名
     private static HostChannelManager sInstance;
+
+
+    private HashMap<Integer, HashMap<String, Object>> mDataMap = new HashMap<>();
 
     private HostChannelManager() {
     }
@@ -47,7 +55,7 @@ public class HostChannelManager {
 
     /**
      * 返回的boolean值代表渠道是否有变化
-     *
+     * <p>
      * 检查channelid
      */
     public synchronized Observable<Boolean> checkChannel(final int channelId, final String packageName) {
@@ -89,5 +97,22 @@ public class HostChannelManager {
     public synchronized void setChannelData(int channelId, String packageName) {
         mChannelId = channelId;
         mPackageName = packageName;
+    }
+
+    public void put(int channelId, String key, Object obj) {
+        HashMap<String, Object> map = mDataMap.get(channelId);
+        if (map == null) {
+            map = new HashMap<>();
+            mDataMap.put(channelId, map);
+        }
+        map.put(key, obj);
+    }
+
+    public Object get(String key) {
+        HashMap<String, Object> map = mDataMap.get(HostChannelManager.getInstance().getChannelId());
+        if (map == null) {
+            return null;
+        }
+        return map.get(key);
     }
 }
