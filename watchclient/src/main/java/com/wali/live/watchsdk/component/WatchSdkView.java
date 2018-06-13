@@ -524,6 +524,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                     mBarrageBtnView.setVisibility(View.VISIBLE);
                     mController.postEvent(MSG_HIDE_GAME_INPUT);
                 }
+                mTopAreaView.onOrientation(false);
                 updateRotateBtn();
                 return true;
             case MSG_ON_ORIENT_LANDSCAPE:
@@ -535,6 +536,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                     mBarrageBtnView.setVisibility(View.INVISIBLE);
                     mController.postEvent(MSG_SHOW_GAME_INPUT);
                 }
+                mTopAreaView.onOrientation(true);
                 updateRotateBtn();
                 return true;
             case MSG_INPUT_VIEW_SHOWED:

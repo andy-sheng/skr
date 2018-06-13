@@ -24,6 +24,7 @@ import com.base.utils.display.DisplayUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.query.model.ViewerModel;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.common.listener.OnItemClickListener;
@@ -66,6 +67,8 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
     private RecyclerView mAvatarRv;
     //星票
     private TextView mTicketNumTv;
+    //水印
+    private WatchWaterMarkView mWatchWaterMarkView;
     //管理
     private View mTicketArea;
     private View mManagerArea;
@@ -125,6 +128,7 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
         mLinkArea = $(R.id.link_guest_area);
         mManagerArea = $(R.id.manager_area);
         mFansArea = $(R.id.vfans_area);
+        mWatchWaterMarkView = $(R.id.watch_water_mark);
         $click(mFansArea, this);
         mFollowTv.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mAnimationHelper.setFollowWidth(mFollowTv.getMeasuredWidth());
@@ -190,6 +194,10 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
 
     public void setTicketAreaShow(boolean isHuYaLive){
         mTicketArea.setVisibility( isHuYaLive ? GONE : VISIBLE);
+    }
+
+    public void onOrientation(boolean isLandscape){
+        mWatchWaterMarkView.onOrientation(isLandscape);
     }
 
     @Override
@@ -286,6 +294,11 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
                 } else {
                     mFansArea.setVisibility(View.GONE);
                 }
+            }
+
+            @Override
+            public void setWaterMarkView(RoomBaseDataModel mMyRoomData) {
+                mWatchWaterMarkView.setRoomData(mMyRoomData);
             }
 
             @Override
@@ -454,6 +467,11 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
          * 设置粉丝团信息
          */
         void setFansGroupModel(FansGroupDetailModel model);
+
+        /**
+         * 设置水印信息
+         */
+        void setWaterMarkView(RoomBaseDataModel mMyRoomData);
     }
 
     private class AnimationHelper {

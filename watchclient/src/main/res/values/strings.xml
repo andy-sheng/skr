@@ -770,4 +770,6 @@
     <string name="income_content">下载小米直播就能马上提现全部奖金哦~</string>
     <string name="income_think">再想想</string>
     <string name="income_download">去下载</string>
+
+    <string name="live_number_id">ID: %s</string>
 </resources>

@@ -152,6 +152,14 @@
         android:overScrollMode="never"
         android:requiresFadingEdge="none"/>
 
+    <com.wali.live.watchsdk.component.view.WatchWaterMarkView
+        android:id="@+id/watch_water_mark"
+        android:layout_below="@+id/avatar_rv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_dimen_30"
+        android:layout_alignParentRight="true"/>
+
     <!--星票-->
     <RelativeLayout
         android:id="@+id/ticket_area"

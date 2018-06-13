@@ -199,6 +199,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
             //这里加条件限制是因为观看端RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE这个事件会多次触发
             getGroupDetailFromServer();
         }
+        mView.setWaterMarkView(mMyRoomData);
         mView.updateTicketAndViewerCount(mMyRoomData.getTicket(), mMyRoomData.getViewerCnt());
         mView.updateAnchorInfo(mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
                 mMyRoomData.getCertificationType(), mMyRoomData.getLevel(), mMyRoomData.getNickName());
