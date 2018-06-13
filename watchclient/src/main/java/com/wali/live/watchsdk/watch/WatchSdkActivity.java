@@ -948,7 +948,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
     @Override
     public void updateVideoUrl(String videoUrl) {
-        if (TextUtils.isEmpty(mMyRoomData.getVideoUrl()) && !TextUtils.isEmpty(videoUrl)) {
+        if (!TextUtils.isEmpty(videoUrl) && !videoUrl.equals(mMyRoomData.getVideoUrl())) {
+            // 这里用都用最新的url做替换，因为存在虎牙直播这种 url 有签名有效期的
+            // 而且虎牙直播卡顿时需要重新拉一下 url
             mMyRoomData.setVideoUrl(videoUrl);
             MyLog.d(TAG, "updateVideoUrl startPlayer");
             mController.postEvent(MSG_NEW_VIDEO_URL, new Params().putItem(videoUrl));
