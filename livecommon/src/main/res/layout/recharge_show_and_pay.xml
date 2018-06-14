@@ -32,7 +32,7 @@
         android:background="@drawable/withdraw_withdraw_button"
         android:gravity="center"
         android:text="立即付款"
-        android:textColor="@color/color_black_trans_70"
+        android:textColor="@color/color_white_trans_70"
         android:textSize="@dimen/text_size_45"/>
 
     <TextView

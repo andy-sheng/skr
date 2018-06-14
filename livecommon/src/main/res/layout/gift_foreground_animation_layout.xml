@@ -48,7 +48,7 @@
                 android:layout_toRightOf="@id/sender_iv"
                 android:singleLine="true"
                 android:text="Angelababy我就是啊"
-                android:textColor="#f79c3c"
+                android:textColor="#fed533"
                 android:textSize="11.33dp" />
 
             <TextView
@@ -60,7 +60,7 @@
                 android:layout_marginTop="1dp"
                 android:singleLine="true"
                 android:text="送了玫瑰花"
-                android:textColor="#dd6652"
+                android:textColor="@color/white"
                 android:textSize="9.33dp" />
 
         </RelativeLayout>
