@@ -763,6 +763,10 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                     public Boolean call(Gift gift) {
                         // 暂时注掉
 //                        MyLog.d(TAG, "dataSourceGiftId:" + gift.toString());
+                        if(gift.getCostType() == Gift.COST_TYPE_GLOD_COIN){
+                            // 先把金币礼物都过滤掉
+                            return false;
+                        }
                         if (!mallType) {
                             return true;
                         }

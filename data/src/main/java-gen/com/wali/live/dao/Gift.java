@@ -49,6 +49,7 @@ public class Gift {
 
     // KEEP FIELDS - put your custom fields here
     public static final String TAG = "Gift";
+    public static final int COST_TYPE_GLOD_COIN = 4;
     private Map<String, GiftLanguageModel> languageModelMap = new HashMap<>();
     // KEEP FIELDS END
 

@@ -21,7 +21,7 @@ import java.util.List;
 public class BalanceDetail implements Serializable{
     private static final String TAG = BalanceDetail.class.getSimpleName();
 
-    private static long ONE_DAY_SECOND = 86400;
+    private static long ONE_DAY_SECOND = 60 * 60 * 24;
     /**真实的钻石数量（用户通过充值得到的钻石数量、金钻）*/
     private int diamondCount;
     /**未过期虚拟钻石列表*/
@@ -232,21 +232,22 @@ public class BalanceDetail implements Serializable{
         if (expire.before(now)) {
             return -1;
         } else {
-            int nowYear = now.get(GregorianCalendar.YEAR);
-            int nowDayOfYear = now.get(GregorianCalendar.DAY_OF_YEAR);
-            int expireYear = expire.get(GregorianCalendar.YEAR);
-            int expireDayOfYear = expire.get(GregorianCalendar.DAY_OF_YEAR);
-            if (nowYear == expireYear && nowDayOfYear == expireDayOfYear) {
-                return 0;
-            }
-            // 一天已经过去的秒数
-            int secondInDay = now.get(GregorianCalendar.HOUR_OF_DAY) * 3600
-                    + now.get(GregorianCalendar.MINUTE) * 60
-                    + now.get(GregorianCalendar.SECOND);
-            // 一天剩余的秒数
-            long leftSecondInDay = ONE_DAY_SECOND - secondInDay;
-            // 最小还剩1天
-            return (int) (((endTime-now.getTimeInMillis())/1000 - leftSecondInDay) / ONE_DAY_SECOND) + 1;
+//            int nowYear = now.get(GregorianCalendar.YEAR);
+//            int nowDayOfYear = now.get(GregorianCalendar.DAY_OF_YEAR);
+//            int expireYear = expire.get(GregorianCalendar.YEAR);
+//            int expireDayOfYear = expire.get(GregorianCalendar.DAY_OF_YEAR);
+//            if (nowYear == expireYear && nowDayOfYear == expireDayOfYear) {
+//                return 0;
+//            }
+//            // 一天已经过去的秒数
+//            int secondInDay = now.get(GregorianCalendar.HOUR_OF_DAY) * 3600
+//                    + now.get(GregorianCalendar.MINUTE) * 60
+//                    + now.get(GregorianCalendar.SECOND);
+//            // 一天剩余的秒数
+//            long leftSecondInDay = ONE_DAY_SECOND - secondInDay;
+//            // 最小还剩1天
+//            return (int) (((endTime-now.getTimeInMillis())/1000 - leftSecondInDay) / ONE_DAY_SECOND) + 1;
+            return (int) (((endTime - now.getTimeInMillis()) / 1000) / ONE_DAY_SECOND + 1);
         }
     }
 
