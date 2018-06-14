@@ -109,7 +109,7 @@
         layout="@layout/component_gift_continue_view_group"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_dimen_450"
-        android:layout_below="@+id/top_area_view"
+        android:layout_above="@+id/live_comment_view"
         android:layout_marginBottom="@dimen/view_dimen_180"/>
 
     <com.wali.live.common.flybarrage.view.FlyBarrageViewGroup
