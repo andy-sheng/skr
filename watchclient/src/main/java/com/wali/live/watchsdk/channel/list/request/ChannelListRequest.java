@@ -31,9 +31,13 @@ public class ChannelListRequest extends BaseRequest {
     private static int getAppTypeByChannelId() {
         int channelId = HostChannelManager.getInstance().getChannelId();
         switch (channelId) {
+            case 50019: {
+                // 小米音乐
+                return 5;
+            }
             case 50010: {
-                // 游戏中心
-                return 4;
+                // 小米音乐 测试
+                return 5;
             }
             default:
                 return 0;
