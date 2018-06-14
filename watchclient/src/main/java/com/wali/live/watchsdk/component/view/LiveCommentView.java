@@ -50,7 +50,7 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
     // this value should be adjust when ui design is changed
     private static final int COMMENT_WIDTH_LANDSCAPE = DisplayUtils.getPhoneHeight() / 2;
     private static final int COMMENT_HEIGHT_PORTRAIT = DisplayUtils.dip2px(130.33f); // 弹幕区域高度
-    private static final int COMMENT_HEIGHT_LANDSCAPE = DisplayUtils.dip2px(133.33f);
+    private static final int COMMENT_HEIGHT_LANDSCAPE = DisplayUtils.dip2px(60.33f);
     private static final int COMMENT_MARGIN_PORTRAIT = DisplayUtils.dip2px(75f); // 弹幕区域右边距
 
     private static final int COMMENT_PADDING_LEFT = DisplayUtils.dip2px(6);
@@ -505,8 +505,29 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
                 mToken = "";
                 mCommentRv.removeOnScrollListener(mOnScrollListener);
             }
+
+            @Override
+            public void dropHeight(boolean isDrop) {
+                LiveCommentView.this.dropHeight(isDrop);
+            }
         }
         return new ComponentView();
+    }
+
+    private void dropHeight(boolean isDrop) {
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
+        if (isDrop) {
+            layoutParams.width = COMMENT_WIDTH_LANDSCAPE;
+            layoutParams.height = COMMENT_HEIGHT_LANDSCAPE;
+            layoutParams.rightMargin = 0;
+            setPadding(COMMENT_PADDING_LEFT, 0, COMMENT_PADDING_RIGHT, PORTRAIT_COMMENT_PADDING_BOTTOM);
+        } else {
+            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+            layoutParams.height = COMMENT_HEIGHT_PORTRAIT;
+            layoutParams.rightMargin = Math.max(mExtraRightMargin, COMMENT_MARGIN_PORTRAIT);
+            setPadding(COMMENT_PADDING_LEFT, 0, COMMENT_PADDING_RIGHT, PORTRAIT_COMMENT_PADDING_BOTTOM);
+        }
+        setLayoutParams(layoutParams);
     }
 
 
@@ -538,6 +559,11 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
          * 销毁对象
          */
         void destroy();
+
+        /**
+         * 高度是否调小
+         */
+        void dropHeight(boolean isDrop);
     }
 
 }

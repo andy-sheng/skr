@@ -16,6 +16,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
+import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 
@@ -30,6 +32,7 @@ public class LiveCommentPresenter extends ComponentPresenter<LiveCommentView.IVi
 
     private boolean mIsGameMode;
     private boolean mIsLandscape = false;// 是否是横屏
+    private boolean mIsInputAreaShow = false; //输入框是否弹出
 
     @Override
     protected final String getTAG() {
@@ -68,6 +71,8 @@ public class LiveCommentPresenter extends ComponentPresenter<LiveCommentView.IVi
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_BOTTOM_POPUP_SHOWED);
         registerAction(MSG_BOTTOM_POPUP_HIDDEN);
+        registerAction(MSG_INPUT_VIEW_SHOWED);
+        registerAction(MSG_INPUT_VIEW_HIDDEN);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -105,6 +110,20 @@ public class LiveCommentPresenter extends ComponentPresenter<LiveCommentView.IVi
             return false;
         }
         switch (event) {
+            case MSG_INPUT_VIEW_SHOWED:
+                mIsInputAreaShow = true;
+                if(!mIsLandscape){
+                    //高度调小
+                    mView.dropHeight(true);
+                }
+                break;
+            case MSG_INPUT_VIEW_HIDDEN:
+                mIsInputAreaShow = false;
+                if(!mIsLandscape){
+                    //恢复正常
+                    mView.dropHeight(false);
+                }
+                break;
             case MSG_ON_ORIENT_PORTRAIT:
                 mView.onOrientation(false);
                 mIsLandscape = false;
