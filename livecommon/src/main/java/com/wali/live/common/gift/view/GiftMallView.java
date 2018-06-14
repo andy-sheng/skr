@@ -88,6 +88,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
     private GiftDisplayViewPagerAdapter mGiftDisplayViewPagerAdapter; // 适配器
 
     private TextView mBalanceTv; // 余额
+    private TextView mBalanceTvDisplay;
 
     private ErrorView mGiftListErrorView;// 错误页面
 
@@ -108,6 +109,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
     private GiftDisplayRecycleViewAdapter mGiftDisplayRecycleViewAdapter;
 
     private TextView mSiliverDiamond;
+    private TextView mSiliverDiamondDisplay;
 
     private Subscription mDiamondTipsSubscription;//第一次打开礼物橱窗提示优先使用银钻订阅
 
@@ -339,7 +341,10 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         mGiftBottomPanel = (RelativeLayout) findViewById(R.id.gift_bottom_panel);
         mGiftMallGuidePageViewStub = (ViewStub) findViewById(R.id.gift_mall_guide_page_viewstub);
         mBalanceTv = (TextView) findViewById(R.id.diamond_max_tv);
+        mBalanceTvDisplay = (TextView) findViewById(R.id.diamond_max_tv_real);
+
         mSiliverDiamond = (TextView) findViewById(R.id.diamond_siliver_tv);
+        mSiliverDiamondDisplay = (TextView) findViewById(R.id.diamond_siliver_tv_real);
 
         mRechargeDisplay = (TextView) findViewById(R.id.recharge_tv);
 
@@ -491,7 +496,9 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
 //            mSlidePkt.setVisibility(View.GONE);
 
             mBalanceTv.setVisibility(View.VISIBLE);
+            mBalanceTvDisplay.setVisibility(VISIBLE);
             mSiliverDiamond.setVisibility(View.VISIBLE);
+            mSiliverDiamondDisplay.setVisibility(VISIBLE);
             mRechargeTv.setVisibility(View.VISIBLE);
 
             mPktDetailTv.setVisibility(View.GONE);
@@ -505,7 +512,9 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
 
             mRechargeDisplay.setVisibility(GONE);
             mBalanceTv.setVisibility(View.GONE);
+            mBalanceTvDisplay.setVisibility(GONE);
             mSiliverDiamond.setVisibility(View.GONE);
+            mSiliverDiamondDisplay.setVisibility(GONE);
             mRechargeTv.setVisibility(View.GONE);
 
             mPktDetailTv.setVisibility(View.VISIBLE);
