@@ -4,6 +4,8 @@ import android.text.TextUtils;
 
 import com.base.global.GlobalData;
 import com.google.protobuf.GeneratedMessage;
+import com.wali.live.statistics.StatisticsKey;
+import com.wali.live.watchsdk.channel.util.Base64;
 
 /**
  * Created by lan on 16/6/28.
@@ -22,7 +24,12 @@ public abstract class ChannelViewModel<GM extends GeneratedMessage> extends Base
     protected int mHeadType;
     protected String mHeadIconUrl;     //head左部配图
     protected String mHeadMoreText;    //更多的文案可配
+    protected String mHeaderViewAllText;
 
+    // 客户端添加的栏目标识
+    protected String mHeadKey;
+
+    protected String mStatisticsKey;
     protected int mGroupPosition;
     protected boolean mIsLast;
 
@@ -30,6 +37,8 @@ public abstract class ChannelViewModel<GM extends GeneratedMessage> extends Base
     protected int mImageHeight;
     protected float mRatio = 1f;
     protected int mFrameHeight;
+
+    protected boolean mIsHide; // 是否隐藏
 
     /**
      * 注意：此构造函数用于构造测试数据
@@ -46,6 +55,20 @@ public abstract class ChannelViewModel<GM extends GeneratedMessage> extends Base
     }
 
     protected abstract void parseTemplate(GM protoItem) throws Exception;
+
+    protected void generateEncodeHead() {
+        if (hasHead()) {
+            mHeadKey = "";
+            if (!TextUtils.isEmpty(mHead)) {
+                mHeadKey = Base64.encode(mHead.getBytes());
+            }
+            String encodeUri = "";
+            if (!TextUtils.isEmpty(mHeadUri)) {
+                encodeUri = Base64.encode(mHeadUri.getBytes());
+            }
+            mStatisticsKey = String.format(StatisticsKey.KEY_CHANNEL_CLICK_MORE, mHeadKey, encodeUri);
+        }
+    }
 
     public int getUiType() {
         return mUiType;
@@ -142,5 +165,21 @@ public abstract class ChannelViewModel<GM extends GeneratedMessage> extends Base
         return mImageHeight;
     }
 
+    public String getHeaderViewAllText() {
+        return mHeaderViewAllText;
+    }
+
+    public String getStatisticsKey() {
+        return mStatisticsKey;
+    }
+
     public abstract boolean isNeedRemove();
+
+    public boolean isHide() {
+        return mIsHide;
+    }
+
+    public void setIsHide(boolean mIsHide) {
+        this.mIsHide = mIsHide;
+    }
 }

@@ -25,6 +25,11 @@ public class SpecificConstants {
     public static final String SCHEME_HTTPS = "https";
 
     /**
+     * @notice SCHEME : MI_VIDEO
+     */
+    public final static String SCHEME_MI_VIDEO = "mivideo";
+
+    /**
      * @description {@link #PARAM_IS_LIVE}
      */
     public static final int PARAM_TYPE_LIVE = 1;
