@@ -247,7 +247,7 @@ public class WidgetView extends RelativeLayout
 
             if (mLeftBottomWiv != null) {
                 LayoutParams lp = (LayoutParams) mLeftBottomWiv.getLayoutParams();
-                lp.bottomMargin = DisplayUtils.dip2px(50f);
+                lp.bottomMargin = DisplayUtils.dip2px(60f);
             }
         } else {
             setPadding(PADDING, PADDING >> 1, PADDING, PADDING_PORTRAIT_BOTTOM);

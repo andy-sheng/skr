@@ -116,7 +116,8 @@
         android:id="@+id/fly_barrage_viewgroup"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_dimen_200"
-        android:layout_alignBottom="@+id/gift_continue_vg" />
+        android:layout_alignBottom="@+id/gift_continue_vg"
+        android:layout_marginBottom="-23.3dp"/>
 
     <!--房间特效礼物-->
     <com.wali.live.common.gift.view.GiftRoomEffectView
