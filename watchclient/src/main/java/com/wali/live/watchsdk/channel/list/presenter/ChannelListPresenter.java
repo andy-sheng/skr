@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.base.activity.RxActivity;
 import com.base.log.MyLog;
+import com.mi.live.data.account.UserAccountManager;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.proto.LiveShowProto;
 import com.wali.live.watchsdk.channel.data.ChannelDataStore;
@@ -119,7 +120,13 @@ public class ChannelListPresenter {
         MyLog.d(TAG, formatLog("processRsp"));
         List<ChannelShow> channelShows = new ArrayList<>();
         for (LiveShowProto.ChannelShow show : rsp.getChannelsList()) {
-            channelShows.add(ChannelShow.parseFromPb(show));
+            ChannelShow channelShow = ChannelShow.parseFromPb(show);
+            if (!UserAccountManager.getInstance().hasAccount()) {
+                if ("关注".equals(channelShow.getChannelName())) {
+                    continue;
+                }
+            }
+            channelShows.add(channelShow);
         }
         return channelShows;
     }
