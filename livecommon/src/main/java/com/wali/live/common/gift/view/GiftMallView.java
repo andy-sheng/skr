@@ -601,7 +601,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         unsubscribeTipsHideSubscription();
 
         if (mDiamondTips == null) {
-            mDiamondTips = new GiftDiamondTips(getContext(), tipsType);
+            mDiamondTips = new GiftDiamondTips(getContext(), tipsType, mIsLandscape);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             int left;
             int bottom;
@@ -656,7 +656,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
                 layoutParams.setMargins(left, 0, 0, bottom);
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             } else {
-                layoutParams.setMargins(left, 0, 0, bottom);
+                layoutParams.setMargins(left, bottom, 0,0 );
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             }
 

@@ -36,9 +36,12 @@ public class GiftDiamondTips extends RelativeLayout{
 
     private int mTipsType;
 
-    public GiftDiamondTips(Context context, int tipsType) {
+    private boolean mIsLandscape = false; //是否横屏
+
+    public GiftDiamondTips(Context context, int tipsType, boolean isLandscape) {
         super(context);
         mTipsType = tipsType;
+        mIsLandscape = isLandscape;
         init(context);
     }
 
@@ -61,6 +64,12 @@ public class GiftDiamondTips extends RelativeLayout{
         mDiamondTipsClose = (TextView) findViewById(R.id.siliver_diamond_tips_close);
         mTipsText = (TextView) findViewById(R.id.gift_tips_tv);
         mTipsContainer = (RelativeLayout) findViewById(R.id.toast_container);
+
+        if(mIsLandscape){
+            setBackground(getResources().getDrawable(R.drawable.toast_bg));
+        }else{
+            setBackground(getResources().getDrawable(R.drawable.toast_bg_shu));
+        }
 
         mTipsText.setMaxWidth(DisplayUtils.dip2px(260));
         if(mTipsType == TIPS_TYPE_MI_COIN) {
