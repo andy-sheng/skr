@@ -173,6 +173,7 @@
                 android:layout_marginLeft="-1.33dp"
                 android:layout_marginRight="@dimen/margin_30"
                 android:background="@drawable/live_icon_gift_recharge"
+                android:alpha="0"
                 android:gravity="center"
                 android:paddingLeft="@dimen/margin_30"
                 android:paddingRight="@dimen/margin_50"

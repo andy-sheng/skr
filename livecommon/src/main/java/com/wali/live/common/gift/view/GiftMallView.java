@@ -139,6 +139,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
     private View mSlidePkt;
 
     private TextView mRechargeTv;
+    private TextView mRechargeDisplay;
 
     private TextView mPktDetailTv;
 
@@ -340,6 +341,8 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         mBalanceTv = (TextView) findViewById(R.id.diamond_max_tv);
         mSiliverDiamond = (TextView) findViewById(R.id.diamond_siliver_tv);
 
+        mRechargeDisplay = (TextView) findViewById(R.id.recharge_tv);
+
         setBalanceInfo();
         mContinueSendBtn = (ContinueSendBtn) findViewById(R.id.continue_send_btn);
         // 顶部透明view点击
@@ -483,7 +486,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
             mMallGiftTv.setSelected(true);
             mPktGiftTv.setSelected(false);
             mMallGiftTv.setBackgroundColor(Color.TRANSPARENT);
-
+            mRechargeDisplay.setVisibility(VISIBLE);
 //            mSlideGift.setVisibility(View.VISIBLE);
 //            mSlidePkt.setVisibility(View.GONE);
 
@@ -500,6 +503,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
 //            mSlideGift.setVisibility(View.GONE);
 //            mSlidePkt.setVisibility(View.VISIBLE);
 
+            mRechargeDisplay.setVisibility(GONE);
             mBalanceTv.setVisibility(View.GONE);
             mSiliverDiamond.setVisibility(View.GONE);
             mRechargeTv.setVisibility(View.GONE);
