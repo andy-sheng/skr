@@ -524,7 +524,6 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                         }
                     }
                     mLiveCommentView.setVisibility(View.VISIBLE);
-                    mBarrageBtnView.setVisibility(View.VISIBLE);
                     mController.postEvent(MSG_HIDE_GAME_INPUT);
                 }
                 mTopAreaView.onOrientation(false);

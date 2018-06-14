@@ -11,8 +11,10 @@ import com.wali.live.watchsdk.component.view.BarrageBtnView;
 
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_GIFT_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_GIFT_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_INPUT_VIEW;
 
 /**
@@ -26,6 +28,7 @@ public class BarrageBtnPresenter extends ComponentPresenter<BarrageBtnView.IView
 
     private boolean mIsGameMode = false;
     private boolean mIsLandscape = false;
+    private boolean mIsGiftMallShow = false;
 
     @Override
     protected String getTAG() {
@@ -46,6 +49,8 @@ public class BarrageBtnPresenter extends ComponentPresenter<BarrageBtnView.IView
         registerAction(MSG_BOTTOM_POPUP_HIDDEN);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_ON_ORIENT_PORTRAIT);
+        registerAction(MSG_SHOW_GIFT_PANEL);
+        registerAction(MSG_HIDE_GIFT_PANEL);
     }
 
     @Override
@@ -67,11 +72,20 @@ public class BarrageBtnPresenter extends ComponentPresenter<BarrageBtnView.IView
             return false;
         }
         switch (event) {
+            case MSG_SHOW_GIFT_PANEL:
+                mIsGiftMallShow = true;
+                break;
+            case MSG_HIDE_GIFT_PANEL:
+                mIsGiftMallShow = false;
+                break;
             case MSG_ON_ORIENT_LANDSCAPE:
                 mIsLandscape = true;
                 break;
             case MSG_ON_ORIENT_PORTRAIT:
                 mIsLandscape = false;
+                if(!mIsGiftMallShow){
+                    mView.getRealView().setVisibility(View.VISIBLE);
+                }
                 break;
             case MSG_BOTTOM_POPUP_SHOWED:
                 mView.getRealView().setVisibility(View.GONE);
@@ -80,7 +94,9 @@ public class BarrageBtnPresenter extends ComponentPresenter<BarrageBtnView.IView
                 if(mIsGameMode && mIsLandscape){
                     mView.getRealView().setVisibility(View.GONE);
                 }else{
-                    mView.getRealView().setVisibility(View.VISIBLE);
+                    if(!mIsGiftMallShow) {
+                        mView.getRealView().setVisibility(View.VISIBLE);
+                    }
                 }
                 return true;
             default:
