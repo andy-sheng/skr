@@ -41,6 +41,7 @@ import com.wali.live.common.gift.exception.GiftException;
 import com.wali.live.common.gift.view.GiftDisPlayItemView;
 import com.wali.live.common.gift.view.GiftMallView;
 import com.wali.live.dao.Gift;
+import com.wali.live.event.EventClass;
 import com.wali.live.proto.GiftProto;
 import com.wali.live.proto.PayProto;
 
@@ -528,6 +529,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                              */
                             if (requestContinueId[0] == mContinueSend.getCurrentContinueId()) {
                                 giftDisPlayItemView.setContinueSendGiftNum(mContinueSend.get(requestContinueId[0]) - 1);
+                                EventBus.getDefault().post(new GiftEventClass.ContinueGiftSendNum(mContinueSend.get(requestContinueId[0]) - 1 , giftCount));
                             }
                         }
 
