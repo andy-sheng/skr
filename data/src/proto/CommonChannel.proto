@@ -15,6 +15,7 @@ message ChannelItem{
     required bytes uiData       = 2;
     optional bool fullColumn    = 3;
     optional uint32 sectionId   = 4;
+    optional bool isHide        = 5; //是否隐藏这个模板，默认false：显示（目前只针对关注分栏的一行三列样式21/26有效）
 }
 
 //type = 1,2,4,16
@@ -427,4 +428,28 @@ message GetLikedVideoRsp {
     required uint32 ret        = 1;  //返回码
     repeated WatElement elem   = 2;  //数据
     optional uint64 next_start = 3;  //下一页的水位。ret=0&next_start=0 表示列表拉完了
+}
+
+
+/****************** 直播间组模板 ******************/
+message UiTemplateGroup {
+    repeated GroupData items            = 1; //子item
+    optional string headerName          = 2; //header的名字
+    optional string headerViewAllUri    = 3; //查看全部的uri，如果没有这个字段不展示查看全部
+    optional string subHeaderName       = 4; //header副标题
+    optional uint32 headerUiType        = 5; //header样式,默认0=老样式,1=头条有正副标题样式,2=header name+">",3=带icon
+    optional string header_icon         = 6; //header图标(字段为空且headerUiType=3时，客户端加本地默认图标)
+    optional string headerViewAllText   = 7; //查看全部uri跳转的文案
+}
+
+message GroupData {
+    optional string frameUri        = 1; //边框
+    optional string coverUri        = 2; //封面图
+    optional string jumpSchemeUri   = 3; //点击封面后的跳转
+    repeated GroupMemberData member = 4; //乘员信息
+    optional uint32 groupCnt        = 5; //分组人数
+}
+
+message GroupMemberData {
+    optional string liveCover = 1;
 }
