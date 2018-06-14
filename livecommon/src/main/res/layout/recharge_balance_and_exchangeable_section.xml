@@ -218,7 +218,7 @@
                 android:layout_toLeftOf="@id/exchange_btn"
                 android:gravity="center|left"
                 android:text="you can exchange diamond"
-                android:textColor="@color/color_white_trans_50"
+                android:textColor="@color/color_black_trans_50"
                 android:textSize="@dimen/text_size_45"/>
 
         </RelativeLayout>
