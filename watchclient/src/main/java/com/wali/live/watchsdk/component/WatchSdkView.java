@@ -231,6 +231,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
     public void setupView() {
         mContentView = $(mParentView, R.id.main_act_container);
         mGiftContinueViewGroup = $(R.id.gift_continue_vg);  // 礼物
+        mGiftContinueViewGroup.orient(mIsLandscape);
         // 播放器
         {
             TextureView view = $(R.id.video_view);

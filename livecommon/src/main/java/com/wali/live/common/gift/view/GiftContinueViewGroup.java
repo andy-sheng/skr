@@ -102,10 +102,10 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
 
     private boolean mIsLandscape = false;
     private int mGiftViewHeight = DisplayUtils.dip2px(140);
-    private int mGiftViewMarginBottom = DisplayUtils.dip2px(61.33f);
-    private int mLandscapeMarginBottom = DisplayUtils.dip2px(20f);
+    private int mGiftViewMarginBottom = DisplayUtils.dip2px(110.33f);
+    private int mLandscapeMarginBottom = DisplayUtils.dip2px(60f);
 
-    private void orient(boolean isLandscape) {
+    public void orient(boolean isLandscape) {
         mIsLandscape = isLandscape;
         giftScheduler.setGiftContinuousViews(getFeedViews());
         MyLog.d(TAG, "isLandscape:" + isLandscape);
@@ -113,12 +113,12 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) this.getLayoutParams();
             lp.height = DisplayUtils.dip2px(100);
             lp.alignWithParent = true;
-//            lp.bottomMargin = mLandscapeMarginBottom;
+            lp.bottomMargin = mLandscapeMarginBottom;
         } else {
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) this.getLayoutParams();
             lp.height = DisplayUtils.dip2px(150);
             lp.alignWithParent = true;
-//            lp.bottomMargin = mGiftViewMarginBottom;
+            lp.bottomMargin = mGiftViewMarginBottom;
             for(GiftContinuousView v:getFeedViews()){
                 v.tryAwake();
             }
