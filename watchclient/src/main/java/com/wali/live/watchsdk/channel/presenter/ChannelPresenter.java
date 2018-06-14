@@ -116,7 +116,7 @@ public class ChannelPresenter implements IChannelPresenter {
                     @Override
                     public void onNext(List<? extends BaseViewModel> list) {
                         MyLog.d(TAG, formatLog("getChannelObservable onNext"));
-                        if (list != null && list.size() != 0) {
+                        if (list != null) {
                             mView.updateView(list);
                         }
                     }
