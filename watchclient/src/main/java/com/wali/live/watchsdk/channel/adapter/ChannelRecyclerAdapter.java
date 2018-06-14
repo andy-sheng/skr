@@ -63,7 +63,7 @@ import java.util.List;
  * @module 频道
  * @description 频道view的基本适配器
  */
-public class ChannelRecyclerAdapter extends RecyclerView.Adapter<BaseHolder> {
+public class ChannelRecyclerAdapter extends EmptyRecyclerAdapter {
     public static final String TAG = ChannelRecyclerAdapter.class.getSimpleName();
 
     private List<? extends BaseViewModel> mChannelModels = new ArrayList<>();
@@ -95,18 +95,18 @@ public class ChannelRecyclerAdapter extends RecyclerView.Adapter<BaseHolder> {
     }
 
     @Override
-    public int getItemCount() {
+    protected int getDataCount() {
         return mChannelModels == null ? 0 : mChannelModels.size();
     }
 
     @Override
-    public int getItemViewType(int position) {
+    protected int getItemType(int position) {
         ChannelViewModel channelViewModel = mChannelModels.get(position).get();
         return channelViewModel.getUiType();
     }
 
     @Override
-    public BaseHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseHolder onCreateHolder(ViewGroup parent, int viewType) {
         BaseHolder holder = null;
         View view;
         switch (viewType) {
@@ -276,7 +276,7 @@ public class ChannelRecyclerAdapter extends RecyclerView.Adapter<BaseHolder> {
     }
 
     @Override
-    public void onBindViewHolder(final BaseHolder holder, final int position) {
+    protected void onBindHolder(BaseHolder holder, int position) {
         if (holder == null) {
             // 此分支不应该进来
             MyLog.e(TAG, "onBindViewHolder error : " + position);
