@@ -57,7 +57,7 @@ public class ChannelLiveGroupViewModel extends ChannelViewModel<CommonChannelPro
         mHeadUri = protoItem.getHeaderViewAllUri();
         mHeadType = protoItem.getHeaderUiType();
         mSubHead = protoItem.getSubHeaderName();
-        mHeadIconUrl = protoItem.getHeaderIcon();
+        mHeadIconUri = protoItem.getHeaderIcon();
         mHeaderViewAllText = protoItem.getHeaderViewAllText();
         generateEncodeHead();
 

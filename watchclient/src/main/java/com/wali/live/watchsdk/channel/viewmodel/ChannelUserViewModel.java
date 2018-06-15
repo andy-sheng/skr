@@ -40,9 +40,9 @@ public class ChannelUserViewModel extends ChannelViewModel<ChannelItem> {
     private void parseUI(UiTemplateUserInfo protoItem) {
         mHead = protoItem.getHeaderName();
         mHeadUri = protoItem.getHeaderViewAllUri();
-        mHeadType = protoItem.getHeaderUiType();
-        mHeadIconUrl = protoItem.getHeaderIcon();
-        mHeadMoreText = protoItem.getHeaderViewAllText();
+        mHeadType = protoItem.getHeaderUiType2();
+        mHeadIconUri = protoItem.getHeaderIcon();
+        mHeaderViewAllText = protoItem.getHeaderViewAllText();
 
         parseUserItem(protoItem.getItemDatasList());
     }

@@ -3,6 +3,7 @@ package com.wali.live.watchsdk.channel.viewmodel;
 import android.text.TextUtils;
 
 import com.base.global.GlobalData;
+import com.base.utils.display.DisplayUtils;
 import com.google.protobuf.GeneratedMessage;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.channel.util.Base64;
@@ -21,9 +22,8 @@ public abstract class ChannelViewModel<GM extends GeneratedMessage> extends Base
     protected String mHead;
     protected String mHeadUri;
     protected String mSubHead;
+    protected String mHeadIconUri;
     protected int mHeadType;
-    protected String mHeadIconUrl;     //head左部配图
-    protected String mHeadMoreText;    //更多的文案可配
     protected String mHeaderViewAllText;
 
     // 客户端添加的栏目标识
@@ -90,6 +90,18 @@ public abstract class ChannelViewModel<GM extends GeneratedMessage> extends Base
         return mHeadUri;
     }
 
+    public String getHeadIconUri(){
+        return mHeadIconUri;
+    }
+
+    public String getHeaderViewAllText() {
+        return mHeaderViewAllText;
+    }
+
+    public String getStatisticsKey() {
+        return mStatisticsKey;
+    }
+
     public int getGroupPosition() {
         return mGroupPosition;
     }
@@ -126,6 +138,18 @@ public abstract class ChannelViewModel<GM extends GeneratedMessage> extends Base
         return mSubHead;
     }
 
+    public boolean isNeedRemoved() {
+        return mUiType == ChannelUiType.TYPE_BANNER || mUiType == ChannelUiType.TYPE_VIDEO_BANNER;
+    }
+
+    public boolean isHide() {
+        return mIsHide;
+    }
+
+    public void setIsHide(boolean mIsHide) {
+        this.mIsHide = mIsHide;
+    }
+
     public void setImageSize(int width, int height) {
         if (mImageWidth == width && mImageHeight == height) {
             return;
@@ -135,7 +159,7 @@ public abstract class ChannelViewModel<GM extends GeneratedMessage> extends Base
 
         if (mImageWidth != 0) {
             mRatio = 1f * mImageHeight / mImageWidth;
-            mFrameHeight = (int) (mRatio * GlobalData.screenWidth);
+            mFrameHeight = (int) (mRatio * DisplayUtils.getPhoneWidth());
         } else {
             mFrameHeight = 0;
         }
@@ -149,37 +173,5 @@ public abstract class ChannelViewModel<GM extends GeneratedMessage> extends Base
         return mFrameHeight;
     }
 
-    public String getHeadIconUrl() {
-        return mHeadIconUrl;
-    }
-
-    public String getHeadMoreText() {
-        return mHeadMoreText;
-    }
-
-    public int getImageWidth() {
-        return mImageWidth;
-    }
-
-    public int getImageHeight() {
-        return mImageHeight;
-    }
-
-    public String getHeaderViewAllText() {
-        return mHeaderViewAllText;
-    }
-
-    public String getStatisticsKey() {
-        return mStatisticsKey;
-    }
-
     public abstract boolean isNeedRemove();
-
-    public boolean isHide() {
-        return mIsHide;
-    }
-
-    public void setIsHide(boolean mIsHide) {
-        this.mIsHide = mIsHide;
-    }
 }

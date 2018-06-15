@@ -1,7 +1,9 @@
 package com.wali.live.watchsdk.channel.holder;
 
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -10,11 +12,13 @@ import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
+import com.wali.live.statistics.StatisticsWorker;
+import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.channel.helper.HolderHelper;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelViewModel;
 
 import static android.view.View.GONE;
-
 /**
  * Created by lan on 16/6/28.
  *
@@ -23,16 +27,21 @@ import static android.view.View.GONE;
  */
 public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
 
-    public final int HEAD_TYPE_LEFT = 2; // title样式 ,表示标题和箭头在左上角
-    public final int HEAD_TYPE_HEAD_ICON = 3; // title样式 ,header icon
-
+    public static int type = 0;
+    public final int HEAD_TYPE_ONE_LINE = 2; // title样式 ,左标题 右箭头 一行标题  ！！！默认样式
+    public final int HEAD_TYPE_ICON = 3; //第三种类型的title样式，带icon  广场分类标题样式
+    //    public final int HEAD_TYPE_HIGH = 4; //第4种类型的title样式，比较高
+    public final int HEAD_TYPE_ICON_AT_MORE = 5; // 右边更多标题的左边有一个小icon 可以动   不带副标题   现在我的关注在用
+    public final int HEAD_TYPE_NEW_TWO_LINE = 6; // 新的有主次标题的title   小时榜TOP10在用
     protected View mHeadArea;
-    protected BaseImageView mHeadIv;
+    protected View mTitleContainer;
     protected TextView mHeadTv;
     protected TextView mSubHeadTv;
     protected TextView mMoreTv;
     protected View mSplitLine;
     protected View mSplitArea;
+    protected BaseImageView mHeadIv;
+    protected BaseImageView mIcon; // 右测标题左边的 icon 可以动
 
     public HeadHolder(View itemView) {
         super(itemView);
@@ -56,10 +65,12 @@ public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
         }
 
         mHeadTv = $(R.id.head_tv);
-        mHeadIv = $(R.id.head_iv);
         mSubHeadTv = $(R.id.sub_head_tv);
         mMoreTv = $(R.id.more_tv);
+        mHeadIv = $(R.id.head_iv);
         mSplitLine = $(R.id.split_line);
+        mIcon = $(R.id.icon);
+        mTitleContainer = $(R.id.ll_title_container);
         if (mSplitLine != null) {
             mSplitLine.setVisibility(View.GONE);
         }
@@ -80,114 +91,115 @@ public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
 
     private void bindTitleView() {
         // 处理分隔区域，现在由服务器下发分割线，所以不再需要特殊处理
+//        bindSplitView();
+
         // 如果有标题，显示标题；有更多，显示更多
         if (mHeadArea == null) {
             return;
         }
-
+        mIcon.setVisibility(View.GONE);
         if (mViewModel.hasHead()) {
             mHeadArea.setVisibility(View.VISIBLE);
             mHeadTv.setText(mViewModel.getHead());
-            mHeadIv.setVisibility(View.GONE);
+            mSubHeadTv.setText(mViewModel.getSubHead());
 
-            if (mViewModel.hasSubHead()) {
-                mSubHeadTv.setVisibility(View.VISIBLE);
-                mSubHeadTv.setText(mViewModel.getSubHead());
-            } else {
-                mSubHeadTv.setVisibility(View.GONE);
-            }
-
+            MyLog.d(TAG, " bindTitleView type: " + mViewModel.getHeadType() + " title " + mViewModel.getHead());
             if (!TextUtils.isEmpty(mViewModel.getHeadUri())) {
-                if (mViewModel.hasSubHead()) {
-                    itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            jumpMore();
-                        }
-                    });
-                    mMoreTv.setVisibility(View.GONE);
-                    mHeadTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.home_more, 0);
-                    mHeadTv.setCompoundDrawablePadding(DisplayUtils.dip2px(3.33f));
-                } else if (mViewModel.getHeadType() == HEAD_TYPE_LEFT) {
-                    mMoreTv.setVisibility(View.GONE);
-                    mHeadTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.more_right_arrow_bg, 0);
-                    mHeadTv.setCompoundDrawablePadding(DisplayUtils.dip2px(1.33f));
-                    mHeadTv.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            jumpMore();
-                        }
-                    });
-                    itemView.setOnClickListener(null);
-                } else {
-                    mHeadTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                    itemView.setOnClickListener(null);
-                    if (!TextUtils.isEmpty(mViewModel.getHeadMoreText())) {
-                        mMoreTv.setText(mViewModel.getHeadMoreText());
+                mHeadArea.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        jumpMore();
                     }
-                    mMoreTv.setVisibility(View.VISIBLE);
-                    mMoreTv.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            jumpMore();
-                        }
-                    });
-                }
+                });
+
+                mMoreTv.setVisibility(View.VISIBLE);
+                mMoreTv.setText(mViewModel.getHeaderViewAllText());
+                mMoreTv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        jumpMore();
+                    }
+                });
+
             } else {
                 mMoreTv.setVisibility(View.GONE);
                 itemView.setOnClickListener(null);
-                mHeadTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }
-            // 调整位置
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mHeadTv.getLayoutParams();
-            if (mViewModel.hasSubHead()) {
-                lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 0);
-                lp.addRule(RelativeLayout.CENTER_VERTICAL, 0);
-                lp.leftMargin = 0;
 
-                lp.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-                lp.topMargin = DisplayUtils.dip2px(15f);
-
-                mHeadArea.getLayoutParams().height = DisplayUtils.dip2px(66.67f);
-            } else if (mViewModel.getHeadType() == HEAD_TYPE_HEAD_ICON && !TextUtils.isEmpty(mViewModel.getHeadIconUrl())) {
-                //调整位置
-                lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 0);
-
-                RelativeLayout.LayoutParams lp1 = (RelativeLayout.LayoutParams) mHeadIv.getLayoutParams();
-                lp1.leftMargin = DisplayUtils.dip2px(6.66f);
-                lp1.width = DisplayUtils.dip2px(22);
-                lp1.height = DisplayUtils.dip2px(22);
-                FrescoWorker.loadImage(mHeadIv,
-                        ImageFactory.newHttpImage(mViewModel.getHeadIconUrl())
-                                .build());
-                mHeadIv.setLayoutParams(lp1);
-                mHeadIv.setVisibility(View.VISIBLE);
-
-                lp.addRule(RelativeLayout.RIGHT_OF, R.id.head_iv);
-                lp.leftMargin = DisplayUtils.dip2px(3.33f);
-                mHeadTv.setLayoutParams(lp);
-
-                mHeadArea.getLayoutParams().height = DisplayUtils.dip2px(43.33f);
-            } else {
-                lp.addRule(RelativeLayout.CENTER_HORIZONTAL, 0);
-                lp.topMargin = 0;
-
-                lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-                lp.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-                lp.leftMargin = DisplayUtils.dip2px(10f);
-
-                mHeadArea.getLayoutParams().height = DisplayUtils.dip2px(43.33f);
-            }
+            resetHeaderLayout(mViewModel.getHeadType());
         } else {
             mHeadArea.setVisibility(View.GONE);
         }
     }
 
+    private void resetHeaderLayout(int headerType) {
+        LinearLayout.LayoutParams subHeadTvParams = (LinearLayout.LayoutParams) mSubHeadTv.getLayoutParams();
+        RelativeLayout.LayoutParams titleContainerParams = (RelativeLayout.LayoutParams) mTitleContainer.getLayoutParams();
+        TextPaint tp = mHeadTv.getPaint();
+        switch (headerType) {
+            case HEAD_TYPE_ICON:
+                mHeadArea.getLayoutParams().height = DisplayUtils.dip2px(72.67f);
+                mHeadIv.setVisibility(View.VISIBLE);
+                mSubHeadTv.setVisibility(View.VISIBLE);
+                mHeadTv.setTextSize(15.0f);
+                mIcon.setVisibility(View.GONE);
+                titleContainerParams.leftMargin = DisplayUtils.dip2px(6.67f);
+                subHeadTvParams.topMargin = DisplayUtils.dip2px(4.67f);
+                tp.setFakeBoldText(false);
+                AvatarUtils.loadCoverByUrlRoundCorner(mHeadIv, mViewModel.getHeadIconUri(), 1080, mHeadIv.getWidth(), mHeadIv.getHeight());
+
+                break;
+            case HEAD_TYPE_ICON_AT_MORE:
+                mHeadArea.getLayoutParams().height = DisplayUtils.dip2px(60.0f);
+                mHeadIv.setVisibility(View.GONE);
+                mSubHeadTv.setVisibility(View.GONE);
+                mHeadTv.setTextSize(18.67f);
+                mIcon.setVisibility(View.VISIBLE);
+                FrescoWorker.frescoShowWebp(mIcon, R.raw.channel_head_icon, DisplayUtils.dip2px(13.3f), DisplayUtils.dip2px(13.3f));
+                titleContainerParams.leftMargin = DisplayUtils.dip2px(13.33f);
+                subHeadTvParams.topMargin = DisplayUtils.dip2px(0.0f);
+                tp.setFakeBoldText(true);
+
+                break;
+            case HEAD_TYPE_NEW_TWO_LINE:
+                mHeadArea.getLayoutParams().height = DisplayUtils.dip2px(72.67f);
+                mHeadIv.setVisibility(View.GONE);
+                mSubHeadTv.setVisibility(View.VISIBLE);
+                mHeadTv.setTextSize(18.67f);
+                mIcon.setVisibility(View.GONE);
+                titleContainerParams.leftMargin = DisplayUtils.dip2px(13.33f);
+                subHeadTvParams.topMargin = DisplayUtils.dip2px(2.0f);
+                tp.setFakeBoldText(true);
+                break;
+            default:
+                mHeadArea.getLayoutParams().height = DisplayUtils.dip2px(60f);
+                mHeadTv.setTextSize(18.67f);
+                titleContainerParams.leftMargin = DisplayUtils.dip2px(10f);
+                tp.setFakeBoldText(true);
+                mHeadIv.setVisibility(View.GONE);
+                mSubHeadTv.setVisibility(View.GONE);
+                mIcon.setVisibility(View.GONE);
+                break;
+        }
+    }
+
+    private void bindSplitView() {
+        // 如果有标题或是组内第一个，同时不是列表第一个的话，就显示分割区域
+        if ((mViewModel.hasHead() || mViewModel.isFirst()) && mPosition != 0 && !(mViewModel.isFirst() && mPosition == 1)) {
+            mSplitArea.setVisibility(View.VISIBLE);
+        } else {
+            mSplitArea.setVisibility(View.GONE);
+        }
+    }
+
     private void jumpMore() {
-        if (!TextUtils.isEmpty(mViewModel.getHeadUri())) {
+        if (mJumpListener != null) {
             mJumpListener.jumpScheme(mViewModel.getHeadUri());
         } else {
-            MyLog.e(TAG, "HeadHolder jumpMore uri is empty");
+         //   HolderHelper.jumpScheme(itemView.getContext(), mViewModel.getHeadUri());
+        }
+        if (!TextUtils.isEmpty(mViewModel.getStatisticsKey())) {
+            StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, mViewModel.getStatisticsKey(), 1);
         }
     }
 }

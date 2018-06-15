@@ -350,6 +350,26 @@ public class AvatarUtils {
         FrescoWorker.loadImage(draweeView, avatarImg);
     }
 
+
+    public static void loadCoverByUrlRoundCorner(final SimpleDraweeView draweeView, final String url, int roundRadius, int width, int heigh) {
+        BaseImage avatarImg;
+        if (TextUtils.isEmpty(url)) {
+            avatarImg = ImageFactory.newResImage(R.drawable.avatar_default).build();
+        } else {
+            avatarImg = ImageFactory.newHttpImage(url).setWidth(width).setHeight(heigh)
+                    .setCornerRadius(roundRadius)
+                    .setFailureDrawable(R.drawable.avatar_default > 0 ? GlobalData.app().getResources().getDrawable(
+                            R.drawable.avatar_default) : null)
+                    .setFailureScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                    .build();
+        }
+        avatarImg.setLoadingDrawable(R.drawable.avatar_default > 0 ? GlobalData.app().getResources().getDrawable(
+                R.drawable.avatar_default) : null);
+        avatarImg.setLoadingScaleType(ScalingUtils.ScaleType.CENTER_CROP);
+        FrescoWorker.loadImage(draweeView, avatarImg);
+    }
+
+
     public static void loadAvatarByUrl(final SimpleDraweeView draweeView, final String url, boolean isCircle) {
         loadAvatarByUrl(draweeView, url, isCircle, false, R.drawable.avatar_default_b);
     }

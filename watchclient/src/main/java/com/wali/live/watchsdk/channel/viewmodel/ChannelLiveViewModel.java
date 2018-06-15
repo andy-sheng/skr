@@ -69,8 +69,8 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         mHeadType = protoItem.getHeaderUiType();
         mSubHead = protoItem.getSubHeaderName();
 
-        mHeadIconUrl = protoItem.getHeaderIcon();
-        mHeadMoreText = protoItem.getHeaderViewAllText();
+        mHeadIconUri = protoItem.getHeaderIcon();
+        mHeaderViewAllText = protoItem.getHeaderViewAllText();
 
         parseLive(protoItem.getItemsList());
     }
