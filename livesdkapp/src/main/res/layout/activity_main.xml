@@ -115,7 +115,9 @@
             android:text="神龙宝箱"
             android:textColor="@color/color_black_trans_80"
             android:textSize="@dimen/text_size_36"/>
+
     </LinearLayout>
+
 
     <TextView
         android:id="@+id/channel_btn"
@@ -170,6 +172,19 @@
         android:background="@drawable/corners_bg_e5e5e5_30px"
         android:gravity="center"
         android:singleLine="true"
+        android:textColor="@color/color_black_trans_80"
+        android:textSize="@dimen/text_size_36"/>
+    <TextView
+        android:id="@+id/channel_info_btn"
+        android:layout_width="match_parent"
+        android:layout_height="40.67dip"
+        android:layout_above="@+id/live_input_tv"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/corners_bg_e5e5e5_30px"
+        android:gravity="center"
+        android:text="渠道号"
         android:textColor="@color/color_black_trans_80"
         android:textSize="@dimen/text_size_36"/>
 </RelativeLayout>

@@ -8,3 +8,4 @@ else
 fi
 
 
+adb shell am start -n com.mi.liveassistant/com.wali.live.MainActivity

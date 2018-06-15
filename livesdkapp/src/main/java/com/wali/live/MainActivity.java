@@ -20,6 +20,7 @@ import com.base.activity.BaseSdkActivity;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
+import com.base.utils.channel.ReleaseChannelUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.milink.event.MiLinkEvent;
@@ -271,6 +272,13 @@ public class MainActivity extends BaseSdkActivity implements IChannelView, IChan
                 ChannelListSdkActivity.openActivity(MainActivity.this);
             }
         });
+        $(R.id.channel_info_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtils.showToast("渠道号:"+ ReleaseChannelUtils.getReleaseChannel());
+            }
+        });
+
     }
 
     private void initPresenters() {
