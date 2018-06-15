@@ -126,9 +126,7 @@ public class ChannelPageHeaderHolder extends FixedHolder {
                 }
             });
         }
-        if (viewModel.getImageWidth() > 0 && viewModel.getImageHeight() > 0) {
-            mBgRatio = viewModel.getImageHeight() / viewModel.getImageWidth();
-        }
+        mBgRatio = viewModel.getRatio();
         FrescoWorker.loadImage(mHeaderIv, ImageFactory.newHttpImage(viewModel.getCoverUrl())
                 .setCallBack(mFrescoCallBack)
                 .setWidth(DisplayUtils.getScreenWidth())
