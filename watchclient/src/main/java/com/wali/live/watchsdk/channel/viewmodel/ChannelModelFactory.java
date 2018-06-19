@@ -41,6 +41,8 @@ public class ChannelModelFactory {
                 return null;
             } else if (uiType == 39) {
                 return new ChannelPageHeaderViewModel(protoItem);
+            } else if(uiType == 45){
+                return new ChannelLiveGroupViewModel(protoItem);
             } else {
                 MyLog.d(TAG, "getChannelViewModel uiType  = " + uiType + " is illegal");
                 return null;

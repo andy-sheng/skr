@@ -274,6 +274,12 @@ public abstract class RepeatHolder extends FixedHolder {
                     bindTVItem((TVItem) item, i);
                 } else if (item instanceof SimpleItem) {
                     bindSimpleItem((SimpleItem) item, i);
+                } else if (item instanceof ChannelLiveViewModel.LiveGroupItem) {
+                    bindLiveGroupItem((ChannelLiveViewModel.LiveGroupItem) item, i);
+                } else if (item instanceof ChannelLiveViewModel.RadioGroupItem) {
+                    bindRadioGroupItem((ChannelLiveViewModel.RadioGroupItem) item, i);
+                } else if (item instanceof ChannelLiveViewModel.ImageItem) {
+                    bindImageItem((ChannelLiveViewModel.ImageItem)item, i);
                 }
                 exposureItem(item);
             }
@@ -341,6 +347,15 @@ public abstract class RepeatHolder extends FixedHolder {
      * @param index
      */
     protected void bindLiveGroupItem(ChannelLiveViewModel.LiveGroupItem item, int index) {
+
+    }
+
+    /**
+     * 电台组
+     * @param item
+     * @param index
+     */
+    protected void bindRadioGroupItem(ChannelLiveViewModel.RadioGroupItem item, int index) {
 
     }
 

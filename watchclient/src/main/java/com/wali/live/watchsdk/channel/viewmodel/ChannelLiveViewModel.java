@@ -96,6 +96,12 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
                 mItemDatas.add(new TVItem(protoItem));
             } else if (protoItem.getType() == BaseItem.ITEM_TYPE_SIMPLE) {
                 mItemDatas.add(new SimpleItem(protoItem));
+            } else if(protoItem.getType() == BaseItem.ITEM_TYPE_IMAGE){
+                mItemDatas.add(new ImageItem(protoItem));
+            } else if(protoItem.getType() == BaseItem.ITEM_TYPE_LIVE_GROUP){
+                mItemDatas.add(new LiveGroupItem(protoItem));
+            } else if(protoItem.getType() == BaseItem.ITEM_TYPE_RADIO_GROUP){
+                mItemDatas.add(new RadioGroupItem(protoItem));
             } else {
                 throw new Exception("ChannelLiveViewModel parseLive unknown type=" + protoItem.getType());
             }
