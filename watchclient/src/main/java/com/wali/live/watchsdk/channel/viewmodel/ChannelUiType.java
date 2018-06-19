@@ -97,6 +97,7 @@ public class ChannelUiType {
                     TYPE_TWO_LONG_COVER,
                     TYPE_PAGE_HEADER,
                     TYPE_PLACEHOLDER,
+                    TYPE_LIVE_GROUP,
                     TYPE_LIVE_OR_LIVE_GROUP
             ));
 }

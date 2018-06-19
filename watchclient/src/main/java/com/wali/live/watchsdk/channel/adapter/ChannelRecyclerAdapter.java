@@ -44,6 +44,7 @@ import com.wali.live.watchsdk.channel.holder.ThreePicTwoLineHolder;
 import com.wali.live.watchsdk.channel.holder.TopicGridHolder;
 import com.wali.live.watchsdk.channel.holder.TwoCardHolder;
 import com.wali.live.watchsdk.channel.holder.TwoLayerHolder;
+import com.wali.live.watchsdk.channel.holder.TwoLiveGroupCardHolder;
 import com.wali.live.watchsdk.channel.holder.TwoLongCoverHolder;
 import com.wali.live.watchsdk.channel.holder.TwoWideCardHolder;
 import com.wali.live.watchsdk.channel.holder.VariableLengthTagHolder;
@@ -265,6 +266,10 @@ public class ChannelRecyclerAdapter extends EmptyRecyclerAdapter {
             case ChannelUiType.TYPE_PAGE_HEADER:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_page_header_item, parent, false);
                 holder = new ChannelPageHeaderHolder(view);
+                break;
+            case ChannelUiType.TYPE_LIVE_GROUP:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_live_group_two_card_item, parent, false);
+                holder = new TwoLiveGroupCardHolder(view);
                 break;
             case ChannelUiType.TYPE_LIVE_OR_LIVE_GROUP:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_two_card_item, parent, false);
