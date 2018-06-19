@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk.channel.holder;
 
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -81,20 +82,28 @@ public abstract class RepeatHolder extends FixedHolder {
     protected void initContentView() {
         initContentViewId();
 
+        newContentView();
+
+        for (int i = 0; i < mViewSize; i++) {
+            mParentViews[i] = $(mParentIds[i]);
+            bindSingleCardView(i);
+        }
+    }
+
+    protected void newContentView() {
         mParentViews = new ViewGroup[mViewSize];
         mImageViews = new BaseImageView[mViewSize];
         mTextViews = new TextView[mViewSize];
         mBadgeIvs = new ImageView[mViewSize];
+    }
 
-        for (int i = 0; i < mViewSize; i++) {
-            mParentViews[i] = $(mParentIds[i]);
-            mImageViews[i] = $(mParentViews[i], mIvIds[i]);
+    protected void bindSingleCardView(int i) {
+        mImageViews[i] = $(mParentViews[i], mIvIds[i]);
+        if (mTvIds != null) {
             mTextViews[i] = $(mParentViews[i], mTvIds[i]);
         }
         if (mBadgeIvIds != null) {
-            for (int i = 0; i < mViewSize; i++) {
-                mBadgeIvs[i] = $(mParentViews[i], mBadgeIvIds[i]);
-            }
+            mBadgeIvs[i] = $(mParentViews[i], mBadgeIvIds[i]);
         }
     }
 
@@ -322,6 +331,19 @@ public abstract class RepeatHolder extends FixedHolder {
     protected void bindSimpleItem(SimpleItem item, int index) {
     }
 
+    protected void bindImageItem(ChannelLiveViewModel.ImageItem item, int index) {
+
+    }
+
+    /**直播间组
+     *
+     * @param item
+     * @param index
+     */
+    protected void bindLiveGroupItem(ChannelLiveViewModel.LiveGroupItem item, int index) {
+
+    }
+
     @Override
     protected void bindNavigateModel(ChannelNavigateViewModel viewModel) {
         List<NavigateItem> itemDatas = viewModel.getItemDatas();
@@ -376,28 +398,22 @@ public abstract class RepeatHolder extends FixedHolder {
         }
         String text = item.getTopLeft().getText();
         if (!TextUtils.isEmpty(text)) {
-            int id = item.getTopLeft().getBgID() - 1;
-            if (id < 0 || id > 5) {
-                MyLog.w(TAG, " bindLeftLabel unknown img id : " + item.getTopLeft().getBgID() + "name:" + item.getNameText());
-                id = 0;
-            }
-            int leftPadding = 0;
-            int rightPadding = 0;
-            mLeftLabelTvs[i].setGravity(Gravity.CENTER);
-            if (id >= 3) {
-                mLeftLabelTvs[i].setGravity(Gravity.CENTER | Gravity.RIGHT);
-                rightPadding = DisplayUtils.dip2px(6.67f);
-            } else if (id == 2) {
-                leftPadding = DisplayUtils.dip2px(6.67f);
-                rightPadding = DisplayUtils.dip2px(8.33f);
-            }
-            mLeftLabelTvs[i].setPadding(leftPadding, 0, rightPadding, 0);
-            mLeftLabelTvs[i].setBackground(itemView.getContext().getResources().getDrawable(ChannelLiveViewModel.RichText.LEFT_LABEL_BG[id]));
-            mLeftLabelTvs[i].setTextColor(Color.WHITE);
-            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) mLeftLabelTvs[i].getLayoutParams();
-            layoutParams.leftMargin = id != 2 ? DisplayUtils.dip2px(6.67f) : 0;
-            mLeftLabelTvs[i].setLayoutParams(layoutParams);
+            GradientDrawable bgDrawable = item.getTopLeft().getBgDrawable();
+            //leftTop, rightTop, rightBottom, leftBottom of (X,Y)
+            int rightTop = mLeftLabelImageHeight >> 1;
+            int rightBottom = mLeftLabelImageHeight >> 1;
+            int leftTop = mImageCornerRadius << 1;
+            float[] radius = {0, 0, rightTop, rightTop, rightBottom, rightBottom, 0, 0 };
+            bgDrawable.setCornerRadii(radius);
+            mLeftLabelTvs[i].setBackground(bgDrawable);
 
+            int leftPadding = DisplayUtils.dip2px(7f);
+            int rightPadding = DisplayUtils.dip2px(7f);
+            mLeftLabelTvs[i].setPadding(leftPadding, 0, rightPadding, 0);
+
+            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) mLeftLabelTvs[i].getLayoutParams();
+            layoutParams.leftMargin = 0;
+            mLeftLabelTvs[i].setLayoutParams(layoutParams);
         }
         mLeftLabelTvs[i].setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.base.image.fresco.BaseImageView
+        android:padding="@dimen/margin_4"
+        android:background="@drawable/shape_circle_white"
+        android:id="@+id/group_mem_item_icon1"
+        android:layout_width="@dimen/view_dimen_88"
+        android:layout_height="@dimen/view_dimen_88" />
+
+    <com.base.image.fresco.BaseImageView
+        android:padding="@dimen/margin_4"
+        android:background="@drawable/shape_circle_white"
+        android:id="@+id/group_mem_item_icon2"
+        android:layout_width="@dimen/view_dimen_88"
+        android:layout_height="@dimen/view_dimen_88"
+        android:layout_marginLeft="@dimen/margin_negative_30" />
+
+    <com.base.image.fresco.BaseImageView
+        android:padding="@dimen/margin_4"
+        android:background="@drawable/shape_circle_white"
+        android:id="@+id/group_mem_item_icon3"
+        android:layout_width="@dimen/view_dimen_88"
+        android:layout_height="@dimen/view_dimen_88"
+        android:layout_marginLeft="@dimen/margin_negative_30" />
+
+    <TextView
+        android:background="@drawable/shape_circle"
+        android:id="@+id/tv_live_group_num"
+        android:layout_marginLeft="@dimen/margin_negative_84"
+        android:layout_gravity="center_vertical"
+        android:text="+15"
+        android:gravity="center"
+        android:layout_width="@dimen/view_dimen_80"
+        android:layout_height="@dimen/view_dimen_80"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_34"
+        />
+</LinearLayout>

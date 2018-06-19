@@ -775,4 +775,8 @@
 
     <string name="empty_page_tip">页面暂时为空</string>
 
+    <string name="channel_default_text_line1">%s\'s session</string>
+    <string name="km">%skm</string>
+    <string name="m">%sm</string>
+
 </resources>

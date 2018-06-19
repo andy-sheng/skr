@@ -105,4 +105,23 @@
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
     </style>
+
+    <style name="michannel_dynamic_label">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:paddingLeft">@dimen/margin_21</item>
+        <item name="android:paddingRight">@dimen/margin_21</item>
+        <item name="android:paddingTop">@dimen/margin_9</item>
+        <item name="android:paddingBottom">@dimen/margin_10</item>
+        <item name="android:textSize">30dip</item>
+    </style>
+
+    <style name="michannel_count_bottom">
+        <item name="android:layout_marginRight">@dimen/view_dimen_24</item>
+        <item name="android:layout_marginBottom">@dimen/view_dimen_18</item>
+        <item name="android:textColor">@color/color_white</item>
+        <item name="android:textSize">@dimen/text_size_39</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxWidth">@dimen/view_dimen_240</item>
+        <item name="android:singleLine">true</item>
+    </style>
 </resources>
