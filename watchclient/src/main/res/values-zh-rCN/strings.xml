@@ -634,4 +634,6 @@
     <string name="lable_month">月</string>
     <string name="logining">登录中...</string>
     <string name="install_weixin">未安装微信客户端，请先下载安装</string>
+
+    <string name="channel_default_text_line1">%s的直播间</string>
 </resources>

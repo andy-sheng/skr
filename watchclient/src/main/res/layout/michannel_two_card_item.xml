@@ -36,14 +36,14 @@
 
         <include
             android:id="@+id/single_card_1"
-            layout="@layout/michannel_single_card_new_item"
+            layout="@layout/michannel_single_card_item_in2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"/>
 
         <include
             android:id="@+id/single_card_2"
-            layout="@layout/michannel_single_card_new_item"
+            layout="@layout/michannel_single_card_item_in2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/channel_center_margin_two"

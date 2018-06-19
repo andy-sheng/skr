@@ -54,6 +54,9 @@ public class ChannelUiType {
 
     public static final int TYPE_PLACEHOLDER = 42;
 
+    public static final int TYPE_LIVE_GROUP = 45;       // 45.直播组
+    public static final int TYPE_LIVE_OR_LIVE_GROUP = 48; //48.一行两列，直播间和直播间组的随意组合，四种情况
+
     public static final HashSet<Integer> ALL_CHANNEL_UI_TYPE =
             new HashSet<>(Arrays.asList(
                     TYPE_MAX_FIVE_CIRCLE,
@@ -93,6 +96,7 @@ public class ChannelUiType {
                     TYPE_VARIABLE_LENGTH_TAG,
                     TYPE_TWO_LONG_COVER,
                     TYPE_PAGE_HEADER,
-                    TYPE_PLACEHOLDER
+                    TYPE_PLACEHOLDER,
+                    TYPE_LIVE_OR_LIVE_GROUP
             ));
 }

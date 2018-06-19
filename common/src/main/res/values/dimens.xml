@@ -380,7 +380,9 @@
     <dimen name="margin_negative_2">-0.67dip</dimen>
     <dimen name="margin_negative_4">-1.33dip</dimen>
     <dimen name="margin_negative_10">-3.33dip</dimen>
+    <dimen name="margin_negative_30">-10dip</dimen>
     <dimen name="margin_negative_40">-13.33dip</dimen>
+    <dimen name="margin_negative_84">-28dip</dimen>
     <dimen name="margin_negative_6">-2dip</dimen>
     <dimen name="margin_12">4dip</dimen>
     <dimen name="margin_13">4.33dip</dimen>

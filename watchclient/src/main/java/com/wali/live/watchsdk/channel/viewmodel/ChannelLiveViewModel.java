@@ -1,5 +1,7 @@
 package com.wali.live.watchsdk.channel.viewmodel;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.text.TextUtils;
 
 import com.base.global.GlobalData;
@@ -21,6 +23,7 @@ import com.wali.live.watchsdk.channel.helper.ModelHelper;
 import com.wali.live.watchsdk.channel.util.BannerManger;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,6 +148,9 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         public static final int ITEM_TYPE_TV = 5;
         public static final int ITEM_TYPE_SIMPLE = 6;
         public static final int ITEM_TYPE_BUTTON = 7; // 小视频创建button
+        public static final int ITEM_TYPE_IMAGE = 8;   //混排图文
+        public static final int ITEM_TYPE_LIVE_GROUP = 9;   //直播间组
+        public static final int ITEM_TYPE_RADIO_GROUP = 10; //电台组
 
         // 共有的
         protected int mType;
@@ -162,6 +168,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
 
         protected User mUser;
         protected boolean mIsFocused;
+        protected int mDownTextType;//1.距离；2.位置；3.人数(字段未设置，默认显示优先级为 距离>位置>人数)
 
         //图片或者小视频的宽高度
         protected int mWidth;
@@ -190,6 +197,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
 
             mWidth = protoItem.getWidth();
             mHeight = protoItem.getHeight();
+            mDownTextType = protoItem.getDowntextType();
 
             if (protoItem.hasWidget()) {
                 mWidgetInfo = protoItem.getWidget();
@@ -285,6 +293,10 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             return "";
         }
 
+        public int getDownTextType() {
+            return mDownTextType;
+        }
+
         public BannerManger.BannerItem toBannerItem() {
             if (mBannerItem == null) {
                 mBannerItem = new BannerManger.BannerItem();
@@ -307,6 +319,12 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
                 return TVItem.newTestInstance();
             } else if (type == BaseItem.ITEM_TYPE_SIMPLE) {
                 return SimpleItem.newTestInstance();
+            }else if(type == BaseItem.ITEM_TYPE_IMAGE) {
+                return ImageItem.newTestInstance();
+            } else if (type == BaseItem.ITEM_TYPE_LIVE_GROUP) {
+                return LiveGroupItem.newTestInstance();
+            } else if(type == BaseItem.ITEM_TYPE_RADIO_GROUP){
+                return RadioGroupItem.newTestInstance();
             }
             return null;
         }
@@ -428,6 +446,49 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         public int getDistance() {
             return mDistance;
         }
+        public String getDistanceString() {
+            if (mDistance >= 1000) {
+                DecimalFormat df = new DecimalFormat("#.00");
+                String s = df.format(mDistance / 1000.0f);
+                return GlobalData.app().getString(R.string.km, s);
+            } else if (mDistance > 0) {
+                String s = "" + mDistance;
+                return GlobalData.app().getString(R.string.m, s);
+            } else {
+                return "Unknown";
+            }
+        }
+
+        public String getDistanceOrCount(){
+            if (mDistance > 0) {
+                return getDistanceString();
+            } else {
+                return getCountString();
+            }
+        }
+
+        private String getDistanceOrLocationOrCountInternal() {
+            if (mDistance > 0) {
+                return getDistanceString();
+            } else if (!TextUtils.isEmpty(getLocation())){
+                return getLocation();
+            } else {
+                return getCountString();
+            }
+        }
+
+        public String getDistanceOrLocationOrCount() {
+            switch (mDownTextType) {
+                case 1:
+                    return getDistanceString();
+                case 2:
+                    return getLocation();
+                case 3:
+                    return getCountString();
+                default:
+                    return getDistanceOrLocationOrCountInternal();
+            }
+        }
     }
 
     public static class LiveItem extends BaseLiveItem {
@@ -446,6 +507,11 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
 
         private int mListPosition = -1;  //list的位置，不是服务器的数据
         private RoomInfo mRoomInfo;
+
+        private boolean mIsPK;
+        private boolean mIsMic;
+        private int mMicType; //0:主播与观众连麦 1：主播与主播连麦
+        private boolean mIsSoundEnable = true; // 是否开启了音量
 
         private LiveItem() {
             super();
@@ -483,6 +549,11 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
 
             if (protoItem.hasShop()) {
                 parseShop(protoItem.getShop());
+            }
+            mIsPK = protoItem.getPk().getIsPk();
+            mIsMic = protoItem.hasMic();
+            if(mIsMic) {
+                mMicType = protoItem.getMic().getMicType();
             }
         }
 
@@ -539,6 +610,26 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
 
         public static LiveItem newTestInstance() {
             return new LiveItem();
+        }
+
+        public boolean isPK() {
+            return mIsPK;
+        }
+
+        public boolean isMic() {
+            return mIsMic;
+        }
+
+        public int getMicType() {
+            return mMicType;
+        }
+
+        public void setIsSoundEnable(boolean mIsSoundEnable) {
+            this.mIsSoundEnable = mIsSoundEnable;
+        }
+
+        public boolean isSoundEnable() {
+            return mIsSoundEnable;
         }
     }
 
@@ -827,6 +918,230 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         }
     }
 
+    public static class ImageItem extends BaseItem{
+
+        private String name;
+        private String iconUrl;
+
+        private ImageItem(){
+            super();
+        }
+
+        public ImageItem(LiveOrReplayItemInfo protoItem) throws Exception {
+            super(protoItem);
+            parse(CommonChannelProto.LiveOrReplayImageData.parseFrom(protoItem.getItems()));
+        }
+
+        public void parse(CommonChannelProto.LiveOrReplayImageData protoItem) {
+            name=protoItem.getName();
+            iconUrl=protoItem.getIconUrl();
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getIconUrl() {
+            return iconUrl;
+        }
+
+        @Override
+        public String getImageUrl() {
+            return getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE);
+        }
+
+        @Override
+        public String getImageUrl(int sizeType) {
+            if (!TextUtils.isEmpty(mImgUrl)) {
+                return mImgUrl + AvatarUtils.getAvatarSizeAppend(sizeType);
+            } else if(mUser!=null){
+                return AvatarUtils.getAvatarUrlByUidTsAndFormat(mUser.getUid(), sizeType, mUser.getAvatar(), false);
+            }
+            return "";
+        }
+
+        @Override
+        public String getNameText() {
+            if (!TextUtils.isEmpty(mLineOneText)) {
+                return mLineOneText;
+            } else if (mUser != null) {
+                return mUser.getNickname();
+            }
+            return null;
+        }
+
+        @Override
+        public String getDisplayText() {
+            if (!TextUtils.isEmpty(mLineTwoText)) {
+                return mLineTwoText;
+            } else if (mUser != null) {
+                return mUser.getSign();
+            }
+            return null;
+        }
+
+        public static ImageItem newTestInstance() {
+            return new ImageItem();
+        }
+    }
+
+    /**
+     * 直播间组
+     */
+    public static class LiveGroupItem extends BaseItem {
+
+        private String frameUrl;
+
+        private int groupCnt;
+
+        private List<String> liveCovers;
+
+        public LiveGroupItem() {
+        }
+
+        public LiveGroupItem(LiveOrReplayItemInfo protoItem) throws Exception {
+            super(protoItem);
+            parse(CommonChannelProto.LiveGroupExtData.parseFrom(protoItem.getItems()));
+        }
+
+        public void parse(CommonChannelProto.LiveGroupExtData groupData) {
+            frameUrl = groupData.getFrameUrl();
+            int liveCoverCount = groupData.getMemberCount();
+            if (liveCoverCount > 0) {
+                liveCovers = new ArrayList<>();
+                for (int i = 0; i < liveCoverCount; i++) {
+                    liveCovers.add(groupData.getMember(i).getLiveCover());
+                }
+            }
+            groupCnt = groupData.getGroupCnt();
+        }
+
+        public String getFrameUrl() {
+            return frameUrl;
+        }
+
+        public void setFrameUrl(String frameUrl) {
+            this.frameUrl = frameUrl;
+        }
+
+        public int getGroupCnt() {
+            return groupCnt;
+        }
+
+        public void setGroupCnt(int groupCnt) {
+            this.groupCnt = groupCnt;
+        }
+
+        public List<String> getLiveCovers() {
+            return liveCovers;
+        }
+
+        public void setLiveCovers(List<String> liveCovers) {
+            this.liveCovers = liveCovers;
+        }
+
+        @Override
+        public String getImageUrl() {
+            return getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE);
+        }
+
+        @Override
+        public String getImageUrl(int sizeType) {
+            if (!TextUtils.isEmpty(mImgUrl)) {
+                return mImgUrl.contains(AvatarUtils.IMG_URL_POSTFIX) ? mImgUrl : mImgUrl + AvatarUtils.getAvatarSizeAppend(sizeType);
+            } else if(mUser!=null){
+                return AvatarUtils.getAvatarUrlByUidTsAndFormat(mUser.getUid(), sizeType, mUser.getAvatar(), false);
+            }
+            return "";
+        }
+
+        @Override
+        public String getNameText() {
+            if (!TextUtils.isEmpty(mLineOneText)) {
+                return mLineOneText;
+            } else if(mUser!=null){
+                return String.format(GlobalData.app().getResources().getString(R.string.channel_default_text_line1), mUser.getNickname());
+            }else{
+                return "";
+            }
+        }
+
+        @Override
+        public String getDisplayText() {
+            return mLineTwoText;
+        }
+
+        public static LiveGroupItem newTestInstance() {
+            return new LiveGroupItem();
+        }
+    }
+
+    public static class RadioGroupItem extends BaseItem{
+
+        private List<CommonChannelProto.GroupMemberData> memberList;
+        private int groupCnt;
+
+        private RadioGroupItem(){
+            super();
+        }
+
+        public RadioGroupItem(LiveOrReplayItemInfo protoItem) throws Exception {
+            super(protoItem);
+            parse(CommonChannelProto.RadioGroupExtData.parseFrom(protoItem.getItems()));
+        }
+
+        public void parse(CommonChannelProto.RadioGroupExtData radioGroupExtData) {
+            memberList=radioGroupExtData.getMemberList();
+            groupCnt=radioGroupExtData.getGroupCnt();
+        }
+
+        public static RadioGroupItem newTestInstance() {
+            return new RadioGroupItem();
+        }
+
+        public List<CommonChannelProto.GroupMemberData> getMemberList() {
+            return memberList;
+        }
+
+        public int getGroupCnt() {
+            return groupCnt;
+        }
+
+        @Override
+        public String getImageUrl() {
+            return getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE);
+        }
+
+        @Override
+        public String getImageUrl(int sizeType) {
+            if (!TextUtils.isEmpty(mImgUrl)) {
+                return mImgUrl + AvatarUtils.getAvatarSizeAppend(sizeType);
+            } else {
+                return AvatarUtils.getAvatarUrlByUidTsAndFormat(mUser.getUid(), sizeType, mUser.getAvatar(), false);
+            }
+        }
+
+        @Override
+        public String getNameText() {
+            if (!TextUtils.isEmpty(mLineOneText)) {
+                return mLineOneText;
+            } else if (mUser != null) {
+                return mUser.getNickname();
+            }
+            return null;
+        }
+
+        @Override
+        public String getDisplayText() {
+            if (!TextUtils.isEmpty(mLineTwoText)) {
+                return mLineTwoText;
+            } else if (mUser != null) {
+                return mUser.getSign();
+            }
+            return null;
+        }
+    }
+
     public static String parseCountString(boolean live, int count) {
         String sCount = String.valueOf(count);
         if (count > 10000) {
@@ -855,12 +1170,21 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         private String jumpUrl;
         private int bgID;
         private String iconUrl;
+        private String bgColor;
+        private boolean hasBgColor;
+
+        private GradientDrawable bgDrawable;
 
         public RichText(CommonChannelProto.RichText richText) {
             text = richText.getText();
             jumpUrl = richText.getJumpSchemeUri();
             bgID = richText.getBgImageID();
             iconUrl = richText.getIconUrl();
+            if(richText.hasBgColor()){
+                hasBgColor = true;
+                bgColor = richText.getBgColor();
+                generateDrawable();
+            }
         }
 
         public RichText(String text, String jumpUrl, int bgID) {
@@ -903,6 +1227,33 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
 
         public void setIconUrl(String iconUrl) {
             this.iconUrl = iconUrl;
+        }
+
+        public void setBgColor(String bgColor) {
+            this.hasBgColor = true;
+            this.bgColor = bgColor;
+            generateDrawable();
+        }
+
+        public String getBgColor() {
+            return bgColor;
+        }
+
+        public boolean hasBgColor() {
+            return hasBgColor;
+        }
+
+        public GradientDrawable getBgDrawable() {
+            return bgDrawable;
+        }
+
+        private void generateDrawable() {
+            String[] rawColors = bgColor.trim().split("-");
+            int[] parsedColors = new int[rawColors.length];
+            for (int i = 0; i < rawColors.length; ++i) {
+                parsedColors[i] = Color.parseColor(rawColors[i]);
+            }
+            bgDrawable = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, parsedColors);
         }
     }
 }
