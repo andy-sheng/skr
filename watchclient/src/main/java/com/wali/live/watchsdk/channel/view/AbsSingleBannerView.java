@@ -23,6 +23,7 @@ public abstract class AbsSingleBannerView extends RelativeLayout {
 
     protected ChannelBannerViewModel.Banner mBanner;
     protected BannerClickListener mBannerClickListener;
+    protected int cornerRadius;
 
     protected <V extends View> V $(int resId) {
         return (V) findViewById(resId);
@@ -61,6 +62,10 @@ public abstract class AbsSingleBannerView extends RelativeLayout {
     public void setBanner(ChannelBannerViewModel.Banner banner) {
         mBanner = banner;
         bindBannerView();
+    }
+
+    public void setCornerRadius(int radius){
+        cornerRadius = radius;
     }
 
     protected abstract void bindBannerView();

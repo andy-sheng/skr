@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.channel.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -43,6 +44,7 @@ public class ChannelBannerView extends RelativeLayout {
     protected static final int BANNER_IMAGE_HEIGHT = 300;
 
     protected static int sBannerHeight;
+    protected int cornerRaidus;
 
     static {
         sBannerHeight = GlobalData.screenWidth * BANNER_IMAGE_HEIGHT / BANNER_IMAGE_WIDTH;
@@ -77,17 +79,20 @@ public class ChannelBannerView extends RelativeLayout {
     }
 
     public ChannelBannerView(Context context) {
-        super(context);
-        init(context);
+        this(context,null);
     }
 
     public ChannelBannerView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
+        this(context,attrs,0);
     }
 
     public ChannelBannerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        if (attrs != null) {
+            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ChannelBannerView);
+            cornerRaidus = (int)a.getDimension(R.styleable.ChannelBannerView_banner_corner_radius, 0f);
+            a.recycle();
+        }
         init(context);
     }
 
@@ -133,6 +138,7 @@ public class ChannelBannerView extends RelativeLayout {
                 AbsSingleBannerView view;
                 if (mCacheList.isEmpty()) {
                     view = newSingleBannerView();
+                    view.setCornerRadius(cornerRaidus);
                     view.setBannerClickListener(mBannerClickListener);
                 } else {
                     view = mCacheList.remove(0);

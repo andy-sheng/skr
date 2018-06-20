@@ -51,9 +51,10 @@ public class ChannelUiType {
 
     public static final int TYPE_TWO_LONG_COVER = 38;        // 38.一行两列，4比3比例的视频封面图
     public static final int TYPE_PAGE_HEADER = 39;           // 39.频道页头图
-
+    public static final int TYPE_BANNER_NO_SPACE = 40;      // 40.无四周空隙的banner
+    public static final int TYPE_RECOMMEND_CARD = 41;       // 41.一图一文，可滑动的推荐卡片样式
     public static final int TYPE_PLACEHOLDER = 42;
-
+    public static final int TYPE_TWO_CARD_WIDE = 43;       // 43.和样式7差不多一样, 只是高度矮一点
     public static final int TYPE_LIVE_GROUP = 45;       // 45.直播组
     public static final int TYPE_LIVE_OR_LIVE_GROUP = 48; //48.一行两列，直播间和直播间组的随意组合，四种情况
 
@@ -96,7 +97,10 @@ public class ChannelUiType {
                     TYPE_VARIABLE_LENGTH_TAG,
                     TYPE_TWO_LONG_COVER,
                     TYPE_PAGE_HEADER,
+                    TYPE_BANNER_NO_SPACE,
+                    TYPE_RECOMMEND_CARD,
                     TYPE_PLACEHOLDER,
+                    TYPE_TWO_CARD_WIDE,
                     TYPE_LIVE_GROUP,
                     TYPE_LIVE_OR_LIVE_GROUP
             ));

@@ -124,4 +124,13 @@
         <item name="android:maxWidth">@dimen/view_dimen_240</item>
         <item name="android:singleLine">true</item>
     </style>
+
+    <declare-styleable name="ChannelBannerView">
+        <attr name="banner_corner_radius" format="dimension" />
+    </declare-styleable>
+
+    <style name="michannel_second_primary_text">
+        <item name="android:textColor">@color/color_black</item>
+        <item name="android:textSize">@dimen/view_dimen_40</item>
+    </style>
 </resources>

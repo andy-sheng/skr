@@ -45,6 +45,8 @@ public abstract class FixedHolder extends HeadHolder {
     protected static int mImageCornerRadius = IMAGE_CORNER_RADIUS;
     protected static int mImageBorderWidth = 0;
 
+    protected int mLabelColor = LABEL_HIGHLIGHT_COLOR;
+
     public FixedHolder(View itemView) {
         super(itemView);
     }
@@ -223,7 +225,7 @@ public abstract class FixedHolder extends HeadHolder {
 
         @Override
         public void updateDrawState(TextPaint ds) {
-            ds.setColor(itemView.getContext().getResources().getColor(LABEL_HIGHLIGHT_COLOR));
+            ds.setColor(itemView.getContext().getResources().getColor(mLabelColor));
         }
     }
 }
