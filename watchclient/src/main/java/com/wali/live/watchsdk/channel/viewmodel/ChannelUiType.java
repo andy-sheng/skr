@@ -61,6 +61,8 @@ public class ChannelUiType {
     public static final int TYPE_LIVE_OR_LIVE_GROUP = 48; //48.一行两列，直播间和直播间组的随意组合，四种情况
     public static final int TYPE_ONE_SQUARE_CARD = 49 ; // 一个正方形卡片
 
+    public static final int TYPE_ONE_WIDE_CARD = 51 ; // 一个长方形卡片 扁的
+
     public static final HashSet<Integer> ALL_CHANNEL_UI_TYPE =
             new HashSet<>(Arrays.asList(
                     TYPE_MAX_FIVE_CIRCLE,
@@ -107,6 +109,7 @@ public class ChannelUiType {
                     TYPE_LIVE_GROUP,
                     TYPE_LIVE_OR_VIDEO_COLLECTION,
                     TYPE_LIVE_OR_LIVE_GROUP,
-                    TYPE_ONE_SQUARE_CARD
+                    TYPE_ONE_SQUARE_CARD,
+                    TYPE_ONE_WIDE_CARD
             ));
 }

@@ -32,6 +32,7 @@ import com.wali.live.watchsdk.channel.holder.OneCardHolder;
 import com.wali.live.watchsdk.channel.holder.OneListHolder;
 import com.wali.live.watchsdk.channel.holder.OneLiveListHolder;
 import com.wali.live.watchsdk.channel.holder.OneSquareHolder;
+import com.wali.live.watchsdk.channel.holder.OneWideCardHolder;
 import com.wali.live.watchsdk.channel.holder.PlaceHolder;
 import com.wali.live.watchsdk.channel.holder.RecommendCardHolder;
 import com.wali.live.watchsdk.channel.holder.SixMakeupHolder;
@@ -299,6 +300,10 @@ public class ChannelRecyclerAdapter extends EmptyRecyclerAdapter {
             case ChannelUiType.TYPE_LIVE_OR_LIVE_GROUP:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_two_card_item, parent, false);
                 holder = new LiveOrLiveGroupHolder(view);
+                break;
+            case ChannelUiType.TYPE_ONE_WIDE_CARD:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.channel_one_wide_item, parent, false);
+                holder = new OneWideCardHolder(view);
                 break;
             default:
                 MyLog.d(TAG, "viewType is : " + viewType);
