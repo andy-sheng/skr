@@ -133,4 +133,27 @@
         <item name="android:textColor">@color/color_black</item>
         <item name="android:textSize">@dimen/view_dimen_40</item>
     </style>
+
+    <style name="michannel_name_bottom">
+        <item name="android:layout_marginLeft">@dimen/view_dimen_24</item>
+        <item name="android:layout_marginBottom">@dimen/view_dimen_18</item>
+        <item name="android:textColor">@color/color_white</item>
+        <item name="android:textSize">@dimen/text_size_42</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="michannel_count_bottom_big">
+        <item name="android:layout_marginRight">@dimen/view_dimen_24</item>
+        <item name="android:layout_marginBottom">@dimen/view_dimen_24</item>
+        <item name="android:textColor">@color/color_white</item>
+        <item name="android:textSize">@dimen/text_size_45</item>
+        <item name="android:shadowDx">0.5</item>
+        <item name="android:shadowDy">0.5</item>
+        <item name="android:shadowRadius">0.5</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxWidth">@dimen/view_dimen_240</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:shadowColor">@color/color_black_trans_80</item>
+    </style>
 </resources>

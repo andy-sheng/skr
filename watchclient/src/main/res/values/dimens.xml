@@ -13,5 +13,6 @@
     <dimen name="view_dimen_800">266.67dp</dimen>
     <dimen name="view_dimen_925">308.33dp</dimen>
     <dimen name="view_dimen_940">313.33dp</dimen>
+    <dimen name="view_dimen_1054">351.33dp</dimen>
 
 </resources>

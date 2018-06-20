@@ -23,6 +23,7 @@ import com.wali.live.watchsdk.channel.holder.LargeCardFloatHeaderHolder;
 import com.wali.live.watchsdk.channel.holder.LargeCardHeadHolder;
 import com.wali.live.watchsdk.channel.holder.LargeCardHolder;
 import com.wali.live.watchsdk.channel.holder.LiveOrLiveGroupHolder;
+import com.wali.live.watchsdk.channel.holder.LiveOrVideoCollectionHolder;
 import com.wali.live.watchsdk.channel.holder.MaxFiveCircleHolder;
 import com.wali.live.watchsdk.channel.holder.NavigateHolder;
 import com.wali.live.watchsdk.channel.holder.NavigationListHolder;
@@ -30,6 +31,7 @@ import com.wali.live.watchsdk.channel.holder.NoticeScrollHolder;
 import com.wali.live.watchsdk.channel.holder.OneCardHolder;
 import com.wali.live.watchsdk.channel.holder.OneListHolder;
 import com.wali.live.watchsdk.channel.holder.OneLiveListHolder;
+import com.wali.live.watchsdk.channel.holder.OneSquareHolder;
 import com.wali.live.watchsdk.channel.holder.PlaceHolder;
 import com.wali.live.watchsdk.channel.holder.RecommendCardHolder;
 import com.wali.live.watchsdk.channel.holder.SixMakeupHolder;
@@ -285,6 +287,14 @@ public class ChannelRecyclerAdapter extends EmptyRecyclerAdapter {
             case ChannelUiType.TYPE_LIVE_GROUP:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_live_group_two_card_item, parent, false);
                 holder = new TwoLiveGroupCardHolder(view);
+                break;
+            case ChannelUiType.TYPE_LIVE_OR_VIDEO_COLLECTION:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_two_card_item, parent, false);
+                holder = new LiveOrVideoCollectionHolder(view);
+                break;
+            case ChannelUiType.TYPE_ONE_SQUARE_CARD:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.channel_one_square_item, parent, false);
+                holder = new OneSquareHolder(view);
                 break;
             case ChannelUiType.TYPE_LIVE_OR_LIVE_GROUP:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_two_card_item, parent, false);

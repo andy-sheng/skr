@@ -1,10 +1,13 @@
 package com.wali.live.watchsdk.channel.holder;
 
+import android.graphics.Paint;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.text.style.CharacterStyle;
 import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.TextView;
@@ -226,6 +229,16 @@ public abstract class FixedHolder extends HeadHolder {
         @Override
         public void updateDrawState(TextPaint ds) {
             ds.setColor(itemView.getContext().getResources().getColor(mLabelColor));
+        }
+    }
+
+    public static class FakeBoldSpan extends CharacterStyle {
+
+        @Override
+        public void updateDrawState(TextPaint tp) {
+//            tp.setFakeBoldText(true);//一种伪粗体效果，比原字体加粗的效果弱一点
+            tp.setStyle(Paint.Style.FILL_AND_STROKE);
+            tp.setStrokeWidth(0.5f);//控制字体加粗的程度
         }
     }
 }
