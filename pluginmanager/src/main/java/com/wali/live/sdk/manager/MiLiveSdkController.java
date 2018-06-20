@@ -146,7 +146,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mMinVersionMap.put(ACTION_DO_FEED_BACK, 205058);
         mMinVersionMap.put(ACTION_DISABLE_RELATION_CHAIN, 205061);
         mMinVersionMap.put(ACTION_OP_GET_BARRAGE, 206003);
-        mMinVersionMap.put(ACTION_OPEN_CHANNEL_LIST,207001);
+        mMinVersionMap.put(ACTION_OPEN_CHANNEL_LIST,430020);
     }
 
     public static IMiLiveSdk getInstance() {
