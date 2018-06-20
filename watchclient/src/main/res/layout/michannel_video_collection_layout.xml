@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:id="@+id/container_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.base.image.fresco.view.TintableImageView
+            android:id="@+id/cover_iv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:background="@tools:sample/avatars"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/black_trans_50_8_corner_bg"/>
+
+
+        <ImageView
+            android:id="@+id/collection_icon"
+            android:layout_width="@dimen/view_dimen_100"
+            android:layout_height="@dimen/view_dimen_100"
+            android:src="@drawable/milive_live_label"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_dimen_155"/>
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:textSize="@dimen/text_size_60"
+            android:textColor="@color/color_white"
+            android:textStyle="bold"
+            tools:text="美女视频"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/collection_icon"
+            android:layout_marginTop="@dimen/margin_40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+</LinearLayout>

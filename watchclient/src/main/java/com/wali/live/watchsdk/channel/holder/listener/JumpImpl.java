@@ -68,4 +68,11 @@ public class JumpImpl implements JumpListener {
         MyLog.d(TAG, "jumpWatchWithLiveList");
         WatchSdkActivity.openActivity(mActRef.get(), mRoomList, position);
     }
+
+    public static void jumpSchema(Activity activity, String url) {
+        if (activity != null && !TextUtils.isEmpty(url)) {
+            SchemeSdkActivity.openActivity(activity, Uri.parse(url));
+        }
+    }
+
 }
