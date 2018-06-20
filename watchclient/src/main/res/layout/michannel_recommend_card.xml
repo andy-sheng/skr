@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.wali.live.watchsdk.channel.view.ChannelBannerView
+        android:id="@+id/banner_view"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginRight="@dimen/margin_10"
+        android:layout_marginTop="@dimen/margin_10"
+        app:banner_corner_radius="8px"
+        android:layout_height="100dp"/>
+
+    <TextView
+        android:id="@+id/title_tv"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/banner_view"
+        android:layout_marginTop="@dimen/margin_20"
+        android:layout_marginLeft="@dimen/margin_30"
+        style="@style/michannel_second_primary_text"
+        android:layout_marginRight="@dimen/margin_30"
+        android:layout_marginBottom="@dimen/margin_20"
+        android:lines="1"
+        android:ellipsize="end"
+        android:layout_height="wrap_content"/>
+
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/anchor_iv"
+        android:layout_width="@dimen/view_dimen_280"
+        android:layout_alignLeft="@+id/banner_view"
+        android:layout_alignTop="@+id/banner_view"
+        android:layout_height="@dimen/height_110"/>
+
+</RelativeLayout>

@@ -288,6 +288,14 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             this.mLabel = mLabel;
         }
 
+        public int getWidth() {
+            return mWidth;
+        }
+
+        public int getHeight() {
+            return mHeight;
+        }
+
         public RichText getTopLeft() {
             return mTopLeft;
         }

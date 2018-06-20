@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.base.log.MyLog;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.holder.BannerHolder;
+import com.wali.live.watchsdk.channel.holder.BannerNoSpaceHolder;
 import com.wali.live.watchsdk.channel.holder.BaseHolder;
 import com.wali.live.watchsdk.channel.holder.ChannelPageHeaderHolder;
 import com.wali.live.watchsdk.channel.holder.CommunityRankHolder;
@@ -30,6 +31,7 @@ import com.wali.live.watchsdk.channel.holder.OneCardHolder;
 import com.wali.live.watchsdk.channel.holder.OneListHolder;
 import com.wali.live.watchsdk.channel.holder.OneLiveListHolder;
 import com.wali.live.watchsdk.channel.holder.PlaceHolder;
+import com.wali.live.watchsdk.channel.holder.RecommendCardHolder;
 import com.wali.live.watchsdk.channel.holder.SixMakeupHolder;
 import com.wali.live.watchsdk.channel.holder.SplitLineHolder;
 import com.wali.live.watchsdk.channel.holder.ThreeCardHolder;
@@ -43,6 +45,7 @@ import com.wali.live.watchsdk.channel.holder.ThreePicHolder;
 import com.wali.live.watchsdk.channel.holder.ThreePicTwoLineHolder;
 import com.wali.live.watchsdk.channel.holder.TopicGridHolder;
 import com.wali.live.watchsdk.channel.holder.TwoCardHolder;
+import com.wali.live.watchsdk.channel.holder.TwoCardWideHolder;
 import com.wali.live.watchsdk.channel.holder.TwoLayerHolder;
 import com.wali.live.watchsdk.channel.holder.TwoLiveGroupCardHolder;
 import com.wali.live.watchsdk.channel.holder.TwoLongCoverHolder;
@@ -266,6 +269,18 @@ public class ChannelRecyclerAdapter extends EmptyRecyclerAdapter {
             case ChannelUiType.TYPE_PAGE_HEADER:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_page_header_item, parent, false);
                 holder = new ChannelPageHeaderHolder(view);
+                break;
+            case ChannelUiType.TYPE_BANNER_NO_SPACE:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_banner_no_space_item, parent, false);
+                holder = new BannerNoSpaceHolder(view);
+                break;
+            case ChannelUiType.TYPE_RECOMMEND_CARD:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_recommend_card, parent, false);
+                holder = new RecommendCardHolder(view);
+                break;
+            case ChannelUiType.TYPE_TWO_CARD_WIDE:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_two_card_item, parent, false);
+                holder = new TwoCardWideHolder(view);
                 break;
             case ChannelUiType.TYPE_LIVE_GROUP:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_live_group_two_card_item, parent, false);
