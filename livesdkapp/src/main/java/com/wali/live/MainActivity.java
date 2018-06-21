@@ -22,6 +22,7 @@ import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.channel.ReleaseChannelUtils;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.repository.GiftRepository;
@@ -42,6 +43,7 @@ import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
 import com.wali.live.watchsdk.contest.ContestPrepareActivity;
 import com.wali.live.watchsdk.cta.CTANotifyFragment;
 import com.wali.live.watchsdk.login.LoginPresenter;
+import com.wali.live.watchsdk.personalcenter.fragment.PersonalCenterFragment;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
@@ -276,6 +278,16 @@ public class MainActivity extends BaseSdkActivity implements IChannelView, IChan
             @Override
             public void onClick(View v) {
                 ToastUtils.showToast("渠道号:"+ ReleaseChannelUtils.getReleaseChannel());
+            }
+        });
+        $(R.id.personal_center_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!UserAccountManager.getInstance().hasAccount()) {
+                    ToastUtils.showToast("请先登录");
+                    return;
+                }
+                PersonalCenterFragment.openFragment(MainActivity.this, R.id.main_act_container);
             }
         });
 

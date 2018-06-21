@@ -1,0 +1,11 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="my">我的</string>
+    <string name="my_wallet">我的钱包</string>
+    <string name="my_view">最近观看</string>
+    <string name="franchise_intro">等级特权</string>
+    <string name="franchise_container_intro">贵族特权</string>
+    <string name="advise_txt">意见反馈</string>
+    <string name="follow_cnt">关注(%s)</string>
+    <string name="fan_cnt">粉丝(%s)</string>
+    <string name="msg">私信</string>
+</resources>

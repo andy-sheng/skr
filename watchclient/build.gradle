@@ -20,6 +20,7 @@ android {
             resources.srcDirs = ['src/main/java', 'src/main/aidl']
             aidl.srcDirs = ['src/main/aidl']
             res.srcDirs = ['src/main/res']
+            res.srcDirs += ['src/main/res-personal-center']
             assets.srcDirs = ['src/main/assets']
         }
     }

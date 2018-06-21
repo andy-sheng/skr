@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -185,6 +186,20 @@
         android:background="@drawable/corners_bg_e5e5e5_30px"
         android:gravity="center"
         android:text="渠道号"
+        android:textColor="@color/color_black_trans_80"
+        android:textSize="@dimen/text_size_36"/>
+
+    <TextView
+        android:id="@+id/personal_center_btn"
+        android:layout_width="match_parent"
+        android:layout_height="40.67dip"
+        android:layout_above="@+id/channel_info_btn"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/corners_bg_e5e5e5_30px"
+        android:gravity="center"
+        android:text="个人中心"
         android:textColor="@color/color_black_trans_80"
         android:textSize="@dimen/text_size_36"/>
 </RelativeLayout>
