@@ -35,6 +35,8 @@ import com.wali.live.watchsdk.channel.viewmodel.ChannelUserViewModel.UserItemDat
 
 import java.util.List;
 
+import static com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel.RichText.LEFT_LABEL_BG;
+
 /**
  * Created by lan on 16/6/28.
  *
@@ -413,22 +415,46 @@ public abstract class RepeatHolder extends FixedHolder {
         }
         String text = item.getTopLeft().getText();
         if (!TextUtils.isEmpty(text)) {
-            GradientDrawable bgDrawable = item.getTopLeft().getBgDrawable();
-            //leftTop, rightTop, rightBottom, leftBottom of (X,Y)
-            int rightTop = mLeftLabelImageHeight >> 1;
-            int rightBottom = mLeftLabelImageHeight >> 1;
-            int leftTop = mImageCornerRadius << 1;
-            float[] radius = {0, 0, rightTop, rightTop, rightBottom, rightBottom, 0, 0 };
-            bgDrawable.setCornerRadii(radius);
-            mLeftLabelTvs[i].setBackground(bgDrawable);
+            if(item.getTopLeft().hasBgColor()){
+                GradientDrawable bgDrawable = item.getTopLeft().getBgDrawable();
+                //leftTop, rightTop, rightBottom, leftBottom of (X,Y)
+                int rightTop = mLeftLabelImageHeight >> 1;
+                int rightBottom = mLeftLabelImageHeight >> 1;
+                int leftTop = mImageCornerRadius << 1;
+                float[] radius = {0, 0, rightTop, rightTop, rightBottom, rightBottom, 0, 0 };
+                bgDrawable.setCornerRadii(radius);
+                mLeftLabelTvs[i].setBackground(bgDrawable);
 
-            int leftPadding = DisplayUtils.dip2px(7f);
-            int rightPadding = DisplayUtils.dip2px(7f);
-            mLeftLabelTvs[i].setPadding(leftPadding, 0, rightPadding, 0);
+                int leftPadding = DisplayUtils.dip2px(7f);
+                int rightPadding = DisplayUtils.dip2px(7f);
+                mLeftLabelTvs[i].setPadding(leftPadding, 0, rightPadding, 0);
 
-            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) mLeftLabelTvs[i].getLayoutParams();
-            layoutParams.leftMargin = 0;
-            mLeftLabelTvs[i].setLayoutParams(layoutParams);
+                ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) mLeftLabelTvs[i].getLayoutParams();
+                layoutParams.leftMargin = 0;
+                mLeftLabelTvs[i].setLayoutParams(layoutParams);
+            }else {
+                int id = item.getTopLeft().getBgID() - 1;
+                if (id < 0 || id > LEFT_LABEL_BG.length - 1) {
+                    MyLog.w(TAG, " bindLeftLabel unknown img id : " + item.getTopLeft().getBgID() + "name:" + item.getNameText());
+                    id = 0;
+                }
+                int leftPadding = 0;
+                int rightPadding = 0;
+                mLeftLabelTvs[i].setGravity(Gravity.CENTER);
+                if (id >= 3 ) {
+                    mLeftLabelTvs[i].setGravity(Gravity.CENTER | Gravity.RIGHT);
+                    rightPadding = DisplayUtils.dip2px(6.67f);
+                } else if (id == 2) {
+                    leftPadding = DisplayUtils.dip2px(6.67f);
+                    rightPadding = DisplayUtils.dip2px(8.33f);
+                }
+                mLeftLabelTvs[i].setPadding(leftPadding, 0, rightPadding, 0);
+                mLeftLabelTvs[i].setBackground(itemView.getContext().getResources().getDrawable(LEFT_LABEL_BG[id]));
+                mLeftLabelTvs[i].setTextColor(Color.WHITE);
+                ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) mLeftLabelTvs[i].getLayoutParams();
+                layoutParams.leftMargin = id != 2 ? DisplayUtils.dip2px(6.67f) : 0;
+                mLeftLabelTvs[i].setLayoutParams(layoutParams);
+            }
         }
         mLeftLabelTvs[i].setOnClickListener(new View.OnClickListener() {
             @Override
