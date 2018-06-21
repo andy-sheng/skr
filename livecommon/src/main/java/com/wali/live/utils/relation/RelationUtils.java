@@ -40,6 +40,9 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Observable;
+import rx.Subscriber;
+
 import static com.mi.live.data.api.BanSpeakerUtils.RESULT_CODE_SUCCESS;
 
 /**
@@ -210,28 +213,28 @@ public class RelationUtils {
         return getBothFollowingListResponse(uuid, count, offset, bothway, false);
     }
 
-    /**
-     * 查询粉丝列表
-     */
-    public static FollowerListResponse getFollowerListResponse(long uuid, int count, int offset) {
-        FollowerListRequest request = FollowerListRequest.newBuilder().setUserId(uuid).setLimit(count).setOffset(offset).build();
-        PacketData packetData = new PacketData();
-        packetData.setCommand(MiLinkCommand.COMMAND_GET_FOLLOWER_LIST);
-        packetData.setData(request.toByteArray());
-        MyLog.v(TAG, "getFollowerListResponse request : \n" + request.toString());
-
-        PacketData responseData = MiLinkClientAdapter.getsInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
-        MyLog.v(TAG, " responseData=" + responseData);
-        try {
-            if (responseData != null) {
-                MyLog.v(TAG, " getMnsCode:" + responseData.getMnsCode());
-                return FollowerListResponse.parseFrom(responseData.getData());
-            }
-        } catch (InvalidProtocolBufferException e) {
-            MyLog.e(e);
-        }
-        return null;
-    }
+//    /**
+//     * 查询粉丝列表
+//     */
+//    public static FollowerListResponse getFollowerListResponse(long uuid, int count, int offset) {
+//        FollowerListRequest request = FollowerListRequest.newBuilder().setUserId(uuid).setLimit(count).setOffset(offset).build();
+//        PacketData packetData = new PacketData();
+//        packetData.setCommand(MiLinkCommand.COMMAND_GET_FOLLOWER_LIST);
+//        packetData.setData(request.toByteArray());
+//        MyLog.v(TAG, "getFollowerListResponse request : \n" + request.toString());
+//
+//        PacketData responseData = MiLinkClientAdapter.getsInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
+//        MyLog.v(TAG, " responseData=" + responseData);
+//        try {
+//            if (responseData != null) {
+//                MyLog.v(TAG, " getMnsCode:" + responseData.getMnsCode());
+//                return FollowerListResponse.parseFrom(responseData.getData());
+//            }
+//        } catch (InvalidProtocolBufferException e) {
+//            MyLog.e(e);
+//        }
+//        return null;
+//    }
 
     /**
      * 查询黑名单列表
@@ -481,5 +484,38 @@ public class RelationUtils {
             MyLog.e(TAG, e);
         }
         return ErrorCode.CODE_ERROR_NORMAL;
+    }
+
+    /**
+     * 查询粉丝列表
+     */
+    public static Observable<FollowerListResponse> getFollowerListResponse(final long uuid, final int count, final int offset) {
+        return Observable.create(new Observable.OnSubscribe<FollowerListResponse>() {
+            @Override
+            public void call(Subscriber<? super FollowerListResponse> subscriber) {
+                FollowerListRequest request = FollowerListRequest.newBuilder().setUserId(uuid).setLimit(count).setOffset(offset).build();
+                PacketData packetData = new PacketData();
+                packetData.setCommand(MiLinkCommand.COMMAND_GET_FOLLOWER_LIST);
+                packetData.setData(request.toByteArray());
+                MyLog.v(TAG, " getFollowingListResponse request : \n" + request.toString());
+
+                MyLog.v(TAG, "getFollowerListResponse request : \n" + request.toString());
+
+                PacketData responseData = MiLinkClientAdapter.getsInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
+                MyLog.v(TAG, " responseData=" + responseData);
+
+                if (null != responseData) {
+                    try {
+                        MyLog.v(TAG, " getMnsCode:" + responseData.getMnsCode());
+                        FollowerListResponse response = FollowerListResponse.parseFrom(responseData.getData());
+                        subscriber.onNext(response);
+                    } catch (InvalidProtocolBufferException e) {
+                        MyLog.e(e);
+                        subscriber.onError(e);
+                    }
+                }
+                subscriber.onCompleted();
+            }
+        });
     }
 }
