@@ -536,5 +536,6 @@ public class MiLinkCommand {
 
     public static final String COMMAND_HUYA_MSG = "zhibo.thirdparty.sendmsg";
     public static final String COMMAND_RADIO_SIGNAL_PUSH = "zhibo.diantai.signal_push";
+    public static final String COMMAND_GET_VIP_INFO = "zhibo.viplevel.home_page";//用户的vip等级信息
 
 }
