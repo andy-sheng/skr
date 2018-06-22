@@ -43,7 +43,7 @@ import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
 import com.wali.live.watchsdk.contest.ContestPrepareActivity;
 import com.wali.live.watchsdk.cta.CTANotifyFragment;
 import com.wali.live.watchsdk.login.LoginPresenter;
-import com.wali.live.watchsdk.personalcenter.fragment.PersonalCenterFragment;
+import com.wali.live.watchsdk.personalcenter.PersonalCenterFragment;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;

@@ -186,6 +186,15 @@ public class UserListData implements Serializable {
         return list;
     }
 
+    public static List<UserListData> parseList(RelationProto.FollowerListResponse response) {
+        List<UserListData> list = new ArrayList<>();
+        for (RelationProto.UserInfo userInfo : response.getUsersList()) {
+            UserListData item = new UserListData(userInfo);
+            list.add(item);
+        }
+        return list;
+    }
+
     public static List<Object> parseUserList(RelationProto.BlockerListResponse response) {
         List<Object> list = new ArrayList<>();
         for (RelationProto.UserInfo userInfo : response.getUsersList()) {

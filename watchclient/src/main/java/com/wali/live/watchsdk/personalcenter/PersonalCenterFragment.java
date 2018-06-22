@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.personalcenter.fragment;
+package com.wali.live.watchsdk.personalcenter;
 
 import android.app.Activity;
 import android.support.v4.util.Pair;
@@ -33,6 +33,8 @@ import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.utils.level.VipLevelUtil;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.editinfo.EditInfoActivity;
+import com.wali.live.watchsdk.personalcenter.relation.FansListFragment;
+import com.wali.live.watchsdk.personalcenter.relation.FollowListFragment;
 import com.wali.live.watchsdk.webview.WebViewActivity;
 
 import java.util.ArrayList;
@@ -123,13 +125,13 @@ public class PersonalCenterFragment extends BaseFragment {
 //                ShowMyLevelActivity.openActivity(getActivity(), data);
 //            }
 //        });
-//        RxView.clicks(mRootView.findViewById(R.id.noble_franchise_container)).throttleFirst(300, TimeUnit.MILLISECONDS).subscribe(new Action1<Void>() {
-//            @Override
-//            public void call(Void aVoid) {
-//                MyLog.d(TAG, "onclick noble franchise");
-//                WebViewActivity.open(getActivity(), Constants.SCHEME_JUMP_TO_MY_NOBLE);
-//            }
-//        });
+        RxView.clicks(mRootView.findViewById(R.id.noble_franchise_container)).throttleFirst(300, TimeUnit.MILLISECONDS).subscribe(new Action1<Void>() {
+            @Override
+            public void call(Void aVoid) {
+                MyLog.d(TAG, "onclick noble franchise");
+                WebViewActivity.open(getActivity(), Constants.SCHEME_JUMP_TO_MY_NOBLE);
+            }
+        });
 //        RxView.clicks(mRootView.findViewById(R.id.advise_container)).throttleFirst(300, TimeUnit.MILLISECONDS).subscribe(new Action1<Void>() {
 //            @Override
 //            public void call(Void aVoid) {
@@ -138,6 +140,22 @@ public class PersonalCenterFragment extends BaseFragment {
 //                startActivity(intent);
 //            }
 //        });
+        RxView.clicks(mRootView.findViewById(R.id.follow_container))
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        FollowListFragment.openFragment(getActivity(), R.id.main_act_container, mUser.getUid());
+                    }
+                });
+        RxView.clicks(mRootView.findViewById(R.id.fan_container))
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        FansListFragment.openFragment(getActivity(), R.id.main_act_container, mUser.getUid());
+                    }
+                });
     }
 
     private void initData() {
@@ -196,7 +214,6 @@ public class PersonalCenterFragment extends BaseFragment {
         if (true == pair.first) {
             view = LevelIconsLayout.getDefaultTextView(getActivity());
             view.setBackgroundResource(pair.second);
-            //view.setText(String.valueOf(mUser.getVipLevel()));
             list.add(view);
         }
         // Plain
@@ -223,7 +240,6 @@ public class PersonalCenterFragment extends BaseFragment {
 //            list.add(view);
 //        }
 
-        MyLog.d(TAG, "zjnTest list size():" + list.size());
         mLevelIconsContainer.addIconsWithClear(list);
     }
 
