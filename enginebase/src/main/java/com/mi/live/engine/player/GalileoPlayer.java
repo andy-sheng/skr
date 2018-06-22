@@ -328,6 +328,11 @@ public class GalileoPlayer implements IPlayer {
     }
 
     @Override
+    public void setVolume(float volumeL, float volumeR) {
+
+    }
+
+    @Override
     public void setSurface(final Surface surface) {
         ThreadPool.runOnEngine(new Runnable() {
             @Override
@@ -399,6 +404,18 @@ public class GalileoPlayer implements IPlayer {
                 mPlayer.pause();
             }
         }, "pause");
+    }
+
+    @Override
+    public void resume() {
+        ThreadPool.runOnEngine(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "start");
+                stayAwake(true);
+                mPlayer.resume();
+            }
+        }, "start");
     }
 
     @Override

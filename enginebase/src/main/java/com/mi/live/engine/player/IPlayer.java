@@ -45,6 +45,8 @@ public interface IPlayer {
 
     void setMuteAudio(boolean isMute);
 
+    void setVolume(float volumeL, float volumeR);
+
     void setSurface(Surface surface);
 
     void setVideoPath(String path, String host);
@@ -54,6 +56,8 @@ public interface IPlayer {
     void start();
 
     void pause();
+
+    void resume();
 
     void stop();
 

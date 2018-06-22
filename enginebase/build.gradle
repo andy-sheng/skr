@@ -30,4 +30,5 @@ dependencies {
     compile files('libs/player.jar')
 
     provided project(':common')
+    compile 'com.google.android.exoplayer:exoplayer-core:r2.4.1'
 }

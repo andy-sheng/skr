@@ -11,4 +11,8 @@
     <declare-styleable name="GiftContinuousView">
         <attr name="left" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="PlayerView">
+        <attr name="real_time" format="boolean"/>
+    </declare-styleable>
 </resources>
