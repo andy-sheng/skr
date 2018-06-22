@@ -21,6 +21,7 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.base.activity.BaseActivity;
 import com.base.global.GlobalData;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.BaseImage;
@@ -42,6 +43,7 @@ import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.milink.sdk.aidl.PacketData;
+import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.income.model.ExceptionWithCode;
 import com.wali.live.proto.UserProto;
 import com.wali.live.proto.Vip.VipProto;
@@ -150,6 +152,10 @@ public class VipLevelPage extends FrameLayout implements VipPrivilegeTableLayout
         bindData();
     }
 
+    private BaseActivity getRxActivity() {
+        return (BaseActivity) getContext();
+    }
+
     @MainThread
     private void bindData() {
         mLevelName.setText("");
@@ -188,6 +194,7 @@ public class VipLevelPage extends FrameLayout implements VipPrivilegeTableLayout
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(getRxActivity().<VipProto.VipHomePageRsp>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new Subscriber<VipProto.VipHomePageRsp>() {
                     @Override
                     public void onCompleted() {
@@ -347,6 +354,7 @@ public class VipLevelPage extends FrameLayout implements VipPrivilegeTableLayout
         mDrawProgressSub = Observable
                 .interval(20, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(getRxActivity().<Long>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long l) {
@@ -368,32 +376,32 @@ public class VipLevelPage extends FrameLayout implements VipPrivilegeTableLayout
                 });
     }
 
-    @NonNull
-    private Observable<UserProto.UploadUserSettingRsp> setVipHideStatus(final boolean isHide) {
-        return Observable.create(new Observable.OnSubscribe<UserProto.UploadUserSettingRsp>() {
-            @Override
-            public void call(Subscriber<? super UserProto.UploadUserSettingRsp> subscriber) {
-                UserProto.UploadUserSettingReq req = UserProto.UploadUserSettingReq.newBuilder()
-                        .setZuid(UserAccountManager.getInstance().getUuidAsLong()).setIsVipHide(isHide)
-                        .build();
-                UserProto.UploadUserSettingRsp rsp = UserInfoManager.UploadUserSettingRspToServer(req);
-                subscriber.onNext(rsp);
-                subscriber.onCompleted();
-            }
-        })
-                .flatMap(new Func1<UserProto.UploadUserSettingRsp, Observable<UserProto.UploadUserSettingRsp>>() {
-                    @Override
-                    public Observable<UserProto.UploadUserSettingRsp> call(UserProto.UploadUserSettingRsp rsp) {
-                        if (rsp == null) {
-                            return Observable.error(new Throwable("UploadUserSettingRsp is null"));
-                        }
-                        if (rsp.getErrorCode() != ErrorCode.CODE_SUCCESS) {
-                            return Observable.error(new ExceptionWithCode(rsp.getErrorCode()));
-                        }
-                        return Observable.just(rsp);
-                    }
-                });
-    }
+//    @NonNull
+//    private Observable<UserProto.UploadUserSettingRsp> setVipHideStatus(final boolean isHide) {
+//        return Observable.create(new Observable.OnSubscribe<UserProto.UploadUserSettingRsp>() {
+//            @Override
+//            public void call(Subscriber<? super UserProto.UploadUserSettingRsp> subscriber) {
+//                UserProto.UploadUserSettingReq req = UserProto.UploadUserSettingReq.newBuilder()
+//                        .setZuid(UserAccountManager.getInstance().getUuidAsLong()).setIsVipHide(isHide)
+//                        .build();
+//                UserProto.UploadUserSettingRsp rsp = UserInfoManager.UploadUserSettingRspToServer(req);
+//                subscriber.onNext(rsp);
+//                subscriber.onCompleted();
+//            }
+//        })
+//                .flatMap(new Func1<UserProto.UploadUserSettingRsp, Observable<UserProto.UploadUserSettingRsp>>() {
+//                    @Override
+//                    public Observable<UserProto.UploadUserSettingRsp> call(UserProto.UploadUserSettingRsp rsp) {
+//                        if (rsp == null) {
+//                            return Observable.error(new Throwable("UploadUserSettingRsp is null"));
+//                        }
+//                        if (rsp.getErrorCode() != ErrorCode.CODE_SUCCESS) {
+//                            return Observable.error(new ExceptionWithCode(rsp.getErrorCode()));
+//                        }
+//                        return Observable.just(rsp);
+//                    }
+//                });
+//    }
 
     public static CharSequence getHighLightKeywordText(@NonNull String text, @NonNull String keyword,
                                                        @NonNull String distraction, @ColorRes int colorResId) {
@@ -440,7 +448,8 @@ public class VipLevelPage extends FrameLayout implements VipPrivilegeTableLayout
     }
 
     private void setHideStatus(boolean canHide, boolean isFrozen) {
-        Observable.create(new Observable.OnSubscribe<UserProto.GetOwnSettingRsp>() {
+        //                        showHideSwitch(canHide, isFrozen, rsp.getIsVipHide());
+       Observable.create(new Observable.OnSubscribe<UserProto.GetOwnSettingRsp>() {
             @Override
             public void call(Subscriber<? super UserProto.GetOwnSettingRsp> subscriber) {
                 UserProto.GetOwnSettingReq req = UserProto.GetOwnSettingReq.newBuilder()
@@ -476,6 +485,7 @@ public class VipLevelPage extends FrameLayout implements VipPrivilegeTableLayout
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(getRxActivity().<UserProto.GetOwnSettingRsp>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new Subscriber<UserProto.GetOwnSettingRsp>() {
                     @Override
                     public void onCompleted() {
