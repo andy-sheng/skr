@@ -26,8 +26,8 @@ public class ChannelModelFactory {
             } else if (uiType == 7 || uiType == 10 || uiType == 11 || uiType == 12 || uiType == 13 || uiType == 15
                     || uiType == 17 || uiType == 18 || uiType == 19 || uiType == 21 || uiType == 22 || uiType == 25
                     || uiType == 26 || uiType == 28 || uiType == 31 || uiType == 32 || uiType == 33 || uiType == 34
-                    || uiType == 38 || uiType == 40 || uiType == 41 || uiType == 43 || uiType == 47 || uiType == 48
-                    || uiType == 49 || uiType == 51) {
+                    || uiType == 38 || uiType == 40 || uiType == 41 || uiType == 43 || uiType == 46 || uiType == 47
+                    || uiType == 48 || uiType == 49 || uiType == 51) {
                 return new ChannelLiveViewModel(protoItem);
             } else if (uiType == 14) {
                 return new ChannelSplitViewModel(protoItem);

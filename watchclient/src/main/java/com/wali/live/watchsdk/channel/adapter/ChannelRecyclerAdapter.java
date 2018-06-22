@@ -29,6 +29,7 @@ import com.wali.live.watchsdk.channel.holder.NavigateHolder;
 import com.wali.live.watchsdk.channel.holder.NavigationListHolder;
 import com.wali.live.watchsdk.channel.holder.NoticeScrollHolder;
 import com.wali.live.watchsdk.channel.holder.OneCardHolder;
+import com.wali.live.watchsdk.channel.holder.OneCardLiveHolder;
 import com.wali.live.watchsdk.channel.holder.OneListHolder;
 import com.wali.live.watchsdk.channel.holder.OneLiveListHolder;
 import com.wali.live.watchsdk.channel.holder.OneSquareHolder;
@@ -289,6 +290,10 @@ public class ChannelRecyclerAdapter extends EmptyRecyclerAdapter {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_live_group_two_card_item, parent, false);
                 holder = new TwoLiveGroupCardHolder(view);
                 break;
+            case ChannelUiType.TYPE_ONE_CARD_LIVE:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_one_card_live_item, parent, false);
+                holder = new OneCardLiveHolder(view);
+                break;
             case ChannelUiType.TYPE_LIVE_OR_VIDEO_COLLECTION:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_two_card_item, parent, false);
                 holder = new LiveOrVideoCollectionHolder(view);
@@ -311,6 +316,7 @@ public class ChannelRecyclerAdapter extends EmptyRecyclerAdapter {
         }
         if (holder != null) {
             holder.setJumpListener(mJumpImpl);
+            holder.setChannelData(mChannelId);
         }
         return holder;
     }

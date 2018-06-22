@@ -461,4 +461,8 @@ public abstract class BaseActivity extends RxActivity implements IStatusBarOpera
     public void setActivityHeight(int mActivityHeight) {
         sActivityHeight = mActivityHeight;
     }
+
+    public boolean isActivityForeground() {
+        return mIsForeground;
+    }
 }

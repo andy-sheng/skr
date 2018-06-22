@@ -56,7 +56,7 @@ public class ChannelUiType {
     public static final int TYPE_PLACEHOLDER = 42;
     public static final int TYPE_TWO_CARD_WIDE = 43;       // 43.和样式7差不多一样, 只是高度矮一点
     public static final int TYPE_LIVE_GROUP = 45;       // 45.直播组
-//    public static final int TYPE_ONE_CARD_LIVE = 46;        //46.一行一列，播放直播画面
+    public static final int TYPE_ONE_CARD_LIVE = 46;        //46.一行一列，播放直播画面
     public static final int TYPE_LIVE_OR_VIDEO_COLLECTION = 47; //47.一行两列，直播与视频集的随意组合
     public static final int TYPE_LIVE_OR_LIVE_GROUP = 48; //48.一行两列，直播间和直播间组的随意组合，四种情况
     public static final int TYPE_ONE_SQUARE_CARD = 49 ; // 一个正方形卡片
@@ -107,6 +107,7 @@ public class ChannelUiType {
                     TYPE_PLACEHOLDER,
                     TYPE_TWO_CARD_WIDE,
                     TYPE_LIVE_GROUP,
+                    TYPE_ONE_CARD_LIVE,
                     TYPE_LIVE_OR_VIDEO_COLLECTION,
                     TYPE_LIVE_OR_LIVE_GROUP,
                     TYPE_ONE_SQUARE_CARD,

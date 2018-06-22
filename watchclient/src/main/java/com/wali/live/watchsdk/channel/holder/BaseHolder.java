@@ -38,6 +38,8 @@ public abstract class BaseHolder<VM extends BaseViewModel> extends RecyclerView.
     protected int mPosition;
     protected JumpListener mJumpListener;
 
+    protected long mChannelId;
+
     public BaseHolder(View itemView) {
         super(itemView);
 
@@ -80,5 +82,13 @@ public abstract class BaseHolder<VM extends BaseViewModel> extends RecyclerView.
 
     protected <V extends View> V $(ViewGroup parent, int id) {
         return (V) (parent.findViewById(id));
+    }
+
+    public void setChannelData(long channelId) {
+        mChannelId = channelId;
+        postChannelData();
+    }
+
+    protected void postChannelData() {
     }
 }
