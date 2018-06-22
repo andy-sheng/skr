@@ -53,6 +53,13 @@
         android:layout_above="@+id/input_area_view"
         android:layout_below="@id/top_area_view" />
 
+    <!--浮动控件容器-->
+    <RelativeLayout
+        android:id="@+id/float_panel_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent" />
+
     <!--游戏模式 输入框与弹幕 改为在代码中动态添加，见WatchSdkView-->
     <ViewStub
         android:id="@+id/game_barrage_viewstub"
@@ -143,12 +150,6 @@
         android:layout_marginBottom="@dimen/margin_20"
         android:layout_marginStart="@dimen/margin_20" />
 
-    <!--浮动控件容器-->
-    <RelativeLayout
-        android:id="@+id/float_panel_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/transparent" />
 
     <!--底部按钮(供BaseBottomButton使用)-->
     <RelativeLayout
