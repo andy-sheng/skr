@@ -27,7 +27,7 @@
             android:windowSoftInputMode="adjustPan|stateHidden" />
 
         <activity
-            android:name="com.wali.live.livesdk.live.image.ClipImageActivity"
+            android:name="com.wali.live.livesdk.com.wali.live.common.photopicker.ClipImageActivity"
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
             android:screenOrientation="portrait" />
 

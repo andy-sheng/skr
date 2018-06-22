@@ -4,12 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.wali.live.livesdk.live.image.ClipZoomImageView
+    <com.wali.live.common.photopicker.view.ClipZoomImageView
         android:id="@+id/clip_zoom_iv"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.wali.live.livesdk.live.image.ClipImageBorderView
+    <com.wali.live.common.photopicker.view.ClipImageBorderView
         android:id="@+id/clip_border_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

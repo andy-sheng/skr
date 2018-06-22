@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.image;
+package com.wali.live.common.photopicker.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -11,7 +11,7 @@ import android.util.TypedValue;
 import android.view.View;
 
 import com.base.utils.display.DisplayUtils;
-import com.wali.live.livesdk.R;
+import com.live.module.common.R;
 
 /**
  * 裁剪框

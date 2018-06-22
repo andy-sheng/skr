@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.viewmodel;
+package com.wali.live.common.photopicker.model;
 
 import java.io.Serializable;
 

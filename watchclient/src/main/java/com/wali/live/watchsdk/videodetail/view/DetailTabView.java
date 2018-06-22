@@ -13,7 +13,7 @@ import com.base.view.SlidingTabLayout;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
+import com.wali.live.common.photopicker.adapter.CommonTabPagerAdapter;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.adapter;
+package com.wali.live.common.photopicker.adapter;
 
 import android.support.v4.view.PagerAdapter;
 import android.view.View;

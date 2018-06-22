@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.image;
+package com.wali.live.common.photopicker;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -19,8 +19,9 @@ import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
 import com.base.utils.CommonUtils;
 import com.base.utils.IOUtils;
+import com.live.module.common.R;
 import com.trello.rxlifecycle.ActivityEvent;
-import com.wali.live.livesdk.R;
+import com.wali.live.common.photopicker.view.ClipImageLayout;
 
 import java.io.File;
 import java.io.IOException;

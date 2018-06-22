@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.image;
+package com.wali.live.common.photopicker.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -20,7 +20,7 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.base.utils.display.DisplayUtils;
-import com.wali.live.livesdk.R;
+import com.live.module.common.R;
 
 /**
  * 缩放图片的View

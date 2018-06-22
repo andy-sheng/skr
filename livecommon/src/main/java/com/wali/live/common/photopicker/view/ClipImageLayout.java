@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.image;
+package com.wali.live.common.photopicker.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -6,7 +6,8 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.wali.live.livesdk.R;
+import com.live.module.common.R;
+
 
 /**
  * ClipImageLayout

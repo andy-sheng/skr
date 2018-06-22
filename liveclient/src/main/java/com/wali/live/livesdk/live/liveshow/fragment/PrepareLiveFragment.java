@@ -25,7 +25,7 @@ import com.thornbirds.component.ComponentController;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
-import com.wali.live.livesdk.live.image.ClipImageActivity;
+import com.wali.live.common.photopicker.ClipImageActivity;
 import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.panel.LiveMagicPresenter;
 import com.wali.live.livesdk.live.liveshow.view.panel.LiveMagicPanel;

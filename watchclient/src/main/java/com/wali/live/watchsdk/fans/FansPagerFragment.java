@@ -23,7 +23,7 @@ import com.base.view.SlidingTabLayout;
 import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
+import com.wali.live.common.photopicker.adapter.CommonTabPagerAdapter;
 import com.wali.live.watchsdk.channel.view.IScrollListener;
 import com.wali.live.watchsdk.channel.view.RepeatScrollView;
 import com.wali.live.watchsdk.fans.dialog.ApplyJoinDialog;

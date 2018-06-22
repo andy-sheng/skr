@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.image.adapter;
+package com.wali.live.common.photopicker.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,10 +12,10 @@ import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.live.module.common.R;
 import com.wali.live.common.listener.OnItemClickListener;
-import com.wali.live.livesdk.R;
-import com.wali.live.livesdk.live.image.PhotoPickerFragment;
-import com.wali.live.livesdk.live.viewmodel.PhotoItem;
+import com.wali.live.common.photopicker.PhotoPickerFragment;
+import com.wali.live.common.photopicker.model.PhotoItem;
 
 import java.util.HashMap;
 import java.util.List;
