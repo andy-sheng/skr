@@ -421,7 +421,7 @@ public abstract class RepeatHolder extends FixedHolder {
                 int rightTop = mLeftLabelImageHeight >> 1;
                 int rightBottom = mLeftLabelImageHeight >> 1;
                 int leftTop = mImageCornerRadius << 1;
-                float[] radius = {0, 0, rightTop, rightTop, rightBottom, rightBottom, 0, 0 };
+                float[] radius = {DisplayUtils.dip2px(3.33f), DisplayUtils.dip2px(3.33f), rightTop, rightTop, rightBottom, rightBottom, 0, 0 };
                 bgDrawable.setCornerRadii(radius);
                 mLeftLabelTvs[i].setBackground(bgDrawable);
 

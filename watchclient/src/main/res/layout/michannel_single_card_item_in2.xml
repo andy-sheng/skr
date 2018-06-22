@@ -20,7 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_alignBottom="@id/cover_iv"
-            android:background="@drawable/shape_gradient_black_no_corner"/>
+            android:layout_marginRight="@dimen/view_dimen_4"
+            android:background="@drawable/shape_gradient_black"/>
 
         <include
             android:id="@+id/mark_tv"
