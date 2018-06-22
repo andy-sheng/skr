@@ -222,7 +222,7 @@ public class UserInfoManager {
         return UploadUserSettingRspToServer(req);
     }
 
-    private static UserProto.UploadUserSettingRsp UploadUserSettingRspToServer(UserProto.UploadUserSettingReq req) {
+    public static UserProto.UploadUserSettingRsp UploadUserSettingRspToServer(UserProto.UploadUserSettingReq req) {
         PacketData data = new PacketData();
         data.setCommand(MiLinkCommand.COMMAND_UPLOAD_USER_SETTING);
         data.setData(req.toByteArray());

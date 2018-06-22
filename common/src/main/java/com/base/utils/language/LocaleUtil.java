@@ -192,6 +192,11 @@ public class LocaleUtil {
     public static final String RED_ENVELOPE_DESC = "http://live.mi.com/lang/%s/redpacketdesc/desc.html";
 
     /**
+     * VIP说明页
+     */
+    public static final String VIP_INSTRUCTION_URL = "http://live.mi.com/lang/%s/vipdesc/vipdesc.html";
+
+    /**
      * @see <a href="http://wiki.n.miui.com/pages/viewpage.action?pageId=25041801">官网国际化</a>
      * @return
      */

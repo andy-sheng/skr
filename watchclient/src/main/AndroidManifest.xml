@@ -181,6 +181,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeLive"/>
 
+        <activity android:name=".personalcenter.level.LevelActivity"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+
         <service
             android:name="com.wali.live.watchsdk.service.PacketProcessService"
             android:exported="false"/>

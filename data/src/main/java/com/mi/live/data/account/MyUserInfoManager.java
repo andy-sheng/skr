@@ -491,4 +491,21 @@ public class MyUserInfoManager {
         EventBus.getDefault().post(new UserInfoEvent());
         EventBus.getDefault().post(new VipUpdateEvent());
     }
+
+    public synchronized void setVipInfo(int vipLevel, boolean isFrozen) {
+        MyLog.d(TAG, String.format("set vip info, level:%d, isFrozen:%b", vipLevel, isFrozen));
+        ensureMyInfoNotNull();
+        mMyInfo.setVipLevel(vipLevel);
+        mMyInfo.setVipFrozen(isFrozen);
+        EventBus.getDefault().post(new UserInfoEvent());
+        EventBus.getDefault().post(new VipUpdateEvent());
+    }
+
+    public synchronized void setVipInfo(boolean isHide) {
+        MyLog.d(TAG, String.format("set vip info, isHide:%b", isHide));
+        ensureMyInfoNotNull();
+        mMyInfo.setVipHide(isHide);
+        EventBus.getDefault().post(new UserInfoEvent());
+        EventBus.getDefault().post(new VipUpdateEvent());
+    }
 }

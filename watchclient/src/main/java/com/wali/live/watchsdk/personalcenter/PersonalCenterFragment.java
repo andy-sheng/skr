@@ -33,6 +33,7 @@ import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.utils.level.VipLevelUtil;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.editinfo.EditInfoActivity;
+import com.wali.live.watchsdk.personalcenter.level.LevelActivity;
 import com.wali.live.watchsdk.personalcenter.relation.FansListFragment;
 import com.wali.live.watchsdk.personalcenter.relation.FollowListFragment;
 import com.wali.live.watchsdk.webview.WebViewActivity;
@@ -116,15 +117,13 @@ public class PersonalCenterFragment extends BaseFragment {
                 FragmentNaviUtils.addFragment(getActivity(), R.id.main_act_container, RechargeFragment.class, null, true, true, true);
             }
         });
-//        RxView.clicks(mRootView.findViewById(R.id.franchise_container)).throttleFirst(300, TimeUnit.MILLISECONDS).subscribe(new Action1<Void>() {
-//            @Override
-//            public void call(Void aVoid) {
-//                MyLog.d(TAG, "onclick franchise");
-//                Bundle data = new Bundle();
-//                data.putInt(ShowMyLevelActivity.EXTRA_FROM_INDEX, StatisticsKey.Level.Key.VIP_FROM_MY_TAB);
-//                ShowMyLevelActivity.openActivity(getActivity(), data);
-//            }
-//        });
+        RxView.clicks(mRootView.findViewById(R.id.franchise_container)).throttleFirst(300, TimeUnit.MILLISECONDS).subscribe(new Action1<Void>() {
+            @Override
+            public void call(Void aVoid) {
+                MyLog.d(TAG, "onclick franchise");
+                LevelActivity.openActivity(getActivity(), 0);
+            }
+        });
         RxView.clicks(mRootView.findViewById(R.id.noble_franchise_container)).throttleFirst(300, TimeUnit.MILLISECONDS).subscribe(new Action1<Void>() {
             @Override
             public void call(Void aVoid) {

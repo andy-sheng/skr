@@ -32,9 +32,13 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.Settings;
+import android.support.annotation.CheckResult;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
@@ -96,6 +100,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
+
+import static com.base.utils.language.LocaleUtil.getWebViewLanguage;
 
 /**
  * Created by MK on 15-4-13.
@@ -2038,5 +2044,29 @@ public abstract class CommonUtils {
             topMargin += 20;
         }
         return topMargin;
+    }
+
+    public static CharSequence getString(@StringRes int resId, Object... formatArgs) {
+        return GlobalData.app().getResources().getString(resId, formatArgs);
+    }
+
+    public static Resources getResources() {
+        return GlobalData.app().getResources();
+    }
+
+    public static Drawable getDrawable(@DrawableRes int id) {
+        return AppCompatResources.getDrawable(GlobalData.app(), id);
+    }
+
+    /**
+     * 根据用户选择的应用语言，为WebView获取一个国际化的网址
+     *
+     * @param template 包含格式化字符串的网址模板，例如http://live.mi.com/lang/%s/qa/index.html，建议定义在{@link LocaleUtil}里
+     * @return
+     */
+
+    @CheckResult
+    public static String getWebViewUrl(@NonNull String template) {
+        return String.format(template, getWebViewLanguage());
     }
 }
