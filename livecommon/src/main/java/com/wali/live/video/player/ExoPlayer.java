@@ -390,7 +390,11 @@ public class ExoPlayer implements IPlayer, IMediaPlayer {
 
     @Override
     public void prepareAsync(boolean realTime) {
-
+        MyLog.w(TAG, "prepareAsync mMediaSourc=" + mMediaSource + " urlChange:" + mUrlChange);
+        if (mUrlChange) {
+            mPlayer.prepare(mMediaSource, true, false);
+            mPlayer.setPlayWhenReady(true);
+        }
     }
 
     @Override

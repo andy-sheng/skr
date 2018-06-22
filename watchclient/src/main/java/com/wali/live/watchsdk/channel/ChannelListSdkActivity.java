@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -16,7 +17,11 @@ import com.wali.live.watchsdk.channel.adapter.ChannelTabPagerAdapter;
 import com.wali.live.watchsdk.channel.list.model.ChannelShow;
 import com.wali.live.watchsdk.channel.list.presenter.ChannelListPresenter;
 import com.wali.live.watchsdk.channel.list.presenter.IChannelListView;
+import com.wali.live.watchsdk.channel.view.LiveChannelView;
+import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.view.EmptyView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -30,8 +35,8 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
     private EmptyView mEmptyView;
 
     private ChannelTabPagerAdapter mPagerAdapter;
-
     private ChannelListPresenter mChannelListPresenter;
+    private boolean mIsFirstLoad = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +64,26 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
 
         mPagerAdapter = new ChannelTabPagerAdapter();
         mViewPager.setAdapter(mPagerAdapter);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                View view = mViewPager.getChildAt(position);
+                if (view instanceof LiveChannelView) {
+                    EventBus.getDefault().removeStickyEvent(EventClass.SelectChannelEvent.class);
+                    EventBus.getDefault().postSticky(new EventClass.SelectChannelEvent(((LiveChannelView) view).getChannelId()));
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void loadData() {
@@ -75,7 +100,26 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
             mEmptyView.setVisibility(View.GONE);
             mPagerAdapter.setChannelList(models);
             mSlidingTabLayout.setViewPager(mViewPager);
+            if (mIsFirstLoad) {
+                if (!models.isEmpty()) {
+                    long channelId = models.get(0).getChannelId();
+                    EventBus.getDefault().postSticky(new EventClass.SelectChannelEvent(channelId));
+                }
+                mIsFirstLoad = false;
+            }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().post(new EventClass.LiveListActivityLiveCycle(EventClass.LiveListActivityLiveCycle.Event.RESUME));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().post(new EventClass.LiveListActivityLiveCycle(EventClass.LiveListActivityLiveCycle.Event.PAUSE));
     }
 
     public static void openActivity(@NonNull Activity activity) {

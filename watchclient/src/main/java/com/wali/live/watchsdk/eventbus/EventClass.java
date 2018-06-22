@@ -116,4 +116,43 @@ public class EventClass {
             return openId;
         }
     }
+
+    public static class StopPlayVideoEvent {
+        public boolean isNeedToReset = false;
+    }
+
+    public static class LiveListActivityLiveCycle {
+        public Event liveEvent;
+
+        public LiveListActivityLiveCycle(Event liveEvent) {
+            this.liveEvent = liveEvent;
+        }
+
+        public enum Event {
+            RESUME, PAUSE;
+        }
+    }
+
+    public static class ChannelVideoCtrlEvent {
+        public ChannelVideoCtrlEvent(boolean canPlay) {
+            this.canPlay = canPlay;
+        }
+
+        public boolean canPlay = false;
+    }
+
+    public static class SelectChannelEvent {
+        public long channelId;
+        public int pagerScrollState;
+
+        public SelectChannelEvent(long channelId) {
+            this.channelId = channelId;
+        }
+
+        public SelectChannelEvent(long channelId, int pagerScrollState) {
+            this.channelId = channelId;
+            this.pagerScrollState = pagerScrollState;
+        }
+    }
+
 }
