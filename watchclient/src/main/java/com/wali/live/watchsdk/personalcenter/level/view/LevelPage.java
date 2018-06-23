@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -21,6 +22,7 @@ import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.milink.sdk.aidl.PacketData;
+import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.proto.ExpLevelProto;
 import com.wali.live.watchsdk.R;
 
@@ -114,6 +116,7 @@ public class LevelPage extends FrameLayout {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(getRxActivity().<ExpLevelProto.GetExpRsp>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new Action1<ExpLevelProto.GetExpRsp>() {
                     @Override
                     public void call(ExpLevelProto.GetExpRsp rsp) {
@@ -184,6 +187,7 @@ public class LevelPage extends FrameLayout {
         mDrawProgressSub = Observable
                 .interval(20, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(getRxActivity().<Long>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long l) {
@@ -203,6 +207,10 @@ public class LevelPage extends FrameLayout {
                         MyLog.e(TAG, "draw progress fail", e);
                     }
                 });
+    }
+
+    private BaseActivity getRxActivity() {
+        return (BaseActivity) getContext();
     }
 
     private <V extends View> V $(@IdRes int id) {

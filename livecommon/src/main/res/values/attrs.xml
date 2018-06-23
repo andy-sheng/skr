@@ -15,7 +15,7 @@
     <declare-styleable name="PlayerView">
         <attr name="real_time" format="boolean"/>
     </declare-styleable>
-    
+
     <declare-styleable
         name="ClipImageSize"><attr format="integer"
         name="clip_image_height"/>
