@@ -3,6 +3,7 @@ package com.wali.live.watchsdk.component.presenter;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.milink.event.MiLinkEvent;
@@ -14,6 +15,7 @@ import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
+import com.wali.live.watchsdk.personalcenter.MyInfoHalfFragment;
 import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
 
 import org.greenrobot.eventbus.EventBus;
@@ -115,9 +117,15 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
         postEvent(MSG_SHOW_MENU_PANEL, new Params().putItem(unReadCnt));
     }
 
+    @Override
+    public void showMyInfoPannel() {
+        MyInfoHalfFragment.openFragment((BaseSdkActivity) mView.getRealView().getContext());
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MiLinkEvent.StatusLogined event) {
         syncUnreadCount();
+        mView.tryBindAvatar();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

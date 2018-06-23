@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/my_info_btn"
+    android:background="@drawable/my_info_btn_bg"
+    android:layout_width="wrap_content"
+    android:padding="@dimen/view_dimen_10"
+    android:layout_height="@dimen/view_dimen_110">
+
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/my_avatar_iv"
+        android:layout_centerVertical="true"
+        android:layout_width="@dimen/view_dimen_90"
+        android:layout_height="@dimen/view_dimen_90"
+        android:src="@drawable/avatar_default" />
+
+    <TextView
+        android:id="@+id/desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_dimen_12"
+        android:layout_toRightOf="@id/my_avatar_iv"
+        android:gravity="center"
+        android:text="我的"
+        android:textColor="@color/color_black"
+        android:textSize="@dimen/view_dimen_36" />
+</RelativeLayout>

@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.component.view;
 
 import android.animation.ValueAnimator;
 import android.support.annotation.NonNull;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
@@ -31,6 +32,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     //    protected View mRotateBtn;
     private View mGameBtn;
     private WatchMenuIconView mMoreBtn;
+    private MyInfoIconView mMyInfoIconView;
 
     private boolean mIsGameMode = false;
 
@@ -62,6 +64,10 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
                 mMoreBtn.changeIconStatus(true);
                 mPresenter.showWatchMenuPanel(mMoreBtn.getMsgUnreadCnt());
             }
+        }else if(id == R.id.my_info_btn){
+            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                mPresenter.showMyInfoPannel();
+            }
         }
     }
 
@@ -85,12 +91,19 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         mMoreBtn = new WatchMenuIconView(getContext());
         addCreatedView(mMoreBtn, R.id.more_btn);
 
+        mMyInfoIconView = new MyInfoIconView(getContext());
+
+        addCreatedView(mMyInfoIconView.getRealView(), R.id.my_info_btn);
+
+        mRightBtnSetPort.add(mMyInfoIconView.getRealView());
         // 横竖屏时按钮排列顺序
         if(!mIsHuYaLive){
             mRightBtnSetPort.add(mGiftBtn);
         }
         mRightBtnSetPort.add(mMoreBtn);
 
+
+        mBottomBtnSetLand.add(mMyInfoIconView.getRealView());
         if(!mIsHuYaLive){
             mBottomBtnSetLand.add(mGiftBtn);
         }
@@ -227,6 +240,14 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             public void updateMoreBtnStatus() {
                 mMoreBtn.changeIconStatus(false);
             }
+
+            @Override
+            public void tryBindAvatar() {
+                if (mMyInfoIconView != null) {
+                    mMyInfoIconView.tryBindAvatar();
+                }
+            }
+
         }
         return new ComponentView();
     }
@@ -256,6 +277,11 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
          * 显示更多面板
          */
         void showWatchMenuPanel(int unReadCnt);
+
+        /**
+         * 显示个人信息
+         */
+        void showMyInfoPannel();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
@@ -272,5 +298,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
          * 更新更多按钮
          */
         void updateMoreBtnStatus();
+
+        void tryBindAvatar();
     }
 }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/place_holder_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_953"
+        android:background="@drawable/shape_vfans_fragment_bg"
+        android:orientation="vertical">
+
+        <com.base.view.SlidingTabLayout
+            android:id="@+id/my_info_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/margin_130"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/margin_188"
+            android:layout_marginRight="@dimen/margin_188"/>
+
+        <View
+            android:id="@+id/split_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_2"
+            android:background="@color/color_black_trans_10"/>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/my_info_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fadingEdge="none"
+            android:fadingEdgeLength="0dp"
+            android:overScrollMode="never"
+            android:requiresFadingEdge="none"/>
+
+    </LinearLayout>
+</LinearLayout>
+
+
+

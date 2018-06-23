@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_dimen_148"
+        android:layout_height="@dimen/view_dimen_148"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_dimen_73" />
+
+    <RelativeLayout
+        android:id="@+id/nickname_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/avatar_iv"
+        android:layout_marginTop="@dimen/view_dimen_30">
+
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_black_trans_90"
+            android:textSize="@dimen/view_dimen_48" />
+    </RelativeLayout>
+
+
+</RelativeLayout>
