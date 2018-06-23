@@ -492,14 +492,16 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             MyLog.e(TAG, "step2PayWayViewHolder == null, can not apply selected pay way, isNeedNotify:" + isNeedNotify);
             return;
         }
-        Drawable payWayIcon = GlobalData.app().getResources().getDrawable(payWay.getIcon());
-        // 这里的图要比原图小
-        payWayIcon.setBounds(0, 0, (int) (payWayIcon.getIntrinsicWidth() * PAY_WAY_ICON_SHRINK_SCALE),
-                (int) (payWayIcon.getIntrinsicHeight() * PAY_WAY_ICON_SHRINK_SCALE));
+        // 隐藏米币的图标
+        payWayViewHolder.itemView.setVisibility(View.GONE);
+//        Drawable payWayIcon = GlobalData.app().getResources().getDrawable(payWay.getIcon());
+//         这里的图要比原图小
+//        payWayIcon.setBounds(0, 0, (int) (payWayIcon.getIntrinsicWidth() * PAY_WAY_ICON_SHRINK_SCALE),
+//                (int) (payWayIcon.getIntrinsicHeight() * PAY_WAY_ICON_SHRINK_SCALE));
         //Drawable arrowIcon = mContext.getResources().getDrawable(R.drawable.pay_activity_diamond_more);
         //arrowIcon.setBounds(0, 0, arrowIcon.getIntrinsicWidth(), arrowIcon.getIntrinsicHeight());
-        payWayViewHolder.mPayWayTv.setCompoundDrawables(payWayIcon, null, null, null);
-        payWayViewHolder.mPayWayTv.setText(payWay.getName());
+//        payWayViewHolder.mPayWayTv.setCompoundDrawables(payWayIcon, null, null, null);
+//        payWayViewHolder.mPayWayTv.setText(payWay.getName());
 
         if (isNeedNotify) {
             if (mLastRechargeListType != payWay.getRechargeListType()) {
@@ -918,7 +920,7 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //MyLog.w(TAG, "viewType:" + viewType);
+        MyLog.w(TAG, "viewType:" + viewType);
         switch (viewType) {
             case ITEM_TYPE_BALANCE:
                 return getBalanceViewHolder(parent);
@@ -926,14 +928,14 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 return getDividerViewHolder(parent);
             case ITEM_TYPE_PAY_WAY_SECOND_STEP:
                 return getStep2PayWayViewHolder(parent);
-            case ITEM_TYPE_PAY_WAY_FIRST_STEP:
-                return getStep1PayWayViewHolder(parent);
             case ITEM_TYPE_PRICE:
                 return getPriceGridViewHolder(parent);
             case ITEM_TYPE_ERROR:
                 return getErrorViewHolder(parent);
             case ITEM_TYPE_LOADING:
                 return getLoadingViewHolder(parent);
+            case ITEM_TYPE_PAY_WAY_FIRST_STEP:
+                return getStep1PayWayViewHolder(parent);
             default:
                 MyLog.e(TAG, "unexpected viewType:" + viewType);
                 break;

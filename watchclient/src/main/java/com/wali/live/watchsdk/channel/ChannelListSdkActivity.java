@@ -9,9 +9,13 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.base.activity.BaseSdkActivity;
+import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.NestViewPager;
 import com.base.view.SlidingTabLayout;
+import com.mi.live.data.account.channel.HostChannelManager;
+import com.wali.live.common.statistics.StatisticsAlmightyWorker;
+import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.adapter.ChannelTabPagerAdapter;
 import com.wali.live.watchsdk.channel.list.model.ChannelShow;
@@ -44,6 +48,15 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
         setContentView(R.layout.activity_channel_list);
         bindViews();
         loadData();
+        report();
+    }
+
+    private void report() {
+        try {
+            String key = String.format(StatisticsKey.KEY_SDK_TONGGLE_CHANNEL_LIST_TYPE, HostChannelManager.getInstance().getChannelId(), 0);
+            StatisticsAlmightyWorker.getsInstance().recordImmediatelyDefault(key, 1);
+        } catch (Exception e) {
+        }
     }
 
     private void bindViews() {
