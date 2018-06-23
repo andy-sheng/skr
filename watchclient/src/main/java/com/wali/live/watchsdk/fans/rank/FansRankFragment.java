@@ -14,7 +14,7 @@ import com.base.view.BackTitleBar;
 import com.base.view.SlidingTabLayout;
 import com.wali.live.proto.VFansCommonProto;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
+import com.wali.live.common.photopicker.adapter.CommonTabPagerAdapter;
 import com.wali.live.watchsdk.fans.rank.view.FansRankView;
 
 public class FansRankFragment extends RxFragment implements View.OnClickListener {

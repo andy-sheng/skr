@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.image;
+package com.wali.live.common.photopicker;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -38,20 +38,20 @@ import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
 import com.base.utils.display.DisplayUtils;
+import com.base.utils.image.ImageUtils;
 import com.base.utils.toast.ToastUtils;
 import com.base.view.SlidingTabLayout;
 import com.base.view.SymmetryTitleBar;
+import com.live.module.common.R;
 import com.mi.live.data.repository.DataType.PhotoFolder;
 import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.trello.rxlifecycle.FragmentEvent;
 import com.wali.live.common.action.PickerAction;
 import com.wali.live.common.listener.OnItemClickListener;
-import com.wali.live.livesdk.R;
-import com.wali.live.livesdk.live.image.adapter.FilePickerRecyclerAdapter;
-import com.wali.live.livesdk.live.image.adapter.PhotoPickerRecyclerAdapter;
-import com.wali.live.livesdk.live.utils.ImageUtils;
-import com.wali.live.livesdk.live.viewmodel.PhotoItem;
-import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
+import com.wali.live.common.photopicker.adapter.CommonTabPagerAdapter;
+import com.wali.live.common.photopicker.adapter.FilePickerRecyclerAdapter;
+import com.wali.live.common.photopicker.adapter.PhotoPickerRecyclerAdapter;
+import com.wali.live.common.photopicker.model.PhotoItem;
 
 import java.io.File;
 import java.util.ArrayList;

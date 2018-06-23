@@ -23,7 +23,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.assist.Attachment;
 import com.wali.live.livesdk.R;
-import com.wali.live.livesdk.live.image.ClipImageActivity;
+import com.wali.live.common.photopicker.ClipImageActivity;
 import com.wali.live.livesdk.live.manager.PrepareLiveCoverManager;
 import com.wali.live.utils.AvatarUtils;
 

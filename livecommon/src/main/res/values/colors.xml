@@ -104,4 +104,6 @@
     <color name="color_black_trans_30">#4D000000</color>
     <color name="color_grey">#f8f8f8</color>
     <color name="color_db5990">#db5990</color>
+    <color name="color_line_e0dfde">#e0dfde</color>
+    <color name="color_90_dcab42">#e5dcab42</color>
 </resources>

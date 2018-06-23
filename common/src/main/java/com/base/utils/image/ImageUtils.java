@@ -23,6 +23,8 @@ import rx.schedulers.Schedulers;
 public class ImageUtils {
     private static final String TAG = ImageUtils.class.getSimpleName();
 
+    public static final String AVATAR_TEMP_DIR = "/zhibo/.temp/";      //临时文件路径, 比如裁剪后的图片临时文件存放在这里
+
     public static Bitmap getLocalBitmap(String path) {
         if (TextUtils.isEmpty(path)) {
             return null;

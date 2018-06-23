@@ -6,7 +6,7 @@
     android:background="@color/color_black_trans_60"
     android:orientation="vertical">
 
-    <com.wali.live.livesdk.live.image.ClipImageLayout
+    <com.wali.live.common.photopicker.view.ClipImageLayout
         android:id="@+id/clipImageLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>

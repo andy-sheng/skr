@@ -42,7 +42,7 @@ import com.wali.live.livesdk.live.view.RoomSettingView;
 import com.wali.live.proto.RankProto;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
-import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
+import com.wali.live.common.photopicker.adapter.CommonTabPagerAdapter;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.recipient.RecipientsSelectFragment;
 import com.wali.live.watchsdk.recipient.adapter.RecipientsSelectRecyclerAdapter;
