@@ -32,4 +32,6 @@
     <string name="vip_frozen_tip_line_2">消费1金钻立即恢复特权</string>
     <string name="vip_total_get_exp">累计获得%1$d经验</string>
     <string name="vip_level_update_required_exp_tip">距离%1$s还需要%2$d经验</string>
+    <string name="default_sign_txt">我是个人简介,当主人写我的时候我才有~~</string>
+    <string name="modify_txt">修改资料</string>
 </resources>

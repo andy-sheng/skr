@@ -1,23 +1,52 @@
 package com.wali.live.watchsdk.personalcenter.view;
 
 import android.content.Context;
+import android.support.v4.util.Pair;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
+import com.base.log.MyLog;
+import com.base.utils.CommonUtils;
+import com.base.utils.display.DisplayUtils;
+import com.base.view.AlwaysMarqueeTextView;
 import com.mi.live.data.account.MyUserInfoManager;
+import com.mi.live.data.config.GetConfigManager;
+import com.mi.live.data.user.User;
+import com.wali.live.common.barrage.view.utils.NobleConfigUtils;
+import com.wali.live.common.view.LevelIconsLayout;
 import com.wali.live.utils.AvatarUtils;
+import com.wali.live.utils.ItemDataFormatUtils;
+import com.wali.live.utils.level.VipLevelUtil;
 import com.wali.live.watchsdk.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyInfoSummaryView extends RelativeLayout {
     public final static String TAG = "MyInfoSummaryView";
 
-    private View mRealView;
+    private Context mContext;
 
+    //ui
+    private View mRealView;
     private BaseImageView mAvatarIv;
-    private TextView mNameTv;
+    private AlwaysMarqueeTextView mNameTv;
+    private ImageView mGenderIv;
+    private TextView mIdTv;
+    private LevelIconsLayout mLevelIconsContainer;
+    private TextView mSignTv;
+    private TextView mFollowTv;
+    private TextView mFanTv;
+
+    //data
+    private User mUser;
 
     public MyInfoSummaryView(Context context) {
         super(context);
@@ -25,16 +54,91 @@ public class MyInfoSummaryView extends RelativeLayout {
     }
 
     private void init(Context context) {
+
+        mContext = context;
+
         mRealView = inflate(context,R.layout.my_info_personal_summary_layout, this);
         mAvatarIv = (BaseImageView) mRealView.findViewById(R.id.avatar_iv);
-        mNameTv = (TextView) mRealView.findViewById(R.id.name_tv);
+        mNameTv = (AlwaysMarqueeTextView) mRealView.findViewById(R.id.name_tv);
+        mGenderIv = (ImageView) mRealView.findViewById(R.id.gender_iv);
+        mIdTv = (TextView) mRealView.findViewById(R.id.id_tv);
+        mLevelIconsContainer = (LevelIconsLayout) mRealView.findViewById(R.id.level_icons_container);
+        mSignTv = (TextView) mRealView.findViewById(R.id.sign_tv);
+        mFollowTv = (TextView) mRealView.findViewById(R.id.follow_tv);
+        mFanTv = (TextView) mRealView.findViewById(R.id.fan_tv);
+
+        mUser = MyUserInfoManager.getInstance().getUser();
 
         bindData();
     }
 
     private void bindData() {
-        AvatarUtils.loadAvatarByUidTs(mAvatarIv, MyUserInfoManager.getInstance().getUuid(), MyUserInfoManager.getInstance().getAvatar(), true);
-        mNameTv.setText(TAG);
+        if(mUser == null) {
+            MyLog.w(TAG, "mUser is null");
+            return;
+        }
+
+        AvatarUtils.loadAvatarByUidTs(mAvatarIv, mUser.getUid(), mUser.getAvatar(), true);
+        mNameTv.setText(TextUtils.isEmpty(mUser.getNickname()) ? String.valueOf(mUser.getUid()) : mUser.getNickname());
+
+        if (mUser.getGender() == 1) {
+            mGenderIv.setVisibility(View.VISIBLE);
+            mGenderIv.setBackgroundResource(R.drawable.all_man);
+        } else if (mUser.getGender() == 2) {
+            mGenderIv.setVisibility(View.VISIBLE);
+            mGenderIv.setBackgroundResource(R.drawable.all_women);
+        } else {
+            mGenderIv.setVisibility(View.GONE);
+        }
+
+        mIdTv.setText(GlobalData.app().getResources().getString(R.string.default_id_hint) + String.valueOf(mUser.getUid()));
+        updateLevelIcons();
+        mSignTv.setText(TextUtils.isEmpty(mUser.getSign()) ? CommonUtils.getString(R.string.default_sign_txt) : mUser.getSign());
+
+        mFollowTv.setText(String.format(GlobalData.app().getResources().getString(R.string.follow_cnt), String.valueOf(mUser.getFollowNum())));
+        mFanTv.setText(String.format(GlobalData.app().getResources().getString(R.string.fan_cnt), String.valueOf(mUser.getFansNum())));
     }
 
+    private void updateLevelIcons() {
+        List<TextView> list = new ArrayList<>();
+        TextView view;
+        if (mUser.isNoble()) {
+            view = LevelIconsLayout.getDefaultTextView(GlobalData.app());
+            view.setBackgroundResource(NobleConfigUtils.getImageResoucesByNobelLevelInBarrage(mUser.getNobleLevel()));
+            list.add(view);
+        }
+        // VIP
+        Pair<Boolean, Integer> pair = VipLevelUtil.getLevelBadgeResId(mUser.getVipLevel(), mUser.isVipFrozen(), false);
+        if (true == pair.first) {
+            view = LevelIconsLayout.getDefaultTextView(mContext);
+            view.setBackgroundResource(pair.second);
+            list.add(view);
+        }
+        // Plain
+        GetConfigManager.LevelItem levelItem = ItemDataFormatUtils.getLevelItem(mUser.getLevel());
+        view = LevelIconsLayout.getDefaultTextView(mContext);
+        view.setText(String.valueOf(mUser.getLevel()) + " ");
+        view.setBackgroundDrawable(levelItem.drawableBG);
+        view.setCompoundDrawables(levelItem.drawableLevel, null, null, null);
+        if (mUser.getVipLevel() > 4 && !mUser.isVipFrozen()) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(view.getLayoutParams());
+            params.setMargins(DisplayUtils.dip2px(3), DisplayUtils.dip2px(2), 0, 0);
+            view.setLayoutParams(params);
+        }
+        list.add(view);
+
+//        if (mCharmLevel > 0) {//TODO-暂时去了
+//            (如果主播开了粉丝团显示等级)
+//            view = LevelIconsLayout.getDefaultTextView(PersonalCenterActivity.this);
+//            view.setBackgroundResource(VfansInfoUtils.getImageResoucesByCharmLevelValue(mCharmLevel));
+//            if (mUser.getVipLevel() > 4 && !mUser.isVipFrozen()) {
+//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(view.getLayoutParams());
+//                params.setMargins(DisplayUtils.dip2px(3), DisplayUtils.dip2px(2), 0, 0);
+//                view.setLayoutParams(params);
+//            }
+//            list.add(view);
+//        }
+
+        mLevelIconsContainer.addIconsWithClear(list);
+    }
 }
