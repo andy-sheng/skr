@@ -48,7 +48,6 @@ import rx.functions.Action1;
 public class EditNameHalfFragment extends RxFragment implements IEditNameView {
     private static final String TAG = "EditNameHalfFragment";
     public static final int REQUEST_CODE = GlobalData.getRequestCode();
-    private final static int NICKNAME_CHANGE_CD = 60 * 60 * 24;
 
     //ui
     private TextView mBackTv;

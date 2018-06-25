@@ -81,6 +81,9 @@ public class EditGenderFragment extends RxFragment implements View.OnClickListen
     private void initView() {
         mMe = MyUserInfoManager.getInstance().getUser();
         mGender = mMe.getGender();
+        if(mGender != 1) {
+            mGender = 2;
+        }
         updateView(mGender);
     }
 
