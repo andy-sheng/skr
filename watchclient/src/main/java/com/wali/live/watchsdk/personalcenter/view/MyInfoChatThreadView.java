@@ -38,6 +38,14 @@ public class MyInfoChatThreadView extends RelativeLayout implements MessagePanel
         inflate(context, R.layout.my_info_half_chatthread_layout, this);
         mChatthreadRv = (RecyclerView) this.findViewById(R.id.chatthread_rv);
         mConversationAdapter = new ConversationAdapter();
+        mConversationAdapter.setClickListener(new ConversationAdapter.IConversationClickListener() {
+            @Override
+            public void onItemClick(ConversationAdapter.ConversationItem item) {
+                if (mMessagePresenter != null) {
+                    mMessagePresenter.onConversationClick(getContext(), item);
+                }
+            }
+        });
         mChatthreadRv.setLayoutManager(new LinearLayoutManager(context,
                 LinearLayoutManager.VERTICAL, false));
         mChatthreadRv.setAdapter(mConversationAdapter);

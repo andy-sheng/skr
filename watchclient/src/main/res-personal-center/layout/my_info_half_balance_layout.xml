@@ -25,4 +25,145 @@
         android:text="钻石余额"
         android:textColor="@color/color_black_trans_40"
         android:textSize="@dimen/view_dimen_40" />
+
+    <View
+        android:id="@+id/spilt_line_1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_1"
+        android:layout_marginTop="@dimen/view_dimen_297"
+        android:background="@color/color_black_trans_10" />
+
+    <LinearLayout
+        android:id="@+id/middle_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_160"
+        android:layout_below="@+id/spilt_line_1"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/gold_balance_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/gold_balance_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/pay_activity_golden_diamond" />
+
+            <TextView
+                android:id="@+id/gold_balance_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_dimen_40"
+                android:layout_toRightOf="@+id/gold_balance_iv"
+                android:text="166"
+                android:textColor="@color/color_black_trans_80"
+                android:textSize="@dimen/view_dimen_44" />
+
+            <TextView
+                android:id="@+id/gold_balance_desc_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/gold_balance_tv"
+                android:layout_below="@+id/gold_balance_tv"
+                android:layout_marginTop="@dimen/view_dimen_2"
+                android:text="永久有效"
+                android:textColor="@color/color_black_trans_40"
+                android:textSize="@dimen/view_dimen_36" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="@dimen/view_dimen_1"
+            android:layout_height="match_parent"
+            android:background="@color/color_black_trans_10" />
+
+        <RelativeLayout
+            android:id="@+id/silver_balance_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/silver_balance_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/pay_activity_silver_diamond" />
+
+            <TextView
+                android:id="@+id/silver_balance_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_dimen_40"
+                android:layout_toRightOf="@+id/silver_balance_iv"
+                android:text="166"
+                android:textColor="@color/color_black_trans_80"
+                android:textSize="@dimen/view_dimen_44" />
+
+            <TextView
+                android:id="@+id/silver_balance_desc_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/silver_balance_tv"
+                android:layout_below="@+id/silver_balance_tv"
+                android:layout_marginTop="@dimen/view_dimen_2"
+                android:text="永久有效"
+                android:textColor="@color/color_black_trans_40"
+                android:textSize="@dimen/view_dimen_36" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/split_line_2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_1"
+        android:layout_below="@+id/middle_container"
+        android:background="@color/color_black_trans_10" />
+
+    <RelativeLayout
+        android:id="@+id/exchange_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/split_line_2"
+        android:layout_marginTop="@dimen/view_dimen_42">
+
+        <TextView
+            android:id="@+id/exchange_tips_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_dimen_40"
+            android:text="您当前可以兑换100钻石"
+            android:textColor="@color/color_black_trans_60"
+            android:textSize="@dimen/view_dimen_36" />
+
+        <TextView
+            android:id="@+id/exchange_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_dimen_16"
+            android:layout_toRightOf="@+id/exchange_tips_tv"
+            android:text="立即兑换"
+            android:textColor="#5191D2"
+            android:textSize="@dimen/view_dimen_36" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/go_rechange_btn"
+        android:layout_width="@dimen/view_dimen_900"
+        android:layout_height="@dimen/view_dimen_130"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_dimen_35"
+        android:gravity="center"
+        android:background="@drawable/recharge_btn_bg"
+        android:text="立即充值"
+        android:textColor="@color/color_white_pressed_white50"
+        android:textSize="@dimen/view_dimen_45" />
 </merge>
