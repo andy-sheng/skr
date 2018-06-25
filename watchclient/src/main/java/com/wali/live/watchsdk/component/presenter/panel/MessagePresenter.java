@@ -72,13 +72,15 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
     public static final int TARGET_OFFICIAL_DEFAULT = 100000; // 小米直播团队
     public static final int TARGET_OFFICIAL = TARGET_OFFICIAL_DEFAULT; // 小米直播官方
 
-    private static final int MODE_NONE = -1;
-    private static final int MODE_FOCUS = 0;
-    private static final int MODE_UN_FOCUS = 1;
+    public static final int MODE_NONE = -1;
+    public static final int MODE_FOCUS = 0;
+    public static final int MODE_UN_FOCUS = 1;
 
     private volatile ConversationPuller mFocusPuller;
     private volatile ConversationPuller mUnFocusPuller;
     private int mMode = MODE_NONE;
+
+    private SwitchFocusInterceptor mSwitchFocusInterceptor;
 
     private final boolean isChineseLocal = CommonUtils.isChinese(); // 标记是否是中国区域
     /**
@@ -149,8 +151,17 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
     @Override
     public void startPresenter() {
         super.startPresenter();
+        startPresenter(MODE_FOCUS);
+    }
+
+    public void startPresenter(int mode) {
+        super.startPresenter();
         EventBus.getDefault().register(this);
-        switchToFocusMode();
+        if (mode == MODE_FOCUS) {
+            switchToFocusMode();
+        } else if (mode == MODE_UN_FOCUS) {
+            switchToUnFocusMode();
+        }
     }
 
     @Override
@@ -209,7 +220,11 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
                 item.unreadCount = 0;
                 markAsReadAsync(item.uid);
             }
-            switchToUnFocusMode();
+            if (mSwitchFocusInterceptor != null) {
+                mSwitchFocusInterceptor.switchToUnFocus();
+            } else {
+                switchToUnFocusMode();
+            }
         } else if (item.uid == Conversation.VFANS_NOTIFY_CONVERSATION_TARGET) {
             GroupNotifyFragment.openFragment((BaseActivity) context);
         } else {
@@ -575,5 +590,13 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
         protected final List<Conversation> onQueryFromLocalStore() {
             return ConversationLocalStore.getAllConversation(false);
         }
+    }
+
+    public void setSwitchFocusInterceptor(SwitchFocusInterceptor switchFocusInterceptor) {
+        mSwitchFocusInterceptor = switchFocusInterceptor;
+    }
+
+    public interface SwitchFocusInterceptor {
+        void switchToUnFocus();
     }
 }

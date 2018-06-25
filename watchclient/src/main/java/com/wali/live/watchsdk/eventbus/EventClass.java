@@ -161,4 +161,10 @@ public class EventClass {
         }
     }
 
+
+    public static class JumpNoFocusChatThreadFragEvent {
+
+        public JumpNoFocusChatThreadFragEvent() {
+        }
+    }
 }

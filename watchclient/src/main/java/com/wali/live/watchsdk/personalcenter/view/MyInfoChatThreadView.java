@@ -12,6 +12,9 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.presenter.adapter.ConversationAdapter;
 import com.wali.live.watchsdk.component.presenter.panel.MessagePresenter;
 import com.wali.live.watchsdk.component.view.panel.MessagePanel;
+import com.wali.live.watchsdk.eventbus.EventClass;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -52,7 +55,12 @@ public class MyInfoChatThreadView extends RelativeLayout implements MessagePanel
 
         mMessagePresenter = new MessagePresenter(mComponentController);
         mMessagePresenter.setView(this);
-
+        mMessagePresenter.setSwitchFocusInterceptor(new MessagePresenter.SwitchFocusInterceptor() {
+            @Override
+            public void switchToUnFocus() {
+                EventBus.getDefault().post(new EventClass.JumpNoFocusChatThreadFragEvent());
+            }
+        });
         bindData();
     }
 
@@ -68,7 +76,7 @@ public class MyInfoChatThreadView extends RelativeLayout implements MessagePanel
 
     @Override
     public void onEnterUnFocusMode() {
-
+        //nevercall
     }
 
     @Override
