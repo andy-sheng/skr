@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.fragment.BaseFragment;
+import com.base.fragment.FragmentDataListener;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
@@ -25,12 +26,14 @@ import java.util.concurrent.TimeUnit;
 
 import rx.functions.Action1;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by zhujianning on 18-6-25.
  * 修改资料页面
  */
 
-public class EditInfoFragment extends BaseFragment {
+public class EditInfoFragment extends BaseFragment implements FragmentDataListener{
     private static final String TAG = "EditInfoFragment";
     public static final int REQUEST_CODE = GlobalData.getRequestCode();
 
@@ -92,6 +95,22 @@ public class EditInfoFragment extends BaseFragment {
                         FragmentNaviUtils.popFragmentFromStack(getActivity());
                     }
                 });
+
+        RxView.clicks(mNameContainer).throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        EditNameHalfFragment.openFragment((BaseSdkActivity) getActivity(), R.id.fl_edit_container, EditInfoFragment.this);
+                    }
+                });
+
+        RxView.clicks(mGenderContainer).throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        EditGenderHalfFragment.openFragment((BaseSdkActivity) getActivity(), R.id.fl_edit_container, EditInfoFragment.this);
+                    }
+                });
     }
 
     private void bindAvator() {
@@ -114,5 +133,18 @@ public class EditInfoFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         FragmentNaviUtils.openFragment(activity, EditInfoFragment.class, bundle, containerId,
                 true, R.anim.slide_right_in, R.anim.slide_bottom_out);
+    }
+
+    @Override
+    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
+        MyLog.w(TAG, "requestCode=" + requestCode + ", resultCode=" + resultCode);
+//        if (resultCode != RESULT_OK) {
+//            return;
+//        }
+        if (requestCode == EditNameHalfFragment.REQUEST_CODE) {
+            bindNickName();
+        } else if(requestCode == EditGenderHalfFragment.REQUEST_CODE) {
+            bindGender();
+        }
     }
 }

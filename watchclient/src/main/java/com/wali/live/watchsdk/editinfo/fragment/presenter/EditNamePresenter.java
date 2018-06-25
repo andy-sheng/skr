@@ -65,4 +65,10 @@ public class EditNamePresenter extends BaseRxPresenter<IEditNameView> {
                     }
                 });
     }
+
+    public void destory() {
+        if(mEditSubscription != null && !mEditSubscription.isUnsubscribed()) {
+            mEditSubscription.unsubscribe();
+        }
+    }
 }

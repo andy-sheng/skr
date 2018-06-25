@@ -2069,4 +2069,29 @@ public abstract class CommonUtils {
     public static String getWebViewUrl(@NonNull String template) {
         return String.format(template, getWebViewLanguage());
     }
+
+    public static String formatSecond(long second) {
+        String timeStr = "0秒";
+        String format;
+        Object[] array;
+        Integer days = (int) (second / (60 * 60 * 24));
+        Integer hours = (int) (second / (60 * 60) - days * 24);
+        Integer minutes = (int) (second / 60 - hours * 60 - days * 24 * 60);
+        Integer seconds = (int) (second - minutes * 60 - hours * 60 * 60 - days * 24 * 60 * 60);
+        if (days > 0) {
+            format = "%1$,d天%2$,d小时";
+            array = new Object[]{days, hours};
+        } else if (hours > 0) {
+            format = "%1$,d小时%2$,d分";
+            array = new Object[]{hours, minutes};
+        } else if (minutes > 0) {
+            format = "%1$,d分";
+            array = new Object[]{minutes};
+        } else {
+            format = "%1$,d秒";
+            array = new Object[]{seconds};
+        }
+        timeStr = String.format(format, array);
+        return timeStr;
+    }
 }
