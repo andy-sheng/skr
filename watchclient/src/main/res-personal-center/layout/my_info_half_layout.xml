@@ -2,21 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blue"
     android:orientation="vertical">
 
     <View
         android:id="@+id/place_holder_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_dimen_966"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/container" />
 
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_dimen_953"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/shape_vfans_fragment_bg"
-        android:orientation="vertical"
-        android:layout_below="@id/place_holder_view">
+        android:orientation="vertical">
 
         <com.base.view.SlidingTabLayout
             android:id="@+id/my_info_tab"
@@ -25,13 +26,13 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/margin_188"
-            android:layout_marginRight="@dimen/margin_188"/>
+            android:layout_marginRight="@dimen/margin_188" />
 
         <View
             android:id="@+id/split_line"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_dimen_2"
-            android:background="@color/color_black_trans_10"/>
+            android:background="@color/color_black_trans_10" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/my_info_pager"
@@ -41,7 +42,7 @@
             android:fadingEdge="none"
             android:fadingEdgeLength="0dp"
             android:overScrollMode="never"
-            android:requiresFadingEdge="none"/>
+            android:requiresFadingEdge="none" />
 
     </LinearLayout>
 
