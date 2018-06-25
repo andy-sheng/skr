@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.base.activity.BaseActivity;
 import com.base.event.KeyboardEvent;
+import com.base.fragment.BaseFragment;
 import com.base.fragment.RxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.keyboard.KeyboardUtils;
@@ -28,6 +29,7 @@ import com.wali.live.common.smiley.SmileyParser;
 import com.wali.live.common.smiley.SmileyPicker;
 import com.wali.live.dao.SixinMessage;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.personalcenter.fragment.ChatThreadHalfFragment;
 import com.wali.live.watchsdk.sixin.cache.SendingMessageCache;
 import com.wali.live.watchsdk.sixin.constant.SixinConstants;
 import com.wali.live.watchsdk.sixin.data.SixinMessageLocalStore;
@@ -364,10 +366,9 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
     public static void open(BaseActivity activity, SixinTarget sixinTarget, boolean isNeedSaveToStack) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(EXTRA_SIXIN_TARGET, sixinTarget);
-        if (isNeedSaveToStack) {
-            FragmentNaviUtils.addFragmentToBackStack(activity, R.id.main_act_container, PopComposeMessageFragment.class, bundle, false, 0, 0);
-        } else {
-            FragmentNaviUtils.addFragmentAndResetArgument(activity, R.id.main_act_container, PopComposeMessageFragment.class, bundle, true, false, 0, 0);
-        }
+
+        BaseFragment fragment = FragmentNaviUtils.addFragment(activity, R.id.main_act_container, PopComposeMessageFragment.class,
+                bundle, true, true, true);
+
     }
 }
