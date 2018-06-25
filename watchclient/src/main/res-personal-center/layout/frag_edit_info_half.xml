@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/place_holder_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_966" />
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_953"
+        android:background="@drawable/shape_vfans_fragment_bg"
+        android:orientation="vertical"
+        android:layout_below="@id/place_holder_view">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_130">
+
+            <TextView
+                android:id="@+id/back_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/view_dimen_40"
+                android:background="@drawable/back_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/modify_txt"
+                android:textColor="@color/color_black_trans_80"
+                android:textSize="@dimen/text_size_40" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_30"
+            android:background="@color/color_f5f5f5" />
+
+        <RelativeLayout
+            android:id="@+id/avator_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_148">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/view_dimen_40"
+                android:layout_marginRight="@dimen/view_dimen_40"
+                android:text="@string/avatar"
+                android:textColor="@color/color_black_trans_50"
+                android:textSize="@dimen/text_size_45" />
+
+            <com.base.image.fresco.BaseImageView
+                android:id="@+id/avatar_iv"
+                android:layout_width="@dimen/view_dimen_100"
+                android:layout_height="@dimen/view_dimen_100"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/view_dimen_100" />
+
+            <View
+                android:layout_width="@dimen/view_dimen_40"
+                android:layout_height="@dimen/view_dimen_40"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/view_dimen_40"
+                android:background="@drawable/set_list_icon_next" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_dimen_1"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="@dimen/view_dimen_40"
+                android:background="@color/color_e5e5e5" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/name_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_148">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/view_dimen_40"
+                android:layout_marginRight="@dimen/view_dimen_40"
+                android:text="@string/name"
+                android:textColor="@color/color_black_trans_50"
+                android:textSize="@dimen/text_size_45" />
+
+            <TextView
+                android:id="@+id/name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/view_dimen_100"
+                android:ellipsize="end"
+                android:maxWidth="@dimen/view_dimen_680"
+                android:singleLine="true"
+                android:textColor="@color/color_black_trans_90"
+                android:textSize="@dimen/text_size_45" />
+
+            <View
+                android:layout_width="@dimen/view_dimen_40"
+                android:layout_height="@dimen/view_dimen_40"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/view_dimen_40"
+                android:background="@drawable/set_list_icon_next" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_dimen_1"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="@dimen/view_dimen_40"
+                android:background="@color/color_e5e5e5" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/gender_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_148">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/view_dimen_40"
+                android:layout_marginRight="@dimen/view_dimen_40"
+                android:text="@string/gender"
+                android:textColor="@color/color_black_trans_50"
+                android:textSize="@dimen/text_size_45" />
+
+            <TextView
+                android:id="@+id/gender_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/view_dimen_100"
+                android:textColor="@color/color_black_trans_90"
+                android:textSize="@dimen/text_size_45" />
+
+            <View
+                android:layout_width="@dimen/view_dimen_40"
+                android:layout_height="@dimen/view_dimen_40"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/view_dimen_40"
+                android:background="@drawable/set_list_icon_next" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_dimen_1"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="@dimen/view_dimen_40"
+                android:background="@color/color_e5e5e5" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/sign_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_148">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/view_dimen_40"
+                android:layout_marginRight="@dimen/view_dimen_40"
+                android:text="@string/signature"
+                android:textColor="@color/color_black_trans_50"
+                android:textSize="@dimen/text_size_45" />
+
+            <TextView
+                android:id="@+id/sign_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/view_dimen_100"
+                android:ellipsize="end"
+                android:maxWidth="@dimen/view_dimen_680"
+                android:singleLine="true"
+                android:textColor="@color/color_black_trans_90"
+                android:textSize="@dimen/text_size_45" />
+
+            <View
+                android:layout_width="@dimen/view_dimen_40"
+                android:layout_height="@dimen/view_dimen_40"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/view_dimen_40"
+                android:background="@drawable/set_list_icon_next" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_dimen_1"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="@dimen/view_dimen_40"
+                android:background="@color/color_e5e5e5" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

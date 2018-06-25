@@ -14,12 +14,19 @@ import com.base.fragment.BaseFragment;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.keyboard.KeyboardUtils;
+import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.SlidingTabLayout;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.eventbus.EventClass;
+import com.wali.live.watchsdk.personalcenter.fragment.EditInfoFragment;
 import com.wali.live.watchsdk.personalcenter.view.MyInfoBalanceView;
 import com.wali.live.watchsdk.personalcenter.view.MyInfoChatThreadView;
 import com.wali.live.watchsdk.personalcenter.view.MyInfoSummaryView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +59,7 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
 
     @Override
     protected void bindView() {
+        EventBus.getDefault().register(this);
         initData();
         initView();
         initPresenter();
@@ -145,6 +153,7 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
     }
 
     private void finish() {
+        EventBus.getDefault().unregister(this);
         KeyboardUtils.hideKeyboardImmediately(getActivity());
         FragmentNaviUtils.popFragmentFromStack(getActivity());
     }
@@ -186,6 +195,16 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.JumpHalfEditFragEvent event) {
+        if(event == null) {
+            return;
+        }
+
+        MyLog.d(TAG, "JumpHalfEditFragEvent");
+        EditInfoFragment.openFragment((BaseSdkActivity) getActivity(), R.id.fl_container);
     }
 
     abstract class LazyNewView<V extends View> {

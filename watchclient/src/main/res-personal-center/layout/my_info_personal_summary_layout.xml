@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_dimen_800"
     tools:parentTag="android.widget.RelativeLayout">
@@ -14,7 +15,10 @@
         android:layout_marginTop="@dimen/view_dimen_40"
         android:text="@string/modify_txt"
         android:textColor="@color/color_black_trans_50"
-        android:textSize="@dimen/text_size_36" />
+        android:textSize="@dimen/text_size_36"
+        android:drawableLeft="@drawable/modify"
+        android:drawablePadding="@dimen/view_dimen_10"
+        android:gravity="center_vertical"/>
 
     <com.base.image.fresco.BaseImageView
         android:id="@+id/avatar_iv"

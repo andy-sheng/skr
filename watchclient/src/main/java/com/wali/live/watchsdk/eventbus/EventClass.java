@@ -155,4 +155,10 @@ public class EventClass {
         }
     }
 
+    public static class JumpHalfEditFragEvent {
+
+        public JumpHalfEditFragEvent() {
+        }
+    }
+
 }

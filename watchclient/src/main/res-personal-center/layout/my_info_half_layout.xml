@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -7,7 +7,7 @@
     <View
         android:id="@+id/place_holder_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/view_dimen_966"
         android:layout_weight="1"/>
 
     <LinearLayout
@@ -15,7 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_dimen_953"
         android:background="@drawable/shape_vfans_fragment_bg"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_below="@id/place_holder_view">
 
         <com.base.view.SlidingTabLayout
             android:id="@+id/my_info_tab"
@@ -43,7 +44,13 @@
             android:requiresFadingEdge="none"/>
 
     </LinearLayout>
-</LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>
 
 
 

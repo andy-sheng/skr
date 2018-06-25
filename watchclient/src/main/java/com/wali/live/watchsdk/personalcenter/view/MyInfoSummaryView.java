@@ -3,7 +3,6 @@ package com.wali.live.watchsdk.personalcenter.view;
 import android.content.Context;
 import android.support.v4.util.Pair;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,6 +15,7 @@ import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.AlwaysMarqueeTextView;
+import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.config.GetConfigManager;
 import com.mi.live.data.user.User;
@@ -25,9 +25,15 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.utils.level.VipLevelUtil;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.eventbus.EventClass;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import rx.functions.Action1;
 
 public class MyInfoSummaryView extends RelativeLayout {
     public final static String TAG = "MyInfoSummaryView";
@@ -44,6 +50,7 @@ public class MyInfoSummaryView extends RelativeLayout {
     private TextView mSignTv;
     private TextView mFollowTv;
     private TextView mFanTv;
+    private TextView mModifyTv;
 
     //data
     private User mUser;
@@ -66,10 +73,24 @@ public class MyInfoSummaryView extends RelativeLayout {
         mSignTv = (TextView) mRealView.findViewById(R.id.sign_tv);
         mFollowTv = (TextView) mRealView.findViewById(R.id.follow_tv);
         mFanTv = (TextView) mRealView.findViewById(R.id.fan_tv);
+        mModifyTv = (TextView) mRealView.findViewById(R.id.modify_tv);
 
         mUser = MyUserInfoManager.getInstance().getUser();
 
+        initListener();
         bindData();
+    }
+
+    private void initListener() {
+        RxView.clicks(mModifyTv)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+//                        EditInfoFragment.openFragment((BaseSdkActivity) mContext);
+                        EventBus.getDefault().post(new EventClass.JumpHalfEditFragEvent());
+                    }
+                });
     }
 
     private void bindData() {
