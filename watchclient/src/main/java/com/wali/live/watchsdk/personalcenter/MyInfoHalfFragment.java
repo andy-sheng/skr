@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.base.activity.BaseRotateSdkActivity;
 import com.base.activity.BaseSdkActivity;
-import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.BaseFragment;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.utils.FragmentNaviUtils;
@@ -18,11 +17,8 @@ import com.base.keyboard.KeyboardUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.SlidingTabLayout;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.fans.view.FansHomeView;
-import com.wali.live.watchsdk.personalcenter.view.IViewProxy;
 import com.wali.live.watchsdk.personalcenter.view.MyInfoBalanceView;
 import com.wali.live.watchsdk.personalcenter.view.MyInfoChatThreadView;
-import com.wali.live.watchsdk.personalcenter.view.MyInfoPrivilegeView;
 import com.wali.live.watchsdk.personalcenter.view.MyInfoSummaryView;
 
 import java.util.ArrayList;
@@ -37,7 +33,7 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
 
     //粉丝团viewpager的page页面对应的position
 
-    List<Pair<String, IViewProxy>> mTitleAndViewList = new ArrayList<>();
+    List<Pair<String, LazyNewView>> mTitleAndViewList = new ArrayList<>();
 
     private View mPlaceHolderView;
     private SlidingTabLayout mTabLayout;
@@ -62,10 +58,26 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
     }
 
     private void initData() {
-        mTitleAndViewList.add(new Pair<String, IViewProxy>("资料", new MyInfoSummaryView()));
-        mTitleAndViewList.add(new Pair<String, IViewProxy>("消息", new MyInfoChatThreadView()));
-        mTitleAndViewList.add(new Pair<String, IViewProxy>("钱包", new MyInfoBalanceView()));
-        mTitleAndViewList.add(new Pair<String, IViewProxy>("特权", new MyInfoPrivilegeView()));
+        mTitleAndViewList.add(new Pair<String, LazyNewView>("资料", new LazyNewView() {
+            @Override
+            public View newView() {
+                return new MyInfoSummaryView(getContext());
+            }
+        }));
+        mTitleAndViewList.add(new Pair<String, LazyNewView>("消息", new LazyNewView() {
+            @Override
+            View newView() {
+                return new MyInfoChatThreadView(getContext());
+            }
+
+        }));
+        mTitleAndViewList.add(new Pair<String, LazyNewView>("钱包", new LazyNewView() {
+            @Override
+            public View newView() {
+                return new MyInfoBalanceView(getContext());
+            }
+        }));
+//        mTitleAndViewList.add(new Pair<String, IViewProxy>("特权", new MyInfoPrivilegeView()));
     }
 
     private void initView() {
@@ -89,15 +101,15 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
         mTabPagerAdapter = new PagerAdapter() {
             @Override
             public void destroyItem(ViewGroup viewGroup, int position, Object arg2) {
-                IViewProxy viewProxy = mTitleAndViewList.get(position).second;
-                viewGroup.removeView(viewProxy.getRealView(getContext()));
+                LazyNewView viewProxy = mTitleAndViewList.get(position).second;
+                viewGroup.removeView(viewProxy.getView());
             }
 
             @Override
             public Object instantiateItem(ViewGroup viewGroup, int position) {
-                IViewProxy viewProxy = mTitleAndViewList.get(position).second;
-                viewGroup.addView(viewProxy.getRealView(getContext()));
-                return viewProxy.getRealView(getContext());
+                LazyNewView viewProxy = mTitleAndViewList.get(position).second;
+                viewGroup.addView(viewProxy.getView());
+                return viewProxy.getView();
             }
 
             @Override
@@ -164,7 +176,7 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
     public static void openFragment(BaseSdkActivity activity) {
         Bundle bundle = new Bundle();
         // 看设计需不需要横竖屏
-        if(activity instanceof BaseRotateSdkActivity){
+        if (activity instanceof BaseRotateSdkActivity) {
 
         }
         FragmentNaviUtils.openFragment(activity, MyInfoHalfFragment.class, bundle, R.id.main_act_container,
@@ -174,5 +186,18 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
 
+    }
+
+    abstract class LazyNewView<V extends View> {
+        V view;
+
+        abstract V newView();
+
+        V getView() {
+            if (view == null) {
+                view = newView();
+            }
+            return view;
+        }
     }
 }

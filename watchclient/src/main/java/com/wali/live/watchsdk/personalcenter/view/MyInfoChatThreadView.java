@@ -1,44 +1,92 @@
 package com.wali.live.watchsdk.personalcenter.view;
 
 import android.content.Context;
-import android.view.LayoutInflater;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
-import com.base.image.fresco.BaseImageView;
-import com.mi.live.data.account.MyUserInfoManager;
-import com.wali.live.utils.AvatarUtils;
+import com.base.log.MyLog;
+import com.thornbirds.component.ComponentController;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.component.presenter.adapter.ConversationAdapter;
+import com.wali.live.watchsdk.component.presenter.panel.MessagePresenter;
+import com.wali.live.watchsdk.component.view.panel.MessagePanel;
 
-public class MyInfoChatThreadView implements IViewProxy{
+import java.util.List;
+
+public class MyInfoChatThreadView extends RelativeLayout implements MessagePanel.IView {
     public final static String TAG = "MyInfoChatThreadView";
 
-    private View mRealView;
+    RecyclerView mChatthreadRv;
+    ConversationAdapter mConversationAdapter;
+    MessagePresenter mMessagePresenter;
 
-    private BaseImageView mAvatarIv;
-    private TextView mNameTv;
+    private ComponentController mComponentController = new ComponentController() {
+        @Override
+        protected String getTAG() {
+            return "MyInfoChatThreadView.ComponentController";
+        }
+    };
 
-    public MyInfoChatThreadView() {
+    public MyInfoChatThreadView(Context context) {
+        super(context);
+        init(context);
     }
 
     private void init(Context context) {
-        mRealView = LayoutInflater.from(context).inflate(R.layout.my_info_personal_summary_layout, null);
-        mAvatarIv = (BaseImageView) mRealView.findViewById(R.id.avatar_iv);
-        mNameTv = (TextView) mRealView.findViewById(R.id.name_tv);
+        inflate(context, R.layout.my_info_half_chatthread_layout, this);
+        mChatthreadRv = (RecyclerView) this.findViewById(R.id.chatthread_rv);
+        mConversationAdapter = new ConversationAdapter();
+        mChatthreadRv.setLayoutManager(new LinearLayoutManager(context,
+                LinearLayoutManager.VERTICAL, false));
+        mChatthreadRv.setAdapter(mConversationAdapter);
+
+        mMessagePresenter = new MessagePresenter(mComponentController);
+        mMessagePresenter.setView(this);
 
         bindData();
     }
 
     private void bindData() {
-        AvatarUtils.loadAvatarByUidTs(mAvatarIv, MyUserInfoManager.getInstance().getUuid(), MyUserInfoManager.getInstance().getAvatar(), true);
-        mNameTv.setText(TAG);
+
+    }
+
+
+    @Override
+    public void onEnterFocusMode() {
+
     }
 
     @Override
-    public View getRealView(Context context) {
-        if(mRealView==null){
-            init(context);
+    public void onEnterUnFocusMode() {
+
+    }
+
+    @Override
+    public void onNewConversationList(List<ConversationAdapter.ConversationItem> list) {
+        if (mConversationAdapter != null) {
+            mConversationAdapter.setItemData(list);
         }
-        return mRealView;
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        MyLog.d(TAG, "onAttachedToWindow");
+
+        super.onAttachedToWindow();
+        mMessagePresenter.startPresenter();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        MyLog.d(TAG, "onDetachedFromWindow");
+        super.onDetachedFromWindow();
+        mMessagePresenter.stopPresenter();
+    }
+
+    @Override
+    public <T extends View> T getRealView() {
+        return (T) this;
     }
 }

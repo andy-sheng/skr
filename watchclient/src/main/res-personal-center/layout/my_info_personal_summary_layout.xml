@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.RelativeLayout">
 
     <com.base.image.fresco.BaseImageView
         android:id="@+id/avatar_iv"
@@ -15,15 +17,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/avatar_iv"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_dimen_30">
 
         <TextView
             android:id="@+id/name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="haha"
             android:textColor="@color/color_black_trans_90"
             android:textSize="@dimen/view_dimen_48" />
     </RelativeLayout>
 
 
-</RelativeLayout>
+</merge>

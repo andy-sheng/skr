@@ -11,7 +11,7 @@ import com.mi.live.data.account.MyUserInfoManager;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 
-public class MyInfoSummaryView implements IViewProxy{
+public class MyInfoSummaryView extends RelativeLayout {
     public final static String TAG = "MyInfoSummaryView";
 
     private View mRealView;
@@ -19,11 +19,13 @@ public class MyInfoSummaryView implements IViewProxy{
     private BaseImageView mAvatarIv;
     private TextView mNameTv;
 
-    public MyInfoSummaryView() {
+    public MyInfoSummaryView(Context context) {
+        super(context);
+        init(context);
     }
 
     private void init(Context context) {
-        mRealView = LayoutInflater.from(context).inflate(R.layout.my_info_personal_summary_layout, null);
+        mRealView = inflate(context,R.layout.my_info_personal_summary_layout, this);
         mAvatarIv = (BaseImageView) mRealView.findViewById(R.id.avatar_iv);
         mNameTv = (TextView) mRealView.findViewById(R.id.name_tv);
 
@@ -33,14 +35,6 @@ public class MyInfoSummaryView implements IViewProxy{
     private void bindData() {
         AvatarUtils.loadAvatarByUidTs(mAvatarIv, MyUserInfoManager.getInstance().getUuid(), MyUserInfoManager.getInstance().getAvatar(), true);
         mNameTv.setText(TAG);
-    }
-
-    @Override
-    public View getRealView(Context context) {
-        if(mRealView==null){
-            init(context);
-        }
-        return mRealView;
     }
 
 }
