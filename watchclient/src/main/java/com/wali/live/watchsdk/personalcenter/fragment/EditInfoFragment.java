@@ -111,6 +111,13 @@ public class EditInfoFragment extends BaseFragment implements FragmentDataListen
                         EditGenderHalfFragment.openFragment((BaseSdkActivity) getActivity(), R.id.fl_edit_container, EditInfoFragment.this);
                     }
                 });
+        RxView.clicks(mSignContainer).throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        EditSignHalfFragment.openFragment((BaseSdkActivity) getActivity(), R.id.fl_edit_container, EditInfoFragment.this);
+                    }
+                });
     }
 
     private void bindAvator() {
@@ -145,6 +152,8 @@ public class EditInfoFragment extends BaseFragment implements FragmentDataListen
             bindNickName();
         } else if(requestCode == EditGenderHalfFragment.REQUEST_CODE) {
             bindGender();
+        } else if(requestCode == EditSignHalfFragment.REQUEST_CODE) {
+            bindSign();
         }
     }
 }
