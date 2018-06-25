@@ -16,7 +16,8 @@
         android:layout_height="@dimen/view_dimen_953"
         android:layout_alignParentBottom="true"
         android:background="@drawable/shape_vfans_fragment_bg"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_above="@+id/bottom_split">
 
         <com.base.view.SlidingTabLayout
             android:id="@+id/my_info_tab"
@@ -44,6 +45,12 @@
             android:requiresFadingEdge="none" />
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/bottom_split"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_0"
+        android:layout_alignParentBottom="true"/>
 
     <FrameLayout
         android:id="@+id/fl_container"

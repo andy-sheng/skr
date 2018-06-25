@@ -74,6 +74,7 @@
     <dimen name="text_size_190">63.333dip</dimen>
 
 
+    <dimen name="view_dimen_0">0dp</dimen>
     <dimen name="view_dimen_1">0.33333334dp</dimen>
     <dimen name="view_dimen_2">0.6666667dp</dimen>
     <dimen name="view_dimen_3">1.0dp</dimen>

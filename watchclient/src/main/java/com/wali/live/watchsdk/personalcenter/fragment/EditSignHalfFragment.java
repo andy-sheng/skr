@@ -55,6 +55,7 @@ public class EditSignHalfFragment extends RxFragment implements IEditSignView {
     private EditText mSignEt;
     private TextView mHintTv;
     private View mTopView;
+    private View mBottomSplit;
 
     //presenter
     private EditSignPresenter mPresenter;
@@ -98,6 +99,7 @@ public class EditSignHalfFragment extends RxFragment implements IEditSignView {
         mSignEt = (EditText) mRootView.findViewById(R.id.sign_et);
         mHintTv = (TextView) mRootView.findViewById(R.id.left_character_hint);
         mTopView = mRootView.findViewById(R.id.place_holder_view);
+        mBottomSplit = mRootView.findViewById(R.id.bottom_split);
 
         mUser = MyUserInfoManager.getInstance().getUser();
         mSignMaxCount = getResources().getInteger(R.integer.max_sign_char_count);
@@ -143,6 +145,13 @@ public class EditSignHalfFragment extends RxFragment implements IEditSignView {
                         clickSaveBtn();
                     }
                 });
+        RxView.clicks(mTopView).throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        FragmentNaviUtils.popAllFragmentFromStack(getActivity());
+                    }
+                });
     }
 
     private void initPresenter() {
@@ -167,23 +176,20 @@ public class EditSignHalfFragment extends RxFragment implements IEditSignView {
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = false, priority = 1)
     public void onEventMainThread(KeyboardEvent event) {
         MyLog.d(TAG, "KeyboardEvent");
-        int start = DisplayUtils.dip2px(322f);
+        int start = DisplayUtils.dip2px(0f);
         int height = KeyboardUtils.getKeyboardHeight(getActivity());
         int y = KeyboardUtils.getScreenHeight(getActivity()) - mSignEt.getBottom() - mTopView.getHeight();
         int tran = height - y;
-        if(tran < 0) {
-            tran = 0;
-        }
         switch (event.eventType) {
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE:
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mTopView.getLayoutParams();
-                params.height = mTopView.getHeight() - tran;
-                mTopView.setLayoutParams(params);
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mBottomSplit.getLayoutParams();
+                params.height = tran;
+                mBottomSplit.setLayoutParams(params);
                 break;
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN:
-                RelativeLayout.LayoutParams paramsl = (RelativeLayout.LayoutParams) mTopView.getLayoutParams();
+                RelativeLayout.LayoutParams paramsl = (RelativeLayout.LayoutParams) mBottomSplit.getLayoutParams();
                 paramsl.height = start;
-                mTopView.setLayoutParams(paramsl);
+                mBottomSplit.setLayoutParams(paramsl);
                 break;
         }
     }

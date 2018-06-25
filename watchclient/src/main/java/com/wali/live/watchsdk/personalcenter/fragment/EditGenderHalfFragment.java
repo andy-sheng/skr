@@ -46,6 +46,7 @@ public class EditGenderHalfFragment extends RxFragment implements IEditGenderVie
     private ImageView mManBtn;
     private LinearLayout mWomanContainer;
     private ImageView mWomanBtn;
+    private View mTopView;
 
     //presenter
     private EditGenderPresenter mPresenter;
@@ -75,6 +76,7 @@ public class EditGenderHalfFragment extends RxFragment implements IEditGenderVie
         mWomanContainer = (LinearLayout) mRootView.findViewById(R.id.setting2);
         mWomanBtn = (ImageView) mRootView.findViewById(R.id.check2);
         mConfirmTv = (TextView) mRootView.findViewById(R.id.confirm_tv);
+        mTopView = mRootView.findViewById(R.id.place_holder_view);
 
         mUser = MyUserInfoManager.getInstance().getUser();
         mGender = mUser.getGender();
@@ -114,6 +116,14 @@ public class EditGenderHalfFragment extends RxFragment implements IEditGenderVie
                     @Override
                     public void call(Void aVoid) {
                         clickConfirmBtn();
+                    }
+                });
+
+        RxView.clicks(mTopView).throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        FragmentNaviUtils.popAllFragmentFromStack(getActivity());
                     }
                 });
     }

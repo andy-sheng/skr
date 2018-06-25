@@ -77,6 +77,7 @@ public class EditInfoFragment extends RxFragment implements FragmentDataListener
     private SimpleDraweeView mAvatorDv;
     private TextView mPreAvatorCancelTv;
     private TextView mPreAvitorConfirmTv;
+    private View mTopView;
 
     //data
     private User mUser;
@@ -103,6 +104,7 @@ public class EditInfoFragment extends RxFragment implements FragmentDataListener
         mNameTv = (TextView) mRootView.findViewById(R.id.name_tv);
         mGenderTv = (TextView) mRootView.findViewById(R.id.gender_tv);
         mSignTv = (TextView) mRootView.findViewById(R.id.sign_tv);
+        mTopView = mRootView.findViewById(R.id.place_holder_view);
 
         mAvatorPreviewContainer = (RelativeLayout) mRootView.findViewById(R.id.avator_preview_container);
         mAvatorDv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_dv);
@@ -181,6 +183,13 @@ public class EditInfoFragment extends RxFragment implements FragmentDataListener
                     @Override
                     public void call(Void aVoid) {
                         clickUse();
+                    }
+                });
+        RxView.clicks(mTopView).throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        FragmentNaviUtils.popAllFragmentFromStack(getActivity());
                     }
                 });
     }

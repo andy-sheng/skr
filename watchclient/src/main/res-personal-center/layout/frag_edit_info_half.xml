@@ -9,7 +9,8 @@
     <View
         android:id="@+id/place_holder_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_dimen_966" />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/container"/>
 
     <LinearLayout
         android:id="@+id/container"
@@ -17,7 +18,7 @@
         android:layout_height="@dimen/view_dimen_953"
         android:background="@drawable/shape_vfans_fragment_bg"
         android:orientation="vertical"
-        android:layout_below="@id/place_holder_view">
+        android:layout_above="@+id/bottom_split">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -219,6 +220,12 @@
         </RelativeLayout>
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/bottom_split"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_0"
+        android:layout_alignParentBottom="true"/>
 
     <FrameLayout
         android:id="@+id/fl_edit_container"
