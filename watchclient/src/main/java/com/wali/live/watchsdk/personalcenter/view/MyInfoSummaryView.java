@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk.personalcenter.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.util.Pair;
 import android.text.TextUtils;
 import android.view.View;
@@ -61,10 +62,9 @@ public class MyInfoSummaryView extends RelativeLayout {
     }
 
     private void init(Context context) {
-
         mContext = context;
-
         mRealView = inflate(context,R.layout.my_info_personal_summary_layout, this);
+        setBackgroundColor(Color.RED);
         mAvatarIv = (BaseImageView) mRealView.findViewById(R.id.avatar_iv);
         mNameTv = (AlwaysMarqueeTextView) mRealView.findViewById(R.id.name_tv);
         mGenderIv = (ImageView) mRealView.findViewById(R.id.gender_iv);

@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk.personalcenter.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.base.activity.BaseSdkActivity;
+import com.base.activity.BaseActivity;
 import com.base.activity.RxActivity;
 import com.base.log.MyLog;
 import com.mi.live.data.account.MyUserInfoManager;
@@ -30,6 +31,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -61,7 +63,7 @@ public class MyInfoBalanceView extends RelativeLayout {
     }
 
     private void init(Context context) {
-        inflate(context,R.layout.my_info_half_balance_layout,this);
+        inflate(context, R.layout.my_info_half_balance_layout, this);
         mTotalBalanceTv = (TextView) this.findViewById(R.id.total_balance_tv);
         mDescTv = (TextView) this.findViewById(R.id.desc_tv);
         mSpiltLine1 = (View) this.findViewById(R.id.spilt_line_1);
@@ -141,6 +143,7 @@ public class MyInfoBalanceView extends RelativeLayout {
     }
 
     private void goBalanceFragment() {
+
         PayManager.getBalanceDetailRsp()
                 .subscribeOn(Schedulers.io())
                 .flatMap(new Func1<PayProto.QueryBalanceDetailResponse, Observable<BalanceDetail>>() {
@@ -151,27 +154,31 @@ public class MyInfoBalanceView extends RelativeLayout {
                         } else if (rsp.getRetCode() != 0) {
                             return Observable.error(new Exception("QueryBalanceDetailResponse.retCode:" + rsp.getRetCode()));
                         }
-                        return Observable.just(BalanceDetail.parseOnlyPktFrom(rsp));
+                        return Observable.just(BalanceDetail.parseFrom(rsp));
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread())
                 .compose(getRxActivity().<BalanceDetail>bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribe(new Action1<BalanceDetail>() {
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Object>() {
                     @Override
-                    public void call(BalanceDetail balanceDetail) {
+                    public void call(Object o) {
+                        BalanceDetail balanceDetail = (BalanceDetail) o;
                         Bundle bundle = new Bundle();
                         bundle.putSerializable(BalanceFragment.BUNDLE_KEY_BALANCE_DETAIL, balanceDetail);
-                        bundle.putSerializable(BalanceFragment.BUNDLE_KEY_FROM, BalanceFragment.BUNDLE_VALUE_FROM_GIFT);
-                        BalanceFragment.openFragment((BaseSdkActivity) getContext(), bundle, null);
-                        //隐藏包裹界面,防止消耗onBackPressed()事件
-                        EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST));
+                        BalanceFragment.openFragment((BaseActivity) getRxActivity(), bundle, null);
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         MyLog.e(TAG, throwable.getMessage());
                     }
+                }, new Action0() {
+                    @Override
+                    public void call() {
+                        MyLog.w(TAG, "get QueryBalanceDetailResponse success");
+                    }
                 });
+
     }
 
     private RxActivity getRxActivity() {
