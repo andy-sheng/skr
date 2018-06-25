@@ -2,12 +2,13 @@ package com.wali.live.watchsdk.personalcenter.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
-import android.text.method.ReplacementTransformationMethod;
-import android.view.KeyEvent;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,9 +29,8 @@ import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.user.User;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.editinfo.EditInfoActivity;
-import com.wali.live.watchsdk.editinfo.fragment.presenter.EditNamePresenter;
-import com.wali.live.watchsdk.editinfo.fragment.presenter.IEditNameView;
-import com.wali.live.watchsdk.income.view.NoLeakEditText;
+import com.wali.live.watchsdk.editinfo.fragment.presenter.EditSignPresenter;
+import com.wali.live.watchsdk.editinfo.fragment.presenter.IEditSignView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -42,28 +42,43 @@ import rx.functions.Action1;
 
 /**
  * Created by zhujianning on 18-6-25.
- * 半屏修改名字页面
  */
 
-public class EditNameHalfFragment extends RxFragment implements IEditNameView {
-    private static final String TAG = "EditNameHalfFragment";
-    public static final int REQUEST_CODE = GlobalData.getRequestCode();
+public class EditSignHalfFragment extends RxFragment implements IEditSignView {
 
+    private static final String TAG = "EditSignHalfFragment";
+    public static final int REQUEST_CODE = GlobalData.getRequestCode();
 
     //ui
     private TextView mBackTv;
     private TextView mConfirmTv;
-    private NoLeakEditText mInputEt;
+    private EditText mSignEt;
+    private TextView mHintTv;
     private View mTopView;
+
+    //presenter
+    private EditSignPresenter mPresenter;
 
     //data
     private User mUser;
-    private int mTrans = 0;
-    private int mNameMaxCount;
+    private int mSignMaxCount;
+    private String mSign;
     private boolean mInfoChanged;
 
-    //presenter
-    private EditNamePresenter mPresenter;
+    private TextWatcher mTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            updateCountHint();
+        }
+    };
 
     @Override
     public int getRequestCode() {
@@ -73,97 +88,80 @@ public class EditNameHalfFragment extends RxFragment implements IEditNameView {
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
         EventBus.getDefault().register(this);
-        return inflater.inflate(R.layout.frag_change_name_half, container, false);
+        return inflater.inflate(R.layout.frag_edit_sign_half, container, false);
     }
 
     @Override
     protected void bindView() {
         mBackTv = (TextView) mRootView.findViewById(R.id.back_tv);
         mConfirmTv = (TextView) mRootView.findViewById(R.id.confirm_tv);
-        mInputEt = (NoLeakEditText) mRootView.findViewById(R.id.input_et);
+        mSignEt = (EditText) mRootView.findViewById(R.id.sign_et);
+        mHintTv = (TextView) mRootView.findViewById(R.id.left_character_hint);
         mTopView = mRootView.findViewById(R.id.place_holder_view);
 
-        initListener();
-        initPresenter();
-
-        mNameMaxCount = getResources().getInteger(R.integer.max_name_char_count);
         mUser = MyUserInfoManager.getInstance().getUser();
-        if(mUser != null) {
-            bindInput();
+        mSignMaxCount = getResources().getInteger(R.integer.max_sign_char_count);
+        mHintTv.setText(String.valueOf(mSignMaxCount) + getString(R.string.character_text));
+        mSign = mUser.getSign();
+
+        if (!TextUtils.isEmpty(mSign)) {
+            if (mSign.length() > mSignMaxCount) {
+                mSign = mSign.substring(0, mSignMaxCount);
+            }
+            mSignEt.setText(mSign);
+            mSignEt.setSelection(mSign.length());
         }
+
+        initPresenter();
+        initListener();
     }
 
-    private void bindInput() {
-        if(!TextUtils.isEmpty(mUser.getNickname())) {
-            mInputEt.setText(mUser.getNickname());
-            mInputEt.setSelection(mUser.getNickname().length());
+    private void updateCountHint() {
+        String sign = mSignEt.getText().toString();
+        if (TextUtils.isEmpty(sign)) {
+            mHintTv.setText(String.valueOf(mSignMaxCount) + GlobalData.app().getResources().getString(R.string.character_text));
+            return;
         }
-    }
 
-    private void initPresenter() {
-        mPresenter = new EditNamePresenter(this);
+        int length = sign.length();
+        mHintTv.setText(String.valueOf(mSignMaxCount - length) + GlobalData.app().getResources().getString(R.string.character_text));
     }
 
     private void initListener() {
-        //禁止输入回车
-        mInputEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return (event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
-            }
-        });
-
-        mInputEt.setTransformationMethod(new ReplacementTransformationMethod() {
-            @Override
-            protected char[] getOriginal() {
-                char[] aa = {'\r', '\n'};
-                return aa;
-            }
-
-            @Override
-            protected char[] getReplacement() {
-                char[] cc = {' ', ' '};
-                return cc;
-            }
-        });
-
         RxView.clicks(mBackTv).throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        FragmentNaviUtils.popFragmentFromStack(getActivity());
+                        closeFragment();
                     }
                 });
+
         RxView.clicks(mConfirmTv).throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        onClickConfirm();
+                        clickSaveBtn();
                     }
                 });
     }
 
-    private void onClickConfirm() {
-        String name = mInputEt.getText().toString().trim();
-        if (TextUtils.isEmpty(name)) {
-            ToastUtils.showToast(R.string.name_is_empty);
+    private void initPresenter() {
+        mPresenter = new EditSignPresenter(this);
+    }
+
+    private void clickSaveBtn() {
+        String sign = mSignEt.getText().toString();
+
+        if (TextUtils.isEmpty(sign)) {
+            ToastUtils.showToast(R.string.signature_is_empty);
             return;
         }
-        if (name.equals(mUser.getNickname())) {
-            ToastUtils.showToast(R.string.input_same_nickname);
-            return;
-        }
-        if (name.length() > mNameMaxCount) {
-            ToastUtils.showToast(R.string.nickname_illegal);
+        if (sign.equals(mSign)) {
+            ToastUtils.showToast(R.string.input_same_signature);
             return;
         }
 
-        //替换回车换行
-        name = name.replaceAll("(\\r\\n|\\r|\\n|\\n\\r)", " ");
-        //替换连续的空格
-        name = name.replaceAll("\\s+", " ");
-
-        mPresenter.uploadName(name);
+        mPresenter.uploadSign(sign);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = false, priority = 1)
@@ -171,15 +169,15 @@ public class EditNameHalfFragment extends RxFragment implements IEditNameView {
         MyLog.d(TAG, "KeyboardEvent");
         int start = DisplayUtils.dip2px(322f);
         int height = KeyboardUtils.getKeyboardHeight(getActivity());
-        int y = KeyboardUtils.getScreenHeight(getActivity()) - mInputEt.getBottom() - mTopView.getHeight();
-        mTrans = height - y;
-        if(mTrans < 0) {
-            mTrans = 0;
+        int y = KeyboardUtils.getScreenHeight(getActivity()) - mSignEt.getBottom() - mTopView.getHeight();
+        int tran = height - y;
+        if(tran < 0) {
+            tran = 0;
         }
         switch (event.eventType) {
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE:
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mTopView.getLayoutParams();
-                params.height = mTopView.getHeight() - mTrans;
+                params.height = mTopView.getHeight() - tran;
                 mTopView.setLayoutParams(params);
                 break;
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN:
@@ -188,23 +186,6 @@ public class EditNameHalfFragment extends RxFragment implements IEditNameView {
                 mTopView.setLayoutParams(paramsl);
                 break;
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-        mPresenter.destory();
-    }
-
-    @Override
-    public void editSuccess(String name) {
-        MyLog.d(TAG, "editSuccess name=" + name);
-        mInfoChanged = true;
-        ToastUtils.showToast(R.string.change_name_success);
-        MyUserInfoManager.getInstance().setNickname(name);
-
-        closeFragment();
     }
 
     private void closeFragment() {
@@ -220,6 +201,19 @@ public class EditNameHalfFragment extends RxFragment implements IEditNameView {
     private void finish() {
         MyLog.w(TAG, "finish");
         FragmentNaviUtils.popFragmentFromStack(getActivity());
+        mTextWatcher = null;
+    }
+
+    @Override
+    public void editSuccess(String sign) {
+        MyLog.d(TAG, "editSuccess sign=" + sign);
+        mInfoChanged = true;
+        ToastUtils.showToast(R.string.change_sign_success);
+
+        mSign = sign;
+        mUser.setSign(mSign);
+
+        closeFragment();
     }
 
     @Override
@@ -228,14 +222,19 @@ public class EditNameHalfFragment extends RxFragment implements IEditNameView {
         if (code == ErrorCode.CODE_CONTAIN_SENSITIVE) {
             ToastUtils.showToast(R.string.change_failed_include_sensitive);
         } else {
-            ToastUtils.showToast(R.string.change_name_failed);
+            ToastUtils.showToast(R.string.change_sign_failed);
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
     public static void openFragment(BaseSdkActivity activity, int containerId, FragmentDataListener listener) {
-        Bundle bundle = new Bundle();
-        BaseFragment fragment = FragmentNaviUtils.addFragment(activity, containerId, EditNameHalfFragment.class,
-                bundle, true, true, true);
+        BaseFragment fragment = FragmentNaviUtils.addFragment(activity, containerId, EditSignHalfFragment.class,
+                new Bundle(), true, true, true);
         fragment.initDataResult(REQUEST_CODE, listener);
     }
 }
