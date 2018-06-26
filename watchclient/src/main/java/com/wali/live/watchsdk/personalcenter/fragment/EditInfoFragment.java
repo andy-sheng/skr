@@ -395,8 +395,7 @@ public class EditInfoFragment extends RxFragment implements FragmentDataListener
     }
 
     public static void openFragment(BaseSdkActivity activity, int containerId) {
-        Bundle bundle = new Bundle();
-        FragmentNaviUtils.openFragment(activity, EditInfoFragment.class, bundle, containerId,
-                true, R.anim.slide_right_in, R.anim.slide_bottom_out);
+        FragmentNaviUtils.addFragment(activity, containerId, EditInfoFragment.class,
+                new Bundle(), true, true, true);
     }
 }
