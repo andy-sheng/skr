@@ -73,9 +73,12 @@ public class FollowFansHolder extends RecyclerView.ViewHolder{
                     @Override
                     public void call(Void aVoid) {
                         if(mData != null
-                                && !mData.isFollowing
                                 && mIFollowOptListener != null) {
-                            mIFollowOptListener.follow(mData.userId);
+                            if(!mData.isFollowing) {
+                                mIFollowOptListener.follow(mData.userId);
+                            } else {
+                                mIFollowOptListener.unFollow(mData.userId);
+                            }
                         }
                     }
                 });
@@ -154,13 +157,19 @@ public class FollowFansHolder extends RecyclerView.ViewHolder{
         } else {
             mFollowTv.setVisibility(View.VISIBLE);
             if(data.isBothway) {
-                mFollowArea.setEnabled(false);
+//                mFollowArea.setSelected(false);
                 mFollowTv.setText(GlobalData.app().getResources().getString(R.string.follow_both));
+                mFollowTv.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.notice_attention_btn_enabled));
+                mFollowTv.setTextColor(GlobalData.app().getResources().getColor(R.color.color_black_trans_30));
             } else if(data.isFollowing) {
-                mFollowArea.setEnabled(false);
+//                mFollowArea.setSelected(false);
+                mFollowTv.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.notice_attention_btn_enabled));
+                mFollowTv.setTextColor(GlobalData.app().getResources().getColor(R.color.color_black_trans_30));
                 mFollowTv.setText(R.string.already_followed);
             } else {
-                mFollowArea.setEnabled(true);
+//                mFollowArea.setSelected(true);
+                mFollowTv.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.notice_attention_btn_normal));
+                mFollowTv.setTextColor(GlobalData.app().getResources().getColor(R.color.color_e5aa1e));
                 mFollowTv.setText(R.string.follow);
             }
         }

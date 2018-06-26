@@ -9,7 +9,7 @@ public class FollowOptContact {
     public interface Iview {
         void followSuccess(long targetUid);
 
-        void unFollowSuccess();
+        void unFollowSuccess(long targetUid);
     }
 
     public interface Ipresenter {

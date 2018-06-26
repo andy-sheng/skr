@@ -35,4 +35,5 @@
     <string name="default_sign_txt">我是个人简介,当主人写我的时候我才有~~</string>
     <string name="modify_txt">修改资料</string>
     <string name="change_failed_cd">还有%s才可以修改昵称哦~</string>
+    <string name="unfollow_success">取消关注成功</string>
 </resources>
