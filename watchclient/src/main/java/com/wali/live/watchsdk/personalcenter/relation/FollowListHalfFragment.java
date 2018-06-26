@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.base.activity.BaseActivity;
 import com.base.activity.BaseSdkActivity;
 import com.base.fragment.BaseFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
@@ -18,10 +19,15 @@ import com.base.view.BackTitleBar;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.data.UserListData;
+import com.mi.live.data.user.User;
+import com.wali.live.dao.SixinMessage;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.personalcenter.relation.adapter.FollowFansAdapter;
 import com.wali.live.watchsdk.personalcenter.relation.contact.FollowListContact;
+import com.wali.live.watchsdk.personalcenter.relation.contact.IItemOnclickListener;
 import com.wali.live.watchsdk.personalcenter.relation.presenter.FollowListPresenter;
+import com.wali.live.watchsdk.sixin.PopComposeMessageFragment;
+import com.wali.live.watchsdk.sixin.pojo.SixinTarget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +118,22 @@ public class FollowListHalfFragment extends BaseFragment{
                         FragmentNaviUtils.popAllFragmentFromStack(getActivity());
                     }
                 });
+
+        mAdapter.setItemOnClickListener(new IItemOnclickListener() {
+            @Override
+            public void onItemClick(User user) {
+                SixinTarget sixinTarget = new SixinTarget(user);
+                if (user.isBothwayFollowing()) {
+                    sixinTarget.setFocusState(SixinMessage.MSG_STATUE_BOTHFOUCS);
+                } else if (user.isFocused()) {
+                    sixinTarget.setFocusState(SixinMessage.MSG_STATUS_ONLY_ME_FOUCS);
+                } else {
+                    sixinTarget.setFocusState(SixinMessage.MSG_STATUS_UNFOUCS);
+                }
+                sixinTarget.setTargetType(0);
+                PopComposeMessageFragment.open((BaseActivity) getActivity(), sixinTarget, true);
+            }
+        });
     }
 
     private void initPresenter() {

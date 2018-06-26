@@ -18,6 +18,7 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.personalcenter.relation.contact.IFollowOptListener;
+import com.wali.live.watchsdk.personalcenter.relation.contact.IItemOnclickListener;
 
 import java.util.concurrent.TimeUnit;
 
@@ -44,8 +45,14 @@ public class FollowFansHolder extends RecyclerView.ViewHolder{
 
     private IFollowOptListener mIFollowOptListener;
 
+    private IItemOnclickListener mIItemOnclickListener;
+
     public void setFollowOptListener(IFollowOptListener listener) {
         mIFollowOptListener = listener;
+    }
+
+    public void setItemOnClickListener(IItemOnclickListener listener) {
+        mIItemOnclickListener = listener;
     }
 
     public FollowFansHolder(View itemView) {
@@ -69,6 +76,23 @@ public class FollowFansHolder extends RecyclerView.ViewHolder{
                                 && !mData.isFollowing
                                 && mIFollowOptListener != null) {
                             mIFollowOptListener.follow(mData.userId);
+                        }
+                    }
+                });
+
+        RxView.clicks(itemView).throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        if(mData != null
+                                && mIItemOnclickListener != null) {
+                            User user = new User();
+                            user.setUid(mData.userId);
+                            user.setAvatar(mData.avatar);
+                            user.setNickname(mData.userNickname);
+                            user.setIsFocused(mData.isFollowing);
+                            user.setIsBothwayFollowing(mData.isBothway);
+                            mIItemOnclickListener.onItemClick(user);
                         }
                     }
                 });

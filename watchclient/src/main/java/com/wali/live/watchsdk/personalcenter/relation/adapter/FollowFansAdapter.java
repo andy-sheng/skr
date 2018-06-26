@@ -9,6 +9,7 @@ import com.base.global.GlobalData;
 import com.mi.live.data.data.UserListData;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.personalcenter.relation.contact.IFollowOptListener;
+import com.wali.live.watchsdk.personalcenter.relation.contact.IItemOnclickListener;
 import com.wali.live.watchsdk.personalcenter.relation.holder.FollowFansHolder;
 
 import java.util.ArrayList;
@@ -23,9 +24,14 @@ public class FollowFansAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<UserListData> mDataList = new ArrayList<>();
 
     private IFollowOptListener mIFollowOptListener;
+    private IItemOnclickListener mIItemOnclickListener;
 
     public void setFollowOptListener(IFollowOptListener listener) {
         mIFollowOptListener = listener;
+    }
+
+    public void setItemOnClickListener(IItemOnclickListener listener) {
+        mIItemOnclickListener = listener;
     }
 
     @Override
@@ -33,6 +39,7 @@ public class FollowFansAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
         View view = LayoutInflater.from(GlobalData.app()).inflate(R.layout.follow_fan_item, parent, false);
         FollowFansHolder holder = new FollowFansHolder(view);
         holder.setFollowOptListener(mIFollowOptListener);
+        holder.setItemOnClickListener(mIItemOnclickListener);
         return holder;
     }
 
