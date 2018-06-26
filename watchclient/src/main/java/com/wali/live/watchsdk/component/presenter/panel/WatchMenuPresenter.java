@@ -165,6 +165,8 @@ public class WatchMenuPresenter extends BaseSdkRxPresenter<WatchMenuPanel.IView>
                             MyLog.d(TAG, "has group info=" + model.hasGroup());
                             if (model.hasGroup()) {
                                 mView.showFansIcon();
+                            }else{
+
                             }
                         }
                     }
