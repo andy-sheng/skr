@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
+import com.base.view.BackTitleBar;
 import com.base.view.NestViewPager;
 import com.base.view.SlidingTabLayout;
 import com.mi.live.data.account.channel.HostChannelManager;
@@ -45,6 +46,8 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
     private ChannelListPresenter mChannelListPresenter;
     private boolean mIsFirstLoad = true;
 
+    private BackTitleBar mTitleBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +66,14 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
     }
 
     private void bindViews() {
+        mTitleBar = (BackTitleBar) findViewById(R.id.title_bar);
+        mTitleBar.setTitle("直播");
+        mTitleBar.getBackBtn().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.channel_tab);
         mViewPager = (NestViewPager) findViewById(R.id.view_pager);
         mEmptyView = (EmptyView) findViewById(R.id.empty_view);
@@ -72,11 +83,11 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
         mSlidingTabLayout.setIndicatorWidth(DisplayUtils.dip2px(12));
         mSlidingTabLayout.setIndicatorBottomMargin(DisplayUtils.dip2px(10));
         mSlidingTabLayout.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_TAIL);
-        if (BaseSdkActivity.isProfileMode()) {
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mSlidingTabLayout.getLayoutParams();
-            lp.height += BaseSdkActivity.getStatusBarHeight();
-            mSlidingTabLayout.setPadding(0, BaseSdkActivity.getStatusBarHeight(), 0, 0);
-        }
+//        if (BaseSdkActivity.isProfileMode()) {
+//            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mSlidingTabLayout.getLayoutParams();
+//            lp.height += BaseSdkActivity.getStatusBarHeight();
+//            mSlidingTabLayout.setPadding(0, BaseSdkActivity.getStatusBarHeight(), 0, 0);
+//        }
 
         mPagerAdapter = new ChannelTabPagerAdapter();
         mViewPager.setAdapter(mPagerAdapter);
@@ -152,5 +163,6 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
     public static void openActivity(@NonNull Activity activity) {
         Intent intent = new Intent(activity, ChannelListSdkActivity.class);
         activity.startActivity(intent);
+//        activity.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
     }
 }

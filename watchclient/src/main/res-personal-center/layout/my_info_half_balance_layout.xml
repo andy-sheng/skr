@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:src="@drawable/pay_activity_silver_diamond" />
+                android:src="@drawable/pay_activity_icon_argentum_diamond" />
 
             <TextView
                 android:id="@+id/silver_balance_tv"
