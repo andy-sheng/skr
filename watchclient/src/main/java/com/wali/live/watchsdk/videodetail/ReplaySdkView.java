@@ -227,7 +227,7 @@ public class ReplaySdkView extends BaseSdkView<View, VideoDetailController>
             if (view == null) {
                 return;
             }
-            TouchPresenter presenter = new TouchPresenter(mController, view);
+            TouchPresenter presenter = new TouchPresenter(mController,mController.mMyRoomData, view);
             registerComponent(presenter);
             presenter.setViewSet(mHorizontalMoveSet, mVerticalMoveSet, mIsGameMode);
         }

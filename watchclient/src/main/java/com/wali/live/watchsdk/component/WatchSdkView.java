@@ -117,8 +117,8 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
 
     protected boolean mIsGameMode = false;
     protected boolean mIsHuYaLive = false;
+
     protected boolean mIsLandscape = false;
-    protected boolean mIsVideoLandscape = false;
 
     @Override
     protected String getTAG() {
@@ -405,7 +405,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             if (view == null) {
                 return;
             }
-            TouchPresenter presenter = new TouchPresenter(mController, view);
+            TouchPresenter presenter = new TouchPresenter(mController, mController.mMyRoomData, view);
             registerComponent(presenter);
             presenter.setViewSet(mHorizontalMoveSet, mVerticalMoveSet, mIsGameMode);
             // 增加上下滑动的判断
@@ -487,7 +487,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
     }
 
     public void updateRotateBtn() {
-        if (!mIsVideoLandscape && !mIsLandscape) {
+        if (!mController.mMyRoomData.isVideoLandscape() && !mIsLandscape) {
             mRotateBtn.setVisibility(View.GONE);
         } else {
             if (CommonUtils.isNotchPhone() && !CommonUtils.isOpenHideNotch()) {
@@ -611,11 +611,11 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 SendEnvelopeFragment.openFragment((BaseActivity) mActivity, mController.mMyRoomData);
                 return true;
             case MSG_VIDEO_LANDSCAPE:
-                mIsVideoLandscape = true;
+                mController.mMyRoomData.setVideoLandscape(true);
                 updateRotateBtn();
                 break;
             case MSG_VIDEO_PORTRAIT:
-                mIsVideoLandscape = false;
+                mController.mMyRoomData.setVideoLandscape(false);
                 updateRotateBtn();
                 break;
             default:
