@@ -34,8 +34,8 @@ import com.wali.live.utils.level.VipLevelUtil;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.editinfo.EditInfoActivity;
 import com.wali.live.watchsdk.personalcenter.level.LevelActivity;
-import com.wali.live.watchsdk.personalcenter.relation.FansListFragment;
-import com.wali.live.watchsdk.personalcenter.relation.FollowListFragment;
+//import com.wali.live.watchsdk.personalcenter.relation.FansListFragment;
+//import com.wali.live.watchsdk.personalcenter.relation.FollowListFragment;
 import com.wali.live.watchsdk.webview.WebViewActivity;
 
 import java.util.ArrayList;
@@ -139,22 +139,22 @@ public class PersonalCenterFragment extends BaseFragment {
 //                startActivity(intent);
 //            }
 //        });
-        RxView.clicks(mRootView.findViewById(R.id.follow_container))
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(new Action1<Void>() {
-                    @Override
-                    public void call(Void aVoid) {
-                        FollowListFragment.openFragment(getActivity(), R.id.main_act_container, mUser.getUid());
-                    }
-                });
-        RxView.clicks(mRootView.findViewById(R.id.fan_container))
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(new Action1<Void>() {
-                    @Override
-                    public void call(Void aVoid) {
-                        FansListFragment.openFragment(getActivity(), R.id.main_act_container, mUser.getUid());
-                    }
-                });
+//        RxView.clicks(mRootView.findViewById(R.id.follow_container))
+//                .throttleFirst(300, TimeUnit.MILLISECONDS)
+//                .subscribe(new Action1<Void>() {
+//                    @Override
+//                    public void call(Void aVoid) {
+//                        FollowListFragment.openFragment(getActivity(), R.id.main_act_container, mUser.getUid());
+//                    }
+//                });
+//        RxView.clicks(mRootView.findViewById(R.id.fan_container))
+//                .throttleFirst(300, TimeUnit.MILLISECONDS)
+//                .subscribe(new Action1<Void>() {
+//                    @Override
+//                    public void call(Void aVoid) {
+//                        FansListFragment.openFragment(getActivity(), R.id.main_act_container, mUser.getUid());
+//                    }
+//                });
     }
 
     private void initData() {
