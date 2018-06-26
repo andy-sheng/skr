@@ -253,7 +253,7 @@
         <activity
             android:name=".channel.ChannelListSdkActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppThemeChannelList"
+            android:theme="@style/AppThemeLive"
             android:screenOrientation="portrait"/>
     </application>
 </manifest>

@@ -18,7 +18,7 @@
 
     <style name="AppThemeChannelList" parent="AppThemeLive">
         <item name="android:windowBackground">@color/color_white</item>
-        <item name="android:windowIsTranslucent">false</item>
+        <!--<item name="android:windowIsTranslucent">false</item>-->
     </style>
 
     <style name="Theme.CustomDialog" parent="Theme.AppCompat.NoActionBar">

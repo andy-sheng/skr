@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -154,6 +155,13 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
         super.onDestroy();
     }
 
+    @Override
+    public void finish() {
+        MyLog.w(TAG, "finish");
+        super.finish();
+        overridePendingTransition(0, R.anim.slide_right_out);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SetUserAccountEvent event) {
         MyLog.w(TAG, "onEvent" + " SetUserAccountEvent=" + event);
@@ -162,7 +170,10 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
 
     public static void openActivity(@NonNull Activity activity) {
         Intent intent = new Intent(activity, ChannelListSdkActivity.class);
-        activity.startActivity(intent);
-//        activity.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+
+        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(activity,R.anim.slide_right_in,R.anim.slide_right_out).toBundle();
+
+        activity.startActivity(intent,bundle);
+
     }
 }
