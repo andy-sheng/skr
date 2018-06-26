@@ -839,6 +839,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
     @Subscribe
     public void onEvent(SdkEventClass.OrientEvent event) {
+        mMyRoomData.setLandscape(event.isLandscape());
         if (event.isLandscape()) {
             orientLandscape();
         } else {

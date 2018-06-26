@@ -759,6 +759,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             } else {
                 orientPortrait();
             }
+            mMyRoomData.setLandscape(event.isLandscape());
             if (mStreamerPresenter != null && !mIsGameLive) {
                 mStreamerPresenter.setAngle(event.orientation);
             }

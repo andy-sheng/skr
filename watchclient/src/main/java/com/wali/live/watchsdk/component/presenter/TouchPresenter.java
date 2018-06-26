@@ -13,10 +13,13 @@ import android.view.animation.LinearInterpolator;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
 import com.thornbirds.component.view.IOrientationListener;
+import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.component.WatchComponentController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +81,8 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     private VelocityTracker mVelocityTracker;
     private int mMaxVelocity;
 
+    protected RoomBaseDataModel mRoomBaseDataModel;
+
     public void setViewSet(@NonNull List<View> horizontalSet) {
         mHorizontalSet = horizontalSet;
         mVerticalSet = new ArrayList<>(0);
@@ -104,8 +109,9 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         return TAG;
     }
 
-    public TouchPresenter(@NonNull IEventController controller, @NonNull View touchView) {
+    public TouchPresenter(@NonNull IEventController controller, RoomBaseDataModel roomBaseDataModel, @NonNull View touchView) {
         super(controller);
+        mRoomBaseDataModel = roomBaseDataModel;
         mTouchView = touchView;
         mTouchView.setSoundEffectsEnabled(false);
         mTouchView.setOnTouchListener(this);
@@ -302,6 +308,9 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     private void onMoveHorizontal(float oldTranslateX, float newTranslateX) {
         for (View view : mHorizontalSet) {
             if (view != null) {
+                if (isNotNeedToCare(view)) {
+                    continue;
+                }
                 if (mIsHideAll) {
                     view.setTranslationX(mViewWidth + newTranslateX);
                     if (newTranslateX == 0) {
@@ -346,11 +355,25 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         int visibility = mIsHideAll ? View.GONE : View.VISIBLE;
         for (View view : mHorizontalSet) {
             if (view != null) {
+                if (isNotNeedToCare(view)) {
+                    continue;
+                }
                 view.setTranslationX(0);
                 view.setVisibility(visibility);
             }
         }
         MyLog.d(TAG, "onFlingRight setTranslationX 0");
+    }
+
+    private boolean isNotNeedToCare(View view) {
+        // 判断
+        if (!mRoomBaseDataModel.isVideoLandscape() && !mRoomBaseDataModel.isLandscape()) {
+            // 隐藏旋转按钮
+            if (view.getId() == R.id.rotate_btn) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void onFlingUp() {

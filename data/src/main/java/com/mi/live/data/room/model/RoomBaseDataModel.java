@@ -150,6 +150,10 @@ public class RoomBaseDataModel implements Serializable {
 
     LiveProto.ThirdPartyInfo huyaInfo;
 
+    boolean mIsVideoLandscape = false;
+
+    boolean mIsLandscape = false;
+
     public RoomBaseDataModel(String name) {
         MyLog.d("RoomBaseDataModel", "name:" + name + ",new NO:" + NO++);
     }
@@ -609,5 +613,21 @@ public class RoomBaseDataModel implements Serializable {
 
     public void setContestId(String contestId) {
         this.contestId = contestId;
+    }
+
+    public boolean isVideoLandscape() {
+        return mIsVideoLandscape;
+    }
+
+    public void setVideoLandscape(boolean videoLandscape) {
+        mIsVideoLandscape = videoLandscape;
+    }
+
+    public boolean isLandscape() {
+        return mIsLandscape;
+    }
+
+    public void setLandscape(boolean landscape) {
+        mIsLandscape = landscape;
     }
 }
