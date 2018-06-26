@@ -105,7 +105,7 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
         mTabLayout = $(R.id.my_info_tab);
         mTabLayout.setCustomTabView(R.layout.my_info_tab_view, R.id.tab_tv);
         mTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.color_14b9c7));
-        mTabLayout.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_AS_DIVIDER);
+        mTabLayout.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER);
         mTabLayout.setIndicatorWidth(DisplayUtils.dip2px(12));
         mTabLayout.setIndicatorBottomMargin(DisplayUtils.dip2px(6));
         mViewPager = $(R.id.my_info_pager);
