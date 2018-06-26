@@ -719,13 +719,14 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void postSuccess() {
                 MyLog.w(TAG, logKey + " by activity success callback");
+                if (needFinish) {
+                    activity.finish();
+                }
                 // 上层回调跳转
                 if (callback != null) {
                     callback.process(null);
                 }
-                if (needFinish) {
-                    activity.finish();
-                }
+
             }
 
             @Override
