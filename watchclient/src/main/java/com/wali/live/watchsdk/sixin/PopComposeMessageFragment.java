@@ -342,26 +342,26 @@ public class PopComposeMessageFragment extends RxFragment implements View.OnClic
         FragmentNaviUtils.popFragment(getActivity());
     }
 
-    @Override
-    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-        if (enter) {
-            Animation animation = null;
-            try {
-                animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_half_bottom_in);
-            } catch (Exception e) {
-                MyLog.e(e);
-            }
-            return animation;
-        } else {
-            Animation animation = null;
-            try {
-                animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_half_bottom_out);
-            } catch (Exception e) {
-                MyLog.e(e);
-            }
-            return animation;
-        }
-    }
+//    @Override
+//    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+//        if (enter) {
+//            Animation animation = null;
+//            try {
+//                animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_half_bottom_in);
+//            } catch (Exception e) {
+//                MyLog.e(e);
+//            }
+//            return animation;
+//        } else {
+//            Animation animation = null;
+//            try {
+//                animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_half_bottom_out);
+//            } catch (Exception e) {
+//                MyLog.e(e);
+//            }
+//            return animation;
+//        }
+//    }
 
     public static void open(BaseActivity activity, SixinTarget sixinTarget, boolean isNeedSaveToStack) {
         Bundle bundle = new Bundle();
