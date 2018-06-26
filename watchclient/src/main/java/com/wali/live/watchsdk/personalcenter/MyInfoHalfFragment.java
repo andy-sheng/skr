@@ -22,6 +22,7 @@ import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.personalcenter.fragment.ChatThreadHalfFragment;
 import com.wali.live.watchsdk.personalcenter.fragment.EditInfoFragment;
 import com.wali.live.watchsdk.personalcenter.relation.FansListHalfFragment;
+import com.wali.live.watchsdk.personalcenter.relation.FollowListHalfFragment;
 import com.wali.live.watchsdk.personalcenter.view.MyInfoBalanceView;
 import com.wali.live.watchsdk.personalcenter.view.MyInfoChatThreadView;
 import com.wali.live.watchsdk.personalcenter.view.MyInfoSummaryView;
@@ -217,6 +218,16 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
 
         MyLog.d(TAG, "JumpHalfFansFragEvent");
         FansListHalfFragment.openFragment((BaseSdkActivity) getActivity(), R.id.fl_container);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.JumpHalfFollowsFragEvent event) {
+        if(event == null) {
+            return;
+        }
+
+        MyLog.d(TAG, "JumpHalfFollowsFragEvent");
+        FollowListHalfFragment.openFragment((BaseSdkActivity) getActivity(), R.id.fl_container);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

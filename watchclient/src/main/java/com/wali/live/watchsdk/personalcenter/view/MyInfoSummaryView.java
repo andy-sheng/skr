@@ -97,6 +97,14 @@ public class MyInfoSummaryView extends RelativeLayout {
                         EventBus.getDefault().post(new EventClass.JumpHalfFansFragEvent());
                     }
                 });
+        RxView.clicks(mFollowTv)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        EventBus.getDefault().post(new EventClass.JumpHalfFollowsFragEvent());
+                    }
+                });
     }
 
     private void bindData() {

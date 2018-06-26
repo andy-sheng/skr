@@ -33,10 +33,11 @@
                 android:background="@drawable/back_icon" />
 
             <TextView
+                android:id="@+id/title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/fans"
+                android:text="@string/follow"
                 android:textColor="@color/color_black_trans_80"
                 android:textSize="@dimen/text_size_40" />
 

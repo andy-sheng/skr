@@ -48,6 +48,7 @@ public class FansListHalfFragment extends BaseFragment {
     private TextView mBackTv;
     private TextView mConfirmTv;
     private View mTopView;
+    private TextView mTitleTv;
 
     //presenter
     private FansListPresenter mPresenter;
@@ -69,6 +70,8 @@ public class FansListHalfFragment extends BaseFragment {
         mBackTv = (TextView) mRootView.findViewById(R.id.back_tv);
         mConfirmTv = (TextView) mRootView.findViewById(R.id.confirm_tv);
         mTopView = mRootView.findViewById(R.id.place_holder_view);
+        mTitleTv = (TextView) mRootView.findViewById(R.id.title_tv);
+        mTitleTv.setText(GlobalData.app().getResources().getString(R.string.fans));
 
         mAdapter = new FollowFansAdapter();
         mAdapter.setFollowOptListener(mIFollowOptListener);
