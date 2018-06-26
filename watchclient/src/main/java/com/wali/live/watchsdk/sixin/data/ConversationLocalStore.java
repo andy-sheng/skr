@@ -35,7 +35,6 @@ public class ConversationLocalStore {
 
     public static final int TARGET_100000 = 100000;
     public static final int TARGET_126 = 126;
-
     public static boolean SHOW_VFAN_GROUP = false; //是否显示宠爱团的对话列表
     public static final int FEED_TYPE_WORKS = 6;      //作品
 
@@ -55,7 +54,7 @@ public class ConversationLocalStore {
         if (conversations == null) {
             conversations = new ArrayList<>();
         }
-//        addPermanentConversationIfNeed(conversations);
+        addPermanentConversationIfNeed(conversations);
         return conversations;
     }
 
@@ -63,12 +62,13 @@ public class ConversationLocalStore {
     private static void addPermanentConversationIfNeed(List<Conversation> conversations) {
         boolean hasInteract = false;
         for (Conversation conversation : conversations) {
-            if (conversation.getTarget() == TARGET_126) {
+            if (conversation.getTarget() == 999) {
+                // 小米直播客服
                 hasInteract = true;
             }
         }
         if (!hasInteract) {
-            addFakeConversation(TARGET_126, R.string.message_interact_notify);
+            addFakeConversation(999, R.string.user_name_999);
         }
     }
 

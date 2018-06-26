@@ -16,6 +16,7 @@ import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -92,26 +93,47 @@ public abstract class BaseBottomButton<PRESENTER, VIEW extends IViewProxy> imple
         lp.addRule(RelativeLayout.BELOW, 0);
     }
 
-    protected void alignViewToGuard(View view, int guardId, int verb, int verbDefault) {
+    static class AlginParams {
+        public int guardId;
+        public int verb;
+        public int verbDefault;
+
+        public AlginParams(int guardId, int verb, int verbDefault) {
+            this.guardId = guardId;
+            this.verb = verb;
+            this.verbDefault = verbDefault;
+        }
+    }
+
+    protected void alignViewToGuard(View view, List<AlginParams> list) {
         if (view == null) {
             MyLog.e(TAG, "alignViewToGuard, but view is null");
             return;
         }
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
         resetChildLayout(layoutParams);
-        if (guardId != 0) {
-            layoutParams.addRule(verb, guardId);
-        } else {
-            layoutParams.addRule(verbDefault, RelativeLayout.TRUE);
+        for (AlginParams alginParams : list) {
+            if (alginParams.guardId != 0) {
+                layoutParams.addRule(alginParams.verb, alginParams.guardId);
+            } else {
+                layoutParams.addRule(alginParams.verbDefault, RelativeLayout.TRUE);
+            }
         }
         view.setLayoutParams(layoutParams);
+    }
+
+    protected void alignViewToGuard(View view, int guardId, int verb, int verbDefault) {
+        alignViewToGuard(view, Arrays.asList(new AlginParams(guardId, verb, verbDefault)));
     }
 
     protected final void orientChild() {
         if (mIsLandscape) {
             int guardId = 0;
             for (View view : mBottomBtnSetLand) {
-                alignViewToGuard(view, guardId, RelativeLayout.ABOVE, RelativeLayout.ALIGN_PARENT_BOTTOM);
+                List<AlginParams> list = new ArrayList<>();
+                list.add(new AlginParams(guardId, RelativeLayout.ABOVE, RelativeLayout.ALIGN_PARENT_BOTTOM));
+                list.add(new AlginParams(0, 0, RelativeLayout.ALIGN_PARENT_RIGHT));
+                alignViewToGuard(view, list);
                 guardId = view.getId();
             }
         } else {

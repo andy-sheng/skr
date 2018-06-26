@@ -13,7 +13,7 @@
         android:paddingLeft="11.33dp"
         android:paddingRight="11.33dp"
         android:singleLine="true"
-        android:textColor="@color/color_14b9c7"
+        android:textColor="@color/color_ff2966"
         android:textSize="@dimen/text_size_40"/>
 
 </RelativeLayout>

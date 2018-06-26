@@ -14,6 +14,7 @@ import com.base.utils.display.DisplayUtils;
 import com.base.view.NestViewPager;
 import com.base.view.SlidingTabLayout;
 import com.mi.live.data.account.channel.HostChannelManager;
+import com.mi.live.data.account.event.SetUserAccountEvent;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.R;
@@ -26,6 +27,8 @@ import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.view.EmptyView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -133,6 +136,17 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
     public void onPause() {
         super.onPause();
         EventBus.getDefault().post(new EventClass.LiveListActivityLiveCycle(EventClass.LiveListActivityLiveCycle.Event.PAUSE));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SetUserAccountEvent event) {
+        MyLog.w(TAG, "onEvent" + " SetUserAccountEvent=" + event);
+        loadData();
     }
 
     public static void openActivity(@NonNull Activity activity) {

@@ -68,9 +68,11 @@ public class UserAccountManager {
         if (account != null) {
             //先把这个账号写到数据库里
             AccountLocalStore.getInstance().replaceAccount(account);
+
+            MiLinkClientAdapter.getsInstance().setIsTouristMode(false);
+            
             setAccount(account);
             // 取消匿名模式
-            MiLinkClientAdapter.getsInstance().setIsTouristMode(false);
             // MilinkChannelClientAdapter.getInstance().destroy();
             // 进入实名模式
             MiLinkClientAdapter.getsInstance().initCallBackFirst();

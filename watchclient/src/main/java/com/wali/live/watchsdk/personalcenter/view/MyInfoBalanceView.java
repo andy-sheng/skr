@@ -139,6 +139,11 @@ public class MyInfoBalanceView extends RelativeLayout {
                             mExchangeContainer.setVisibility(GONE);
                         }
                     }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, throwable.getMessage());
+                    }
                 });
     }
 

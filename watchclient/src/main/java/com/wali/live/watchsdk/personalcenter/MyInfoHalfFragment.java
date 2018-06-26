@@ -104,7 +104,7 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
 
         mTabLayout = $(R.id.my_info_tab);
         mTabLayout.setCustomTabView(R.layout.my_info_tab_view, R.id.tab_tv);
-        mTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.color_14b9c7));
+        mTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.color_ff2966));
         mTabLayout.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER);
         mTabLayout.setIndicatorWidth(DisplayUtils.dip2px(12));
         mTabLayout.setIndicatorBottomMargin(DisplayUtils.dip2px(6));
@@ -202,7 +202,7 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.JumpHalfEditFragEvent event) {
-        if(event == null) {
+        if (event == null) {
             return;
         }
 
@@ -212,7 +212,7 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.JumpHalfFansFragEvent event) {
-        if(event == null) {
+        if (event == null) {
             return;
         }
 
@@ -222,7 +222,7 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.JumpHalfFollowsFragEvent event) {
-        if(event == null) {
+        if (event == null) {
             return;
         }
 
@@ -232,12 +232,12 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.JumpNoFocusChatThreadFragEvent event) {
-        if(event == null) {
+        if (event == null) {
             return;
         }
 
         MyLog.d(TAG, "JumpHalfEditFragEvent");
-        ChatThreadHalfFragment.openFragment((BaseSdkActivity) getActivity(), R.id.fl_container,null);
+        ChatThreadHalfFragment.openFragment((BaseSdkActivity) getActivity(), R.id.fl_container, null);
     }
 
     abstract class LazyNewView<V extends View> {

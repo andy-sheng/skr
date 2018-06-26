@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <!--主播信息-->
     <RelativeLayout
@@ -13,7 +13,7 @@
         <com.base.image.fresco.BaseImageView
             android:id="@+id/anchor_iv"
             android:layout_width="@dimen/view_dimen_100"
-            android:layout_height="@dimen/view_dimen_100"/>
+            android:layout_height="@dimen/view_dimen_100" />
 
         <ImageView
             android:id="@+id/user_badge_iv"
@@ -21,7 +21,7 @@
             android:layout_height="@dimen/view_dimen_30"
             android:layout_marginStart="@dimen/margin_66"
             android:layout_marginTop="@dimen/margin_60"
-            android:scaleType="fitStart"/>
+            android:scaleType="fitStart" />
 
         <!--主播连麦中时头像右下方的小图标-->
         <ImageView
@@ -32,7 +32,7 @@
             android:layout_alignEnd="@id/anchor_iv"
             android:scaleType="fitCenter"
             android:src="@drawable/link_anchor_icon_connecting"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <RelativeLayout
             android:id="@+id/anchor_detail_area"
@@ -52,7 +52,7 @@
                 android:maxWidth="@dimen/view_dimen_225"
                 android:minWidth="@dimen/view_dimen_75"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/text_size_34"/>
+                android:textSize="@dimen/text_size_34" />
 
             <ImageView
                 android:id="@+id/viewers_iv"
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/name_tv"
                 android:layout_marginTop="@dimen/view_dimen_12"
-                android:src="@drawable/live_icon_people"/>
+                android:src="@drawable/live_icon_people" />
 
             <TextView
                 android:id="@+id/viewers_num_tv"
@@ -71,7 +71,7 @@
                 android:layout_marginTop="1dp"
                 android:layout_toEndOf="@id/viewers_iv"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_28"/>
+                android:textSize="@dimen/text_size_28" />
 
         </RelativeLayout>
 
@@ -90,7 +90,7 @@
             android:paddingRight="@dimen/margin_24"
             android:text="@string/follow"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/text_size_36"/>
+            android:textSize="@dimen/text_size_36" />
 
         <RelativeLayout
             android:id="@+id/vfans_area"
@@ -123,7 +123,7 @@
                 android:id="@+id/guest_iv"
                 android:layout_width="@dimen/view_dimen_100"
                 android:layout_height="@dimen/view_dimen_100"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true" />
 
             <ImageView
                 android:id="@+id/link_guest_icon"
@@ -132,7 +132,7 @@
                 android:layout_alignBottom="@id/guest_iv"
                 android:layout_alignEnd="@id/guest_iv"
                 android:scaleType="fitCenter"
-                android:src="@drawable/link_guest_icon_connecting"/>
+                android:src="@drawable/link_guest_icon_connecting" />
 
         </RelativeLayout>
 
@@ -150,15 +150,15 @@
         android:fadingEdge="none"
         android:fadingEdgeLength="0dp"
         android:overScrollMode="never"
-        android:requiresFadingEdge="none"/>
+        android:requiresFadingEdge="none" />
 
     <com.wali.live.watchsdk.component.view.WatchWaterMarkView
         android:id="@+id/watch_water_mark"
-        android:layout_below="@+id/avatar_rv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_dimen_30"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/avatar_rv"
+        android:layout_marginTop="@dimen/view_dimen_30" />
 
     <!--星票-->
     <RelativeLayout
@@ -179,8 +179,8 @@
             android:layout_marginStart="@dimen/margin_20"
             android:gravity="center_vertical"
             android:text="@string/ticket_num"
-            android:textColor="@color/color_fed533"
-            android:textSize="@dimen/text_size_32"/>
+            android:textColor="@color/color_ff2966"
+            android:textSize="@dimen/text_size_32" />
 
         <TextView
             android:id="@+id/ticket_num_tv"
@@ -195,7 +195,7 @@
             android:ellipsize="none"
             android:maxLines="1"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/text_size_32"/>
+            android:textSize="@dimen/text_size_32" />
     </RelativeLayout>
 
     <!--房间管理-->
@@ -222,7 +222,7 @@
             android:paddingRight="@dimen/view_dimen_30"
             android:text="@string/room_admin"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/text_size_32"/>
+            android:textSize="@dimen/text_size_32" />
     </RelativeLayout>
 
 </merge>

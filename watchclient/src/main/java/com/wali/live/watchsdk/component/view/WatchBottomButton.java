@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 
@@ -64,7 +65,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
                 mMoreBtn.changeIconStatus(true);
                 mPresenter.showWatchMenuPanel(mMoreBtn.getMsgUnreadCnt());
             }
-        }else if(id == R.id.my_info_btn){
+        } else if (id == R.id.my_info_btn) {
             if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.showMyInfoPannel();
             }
@@ -75,6 +76,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             @NonNull RelativeLayout contentContainer,
             boolean isGameMode, boolean isHuYaLive) {
         super(contentContainer);
+        mContentContainer.setPadding(BTN_MARGIN, BTN_MARGIN, 0, BTN_MARGIN);
         mIsGameMode = isGameMode;
         mIsHuYaLive = isHuYaLive;
         initView();
@@ -84,7 +86,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         mGiftBtn = createImageView(R.drawable.live_icon_gift_btn);
         addCreatedView(mGiftBtn, R.id.gift_btn);
 
-        if(mIsHuYaLive){
+        if (mIsHuYaLive) {
             mGiftBtn.setVisibility(View.GONE);
         }
 
@@ -92,18 +94,21 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         addCreatedView(mMoreBtn, R.id.more_btn);
 
         mMyInfoIconView = new MyInfoIconView(getContext());
-
         addCreatedView(mMyInfoIconView, R.id.my_info_btn);
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mMyInfoIconView.getLayoutParams();
+        layoutParams.setMargins(BTN_MARGIN, BTN_MARGIN, 0, BTN_MARGIN);
+
+//        addCreatedView(mMyInfoIconView, R.id.my_info_btn);
 
         mRightBtnSetPort.add(mMyInfoIconView);        // 横竖屏时按钮排列顺序
-        if(!mIsHuYaLive){
+        if (!mIsHuYaLive) {
             mRightBtnSetPort.add(mGiftBtn);
         }
         mRightBtnSetPort.add(mMoreBtn);
 
 
         mBottomBtnSetLand.add(mMyInfoIconView);
-        if(!mIsHuYaLive){
+        if (!mIsHuYaLive) {
             mBottomBtnSetLand.add(mGiftBtn);
         }
         mBottomBtnSetLand.add(mMoreBtn);
@@ -178,8 +183,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         clearAnimator();
     }
 
-    public void setMoreBtnVisiable(boolean isShow){
-        mMoreBtn.setVisibility( isShow ? View.VISIBLE : View.GONE);
+    public void setMoreBtnVisiable(boolean isShow) {
+        mMoreBtn.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 
     public void reset() {
