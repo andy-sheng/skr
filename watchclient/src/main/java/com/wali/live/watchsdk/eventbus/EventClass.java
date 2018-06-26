@@ -161,6 +161,12 @@ public class EventClass {
         }
     }
 
+    public static class JumpHalfFansFragEvent {
+
+        public JumpHalfFansFragEvent() {
+        }
+    }
+
 
     public static class JumpNoFocusChatThreadFragEvent {
 

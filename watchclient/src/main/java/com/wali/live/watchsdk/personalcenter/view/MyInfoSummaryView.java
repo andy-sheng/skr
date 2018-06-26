@@ -86,8 +86,15 @@ public class MyInfoSummaryView extends RelativeLayout {
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-//                        EditInfoFragment.openFragment((BaseSdkActivity) mContext);
                         EventBus.getDefault().post(new EventClass.JumpHalfEditFragEvent());
+                    }
+                });
+        RxView.clicks(mFanTv)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        EventBus.getDefault().post(new EventClass.JumpHalfFansFragEvent());
                     }
                 });
     }
