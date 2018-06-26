@@ -93,17 +93,16 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
         mMyInfoIconView = new MyInfoIconView(getContext());
 
-        addCreatedView(mMyInfoIconView.getRealView(), R.id.my_info_btn);
+        addCreatedView(mMyInfoIconView, R.id.my_info_btn);
 
-        mRightBtnSetPort.add(mMyInfoIconView.getRealView());
-        // 横竖屏时按钮排列顺序
+        mRightBtnSetPort.add(mMyInfoIconView);        // 横竖屏时按钮排列顺序
         if(!mIsHuYaLive){
             mRightBtnSetPort.add(mGiftBtn);
         }
         mRightBtnSetPort.add(mMoreBtn);
 
 
-        mBottomBtnSetLand.add(mMyInfoIconView.getRealView());
+        mBottomBtnSetLand.add(mMyInfoIconView);
         if(!mIsHuYaLive){
             mBottomBtnSetLand.add(mGiftBtn);
         }
@@ -179,7 +178,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         clearAnimator();
     }
 
-    public void setMoreBtnShow(boolean isShow){
+    public void setMoreBtnVisiable(boolean isShow){
         mMoreBtn.setVisibility( isShow ? View.VISIBLE : View.GONE);
     }
 
@@ -233,7 +232,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
             @Override
             public void onUpdateUnreadCount(int unReadCnt) {
-                mMoreBtn.setMsgUnreadCnt(unReadCnt);
+                mMyInfoIconView.setMsgUnreadCnt(unReadCnt);
+//                mMoreBtn.setMsgUnreadCnt(unReadCnt);
             }
 
             @Override

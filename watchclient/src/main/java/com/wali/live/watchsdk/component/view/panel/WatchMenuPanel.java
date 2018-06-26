@@ -87,7 +87,8 @@ public class WatchMenuPanel extends BaseBottomPanel<RelativeLayout, RelativeLayo
     private void initView() {
         mMsgIv = createImageView(R.drawable.live_icon_msg_btn, R.string.private_message, R.id.msg_ctrl_btn);
         mMsgIv.setUnread(mUnReadCnt);
-        mBottomBtnSet.add(mMsgIv);
+
+//        mBottomBtnSet.add(mMsgIv);
         if (mEnableShare) {
             mShareIv = createImageView(R.drawable.live_menu_share_btn, R.string.watch_share_btn, R.id.share_btn);
             mBottomBtnSet.add(mShareIv);

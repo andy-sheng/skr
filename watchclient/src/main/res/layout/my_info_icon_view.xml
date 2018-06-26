@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_info_btn"
-    android:background="@drawable/my_info_btn_bg"
     android:layout_width="wrap_content"
+    android:layout_height="@dimen/view_dimen_110"
+    android:background="@drawable/my_info_btn_bg"
     android:padding="@dimen/view_dimen_10"
-    android:layout_height="@dimen/view_dimen_110">
+    tools:parentTag="android.widget.RelativeLayout">
 
     <com.base.image.fresco.BaseImageView
         android:id="@+id/my_avatar_iv"
-        android:layout_centerVertical="true"
         android:layout_width="@dimen/view_dimen_90"
         android:layout_height="@dimen/view_dimen_90"
+        android:layout_centerVertical="true"
         android:src="@drawable/avatar_default" />
 
     <TextView
@@ -24,4 +26,13 @@
         android:text="我的"
         android:textColor="@color/color_black"
         android:textSize="@dimen/view_dimen_36" />
+
+    <ImageView
+        android:id="@+id/new_msg_point_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/view_dimen_10"
+        android:src="@drawable/new_msg_point"
+        android:visibility="gone" />
 </RelativeLayout>

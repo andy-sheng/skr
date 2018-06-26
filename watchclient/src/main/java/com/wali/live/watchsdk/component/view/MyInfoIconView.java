@@ -15,35 +15,39 @@ import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 
-public class MyInfoIconView {
+public class MyInfoIconView extends RelativeLayout {
     private static final String TAG = "MyInfoIconView";
-
-    View mRealView;
 
     BaseImageView mMyAvatarIv;
     TextView mDescTv;
+    ImageView mNewMsgPointIv;
 
     public MyInfoIconView(Context context) {
+        super(context);
         init(context);
     }
 
     private void init(Context context) {
-        LayoutInflater factory = LayoutInflater.from(context);
-        mRealView = factory.inflate(R.layout.my_info_icon_view, null);
-        mMyAvatarIv = (BaseImageView)mRealView.findViewById(R.id.my_avatar_iv);
-        mDescTv = (TextView)mRealView.findViewById(R.id.desc_tv);
+        inflate(context, R.layout.my_info_icon_view, this);
+        mMyAvatarIv = (BaseImageView) this.findViewById(R.id.my_avatar_iv);
+        mDescTv = (TextView) this.findViewById(R.id.desc_tv);
+        mNewMsgPointIv = (ImageView) this.findViewById(R.id.new_msg_point_iv);
         tryBindAvatar();
     }
 
     public void tryBindAvatar() {
-        if(UserAccountManager.getInstance().hasAccount()){
-            AvatarUtils.loadAvatarByUidTs(mMyAvatarIv, MyUserInfoManager.getInstance().getUuid(), MyUserInfoManager.getInstance().getAvatar(),true);
-        }else{
-            AvatarUtils.loadAvatarByUidTs(mMyAvatarIv,0,0,true);
+        if (UserAccountManager.getInstance().hasAccount()) {
+            AvatarUtils.loadAvatarByUidTs(mMyAvatarIv, MyUserInfoManager.getInstance().getUuid(), MyUserInfoManager.getInstance().getAvatar(), true);
+        } else {
+            AvatarUtils.loadAvatarByUidTs(mMyAvatarIv, 0, 0, true);
         }
     }
 
-    public View getRealView() {
-        return mRealView;
+    public void setMsgUnreadCnt(int unReadCnt) {
+        if (unReadCnt > 0) {
+            mNewMsgPointIv.setVisibility(VISIBLE);
+        } else {
+            mNewMsgPointIv.setVisibility(GONE);
+        }
     }
 }

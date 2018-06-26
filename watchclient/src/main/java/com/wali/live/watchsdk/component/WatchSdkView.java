@@ -4,18 +4,15 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.base.activity.BaseActivity;
-import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.Constants;
@@ -63,11 +60,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.qos.logback.core.android.SystemPropertiesProxy;
-
 import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
-import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
-import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_ENABLE_MOVE_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_FOLLOW_COUNT_DOWN;
@@ -333,8 +326,8 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                     mController, mController.mMyRoomData);
             registerComponent(mWatchBottomButton, presenter);
             // 判断是否支持分享和关系链
-            if (!mController.mMyRoomData.isEnableRelationChain() && !mController.mMyRoomData.getEnableShare()){
-                mWatchBottomButton.setMoreBtnShow(false);
+            if (!mController.mMyRoomData.isEnableRelationChain() && !mController.mMyRoomData.getEnableShare()) {
+                mWatchBottomButton.setMoreBtnVisiable(false);
             }
         }
         // 抢红包
@@ -497,10 +490,10 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
         if (!mIsVideoLandscape && !mIsLandscape) {
             mRotateBtn.setVisibility(View.GONE);
         } else {
-            if(CommonUtils.isNotchPhone() && !CommonUtils.isOpenHideNotch()){
+            if (CommonUtils.isNotchPhone() && !CommonUtils.isOpenHideNotch()) {
                 int toRight = CommonUtils.getStatusBarHeight();
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)mRotateBtn.getLayoutParams();
-                layoutParams.setMargins(0,0, toRight,0);
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRotateBtn.getLayoutParams();
+                layoutParams.setMargins(0, 0, toRight, 0);
                 mRotateBtn.setLayoutParams(layoutParams);
             }
 
@@ -613,7 +606,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                     mVerticalMoveSet.add(mFollowGuideView);
                 }
             }
-                break;
+            break;
             case MSG_SHOW_SEND_ENVELOPE:
                 SendEnvelopeFragment.openFragment((BaseActivity) mActivity, mController.mMyRoomData);
                 return true;
