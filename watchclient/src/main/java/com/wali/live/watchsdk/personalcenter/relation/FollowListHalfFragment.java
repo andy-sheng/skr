@@ -15,6 +15,7 @@ import com.base.activity.BaseSdkActivity;
 import com.base.fragment.BaseFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
+import com.base.utils.toast.ToastUtils;
 import com.base.view.BackTitleBar;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.MyUserInfoManager;
@@ -24,8 +25,11 @@ import com.wali.live.dao.SixinMessage;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.personalcenter.relation.adapter.FollowFansAdapter;
 import com.wali.live.watchsdk.personalcenter.relation.contact.FollowListContact;
+import com.wali.live.watchsdk.personalcenter.relation.contact.FollowOptContact;
+import com.wali.live.watchsdk.personalcenter.relation.contact.IFollowOptListener;
 import com.wali.live.watchsdk.personalcenter.relation.contact.IItemOnclickListener;
 import com.wali.live.watchsdk.personalcenter.relation.presenter.FollowListPresenter;
+import com.wali.live.watchsdk.personalcenter.relation.presenter.FollowOptPresenter;
 import com.wali.live.watchsdk.sixin.PopComposeMessageFragment;
 import com.wali.live.watchsdk.sixin.pojo.SixinTarget;
 
@@ -47,9 +51,11 @@ public class FollowListHalfFragment extends BaseFragment{
 
     //presenter
     private FollowListPresenter mPresenter;
+    private FollowOptPresenter mFollowOptPresenter;
 
     //data
     private long mUuid;
+    private List<UserListData> mDatas;
 
     //ui
     private RecyclerView mRecyclerView;
@@ -78,6 +84,7 @@ public class FollowListHalfFragment extends BaseFragment{
         mConfirmTv = (TextView) mRootView.findViewById(R.id.confirm_tv);
         mTopView = mRootView.findViewById(R.id.place_holder_view);
         mAdapter = new FollowFansAdapter();
+        mAdapter.setFollowOptListener(mIFollowOptListener);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
         mRecyclerView.setAdapter(mAdapter);
@@ -138,6 +145,7 @@ public class FollowListHalfFragment extends BaseFragment{
 
     private void initPresenter() {
         mPresenter = new FollowListPresenter(mRelationListContact);
+        mFollowOptPresenter = new FollowOptPresenter(mFollowOptContact);
     }
 
     private FollowListContact.Iview mRelationListContact = new FollowListContact.Iview() {
@@ -145,9 +153,47 @@ public class FollowListHalfFragment extends BaseFragment{
         @Override
         public void loadFollowListSuccess(List<UserListData> datas) {
             if(datas != null && !datas.isEmpty()) {
+                mDatas = datas;
                 mAdapter.setDataSourse(datas);
                 ArrayList<Object> objects = new ArrayList<>();
                 objects.addAll(datas);
+            }
+        }
+    };
+
+    private IFollowOptListener mIFollowOptListener = new IFollowOptListener() {
+
+        @Override
+        public void follow(long targetId) {
+//            mFollowOptPresenter.follow(targetId);
+        }
+
+        @Override
+        public void unFollow(long targetId) {
+            mFollowOptPresenter.unFollow(targetId);
+        }
+    };
+
+    private FollowOptContact.Iview mFollowOptContact = new FollowOptContact.Iview() {
+
+        @Override
+        public void followSuccess(long targetId) {
+        }
+
+        @Override
+        public void unFollowSuccess(long targetId) {
+            ToastUtils.showToast(R.string.unfollow_success);
+            if(mDatas != null
+                    && !mDatas.isEmpty()) {
+                for(int i = mDatas.size() - 1; i >= 0; i--) {
+                    UserListData data = mDatas.get(i);
+                    if(data.userId == targetId) {
+                        mDatas.remove(data);
+                        break;
+                    }
+                }
+                mAdapter.setDataSourse(mDatas);
+//                mAdapter.notifyDataSetChanged();
             }
         }
     };

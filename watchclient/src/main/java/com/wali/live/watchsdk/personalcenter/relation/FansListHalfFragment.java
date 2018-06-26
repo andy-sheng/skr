@@ -15,6 +15,7 @@ import com.base.fragment.BaseFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.utils.toast.ToastUtils;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.data.UserListData;
@@ -192,12 +193,14 @@ public class FansListHalfFragment extends BaseFragment {
 
         @Override
         public void followSuccess(long targetId) {
+            ToastUtils.showToast(R.string.follow_success);
             if(mAdapter != null
                     && mAdapter.getDatas() != null
                     && !mAdapter.getDatas().isEmpty()) {
                 for(UserListData data : mAdapter.getDatas()) {
                     if(data.userId == targetId) {
                         data.isBothway = true;
+                        data.isFollowing = true;
                         break;
                     }
                 }
@@ -207,7 +210,21 @@ public class FansListHalfFragment extends BaseFragment {
         }
 
         @Override
-        public void unFollowSuccess() {
+        public void unFollowSuccess(long targetId) {
+            ToastUtils.showToast(R.string.unfollow_success);
+            if(mAdapter != null
+                    && mAdapter.getDatas() != null
+                    && !mAdapter.getDatas().isEmpty()) {
+                for(UserListData data : mAdapter.getDatas()) {
+                    if(data.userId == targetId) {
+                        data.isFollowing = false;
+                        data.isBothway = false;
+                        break;
+                    }
+                }
+
+                mAdapter.notifyDataSetChanged();
+            }
         }
     };
 

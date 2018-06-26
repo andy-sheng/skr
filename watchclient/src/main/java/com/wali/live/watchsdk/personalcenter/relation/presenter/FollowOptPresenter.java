@@ -105,7 +105,7 @@ public class FollowOptPresenter extends RxLifeCyclePresenter implements FollowOp
 
                     @Override
                     public void onNext(Boolean aBoolean) {
-                        mIview.unFollowSuccess();
+                        mIview.unFollowSuccess(targetUid);
                     }
                 });
     }
