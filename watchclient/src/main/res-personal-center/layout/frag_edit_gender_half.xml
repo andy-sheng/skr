@@ -22,7 +22,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_dimen_130"
-            android:background="@color/color_white">
+            android:background="@drawable/shape_vfans_fragment_bg">
 
             <TextView
                 android:id="@+id/back_tv"
