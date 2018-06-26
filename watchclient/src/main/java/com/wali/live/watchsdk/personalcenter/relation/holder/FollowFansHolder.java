@@ -169,7 +169,7 @@ public class FollowFansHolder extends RecyclerView.ViewHolder{
             } else {
 //                mFollowArea.setSelected(true);
                 mFollowTv.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.notice_attention_btn_normal));
-                mFollowTv.setTextColor(GlobalData.app().getResources().getColor(R.color.color_e5aa1e));
+                mFollowTv.setTextColor(GlobalData.app().getResources().getColor(R.color.color_ff2966));
                 mFollowTv.setText(R.string.follow);
             }
         }

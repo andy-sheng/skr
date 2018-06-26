@@ -65,6 +65,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="13.33dp"
             android:textColor="@color/color_black_trans_90"
+            android:textCursorDrawable="@drawable/text_cursor_color"
             android:textSize="16sp" />
 
         <!-- 底部的提示-->

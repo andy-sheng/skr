@@ -70,6 +70,7 @@
                 android:hint="@string/signature_input_text"
                 android:paddingLeft="13.33dp"
                 android:paddingTop="20dp"
+                android:textCursorDrawable="@drawable/text_cursor_color"
                 android:textColor="@color/color_black_trans_90"
                 android:textSize="16dp"/>
 
