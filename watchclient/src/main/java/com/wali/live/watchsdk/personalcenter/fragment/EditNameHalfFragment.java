@@ -218,6 +218,7 @@ public class EditNameHalfFragment extends RxFragment implements IEditNameView {
 
     private void closeFragment() {
         MyLog.w(TAG, "closeFragment infoChanged=" + mInfoChanged);
+        KeyboardUtils.hideKeyboard(getActivity());
         if (mInfoChanged && mDataListener != null) {
             Bundle bundle = new Bundle();
             bundle.putBoolean(EditInfoActivity.EXTRA_OUT_INFO_CHANGED, mInfoChanged);
