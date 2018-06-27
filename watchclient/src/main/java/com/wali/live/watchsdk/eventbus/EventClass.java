@@ -178,4 +178,9 @@ public class EventClass {
         public JumpNoFocusChatThreadFragEvent() {
         }
     }
+
+    public static class PersonalInfoChangeEvent {
+        public PersonalInfoChangeEvent() {
+        }
+    }
 }

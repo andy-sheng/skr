@@ -240,6 +240,25 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
         ChatThreadHalfFragment.openFragment((BaseSdkActivity) getActivity(), R.id.fl_container, null);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.PersonalInfoChangeEvent event) {
+        if (event == null) {
+            return;
+        }
+
+        MyLog.d(TAG, "PersonalInfoChangeEvent");
+        if(mTitleAndViewList != null && !mTitleAndViewList.isEmpty()) {
+            for(int i = 0; i < mTitleAndViewList.size(); i++) {
+                LazyNewView viewProxy = mTitleAndViewList.get(i).second;
+                if(viewProxy.getView() instanceof MyInfoSummaryView) {
+                    ((MyInfoSummaryView) viewProxy.getView()).refreshUi();
+                    break;
+                }
+
+            }
+        }
+    }
+
     abstract class LazyNewView<V extends View> {
         V view;
 

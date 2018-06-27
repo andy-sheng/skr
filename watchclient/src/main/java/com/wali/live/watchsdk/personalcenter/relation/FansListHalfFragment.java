@@ -22,6 +22,7 @@ import com.mi.live.data.data.UserListData;
 import com.mi.live.data.user.User;
 import com.wali.live.dao.SixinMessage;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.personalcenter.relation.adapter.FollowFansAdapter;
 import com.wali.live.watchsdk.personalcenter.relation.contact.FansListContact;
 import com.wali.live.watchsdk.personalcenter.relation.contact.FollowOptContact;
@@ -31,6 +32,8 @@ import com.wali.live.watchsdk.personalcenter.relation.presenter.FansListPresente
 import com.wali.live.watchsdk.personalcenter.relation.presenter.FollowOptPresenter;
 import com.wali.live.watchsdk.sixin.PopComposeMessageFragment;
 import com.wali.live.watchsdk.sixin.pojo.SixinTarget;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -192,8 +195,10 @@ public class FansListHalfFragment extends BaseFragment {
     private FollowOptContact.Iview mFollowOptContact = new FollowOptContact.Iview() {
 
         @Override
-        public void followSuccess(long targetId) {
+        public void followSuccess(long targetId, int ret) {
             ToastUtils.showToast(R.string.follow_success);
+            MyUserInfoManager.getInstance().getUser().setFollowNum(MyUserInfoManager.getInstance().getUser().getFollowNum() + 1);
+            EventBus.getDefault().post(new EventClass.PersonalInfoChangeEvent());
             if(mAdapter != null
                     && mAdapter.getDatas() != null
                     && !mAdapter.getDatas().isEmpty()) {
@@ -212,6 +217,8 @@ public class FansListHalfFragment extends BaseFragment {
         @Override
         public void unFollowSuccess(long targetId) {
             ToastUtils.showToast(R.string.unfollow_success);
+            MyUserInfoManager.getInstance().getUser().setFollowNum(MyUserInfoManager.getInstance().getUser().getFollowNum() - 1);
+            EventBus.getDefault().post(new EventClass.PersonalInfoChangeEvent());
             if(mAdapter != null
                     && mAdapter.getDatas() != null
                     && !mAdapter.getDatas().isEmpty()) {

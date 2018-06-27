@@ -35,13 +35,13 @@ public class FollowOptPresenter extends RxLifeCyclePresenter implements FollowOp
             return;
         }
 
-        mFollowSubscribe = Observable.create(new Observable.OnSubscribe<Boolean>() {
+        mFollowSubscribe = Observable.create(new Observable.OnSubscribe<Integer>() {
             @Override
-            public void call(Subscriber<? super Boolean> subscriber) {
+            public void call(Subscriber<? super Integer> subscriber) {
                 int retCode = RelationUtils.follow(UserAccountManager.getInstance().getUuidAsLong(), targetUid);
                 if (retCode == RelationUtils.FOLLOW_STATE_SUCCESS
                         || retCode == RelationUtils.FOLLOW_STATE_BOTH_WAY) {
-                    subscriber.onNext(true);
+                    subscriber.onNext(retCode);
                 } else {
                     subscriber.onError(new Exception("follow opt fail"));
                 }
@@ -50,9 +50,9 @@ public class FollowOptPresenter extends RxLifeCyclePresenter implements FollowOp
             }
         })
                 .subscribeOn(Schedulers.io())
-                .compose(this.<Boolean>bindUntilEvent(PresenterEvent.DESTROY))
+                .compose(this.<Integer>bindUntilEvent(PresenterEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Boolean>() {
+                .subscribe(new Observer<Integer>() {
                     @Override
                     public void onCompleted() {
 
@@ -64,8 +64,8 @@ public class FollowOptPresenter extends RxLifeCyclePresenter implements FollowOp
                     }
 
                     @Override
-                    public void onNext(Boolean aBoolean) {
-                        mIview.followSuccess(targetUid);
+                    public void onNext(Integer ret) {
+                        mIview.followSuccess(targetUid, ret);
                     }
                 });
     }
