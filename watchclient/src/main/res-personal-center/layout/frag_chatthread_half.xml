@@ -16,7 +16,8 @@
         android:id="@+id/container"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_dimen_953"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/shape_vfans_fragment_bg">
 
         <com.base.view.BackTitleBar
             android:id="@+id/title_bar"
