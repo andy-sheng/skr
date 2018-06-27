@@ -10,6 +10,10 @@
         android:allowBackup="true"
         android:supportsRtl="true">
 
+        <activity android:name="com.wali.live.common.photopicker.ClipImageActivity"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
+            android:screenOrientation="portrait" />
+
         <receiver android:name="com.wali.live.receiver.NetworkReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
