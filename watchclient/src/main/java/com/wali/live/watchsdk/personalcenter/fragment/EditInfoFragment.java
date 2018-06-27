@@ -39,6 +39,9 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.editinfo.fragment.presenter.EditAvatarPresenter;
 import com.wali.live.watchsdk.editinfo.fragment.presenter.IEditAvatarView;
+import com.wali.live.watchsdk.eventbus.EventClass;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.concurrent.TimeUnit;
 
@@ -350,6 +353,7 @@ public class EditInfoFragment extends RxFragment implements FragmentDataListener
         } else if(requestCode == EditSignHalfFragment.REQUEST_CODE) {
             bindSign();
         }
+        EventBus.getDefault().post(new EventClass.PersonalInfoChangeEvent());
     }
 
     @Override
@@ -386,6 +390,7 @@ public class EditInfoFragment extends RxFragment implements FragmentDataListener
         mUser.setAvatar(avatar);
         hideAvatorDvMode();
         bindAvator();
+        EventBus.getDefault().post(new EventClass.PersonalInfoChangeEvent());
     }
 
     @Override
