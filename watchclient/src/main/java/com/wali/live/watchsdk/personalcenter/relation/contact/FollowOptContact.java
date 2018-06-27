@@ -7,7 +7,7 @@ package com.wali.live.watchsdk.personalcenter.relation.contact;
 public class FollowOptContact {
 
     public interface Iview {
-        void followSuccess(long targetUid);
+        void followSuccess(long targetUid, int ret);
 
         void unFollowSuccess(long targetUid);
     }

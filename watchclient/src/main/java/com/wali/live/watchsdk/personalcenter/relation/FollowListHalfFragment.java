@@ -1,6 +1,5 @@
 package com.wali.live.watchsdk.personalcenter.relation;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,13 +15,14 @@ import com.base.fragment.BaseFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.utils.toast.ToastUtils;
-import com.base.view.BackTitleBar;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.data.UserListData;
 import com.mi.live.data.user.User;
 import com.wali.live.dao.SixinMessage;
+import com.wali.live.utils.relation.RelationUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.personalcenter.relation.adapter.FollowFansAdapter;
 import com.wali.live.watchsdk.personalcenter.relation.contact.FollowListContact;
 import com.wali.live.watchsdk.personalcenter.relation.contact.FollowOptContact;
@@ -32,6 +32,8 @@ import com.wali.live.watchsdk.personalcenter.relation.presenter.FollowListPresen
 import com.wali.live.watchsdk.personalcenter.relation.presenter.FollowOptPresenter;
 import com.wali.live.watchsdk.sixin.PopComposeMessageFragment;
 import com.wali.live.watchsdk.sixin.pojo.SixinTarget;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -165,7 +167,7 @@ public class FollowListHalfFragment extends BaseFragment{
 
         @Override
         public void follow(long targetId) {
-//            mFollowOptPresenter.follow(targetId);
+            mFollowOptPresenter.follow(targetId);
         }
 
         @Override
@@ -177,23 +179,41 @@ public class FollowListHalfFragment extends BaseFragment{
     private FollowOptContact.Iview mFollowOptContact = new FollowOptContact.Iview() {
 
         @Override
-        public void followSuccess(long targetId) {
+        public void followSuccess(long targetId, int ret) {
+            ToastUtils.showToast(R.string.follow_success);
+            MyUserInfoManager.getInstance().getUser().setFollowNum(MyUserInfoManager.getInstance().getUser().getFollowNum() + 1);
+            EventBus.getDefault().post(new EventClass.PersonalInfoChangeEvent());
+            if(mAdapter != null
+                    && mAdapter.getDatas() != null
+                    && !mAdapter.getDatas().isEmpty()) {
+                for(UserListData data : mAdapter.getDatas()) {
+                    if(data.userId == targetId) {
+                        data.isBothway = ret == RelationUtils.FOLLOW_STATE_BOTH_WAY;
+                        data.isFollowing = true;
+                        break;
+                    }
+                }
+
+                mAdapter.notifyDataSetChanged();
+            }
         }
 
         @Override
         public void unFollowSuccess(long targetId) {
             ToastUtils.showToast(R.string.unfollow_success);
-            if(mDatas != null
-                    && !mDatas.isEmpty()) {
-                for(int i = mDatas.size() - 1; i >= 0; i--) {
-                    UserListData data = mDatas.get(i);
+            MyUserInfoManager.getInstance().getUser().setFollowNum(MyUserInfoManager.getInstance().getUser().getFollowNum() - 1);
+            EventBus.getDefault().post(new EventClass.PersonalInfoChangeEvent());
+            if(mAdapter != null && mAdapter.getDatas() != null
+                    && !mAdapter.getDatas().isEmpty()) {
+                for(int i = mAdapter.getDatas().size() - 1; i >= 0; i--) {
+                    UserListData data = mAdapter.getDatas().get(i);
                     if(data.userId == targetId) {
-                        mDatas.remove(data);
+                        data.isFollowing = false;
+                        data.isBothway = false;
                         break;
                     }
                 }
-                mAdapter.setDataSourse(mDatas);
-//                mAdapter.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();
             }
         }
     };

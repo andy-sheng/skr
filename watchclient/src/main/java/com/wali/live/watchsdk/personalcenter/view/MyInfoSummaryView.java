@@ -134,6 +134,11 @@ public class MyInfoSummaryView extends RelativeLayout {
         mFanTv.setText(String.format(GlobalData.app().getResources().getString(R.string.fan_cnt), String.valueOf(mUser.getFansNum())));
     }
 
+    public void refreshUi() {
+        MyLog.d(TAG, "refreshUi");
+        bindData();
+    }
+
     private void updateLevelIcons() {
         List<TextView> list = new ArrayList<>();
         TextView view;
