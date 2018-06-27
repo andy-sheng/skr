@@ -6,10 +6,10 @@ allprojects {
 
 ext {
     //Android
-    androidBuildToolsVersion = "27.0.3"
+    androidBuildToolsVersion = '25.0.1'
     androidMinSdkVersion = 18
-    androidTargetSdkVersion = 23
-    androidCompileSdkVersion = 27
+    androidTargetSdkVersion = 25
+    androidCompileSdkVersion = 25
 
     //Librariesi
     daggerVersion = '2.0.2'
