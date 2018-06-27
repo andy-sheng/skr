@@ -103,7 +103,7 @@ public class EditSignHalfFragment extends RxFragment implements IEditSignView {
 
         mUser = MyUserInfoManager.getInstance().getUser();
         mSignMaxCount = getResources().getInteger(R.integer.max_sign_char_count);
-        mHintTv.setText(String.valueOf(mSignMaxCount) + getString(R.string.character_text));
+//        mHintTv.setText(String.valueOf(mSignMaxCount) + getString(R.string.character_text));
         mSign = mUser.getSign();
 
         if (!TextUtils.isEmpty(mSign)) {
@@ -116,6 +116,8 @@ public class EditSignHalfFragment extends RxFragment implements IEditSignView {
 
         initPresenter();
         initListener();
+
+        updateCountHint();
     }
 
     private void updateCountHint() {
