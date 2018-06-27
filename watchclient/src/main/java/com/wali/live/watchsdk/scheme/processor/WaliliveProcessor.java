@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
+import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.LiveManager;
 import com.wali.live.event.EventClass;
 import com.wali.live.pay.activity.RechargeActivity;
@@ -73,6 +74,8 @@ public class WaliliveProcessor extends CommonProcessor {
                 jumpToContestPrepare(uri, activity);
                 break;
             default:
+                String tips = String.format("无法识别的host:%s,下载小米直播体验完整功能", host);
+                ToastUtils.showToast(tips);
                 return false;
         }
         if (finishActivity) {
