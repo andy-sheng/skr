@@ -68,6 +68,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         } else if (id == R.id.my_info_btn) {
             if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.showMyInfoPannel();
+                mMyInfoIconView.setMsgUnreadCnt(0);
             }
         }
     }
