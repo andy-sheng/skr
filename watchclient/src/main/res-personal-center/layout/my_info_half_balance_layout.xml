@@ -72,7 +72,7 @@
                 android:layout_alignLeft="@+id/gold_balance_tv"
                 android:layout_below="@+id/gold_balance_tv"
                 android:layout_marginTop="@dimen/view_dimen_2"
-                android:text="永久有效"
+                android:text="@string/foever_text"
                 android:textColor="@color/color_black_trans_40"
                 android:textSize="@dimen/view_dimen_36" />
         </RelativeLayout>
@@ -114,7 +114,7 @@
                 android:layout_alignLeft="@+id/silver_balance_tv"
                 android:layout_below="@+id/silver_balance_tv"
                 android:layout_marginTop="@dimen/view_dimen_2"
-                android:text="永久有效"
+                android:text="@string/will_expire_tip"
                 android:textColor="@color/color_black_trans_40"
                 android:textSize="@dimen/view_dimen_36" />
         </RelativeLayout>
