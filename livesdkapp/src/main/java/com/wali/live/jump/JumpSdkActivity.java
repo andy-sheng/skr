@@ -2,6 +2,7 @@ package com.wali.live.jump;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
@@ -58,10 +59,12 @@ public class JumpSdkActivity extends BaseSdkActivity {
     private static final String EXTRA_WATCH_ROOM_LIST = "extra_watch_room_list";
     private static final String EXTRA_WATCH_ROOM_POSITION = "extra_watch_room_position";
 
+    private boolean hasFinishFlag = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.slide_bottom_in, 0);
+//        overridePendingTransition(R.anim.slide_bottom_in, 0);
         setTranslucentStatus(this, true);
         setStatusColor(this, true);
 
@@ -81,6 +84,52 @@ public class JumpSdkActivity extends BaseSdkActivity {
         } else {
             processIntent();
         }
+
+        getWindow().getDecorView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                realFinish();
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        MyLog.d(TAG, "onStart");
+        super.onStart();
+        if(hasFinishFlag){
+            realFinish();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        MyLog.d(TAG, "onResume");
+        super.onResume();
+        if(hasFinishFlag){
+            realFinish();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        MyLog.d(TAG, "onStop");
+
+        super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        MyLog.d(TAG, "onPause");
+
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        MyLog.d(TAG, "onDestroy");
+
+        super.onDestroy();
     }
 
     protected void processIntent() {
@@ -98,8 +147,8 @@ public class JumpSdkActivity extends BaseSdkActivity {
 
         final boolean enableShare = intent.getBooleanExtra(EXTRA_ENABLE_SHARE, false);
         final boolean enableFollow = intent.getBooleanExtra(EXTRA_ENABLE_FOLLOW, true);
-        HostChannelManager.getInstance().put(channelId,HostChannelManager.KEY_SHARE_ENABLE,enableShare);
-        HostChannelManager.getInstance().put(channelId,HostChannelManager.KEY_FOLLOW_ENABLE,enableFollow);
+        HostChannelManager.getInstance().put(channelId, HostChannelManager.KEY_SHARE_ENABLE, enableShare);
+        HostChannelManager.getInstance().put(channelId, HostChannelManager.KEY_FOLLOW_ENABLE, enableFollow);
 
         MyLog.d(TAG, action + " enableShare=" + enableShare);
         switch (action) {
@@ -212,7 +261,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                         new ICommonCallBack() {
                             @Override
                             public void process(Object objects) {
-                                ContestPrepareActivity.open(JumpSdkActivity.this,0);
+                                ContestPrepareActivity.open(JumpSdkActivity.this, 0);
                             }
                         }, true, ACTION_OPEN_CONTEST_PREPARE);
                 break;
@@ -278,15 +327,24 @@ public class JumpSdkActivity extends BaseSdkActivity {
         }
     }
 
+    /**
+     * 这里不能马上把 activity 销毁，因为会导致有jump启动的Activity A 退出动画无效
+     * 所以只能延迟finish
+     */
     @Override
     public void finish() {
         MyLog.w(TAG, "finish");
+        hasFinishFlag = true;
+    }
+
+    public void realFinish(){
         super.finish();
+        // 给音乐用的
         overridePendingTransition(0, R.anim.slide_bottom_out);
     }
 
     @Override
     public void onBackPressed() {
-        finish();
+        realFinish();
     }
 }

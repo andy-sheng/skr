@@ -171,9 +171,11 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
     public static void openActivity(@NonNull Activity activity) {
         Intent intent = new Intent(activity, ChannelListSdkActivity.class);
 
-        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(activity,R.anim.slide_right_in,R.anim.slide_right_out).toBundle();
+//        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(activity,R.anim.slide_right_in,R.anim.slide_right_out).toBundle();
 
-        activity.startActivity(intent,bundle);
+//        activity.startActivity(intent,bundle);
 
+        activity.overridePendingTransition(R.anim.slide_right_in,  0);
+        activity.startActivity(intent);
     }
 }
