@@ -3,6 +3,7 @@ package com.wali.live.jump;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
@@ -85,12 +86,19 @@ public class JumpSdkActivity extends BaseSdkActivity {
             processIntent();
         }
 
-        getWindow().getDecorView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                realFinish();
+        ViewGroup decor = (ViewGroup) getWindow().getDecorView();
+        // 做个保护
+        if (decor != null) {
+            View decorChild = decor.findViewById(android.R.id.content);
+            if (decorChild != null) {
+                decorChild.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        realFinish();
+                    }
+                });
             }
-        });
+        }
     }
 
     @Override
@@ -337,7 +345,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
         hasFinishFlag = true;
     }
 
-    public void realFinish(){
+    public void realFinish() {
         super.finish();
         // 给音乐用的
         overridePendingTransition(0, R.anim.slide_bottom_out);
