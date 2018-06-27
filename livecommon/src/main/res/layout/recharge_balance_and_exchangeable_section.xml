@@ -23,7 +23,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="-7.3dp"
             android:text="666"
-            android:textColor="@color/recharge_balance_number"
+            android:textColor="@color/black"
             android:textSize="@dimen/text_size_90"/>
 
         <View
