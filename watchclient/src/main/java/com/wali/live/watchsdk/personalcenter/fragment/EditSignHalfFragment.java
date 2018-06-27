@@ -152,6 +152,8 @@ public class EditSignHalfFragment extends RxFragment implements IEditSignView {
                         FragmentNaviUtils.popAllFragmentFromStack(getActivity());
                     }
                 });
+
+        mSignEt.addTextChangedListener(mTextWatcher);
     }
 
     private void initPresenter() {
