@@ -26,6 +26,7 @@ import com.wali.live.watchsdk.personalcenter.relation.FollowListHalfFragment;
 import com.wali.live.watchsdk.personalcenter.view.MyInfoBalanceView;
 import com.wali.live.watchsdk.personalcenter.view.MyInfoChatThreadView;
 import com.wali.live.watchsdk.personalcenter.view.MyInfoSummaryView;
+import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -159,6 +160,7 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
         EventBus.getDefault().unregister(this);
         KeyboardUtils.hideKeyboardImmediately(getActivity());
         FragmentNaviUtils.popFragmentFromStack(getActivity());
+        EventBus.getDefault().post(new ConversationLocalStore.NotifyUnreadCountChangeEvent(0));
     }
 
     @Override
