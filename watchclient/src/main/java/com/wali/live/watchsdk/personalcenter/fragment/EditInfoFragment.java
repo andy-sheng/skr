@@ -390,7 +390,9 @@ public class EditInfoFragment extends RxFragment implements FragmentDataListener
         mUser.setAvatar(avatar);
         hideAvatorDvMode();
         bindAvator();
-        EventBus.getDefault().post(new EventClass.PersonalInfoChangeEvent());
+        EventClass.PersonalInfoChangeEvent event = new EventClass.PersonalInfoChangeEvent();
+        event.isAvatorChange = true;
+        EventBus.getDefault().post(event);
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
+import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.personalcenter.MyInfoHalfFragment;
 import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
 
@@ -126,6 +127,17 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
     public void onEvent(MiLinkEvent.StatusLogined event) {
         syncUnreadCount();
         mView.tryBindAvatar();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventClass.PersonalInfoChangeEvent event) {
+        if(event == null) {
+            return;
+        }
+
+        if(event.isAvatorChange && mView != null) {
+            mView.tryBindAvatar();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

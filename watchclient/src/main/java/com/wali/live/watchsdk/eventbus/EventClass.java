@@ -180,6 +180,7 @@ public class EventClass {
     }
 
     public static class PersonalInfoChangeEvent {
+        public boolean isAvatorChange;
         public PersonalInfoChangeEvent() {
         }
     }
