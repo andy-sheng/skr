@@ -1,25 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-
-    compileSdkVersion rootProject.ext.androidCompileSdkVersion
-    buildToolsVersion rootProject.ext.androidBuildToolsVersion
-//    useLibrary 'org.apache.http.legacy'
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "com.wali.live.sdk.manager.aardemo"
-        minSdkVersion rootProject.ext.androidMinSdkVersion
-        targetSdkVersion rootProject.ext.androidTargetSdkVersion
+        minSdkVersion 18
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
         multiDexEnabled true
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
-
-    // chenyong1 后面去掉这个选项对lint进行优化
-    lintOptions {
-        checkReleaseBuilds false
-        abortOnError false
-        quiet true
-        ignoreWarnings true
-        disable 'InvalidPackage'  // Some libraries have issues with this
     }
 
     signingConfigs {
@@ -28,16 +18,10 @@ android {
             storePassword "XiaomiIs#1"
             keyAlias "release_key"
             keyPassword "XiaomiIs#1"
-            v2SigningEnabled false
         }
     }
 
     buildTypes {
-
-        debug {
-            debuggable true
-            signingConfig signingConfigs.myConfig
-        }
         release {
             minifyEnabled true
             //Zipalign优化
@@ -58,13 +42,6 @@ android {
         }
     }
 }
-
-repositories {
-    flatDir {
-        dirs 'libs'
-    }
-}
-
 
 repositories {
     flatDir {
