@@ -27,7 +27,7 @@
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:layout_marginTop="@dimen/view_dimen_80"
-        android:background="@drawable/withdraw_diamond_button"
+        android:background="@drawable/recharge_pay_bg"
         android:gravity="center"
         android:text="立即付款"
         android:textColor="@color/color_white_trans_70"

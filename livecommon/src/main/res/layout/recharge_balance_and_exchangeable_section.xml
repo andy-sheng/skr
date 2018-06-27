@@ -67,45 +67,73 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="2dp">
 
+                <ImageView
+                    android:id="@+id/gold_balance_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/pay_activity_icon_golden_diamond" />
+
                 <TextView
                     android:id="@+id/gold_balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:drawableLeft="@drawable/pay_activity_golden_diamond"
-                    android:drawablePadding="@dimen/view_dimen_16"
-                    android:gravity="center"
+                    android:layout_marginLeft="@dimen/view_dimen_40"
+                    android:layout_toRightOf="@+id/gold_balance_iv"
                     android:text="166"
                     android:textColor="@color/color_black_trans_80"
-                    android:textSize="@dimen/text_size_45"/>
+                    android:textSize="@dimen/view_dimen_44" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/gold_balance_desc_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/gold_balance"
-                    android:layout_centerHorizontal="true">
+                    android:layout_alignLeft="@+id/gold_balance"
+                    android:layout_below="@+id/gold_balance"
+                    android:layout_marginTop="@dimen/view_dimen_2"
+                    android:text="永久有效"
+                    android:textColor="@color/color_black_trans_40"
+                    android:textSize="@dimen/view_dimen_36" />
 
-                    <View
-                        android:layout_width="@dimen/view_dimen_16"
-                        android:layout_height="match_parent"/>
+                <!--<TextView-->
+                    <!--android:id="@+id/gold_balance"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_centerHorizontal="true"-->
+                    <!--android:drawableLeft="@drawable/pay_activity_golden_diamond"-->
+                    <!--android:drawablePadding="@dimen/view_dimen_16"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="166"-->
+                    <!--android:textColor="@color/color_black_trans_80"-->
+                    <!--android:textSize="@dimen/text_size_45"/>-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_16"
-                        android:layout_marginRight="@dimen/margin_16"
-                        android:text="@string/valid_forever_tip"
-                        android:textColor="@color/color_black_trans_50"
-                        android:textSize="@dimen/text_size_36"/>
-                    <!--箭头-
-                    <ImageView
-                        android:layout_width="@dimen/view_dimen_16"
-                        android:layout_height="match_parent"
-                        android:scaleType="center"
-                        android:src="@drawable/pay_activity_diamond_more"/>
-                        -->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@id/gold_balance"-->
+                    <!--android:layout_centerHorizontal="true">-->
 
-                </LinearLayout>
+                    <!--<View-->
+                        <!--android:layout_width="@dimen/view_dimen_16"-->
+                        <!--android:layout_height="match_parent"/>-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="@dimen/margin_16"-->
+                        <!--android:layout_marginRight="@dimen/margin_16"-->
+                        <!--android:text="@string/valid_forever_tip"-->
+                        <!--android:textColor="@color/color_black_trans_50"-->
+                        <!--android:textSize="@dimen/text_size_36"/>-->
+                    <!--&lt;!&ndash;箭头- -->
+                    <!--<ImageView-->
+                        <!--android:layout_width="@dimen/view_dimen_16"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:scaleType="center"-->
+                        <!--android:src="@drawable/pay_activity_diamond_more"/>-->
+                        <!--&ndash;&gt;-->
+
+                <!--</LinearLayout>-->
 
             </RelativeLayout>
 
@@ -129,44 +157,72 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="2dp">
 
+                <ImageView
+                    android:id="@+id/silver_balance_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/pay_activity_icon_argentum_diamond" />
+
                 <TextView
                     android:id="@+id/silver_balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:drawableLeft="@drawable/pay_activity_silver_diamond"
-                    android:drawablePadding="@dimen/view_dimen_16"
-                    android:gravity="center"
-                    android:text="500"
+                    android:layout_marginLeft="@dimen/view_dimen_40"
+                    android:layout_toRightOf="@+id/silver_balance_iv"
+                    android:text="166"
                     android:textColor="@color/color_black_trans_80"
-                    android:textSize="@dimen/text_size_45"/>
+                    android:textSize="@dimen/view_dimen_44" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/silver_balance_desc_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/silver_balance"
-                    android:layout_centerHorizontal="true">
+                    android:layout_alignLeft="@+id/silver_balance"
+                    android:layout_below="@+id/silver_balance"
+                    android:layout_marginTop="@dimen/view_dimen_2"
+                    android:text="永久有效"
+                    android:textColor="@color/color_black_trans_40"
+                    android:textSize="@dimen/view_dimen_36" />
 
-                    <View
-                        android:layout_width="@dimen/view_dimen_16"
-                        android:layout_height="match_parent"/>
+                <!--<TextView-->
+                    <!--android:id="@+id/silver_balance"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_centerHorizontal="true"-->
+                    <!--android:drawableLeft="@drawable/pay_activity_silver_diamond"-->
+                    <!--android:drawablePadding="@dimen/view_dimen_16"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="500"-->
+                    <!--android:textColor="@color/color_black_trans_80"-->
+                    <!--android:textSize="@dimen/text_size_45"/>-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_16"
-                        android:layout_marginRight="@dimen/margin_16"
-                        android:text="@string/will_expire_tip"
-                        android:textColor="@color/color_black_trans_50"
-                        android:textSize="@dimen/text_size_36"/>
-                    <!--箭头
-                    <ImageView
-                        android:layout_width="@dimen/view_dimen_16"
-                        android:layout_height="match_parent"
-                        android:scaleType="center"
-                        android:src="@drawable/pay_activity_diamond_more"/>
-                        -->
-                </LinearLayout>
+                <!--<LinearLayout-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@id/silver_balance"-->
+                    <!--android:layout_centerHorizontal="true">-->
+
+                    <!--<View-->
+                        <!--android:layout_width="@dimen/view_dimen_16"-->
+                        <!--android:layout_height="match_parent"/>-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="@dimen/margin_16"-->
+                        <!--android:layout_marginRight="@dimen/margin_16"-->
+                        <!--android:text="@string/will_expire_tip"-->
+                        <!--android:textColor="@color/color_black_trans_50"-->
+                        <!--android:textSize="@dimen/text_size_36"/>-->
+                    <!--&lt;!&ndash;箭头-->
+                    <!--<ImageView-->
+                        <!--android:layout_width="@dimen/view_dimen_16"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:scaleType="center"-->
+                        <!--android:src="@drawable/pay_activity_diamond_more"/>-->
+                        <!--&ndash;&gt;-->
+                <!--</LinearLayout>-->
 
             </RelativeLayout>
 

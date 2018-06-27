@@ -77,7 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/nickname_container"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin_42"
+        android:layout_marginTop="@dimen/margin_35"
         android:text="123456"
         android:textColor="@color/color_black_trans_50"
         android:textSize="@dimen/text_size_39" />
@@ -88,7 +88,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/id_tv"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_dimen_50"
+        android:layout_marginTop="@dimen/view_dimen_90"
         android:ellipsize="end"
         android:maxWidth="@dimen/view_dimen_720"
         android:singleLine="true"
@@ -102,7 +102,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/sign_tv"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_dimen_70"
+        android:layout_marginTop="@dimen/view_dimen_90"
         android:orientation="horizontal">
 
         <TextView

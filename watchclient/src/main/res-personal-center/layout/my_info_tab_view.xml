@@ -10,8 +10,8 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:paddingLeft="11.33dp"
-        android:paddingRight="11.33dp"
+        android:paddingLeft="@dimen/view_dimen_64"
+        android:paddingRight="@dimen/view_dimen_64"
         android:singleLine="true"
         android:textColor="@drawable/color_pc_tab_text"
         android:textSize="@dimen/text_size_40"/>
