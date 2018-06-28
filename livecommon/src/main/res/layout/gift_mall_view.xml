@@ -290,6 +290,7 @@
             android:id="@+id/gift_mall_guide_page_viewstub"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_dimen_170"
             android:inflatedId="@+id/gift_mall_guide_page"
             android:layout="@layout/gift_mall_guide_page_view"/>
         <!--<include layout="@layout/gift_mall_guide_page_view"/>-->

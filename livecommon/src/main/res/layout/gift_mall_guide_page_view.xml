@@ -3,7 +3,6 @@
     android:id="@+id/gift_mall_guide_page"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
     android:visibility="gone">
 
     <TextView
