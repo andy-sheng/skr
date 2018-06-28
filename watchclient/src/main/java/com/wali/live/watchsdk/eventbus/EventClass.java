@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.eventbus;
 
+import com.mi.live.data.push.model.BarrageMsg;
 import com.wali.live.watchsdk.fans.adapter.FansMemberAdapter;
 
 import java.util.List;
@@ -182,6 +183,14 @@ public class EventClass {
     public static class PersonalInfoChangeEvent {
         public boolean isAvatorChange;
         public PersonalInfoChangeEvent() {
+        }
+    }
+
+    public static class HighLevelUserActionEvent {
+        public BarrageMsg enterLiveBarrage;
+
+        public HighLevelUserActionEvent(BarrageMsg enterLiveBarrage) {
+            this.enterLiveBarrage = enterLiveBarrage;
         }
     }
 }

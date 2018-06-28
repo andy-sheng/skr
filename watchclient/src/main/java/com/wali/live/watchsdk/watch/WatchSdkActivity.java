@@ -98,6 +98,7 @@ import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomSystemMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
+import com.wali.live.watchsdk.watch.presenter.push.VipUserActionMsgPresenter;
 import com.wali.live.watchsdk.watch.view.IWatchVideoView;
 import com.wali.live.watchsdk.webview.HalfWebViewActivity;
 import com.wali.live.watchsdk.webview.WebViewActivity;
@@ -165,6 +166,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     private AnimMsgPresenter mAnimMsgPresenter;
     private ForbidManagePresenter mForbidManagePresenter;
     protected UserInfoPresenter mUserInfoPresenter;
+    private VipUserActionMsgPresenter mVipUserActionMsgPresenter;
 
     private PhoneStateReceiver mPhoneStateReceiver;
     private ScreenStateReceiver mScreenStateReceiver;
@@ -392,6 +394,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         mAnimMsgPresenter = new AnimMsgPresenter(mMyRoomData);
         addPushProcessor(mAnimMsgPresenter);
         addPresent(mAnimMsgPresenter);
+
+        mVipUserActionMsgPresenter = new VipUserActionMsgPresenter(mRoomChatMsgManager);
+        addPushProcessor(mVipUserActionMsgPresenter);
+        addPresent(mVipUserActionMsgPresenter);
 
         mUserInfoPresenter = new UserInfoPresenter(this, mMyRoomData);
 

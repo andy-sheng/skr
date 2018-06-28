@@ -115,6 +115,7 @@ import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomManagerPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
+import com.wali.live.watchsdk.watch.presenter.push.VipUserActionMsgPresenter;
 import com.wali.live.watchsdk.webview.HalfWebViewActivity;
 import com.wali.live.watchsdk.webview.WebViewActivity;
 
@@ -204,6 +205,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private ForbidManagePresenter mForbidManagePresenter;
     private RoomManagerPresenter mRoomManagerPresenter;
     private AnimMsgPresenter mAnimMsgPresenter;
+    private VipUserActionMsgPresenter mVipUserActionMsgPresenter;
 
     protected BaseImageView mMaskIv; // 高斯蒙层
     protected ImageView mCloseBtn; // 关闭按钮
@@ -684,6 +686,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mAnimMsgPresenter = new AnimMsgPresenter(mMyRoomData);
         addPresent(mAnimMsgPresenter);
         addPushProcessor(mAnimMsgPresenter);
+        mVipUserActionMsgPresenter = new VipUserActionMsgPresenter(mRoomChatMsgManager);
+        addPresent(mVipUserActionMsgPresenter);
+        addPushProcessor(mVipUserActionMsgPresenter);
 
         mTipsTv = $(R.id.tips_tv);
 
