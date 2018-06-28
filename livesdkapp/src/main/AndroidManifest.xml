@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mi.liveassistant"
-    android:versionCode="432009"
-    android:versionName="4.32.9">
+    android:versionCode="433009"
+    android:versionName="4.33.9">
 
     <application
         android:name="com.wali.live.init.LiveSdkApplication"
@@ -14,6 +14,7 @@
 
         <activity
             android:name="com.wali.live.jump.JumpSdkActivity"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
             android:excludeFromRecents="true"
             android:exported="true"
             android:noHistory="true"
