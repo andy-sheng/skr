@@ -677,6 +677,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
             //TODO 这段代码迁移到了switchRoom
             //WatchRoomCharactorManager.getInstance().clear();
             syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);
+
             if (mController != null) {
                 mController.postEvent(MSG_ON_LIVE_SUCCESS);
                 if (roomInfo.getMicBeginInfo() != null) {
@@ -739,6 +740,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         }
         return mForbidManagePresenter;
     }
+
 
     /*拉取房间礼物属性信息*/
     protected void syncRoomEffect(final String roomId, long uuid, long zuid, Location location) {

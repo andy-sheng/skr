@@ -21,6 +21,7 @@ android {
             aidl.srcDirs = ['src/main/aidl']
             res.srcDirs = ['src/main/res']
             res.srcDirs += ['src/main/res-personal-center']
+            res.srcDirs += ['src/main/res-vip']
             assets.srcDirs = ['src/main/assets']
         }
     }

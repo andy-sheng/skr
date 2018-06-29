@@ -20,17 +20,23 @@ import com.mi.milink.sdk.aidl.PacketData;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.Params;
+import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.proto.LiveProto;
 import com.wali.live.watchsdk.component.view.WidgetView;
+import com.wali.live.watchsdk.eventbus.EventClass;
+import com.wali.live.watchsdk.vip.manager.OperationAnimManager;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -319,50 +325,12 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
                 mView.onOrientation(true);
                 return true;
             case MSG_ON_LIVE_SUCCESS:
+                syncRoyalRes();
+                getRoomAttachment();
+                break;
             case MSG_ON_PK_START:
             case MSG_ON_PK_STOP:
-                if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
-                    int liveType = mMyRoomData.getLiveType();
-                    MyLog.w(TAG, "live type=" + liveType + " event=" + event);
-                    if (liveType != LiveManager.TYPE_LIVE_PRIVATE && liveType != LiveManager.TYPE_LIVE_TOKEN) {
-                        getRoomAttachment(mMyRoomData.getRoomId(), mMyRoomData.getUid(), mMyRoomData.getLiveType())
-                                .retryWhen(new RxRetryAssist(3, 5, true)) // 重试3次，间隔5秒
-                                .compose(bindUntilEvent(PresenterEvent.DESTROY))
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Action1<Object>() {
-                                    @Override
-                                    public void call(Object o) {
-                                        LiveProto.GetRoomAttachmentRsp rsp = (LiveProto.GetRoomAttachmentRsp) o;
-                                        setWidgetList(rsp.getNewWidgetInfo().getWidgetItemList());
-                                        //粉丝团飘萍计数
-                                        if (rsp.hasVfansCounter()) {
-                                            mController.postEvent(MSG_BARRAGE_FANS, new Params().putItem(rsp.hasVfansCounter()));
-                                        }
-                                        //管理员飘萍计数
-                                        if (rsp.hasCounter()) {
-                                            mController.postEvent(MSG_BARRAGE_ADMIN, new Params().putItem(rsp.getCounter()));
-                                        }
-                                        // vip用户计数
-                                        if (rsp.hasVipCounter()) {
-                                            mController.postEvent(MSG_BARRAGE_VIP, new Params().putItem(rsp.getVipCounter()));
-                                        }
-                                        if (rsp.getNewWidgetInfo().hasPullInterval()) {
-                                            getAttachmentDelay(rsp.getNewWidgetInfo().getPullInterval());
-                                        }
-                                        if (rsp.hasAnimationConfig() && rsp.getAnimationConfig().hasNoJoinAnimation()) {
-                                            int noJoinAnimation = rsp.getAnimationConfig().getNoJoinAnimation();
-                                            mController.postEvent(MSG_BARRAGE_VIP_ENTER, new Params().putItem(noJoinAnimation == VIP_ENTER_ROOM_EFFECT_ALLOW));
-                                        }
-                                    }
-                                }, new Action1<Throwable>() {
-                                    @Override
-                                    public void call(Throwable throwable) {
-                                        MyLog.e(TAG, throwable);
-                                    }
-                                });
-                    }
-                }
+                getRoomAttachment();
                 break;
             case MSG_INPUT_VIEW_SHOWED:
                 mView.adjustWidgetView(false);
@@ -374,5 +342,81 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
                 break;
         }
         return false;
+    }
+
+    private void getRoomAttachment() {
+        if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
+            int liveType = mMyRoomData.getLiveType();
+            if (liveType != LiveManager.TYPE_LIVE_PRIVATE && liveType != LiveManager.TYPE_LIVE_TOKEN) {
+                getRoomAttachment(mMyRoomData.getRoomId(), mMyRoomData.getUid(), mMyRoomData.getLiveType())
+                        .retryWhen(new RxRetryAssist(3, 5, true)) // 重试3次，间隔5秒
+                        .compose(bindUntilEvent(PresenterEvent.DESTROY))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<Object>() {
+                            @Override
+                            public void call(Object o) {
+                                LiveProto.GetRoomAttachmentRsp rsp = (LiveProto.GetRoomAttachmentRsp) o;
+                                setWidgetList(rsp.getNewWidgetInfo().getWidgetItemList());
+                                //粉丝团飘萍计数
+                                if (rsp.hasVfansCounter()) {
+                                    mController.postEvent(MSG_BARRAGE_FANS, new Params().putItem(rsp.hasVfansCounter()));
+                                }
+                                //管理员飘萍计数
+                                if (rsp.hasCounter()) {
+                                    mController.postEvent(MSG_BARRAGE_ADMIN, new Params().putItem(rsp.getCounter()));
+                                }
+                                // vip用户计数
+                                if (rsp.hasVipCounter()) {
+                                    mController.postEvent(MSG_BARRAGE_VIP, new Params().putItem(rsp.getVipCounter()));
+                                }
+                                if (rsp.getNewWidgetInfo().hasPullInterval()) {
+                                    getAttachmentDelay(rsp.getNewWidgetInfo().getPullInterval());
+                                }
+
+                                if (rsp.hasAnimationConfig() && rsp.getAnimationConfig().hasNoJoinAnimation()) {
+                                    int noJoinAnimation = rsp.getAnimationConfig().getNoJoinAnimation();
+//                                            mController.postEvent(MSG_BARRAGE_VIP_ENTER, new Params().putItem(noJoinAnimation == VIP_ENTER_ROOM_EFFECT_ALLOW));
+                                    EventBus.getDefault().post(EventClass.UpdateVipEnterRoomEffectSwitchEvent.newInstance(mMyRoomData.getUid(), noJoinAnimation));
+                                }
+                            }
+                        }, new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                MyLog.e(TAG, throwable);
+                            }
+                        });
+            }
+        }
+    }
+
+    private void syncRoyalRes() {
+        Observable.create(new Observable.OnSubscribe<Object>() {
+            @Override
+            public void call(Subscriber<? super Object> subscriber) {
+                OperationAnimManager.pullResListFromServer(false);
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .compose(this.<Object>bindUntilEvent(PresenterEvent.DESTROY))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Object>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.d(TAG, e);
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+
+                    }
+                });
+
+
     }
 }

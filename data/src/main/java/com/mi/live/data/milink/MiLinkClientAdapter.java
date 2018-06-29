@@ -218,7 +218,9 @@ public class MiLinkClientAdapter {
             MiLinkCommand.COMMAND_LIST_HISTORY,
             MiLinkCommand.COMMAND_STATISTICS_RECOMMEND_TAG,
             MiLinkCommand.COMMAND_HOT_CHANNEL_SUB_LIST,
-            MiLinkCommand.COMMAND_LIST_CHANNEL
+            MiLinkCommand.COMMAND_LIST_CHANNEL,
+            MiLinkCommand.COMMAND_ROOM_ATTACHMENT,
+            MiLinkCommand.COMMAND_OPERATION_ANIM_RESOURCE
     };
 
     public void sendAsync(PacketData packet, int timeout, final SendPacketListener l) {

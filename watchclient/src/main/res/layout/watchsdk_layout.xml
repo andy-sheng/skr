@@ -72,12 +72,18 @@
         android:inflatedId="@+id/game_barrage_view"
         android:layout="@layout/view_game_barrage" />
 
-    <com.wali.live.watchsdk.component.view.BarrageControlAnimView
-        android:id="@+id/msg_anim_view"
+    <!--<com.wali.live.watchsdk.component.view.BarrageControlAnimView-->
+        <!--android:id="@+id/msg_anim_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/fly_barrage_viewgroup"-->
+        <!--android:layout_marginBottom="@dimen/view_dimen_70" />-->
+    <com.wali.live.watchsdk.vip.view.SuperLevelUserEnterAnimControlView
+        android:id="@+id/enter_tips_anim_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/fly_barrage_viewgroup"
-        android:layout_marginBottom="@dimen/view_dimen_70" />
+        android:layout_marginBottom="@dimen/view_dimen_70"/>
 
     <!--<ViewStub-->
     <!--android:id="@+id/game_bottom_viewstub"-->
