@@ -12,10 +12,13 @@ import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.Params;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
+import com.wali.live.proto.VFansProto;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
 import com.wali.live.watchsdk.eventbus.EventClass;
+import com.wali.live.watchsdk.fans.model.FansGroupListModel;
+import com.wali.live.watchsdk.fans.request.GetGroupListRequest;
 import com.wali.live.watchsdk.personalcenter.MyInfoHalfFragment;
 import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
 
@@ -24,6 +27,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -109,6 +113,49 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
     }
 
     @Override
+    public void processMoreBtnShow() {
+        // 判断是否支持分享和关系链
+        if (mMyRoomData.getEnableShare()) {
+            mView.showMoreBtn();
+        } else {
+            Observable.create(new Observable.OnSubscribe<FansGroupListModel>() {
+                @Override
+                public void call(Subscriber<? super FansGroupListModel> subscriber) {
+                    VFansProto.GetGroupListRsp rsp = new GetGroupListRequest().syncRsp();
+                    if (rsp != null) {
+                        subscriber.onNext(new FansGroupListModel(rsp));
+//                        subscriber.onNext(null);
+                    } else {
+                        subscriber.onNext(null);
+                    }
+                    subscriber.onCompleted();
+                }
+            })
+                    .subscribeOn(Schedulers.io())
+                    .compose(this.<FansGroupListModel>bindUntilEvent(BaseSdkRxPresenter.PresenterEvent.STOP))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<FansGroupListModel>() {
+                        @Override
+                        public void call(FansGroupListModel model) {
+                            MyLog.d(TAG, "get fans group success");
+                            if (mView != null) {
+                                MyLog.d(TAG, "has group info=" + model.hasGroup());
+                                if (model.hasGroup()) {
+                                    mView.showMoreBtn();
+                                    return;
+                                }
+                            }
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            MyLog.e(TAG, throwable);
+                        }
+                    });
+        }
+    }
+
+    @Override
     public void showGameDownloadView() {
         postEvent(MSG_SHOW_GAME_DOWNLOAD);
     }
@@ -131,11 +178,11 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventClass.PersonalInfoChangeEvent event) {
-        if(event == null) {
+        if (event == null) {
             return;
         }
 
-        if(event.isAvatorChange && mView != null) {
+        if (event.isAvatorChange && mView != null) {
             mView.tryBindAvatar();
         }
     }
