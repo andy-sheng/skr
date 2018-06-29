@@ -200,7 +200,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
             getGroupDetailFromServer();
         }
         mView.setWaterMarkView(mMyRoomData);
-        mView.updateTicketAndViewerCount(mMyRoomData.getTicket(), mMyRoomData.getViewerCnt());
+        mView.updateTicketAndViewerCount(mMyRoomData.getTicket(),mMyRoomData.getInitTicket(), mMyRoomData.getViewerCnt());
         mView.updateAnchorInfo(mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
                 mMyRoomData.getCertificationType(), mMyRoomData.getLevel(), mMyRoomData.getNickName());
         mView.showManager(mIsLive);
@@ -252,7 +252,7 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
             case RoomDataChangeEvent.TYPE_CHANGE_TICKET:
             case RoomDataChangeEvent.TYPE_CHANGE_VIEWER_COUNT: {
                 mMyRoomData = event.source;
-                mView.updateTicketAndViewerCount(mMyRoomData.getTicket(), mMyRoomData.getViewerCnt());
+                mView.updateTicketAndViewerCount(mMyRoomData.getTicket(),mMyRoomData.getInitTicket(), mMyRoomData.getViewerCnt());
             }
             break;
             case RoomDataChangeEvent.TYPE_CHANGE_VIEWERS: {

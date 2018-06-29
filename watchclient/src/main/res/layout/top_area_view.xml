@@ -163,10 +163,12 @@
     <!--星票-->
     <RelativeLayout
         android:id="@+id/ticket_area"
-        android:layout_width="@dimen/view_dimen_300"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/anchor_info_container"
         android:layout_below="@id/anchor_info_container"
+        android:paddingRight="@dimen/view_dimen_10"
+        android:minWidth="@dimen/view_dimen_200"
         android:layout_marginBottom="@dimen/view_dimen_30"
         android:layout_marginTop="@dimen/view_dimen_30"
         android:background="@drawable/live_anchor_star_ticket_bg">

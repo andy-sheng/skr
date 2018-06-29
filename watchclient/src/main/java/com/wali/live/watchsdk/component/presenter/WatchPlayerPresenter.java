@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk.component.presenter;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.support.annotation.NonNull;
 import android.view.TextureView;
 
@@ -87,15 +88,43 @@ public class WatchPlayerPresenter extends BasePlayerPresenter<TextureView, PullS
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        abandonAudioFocus();
     }
 
     @Override
     protected final void doStartPlay() {
+        requestAudioFocus();
         if (mStreamerPresenter.isStarted()) {
             mStreamerPresenter.resumeWatch();
         } else {
             mStreamerPresenter.startWatch();
         }
+    }
+
+    private boolean requestAudioFocus() {
+        // 关闭其他音乐
+        AudioManager mAudioManager = (AudioManager) GlobalData.app().getSystemService(Context.AUDIO_SERVICE);
+        MyLog.w(TAG, "stopOtherMusic");
+        int result = mAudioManager.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+        if (result != AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            MyLog.w(TAG, "AudioManager result = " + result);
+            return false;
+        }
+        MyLog.w(TAG, "stopOtherMusic over");
+        return true;
+    }
+
+    private boolean abandonAudioFocus() {
+        // 关闭其他音乐
+        AudioManager mAudioManager = (AudioManager) GlobalData.app().getSystemService(Context.AUDIO_SERVICE);
+        MyLog.w(TAG, "stopOtherMusic");
+        int result = mAudioManager.abandonAudioFocus(null);
+        if (result != AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            MyLog.w(TAG, "AudioManager result = " + result);
+            return false;
+        }
+        MyLog.w(TAG, "stopOtherMusic over");
+        return true;
     }
 
     private void startPlay() {
