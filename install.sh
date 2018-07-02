@@ -8,8 +8,11 @@ else
 	elif [[ $1 == "1" ]]; then
 		# 应用商店 meng_1254_48_android
 		CHANNEL_ID="meng_1254_48_android"
+	elif [[ $1 == "2" ]]; then
+		# 厂包 5005_1_android
+		CHANNEL_ID="5005_1_android"
 	else
-		echo "错误的参数，0 DEFAULT | 1 meng_1254_48_android"
+		echo "错误的参数，0 DEFAULT | 1 meng_1254_48_android | 2 5005_1_android"
 		exit
 	fi
 
