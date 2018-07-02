@@ -890,6 +890,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     }
 
     private boolean check4GNet() {
+        if(true){
+            return false;
+        }
         if (AppNetworkUtils.is4g()) {
             MyAlertDialog alertDialog = new MyAlertDialog.Builder(this).create();
             alertDialog.setMessage(GlobalData.app().getString(R.string.live_traffic_tip));

@@ -130,22 +130,28 @@ public abstract class BaseBottomButton<PRESENTER, VIEW extends IViewProxy> imple
         if (mIsLandscape) {
             int guardId = 0;
             for (View view : mBottomBtnSetLand) {
-                List<AlginParams> list = new ArrayList<>();
-                list.add(new AlginParams(guardId, RelativeLayout.ABOVE, RelativeLayout.ALIGN_PARENT_BOTTOM));
-                list.add(new AlginParams(0, 0, RelativeLayout.ALIGN_PARENT_RIGHT));
-                alignViewToGuard(view, list);
-                guardId = view.getId();
+                if (view.getVisibility() == View.VISIBLE) {
+                    List<AlginParams> list = new ArrayList<>();
+                    list.add(new AlginParams(guardId, RelativeLayout.ABOVE, RelativeLayout.ALIGN_PARENT_BOTTOM));
+                    list.add(new AlginParams(0, 0, RelativeLayout.ALIGN_PARENT_RIGHT));
+                    alignViewToGuard(view, list);
+                    guardId = view.getId();
+                }
             }
         } else {
             int guardId = 0;
             for (View view : mLeftBtnSetPort) {
-                alignViewToGuard(view, guardId, RelativeLayout.RIGHT_OF, RelativeLayout.ALIGN_PARENT_LEFT);
-                guardId = view.getId();
+                if (view.getVisibility() == View.VISIBLE) {
+                    alignViewToGuard(view, guardId, RelativeLayout.RIGHT_OF, RelativeLayout.ALIGN_PARENT_LEFT);
+                    guardId = view.getId();
+                }
             }
             guardId = 0;
             for (View view : mRightBtnSetPort) {
-                alignViewToGuard(view, guardId, RelativeLayout.LEFT_OF, RelativeLayout.ALIGN_PARENT_RIGHT);
-                guardId = view.getId();
+                if (view.getVisibility() == View.VISIBLE) {
+                    alignViewToGuard(view, guardId, RelativeLayout.LEFT_OF, RelativeLayout.ALIGN_PARENT_RIGHT);
+                    guardId = view.getId();
+                }
             }
         }
     }

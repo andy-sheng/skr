@@ -132,6 +132,8 @@ public class WaliliveProcessor extends CommonProcessor {
             int liveEndType = SchemeUtils.getInt(uri, SchemeConstants.PARAM_TYPE_LIVE_END, 0);
             if (liveEndType == SchemeConstants.TYPE_PERSON_INFO) { //跳转个人资料页
                 //因為沒有个人资料页，所以这里做了拦截
+                String tips = String.format("更多精彩内容，请下载小米直播体验");
+                ToastUtils.showToast(tips);
                 return;
             }
         }

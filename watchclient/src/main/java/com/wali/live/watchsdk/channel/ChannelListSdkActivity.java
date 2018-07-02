@@ -129,8 +129,17 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
             mPagerAdapter.setChannelList(models);
             mSlidingTabLayout.setViewPager(mViewPager);
             if (mIsFirstLoad) {
+                int defaultSelected = 0;
+                for (int i = 0; i < models.size(); i++) {
+                    ChannelShow show = models.get(i);
+                    if ("推荐".equals(show.getChannelName())) {
+                        defaultSelected = i;
+                        break;
+                    }
+                }
                 if (!models.isEmpty()) {
-                    long channelId = models.get(0).getChannelId();
+                    mViewPager.setCurrentItem(defaultSelected);
+                    long channelId = models.get(defaultSelected).getChannelId();
                     EventBus.getDefault().postSticky(new EventClass.SelectChannelEvent(channelId));
                 }
                 mIsFirstLoad = false;
@@ -175,7 +184,7 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
 
 //        activity.startActivity(intent,bundle);
 
-        activity.overridePendingTransition(R.anim.slide_right_in,  0);
+        activity.overridePendingTransition(R.anim.slide_right_in, 0);
         activity.startActivity(intent);
     }
 }

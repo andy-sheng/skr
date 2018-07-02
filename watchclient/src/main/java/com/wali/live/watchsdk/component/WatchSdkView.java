@@ -17,10 +17,13 @@ import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.Constants;
 import com.base.utils.display.DisplayUtils;
+import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.thornbirds.component.IParams;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.component.BaseSdkView;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
+import com.wali.live.proto.VFansProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.BarrageBtnPresenter;
@@ -342,10 +345,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             BottomButtonPresenter presenter = new BottomButtonPresenter(
                     mController, mController.mMyRoomData);
             registerComponent(mWatchBottomButton, presenter);
-            // 判断是否支持分享和关系链
-            if (!mController.mMyRoomData.isEnableRelationChain() && !mController.mMyRoomData.getEnableShare()) {
-                mWatchBottomButton.setMoreBtnVisiable(false);
-            }
+            presenter.processMoreBtnShow();
         }
         // 抢红包
         {

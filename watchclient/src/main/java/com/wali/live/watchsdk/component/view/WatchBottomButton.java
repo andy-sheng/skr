@@ -86,34 +86,36 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     protected void initView() {
         mGiftBtn = createImageView(R.drawable.live_icon_gift_btn);
         addCreatedView(mGiftBtn, R.id.gift_btn);
-
         if (mIsHuYaLive) {
             mGiftBtn.setVisibility(View.GONE);
         }
-
-        mMoreBtn = new WatchMenuIconView(getContext());
-        addCreatedView(mMoreBtn, R.id.more_btn);
 
         mMyInfoIconView = new MyInfoIconView(getContext());
         addCreatedView(mMyInfoIconView, R.id.my_info_btn);
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mMyInfoIconView.getLayoutParams();
         layoutParams.setMargins(BTN_MARGIN, BTN_MARGIN, 0, BTN_MARGIN);
 
-//        addCreatedView(mMyInfoIconView, R.id.my_info_btn);
-
         mRightBtnSetPort.add(mMyInfoIconView);        // 横竖屏时按钮排列顺序
+
         if (!mIsHuYaLive) {
             mRightBtnSetPort.add(mGiftBtn);
         }
-        mRightBtnSetPort.add(mMoreBtn);
-
 
         mBottomBtnSetLand.add(mMyInfoIconView);
         if (!mIsHuYaLive) {
             mBottomBtnSetLand.add(mGiftBtn);
         }
-        mBottomBtnSetLand.add(mMoreBtn);
 
+        orientChild();
+    }
+
+    private void showMoreBtnIcon() {
+        if (mMoreBtn == null) {
+            mMoreBtn = new WatchMenuIconView(getContext());
+            addCreatedView(mMoreBtn, R.id.more_btn);
+        }
+        mRightBtnSetPort.add(mMoreBtn);
+        mBottomBtnSetLand.add(mMoreBtn);
         orientChild();
     }
 
@@ -184,10 +186,6 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         clearAnimator();
     }
 
-    public void setMoreBtnVisiable(boolean isShow) {
-        mMoreBtn.setVisibility(isShow ? View.VISIBLE : View.GONE);
-    }
-
     public void reset() {
         clearAnimator();
         if (mGameBtn != null) {
@@ -239,12 +237,13 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             @Override
             public void onUpdateUnreadCount(int unReadCnt) {
                 mMyInfoIconView.setMsgUnreadCnt(unReadCnt);
-//                mMoreBtn.setMsgUnreadCnt(unReadCnt);
             }
 
             @Override
             public void updateMoreBtnStatus() {
-                mMoreBtn.changeIconStatus(false);
+                if(mMoreBtn!=null) {
+                    mMoreBtn.changeIconStatus(false);
+                }
             }
 
             @Override
@@ -252,6 +251,11 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
                 if (mMyInfoIconView != null) {
                     mMyInfoIconView.tryBindAvatar();
                 }
+            }
+
+            @Override
+            public void showMoreBtn() {
+                showMoreBtnIcon();
             }
 
         }
@@ -288,6 +292,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
          * 显示个人信息
          */
         void showMyInfoPannel();
+
+        void processMoreBtnShow();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
@@ -306,5 +312,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         void updateMoreBtnStatus();
 
         void tryBindAvatar();
+
+        void showMoreBtn();
     }
 }

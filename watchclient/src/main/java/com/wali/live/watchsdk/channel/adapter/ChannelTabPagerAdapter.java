@@ -120,6 +120,11 @@ public class ChannelTabPagerAdapter extends PagerAdapter {
     }
 
     @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
+
+    @Override
     public int getCount() {
         return mChannelList == null ? 0 : mChannelList.size();
     }

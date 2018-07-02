@@ -65,6 +65,8 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
     private View mLinkArea;
     //观众
     private RecyclerView mAvatarRv;
+    //星票描述
+    private TextView mTicketDescTv;
     //星票
     private TextView mTicketNumTv;
     //水印
@@ -122,9 +124,10 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
         mFollowTv = $(R.id.follow_tv);
         mAnchorInfoContainer = $(R.id.anchor_info_container);
         mAvatarRv = $(R.id.avatar_rv);
+        mTicketDescTv = $(R.id.ticket_str_tv);
         mTicketNumTv = $(R.id.ticket_num_tv);
         mGuestIv = $(R.id.guest_iv);
-        mTicketArea= $(R.id.ticket_area);
+        mTicketArea = $(R.id.ticket_area);
         mLinkArea = $(R.id.link_guest_area);
         mManagerArea = $(R.id.manager_area);
         mFansArea = $(R.id.vfans_area);
@@ -192,11 +195,11 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
         mFollowTv.setVisibility(mEnableFollow ? VISIBLE : GONE);
     }
 
-    public void setTicketAreaShow(boolean isHuYaLive){
-        mTicketArea.setVisibility( isHuYaLive ? GONE : VISIBLE);
+    public void setTicketAreaShow(boolean isHuYaLive) {
+        mTicketArea.setVisibility(isHuYaLive ? GONE : VISIBLE);
     }
 
-    public void onOrientation(boolean isLandscape){
+    public void onOrientation(boolean isLandscape) {
         mWatchWaterMarkView.onOrientation(isLandscape);
     }
 
@@ -251,8 +254,16 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
 
 
             @Override
-            public void updateTicketAndViewerCount(int ticketCount, int viewerCount) {
-                mTicketNumTv.setText(String.valueOf(ticketCount));
+            public void updateTicketAndViewerCount(int ticketCount, int initTicket, int viewerCount) {
+                int thisLiveTicket = ticketCount - initTicket;
+                if (thisLiveTicket > 0 && initTicket > 0) {
+                    mTicketDescTv.setText("本场");
+                    mTicketNumTv.setText(String.valueOf(thisLiveTicket));
+                } else {
+                    mTicketDescTv.setText("星票");
+                    mTicketNumTv.setText(String.valueOf(ticketCount));
+                }
+
                 mViewersNumTv.setText(String.valueOf(viewerCount));
             }
 
@@ -451,7 +462,7 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
         /**
          * 更新星票和观众数量
          */
-        void updateTicketAndViewerCount(int ticket, int viewerCnt);
+        void updateTicketAndViewerCount(int ticket, int initTicket, int viewerCnt);
 
         /**
          * 更新主播信息
