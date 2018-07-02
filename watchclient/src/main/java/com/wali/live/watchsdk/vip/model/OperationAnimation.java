@@ -1,5 +1,7 @@
 package com.wali.live.watchsdk.vip.model;
 
+import android.text.TextUtils;
+
 import com.base.log.MyLog;
 import com.base.utils.FileIOUtils;
 
@@ -37,13 +39,39 @@ public class OperationAnimation {
         }
         MyLog.d(TAG, "jsonObject : " + jsonObject);
         if (jsonObject != null) {
+
             File resFile = new File(path).getParentFile();
             bottomText = jsonObject.optString("bottomText", "");
-            topWebpPath = new File(resFile, jsonObject.optString("topWebpName")).getAbsolutePath();
-            bottomWebpPath = new File(resFile, jsonObject.optString("bottomWebpName")).getAbsolutePath();
-            topIconPath = new File(resFile, jsonObject.optString("topIconName")).getAbsolutePath();
-            bottomIconPath = new File(resFile, jsonObject.optString("bottomIconName")).getAbsolutePath();
-            bottomBackPath = new File(resFile, jsonObject.optString("bottomBackground")).getAbsolutePath();
+            {
+                String topWebpName = jsonObject.optString("topWebpName");
+                if(!TextUtils.isEmpty(topWebpName)) {
+                    topWebpPath = new File(resFile, topWebpName).getAbsolutePath();
+                }
+            }
+            {
+                String bottomWebpName = jsonObject.optString("bottomWebpName");
+                if(!TextUtils.isEmpty(bottomWebpName)) {
+                    bottomWebpPath = new File(resFile, bottomWebpName).getAbsolutePath();
+                }
+            }
+            {
+                String topIconName = jsonObject.optString("topIconName");
+                if(!TextUtils.isEmpty(topIconName)) {
+                    topIconPath = new File(resFile, topIconName).getAbsolutePath();
+                }
+            }
+            {
+                String bottomIconName = jsonObject.optString("bottomIconName");
+                if(!TextUtils.isEmpty(bottomIconName)) {
+                    bottomIconPath = new File(resFile, bottomIconName).getAbsolutePath();
+                }
+            }
+            {
+                String bottomBackground = jsonObject.optString("bottomBackground");
+                if(!TextUtils.isEmpty(bottomBackground)) {
+                    bottomBackPath = new File(resFile, bottomBackground).getAbsolutePath();
+                }
+            }
             effectDuration = jsonObject.optInt("duration", 4_000);
             nobelType = jsonObject.optInt("nobelType", 0);
             isRound = "round".equals(jsonObject.optString("topShape", "six"));

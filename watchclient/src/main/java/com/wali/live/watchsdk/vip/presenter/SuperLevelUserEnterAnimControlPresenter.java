@@ -40,6 +40,7 @@ public class SuperLevelUserEnterAnimControlPresenter extends RxLifeCyclePresente
     @Override
     public void destroy() {
         super.destroy();
+        EventBus.getDefault().unregister(this);
         if(mIView != null) {
             mIView.destory();
         }

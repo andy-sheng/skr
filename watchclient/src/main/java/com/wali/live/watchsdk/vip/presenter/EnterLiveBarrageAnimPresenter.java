@@ -141,6 +141,8 @@ public class EnterLiveBarrageAnimPresenter extends RxLifeCyclePresenter implemen
                 } else {
                     subscriber.onError(new Exception("drawable == null"));
                 }
+
+                subscriber.onCompleted();
             }
         })
                 .observeOn(AndroidSchedulers.mainThread())

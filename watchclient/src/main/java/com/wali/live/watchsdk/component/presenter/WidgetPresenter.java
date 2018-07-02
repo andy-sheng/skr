@@ -395,6 +395,7 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
             @Override
             public void call(Subscriber<? super Object> subscriber) {
                 OperationAnimManager.pullResListFromServer(false);
+                subscriber.onCompleted();
             }
         })
                 .subscribeOn(Schedulers.io())

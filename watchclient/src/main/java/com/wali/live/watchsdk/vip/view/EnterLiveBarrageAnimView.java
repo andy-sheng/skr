@@ -230,9 +230,12 @@ public class EnterLiveBarrageAnimView extends RelativeLayout implements ISuperLe
                         mContentArea.setBackground(drawable);
                     }
 
-                    Drawable drawable1 = drawables.get(1);
-                    if(drawable1 != null) {
-                        operateIcon.setBackground(drawable1);
+
+                    if(1 < drawables.size()) {
+                        Drawable drawable1 = drawables.get(1);
+                        if(drawable1 != null) {
+                            operateIcon.setBackground(drawable1);
+                        }
                     }
                 } else {
                     mContentArea.setBackgroundResource(R.drawable.guizu_back);

@@ -8,6 +8,7 @@ import android.util.SparseArray;
 import android.widget.RelativeLayout;
 
 import com.base.activity.BaseActivity;
+import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
