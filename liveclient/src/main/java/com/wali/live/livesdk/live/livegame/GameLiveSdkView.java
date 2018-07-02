@@ -198,6 +198,7 @@ public class GameLiveSdkView extends BaseLiveSdkView<View, GameLiveController> {
                 R.id.gift_continue_vg,
                 R.id.gift_room_effect_view,
                 R.id.widget_view,
+                R.id.enter_tips_anim_container,
                 R.id.noble_user_enter_ainm_control_view
         }, mHorizontalMoveSet);
         // 滑动
