@@ -144,6 +144,7 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
             @Override
             public void showFansIcon() {
                 mFansBtn.setVisibility(View.VISIBLE);
+                orientChild();
             }
         }
         return new ComponentView();
