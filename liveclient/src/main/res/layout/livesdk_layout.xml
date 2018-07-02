@@ -114,6 +114,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <!--贵族进场大动画-->
+    <com.wali.live.watchsdk.vip.view.NobleUserEnterAnimControlView
+        android:id="@+id/noble_user_enter_ainm_control_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <!--底部按钮(供BaseBottomButton使用)-->
     <RelativeLayout
         android:id="@+id/bottom_button_view"
