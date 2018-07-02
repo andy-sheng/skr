@@ -25,6 +25,7 @@ import com.mi.live.data.push.model.BarrageMsgType;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.vip.model.AnimationConfig;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -255,7 +256,7 @@ public class LevelUpgradeBarrageAnimView extends RelativeLayout implements ISupe
 
     private void resetBackgroudByLevel(int level) {
         if (mIplayEndCallBack != null) {
-            SparseArray<int[]> levelRange = mIplayEndCallBack.getAnim(SuperLevelUserEnterAnimControlView.AnimationConfig.TYPE_ANIME_LEVEL_UPGRAGE).levelRange;
+            SparseArray<int[]> levelRange = mIplayEndCallBack.getAnim(AnimationConfig.TYPE_ANIME_LEVEL_UPGRAGE).levelRange;
             int length = levelRange.size();
             for (int i = 0; i < length; i++) {
                 int key = levelRange.keyAt(i);
@@ -272,7 +273,7 @@ public class LevelUpgradeBarrageAnimView extends RelativeLayout implements ISupe
 
     private boolean accepctLevel(int level) {
         if (mIplayEndCallBack != null) {
-            SparseArray<int[]> levelRange = mIplayEndCallBack.getAnim(SuperLevelUserEnterAnimControlView.AnimationConfig.TYPE_ANIME_LEVEL_UPGRAGE).levelRange;
+            SparseArray<int[]> levelRange = mIplayEndCallBack.getAnim(AnimationConfig.TYPE_ANIME_LEVEL_UPGRAGE).levelRange;
             int length = levelRange.size();
             for (int i = 0; i < length; i++) {
                 int key = levelRange.keyAt(i);
@@ -287,7 +288,7 @@ public class LevelUpgradeBarrageAnimView extends RelativeLayout implements ISupe
 
     private int getAnime(int level) {
         if (mIplayEndCallBack != null) {
-            SparseArray<int[]> levelRange = mIplayEndCallBack.getAnim(SuperLevelUserEnterAnimControlView.AnimationConfig.TYPE_ANIME_LEVEL_UPGRAGE).levelRange;
+            SparseArray<int[]> levelRange = mIplayEndCallBack.getAnim(AnimationConfig.TYPE_ANIME_LEVEL_UPGRAGE).levelRange;
             int length = levelRange.size();
             for (int i = 0; i < length; i++) {
                 int key = levelRange.keyAt(i);

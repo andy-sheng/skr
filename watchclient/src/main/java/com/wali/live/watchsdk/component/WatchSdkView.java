@@ -53,7 +53,9 @@ import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.view.WidgetView;
 import com.wali.live.watchsdk.component.view.panel.GameDownloadPanel;
 import com.wali.live.watchsdk.envelope.SendEnvelopeFragment;
+import com.wali.live.watchsdk.vip.presenter.NobleUserEnterAnimControlPresenter;
 import com.wali.live.watchsdk.vip.presenter.SuperLevelUserEnterAnimControlPresenter;
+import com.wali.live.watchsdk.vip.view.NobleUserEnterAnimControlView;
 import com.wali.live.watchsdk.vip.view.SuperLevelUserEnterAnimControlView;
 import com.wali.live.watchsdk.watch.presenter.PanelContainerPresenter;
 
@@ -122,6 +124,8 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
 
     protected boolean mIsLandscape = false;
     private SuperLevelUserEnterAnimControlPresenter mSuperLevelUserBarrageAnimPresenter;
+    private NobleUserEnterAnimControlView mNobleUserEnterAnimControlView;
+    private NobleUserEnterAnimControlPresenter mNobleUserEnterAnimControlPresenter;
 
     @Override
     protected String getTAG() {
@@ -275,6 +279,12 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             mSuperLevelUserBarrageAnimPresenter = new SuperLevelUserEnterAnimControlPresenter(mSuperLevelUserBarrageAnimView);
         }
 
+//        贵族进场大动画
+        {
+            mNobleUserEnterAnimControlView = $(R.id.noble_user_enter_ainm_control_view);
+            mNobleUserEnterAnimControlPresenter = new NobleUserEnterAnimControlPresenter(mNobleUserEnterAnimControlView);
+        }
+
         // 底部面板
         {
             RelativeLayout relativeLayout = $(R.id.bottom_panel_view);
@@ -382,6 +392,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 R.id.live_comment_view,
 //                R.id.msg_anim_view,
                 R.id.enter_tips_anim_container,
+                R.id.noble_user_enter_ainm_control_view,
                 R.id.gift_animation_player_view,
                 R.id.gift_continue_vg,
                 R.id.gift_room_effect_view,
@@ -396,6 +407,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 R.id.live_comment_view,
 //                R.id.msg_anim_view,
                 R.id.enter_tips_anim_container,
+                R.id.noble_user_enter_ainm_control_view,
                 R.id.gift_animation_player_view,
                 R.id.gift_continue_vg,
                 R.id.gift_room_effect_view,
@@ -459,6 +471,10 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
     private void destory() {
         if(mSuperLevelUserBarrageAnimPresenter != null) {
             mSuperLevelUserBarrageAnimPresenter.destroy();
+        }
+
+        if(mNobleUserEnterAnimControlPresenter != null) {
+            mNobleUserEnterAnimControlPresenter.destroy();
         }
     }
 

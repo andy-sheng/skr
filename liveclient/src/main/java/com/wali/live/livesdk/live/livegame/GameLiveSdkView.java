@@ -31,7 +31,9 @@ import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.component.view.TopAreaView;
 import com.wali.live.watchsdk.component.view.WidgetView;
+import com.wali.live.watchsdk.vip.presenter.NobleUserEnterAnimControlPresenter;
 import com.wali.live.watchsdk.vip.presenter.SuperLevelUserEnterAnimControlPresenter;
+import com.wali.live.watchsdk.vip.view.NobleUserEnterAnimControlView;
 import com.wali.live.watchsdk.vip.view.SuperLevelUserEnterAnimControlView;
 
 import java.lang.ref.WeakReference;
@@ -69,6 +71,9 @@ public class GameLiveSdkView extends BaseLiveSdkView<View, GameLiveController> {
 
     private SuperLevelUserEnterAnimControlView mSuperLevelUserBarrageAnimView;
     private SuperLevelUserEnterAnimControlPresenter mSuperLevelUserBarrageAnimPresenter;
+
+    private NobleUserEnterAnimControlView mNobleUserEnterAnimControlView;
+    private NobleUserEnterAnimControlPresenter mNobleUserEnterAnimControlPresenter;
 
     @Override
     protected String getTAG() {
@@ -124,6 +129,13 @@ public class GameLiveSdkView extends BaseLiveSdkView<View, GameLiveController> {
             mSuperLevelUserBarrageAnimView = $(R.id.enter_tips_anim_container);
             mSuperLevelUserBarrageAnimPresenter = new SuperLevelUserEnterAnimControlPresenter(mSuperLevelUserBarrageAnimView);
         }
+
+        //        贵族进场大动画
+        {
+            mNobleUserEnterAnimControlView = $(R.id.noble_user_enter_ainm_control_view);
+            mNobleUserEnterAnimControlPresenter = new NobleUserEnterAnimControlPresenter(mNobleUserEnterAnimControlView);
+        }
+
         // 输入框
         {
             InputAreaView view = $(R.id.input_area_view);
@@ -185,7 +197,8 @@ public class GameLiveSdkView extends BaseLiveSdkView<View, GameLiveController> {
                 R.id.gift_animation_player_view,
                 R.id.gift_continue_vg,
                 R.id.gift_room_effect_view,
-                R.id.widget_view
+                R.id.widget_view,
+                R.id.noble_user_enter_ainm_control_view
         }, mHorizontalMoveSet);
         // 滑动
 //        {
@@ -228,6 +241,10 @@ public class GameLiveSdkView extends BaseLiveSdkView<View, GameLiveController> {
     private void destory() {
         if(mSuperLevelUserBarrageAnimPresenter != null) {
             mSuperLevelUserBarrageAnimPresenter.destroy();
+        }
+
+        if(mNobleUserEnterAnimControlPresenter != null) {
+            mNobleUserEnterAnimControlPresenter.destroy();
         }
     }
 

@@ -39,6 +39,7 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.vip.contact.EnterLiveBarrageAnimContact;
 import com.wali.live.watchsdk.vip.manager.OperationAnimManager;
+import com.wali.live.watchsdk.vip.model.AnimationConfig;
 import com.wali.live.watchsdk.vip.model.OperationAnimation;
 import com.wali.live.watchsdk.vip.presenter.EnterLiveBarrageAnimPresenter;
 
@@ -133,9 +134,9 @@ public class EnterLiveBarrageAnimView extends RelativeLayout implements ISuperLe
 
         initPresenter();
 
-        mLevelBackgroundMap.put(SuperLevelUserEnterAnimControlView.AnimationConfig.EFFECT_LEVEL_1, R.drawable.vip_enter_1);
-        mLevelBackgroundMap.put(SuperLevelUserEnterAnimControlView.AnimationConfig.EFFECT_LEVEL_2, R.drawable.vip_enter_2);
-        mLevelBackgroundMap.put(SuperLevelUserEnterAnimControlView.AnimationConfig.EFFECT_LEVEL_3, R.drawable.vip_enter_3);
+        mLevelBackgroundMap.put(AnimationConfig.EFFECT_LEVEL_1, R.drawable.vip_enter_1);
+        mLevelBackgroundMap.put(AnimationConfig.EFFECT_LEVEL_2, R.drawable.vip_enter_2);
+        mLevelBackgroundMap.put(AnimationConfig.EFFECT_LEVEL_3, R.drawable.vip_enter_3);
 
         setOnClickListener(new OnClickListener() {
             @Override
@@ -302,13 +303,13 @@ public class EnterLiveBarrageAnimView extends RelativeLayout implements ISuperLe
         int resId;
         if (vipLevel > 2) {
             switch (mAnimResOrder) {
-                case SuperLevelUserEnterAnimControlView.AnimationConfig.EFFECT_LEVEL_1:
+                case AnimationConfig.EFFECT_LEVEL_1:
                     resId = R.raw.vip_come_in_1;
                     break;
-                case SuperLevelUserEnterAnimControlView.AnimationConfig.EFFECT_LEVEL_2:
+                case AnimationConfig.EFFECT_LEVEL_2:
                     resId = R.raw.vip_come_in_2;
                     break;
-                case SuperLevelUserEnterAnimControlView.AnimationConfig.EFFECT_LEVEL_3:
+                case AnimationConfig.EFFECT_LEVEL_3:
                     resId = R.raw.vip_come_in_3;
                     break;
                 default:
@@ -489,7 +490,7 @@ public class EnterLiveBarrageAnimView extends RelativeLayout implements ISuperLe
 
     private void resetBackgroundByLevel(int vipLevel) {
         if (mIPlayEndCallBack != null) {
-            SparseArray<int[]> levelRange = mIPlayEndCallBack.getAnim(SuperLevelUserEnterAnimControlView.AnimationConfig.TYPE_ANIME_ENTER_ROOM).levelRange;
+            SparseArray<int[]> levelRange = mIPlayEndCallBack.getAnim(AnimationConfig.TYPE_ANIME_ENTER_ROOM).levelRange;
             int length = levelRange.size();
             for (int i = 0; i < length; i++) {
                 int effectLevel = levelRange.keyAt(i);
@@ -507,7 +508,7 @@ public class EnterLiveBarrageAnimView extends RelativeLayout implements ISuperLe
 
     private boolean acceptLevel(int level) {
         if (mIPlayEndCallBack != null) {
-            SparseArray<int[]> levelRange = mIPlayEndCallBack.getAnim(SuperLevelUserEnterAnimControlView.AnimationConfig.TYPE_ANIME_ENTER_ROOM).levelRange;
+            SparseArray<int[]> levelRange = mIPlayEndCallBack.getAnim(AnimationConfig.TYPE_ANIME_ENTER_ROOM).levelRange;
             int length = levelRange.size();
             for (int i = 0; i < length; i++) {
                 int[] item = levelRange.valueAt(i);
@@ -631,7 +632,6 @@ public class EnterLiveBarrageAnimView extends RelativeLayout implements ISuperLe
 
         mContentArea.startAnimation(animation1);
     }
-
 
     //todo yss 这里播放运营活动期间的相关用户入场动画
     public void playOperationAnim() {

@@ -41,7 +41,9 @@ import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.component.view.TopAreaView;
 import com.wali.live.watchsdk.component.view.WidgetView;
 import com.wali.live.watchsdk.envelope.SendEnvelopeFragment;
+import com.wali.live.watchsdk.vip.presenter.NobleUserEnterAnimControlPresenter;
 import com.wali.live.watchsdk.vip.presenter.SuperLevelUserEnterAnimControlPresenter;
+import com.wali.live.watchsdk.vip.view.NobleUserEnterAnimControlView;
 import com.wali.live.watchsdk.vip.view.SuperLevelUserEnterAnimControlView;
 
 import java.lang.ref.WeakReference;
@@ -82,6 +84,9 @@ public class ShowLiveSdkView extends BaseLiveSdkView<View, ShowLiveController> {
 
     private SuperLevelUserEnterAnimControlView mSuperLevelUserBarrageAnimView;
     private SuperLevelUserEnterAnimControlPresenter mSuperLevelUserBarrageAnimPresenter;
+
+    private NobleUserEnterAnimControlView mNobleUserEnterAnimControlView;
+    private NobleUserEnterAnimControlPresenter mNobleUserEnterAnimControlPresenter;
 
     @Override
     protected String getTAG() {
@@ -157,6 +162,13 @@ public class ShowLiveSdkView extends BaseLiveSdkView<View, ShowLiveController> {
             mSuperLevelUserBarrageAnimView = $(R.id.enter_tips_anim_container);
             mSuperLevelUserBarrageAnimPresenter = new SuperLevelUserEnterAnimControlPresenter(mSuperLevelUserBarrageAnimView);
         }
+
+        //        贵族进场大动画
+        {
+            mNobleUserEnterAnimControlView = $(R.id.noble_user_enter_ainm_control_view);
+            mNobleUserEnterAnimControlPresenter = new NobleUserEnterAnimControlPresenter(mNobleUserEnterAnimControlView);
+        }
+
         // 输入框
         {
             InputAreaView view = $(R.id.input_area_view);
@@ -248,6 +260,7 @@ public class ShowLiveSdkView extends BaseLiveSdkView<View, ShowLiveController> {
                 R.id.bottom_button_view,
                 R.id.live_comment_view,
                 R.id.gift_animation_player_view,
+                R.id.noble_user_enter_ainm_control_view,
                 R.id.gift_continue_vg,
                 R.id.gift_room_effect_view,
                 R.id.enter_tips_anim_container,
@@ -295,6 +308,10 @@ public class ShowLiveSdkView extends BaseLiveSdkView<View, ShowLiveController> {
     private void destory() {
         if(mSuperLevelUserBarrageAnimPresenter != null) {
             mSuperLevelUserBarrageAnimPresenter.destroy();
+        }
+
+        if(mNobleUserEnterAnimControlPresenter != null) {
+            mNobleUserEnterAnimControlPresenter.destroy();
         }
     }
 
