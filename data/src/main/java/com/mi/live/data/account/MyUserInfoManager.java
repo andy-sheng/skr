@@ -508,4 +508,12 @@ public class MyUserInfoManager {
         EventBus.getDefault().post(new UserInfoEvent());
         EventBus.getDefault().post(new VipUpdateEvent());
     }
+
+    public synchronized void setVipInfo(int vipLevel) {
+        MyLog.d(TAG, String.format("set vip info, level:%d", vipLevel));
+        ensureMyInfoNotNull();
+        mMyInfo.setVipLevel(vipLevel);
+        EventBus.getDefault().post(new UserInfoEvent());
+        EventBus.getDefault().post(new VipUpdateEvent());
+    }
 }

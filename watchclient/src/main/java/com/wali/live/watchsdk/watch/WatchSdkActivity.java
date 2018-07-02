@@ -98,6 +98,7 @@ import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomSystemMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
+import com.wali.live.watchsdk.watch.presenter.push.VipUserActionMsgPresenter;
 import com.wali.live.watchsdk.watch.view.IWatchVideoView;
 import com.wali.live.watchsdk.webview.HalfWebViewActivity;
 import com.wali.live.watchsdk.webview.WebViewActivity;
@@ -165,6 +166,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     private AnimMsgPresenter mAnimMsgPresenter;
     private ForbidManagePresenter mForbidManagePresenter;
     protected UserInfoPresenter mUserInfoPresenter;
+    private VipUserActionMsgPresenter mVipUserActionMsgPresenter;
 
     private PhoneStateReceiver mPhoneStateReceiver;
     private ScreenStateReceiver mScreenStateReceiver;
@@ -392,6 +394,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         mAnimMsgPresenter = new AnimMsgPresenter(mMyRoomData);
         addPushProcessor(mAnimMsgPresenter);
         addPresent(mAnimMsgPresenter);
+
+        mVipUserActionMsgPresenter = new VipUserActionMsgPresenter(mRoomChatMsgManager);
+        addPushProcessor(mVipUserActionMsgPresenter);
+        addPresent(mVipUserActionMsgPresenter);
 
         mUserInfoPresenter = new UserInfoPresenter(this, mMyRoomData);
 
@@ -671,6 +677,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
             //TODO 这段代码迁移到了switchRoom
             //WatchRoomCharactorManager.getInstance().clear();
             syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);
+
             if (mController != null) {
                 mController.postEvent(MSG_ON_LIVE_SUCCESS);
                 if (roomInfo.getMicBeginInfo() != null) {
@@ -733,6 +740,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         }
         return mForbidManagePresenter;
     }
+
 
     /*拉取房间礼物属性信息*/
     protected void syncRoomEffect(final String roomId, long uuid, long zuid, Location location) {

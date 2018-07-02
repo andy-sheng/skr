@@ -110,6 +110,7 @@ public class MainActivity extends BaseSdkActivity implements IChannelView, IChan
         getChannelFromServer();
     }
 
+
     private void syncGiftList() {
         Observable
                 .create(new Observable.OnSubscribe<Object>() {

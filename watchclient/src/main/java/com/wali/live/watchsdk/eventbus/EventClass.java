@@ -1,5 +1,8 @@
 package com.wali.live.watchsdk.eventbus;
 
+import android.support.annotation.NonNull;
+
+import com.mi.live.data.push.model.BarrageMsg;
 import com.wali.live.watchsdk.fans.adapter.FansMemberAdapter;
 
 import java.util.List;
@@ -183,5 +186,46 @@ public class EventClass {
         public boolean isAvatorChange;
         public PersonalInfoChangeEvent() {
         }
+    }
+
+    public static class HighLevelUserActionEvent {
+        public BarrageMsg enterLiveBarrage;
+
+        public HighLevelUserActionEvent(BarrageMsg enterLiveBarrage) {
+            this.enterLiveBarrage = enterLiveBarrage;
+        }
+    }
+
+    /**
+     * 通知该房间是否允许播放VIP进场特效
+     */
+    public static class UpdateVipEnterRoomEffectSwitchEvent {
+        //该房间是否禁止播放VIP进场特效， 0 不禁止， 1 禁止
+        public static final int VIP_ENTER_ROOM_EFFECT_ALLOW = 0;
+        public static final int VIP_ENTER_ROOM_EFFECT_FORBID = 1;
+        public final long anchorId;
+        public final boolean enableEffect;
+
+        private UpdateVipEnterRoomEffectSwitchEvent(long anchorId, boolean enableEffect) {
+            this.anchorId = anchorId;
+            this.enableEffect = enableEffect;
+        }
+
+        public static UpdateVipEnterRoomEffectSwitchEvent newInstance(long anchorId, int noJoinAnimation) {
+            return new UpdateVipEnterRoomEffectSwitchEvent(anchorId, noJoinAnimation == VIP_ENTER_ROOM_EFFECT_ALLOW);
+        }
+    }
+
+    public static final class AddBarrageEvent {
+        public final BarrageMsg barrageMsg;
+
+        private AddBarrageEvent(BarrageMsg barrageMsg) {
+            this.barrageMsg = barrageMsg;
+        }
+
+        public static AddBarrageEvent newInstance(@NonNull BarrageMsg barrageMsg) {
+            return new AddBarrageEvent(barrageMsg);
+        }
+
     }
 }

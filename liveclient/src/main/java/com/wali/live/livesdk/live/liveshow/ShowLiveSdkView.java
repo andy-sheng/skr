@@ -31,18 +31,20 @@ import com.wali.live.livesdk.live.liveshow.view.LiveDisplayView;
 import com.wali.live.livesdk.live.liveshow.view.button.MagicControlBtnView;
 import com.wali.live.livesdk.live.liveshow.view.button.PlusControlBtnView;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
-import com.wali.live.watchsdk.component.presenter.BarrageControlAnimPresenter;
 import com.wali.live.watchsdk.component.presenter.EnvelopePresenter;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.presenter.TopAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
-import com.wali.live.watchsdk.component.view.BarrageControlAnimView;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.component.view.TopAreaView;
 import com.wali.live.watchsdk.component.view.WidgetView;
 import com.wali.live.watchsdk.envelope.SendEnvelopeFragment;
+import com.wali.live.watchsdk.vip.presenter.NobleUserEnterAnimControlPresenter;
+import com.wali.live.watchsdk.vip.presenter.SuperLevelUserEnterAnimControlPresenter;
+import com.wali.live.watchsdk.vip.view.NobleUserEnterAnimControlView;
+import com.wali.live.watchsdk.vip.view.SuperLevelUserEnterAnimControlView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -79,6 +81,12 @@ public class ShowLiveSdkView extends BaseLiveSdkView<View, ShowLiveController> {
     protected RelativeLayout mFloatContainer;
 
     protected boolean mIsLandscape = false;
+
+    private SuperLevelUserEnterAnimControlView mSuperLevelUserBarrageAnimView;
+    private SuperLevelUserEnterAnimControlPresenter mSuperLevelUserBarrageAnimPresenter;
+
+    private NobleUserEnterAnimControlView mNobleUserEnterAnimControlView;
+    private NobleUserEnterAnimControlPresenter mNobleUserEnterAnimControlPresenter;
 
     @Override
     protected String getTAG() {
@@ -144,12 +152,23 @@ public class ShowLiveSdkView extends BaseLiveSdkView<View, ShowLiveController> {
 
             mLiveCommentView = view;
         }
-        //弹幕区上面的特权弹幕动画展示
+//        //弹幕区上面的特权弹幕动画展示
+//        {
+//            BarrageControlAnimView view = $(R.id.msg_anim_view);
+//            BarrageControlAnimPresenter presenter = new BarrageControlAnimPresenter(mController, mController.mMyRoomData);
+//            registerComponent(view, presenter);
+//        }
         {
-            BarrageControlAnimView view = $(R.id.msg_anim_view);
-            BarrageControlAnimPresenter presenter = new BarrageControlAnimPresenter(mController, mController.mMyRoomData);
-            registerComponent(view, presenter);
+            mSuperLevelUserBarrageAnimView = $(R.id.enter_tips_anim_container);
+            mSuperLevelUserBarrageAnimPresenter = new SuperLevelUserEnterAnimControlPresenter(mSuperLevelUserBarrageAnimView);
         }
+
+        //        贵族进场大动画
+        {
+            mNobleUserEnterAnimControlView = $(R.id.noble_user_enter_ainm_control_view);
+            mNobleUserEnterAnimControlPresenter = new NobleUserEnterAnimControlPresenter(mNobleUserEnterAnimControlView);
+        }
+
         // 输入框
         {
             InputAreaView view = $(R.id.input_area_view);
@@ -241,8 +260,10 @@ public class ShowLiveSdkView extends BaseLiveSdkView<View, ShowLiveController> {
                 R.id.bottom_button_view,
                 R.id.live_comment_view,
                 R.id.gift_animation_player_view,
+                R.id.noble_user_enter_ainm_control_view,
                 R.id.gift_continue_vg,
                 R.id.gift_room_effect_view,
+                R.id.enter_tips_anim_container,
                 R.id.widget_view
         }, mHorizontalMoveSet);
         // 滑动
@@ -266,12 +287,32 @@ public class ShowLiveSdkView extends BaseLiveSdkView<View, ShowLiveController> {
         registerAction(MSG_INPUT_VIEW_HIDDEN);
         registerAction(MSG_BACKGROUND_CLICK);
         registerAction(MSG_SHOW_SEND_ENVELOPE);
+
+        start();
     }
 
     @Override
     public void stopView() {
         super.stopView();
         mAnimationHelper.clearAnimation();
+
+        destory();
+    }
+
+    private void start() {
+        if(mSuperLevelUserBarrageAnimPresenter != null) {
+            mSuperLevelUserBarrageAnimPresenter.start();
+        }
+    }
+
+    private void destory() {
+        if(mSuperLevelUserBarrageAnimPresenter != null) {
+            mSuperLevelUserBarrageAnimPresenter.destroy();
+        }
+
+        if(mNobleUserEnterAnimControlPresenter != null) {
+            mNobleUserEnterAnimControlPresenter.destroy();
+        }
     }
 
     @Override

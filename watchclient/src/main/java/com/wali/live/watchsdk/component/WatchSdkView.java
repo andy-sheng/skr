@@ -27,7 +27,6 @@ import com.wali.live.proto.VFansProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.BarrageBtnPresenter;
-import com.wali.live.watchsdk.component.presenter.BarrageControlAnimPresenter;
 import com.wali.live.watchsdk.component.presenter.BottomButtonPresenter;
 import com.wali.live.watchsdk.component.presenter.EnvelopePresenter;
 import com.wali.live.watchsdk.component.presenter.ExtraContainerPresenter;
@@ -57,19 +56,15 @@ import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.view.WidgetView;
 import com.wali.live.watchsdk.component.view.panel.GameDownloadPanel;
 import com.wali.live.watchsdk.envelope.SendEnvelopeFragment;
-import com.wali.live.watchsdk.fans.model.FansGroupListModel;
-import com.wali.live.watchsdk.fans.request.GetGroupListRequest;
+import com.wali.live.watchsdk.vip.presenter.NobleUserEnterAnimControlPresenter;
+import com.wali.live.watchsdk.vip.presenter.SuperLevelUserEnterAnimControlPresenter;
+import com.wali.live.watchsdk.vip.view.NobleUserEnterAnimControlView;
+import com.wali.live.watchsdk.vip.view.SuperLevelUserEnterAnimControlView;
 import com.wali.live.watchsdk.watch.presenter.PanelContainerPresenter;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
 import static com.wali.live.component.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
@@ -104,7 +99,8 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
     protected TopAreaView mTopAreaView;
     protected LiveCommentView mLiveCommentView;
     protected View mBarrageBtnView;
-    protected BarrageControlAnimView mBarrageControlAnimView;
+//    protected BarrageControlAnimView mBarrageControlAnimView;
+    protected SuperLevelUserEnterAnimControlView mSuperLevelUserBarrageAnimView;
 
     protected GiftContinueViewGroup mGiftContinueViewGroup;
 
@@ -130,6 +126,9 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
     protected boolean mIsHuYaLive = false;
 
     protected boolean mIsLandscape = false;
+    private SuperLevelUserEnterAnimControlPresenter mSuperLevelUserBarrageAnimPresenter;
+    private NobleUserEnterAnimControlView mNobleUserEnterAnimControlView;
+    private NobleUserEnterAnimControlPresenter mNobleUserEnterAnimControlPresenter;
 
     @Override
     protected String getTAG() {
@@ -273,12 +272,22 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             mLiveCommentView = view;
         }
         //弹幕区上面的特权弹幕动画展示
+//        {
+//            BarrageControlAnimView view = $(R.id.msg_anim_view);
+//            BarrageControlAnimPresenter presenter = new BarrageControlAnimPresenter(mController, mController.mMyRoomData);
+//            mBarrageControlAnimView = view;
+//        }
         {
-            BarrageControlAnimView view = $(R.id.msg_anim_view);
-            BarrageControlAnimPresenter presenter = new BarrageControlAnimPresenter(mController, mController.mMyRoomData);
-            registerComponent(view, presenter);
-            mBarrageControlAnimView = view;
+            mSuperLevelUserBarrageAnimView = $(R.id.enter_tips_anim_container);
+            mSuperLevelUserBarrageAnimPresenter = new SuperLevelUserEnterAnimControlPresenter(mSuperLevelUserBarrageAnimView);
         }
+
+//        贵族进场大动画
+        {
+            mNobleUserEnterAnimControlView = $(R.id.noble_user_enter_ainm_control_view);
+            mNobleUserEnterAnimControlPresenter = new NobleUserEnterAnimControlPresenter(mNobleUserEnterAnimControlView);
+        }
+
         // 底部面板
         {
             RelativeLayout relativeLayout = $(R.id.bottom_panel_view);
@@ -381,7 +390,9 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 R.id.top_area_view,
                 R.id.bottom_button_view,
                 R.id.live_comment_view,
-                R.id.msg_anim_view,
+//                R.id.msg_anim_view,
+                R.id.enter_tips_anim_container,
+                R.id.noble_user_enter_ainm_control_view,
                 R.id.gift_animation_player_view,
                 R.id.gift_continue_vg,
                 R.id.gift_room_effect_view,
@@ -394,7 +405,9 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 R.id.top_area_view,
                 R.id.bottom_button_view,
                 R.id.live_comment_view,
-                R.id.msg_anim_view,
+//                R.id.msg_anim_view,
+                R.id.enter_tips_anim_container,
+                R.id.noble_user_enter_ainm_control_view,
                 R.id.gift_animation_player_view,
                 R.id.gift_continue_vg,
                 R.id.gift_room_effect_view,
@@ -438,12 +451,31 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
         registerAction(MSG_SHOW_SEND_ENVELOPE);
         registerAction(MSG_VIDEO_PORTRAIT);
         registerAction(MSG_VIDEO_LANDSCAPE);
+
+        start();
     }
 
     @Override
     public void stopView() {
         super.stopView();
         mAnimationHelper.clearAnimation();
+        destory();
+    }
+
+    private void start() {
+        if(mSuperLevelUserBarrageAnimPresenter != null) {
+            mSuperLevelUserBarrageAnimPresenter.start();
+        }
+    }
+
+    private void destory() {
+        if(mSuperLevelUserBarrageAnimPresenter != null) {
+            mSuperLevelUserBarrageAnimPresenter.destroy();
+        }
+
+        if(mNobleUserEnterAnimControlPresenter != null) {
+            mNobleUserEnterAnimControlPresenter.destroy();
+        }
     }
 
     public void switchToNextRoom() {
@@ -469,9 +501,13 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             mWidgetPresenter.reset();
         }
         mLiveCommentView.reset();
-        mBarrageControlAnimView.reset();
+//        mBarrageControlAnimView.reset();
         mWatchBottomButton.reset();
         mTopAreaView.reset();
+
+        if(mSuperLevelUserBarrageAnimPresenter != null) {
+            mSuperLevelUserBarrageAnimPresenter.reset();
+        }
     }
 
     public void postSwitch(boolean isGameMode) {

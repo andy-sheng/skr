@@ -13,6 +13,7 @@ import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.image.fresco.processor.BlurPostprocessor;
 import com.base.image.fresco.processor.GrayPostprocessor;
+import com.base.image.fresco.processor.HexagonPostProcessor;
 import com.base.log.MyLog;
 import com.base.utils.Constants;
 import com.base.utils.image.ImageUtils;
@@ -554,5 +555,25 @@ public class AvatarUtils {
             return "";
         }
         return in + AvatarUtils.getAvatarSizeAppend(AvatarUtils.SIZE_TYPE_AVATAR_SMALL);
+    }
+
+    public static void loadHexagonAvatarByUrl(final SimpleDraweeView draweeView, final String url, int loadingAvatarResId) {
+        BaseImage avatarImg;
+        if (TextUtils.isEmpty(url)) {
+            avatarImg = ImageFactory.newResImage(loadingAvatarResId).build();
+        } else {
+            avatarImg = ImageFactory.newHttpImage(url).setWidth(AVATAR_SIZE).setHeight(AVATAR_SIZE)
+                    .setFailureDrawable(loadingAvatarResId > 0 ? GlobalData.app().getResources().getDrawable(
+                            loadingAvatarResId) : null)
+                    .setFailureScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
+                    .build();
+        }
+
+        avatarImg.setPostprocessor(new HexagonPostProcessor());
+        avatarImg.setLoadingDrawable(loadingAvatarResId > 0 ? GlobalData.app().getResources().getDrawable(
+                loadingAvatarResId) : null);
+        avatarImg.setLoadingScaleType(ScalingUtils.ScaleType.CENTER_INSIDE);
+
+        FrescoWorker.loadImage(draweeView, avatarImg);
     }
 }
