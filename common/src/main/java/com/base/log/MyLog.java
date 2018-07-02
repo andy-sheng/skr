@@ -24,7 +24,7 @@ public class MyLog {
     private static AtomicInteger sCodeGenerator = new AtomicInteger(1);
 
     private static int sCurrentLogLevel = TraceLevel.ERROR;             //当前的日志级别
-
+    private static int sCurrentFileLogLevel = TraceLevel.ERROR;             //当前的日志级别
     // ------------------------------------------------------------------------------
     // 日志打印方法
     // ------------------------------------------------------------------------------
@@ -129,8 +129,8 @@ public class MyLog {
      *
      * @param level
      */
-    public static void setLogcatTraceLevel(int level, String logTag) {
-        if (level > TraceLevel.ALL || level < TraceLevel.VERBOSE) {
+    public static void setLogcatTraceLevel(int level,int fileLogLevel, String logTag) {
+        if (level > TraceLevel.ALL || level < 0) {
             level = TraceLevel.ALL;
         }
         if (!TextUtils.isEmpty(logTag)) {
@@ -143,6 +143,7 @@ public class MyLog {
                 .logAdapter(new CustomLogAdapter())
                 .singleMode();
         sCurrentLogLevel = level;
+        sCurrentFileLogLevel = fileLogLevel;
         ClientLog.setLogcatTraceLevel(level);
     }
 
@@ -155,7 +156,14 @@ public class MyLog {
         return sCurrentLogLevel;
     }
 
-
+    /**
+     * 得到当前的文件日志级别
+     *
+     * @return
+     */
+    public static int getCurrentFileLogLevel() {
+        return sCurrentFileLogLevel;
+    }
     // ------------------------------------------------------------------------------
     // 性能统计
     // ------------------------------------------------------------------------------

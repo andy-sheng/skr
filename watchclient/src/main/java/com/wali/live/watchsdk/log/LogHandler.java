@@ -94,7 +94,7 @@ public class LogHandler implements MiLinkPacketDispatcher.PacketDataHandler {
             } else {
                 //设置log level
                 int logLevel = dataLoglevel.getLoglevel();
-                InitManager.setAppAndMilinkLogLevel(logLevel);
+                InitManager.setAppAndMilinkLogLevel(logLevel,logLevel);
 
                 //产品要求在多少秒之后要恢复之前的log级别
                 long timeDelay = dataLoglevel.getTimeLong();

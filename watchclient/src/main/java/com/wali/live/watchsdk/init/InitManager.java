@@ -37,6 +37,7 @@ import com.xsj.crasheye.Crasheye;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by lan on 16/12/1.
@@ -143,37 +144,21 @@ public class InitManager {
     }
 
     public static void initLogger() {
-        setAppLogLevel();
-        setMilinkLogLevel();
-    }
-
-    /**
-     * 设置app log级别
-     */
-    public static void setAppLogLevel() {
         if (BuildConfig.DEBUG
                 || Constants.isTestBuild
                 || Constants.isDailyBuild
                 || Constants.isDebugBuild) {
-            MyLog.setLogcatTraceLevel(TraceLevel.ALL, LOGTAG);
+            setAppAndMilinkLogLevel(TraceLevel.ALL,TraceLevel.ALL);
         } else {
-            MiLinkLog.setLogcatTraceLevel(0);
-            MiLinkLog.setFileTraceLevel(TraceLevel.ABOVE_INFO);
+            setAppAndMilinkLogLevel(0,TraceLevel.ABOVE_INFO);
         }
     }
 
-    /**
-     * 设置milink log级别
-     */
-    public static void setMilinkLogLevel() {
-        if (BuildConfig.DEBUG
-                || Constants.isTestBuild
-                || Constants.isDailyBuild
-                || Constants.isDebugBuild) {
-            MiLinkClientAdapter.getsInstance().setMilinkLogLevel(TraceLevel.ALL);
-        } else {
-            MiLinkClientAdapter.getsInstance().setMilinkLogLevel(0);
-        }
+    public static void setAppAndMilinkLogLevel(int consoleLogLevel,int fileLogLevel) {
+        MyLog.setLogcatTraceLevel(consoleLogLevel,fileLogLevel, LOGTAG);
+        MiLinkLog.setLogcatTraceLevel(consoleLogLevel);
+        MiLinkLog.setFileTraceLevel(fileLogLevel);
+        MiLinkClientAdapter.getsInstance().setMilinkLogLevel(consoleLogLevel);
     }
 
     private static void initCrasheye() {
@@ -182,4 +167,6 @@ public class InitManager {
         // 这里还没有登录，在UserAccountManager登录后初始化
         // Crasheye.setUserIdentifier(UserAccountManager.getInstance().getUuid());
     }
+
+
 }
