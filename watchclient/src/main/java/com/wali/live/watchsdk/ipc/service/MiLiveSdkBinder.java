@@ -326,7 +326,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
     @Override
     public void statistic(String key, long time) throws RemoteException {
-        MyLog.w(TAG, "statistic key" + key);
+//        MyLog.w(TAG, "statistic key" + key);
         //场包cta弹窗之前，不能有网络访问。
         if (CommonUtils.isNeedShowCtaDialog()) {
             MyLog.w(TAG, "statistic isNeedShowCtaDialog true");
@@ -473,7 +473,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         }
         try {
             String key = String.format(StatisticsKey.KEY_SDK_LOGIN_ENTRANCE, channelId, miid);
-            MyLog.w(TAG, "reportLoginEntrance key=" + key);
+            MyLog.d(TAG, "reportLoginEntrance key=" + key);
             StatisticsAlmightyWorker.getsInstance().recordImmediatelyDefault(key, 1);
         } catch (Exception e) {
             MyLog.e(TAG, "reportLoginEntrance e", e);
@@ -483,7 +483,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     private void reportLoginSuccess(int channelId, long miid) {
         try {
             String key = String.format(StatisticsKey.KEY_SDK_LOGIN_SUCCESS, channelId, miid);
-            MyLog.w(TAG, "reportLoginSuccess key=" + key);
+            MyLog.d(TAG, "reportLoginSuccess key=" + key);
             StatisticsAlmightyWorker.getsInstance().recordImmediatelyDefault(key, 1);
         } catch (Exception e) {
             MyLog.e(TAG, "reportLoginSuccess e", e);
