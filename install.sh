@@ -11,6 +11,8 @@ else
 	elif [[ $1 == "2" ]]; then
 		# 厂包 5005_1_android
 		CHANNEL_ID="5005_1_android"
+	elif [[ $1 == "test" ]]; then
+		CHANNEL_ID="TEST"
 	else
 		echo "错误的参数，0 DEFAULT | 1 meng_1254_48_android | 2 5005_1_android"
 		exit
