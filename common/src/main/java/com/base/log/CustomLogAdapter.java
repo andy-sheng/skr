@@ -2,6 +2,7 @@ package com.base.log;
 
 import android.util.Log;
 
+import com.base.common.BuildConfig;
 import com.base.log.logger.LogAdapter;
 import com.mi.milink.sdk.base.debug.TraceLevel;
 
@@ -24,11 +25,16 @@ public class CustomLogAdapter implements LogAdapter {
 //        }
 //    };
 
+    // 是否能在控制台输出日志
+    boolean consoleLog = BuildConfig.DEBUG ? true : false;
+
     @Override
     public void d(final String tag, final String message) {
         if ((MyLog.getCurrentLogLevel() & TraceLevel.DEBUG) > 0) {
             log.debug(message);
-            Log.d(tag, message);
+            if (consoleLog) {
+                Log.d(tag, message);
+            }
         }
     }
 
@@ -37,7 +43,9 @@ public class CustomLogAdapter implements LogAdapter {
         if ((MyLog.getCurrentLogLevel() & TraceLevel.ERROR) > 0) {
 
             log.error(message);
-            Log.e(tag, message);
+            if (consoleLog) {
+                Log.e(tag, message);
+            }
         }
     }
 
@@ -46,7 +54,9 @@ public class CustomLogAdapter implements LogAdapter {
         if ((MyLog.getCurrentLogLevel() & TraceLevel.WARN) > 0) {
 
             log.warn(message);
-            Log.w(tag, message);
+            if (consoleLog) {
+                Log.w(tag, message);
+            }
         }
     }
 
@@ -55,7 +65,9 @@ public class CustomLogAdapter implements LogAdapter {
         if ((MyLog.getCurrentLogLevel() & TraceLevel.INFO) > 0) {
 
             log.info(message);
-            Log.i(tag, message);
+            if (consoleLog) {
+                Log.i(tag, message);
+            }
         }
     }
 
@@ -64,7 +76,9 @@ public class CustomLogAdapter implements LogAdapter {
         if ((MyLog.getCurrentLogLevel() & TraceLevel.VERBOSE) > 0) {
 
             log.debug(message);
-            Log.d(tag, message);
+            if (consoleLog) {
+                Log.d(tag, message);
+            }
         }
     }
 
@@ -73,7 +87,9 @@ public class CustomLogAdapter implements LogAdapter {
         if ((MyLog.getCurrentLogLevel() & TraceLevel.WARN) > 0) {
 
             log.warn(message);
-            Log.w(tag, message);
+            if (consoleLog) {
+                Log.w(tag, message);
+            }
         }
     }
 }

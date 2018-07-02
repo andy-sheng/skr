@@ -143,51 +143,37 @@ public class InitManager {
     }
 
     public static void initLogger() {
-        if (BuildConfig.DEBUG
-                || Constants.isTestBuild
-                || Constants.isDailyBuild
-                || Constants.isDebugBuild) {
-            setAppAndMilinkLogLevel(TraceLevel.ALL);
-        } else {
-            setAppAndMilinkLogLevel(TraceLevel.ABOVE_INFO);
-        }
-    }
-
-    /**
-     * 同时设置app和milink日志
-     */
-    public static void setAppAndMilinkLogLevel(int logLevel) {
-        if (logLevel > TraceLevel.ALL || logLevel < TraceLevel.VERBOSE) {
-            logLevel = TraceLevel.ALL;
-        }
-
-        setAppLogLevel(logLevel);
-        setMilinkLogLevel(logLevel);
+        setAppLogLevel();
+        setMilinkLogLevel();
     }
 
     /**
      * 设置app log级别
      */
-    public static void setAppLogLevel(int logLevel) {
-        if (logLevel > TraceLevel.ALL || logLevel < TraceLevel.VERBOSE) {
-            logLevel = TraceLevel.ALL;
+    public static void setAppLogLevel() {
+        if (BuildConfig.DEBUG
+                || Constants.isTestBuild
+                || Constants.isDailyBuild
+                || Constants.isDebugBuild) {
+            MyLog.setLogcatTraceLevel(TraceLevel.ALL, LOGTAG);
+        } else {
+            MiLinkLog.setLogcatTraceLevel(0);
+            MiLinkLog.setFileTraceLevel(TraceLevel.ABOVE_INFO);
         }
-
-        MyLog.setLogcatTraceLevel(logLevel, LOGTAG);
-//        MyLog.setFileTraceLevel(logLevel);
-        MiLinkLog.setLogcatTraceLevel(logLevel);
-        MiLinkLog.setFileTraceLevel(logLevel);
     }
 
     /**
      * 设置milink log级别
      */
-    public static void setMilinkLogLevel(int logLevel) {
-        if (logLevel > TraceLevel.ALL || logLevel < TraceLevel.VERBOSE) {
-            logLevel = TraceLevel.ALL;
+    public static void setMilinkLogLevel() {
+        if (BuildConfig.DEBUG
+                || Constants.isTestBuild
+                || Constants.isDailyBuild
+                || Constants.isDebugBuild) {
+            MiLinkClientAdapter.getsInstance().setMilinkLogLevel(TraceLevel.ALL);
+        } else {
+            MiLinkClientAdapter.getsInstance().setMilinkLogLevel(0);
         }
-
-        MiLinkClientAdapter.getsInstance().setMilinkLogLevel(logLevel);
     }
 
     private static void initCrasheye() {
