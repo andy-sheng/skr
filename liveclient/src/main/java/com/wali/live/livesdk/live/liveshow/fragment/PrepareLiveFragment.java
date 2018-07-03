@@ -209,6 +209,10 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.RECORD_AUDIO);
             return;
         }
+        if (!PermissionUtils.checkSdcardAlertWindow(getContext())) {
+            PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.WRITE_EXTERNAL_STORAGE);
+            return;
+        }
         if (!AccountAuthManager.triggerActionNeedAccount(getActivity())) {
             return;
         }
