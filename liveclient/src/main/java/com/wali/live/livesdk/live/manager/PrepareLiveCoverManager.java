@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 
 import com.base.activity.BaseSdkActivity;
@@ -192,7 +193,10 @@ public class PrepareLiveCoverManager {
                     }
                     File file = new File(dirPath, System.currentTimeMillis() + ".jpg");
                     mTakePhotoPath = file.getAbsolutePath();
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+
+                    Uri uri = FileProvider.getUriForFile(GlobalData.app(), "com.wali.live.watchsdk.editinfo.fileprovider", file);
+
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 
                     if (mFragment != null) {
                         mFragment.startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO);
