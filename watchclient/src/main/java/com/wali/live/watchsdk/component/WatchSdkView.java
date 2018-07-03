@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.TextureView;
@@ -13,17 +15,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.base.activity.BaseActivity;
+import com.base.dialog.MyAlertDialog;
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.Constants;
 import com.base.utils.display.DisplayUtils;
-import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
+import com.mi.live.data.event.GiftEventClass;
 import com.thornbirds.component.IParams;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.component.BaseSdkView;
-import com.wali.live.component.presenter.BaseSdkRxPresenter;
-import com.wali.live.proto.VFansProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.BarrageBtnPresenter;
@@ -43,7 +45,6 @@ import com.wali.live.watchsdk.component.presenter.WatchFloatPresenter;
 import com.wali.live.watchsdk.component.presenter.WatchPlayerPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.BarrageBtnView;
-import com.wali.live.watchsdk.component.view.BarrageControlAnimView;
 import com.wali.live.watchsdk.component.view.ExtraContainerView;
 import com.wali.live.watchsdk.component.view.FollowGuideView;
 import com.wali.live.watchsdk.component.view.GameBarrageView;
@@ -62,6 +63,8 @@ import com.wali.live.watchsdk.vip.view.NobleUserEnterAnimControlView;
 import com.wali.live.watchsdk.vip.view.SuperLevelUserEnterAnimControlView;
 import com.wali.live.watchsdk.watch.presenter.PanelContainerPresenter;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +80,7 @@ import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_POP_INSUFFICIENT_TIPS;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_FOLLOW_GUIDE;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_INPUT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
@@ -129,6 +133,8 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
     private SuperLevelUserEnterAnimControlPresenter mSuperLevelUserBarrageAnimPresenter;
     private NobleUserEnterAnimControlView mNobleUserEnterAnimControlView;
     private NobleUserEnterAnimControlPresenter mNobleUserEnterAnimControlPresenter;
+
+    private MyAlertDialog mBalanceInsufficientDialog;
 
     @Override
     protected String getTAG() {
@@ -451,6 +457,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
         registerAction(MSG_SHOW_SEND_ENVELOPE);
         registerAction(MSG_VIDEO_PORTRAIT);
         registerAction(MSG_VIDEO_LANDSCAPE);
+        registerAction(MSG_POP_INSUFFICIENT_TIPS);
 
         start();
     }
@@ -543,6 +550,30 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
 
             mRotateBtn.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void popInsufficientTips() {
+        if (mBalanceInsufficientDialog == null) {
+            mBalanceInsufficientDialog = new MyAlertDialog.Builder(mActivity).create();
+            mBalanceInsufficientDialog.setTitle(R.string.account_withdraw_pay_user_account_not_enough);
+            mBalanceInsufficientDialog.setMessage(GlobalData.app().getResources().getString(R.string.account_withdraw_pay_user_account_not_enough_tip));
+            mBalanceInsufficientDialog.setButton(AlertDialog.BUTTON_POSITIVE, GlobalData.app().getResources().getString(R.string.recharge), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_GO_RECHARGE));
+                    dialog.dismiss();
+                }
+            });
+            mBalanceInsufficientDialog.setButton(AlertDialog.BUTTON_NEGATIVE, GlobalData.app().getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        }
+
+        mBalanceInsufficientDialog.setCancelable(false);
+        mBalanceInsufficientDialog.show();
     }
 
     @Override
@@ -661,6 +692,9 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             case MSG_VIDEO_PORTRAIT:
                 mController.mMyRoomData.setVideoLandscape(false);
                 updateRotateBtn();
+                break;
+            case MSG_POP_INSUFFICIENT_TIPS:
+                popInsufficientTips();
                 break;
             default:
                 break;

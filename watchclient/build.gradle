@@ -22,6 +22,7 @@ android {
             res.srcDirs = ['src/main/res']
             res.srcDirs += ['src/main/res-personal-center']
             res.srcDirs += ['src/main/res-vip']
+            res.srcDirs += ['src/main/res-gift-fast-send']
             assets.srcDirs = ['src/main/assets']
         }
     }

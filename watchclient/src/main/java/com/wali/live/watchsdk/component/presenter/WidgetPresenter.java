@@ -69,6 +69,7 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
     private static final int FROM_ALL = 0;
     private static final int FROM_WATCH = 1;
     private static final int FROM_LIVE = 2;
+    private static final int WIDGET_SPEEDY_GIFT_POSITION = 7;//首充运营位
 
     protected RoomBaseDataModel mMyRoomData;
     private Handler mUIHandler;
@@ -376,9 +377,11 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
 
                                 if (rsp.hasAnimationConfig() && rsp.getAnimationConfig().hasNoJoinAnimation()) {
                                     int noJoinAnimation = rsp.getAnimationConfig().getNoJoinAnimation();
-//                                            mController.postEvent(MSG_BARRAGE_VIP_ENTER, new Params().putItem(noJoinAnimation == VIP_ENTER_ROOM_EFFECT_ALLOW));
                                     EventBus.getDefault().post(EventClass.UpdateVipEnterRoomEffectSwitchEvent.newInstance(mMyRoomData.getUid(), noJoinAnimation));
                                 }
+
+                                //快速送礼物
+                                getFastGiftInfo(rsp);
                             }
                         }, new Action1<Throwable>() {
                             @Override
@@ -388,6 +391,35 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
                         });
             }
         }
+    }
+
+    private void getFastGiftInfo(LiveProto.GetRoomAttachmentRsp rsp) {
+        if(rsp == null) {
+            return;
+        }
+
+        LiveCommonProto.NewWidgetInfo info = rsp.getNewWidgetInfo();
+        if(info == null) {
+            return;
+        }
+
+        LiveCommonProto.NewWidgetUnit widgetUnit = null;
+        for(LiveCommonProto.NewWidgetItem item : info.getWidgetItemList()) {
+            if(item != null
+                    && item.getPosition() == WIDGET_SPEEDY_GIFT_POSITION) {
+                List<LiveCommonProto.NewWidgetUnit> units = item.getWidgetUintList();
+                if(units != null
+                        && !units.isEmpty()) {
+                    widgetUnit = units.get(0);
+                    break;
+                }
+            }
+        }
+
+
+        EventBus.getDefault().post(new EventClass.UpdateFastGiftInfoEvent(rsp.hasSpeedyGiftConfig() ? rsp.getSpeedyGiftConfig().getGiftId() : -1
+                , widgetUnit != null ? widgetUnit.getIcon() : null
+                , widgetUnit != null ? widgetUnit.getLinkUrl() : null));
     }
 
     private void syncRoyalRes() {
