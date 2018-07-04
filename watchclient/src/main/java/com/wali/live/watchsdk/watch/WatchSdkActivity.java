@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.base.activity.BaseActivity;
+import com.base.activity.BaseSdkActivity;
 import com.base.dialog.DialogUtils;
 import com.base.dialog.MyAlertDialog;
 import com.base.event.SdkEventClass;

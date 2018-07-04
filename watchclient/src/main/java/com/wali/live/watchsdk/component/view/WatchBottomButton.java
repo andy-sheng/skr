@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.component.view;
 
 import android.animation.ValueAnimator;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.wali.live.component.view.BaseBottomButton;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
+import com.wali.live.watchsdk.fastsend.view.GiftFastSendView;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 /**
@@ -34,6 +36,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     private View mGameBtn;
     private WatchMenuIconView mMoreBtn;
     private MyInfoIconView mMyInfoIconView;
+    private GiftFastSendView mGiftFastSendView;
 
     private boolean mIsGameMode = false;
 
@@ -70,6 +73,10 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
                 mPresenter.showMyInfoPannel();
                 mMyInfoIconView.setMsgUnreadCnt(0);
             }
+        } else if(id == R.id.gift_fast_sent_container) {
+            if(AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                mPresenter.onFastGiftClick();
+            }
         }
     }
 
@@ -95,18 +102,29 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mMyInfoIconView.getLayoutParams();
         layoutParams.setMargins(BTN_MARGIN, BTN_MARGIN, 0, BTN_MARGIN);
 
-        mRightBtnSetPort.add(mMyInfoIconView);        // 横竖屏时按钮排列顺序
+        mGiftFastSendView = createFastGiftView();
+        addCreatedView(mGiftFastSendView, R.id.gift_fast_sent_container);
 
+        mRightBtnSetPort.add(mMyInfoIconView);        // 横竖屏时按钮排列顺序
         if (!mIsHuYaLive) {
             mRightBtnSetPort.add(mGiftBtn);
         }
-
         mBottomBtnSetLand.add(mMyInfoIconView);
         if (!mIsHuYaLive) {
             mBottomBtnSetLand.add(mGiftBtn);
         }
+        mRightBtnSetPort.add(mGiftFastSendView);
+        if(!mIsHuYaLive) {
+            mBottomBtnSetLand.add(mGiftFastSendView);
+        }
 
         orientChild();
+    }
+
+    private GiftFastSendView createFastGiftView() {
+        GiftFastSendView view = new GiftFastSendView(getContext());
+        view.setImgPic("", true);
+        return view;
     }
 
     private void showMoreBtnIcon() {
@@ -258,6 +276,21 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
                 showMoreBtnIcon();
             }
 
+            @Override
+            public void setFastGift(String widgetIcon, boolean needGiftIcon) {
+                if(mGiftFastSendView != null) {
+                    mGiftFastSendView.setImgPic(widgetIcon, needGiftIcon);
+                    orientChild();
+                }
+            }
+
+            @Override
+            public void startFastGiftPBarAnim() {
+                if(mGiftFastSendView != null) {
+                    mGiftFastSendView.start();
+                }
+            }
+
         }
         return new ComponentView();
     }
@@ -294,6 +327,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         void showMyInfoPannel();
 
         void processMoreBtnShow();
+
+        void onFastGiftClick();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
@@ -314,5 +349,9 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         void tryBindAvatar();
 
         void showMoreBtn();
+
+        void setFastGift(String widgetIcon, boolean needGiftIcon);
+
+        void startFastGiftPBarAnim();
     }
 }

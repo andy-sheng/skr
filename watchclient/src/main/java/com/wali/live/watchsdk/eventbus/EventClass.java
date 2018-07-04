@@ -228,4 +228,16 @@ public class EventClass {
         }
 
     }
+
+    public static final class UpdateFastGiftInfoEvent {
+        public int giftId;
+        public String widgetIcon;
+        public String linkUrl;
+
+        public UpdateFastGiftInfoEvent(int giftId, String widgetIcon, String linkUrl) {
+            this.giftId = giftId;
+            this.widgetIcon = widgetIcon;
+            this.linkUrl = linkUrl;
+        }
+    }
 }
