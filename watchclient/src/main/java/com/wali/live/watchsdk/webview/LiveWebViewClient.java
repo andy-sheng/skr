@@ -36,7 +36,7 @@ public class LiveWebViewClient extends WebViewClient {
 
     protected WeakReference<Activity> mBaseActivity;
 
-    private NewH5CachePackage mNewCachePkg;
+//    private NewH5CachePackage mNewCachePkg;
 
     public int getWebViewCount() {
         return mWebViewCount;
@@ -46,9 +46,9 @@ public class LiveWebViewClient extends WebViewClient {
         this.mWebViewCount = webViewCount;
     }
 
-    public void setNewCachePackage(NewH5CachePackage cpkg) {
-        mNewCachePkg = cpkg;
-    }
+//    public void setNewCachePackage(NewH5CachePackage cpkg) {
+//        mNewCachePkg = cpkg;
+//    }
 
     public LiveWebViewClient(WebViewListener mWebViewListener, Activity activity) {
         this.mWebViewListener = mWebViewListener;
@@ -111,34 +111,34 @@ public class LiveWebViewClient extends WebViewClient {
     public WebResourceResponse shouldInterceptRequest(WebView view, final String url) {
         boolean urlValid = isValidUrl(url);
         MyLog.d(TAG, "url=" + url + ", urlValid=" + urlValid);
-        if (urlValid) {
-            WebResourceResponse response = null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                try {
-                    if (null == response && mNewCachePkg != null) {
-                        InputStream in = mNewCachePkg.loadCache(url, GlobalData.app().getApplicationContext());
-                        if (in != null) {
-                            NewH5CachePackage.H5CacheFileInfo fileInfo = mNewCachePkg.getFileInfo(url);
-
-                            if (fileInfo != null) {
-                                MyLog.w(TAG, "new intercept response=" + fileInfo.getContentType());
-                                response = new WebResourceResponse(
-                                        fileInfo.getContentType(),
-                                        fileInfo.getCharset(), in);
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    MyLog.e(TAG, "", e);
-                }
-            }
-            if (response != null) {
-                return response;
-            }
+//        if (urlValid) {
+//            WebResourceResponse response = null;
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+//                try {
+//                    if (null == response && mNewCachePkg != null) {
+//                        InputStream in = mNewCachePkg.loadCache(url, GlobalData.app().getApplicationContext());
+//                        if (in != null) {
+//                            NewH5CachePackage.H5CacheFileInfo fileInfo = mNewCachePkg.getFileInfo(url);
+//
+//                            if (fileInfo != null) {
+//                                MyLog.w(TAG, "new intercept response=" + fileInfo.getContentType());
+//                                response = new WebResourceResponse(
+//                                        fileInfo.getContentType(),
+//                                        fileInfo.getCharset(), in);
+//                            }
+//                        }
+//                    }
+//                } catch (Exception e) {
+//                    MyLog.e(TAG, "", e);
+//                }
+//            }
+//            if (response != null) {
+//                return response;
+//            }
+//            return super.shouldInterceptRequest(view, url);
+//        } else {
             return super.shouldInterceptRequest(view, url);
-        } else {
-            return super.shouldInterceptRequest(view, url);
-        }
+//        }
     }
 
     public static boolean isValidUrl(String url) {
