@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_black_trans_60"
+    android:orientation="vertical"
+    android:paddingBottom="5dip"
+    android:paddingLeft="5dip"
+    android:paddingRight="5dip">
+
+    <LinearLayout
+        android:id="@+id/rl_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/transparent"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/dismiss_area"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/transparent" />
+
+
+        <RelativeLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="251dp"
+            android:background="@drawable/round_f7f7f7_bg">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/report_detail_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.wali.live.watchsdk.income.view.NoLeakEditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="left"
+                android:maxLength="200"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="16dip"
+                android:scrollbars="vertical"
+                android:textColor="@color/color_black_trans_70"
+                android:textColorHint="@color/color_black_trans_30"
+                android:textCursorDrawable="@drawable/edittext_color_cursor"
+                android:textSize="@dimen/text_size_42"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <!-- 暂时放下面，防止影响recyclerview第一个item的圆角 -->
+        <RelativeLayout
+            android:id="@+id/title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="52.3dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dip"
+                android:scaleType="center"
+                android:src="@drawable/topbar_icon_all_back_bg" />
+
+            <TextView
+                android:id="@+id/title_tv"
+                android:layout_width="173.33dip"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/report_input_content"
+                android:textColor="@color/color_black_trans_90"
+                android:textSize="@dimen/text_size_50" />
+
+        </RelativeLayout>
+
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="52.3dp"
+            android:background="@drawable/list_item_round_down_corner_bg"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/color_black_trans_70"
+            android:textSize="@dimen/text_size_42" />
+    </LinearLayout>
+
+
+    <com.wali.live.common.view.PlaceHolderView
+        android:id="@+id/holder_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

@@ -81,6 +81,7 @@ import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_POP_INSUFFICIENT_TIPS;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_FEEDBACK_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_FOLLOW_GUIDE;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_INPUT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
@@ -135,6 +136,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
     private NobleUserEnterAnimControlPresenter mNobleUserEnterAnimControlPresenter;
 
     private MyAlertDialog mBalanceInsufficientDialog;
+    private PanelContainerPresenter mPanelContainerPresenter;
 
     @Override
     protected String getTAG() {
@@ -301,9 +303,9 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 MyLog.e(TAG, "missing R.id.bottom_panel_view");
                 return;
             }
-            PanelContainerPresenter presenter = new PanelContainerPresenter(mController,
+            mPanelContainerPresenter = new PanelContainerPresenter(mController,
                     mController.mMyRoomData);
-            registerHybridComponent(presenter, relativeLayout);
+            registerHybridComponent(mPanelContainerPresenter, relativeLayout);
         }
         // 悬浮面板容器，与底部面板类似，但是不会在显示新Panel时，隐藏之前显示的Panel
         {
@@ -458,6 +460,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
         registerAction(MSG_VIDEO_PORTRAIT);
         registerAction(MSG_VIDEO_LANDSCAPE);
         registerAction(MSG_POP_INSUFFICIENT_TIPS);
+        registerAction(MSG_SHOW_FEEDBACK_VIEW);
 
         start();
     }
@@ -574,6 +577,27 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
 
         mBalanceInsufficientDialog.setCancelable(false);
         mBalanceInsufficientDialog.show();
+    }
+
+    private void showFeedBackDialog() {
+        MyAlertDialog.Builder myAlertDialog = new MyAlertDialog.Builder(mActivity);
+        String reportText = GlobalData.app().getResources().getString(R.string.report);
+        String dislikeText = GlobalData.app().getResources().getString(R.string.dislike_anchor);
+        String cancelText = GlobalData.app().getResources().getString(R.string.cancel);
+        myAlertDialog.setItems(new String[]{dislikeText, reportText, cancelText}, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        mPanelContainerPresenter.onClickDislikeButton();
+                        break;
+                    case 1:
+                        mPanelContainerPresenter.onClickBlockButton();
+                        break;
+                }
+            }
+        });
+        myAlertDialog.create().show();
     }
 
     @Override
@@ -695,6 +719,9 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 break;
             case MSG_POP_INSUFFICIENT_TIPS:
                 popInsufficientTips();
+                break;
+            case MSG_SHOW_FEEDBACK_VIEW:
+                showFeedBackDialog();
                 break;
             default:
                 break;

@@ -140,44 +140,47 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
     @Override
     public void processMoreBtnShow() {
         // 判断是否支持分享和关系链
-        if (mMyRoomData.getEnableShare()) {
-            mView.showMoreBtn();
-        } else {
-            Observable.create(new Observable.OnSubscribe<FansGroupListModel>() {
-                @Override
-                public void call(Subscriber<? super FansGroupListModel> subscriber) {
-                    VFansProto.GetGroupListRsp rsp = new GetGroupListRequest().syncRsp();
-                    if (rsp != null) {
-                        subscriber.onNext(new FansGroupListModel(rsp));
+//        if (mMyRoomData.getEnableShare()) {
+//            mView.showMoreBtn();
+//        } else {
+//            Observable.create(new Observable.OnSubscribe<FansGroupListModel>() {
+//                @Override
+//                public void call(Subscriber<? super FansGroupListModel> subscriber) {
+//                    VFansProto.GetGroupListRsp rsp = new GetGroupListRequest().syncRsp();
+//                    if (rsp != null) {
+//                        subscriber.onNext(new FansGroupListModel(rsp));
+////                        subscriber.onNext(null);
+//                    } else {
 //                        subscriber.onNext(null);
-                    } else {
-                        subscriber.onNext(null);
-                    }
-                    subscriber.onCompleted();
-                }
-            })
-                    .subscribeOn(Schedulers.io())
-                    .compose(this.<FansGroupListModel>bindUntilEvent(BaseSdkRxPresenter.PresenterEvent.STOP))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<FansGroupListModel>() {
-                        @Override
-                        public void call(FansGroupListModel model) {
-                            MyLog.d(TAG, "get fans group success");
-                            if (mView != null) {
-                                MyLog.d(TAG, "has group info=" + model.hasGroup());
-                                if (model.hasGroup()) {
-                                    mView.showMoreBtn();
-                                    return;
-                                }
-                            }
-                        }
-                    }, new Action1<Throwable>() {
-                        @Override
-                        public void call(Throwable throwable) {
-                            MyLog.e(TAG, throwable);
-                        }
-                    });
-        }
+//                    }
+//                    subscriber.onCompleted();
+//                }
+//            })
+//                    .subscribeOn(Schedulers.io())
+//                    .compose(this.<FansGroupListModel>bindUntilEvent(BaseSdkRxPresenter.PresenterEvent.STOP))
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(new Action1<FansGroupListModel>() {
+//                        @Override
+//                        public void call(FansGroupListModel model) {
+//                            MyLog.d(TAG, "get fans group success");
+//                            if (mView != null) {
+//                                MyLog.d(TAG, "has group info=" + model.hasGroup());
+//                                if (model.hasGroup()) {
+//                                    mView.showMoreBtn();
+//                                    return;
+//                                }
+//                            }
+//                        }
+//                    }, new Action1<Throwable>() {
+//                        @Override
+//                        public void call(Throwable throwable) {
+//                            MyLog.e(TAG, throwable);
+//                        }
+//                    });
+//        }
+
+        //Todo-暂时先改成下面这个样子
+        mView.showMoreBtn();
     }
 
     @Override

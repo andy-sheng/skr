@@ -20,4 +20,11 @@
         <item>View male</item>
         <item>Cancel</item>
     </string-array>
+    <string-array name="report_reason_detail">
+        <item>色情违法</item>
+        <item>政治敏感</item>
+        <item>骚扰谩骂</item>
+        <item>广告欺诈</item>
+        <item>其他</item>
+    </string-array>
 </resources>
