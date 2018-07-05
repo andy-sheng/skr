@@ -1,7 +1,7 @@
 package com.wali.live.video.player.presenter;
 
-import com.wali.live.video.player.IPlayer;
-import com.wali.live.video.player.IPlayerCallBack;
+import com.mi.live.engine.player.IPlayer;
+import com.mi.live.engine.player.IPlayerCallback;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public interface IPlayerPresenter {
 
     int getPlayMode();
 
-    void setVideoPlayerCallBack(IPlayerCallBack playerCallBack);
+    void setVideoPlayerCallBack(IPlayerCallback playerCallBack);
 
     boolean isInErrorState();
 
