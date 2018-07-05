@@ -183,7 +183,6 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_BARRAGE_FANS = MSG_INPUT_FIRST + 6;        // 显示隐藏 飘屏弹幕开关
     public static final int MSG_BARRAGE_ADMIN = MSG_INPUT_FIRST + 7;       // 显示隐藏 admin飘屏弹幕开关
     public static final int MSG_BARRAGE_VIP = MSG_INPUT_FIRST + 8;         // 显示隐藏 vip飘屏弹幕开关
-    public static final int MSG_BARRAGE_VIP_ENTER = MSG_INPUT_FIRST + 9;   // 显示隐藏 进入房间的vip入场动画
 
     // 弹出页面相关消息
     private static final int MSG_POPUP_FIRST = 23000;

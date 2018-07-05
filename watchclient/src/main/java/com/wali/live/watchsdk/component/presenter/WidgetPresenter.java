@@ -47,7 +47,6 @@ import rx.schedulers.Schedulers;
 import static com.wali.live.component.BaseSdkController.MSG_BARRAGE_ADMIN;
 import static com.wali.live.component.BaseSdkController.MSG_BARRAGE_FANS;
 import static com.wali.live.component.BaseSdkController.MSG_BARRAGE_VIP;
-import static com.wali.live.component.BaseSdkController.MSG_BARRAGE_VIP_ENTER;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_LIVE_SUCCESS;
@@ -55,7 +54,6 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_ON_PK_START;
 import static com.wali.live.component.BaseSdkController.MSG_ON_PK_STOP;
-import static com.wali.live.watchsdk.component.view.BarrageAnimView.VIP_ENTER_ROOM_EFFECT_ALLOW;
 
 /**
  * Created by chenyong on 2017/03/24.
@@ -415,7 +413,6 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
                 }
             }
         }
-
 
         EventBus.getDefault().post(new EventClass.UpdateFastGiftInfoEvent(rsp.hasSpeedyGiftConfig() ? rsp.getSpeedyGiftConfig().getGiftId() : -1
                 , widgetUnit != null ? widgetUnit.getIcon() : null

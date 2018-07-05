@@ -110,7 +110,6 @@ import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.watchsdk.task.LiveTask;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
-import com.wali.live.watchsdk.watch.presenter.push.AnimMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomManagerPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
@@ -204,7 +203,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private RoomViewerPresenter mRoomViewerPresenter;
     private ForbidManagePresenter mForbidManagePresenter;
     private RoomManagerPresenter mRoomManagerPresenter;
-    private AnimMsgPresenter mAnimMsgPresenter;
     private VipUserActionMsgPresenter mVipUserActionMsgPresenter;
 
     protected BaseImageView mMaskIv; // 高斯蒙层
@@ -683,9 +681,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mRoomManagerPresenter = new RoomManagerPresenter(this, mRoomChatMsgManager, false, mMyRoomData);
         addPresent(mRoomManagerPresenter);
         addPushProcessor(mRoomManagerPresenter);
-        mAnimMsgPresenter = new AnimMsgPresenter(mMyRoomData);
-        addPresent(mAnimMsgPresenter);
-        addPushProcessor(mAnimMsgPresenter);
         mVipUserActionMsgPresenter = new VipUserActionMsgPresenter(mRoomChatMsgManager);
         addPresent(mVipUserActionMsgPresenter);
         addPushProcessor(mVipUserActionMsgPresenter);
