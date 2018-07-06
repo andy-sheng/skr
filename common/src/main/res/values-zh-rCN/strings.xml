@@ -57,4 +57,5 @@
     <string name="share_description_visitor_abroad">我在看%1$s(直播号:%2$s)在%3$s直播%4$s。%5$s</string>
     <string name="share_description_default">众多人气主播都在小米直播！</string>
     <string name="share_title">“%1$s”在直播</string>
+    <string name="update_downloading">正在下载更新请稍后...</string>
 </resources>

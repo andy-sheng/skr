@@ -68,4 +68,5 @@
     <string name="share_description_anchor_abroad">\"%1$s (ID: %2$s)\" is on air. #MiLive: Live streaming begins! %3$s%4$s%5$s\u0020</string>
     <string name="share_description_visitor_abroad">I\'m watching %1$s\'s live stream (MiLive ID: %2$s). %3$s%4$s%5$s\u0020</string>
 
+    <string name="update_downloading">Downloading...</string>
 </resources>

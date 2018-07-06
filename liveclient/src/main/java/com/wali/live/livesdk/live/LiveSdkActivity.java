@@ -34,10 +34,12 @@ import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.thread.ThreadPool;
 import com.base.utils.CommonUtils;
+import com.base.utils.DynamicLoadSoManager;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.network.Network;
 import com.base.utils.rx.RxRetryAssist;
 import com.base.utils.toast.ToastUtils;
+import com.base.utils.version.VersionCheckManager;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.MyUserInfoManager;
@@ -128,6 +130,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
 import static com.wali.live.component.BaseSdkController.MSG_END_LIVE_UNEXPECTED;
@@ -1282,7 +1287,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 if (gift != null) {
                     BarrageMsg pushMsg = GiftRepository.createGiftBarrageMessage(gift.getGiftId(), gift.getName(), gift.getCatagory(),
                             gift.getSendDescribe(), 1, 0, System.currentTimeMillis(), -1, mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), "", "", 0,
-                            false, 1 , "");
+                            false, 1, "");
                     BarrageMessageManager.getInstance().pretendPushBarrage(pushMsg);
                 }
                 break;
@@ -1453,15 +1458,31 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     /**
      * 区分是否是游戏直播还是秀场直播
      */
-    public static void openActivity(Activity activity, Location location, boolean enableShare, boolean isGameLive) {
-        Intent intent = new Intent(activity, LiveSdkActivity.class);
-        if (enableShare) {
-            intent.putExtra(EXTRA_ENABLE_SHARE, enableShare);
-        }
-        if (location != null) {
-            intent.putExtra(EXTRA_LOCATION, location);
-        }
-        intent.putExtra(EXTRA_IS_GAME_LIVE, isGameLive);
-        activity.startActivity(intent);
+    public static void openActivity(final Activity activity, final Location location, final boolean enableShare, final boolean isGameLive) {
+        DynamicLoadSoManager dynamicLoadSoManager = new DynamicLoadSoManager("broadcast");
+        dynamicLoadSoManager.loadLibrary(new DynamicLoadSoManager.CallBack() {
+            @Override
+            public void loadLibrarySuccess() {
+                Observable.create(new Observable.OnSubscribe<Object>() {
+                    @Override
+                    public void call(Subscriber<? super Object> subscriber) {
+                        Intent intent = new Intent(activity, LiveSdkActivity.class);
+                        if (enableShare) {
+                            intent.putExtra(EXTRA_ENABLE_SHARE, enableShare);
+                        }
+                        if (location != null) {
+                            intent.putExtra(EXTRA_LOCATION, location);
+                        }
+                        intent.putExtra(EXTRA_IS_GAME_LIVE, isGameLive);
+                        activity.startActivity(intent);
+                        subscriber.onCompleted();
+                    }
+                })
+                        .subscribeOn(AndroidSchedulers.mainThread())
+                        .subscribe();
+
+            }
+        });
+
     }
 }
