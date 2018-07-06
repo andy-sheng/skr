@@ -6,10 +6,13 @@ import android.support.annotation.NonNull;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.utils.DynamicLoadSoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.mi.live.engine.player.ExoPlayer;
 import com.mi.live.engine.player.GalileoPlayer;
+import com.mi.live.engine.player.IPlayer;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.Params;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
@@ -58,10 +61,16 @@ public class WatchComponentController extends BaseSdkController {
     public void setupController(Context context) {
         mStreamerPresenter = new PullStreamerPresenter(new EventPlayerCallback(this));
         mStreamerPresenter.setIsRealTime(true);
-        GalileoPlayer player = new GalileoPlayer(GlobalData.app(), UserAccountManager.getInstance().getUuid(),
-                MiLinkClientAdapter.getsInstance().getClientIp());
+        IPlayer player = null;
+        if(DynamicLoadSoManager.isLibraryExist("broadcast")){
+             player = new GalileoPlayer(GlobalData.app(), UserAccountManager.getInstance().getUuid(),
+                    MiLinkClientAdapter.getsInstance().getClientIp());
+        }else{
+            player = new ExoPlayer();
+        }
         player.setCallback(mStreamerPresenter.getInnerPlayerCallback());
         mStreamerPresenter.setStreamer(player);
+
     }
 
     @Override

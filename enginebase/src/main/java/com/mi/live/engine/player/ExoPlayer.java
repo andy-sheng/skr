@@ -1,4 +1,4 @@
-package com.wali.live.video.player;
+package com.mi.live.engine.player;
 
 import android.content.Context;
 import android.net.Uri;
@@ -35,7 +35,6 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
-import com.mi.live.engine.player.IPlayerCallback;
 import com.xiaomi.player.Player;
 
 import org.greenrobot.eventbus.EventBus;
@@ -47,13 +46,16 @@ import java.util.List;
  * Created by chengsimin on 2017/6/1.
  */
 
-public class ExoPlayer implements IPlayer, IMediaPlayer {
+public class ExoPlayer implements IPlayer{
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
 
     private static DataSource.Factory mediaDataSourceFactory = new DefaultDataSourceFactory(GlobalData.app(), BANDWIDTH_METER,
             new DefaultHttpDataSourceFactory(Util.getUserAgent(GlobalData.app(), "MiLivePlayer"), BANDWIDTH_METER));
 
     private String TAG = "ExoPlayer";
+
+    private IPlayerCallback mCallback;
+
     private SimpleExoPlayer mPlayer;
     private MediaSource mMediaSource;
     private String mUrl;
@@ -61,11 +63,6 @@ public class ExoPlayer implements IPlayer, IMediaPlayer {
     private int width = 0;
     private int height = 0;
 
-    private OnLoadingChangedListener mOnLoadingChangedListener;
-    private OnVideoSizeChangedListener mOnVideoSizeChangedListener;
-    private OnPreparedListener mOnPreparedListener;
-    private OnCompletionListener mOnCompletionListener;
-    private OnErrorListener mErrorListener;
 
     // 为了预加载使用
     private static SimpleExoPlayer sExoPlayer;
@@ -122,9 +119,6 @@ public class ExoPlayer implements IPlayer, IMediaPlayer {
             @Override
             public void onLoadingChanged(boolean isLoading) {
                 MyLog.d(TAG, "onLoadingChanged" + " isLoading=" + isLoading);
-                if (mOnLoadingChangedListener != null) {
-                    mOnLoadingChangedListener.onLoadingChanged(isLoading);
-                }
             }
 
             @Override
@@ -135,8 +129,8 @@ public class ExoPlayer implements IPlayer, IMediaPlayer {
                     case com.google.android.exoplayer2.ExoPlayer.STATE_BUFFERING:
                         break;
                     case com.google.android.exoplayer2.ExoPlayer.STATE_ENDED:
-                        if (mOnCompletionListener != null) {
-                            mOnCompletionListener.onCompletion(ExoPlayer.this);
+                        if (mCallback != null) {
+                            mCallback.onCompletion();
                         }
                         break;
                     case com.google.android.exoplayer2.ExoPlayer.STATE_IDLE:
@@ -153,8 +147,8 @@ public class ExoPlayer implements IPlayer, IMediaPlayer {
             public void onPlayerError(ExoPlaybackException error) {
                 MyLog.d(TAG, "onPlayerError" + " error=" + error);
                 error.printStackTrace();
-                if (mErrorListener != null) {
-                    mErrorListener.onError(ExoPlayer.this, error.type, 0);
+                if (mCallback != null) {
+                    mCallback.onError(-1,-1);
                 }
             }
 
@@ -235,8 +229,8 @@ public class ExoPlayer implements IPlayer, IMediaPlayer {
                 MyLog.d(TAG, "onVideoSizeChanged" + " width=" + width + " height=" + height + " unappliedRotationDegrees=" + unappliedRotationDegrees + " pixelWidthHeightRatio=" + pixelWidthHeightRatio);
                 ExoPlayer.this.width = width;
                 ExoPlayer.this.height = height;
-                if (null != mOnVideoSizeChangedListener) {
-                    mOnVideoSizeChangedListener.onVideoSizeChanged(ExoPlayer.this, width, height, 0, 0);
+                if (null != mCallback) {
+                    mCallback.onVideoSizeChanged( width, height);
                 }
             }
 
@@ -244,8 +238,8 @@ public class ExoPlayer implements IPlayer, IMediaPlayer {
             public void onRenderedFirstFrame(Surface surface) {
                 MyLog.d(TAG, "onRenderedFirstFrame" + " surface=" + surface);
                 EventBus.getDefault().postSticky(new OnPreparedEvent());
-                if (mOnPreparedListener != null) {
-                    mOnPreparedListener.onPrepared(ExoPlayer.this);
+                if (mCallback != null) {
+                    mCallback.onPrepared();
                 }
             }
 
@@ -289,6 +283,11 @@ public class ExoPlayer implements IPlayer, IMediaPlayer {
                 throw new IllegalStateException("Unsupported type: " + type);
             }
         }
+    }
+
+    @Override
+    public void setCallback(IPlayerCallback callback) {
+        this.mCallback = callback;
     }
 
     @Override
@@ -340,18 +339,9 @@ public class ExoPlayer implements IPlayer, IMediaPlayer {
         return mPlayer.getPlayWhenReady();
     }
 
-    @Override
-    public boolean setRotateDegree(int degree) {
-        return false;
-    }
 
     @Override
     public void setBufferTimeMax(float timeInSecond) {
-
-    }
-
-    @Override
-    public void reload(String path, boolean flushBuffer) {
 
     }
 
@@ -374,27 +364,13 @@ public class ExoPlayer implements IPlayer, IMediaPlayer {
     }
 
     @Override
-    public long getStreamId() {
-        return 0;
-    }
-
-    @Override
-    public long getAudioSource() {
-        return 0;
-    }
-
-    @Override
     public void setScreenOnWhilePlaying(boolean screenOn) {
 
     }
 
     @Override
-    public void prepareAsync(boolean realTime) {
-        MyLog.w(TAG, "prepareAsync mMediaSourc=" + mMediaSource + " urlChange:" + mUrlChange);
-        if (mUrlChange) {
-            mPlayer.prepare(mMediaSource, true, false);
-            mPlayer.setPlayWhenReady(true);
-        }
+    public void setMuteAudio(boolean isMute) {
+
     }
 
     @Override
@@ -407,16 +383,6 @@ public class ExoPlayer implements IPlayer, IMediaPlayer {
     }
 
     @Override
-    public void setBufferSize(int size) {
-
-    }
-
-    @Override
-    public void setLooping(boolean looping) {
-
-    }
-
-    @Override
     public void setSurface(Surface surface) {
         MyLog.d(TAG, "setSurface" + " surface=" + surface);
         if (mPlayer == null) {
@@ -426,25 +392,21 @@ public class ExoPlayer implements IPlayer, IMediaPlayer {
     }
 
     @Override
-    public void setIpList(String[] httpIpList, String[] localIpList) {
-
+    public void setVideoPath(String path, String host) {
+        if (path != null && !path.equals(mUrl)) {
+            mUrl = path;
+            mUrlChange = true;
+            mMediaSource = buildMediaSource(Uri.parse(path), null);
+        }
     }
 
     @Override
-    public void setDisplay(SurfaceHolder sh) {
-
+    public void prepare(boolean realTime) {
+        if (mUrlChange) {
+            mPlayer.prepare(mMediaSource, true, false);
+            mPlayer.setPlayWhenReady(true);
+        }
     }
-
-    @Override
-    public void setTimeout(int prepareTimeout, int readTimeout) {
-
-    }
-
-    @Override
-    public void setLogPath(String path) {
-
-    }
-
 
     @Override
     public void start() {
@@ -491,11 +453,6 @@ public class ExoPlayer implements IPlayer, IMediaPlayer {
     }
 
     @Override
-    public boolean isPlayable() {
-        return false;
-    }
-
-    @Override
     public void release() {
         MyLog.d(TAG, "release");
         mPlayer.clearVideoSurface();
@@ -505,15 +462,8 @@ public class ExoPlayer implements IPlayer, IMediaPlayer {
         mPlayer.setVideoDebugListener(null);
         mPlayer = null;
         mMediaSource = null;
-        mOnPreparedListener = null;
-        mOnCompletionListener = null;
-        mOnVideoSizeChangedListener = null;
         sExoPlayer = null;
-    }
-
-    @Override
-    public String getServerAddress() {
-        return null;
+        mCallback = null;
     }
 
     @Override
@@ -526,104 +476,38 @@ public class ExoPlayer implements IPlayer, IMediaPlayer {
     }
 
     @Override
+    public void reconnect() {
+    }
+
+    @Override
     public void setIpList(List<String> httpIpList, List<String> localIpList) {
 
     }
 
-    @Override
-    public void setVideoFilter(String filter) {
+//    @Override
+//    public void prepareAsync() throws IllegalStateException {
+//        MyLog.w(TAG, "prepareAsync mMediaSourc=" + mMediaSource + " urlChange:" + mUrlChange);
+//        if (mUrlChange) {
+//            mPlayer.prepare(mMediaSource, true, false);
+//            mPlayer.setPlayWhenReady(true);
+//        }
+//    }
 
-    }
+//    @Override
+//    public String getDataSource() {
+//        MyLog.d(TAG, "getDataSource");
+//        return mUrl;
+//    }
 
-    @Override
-    public void setVideoFilterIntensity(float intensity) {
-
-    }
-
-    @Override
-    public void setMp3DataSource(String mp3FilePath, long beginTs, long endTs) {
-
-    }
-
-    @Override
-    public void setInnerVolume(float volume) {
-
-    }
-
-    @Override
-    public void setMp3Volume(float volume) {
-
-    }
-
-    @Override
-    public void prepareAsync() throws IllegalStateException {
-        MyLog.w(TAG, "prepareAsync mMediaSourc=" + mMediaSource + " urlChange:" + mUrlChange);
-        if (mUrlChange) {
-            mPlayer.prepare(mMediaSource, true, false);
-            mPlayer.setPlayWhenReady(true);
-        }
-    }
-
-    @Override
-    public String getDataSource() {
-        MyLog.d(TAG, "getDataSource");
-        return mUrl;
-    }
-
-    @Override
-    public void setDataSource(String path, String host) {
-        MyLog.d(TAG, "setDataSource" + " path=" + path + " host=" + host);
-        if (path != null && !path.equals(mUrl)) {
-            mUrl = path;
-            mUrlChange = true;
-            mMediaSource = buildMediaSource(Uri.parse(path), null);
-        }
-    }
-
-    @Override
-    public void setOnLoadingChangedListener(OnLoadingChangedListener listener) {
-        mOnLoadingChangedListener = listener;
-    }
-
-    @Override
-    public void setWakeMode(Context context, int mode) {
-
-    }
-
-    @Override
-    public void setOnErrorListener(OnErrorListener listener) {
-        mErrorListener = listener;
-    }
-
-    @Override
-    public void setOnInfoListener(OnInfoListener listener) {
-
-    }
-
-    @Override
-    public void setOnVideoSizeChangedListener(OnVideoSizeChangedListener listener) {
-        mOnVideoSizeChangedListener = listener;
-    }
-
-    @Override
-    public void setOnCompletionListener(OnCompletionListener listener) {
-        mOnCompletionListener = listener;
-    }
-
-    @Override
-    public void setOnBufferingUpdateListener(OnBufferingUpdateListener listener) {
-
-    }
-
-    @Override
-    public void setOnSeekCompleteListener(OnSeekCompleteListener listener) {
-
-    }
-
-    @Override
-    public void setOnPreparedListener(OnPreparedListener listener) {
-        mOnPreparedListener = listener;
-    }
+//    @Override
+//    public void setDataSource(String path, String host) {
+//        MyLog.d(TAG, "setDataSource" + " path=" + path + " host=" + host);
+//        if (path != null && !path.equals(mUrl)) {
+//            mUrl = path;
+//            mUrlChange = true;
+//            mMediaSource = buildMediaSource(Uri.parse(path), null);
+//        }
+//    }
 
     public static final class OnPreparedEvent {
 

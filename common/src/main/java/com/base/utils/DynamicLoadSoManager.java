@@ -42,6 +42,8 @@ public class DynamicLoadSoManager {
 
     static HashMap<String, LibInfo> sLibInfoMap = new HashMap();
 
+    String libName;// 如broadcast
+
     public DynamicLoadSoManager(String libName) {
         this.libName = libName;
     }
@@ -52,13 +54,68 @@ public class DynamicLoadSoManager {
         public String downloadUrl;
         public boolean tryAllWay = false;
         public boolean downloadIng = false;
+        public boolean hasCheck = false;
 
         public LibInfo(String name) {
             this.name = name;
         }
     }
 
-    String libName;// 如broadcast
+
+    public static boolean isLibraryExist(String libName) {
+        LibInfo libInfo = sLibInfoMap.get(libName);
+        if (libInfo == null) {
+            libInfo = new LibInfo(libName);
+            sLibInfoMap.put(libName, libInfo);
+        }
+        if (libInfo.hasLoad) {
+            return true;
+        }
+        if (libInfo.hasCheck) {
+            return libInfo.hasLoad;
+        }
+        // 首先尝试直接load
+        try {
+            System.loadLibrary(libName);
+            // 加载成功
+            libInfo.hasLoad = true;
+            return true;
+        } catch (UnsatisfiedLinkError e) {
+            CustomLogcat.e(TAG, "cannot load library " + libName + " from system lib",
+                    e);
+        } catch (Exception e) {
+            CustomLogcat.e(TAG, "cannot load library " + libName + " from system lib",
+                    e);
+        } catch (Error e) {
+            CustomLogcat.e(TAG, "cannot load library " + libName + " from system lib",
+                    e);
+        }
+        // 系统库里没有加载成功，看看包路径下是否有so
+        String soFileName = "lib" + libName + ".so";
+        final File soFile = new File(getLibDir(), soFileName);
+
+        if (soFile.exists()) {
+            try {
+                String soFilePath = soFile.getAbsolutePath();
+                CustomLogcat.d(TAG, "try to load library: " + soFilePath
+                        + " from qzlib");
+                System.load(soFilePath);
+                libInfo.hasLoad = true;
+                return true;
+            } catch (UnsatisfiedLinkError e) {
+                CustomLogcat.e(TAG, "cannot load library " + libName + " from system lib",
+                        e);
+            } catch (Exception e) {
+                CustomLogcat.e(TAG, "cannot load library " + libName + " from system lib",
+                        e);
+            } catch (Error e) {
+                CustomLogcat.e(TAG, "cannot load library " + libName + " from system lib",
+                        e);
+            }
+        }
+        libInfo.hasCheck = true;
+        return false;
+    }
 
     public void loadLibrary(final CallBack callBack) {
         final LibInfo libInfo = getLibInfo();

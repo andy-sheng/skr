@@ -18,14 +18,10 @@ import com.base.utils.CommonUtils;
 import com.base.utils.Constants;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.sdcard.SDCardUtils;
-import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.milink.MiLinkClientAdapter;
-import com.mi.live.engine.player.GalileoPlayer;
+import com.mi.live.engine.player.ExoPlayer;
+import com.mi.live.engine.player.IPlayer;
+import com.mi.live.engine.player.IPlayerCallback;
 import com.wali.live.dns.PreDnsManager;
-import com.wali.live.video.player.ExoPlayer;
-import com.wali.live.video.player.IMediaPlayer;
-import com.wali.live.video.player.IPlayer;
-import com.wali.live.video.player.IPlayerCallBack;
 import com.wali.live.video.player.IVideoView;
 import com.wali.live.video.player.PlayConfig;
 import com.wali.live.video.player.VideoPlayMode;
@@ -33,7 +29,6 @@ import com.wali.live.video.presenter.FixedStreamerDebugPresenter;
 import com.xiaomi.player.Player;
 import com.xiaomi.player.enums.PlayerWorkingMode;
 
-import java.io.IOException;
 import java.util.List;
 
 import rx.Subscription;
@@ -85,7 +80,7 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     private Player.SurfaceGravity mSurfaceGravity;
 
     // 外部注册的监听回调
-    private IPlayerCallBack mPlayerCallBack;
+    private IPlayerCallback mPlayerCallBack;
     private boolean mIsWatch = false;
     private boolean mIsStreamerDebug = FixedStreamerDebugPresenter.getsInstance().isStreamerDebug();
 
@@ -222,7 +217,7 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     }
 
     public boolean setRotateDegree(int degree) {
-        return mPlayer != null && mPlayer.setRotateDegree(degree);
+        return mPlayer != null;
     }
 
     public void setNeedReset(boolean isNeedReset) {
@@ -308,9 +303,9 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     }
 
     public void rotateVideo(int rotateAngle) {
-        if (mPlayer != null) {
-            mPlayer.setRotateDegree(rotateAngle);
-        }
+//        if (mPlayer != null) {
+//            mPlayer.setRotateDegree(rotateAngle);
+//        }
     }
 
     public String getStreamName() {
@@ -325,7 +320,7 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         if (null != mPlayer && null != mUri && mIsReconnectEnable) {
             MyLog.w(TAG, "reload uri=" + mUri.toString());
             try {
-                mPlayer.reload(mUri.toString(), mRealTime);
+                mPlayer.reconnect();
             } catch (OutOfMemoryError error) {
                 MyLog.e(TAG, error);
             }
@@ -342,7 +337,7 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
                 }
                 mPlayer.setSurface(mSurface);
             } else if (null != mVideoView.getSurfaceHolder()) {
-                mPlayer.setDisplay(mVideoView.getSurfaceHolder());
+//                mPlayer.setDisplay(mVideoView.getSurfaceHolder());
                 MyLog.w(TAG, "setDisplay");
             }
         }
@@ -379,14 +374,9 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
 //                    mPlayer.setLogPath(logPath);
 //                }
 
-                mPlayer.setOnPreparedListener(mPreparedListener);
-                mPlayer.setOnVideoSizeChangedListener(mSizeChangedListener);
-                mPlayer.setOnCompletionListener(mCompletionListener);
-                mPlayer.setOnErrorListener(mErrorListener);
-                mPlayer.setOnInfoListener(mInfoListener);
-                mPlayer.setOnSeekCompleteListener(mSeekCompleteListener);
+                mPlayer.setCallback(innerCallBack);
             }
-            mPlayer.setDataSource(mUri.toString(), mHost);
+            mPlayer.setVideoPath(mUri.toString(),mHost);
             if (mHttpIpList != null && mLocalIpList != null) {
                 mPlayer.setIpList(mHttpIpList, mLocalIpList);
             }
@@ -400,24 +390,17 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
                 updateGravity();
             }
             mPlayer.setScreenOnWhilePlaying(true);
-            mPlayer.prepareAsync(mRealTime);
+
+            mPlayer.prepare(mRealTime);
 //            mPlayer.setMp3DataSource("/storage/emulated/0/wxx.mp3",0,10*1000);
 
-            if (mPlayerCallBack != null) {
-                mPlayerCallBack.onLoad();
-            }
+//            if (mPlayerCallBack != null) {
+//                mPlayerCallBack.onLoad();
+//            }
             MyLog.w(TAG, "openVideo 10");
-        } catch (IOException e) {
-            MyLog.e(TAG, "Unable to open content: " + mUri, e);
-            mCurrentState = STATE_ERROR;
-            return;
-        } catch (IllegalArgumentException e) {
-            MyLog.e(TAG, "Unable to open content: " + mUri, e);
-            mCurrentState = STATE_ERROR;
-            return;
         } catch (Exception e) {
+            MyLog.e(TAG, "Unable to open content: " + mUri, e);
             mCurrentState = STATE_ERROR;
-            MyLog.e(e);
             return;
         }
 
@@ -460,11 +443,35 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         return true;
     }
 
-    private IMediaPlayer.OnVideoSizeChangedListener mSizeChangedListener = new IMediaPlayer.OnVideoSizeChangedListener() {
+    private IPlayerCallback innerCallBack = new IPlayerCallback() {
         @Override
-        public void onVideoSizeChanged(IMediaPlayer mp, int width, int height, int sarNum, int sarDen) {
-            MyLog.w(TAG, String.format("videoSize : ( %d , %d ) , onVideoSizeChanged: ( %d x %d ) , sarNum / sarDen ( %d / %d ) , player size: ( %d x %d )",
-                    mVideoWidth, mVideoHeight, width, height, sarNum, sarDen, mp.getVideoWidth(), mp.getVideoHeight()));
+        public void onPrepared() {
+            mVideoWidth = mPlayer.getVideoWidth();
+            mVideoHeight = mPlayer.getVideoHeight();
+            onVideoPrepared();
+            if (mPlayerCallBack != null) {
+                mPlayerCallBack.onPrepared();
+            }
+        }
+
+        @Override
+        public void onCompletion() {
+            MyLog.w(TAG, "onCompletion");
+            mCurrentState = STATE_PLAYBACK_COMPLETED;
+            if (mPlayerCallBack != null) {
+                mPlayerCallBack.onCompletion();
+            }
+        }
+
+        @Override
+        public void onSeekComplete() {
+            if (mPlayerCallBack != null) {
+                mPlayerCallBack.onSeekComplete();
+            }
+        }
+
+        @Override
+        public void onVideoSizeChanged(int width, int height) {
             mVideoWidth = width;
             mVideoHeight = height;
             if (null != mVideoView) {
@@ -478,17 +485,49 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
             if (width > height) {
                 mPlayMode = VideoPlayMode.PLAY_MODE_LANDSCAPE;
                 MyLog.d(TAG, "onVideoSizeChanged requestOrientation playMode = " + mPlayMode);
-                if (mPlayerCallBack != null) {
-                    mPlayerCallBack.requestOrientation(VideoPlayMode.PLAY_MODE_LANDSCAPE);
-                }
+//                if (mPlayerCallBack != null) {
+//                    mPlayerCallBack.requestOrientation(VideoPlayMode.PLAY_MODE_LANDSCAPE);
+//                }
             } else if (width < height) {
                 mPlayMode = VideoPlayMode.PLAY_MODE_PORTRAIT;
                 MyLog.d(TAG, "onVideoSizeChanged requestOrientation playMode = " + mPlayMode);
-                if (mPlayerCallBack != null) {
-                    mPlayerCallBack.requestOrientation(VideoPlayMode.PLAY_MODE_PORTRAIT);
-                }
+//                if (mPlayerCallBack != null) {
+//                    mPlayerCallBack.requestOrientation(VideoPlayMode.PLAY_MODE_PORTRAIT);
+//                }
             }
             updateGravity();
+        }
+
+        @Override
+        public void onError(int what, int extra) {
+            mCurrentState = STATE_ERROR;
+            //TODO 播放内核播放失败，需要设置正确的appId,ak,sk
+            if (what == -1040) {
+                return ;
+            }
+            if (mPlayerCallBack != null) {
+                mPlayerCallBack.onError(what,extra);
+            }
+            return ;
+        }
+
+        @Override
+        public void onInfo(int what, int extra) {
+            switch (what) {
+                case 5001:
+                    MyLog.w(TAG, "MEDIA_INFO_RELOADED");
+                    //重新reload后,不会调用onPrepared,所以在这里重置状态
+                    mCurrentState = STATE_PREPARED;
+                    break;
+                default:
+                    break;
+            }
+            if (mPlayerCallBack != null) {
+                Message msg = Message.obtain();
+                msg.what = what;
+                mPlayerCallBack.onInfo(what,extra);
+            }
+            return ;
         }
     };
 
@@ -498,7 +537,7 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         if (mPlayer != null) {
             MyLog.w(TAG, String.format("onPrepared : ( %d x %d )", mPlayer.getVideoWidth(), mPlayer.getVideoHeight()));
             mStartTime = System.currentTimeMillis();
-            mIpAddress = mPlayer.getServerAddress();
+//            mIpAddress = mPlayer.getServerAddress();
             mIpStr = "ServerIP: " + mIpAddress + "\n";
             mResolutionStr = "Resolution: " + mPlayer.getVideoWidth() + "x" + mPlayer.getVideoHeight() + "\n";
             mPrepareStr = mIpStr + mResolutionStr + mMediaMetaStr + mFrameStr;
@@ -510,19 +549,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         updateGravity();
     }
 
-    private IMediaPlayer.OnPreparedListener mPreparedListener = new IMediaPlayer.OnPreparedListener() {
-        @Override
-        public void onPrepared(IMediaPlayer mp) {
-
-            mVideoWidth = mp.getVideoWidth();
-            mVideoHeight = mp.getVideoHeight();
-            onVideoPrepared();
-            if (mPlayerCallBack != null) {
-                mPlayerCallBack.onPrepared();
-            }
-        }
-    };
-
     /**
      * 因为小视频是先启动
      * //TODO:需要想别的办法
@@ -531,69 +557,14 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         onVideoPrepared();
     }
 
-    private IMediaPlayer.OnCompletionListener mCompletionListener = new IMediaPlayer.OnCompletionListener() {
-        @Override
-        public void onCompletion(IMediaPlayer mp) {
-            MyLog.w(TAG, "onCompletion");
-            mCurrentState = STATE_PLAYBACK_COMPLETED;
-            if (mPlayerCallBack != null) {
-                mPlayerCallBack.onCompletion();
-            }
-        }
-    };
 
-    private IMediaPlayer.OnErrorListener mErrorListener = new IMediaPlayer.OnErrorListener() {
-        @Override
-        public boolean onError(IMediaPlayer mp, int framework_err, int impl_err) {
-            MyLog.e(TAG, "framework_err = " + framework_err + " , impl_err = " + impl_err);
-            mCurrentState = STATE_ERROR;
-            //TODO 播放内核播放失败，需要设置正确的appId,ak,sk
-            if (framework_err == -1040) {
-                return false;
-            }
-            if (mPlayerCallBack != null) {
-                mPlayerCallBack.onError(framework_err);
-            }
-            return true;
-        }
-    };
-
-    private final IMediaPlayer.OnInfoListener mInfoListener = new IMediaPlayer.OnInfoListener() {
-        @Override
-        public boolean onInfo(IMediaPlayer mp, int what, int extra) {
-            switch (what) {
-                case IMediaPlayer.MEDIA_INFO_RELOADED:
-                    MyLog.w(TAG, "MEDIA_INFO_RELOADED");
-                    //重新reload后,不会调用onPrepared,所以在这里重置状态
-                    mCurrentState = STATE_PREPARED;
-                    break;
-                default:
-                    break;
-            }
-            if (mPlayerCallBack != null) {
-                Message msg = Message.obtain();
-                msg.what = what;
-                mPlayerCallBack.onInfo(msg);
-            }
-            return true;
-        }
-    };
-
-    private final IMediaPlayer.OnSeekCompleteListener mSeekCompleteListener = new IMediaPlayer.OnSeekCompleteListener() {
-        @Override
-        public void onSeekComplete(IMediaPlayer mp) {
-            if (mPlayerCallBack != null) {
-                mPlayerCallBack.onSeekComplete();
-            }
-        }
-    };
 
     public boolean hasVideoPlayerCallBack() {
         return mPlayerCallBack != null;
     }
 
     @Override
-    public void setVideoPlayerCallBack(IPlayerCallBack playerCallBack) {
+    public void setVideoPlayerCallBack(IPlayerCallback playerCallBack) {
         mPlayerCallBack = playerCallBack;
     }
 
@@ -648,21 +619,21 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
 
     @Override
     public void setMp3DataSource(String mp3FilePath, long beginTs, long endTs) {
-        if (null != mPlayer) {
-            mPlayer.setMp3DataSource(mp3FilePath, beginTs, endTs);
-        }
+//        if (null != mPlayer) {
+//            mPlayer.setMp3DataSource(mp3FilePath, beginTs, endTs);
+//        }
     }
 
     public void setInnerVolume(float volume) {
-        if (null != mPlayer) {
-            mPlayer.setInnerVolume(volume);
-        }
+//        if (null != mPlayer) {
+//            mPlayer.setInnerVolume(volume);
+//        }
     }
 
     public void setMp3Volume(float volume) {
-        if (null != mPlayer) {
-            mPlayer.setMp3Volume(volume);
-        }
+//        if (null != mPlayer) {
+//            mPlayer.setMp3Volume(volume);
+//        }
     }
 
     @Override
@@ -680,8 +651,8 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
             //TODO 是否使用reload
             mPlayer.reset();
             try {
-                mPlayer.setDataSource(mUri.toString(), mHost);
-                mPlayer.prepareAsync(mRealTime);
+                mPlayer.setVideoPath(mUri.toString(), mHost);
+                mPlayer.prepare(mRealTime);
                 setSurface();
 //                        mPlayer.setSurface(mSurfaceHolder.getSurface());
             } catch (Exception e) {
@@ -730,21 +701,16 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
                 mPlayer.reset();
                 mPlayer.stop();
 
-                mPlayer.setOnPreparedListener(null);
-                mPlayer.setOnVideoSizeChangedListener(null);
-                mPlayer.setOnCompletionListener(null);
-                mPlayer.setOnErrorListener(null);
-                mPlayer.setOnInfoListener(null);
-                mPlayer.setOnSeekCompleteListener(null);
+                mPlayer.setCallback(null);
                 mPlayer.setSurface(null);
                 mPlayer.release();
                 mPlayer = null;
                 mUri = null;
                 mIsReconnectEnable = false;
                 mCurrentState = STATE_IDLE;
-                if (mPlayerCallBack != null) {
-                    mPlayerCallBack.onReleased();
-                }
+//                if (mPlayerCallBack != null) {
+//                    mPlayerCallBack.onReleased();
+//                }
                 MyLog.e(TAG, "release cost : " + String.valueOf(System.currentTimeMillis() - current));
             }
         }
@@ -775,11 +741,11 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
 
     @Override
     public String getIpAddress() {
-        if (TextUtils.isEmpty(mIpAddress) && mPlayer != null) {
-            return mPlayer.getServerAddress();
-        } else {
+//        if (TextUtils.isEmpty(mIpAddress) && mPlayer != null) {
+//            return mPlayer.getServerAddress();
+//        } else {
             return mIpAddress;
-        }
+//        }
     }
 
     @Override
@@ -889,41 +855,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     public boolean isInErrorState() {
         return (mPlayer != null && mCurrentState == STATE_ERROR);
     }
-
-//    /*
-//    * 横屏加黑边
-//    * */
-//    public void setVideoLayout() {
-//        if (mVideoHeight > 0 && mVideoWidth > 0) {
-//            if (mVideoWidth > mVideoHeight && mIsShowWithBlack) {
-//                //如果修改请注意布局为RelativeLayout
-//                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) getLayoutParams();
-//                float videoRatio = ((float) (mVideoWidth)) / mVideoHeight;
-//                MyLog.w(TAG, "videoRatio = " + videoRatio);
-//                lp.height = (int) (DisplayUtils.getPhoneWidth() / videoRatio);
-//                lp.width = DisplayUtils.getPhoneWidth();
-//                lp.topMargin = DisplayUtils.dip2px(125);
-//                lp.addRule(RelativeLayout.CENTER_IN_PARENT, 0);
-//                setLayoutParams(lp);
-//            } else {
-//                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) getLayoutParams();
-//                float videoRatio = ((float) (mVideoWidth)) / mVideoHeight;
-//                float windowRatio = DisplayUtils.getPhoneWidth() / (float) DisplayUtils.getPhoneHeight();
-//                boolean shouldBeWider = videoRatio > windowRatio;
-//                if (shouldBeWider) {
-//                    lp.height = DisplayUtils.getPhoneHeight();
-//                    lp.width = (int) (DisplayUtils.getPhoneHeight() * videoRatio);
-//                } else {
-//                    lp.width = DisplayUtils.getPhoneWidth();
-//                    lp.height = (int) (DisplayUtils.getPhoneWidth() / videoRatio);
-//                }
-//                MyLog.w(TAG, "videoRatio = " + videoRatio);
-//                lp.addRule(RelativeLayout.CENTER_IN_PARENT);
-//                lp.topMargin = 0;
-//                setLayoutParams(lp);
-//            }
-//        }
-//    }
 
     public boolean isKsyMediaPlayerNull() {
         return mPlayer == null;
@@ -1111,30 +1042,30 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     @Override
     public void setBufferSize(int size) {
         mBufferSize = size;
-        if (mPlayer != null) {
-            mPlayer.setBufferSize(mBufferSize);
-        }
+//        if (mPlayer != null) {
+//            mPlayer.setBufferSize(mBufferSize);
+//        }
     }
 
     public long getStreamId() {
-        if (mPlayer != null) {
-            return mPlayer.getStreamId();
-        }
+//        if (mPlayer != null) {
+//            return mPlayer.getStreamId();
+//        }
         return 0;
     }
 
     public long getAudioSource() {
-        if (mPlayer != null) {
-            return mPlayer.getAudioSource();
-        }
+//        if (mPlayer != null) {
+//            return mPlayer.getAudioSource();
+//        }
         return 0;
     }
 
     public void setLooping(boolean looping) {
         mLooping = looping;
-        if (mPlayer != null) {
-            mPlayer.setLooping(mLooping);
-        }
+//        if (mPlayer != null) {
+//            mPlayer.setLooping(mLooping);
+//        }
     }
 
     public interface OnReportBitRateListener {
@@ -1154,15 +1085,15 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     }
 
     public void setVideoFilter(String filter) {
-        if (mPlayer != null) {
-            mPlayer.setVideoFilter(filter);
-        }
+//        if (mPlayer != null) {
+//            mPlayer.setVideoFilter(filter);
+//        }
     }
 
     public void setVideoFilterIntensity(float intensity) {
-        if (mPlayer != null) {
-            mPlayer.setVideoFilterIntensity(intensity);
-        }
+//        if (mPlayer != null) {
+//            mPlayer.setVideoFilterIntensity(intensity);
+//        }
     }
 
     @Override

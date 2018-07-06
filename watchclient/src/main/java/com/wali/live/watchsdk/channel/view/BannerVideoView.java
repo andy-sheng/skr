@@ -19,8 +19,8 @@ import com.base.thread.ThreadPool;
 import com.base.utils.network.NetworkUtils;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.mi.live.data.milink.event.MiLinkEvent;
+import com.mi.live.engine.player.IPlayerCallback;
 import com.wali.live.utils.AvatarUtils;
-import com.wali.live.video.player.IPlayerCallBack;
 import com.wali.live.video.player.PlayConfig;
 import com.wali.live.video.player.presenter.VideoPlayerPresenter;
 import com.wali.live.video.widget.player.VideoPlayerTextureView;
@@ -41,7 +41,7 @@ import static com.wali.live.video.player.presenter.VideoPlayerPresenter.MODE_EXO
  *
  * @module 频道
  */
-public class BannerVideoView extends RelativeLayout implements IPlayerCallBack {
+public class BannerVideoView extends RelativeLayout implements IPlayerCallback {
     private static final String TAG = BannerVideoView.class.getSimpleName();
     protected VideoPlayerPresenter mVideoPresenter;
     BaseImageView mBannerIv;
@@ -216,9 +216,6 @@ public class BannerVideoView extends RelativeLayout implements IPlayerCallBack {
         return mVolumeBtn;
     }
 
-    @Override
-    public void onLoad() {
-    }
 
     @Override
     public void onPrepared() {
@@ -233,33 +230,24 @@ public class BannerVideoView extends RelativeLayout implements IPlayerCallBack {
     }
 
     @Override
-    public void onError(int errCode) {
-        MyLog.e(TAG, "onError errCode=" + errCode);
-    }
-
-    @Override
-    public void onBufferingUpdate(int percent) {
-    }
-
-    @Override
-    public void onInfo(int info) {
-    }
-
-    @Override
-    public void onInfo(Message msg) {
-    }
-
-    @Override
     public void onSeekComplete() {
     }
 
     @Override
-    public void requestOrientation(int playMode) {
+    public void onVideoSizeChanged(int width, int height) {
+
     }
 
     @Override
-    public void onReleased() {
+    public void onError(int what, int extra) {
+
     }
+
+    @Override
+    public void onInfo(int what, int extra) {
+
+    }
+
 
     @Override
     protected void onAttachedToWindow() {
