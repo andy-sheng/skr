@@ -3,6 +3,7 @@ package com.wali.live.watchsdk.videodetail.data;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.view.Surface;
+import android.view.View;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -102,9 +103,9 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         }
     }
 
-    public final void setGravity(Player.SurfaceGravity gravity, int width, int height) {
+    public final void setGravity(View view, Player.SurfaceGravity gravity, int width, int height) {
         if (mStreamer != null) {
-            mStreamer.setGravity(gravity, width, height);
+            mStreamer.setGravity(view,gravity, width, height);
         }
     }
 

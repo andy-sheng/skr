@@ -6,6 +6,7 @@ import android.os.PowerManager;
 import android.text.TextUtils;
 import android.view.Surface;
 import android.view.SurfaceHolder;
+import android.view.View;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -276,7 +277,7 @@ public class GalileoPlayer implements IPlayer {
     }
 
     @Override
-    public void setGravity(final Player.SurfaceGravity gravity, final int width, final int height) {
+    public void setGravity(View view, final Player.SurfaceGravity gravity, final int width, final int height) {
         ThreadPool.runOnEngine(new Runnable() {
             @Override
             public void run() {

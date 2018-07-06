@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.SurfaceTexture;
 import android.view.Surface;
 import android.view.TextureView;
+import android.view.View;
 
 import com.base.dialog.MyAlertDialog;
 import com.base.log.MyLog;
@@ -71,7 +72,7 @@ public abstract class BasePlayerPresenter<VIEW, STREAMER extends PullStreamerPre
             mSurfaceWidth = width;
             mSurfaceHeight = height;
             mStreamerPresenter.setSurface(mSurface);
-            mStreamerPresenter.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFit,
+            mStreamerPresenter.setGravity((View) mView, Player.SurfaceGravity.SurfaceGravityResizeAspectFit,
                     mSurfaceWidth, mSurfaceHeight);
             updateShiftUp();
         }
@@ -102,8 +103,17 @@ public abstract class BasePlayerPresenter<VIEW, STREAMER extends PullStreamerPre
         } else if (mVideoWidth == 0 || mVideoHeight == 0) {
             mStreamerPresenter.shiftUp(0);
         } else if (mVideoWidth * 16 > mVideoHeight * 9) {
-            float ratio = (mSurfaceHeight - mSurfaceWidth * 9 / 16) * 0.25f / mSurfaceHeight;
-            mStreamerPresenter.shiftUp(ratio);
+
+
+            View view = (View) mView;
+            View parent = (View) view.getParent();
+            if (parent.getHeight() != 0) {
+                float ratio = (parent.getHeight() - parent.getWidth() * 9 / 16) * 0.25f / parent.getHeight();
+//            float ratio = (mSurfaceHeight - mSurfaceWidth * 9 / 16) * 0.25f / mSurfaceHeight;
+                mStreamerPresenter.shiftUp(ratio);
+            }
+//            float ratio = (mSurfaceHeight - mSurfaceWidth * 9 / 16) * 0.25f / mSurfaceHeight;
+//            mStreamerPresenter.shiftUp(ratio);
         } else {
             mStreamerPresenter.shiftUp(0);
         }

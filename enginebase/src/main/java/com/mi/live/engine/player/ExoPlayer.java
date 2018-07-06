@@ -1,10 +1,11 @@
 package com.mi.live.engine.player;
 
-import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.Surface;
-import android.view.SurfaceHolder;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -46,7 +47,7 @@ import java.util.List;
  * Created by chengsimin on 2017/6/1.
  */
 
-public class ExoPlayer implements IPlayer{
+public class ExoPlayer implements IPlayer {
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
 
     private static DataSource.Factory mediaDataSourceFactory = new DefaultDataSourceFactory(GlobalData.app(), BANDWIDTH_METER,
@@ -60,10 +61,11 @@ public class ExoPlayer implements IPlayer{
     private MediaSource mMediaSource;
     private String mUrl;
     private boolean mUrlChange = false;
-    private int width = 0;
-    private int height = 0;
+    private int videoWidth = 0;
+    private int videoHeight = 0;
+    private float mShiftUp = 0;
 
-
+    View mView;
     // 为了预加载使用
     private static SimpleExoPlayer sExoPlayer;
     private static String mPreLoadUrl;
@@ -148,7 +150,7 @@ public class ExoPlayer implements IPlayer{
                 MyLog.d(TAG, "onPlayerError" + " error=" + error);
                 error.printStackTrace();
                 if (mCallback != null) {
-                    mCallback.onError(-1,-1);
+                    mCallback.onError(-1, -1);
                 }
             }
 
@@ -227,10 +229,10 @@ public class ExoPlayer implements IPlayer{
             @Override
             public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
                 MyLog.d(TAG, "onVideoSizeChanged" + " width=" + width + " height=" + height + " unappliedRotationDegrees=" + unappliedRotationDegrees + " pixelWidthHeightRatio=" + pixelWidthHeightRatio);
-                ExoPlayer.this.width = width;
-                ExoPlayer.this.height = height;
+                ExoPlayer.this.videoWidth = width;
+                ExoPlayer.this.videoHeight = height;
                 if (null != mCallback) {
-                    mCallback.onVideoSizeChanged( width, height);
+                    mCallback.onVideoSizeChanged(width, height);
                 }
             }
 
@@ -292,12 +294,12 @@ public class ExoPlayer implements IPlayer{
 
     @Override
     public int getVideoWidth() {
-        return width;
+        return videoWidth;
     }
 
     @Override
     public int getVideoHeight() {
-        return height;
+        return videoHeight;
     }
 
     @Override
@@ -346,8 +348,10 @@ public class ExoPlayer implements IPlayer{
     }
 
     @Override
-    public void setGravity(Player.SurfaceGravity gravity, int width, int height) {
+    public void setGravity(View view, Player.SurfaceGravity gravity, int width, int height) {
         MyLog.d(TAG, "setGravity" + " gravity=" + gravity + " width=" + width + " height=" + height);
+        mView = view;
+
         // 这个可以用来设置适应
         if (gravity == Player.SurfaceGravity.SurfaceGravityResizeAspectFill) {
             mPlayer.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
@@ -356,11 +360,58 @@ public class ExoPlayer implements IPlayer{
         } else {
             mPlayer.setVideoScalingMode(C.VIDEO_SCALING_MODE_DEFAULT);
         }
+        adjustView("setGravity");
+    }
+
+
+    void adjustView(String from) {
+        MyLog.d(TAG, "adjustView" + " from=" + from);
+
+        // ExoPlayer不会跟GalioPlayer那样自动留黑适配等，需要自己把TextView设定成适配流的大小
+        if (mView != null) {
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mView.getLayoutParams();
+            MyLog.d(TAG, "adjustView videoWidth:" + videoWidth + " videoHeight:" + videoHeight);
+            MyLog.d(TAG, "adjustView lp.width:" + lp.width + " lp.height:" + lp.height);
+            MyLog.d(TAG, "adjustView view.width:" + mView.getWidth() + " view.height:" + mView.getHeight());
+            View parent = (View) mView.getParent();
+            MyLog.d(TAG, "adjustView parent.width:" + parent.getWidth() + " parent.height:" + parent.getHeight());
+            if (videoHeight != 0 && videoWidth != 0 && parent.getWidth() != 0) {
+                //目的：将view弄成合适的宽度和高度
+                //判断流是横屏还是竖屏
+
+                //假设以宽度为基准适配
+                int height = parent.getWidth() * videoHeight / videoWidth;
+                MyLog.d(TAG, "adjustView 计算出height=" + height);
+                if (height > parent.getHeight()) {
+                    MyLog.d(TAG, "adjustView" + " 高为准，两边留黑");
+                    // 超出了父布局的高度了，说明以宽度适配不合适，改为高度适配
+                    int width = parent.getHeight() * videoWidth / videoHeight;
+                    MyLog.d(TAG, "adjustView width=" + width);
+                    lp.width = width;
+                    lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                    lp.leftMargin = (parent.getWidth() - width) / 2;
+                    lp.topMargin = 0;
+                    mView.setLayoutParams(lp);
+                } else if (height <= parent.getHeight()) {
+                    MyLog.d(TAG, "adjustView" + " 宽为准，上下留黑");
+                    lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    lp.height = height;
+                    lp.leftMargin = 0;
+
+                    // 这样乘以一个数的原因是，不清楚GalioPlayer 的 ratio 是怎么划算的，同样的0.17两边表现不一样，不做一些衰减，shiftUp太大了。
+                    int shiftUp = (int) (mShiftUp * parent.getHeight() * 0.5f);
+                    lp.topMargin = (parent.getHeight() - height) / 2 - shiftUp;
+                    mView.setLayoutParams(lp);
+                }
+            }
+        }
     }
 
     @Override
     public void shiftUp(float ratio, float min_layer_ratio, float max_layer_ratio, float mix_frame_ratio, float max_frame_ratio) {
-
+        MyLog.d(TAG, "shiftUp" + " ratio=" + ratio + " min_layer_ratio=" + min_layer_ratio + " max_layer_ratio=" + max_layer_ratio + " mix_frame_ratio=" + mix_frame_ratio + " max_frame_ratio=" + max_frame_ratio);
+        mShiftUp = ratio;
+        adjustView("shiftUp");
     }
 
     @Override
@@ -370,7 +421,11 @@ public class ExoPlayer implements IPlayer{
 
     @Override
     public void setMuteAudio(boolean isMute) {
-
+        if (isMute) {
+            mPlayer.setVolume(0);
+        } else {
+            mPlayer.setVolume(0.5f);
+        }
     }
 
     @Override
