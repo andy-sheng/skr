@@ -72,7 +72,7 @@ public abstract class BasePlayerPresenter<VIEW, STREAMER extends PullStreamerPre
             mSurfaceWidth = width;
             mSurfaceHeight = height;
             mStreamerPresenter.setSurface(mSurface);
-            mStreamerPresenter.setGravity((View) mView, Player.SurfaceGravity.SurfaceGravityResizeAspectFit,
+            mStreamerPresenter.setGravity(mView, Player.SurfaceGravity.SurfaceGravityResizeAspectFit,
                     mSurfaceWidth, mSurfaceHeight);
             updateShiftUp();
         }
@@ -103,17 +103,17 @@ public abstract class BasePlayerPresenter<VIEW, STREAMER extends PullStreamerPre
         } else if (mVideoWidth == 0 || mVideoHeight == 0) {
             mStreamerPresenter.shiftUp(0);
         } else if (mVideoWidth * 16 > mVideoHeight * 9) {
-
-
-            View view = (View) mView;
-            View parent = (View) view.getParent();
-            if (parent.getHeight() != 0) {
-                float ratio = (parent.getHeight() - parent.getWidth() * 9 / 16) * 0.25f / parent.getHeight();
-//            float ratio = (mSurfaceHeight - mSurfaceWidth * 9 / 16) * 0.25f / mSurfaceHeight;
+            if (mView instanceof View) {
+                View view = (View) mView;
+                View parent = (View) view.getParent();
+                if (parent.getHeight() != 0) {
+                    float ratio = (parent.getHeight() - parent.getWidth() * 9 / 16) * 0.25f / parent.getHeight();
+                    mStreamerPresenter.shiftUp(ratio);
+                }
+            } else {
+                float ratio = (mSurfaceHeight - mSurfaceWidth * 9 / 16) * 0.25f / mSurfaceHeight;
                 mStreamerPresenter.shiftUp(ratio);
             }
-//            float ratio = (mSurfaceHeight - mSurfaceWidth * 9 / 16) * 0.25f / mSurfaceHeight;
-//            mStreamerPresenter.shiftUp(ratio);
         } else {
             mStreamerPresenter.shiftUp(0);
         }

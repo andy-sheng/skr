@@ -386,7 +386,7 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
                 mVideoView.adjustVideoLayout(mIsLandscape);
             }
             if (mViewWidth > 0 && mViewHeight > 0 && mSurfaceGravity != null) {
-                mPlayer.setGravity((View) mVideoView,mSurfaceGravity, mViewWidth, mViewHeight);
+                mPlayer.setGravity(mVideoView,mSurfaceGravity, mViewWidth, mViewHeight);
             } else {
                 updateGravity();
             }
@@ -415,15 +415,15 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
 
             if (mIsLandscape) {
                 if (CommonUtils.isNeedFill(layoutHeight, layoutWidth, mVideoWidth, mVideoHeight)) {
-                    mPlayer.setGravity((View) mVideoView,Player.SurfaceGravity.SurfaceGravityResizeAspectFill, layoutHeight, layoutWidth);
+                    mPlayer.setGravity( mVideoView,Player.SurfaceGravity.SurfaceGravityResizeAspectFill, layoutHeight, layoutWidth);
                 } else {
-                    mPlayer.setGravity((View) mVideoView,Player.SurfaceGravity.SurfaceGravityResizeAspectFit, layoutHeight, layoutWidth);
+                    mPlayer.setGravity( mVideoView,Player.SurfaceGravity.SurfaceGravityResizeAspectFit, layoutHeight, layoutWidth);
                 }
             } else {
                 if (CommonUtils.isNeedFill(layoutWidth, layoutHeight, mVideoWidth, mVideoHeight)) {
-                    mPlayer.setGravity((View) mVideoView,Player.SurfaceGravity.SurfaceGravityResizeAspectFill, layoutWidth, layoutHeight);
+                    mPlayer.setGravity( mVideoView,Player.SurfaceGravity.SurfaceGravityResizeAspectFill, layoutWidth, layoutHeight);
                 } else {
-                    mPlayer.setGravity((View) mVideoView,Player.SurfaceGravity.SurfaceGravityResizeAspectFit, layoutWidth, layoutHeight);
+                    mPlayer.setGravity( mVideoView,Player.SurfaceGravity.SurfaceGravityResizeAspectFit, layoutWidth, layoutHeight);
                 }
             }
         }
@@ -574,7 +574,7 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         mViewWidth = width;
         mViewHeight = height;
         if (mPlayer != null) {
-            mPlayer.setGravity((View) mVideoView,gravity, width, height);
+            mPlayer.setGravity( mVideoView,gravity, width, height);
         }
     }
 

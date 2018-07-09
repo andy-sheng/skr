@@ -103,7 +103,7 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         }
     }
 
-    public final void setGravity(View view, Player.SurfaceGravity gravity, int width, int height) {
+    public final void setGravity(Object view, Player.SurfaceGravity gravity, int width, int height) {
         if (mStreamer != null) {
             mStreamer.setGravity(view,gravity, width, height);
         }
