@@ -11,6 +11,8 @@ else
 	elif [[ $1 == "2" ]]; then
 		# 厂包 5005_1_android
 		CHANNEL_ID="5005_1_android"
+		echo "rm enginelive/src/main/jniLibs/armeabi-v7a/libbroadcast.so 控制包大小"
+		rm enginelive/src/main/jniLibs/armeabi-v7a/libbroadcast.so
 	elif [[ $1 == "test" ]]; then
 		CHANNEL_ID="TEST"
 	else
@@ -22,10 +24,14 @@ else
 	./ship_to.sh $CHANNEL_ID
 	#./gradlew :livesdkapp:assembleRelease
 	cd ..
+
+	if [[ $1 == "2" ]]; then
+		git checkout enginelive/src/main/jniLibs/armeabi-v7a/libbroadcast.so
+	fi
+	
 	date1=`date +%m_%d_%H_%M`
 	cp livesdkapp/build/outputs/apk/livesdkapp-release.apk ~/Downloads/livesdkapp-$CHANNEL_ID-$date1.apk
 	adb install -r  livesdkapp/build/outputs/apk/livesdkapp-release.apk
 fi
-
 
 adb shell am start -n com.mi.liveassistant/com.wali.live.MainActivity
