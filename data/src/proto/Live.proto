@@ -4,8 +4,8 @@ import "Common.proto";
 import "Account.proto";
 import "LiveCommon.proto";
 import "Live2.proto";
-import "LiveMic.proto";
 import "LivePk.proto";
+import "BigTurnTable.proto";
 
 option java_package = "com.wali.live.proto";
 option java_outer_classname = "LiveProto";
@@ -526,6 +526,7 @@ message GetRoomAttachmentReq {
     optional uint32 roomType = 6; //房间类型，0公开，1私密，2:密码房间，口令
     optional bool isGetIconConfig = 7; //是否获取直播间icon配置
     optional bool isGetRoomExtraCtrl = 8; //是否获取控制信息,add by xumin
+    optional bool isGetTurntable = 9;//是否获取直播间大转盘
 }
 
 message GetRoomAttachmentRsp {
@@ -540,6 +541,7 @@ message GetRoomAttachmentRsp {
     optional LimitedInfo vipCounter = 9; //vip飘屏计数,add by xumin
     optional LimitedInfo vfansCounter = 10; //vfans飘屏计数,add by xumin
     optional SpeedyGiftConfig speedyGiftConfig = 11; //快捷送礼配置
+    repeated TurntableConfig turntableConfig = 13; //直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
 }
 
 message SpeedyGiftConfig {

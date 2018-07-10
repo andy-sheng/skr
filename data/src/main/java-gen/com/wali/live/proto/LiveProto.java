@@ -12064,7 +12064,7 @@ public final class LiveProto {
      *连麦的信息，如果在连麦，则有此信息
      * </pre>
      */
-    com.wali.live.proto.LiveMicProto.MicInfo getMicInfo();
+    com.wali.live.proto.LiveCommonProto.MicInfo getMicInfo();
     /**
      * <code>optional .com.wali.live.proto.MicInfo micInfo = 14;</code>
      *
@@ -12072,7 +12072,7 @@ public final class LiveProto {
      *连麦的信息，如果在连麦，则有此信息
      * </pre>
      */
-    com.wali.live.proto.LiveMicProto.MicInfoOrBuilder getMicInfoOrBuilder();
+    com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder getMicInfoOrBuilder();
 
     /**
      * <code>optional uint32 micuidStatus = 15;</code>
@@ -12520,11 +12520,11 @@ public final class LiveProto {
               break;
             }
             case 114: {
-              com.wali.live.proto.LiveMicProto.MicInfo.Builder subBuilder = null;
+              com.wali.live.proto.LiveCommonProto.MicInfo.Builder subBuilder = null;
               if (((bitField0_ & 0x00000400) == 0x00000400)) {
                 subBuilder = micInfo_.toBuilder();
               }
-              micInfo_ = input.readMessage(com.wali.live.proto.LiveMicProto.MicInfo.PARSER, extensionRegistry);
+              micInfo_ = input.readMessage(com.wali.live.proto.LiveCommonProto.MicInfo.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(micInfo_);
                 micInfo_ = subBuilder.buildPartial();
@@ -13072,7 +13072,7 @@ public final class LiveProto {
     }
 
     public static final int MICINFO_FIELD_NUMBER = 14;
-    private com.wali.live.proto.LiveMicProto.MicInfo micInfo_;
+    private com.wali.live.proto.LiveCommonProto.MicInfo micInfo_;
     /**
      * <code>optional .com.wali.live.proto.MicInfo micInfo = 14;</code>
      *
@@ -13090,7 +13090,7 @@ public final class LiveProto {
      *连麦的信息，如果在连麦，则有此信息
      * </pre>
      */
-    public com.wali.live.proto.LiveMicProto.MicInfo getMicInfo() {
+    public com.wali.live.proto.LiveCommonProto.MicInfo getMicInfo() {
       return micInfo_;
     }
     /**
@@ -13100,7 +13100,7 @@ public final class LiveProto {
      *连麦的信息，如果在连麦，则有此信息
      * </pre>
      */
-    public com.wali.live.proto.LiveMicProto.MicInfoOrBuilder getMicInfoOrBuilder() {
+    public com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder getMicInfoOrBuilder() {
       return micInfo_;
     }
 
@@ -13563,7 +13563,7 @@ public final class LiveProto {
       otherPKInfo_ = com.wali.live.proto.LiveCommonProto.PKInfo.getDefaultInstance();
       pkInitTicket_ = 0;
       downStreamUrl_ = "";
-      micInfo_ = com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance();
+      micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
       micuidStatus_ = 0;
       timestamp_ = 0L;
       liveCover_ = com.wali.live.proto.Live2Proto.LiveCover.getDefaultInstance();
@@ -13983,7 +13983,7 @@ public final class LiveProto {
         downStreamUrl_ = "";
         bitField0_ = (bitField0_ & ~0x00000400);
         if (micInfoBuilder_ == null) {
-          micInfo_ = com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance();
+          micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
         } else {
           micInfoBuilder_.clear();
         }
@@ -15507,9 +15507,9 @@ public final class LiveProto {
         return this;
       }
 
-      private com.wali.live.proto.LiveMicProto.MicInfo micInfo_ = com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance();
+      private com.wali.live.proto.LiveCommonProto.MicInfo micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          com.wali.live.proto.LiveMicProto.MicInfo, com.wali.live.proto.LiveMicProto.MicInfo.Builder, com.wali.live.proto.LiveMicProto.MicInfoOrBuilder> micInfoBuilder_;
+          com.wali.live.proto.LiveCommonProto.MicInfo, com.wali.live.proto.LiveCommonProto.MicInfo.Builder, com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder> micInfoBuilder_;
       /**
        * <code>optional .com.wali.live.proto.MicInfo micInfo = 14;</code>
        *
@@ -15527,7 +15527,7 @@ public final class LiveProto {
        *连麦的信息，如果在连麦，则有此信息
        * </pre>
        */
-      public com.wali.live.proto.LiveMicProto.MicInfo getMicInfo() {
+      public com.wali.live.proto.LiveCommonProto.MicInfo getMicInfo() {
         if (micInfoBuilder_ == null) {
           return micInfo_;
         } else {
@@ -15541,7 +15541,7 @@ public final class LiveProto {
        *连麦的信息，如果在连麦，则有此信息
        * </pre>
        */
-      public Builder setMicInfo(com.wali.live.proto.LiveMicProto.MicInfo value) {
+      public Builder setMicInfo(com.wali.live.proto.LiveCommonProto.MicInfo value) {
         if (micInfoBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -15562,7 +15562,7 @@ public final class LiveProto {
        * </pre>
        */
       public Builder setMicInfo(
-          com.wali.live.proto.LiveMicProto.MicInfo.Builder builderForValue) {
+          com.wali.live.proto.LiveCommonProto.MicInfo.Builder builderForValue) {
         if (micInfoBuilder_ == null) {
           micInfo_ = builderForValue.build();
           onChanged();
@@ -15579,12 +15579,12 @@ public final class LiveProto {
        *连麦的信息，如果在连麦，则有此信息
        * </pre>
        */
-      public Builder mergeMicInfo(com.wali.live.proto.LiveMicProto.MicInfo value) {
+      public Builder mergeMicInfo(com.wali.live.proto.LiveCommonProto.MicInfo value) {
         if (micInfoBuilder_ == null) {
           if (((bitField0_ & 0x00000800) == 0x00000800) &&
-              micInfo_ != com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance()) {
+              micInfo_ != com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance()) {
             micInfo_ =
-              com.wali.live.proto.LiveMicProto.MicInfo.newBuilder(micInfo_).mergeFrom(value).buildPartial();
+              com.wali.live.proto.LiveCommonProto.MicInfo.newBuilder(micInfo_).mergeFrom(value).buildPartial();
           } else {
             micInfo_ = value;
           }
@@ -15604,7 +15604,7 @@ public final class LiveProto {
        */
       public Builder clearMicInfo() {
         if (micInfoBuilder_ == null) {
-          micInfo_ = com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance();
+          micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
           onChanged();
         } else {
           micInfoBuilder_.clear();
@@ -15619,7 +15619,7 @@ public final class LiveProto {
        *连麦的信息，如果在连麦，则有此信息
        * </pre>
        */
-      public com.wali.live.proto.LiveMicProto.MicInfo.Builder getMicInfoBuilder() {
+      public com.wali.live.proto.LiveCommonProto.MicInfo.Builder getMicInfoBuilder() {
         bitField0_ |= 0x00000800;
         onChanged();
         return getMicInfoFieldBuilder().getBuilder();
@@ -15631,7 +15631,7 @@ public final class LiveProto {
        *连麦的信息，如果在连麦，则有此信息
        * </pre>
        */
-      public com.wali.live.proto.LiveMicProto.MicInfoOrBuilder getMicInfoOrBuilder() {
+      public com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder getMicInfoOrBuilder() {
         if (micInfoBuilder_ != null) {
           return micInfoBuilder_.getMessageOrBuilder();
         } else {
@@ -15646,11 +15646,11 @@ public final class LiveProto {
        * </pre>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.wali.live.proto.LiveMicProto.MicInfo, com.wali.live.proto.LiveMicProto.MicInfo.Builder, com.wali.live.proto.LiveMicProto.MicInfoOrBuilder> 
+          com.wali.live.proto.LiveCommonProto.MicInfo, com.wali.live.proto.LiveCommonProto.MicInfo.Builder, com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder> 
           getMicInfoFieldBuilder() {
         if (micInfoBuilder_ == null) {
           micInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.wali.live.proto.LiveMicProto.MicInfo, com.wali.live.proto.LiveMicProto.MicInfo.Builder, com.wali.live.proto.LiveMicProto.MicInfoOrBuilder>(
+              com.wali.live.proto.LiveCommonProto.MicInfo, com.wali.live.proto.LiveCommonProto.MicInfo.Builder, com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder>(
                   getMicInfo(),
                   getParentForChildren(),
                   isClean());
@@ -18089,7 +18089,7 @@ public final class LiveProto {
      *连麦的信息
      * </pre>
      */
-    com.wali.live.proto.LiveMicProto.MicInfo getMicInfo();
+    com.wali.live.proto.LiveCommonProto.MicInfo getMicInfo();
     /**
      * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
      *
@@ -18097,7 +18097,7 @@ public final class LiveProto {
      *连麦的信息
      * </pre>
      */
-    com.wali.live.proto.LiveMicProto.MicInfoOrBuilder getMicInfoOrBuilder();
+    com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder getMicInfoOrBuilder();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.MicBeginReq}
@@ -18168,11 +18168,11 @@ public final class LiveProto {
               break;
             }
             case 26: {
-              com.wali.live.proto.LiveMicProto.MicInfo.Builder subBuilder = null;
+              com.wali.live.proto.LiveCommonProto.MicInfo.Builder subBuilder = null;
               if (((bitField0_ & 0x00000004) == 0x00000004)) {
                 subBuilder = micInfo_.toBuilder();
               }
-              micInfo_ = input.readMessage(com.wali.live.proto.LiveMicProto.MicInfo.PARSER, extensionRegistry);
+              micInfo_ = input.readMessage(com.wali.live.proto.LiveCommonProto.MicInfo.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(micInfo_);
                 micInfo_ = subBuilder.buildPartial();
@@ -18298,7 +18298,7 @@ public final class LiveProto {
     }
 
     public static final int MICINFO_FIELD_NUMBER = 3;
-    private com.wali.live.proto.LiveMicProto.MicInfo micInfo_;
+    private com.wali.live.proto.LiveCommonProto.MicInfo micInfo_;
     /**
      * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
      *
@@ -18316,7 +18316,7 @@ public final class LiveProto {
      *连麦的信息
      * </pre>
      */
-    public com.wali.live.proto.LiveMicProto.MicInfo getMicInfo() {
+    public com.wali.live.proto.LiveCommonProto.MicInfo getMicInfo() {
       return micInfo_;
     }
     /**
@@ -18326,14 +18326,14 @@ public final class LiveProto {
      *连麦的信息
      * </pre>
      */
-    public com.wali.live.proto.LiveMicProto.MicInfoOrBuilder getMicInfoOrBuilder() {
+    public com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder getMicInfoOrBuilder() {
       return micInfo_;
     }
 
     private void initFields() {
       zuid_ = 0L;
       liveId_ = "";
-      micInfo_ = com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance();
+      micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -18522,7 +18522,7 @@ public final class LiveProto {
         liveId_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
         if (micInfoBuilder_ == null) {
-          micInfo_ = com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance();
+          micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
         } else {
           micInfoBuilder_.clear();
         }
@@ -18789,9 +18789,9 @@ public final class LiveProto {
         return this;
       }
 
-      private com.wali.live.proto.LiveMicProto.MicInfo micInfo_ = com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance();
+      private com.wali.live.proto.LiveCommonProto.MicInfo micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          com.wali.live.proto.LiveMicProto.MicInfo, com.wali.live.proto.LiveMicProto.MicInfo.Builder, com.wali.live.proto.LiveMicProto.MicInfoOrBuilder> micInfoBuilder_;
+          com.wali.live.proto.LiveCommonProto.MicInfo, com.wali.live.proto.LiveCommonProto.MicInfo.Builder, com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder> micInfoBuilder_;
       /**
        * <code>required .com.wali.live.proto.MicInfo micInfo = 3;</code>
        *
@@ -18809,7 +18809,7 @@ public final class LiveProto {
        *连麦的信息
        * </pre>
        */
-      public com.wali.live.proto.LiveMicProto.MicInfo getMicInfo() {
+      public com.wali.live.proto.LiveCommonProto.MicInfo getMicInfo() {
         if (micInfoBuilder_ == null) {
           return micInfo_;
         } else {
@@ -18823,7 +18823,7 @@ public final class LiveProto {
        *连麦的信息
        * </pre>
        */
-      public Builder setMicInfo(com.wali.live.proto.LiveMicProto.MicInfo value) {
+      public Builder setMicInfo(com.wali.live.proto.LiveCommonProto.MicInfo value) {
         if (micInfoBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -18844,7 +18844,7 @@ public final class LiveProto {
        * </pre>
        */
       public Builder setMicInfo(
-          com.wali.live.proto.LiveMicProto.MicInfo.Builder builderForValue) {
+          com.wali.live.proto.LiveCommonProto.MicInfo.Builder builderForValue) {
         if (micInfoBuilder_ == null) {
           micInfo_ = builderForValue.build();
           onChanged();
@@ -18861,12 +18861,12 @@ public final class LiveProto {
        *连麦的信息
        * </pre>
        */
-      public Builder mergeMicInfo(com.wali.live.proto.LiveMicProto.MicInfo value) {
+      public Builder mergeMicInfo(com.wali.live.proto.LiveCommonProto.MicInfo value) {
         if (micInfoBuilder_ == null) {
           if (((bitField0_ & 0x00000004) == 0x00000004) &&
-              micInfo_ != com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance()) {
+              micInfo_ != com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance()) {
             micInfo_ =
-              com.wali.live.proto.LiveMicProto.MicInfo.newBuilder(micInfo_).mergeFrom(value).buildPartial();
+              com.wali.live.proto.LiveCommonProto.MicInfo.newBuilder(micInfo_).mergeFrom(value).buildPartial();
           } else {
             micInfo_ = value;
           }
@@ -18886,7 +18886,7 @@ public final class LiveProto {
        */
       public Builder clearMicInfo() {
         if (micInfoBuilder_ == null) {
-          micInfo_ = com.wali.live.proto.LiveMicProto.MicInfo.getDefaultInstance();
+          micInfo_ = com.wali.live.proto.LiveCommonProto.MicInfo.getDefaultInstance();
           onChanged();
         } else {
           micInfoBuilder_.clear();
@@ -18901,7 +18901,7 @@ public final class LiveProto {
        *连麦的信息
        * </pre>
        */
-      public com.wali.live.proto.LiveMicProto.MicInfo.Builder getMicInfoBuilder() {
+      public com.wali.live.proto.LiveCommonProto.MicInfo.Builder getMicInfoBuilder() {
         bitField0_ |= 0x00000004;
         onChanged();
         return getMicInfoFieldBuilder().getBuilder();
@@ -18913,7 +18913,7 @@ public final class LiveProto {
        *连麦的信息
        * </pre>
        */
-      public com.wali.live.proto.LiveMicProto.MicInfoOrBuilder getMicInfoOrBuilder() {
+      public com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder getMicInfoOrBuilder() {
         if (micInfoBuilder_ != null) {
           return micInfoBuilder_.getMessageOrBuilder();
         } else {
@@ -18928,11 +18928,11 @@ public final class LiveProto {
        * </pre>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.wali.live.proto.LiveMicProto.MicInfo, com.wali.live.proto.LiveMicProto.MicInfo.Builder, com.wali.live.proto.LiveMicProto.MicInfoOrBuilder> 
+          com.wali.live.proto.LiveCommonProto.MicInfo, com.wali.live.proto.LiveCommonProto.MicInfo.Builder, com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder> 
           getMicInfoFieldBuilder() {
         if (micInfoBuilder_ == null) {
           micInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.wali.live.proto.LiveMicProto.MicInfo, com.wali.live.proto.LiveMicProto.MicInfo.Builder, com.wali.live.proto.LiveMicProto.MicInfoOrBuilder>(
+              com.wali.live.proto.LiveCommonProto.MicInfo, com.wali.live.proto.LiveCommonProto.MicInfo.Builder, com.wali.live.proto.LiveCommonProto.MicInfoOrBuilder>(
                   getMicInfo(),
                   getParentForChildren(),
                   isClean());
@@ -61641,6 +61641,23 @@ public final class LiveProto {
      * </pre>
      */
     boolean getIsGetRoomExtraCtrl();
+
+    /**
+     * <code>optional bool isGetTurntable = 9;</code>
+     *
+     * <pre>
+     *是否获取直播间大转盘
+     * </pre>
+     */
+    boolean hasIsGetTurntable();
+    /**
+     * <code>optional bool isGetTurntable = 9;</code>
+     *
+     * <pre>
+     *是否获取直播间大转盘
+     * </pre>
+     */
+    boolean getIsGetTurntable();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.GetRoomAttachmentReq}
@@ -61738,6 +61755,11 @@ public final class LiveProto {
             case 64: {
               bitField0_ |= 0x00000080;
               isGetRoomExtraCtrl_ = input.readBool();
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000100;
+              isGetTurntable_ = input.readBool();
               break;
             }
           }
@@ -61995,6 +62017,29 @@ public final class LiveProto {
       return isGetRoomExtraCtrl_;
     }
 
+    public static final int ISGETTURNTABLE_FIELD_NUMBER = 9;
+    private boolean isGetTurntable_;
+    /**
+     * <code>optional bool isGetTurntable = 9;</code>
+     *
+     * <pre>
+     *是否获取直播间大转盘
+     * </pre>
+     */
+    public boolean hasIsGetTurntable() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional bool isGetTurntable = 9;</code>
+     *
+     * <pre>
+     *是否获取直播间大转盘
+     * </pre>
+     */
+    public boolean getIsGetTurntable() {
+      return isGetTurntable_;
+    }
+
     private void initFields() {
       zuid_ = 0L;
       isGetWidget_ = false;
@@ -62004,6 +62049,7 @@ public final class LiveProto {
       roomType_ = 0;
       isGetIconConfig_ = false;
       isGetRoomExtraCtrl_ = false;
+      isGetTurntable_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -62050,6 +62096,9 @@ public final class LiveProto {
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         output.writeBool(8, isGetRoomExtraCtrl_);
       }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeBool(9, isGetTurntable_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -62090,6 +62139,10 @@ public final class LiveProto {
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(8, isGetRoomExtraCtrl_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(9, isGetTurntable_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -62229,6 +62282,8 @@ public final class LiveProto {
         bitField0_ = (bitField0_ & ~0x00000040);
         isGetRoomExtraCtrl_ = false;
         bitField0_ = (bitField0_ & ~0x00000080);
+        isGetTurntable_ = false;
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
@@ -62289,6 +62344,10 @@ public final class LiveProto {
           to_bitField0_ |= 0x00000080;
         }
         result.isGetRoomExtraCtrl_ = isGetRoomExtraCtrl_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.isGetTurntable_ = isGetTurntable_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -62330,6 +62389,9 @@ public final class LiveProto {
         }
         if (other.hasIsGetRoomExtraCtrl()) {
           setIsGetRoomExtraCtrl(other.getIsGetRoomExtraCtrl());
+        }
+        if (other.hasIsGetTurntable()) {
+          setIsGetTurntable(other.getIsGetTurntable());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -62802,6 +62864,54 @@ public final class LiveProto {
         return this;
       }
 
+      private boolean isGetTurntable_ ;
+      /**
+       * <code>optional bool isGetTurntable = 9;</code>
+       *
+       * <pre>
+       *是否获取直播间大转盘
+       * </pre>
+       */
+      public boolean hasIsGetTurntable() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional bool isGetTurntable = 9;</code>
+       *
+       * <pre>
+       *是否获取直播间大转盘
+       * </pre>
+       */
+      public boolean getIsGetTurntable() {
+        return isGetTurntable_;
+      }
+      /**
+       * <code>optional bool isGetTurntable = 9;</code>
+       *
+       * <pre>
+       *是否获取直播间大转盘
+       * </pre>
+       */
+      public Builder setIsGetTurntable(boolean value) {
+        bitField0_ |= 0x00000100;
+        isGetTurntable_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool isGetTurntable = 9;</code>
+       *
+       * <pre>
+       *是否获取直播间大转盘
+       * </pre>
+       */
+      public Builder clearIsGetTurntable() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        isGetTurntable_ = false;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetRoomAttachmentReq)
     }
 
@@ -63102,6 +63212,50 @@ public final class LiveProto {
      * </pre>
      */
     com.wali.live.proto.LiveProto.SpeedyGiftConfigOrBuilder getSpeedyGiftConfigOrBuilder();
+
+    /**
+     * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+     *
+     * <pre>
+     *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+     * </pre>
+     */
+    java.util.List<com.wali.live.proto.BigTurnTableProto.TurntableConfig> 
+        getTurntableConfigList();
+    /**
+     * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+     *
+     * <pre>
+     *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+     * </pre>
+     */
+    com.wali.live.proto.BigTurnTableProto.TurntableConfig getTurntableConfig(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+     *
+     * <pre>
+     *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+     * </pre>
+     */
+    int getTurntableConfigCount();
+    /**
+     * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+     *
+     * <pre>
+     *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+     * </pre>
+     */
+    java.util.List<? extends com.wali.live.proto.BigTurnTableProto.TurntableConfigOrBuilder> 
+        getTurntableConfigOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+     *
+     * <pre>
+     *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+     * </pre>
+     */
+    com.wali.live.proto.BigTurnTableProto.TurntableConfigOrBuilder getTurntableConfigOrBuilder(
+        int index);
   }
   /**
    * Protobuf type {@code com.wali.live.proto.GetRoomAttachmentRsp}
@@ -63285,6 +63439,14 @@ public final class LiveProto {
               bitField0_ |= 0x00000200;
               break;
             }
+            case 106: {
+              if (!((mutable_bitField0_ & 0x00000800) == 0x00000800)) {
+                turntableConfig_ = new java.util.ArrayList<com.wali.live.proto.BigTurnTableProto.TurntableConfig>();
+                mutable_bitField0_ |= 0x00000800;
+              }
+              turntableConfig_.add(input.readMessage(com.wali.live.proto.BigTurnTableProto.TurntableConfig.PARSER, extensionRegistry));
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -63295,6 +63457,9 @@ public final class LiveProto {
       } finally {
         if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
           widgetInfo_ = java.util.Collections.unmodifiableList(widgetInfo_);
+        }
+        if (((mutable_bitField0_ & 0x00000800) == 0x00000800)) {
+          turntableConfig_ = java.util.Collections.unmodifiableList(turntableConfig_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -63703,6 +63868,61 @@ public final class LiveProto {
       return speedyGiftConfig_;
     }
 
+    public static final int TURNTABLECONFIG_FIELD_NUMBER = 13;
+    private java.util.List<com.wali.live.proto.BigTurnTableProto.TurntableConfig> turntableConfig_;
+    /**
+     * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+     *
+     * <pre>
+     *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+     * </pre>
+     */
+    public java.util.List<com.wali.live.proto.BigTurnTableProto.TurntableConfig> getTurntableConfigList() {
+      return turntableConfig_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+     *
+     * <pre>
+     *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+     * </pre>
+     */
+    public java.util.List<? extends com.wali.live.proto.BigTurnTableProto.TurntableConfigOrBuilder> 
+        getTurntableConfigOrBuilderList() {
+      return turntableConfig_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+     *
+     * <pre>
+     *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+     * </pre>
+     */
+    public int getTurntableConfigCount() {
+      return turntableConfig_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+     *
+     * <pre>
+     *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+     * </pre>
+     */
+    public com.wali.live.proto.BigTurnTableProto.TurntableConfig getTurntableConfig(int index) {
+      return turntableConfig_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+     *
+     * <pre>
+     *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+     * </pre>
+     */
+    public com.wali.live.proto.BigTurnTableProto.TurntableConfigOrBuilder getTurntableConfigOrBuilder(
+        int index) {
+      return turntableConfig_.get(index);
+    }
+
     private void initFields() {
       retCode_ = 0;
       widgetInfo_ = java.util.Collections.emptyList();
@@ -63715,6 +63935,7 @@ public final class LiveProto {
       vipCounter_ = com.wali.live.proto.LiveProto.LimitedInfo.getDefaultInstance();
       vfansCounter_ = com.wali.live.proto.LiveProto.LimitedInfo.getDefaultInstance();
       speedyGiftConfig_ = com.wali.live.proto.LiveProto.SpeedyGiftConfig.getDefaultInstance();
+      turntableConfig_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -63784,6 +64005,9 @@ public final class LiveProto {
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
         output.writeMessage(11, speedyGiftConfig_);
       }
+      for (int i = 0; i < turntableConfig_.size(); i++) {
+        output.writeMessage(13, turntableConfig_.get(i));
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -63836,6 +64060,10 @@ public final class LiveProto {
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(11, speedyGiftConfig_);
+      }
+      for (int i = 0; i < turntableConfig_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(13, turntableConfig_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -63956,6 +64184,7 @@ public final class LiveProto {
           getVipCounterFieldBuilder();
           getVfansCounterFieldBuilder();
           getSpeedyGiftConfigFieldBuilder();
+          getTurntableConfigFieldBuilder();
         }
       }
       private static Builder create() {
@@ -64026,6 +64255,12 @@ public final class LiveProto {
           speedyGiftConfigBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000400);
+        if (turntableConfigBuilder_ == null) {
+          turntableConfig_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000800);
+        } else {
+          turntableConfigBuilder_.clear();
+        }
         return this;
       }
 
@@ -64139,6 +64374,15 @@ public final class LiveProto {
         } else {
           result.speedyGiftConfig_ = speedyGiftConfigBuilder_.build();
         }
+        if (turntableConfigBuilder_ == null) {
+          if (((bitField0_ & 0x00000800) == 0x00000800)) {
+            turntableConfig_ = java.util.Collections.unmodifiableList(turntableConfig_);
+            bitField0_ = (bitField0_ & ~0x00000800);
+          }
+          result.turntableConfig_ = turntableConfig_;
+        } else {
+          result.turntableConfig_ = turntableConfigBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -64210,6 +64454,32 @@ public final class LiveProto {
         }
         if (other.hasSpeedyGiftConfig()) {
           mergeSpeedyGiftConfig(other.getSpeedyGiftConfig());
+        }
+        if (turntableConfigBuilder_ == null) {
+          if (!other.turntableConfig_.isEmpty()) {
+            if (turntableConfig_.isEmpty()) {
+              turntableConfig_ = other.turntableConfig_;
+              bitField0_ = (bitField0_ & ~0x00000800);
+            } else {
+              ensureTurntableConfigIsMutable();
+              turntableConfig_.addAll(other.turntableConfig_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.turntableConfig_.isEmpty()) {
+            if (turntableConfigBuilder_.isEmpty()) {
+              turntableConfigBuilder_.dispose();
+              turntableConfigBuilder_ = null;
+              turntableConfig_ = other.turntableConfig_;
+              bitField0_ = (bitField0_ & ~0x00000800);
+              turntableConfigBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getTurntableConfigFieldBuilder() : null;
+            } else {
+              turntableConfigBuilder_.addAllMessages(other.turntableConfig_);
+            }
+          }
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -65986,6 +66256,318 @@ public final class LiveProto {
           speedyGiftConfig_ = null;
         }
         return speedyGiftConfigBuilder_;
+      }
+
+      private java.util.List<com.wali.live.proto.BigTurnTableProto.TurntableConfig> turntableConfig_ =
+        java.util.Collections.emptyList();
+      private void ensureTurntableConfigIsMutable() {
+        if (!((bitField0_ & 0x00000800) == 0x00000800)) {
+          turntableConfig_ = new java.util.ArrayList<com.wali.live.proto.BigTurnTableProto.TurntableConfig>(turntableConfig_);
+          bitField0_ |= 0x00000800;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.BigTurnTableProto.TurntableConfig, com.wali.live.proto.BigTurnTableProto.TurntableConfig.Builder, com.wali.live.proto.BigTurnTableProto.TurntableConfigOrBuilder> turntableConfigBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+       *
+       * <pre>
+       *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.BigTurnTableProto.TurntableConfig> getTurntableConfigList() {
+        if (turntableConfigBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(turntableConfig_);
+        } else {
+          return turntableConfigBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+       *
+       * <pre>
+       *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+       * </pre>
+       */
+      public int getTurntableConfigCount() {
+        if (turntableConfigBuilder_ == null) {
+          return turntableConfig_.size();
+        } else {
+          return turntableConfigBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+       *
+       * <pre>
+       *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+       * </pre>
+       */
+      public com.wali.live.proto.BigTurnTableProto.TurntableConfig getTurntableConfig(int index) {
+        if (turntableConfigBuilder_ == null) {
+          return turntableConfig_.get(index);
+        } else {
+          return turntableConfigBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+       *
+       * <pre>
+       *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+       * </pre>
+       */
+      public Builder setTurntableConfig(
+          int index, com.wali.live.proto.BigTurnTableProto.TurntableConfig value) {
+        if (turntableConfigBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureTurntableConfigIsMutable();
+          turntableConfig_.set(index, value);
+          onChanged();
+        } else {
+          turntableConfigBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+       *
+       * <pre>
+       *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+       * </pre>
+       */
+      public Builder setTurntableConfig(
+          int index, com.wali.live.proto.BigTurnTableProto.TurntableConfig.Builder builderForValue) {
+        if (turntableConfigBuilder_ == null) {
+          ensureTurntableConfigIsMutable();
+          turntableConfig_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          turntableConfigBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+       *
+       * <pre>
+       *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+       * </pre>
+       */
+      public Builder addTurntableConfig(com.wali.live.proto.BigTurnTableProto.TurntableConfig value) {
+        if (turntableConfigBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureTurntableConfigIsMutable();
+          turntableConfig_.add(value);
+          onChanged();
+        } else {
+          turntableConfigBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+       *
+       * <pre>
+       *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+       * </pre>
+       */
+      public Builder addTurntableConfig(
+          int index, com.wali.live.proto.BigTurnTableProto.TurntableConfig value) {
+        if (turntableConfigBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureTurntableConfigIsMutable();
+          turntableConfig_.add(index, value);
+          onChanged();
+        } else {
+          turntableConfigBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+       *
+       * <pre>
+       *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+       * </pre>
+       */
+      public Builder addTurntableConfig(
+          com.wali.live.proto.BigTurnTableProto.TurntableConfig.Builder builderForValue) {
+        if (turntableConfigBuilder_ == null) {
+          ensureTurntableConfigIsMutable();
+          turntableConfig_.add(builderForValue.build());
+          onChanged();
+        } else {
+          turntableConfigBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+       *
+       * <pre>
+       *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+       * </pre>
+       */
+      public Builder addTurntableConfig(
+          int index, com.wali.live.proto.BigTurnTableProto.TurntableConfig.Builder builderForValue) {
+        if (turntableConfigBuilder_ == null) {
+          ensureTurntableConfigIsMutable();
+          turntableConfig_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          turntableConfigBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+       *
+       * <pre>
+       *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+       * </pre>
+       */
+      public Builder addAllTurntableConfig(
+          java.lang.Iterable<? extends com.wali.live.proto.BigTurnTableProto.TurntableConfig> values) {
+        if (turntableConfigBuilder_ == null) {
+          ensureTurntableConfigIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, turntableConfig_);
+          onChanged();
+        } else {
+          turntableConfigBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+       *
+       * <pre>
+       *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+       * </pre>
+       */
+      public Builder clearTurntableConfig() {
+        if (turntableConfigBuilder_ == null) {
+          turntableConfig_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000800);
+          onChanged();
+        } else {
+          turntableConfigBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+       *
+       * <pre>
+       *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+       * </pre>
+       */
+      public Builder removeTurntableConfig(int index) {
+        if (turntableConfigBuilder_ == null) {
+          ensureTurntableConfigIsMutable();
+          turntableConfig_.remove(index);
+          onChanged();
+        } else {
+          turntableConfigBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+       *
+       * <pre>
+       *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+       * </pre>
+       */
+      public com.wali.live.proto.BigTurnTableProto.TurntableConfig.Builder getTurntableConfigBuilder(
+          int index) {
+        return getTurntableConfigFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+       *
+       * <pre>
+       *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+       * </pre>
+       */
+      public com.wali.live.proto.BigTurnTableProto.TurntableConfigOrBuilder getTurntableConfigOrBuilder(
+          int index) {
+        if (turntableConfigBuilder_ == null) {
+          return turntableConfig_.get(index);  } else {
+          return turntableConfigBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+       *
+       * <pre>
+       *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+       * </pre>
+       */
+      public java.util.List<? extends com.wali.live.proto.BigTurnTableProto.TurntableConfigOrBuilder> 
+           getTurntableConfigOrBuilderList() {
+        if (turntableConfigBuilder_ != null) {
+          return turntableConfigBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(turntableConfig_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+       *
+       * <pre>
+       *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+       * </pre>
+       */
+      public com.wali.live.proto.BigTurnTableProto.TurntableConfig.Builder addTurntableConfigBuilder() {
+        return getTurntableConfigFieldBuilder().addBuilder(
+            com.wali.live.proto.BigTurnTableProto.TurntableConfig.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+       *
+       * <pre>
+       *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+       * </pre>
+       */
+      public com.wali.live.proto.BigTurnTableProto.TurntableConfig.Builder addTurntableConfigBuilder(
+          int index) {
+        return getTurntableConfigFieldBuilder().addBuilder(
+            index, com.wali.live.proto.BigTurnTableProto.TurntableConfig.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.TurntableConfig turntableConfig = 13;</code>
+       *
+       * <pre>
+       *直播间大转盘内容 TurntableConfig定义在http://wiki.n.miui.com/pages/viewpage.action?pageId=79762978
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.BigTurnTableProto.TurntableConfig.Builder> 
+           getTurntableConfigBuilderList() {
+        return getTurntableConfigFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.BigTurnTableProto.TurntableConfig, com.wali.live.proto.BigTurnTableProto.TurntableConfig.Builder, com.wali.live.proto.BigTurnTableProto.TurntableConfigOrBuilder> 
+          getTurntableConfigFieldBuilder() {
+        if (turntableConfigBuilder_ == null) {
+          turntableConfigBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.BigTurnTableProto.TurntableConfig, com.wali.live.proto.BigTurnTableProto.TurntableConfig.Builder, com.wali.live.proto.BigTurnTableProto.TurntableConfigOrBuilder>(
+                  turntableConfig_,
+                  ((bitField0_ & 0x00000800) == 0x00000800),
+                  getParentForChildren(),
+                  isClean());
+          turntableConfig_ = null;
+        }
+        return turntableConfigBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetRoomAttachmentRsp)
@@ -76876,218 +77458,221 @@ public final class LiveProto {
     java.lang.String[] descriptorData = {
       "\n\nLive.proto\022\023com.wali.live.proto\032\014Commo" +
       "n.proto\032\rAccount.proto\032\020LiveCommon.proto" +
-      "\032\013Live2.proto\032\rLiveMic.proto\032\014LivePk.pro" +
-      "to\"w\n\014GetRoomIdReq\022\014\n\004uuid\030\001 \002(\004\022\017\n\007appT" +
-      "ype\030\002 \001(\r\022\031\n\007appInfo\030\003 \001(\0132\010.AppInfo\022\014\n\004" +
-      "type\030\004 \001(\r\022\017\n\007guildId\030\005 \001(\004\022\016\n\006source\030\006 " +
-      "\001(\r\"\274\001\n\014GetRoomIdRsp\022\017\n\007retCode\030\001 \002(\r\022\016\n" +
-      "\006liveId\030\002 \001(\t\022\020\n\010shareUrl\030\003 \001(\t\022\023\n\013upStr" +
-      "eamUrl\030\004 \001(\t\022\022\n\nbeginLevel\030\005 \001(\r\022\026\n\016udpU" +
-      "pstreamUrl\030\006 \001(\t\0228\n\016newUpStreamUrl\030\007 \003(\013",
-      "2 .com.wali.live.proto.UpStreamUrl\"\377\002\n\014B" +
-      "eginLiveReq\022\014\n\004uuid\030\001 \002(\004\022/\n\010location\030\002 " +
-      "\001(\0132\035.com.wali.live.proto.Location\022\014\n\004ty" +
-      "pe\030\003 \001(\r\022\017\n\007invitee\030\004 \003(\004\022\022\n\naddHistory\030" +
-      "\005 \001(\010\022\021\n\tliveTitle\030\006 \001(\t\022\020\n\010password\030\007 \001" +
-      "(\t\022\035\n\tliveCover\030\010 \001(\0132\n.LiveCover\022\016\n\006liv" +
-      "eId\030\t \001(\t\022\017\n\007appType\030\n \001(\r\022\031\n\007appInfo\030\013 " +
-      "\001(\0132\010.AppInfo\022\016\n\006playUI\030\014 \001(\r\022\'\n\016ticketL" +
-      "iveInfo\030\r \001(\0132\017.TicketLiveInfo\022\032\n\010tagInf" +
-      "os\030\016 \003(\0132\010.TagInfo\022\030\n\020supportMagicFace\030\020",
-      " \001(\010\022\016\n\006source\030\021 \001(\r\"\346\001\n\014BeginLiveRsp\022\017\n" +
-      "\007retCode\030\001 \002(\r\022\016\n\006liveId\030\002 \001(\t\022\022\n\ncreate" +
-      "Time\030\003 \001(\004\022\020\n\010shareUrl\030\004 \001(\t\022\023\n\013upStream" +
-      "Url\030\005 \001(\t\022\022\n\nbeginLevel\030\006 \001(\r\022\024\n\014showIco" +
-      "nCtrl\030\007 \001(\r\022\026\n\016udpUpstreamUrl\030\010 \001(\t\0228\n\016n" +
-      "ewUpStreamUrl\030\t \003(\0132 .com.wali.live.prot" +
-      "o.UpStreamUrl\"g\n\nEndLiveReq\022\014\n\004uuid\030\001 \002(" +
-      "\004\022\016\n\006liveId\030\002 \002(\t\022\017\n\007appType\030\003 \001(\r\022\031\n\007ap" +
-      "pInfo\030\004 \001(\0132\010.AppInfo\022\017\n\007guildId\030\005 \001(\004\"\311" +
-      "\001\n\nEndLiveRsp\022\017\n\007retCode\030\001 \002(\r\022\024\n\014hisVie",
-      "werCnt\030\002 \001(\r\022\033\n\023generateHistorySucc\030\003 \001(" +
-      "\010\022\032\n\022generateHistoryMsg\030\004 \001(\t\022\030\n\020ticketB" +
-      "uyerCount\030\005 \001(\r\022\027\n\017hisBeginLiveCnt\030\006 \001(\004" +
-      "\022\020\n\010duration\030\007 \001(\004\022\026\n\016newFollowerCnt\030\010 \001" +
-      "(\004\"u\n\014EnterLiveReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid" +
-      "\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\022\020\n\010password\030\004 \001(\t" +
-      "\022\014\n\004type\030\005 \001(\r\022\031\n\021showSpecialEffect\030\006 \001(" +
-      "\010\"\321\006\n\014EnterLiveRsp\022\017\n\007retCode\030\001 \002(\r\022\021\n\tv" +
-      "iewerCnt\030\002 \001(\r\022+\n\006viewer\030\004 \003(\0132\033.com.wal" +
-      "i.live.proto.Viewer\022\021\n\tisManager\030\006 \001(\010\022\020",
-      "\n\010banSpeak\030\007 \001(\010\022/\n\010location\030\010 \001(\0132\035.com" +
-      ".wali.live.proto.Location\022\014\n\004type\030\t \001(\r\022" +
-      "\020\n\010shareUrl\030\n \001(\t\0220\n\013otherPKInfo\030\013 \001(\0132\033" +
-      ".com.wali.live.proto.PKInfo\022\024\n\014pkInitTic" +
-      "ket\030\014 \001(\r\022\025\n\rdownStreamUrl\030\r \001(\t\022-\n\007micI" +
-      "nfo\030\016 \001(\0132\034.com.wali.live.proto.MicInfo\022" +
-      "\024\n\014micuidStatus\030\017 \001(\r\022\021\n\ttimestamp\030\020 \001(\004" +
-      "\022\035\n\tliveCover\030\021 \001(\0132\n.LiveCover\022\021\n\tliveT" +
-      "itle\030\022 \001(\t\022\023\n\013messageMode\030\023 \001(\005\022-\n\007msgRu" +
-      "le\030\024 \001(\0132\034.com.wali.live.proto.MsgRule\022\016",
-      "\n\006isShop\030\025 \001(\010\022\020\n\010hideGift\030\026 \001(\010\022\020\n\010hide" +
-      "Icon\030\027 \001(\005\022\'\n\014ticketStatus\030\030 \001(\0132\021.Ticke" +
-      "tLiveStatus\022\030\n\020supportMagicFace\030\032 \001(\010\022\027\n" +
-      "\017enableViewerMic\030\033 \001(\010\022\023\n\013is_pk_admin\030\034 " +
-      "\001(\010\0223\n\013new_pk_info\030\035 \001(\0132\036.com.wali.live" +
-      ".proto.NewPKInfo\0226\n\014contest_info\030  \001(\0132 " +
-      ".com.wali.live.proto.ContestInfo\022;\n\016thir" +
-      "dPartyInfo\030# \001(\0132#.com.wali.live.proto.T" +
-      "hirdPartyInfo\"V\n\016ThirdPartyInfo\022\014\n\004uuid\030" +
-      "\001 \001(\004\022\025\n\rdownStreamUrl\030\002 \001(\t\022\017\n\007logoUrl\030",
-      "\003 \001(\t\022\016\n\006source\030\004 \001(\r\"Z\n\013MicBeginReq\022\014\n\004" +
-      "zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022-\n\007micInfo\030\003 " +
-      "\002(\0132\034.com.wali.live.proto.MicInfo\"\036\n\013Mic" +
-      "BeginRsp\022\017\n\007retCode\030\001 \002(\r\"9\n\tMicEndReq\022\014" +
-      "\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022\016\n\006micuid\030\003" +
-      " \002(\004\"\034\n\tMicEndRsp\022\017\n\007retCode\030\001 \002(\r\":\n\014Vi" +
-      "ewerTopReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\022\016" +
-      "\n\006liveId\030\003 \002(\t\"L\n\014ViewerTopRsp\022\017\n\007retCod" +
-      "e\030\001 \002(\r\022+\n\006viewer\030\002 \003(\0132\033.com.wali.live." +
-      "proto.Viewer\"{\n\013RoomInfoReq\022\014\n\004uuid\030\001 \002(",
-      "\004\022\014\n\004zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\022\020\n\010passw" +
-      "ord\030\004 \001(\t\022\025\n\rgetLatestLive\030\005 \001(\010\022\027\n\017getG" +
-      "ameInfoOnly\030\006 \001(\010\"\250\002\n\013RoomInfoRsp\022\017\n\007ret" +
-      "Code\030\001 \002(\r\022\025\n\rdownStreamUrl\030\002 \001(\t\022\023\n\013pla" +
-      "ybackUrl\030\003 \001(\t\022\020\n\010shareUrl\030\004 \001(\t\022\021\n\tbegi" +
-      "nTime\030\005 \001(\004\022\016\n\006liveid\030\006 \001(\t\022\014\n\004type\030\007 \001(" +
-      "\r\022\'\n\014ticketStatus\030\010 \001(\0132\021.TicketLiveStat" +
-      "us\0228\n\rgamepack_info\030\t \001(\0132!.com.wali.liv" +
-      "e.proto.GamePackInfo\0226\n\014contest_info\030\n \001" +
-      "(\0132 .com.wali.live.proto.ContestInfo\"]\n\013",
-      "ContestInfo\022\024\n\014able_contest\030\001 \001(\010\022\023\n\013rev" +
-      "ival_num\030\002 \001(\r\022\017\n\007is_late\030\003 \001(\010\022\022\n\nconte" +
-      "st_id\030\004 \001(\t\"\257\002\n\014GamePackInfo\022\014\n\004zuid\030\001 \001" +
-      "(\004\022\016\n\006roomId\030\002 \001(\t\022\021\n\tcdnDomain\030\003 \001(\t\022\023\n" +
-      "\013displayName\030\004 \001(\t\022\016\n\006gameId\030\005 \001(\r\022\023\n\013pa" +
-      "cakgeName\030\006 \001(\t\022\014\n\004icon\030\007 \001(\t\022\022\n\ngameApk" +
-      "Ss1\030\010 \001(\t\022\017\n\007gameApk\030\t \001(\t\022\021\n\tshortName\030" +
-      "\n \001(\t\0226\n\006level1\030\013 \001(\0132&.com.wali.live.pr" +
-      "oto.GameTagInfoDetail\0226\n\006level2\030\014 \001(\0132&." +
-      "com.wali.live.proto.GameTagInfoDetail\"-\n",
-      "\021GameTagInfoDetail\022\n\n\002id\030\001 \001(\r\022\014\n\004name\030\002" +
-      " \001(\t\"O\n\014LeaveLiveReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zu" +
-      "id\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\022\023\n\013messageMode\030" +
-      "\004 \001(\005\"\037\n\014LeaveLiveRsp\022\017\n\007retCode\030\001 \002(\r\"0" +
-      "\n\020HistoryDeleteReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006live" +
-      "Id\030\002 \002(\t\"#\n\020HistoryDeleteRsp\022\017\n\007retCode\030" +
-      "\001 \002(\r\"u\n\014HeartBeatReq\022\016\n\006liveId\030\001 \002(\t\022\r\n" +
-      "\005pkuid\030\002 \001(\004\022\020\n\010pkLiveId\030\003 \001(\t\022\016\n\006status" +
-      "\030\004 \001(\005\022\016\n\006micuid\030\005 \001(\004\022\024\n\014micuidStatus\030\006" +
-      " \001(\005\"\037\n\014HeartBeatRsp\022\017\n\007retCode\030\001 \002(\r\"n\n",
-      "\nPKBeginReq\022\014\n\004uuid\030\001 \002(\004\022\r\n\005pkuid\030\002 \002(\004" +
-      "\022\020\n\010pkLiveId\030\003 \001(\t\022\026\n\016myPkInitTicket\030\004 \001" +
-      "(\r\022\031\n\021otherPkInitTicket\030\005 \001(\r\"P\n\nPKBegin" +
-      "Rsp\022\017\n\007retCode\030\001 \002(\r\022\026\n\016myPkInitTicket\030\002" +
-      " \001(\r\022\031\n\021otherPkInitTicket\030\003 \001(\r\"9\n\010PKEnd" +
-      "Req\022\014\n\004uuid\030\001 \002(\004\022\r\n\005pkuid\030\002 \002(\004\022\020\n\010pkLi" +
-      "veId\030\003 \001(\t\"\033\n\010PKEndRsp\022\017\n\007retCode\030\001 \002(\r\"" +
-      "\034\n\014GetPKInfoReq\022\014\n\004zuid\030\001 \002(\004\"\202\001\n\014GetPKI" +
-      "nfoRsp\022\017\n\007retCode\030\001 \002(\r\022/\n\nthisPKInfo\030\002 " +
-      "\001(\0132\033.com.wali.live.proto.PKInfo\0220\n\013othe",
-      "rPKInfo\030\003 \001(\0132\033.com.wali.live.proto.PKIn" +
-      "fo\"\036\n\014ZuidSleepReq\022\016\n\006liveId\030\001 \002(\t\"\037\n\014Zu" +
-      "idSleepRsp\022\017\n\007retCode\030\001 \002(\r\"\037\n\rZuidActiv" +
-      "eReq\022\016\n\006liveId\030\001 \002(\t\" \n\rZuidActiveRsp\022\017\n" +
-      "\007retCode\030\001 \002(\r\"F\n\017AdminSettingReq\022\020\n\010adm" +
-      "inUid\030\001 \002(\004\022\021\n\toperation\030\002 \002(\r\022\016\n\006liveId" +
-      "\030\003 \001(\t\"\"\n\017AdminSettingRsp\022\017\n\007retCode\030\001 \002" +
-      "(\r\"\036\n\014AdminListReq\022\016\n\006liveId\030\001 \002(\t\"9\n\014Ad" +
-      "minListRsp\022\017\n\007retCode\030\001 \002(\r\022\030\n\005users\030\002 \003" +
-      "(\0132\t.UserInfo\"R\n\020SetBanSpeakerReq\022\016\n\006liv",
-      "eId\030\001 \002(\t\022\014\n\004zuid\030\002 \002(\004\022\014\n\004uuid\030\003 \002(\004\022\022\n" +
-      "\nbanSpeaker\030\004 \003(\004\"#\n\020SetBanSpeakerRsp\022\017\n" +
-      "\007retCode\030\001 \002(\r\"G\n\023CancelBanSpeakerReq\022\016\n" +
-      "\006liveId\030\001 \002(\t\022\014\n\004zuid\030\002 \002(\004\022\022\n\nbanSpeake" +
-      "r\030\003 \003(\004\"&\n\023CancelBanSpeakerRsp\022\017\n\007retCod" +
-      "e\030\001 \002(\r\"E\n\027GetLiveKeyPersonInfoReq\022\014\n\004uu" +
-      "id\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\">" +
-      "\n\027GetLiveKeyPersonInfoRsp\022\017\n\007retCode\030\001 \002" +
-      "(\r\022\022\n\nbanSpeaker\030\002 \003(\004\",\n\016HistoryLiveReq" +
-      "\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\"s\n\016HistoryL",
-      "iveRsp\022\017\n\007retCode\030\001 \002(\r\022\031\n\007hisLive\030\002 \003(\013" +
-      "2\010.HisLive\022\014\n\004type\030\003 \001(\r\022\'\n\014ticketStatus" +
-      "\030\004 \001(\0132\021.TicketLiveStatus\"\353\001\n\rViewerInfo" +
-      "Rsp\022\017\n\007retCode\030\001 \002(\r\022\021\n\tviewerCnt\030\002 \001(\r\022" +
-      "+\n\006viewer\030\003 \003(\0132\033.com.wali.live.proto.Vi" +
-      "ewer\022/\n\010location\030\004 \001(\0132\035.com.wali.live.p" +
-      "roto.Location\022\014\n\004type\030\005 \001(\r\022\020\n\010shareUrl\030" +
-      "\006 \001(\t\022\022\n\nbanSpeaker\030\007 \003(\004\022\021\n\tadminUuid\030\010" +
-      " \003(\004\022\021\n\ttimestamp\030\t \001(\004\"\031\n\tMyRoomReq\022\014\n\004" +
-      "uuid\030\001 \002(\004\"\314\002\n\tMyRoomRsp\022\017\n\007retCode\030\001 \002(",
-      "\r\022\016\n\006liveId\030\002 \001(\t\022\020\n\010shareUrl\030\003 \001(\t\022\023\n\013u" +
-      "pStreamUrl\030\004 \001(\t\022\014\n\004type\030\005 \001(\r\022\020\n\010passwo" +
-      "rd\030\006 \001(\t\022\017\n\007appType\030\007 \001(\r\022-\n\007msgRule\030\010 \001" +
-      "(\0132\034.com.wali.live.proto.MsgRule\022\017\n\007invi" +
-      "tee\030\t \003(\004\022\025\n\rdownStreamUrl\030\n \001(\t\022\035\n\tlive" +
-      "Cover\030\013 \001(\0132\n.LiveCover\022\026\n\016udpUpstreamUr" +
-      "l\030\014 \001(\t\0228\n\016newUpStreamUrl\030\r \003(\0132 .com.wa" +
-      "li.live.proto.UpStreamUrl\"=\n\013IsInRoomReq" +
-      "\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022\020\n\010viewer" +
-      "Id\030\003 \003(\004\"0\n\013IsInRoomRsp\022\017\n\007retCode\030\001 \002(\r",
-      "\022\020\n\010viewerId\030\002 \003(\004\"?\n\017MicuidActiveReq\022\016\n" +
-      "\006liveId\030\001 \002(\t\022\016\n\006micuid\030\002 \002(\004\022\014\n\004zuid\030\003 " +
-      "\002(\004\"\"\n\017MicuidActiveRsp\022\017\n\007retCode\030\001 \002(\r\"" +
-      ">\n\016MicuidSleepReq\022\016\n\006liveId\030\001 \002(\t\022\016\n\006mic" +
-      "uid\030\002 \002(\004\022\014\n\004zuid\030\003 \002(\004\"!\n\016MicuidSleepRs" +
-      "p\022\017\n\007retCode\030\001 \002(\r\"_\n\020UpdateMsgRuleReq\022\014" +
-      "\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022-\n\007msgRule\030" +
-      "\003 \002(\0132\034.com.wali.live.proto.MsgRule\"#\n\020U" +
-      "pdateMsgRuleRsp\022\017\n\007retCode\030\001 \002(\r\"B\n\021Room" +
-      "AddInviteeReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 ",
-      "\002(\t\022\017\n\007invitee\030\003 \003(\004\"$\n\021RoomAddInviteeRs" +
-      "p\022\017\n\007retCode\030\001 \002(\r\"E\n\024RoomDeleteInviteeR" +
-      "eq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022\017\n\007invi" +
-      "tee\030\003 \003(\004\"\'\n\024RoomDeleteInviteeRsp\022\017\n\007ret" +
-      "Code\030\001 \002(\r\"\277\001\n\024GetRoomAttachmentReq\022\014\n\004z" +
-      "uid\030\001 \002(\004\022\023\n\013isGetWidget\030\002 \001(\010\022\016\n\006liveid" +
-      "\030\003 \002(\t\022\026\n\016isGetAnimation\030\004 \001(\010\022\025\n\risGetS" +
-      "hopType\030\005 \001(\010\022\020\n\010roomType\030\006 \001(\r\022\027\n\017isGet" +
-      "IconConfig\030\007 \001(\010\022\032\n\022isGetRoomExtraCtrl\030\010" +
-      " \001(\010\"\343\004\n\024GetRoomAttachmentRsp\022\017\n\007retCode",
-      "\030\001 \002(\r\0223\n\nwidgetInfo\030\002 \003(\0132\037.com.wali.li" +
-      "ve.proto.WidgetInfo\022A\n\017animationConfig\030\003" +
-      " \001(\0132(.com.wali.live.proto.RoomAnimation" +
-      "Config\022;\n\016shoppingConfig\030\004 \001(\0132#.com.wal" +
-      "i.live.proto.ShoppingConfig\0229\n\rnewWidget" +
-      "Info\030\005 \001(\0132\".com.wali.live.proto.NewWidg" +
-      "etInfo\0227\n\niconConfig\030\006 \001(\0132#.com.wali.li" +
-      "ve.proto.RoomIconConfig\022/\n\010ctrlInfo\030\007 \001(" +
-      "\0132\035.com.wali.live.proto.CtrlInfo\0221\n\007coun" +
-      "ter\030\010 \001(\0132 .com.wali.live.proto.LimitedI",
-      "nfo\0224\n\nvipCounter\030\t \001(\0132 .com.wali.live." +
-      "proto.LimitedInfo\0226\n\014vfansCounter\030\n \001(\0132" +
-      " .com.wali.live.proto.LimitedInfo\022?\n\020spe" +
-      "edyGiftConfig\030\013 \001(\0132%.com.wali.live.prot" +
-      "o.SpeedyGiftConfig\"\"\n\020SpeedyGiftConfig\022\016" +
-      "\n\006giftId\030\001 \001(\r\"]\n\033SmartBarrageCtrlPullRe" +
-      "quest\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \001(\004\022\017\n\007roo" +
-      "m_id\030\003 \001(\t\022\021\n\troom_type\030\004 \001(\r\"y\n\034SmartBa" +
-      "rrageCtrlPullResponse\022\013\n\003ret\030\001 \002(\r\022\017\n\007er" +
-      "r_msg\030\002 \001(\t\022;\n\010ctrl_msg\030\003 \003(\0132).com.wali",
-      ".live.proto.RoomExtraCtrlMessage\"D\n\010Ctrl" +
-      "Info\022\032\n\022room_switch_status\030\001 \001(\010\022\034\n\024glob" +
-      "al_switch_status\030\002 \001(\010\"+\n\013LimitedInfo\022\017\n" +
-      "\007counter\030\001 \001(\r\022\013\n\003max\030\002 \001(\r\"<\n\024RoomExtra" +
-      "CtrlMessage\022\021\n\ttype_info\030\001 \002(\r\022\021\n\tctrl_i" +
-      "nfo\030\002 \001(\014\"B\n\020GetRoomWidgetReq\022\014\n\004zuid\030\001 " +
-      "\002(\004\022\016\n\006liveid\030\002 \002(\t\022\020\n\010roomType\030\003 \001(\r\"\262\001" +
-      "\n\020GetRoomWidgetRsp\022\017\n\007retCode\030\001 \002(\r\0229\n\rn" +
-      "ewWidgetInfo\030\002 \001(\0132\".com.wali.live.proto" +
-      ".NewWidgetInfo\022\021\n\ttimestamp\030\003 \001(\004\022?\n\020spe",
-      "edyGiftConfig\030\004 \001(\0132%.com.wali.live.prot" +
-      "o.SpeedyGiftConfig\"@\n\016WidgetClickReq\022\020\n\010" +
-      "widgetID\030\001 \002(\r\022\014\n\004zuid\030\002 \001(\004\022\016\n\006liveid\030\003" +
-      " \001(\t\"Y\n\016WidgetClickRsp\022\017\n\007retCode\030\001 \002(\r\022" +
-      "\023\n\013counterText\030\002 \001(\t\022\021\n\ttimestamp\030\003 \001(\004\022" +
-      "\016\n\006giftId\030\004 \001(\r\"/\n\017GetTitleListReq\022\014\n\004uu" +
-      "id\030\001 \001(\004\022\016\n\006source\030\002 \003(\r\"V\n\017GetTitleList" +
-      "Rsp\022\017\n\007retCode\030\001 \002(\r\0222\n\ntitle_info\030\002 \003(\013" +
-      "2\036.com.wali.live.proto.TitleInfo\"/\n\tTitl" +
-      "eInfo\022\016\n\006source\030\001 \001(\r\022\022\n\ntitle_list\030\002 \003(",
-      "\t\"G\n\030CheckMicQualificationReq\022\014\n\004uuid\030\001 " +
-      "\002(\004\022\017\n\007live_id\030\002 \002(\t\022\014\n\004zuid\030\003 \002(\004\",\n\030Ch" +
-      "eckMicQualificationRsp\022\020\n\010ret_code\030\001 \002(\r" +
-      "B \n\023com.wali.live.protoB\tLiveProto"
+      "\032\013Live2.proto\032\014LivePk.proto\032\022BigTurnTabl" +
+      "e.proto\"w\n\014GetRoomIdReq\022\014\n\004uuid\030\001 \002(\004\022\017\n" +
+      "\007appType\030\002 \001(\r\022\031\n\007appInfo\030\003 \001(\0132\010.AppInf" +
+      "o\022\014\n\004type\030\004 \001(\r\022\017\n\007guildId\030\005 \001(\004\022\016\n\006sour" +
+      "ce\030\006 \001(\r\"\274\001\n\014GetRoomIdRsp\022\017\n\007retCode\030\001 \002" +
+      "(\r\022\016\n\006liveId\030\002 \001(\t\022\020\n\010shareUrl\030\003 \001(\t\022\023\n\013" +
+      "upStreamUrl\030\004 \001(\t\022\022\n\nbeginLevel\030\005 \001(\r\022\026\n" +
+      "\016udpUpstreamUrl\030\006 \001(\t\0228\n\016newUpStreamUrl\030",
+      "\007 \003(\0132 .com.wali.live.proto.UpStreamUrl\"" +
+      "\377\002\n\014BeginLiveReq\022\014\n\004uuid\030\001 \002(\004\022/\n\010locati" +
+      "on\030\002 \001(\0132\035.com.wali.live.proto.Location\022" +
+      "\014\n\004type\030\003 \001(\r\022\017\n\007invitee\030\004 \003(\004\022\022\n\naddHis" +
+      "tory\030\005 \001(\010\022\021\n\tliveTitle\030\006 \001(\t\022\020\n\010passwor" +
+      "d\030\007 \001(\t\022\035\n\tliveCover\030\010 \001(\0132\n.LiveCover\022\016" +
+      "\n\006liveId\030\t \001(\t\022\017\n\007appType\030\n \001(\r\022\031\n\007appIn" +
+      "fo\030\013 \001(\0132\010.AppInfo\022\016\n\006playUI\030\014 \001(\r\022\'\n\016ti" +
+      "cketLiveInfo\030\r \001(\0132\017.TicketLiveInfo\022\032\n\010t" +
+      "agInfos\030\016 \003(\0132\010.TagInfo\022\030\n\020supportMagicF",
+      "ace\030\020 \001(\010\022\016\n\006source\030\021 \001(\r\"\346\001\n\014BeginLiveR" +
+      "sp\022\017\n\007retCode\030\001 \002(\r\022\016\n\006liveId\030\002 \001(\t\022\022\n\nc" +
+      "reateTime\030\003 \001(\004\022\020\n\010shareUrl\030\004 \001(\t\022\023\n\013upS" +
+      "treamUrl\030\005 \001(\t\022\022\n\nbeginLevel\030\006 \001(\r\022\024\n\014sh" +
+      "owIconCtrl\030\007 \001(\r\022\026\n\016udpUpstreamUrl\030\010 \001(\t" +
+      "\0228\n\016newUpStreamUrl\030\t \003(\0132 .com.wali.live" +
+      ".proto.UpStreamUrl\"g\n\nEndLiveReq\022\014\n\004uuid" +
+      "\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022\017\n\007appType\030\003 \001(\r\022" +
+      "\031\n\007appInfo\030\004 \001(\0132\010.AppInfo\022\017\n\007guildId\030\005 " +
+      "\001(\004\"\311\001\n\nEndLiveRsp\022\017\n\007retCode\030\001 \002(\r\022\024\n\014h",
+      "isViewerCnt\030\002 \001(\r\022\033\n\023generateHistorySucc" +
+      "\030\003 \001(\010\022\032\n\022generateHistoryMsg\030\004 \001(\t\022\030\n\020ti" +
+      "cketBuyerCount\030\005 \001(\r\022\027\n\017hisBeginLiveCnt\030" +
+      "\006 \001(\004\022\020\n\010duration\030\007 \001(\004\022\026\n\016newFollowerCn" +
+      "t\030\010 \001(\004\"u\n\014EnterLiveReq\022\014\n\004uuid\030\001 \002(\004\022\014\n" +
+      "\004zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\022\020\n\010password\030" +
+      "\004 \001(\t\022\014\n\004type\030\005 \001(\r\022\031\n\021showSpecialEffect" +
+      "\030\006 \001(\010\"\321\006\n\014EnterLiveRsp\022\017\n\007retCode\030\001 \002(\r" +
+      "\022\021\n\tviewerCnt\030\002 \001(\r\022+\n\006viewer\030\004 \003(\0132\033.co" +
+      "m.wali.live.proto.Viewer\022\021\n\tisManager\030\006 ",
+      "\001(\010\022\020\n\010banSpeak\030\007 \001(\010\022/\n\010location\030\010 \001(\0132" +
+      "\035.com.wali.live.proto.Location\022\014\n\004type\030\t" +
+      " \001(\r\022\020\n\010shareUrl\030\n \001(\t\0220\n\013otherPKInfo\030\013 " +
+      "\001(\0132\033.com.wali.live.proto.PKInfo\022\024\n\014pkIn" +
+      "itTicket\030\014 \001(\r\022\025\n\rdownStreamUrl\030\r \001(\t\022-\n" +
+      "\007micInfo\030\016 \001(\0132\034.com.wali.live.proto.Mic" +
+      "Info\022\024\n\014micuidStatus\030\017 \001(\r\022\021\n\ttimestamp\030" +
+      "\020 \001(\004\022\035\n\tliveCover\030\021 \001(\0132\n.LiveCover\022\021\n\t" +
+      "liveTitle\030\022 \001(\t\022\023\n\013messageMode\030\023 \001(\005\022-\n\007" +
+      "msgRule\030\024 \001(\0132\034.com.wali.live.proto.MsgR",
+      "ule\022\016\n\006isShop\030\025 \001(\010\022\020\n\010hideGift\030\026 \001(\010\022\020\n" +
+      "\010hideIcon\030\027 \001(\005\022\'\n\014ticketStatus\030\030 \001(\0132\021." +
+      "TicketLiveStatus\022\030\n\020supportMagicFace\030\032 \001" +
+      "(\010\022\027\n\017enableViewerMic\030\033 \001(\010\022\023\n\013is_pk_adm" +
+      "in\030\034 \001(\010\0223\n\013new_pk_info\030\035 \001(\0132\036.com.wali" +
+      ".live.proto.NewPKInfo\0226\n\014contest_info\030  " +
+      "\001(\0132 .com.wali.live.proto.ContestInfo\022;\n" +
+      "\016thirdPartyInfo\030# \001(\0132#.com.wali.live.pr" +
+      "oto.ThirdPartyInfo\"V\n\016ThirdPartyInfo\022\014\n\004" +
+      "uuid\030\001 \001(\004\022\025\n\rdownStreamUrl\030\002 \001(\t\022\017\n\007log",
+      "oUrl\030\003 \001(\t\022\016\n\006source\030\004 \001(\r\"Z\n\013MicBeginRe" +
+      "q\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022-\n\007micIn" +
+      "fo\030\003 \002(\0132\034.com.wali.live.proto.MicInfo\"\036" +
+      "\n\013MicBeginRsp\022\017\n\007retCode\030\001 \002(\r\"9\n\tMicEnd" +
+      "Req\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022\016\n\006mic" +
+      "uid\030\003 \002(\004\"\034\n\tMicEndRsp\022\017\n\007retCode\030\001 \002(\r\"" +
+      ":\n\014ViewerTopReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 " +
+      "\002(\004\022\016\n\006liveId\030\003 \002(\t\"L\n\014ViewerTopRsp\022\017\n\007r" +
+      "etCode\030\001 \002(\r\022+\n\006viewer\030\002 \003(\0132\033.com.wali." +
+      "live.proto.Viewer\"{\n\013RoomInfoReq\022\014\n\004uuid",
+      "\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\022\020\n\010" +
+      "password\030\004 \001(\t\022\025\n\rgetLatestLive\030\005 \001(\010\022\027\n" +
+      "\017getGameInfoOnly\030\006 \001(\010\"\250\002\n\013RoomInfoRsp\022\017" +
+      "\n\007retCode\030\001 \002(\r\022\025\n\rdownStreamUrl\030\002 \001(\t\022\023" +
+      "\n\013playbackUrl\030\003 \001(\t\022\020\n\010shareUrl\030\004 \001(\t\022\021\n" +
+      "\tbeginTime\030\005 \001(\004\022\016\n\006liveid\030\006 \001(\t\022\014\n\004type" +
+      "\030\007 \001(\r\022\'\n\014ticketStatus\030\010 \001(\0132\021.TicketLiv" +
+      "eStatus\0228\n\rgamepack_info\030\t \001(\0132!.com.wal" +
+      "i.live.proto.GamePackInfo\0226\n\014contest_inf" +
+      "o\030\n \001(\0132 .com.wali.live.proto.ContestInf",
+      "o\"]\n\013ContestInfo\022\024\n\014able_contest\030\001 \001(\010\022\023" +
+      "\n\013revival_num\030\002 \001(\r\022\017\n\007is_late\030\003 \001(\010\022\022\n\n" +
+      "contest_id\030\004 \001(\t\"\257\002\n\014GamePackInfo\022\014\n\004zui" +
+      "d\030\001 \001(\004\022\016\n\006roomId\030\002 \001(\t\022\021\n\tcdnDomain\030\003 \001" +
+      "(\t\022\023\n\013displayName\030\004 \001(\t\022\016\n\006gameId\030\005 \001(\r\022" +
+      "\023\n\013pacakgeName\030\006 \001(\t\022\014\n\004icon\030\007 \001(\t\022\022\n\nga" +
+      "meApkSs1\030\010 \001(\t\022\017\n\007gameApk\030\t \001(\t\022\021\n\tshort" +
+      "Name\030\n \001(\t\0226\n\006level1\030\013 \001(\0132&.com.wali.li" +
+      "ve.proto.GameTagInfoDetail\0226\n\006level2\030\014 \001" +
+      "(\0132&.com.wali.live.proto.GameTagInfoDeta",
+      "il\"-\n\021GameTagInfoDetail\022\n\n\002id\030\001 \001(\r\022\014\n\004n" +
+      "ame\030\002 \001(\t\"O\n\014LeaveLiveReq\022\014\n\004uuid\030\001 \002(\004\022" +
+      "\014\n\004zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\022\023\n\013message" +
+      "Mode\030\004 \001(\005\"\037\n\014LeaveLiveRsp\022\017\n\007retCode\030\001 " +
+      "\002(\r\"0\n\020HistoryDeleteReq\022\014\n\004zuid\030\001 \002(\004\022\016\n" +
+      "\006liveId\030\002 \002(\t\"#\n\020HistoryDeleteRsp\022\017\n\007ret" +
+      "Code\030\001 \002(\r\"u\n\014HeartBeatReq\022\016\n\006liveId\030\001 \002" +
+      "(\t\022\r\n\005pkuid\030\002 \001(\004\022\020\n\010pkLiveId\030\003 \001(\t\022\016\n\006s" +
+      "tatus\030\004 \001(\005\022\016\n\006micuid\030\005 \001(\004\022\024\n\014micuidSta" +
+      "tus\030\006 \001(\005\"\037\n\014HeartBeatRsp\022\017\n\007retCode\030\001 \002",
+      "(\r\"n\n\nPKBeginReq\022\014\n\004uuid\030\001 \002(\004\022\r\n\005pkuid\030" +
+      "\002 \002(\004\022\020\n\010pkLiveId\030\003 \001(\t\022\026\n\016myPkInitTicke" +
+      "t\030\004 \001(\r\022\031\n\021otherPkInitTicket\030\005 \001(\r\"P\n\nPK" +
+      "BeginRsp\022\017\n\007retCode\030\001 \002(\r\022\026\n\016myPkInitTic" +
+      "ket\030\002 \001(\r\022\031\n\021otherPkInitTicket\030\003 \001(\r\"9\n\010" +
+      "PKEndReq\022\014\n\004uuid\030\001 \002(\004\022\r\n\005pkuid\030\002 \002(\004\022\020\n" +
+      "\010pkLiveId\030\003 \001(\t\"\033\n\010PKEndRsp\022\017\n\007retCode\030\001" +
+      " \002(\r\"\034\n\014GetPKInfoReq\022\014\n\004zuid\030\001 \002(\004\"\202\001\n\014G" +
+      "etPKInfoRsp\022\017\n\007retCode\030\001 \002(\r\022/\n\nthisPKIn" +
+      "fo\030\002 \001(\0132\033.com.wali.live.proto.PKInfo\0220\n",
+      "\013otherPKInfo\030\003 \001(\0132\033.com.wali.live.proto" +
+      ".PKInfo\"\036\n\014ZuidSleepReq\022\016\n\006liveId\030\001 \002(\t\"" +
+      "\037\n\014ZuidSleepRsp\022\017\n\007retCode\030\001 \002(\r\"\037\n\rZuid" +
+      "ActiveReq\022\016\n\006liveId\030\001 \002(\t\" \n\rZuidActiveR" +
+      "sp\022\017\n\007retCode\030\001 \002(\r\"F\n\017AdminSettingReq\022\020" +
+      "\n\010adminUid\030\001 \002(\004\022\021\n\toperation\030\002 \002(\r\022\016\n\006l" +
+      "iveId\030\003 \001(\t\"\"\n\017AdminSettingRsp\022\017\n\007retCod" +
+      "e\030\001 \002(\r\"\036\n\014AdminListReq\022\016\n\006liveId\030\001 \002(\t\"" +
+      "9\n\014AdminListRsp\022\017\n\007retCode\030\001 \002(\r\022\030\n\005user" +
+      "s\030\002 \003(\0132\t.UserInfo\"R\n\020SetBanSpeakerReq\022\016",
+      "\n\006liveId\030\001 \002(\t\022\014\n\004zuid\030\002 \002(\004\022\014\n\004uuid\030\003 \002" +
+      "(\004\022\022\n\nbanSpeaker\030\004 \003(\004\"#\n\020SetBanSpeakerR" +
+      "sp\022\017\n\007retCode\030\001 \002(\r\"G\n\023CancelBanSpeakerR" +
+      "eq\022\016\n\006liveId\030\001 \002(\t\022\014\n\004zuid\030\002 \002(\004\022\022\n\nbanS" +
+      "peaker\030\003 \003(\004\"&\n\023CancelBanSpeakerRsp\022\017\n\007r" +
+      "etCode\030\001 \002(\r\"E\n\027GetLiveKeyPersonInfoReq\022" +
+      "\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\022\016\n\006liveId\030\003 " +
+      "\002(\t\">\n\027GetLiveKeyPersonInfoRsp\022\017\n\007retCod" +
+      "e\030\001 \002(\r\022\022\n\nbanSpeaker\030\002 \003(\004\",\n\016HistoryLi" +
+      "veReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\"s\n\016His",
+      "toryLiveRsp\022\017\n\007retCode\030\001 \002(\r\022\031\n\007hisLive\030" +
+      "\002 \003(\0132\010.HisLive\022\014\n\004type\030\003 \001(\r\022\'\n\014ticketS" +
+      "tatus\030\004 \001(\0132\021.TicketLiveStatus\"\353\001\n\rViewe" +
+      "rInfoRsp\022\017\n\007retCode\030\001 \002(\r\022\021\n\tviewerCnt\030\002" +
+      " \001(\r\022+\n\006viewer\030\003 \003(\0132\033.com.wali.live.pro" +
+      "to.Viewer\022/\n\010location\030\004 \001(\0132\035.com.wali.l" +
+      "ive.proto.Location\022\014\n\004type\030\005 \001(\r\022\020\n\010shar" +
+      "eUrl\030\006 \001(\t\022\022\n\nbanSpeaker\030\007 \003(\004\022\021\n\tadminU" +
+      "uid\030\010 \003(\004\022\021\n\ttimestamp\030\t \001(\004\"\031\n\tMyRoomRe" +
+      "q\022\014\n\004uuid\030\001 \002(\004\"\314\002\n\tMyRoomRsp\022\017\n\007retCode",
+      "\030\001 \002(\r\022\016\n\006liveId\030\002 \001(\t\022\020\n\010shareUrl\030\003 \001(\t" +
+      "\022\023\n\013upStreamUrl\030\004 \001(\t\022\014\n\004type\030\005 \001(\r\022\020\n\010p" +
+      "assword\030\006 \001(\t\022\017\n\007appType\030\007 \001(\r\022-\n\007msgRul" +
+      "e\030\010 \001(\0132\034.com.wali.live.proto.MsgRule\022\017\n" +
+      "\007invitee\030\t \003(\004\022\025\n\rdownStreamUrl\030\n \001(\t\022\035\n" +
+      "\tliveCover\030\013 \001(\0132\n.LiveCover\022\026\n\016udpUpstr" +
+      "eamUrl\030\014 \001(\t\0228\n\016newUpStreamUrl\030\r \003(\0132 .c" +
+      "om.wali.live.proto.UpStreamUrl\"=\n\013IsInRo" +
+      "omReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022\020\n\010v" +
+      "iewerId\030\003 \003(\004\"0\n\013IsInRoomRsp\022\017\n\007retCode\030",
+      "\001 \002(\r\022\020\n\010viewerId\030\002 \003(\004\"?\n\017MicuidActiveR" +
+      "eq\022\016\n\006liveId\030\001 \002(\t\022\016\n\006micuid\030\002 \002(\004\022\014\n\004zu" +
+      "id\030\003 \002(\004\"\"\n\017MicuidActiveRsp\022\017\n\007retCode\030\001" +
+      " \002(\r\">\n\016MicuidSleepReq\022\016\n\006liveId\030\001 \002(\t\022\016" +
+      "\n\006micuid\030\002 \002(\004\022\014\n\004zuid\030\003 \002(\004\"!\n\016MicuidSl" +
+      "eepRsp\022\017\n\007retCode\030\001 \002(\r\"_\n\020UpdateMsgRule" +
+      "Req\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022-\n\007msg" +
+      "Rule\030\003 \002(\0132\034.com.wali.live.proto.MsgRule" +
+      "\"#\n\020UpdateMsgRuleRsp\022\017\n\007retCode\030\001 \002(\r\"B\n" +
+      "\021RoomAddInviteeReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006live",
+      "Id\030\002 \002(\t\022\017\n\007invitee\030\003 \003(\004\"$\n\021RoomAddInvi" +
+      "teeRsp\022\017\n\007retCode\030\001 \002(\r\"E\n\024RoomDeleteInv" +
+      "iteeReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \002(\t\022\017\n" +
+      "\007invitee\030\003 \003(\004\"\'\n\024RoomDeleteInviteeRsp\022\017" +
+      "\n\007retCode\030\001 \002(\r\"\327\001\n\024GetRoomAttachmentReq" +
+      "\022\014\n\004zuid\030\001 \002(\004\022\023\n\013isGetWidget\030\002 \001(\010\022\016\n\006l" +
+      "iveid\030\003 \002(\t\022\026\n\016isGetAnimation\030\004 \001(\010\022\025\n\ri" +
+      "sGetShopType\030\005 \001(\010\022\020\n\010roomType\030\006 \001(\r\022\027\n\017" +
+      "isGetIconConfig\030\007 \001(\010\022\032\n\022isGetRoomExtraC" +
+      "trl\030\010 \001(\010\022\026\n\016isGetTurntable\030\t \001(\010\"\242\005\n\024Ge",
+      "tRoomAttachmentRsp\022\017\n\007retCode\030\001 \002(\r\0223\n\nw" +
+      "idgetInfo\030\002 \003(\0132\037.com.wali.live.proto.Wi" +
+      "dgetInfo\022A\n\017animationConfig\030\003 \001(\0132(.com." +
+      "wali.live.proto.RoomAnimationConfig\022;\n\016s" +
+      "hoppingConfig\030\004 \001(\0132#.com.wali.live.prot" +
+      "o.ShoppingConfig\0229\n\rnewWidgetInfo\030\005 \001(\0132" +
+      "\".com.wali.live.proto.NewWidgetInfo\0227\n\ni" +
+      "conConfig\030\006 \001(\0132#.com.wali.live.proto.Ro" +
+      "omIconConfig\022/\n\010ctrlInfo\030\007 \001(\0132\035.com.wal" +
+      "i.live.proto.CtrlInfo\0221\n\007counter\030\010 \001(\0132 ",
+      ".com.wali.live.proto.LimitedInfo\0224\n\nvipC" +
+      "ounter\030\t \001(\0132 .com.wali.live.proto.Limit" +
+      "edInfo\0226\n\014vfansCounter\030\n \001(\0132 .com.wali." +
+      "live.proto.LimitedInfo\022?\n\020speedyGiftConf" +
+      "ig\030\013 \001(\0132%.com.wali.live.proto.SpeedyGif" +
+      "tConfig\022=\n\017turntableConfig\030\r \003(\0132$.com.w" +
+      "ali.live.proto.TurntableConfig\"\"\n\020Speedy" +
+      "GiftConfig\022\016\n\006giftId\030\001 \001(\r\"]\n\033SmartBarra" +
+      "geCtrlPullRequest\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030" +
+      "\002 \001(\004\022\017\n\007room_id\030\003 \001(\t\022\021\n\troom_type\030\004 \001(",
+      "\r\"y\n\034SmartBarrageCtrlPullResponse\022\013\n\003ret" +
+      "\030\001 \002(\r\022\017\n\007err_msg\030\002 \001(\t\022;\n\010ctrl_msg\030\003 \003(" +
+      "\0132).com.wali.live.proto.RoomExtraCtrlMes" +
+      "sage\"D\n\010CtrlInfo\022\032\n\022room_switch_status\030\001" +
+      " \001(\010\022\034\n\024global_switch_status\030\002 \001(\010\"+\n\013Li" +
+      "mitedInfo\022\017\n\007counter\030\001 \001(\r\022\013\n\003max\030\002 \001(\r\"" +
+      "<\n\024RoomExtraCtrlMessage\022\021\n\ttype_info\030\001 \002" +
+      "(\r\022\021\n\tctrl_info\030\002 \001(\014\"B\n\020GetRoomWidgetRe" +
+      "q\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveid\030\002 \002(\t\022\020\n\010roomT" +
+      "ype\030\003 \001(\r\"\262\001\n\020GetRoomWidgetRsp\022\017\n\007retCod",
+      "e\030\001 \002(\r\0229\n\rnewWidgetInfo\030\002 \001(\0132\".com.wal" +
+      "i.live.proto.NewWidgetInfo\022\021\n\ttimestamp\030" +
+      "\003 \001(\004\022?\n\020speedyGiftConfig\030\004 \001(\0132%.com.wa" +
+      "li.live.proto.SpeedyGiftConfig\"@\n\016Widget" +
+      "ClickReq\022\020\n\010widgetID\030\001 \002(\r\022\014\n\004zuid\030\002 \001(\004" +
+      "\022\016\n\006liveid\030\003 \001(\t\"Y\n\016WidgetClickRsp\022\017\n\007re" +
+      "tCode\030\001 \002(\r\022\023\n\013counterText\030\002 \001(\t\022\021\n\ttime" +
+      "stamp\030\003 \001(\004\022\016\n\006giftId\030\004 \001(\r\"/\n\017GetTitleL" +
+      "istReq\022\014\n\004uuid\030\001 \001(\004\022\016\n\006source\030\002 \003(\r\"V\n\017" +
+      "GetTitleListRsp\022\017\n\007retCode\030\001 \002(\r\0222\n\ntitl",
+      "e_info\030\002 \003(\0132\036.com.wali.live.proto.Title" +
+      "Info\"/\n\tTitleInfo\022\016\n\006source\030\001 \001(\r\022\022\n\ntit" +
+      "le_list\030\002 \003(\t\"G\n\030CheckMicQualificationRe" +
+      "q\022\014\n\004uuid\030\001 \002(\004\022\017\n\007live_id\030\002 \002(\t\022\014\n\004zuid" +
+      "\030\003 \002(\004\",\n\030CheckMicQualificationRsp\022\020\n\010re" +
+      "t_code\030\001 \002(\rB \n\023com.wali.live.protoB\tLiv" +
+      "eProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -77104,8 +77689,8 @@ public final class LiveProto {
           com.wali.live.proto.AccountProto.getDescriptor(),
           com.wali.live.proto.LiveCommonProto.getDescriptor(),
           com.wali.live.proto.Live2Proto.getDescriptor(),
-          com.wali.live.proto.LiveMicProto.getDescriptor(),
           com.wali.live.proto.LivePKProto.getDescriptor(),
+          com.wali.live.proto.BigTurnTableProto.getDescriptor(),
         }, assigner);
     internal_static_com_wali_live_proto_GetRoomIdReq_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -77490,13 +78075,13 @@ public final class LiveProto {
     internal_static_com_wali_live_proto_GetRoomAttachmentReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetRoomAttachmentReq_descriptor,
-        new java.lang.String[] { "Zuid", "IsGetWidget", "Liveid", "IsGetAnimation", "IsGetShopType", "RoomType", "IsGetIconConfig", "IsGetRoomExtraCtrl", });
+        new java.lang.String[] { "Zuid", "IsGetWidget", "Liveid", "IsGetAnimation", "IsGetShopType", "RoomType", "IsGetIconConfig", "IsGetRoomExtraCtrl", "IsGetTurntable", });
     internal_static_com_wali_live_proto_GetRoomAttachmentRsp_descriptor =
       getDescriptor().getMessageTypes().get(64);
     internal_static_com_wali_live_proto_GetRoomAttachmentRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetRoomAttachmentRsp_descriptor,
-        new java.lang.String[] { "RetCode", "WidgetInfo", "AnimationConfig", "ShoppingConfig", "NewWidgetInfo", "IconConfig", "CtrlInfo", "Counter", "VipCounter", "VfansCounter", "SpeedyGiftConfig", });
+        new java.lang.String[] { "RetCode", "WidgetInfo", "AnimationConfig", "ShoppingConfig", "NewWidgetInfo", "IconConfig", "CtrlInfo", "Counter", "VipCounter", "VfansCounter", "SpeedyGiftConfig", "TurntableConfig", });
     internal_static_com_wali_live_proto_SpeedyGiftConfig_descriptor =
       getDescriptor().getMessageTypes().get(65);
     internal_static_com_wali_live_proto_SpeedyGiftConfig_fieldAccessorTable = new
@@ -77591,8 +78176,8 @@ public final class LiveProto {
     com.wali.live.proto.AccountProto.getDescriptor();
     com.wali.live.proto.LiveCommonProto.getDescriptor();
     com.wali.live.proto.Live2Proto.getDescriptor();
-    com.wali.live.proto.LiveMicProto.getDescriptor();
     com.wali.live.proto.LivePKProto.getDescriptor();
+    com.wali.live.proto.BigTurnTableProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)
