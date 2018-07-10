@@ -348,9 +348,11 @@ public class ExoPlayer implements IPlayer {
     }
 
     @Override
-    public void setGravity(View view, Player.SurfaceGravity gravity, int width, int height) {
+    public void setGravity(Object view, Player.SurfaceGravity gravity, int width, int height) {
         MyLog.d(TAG, "setGravity" + " gravity=" + gravity + " width=" + width + " height=" + height);
-        mView = view;
+        if (view instanceof View) {
+            mView = (View) view;
+        }
 
         // 这个可以用来设置适应
         if (gravity == Player.SurfaceGravity.SurfaceGravityResizeAspectFill) {
@@ -519,6 +521,7 @@ public class ExoPlayer implements IPlayer {
         mMediaSource = null;
         sExoPlayer = null;
         mCallback = null;
+        mView = null;
     }
 
     @Override

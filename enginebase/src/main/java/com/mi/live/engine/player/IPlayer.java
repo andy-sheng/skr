@@ -38,7 +38,7 @@ public interface IPlayer {
 
     void setBufferTimeMax(float timeInSecond);
 
-    void setGravity(View view, Player.SurfaceGravity gravity, int width, int height);
+    void setGravity(Object view, Player.SurfaceGravity gravity, int width, int height);
 
     void shiftUp(float ratio, float min_layer_ratio, float max_layer_ratio, float mix_frame_ratio, float max_frame_ratio);
 
