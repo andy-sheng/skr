@@ -120,4 +120,5 @@
 
     <color name="top_bar_color">#5e43d5</color> <!-- 顶部titleBar 背景颜色-->
     <color name="top_bar_title_text_color">#ffffff</color> <!-- 顶部titleBar 文字标题颜色-->
+    <color name="color_e9d7fe">#e9d7fe</color>
 </resources>

@@ -206,6 +206,7 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_HIDE_GIFT_PANEL = MSG_POPUP_FIRST + 17;     // 隐藏 礼物面板
     public static final int MSG_POP_INSUFFICIENT_TIPS = MSG_POPUP_FIRST + 18;
     public static final int MSG_SHOW_FEEDBACK_VIEW = MSG_POPUP_FIRST + 19;
+    public static final int MSG_SHOW_BIG_TURN_TABLE = MSG_POPUP_FIRST + 20;
 
 
     //连麦/PK相关消息

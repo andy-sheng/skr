@@ -1,7 +1,10 @@
 package com.wali.live.livesdk.live.liveshow.presenter.panel;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
+import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
@@ -9,6 +12,7 @@ import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.utils.PlusParamUtils;
 import com.wali.live.livesdk.live.liveshow.view.panel.LivePlusPanel;
+import com.wali.live.watchsdk.bigturntable.BigTurnTableFragment;
 import com.wali.live.watchsdk.component.presenter.adapter.PlusItemAdapter;
 
 import java.util.ArrayList;
@@ -36,6 +40,9 @@ public class LivePlusPresenter extends BaseSdkRxPresenter<LivePlusPanel.IView>
         implements LivePlusPanel.IPresenter {
     private static final String TAG = "LivePlusPresenter";
 
+    private String mRoomId;
+    private long mUid;
+
     @Override
     protected String getTAG() {
         return TAG;
@@ -43,6 +50,11 @@ public class LivePlusPresenter extends BaseSdkRxPresenter<LivePlusPanel.IView>
 
     public LivePlusPresenter(@NonNull IEventController controller) {
         super(controller);
+    }
+
+    public void setRoomInfo(String roomId, long uid) {
+        this.mRoomId = roomId;
+        this.mUid = uid;
     }
 
     @Override
@@ -80,6 +92,11 @@ public class LivePlusPresenter extends BaseSdkRxPresenter<LivePlusPanel.IView>
                             plusItems.add(new PlusItemAdapter.PlusItem(R.id.envelope_btn,
                                     R.string.red_packet, R.drawable.live_plus_start_hongbao));
                         }
+
+                        if(!PlusParamUtils.isHideBigTurnTable()) {
+                            plusItems.add(new PlusItemAdapter.PlusItem(R.id.big_turn_table,
+                                    R.string.big_turn_table, R.drawable.bg_big_turn_table_show));
+                        }
                         return plusItems;
                     }
                 })
@@ -99,6 +116,15 @@ public class LivePlusPresenter extends BaseSdkRxPresenter<LivePlusPanel.IView>
                         MyLog.e(TAG, "syncPlusBtnConfig failed, exception=" + throwable);
                     }
                 });
+    }
+
+    @Override
+    public void showBigTurnTable() {
+        postEvent(MSG_HIDE_BOTTOM_PANEL);
+        if(!TextUtils.isEmpty(mRoomId)
+                && mUid != 0) {
+            BigTurnTableFragment.openFragment((BaseActivity) mView.getRealView().getContext(), mRoomId, mUid);
+        }
     }
 
     @Override

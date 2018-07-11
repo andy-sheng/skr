@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
+import com.base.log.MyLog;
 import com.wali.live.proto.BigTurnTableProto;
 
 /**
@@ -20,7 +21,8 @@ public class PrizeItemModel {
     private boolean isCustom;
     private String customDes;
     private int colorId;
-    private Bitmap drawable;
+//    private Drawable drawable;
+    private String giftPic;
     private boolean hasRotate;
     private int tickets;
 
@@ -128,20 +130,22 @@ public class PrizeItemModel {
         this.colorId = colorId;
     }
 
-    public Bitmap getDrawable() {
-        return drawable;
-    }
-
-    public void setDrawable(Drawable drawable) {
-        if(drawable == null) {
-            return;
-        }
-        this.drawable = ((BitmapDrawable) drawable).getBitmap();
-    }
-
-    public void setBmp(Bitmap bmp) {
-        this.drawable = bmp;
-    }
+//    public Drawable getDrawable() {
+//        return drawable;
+//    }
+//
+//    public void setDrawable(Drawable drawable) {
+//        if(drawable == null) {
+//            return;
+//        }
+//
+//        this.drawable = drawable;
+////        this.drawable = ((BitmapDrawable) drawable).getBitmap();
+//    }
+//
+////    public void setBmp(Bitmap bmp) {
+////        this.drawable = bmp;
+////    }
 
     public boolean isHasRotate() {
         return hasRotate;
@@ -149,5 +153,13 @@ public class PrizeItemModel {
 
     public void setHasRotate(boolean hasRotate) {
         this.hasRotate = hasRotate;
+    }
+
+    public String getGiftPic() {
+        return giftPic;
+    }
+
+    public void setGiftPic(String giftPic) {
+        this.giftPic = giftPic;
     }
 }
