@@ -778,5 +778,14 @@
     <string name="channel_default_text_line1">%s\'s session</string>
     <string name="km">%skm</string>
     <string name="m">%sm</string>
+    <string name="watch_feedback_btn">反馈</string>
+    <string name="dislike_anchor">不喜欢这个主播</string>
+    <string name="dislike_feedback_success">已成功提交</string>
+    <string name="dislike_feedback_fail">提交失败哦</string>
+    <string name="report_input_content">请填写举报的理由</string>
+    <string name="report_edittext_hint">最多提交200字</string>
+    <string name="report_send">提交</string>
+    <string name="report_success">举报成功</string>
+    <string name="report_fail">举报失败</string>
 
 </resources>

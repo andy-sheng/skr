@@ -46,6 +46,7 @@ public class WatchMenuPanel extends BaseBottomPanel<RelativeLayout, RelativeLayo
     private WatchMenuItemView mShareIv;
     private WatchMenuItemView mMsgIv;
     private WatchMenuItemView mFansIv;
+    private WatchMenuItemView mFeedBackIv;
 
     @Override
     public void onClick(View v) {
@@ -56,6 +57,8 @@ public class WatchMenuPanel extends BaseBottomPanel<RelativeLayout, RelativeLayo
             mPresenter.showMsgCtrlView();
         } else if (i == R.id.vip_fans_btn) {
             mPresenter.showVipFansView();
+        } else if(i == R.id.feed_back_btn) {
+            mPresenter.onFeedBackClick();
         }
     }
 
@@ -97,6 +100,10 @@ public class WatchMenuPanel extends BaseBottomPanel<RelativeLayout, RelativeLayo
             mFansIv = createImageView(R.drawable.menu_live_icon_pet, R.string.vfan_me, R.id.vip_fans_btn);
             mBottomBtnSet.add(mFansIv);
         }
+
+        mFeedBackIv = createImageView(R.drawable.live_menu_feedback_btn, R.string.watch_feedback_btn,R.id.feed_back_btn);
+        mBottomBtnSet.add(mFeedBackIv);
+
         orientChild();
         orientSelf();
     }
@@ -223,6 +230,8 @@ public class WatchMenuPanel extends BaseBottomPanel<RelativeLayout, RelativeLayo
         void startPresenter();
 
         void stopPresenter();
+
+        void onFeedBackClick();
     }
 
     public interface IView extends IViewProxy {

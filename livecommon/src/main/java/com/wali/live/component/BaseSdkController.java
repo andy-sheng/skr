@@ -205,6 +205,8 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_SHOW_FANS_PANEL = MSG_POPUP_FIRST + 16;     // 显示 更多面板
     public static final int MSG_HIDE_GIFT_PANEL = MSG_POPUP_FIRST + 17;     // 隐藏 礼物面板
     public static final int MSG_POP_INSUFFICIENT_TIPS = MSG_POPUP_FIRST + 18;
+    public static final int MSG_SHOW_FEEDBACK_VIEW = MSG_POPUP_FIRST + 19;
+
 
     //连麦/PK相关消息
     private static final int MSG_TOP_VIEW_FIRST = 24000;

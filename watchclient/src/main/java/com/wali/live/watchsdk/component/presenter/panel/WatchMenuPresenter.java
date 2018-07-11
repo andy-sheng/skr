@@ -3,15 +3,20 @@ package com.wali.live.watchsdk.component.presenter.panel;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
+import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.ErrorCode;
+import com.mi.live.data.api.feedback.FeedBackApi;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.proto.VFansProto;
+import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.view.panel.WatchMenuPanel;
 import com.wali.live.watchsdk.fans.model.FansGroupListModel;
 import com.wali.live.watchsdk.fans.request.GetGroupListRequest;
+import com.wali.live.watchsdk.feedback.ReportFragment;
 import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
 
 import org.greenrobot.eventbus.EventBus;
@@ -19,6 +24,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import rx.Observable;
+import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -31,6 +37,7 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_MENU_PANEL_HIDDEN
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_FANS_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_FEEDBACK_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_MESSAGE_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SHARE_PANEL;
 
@@ -68,6 +75,11 @@ public class WatchMenuPresenter extends BaseSdkRxPresenter<WatchMenuPanel.IView>
         postEvent(MSG_ON_MENU_PANEL_HIDDEN);
         unregisterAllAction();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onFeedBackClick() {
+        postEvent(MSG_SHOW_FEEDBACK_VIEW);
     }
 
     @Override
@@ -178,6 +190,43 @@ public class WatchMenuPresenter extends BaseSdkRxPresenter<WatchMenuPanel.IView>
                 });
     }
 
+    public void onClickDislikeButton(final long uid, final String roomId) {
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                boolean b = FeedBackApi.sendDisLikeLiveFeedBack(System.currentTimeMillis(), uid, roomId);
+                subscriber.onNext(b);
+                subscriber.onCompleted();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .compose(this.<Boolean>bindUntilEvent(PresenterEvent.STOP))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.d(TAG, e);
+                    }
+
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        ToastUtils.showToast(aBoolean ? R.string.dislike_feedback_success : R.string.dislike_feedback_fail);
+                    }
+                });
+    }
+
+    public void onClickBlockButton(long uid, String roomId, String videoUrl) {
+        ReportFragment.openFragment((BaseActivity) mView.getRealView().getContext()
+                , uid
+                , roomId
+                , videoUrl
+                , ReportFragment.LOCATION_ROOM, ReportFragment.EXT_ANCHOR);
+    }
 
     @Override
     public boolean onEvent(int event, IParams params) {

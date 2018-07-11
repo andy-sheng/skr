@@ -41,6 +41,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     private SoftReference<MessagePresenter> mMessagePresenterRef;
     private SoftReference<WatchMenuPanel> mMenuPanelRef;
     private SoftReference<WatchMenuPresenter> mMenuPresenterRef;
+    private WatchMenuPresenter mWatchMenuPresenter;
 
     @Override
     protected final String getTAG() {
@@ -109,14 +110,30 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
         if (panel == null) {
             panel = new WatchMenuPanel(mView, unReadCnt, mMyRoomData.getEnableShare());
             mMenuPanelRef = new SoftReference<>(panel);
-            WatchMenuPresenter presenter = deRef(mMenuPresenterRef);
-            if (presenter == null) {
-                presenter = new WatchMenuPresenter(mController);
-                mMenuPresenterRef = new SoftReference<>(presenter);
+            mWatchMenuPresenter = deRef(mMenuPresenterRef);
+            if (mWatchMenuPresenter == null) {
+                mWatchMenuPresenter = new WatchMenuPresenter(mController);
+                mMenuPresenterRef = new SoftReference<>(mWatchMenuPresenter);
             }
-            setupComponent(panel, presenter);
+            setupComponent(panel, mWatchMenuPresenter);
         }
         showPanel(panel, true);
+    }
+
+    public void onClickDislikeButton() {
+        if(mWatchMenuPresenter != null) {
+            mWatchMenuPresenter.onClickDislikeButton(mMyRoomData.getUid(), mMyRoomData.getRoomId());
+        }
+    }
+
+    public void onClickBlockButton() {
+        if(mWatchMenuPresenter != null) {
+            if(mMyRoomData != null) {
+                mWatchMenuPresenter.onClickBlockButton(mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl());
+            } else {
+                MyLog.w(TAG, "mMyRoomData==null");
+            }
+        }
     }
 
     @Override
