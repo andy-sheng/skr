@@ -70,32 +70,6 @@ message MicBusyRsp {
     required uint32 ret_code     = 1; //0 代表成功
 }
 
-//pk开始
-//zhibo.live.pkbegin
-message PKBeginReq {
-    required uint64 uuid          = 1; //发起用户id
-    required string liveid        = 2; //发起用户的房间号
-    required uint64 pk_uuid       = 3; //被pk用户的id
-    required string pk_liveid       = 4; //被pk用户的房间号
-}
-message PKBeginRsp {
-    required uint32 retCode     = 1; //0:表示成功
-}
-
-//pk结束
-//zhibo.live.pkend
-message PKEndReq {
-    required uint64 uuid           = 1; //发起用户id
-    required string liveid         = 2; //发起用户的房间号
-    required uint64 pk_uuid        = 3; //被pk用户的id
-    optional uint32 type           = 4; //0：正常结束 1：提前结束
-}
-message PKEndRsp {
-    required uint32 ret_code     = 1; //0:表示成功
-    optional uint64 score        = 2; //发起方分数
-    optional uint64 pk_score     = 3; //被pk方分数
-}
-
 //zhibo.live.pksetting
 message PKSettingReq {
     required uint64 uuid          = 1; //用户id

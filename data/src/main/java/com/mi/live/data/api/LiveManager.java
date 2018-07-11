@@ -236,31 +236,31 @@ public class LiveManager {
     }
 
 
-    public static boolean beginLineMic(long zuid, String liveId, long micuid, float scaleX, float scaleY, float scaleW, float scaleH) {
-        LiveProto.MicBeginReq.Builder builder = LiveProto.MicBeginReq.newBuilder()
-                .setZuid(zuid).setLiveId(liveId).setMicInfo(
-                        LiveMicProto.MicInfo.newBuilder().setMicuid(micuid).setSubViewPos(
-                                LiveMicProto.MicSubViewPos.newBuilder().setTopXScale(scaleX).setTopYScale(scaleY).setWidthScale(scaleW).setHeightScale(scaleH)));
-        LiveProto.MicBeginReq req = builder.build();
-        PacketData data = new PacketData();
-        data.setCommand(MiLinkCommand.COMMAND_LIVE_MIC_BEGIN);
-        data.setData(req.toByteArray());
-        MyLog.v(TAG, "beginLineMic request : \n" + req.toString());
-
-        PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
-        if (rspData != null) {
-            try {
-                LiveProto.MicBeginRsp rsp = LiveProto.MicBeginRsp.parseFrom(rspData.getData());
-                if (rsp != null) {
-                    MyLog.v(TAG, "beginLive response : \n" + rsp.toString());
-                    return rsp.getRetCode() == 0;
-                }
-            } catch (InvalidProtocolBufferException e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
-    }
+//    public static boolean beginLineMic(long zuid, String liveId, long micuid, float scaleX, float scaleY, float scaleW, float scaleH) {
+//        LiveProto.MicBeginReq.Builder builder = LiveProto.MicBeginReq.newBuilder()
+//                .setZuid(zuid).setLiveId(liveId).setMicInfo(
+//                        LiveMicProto.MicInfo.newBuilder().setMicuid(micuid).setSubViewPos(
+//                                LiveMicProto.MicSubViewPos.newBuilder().setTopXScale(scaleX).setTopYScale(scaleY).setWidthScale(scaleW).setHeightScale(scaleH)));
+//        LiveProto.MicBeginReq req = builder.build();
+//        PacketData data = new PacketData();
+//        data.setCommand(MiLinkCommand.COMMAND_LIVE_MIC_BEGIN);
+//        data.setData(req.toByteArray());
+//        MyLog.v(TAG, "beginLineMic request : \n" + req.toString());
+//
+//        PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
+//        if (rspData != null) {
+//            try {
+//                LiveProto.MicBeginRsp rsp = LiveProto.MicBeginRsp.parseFrom(rspData.getData());
+//                if (rsp != null) {
+//                    MyLog.v(TAG, "beginLive response : \n" + rsp.toString());
+//                    return rsp.getRetCode() == 0;
+//                }
+//            } catch (InvalidProtocolBufferException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return false;
+//    }
 
     public static boolean endLineMic(long zuid, String liveId, long micuid) {
         LiveProto.MicEndReq.Builder builder = LiveProto.MicEndReq.newBuilder()

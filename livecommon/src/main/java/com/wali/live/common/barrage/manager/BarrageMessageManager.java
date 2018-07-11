@@ -186,7 +186,7 @@ public class BarrageMessageManager implements MiLinkPacketDispatcher.PacketDataH
 //                        TODO 打开注释
 //                        GiftManager.popupGlobalGiftMsgWindow(barrageMsg, (BarrageMsg.GiftMsgExt) barrageMsg.getMsgExt(), RoomInfoGlobalCache.getsInstance().getCurrentRoomId());
                     } else if (barrageMsg.getMsgType() == BarrageMsgType.B_MSG_TYPE_TEXT) {
-                        MyLog.d(TAG, " zjnTest BarrageMsg msgType:" + msg.getMsgType() + ", roomid:" + msg.getRoomId() + ",body:" + msg.getMsgBody() + " cid=" + msg.getCid() + " fromUser=" + msg.getFromUser());
+                        MyLog.d(TAG, "BarrageMsg msgType:" + msg.getMsgType() + ", roomid:" + msg.getRoomId() + ",body:" + msg.getMsgBody() + " cid=" + msg.getCid() + " fromUser=" + msg.getFromUser());
 //                        TODO 打开注释
 //                        GiftManager.popupGlobalGiftMsgWindow(barrageMsg, (BarrageMsg.RoomTxtMessageExt) barrageMsg.getMsgExt(), RoomInfoGlobalCache.getsInstance().getCurrentRoomId());
                     }

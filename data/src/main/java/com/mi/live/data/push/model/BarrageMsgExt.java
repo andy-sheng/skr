@@ -7,6 +7,7 @@ import com.google.protobuf.ByteString;
 import com.mi.live.data.repository.model.turntable.TurnTableConfigModel;
 import com.mi.live.data.user.User;
 import com.wali.live.proto.BigTurnTableProto;
+import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.proto.LiveMicProto;
 import com.wali.live.proto.LivePKProto;
@@ -73,7 +74,7 @@ public class BarrageMsgExt {
             return this;
         }
 
-        public MicBeginInfo parseFromPB(LiveMicProto.MicInfo micInfo) {
+        public MicBeginInfo parseFromPB(LiveCommonProto.MicInfo micInfo) {
             if (micInfo == null) {
                 return null;
             }

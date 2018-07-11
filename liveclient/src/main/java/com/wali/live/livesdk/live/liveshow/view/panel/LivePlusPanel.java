@@ -48,6 +48,8 @@ public class LivePlusPanel extends BaseBottomPanel<RecyclerView, RelativeLayout>
             mPresenter.showInputView();
         } else if (id == R.id.envelope_btn) {
             mPresenter.showEnvelopeView();
+        } else if (id == R.id.big_turn_table) {
+
         }
     }
 
