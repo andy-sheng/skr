@@ -104,17 +104,18 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
         mGiftFastSendView = createFastGiftView();
         addCreatedView(mGiftFastSendView, R.id.gift_fast_sent_container);
+        if (mIsHuYaLive) {
+            mGiftFastSendView.setVisibility(View.GONE);
+        }
 
         mRightBtnSetPort.add(mMyInfoIconView);        // 横竖屏时按钮排列顺序
         if (!mIsHuYaLive) {
             mRightBtnSetPort.add(mGiftBtn);
+            mRightBtnSetPort.add(mGiftFastSendView);
         }
         mBottomBtnSetLand.add(mMyInfoIconView);
         if (!mIsHuYaLive) {
             mBottomBtnSetLand.add(mGiftBtn);
-        }
-        mRightBtnSetPort.add(mGiftFastSendView);
-        if(!mIsHuYaLive) {
             mBottomBtnSetLand.add(mGiftFastSendView);
         }
 
@@ -278,7 +279,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
             @Override
             public void setFastGift(String widgetIcon, boolean needGiftIcon) {
-                if(mGiftFastSendView != null) {
+                if(mGiftFastSendView != null && !mIsHuYaLive) {
                     mGiftFastSendView.setImgPic(widgetIcon, needGiftIcon);
                     orientChild();
                 }
