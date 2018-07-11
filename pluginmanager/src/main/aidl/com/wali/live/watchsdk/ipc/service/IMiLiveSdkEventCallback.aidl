@@ -24,4 +24,6 @@ interface IMiLiveSdkEventCallback {
     void onEventShare(in ShareInfo shareInfo);
 
     void onEventRecvBarrage(in List<BarrageInfo> barrageInfos);
+
+    void onEventRecvInfo(int type,String json);
 }

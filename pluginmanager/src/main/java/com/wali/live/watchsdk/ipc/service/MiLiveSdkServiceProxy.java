@@ -127,6 +127,13 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             }
         }
 
+        @Override
+        public void onEventRecvInfo(int type, String json) throws RemoteException {
+            Logger.w(TAG, "onEventRecvBarrage mGetBarrageCallback=" + mGetBarrageCallback);
+            if (mCallback != null) {
+                mCallback.notifyRecvInfo(type, json);
+            }
+        }
     };
 
     private static MiLiveSdkServiceProxy sInstance;
@@ -396,6 +403,20 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                         MiLiveSdkController.getInstance().getChannelSecret(), roomId);
             } catch (RemoteException e) {
                 resolveException(e, IMiLiveSdk.ICallback.GET_BARRAGE);
+            }
+        }
+    }
+
+    public void getLiveUid() {
+        Logger.w(TAG, "stopBarragePull");
+        if (mRemoteService == null) {
+            resolveNullService(IMiLiveSdk.ICallback.GET_BARRAGE);
+        } else {
+            try {
+                mRemoteService.getLiveUid(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret());
+            } catch (RemoteException e) {
+                resolveException(e, IMiLiveSdk.ICallback.GET_LIVE_UID);
             }
         }
     }

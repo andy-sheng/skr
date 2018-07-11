@@ -41,6 +41,8 @@ import com.wali.live.watchsdk.request.VerifyRequest;
 import com.wali.live.watchsdk.statistics.MilinkStatistics;
 
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -267,12 +269,12 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Override
-    public void startBarragePull(final int channelId, String packageName, String channelSecret, final String roomId,final int[] msgType) {
+    public void startBarragePull(final int channelId, String packageName, String channelSecret, final String roomId, final int[] msgType) {
         MyLog.d(TAG, "startBarragePull" + " channelId=" + channelId + " packageName=" + packageName + " channelSecret=" + channelSecret + " roomId=" + roomId);
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
             @Override
             public void postSuccess() {
-                BarragePullManager.getInstance().startWork(channelId, roomId,msgType);
+                BarragePullManager.getInstance().startWork(channelId, roomId, msgType);
             }
 
             @Override
@@ -286,12 +288,38 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Override
-    public void stopBarragePull(final int channelId, String packageName, String channelSecret,final String roomId) {
-        MyLog.d(TAG, "stopBarragePull" + " channelId=" + channelId + " packageName=" + packageName + " channelSecret=" + channelSecret+" roomId:"+roomId);
+    public void stopBarragePull(final int channelId, String packageName, String channelSecret, final String roomId) {
+        MyLog.d(TAG, "stopBarragePull" + " channelId=" + channelId + " packageName=" + packageName + " channelSecret=" + channelSecret + " roomId:" + roomId);
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
             @Override
             public void postSuccess() {
                 BarragePullManager.getInstance().stopWork(roomId);
+            }
+
+            @Override
+            public void postError() {
+            }
+
+            @Override
+            public void processFailure() {
+            }
+        });
+    }
+
+    @Override
+    public void getLiveUid(final int channelId, String packageName, String channelSecret) {
+        MyLog.d(TAG,"getLiveUid" + " channelId=" + channelId + " packageName=" + packageName + " channelSecret=" + channelSecret);
+        secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
+            @Override
+            public void postSuccess() {
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("uid", UserAccountManager.getInstance().getUuidAsLong());
+                    onEventRecvInfo(channelId, 1, jsonObject.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
 
             @Override
@@ -855,6 +883,41 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     /**
+     * 登出的结果
+     */
+    private void onEventRecvInfo(final int channelId, final int type, final String json) {
+        MyLog.d(TAG, "onEventRecvInfo channelId=" + channelId);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
+                boolean aidlSuccess = false;
+                RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
+                if (callbackList != null) {
+                    MyLog.w(TAG, "CallBackList!=null");
+                    int n = callbackList.beginBroadcast();
+                    for (int i = 0; i < n; i++) {
+                        IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
+                        try {
+                            callback.onEventRecvInfo(type, json);
+                            aidlSuccess = true;
+                        } catch (Exception e) {
+                            MyLog.v(TAG, "dead callback.");
+                            deadCallback.add(callback);
+                        }
+                    }
+                    callbackList.finishBroadcast();
+                    for (IMiLiveSdkEventCallback callback : deadCallback) {
+                        MyLog.v(TAG, "unregister event callback.");
+                        callbackList.unregister(callback);
+                    }
+                }
+                MyLog.d(TAG, "onEventLogoff aidl success=" + aidlSuccess);
+            }
+        });
+    }
+
+    /**
      * 登录的结果
      */
     public void onEventLogin(final int channelId, final int code) {
@@ -877,6 +940,11 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                         IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
                         try {
                             callback.onEventLogin(code);
+                            if (code == 0) {
+                                JSONObject jsonObject = new JSONObject();
+                                jsonObject.put("uid", UserAccountManager.getInstance().getUuidAsLong());
+                                callback.onEventRecvInfo(1, jsonObject.toString());
+                            }
                             aidlSuccess = true;
                         } catch (Exception e) {
                             MyLog.v(TAG, "dead callback.");

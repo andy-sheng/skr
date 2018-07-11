@@ -249,6 +249,8 @@ public interface IMiLiveSdk {
 
     boolean openChannelList(Activity activity,IAssistantCallback assistantCallback);
 
+    void getLiveUid(IAssistantCallback assistantCallback);
+
     /**
      * sdk 上层应用回调
      */
@@ -276,6 +278,8 @@ public interface IMiLiveSdk {
         int GET_FOLLOWING_LIVES = 1102;
 
         int GET_BARRAGE = 1103;
+
+        int GET_LIVE_UID = 1104;
         /**
          * 分享相关接口标志
          */
@@ -335,6 +339,11 @@ public interface IMiLiveSdk {
          * 通知上层分享
          */
         void notifyWantShare(ShareInfo shareInfo);
+
+        /**
+         * 通知上层分享
+         */
+        void notifyRecvInfo(int type,String json);
     }
 
     /**
@@ -454,6 +463,11 @@ public interface IMiLiveSdk {
 
         @Override
         public void notifyWantShare(ShareInfo shareInfo) {
+
+        }
+
+        @Override
+        public void notifyRecvInfo(int type, String json) {
 
         }
     }

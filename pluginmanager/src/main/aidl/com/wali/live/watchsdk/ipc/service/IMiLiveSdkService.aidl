@@ -33,4 +33,6 @@ interface IMiLiveSdkService {
     void startBarragePull(int channelId, String packageName, String channelSecret,String roomId,in int[] msgType);
 
     void stopBarragePull(int channelId, String packageName, String channelSecret,String roomId);
+
+    void getLiveUid(int channelId, String packageName, String channelSecret);
 }

@@ -336,6 +336,15 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
+    public void getLiveUid(IAssistantCallback callback) {
+//        if (!checkVersion(ACTION_OP_GET_BARRAGE, callback)) {
+//            return;
+//        }
+        checkHasInit();
+        MiLiveSdkServiceProxy.getInstance().getLiveUid();
+    }
+
+    @Override
     public boolean openChannelList(Activity activity,IAssistantCallback callback) {
         Logger.d(TAG,"openChannelList");
         if (!checkVersion(ACTION_OPEN_CHANNEL_LIST, callback)) {
