@@ -150,7 +150,7 @@ public class GiftModelQueue implements IGiftModelQueue {
     }
 
     @Override
-    public void clear() {
+    public synchronized void clear() {
         mSelfBatchMap.clear();
         mOtherBatchMap.clear();
         mSelfMap.clear();
@@ -169,7 +169,7 @@ public class GiftModelQueue implements IGiftModelQueue {
 
     //从queue中获取一个非本continueId的model
     @Override
-    public GiftRecvModel nonThisModel(GiftRecvModel model) {
+    public synchronized GiftRecvModel nonThisModel(GiftRecvModel model) {
         GiftRecvModel data=nonThisModel(model,mSelfBatchMap);
         if(data==null){
             data=nonThisModel(model,mOtherBatchMap);
