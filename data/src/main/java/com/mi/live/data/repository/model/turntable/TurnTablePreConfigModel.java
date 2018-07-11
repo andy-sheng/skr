@@ -3,6 +3,7 @@ package com.mi.live.data.repository.model.turntable;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 
+import com.base.log.MyLog;
 import com.wali.live.proto.BigTurnTableProto;
 
 import java.util.ArrayList;
@@ -39,26 +40,6 @@ public class TurnTablePreConfigModel {
     public TurnTablePreConfigModel() {
 
     }
-
-    public void rotateBmp() {
-        if(prizeItems != null && !prizeItems.isEmpty()) {
-            for(int i = 0; i < prizeItems.size(); i++) {
-
-                Bitmap drawable = prizeItems.get(i).getDrawable();
-                if(drawable != null) {
-                    int ww = drawable.getWidth();
-                    int hh = drawable.getHeight();
-                    Matrix matrix = new Matrix();
-                    matrix.postScale(1f, 1f);
-                    matrix.postRotate(360 / prizeItems.size() * i + 10);
-                    drawable = Bitmap.createBitmap(drawable, 0, 0, ww, hh,
-                            matrix, true);
-                    prizeItems.get(i).setBmp(drawable);
-                }
-            }
-        }
-    }
-
 
     public BigTurnTableProto.TurntableType getType() {
         return type;

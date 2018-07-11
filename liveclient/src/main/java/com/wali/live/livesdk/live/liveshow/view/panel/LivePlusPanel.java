@@ -49,7 +49,7 @@ public class LivePlusPanel extends BaseBottomPanel<RecyclerView, RelativeLayout>
         } else if (id == R.id.envelope_btn) {
             mPresenter.showEnvelopeView();
         } else if (id == R.id.big_turn_table) {
-
+            mPresenter.showBigTurnTable();
         }
     }
 
@@ -123,6 +123,8 @@ public class LivePlusPanel extends BaseBottomPanel<RecyclerView, RelativeLayout>
          * 同步直播加按钮可见性配置
          */
         void syncPlusBtnConfig();
+
+        void showBigTurnTable();
     }
 
     public interface IView extends IViewProxy {

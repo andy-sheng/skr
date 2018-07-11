@@ -1,7 +1,9 @@
 package com.wali.live.livesdk.live.presenter;
 
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.mvp.BaseRxPresenter;
+import com.base.preference.PreferenceUtils;
 import com.base.utils.rx.RxRetryAssist;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
@@ -29,6 +31,8 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+
+import static com.base.preference.PreferenceUtils.PREF_KEY_SHOW_BIG_TURN_TABLE;
 
 /**
  * Created by lan on 17/4/5.
@@ -205,6 +209,17 @@ public class RoomPreparePresenter extends BaseRxPresenter<IRoomPrepareView> {
                                     }
                                 }
                             }
+
+                            if (getRoomAttachmentRsp.getTurntableConfigList() == null
+                                    || getRoomAttachmentRsp.getTurntableConfigList().isEmpty()) {
+                                MyLog.d(TAG, "close Big turn table");
+                                PreferenceUtils.setSettingBoolean(
+                                        GlobalData.app(), PREF_KEY_SHOW_BIG_TURN_TABLE, false);
+                            } else {
+                                PreferenceUtils.setSettingBoolean(
+                                        GlobalData.app(), PREF_KEY_SHOW_BIG_TURN_TABLE, true);
+                            }
+
                             PlusParamUtils.processIconConfig(getRoomAttachmentRsp);
                         }
                     }

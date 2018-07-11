@@ -1,12 +1,15 @@
 package com.wali.live.livesdk.live.component.utils;
 
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveProto;
+
+import static com.base.preference.PreferenceUtils.PREF_KEY_SHOW_BIG_TURN_TABLE;
 
 /**
  * Created by yangli on 16-9-6.
@@ -42,6 +45,11 @@ public class PlusParamUtils {
     public static boolean isHideExpression(boolean defaultValue) {
         return PreferenceUtils.getSettingBoolean(
                 GlobalData.app(), KEY_PLUS_HIDE_EXPRESSION, defaultValue);
+    }
+
+    public static boolean isHideBigTurnTable() {
+        return PreferenceUtils.getSettingBoolean(
+                GlobalData.app(), PREF_KEY_SHOW_BIG_TURN_TABLE, false);
     }
 
     public static void processIconConfig(LiveProto.GetRoomAttachmentRsp rsp) {

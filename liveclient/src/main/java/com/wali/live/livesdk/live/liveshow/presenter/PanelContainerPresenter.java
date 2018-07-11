@@ -125,6 +125,9 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
             LivePlusPresenter presenter = deRef(mPlusPresenterRef);
             if (presenter == null) {
                 presenter = new LivePlusPresenter(mController);
+                if(mMyRoomData != null) {
+                    presenter.setRoomInfo(mMyRoomData.getRoomId(), mMyRoomData.getUid());
+                }
                 mPlusPresenterRef = new WeakReference<>(presenter);
             }
             setupComponent(panel, presenter);

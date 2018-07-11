@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/big_turn_table_bg">
+
+    <View
+        android:id="@+id/top_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_dimen_1"
+        android:layout_marginTop="@dimen/margin_200"/>
+
+    <com.wali.live.watchsdk.bigturntable.view.LiveBigTurnTableContainer
+        android:id="@+id/big_turn_table_panel_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/top_iv"/>
+
+    <com.base.view.BackTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

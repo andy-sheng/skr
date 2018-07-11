@@ -540,4 +540,10 @@ public class MiLinkCommand {
     //运营活动相关
     public static final String COMMAND_OPERATION_ANIM_RESOURCE = "zhibo.actconfig.geteffectresources";
 
+    //大转盘相关
+    public static final String COMMAND_START_TURNTABLE = "zhibo.turntable.start";
+    public static final String COMMAND_STOP_TURNTABLE = "zhibo.turntable.stop";
+    public static final String COMMAND_DRAW_TURNTABLE = "zhibo.turntable.draw";
+    public static final String COMMAND_REWARD_TURNTABLE = "zhibo.turntable.reward";
+
 }

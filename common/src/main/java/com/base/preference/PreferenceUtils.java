@@ -84,6 +84,8 @@ public abstract class PreferenceUtils {
 
     public static final String PREF_KEY_FIRST_POP_INCOME_TIP2 = "pref_key_first_pop_income_tip2";
 
+    public static final String PREF_KEY_SHOW_BIG_TURN_TABLE = "pref_key_show_turn_table";
+
     public interface PrefObserver {
         void notifyPrefChange(final String key, Object value);
     }
