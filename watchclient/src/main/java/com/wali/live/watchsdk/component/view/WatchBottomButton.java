@@ -74,12 +74,12 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
                 mPresenter.showMyInfoPannel();
                 mMyInfoIconView.setMsgUnreadCnt(0);
             }
-        } else if(id == R.id.gift_fast_sent_container) {
-            if(AccountAuthManager.triggerActionNeedAccount(getContext())) {
+        } else if (id == R.id.gift_fast_sent_container) {
+            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.onFastGiftClick();
             }
-        } else if(id == R.id.big_turn_table_btn) {
-            if(AccountAuthManager.triggerActionNeedAccount(getContext())) {
+        } else if (id == R.id.big_turn_table_btn) {
+            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.onBigTurnTableClick();
             }
         }
@@ -107,13 +107,14 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mMyInfoIconView.getLayoutParams();
         layoutParams.setMargins(BTN_MARGIN, BTN_MARGIN, 0, BTN_MARGIN);
 
+
         mGiftFastSendView = createFastGiftView();
         addCreatedView(mGiftFastSendView, R.id.gift_fast_sent_container);
         if (mIsHuYaLive) {
             mGiftFastSendView.setVisibility(View.GONE);
         }
 
-        mRightBtnSetPort.add(mMyInfoIconView);        // 横竖屏时按钮排列顺序
+        mAboveTheRightBtnSetPort.add(mMyInfoIconView);        // 横竖屏时按钮排列顺序
         if (!mIsHuYaLive) {
             mRightBtnSetPort.add(mGiftBtn);
             mRightBtnSetPort.add(mGiftFastSendView);
@@ -144,21 +145,21 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     }
 
     private void showBigTurnTableBtn() {
-        if(mBigTurnTableBtn == null) {
+        if (mBigTurnTableBtn == null) {
             mBigTurnTableBtn = createImageView(R.drawable.bg_big_turn_table_show);
             addCreatedView(mBigTurnTableBtn, R.id.big_turn_table_btn);
         }
         mRightBtnSetPort.add(mBigTurnTableBtn);
-        if(!mIsHuYaLive) {
+        if (!mIsHuYaLive) {
             mBottomBtnSetLand.add(mBigTurnTableBtn);
         }
         orientChild();
     }
 
     private void hideBigTurnTableBtn() {
-        if(mBigTurnTableBtn != null) {
+        if (mBigTurnTableBtn != null) {
             mRightBtnSetPort.remove(mBigTurnTableBtn);
-            if(!mIsHuYaLive) {
+            if (!mIsHuYaLive) {
                 mBottomBtnSetLand.remove(mBigTurnTableBtn);
             }
             orientChild();
@@ -240,7 +241,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             mContentContainer.removeView(mGameBtn);
         }
 
-        if(mBigTurnTableBtn != null) {
+        if (mBigTurnTableBtn != null) {
             mRightBtnSetPort.remove(mBigTurnTableBtn);
             mBottomBtnSetLand.remove(mBigTurnTableBtn);
             mContentContainer.removeView(mBigTurnTableBtn);
@@ -294,7 +295,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
             @Override
             public void updateMoreBtnStatus() {
-                if(mMoreBtn!=null) {
+                if (mMoreBtn != null) {
                     mMoreBtn.changeIconStatus(false);
                 }
             }
@@ -313,7 +314,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
             @Override
             public void setFastGift(String widgetIcon, boolean needGiftIcon) {
-                if(mGiftFastSendView != null && !mIsHuYaLive) {
+                if (mGiftFastSendView != null && !mIsHuYaLive) {
                     mGiftFastSendView.setImgPic(widgetIcon, needGiftIcon);
                     orientChild();
                 }
@@ -321,7 +322,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
             @Override
             public void startFastGiftPBarAnim() {
-                if(mGiftFastSendView != null) {
+                if (mGiftFastSendView != null) {
                     mGiftFastSendView.start();
                 }
             }

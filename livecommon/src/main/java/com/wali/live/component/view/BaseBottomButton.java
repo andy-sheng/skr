@@ -1,6 +1,7 @@
 package com.wali.live.component.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -34,6 +35,8 @@ public abstract class BaseBottomButton<PRESENTER, VIEW extends IViewProxy> imple
     protected RelativeLayout mContentContainer;
     protected final List<View> mLeftBtnSetPort = new ArrayList<>();
     protected final List<View> mRightBtnSetPort = new ArrayList<>();
+    protected final List<View> mAboveTheRightBtnSetPort = new ArrayList<>();
+
     protected final List<View> mBottomBtnSetLand = new ArrayList<>();
 
     protected boolean mIsLandscape = false;
@@ -146,10 +149,39 @@ public abstract class BaseBottomButton<PRESENTER, VIEW extends IViewProxy> imple
                     guardId = view.getId();
                 }
             }
+
+
             guardId = 0;
-            for (View view : mRightBtnSetPort) {
+            for (int j = 0; j < mAboveTheRightBtnSetPort.size(); j++) {
+                View view2 = mAboveTheRightBtnSetPort.get(j);
+                List<AlginParams> list = new ArrayList<>();
+                if (j != 0) {
+                    list.add(new AlginParams(guardId, RelativeLayout.ABOVE, 0));
+                }
+                list.add(new AlginParams(0, 0, RelativeLayout.ALIGN_PARENT_RIGHT));
+                alignViewToGuard(view2, list);
+                guardId = view2.getId();
+            }
+
+
+            guardId = 0;
+            for (int i = 0; i < mRightBtnSetPort.size(); i++) {
+                View view = mRightBtnSetPort.get(i);
                 if (view.getVisibility() == View.VISIBLE) {
-                    alignViewToGuard(view, guardId, RelativeLayout.LEFT_OF, RelativeLayout.ALIGN_PARENT_RIGHT);
+
+                    List<AlginParams> list = new ArrayList<>();
+                    if (i != 0) {
+                        list.add(new AlginParams(guardId, RelativeLayout.LEFT_OF, RelativeLayout.ALIGN_PARENT_RIGHT));
+                    } else {
+                        list.add(new AlginParams(0, 0, RelativeLayout.ALIGN_PARENT_RIGHT));
+                    }
+                    if (!mAboveTheRightBtnSetPort.isEmpty()) {
+                        int belowId = mAboveTheRightBtnSetPort.get(0).getId();
+                        list.add(new AlginParams(belowId, RelativeLayout.BELOW, 0));
+                    }
+
+                    alignViewToGuard(view, list);
+
                     guardId = view.getId();
                 }
             }
