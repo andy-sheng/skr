@@ -21,7 +21,7 @@ import com.wali.live.proto.BigTurnTableProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.bigturntable.contact.BigTurnTableContact;
 import com.wali.live.watchsdk.bigturntable.presenter.BigTurnTablePresenter;
-import com.wali.live.watchsdk.bigturntable.view.LiveBigTurnTableContainer;
+import com.wali.live.watchsdk.bigturntable.view.LiveBigTurnTablePanelView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -50,7 +50,7 @@ public class BigTurnTableFragment extends RxFragment {
     //ui
     private View mTopView;
     private BackTitleBar mTitleBar;
-    private LiveBigTurnTableContainer mBigTurnTablePanelView;
+    private LiveBigTurnTablePanelView mBigTurnTablePanelView;
 //    private BigTurnTableRuleView mBigTurnTableRuleView;
 
     @Override
@@ -69,7 +69,7 @@ public class BigTurnTableFragment extends RxFragment {
         mTitleBar = (BackTitleBar) mRootView.findViewById(R.id.title_bar);
         mTitleBar.getBackBtn().setText(GlobalData.app().getResources().getString(R.string.back));
         mTitleBar.getRightTextBtn().setText(GlobalData.app().getResources().getString(R.string.rule));
-        mBigTurnTablePanelView = (LiveBigTurnTableContainer) mRootView.findViewById(R.id.big_turn_table_panel_view);
+        mBigTurnTablePanelView = (LiveBigTurnTablePanelView) mRootView.findViewById(R.id.big_turn_table_panel_view);
         mTopView = mRootView.findViewById(R.id.top_iv);
         initParams();
         initListener();
@@ -97,7 +97,7 @@ public class BigTurnTableFragment extends RxFragment {
                     }
                 });
 
-        mBigTurnTablePanelView.setOnLiveTurnTableListener(new LiveBigTurnTableContainer.OnLiveTurnTableListener() {
+        mBigTurnTablePanelView.setOnLiveTurnTableListener(new LiveBigTurnTablePanelView.OnLiveTurnTableListener() {
             @Override
             public void open(BigTurnTableProto.TurntableType mode, String inputTxt, boolean needCloseOtherMode) {
                 if(needCloseOtherMode) {

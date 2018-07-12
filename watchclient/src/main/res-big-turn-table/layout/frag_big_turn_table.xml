@@ -10,7 +10,7 @@
         android:layout_height="@dimen/view_dimen_1"
         android:layout_marginTop="@dimen/margin_200"/>
 
-    <com.wali.live.watchsdk.bigturntable.view.LiveBigTurnTableContainer
+    <com.wali.live.watchsdk.bigturntable.view.LiveBigTurnTablePanelView
         android:id="@+id/big_turn_table_panel_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

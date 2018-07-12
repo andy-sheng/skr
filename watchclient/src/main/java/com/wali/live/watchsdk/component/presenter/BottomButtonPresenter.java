@@ -53,11 +53,14 @@ import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_BIG_TURN_TABLE_BTN;
 import static com.wali.live.component.BaseSdkController.MSG_ON_MENU_PANEL_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_POP_INSUFFICIENT_TIPS;
 import static com.wali.live.component.BaseSdkController.MSG_SHOE_GAME_ICON;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_BIG_TURN_TABLE_BTN;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_BIG_TURN_TABLE_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_DOWNLOAD;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_INPUT_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_MENU_PANEL;
@@ -101,6 +104,8 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
         registerAction(MSG_BOTTOM_POPUP_HIDDEN);
         registerAction(MSG_SHOE_GAME_ICON);
         registerAction(MSG_ON_MENU_PANEL_HIDDEN);
+        registerAction(MSG_SHOW_BIG_TURN_TABLE_BTN);
+        registerAction(MSG_HIDE_BIG_TURN_TABLE_BTN);
         EventBus.getDefault().register(this);
 
         syncUnreadCount();
@@ -192,6 +197,11 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
                 sendFastGift(mFastGiftId);
             }
         }
+    }
+
+    @Override
+    public void onBigTurnTableClick() {
+        postEvent(MSG_SHOW_BIG_TURN_TABLE_PANEL);
     }
 
     private void sendFastGift(final int giftId) {
@@ -408,6 +418,12 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
                 return true;
             case MSG_ON_MENU_PANEL_HIDDEN:
                 mView.updateMoreBtnStatus();
+                break;
+            case MSG_SHOW_BIG_TURN_TABLE_BTN:
+                mView.showBigTurnTable();
+                break;
+            case MSG_HIDE_BIG_TURN_TABLE_BTN:
+                mView.hideBigTurnTable();
                 break;
             default:
                 break;

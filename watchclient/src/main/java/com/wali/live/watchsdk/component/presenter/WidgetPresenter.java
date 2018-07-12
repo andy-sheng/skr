@@ -15,6 +15,7 @@ import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.push.IPushMsgProcessor;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
+import com.mi.live.data.repository.model.turntable.TurnTableConfigModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.thornbirds.component.IEventController;
@@ -47,6 +48,7 @@ import rx.schedulers.Schedulers;
 import static com.wali.live.component.BaseSdkController.MSG_BARRAGE_ADMIN;
 import static com.wali.live.component.BaseSdkController.MSG_BARRAGE_FANS;
 import static com.wali.live.component.BaseSdkController.MSG_BARRAGE_VIP;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_BIG_TURN_TABLE_BTN;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_LIVE_SUCCESS;
@@ -54,6 +56,7 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_ON_PK_START;
 import static com.wali.live.component.BaseSdkController.MSG_ON_PK_STOP;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_BIG_TURN_TABLE_BTN;
 
 /**
  * Created by chenyong on 2017/03/24.
@@ -220,6 +223,7 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
                         .setRoomType(roomType)
                         .setIsGetRoomExtraCtrl(true)
                         .setIsGetIconConfig(false)
+                        .setIsGetTurntable(true)
                         .build();
                 PacketData data = new PacketData();
                 data.setCommand(MiLinkCommand.COMMAND_ROOM_ATTACHMENT);
@@ -380,6 +384,15 @@ public class WidgetPresenter extends BaseSdkRxPresenter<WidgetView.IView>
 
                                 //快速送礼物
                                 getFastGiftInfo(rsp);
+
+                                //大转盘
+                                if(rsp.getTurntableConfigList() != null
+                                        && !rsp.getTurntableConfigList().isEmpty()) {
+                                    TurnTableConfigModel data = new TurnTableConfigModel(rsp.getTurntableConfigList().get(0));
+                                    postEvent(MSG_SHOW_BIG_TURN_TABLE_BTN, new Params().putItem(data));
+                                } else {
+                                    postEvent(MSG_HIDE_BIG_TURN_TABLE_BTN);
+                                }
                             }
                         }, new Action1<Throwable>() {
                             @Override

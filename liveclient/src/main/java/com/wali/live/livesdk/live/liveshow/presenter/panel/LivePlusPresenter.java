@@ -93,7 +93,7 @@ public class LivePlusPresenter extends BaseSdkRxPresenter<LivePlusPanel.IView>
                                     R.string.red_packet, R.drawable.live_plus_start_hongbao));
                         }
 
-                        if(!PlusParamUtils.isHideBigTurnTable()) {
+                        if(PlusParamUtils.isShowBigTurnTable()) {
                             plusItems.add(new PlusItemAdapter.PlusItem(R.id.big_turn_table,
                                     R.string.big_turn_table, R.drawable.bg_big_turn_table_show));
                         }

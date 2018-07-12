@@ -47,7 +47,7 @@ public class PlusParamUtils {
                 GlobalData.app(), KEY_PLUS_HIDE_EXPRESSION, defaultValue);
     }
 
-    public static boolean isHideBigTurnTable() {
+    public static boolean isShowBigTurnTable() {
         return PreferenceUtils.getSettingBoolean(
                 GlobalData.app(), PREF_KEY_SHOW_BIG_TURN_TABLE, false);
     }

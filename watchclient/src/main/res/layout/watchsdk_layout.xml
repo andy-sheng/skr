@@ -183,6 +183,12 @@
         android:orientation="vertical"
         android:visibility="invisible" />
 
+    <ViewStub
+        android:id="@+id/big_turn_table_panel_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/view_big_turn_table_panel" />
+
     <!--红包容器-->
     <RelativeLayout
         android:id="@+id/envelope_view"
