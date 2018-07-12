@@ -20,10 +20,7 @@ public class PrizeItemModel {
     private String times;
     private boolean isCustom;
     private String customDes;
-    private int colorId;
-//    private Drawable drawable;
     private String giftPic;
-    private boolean hasRotate;
     private int tickets;
 
     public PrizeItemModel(BigTurnTableProto.PrizeItem data) {
@@ -120,39 +117,6 @@ public class PrizeItemModel {
                 ", isCustom=" + isCustom +
                 ", customDes='" + customDes + '\'' +
                 '}';
-    }
-
-    public int getColorId() {
-        return colorId;
-    }
-
-    public void setColorId(int colorId) {
-        this.colorId = colorId;
-    }
-
-//    public Drawable getDrawable() {
-//        return drawable;
-//    }
-//
-//    public void setDrawable(Drawable drawable) {
-//        if(drawable == null) {
-//            return;
-//        }
-//
-//        this.drawable = drawable;
-////        this.drawable = ((BitmapDrawable) drawable).getBitmap();
-//    }
-//
-////    public void setBmp(Bitmap bmp) {
-////        this.drawable = bmp;
-////    }
-
-    public boolean isHasRotate() {
-        return hasRotate;
-    }
-
-    public void setHasRotate(boolean hasRotate) {
-        this.hasRotate = hasRotate;
     }
 
     public String getGiftPic() {

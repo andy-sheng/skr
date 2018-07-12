@@ -39,6 +39,7 @@ import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.event.GiftEventClass;
+import com.mi.live.data.event.TurnTableEvent;
 import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.location.Location;
@@ -128,6 +129,7 @@ import static com.wali.live.component.BaseSdkController.MSG_PAGE_DOWN;
 import static com.wali.live.component.BaseSdkController.MSG_PAGE_UP;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_COMPLETED;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_READY;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_BIG_TURN_TABLE_BTN;
 import static com.wali.live.component.BaseSdkController.MSG_SWITCH_ROOM;
 
 /**
@@ -650,6 +652,16 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
             default:
                 break;
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(TurnTableEvent event) {
+        if(event == null) {
+            return;
+        }
+
+        MyLog.d(TAG, "TurnTableEvent");
+        mController.postEvent(MSG_SHOW_BIG_TURN_TABLE_BTN, new Params().putItem(event.getData()));
     }
 
     private void viewerTopFromServer(RoomBaseDataModel roomData) {

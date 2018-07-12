@@ -28,7 +28,7 @@ import static com.wali.live.watchsdk.bigturntable.TurnTableType.MODE_SMALL;
  * Created by zhujianning on 18-7-10.
  */
 
-public class LiveBigTurnTableContainer extends RelativeLayout {
+public class LiveBigTurnTablePanelView extends RelativeLayout {
     private static final String TAG = "LiveBigTurnTableContainer";
 
     //data
@@ -77,15 +77,15 @@ public class LiveBigTurnTableContainer extends RelativeLayout {
         }
     };
 
-    public LiveBigTurnTableContainer(Context context) {
+    public LiveBigTurnTablePanelView(Context context) {
         this(context, null);
     }
 
-    public LiveBigTurnTableContainer(Context context, AttributeSet attrs) {
+    public LiveBigTurnTablePanelView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public LiveBigTurnTableContainer(Context context, AttributeSet attrs, int defStyleAttr) {
+    public LiveBigTurnTablePanelView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }

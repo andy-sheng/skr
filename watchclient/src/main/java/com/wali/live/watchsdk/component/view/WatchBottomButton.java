@@ -37,6 +37,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     private WatchMenuIconView mMoreBtn;
     private MyInfoIconView mMyInfoIconView;
     private GiftFastSendView mGiftFastSendView;
+    private View mBigTurnTableBtn;
 
     private boolean mIsGameMode = false;
 
@@ -76,6 +77,10 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         } else if(id == R.id.gift_fast_sent_container) {
             if(AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.onFastGiftClick();
+            }
+        } else if(id == R.id.big_turn_table_btn) {
+            if(AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                mPresenter.onBigTurnTableClick();
             }
         }
     }
@@ -136,6 +141,28 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         mRightBtnSetPort.add(mMoreBtn);
         mBottomBtnSetLand.add(mMoreBtn);
         orientChild();
+    }
+
+    private void showBigTurnTableBtn() {
+        if(mBigTurnTableBtn == null) {
+            mBigTurnTableBtn = createImageView(R.drawable.bg_big_turn_table_show);
+            addCreatedView(mBigTurnTableBtn, R.id.big_turn_table_btn);
+        }
+        mRightBtnSetPort.add(mBigTurnTableBtn);
+        if(!mIsHuYaLive) {
+            mBottomBtnSetLand.add(mBigTurnTableBtn);
+        }
+        orientChild();
+    }
+
+    private void hideBigTurnTableBtn() {
+        if(mBigTurnTableBtn != null) {
+            mRightBtnSetPort.remove(mBigTurnTableBtn);
+            if(!mIsHuYaLive) {
+                mBottomBtnSetLand.remove(mBigTurnTableBtn);
+            }
+            orientChild();
+        }
     }
 
     private void showGameIcon(final GameViewModel gameModel) {
@@ -292,6 +319,16 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
                 }
             }
 
+            @Override
+            public void showBigTurnTable() {
+                showBigTurnTableBtn();
+            }
+
+            @Override
+            public void hideBigTurnTable() {
+                hideBigTurnTableBtn();
+            }
+
         }
         return new ComponentView();
     }
@@ -330,6 +367,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         void processMoreBtnShow();
 
         void onFastGiftClick();
+
+        void onBigTurnTableClick();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
@@ -354,5 +393,9 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         void setFastGift(String widgetIcon, boolean needGiftIcon);
 
         void startFastGiftPBarAnim();
+
+        void showBigTurnTable();
+
+        void hideBigTurnTable();
     }
 }

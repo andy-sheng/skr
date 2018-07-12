@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -23,11 +24,13 @@ import com.base.utils.Constants;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.event.GiftEventClass;
+import com.mi.live.data.repository.model.turntable.TurnTableConfigModel;
 import com.thornbirds.component.IParams;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
+import com.wali.live.watchsdk.bigturntable.presenter.WatchBigTurnTablePanelPresenter;
 import com.wali.live.watchsdk.component.presenter.BarrageBtnPresenter;
 import com.wali.live.watchsdk.component.presenter.BottomButtonPresenter;
 import com.wali.live.watchsdk.component.presenter.EnvelopePresenter;
@@ -81,6 +84,8 @@ import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_POP_INSUFFICIENT_TIPS;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_BIG_TURN_TABLE_BTN;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_BIG_TURN_TABLE_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_FEEDBACK_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_FOLLOW_GUIDE;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_INPUT;
@@ -137,6 +142,8 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
 
     private MyAlertDialog mBalanceInsufficientDialog;
     private PanelContainerPresenter mPanelContainerPresenter;
+    private WatchBigTurnTablePanelPresenter mWatchBigTurnTablePanelPresenter;
+    private TurnTableConfigModel mTurnTableConfigModel;
 
     @Override
     protected String getTAG() {
@@ -280,11 +287,6 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             mLiveCommentView = view;
         }
         //弹幕区上面的特权弹幕动画展示
-//        {
-//            BarrageControlAnimView view = $(R.id.msg_anim_view);
-//            BarrageControlAnimPresenter presenter = new BarrageControlAnimPresenter(mController, mController.mMyRoomData);
-//            mBarrageControlAnimView = view;
-//        }
         {
             mSuperLevelUserBarrageAnimView = $(R.id.enter_tips_anim_container);
             mSuperLevelUserBarrageAnimPresenter = new SuperLevelUserEnterAnimControlPresenter(mSuperLevelUserBarrageAnimView);
@@ -379,6 +381,14 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             ((BaseComponentSdkActivity) mActivity).addPushProcessor(mWidgetPresenter);
         }
 
+        //大转盘presenter
+        {
+            mWatchBigTurnTablePanelPresenter = new WatchBigTurnTablePanelPresenter(mActivity, mIsLandscape, mController.mMyRoomData);
+            ViewStub stub = (ViewStub) mActivity.findViewById(R.id.big_turn_table_panel_view_stub);
+            mWatchBigTurnTablePanelPresenter.setViewStub(stub);
+        }
+
+
         if (mController.mRoomInfoList != null && mController.mRoomInfoList.size() > 1) {
             mPagerView = new ImagePagerView(mActivity);
             mPagerView.setVerticalList(mController.mRoomInfoList, mController.mRoomInfoPosition);
@@ -461,6 +471,8 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
         registerAction(MSG_VIDEO_LANDSCAPE);
         registerAction(MSG_POP_INSUFFICIENT_TIPS);
         registerAction(MSG_SHOW_FEEDBACK_VIEW);
+        registerAction(MSG_SHOW_BIG_TURN_TABLE_BTN);
+        registerAction(MSG_SHOW_BIG_TURN_TABLE_PANEL);
 
         start();
     }
@@ -485,6 +497,10 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
 
         if(mNobleUserEnterAnimControlPresenter != null) {
             mNobleUserEnterAnimControlPresenter.destroy();
+        }
+
+        if(mWatchBigTurnTablePanelPresenter != null) {
+            mWatchBigTurnTablePanelPresenter.destroy();
         }
     }
 
@@ -722,6 +738,17 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 break;
             case MSG_SHOW_FEEDBACK_VIEW:
                 showFeedBackDialog();
+                break;
+            case MSG_SHOW_BIG_TURN_TABLE_BTN:
+                mTurnTableConfigModel = (TurnTableConfigModel) params.getItem(0);
+                if(mWatchBigTurnTablePanelPresenter != null) {
+                    mWatchBigTurnTablePanelPresenter.setTurnTableData(mTurnTableConfigModel);
+                }
+                break;
+            case MSG_SHOW_BIG_TURN_TABLE_PANEL:
+                if(mWatchBigTurnTablePanelPresenter != null) {
+                    mWatchBigTurnTablePanelPresenter.showPanel();
+                }
                 break;
             default:
                 break;
