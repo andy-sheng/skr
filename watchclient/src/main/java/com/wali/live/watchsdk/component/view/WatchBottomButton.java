@@ -238,6 +238,13 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             mBottomBtnSetLand.remove(mGameBtn);
             mContentContainer.removeView(mGameBtn);
         }
+
+        if(mBigTurnTableBtn != null) {
+            mRightBtnSetPort.remove(mBigTurnTableBtn);
+            mBottomBtnSetLand.remove(mBigTurnTableBtn);
+            mContentContainer.removeView(mBigTurnTableBtn);
+            mBigTurnTableBtn = null;
+        }
     }
 
     private void clearAnimator() {
