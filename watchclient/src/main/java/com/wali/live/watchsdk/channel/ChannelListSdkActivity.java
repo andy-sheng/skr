@@ -26,6 +26,7 @@ import com.wali.live.watchsdk.channel.list.presenter.ChannelListPresenter;
 import com.wali.live.watchsdk.channel.list.presenter.IChannelListView;
 import com.wali.live.watchsdk.channel.view.LiveChannelView;
 import com.wali.live.watchsdk.eventbus.EventClass;
+import com.wali.live.watchsdk.statistics.MilinkStatistics;
 import com.wali.live.watchsdk.view.EmptyView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -104,6 +105,9 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
                 if (view instanceof LiveChannelView) {
                     EventBus.getDefault().removeStickyEvent(EventClass.SelectChannelEvent.class);
                     EventBus.getDefault().postSticky(new EventClass.SelectChannelEvent(((LiveChannelView) view).getChannelId()));
+
+                    // 频道切换打点
+                    MilinkStatistics.getInstance().statisticChannelChange((int) ((LiveChannelView) view).getChannelId());
                 }
             }
 
@@ -141,6 +145,9 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
                     mViewPager.setCurrentItem(defaultSelected);
                     long channelId = models.get(defaultSelected).getChannelId();
                     EventBus.getDefault().postSticky(new EventClass.SelectChannelEvent(channelId));
+
+                    // 频道切换打点 首次展示频道
+                    MilinkStatistics.getInstance().statisticChannelChange((int) channelId);
                 }
                 mIsFirstLoad = false;
             }
