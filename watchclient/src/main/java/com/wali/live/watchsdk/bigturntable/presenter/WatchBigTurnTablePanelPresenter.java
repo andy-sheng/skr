@@ -290,7 +290,7 @@ public class WatchBigTurnTablePanelPresenter extends RxLifeCyclePresenter {
     }
 
     public void orientationChange(boolean isLandscape) {
-        MyLog.d(TAG, "zjnTest isLandscape:" + isLandscape);
+        MyLog.d(TAG, "isLandscape:" + isLandscape);
         if (mIsLandscape != isLandscape) {
             mIsLandscape = isLandscape;
             if (mBigTurnTablePanelView != null) {
