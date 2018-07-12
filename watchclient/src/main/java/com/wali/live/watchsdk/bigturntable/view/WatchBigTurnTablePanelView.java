@@ -48,7 +48,7 @@ public class WatchBigTurnTablePanelView extends RelativeLayout {
     private TextView mCancelTv;
     private BaseImageView mHostIv;
     private TextView mRuleTv;
-//    private BigTurnTableRuleView mBigTurnTableRuleView;
+    private BigTurnTableRuleView mBigTurnTableRuleView;
     private TextView mNameTv;
     private RelativeLayout mPOptContainer;
     private RelativeLayout mLOptContainer;
@@ -205,19 +205,17 @@ public class WatchBigTurnTablePanelView extends RelativeLayout {
             mParams.topMargin = DisplayUtils.dip2px(200f);
         }
         mContainer.setLayoutParams(mParams);
-        //TODO-暂时去了
-//        if(mBigTurnTableRuleView != null) {
-//            mBigTurnTableRuleView.switchOrient(mIsLandscape);
-//        }
+        if(mBigTurnTableRuleView != null) {
+            mBigTurnTableRuleView.switchOrient(mIsLandscape);
+        }
     }
 
     private void showRuleTips() {
-        //TODO-暂时去了
-//        if(mBigTurnTableRuleView == null) {
-//            mBigTurnTableRuleView = new BigTurnTableRuleView(mContext);
-//        }
-//        mBigTurnTableRuleView.switchOrient(mIsLandscape);
-//        mBigTurnTableRuleView.show(this);
+        if(mBigTurnTableRuleView == null) {
+            mBigTurnTableRuleView = new BigTurnTableRuleView(mContext);
+        }
+        mBigTurnTableRuleView.switchOrient(mIsLandscape);
+        mBigTurnTableRuleView.show(this);
     }
 
     public void startRotate(int index, String prizeKey) {

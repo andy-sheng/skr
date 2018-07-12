@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_black_trans_50">
+
+    <RelativeLayout
+        android:id="@+id/tip_container"
+        android:layout_width="@dimen/view_dimen_893"
+        android:layout_height="@dimen/view_dimen_1020"
+        android:background="@drawable/shape_big_turn_table_rule"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/tv_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_dimen_60"
+            android:text="@string/activity_txt"
+            android:textSize="@dimen/text_size_36"
+            android:textColor="@color/color_black_tran_60"
+            android:layout_marginTop="@dimen/view_dimen_70"/>
+
+        <TextView
+            android:id="@+id/tv_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_1"
+            android:layout_marginLeft="@dimen/view_dimen_60"
+            android:layout_marginRight="@dimen/view_dimen_60"
+            android:layout_marginTop="@dimen/view_dimen_80"
+            android:textColor="@color/color_black_tran_60"
+            android:text="@string/activity_tips_1"
+            android:textSize="@dimen/text_size_36"/>
+
+        <TextView
+            android:id="@+id/tv_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_2"
+            android:layout_marginLeft="@dimen/view_dimen_60"
+            android:layout_marginRight="@dimen/view_dimen_60"
+            android:layout_marginTop="@dimen/view_dimen_70"
+            android:textColor="@color/color_black_tran_60"
+            android:text="@string/activity_tips_2"
+            android:textSize="@dimen/text_size_36"/>
+
+        <TextView
+            android:id="@+id/tv_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_3"
+            android:layout_marginLeft="@dimen/view_dimen_60"
+            android:layout_marginRight="@dimen/view_dimen_60"
+            android:layout_marginTop="@dimen/view_dimen_70"
+            android:textColor="@color/color_black_tran_60"
+            android:text="@string/activity_tips_3"
+            android:textSize="@dimen/text_size_36"/>
+
+        <TextView
+            android:id="@+id/know_tv"
+            android:layout_width="@dimen/view_dimen_600"
+            android:layout_height="@dimen/view_dimen_120"
+            android:background="@drawable/shape_big_turn_table_rule_btn"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:text="@string/konw_txt"
+            android:textSize="@dimen/text_size_45"
+            android:textColor="@color/white"
+            android:layout_marginBottom="@dimen/view_dimen_70"/>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

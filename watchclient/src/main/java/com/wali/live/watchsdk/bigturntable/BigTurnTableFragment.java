@@ -21,6 +21,7 @@ import com.wali.live.proto.BigTurnTableProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.bigturntable.contact.BigTurnTableContact;
 import com.wali.live.watchsdk.bigturntable.presenter.BigTurnTablePresenter;
+import com.wali.live.watchsdk.bigturntable.view.BigTurnTableRuleView;
 import com.wali.live.watchsdk.bigturntable.view.LiveBigTurnTablePanelView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -51,7 +52,7 @@ public class BigTurnTableFragment extends RxFragment {
     private View mTopView;
     private BackTitleBar mTitleBar;
     private LiveBigTurnTablePanelView mBigTurnTablePanelView;
-//    private BigTurnTableRuleView mBigTurnTableRuleView;
+    private BigTurnTableRuleView mBigTurnTableRuleView;
 
     @Override
     public int getRequestCode() {
@@ -143,10 +144,10 @@ public class BigTurnTableFragment extends RxFragment {
     }
 
     private void showRuleTips() {
-//        if(mBigTurnTableRuleView == null) {
-//            mBigTurnTableRuleView = new BigTurnTableRuleView(getActivity());
-//        }
-//        mBigTurnTableRuleView.show(mRootView);
+        if(mBigTurnTableRuleView == null) {
+            mBigTurnTableRuleView = new BigTurnTableRuleView(getActivity());
+        }
+        mBigTurnTableRuleView.show(mRootView);
     }
 
     private BigTurnTableContact.IView mBigTurnTableContact = new BigTurnTableContact.IView() {
