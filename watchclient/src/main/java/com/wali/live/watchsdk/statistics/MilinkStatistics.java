@@ -3,6 +3,7 @@ package com.wali.live.watchsdk.statistics;
 import com.base.log.MyLog;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.StatisticsProto;
+import com.wali.live.watchsdk.statistics.item.ChannelChangeStatisticsItem;
 import com.wali.live.watchsdk.statistics.item.ChannelStatisticsItem;
 import com.wali.live.watchsdk.statistics.item.MilinkStatisticsItem;
 import com.wali.live.watchsdk.statistics.item.SimpleStatisticsItem;
@@ -80,6 +81,16 @@ public class MilinkStatistics {
         MilinkStatisticsItem item = new ChannelStatisticsItem(date,
                 ChannelStatisticsItem.CHANNEL_TYPE_CLICK,
                 recommend);
+        upload(item);
+    }
+
+    public void statisticChannelChange(int channelId) {
+        int type = ChannelChangeStatisticsItem.getTypeByChannel();
+        if (type == -1) {
+            return;
+        }
+        long date = System.currentTimeMillis();
+        MilinkStatisticsItem item = new ChannelChangeStatisticsItem(date, type, channelId);
         upload(item);
     }
 
