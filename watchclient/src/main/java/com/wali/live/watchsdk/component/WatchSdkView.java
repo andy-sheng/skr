@@ -19,6 +19,7 @@ import com.base.activity.BaseActivity;
 import com.base.dialog.MyAlertDialog;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.permission.PermissionUtils;
 import com.base.utils.CommonUtils;
 import com.base.utils.Constants;
 import com.base.utils.display.DisplayUtils;
@@ -752,7 +753,9 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 }
                 break;
             case MSG_SHOW_BIG_TURN_TABLE_PANEL:
-                if(mWatchBigTurnTablePanelPresenter != null) {
+                if (!PermissionUtils.checkSdcardAlertWindow(mActivity)) {
+                    PermissionUtils.requestPermissionDialog(mActivity, PermissionUtils.PermissionType.WRITE_EXTERNAL_STORAGE);
+                } else if(mWatchBigTurnTablePanelPresenter != null) {
                     mWatchBigTurnTablePanelPresenter.showPanel();
                 }
                 break;
