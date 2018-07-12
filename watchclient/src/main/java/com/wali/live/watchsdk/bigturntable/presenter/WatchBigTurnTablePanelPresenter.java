@@ -1,11 +1,9 @@
 package com.wali.live.watchsdk.bigturntable.presenter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewStub;
-
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.presenter.RxLifeCyclePresenter;
@@ -19,15 +17,12 @@ import com.mi.live.data.repository.model.turntable.PrizeItemModel;
 import com.mi.live.data.repository.model.turntable.TurnTableConfigModel;
 import com.mi.live.data.repository.model.turntable.TurnTablePreConfigModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.dao.Gift;
 import com.wali.live.proto.BigTurnTableProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.bigturntable.api.BigTurnTableApi;
 import com.wali.live.watchsdk.bigturntable.view.WatchBigTurnTablePanelView;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -292,5 +287,23 @@ public class WatchBigTurnTablePanelPresenter extends RxLifeCyclePresenter {
                         }
                     }
                 });
+    }
+
+    public void orientationChange(boolean isLandscape) {
+        MyLog.d(TAG, "zjnTest isLandscape:" + isLandscape);
+        if (mIsLandscape != isLandscape) {
+            mIsLandscape = isLandscape;
+            if (mBigTurnTablePanelView != null) {
+                mBigTurnTablePanelView.switchOrient(mIsLandscape);
+            }
+        }
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if(mBigTurnTablePanelView != null) {
+            mBigTurnTablePanelView.destory();
+        }
     }
 }
