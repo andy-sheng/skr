@@ -654,16 +654,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(TurnTableEvent event) {
-        if(event == null) {
-            return;
-        }
-
-        MyLog.d(TAG, "TurnTableEvent");
-        mController.postEvent(MSG_SHOW_BIG_TURN_TABLE_BTN, new Params().putItem(event.getData()));
-    }
-
     private void viewerTopFromServer(RoomBaseDataModel roomData) {
         if (TextUtils.isEmpty(roomData.getRoomId())) {
             MyLog.d(TAG, "viewerTop roomId is empty");

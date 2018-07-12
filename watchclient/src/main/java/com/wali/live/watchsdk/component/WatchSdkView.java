@@ -636,6 +636,9 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                     mController.postEvent(MSG_HIDE_GAME_INPUT);
                 }
                 mTopAreaView.onOrientation(false);
+                if(mWatchBigTurnTablePanelPresenter != null) {
+                    mWatchBigTurnTablePanelPresenter.orientationChange(false);
+                }
                 updateRotateBtn();
                 return true;
             case MSG_ON_ORIENT_LANDSCAPE:
@@ -648,6 +651,9 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                     mController.postEvent(MSG_SHOW_GAME_INPUT);
                 }
                 mTopAreaView.onOrientation(true);
+                if(mWatchBigTurnTablePanelPresenter != null) {
+                    mWatchBigTurnTablePanelPresenter.orientationChange(true);
+                }
                 updateRotateBtn();
                 return true;
             case MSG_INPUT_VIEW_SHOWED:

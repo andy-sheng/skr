@@ -12,6 +12,7 @@ import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.GiftEventClass;
+import com.mi.live.data.event.TurnTableEvent;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.repository.GiftRepository;
@@ -361,6 +362,17 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
         if(!TextUtils.isEmpty(mWidgetLinkUrl)) {
             onEvent(new EventClass.UpdateFastGiftInfoEvent(mFastGiftId, null, null));
         }
+    }
+
+    //显示大转盘按钮event
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(TurnTableEvent event) {
+        if(event == null) {
+            return;
+        }
+
+        MyLog.d(TAG, "TurnTableEvent");
+        postEvent(MSG_SHOW_BIG_TURN_TABLE_BTN, new Params().putItem(event.getData()));
     }
 
     // TODO-YangLi 相同代码，可以考虑抽取基类
