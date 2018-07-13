@@ -54,6 +54,8 @@ import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_CLEAR_SCREEN_VIEW_GONE;
+import static com.wali.live.component.BaseSdkController.MSG_CLEAR_SCREEN_VIEW_VISIABLE;
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_BIG_TURN_TABLE_BTN;
 import static com.wali.live.component.BaseSdkController.MSG_ON_MENU_PANEL_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
@@ -107,6 +109,8 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
         registerAction(MSG_ON_MENU_PANEL_HIDDEN);
         registerAction(MSG_SHOW_BIG_TURN_TABLE_BTN);
         registerAction(MSG_HIDE_BIG_TURN_TABLE_BTN);
+        registerAction(MSG_CLEAR_SCREEN_VIEW_GONE);
+        registerAction(MSG_CLEAR_SCREEN_VIEW_VISIABLE);
         EventBus.getDefault().register(this);
 
         syncUnreadCount();
@@ -436,6 +440,12 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
                 break;
             case MSG_HIDE_BIG_TURN_TABLE_BTN:
                 mView.hideBigTurnTable();
+                break;
+            case MSG_CLEAR_SCREEN_VIEW_GONE:
+                mView.notifyClearScreen(false);
+                break;
+            case MSG_CLEAR_SCREEN_VIEW_VISIABLE:
+                mView.notifyClearScreen(true);
                 break;
             default:
                 break;

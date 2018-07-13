@@ -420,6 +420,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 R.id.close_btn,
                 R.id.rotate_btn,
         }, mHorizontalMoveSet);
+
         addViewToSet(new int[]{
                 R.id.top_area_view,
                 R.id.bottom_button_view,
