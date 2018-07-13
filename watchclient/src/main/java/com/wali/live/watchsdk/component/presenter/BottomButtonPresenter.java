@@ -54,6 +54,7 @@ import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_CLEAR_SCREEN_CANCEL;
 import static com.wali.live.component.BaseSdkController.MSG_CLEAR_SCREEN_VIEW_GONE;
 import static com.wali.live.component.BaseSdkController.MSG_CLEAR_SCREEN_VIEW_VISIABLE;
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_BIG_TURN_TABLE_BTN;
@@ -207,6 +208,11 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
     @Override
     public void onBigTurnTableClick() {
         postEvent(MSG_SHOW_BIG_TURN_TABLE_PANEL);
+    }
+
+    @Override
+    public void cancelClearScreen() {
+        postEvent(MSG_CLEAR_SCREEN_CANCEL);
     }
 
     private void sendFastGift(final int giftId) {

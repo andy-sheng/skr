@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
+import static com.wali.live.component.BaseSdkController.MSG_CLEAR_SCREEN_CANCEL;
 import static com.wali.live.component.BaseSdkController.MSG_CLEAR_SCREEN_VIEW_GONE;
 import static com.wali.live.component.BaseSdkController.MSG_CLEAR_SCREEN_VIEW_VISIABLE;
 import static com.wali.live.component.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
@@ -134,6 +135,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_ENABLE_MOVE_VIEW);
         registerAction(MSG_DISABLE_MOVE_VIEW);
+        registerAction(MSG_CLEAR_SCREEN_CANCEL);
     }
 
     @Override
@@ -459,6 +461,10 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                 mHorizontalMoveEnabled = false;
                 mVerticalMoveEnabled = false;
                 return true;
+            case MSG_CLEAR_SCREEN_CANCEL:
+                onMoveHorizontal(0,1);
+                onFlingLeft();
+                break;
             default:
                 break;
         }

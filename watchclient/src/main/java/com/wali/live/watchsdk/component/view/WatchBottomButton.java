@@ -38,6 +38,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     private MyInfoIconView mMyInfoIconView;
     private GiftFastSendView mGiftFastSendView;
     private View mBigTurnTableBtn;
+    private View mShowAllBtn;
 
     private boolean mIsGameMode = false;
 
@@ -45,6 +46,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     private ValueAnimator mShakeAnimator;
 
     boolean mIsHuYaLive = false;
+
+    private RelativeLayout mClearScreenContainer;
 
     @Override
     protected final String getTAG() {
@@ -82,6 +85,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.onBigTurnTableClick();
             }
+        }else if(id== R.id.show_btn){
+            mPresenter.cancelClearScreen();
         }
     }
 
@@ -260,6 +265,9 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         mIsGameMode = isGameMode;
     }
 
+    protected final void orientChild() {
+        super.orientChild();
+    }
     @Override
     public IView getViewProxy() {
         /**
@@ -337,7 +345,29 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
             @Override
             public void notifyClearScreen(boolean viewVisiable) {
+                if (mShowAllBtn == null) {
+                    mShowAllBtn = createImageView(R.drawable.live_bottom_return_btn);
 
+                    if (mClearScreenContainer == null) {
+                        mClearScreenContainer = new RelativeLayout(mContentContainer.getContext());
+                        RelativeLayout parent = (RelativeLayout) mContentContainer.getParent();
+                        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                        parent.addView(mClearScreenContainer, layoutParams);
+                    }
+                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    layoutParams.alignWithParent = true;
+                    layoutParams.setMargins(BTN_MARGIN, BTN_MARGIN, BTN_MARGIN, BTN_MARGIN);
+                    mClearScreenContainer.addView(mShowAllBtn, layoutParams);
+
+                    mShowAllBtn.setId(R.id.show_btn);
+                    mShowAllBtn.setOnClickListener(WatchBottomButton.this);
+                }
+
+                mClearScreenContainer.setVisibility(viewVisiable ? View.GONE : View.VISIBLE);
             }
 
         }
@@ -380,6 +410,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         void onFastGiftClick();
 
         void onBigTurnTableClick();
+
+        void cancelClearScreen();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {

@@ -42,6 +42,19 @@ public abstract class BaseSdkView<VIEW extends View, CONTROLLER extends BaseSdkC
         }
     }
 
+//    protected final void addViewToSet(int parentViewId ,int[] childIdSet, List<View>... listSet) {
+//        if ( listSet == null) {
+//            return;
+//        }
+//        View parentView = $(parentViewId);
+//        for (int childId : childIdSet) {
+//            View view = parentView.findViewById(childId);
+//            for (List<View> viewSet : listSet) {
+//                viewSet.add(view);
+//            }
+//        }
+//    }
+
     // add view to mContentView
     protected final <T extends View> void addViewAboveAnchor(
             @NonNull T view,

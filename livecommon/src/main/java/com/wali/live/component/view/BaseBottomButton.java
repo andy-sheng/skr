@@ -85,7 +85,7 @@ public abstract class BaseBottomButton<PRESENTER, VIEW extends IViewProxy> imple
         mContentContainer.setPadding(BTN_MARGIN, BTN_MARGIN, BTN_MARGIN, BTN_MARGIN);
     }
 
-    private void resetChildLayout(RelativeLayout.LayoutParams lp) {
+    protected void resetChildLayout(RelativeLayout.LayoutParams lp) {
         lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 0);
         lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
         lp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
@@ -129,7 +129,7 @@ public abstract class BaseBottomButton<PRESENTER, VIEW extends IViewProxy> imple
         alignViewToGuard(view, Arrays.asList(new AlginParams(guardId, verb, verbDefault)));
     }
 
-    protected final void orientChild() {
+    protected void orientChild() {
         if (mIsLandscape) {
             int guardId = 0;
             for (View view : mBottomBtnSetLand) {
@@ -154,13 +154,15 @@ public abstract class BaseBottomButton<PRESENTER, VIEW extends IViewProxy> imple
             guardId = 0;
             for (int j = 0; j < mAboveTheRightBtnSetPort.size(); j++) {
                 View view2 = mAboveTheRightBtnSetPort.get(j);
-                List<AlginParams> list = new ArrayList<>();
-                if (j != 0) {
-                    list.add(new AlginParams(guardId, RelativeLayout.ABOVE, 0));
+                if (view2.getVisibility() == View.VISIBLE) {
+                    List<AlginParams> list = new ArrayList<>();
+                    if (j != 0) {
+                        list.add(new AlginParams(guardId, RelativeLayout.ABOVE, 0));
+                    }
+                    list.add(new AlginParams(0, 0, RelativeLayout.ALIGN_PARENT_RIGHT));
+                    alignViewToGuard(view2, list);
+                    guardId = view2.getId();
                 }
-                list.add(new AlginParams(0, 0, RelativeLayout.ALIGN_PARENT_RIGHT));
-                alignViewToGuard(view2, list);
-                guardId = view2.getId();
             }
 
 
