@@ -143,7 +143,7 @@ public class BarrageBtnView extends FrameLayout implements
         MyLog.d(TAG, "start to play pop anime");
 
         mShiningView = LayoutInflater.from(getContext()).inflate(R.layout.barrage_send_tip_layout, this, false);
-        addView(mShiningView, 0);
+        addView(mShiningView, 1);
 
         mBarrageBtnShiningBg = (SimpleDraweeView) mShiningView.findViewById(R.id.barrage_btn_bg_shining);
         mPopText = (TextView) mShiningView.findViewById(R.id.pop_text);
@@ -160,12 +160,12 @@ public class BarrageBtnView extends FrameLayout implements
 
         ObjectAnimator transAnimator = ObjectAnimator.ofFloat(mPopText, "translationY",
                 DisplayUtils.dip2px(6.67f), 0, DisplayUtils.dip2px(6.67f), 0, DisplayUtils.dip2px(6.67f), 0);
-        transAnimator.setDuration(5220);
+        transAnimator.setDuration(5400);
         transAnimator.setRepeatCount(0);
 
         ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mPopText, "alpha", 1.0f, 0f);
-        alphaAnimator.setStartDelay(4350);
-        alphaAnimator.setDuration(870);
+        alphaAnimator.setStartDelay(4500);
+        alphaAnimator.setDuration(900);
         alphaAnimator.setRepeatCount(0);
 
         mPopAnimator = new AnimatorSet();
