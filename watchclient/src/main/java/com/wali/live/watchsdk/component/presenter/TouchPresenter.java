@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
+import static com.wali.live.component.BaseSdkController.MSG_CLEAR_SCREEN_VIEW_GONE;
+import static com.wali.live.component.BaseSdkController.MSG_CLEAR_SCREEN_VIEW_VISIABLE;
 import static com.wali.live.component.BaseSdkController.MSG_DISABLE_MOVE_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_ENABLE_MOVE_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
@@ -316,9 +318,11 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                     if (newTranslateX == 0) {
                         MyLog.d(TAG, "onMoveHorizontal setVisibility INVISIBLE");
                         view.setVisibility(View.INVISIBLE);
+                        mController.postEvent(MSG_CLEAR_SCREEN_VIEW_GONE);
                     } else if (oldTranslateX == 0) {
                         MyLog.d(TAG, "onMoveHorizontal setVisibility VISIBLE");
                         view.setVisibility(View.VISIBLE);
+                        mController.postEvent(MSG_CLEAR_SCREEN_VIEW_VISIABLE);
                     }
                 } else {
                     view.setTranslationX(newTranslateX);
@@ -328,7 +332,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     }
 
     private void onFlingLeft() {
-        mIsHideAll = false;
+        setHideAll(false);
         mTranslation = 0;
         for (View view : mHorizontalSet) {
             if (view != null) {
@@ -339,7 +343,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     }
 
     private void onFlingRight() {
-        mIsHideAll = true;
+        setHideAll(true);
         mTranslation = 0;
         for (View view : mHorizontalSet) {
             if (view != null) {
@@ -347,7 +351,17 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                 view.setVisibility(View.GONE);
             }
         }
+        mController.postEvent(MSG_CLEAR_SCREEN_VIEW_GONE);
         MyLog.d(TAG, "onFlingRight setTranslationX 0");
+    }
+
+    private void setHideAll(boolean hideAll) {
+        mIsHideAll = hideAll;
+        if (mIsHideAll) {
+
+        } else {
+
+        }
     }
 
     private void onCancelMoveHorizontal() {
@@ -361,6 +375,11 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                 view.setTranslationX(0);
                 view.setVisibility(visibility);
             }
+        }
+        if (mIsHideAll) {
+            mController.postEvent(MSG_CLEAR_SCREEN_VIEW_GONE);
+        } else {
+            mController.postEvent(MSG_CLEAR_SCREEN_VIEW_VISIABLE);
         }
         MyLog.d(TAG, "onFlingRight setTranslationX 0");
     }
@@ -423,7 +442,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                 mViewWidth = GlobalData.screenHeight;
                 mFlingThreshold = FLING_THRESHOLD_LARGE;
                 if (mIsGameMode && mIsHideAll) { // 竖屏转横屏，恢复被隐藏的View，横屏转竖屏的逻辑在WatchSdkView中处理
-                    mIsHideAll = false;
+                    setHideAll(false);
                     for (View view : mHorizontalSet) {
                         if (view != null && view.getVisibility() != View.VISIBLE) {
                             view.setVisibility(View.VISIBLE);

@@ -335,6 +335,11 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
                 hideBigTurnTableBtn();
             }
 
+            @Override
+            public void notifyClearScreen(boolean viewVisiable) {
+
+            }
+
         }
         return new ComponentView();
     }
@@ -403,5 +408,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         void showBigTurnTable();
 
         void hideBigTurnTable();
+
+        void notifyClearScreen(boolean viewVisiable);
     }
 }
