@@ -183,6 +183,10 @@ public final class PayProto {
      * </pre>
      */
     CODA_IDR_ATM_CH(9, 10),
+    /**
+     * <code>ACTIVITY_CH = 14;</code>
+     */
+    ACTIVITY_CH(10, 14),
     ;
 
     /**
@@ -265,6 +269,10 @@ public final class PayProto {
      * </pre>
      */
     public static final int CODA_IDR_ATM_CH_VALUE = 10;
+    /**
+     * <code>ACTIVITY_CH = 14;</code>
+     */
+    public static final int ACTIVITY_CH_VALUE = 14;
 
 
     public final int getNumber() { return value; }
@@ -281,6 +289,7 @@ public final class PayProto {
         case 8: return PAYTM_CH;
         case 9: return CODA_IDR_DCB_CH;
         case 10: return CODA_IDR_ATM_CH;
+        case 14: return ACTIVITY_CH;
         default: return null;
       }
     }
@@ -1113,10 +1122,10 @@ public final class PayProto {
     // @@protoc_insertion_point(enum_scope:GrantType)
   }
 
-  public interface QueryAccountRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface QueryAccountRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:QueryAccountRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      *
@@ -1134,7 +1143,6 @@ public final class PayProto {
      */
     long getUuid();
 
-    // required .Platform platform = 2;
     /**
      * <code>required .Platform platform = 2;</code>
      */
@@ -1153,8 +1161,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class QueryAccountRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements QueryAccountRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:QueryAccountRequest)
+      QueryAccountRequestOrBuilder {
     // Use QueryAccountRequest.newBuilder() to construct.
     private QueryAccountRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -1256,7 +1265,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -1280,7 +1288,6 @@ public final class PayProto {
       return uuid_;
     }
 
-    // required .Platform platform = 2;
     public static final int PLATFORM_FIELD_NUMBER = 2;
     private com.wali.live.proto.PayProto.Platform platform_;
     /**
@@ -1303,7 +1310,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -1430,8 +1438,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.QueryAccountRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:QueryAccountRequest)
+        com.wali.live.proto.PayProto.QueryAccountRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_QueryAccountRequest_descriptor;
@@ -1561,7 +1570,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -1610,7 +1618,6 @@ public final class PayProto {
         return this;
       }
 
-      // required .Platform platform = 2;
       private com.wali.live.proto.PayProto.Platform platform_ = com.wali.live.proto.PayProto.Platform.IOS;
       /**
        * <code>required .Platform platform = 2;</code>
@@ -1657,10 +1664,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:QueryAccountRequest)
   }
 
-  public interface QueryAccountResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface QueryAccountResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:QueryAccountResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret_code = 1;
     /**
      * <code>required uint32 ret_code = 1;</code>
      *
@@ -1678,7 +1685,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // optional uint32 usable_gem_cnt = 2;
     /**
      * <code>optional uint32 usable_gem_cnt = 2;</code>
      *
@@ -1696,7 +1702,6 @@ public final class PayProto {
      */
     int getUsableGemCnt();
 
-    // optional uint32 consum_gem_cnt = 3;
     /**
      * <code>optional uint32 consum_gem_cnt = 3;</code>
      *
@@ -1714,7 +1719,6 @@ public final class PayProto {
      */
     int getConsumGemCnt();
 
-    // optional uint32 usable_ticket_cnt = 4;
     /**
      * <code>optional uint32 usable_ticket_cnt = 4;</code>
      *
@@ -1732,7 +1736,6 @@ public final class PayProto {
      */
     int getUsableTicketCnt();
 
-    // optional uint32 total_ticket_cnt = 5;
     /**
      * <code>optional uint32 total_ticket_cnt = 5;</code>
      *
@@ -1750,7 +1753,6 @@ public final class PayProto {
      */
     int getTotalTicketCnt();
 
-    // repeated uint64 rank_top_three_list = 6;
     /**
      * <code>repeated uint64 rank_top_three_list = 6;</code>
      *
@@ -1780,8 +1782,9 @@ public final class PayProto {
    * Protobuf type {@code QueryAccountResponse}
    */
   public static final class QueryAccountResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements QueryAccountResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:QueryAccountResponse)
+      QueryAccountResponseOrBuilder {
     // Use QueryAccountResponse.newBuilder() to construct.
     private QueryAccountResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -1916,7 +1919,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 ret_code = 1;
     public static final int RET_CODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -1940,7 +1942,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // optional uint32 usable_gem_cnt = 2;
     public static final int USABLE_GEM_CNT_FIELD_NUMBER = 2;
     private int usableGemCnt_;
     /**
@@ -1964,7 +1965,6 @@ public final class PayProto {
       return usableGemCnt_;
     }
 
-    // optional uint32 consum_gem_cnt = 3;
     public static final int CONSUM_GEM_CNT_FIELD_NUMBER = 3;
     private int consumGemCnt_;
     /**
@@ -1988,7 +1988,6 @@ public final class PayProto {
       return consumGemCnt_;
     }
 
-    // optional uint32 usable_ticket_cnt = 4;
     public static final int USABLE_TICKET_CNT_FIELD_NUMBER = 4;
     private int usableTicketCnt_;
     /**
@@ -2012,7 +2011,6 @@ public final class PayProto {
       return usableTicketCnt_;
     }
 
-    // optional uint32 total_ticket_cnt = 5;
     public static final int TOTAL_TICKET_CNT_FIELD_NUMBER = 5;
     private int totalTicketCnt_;
     /**
@@ -2036,7 +2034,6 @@ public final class PayProto {
       return totalTicketCnt_;
     }
 
-    // repeated uint64 rank_top_three_list = 6;
     public static final int RANK_TOP_THREE_LIST_FIELD_NUMBER = 6;
     private java.util.List<java.lang.Long> rankTopThreeList_;
     /**
@@ -2082,7 +2079,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -2233,8 +2231,9 @@ public final class PayProto {
      * Protobuf type {@code QueryAccountResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.QueryAccountResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:QueryAccountResponse)
+        com.wali.live.proto.PayProto.QueryAccountResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_QueryAccountResponse_descriptor;
@@ -2404,7 +2403,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 ret_code = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 ret_code = 1;</code>
@@ -2453,7 +2451,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 usable_gem_cnt = 2;
       private int usableGemCnt_ ;
       /**
        * <code>optional uint32 usable_gem_cnt = 2;</code>
@@ -2502,7 +2499,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 consum_gem_cnt = 3;
       private int consumGemCnt_ ;
       /**
        * <code>optional uint32 consum_gem_cnt = 3;</code>
@@ -2551,7 +2547,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 usable_ticket_cnt = 4;
       private int usableTicketCnt_ ;
       /**
        * <code>optional uint32 usable_ticket_cnt = 4;</code>
@@ -2600,7 +2595,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 total_ticket_cnt = 5;
       private int totalTicketCnt_ ;
       /**
        * <code>optional uint32 total_ticket_cnt = 5;</code>
@@ -2649,7 +2643,6 @@ public final class PayProto {
         return this;
       }
 
-      // repeated uint64 rank_top_three_list = 6;
       private java.util.List<java.lang.Long> rankTopThreeList_ = java.util.Collections.emptyList();
       private void ensureRankTopThreeListIsMutable() {
         if (!((bitField0_ & 0x00000020) == 0x00000020)) {
@@ -2725,7 +2718,8 @@ public final class PayProto {
       public Builder addAllRankTopThreeList(
           java.lang.Iterable<? extends java.lang.Long> values) {
         ensureRankTopThreeListIsMutable();
-        super.addAll(values, rankTopThreeList_);
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, rankTopThreeList_);
         onChanged();
         return this;
       }
@@ -2754,10 +2748,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:QueryAccountResponse)
   }
 
-  public interface ConsumGemRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ConsumGemRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ConsumGemRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      */
@@ -2767,7 +2761,6 @@ public final class PayProto {
      */
     long getUuid();
 
-    // required string out_order_id = 2;
     /**
      * <code>required string out_order_id = 2;</code>
      */
@@ -2782,7 +2775,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getOutOrderIdBytes();
 
-    // required uint32 gift_id = 3;
     /**
      * <code>required uint32 gift_id = 3;</code>
      */
@@ -2792,7 +2784,6 @@ public final class PayProto {
      */
     int getGiftId();
 
-    // required uint32 consum_gem_cnt = 4;
     /**
      * <code>required uint32 consum_gem_cnt = 4;</code>
      *
@@ -2810,7 +2801,6 @@ public final class PayProto {
      */
     int getConsumGemCnt();
 
-    // required uint64 receiver_id = 5;
     /**
      * <code>required uint64 receiver_id = 5;</code>
      *
@@ -2828,7 +2818,6 @@ public final class PayProto {
      */
     long getReceiverId();
 
-    // required uint32 give_ticket_cnt = 6;
     /**
      * <code>required uint32 give_ticket_cnt = 6;</code>
      *
@@ -2846,7 +2835,6 @@ public final class PayProto {
      */
     int getGiveTicketCnt();
 
-    // required .Platform platform = 7;
     /**
      * <code>required .Platform platform = 7;</code>
      */
@@ -2865,8 +2853,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class ConsumGemRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements ConsumGemRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ConsumGemRequest)
+      ConsumGemRequestOrBuilder {
     // Use ConsumGemRequest.newBuilder() to construct.
     private ConsumGemRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -2918,8 +2907,9 @@ public final class PayProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              outOrderId_ = input.readBytes();
+              outOrderId_ = bs;
               break;
             }
             case 24: {
@@ -2993,7 +2983,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -3009,7 +2998,6 @@ public final class PayProto {
       return uuid_;
     }
 
-    // required string out_order_id = 2;
     public static final int OUT_ORDER_ID_FIELD_NUMBER = 2;
     private java.lang.Object outOrderId_;
     /**
@@ -3052,7 +3040,6 @@ public final class PayProto {
       }
     }
 
-    // required uint32 gift_id = 3;
     public static final int GIFT_ID_FIELD_NUMBER = 3;
     private int giftId_;
     /**
@@ -3068,7 +3055,6 @@ public final class PayProto {
       return giftId_;
     }
 
-    // required uint32 consum_gem_cnt = 4;
     public static final int CONSUM_GEM_CNT_FIELD_NUMBER = 4;
     private int consumGemCnt_;
     /**
@@ -3092,7 +3078,6 @@ public final class PayProto {
       return consumGemCnt_;
     }
 
-    // required uint64 receiver_id = 5;
     public static final int RECEIVER_ID_FIELD_NUMBER = 5;
     private long receiverId_;
     /**
@@ -3116,7 +3101,6 @@ public final class PayProto {
       return receiverId_;
     }
 
-    // required uint32 give_ticket_cnt = 6;
     public static final int GIVE_TICKET_CNT_FIELD_NUMBER = 6;
     private int giveTicketCnt_;
     /**
@@ -3140,7 +3124,6 @@ public final class PayProto {
       return giveTicketCnt_;
     }
 
-    // required .Platform platform = 7;
     public static final int PLATFORM_FIELD_NUMBER = 7;
     private com.wali.live.proto.PayProto.Platform platform_;
     /**
@@ -3168,7 +3151,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -3350,8 +3334,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.ConsumGemRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ConsumGemRequest)
+        com.wali.live.proto.PayProto.ConsumGemRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_ConsumGemRequest_descriptor;
@@ -3548,7 +3533,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -3581,7 +3565,6 @@ public final class PayProto {
         return this;
       }
 
-      // required string out_order_id = 2;
       private java.lang.Object outOrderId_ = "";
       /**
        * <code>required string out_order_id = 2;</code>
@@ -3595,9 +3578,12 @@ public final class PayProto {
       public java.lang.String getOutOrderId() {
         java.lang.Object ref = outOrderId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          outOrderId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            outOrderId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3655,7 +3641,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint32 gift_id = 3;
       private int giftId_ ;
       /**
        * <code>required uint32 gift_id = 3;</code>
@@ -3688,7 +3673,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint32 consum_gem_cnt = 4;
       private int consumGemCnt_ ;
       /**
        * <code>required uint32 consum_gem_cnt = 4;</code>
@@ -3737,7 +3721,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint64 receiver_id = 5;
       private long receiverId_ ;
       /**
        * <code>required uint64 receiver_id = 5;</code>
@@ -3786,7 +3769,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint32 give_ticket_cnt = 6;
       private int giveTicketCnt_ ;
       /**
        * <code>required uint32 give_ticket_cnt = 6;</code>
@@ -3835,7 +3817,6 @@ public final class PayProto {
         return this;
       }
 
-      // required .Platform platform = 7;
       private com.wali.live.proto.PayProto.Platform platform_ = com.wali.live.proto.PayProto.Platform.IOS;
       /**
        * <code>required .Platform platform = 7;</code>
@@ -3882,10 +3863,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:ConsumGemRequest)
   }
 
-  public interface ConsumGemResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ConsumGemResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ConsumGemResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret_code = 1;
     /**
      * <code>required uint32 ret_code = 1;</code>
      */
@@ -3895,7 +3876,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // optional uint32 usable_gem_cnt = 2;
     /**
      * <code>optional uint32 usable_gem_cnt = 2;</code>
      */
@@ -3905,7 +3885,6 @@ public final class PayProto {
      */
     int getUsableGemCnt();
 
-    // optional uint64 timestamp = 3;
     /**
      * <code>optional uint64 timestamp = 3;</code>
      */
@@ -3919,8 +3898,9 @@ public final class PayProto {
    * Protobuf type {@code ConsumGemResponse}
    */
   public static final class ConsumGemResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements ConsumGemResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ConsumGemResponse)
+      ConsumGemResponseOrBuilder {
     // Use ConsumGemResponse.newBuilder() to construct.
     private ConsumGemResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -4021,7 +4001,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 ret_code = 1;
     public static final int RET_CODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -4037,7 +4016,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // optional uint32 usable_gem_cnt = 2;
     public static final int USABLE_GEM_CNT_FIELD_NUMBER = 2;
     private int usableGemCnt_;
     /**
@@ -4053,7 +4031,6 @@ public final class PayProto {
       return usableGemCnt_;
     }
 
-    // optional uint64 timestamp = 3;
     public static final int TIMESTAMP_FIELD_NUMBER = 3;
     private long timestamp_;
     /**
@@ -4077,7 +4054,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -4202,8 +4180,9 @@ public final class PayProto {
      * Protobuf type {@code ConsumGemResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.ConsumGemResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ConsumGemResponse)
+        com.wali.live.proto.PayProto.ConsumGemResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_ConsumGemResponse_descriptor;
@@ -4338,7 +4317,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 ret_code = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 ret_code = 1;</code>
@@ -4371,7 +4349,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 usable_gem_cnt = 2;
       private int usableGemCnt_ ;
       /**
        * <code>optional uint32 usable_gem_cnt = 2;</code>
@@ -4404,7 +4381,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint64 timestamp = 3;
       private long timestamp_ ;
       /**
        * <code>optional uint64 timestamp = 3;</code>
@@ -4448,10 +4424,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:ConsumGemResponse)
   }
 
-  public interface GetGemPriceRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetGemPriceRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetGemPriceRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      */
@@ -4461,7 +4437,6 @@ public final class PayProto {
      */
     long getUuid();
 
-    // required .Platform platform = 2;
     /**
      * <code>required .Platform platform = 2;</code>
      */
@@ -4471,7 +4446,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.Platform getPlatform();
 
-    // optional .RChannel channel = 3;
     /**
      * <code>optional .RChannel channel = 3;</code>
      */
@@ -4490,8 +4464,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class GetGemPriceRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements GetGemPriceRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetGemPriceRequest)
+      GetGemPriceRequestOrBuilder {
     // Use GetGemPriceRequest.newBuilder() to construct.
     private GetGemPriceRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -4604,7 +4579,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -4620,7 +4594,6 @@ public final class PayProto {
       return uuid_;
     }
 
-    // required .Platform platform = 2;
     public static final int PLATFORM_FIELD_NUMBER = 2;
     private com.wali.live.proto.PayProto.Platform platform_;
     /**
@@ -4636,7 +4609,6 @@ public final class PayProto {
       return platform_;
     }
 
-    // optional .RChannel channel = 3;
     public static final int CHANNEL_FIELD_NUMBER = 3;
     private com.wali.live.proto.PayProto.RChannel channel_;
     /**
@@ -4660,7 +4632,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -4794,8 +4767,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.GetGemPriceRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetGemPriceRequest)
+        com.wali.live.proto.PayProto.GetGemPriceRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_GetGemPriceRequest_descriptor;
@@ -4934,7 +4908,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -4967,7 +4940,6 @@ public final class PayProto {
         return this;
       }
 
-      // required .Platform platform = 2;
       private com.wali.live.proto.PayProto.Platform platform_ = com.wali.live.proto.PayProto.Platform.IOS;
       /**
        * <code>required .Platform platform = 2;</code>
@@ -5003,7 +4975,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .RChannel channel = 3;
       private com.wali.live.proto.PayProto.RChannel channel_ = com.wali.live.proto.PayProto.RChannel.IOS_CH;
       /**
        * <code>optional .RChannel channel = 3;</code>
@@ -5050,10 +5021,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:GetGemPriceRequest)
   }
 
-  public interface GemGoodsOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GemGoodsOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GemGoods)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 goods_id = 1;
     /**
      * <code>required uint32 goods_id = 1;</code>
      */
@@ -5063,7 +5034,6 @@ public final class PayProto {
      */
     int getGoodsId();
 
-    // required uint32 gem_cnt = 2;
     /**
      * <code>required uint32 gem_cnt = 2;</code>
      */
@@ -5073,7 +5043,6 @@ public final class PayProto {
      */
     int getGemCnt();
 
-    // required uint32 price = 3;
     /**
      * <code>required uint32 price = 3;</code>
      *
@@ -5091,7 +5060,6 @@ public final class PayProto {
      */
     int getPrice();
 
-    // optional uint32 give_gem_cnt = 4;
     /**
      * <code>optional uint32 give_gem_cnt = 4;</code>
      */
@@ -5101,7 +5069,6 @@ public final class PayProto {
      */
     int getGiveGemCnt();
 
-    // optional uint32 max_buy_times = 5;
     /**
      * <code>optional uint32 max_buy_times = 5;</code>
      *
@@ -5119,7 +5086,6 @@ public final class PayProto {
      */
     int getMaxBuyTimes();
 
-    // optional uint64 begin_time = 6;
     /**
      * <code>optional uint64 begin_time = 6;</code>
      *
@@ -5137,7 +5103,6 @@ public final class PayProto {
      */
     long getBeginTime();
 
-    // optional uint64 end_time = 7;
     /**
      * <code>optional uint64 end_time = 7;</code>
      *
@@ -5155,7 +5120,6 @@ public final class PayProto {
      */
     long getEndTime();
 
-    // optional string subtitle = 8;
     /**
      * <code>optional string subtitle = 8;</code>
      *
@@ -5182,7 +5146,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getSubtitleBytes();
 
-    // optional string icon = 9;
     /**
      * <code>optional string icon = 9;</code>
      */
@@ -5197,7 +5160,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getIconBytes();
 
-    // optional .ActType act_type = 10;
     /**
      * <code>optional .ActType act_type = 10;</code>
      *
@@ -5219,8 +5181,9 @@ public final class PayProto {
    * Protobuf type {@code GemGoods}
    */
   public static final class GemGoods extends
-      com.google.protobuf.GeneratedMessage
-      implements GemGoodsOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GemGoods)
+      GemGoodsOrBuilder {
     // Use GemGoods.newBuilder() to construct.
     private GemGoods(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -5302,13 +5265,15 @@ public final class PayProto {
               break;
             }
             case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
-              subtitle_ = input.readBytes();
+              subtitle_ = bs;
               break;
             }
             case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              icon_ = input.readBytes();
+              icon_ = bs;
               break;
             }
             case 80: {
@@ -5362,7 +5327,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 goods_id = 1;
     public static final int GOODS_ID_FIELD_NUMBER = 1;
     private int goodsId_;
     /**
@@ -5378,7 +5342,6 @@ public final class PayProto {
       return goodsId_;
     }
 
-    // required uint32 gem_cnt = 2;
     public static final int GEM_CNT_FIELD_NUMBER = 2;
     private int gemCnt_;
     /**
@@ -5394,7 +5357,6 @@ public final class PayProto {
       return gemCnt_;
     }
 
-    // required uint32 price = 3;
     public static final int PRICE_FIELD_NUMBER = 3;
     private int price_;
     /**
@@ -5418,7 +5380,6 @@ public final class PayProto {
       return price_;
     }
 
-    // optional uint32 give_gem_cnt = 4;
     public static final int GIVE_GEM_CNT_FIELD_NUMBER = 4;
     private int giveGemCnt_;
     /**
@@ -5434,7 +5395,6 @@ public final class PayProto {
       return giveGemCnt_;
     }
 
-    // optional uint32 max_buy_times = 5;
     public static final int MAX_BUY_TIMES_FIELD_NUMBER = 5;
     private int maxBuyTimes_;
     /**
@@ -5458,7 +5418,6 @@ public final class PayProto {
       return maxBuyTimes_;
     }
 
-    // optional uint64 begin_time = 6;
     public static final int BEGIN_TIME_FIELD_NUMBER = 6;
     private long beginTime_;
     /**
@@ -5482,7 +5441,6 @@ public final class PayProto {
       return beginTime_;
     }
 
-    // optional uint64 end_time = 7;
     public static final int END_TIME_FIELD_NUMBER = 7;
     private long endTime_;
     /**
@@ -5506,7 +5464,6 @@ public final class PayProto {
       return endTime_;
     }
 
-    // optional string subtitle = 8;
     public static final int SUBTITLE_FIELD_NUMBER = 8;
     private java.lang.Object subtitle_;
     /**
@@ -5561,7 +5518,6 @@ public final class PayProto {
       }
     }
 
-    // optional string icon = 9;
     public static final int ICON_FIELD_NUMBER = 9;
     private java.lang.Object icon_;
     /**
@@ -5604,7 +5560,6 @@ public final class PayProto {
       }
     }
 
-    // optional .ActType act_type = 10;
     public static final int ACT_TYPE_FIELD_NUMBER = 10;
     private com.wali.live.proto.PayProto.ActType actType_;
     /**
@@ -5643,7 +5598,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasGoodsId()) {
         memoizedIsInitialized = 0;
@@ -5825,8 +5781,9 @@ public final class PayProto {
      * Protobuf type {@code GemGoods}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.GemGoodsOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GemGoods)
+        com.wali.live.proto.PayProto.GemGoodsOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_GemGoods_descriptor;
@@ -6036,7 +5993,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 goods_id = 1;
       private int goodsId_ ;
       /**
        * <code>required uint32 goods_id = 1;</code>
@@ -6069,7 +6025,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint32 gem_cnt = 2;
       private int gemCnt_ ;
       /**
        * <code>required uint32 gem_cnt = 2;</code>
@@ -6102,7 +6057,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint32 price = 3;
       private int price_ ;
       /**
        * <code>required uint32 price = 3;</code>
@@ -6151,7 +6105,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 give_gem_cnt = 4;
       private int giveGemCnt_ ;
       /**
        * <code>optional uint32 give_gem_cnt = 4;</code>
@@ -6184,7 +6137,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 max_buy_times = 5;
       private int maxBuyTimes_ ;
       /**
        * <code>optional uint32 max_buy_times = 5;</code>
@@ -6233,7 +6185,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint64 begin_time = 6;
       private long beginTime_ ;
       /**
        * <code>optional uint64 begin_time = 6;</code>
@@ -6282,7 +6233,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint64 end_time = 7;
       private long endTime_ ;
       /**
        * <code>optional uint64 end_time = 7;</code>
@@ -6331,7 +6281,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string subtitle = 8;
       private java.lang.Object subtitle_ = "";
       /**
        * <code>optional string subtitle = 8;</code>
@@ -6353,9 +6302,12 @@ public final class PayProto {
       public java.lang.String getSubtitle() {
         java.lang.Object ref = subtitle_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          subtitle_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            subtitle_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6429,7 +6381,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string icon = 9;
       private java.lang.Object icon_ = "";
       /**
        * <code>optional string icon = 9;</code>
@@ -6443,9 +6394,12 @@ public final class PayProto {
       public java.lang.String getIcon() {
         java.lang.Object ref = icon_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          icon_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            icon_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6503,7 +6457,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .ActType act_type = 10;
       private com.wali.live.proto.PayProto.ActType actType_ = com.wali.live.proto.PayProto.ActType.NEWMAN_FIRST_RECHARGE;
       /**
        * <code>optional .ActType act_type = 10;</code>
@@ -6566,10 +6519,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:GemGoods)
   }
 
-  public interface GetGemPriceResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetGemPriceResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetGemPriceResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret_code = 1;
     /**
      * <code>required uint32 ret_code = 1;</code>
      *
@@ -6587,7 +6540,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // optional uint32 usable_gem_cnt = 2;
     /**
      * <code>optional uint32 usable_gem_cnt = 2;</code>
      *
@@ -6605,7 +6557,6 @@ public final class PayProto {
      */
     int getUsableGemCnt();
 
-    // repeated .GemGoods gem_goods_list = 3;
     /**
      * <code>repeated .GemGoods gem_goods_list = 3;</code>
      *
@@ -6650,7 +6601,6 @@ public final class PayProto {
     com.wali.live.proto.PayProto.GemGoodsOrBuilder getGemGoodsListOrBuilder(
         int index);
 
-    // optional .NotifyType notifyType = 4;
     /**
      * <code>optional .NotifyType notifyType = 4;</code>
      */
@@ -6660,7 +6610,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.NotifyType getNotifyType();
 
-    // optional string msg = 5;
     /**
      * <code>optional string msg = 5;</code>
      */
@@ -6675,7 +6624,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getMsgBytes();
 
-    // optional uint32 exchangeable_gem_cnt = 6;
     /**
      * <code>optional uint32 exchangeable_gem_cnt = 6;</code>
      *
@@ -6693,7 +6641,6 @@ public final class PayProto {
      */
     int getExchangeableGemCnt();
 
-    // optional uint32 expire_virtual_gem_cnt = 7;
     /**
      * <code>optional uint32 expire_virtual_gem_cnt = 7;</code>
      *
@@ -6711,7 +6658,6 @@ public final class PayProto {
      */
     int getExpireVirtualGemCnt();
 
-    // optional uint32 expire_gift_card_cnt = 8;
     /**
      * <code>optional uint32 expire_gift_card_cnt = 8;</code>
      *
@@ -6729,7 +6675,6 @@ public final class PayProto {
      */
     int getExpireGiftCardCnt();
 
-    // optional uint32 usable_virtual_gem_cnt = 9;
     /**
      * <code>optional uint32 usable_virtual_gem_cnt = 9;</code>
      *
@@ -6747,7 +6692,6 @@ public final class PayProto {
      */
     int getUsableVirtualGemCnt();
 
-    // optional .RechargeDayAmount amount = 10;
     /**
      * <code>optional .RechargeDayAmount amount = 10;</code>
      *
@@ -6777,8 +6721,9 @@ public final class PayProto {
    * Protobuf type {@code GetGemPriceResponse}
    */
   public static final class GetGemPriceResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements GetGemPriceResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetGemPriceResponse)
+      GetGemPriceResponseOrBuilder {
     // Use GetGemPriceResponse.newBuilder() to construct.
     private GetGemPriceResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -6854,8 +6799,9 @@ public final class PayProto {
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              msg_ = input.readBytes();
+              msg_ = bs;
               break;
             }
             case 48: {
@@ -6934,7 +6880,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 ret_code = 1;
     public static final int RET_CODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -6958,7 +6903,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // optional uint32 usable_gem_cnt = 2;
     public static final int USABLE_GEM_CNT_FIELD_NUMBER = 2;
     private int usableGemCnt_;
     /**
@@ -6982,7 +6926,6 @@ public final class PayProto {
       return usableGemCnt_;
     }
 
-    // repeated .GemGoods gem_goods_list = 3;
     public static final int GEM_GOODS_LIST_FIELD_NUMBER = 3;
     private java.util.List<com.wali.live.proto.PayProto.GemGoods> gemGoodsList_;
     /**
@@ -7038,7 +6981,6 @@ public final class PayProto {
       return gemGoodsList_.get(index);
     }
 
-    // optional .NotifyType notifyType = 4;
     public static final int NOTIFYTYPE_FIELD_NUMBER = 4;
     private com.wali.live.proto.PayProto.NotifyType notifyType_;
     /**
@@ -7054,7 +6996,6 @@ public final class PayProto {
       return notifyType_;
     }
 
-    // optional string msg = 5;
     public static final int MSG_FIELD_NUMBER = 5;
     private java.lang.Object msg_;
     /**
@@ -7097,7 +7038,6 @@ public final class PayProto {
       }
     }
 
-    // optional uint32 exchangeable_gem_cnt = 6;
     public static final int EXCHANGEABLE_GEM_CNT_FIELD_NUMBER = 6;
     private int exchangeableGemCnt_;
     /**
@@ -7121,7 +7061,6 @@ public final class PayProto {
       return exchangeableGemCnt_;
     }
 
-    // optional uint32 expire_virtual_gem_cnt = 7;
     public static final int EXPIRE_VIRTUAL_GEM_CNT_FIELD_NUMBER = 7;
     private int expireVirtualGemCnt_;
     /**
@@ -7145,7 +7084,6 @@ public final class PayProto {
       return expireVirtualGemCnt_;
     }
 
-    // optional uint32 expire_gift_card_cnt = 8;
     public static final int EXPIRE_GIFT_CARD_CNT_FIELD_NUMBER = 8;
     private int expireGiftCardCnt_;
     /**
@@ -7169,7 +7107,6 @@ public final class PayProto {
       return expireGiftCardCnt_;
     }
 
-    // optional uint32 usable_virtual_gem_cnt = 9;
     public static final int USABLE_VIRTUAL_GEM_CNT_FIELD_NUMBER = 9;
     private int usableVirtualGemCnt_;
     /**
@@ -7193,7 +7130,6 @@ public final class PayProto {
       return usableVirtualGemCnt_;
     }
 
-    // optional .RechargeDayAmount amount = 10;
     public static final int AMOUNT_FIELD_NUMBER = 10;
     private com.wali.live.proto.PayProto.RechargeDayAmount amount_;
     /**
@@ -7242,7 +7178,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -7422,8 +7359,9 @@ public final class PayProto {
      * Protobuf type {@code GetGemPriceResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.GetGemPriceResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetGemPriceResponse)
+        com.wali.live.proto.PayProto.GetGemPriceResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_GetGemPriceResponse_descriptor;
@@ -7671,7 +7609,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 ret_code = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 ret_code = 1;</code>
@@ -7720,7 +7657,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 usable_gem_cnt = 2;
       private int usableGemCnt_ ;
       /**
        * <code>optional uint32 usable_gem_cnt = 2;</code>
@@ -7769,7 +7705,6 @@ public final class PayProto {
         return this;
       }
 
-      // repeated .GemGoods gem_goods_list = 3;
       private java.util.List<com.wali.live.proto.PayProto.GemGoods> gemGoodsList_ =
         java.util.Collections.emptyList();
       private void ensureGemGoodsListIsMutable() {
@@ -7951,7 +7886,8 @@ public final class PayProto {
           java.lang.Iterable<? extends com.wali.live.proto.PayProto.GemGoods> values) {
         if (gemGoodsListBuilder_ == null) {
           ensureGemGoodsListIsMutable();
-          super.addAll(values, gemGoodsList_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, gemGoodsList_);
           onChanged();
         } else {
           gemGoodsListBuilder_.addAllMessages(values);
@@ -8081,7 +8017,6 @@ public final class PayProto {
         return gemGoodsListBuilder_;
       }
 
-      // optional .NotifyType notifyType = 4;
       private com.wali.live.proto.PayProto.NotifyType notifyType_ = com.wali.live.proto.PayProto.NotifyType.TOAST;
       /**
        * <code>optional .NotifyType notifyType = 4;</code>
@@ -8117,7 +8052,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string msg = 5;
       private java.lang.Object msg_ = "";
       /**
        * <code>optional string msg = 5;</code>
@@ -8131,9 +8065,12 @@ public final class PayProto {
       public java.lang.String getMsg() {
         java.lang.Object ref = msg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          msg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -8191,7 +8128,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 exchangeable_gem_cnt = 6;
       private int exchangeableGemCnt_ ;
       /**
        * <code>optional uint32 exchangeable_gem_cnt = 6;</code>
@@ -8240,7 +8176,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 expire_virtual_gem_cnt = 7;
       private int expireVirtualGemCnt_ ;
       /**
        * <code>optional uint32 expire_virtual_gem_cnt = 7;</code>
@@ -8289,7 +8224,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 expire_gift_card_cnt = 8;
       private int expireGiftCardCnt_ ;
       /**
        * <code>optional uint32 expire_gift_card_cnt = 8;</code>
@@ -8338,7 +8272,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 usable_virtual_gem_cnt = 9;
       private int usableVirtualGemCnt_ ;
       /**
        * <code>optional uint32 usable_virtual_gem_cnt = 9;</code>
@@ -8387,7 +8320,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .RechargeDayAmount amount = 10;
       private com.wali.live.proto.PayProto.RechargeDayAmount amount_ = com.wali.live.proto.PayProto.RechargeDayAmount.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.PayProto.RechargeDayAmount, com.wali.live.proto.PayProto.RechargeDayAmount.Builder, com.wali.live.proto.PayProto.RechargeDayAmountOrBuilder> amountBuilder_;
@@ -8532,7 +8464,7 @@ public final class PayProto {
         if (amountBuilder_ == null) {
           amountBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.PayProto.RechargeDayAmount, com.wali.live.proto.PayProto.RechargeDayAmount.Builder, com.wali.live.proto.PayProto.RechargeDayAmountOrBuilder>(
-                  amount_,
+                  getAmount(),
                   getParentForChildren(),
                   isClean());
           amount_ = null;
@@ -8551,10 +8483,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:GetGemPriceResponse)
   }
 
-  public interface RechargeDayAmountOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface RechargeDayAmountOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:RechargeDayAmount)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint32 wxpay_amount = 1;
     /**
      * <code>optional uint32 wxpay_amount = 1;</code>
      *
@@ -8572,7 +8504,6 @@ public final class PayProto {
      */
     int getWxpayAmount();
 
-    // optional uint32 miwallet_amount = 2;
     /**
      * <code>optional uint32 miwallet_amount = 2;</code>
      *
@@ -8598,8 +8529,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class RechargeDayAmount extends
-      com.google.protobuf.GeneratedMessage
-      implements RechargeDayAmountOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:RechargeDayAmount)
+      RechargeDayAmountOrBuilder {
     // Use RechargeDayAmount.newBuilder() to construct.
     private RechargeDayAmount(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -8695,7 +8627,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // optional uint32 wxpay_amount = 1;
     public static final int WXPAY_AMOUNT_FIELD_NUMBER = 1;
     private int wxpayAmount_;
     /**
@@ -8719,7 +8650,6 @@ public final class PayProto {
       return wxpayAmount_;
     }
 
-    // optional uint32 miwallet_amount = 2;
     public static final int MIWALLET_AMOUNT_FIELD_NUMBER = 2;
     private int miwalletAmount_;
     /**
@@ -8750,7 +8680,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -8868,8 +8799,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.RechargeDayAmountOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:RechargeDayAmount)
+        com.wali.live.proto.PayProto.RechargeDayAmountOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_RechargeDayAmount_descriptor;
@@ -8991,7 +8923,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // optional uint32 wxpay_amount = 1;
       private int wxpayAmount_ ;
       /**
        * <code>optional uint32 wxpay_amount = 1;</code>
@@ -9040,7 +8971,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 miwallet_amount = 2;
       private int miwalletAmount_ ;
       /**
        * <code>optional uint32 miwallet_amount = 2;</code>
@@ -9100,10 +9030,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:RechargeDayAmount)
   }
 
-  public interface CreateOrderRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface CreateOrderRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:CreateOrderRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      *
@@ -9121,7 +9051,6 @@ public final class PayProto {
      */
     long getUuid();
 
-    // required .Platform platform = 2;
     /**
      * <code>required .Platform platform = 2;</code>
      */
@@ -9131,7 +9060,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.Platform getPlatform();
 
-    // required uint32 goods_id = 3;
     /**
      * <code>required uint32 goods_id = 3;</code>
      *
@@ -9149,7 +9077,6 @@ public final class PayProto {
      */
     int getGoodsId();
 
-    // optional uint32 gem_cnt = 4;
     /**
      * <code>optional uint32 gem_cnt = 4;</code>
      *
@@ -9167,7 +9094,6 @@ public final class PayProto {
      */
     int getGemCnt();
 
-    // optional uint32 price = 5;
     /**
      * <code>optional uint32 price = 5;</code>
      *
@@ -9185,7 +9111,6 @@ public final class PayProto {
      */
     int getPrice();
 
-    // required .PayType pay_type = 6;
     /**
      * <code>required .PayType pay_type = 6;</code>
      */
@@ -9195,7 +9120,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.PayType getPayType();
 
-    // optional .RChannel channel = 7;
     /**
      * <code>optional .RChannel channel = 7;</code>
      *
@@ -9213,7 +9137,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.RChannel getChannel();
 
-    // optional uint32 give_gem_cnt = 8;
     /**
      * <code>optional uint32 give_gem_cnt = 8;</code>
      *
@@ -9231,7 +9154,6 @@ public final class PayProto {
      */
     int getGiveGemCnt();
 
-    // optional string app_channel = 9;
     /**
      * <code>optional string app_channel = 9;</code>
      *
@@ -9258,7 +9180,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getAppChannelBytes();
 
-    // optional .AppType app_type = 10 [default = ZHIBO];
     /**
      * <code>optional .AppType app_type = 10 [default = ZHIBO];</code>
      */
@@ -9277,8 +9198,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class CreateOrderRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements CreateOrderRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:CreateOrderRequest)
+      CreateOrderRequestOrBuilder {
     // Use CreateOrderRequest.newBuilder() to construct.
     private CreateOrderRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -9383,8 +9305,9 @@ public final class PayProto {
               break;
             }
             case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              appChannel_ = input.readBytes();
+              appChannel_ = bs;
               break;
             }
             case 80: {
@@ -9438,7 +9361,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -9462,7 +9384,6 @@ public final class PayProto {
       return uuid_;
     }
 
-    // required .Platform platform = 2;
     public static final int PLATFORM_FIELD_NUMBER = 2;
     private com.wali.live.proto.PayProto.Platform platform_;
     /**
@@ -9478,7 +9399,6 @@ public final class PayProto {
       return platform_;
     }
 
-    // required uint32 goods_id = 3;
     public static final int GOODS_ID_FIELD_NUMBER = 3;
     private int goodsId_;
     /**
@@ -9502,7 +9422,6 @@ public final class PayProto {
       return goodsId_;
     }
 
-    // optional uint32 gem_cnt = 4;
     public static final int GEM_CNT_FIELD_NUMBER = 4;
     private int gemCnt_;
     /**
@@ -9526,7 +9445,6 @@ public final class PayProto {
       return gemCnt_;
     }
 
-    // optional uint32 price = 5;
     public static final int PRICE_FIELD_NUMBER = 5;
     private int price_;
     /**
@@ -9550,7 +9468,6 @@ public final class PayProto {
       return price_;
     }
 
-    // required .PayType pay_type = 6;
     public static final int PAY_TYPE_FIELD_NUMBER = 6;
     private com.wali.live.proto.PayProto.PayType payType_;
     /**
@@ -9566,7 +9483,6 @@ public final class PayProto {
       return payType_;
     }
 
-    // optional .RChannel channel = 7;
     public static final int CHANNEL_FIELD_NUMBER = 7;
     private com.wali.live.proto.PayProto.RChannel channel_;
     /**
@@ -9590,7 +9506,6 @@ public final class PayProto {
       return channel_;
     }
 
-    // optional uint32 give_gem_cnt = 8;
     public static final int GIVE_GEM_CNT_FIELD_NUMBER = 8;
     private int giveGemCnt_;
     /**
@@ -9614,7 +9529,6 @@ public final class PayProto {
       return giveGemCnt_;
     }
 
-    // optional string app_channel = 9;
     public static final int APP_CHANNEL_FIELD_NUMBER = 9;
     private java.lang.Object appChannel_;
     /**
@@ -9669,7 +9583,6 @@ public final class PayProto {
       }
     }
 
-    // optional .AppType app_type = 10 [default = ZHIBO];
     public static final int APP_TYPE_FIELD_NUMBER = 10;
     private com.wali.live.proto.PayProto.AppType appType_;
     /**
@@ -9700,7 +9613,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -9891,8 +9805,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.CreateOrderRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:CreateOrderRequest)
+        com.wali.live.proto.PayProto.CreateOrderRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_CreateOrderRequest_descriptor;
@@ -10104,7 +10019,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -10153,7 +10067,6 @@ public final class PayProto {
         return this;
       }
 
-      // required .Platform platform = 2;
       private com.wali.live.proto.PayProto.Platform platform_ = com.wali.live.proto.PayProto.Platform.IOS;
       /**
        * <code>required .Platform platform = 2;</code>
@@ -10189,7 +10102,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint32 goods_id = 3;
       private int goodsId_ ;
       /**
        * <code>required uint32 goods_id = 3;</code>
@@ -10238,7 +10150,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 gem_cnt = 4;
       private int gemCnt_ ;
       /**
        * <code>optional uint32 gem_cnt = 4;</code>
@@ -10287,7 +10198,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 price = 5;
       private int price_ ;
       /**
        * <code>optional uint32 price = 5;</code>
@@ -10336,7 +10246,6 @@ public final class PayProto {
         return this;
       }
 
-      // required .PayType pay_type = 6;
       private com.wali.live.proto.PayProto.PayType payType_ = com.wali.live.proto.PayProto.PayType.IAP;
       /**
        * <code>required .PayType pay_type = 6;</code>
@@ -10372,7 +10281,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .RChannel channel = 7;
       private com.wali.live.proto.PayProto.RChannel channel_ = com.wali.live.proto.PayProto.RChannel.IOS_CH;
       /**
        * <code>optional .RChannel channel = 7;</code>
@@ -10424,7 +10332,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 give_gem_cnt = 8;
       private int giveGemCnt_ ;
       /**
        * <code>optional uint32 give_gem_cnt = 8;</code>
@@ -10473,7 +10380,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string app_channel = 9;
       private java.lang.Object appChannel_ = "";
       /**
        * <code>optional string app_channel = 9;</code>
@@ -10495,9 +10401,12 @@ public final class PayProto {
       public java.lang.String getAppChannel() {
         java.lang.Object ref = appChannel_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          appChannel_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            appChannel_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -10571,7 +10480,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .AppType app_type = 10 [default = ZHIBO];
       private com.wali.live.proto.PayProto.AppType appType_ = com.wali.live.proto.PayProto.AppType.ZHIBO;
       /**
        * <code>optional .AppType app_type = 10 [default = ZHIBO];</code>
@@ -10618,10 +10526,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:CreateOrderRequest)
   }
 
-  public interface CreateOrderResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface CreateOrderResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:CreateOrderResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret_code = 1;
     /**
      * <code>required uint32 ret_code = 1;</code>
      *
@@ -10639,7 +10547,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // optional string order_id = 2;
     /**
      * <code>optional string order_id = 2;</code>
      *
@@ -10666,7 +10573,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getOrderIdBytes();
 
-    // optional string user_info = 3;
     /**
      * <code>optional string user_info = 3;</code>
      */
@@ -10681,7 +10587,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getUserInfoBytes();
 
-    // optional .NotifyType notifyType = 4;
     /**
      * <code>optional .NotifyType notifyType = 4;</code>
      */
@@ -10691,7 +10596,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.NotifyType getNotifyType();
 
-    // optional string msg = 5;
     /**
      * <code>optional string msg = 5;</code>
      */
@@ -10710,8 +10614,9 @@ public final class PayProto {
    * Protobuf type {@code CreateOrderResponse}
    */
   public static final class CreateOrderResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements CreateOrderResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:CreateOrderResponse)
+      CreateOrderResponseOrBuilder {
     // Use CreateOrderResponse.newBuilder() to construct.
     private CreateOrderResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -10763,13 +10668,15 @@ public final class PayProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              orderId_ = input.readBytes();
+              orderId_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              userInfo_ = input.readBytes();
+              userInfo_ = bs;
               break;
             }
             case 32: {
@@ -10784,8 +10691,9 @@ public final class PayProto {
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              msg_ = input.readBytes();
+              msg_ = bs;
               break;
             }
           }
@@ -10828,7 +10736,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 ret_code = 1;
     public static final int RET_CODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -10852,7 +10759,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // optional string order_id = 2;
     public static final int ORDER_ID_FIELD_NUMBER = 2;
     private java.lang.Object orderId_;
     /**
@@ -10907,7 +10813,6 @@ public final class PayProto {
       }
     }
 
-    // optional string user_info = 3;
     public static final int USER_INFO_FIELD_NUMBER = 3;
     private java.lang.Object userInfo_;
     /**
@@ -10950,7 +10855,6 @@ public final class PayProto {
       }
     }
 
-    // optional .NotifyType notifyType = 4;
     public static final int NOTIFYTYPE_FIELD_NUMBER = 4;
     private com.wali.live.proto.PayProto.NotifyType notifyType_;
     /**
@@ -10966,7 +10870,6 @@ public final class PayProto {
       return notifyType_;
     }
 
-    // optional string msg = 5;
     public static final int MSG_FIELD_NUMBER = 5;
     private java.lang.Object msg_;
     /**
@@ -11019,7 +10922,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -11158,8 +11062,9 @@ public final class PayProto {
      * Protobuf type {@code CreateOrderResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.CreateOrderResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:CreateOrderResponse)
+        com.wali.live.proto.PayProto.CreateOrderResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_CreateOrderResponse_descriptor;
@@ -11318,7 +11223,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 ret_code = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 ret_code = 1;</code>
@@ -11367,7 +11271,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string order_id = 2;
       private java.lang.Object orderId_ = "";
       /**
        * <code>optional string order_id = 2;</code>
@@ -11389,9 +11292,12 @@ public final class PayProto {
       public java.lang.String getOrderId() {
         java.lang.Object ref = orderId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          orderId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            orderId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -11465,7 +11371,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string user_info = 3;
       private java.lang.Object userInfo_ = "";
       /**
        * <code>optional string user_info = 3;</code>
@@ -11479,9 +11384,12 @@ public final class PayProto {
       public java.lang.String getUserInfo() {
         java.lang.Object ref = userInfo_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          userInfo_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            userInfo_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -11539,7 +11447,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .NotifyType notifyType = 4;
       private com.wali.live.proto.PayProto.NotifyType notifyType_ = com.wali.live.proto.PayProto.NotifyType.TOAST;
       /**
        * <code>optional .NotifyType notifyType = 4;</code>
@@ -11575,7 +11482,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string msg = 5;
       private java.lang.Object msg_ = "";
       /**
        * <code>optional string msg = 5;</code>
@@ -11589,9 +11495,12 @@ public final class PayProto {
       public java.lang.String getMsg() {
         java.lang.Object ref = msg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          msg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -11660,10 +11569,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:CreateOrderResponse)
   }
 
-  public interface CheckOrderRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface CheckOrderRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:CheckOrderRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      */
@@ -11673,7 +11582,6 @@ public final class PayProto {
      */
     long getUuid();
 
-    // required .Platform platform = 2;
     /**
      * <code>required .Platform platform = 2;</code>
      */
@@ -11683,7 +11591,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.Platform getPlatform();
 
-    // optional string order_id = 3;
     /**
      * <code>optional string order_id = 3;</code>
      *
@@ -11710,7 +11617,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getOrderIdBytes();
 
-    // optional string puid = 4;
     /**
      * <code>optional string puid = 4;</code>
      *
@@ -11737,7 +11643,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getPuidBytes();
 
-    // optional string receipt = 5;
     /**
      * <code>optional string receipt = 5;</code>
      *
@@ -11764,7 +11669,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getReceiptBytes();
 
-    // optional string transaction_id = 6;
     /**
      * <code>optional string transaction_id = 6;</code>
      */
@@ -11789,8 +11693,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class CheckOrderRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements CheckOrderRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:CheckOrderRequest)
+      CheckOrderRequestOrBuilder {
     // Use CheckOrderRequest.newBuilder() to construct.
     private CheckOrderRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -11853,23 +11758,27 @@ public final class PayProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              orderId_ = input.readBytes();
+              orderId_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              puid_ = input.readBytes();
+              puid_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              receipt_ = input.readBytes();
+              receipt_ = bs;
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              transactionId_ = input.readBytes();
+              transactionId_ = bs;
               break;
             }
           }
@@ -11912,7 +11821,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -11928,7 +11836,6 @@ public final class PayProto {
       return uuid_;
     }
 
-    // required .Platform platform = 2;
     public static final int PLATFORM_FIELD_NUMBER = 2;
     private com.wali.live.proto.PayProto.Platform platform_;
     /**
@@ -11944,7 +11851,6 @@ public final class PayProto {
       return platform_;
     }
 
-    // optional string order_id = 3;
     public static final int ORDER_ID_FIELD_NUMBER = 3;
     private java.lang.Object orderId_;
     /**
@@ -11999,7 +11905,6 @@ public final class PayProto {
       }
     }
 
-    // optional string puid = 4;
     public static final int PUID_FIELD_NUMBER = 4;
     private java.lang.Object puid_;
     /**
@@ -12054,7 +11959,6 @@ public final class PayProto {
       }
     }
 
-    // optional string receipt = 5;
     public static final int RECEIPT_FIELD_NUMBER = 5;
     private java.lang.Object receipt_;
     /**
@@ -12109,7 +12013,6 @@ public final class PayProto {
       }
     }
 
-    // optional string transaction_id = 6;
     public static final int TRANSACTION_ID_FIELD_NUMBER = 6;
     private java.lang.Object transactionId_;
     /**
@@ -12163,7 +12066,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -12319,8 +12223,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.CheckOrderRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:CheckOrderRequest)
+        com.wali.live.proto.PayProto.CheckOrderRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_CheckOrderRequest_descriptor;
@@ -12494,7 +12399,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -12527,7 +12431,6 @@ public final class PayProto {
         return this;
       }
 
-      // required .Platform platform = 2;
       private com.wali.live.proto.PayProto.Platform platform_ = com.wali.live.proto.PayProto.Platform.IOS;
       /**
        * <code>required .Platform platform = 2;</code>
@@ -12563,7 +12466,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string order_id = 3;
       private java.lang.Object orderId_ = "";
       /**
        * <code>optional string order_id = 3;</code>
@@ -12585,9 +12487,12 @@ public final class PayProto {
       public java.lang.String getOrderId() {
         java.lang.Object ref = orderId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          orderId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            orderId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -12661,7 +12566,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string puid = 4;
       private java.lang.Object puid_ = "";
       /**
        * <code>optional string puid = 4;</code>
@@ -12683,9 +12587,12 @@ public final class PayProto {
       public java.lang.String getPuid() {
         java.lang.Object ref = puid_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          puid_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            puid_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -12759,7 +12666,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string receipt = 5;
       private java.lang.Object receipt_ = "";
       /**
        * <code>optional string receipt = 5;</code>
@@ -12781,9 +12687,12 @@ public final class PayProto {
       public java.lang.String getReceipt() {
         java.lang.Object ref = receipt_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          receipt_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            receipt_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -12857,7 +12766,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string transaction_id = 6;
       private java.lang.Object transactionId_ = "";
       /**
        * <code>optional string transaction_id = 6;</code>
@@ -12871,9 +12779,12 @@ public final class PayProto {
       public java.lang.String getTransactionId() {
         java.lang.Object ref = transactionId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          transactionId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            transactionId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -12942,10 +12853,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:CheckOrderRequest)
   }
 
-  public interface CheckOrderResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface CheckOrderResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:CheckOrderResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret_code = 1;
     /**
      * <code>required uint32 ret_code = 1;</code>
      */
@@ -12955,7 +12866,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // optional uint32 usable_gem_cnt = 2;
     /**
      * <code>optional uint32 usable_gem_cnt = 2;</code>
      */
@@ -12969,8 +12879,9 @@ public final class PayProto {
    * Protobuf type {@code CheckOrderResponse}
    */
   public static final class CheckOrderResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements CheckOrderResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:CheckOrderResponse)
+      CheckOrderResponseOrBuilder {
     // Use CheckOrderResponse.newBuilder() to construct.
     private CheckOrderResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -13066,7 +12977,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 ret_code = 1;
     public static final int RET_CODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -13082,7 +12992,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // optional uint32 usable_gem_cnt = 2;
     public static final int USABLE_GEM_CNT_FIELD_NUMBER = 2;
     private int usableGemCnt_;
     /**
@@ -13105,7 +13014,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -13223,8 +13133,9 @@ public final class PayProto {
      * Protobuf type {@code CheckOrderResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.CheckOrderResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:CheckOrderResponse)
+        com.wali.live.proto.PayProto.CheckOrderResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_CheckOrderResponse_descriptor;
@@ -13350,7 +13261,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 ret_code = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 ret_code = 1;</code>
@@ -13383,7 +13293,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 usable_gem_cnt = 2;
       private int usableGemCnt_ ;
       /**
        * <code>optional uint32 usable_gem_cnt = 2;</code>
@@ -13427,10 +13336,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:CheckOrderResponse)
   }
 
-  public interface QueryProfitRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface QueryProfitRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:QueryProfitRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      *
@@ -13448,7 +13357,6 @@ public final class PayProto {
      */
     long getUuid();
 
-    // required .Platform platform = 2;
     /**
      * <code>required .Platform platform = 2;</code>
      */
@@ -13467,8 +13375,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class QueryProfitRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements QueryProfitRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:QueryProfitRequest)
+      QueryProfitRequestOrBuilder {
     // Use QueryProfitRequest.newBuilder() to construct.
     private QueryProfitRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -13570,7 +13479,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -13594,7 +13502,6 @@ public final class PayProto {
       return uuid_;
     }
 
-    // required .Platform platform = 2;
     public static final int PLATFORM_FIELD_NUMBER = 2;
     private com.wali.live.proto.PayProto.Platform platform_;
     /**
@@ -13617,7 +13524,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -13744,8 +13652,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.QueryProfitRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:QueryProfitRequest)
+        com.wali.live.proto.PayProto.QueryProfitRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_QueryProfitRequest_descriptor;
@@ -13875,7 +13784,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -13924,7 +13832,6 @@ public final class PayProto {
         return this;
       }
 
-      // required .Platform platform = 2;
       private com.wali.live.proto.PayProto.Platform platform_ = com.wali.live.proto.PayProto.Platform.IOS;
       /**
        * <code>required .Platform platform = 2;</code>
@@ -13971,10 +13878,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:QueryProfitRequest)
   }
 
-  public interface AliPayOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface AliPayOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:AliPay)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string account = 1;
     /**
      * <code>optional string account = 1;</code>
      */
@@ -13989,7 +13896,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getAccountBytes();
 
-    // optional string real_name = 2;
     /**
      * <code>optional string real_name = 2;</code>
      */
@@ -14004,7 +13910,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getRealNameBytes();
 
-    // optional uint32 max_cash_cnt_onetime = 3;
     /**
      * <code>optional uint32 max_cash_cnt_onetime = 3;</code>
      */
@@ -14018,8 +13923,9 @@ public final class PayProto {
    * Protobuf type {@code AliPay}
    */
   public static final class AliPay extends
-      com.google.protobuf.GeneratedMessage
-      implements AliPayOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:AliPay)
+      AliPayOrBuilder {
     // Use AliPay.newBuilder() to construct.
     private AliPay(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -14066,13 +13972,15 @@ public final class PayProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              account_ = input.readBytes();
+              account_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              realName_ = input.readBytes();
+              realName_ = bs;
               break;
             }
             case 24: {
@@ -14120,7 +14028,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // optional string account = 1;
     public static final int ACCOUNT_FIELD_NUMBER = 1;
     private java.lang.Object account_;
     /**
@@ -14163,7 +14070,6 @@ public final class PayProto {
       }
     }
 
-    // optional string real_name = 2;
     public static final int REAL_NAME_FIELD_NUMBER = 2;
     private java.lang.Object realName_;
     /**
@@ -14206,7 +14112,6 @@ public final class PayProto {
       }
     }
 
-    // optional uint32 max_cash_cnt_onetime = 3;
     public static final int MAX_CASH_CNT_ONETIME_FIELD_NUMBER = 3;
     private int maxCashCntOnetime_;
     /**
@@ -14230,7 +14135,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -14351,8 +14257,9 @@ public final class PayProto {
      * Protobuf type {@code AliPay}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.AliPayOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:AliPay)
+        com.wali.live.proto.PayProto.AliPayOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_AliPay_descriptor;
@@ -14487,7 +14394,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // optional string account = 1;
       private java.lang.Object account_ = "";
       /**
        * <code>optional string account = 1;</code>
@@ -14501,9 +14407,12 @@ public final class PayProto {
       public java.lang.String getAccount() {
         java.lang.Object ref = account_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          account_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            account_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -14561,7 +14470,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string real_name = 2;
       private java.lang.Object realName_ = "";
       /**
        * <code>optional string real_name = 2;</code>
@@ -14575,9 +14483,12 @@ public final class PayProto {
       public java.lang.String getRealName() {
         java.lang.Object ref = realName_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          realName_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            realName_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -14635,7 +14546,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 max_cash_cnt_onetime = 3;
       private int maxCashCntOnetime_ ;
       /**
        * <code>optional uint32 max_cash_cnt_onetime = 3;</code>
@@ -14679,10 +14589,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:AliPay)
   }
 
-  public interface WeixinPayOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface WeixinPayOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:WeixinPay)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string user_name = 1;
     /**
      * <code>optional string user_name = 1;</code>
      */
@@ -14697,7 +14607,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getUserNameBytes();
 
-    // optional string headimgurl = 2;
     /**
      * <code>optional string headimgurl = 2;</code>
      */
@@ -14712,7 +14621,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getHeadimgurlBytes();
 
-    // optional uint32 vertification = 3;
     /**
      * <code>optional uint32 vertification = 3;</code>
      *
@@ -14730,7 +14638,6 @@ public final class PayProto {
      */
     int getVertification();
 
-    // optional string unionid = 4;
     /**
      * <code>optional string unionid = 4;</code>
      */
@@ -14749,8 +14656,9 @@ public final class PayProto {
    * Protobuf type {@code WeixinPay}
    */
   public static final class WeixinPay extends
-      com.google.protobuf.GeneratedMessage
-      implements WeixinPayOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:WeixinPay)
+      WeixinPayOrBuilder {
     // Use WeixinPay.newBuilder() to construct.
     private WeixinPay(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -14797,13 +14705,15 @@ public final class PayProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              userName_ = input.readBytes();
+              userName_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              headimgurl_ = input.readBytes();
+              headimgurl_ = bs;
               break;
             }
             case 24: {
@@ -14812,8 +14722,9 @@ public final class PayProto {
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              unionid_ = input.readBytes();
+              unionid_ = bs;
               break;
             }
           }
@@ -14856,7 +14767,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // optional string user_name = 1;
     public static final int USER_NAME_FIELD_NUMBER = 1;
     private java.lang.Object userName_;
     /**
@@ -14899,7 +14809,6 @@ public final class PayProto {
       }
     }
 
-    // optional string headimgurl = 2;
     public static final int HEADIMGURL_FIELD_NUMBER = 2;
     private java.lang.Object headimgurl_;
     /**
@@ -14942,7 +14851,6 @@ public final class PayProto {
       }
     }
 
-    // optional uint32 vertification = 3;
     public static final int VERTIFICATION_FIELD_NUMBER = 3;
     private int vertification_;
     /**
@@ -14966,7 +14874,6 @@ public final class PayProto {
       return vertification_;
     }
 
-    // optional string unionid = 4;
     public static final int UNIONID_FIELD_NUMBER = 4;
     private java.lang.Object unionid_;
     /**
@@ -15018,7 +14925,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -15146,8 +15054,9 @@ public final class PayProto {
      * Protobuf type {@code WeixinPay}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.WeixinPayOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:WeixinPay)
+        com.wali.live.proto.PayProto.WeixinPayOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_WeixinPay_descriptor;
@@ -15293,7 +15202,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // optional string user_name = 1;
       private java.lang.Object userName_ = "";
       /**
        * <code>optional string user_name = 1;</code>
@@ -15307,9 +15215,12 @@ public final class PayProto {
       public java.lang.String getUserName() {
         java.lang.Object ref = userName_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          userName_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            userName_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -15367,7 +15278,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string headimgurl = 2;
       private java.lang.Object headimgurl_ = "";
       /**
        * <code>optional string headimgurl = 2;</code>
@@ -15381,9 +15291,12 @@ public final class PayProto {
       public java.lang.String getHeadimgurl() {
         java.lang.Object ref = headimgurl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          headimgurl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headimgurl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -15441,7 +15354,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 vertification = 3;
       private int vertification_ ;
       /**
        * <code>optional uint32 vertification = 3;</code>
@@ -15490,7 +15402,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string unionid = 4;
       private java.lang.Object unionid_ = "";
       /**
        * <code>optional string unionid = 4;</code>
@@ -15504,9 +15415,12 @@ public final class PayProto {
       public java.lang.String getUnionid() {
         java.lang.Object ref = unionid_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          unionid_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            unionid_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -15575,10 +15489,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:WeixinPay)
   }
 
-  public interface PaypalPayOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface PaypalPayOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:PaypalPay)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string account = 1;
     /**
      * <code>optional string account = 1;</code>
      */
@@ -15593,7 +15507,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getAccountBytes();
 
-    // optional string firstname = 2;
     /**
      * <code>optional string firstname = 2;</code>
      */
@@ -15608,7 +15521,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getFirstnameBytes();
 
-    // optional string lastname = 3;
     /**
      * <code>optional string lastname = 3;</code>
      */
@@ -15623,7 +15535,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getLastnameBytes();
 
-    // optional uint32 vertification = 4;
     /**
      * <code>optional uint32 vertification = 4;</code>
      *
@@ -15645,8 +15556,9 @@ public final class PayProto {
    * Protobuf type {@code PaypalPay}
    */
   public static final class PaypalPay extends
-      com.google.protobuf.GeneratedMessage
-      implements PaypalPayOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:PaypalPay)
+      PaypalPayOrBuilder {
     // Use PaypalPay.newBuilder() to construct.
     private PaypalPay(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -15693,18 +15605,21 @@ public final class PayProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              account_ = input.readBytes();
+              account_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              firstname_ = input.readBytes();
+              firstname_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              lastname_ = input.readBytes();
+              lastname_ = bs;
               break;
             }
             case 32: {
@@ -15752,7 +15667,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // optional string account = 1;
     public static final int ACCOUNT_FIELD_NUMBER = 1;
     private java.lang.Object account_;
     /**
@@ -15795,7 +15709,6 @@ public final class PayProto {
       }
     }
 
-    // optional string firstname = 2;
     public static final int FIRSTNAME_FIELD_NUMBER = 2;
     private java.lang.Object firstname_;
     /**
@@ -15838,7 +15751,6 @@ public final class PayProto {
       }
     }
 
-    // optional string lastname = 3;
     public static final int LASTNAME_FIELD_NUMBER = 3;
     private java.lang.Object lastname_;
     /**
@@ -15881,7 +15793,6 @@ public final class PayProto {
       }
     }
 
-    // optional uint32 vertification = 4;
     public static final int VERTIFICATION_FIELD_NUMBER = 4;
     private int vertification_;
     /**
@@ -15914,7 +15825,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -16042,8 +15954,9 @@ public final class PayProto {
      * Protobuf type {@code PaypalPay}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.PaypalPayOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:PaypalPay)
+        com.wali.live.proto.PayProto.PaypalPayOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_PaypalPay_descriptor;
@@ -16189,7 +16102,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // optional string account = 1;
       private java.lang.Object account_ = "";
       /**
        * <code>optional string account = 1;</code>
@@ -16203,9 +16115,12 @@ public final class PayProto {
       public java.lang.String getAccount() {
         java.lang.Object ref = account_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          account_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            account_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -16263,7 +16178,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string firstname = 2;
       private java.lang.Object firstname_ = "";
       /**
        * <code>optional string firstname = 2;</code>
@@ -16277,9 +16191,12 @@ public final class PayProto {
       public java.lang.String getFirstname() {
         java.lang.Object ref = firstname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          firstname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            firstname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -16337,7 +16254,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string lastname = 3;
       private java.lang.Object lastname_ = "";
       /**
        * <code>optional string lastname = 3;</code>
@@ -16351,9 +16267,12 @@ public final class PayProto {
       public java.lang.String getLastname() {
         java.lang.Object ref = lastname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          lastname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            lastname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -16411,7 +16330,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 vertification = 4;
       private int vertification_ ;
       /**
        * <code>optional uint32 vertification = 4;</code>
@@ -16471,10 +16389,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:PaypalPay)
   }
 
-  public interface QueryProfitResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface QueryProfitResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:QueryProfitResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret_code = 1;
     /**
      * <code>required uint32 ret_code = 1;</code>
      *
@@ -16492,7 +16410,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // optional uint32 usable_ticket_cnt = 2;
     /**
      * <code>optional uint32 usable_ticket_cnt = 2;</code>
      *
@@ -16510,7 +16427,6 @@ public final class PayProto {
      */
     int getUsableTicketCnt();
 
-    // optional uint32 exchange_cash_cnt = 3;
     /**
      * <code>optional uint32 exchange_cash_cnt = 3;</code>
      *
@@ -16528,7 +16444,6 @@ public final class PayProto {
      */
     int getExchangeCashCnt();
 
-    // optional uint32 exchange_cash_today_cnt = 4;
     /**
      * <code>optional uint32 exchange_cash_today_cnt = 4;</code>
      *
@@ -16546,7 +16461,6 @@ public final class PayProto {
      */
     int getExchangeCashTodayCnt();
 
-    // optional .AliPay alipay = 5;
     /**
      * <code>optional .AliPay alipay = 5;</code>
      */
@@ -16560,7 +16474,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.AliPayOrBuilder getAlipayOrBuilder();
 
-    // optional uint32 account_status = 6;
     /**
      * <code>optional uint32 account_status = 6;</code>
      *
@@ -16578,7 +16491,6 @@ public final class PayProto {
      */
     int getAccountStatus();
 
-    // optional uint32 max_cash_cnt_times = 7;
     /**
      * <code>optional uint32 max_cash_cnt_times = 7;</code>
      */
@@ -16588,7 +16500,6 @@ public final class PayProto {
      */
     int getMaxCashCntTimes();
 
-    // optional .WeixinPay wxpay = 8;
     /**
      * <code>optional .WeixinPay wxpay = 8;</code>
      */
@@ -16602,7 +16513,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.WeixinPayOrBuilder getWxpayOrBuilder();
 
-    // optional .NotifyType notifyType = 9;
     /**
      * <code>optional .NotifyType notifyType = 9;</code>
      */
@@ -16612,7 +16522,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.NotifyType getNotifyType();
 
-    // optional string msg = 10;
     /**
      * <code>optional string msg = 10;</code>
      */
@@ -16627,7 +16536,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getMsgBytes();
 
-    // optional .PaypalPay paypal = 11;
     /**
      * <code>optional .PaypalPay paypal = 11;</code>
      */
@@ -16641,7 +16549,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.PaypalPayOrBuilder getPaypalOrBuilder();
 
-    // optional uint32 exchange_usd_cash_cnt = 12;
     /**
      * <code>optional uint32 exchange_usd_cash_cnt = 12;</code>
      *
@@ -16659,7 +16566,6 @@ public final class PayProto {
      */
     int getExchangeUsdCashCnt();
 
-    // optional uint32 exchange_usd_cash_today_cnt = 13;
     /**
      * <code>optional uint32 exchange_usd_cash_today_cnt = 13;</code>
      *
@@ -16677,7 +16583,6 @@ public final class PayProto {
      */
     int getExchangeUsdCashTodayCnt();
 
-    // optional uint32 exchange_min_cash_cnt_onetime = 14;
     /**
      * <code>optional uint32 exchange_min_cash_cnt_onetime = 14;</code>
      *
@@ -16695,7 +16600,6 @@ public final class PayProto {
      */
     int getExchangeMinCashCntOnetime();
 
-    // optional uint32 exchange_min_usd_cash_cnt_onetime = 15;
     /**
      * <code>optional uint32 exchange_min_usd_cash_cnt_onetime = 15;</code>
      *
@@ -16713,7 +16617,6 @@ public final class PayProto {
      */
     int getExchangeMinUsdCashCntOnetime();
 
-    // optional uint32 exchange_max_cash_cnt_onetime = 16;
     /**
      * <code>optional uint32 exchange_max_cash_cnt_onetime = 16;</code>
      *
@@ -16731,7 +16634,6 @@ public final class PayProto {
      */
     int getExchangeMaxCashCntOnetime();
 
-    // optional uint32 exchange_max_usd_cash_cnt_onetime = 17;
     /**
      * <code>optional uint32 exchange_max_usd_cash_cnt_onetime = 17;</code>
      *
@@ -16749,7 +16651,6 @@ public final class PayProto {
      */
     int getExchangeMaxUsdCashCntOnetime();
 
-    // optional uint32 sign_status = 18;
     /**
      * <code>optional uint32 sign_status = 18;</code>
      *
@@ -16767,7 +16668,6 @@ public final class PayProto {
      */
     int getSignStatus();
 
-    // optional string redirect_url = 19;
     /**
      * <code>optional string redirect_url = 19;</code>
      *
@@ -16794,7 +16694,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getRedirectUrlBytes();
 
-    // optional uint32 frozen_usable_ticket_cnt = 20;
     /**
      * <code>optional uint32 frozen_usable_ticket_cnt = 20;</code>
      *
@@ -16812,7 +16711,6 @@ public final class PayProto {
      */
     int getFrozenUsableTicketCnt();
 
-    // optional uint32 usable_mibi_ticket_cnt = 21;
     /**
      * <code>optional uint32 usable_mibi_ticket_cnt = 21;</code>
      *
@@ -16830,7 +16728,6 @@ public final class PayProto {
      */
     int getUsableMibiTicketCnt();
 
-    // optional uint32 clear_mibi_ticket_cnt = 22;
     /**
      * <code>optional uint32 clear_mibi_ticket_cnt = 22;</code>
      *
@@ -16848,7 +16745,6 @@ public final class PayProto {
      */
     int getClearMibiTicketCnt();
 
-    // optional uint32 monthly_withdraw_amount = 23;
     /**
      * <code>optional uint32 monthly_withdraw_amount = 23;</code>
      *
@@ -16866,7 +16762,6 @@ public final class PayProto {
      */
     int getMonthlyWithdrawAmount();
 
-    // optional uint32 remain_notax_quota = 24;
     /**
      * <code>optional uint32 remain_notax_quota = 24;</code>
      *
@@ -16884,7 +16779,6 @@ public final class PayProto {
      */
     int getRemainNotaxQuota();
 
-    // optional uint32 clear_cash_cnt = 25;
     /**
      * <code>optional uint32 clear_cash_cnt = 25;</code>
      *
@@ -16902,7 +16796,6 @@ public final class PayProto {
      */
     int getClearCashCnt();
 
-    // optional uint32 clear_usd_cash_cnt = 26;
     /**
      * <code>optional uint32 clear_usd_cash_cnt = 26;</code>
      *
@@ -16920,7 +16813,6 @@ public final class PayProto {
      */
     int getClearUsdCashCnt();
 
-    // optional uint32 ticket_cash_cnt = 27;
     /**
      * <code>optional uint32 ticket_cash_cnt = 27;</code>
      *
@@ -16938,7 +16830,6 @@ public final class PayProto {
      */
     int getTicketCashCnt();
 
-    // optional uint32 ticket_usd_cash_cnt = 28;
     /**
      * <code>optional uint32 ticket_usd_cash_cnt = 28;</code>
      *
@@ -16956,7 +16847,6 @@ public final class PayProto {
      */
     int getTicketUsdCashCnt();
 
-    // optional uint32 game_ticket_cash_cnt = 29;
     /**
      * <code>optional uint32 game_ticket_cash_cnt = 29;</code>
      *
@@ -16974,7 +16864,6 @@ public final class PayProto {
      */
     int getGameTicketCashCnt();
 
-    // optional uint32 game_ticket_usd_cash_cnt = 30;
     /**
      * <code>optional uint32 game_ticket_usd_cash_cnt = 30;</code>
      *
@@ -16996,8 +16885,9 @@ public final class PayProto {
    * Protobuf type {@code QueryProfitResponse}
    */
   public static final class QueryProfitResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements QueryProfitResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:QueryProfitResponse)
+      QueryProfitResponseOrBuilder {
     // Use QueryProfitResponse.newBuilder() to construct.
     private QueryProfitResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -17111,8 +17001,9 @@ public final class PayProto {
               break;
             }
             case 82: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000200;
-              msg_ = input.readBytes();
+              msg_ = bs;
               break;
             }
             case 90: {
@@ -17164,8 +17055,9 @@ public final class PayProto {
               break;
             }
             case 154: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00040000;
-              redirectUrl_ = input.readBytes();
+              redirectUrl_ = bs;
               break;
             }
             case 160: {
@@ -17263,7 +17155,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 ret_code = 1;
     public static final int RET_CODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -17287,7 +17178,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // optional uint32 usable_ticket_cnt = 2;
     public static final int USABLE_TICKET_CNT_FIELD_NUMBER = 2;
     private int usableTicketCnt_;
     /**
@@ -17311,7 +17201,6 @@ public final class PayProto {
       return usableTicketCnt_;
     }
 
-    // optional uint32 exchange_cash_cnt = 3;
     public static final int EXCHANGE_CASH_CNT_FIELD_NUMBER = 3;
     private int exchangeCashCnt_;
     /**
@@ -17335,7 +17224,6 @@ public final class PayProto {
       return exchangeCashCnt_;
     }
 
-    // optional uint32 exchange_cash_today_cnt = 4;
     public static final int EXCHANGE_CASH_TODAY_CNT_FIELD_NUMBER = 4;
     private int exchangeCashTodayCnt_;
     /**
@@ -17359,7 +17247,6 @@ public final class PayProto {
       return exchangeCashTodayCnt_;
     }
 
-    // optional .AliPay alipay = 5;
     public static final int ALIPAY_FIELD_NUMBER = 5;
     private com.wali.live.proto.PayProto.AliPay alipay_;
     /**
@@ -17381,7 +17268,6 @@ public final class PayProto {
       return alipay_;
     }
 
-    // optional uint32 account_status = 6;
     public static final int ACCOUNT_STATUS_FIELD_NUMBER = 6;
     private int accountStatus_;
     /**
@@ -17405,7 +17291,6 @@ public final class PayProto {
       return accountStatus_;
     }
 
-    // optional uint32 max_cash_cnt_times = 7;
     public static final int MAX_CASH_CNT_TIMES_FIELD_NUMBER = 7;
     private int maxCashCntTimes_;
     /**
@@ -17421,7 +17306,6 @@ public final class PayProto {
       return maxCashCntTimes_;
     }
 
-    // optional .WeixinPay wxpay = 8;
     public static final int WXPAY_FIELD_NUMBER = 8;
     private com.wali.live.proto.PayProto.WeixinPay wxpay_;
     /**
@@ -17443,7 +17327,6 @@ public final class PayProto {
       return wxpay_;
     }
 
-    // optional .NotifyType notifyType = 9;
     public static final int NOTIFYTYPE_FIELD_NUMBER = 9;
     private com.wali.live.proto.PayProto.NotifyType notifyType_;
     /**
@@ -17459,7 +17342,6 @@ public final class PayProto {
       return notifyType_;
     }
 
-    // optional string msg = 10;
     public static final int MSG_FIELD_NUMBER = 10;
     private java.lang.Object msg_;
     /**
@@ -17502,7 +17384,6 @@ public final class PayProto {
       }
     }
 
-    // optional .PaypalPay paypal = 11;
     public static final int PAYPAL_FIELD_NUMBER = 11;
     private com.wali.live.proto.PayProto.PaypalPay paypal_;
     /**
@@ -17524,7 +17405,6 @@ public final class PayProto {
       return paypal_;
     }
 
-    // optional uint32 exchange_usd_cash_cnt = 12;
     public static final int EXCHANGE_USD_CASH_CNT_FIELD_NUMBER = 12;
     private int exchangeUsdCashCnt_;
     /**
@@ -17548,7 +17428,6 @@ public final class PayProto {
       return exchangeUsdCashCnt_;
     }
 
-    // optional uint32 exchange_usd_cash_today_cnt = 13;
     public static final int EXCHANGE_USD_CASH_TODAY_CNT_FIELD_NUMBER = 13;
     private int exchangeUsdCashTodayCnt_;
     /**
@@ -17572,7 +17451,6 @@ public final class PayProto {
       return exchangeUsdCashTodayCnt_;
     }
 
-    // optional uint32 exchange_min_cash_cnt_onetime = 14;
     public static final int EXCHANGE_MIN_CASH_CNT_ONETIME_FIELD_NUMBER = 14;
     private int exchangeMinCashCntOnetime_;
     /**
@@ -17596,7 +17474,6 @@ public final class PayProto {
       return exchangeMinCashCntOnetime_;
     }
 
-    // optional uint32 exchange_min_usd_cash_cnt_onetime = 15;
     public static final int EXCHANGE_MIN_USD_CASH_CNT_ONETIME_FIELD_NUMBER = 15;
     private int exchangeMinUsdCashCntOnetime_;
     /**
@@ -17620,7 +17497,6 @@ public final class PayProto {
       return exchangeMinUsdCashCntOnetime_;
     }
 
-    // optional uint32 exchange_max_cash_cnt_onetime = 16;
     public static final int EXCHANGE_MAX_CASH_CNT_ONETIME_FIELD_NUMBER = 16;
     private int exchangeMaxCashCntOnetime_;
     /**
@@ -17644,7 +17520,6 @@ public final class PayProto {
       return exchangeMaxCashCntOnetime_;
     }
 
-    // optional uint32 exchange_max_usd_cash_cnt_onetime = 17;
     public static final int EXCHANGE_MAX_USD_CASH_CNT_ONETIME_FIELD_NUMBER = 17;
     private int exchangeMaxUsdCashCntOnetime_;
     /**
@@ -17668,7 +17543,6 @@ public final class PayProto {
       return exchangeMaxUsdCashCntOnetime_;
     }
 
-    // optional uint32 sign_status = 18;
     public static final int SIGN_STATUS_FIELD_NUMBER = 18;
     private int signStatus_;
     /**
@@ -17692,7 +17566,6 @@ public final class PayProto {
       return signStatus_;
     }
 
-    // optional string redirect_url = 19;
     public static final int REDIRECT_URL_FIELD_NUMBER = 19;
     private java.lang.Object redirectUrl_;
     /**
@@ -17747,7 +17620,6 @@ public final class PayProto {
       }
     }
 
-    // optional uint32 frozen_usable_ticket_cnt = 20;
     public static final int FROZEN_USABLE_TICKET_CNT_FIELD_NUMBER = 20;
     private int frozenUsableTicketCnt_;
     /**
@@ -17771,7 +17643,6 @@ public final class PayProto {
       return frozenUsableTicketCnt_;
     }
 
-    // optional uint32 usable_mibi_ticket_cnt = 21;
     public static final int USABLE_MIBI_TICKET_CNT_FIELD_NUMBER = 21;
     private int usableMibiTicketCnt_;
     /**
@@ -17795,7 +17666,6 @@ public final class PayProto {
       return usableMibiTicketCnt_;
     }
 
-    // optional uint32 clear_mibi_ticket_cnt = 22;
     public static final int CLEAR_MIBI_TICKET_CNT_FIELD_NUMBER = 22;
     private int clearMibiTicketCnt_;
     /**
@@ -17819,7 +17689,6 @@ public final class PayProto {
       return clearMibiTicketCnt_;
     }
 
-    // optional uint32 monthly_withdraw_amount = 23;
     public static final int MONTHLY_WITHDRAW_AMOUNT_FIELD_NUMBER = 23;
     private int monthlyWithdrawAmount_;
     /**
@@ -17843,7 +17712,6 @@ public final class PayProto {
       return monthlyWithdrawAmount_;
     }
 
-    // optional uint32 remain_notax_quota = 24;
     public static final int REMAIN_NOTAX_QUOTA_FIELD_NUMBER = 24;
     private int remainNotaxQuota_;
     /**
@@ -17867,7 +17735,6 @@ public final class PayProto {
       return remainNotaxQuota_;
     }
 
-    // optional uint32 clear_cash_cnt = 25;
     public static final int CLEAR_CASH_CNT_FIELD_NUMBER = 25;
     private int clearCashCnt_;
     /**
@@ -17891,7 +17758,6 @@ public final class PayProto {
       return clearCashCnt_;
     }
 
-    // optional uint32 clear_usd_cash_cnt = 26;
     public static final int CLEAR_USD_CASH_CNT_FIELD_NUMBER = 26;
     private int clearUsdCashCnt_;
     /**
@@ -17915,7 +17781,6 @@ public final class PayProto {
       return clearUsdCashCnt_;
     }
 
-    // optional uint32 ticket_cash_cnt = 27;
     public static final int TICKET_CASH_CNT_FIELD_NUMBER = 27;
     private int ticketCashCnt_;
     /**
@@ -17939,7 +17804,6 @@ public final class PayProto {
       return ticketCashCnt_;
     }
 
-    // optional uint32 ticket_usd_cash_cnt = 28;
     public static final int TICKET_USD_CASH_CNT_FIELD_NUMBER = 28;
     private int ticketUsdCashCnt_;
     /**
@@ -17963,7 +17827,6 @@ public final class PayProto {
       return ticketUsdCashCnt_;
     }
 
-    // optional uint32 game_ticket_cash_cnt = 29;
     public static final int GAME_TICKET_CASH_CNT_FIELD_NUMBER = 29;
     private int gameTicketCashCnt_;
     /**
@@ -17987,7 +17850,6 @@ public final class PayProto {
       return gameTicketCashCnt_;
     }
 
-    // optional uint32 game_ticket_usd_cash_cnt = 30;
     public static final int GAME_TICKET_USD_CASH_CNT_FIELD_NUMBER = 30;
     private int gameTicketUsdCashCnt_;
     /**
@@ -18046,7 +17908,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -18360,8 +18223,9 @@ public final class PayProto {
      * Protobuf type {@code QueryProfitResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.QueryProfitResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:QueryProfitResponse)
+        com.wali.live.proto.PayProto.QueryProfitResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_QueryProfitResponse_descriptor;
@@ -18770,7 +18634,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 ret_code = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 ret_code = 1;</code>
@@ -18819,7 +18682,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 usable_ticket_cnt = 2;
       private int usableTicketCnt_ ;
       /**
        * <code>optional uint32 usable_ticket_cnt = 2;</code>
@@ -18868,7 +18730,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 exchange_cash_cnt = 3;
       private int exchangeCashCnt_ ;
       /**
        * <code>optional uint32 exchange_cash_cnt = 3;</code>
@@ -18917,7 +18778,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 exchange_cash_today_cnt = 4;
       private int exchangeCashTodayCnt_ ;
       /**
        * <code>optional uint32 exchange_cash_today_cnt = 4;</code>
@@ -18966,7 +18826,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .AliPay alipay = 5;
       private com.wali.live.proto.PayProto.AliPay alipay_ = com.wali.live.proto.PayProto.AliPay.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.PayProto.AliPay, com.wali.live.proto.PayProto.AliPay.Builder, com.wali.live.proto.PayProto.AliPayOrBuilder> alipayBuilder_;
@@ -19075,7 +18934,7 @@ public final class PayProto {
         if (alipayBuilder_ == null) {
           alipayBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.PayProto.AliPay, com.wali.live.proto.PayProto.AliPay.Builder, com.wali.live.proto.PayProto.AliPayOrBuilder>(
-                  alipay_,
+                  getAlipay(),
                   getParentForChildren(),
                   isClean());
           alipay_ = null;
@@ -19083,7 +18942,6 @@ public final class PayProto {
         return alipayBuilder_;
       }
 
-      // optional uint32 account_status = 6;
       private int accountStatus_ ;
       /**
        * <code>optional uint32 account_status = 6;</code>
@@ -19132,7 +18990,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 max_cash_cnt_times = 7;
       private int maxCashCntTimes_ ;
       /**
        * <code>optional uint32 max_cash_cnt_times = 7;</code>
@@ -19165,7 +19022,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .WeixinPay wxpay = 8;
       private com.wali.live.proto.PayProto.WeixinPay wxpay_ = com.wali.live.proto.PayProto.WeixinPay.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.PayProto.WeixinPay, com.wali.live.proto.PayProto.WeixinPay.Builder, com.wali.live.proto.PayProto.WeixinPayOrBuilder> wxpayBuilder_;
@@ -19274,7 +19130,7 @@ public final class PayProto {
         if (wxpayBuilder_ == null) {
           wxpayBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.PayProto.WeixinPay, com.wali.live.proto.PayProto.WeixinPay.Builder, com.wali.live.proto.PayProto.WeixinPayOrBuilder>(
-                  wxpay_,
+                  getWxpay(),
                   getParentForChildren(),
                   isClean());
           wxpay_ = null;
@@ -19282,7 +19138,6 @@ public final class PayProto {
         return wxpayBuilder_;
       }
 
-      // optional .NotifyType notifyType = 9;
       private com.wali.live.proto.PayProto.NotifyType notifyType_ = com.wali.live.proto.PayProto.NotifyType.TOAST;
       /**
        * <code>optional .NotifyType notifyType = 9;</code>
@@ -19318,7 +19173,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string msg = 10;
       private java.lang.Object msg_ = "";
       /**
        * <code>optional string msg = 10;</code>
@@ -19332,9 +19186,12 @@ public final class PayProto {
       public java.lang.String getMsg() {
         java.lang.Object ref = msg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          msg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -19392,7 +19249,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .PaypalPay paypal = 11;
       private com.wali.live.proto.PayProto.PaypalPay paypal_ = com.wali.live.proto.PayProto.PaypalPay.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.PayProto.PaypalPay, com.wali.live.proto.PayProto.PaypalPay.Builder, com.wali.live.proto.PayProto.PaypalPayOrBuilder> paypalBuilder_;
@@ -19501,7 +19357,7 @@ public final class PayProto {
         if (paypalBuilder_ == null) {
           paypalBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.PayProto.PaypalPay, com.wali.live.proto.PayProto.PaypalPay.Builder, com.wali.live.proto.PayProto.PaypalPayOrBuilder>(
-                  paypal_,
+                  getPaypal(),
                   getParentForChildren(),
                   isClean());
           paypal_ = null;
@@ -19509,7 +19365,6 @@ public final class PayProto {
         return paypalBuilder_;
       }
 
-      // optional uint32 exchange_usd_cash_cnt = 12;
       private int exchangeUsdCashCnt_ ;
       /**
        * <code>optional uint32 exchange_usd_cash_cnt = 12;</code>
@@ -19558,7 +19413,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 exchange_usd_cash_today_cnt = 13;
       private int exchangeUsdCashTodayCnt_ ;
       /**
        * <code>optional uint32 exchange_usd_cash_today_cnt = 13;</code>
@@ -19607,7 +19461,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 exchange_min_cash_cnt_onetime = 14;
       private int exchangeMinCashCntOnetime_ ;
       /**
        * <code>optional uint32 exchange_min_cash_cnt_onetime = 14;</code>
@@ -19656,7 +19509,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 exchange_min_usd_cash_cnt_onetime = 15;
       private int exchangeMinUsdCashCntOnetime_ ;
       /**
        * <code>optional uint32 exchange_min_usd_cash_cnt_onetime = 15;</code>
@@ -19705,7 +19557,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 exchange_max_cash_cnt_onetime = 16;
       private int exchangeMaxCashCntOnetime_ ;
       /**
        * <code>optional uint32 exchange_max_cash_cnt_onetime = 16;</code>
@@ -19754,7 +19605,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 exchange_max_usd_cash_cnt_onetime = 17;
       private int exchangeMaxUsdCashCntOnetime_ ;
       /**
        * <code>optional uint32 exchange_max_usd_cash_cnt_onetime = 17;</code>
@@ -19803,7 +19653,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 sign_status = 18;
       private int signStatus_ ;
       /**
        * <code>optional uint32 sign_status = 18;</code>
@@ -19852,7 +19701,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string redirect_url = 19;
       private java.lang.Object redirectUrl_ = "";
       /**
        * <code>optional string redirect_url = 19;</code>
@@ -19874,9 +19722,12 @@ public final class PayProto {
       public java.lang.String getRedirectUrl() {
         java.lang.Object ref = redirectUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          redirectUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            redirectUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -19950,7 +19801,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 frozen_usable_ticket_cnt = 20;
       private int frozenUsableTicketCnt_ ;
       /**
        * <code>optional uint32 frozen_usable_ticket_cnt = 20;</code>
@@ -19999,7 +19849,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 usable_mibi_ticket_cnt = 21;
       private int usableMibiTicketCnt_ ;
       /**
        * <code>optional uint32 usable_mibi_ticket_cnt = 21;</code>
@@ -20048,7 +19897,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 clear_mibi_ticket_cnt = 22;
       private int clearMibiTicketCnt_ ;
       /**
        * <code>optional uint32 clear_mibi_ticket_cnt = 22;</code>
@@ -20097,7 +19945,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 monthly_withdraw_amount = 23;
       private int monthlyWithdrawAmount_ ;
       /**
        * <code>optional uint32 monthly_withdraw_amount = 23;</code>
@@ -20146,7 +19993,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 remain_notax_quota = 24;
       private int remainNotaxQuota_ ;
       /**
        * <code>optional uint32 remain_notax_quota = 24;</code>
@@ -20195,7 +20041,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 clear_cash_cnt = 25;
       private int clearCashCnt_ ;
       /**
        * <code>optional uint32 clear_cash_cnt = 25;</code>
@@ -20244,7 +20089,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 clear_usd_cash_cnt = 26;
       private int clearUsdCashCnt_ ;
       /**
        * <code>optional uint32 clear_usd_cash_cnt = 26;</code>
@@ -20293,7 +20137,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 ticket_cash_cnt = 27;
       private int ticketCashCnt_ ;
       /**
        * <code>optional uint32 ticket_cash_cnt = 27;</code>
@@ -20342,7 +20185,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 ticket_usd_cash_cnt = 28;
       private int ticketUsdCashCnt_ ;
       /**
        * <code>optional uint32 ticket_usd_cash_cnt = 28;</code>
@@ -20391,7 +20233,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 game_ticket_cash_cnt = 29;
       private int gameTicketCashCnt_ ;
       /**
        * <code>optional uint32 game_ticket_cash_cnt = 29;</code>
@@ -20440,7 +20281,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 game_ticket_usd_cash_cnt = 30;
       private int gameTicketUsdCashCnt_ ;
       /**
        * <code>optional uint32 game_ticket_usd_cash_cnt = 30;</code>
@@ -20500,10 +20340,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:QueryProfitResponse)
   }
 
-  public interface GetExchangeRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetExchangeRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetExchangeRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      */
@@ -20513,7 +20353,6 @@ public final class PayProto {
      */
     long getUuid();
 
-    // required .Platform platform = 2;
     /**
      * <code>required .Platform platform = 2;</code>
      */
@@ -20532,8 +20371,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class GetExchangeRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements GetExchangeRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetExchangeRequest)
+      GetExchangeRequestOrBuilder {
     // Use GetExchangeRequest.newBuilder() to construct.
     private GetExchangeRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -20635,7 +20475,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -20651,7 +20490,6 @@ public final class PayProto {
       return uuid_;
     }
 
-    // required .Platform platform = 2;
     public static final int PLATFORM_FIELD_NUMBER = 2;
     private com.wali.live.proto.PayProto.Platform platform_;
     /**
@@ -20674,7 +20512,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -20801,8 +20640,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.GetExchangeRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetExchangeRequest)
+        com.wali.live.proto.PayProto.GetExchangeRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_GetExchangeRequest_descriptor;
@@ -20932,7 +20772,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -20965,7 +20804,6 @@ public final class PayProto {
         return this;
       }
 
-      // required .Platform platform = 2;
       private com.wali.live.proto.PayProto.Platform platform_ = com.wali.live.proto.PayProto.Platform.IOS;
       /**
        * <code>required .Platform platform = 2;</code>
@@ -21012,10 +20850,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:GetExchangeRequest)
   }
 
-  public interface GemExchangeOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GemExchangeOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GemExchange)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 exchange_id = 1;
     /**
      * <code>required uint32 exchange_id = 1;</code>
      */
@@ -21025,7 +20863,6 @@ public final class PayProto {
      */
     int getExchangeId();
 
-    // required uint32 gem_cnt = 2;
     /**
      * <code>required uint32 gem_cnt = 2;</code>
      *
@@ -21043,7 +20880,6 @@ public final class PayProto {
      */
     int getGemCnt();
 
-    // required uint32 ticket_cnt = 3;
     /**
      * <code>required uint32 ticket_cnt = 3;</code>
      */
@@ -21053,7 +20889,6 @@ public final class PayProto {
      */
     int getTicketCnt();
 
-    // optional uint32 give_gem_cnt = 4;
     /**
      * <code>optional uint32 give_gem_cnt = 4;</code>
      */
@@ -21063,7 +20898,6 @@ public final class PayProto {
      */
     int getGiveGemCnt();
 
-    // optional string subtitle = 5;
     /**
      * <code>optional string subtitle = 5;</code>
      *
@@ -21090,7 +20924,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getSubtitleBytes();
 
-    // optional uint64 begin_time = 6;
     /**
      * <code>optional uint64 begin_time = 6;</code>
      *
@@ -21108,7 +20941,6 @@ public final class PayProto {
      */
     long getBeginTime();
 
-    // optional uint64 end_time = 7;
     /**
      * <code>optional uint64 end_time = 7;</code>
      *
@@ -21126,7 +20958,6 @@ public final class PayProto {
      */
     long getEndTime();
 
-    // optional uint32 gold_gem_cnt = 8;
     /**
      * <code>optional uint32 gold_gem_cnt = 8;</code>
      *
@@ -21144,7 +20975,6 @@ public final class PayProto {
      */
     int getGoldGemCnt();
 
-    // optional uint32 virtual_gem_cnt = 9;
     /**
      * <code>optional uint32 virtual_gem_cnt = 9;</code>
      *
@@ -21166,8 +20996,9 @@ public final class PayProto {
    * Protobuf type {@code GemExchange}
    */
   public static final class GemExchange extends
-      com.google.protobuf.GeneratedMessage
-      implements GemExchangeOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GemExchange)
+      GemExchangeOrBuilder {
     // Use GemExchange.newBuilder() to construct.
     private GemExchange(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -21234,8 +21065,9 @@ public final class PayProto {
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              subtitle_ = input.readBytes();
+              subtitle_ = bs;
               break;
             }
             case 48: {
@@ -21298,7 +21130,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 exchange_id = 1;
     public static final int EXCHANGE_ID_FIELD_NUMBER = 1;
     private int exchangeId_;
     /**
@@ -21314,7 +21145,6 @@ public final class PayProto {
       return exchangeId_;
     }
 
-    // required uint32 gem_cnt = 2;
     public static final int GEM_CNT_FIELD_NUMBER = 2;
     private int gemCnt_;
     /**
@@ -21338,7 +21168,6 @@ public final class PayProto {
       return gemCnt_;
     }
 
-    // required uint32 ticket_cnt = 3;
     public static final int TICKET_CNT_FIELD_NUMBER = 3;
     private int ticketCnt_;
     /**
@@ -21354,7 +21183,6 @@ public final class PayProto {
       return ticketCnt_;
     }
 
-    // optional uint32 give_gem_cnt = 4;
     public static final int GIVE_GEM_CNT_FIELD_NUMBER = 4;
     private int giveGemCnt_;
     /**
@@ -21370,7 +21198,6 @@ public final class PayProto {
       return giveGemCnt_;
     }
 
-    // optional string subtitle = 5;
     public static final int SUBTITLE_FIELD_NUMBER = 5;
     private java.lang.Object subtitle_;
     /**
@@ -21425,7 +21252,6 @@ public final class PayProto {
       }
     }
 
-    // optional uint64 begin_time = 6;
     public static final int BEGIN_TIME_FIELD_NUMBER = 6;
     private long beginTime_;
     /**
@@ -21449,7 +21275,6 @@ public final class PayProto {
       return beginTime_;
     }
 
-    // optional uint64 end_time = 7;
     public static final int END_TIME_FIELD_NUMBER = 7;
     private long endTime_;
     /**
@@ -21473,7 +21298,6 @@ public final class PayProto {
       return endTime_;
     }
 
-    // optional uint32 gold_gem_cnt = 8;
     public static final int GOLD_GEM_CNT_FIELD_NUMBER = 8;
     private int goldGemCnt_;
     /**
@@ -21497,7 +21321,6 @@ public final class PayProto {
       return goldGemCnt_;
     }
 
-    // optional uint32 virtual_gem_cnt = 9;
     public static final int VIRTUAL_GEM_CNT_FIELD_NUMBER = 9;
     private int virtualGemCnt_;
     /**
@@ -21535,7 +21358,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasExchangeId()) {
         memoizedIsInitialized = 0;
@@ -21710,8 +21534,9 @@ public final class PayProto {
      * Protobuf type {@code GemExchange}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.GemExchangeOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GemExchange)
+        com.wali.live.proto.PayProto.GemExchangeOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_GemExchange_descriptor;
@@ -21910,7 +21735,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 exchange_id = 1;
       private int exchangeId_ ;
       /**
        * <code>required uint32 exchange_id = 1;</code>
@@ -21943,7 +21767,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint32 gem_cnt = 2;
       private int gemCnt_ ;
       /**
        * <code>required uint32 gem_cnt = 2;</code>
@@ -21992,7 +21815,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint32 ticket_cnt = 3;
       private int ticketCnt_ ;
       /**
        * <code>required uint32 ticket_cnt = 3;</code>
@@ -22025,7 +21847,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 give_gem_cnt = 4;
       private int giveGemCnt_ ;
       /**
        * <code>optional uint32 give_gem_cnt = 4;</code>
@@ -22058,7 +21879,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string subtitle = 5;
       private java.lang.Object subtitle_ = "";
       /**
        * <code>optional string subtitle = 5;</code>
@@ -22080,9 +21900,12 @@ public final class PayProto {
       public java.lang.String getSubtitle() {
         java.lang.Object ref = subtitle_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          subtitle_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            subtitle_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -22156,7 +21979,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint64 begin_time = 6;
       private long beginTime_ ;
       /**
        * <code>optional uint64 begin_time = 6;</code>
@@ -22205,7 +22027,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint64 end_time = 7;
       private long endTime_ ;
       /**
        * <code>optional uint64 end_time = 7;</code>
@@ -22254,7 +22075,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 gold_gem_cnt = 8;
       private int goldGemCnt_ ;
       /**
        * <code>optional uint32 gold_gem_cnt = 8;</code>
@@ -22303,7 +22123,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 virtual_gem_cnt = 9;
       private int virtualGemCnt_ ;
       /**
        * <code>optional uint32 virtual_gem_cnt = 9;</code>
@@ -22363,10 +22182,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:GemExchange)
   }
 
-  public interface GetExchangeResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetExchangeResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetExchangeResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret_code = 1;
     /**
      * <code>required uint32 ret_code = 1;</code>
      */
@@ -22376,7 +22195,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // optional uint32 usable_gem_cnt = 2;
     /**
      * <code>optional uint32 usable_gem_cnt = 2;</code>
      */
@@ -22386,7 +22204,6 @@ public final class PayProto {
      */
     int getUsableGemCnt();
 
-    // repeated .GemExchange gem_exchange_list = 3;
     /**
      * <code>repeated .GemExchange gem_exchange_list = 3;</code>
      */
@@ -22411,7 +22228,6 @@ public final class PayProto {
     com.wali.live.proto.PayProto.GemExchangeOrBuilder getGemExchangeListOrBuilder(
         int index);
 
-    // optional uint32 uasble_ticket_cnt = 4;
     /**
      * <code>optional uint32 uasble_ticket_cnt = 4;</code>
      */
@@ -22421,7 +22237,6 @@ public final class PayProto {
      */
     int getUasbleTicketCnt();
 
-    // optional .NotifyType notifyType = 5;
     /**
      * <code>optional .NotifyType notifyType = 5;</code>
      */
@@ -22431,7 +22246,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.NotifyType getNotifyType();
 
-    // optional string msg = 6;
     /**
      * <code>optional string msg = 6;</code>
      */
@@ -22446,7 +22260,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getMsgBytes();
 
-    // optional uint32 usable_game_ticket_cnt = 7;
     /**
      * <code>optional uint32 usable_game_ticket_cnt = 7;</code>
      */
@@ -22460,8 +22273,9 @@ public final class PayProto {
    * Protobuf type {@code GetExchangeResponse}
    */
   public static final class GetExchangeResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements GetExchangeResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetExchangeResponse)
+      GetExchangeResponseOrBuilder {
     // Use GetExchangeResponse.newBuilder() to construct.
     private GetExchangeResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -22542,8 +22356,9 @@ public final class PayProto {
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              msg_ = input.readBytes();
+              msg_ = bs;
               break;
             }
             case 56: {
@@ -22594,7 +22409,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 ret_code = 1;
     public static final int RET_CODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -22610,7 +22424,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // optional uint32 usable_gem_cnt = 2;
     public static final int USABLE_GEM_CNT_FIELD_NUMBER = 2;
     private int usableGemCnt_;
     /**
@@ -22626,7 +22439,6 @@ public final class PayProto {
       return usableGemCnt_;
     }
 
-    // repeated .GemExchange gem_exchange_list = 3;
     public static final int GEM_EXCHANGE_LIST_FIELD_NUMBER = 3;
     private java.util.List<com.wali.live.proto.PayProto.GemExchange> gemExchangeList_;
     /**
@@ -22662,7 +22474,6 @@ public final class PayProto {
       return gemExchangeList_.get(index);
     }
 
-    // optional uint32 uasble_ticket_cnt = 4;
     public static final int UASBLE_TICKET_CNT_FIELD_NUMBER = 4;
     private int uasbleTicketCnt_;
     /**
@@ -22678,7 +22489,6 @@ public final class PayProto {
       return uasbleTicketCnt_;
     }
 
-    // optional .NotifyType notifyType = 5;
     public static final int NOTIFYTYPE_FIELD_NUMBER = 5;
     private com.wali.live.proto.PayProto.NotifyType notifyType_;
     /**
@@ -22694,7 +22504,6 @@ public final class PayProto {
       return notifyType_;
     }
 
-    // optional string msg = 6;
     public static final int MSG_FIELD_NUMBER = 6;
     private java.lang.Object msg_;
     /**
@@ -22737,7 +22546,6 @@ public final class PayProto {
       }
     }
 
-    // optional uint32 usable_game_ticket_cnt = 7;
     public static final int USABLE_GAME_TICKET_CNT_FIELD_NUMBER = 7;
     private int usableGameTicketCnt_;
     /**
@@ -22765,7 +22573,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -22924,8 +22733,9 @@ public final class PayProto {
      * Protobuf type {@code GetExchangeResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.GetExchangeResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetExchangeResponse)
+        com.wali.live.proto.PayProto.GetExchangeResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_GetExchangeResponse_descriptor;
@@ -23137,7 +22947,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 ret_code = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 ret_code = 1;</code>
@@ -23170,7 +22979,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 usable_gem_cnt = 2;
       private int usableGemCnt_ ;
       /**
        * <code>optional uint32 usable_gem_cnt = 2;</code>
@@ -23203,7 +23011,6 @@ public final class PayProto {
         return this;
       }
 
-      // repeated .GemExchange gem_exchange_list = 3;
       private java.util.List<com.wali.live.proto.PayProto.GemExchange> gemExchangeList_ =
         java.util.Collections.emptyList();
       private void ensureGemExchangeListIsMutable() {
@@ -23345,7 +23152,8 @@ public final class PayProto {
           java.lang.Iterable<? extends com.wali.live.proto.PayProto.GemExchange> values) {
         if (gemExchangeListBuilder_ == null) {
           ensureGemExchangeListIsMutable();
-          super.addAll(values, gemExchangeList_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, gemExchangeList_);
           onChanged();
         } else {
           gemExchangeListBuilder_.addAllMessages(values);
@@ -23443,7 +23251,6 @@ public final class PayProto {
         return gemExchangeListBuilder_;
       }
 
-      // optional uint32 uasble_ticket_cnt = 4;
       private int uasbleTicketCnt_ ;
       /**
        * <code>optional uint32 uasble_ticket_cnt = 4;</code>
@@ -23476,7 +23283,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .NotifyType notifyType = 5;
       private com.wali.live.proto.PayProto.NotifyType notifyType_ = com.wali.live.proto.PayProto.NotifyType.TOAST;
       /**
        * <code>optional .NotifyType notifyType = 5;</code>
@@ -23512,7 +23318,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string msg = 6;
       private java.lang.Object msg_ = "";
       /**
        * <code>optional string msg = 6;</code>
@@ -23526,9 +23331,12 @@ public final class PayProto {
       public java.lang.String getMsg() {
         java.lang.Object ref = msg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          msg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -23586,7 +23394,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 usable_game_ticket_cnt = 7;
       private int usableGameTicketCnt_ ;
       /**
        * <code>optional uint32 usable_game_ticket_cnt = 7;</code>
@@ -23630,10 +23437,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:GetExchangeResponse)
   }
 
-  public interface ExchangeGemRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ExchangeGemRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ExchangeGemRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      */
@@ -23643,7 +23450,6 @@ public final class PayProto {
      */
     long getUuid();
 
-    // required uint64 client_id = 2;
     /**
      * <code>required uint64 client_id = 2;</code>
      *
@@ -23661,7 +23467,6 @@ public final class PayProto {
      */
     long getClientId();
 
-    // required uint32 exchange_id = 3;
     /**
      * <code>required uint32 exchange_id = 3;</code>
      */
@@ -23671,7 +23476,6 @@ public final class PayProto {
      */
     int getExchangeId();
 
-    // required uint32 gem_cnt = 4;
     /**
      * <code>required uint32 gem_cnt = 4;</code>
      */
@@ -23681,7 +23485,6 @@ public final class PayProto {
      */
     int getGemCnt();
 
-    // required uint32 tichket_cnt = 5;
     /**
      * <code>required uint32 tichket_cnt = 5;</code>
      */
@@ -23691,7 +23494,6 @@ public final class PayProto {
      */
     int getTichketCnt();
 
-    // optional uint32 give_gem_cnt = 6;
     /**
      * <code>optional uint32 give_gem_cnt = 6;</code>
      */
@@ -23701,7 +23503,6 @@ public final class PayProto {
      */
     int getGiveGemCnt();
 
-    // optional .Platform platform = 7;
     /**
      * <code>optional .Platform platform = 7;</code>
      */
@@ -23720,8 +23521,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class ExchangeGemRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements ExchangeGemRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ExchangeGemRequest)
+      ExchangeGemRequestOrBuilder {
     // Use ExchangeGemRequest.newBuilder() to construct.
     private ExchangeGemRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -23848,7 +23650,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -23864,7 +23665,6 @@ public final class PayProto {
       return uuid_;
     }
 
-    // required uint64 client_id = 2;
     public static final int CLIENT_ID_FIELD_NUMBER = 2;
     private long clientId_;
     /**
@@ -23888,7 +23688,6 @@ public final class PayProto {
       return clientId_;
     }
 
-    // required uint32 exchange_id = 3;
     public static final int EXCHANGE_ID_FIELD_NUMBER = 3;
     private int exchangeId_;
     /**
@@ -23904,7 +23703,6 @@ public final class PayProto {
       return exchangeId_;
     }
 
-    // required uint32 gem_cnt = 4;
     public static final int GEM_CNT_FIELD_NUMBER = 4;
     private int gemCnt_;
     /**
@@ -23920,7 +23718,6 @@ public final class PayProto {
       return gemCnt_;
     }
 
-    // required uint32 tichket_cnt = 5;
     public static final int TICHKET_CNT_FIELD_NUMBER = 5;
     private int tichketCnt_;
     /**
@@ -23936,7 +23733,6 @@ public final class PayProto {
       return tichketCnt_;
     }
 
-    // optional uint32 give_gem_cnt = 6;
     public static final int GIVE_GEM_CNT_FIELD_NUMBER = 6;
     private int giveGemCnt_;
     /**
@@ -23952,7 +23748,6 @@ public final class PayProto {
       return giveGemCnt_;
     }
 
-    // optional .Platform platform = 7;
     public static final int PLATFORM_FIELD_NUMBER = 7;
     private com.wali.live.proto.PayProto.Platform platform_;
     /**
@@ -23980,7 +23775,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -24154,8 +23950,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.ExchangeGemRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ExchangeGemRequest)
+        com.wali.live.proto.PayProto.ExchangeGemRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_ExchangeGemRequest_descriptor;
@@ -24342,7 +24139,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -24375,7 +24171,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint64 client_id = 2;
       private long clientId_ ;
       /**
        * <code>required uint64 client_id = 2;</code>
@@ -24424,7 +24219,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint32 exchange_id = 3;
       private int exchangeId_ ;
       /**
        * <code>required uint32 exchange_id = 3;</code>
@@ -24457,7 +24251,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint32 gem_cnt = 4;
       private int gemCnt_ ;
       /**
        * <code>required uint32 gem_cnt = 4;</code>
@@ -24490,7 +24283,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint32 tichket_cnt = 5;
       private int tichketCnt_ ;
       /**
        * <code>required uint32 tichket_cnt = 5;</code>
@@ -24523,7 +24315,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 give_gem_cnt = 6;
       private int giveGemCnt_ ;
       /**
        * <code>optional uint32 give_gem_cnt = 6;</code>
@@ -24556,7 +24347,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .Platform platform = 7;
       private com.wali.live.proto.PayProto.Platform platform_ = com.wali.live.proto.PayProto.Platform.IOS;
       /**
        * <code>optional .Platform platform = 7;</code>
@@ -24603,10 +24393,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:ExchangeGemRequest)
   }
 
-  public interface ExchangeGemResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ExchangeGemResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ExchangeGemResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret_code = 1;
     /**
      * <code>required uint32 ret_code = 1;</code>
      */
@@ -24616,7 +24406,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // optional uint32 usable_gem_cnt = 2;
     /**
      * <code>optional uint32 usable_gem_cnt = 2;</code>
      */
@@ -24626,7 +24415,6 @@ public final class PayProto {
      */
     int getUsableGemCnt();
 
-    // optional uint32 usable_ticket_cnt = 3;
     /**
      * <code>optional uint32 usable_ticket_cnt = 3;</code>
      *
@@ -24648,8 +24436,9 @@ public final class PayProto {
    * Protobuf type {@code ExchangeGemResponse}
    */
   public static final class ExchangeGemResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements ExchangeGemResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ExchangeGemResponse)
+      ExchangeGemResponseOrBuilder {
     // Use ExchangeGemResponse.newBuilder() to construct.
     private ExchangeGemResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -24750,7 +24539,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 ret_code = 1;
     public static final int RET_CODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -24766,7 +24554,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // optional uint32 usable_gem_cnt = 2;
     public static final int USABLE_GEM_CNT_FIELD_NUMBER = 2;
     private int usableGemCnt_;
     /**
@@ -24782,7 +24569,6 @@ public final class PayProto {
       return usableGemCnt_;
     }
 
-    // optional uint32 usable_ticket_cnt = 3;
     public static final int USABLE_TICKET_CNT_FIELD_NUMBER = 3;
     private int usableTicketCnt_;
     /**
@@ -24814,7 +24600,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -24939,8 +24726,9 @@ public final class PayProto {
      * Protobuf type {@code ExchangeGemResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.ExchangeGemResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ExchangeGemResponse)
+        com.wali.live.proto.PayProto.ExchangeGemResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_ExchangeGemResponse_descriptor;
@@ -25075,7 +24863,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 ret_code = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 ret_code = 1;</code>
@@ -25108,7 +24895,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 usable_gem_cnt = 2;
       private int usableGemCnt_ ;
       /**
        * <code>optional uint32 usable_gem_cnt = 2;</code>
@@ -25141,7 +24927,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 usable_ticket_cnt = 3;
       private int usableTicketCnt_ ;
       /**
        * <code>optional uint32 usable_ticket_cnt = 3;</code>
@@ -25201,10 +24986,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:ExchangeGemResponse)
   }
 
-  public interface WithdrawRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface WithdrawRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:WithdrawRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      */
@@ -25214,7 +24999,6 @@ public final class PayProto {
      */
     long getUuid();
 
-    // required uint64 client_id = 2;
     /**
      * <code>required uint64 client_id = 2;</code>
      *
@@ -25232,7 +25016,6 @@ public final class PayProto {
      */
     long getClientId();
 
-    // optional uint32 withdraw_amount = 3;
     /**
      * <code>optional uint32 withdraw_amount = 3;</code>
      *
@@ -25250,7 +25033,6 @@ public final class PayProto {
      */
     int getWithdrawAmount();
 
-    // optional uint32 consum_ticket_cnt = 4;
     /**
      * <code>optional uint32 consum_ticket_cnt = 4;</code>
      */
@@ -25260,7 +25042,6 @@ public final class PayProto {
      */
     int getConsumTicketCnt();
 
-    // required .WithdrawType withdraw_type = 5;
     /**
      * <code>required .WithdrawType withdraw_type = 5;</code>
      *
@@ -25278,7 +25059,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.WithdrawType getWithdrawType();
 
-    // optional .Platform platform = 6;
     /**
      * <code>optional .Platform platform = 6;</code>
      */
@@ -25288,7 +25068,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.Platform getPlatform();
 
-    // optional uint32 channel_id = 7;
     /**
      * <code>optional uint32 channel_id = 7;</code>
      *
@@ -25306,7 +25085,6 @@ public final class PayProto {
      */
     int getChannelId();
 
-    // optional string unionid = 8;
     /**
      * <code>optional string unionid = 8;</code>
      *
@@ -25333,7 +25111,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getUnionidBytes();
 
-    // optional bool need_real_resule = 9;
     /**
      * <code>optional bool need_real_resule = 9;</code>
      *
@@ -25360,8 +25137,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class WithdrawRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements WithdrawRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:WithdrawRequest)
+      WithdrawRequestOrBuilder {
     // Use WithdrawRequest.newBuilder() to construct.
     private WithdrawRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -25455,8 +25233,9 @@ public final class PayProto {
               break;
             }
             case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
-              unionid_ = input.readBytes();
+              unionid_ = bs;
               break;
             }
             case 72: {
@@ -25504,7 +25283,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -25520,7 +25298,6 @@ public final class PayProto {
       return uuid_;
     }
 
-    // required uint64 client_id = 2;
     public static final int CLIENT_ID_FIELD_NUMBER = 2;
     private long clientId_;
     /**
@@ -25544,7 +25321,6 @@ public final class PayProto {
       return clientId_;
     }
 
-    // optional uint32 withdraw_amount = 3;
     public static final int WITHDRAW_AMOUNT_FIELD_NUMBER = 3;
     private int withdrawAmount_;
     /**
@@ -25568,7 +25344,6 @@ public final class PayProto {
       return withdrawAmount_;
     }
 
-    // optional uint32 consum_ticket_cnt = 4;
     public static final int CONSUM_TICKET_CNT_FIELD_NUMBER = 4;
     private int consumTicketCnt_;
     /**
@@ -25584,7 +25359,6 @@ public final class PayProto {
       return consumTicketCnt_;
     }
 
-    // required .WithdrawType withdraw_type = 5;
     public static final int WITHDRAW_TYPE_FIELD_NUMBER = 5;
     private com.wali.live.proto.PayProto.WithdrawType withdrawType_;
     /**
@@ -25608,7 +25382,6 @@ public final class PayProto {
       return withdrawType_;
     }
 
-    // optional .Platform platform = 6;
     public static final int PLATFORM_FIELD_NUMBER = 6;
     private com.wali.live.proto.PayProto.Platform platform_;
     /**
@@ -25624,7 +25397,6 @@ public final class PayProto {
       return platform_;
     }
 
-    // optional uint32 channel_id = 7;
     public static final int CHANNEL_ID_FIELD_NUMBER = 7;
     private int channelId_;
     /**
@@ -25648,7 +25420,6 @@ public final class PayProto {
       return channelId_;
     }
 
-    // optional string unionid = 8;
     public static final int UNIONID_FIELD_NUMBER = 8;
     private java.lang.Object unionid_;
     /**
@@ -25703,7 +25474,6 @@ public final class PayProto {
       }
     }
 
-    // optional bool need_real_resule = 9;
     public static final int NEED_REAL_RESULE_FIELD_NUMBER = 9;
     private boolean needRealResule_;
     /**
@@ -25741,7 +25511,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -25921,8 +25692,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.WithdrawRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:WithdrawRequest)
+        com.wali.live.proto.PayProto.WithdrawRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_WithdrawRequest_descriptor;
@@ -26121,7 +25893,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -26154,7 +25925,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint64 client_id = 2;
       private long clientId_ ;
       /**
        * <code>required uint64 client_id = 2;</code>
@@ -26203,7 +25973,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 withdraw_amount = 3;
       private int withdrawAmount_ ;
       /**
        * <code>optional uint32 withdraw_amount = 3;</code>
@@ -26252,7 +26021,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 consum_ticket_cnt = 4;
       private int consumTicketCnt_ ;
       /**
        * <code>optional uint32 consum_ticket_cnt = 4;</code>
@@ -26285,7 +26053,6 @@ public final class PayProto {
         return this;
       }
 
-      // required .WithdrawType withdraw_type = 5;
       private com.wali.live.proto.PayProto.WithdrawType withdrawType_ = com.wali.live.proto.PayProto.WithdrawType.ALIPAY_WITHDRAW;
       /**
        * <code>required .WithdrawType withdraw_type = 5;</code>
@@ -26337,7 +26104,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .Platform platform = 6;
       private com.wali.live.proto.PayProto.Platform platform_ = com.wali.live.proto.PayProto.Platform.IOS;
       /**
        * <code>optional .Platform platform = 6;</code>
@@ -26373,7 +26139,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 channel_id = 7;
       private int channelId_ ;
       /**
        * <code>optional uint32 channel_id = 7;</code>
@@ -26422,7 +26187,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string unionid = 8;
       private java.lang.Object unionid_ = "";
       /**
        * <code>optional string unionid = 8;</code>
@@ -26444,9 +26208,12 @@ public final class PayProto {
       public java.lang.String getUnionid() {
         java.lang.Object ref = unionid_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          unionid_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            unionid_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -26520,7 +26287,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional bool need_real_resule = 9;
       private boolean needRealResule_ ;
       /**
        * <code>optional bool need_real_resule = 9;</code>
@@ -26580,10 +26346,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:WithdrawRequest)
   }
 
-  public interface WithdrawResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface WithdrawResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:WithdrawResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret_code = 1;
     /**
      * <code>required uint32 ret_code = 1;</code>
      *
@@ -26601,7 +26367,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // optional uint32 usable_ticket_cnt = 2;
     /**
      * <code>optional uint32 usable_ticket_cnt = 2;</code>
      *
@@ -26619,7 +26384,6 @@ public final class PayProto {
      */
     int getUsableTicketCnt();
 
-    // optional uint32 exchange_cash_cnt = 3;
     /**
      * <code>optional uint32 exchange_cash_cnt = 3;</code>
      *
@@ -26637,7 +26401,6 @@ public final class PayProto {
      */
     int getExchangeCashCnt();
 
-    // optional uint32 today_exchange_cash_cnt = 4;
     /**
      * <code>optional uint32 today_exchange_cash_cnt = 4;</code>
      *
@@ -26655,7 +26418,6 @@ public final class PayProto {
      */
     int getTodayExchangeCashCnt();
 
-    // optional .NotifyType notifyType = 5;
     /**
      * <code>optional .NotifyType notifyType = 5;</code>
      */
@@ -26665,7 +26427,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.NotifyType getNotifyType();
 
-    // optional string msg = 6;
     /**
      * <code>optional string msg = 6;</code>
      */
@@ -26684,8 +26445,9 @@ public final class PayProto {
    * Protobuf type {@code WithdrawResponse}
    */
   public static final class WithdrawResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements WithdrawResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:WithdrawResponse)
+      WithdrawResponseOrBuilder {
     // Use WithdrawResponse.newBuilder() to construct.
     private WithdrawResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -26763,8 +26525,9 @@ public final class PayProto {
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              msg_ = input.readBytes();
+              msg_ = bs;
               break;
             }
           }
@@ -26807,7 +26570,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 ret_code = 1;
     public static final int RET_CODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -26831,7 +26593,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // optional uint32 usable_ticket_cnt = 2;
     public static final int USABLE_TICKET_CNT_FIELD_NUMBER = 2;
     private int usableTicketCnt_;
     /**
@@ -26855,7 +26616,6 @@ public final class PayProto {
       return usableTicketCnt_;
     }
 
-    // optional uint32 exchange_cash_cnt = 3;
     public static final int EXCHANGE_CASH_CNT_FIELD_NUMBER = 3;
     private int exchangeCashCnt_;
     /**
@@ -26879,7 +26639,6 @@ public final class PayProto {
       return exchangeCashCnt_;
     }
 
-    // optional uint32 today_exchange_cash_cnt = 4;
     public static final int TODAY_EXCHANGE_CASH_CNT_FIELD_NUMBER = 4;
     private int todayExchangeCashCnt_;
     /**
@@ -26903,7 +26662,6 @@ public final class PayProto {
       return todayExchangeCashCnt_;
     }
 
-    // optional .NotifyType notifyType = 5;
     public static final int NOTIFYTYPE_FIELD_NUMBER = 5;
     private com.wali.live.proto.PayProto.NotifyType notifyType_;
     /**
@@ -26919,7 +26677,6 @@ public final class PayProto {
       return notifyType_;
     }
 
-    // optional string msg = 6;
     public static final int MSG_FIELD_NUMBER = 6;
     private java.lang.Object msg_;
     /**
@@ -26973,7 +26730,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -27119,8 +26877,9 @@ public final class PayProto {
      * Protobuf type {@code WithdrawResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.WithdrawResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:WithdrawResponse)
+        com.wali.live.proto.PayProto.WithdrawResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_WithdrawResponse_descriptor;
@@ -27284,7 +27043,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 ret_code = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 ret_code = 1;</code>
@@ -27333,7 +27091,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 usable_ticket_cnt = 2;
       private int usableTicketCnt_ ;
       /**
        * <code>optional uint32 usable_ticket_cnt = 2;</code>
@@ -27382,7 +27139,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 exchange_cash_cnt = 3;
       private int exchangeCashCnt_ ;
       /**
        * <code>optional uint32 exchange_cash_cnt = 3;</code>
@@ -27431,7 +27187,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 today_exchange_cash_cnt = 4;
       private int todayExchangeCashCnt_ ;
       /**
        * <code>optional uint32 today_exchange_cash_cnt = 4;</code>
@@ -27480,7 +27235,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .NotifyType notifyType = 5;
       private com.wali.live.proto.PayProto.NotifyType notifyType_ = com.wali.live.proto.PayProto.NotifyType.TOAST;
       /**
        * <code>optional .NotifyType notifyType = 5;</code>
@@ -27516,7 +27270,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string msg = 6;
       private java.lang.Object msg_ = "";
       /**
        * <code>optional string msg = 6;</code>
@@ -27530,9 +27283,12 @@ public final class PayProto {
       public java.lang.String getMsg() {
         java.lang.Object ref = msg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          msg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -27601,10 +27357,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:WithdrawResponse)
   }
 
-  public interface WithdrawRecordRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface WithdrawRecordRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:WithdrawRecordRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      */
@@ -27614,7 +27370,6 @@ public final class PayProto {
      */
     long getUuid();
 
-    // optional string item_id = 2;
     /**
      * <code>optional string item_id = 2;</code>
      */
@@ -27629,7 +27384,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getItemIdBytes();
 
-    // optional uint32 limit = 3;
     /**
      * <code>optional uint32 limit = 3;</code>
      */
@@ -27650,8 +27404,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class WithdrawRecordRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements WithdrawRecordRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:WithdrawRecordRequest)
+      WithdrawRecordRequestOrBuilder {
     // Use WithdrawRecordRequest.newBuilder() to construct.
     private WithdrawRecordRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -27703,8 +27458,9 @@ public final class PayProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              itemId_ = input.readBytes();
+              itemId_ = bs;
               break;
             }
             case 24: {
@@ -27752,7 +27508,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -27768,7 +27523,6 @@ public final class PayProto {
       return uuid_;
     }
 
-    // optional string item_id = 2;
     public static final int ITEM_ID_FIELD_NUMBER = 2;
     private java.lang.Object itemId_;
     /**
@@ -27811,7 +27565,6 @@ public final class PayProto {
       }
     }
 
-    // optional uint32 limit = 3;
     public static final int LIMIT_FIELD_NUMBER = 3;
     private int limit_;
     /**
@@ -27835,7 +27588,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -27967,8 +27721,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.WithdrawRecordRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:WithdrawRecordRequest)
+        com.wali.live.proto.PayProto.WithdrawRecordRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_WithdrawRecordRequest_descriptor;
@@ -28105,7 +27860,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -28138,7 +27892,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string item_id = 2;
       private java.lang.Object itemId_ = "";
       /**
        * <code>optional string item_id = 2;</code>
@@ -28152,9 +27905,12 @@ public final class PayProto {
       public java.lang.String getItemId() {
         java.lang.Object ref = itemId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          itemId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            itemId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -28212,7 +27968,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 limit = 3;
       private int limit_ ;
       /**
        * <code>optional uint32 limit = 3;</code>
@@ -28256,10 +28011,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:WithdrawRecordRequest)
   }
 
-  public interface WithdrawRecordOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface WithdrawRecordOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:WithdrawRecord)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string item_id = 1;
     /**
      * <code>optional string item_id = 1;</code>
      */
@@ -28274,7 +28029,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getItemIdBytes();
 
-    // optional uint32 amount = 3;
     /**
      * <code>optional uint32 amount = 3;</code>
      *
@@ -28292,7 +28046,6 @@ public final class PayProto {
      */
     int getAmount();
 
-    // optional uint64 timestamp = 4;
     /**
      * <code>optional uint64 timestamp = 4;</code>
      *
@@ -28310,7 +28063,6 @@ public final class PayProto {
      */
     long getTimestamp();
 
-    // optional uint32 status = 5;
     /**
      * <code>optional uint32 status = 5;</code>
      *
@@ -28328,7 +28080,6 @@ public final class PayProto {
      */
     int getStatus();
 
-    // optional string item_key = 6;
     /**
      * <code>optional string item_key = 6;</code>
      *
@@ -28355,7 +28106,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getItemKeyBytes();
 
-    // optional string status_msg = 7;
     /**
      * <code>optional string status_msg = 7;</code>
      *
@@ -28382,7 +28132,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getStatusMsgBytes();
 
-    // optional uint32 orther_currency_amount = 8;
     /**
      * <code>optional uint32 orther_currency_amount = 8;</code>
      *
@@ -28400,7 +28149,6 @@ public final class PayProto {
      */
     int getOrtherCurrencyAmount();
 
-    // optional .WithdrawType withdraw_type = 9;
     /**
      * <code>optional .WithdrawType withdraw_type = 9;</code>
      *
@@ -28427,8 +28175,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class WithdrawRecord extends
-      com.google.protobuf.GeneratedMessage
-      implements WithdrawRecordOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:WithdrawRecord)
+      WithdrawRecordOrBuilder {
     // Use WithdrawRecord.newBuilder() to construct.
     private WithdrawRecord(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -28475,8 +28224,9 @@ public final class PayProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              itemId_ = input.readBytes();
+              itemId_ = bs;
               break;
             }
             case 24: {
@@ -28495,13 +28245,15 @@ public final class PayProto {
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              itemKey_ = input.readBytes();
+              itemKey_ = bs;
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              statusMsg_ = input.readBytes();
+              statusMsg_ = bs;
               break;
             }
             case 64: {
@@ -28560,7 +28312,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // optional string item_id = 1;
     public static final int ITEM_ID_FIELD_NUMBER = 1;
     private java.lang.Object itemId_;
     /**
@@ -28603,7 +28354,6 @@ public final class PayProto {
       }
     }
 
-    // optional uint32 amount = 3;
     public static final int AMOUNT_FIELD_NUMBER = 3;
     private int amount_;
     /**
@@ -28627,7 +28377,6 @@ public final class PayProto {
       return amount_;
     }
 
-    // optional uint64 timestamp = 4;
     public static final int TIMESTAMP_FIELD_NUMBER = 4;
     private long timestamp_;
     /**
@@ -28651,7 +28400,6 @@ public final class PayProto {
       return timestamp_;
     }
 
-    // optional uint32 status = 5;
     public static final int STATUS_FIELD_NUMBER = 5;
     private int status_;
     /**
@@ -28675,7 +28423,6 @@ public final class PayProto {
       return status_;
     }
 
-    // optional string item_key = 6;
     public static final int ITEM_KEY_FIELD_NUMBER = 6;
     private java.lang.Object itemKey_;
     /**
@@ -28730,7 +28477,6 @@ public final class PayProto {
       }
     }
 
-    // optional string status_msg = 7;
     public static final int STATUS_MSG_FIELD_NUMBER = 7;
     private java.lang.Object statusMsg_;
     /**
@@ -28785,7 +28531,6 @@ public final class PayProto {
       }
     }
 
-    // optional uint32 orther_currency_amount = 8;
     public static final int ORTHER_CURRENCY_AMOUNT_FIELD_NUMBER = 8;
     private int ortherCurrencyAmount_;
     /**
@@ -28809,7 +28554,6 @@ public final class PayProto {
       return ortherCurrencyAmount_;
     }
 
-    // optional .WithdrawType withdraw_type = 9;
     public static final int WITHDRAW_TYPE_FIELD_NUMBER = 9;
     private com.wali.live.proto.PayProto.WithdrawType withdrawType_;
     /**
@@ -28846,7 +28590,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -29007,8 +28752,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.WithdrawRecordOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:WithdrawRecord)
+        com.wali.live.proto.PayProto.WithdrawRecordOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_WithdrawRecord_descriptor;
@@ -29190,7 +28936,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // optional string item_id = 1;
       private java.lang.Object itemId_ = "";
       /**
        * <code>optional string item_id = 1;</code>
@@ -29204,9 +28949,12 @@ public final class PayProto {
       public java.lang.String getItemId() {
         java.lang.Object ref = itemId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          itemId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            itemId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -29264,7 +29012,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 amount = 3;
       private int amount_ ;
       /**
        * <code>optional uint32 amount = 3;</code>
@@ -29313,7 +29060,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint64 timestamp = 4;
       private long timestamp_ ;
       /**
        * <code>optional uint64 timestamp = 4;</code>
@@ -29362,7 +29108,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 status = 5;
       private int status_ ;
       /**
        * <code>optional uint32 status = 5;</code>
@@ -29411,7 +29156,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string item_key = 6;
       private java.lang.Object itemKey_ = "";
       /**
        * <code>optional string item_key = 6;</code>
@@ -29433,9 +29177,12 @@ public final class PayProto {
       public java.lang.String getItemKey() {
         java.lang.Object ref = itemKey_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          itemKey_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            itemKey_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -29509,7 +29256,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string status_msg = 7;
       private java.lang.Object statusMsg_ = "";
       /**
        * <code>optional string status_msg = 7;</code>
@@ -29531,9 +29277,12 @@ public final class PayProto {
       public java.lang.String getStatusMsg() {
         java.lang.Object ref = statusMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          statusMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            statusMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -29607,7 +29356,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 orther_currency_amount = 8;
       private int ortherCurrencyAmount_ ;
       /**
        * <code>optional uint32 orther_currency_amount = 8;</code>
@@ -29656,7 +29404,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .WithdrawType withdraw_type = 9;
       private com.wali.live.proto.PayProto.WithdrawType withdrawType_ = com.wali.live.proto.PayProto.WithdrawType.ALIPAY_WITHDRAW;
       /**
        * <code>optional .WithdrawType withdraw_type = 9;</code>
@@ -29719,10 +29466,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:WithdrawRecord)
   }
 
-  public interface WithdrawRecordResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface WithdrawRecordResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:WithdrawRecordResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret_code = 1;
     /**
      * <code>required uint32 ret_code = 1;</code>
      */
@@ -29732,7 +29479,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // repeated .WithdrawRecord withdrawRecords = 2;
     /**
      * <code>repeated .WithdrawRecord withdrawRecords = 2;</code>
      */
@@ -29761,8 +29507,9 @@ public final class PayProto {
    * Protobuf type {@code WithdrawRecordResponse}
    */
   public static final class WithdrawRecordResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements WithdrawRecordResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:WithdrawRecordResponse)
+      WithdrawRecordResponseOrBuilder {
     // Use WithdrawRecordResponse.newBuilder() to construct.
     private WithdrawRecordResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -29864,7 +29611,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 ret_code = 1;
     public static final int RET_CODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -29880,7 +29626,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // repeated .WithdrawRecord withdrawRecords = 2;
     public static final int WITHDRAWRECORDS_FIELD_NUMBER = 2;
     private java.util.List<com.wali.live.proto.PayProto.WithdrawRecord> withdrawRecords_;
     /**
@@ -29923,7 +29668,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -30041,8 +29787,9 @@ public final class PayProto {
      * Protobuf type {@code WithdrawRecordResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.WithdrawRecordResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:WithdrawRecordResponse)
+        com.wali.live.proto.PayProto.WithdrawRecordResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_WithdrawRecordResponse_descriptor;
@@ -30201,7 +29948,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 ret_code = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 ret_code = 1;</code>
@@ -30234,7 +29980,6 @@ public final class PayProto {
         return this;
       }
 
-      // repeated .WithdrawRecord withdrawRecords = 2;
       private java.util.List<com.wali.live.proto.PayProto.WithdrawRecord> withdrawRecords_ =
         java.util.Collections.emptyList();
       private void ensureWithdrawRecordsIsMutable() {
@@ -30376,7 +30121,8 @@ public final class PayProto {
           java.lang.Iterable<? extends com.wali.live.proto.PayProto.WithdrawRecord> values) {
         if (withdrawRecordsBuilder_ == null) {
           ensureWithdrawRecordsIsMutable();
-          super.addAll(values, withdrawRecords_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, withdrawRecords_);
           onChanged();
         } else {
           withdrawRecordsBuilder_.addAllMessages(values);
@@ -30485,10 +30231,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:WithdrawRecordResponse)
   }
 
-  public interface BindRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface BindRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:BindRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      */
@@ -30498,7 +30244,6 @@ public final class PayProto {
      */
     long getUuid();
 
-    // optional string real_name = 2;
     /**
      * <code>optional string real_name = 2;</code>
      *
@@ -30525,7 +30270,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getRealNameBytes();
 
-    // optional string account = 3;
     /**
      * <code>optional string account = 3;</code>
      *
@@ -30552,7 +30296,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getAccountBytes();
 
-    // optional string card_id = 4;
     /**
      * <code>optional string card_id = 4;</code>
      *
@@ -30579,7 +30322,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getCardIdBytes();
 
-    // optional string oauth_code = 5;
     /**
      * <code>optional string oauth_code = 5;</code>
      */
@@ -30594,7 +30336,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getOauthCodeBytes();
 
-    // optional .WithdrawType type = 6;
     /**
      * <code>optional .WithdrawType type = 6;</code>
      */
@@ -30604,7 +30345,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.WithdrawType getType();
 
-    // optional string paypal_account = 7;
     /**
      * <code>optional string paypal_account = 7;</code>
      *
@@ -30631,7 +30371,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getPaypalAccountBytes();
 
-    // optional string paypal_firstname = 8;
     /**
      * <code>optional string paypal_firstname = 8;</code>
      *
@@ -30658,7 +30397,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getPaypalFirstnameBytes();
 
-    // optional string paypal_lastname = 9;
     /**
      * <code>optional string paypal_lastname = 9;</code>
      *
@@ -30695,8 +30433,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class BindRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements BindRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:BindRequest)
+      BindRequestOrBuilder {
     // Use BindRequest.newBuilder() to construct.
     private BindRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -30748,23 +30487,27 @@ public final class PayProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              realName_ = input.readBytes();
+              realName_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              account_ = input.readBytes();
+              account_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              cardId_ = input.readBytes();
+              cardId_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              oauthCode_ = input.readBytes();
+              oauthCode_ = bs;
               break;
             }
             case 48: {
@@ -30779,18 +30522,21 @@ public final class PayProto {
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              paypalAccount_ = input.readBytes();
+              paypalAccount_ = bs;
               break;
             }
             case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
-              paypalFirstname_ = input.readBytes();
+              paypalFirstname_ = bs;
               break;
             }
             case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              paypalLastname_ = input.readBytes();
+              paypalLastname_ = bs;
               break;
             }
           }
@@ -30833,7 +30579,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -30849,7 +30594,6 @@ public final class PayProto {
       return uuid_;
     }
 
-    // optional string real_name = 2;
     public static final int REAL_NAME_FIELD_NUMBER = 2;
     private java.lang.Object realName_;
     /**
@@ -30904,7 +30648,6 @@ public final class PayProto {
       }
     }
 
-    // optional string account = 3;
     public static final int ACCOUNT_FIELD_NUMBER = 3;
     private java.lang.Object account_;
     /**
@@ -30959,7 +30702,6 @@ public final class PayProto {
       }
     }
 
-    // optional string card_id = 4;
     public static final int CARD_ID_FIELD_NUMBER = 4;
     private java.lang.Object cardId_;
     /**
@@ -31014,7 +30756,6 @@ public final class PayProto {
       }
     }
 
-    // optional string oauth_code = 5;
     public static final int OAUTH_CODE_FIELD_NUMBER = 5;
     private java.lang.Object oauthCode_;
     /**
@@ -31057,7 +30798,6 @@ public final class PayProto {
       }
     }
 
-    // optional .WithdrawType type = 6;
     public static final int TYPE_FIELD_NUMBER = 6;
     private com.wali.live.proto.PayProto.WithdrawType type_;
     /**
@@ -31073,7 +30813,6 @@ public final class PayProto {
       return type_;
     }
 
-    // optional string paypal_account = 7;
     public static final int PAYPAL_ACCOUNT_FIELD_NUMBER = 7;
     private java.lang.Object paypalAccount_;
     /**
@@ -31128,7 +30867,6 @@ public final class PayProto {
       }
     }
 
-    // optional string paypal_firstname = 8;
     public static final int PAYPAL_FIRSTNAME_FIELD_NUMBER = 8;
     private java.lang.Object paypalFirstname_;
     /**
@@ -31183,7 +30921,6 @@ public final class PayProto {
       }
     }
 
-    // optional string paypal_lastname = 9;
     public static final int PAYPAL_LASTNAME_FIELD_NUMBER = 9;
     private java.lang.Object paypalLastname_;
     /**
@@ -31252,7 +30989,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -31425,8 +31163,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.BindRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:BindRequest)
+        com.wali.live.proto.PayProto.BindRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_BindRequest_descriptor;
@@ -31629,7 +31368,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -31662,7 +31400,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string real_name = 2;
       private java.lang.Object realName_ = "";
       /**
        * <code>optional string real_name = 2;</code>
@@ -31684,9 +31421,12 @@ public final class PayProto {
       public java.lang.String getRealName() {
         java.lang.Object ref = realName_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          realName_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            realName_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -31760,7 +31500,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string account = 3;
       private java.lang.Object account_ = "";
       /**
        * <code>optional string account = 3;</code>
@@ -31782,9 +31521,12 @@ public final class PayProto {
       public java.lang.String getAccount() {
         java.lang.Object ref = account_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          account_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            account_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -31858,7 +31600,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string card_id = 4;
       private java.lang.Object cardId_ = "";
       /**
        * <code>optional string card_id = 4;</code>
@@ -31880,9 +31621,12 @@ public final class PayProto {
       public java.lang.String getCardId() {
         java.lang.Object ref = cardId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          cardId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            cardId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -31956,7 +31700,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string oauth_code = 5;
       private java.lang.Object oauthCode_ = "";
       /**
        * <code>optional string oauth_code = 5;</code>
@@ -31970,9 +31713,12 @@ public final class PayProto {
       public java.lang.String getOauthCode() {
         java.lang.Object ref = oauthCode_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          oauthCode_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            oauthCode_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -32030,7 +31776,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .WithdrawType type = 6;
       private com.wali.live.proto.PayProto.WithdrawType type_ = com.wali.live.proto.PayProto.WithdrawType.ALIPAY_WITHDRAW;
       /**
        * <code>optional .WithdrawType type = 6;</code>
@@ -32066,7 +31811,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string paypal_account = 7;
       private java.lang.Object paypalAccount_ = "";
       /**
        * <code>optional string paypal_account = 7;</code>
@@ -32088,9 +31832,12 @@ public final class PayProto {
       public java.lang.String getPaypalAccount() {
         java.lang.Object ref = paypalAccount_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          paypalAccount_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            paypalAccount_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -32164,7 +31911,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string paypal_firstname = 8;
       private java.lang.Object paypalFirstname_ = "";
       /**
        * <code>optional string paypal_firstname = 8;</code>
@@ -32186,9 +31932,12 @@ public final class PayProto {
       public java.lang.String getPaypalFirstname() {
         java.lang.Object ref = paypalFirstname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          paypalFirstname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            paypalFirstname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -32262,7 +32011,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string paypal_lastname = 9;
       private java.lang.Object paypalLastname_ = "";
       /**
        * <code>optional string paypal_lastname = 9;</code>
@@ -32284,9 +32032,12 @@ public final class PayProto {
       public java.lang.String getPaypalLastname() {
         java.lang.Object ref = paypalLastname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          paypalLastname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            paypalLastname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -32371,10 +32122,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:BindRequest)
   }
 
-  public interface BindResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface BindResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:BindResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret_code = 1;
     /**
      * <code>required uint32 ret_code = 1;</code>
      */
@@ -32384,7 +32135,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // optional string openid = 2;
     /**
      * <code>optional string openid = 2;</code>
      */
@@ -32399,7 +32149,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getOpenidBytes();
 
-    // optional .AliPay alipay = 3;
     /**
      * <code>optional .AliPay alipay = 3;</code>
      */
@@ -32413,7 +32162,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.AliPayOrBuilder getAlipayOrBuilder();
 
-    // optional .WeixinPay wxpay = 4;
     /**
      * <code>optional .WeixinPay wxpay = 4;</code>
      */
@@ -32427,7 +32175,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.WeixinPayOrBuilder getWxpayOrBuilder();
 
-    // optional .PaypalPay paypal = 5;
     /**
      * <code>optional .PaypalPay paypal = 5;</code>
      */
@@ -32445,8 +32192,9 @@ public final class PayProto {
    * Protobuf type {@code BindResponse}
    */
   public static final class BindResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements BindResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:BindResponse)
+      BindResponseOrBuilder {
     // Use BindResponse.newBuilder() to construct.
     private BindResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -32498,8 +32246,9 @@ public final class PayProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              openid_ = input.readBytes();
+              openid_ = bs;
               break;
             }
             case 26: {
@@ -32581,7 +32330,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 ret_code = 1;
     public static final int RET_CODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -32597,7 +32345,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // optional string openid = 2;
     public static final int OPENID_FIELD_NUMBER = 2;
     private java.lang.Object openid_;
     /**
@@ -32640,7 +32387,6 @@ public final class PayProto {
       }
     }
 
-    // optional .AliPay alipay = 3;
     public static final int ALIPAY_FIELD_NUMBER = 3;
     private com.wali.live.proto.PayProto.AliPay alipay_;
     /**
@@ -32662,7 +32408,6 @@ public final class PayProto {
       return alipay_;
     }
 
-    // optional .WeixinPay wxpay = 4;
     public static final int WXPAY_FIELD_NUMBER = 4;
     private com.wali.live.proto.PayProto.WeixinPay wxpay_;
     /**
@@ -32684,7 +32429,6 @@ public final class PayProto {
       return wxpay_;
     }
 
-    // optional .PaypalPay paypal = 5;
     public static final int PAYPAL_FIELD_NUMBER = 5;
     private com.wali.live.proto.PayProto.PaypalPay paypal_;
     /**
@@ -32716,7 +32460,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -32855,8 +32600,9 @@ public final class PayProto {
      * Protobuf type {@code BindResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.BindResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:BindResponse)
+        com.wali.live.proto.PayProto.BindResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_BindResponse_descriptor;
@@ -33038,7 +32784,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 ret_code = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 ret_code = 1;</code>
@@ -33071,7 +32816,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string openid = 2;
       private java.lang.Object openid_ = "";
       /**
        * <code>optional string openid = 2;</code>
@@ -33085,9 +32829,12 @@ public final class PayProto {
       public java.lang.String getOpenid() {
         java.lang.Object ref = openid_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          openid_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            openid_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -33145,7 +32892,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .AliPay alipay = 3;
       private com.wali.live.proto.PayProto.AliPay alipay_ = com.wali.live.proto.PayProto.AliPay.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.PayProto.AliPay, com.wali.live.proto.PayProto.AliPay.Builder, com.wali.live.proto.PayProto.AliPayOrBuilder> alipayBuilder_;
@@ -33254,7 +33000,7 @@ public final class PayProto {
         if (alipayBuilder_ == null) {
           alipayBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.PayProto.AliPay, com.wali.live.proto.PayProto.AliPay.Builder, com.wali.live.proto.PayProto.AliPayOrBuilder>(
-                  alipay_,
+                  getAlipay(),
                   getParentForChildren(),
                   isClean());
           alipay_ = null;
@@ -33262,7 +33008,6 @@ public final class PayProto {
         return alipayBuilder_;
       }
 
-      // optional .WeixinPay wxpay = 4;
       private com.wali.live.proto.PayProto.WeixinPay wxpay_ = com.wali.live.proto.PayProto.WeixinPay.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.PayProto.WeixinPay, com.wali.live.proto.PayProto.WeixinPay.Builder, com.wali.live.proto.PayProto.WeixinPayOrBuilder> wxpayBuilder_;
@@ -33371,7 +33116,7 @@ public final class PayProto {
         if (wxpayBuilder_ == null) {
           wxpayBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.PayProto.WeixinPay, com.wali.live.proto.PayProto.WeixinPay.Builder, com.wali.live.proto.PayProto.WeixinPayOrBuilder>(
-                  wxpay_,
+                  getWxpay(),
                   getParentForChildren(),
                   isClean());
           wxpay_ = null;
@@ -33379,7 +33124,6 @@ public final class PayProto {
         return wxpayBuilder_;
       }
 
-      // optional .PaypalPay paypal = 5;
       private com.wali.live.proto.PayProto.PaypalPay paypal_ = com.wali.live.proto.PayProto.PaypalPay.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.PayProto.PaypalPay, com.wali.live.proto.PayProto.PaypalPay.Builder, com.wali.live.proto.PayProto.PaypalPayOrBuilder> paypalBuilder_;
@@ -33488,7 +33232,7 @@ public final class PayProto {
         if (paypalBuilder_ == null) {
           paypalBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.PayProto.PaypalPay, com.wali.live.proto.PayProto.PaypalPay.Builder, com.wali.live.proto.PayProto.PaypalPayOrBuilder>(
-                  paypal_,
+                  getPaypal(),
                   getParentForChildren(),
                   isClean());
           paypal_ = null;
@@ -33507,10 +33251,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:BindResponse)
   }
 
-  public interface AuthAndWithdrawRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface AuthAndWithdrawRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:AuthAndWithdrawRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      */
@@ -33520,7 +33264,6 @@ public final class PayProto {
      */
     long getUuid();
 
-    // optional string real_name = 2;
     /**
      * <code>optional string real_name = 2;</code>
      *
@@ -33547,7 +33290,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getRealNameBytes();
 
-    // optional string account = 3;
     /**
      * <code>optional string account = 3;</code>
      *
@@ -33574,7 +33316,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getAccountBytes();
 
-    // optional string card_id = 4;
     /**
      * <code>optional string card_id = 4;</code>
      *
@@ -33601,7 +33342,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getCardIdBytes();
 
-    // optional string oauth_code = 5;
     /**
      * <code>optional string oauth_code = 5;</code>
      */
@@ -33616,7 +33356,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getOauthCodeBytes();
 
-    // optional .WithdrawType type = 6;
     /**
      * <code>optional .WithdrawType type = 6;</code>
      */
@@ -33626,7 +33365,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.WithdrawType getType();
 
-    // optional .Platform platform = 7;
     /**
      * <code>optional .Platform platform = 7;</code>
      */
@@ -33645,8 +33383,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class AuthAndWithdrawRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements AuthAndWithdrawRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:AuthAndWithdrawRequest)
+      AuthAndWithdrawRequestOrBuilder {
     // Use AuthAndWithdrawRequest.newBuilder() to construct.
     private AuthAndWithdrawRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -33698,23 +33437,27 @@ public final class PayProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              realName_ = input.readBytes();
+              realName_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              account_ = input.readBytes();
+              account_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              cardId_ = input.readBytes();
+              cardId_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              oauthCode_ = input.readBytes();
+              oauthCode_ = bs;
               break;
             }
             case 48: {
@@ -33779,7 +33522,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -33795,7 +33537,6 @@ public final class PayProto {
       return uuid_;
     }
 
-    // optional string real_name = 2;
     public static final int REAL_NAME_FIELD_NUMBER = 2;
     private java.lang.Object realName_;
     /**
@@ -33850,7 +33591,6 @@ public final class PayProto {
       }
     }
 
-    // optional string account = 3;
     public static final int ACCOUNT_FIELD_NUMBER = 3;
     private java.lang.Object account_;
     /**
@@ -33905,7 +33645,6 @@ public final class PayProto {
       }
     }
 
-    // optional string card_id = 4;
     public static final int CARD_ID_FIELD_NUMBER = 4;
     private java.lang.Object cardId_;
     /**
@@ -33960,7 +33699,6 @@ public final class PayProto {
       }
     }
 
-    // optional string oauth_code = 5;
     public static final int OAUTH_CODE_FIELD_NUMBER = 5;
     private java.lang.Object oauthCode_;
     /**
@@ -34003,7 +33741,6 @@ public final class PayProto {
       }
     }
 
-    // optional .WithdrawType type = 6;
     public static final int TYPE_FIELD_NUMBER = 6;
     private com.wali.live.proto.PayProto.WithdrawType type_;
     /**
@@ -34019,7 +33756,6 @@ public final class PayProto {
       return type_;
     }
 
-    // optional .Platform platform = 7;
     public static final int PLATFORM_FIELD_NUMBER = 7;
     private com.wali.live.proto.PayProto.Platform platform_;
     /**
@@ -34047,7 +33783,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -34205,8 +33942,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.AuthAndWithdrawRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:AuthAndWithdrawRequest)
+        com.wali.live.proto.PayProto.AuthAndWithdrawRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_AuthAndWithdrawRequest_descriptor;
@@ -34385,7 +34123,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -34418,7 +34155,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string real_name = 2;
       private java.lang.Object realName_ = "";
       /**
        * <code>optional string real_name = 2;</code>
@@ -34440,9 +34176,12 @@ public final class PayProto {
       public java.lang.String getRealName() {
         java.lang.Object ref = realName_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          realName_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            realName_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -34516,7 +34255,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string account = 3;
       private java.lang.Object account_ = "";
       /**
        * <code>optional string account = 3;</code>
@@ -34538,9 +34276,12 @@ public final class PayProto {
       public java.lang.String getAccount() {
         java.lang.Object ref = account_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          account_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            account_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -34614,7 +34355,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string card_id = 4;
       private java.lang.Object cardId_ = "";
       /**
        * <code>optional string card_id = 4;</code>
@@ -34636,9 +34376,12 @@ public final class PayProto {
       public java.lang.String getCardId() {
         java.lang.Object ref = cardId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          cardId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            cardId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -34712,7 +34455,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string oauth_code = 5;
       private java.lang.Object oauthCode_ = "";
       /**
        * <code>optional string oauth_code = 5;</code>
@@ -34726,9 +34468,12 @@ public final class PayProto {
       public java.lang.String getOauthCode() {
         java.lang.Object ref = oauthCode_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          oauthCode_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            oauthCode_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -34786,7 +34531,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .WithdrawType type = 6;
       private com.wali.live.proto.PayProto.WithdrawType type_ = com.wali.live.proto.PayProto.WithdrawType.ALIPAY_WITHDRAW;
       /**
        * <code>optional .WithdrawType type = 6;</code>
@@ -34822,7 +34566,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .Platform platform = 7;
       private com.wali.live.proto.PayProto.Platform platform_ = com.wali.live.proto.PayProto.Platform.IOS;
       /**
        * <code>optional .Platform platform = 7;</code>
@@ -34869,10 +34612,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:AuthAndWithdrawRequest)
   }
 
-  public interface AuthAndWithdrawResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface AuthAndWithdrawResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:AuthAndWithdrawResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret_code = 1;
     /**
      * <code>required uint32 ret_code = 1;</code>
      */
@@ -34882,7 +34625,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // optional string openid = 2;
     /**
      * <code>optional string openid = 2;</code>
      */
@@ -34897,7 +34639,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getOpenidBytes();
 
-    // optional .AliPay alipay = 3;
     /**
      * <code>optional .AliPay alipay = 3;</code>
      */
@@ -34911,7 +34652,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.AliPayOrBuilder getAlipayOrBuilder();
 
-    // optional .WeixinPay wxpay = 4;
     /**
      * <code>optional .WeixinPay wxpay = 4;</code>
      */
@@ -34929,8 +34669,9 @@ public final class PayProto {
    * Protobuf type {@code AuthAndWithdrawResponse}
    */
   public static final class AuthAndWithdrawResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements AuthAndWithdrawResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:AuthAndWithdrawResponse)
+      AuthAndWithdrawResponseOrBuilder {
     // Use AuthAndWithdrawResponse.newBuilder() to construct.
     private AuthAndWithdrawResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -34982,8 +34723,9 @@ public final class PayProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              openid_ = input.readBytes();
+              openid_ = bs;
               break;
             }
             case 26: {
@@ -35052,7 +34794,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 ret_code = 1;
     public static final int RET_CODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -35068,7 +34809,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // optional string openid = 2;
     public static final int OPENID_FIELD_NUMBER = 2;
     private java.lang.Object openid_;
     /**
@@ -35111,7 +34851,6 @@ public final class PayProto {
       }
     }
 
-    // optional .AliPay alipay = 3;
     public static final int ALIPAY_FIELD_NUMBER = 3;
     private com.wali.live.proto.PayProto.AliPay alipay_;
     /**
@@ -35133,7 +34872,6 @@ public final class PayProto {
       return alipay_;
     }
 
-    // optional .WeixinPay wxpay = 4;
     public static final int WXPAY_FIELD_NUMBER = 4;
     private com.wali.live.proto.PayProto.WeixinPay wxpay_;
     /**
@@ -35164,7 +34902,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -35296,8 +35035,9 @@ public final class PayProto {
      * Protobuf type {@code AuthAndWithdrawResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.AuthAndWithdrawResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:AuthAndWithdrawResponse)
+        com.wali.live.proto.PayProto.AuthAndWithdrawResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_AuthAndWithdrawResponse_descriptor;
@@ -35461,7 +35201,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 ret_code = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 ret_code = 1;</code>
@@ -35494,7 +35233,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string openid = 2;
       private java.lang.Object openid_ = "";
       /**
        * <code>optional string openid = 2;</code>
@@ -35508,9 +35246,12 @@ public final class PayProto {
       public java.lang.String getOpenid() {
         java.lang.Object ref = openid_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          openid_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            openid_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -35568,7 +35309,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .AliPay alipay = 3;
       private com.wali.live.proto.PayProto.AliPay alipay_ = com.wali.live.proto.PayProto.AliPay.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.PayProto.AliPay, com.wali.live.proto.PayProto.AliPay.Builder, com.wali.live.proto.PayProto.AliPayOrBuilder> alipayBuilder_;
@@ -35677,7 +35417,7 @@ public final class PayProto {
         if (alipayBuilder_ == null) {
           alipayBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.PayProto.AliPay, com.wali.live.proto.PayProto.AliPay.Builder, com.wali.live.proto.PayProto.AliPayOrBuilder>(
-                  alipay_,
+                  getAlipay(),
                   getParentForChildren(),
                   isClean());
           alipay_ = null;
@@ -35685,7 +35425,6 @@ public final class PayProto {
         return alipayBuilder_;
       }
 
-      // optional .WeixinPay wxpay = 4;
       private com.wali.live.proto.PayProto.WeixinPay wxpay_ = com.wali.live.proto.PayProto.WeixinPay.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.PayProto.WeixinPay, com.wali.live.proto.PayProto.WeixinPay.Builder, com.wali.live.proto.PayProto.WeixinPayOrBuilder> wxpayBuilder_;
@@ -35794,7 +35533,7 @@ public final class PayProto {
         if (wxpayBuilder_ == null) {
           wxpayBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.PayProto.WeixinPay, com.wali.live.proto.PayProto.WeixinPay.Builder, com.wali.live.proto.PayProto.WeixinPayOrBuilder>(
-                  wxpay_,
+                  getWxpay(),
                   getParentForChildren(),
                   isClean());
           wxpay_ = null;
@@ -35813,8 +35552,9 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:AuthAndWithdrawResponse)
   }
 
-  public interface GetRankListRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetRankListRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetRankListRequest)
+      com.google.protobuf.MessageOrBuilder {
   }
   /**
    * Protobuf type {@code GetRankListRequest}
@@ -35825,8 +35565,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class GetRankListRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements GetRankListRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetRankListRequest)
+      GetRankListRequestOrBuilder {
     // Use GetRankListRequest.newBuilder() to construct.
     private GetRankListRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -35915,7 +35656,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -36020,8 +35762,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.GetRankListRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetRankListRequest)
+        com.wali.live.proto.PayProto.GetRankListRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_GetRankListRequest_descriptor;
@@ -36132,15 +35875,17 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:GetRankListRequest)
   }
 
-  public interface GetRankListResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetRankListResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetRankListResponse)
+      com.google.protobuf.MessageOrBuilder {
   }
   /**
    * Protobuf type {@code GetRankListResponse}
    */
   public static final class GetRankListResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements GetRankListResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetRankListResponse)
+      GetRankListResponseOrBuilder {
     // Use GetRankListResponse.newBuilder() to construct.
     private GetRankListResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -36229,7 +35974,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -36329,8 +36075,9 @@ public final class PayProto {
      * Protobuf type {@code GetRankListResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.GetRankListResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetRankListResponse)
+        com.wali.live.proto.PayProto.GetRankListResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_GetRankListResponse_descriptor;
@@ -36441,10 +36188,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:GetRankListResponse)
   }
 
-  public interface RedPointConfigOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface RedPointConfigOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:RedPointConfig)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 startTime = 1;
     /**
      * <code>required uint64 startTime = 1;</code>
      *
@@ -36462,7 +36209,6 @@ public final class PayProto {
      */
     long getStartTime();
 
-    // required uint64 endTime = 2;
     /**
      * <code>required uint64 endTime = 2;</code>
      *
@@ -36480,7 +36226,6 @@ public final class PayProto {
      */
     long getEndTime();
 
-    // optional string uniq = 3;
     /**
      * <code>optional string uniq = 3;</code>
      *
@@ -36511,8 +36256,9 @@ public final class PayProto {
    * Protobuf type {@code RedPointConfig}
    */
   public static final class RedPointConfig extends
-      com.google.protobuf.GeneratedMessage
-      implements RedPointConfigOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:RedPointConfig)
+      RedPointConfigOrBuilder {
     // Use RedPointConfig.newBuilder() to construct.
     private RedPointConfig(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -36569,8 +36315,9 @@ public final class PayProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              uniq_ = input.readBytes();
+              uniq_ = bs;
               break;
             }
           }
@@ -36613,7 +36360,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint64 startTime = 1;
     public static final int STARTTIME_FIELD_NUMBER = 1;
     private long startTime_;
     /**
@@ -36637,7 +36383,6 @@ public final class PayProto {
       return startTime_;
     }
 
-    // required uint64 endTime = 2;
     public static final int ENDTIME_FIELD_NUMBER = 2;
     private long endTime_;
     /**
@@ -36661,7 +36406,6 @@ public final class PayProto {
       return endTime_;
     }
 
-    // optional string uniq = 3;
     public static final int UNIQ_FIELD_NUMBER = 3;
     private java.lang.Object uniq_;
     /**
@@ -36724,7 +36468,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasStartTime()) {
         memoizedIsInitialized = 0;
@@ -36853,8 +36598,9 @@ public final class PayProto {
      * Protobuf type {@code RedPointConfig}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.RedPointConfigOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:RedPointConfig)
+        com.wali.live.proto.PayProto.RedPointConfigOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_RedPointConfig_descriptor;
@@ -36995,7 +36741,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint64 startTime = 1;
       private long startTime_ ;
       /**
        * <code>required uint64 startTime = 1;</code>
@@ -37044,7 +36789,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint64 endTime = 2;
       private long endTime_ ;
       /**
        * <code>required uint64 endTime = 2;</code>
@@ -37093,7 +36837,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string uniq = 3;
       private java.lang.Object uniq_ = "";
       /**
        * <code>optional string uniq = 3;</code>
@@ -37115,9 +36858,12 @@ public final class PayProto {
       public java.lang.String getUniq() {
         java.lang.Object ref = uniq_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          uniq_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            uniq_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -37202,10 +36948,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:RedPointConfig)
   }
 
-  public interface GetRedPointConfigRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetRedPointConfigRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetRedPointConfigRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string type = 1;
     /**
      * <code>required string type = 1;</code>
      *
@@ -37232,7 +36978,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getTypeBytes();
 
-    // optional string uniq = 2;
     /**
      * <code>optional string uniq = 2;</code>
      */
@@ -37251,8 +36996,9 @@ public final class PayProto {
    * Protobuf type {@code GetRedPointConfigRequest}
    */
   public static final class GetRedPointConfigRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements GetRedPointConfigRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetRedPointConfigRequest)
+      GetRedPointConfigRequestOrBuilder {
     // Use GetRedPointConfigRequest.newBuilder() to construct.
     private GetRedPointConfigRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -37299,13 +37045,15 @@ public final class PayProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              type_ = input.readBytes();
+              type_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              uniq_ = input.readBytes();
+              uniq_ = bs;
               break;
             }
           }
@@ -37348,7 +37096,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required string type = 1;
     public static final int TYPE_FIELD_NUMBER = 1;
     private java.lang.Object type_;
     /**
@@ -37403,7 +37150,6 @@ public final class PayProto {
       }
     }
 
-    // optional string uniq = 2;
     public static final int UNIQ_FIELD_NUMBER = 2;
     private java.lang.Object uniq_;
     /**
@@ -37453,7 +37199,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasType()) {
         memoizedIsInitialized = 0;
@@ -37571,8 +37318,9 @@ public final class PayProto {
      * Protobuf type {@code GetRedPointConfigRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.GetRedPointConfigRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetRedPointConfigRequest)
+        com.wali.live.proto.PayProto.GetRedPointConfigRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_GetRedPointConfigRequest_descriptor;
@@ -37702,7 +37450,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required string type = 1;
       private java.lang.Object type_ = "";
       /**
        * <code>required string type = 1;</code>
@@ -37724,9 +37471,12 @@ public final class PayProto {
       public java.lang.String getType() {
         java.lang.Object ref = type_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          type_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            type_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -37800,7 +37550,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string uniq = 2;
       private java.lang.Object uniq_ = "";
       /**
        * <code>optional string uniq = 2;</code>
@@ -37814,9 +37563,12 @@ public final class PayProto {
       public java.lang.String getUniq() {
         java.lang.Object ref = uniq_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          uniq_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            uniq_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -37885,10 +37637,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:GetRedPointConfigRequest)
   }
 
-  public interface GetRedPointConfigResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetRedPointConfigResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetRedPointConfigResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret_code = 1;
     /**
      * <code>required uint32 ret_code = 1;</code>
      *
@@ -37906,7 +37658,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // optional .RedPointConfig config = 2;
     /**
      * <code>optional .RedPointConfig config = 2;</code>
      */
@@ -37924,8 +37675,9 @@ public final class PayProto {
    * Protobuf type {@code GetRedPointConfigResponse}
    */
   public static final class GetRedPointConfigResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements GetRedPointConfigResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetRedPointConfigResponse)
+      GetRedPointConfigResponseOrBuilder {
     // Use GetRedPointConfigResponse.newBuilder() to construct.
     private GetRedPointConfigResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -38029,7 +37781,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 ret_code = 1;
     public static final int RET_CODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -38053,7 +37804,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // optional .RedPointConfig config = 2;
     public static final int CONFIG_FIELD_NUMBER = 2;
     private com.wali.live.proto.PayProto.RedPointConfig config_;
     /**
@@ -38082,7 +37832,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -38206,8 +37957,9 @@ public final class PayProto {
      * Protobuf type {@code GetRedPointConfigResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.GetRedPointConfigResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetRedPointConfigResponse)
+        com.wali.live.proto.PayProto.GetRedPointConfigResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_GetRedPointConfigResponse_descriptor;
@@ -38348,7 +38100,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 ret_code = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 ret_code = 1;</code>
@@ -38397,7 +38148,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .RedPointConfig config = 2;
       private com.wali.live.proto.PayProto.RedPointConfig config_ = com.wali.live.proto.PayProto.RedPointConfig.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.PayProto.RedPointConfig, com.wali.live.proto.PayProto.RedPointConfig.Builder, com.wali.live.proto.PayProto.RedPointConfigOrBuilder> configBuilder_;
@@ -38506,7 +38256,7 @@ public final class PayProto {
         if (configBuilder_ == null) {
           configBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.PayProto.RedPointConfig, com.wali.live.proto.PayProto.RedPointConfig.Builder, com.wali.live.proto.PayProto.RedPointConfigOrBuilder>(
-                  config_,
+                  getConfig(),
                   getParentForChildren(),
                   isClean());
           config_ = null;
@@ -38525,10 +38275,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:GetRedPointConfigResponse)
   }
 
-  public interface GiftCardOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GiftCardOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GiftCard)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint32 gift_id = 1;
     /**
      * <code>optional uint32 gift_id = 1;</code>
      *
@@ -38546,7 +38296,6 @@ public final class PayProto {
      */
     int getGiftId();
 
-    // optional uint32 gift_card_cnt = 2;
     /**
      * <code>optional uint32 gift_card_cnt = 2;</code>
      *
@@ -38564,7 +38313,6 @@ public final class PayProto {
      */
     int getGiftCardCnt();
 
-    // optional uint64 begin_time = 3;
     /**
      * <code>optional uint64 begin_time = 3;</code>
      *
@@ -38582,7 +38330,6 @@ public final class PayProto {
      */
     long getBeginTime();
 
-    // optional uint64 end_time = 4;
     /**
      * <code>optional uint64 end_time = 4;</code>
      *
@@ -38600,7 +38347,6 @@ public final class PayProto {
      */
     long getEndTime();
 
-    // optional uint32 active_id = 5;
     /**
      * <code>optional uint32 active_id = 5;</code>
      *
@@ -38622,8 +38368,9 @@ public final class PayProto {
    * Protobuf type {@code GiftCard}
    */
   public static final class GiftCard extends
-      com.google.protobuf.GeneratedMessage
-      implements GiftCardOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GiftCard)
+      GiftCardOrBuilder {
     // Use GiftCard.newBuilder() to construct.
     private GiftCard(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -38734,7 +38481,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // optional uint32 gift_id = 1;
     public static final int GIFT_ID_FIELD_NUMBER = 1;
     private int giftId_;
     /**
@@ -38758,7 +38504,6 @@ public final class PayProto {
       return giftId_;
     }
 
-    // optional uint32 gift_card_cnt = 2;
     public static final int GIFT_CARD_CNT_FIELD_NUMBER = 2;
     private int giftCardCnt_;
     /**
@@ -38782,7 +38527,6 @@ public final class PayProto {
       return giftCardCnt_;
     }
 
-    // optional uint64 begin_time = 3;
     public static final int BEGIN_TIME_FIELD_NUMBER = 3;
     private long beginTime_;
     /**
@@ -38806,7 +38550,6 @@ public final class PayProto {
       return beginTime_;
     }
 
-    // optional uint64 end_time = 4;
     public static final int END_TIME_FIELD_NUMBER = 4;
     private long endTime_;
     /**
@@ -38830,7 +38573,6 @@ public final class PayProto {
       return endTime_;
     }
 
-    // optional uint32 active_id = 5;
     public static final int ACTIVE_ID_FIELD_NUMBER = 5;
     private int activeId_;
     /**
@@ -38864,7 +38606,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -38999,8 +38742,9 @@ public final class PayProto {
      * Protobuf type {@code GiftCard}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.GiftCardOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GiftCard)
+        com.wali.live.proto.PayProto.GiftCardOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_GiftCard_descriptor;
@@ -39149,7 +38893,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // optional uint32 gift_id = 1;
       private int giftId_ ;
       /**
        * <code>optional uint32 gift_id = 1;</code>
@@ -39198,7 +38941,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 gift_card_cnt = 2;
       private int giftCardCnt_ ;
       /**
        * <code>optional uint32 gift_card_cnt = 2;</code>
@@ -39247,7 +38989,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint64 begin_time = 3;
       private long beginTime_ ;
       /**
        * <code>optional uint64 begin_time = 3;</code>
@@ -39296,7 +39037,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint64 end_time = 4;
       private long endTime_ ;
       /**
        * <code>optional uint64 end_time = 4;</code>
@@ -39345,7 +39085,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 active_id = 5;
       private int activeId_ ;
       /**
        * <code>optional uint32 active_id = 5;</code>
@@ -39405,10 +39144,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:GiftCard)
   }
 
-  public interface PayPushOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface PayPushOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:PayPush)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret_code = 1;
     /**
      * <code>required uint32 ret_code = 1;</code>
      */
@@ -39418,7 +39157,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // required string order_id = 2;
     /**
      * <code>required string order_id = 2;</code>
      */
@@ -39433,7 +39171,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getOrderIdBytes();
 
-    // optional uint32 usable_gem_cnt = 3;
     /**
      * <code>optional uint32 usable_gem_cnt = 3;</code>
      */
@@ -39452,8 +39189,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class PayPush extends
-      com.google.protobuf.GeneratedMessage
-      implements PayPushOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:PayPush)
+      PayPushOrBuilder {
     // Use PayPush.newBuilder() to construct.
     private PayPush(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -39505,8 +39243,9 @@ public final class PayProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              orderId_ = input.readBytes();
+              orderId_ = bs;
               break;
             }
             case 24: {
@@ -39554,7 +39293,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 ret_code = 1;
     public static final int RET_CODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -39570,7 +39308,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // required string order_id = 2;
     public static final int ORDER_ID_FIELD_NUMBER = 2;
     private java.lang.Object orderId_;
     /**
@@ -39613,7 +39350,6 @@ public final class PayProto {
       }
     }
 
-    // optional uint32 usable_gem_cnt = 3;
     public static final int USABLE_GEM_CNT_FIELD_NUMBER = 3;
     private int usableGemCnt_;
     /**
@@ -39637,7 +39373,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -39771,8 +39508,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.PayPushOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:PayPush)
+        com.wali.live.proto.PayProto.PayPushOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_PayPush_descriptor;
@@ -39913,7 +39651,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 ret_code = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 ret_code = 1;</code>
@@ -39946,7 +39683,6 @@ public final class PayProto {
         return this;
       }
 
-      // required string order_id = 2;
       private java.lang.Object orderId_ = "";
       /**
        * <code>required string order_id = 2;</code>
@@ -39960,9 +39696,12 @@ public final class PayProto {
       public java.lang.String getOrderId() {
         java.lang.Object ref = orderId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          orderId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            orderId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -40020,7 +39759,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 usable_gem_cnt = 3;
       private int usableGemCnt_ ;
       /**
        * <code>optional uint32 usable_gem_cnt = 3;</code>
@@ -40064,10 +39802,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:PayPush)
   }
 
-  public interface GiftCardPushOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GiftCardPushOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GiftCardPush)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret_code = 1;
     /**
      * <code>required uint32 ret_code = 1;</code>
      */
@@ -40077,7 +39815,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // repeated .GiftCard gift_cards = 2;
     /**
      * <code>repeated .GiftCard gift_cards = 2;</code>
      */
@@ -40102,7 +39839,6 @@ public final class PayProto {
     com.wali.live.proto.PayProto.GiftCardOrBuilder getGiftCardsOrBuilder(
         int index);
 
-    // optional uint32 ios_usable_gem_cnt = 3;
     /**
      * <code>optional uint32 ios_usable_gem_cnt = 3;</code>
      */
@@ -40112,7 +39848,6 @@ public final class PayProto {
      */
     int getIosUsableGemCnt();
 
-    // optional uint32 and_usable_gem_cnt = 4;
     /**
      * <code>optional uint32 and_usable_gem_cnt = 4;</code>
      */
@@ -40122,7 +39857,6 @@ public final class PayProto {
      */
     int getAndUsableGemCnt();
 
-    // optional uint64 user_asset_timestamp = 5;
     /**
      * <code>optional uint64 user_asset_timestamp = 5;</code>
      */
@@ -40132,7 +39866,6 @@ public final class PayProto {
      */
     long getUserAssetTimestamp();
 
-    // optional uint32 usable_virtual_gem_cnt = 6;
     /**
      * <code>optional uint32 usable_virtual_gem_cnt = 6;</code>
      *
@@ -40159,8 +39892,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class GiftCardPush extends
-      com.google.protobuf.GeneratedMessage
-      implements GiftCardPushOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GiftCardPush)
+      GiftCardPushOrBuilder {
     // Use GiftCardPush.newBuilder() to construct.
     private GiftCardPush(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -40282,7 +40016,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 ret_code = 1;
     public static final int RET_CODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -40298,7 +40031,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // repeated .GiftCard gift_cards = 2;
     public static final int GIFT_CARDS_FIELD_NUMBER = 2;
     private java.util.List<com.wali.live.proto.PayProto.GiftCard> giftCards_;
     /**
@@ -40334,7 +40066,6 @@ public final class PayProto {
       return giftCards_.get(index);
     }
 
-    // optional uint32 ios_usable_gem_cnt = 3;
     public static final int IOS_USABLE_GEM_CNT_FIELD_NUMBER = 3;
     private int iosUsableGemCnt_;
     /**
@@ -40350,7 +40081,6 @@ public final class PayProto {
       return iosUsableGemCnt_;
     }
 
-    // optional uint32 and_usable_gem_cnt = 4;
     public static final int AND_USABLE_GEM_CNT_FIELD_NUMBER = 4;
     private int andUsableGemCnt_;
     /**
@@ -40366,7 +40096,6 @@ public final class PayProto {
       return andUsableGemCnt_;
     }
 
-    // optional uint64 user_asset_timestamp = 5;
     public static final int USER_ASSET_TIMESTAMP_FIELD_NUMBER = 5;
     private long userAssetTimestamp_;
     /**
@@ -40382,7 +40111,6 @@ public final class PayProto {
       return userAssetTimestamp_;
     }
 
-    // optional uint32 usable_virtual_gem_cnt = 6;
     public static final int USABLE_VIRTUAL_GEM_CNT_FIELD_NUMBER = 6;
     private int usableVirtualGemCnt_;
     /**
@@ -40417,7 +40145,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -40568,8 +40297,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.GiftCardPushOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GiftCardPush)
+        com.wali.live.proto.PayProto.GiftCardPushOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_GiftCardPush_descriptor;
@@ -40764,7 +40494,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 ret_code = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 ret_code = 1;</code>
@@ -40797,7 +40526,6 @@ public final class PayProto {
         return this;
       }
 
-      // repeated .GiftCard gift_cards = 2;
       private java.util.List<com.wali.live.proto.PayProto.GiftCard> giftCards_ =
         java.util.Collections.emptyList();
       private void ensureGiftCardsIsMutable() {
@@ -40939,7 +40667,8 @@ public final class PayProto {
           java.lang.Iterable<? extends com.wali.live.proto.PayProto.GiftCard> values) {
         if (giftCardsBuilder_ == null) {
           ensureGiftCardsIsMutable();
-          super.addAll(values, giftCards_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, giftCards_);
           onChanged();
         } else {
           giftCardsBuilder_.addAllMessages(values);
@@ -41037,7 +40766,6 @@ public final class PayProto {
         return giftCardsBuilder_;
       }
 
-      // optional uint32 ios_usable_gem_cnt = 3;
       private int iosUsableGemCnt_ ;
       /**
        * <code>optional uint32 ios_usable_gem_cnt = 3;</code>
@@ -41070,7 +40798,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 and_usable_gem_cnt = 4;
       private int andUsableGemCnt_ ;
       /**
        * <code>optional uint32 and_usable_gem_cnt = 4;</code>
@@ -41103,7 +40830,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint64 user_asset_timestamp = 5;
       private long userAssetTimestamp_ ;
       /**
        * <code>optional uint64 user_asset_timestamp = 5;</code>
@@ -41136,7 +40862,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 usable_virtual_gem_cnt = 6;
       private int usableVirtualGemCnt_ ;
       /**
        * <code>optional uint32 usable_virtual_gem_cnt = 6;</code>
@@ -41196,10 +40921,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:GiftCardPush)
   }
 
-  public interface QueryBalanceDetailRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface QueryBalanceDetailRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:QueryBalanceDetailRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint64 uuid = 1;
     /**
      * <code>optional uint64 uuid = 1;</code>
      */
@@ -41209,7 +40934,6 @@ public final class PayProto {
      */
     long getUuid();
 
-    // optional .Platform platform = 2;
     /**
      * <code>optional .Platform platform = 2;</code>
      */
@@ -41227,8 +40951,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class QueryBalanceDetailRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements QueryBalanceDetailRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:QueryBalanceDetailRequest)
+      QueryBalanceDetailRequestOrBuilder {
     // Use QueryBalanceDetailRequest.newBuilder() to construct.
     private QueryBalanceDetailRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -41330,7 +41055,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // optional uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -41346,7 +41070,6 @@ public final class PayProto {
       return uuid_;
     }
 
-    // optional .Platform platform = 2;
     public static final int PLATFORM_FIELD_NUMBER = 2;
     private com.wali.live.proto.PayProto.Platform platform_;
     /**
@@ -41369,7 +41092,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -41487,8 +41211,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.QueryBalanceDetailRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:QueryBalanceDetailRequest)
+        com.wali.live.proto.PayProto.QueryBalanceDetailRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_QueryBalanceDetailRequest_descriptor;
@@ -41610,7 +41335,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // optional uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 1;</code>
@@ -41643,7 +41367,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .Platform platform = 2;
       private com.wali.live.proto.PayProto.Platform platform_ = com.wali.live.proto.PayProto.Platform.IOS;
       /**
        * <code>optional .Platform platform = 2;</code>
@@ -41690,10 +41413,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:QueryBalanceDetailRequest)
   }
 
-  public interface QueryBalanceDetailResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface QueryBalanceDetailResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:QueryBalanceDetailResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint32 ret_code = 1;
     /**
      * <code>optional uint32 ret_code = 1;</code>
      */
@@ -41703,7 +41426,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // optional uint32 real_gem_cnt = 2;
     /**
      * <code>optional uint32 real_gem_cnt = 2;</code>
      *
@@ -41721,7 +41443,6 @@ public final class PayProto {
      */
     int getRealGemCnt();
 
-    // repeated .VirtualGem virtual_gem_list = 3;
     /**
      * <code>repeated .VirtualGem virtual_gem_list = 3;</code>
      *
@@ -41766,7 +41487,6 @@ public final class PayProto {
     com.wali.live.proto.PayProto.VirtualGemOrBuilder getVirtualGemListOrBuilder(
         int index);
 
-    // repeated .GiftCard gift_card_list = 4;
     /**
      * <code>repeated .GiftCard gift_card_list = 4;</code>
      *
@@ -41811,7 +41531,6 @@ public final class PayProto {
     com.wali.live.proto.PayProto.GiftCardOrBuilder getGiftCardListOrBuilder(
         int index);
 
-    // optional uint32 usable_virtual_gem_cnt = 5;
     /**
      * <code>optional uint32 usable_virtual_gem_cnt = 5;</code>
      *
@@ -41829,7 +41548,6 @@ public final class PayProto {
      */
     int getUsableVirtualGemCnt();
 
-    // optional .ExpireOrderHistoryRecord history = 6;
     /**
      * <code>optional .ExpireOrderHistoryRecord history = 6;</code>
      *
@@ -41859,8 +41577,9 @@ public final class PayProto {
    * Protobuf type {@code QueryBalanceDetailResponse}
    */
   public static final class QueryBalanceDetailResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements QueryBalanceDetailResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:QueryBalanceDetailResponse)
+      QueryBalanceDetailResponseOrBuilder {
     // Use QueryBalanceDetailResponse.newBuilder() to construct.
     private QueryBalanceDetailResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -41996,7 +41715,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // optional uint32 ret_code = 1;
     public static final int RET_CODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -42012,7 +41730,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // optional uint32 real_gem_cnt = 2;
     public static final int REAL_GEM_CNT_FIELD_NUMBER = 2;
     private int realGemCnt_;
     /**
@@ -42036,7 +41753,6 @@ public final class PayProto {
       return realGemCnt_;
     }
 
-    // repeated .VirtualGem virtual_gem_list = 3;
     public static final int VIRTUAL_GEM_LIST_FIELD_NUMBER = 3;
     private java.util.List<com.wali.live.proto.PayProto.VirtualGem> virtualGemList_;
     /**
@@ -42092,7 +41808,6 @@ public final class PayProto {
       return virtualGemList_.get(index);
     }
 
-    // repeated .GiftCard gift_card_list = 4;
     public static final int GIFT_CARD_LIST_FIELD_NUMBER = 4;
     private java.util.List<com.wali.live.proto.PayProto.GiftCard> giftCardList_;
     /**
@@ -42148,7 +41863,6 @@ public final class PayProto {
       return giftCardList_.get(index);
     }
 
-    // optional uint32 usable_virtual_gem_cnt = 5;
     public static final int USABLE_VIRTUAL_GEM_CNT_FIELD_NUMBER = 5;
     private int usableVirtualGemCnt_;
     /**
@@ -42172,7 +41886,6 @@ public final class PayProto {
       return usableVirtualGemCnt_;
     }
 
-    // optional .ExpireOrderHistoryRecord history = 6;
     public static final int HISTORY_FIELD_NUMBER = 6;
     private com.wali.live.proto.PayProto.ExpireOrderHistoryRecord history_;
     /**
@@ -42217,7 +41930,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -42359,8 +42073,9 @@ public final class PayProto {
      * Protobuf type {@code QueryBalanceDetailResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.QueryBalanceDetailResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:QueryBalanceDetailResponse)
+        com.wali.live.proto.PayProto.QueryBalanceDetailResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_QueryBalanceDetailResponse_descriptor;
@@ -42593,7 +42308,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // optional uint32 ret_code = 1;
       private int retCode_ ;
       /**
        * <code>optional uint32 ret_code = 1;</code>
@@ -42626,7 +42340,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 real_gem_cnt = 2;
       private int realGemCnt_ ;
       /**
        * <code>optional uint32 real_gem_cnt = 2;</code>
@@ -42675,7 +42388,6 @@ public final class PayProto {
         return this;
       }
 
-      // repeated .VirtualGem virtual_gem_list = 3;
       private java.util.List<com.wali.live.proto.PayProto.VirtualGem> virtualGemList_ =
         java.util.Collections.emptyList();
       private void ensureVirtualGemListIsMutable() {
@@ -42857,7 +42569,8 @@ public final class PayProto {
           java.lang.Iterable<? extends com.wali.live.proto.PayProto.VirtualGem> values) {
         if (virtualGemListBuilder_ == null) {
           ensureVirtualGemListIsMutable();
-          super.addAll(values, virtualGemList_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, virtualGemList_);
           onChanged();
         } else {
           virtualGemListBuilder_.addAllMessages(values);
@@ -42987,7 +42700,6 @@ public final class PayProto {
         return virtualGemListBuilder_;
       }
 
-      // repeated .GiftCard gift_card_list = 4;
       private java.util.List<com.wali.live.proto.PayProto.GiftCard> giftCardList_ =
         java.util.Collections.emptyList();
       private void ensureGiftCardListIsMutable() {
@@ -43169,7 +42881,8 @@ public final class PayProto {
           java.lang.Iterable<? extends com.wali.live.proto.PayProto.GiftCard> values) {
         if (giftCardListBuilder_ == null) {
           ensureGiftCardListIsMutable();
-          super.addAll(values, giftCardList_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, giftCardList_);
           onChanged();
         } else {
           giftCardListBuilder_.addAllMessages(values);
@@ -43299,7 +43012,6 @@ public final class PayProto {
         return giftCardListBuilder_;
       }
 
-      // optional uint32 usable_virtual_gem_cnt = 5;
       private int usableVirtualGemCnt_ ;
       /**
        * <code>optional uint32 usable_virtual_gem_cnt = 5;</code>
@@ -43348,7 +43060,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .ExpireOrderHistoryRecord history = 6;
       private com.wali.live.proto.PayProto.ExpireOrderHistoryRecord history_ = com.wali.live.proto.PayProto.ExpireOrderHistoryRecord.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.PayProto.ExpireOrderHistoryRecord, com.wali.live.proto.PayProto.ExpireOrderHistoryRecord.Builder, com.wali.live.proto.PayProto.ExpireOrderHistoryRecordOrBuilder> historyBuilder_;
@@ -43493,7 +43204,7 @@ public final class PayProto {
         if (historyBuilder_ == null) {
           historyBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.PayProto.ExpireOrderHistoryRecord, com.wali.live.proto.PayProto.ExpireOrderHistoryRecord.Builder, com.wali.live.proto.PayProto.ExpireOrderHistoryRecordOrBuilder>(
-                  history_,
+                  getHistory(),
                   getParentForChildren(),
                   isClean());
           history_ = null;
@@ -43512,10 +43223,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:QueryBalanceDetailResponse)
   }
 
-  public interface VirtualGemOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface VirtualGemOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:VirtualGem)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint32 virtual_gem_cnt = 1;
     /**
      * <code>optional uint32 virtual_gem_cnt = 1;</code>
      *
@@ -43533,7 +43244,6 @@ public final class PayProto {
      */
     int getVirtualGemCnt();
 
-    // optional uint64 begin_time = 2;
     /**
      * <code>optional uint64 begin_time = 2;</code>
      *
@@ -43551,7 +43261,6 @@ public final class PayProto {
      */
     long getBeginTime();
 
-    // optional uint64 end_time = 3;
     /**
      * <code>optional uint64 end_time = 3;</code>
      *
@@ -43573,8 +43282,9 @@ public final class PayProto {
    * Protobuf type {@code VirtualGem}
    */
   public static final class VirtualGem extends
-      com.google.protobuf.GeneratedMessage
-      implements VirtualGemOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:VirtualGem)
+      VirtualGemOrBuilder {
     // Use VirtualGem.newBuilder() to construct.
     private VirtualGem(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -43675,7 +43385,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // optional uint32 virtual_gem_cnt = 1;
     public static final int VIRTUAL_GEM_CNT_FIELD_NUMBER = 1;
     private int virtualGemCnt_;
     /**
@@ -43699,7 +43408,6 @@ public final class PayProto {
       return virtualGemCnt_;
     }
 
-    // optional uint64 begin_time = 2;
     public static final int BEGIN_TIME_FIELD_NUMBER = 2;
     private long beginTime_;
     /**
@@ -43723,7 +43431,6 @@ public final class PayProto {
       return beginTime_;
     }
 
-    // optional uint64 end_time = 3;
     public static final int END_TIME_FIELD_NUMBER = 3;
     private long endTime_;
     /**
@@ -43755,7 +43462,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -43876,8 +43584,9 @@ public final class PayProto {
      * Protobuf type {@code VirtualGem}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.VirtualGemOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:VirtualGem)
+        com.wali.live.proto.PayProto.VirtualGemOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_VirtualGem_descriptor;
@@ -44008,7 +43717,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // optional uint32 virtual_gem_cnt = 1;
       private int virtualGemCnt_ ;
       /**
        * <code>optional uint32 virtual_gem_cnt = 1;</code>
@@ -44057,7 +43765,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint64 begin_time = 2;
       private long beginTime_ ;
       /**
        * <code>optional uint64 begin_time = 2;</code>
@@ -44106,7 +43813,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint64 end_time = 3;
       private long endTime_ ;
       /**
        * <code>optional uint64 end_time = 3;</code>
@@ -44166,10 +43872,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:VirtualGem)
   }
 
-  public interface ExpireOrderHistoryRecordOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ExpireOrderHistoryRecordOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ExpireOrderHistoryRecord)
+      com.google.protobuf.MessageOrBuilder {
 
-    // repeated .ExpireOrderRecord cards = 1;
     /**
      * <code>repeated .ExpireOrderRecord cards = 1;</code>
      */
@@ -44194,7 +43900,6 @@ public final class PayProto {
     com.wali.live.proto.PayProto.ExpireOrderRecordOrBuilder getCardsOrBuilder(
         int index);
 
-    // repeated .ExpireOrderRecord gems = 2;
     /**
      * <code>repeated .ExpireOrderRecord gems = 2;</code>
      */
@@ -44223,8 +43928,9 @@ public final class PayProto {
    * Protobuf type {@code ExpireOrderHistoryRecord}
    */
   public static final class ExpireOrderHistoryRecord extends
-      com.google.protobuf.GeneratedMessage
-      implements ExpireOrderHistoryRecordOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ExpireOrderHistoryRecord)
+      ExpireOrderHistoryRecordOrBuilder {
     // Use ExpireOrderHistoryRecord.newBuilder() to construct.
     private ExpireOrderHistoryRecord(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -44331,7 +44037,6 @@ public final class PayProto {
       return PARSER;
     }
 
-    // repeated .ExpireOrderRecord cards = 1;
     public static final int CARDS_FIELD_NUMBER = 1;
     private java.util.List<com.wali.live.proto.PayProto.ExpireOrderRecord> cards_;
     /**
@@ -44367,7 +44072,6 @@ public final class PayProto {
       return cards_.get(index);
     }
 
-    // repeated .ExpireOrderRecord gems = 2;
     public static final int GEMS_FIELD_NUMBER = 2;
     private java.util.List<com.wali.live.proto.PayProto.ExpireOrderRecord> gems_;
     /**
@@ -44410,7 +44114,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -44524,8 +44229,9 @@ public final class PayProto {
      * Protobuf type {@code ExpireOrderHistoryRecord}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.ExpireOrderHistoryRecordOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ExpireOrderHistoryRecord)
+        com.wali.live.proto.PayProto.ExpireOrderHistoryRecordOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_ExpireOrderHistoryRecord_descriptor;
@@ -44711,7 +44417,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // repeated .ExpireOrderRecord cards = 1;
       private java.util.List<com.wali.live.proto.PayProto.ExpireOrderRecord> cards_ =
         java.util.Collections.emptyList();
       private void ensureCardsIsMutable() {
@@ -44853,7 +44558,8 @@ public final class PayProto {
           java.lang.Iterable<? extends com.wali.live.proto.PayProto.ExpireOrderRecord> values) {
         if (cardsBuilder_ == null) {
           ensureCardsIsMutable();
-          super.addAll(values, cards_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, cards_);
           onChanged();
         } else {
           cardsBuilder_.addAllMessages(values);
@@ -44951,7 +44657,6 @@ public final class PayProto {
         return cardsBuilder_;
       }
 
-      // repeated .ExpireOrderRecord gems = 2;
       private java.util.List<com.wali.live.proto.PayProto.ExpireOrderRecord> gems_ =
         java.util.Collections.emptyList();
       private void ensureGemsIsMutable() {
@@ -45093,7 +44798,8 @@ public final class PayProto {
           java.lang.Iterable<? extends com.wali.live.proto.PayProto.ExpireOrderRecord> values) {
         if (gemsBuilder_ == null) {
           ensureGemsIsMutable();
-          super.addAll(values, gems_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, gems_);
           onChanged();
         } else {
           gemsBuilder_.addAllMessages(values);
@@ -45202,10 +44908,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:ExpireOrderHistoryRecord)
   }
 
-  public interface ExpireOrderRecordOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ExpireOrderRecordOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ExpireOrderRecord)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string order_id = 1;
     /**
      * <code>optional string order_id = 1;</code>
      */
@@ -45220,7 +44926,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getOrderIdBytes();
 
-    // optional uint32 uuid = 2;
     /**
      * <code>optional uint32 uuid = 2;</code>
      */
@@ -45230,7 +44935,6 @@ public final class PayProto {
      */
     int getUuid();
 
-    // optional uint32 gift_id = 3;
     /**
      * <code>optional uint32 gift_id = 3;</code>
      *
@@ -45248,7 +44952,6 @@ public final class PayProto {
      */
     int getGiftId();
 
-    // optional uint32 gift_cnt = 4;
     /**
      * <code>optional uint32 gift_cnt = 4;</code>
      *
@@ -45266,7 +44969,6 @@ public final class PayProto {
      */
     int getGiftCnt();
 
-    // optional uint32 worth_gem = 5;
     /**
      * <code>optional uint32 worth_gem = 5;</code>
      *
@@ -45284,7 +44986,6 @@ public final class PayProto {
      */
     int getWorthGem();
 
-    // optional uint64 begin_time = 6;
     /**
      * <code>optional uint64 begin_time = 6;</code>
      *
@@ -45302,7 +45003,6 @@ public final class PayProto {
      */
     long getBeginTime();
 
-    // optional uint64 end_time = 7;
     /**
      * <code>optional uint64 end_time = 7;</code>
      *
@@ -45320,7 +45020,6 @@ public final class PayProto {
      */
     long getEndTime();
 
-    // optional uint32 expire_type = 8;
     /**
      * <code>optional uint32 expire_type = 8;</code>
      */
@@ -45330,7 +45029,6 @@ public final class PayProto {
      */
     int getExpireType();
 
-    // optional uint64 create_time = 9;
     /**
      * <code>optional uint64 create_time = 9;</code>
      *
@@ -45348,7 +45046,6 @@ public final class PayProto {
      */
     long getCreateTime();
 
-    // optional uint32 status = 10;
     /**
      * <code>optional uint32 status = 10;</code>
      *
@@ -45366,7 +45063,6 @@ public final class PayProto {
      */
     int getStatus();
 
-    // optional .GrantType type = 11 [default = CARD];
     /**
      * <code>optional .GrantType type = 11 [default = CARD];</code>
      *
@@ -45386,8 +45082,9 @@ public final class PayProto {
    * Protobuf type {@code ExpireOrderRecord}
    */
   public static final class ExpireOrderRecord extends
-      com.google.protobuf.GeneratedMessage
-      implements ExpireOrderRecordOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ExpireOrderRecord)
+      ExpireOrderRecordOrBuilder {
     // Use ExpireOrderRecord.newBuilder() to construct.
     private ExpireOrderRecord(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -45434,8 +45131,9 @@ public final class PayProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              orderId_ = input.readBytes();
+              orderId_ = bs;
               break;
             }
             case 16: {
@@ -45534,7 +45232,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // optional string order_id = 1;
     public static final int ORDER_ID_FIELD_NUMBER = 1;
     private java.lang.Object orderId_;
     /**
@@ -45577,7 +45274,6 @@ public final class PayProto {
       }
     }
 
-    // optional uint32 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private int uuid_;
     /**
@@ -45593,7 +45289,6 @@ public final class PayProto {
       return uuid_;
     }
 
-    // optional uint32 gift_id = 3;
     public static final int GIFT_ID_FIELD_NUMBER = 3;
     private int giftId_;
     /**
@@ -45617,7 +45312,6 @@ public final class PayProto {
       return giftId_;
     }
 
-    // optional uint32 gift_cnt = 4;
     public static final int GIFT_CNT_FIELD_NUMBER = 4;
     private int giftCnt_;
     /**
@@ -45641,7 +45335,6 @@ public final class PayProto {
       return giftCnt_;
     }
 
-    // optional uint32 worth_gem = 5;
     public static final int WORTH_GEM_FIELD_NUMBER = 5;
     private int worthGem_;
     /**
@@ -45665,7 +45358,6 @@ public final class PayProto {
       return worthGem_;
     }
 
-    // optional uint64 begin_time = 6;
     public static final int BEGIN_TIME_FIELD_NUMBER = 6;
     private long beginTime_;
     /**
@@ -45689,7 +45381,6 @@ public final class PayProto {
       return beginTime_;
     }
 
-    // optional uint64 end_time = 7;
     public static final int END_TIME_FIELD_NUMBER = 7;
     private long endTime_;
     /**
@@ -45713,7 +45404,6 @@ public final class PayProto {
       return endTime_;
     }
 
-    // optional uint32 expire_type = 8;
     public static final int EXPIRE_TYPE_FIELD_NUMBER = 8;
     private int expireType_;
     /**
@@ -45729,7 +45419,6 @@ public final class PayProto {
       return expireType_;
     }
 
-    // optional uint64 create_time = 9;
     public static final int CREATE_TIME_FIELD_NUMBER = 9;
     private long createTime_;
     /**
@@ -45753,7 +45442,6 @@ public final class PayProto {
       return createTime_;
     }
 
-    // optional uint32 status = 10;
     public static final int STATUS_FIELD_NUMBER = 10;
     private int status_;
     /**
@@ -45777,7 +45465,6 @@ public final class PayProto {
       return status_;
     }
 
-    // optional .GrantType type = 11 [default = CARD];
     public static final int TYPE_FIELD_NUMBER = 11;
     private com.wali.live.proto.PayProto.GrantType type_;
     /**
@@ -45815,7 +45502,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -45992,8 +45680,9 @@ public final class PayProto {
      * Protobuf type {@code ExpireOrderRecord}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.ExpireOrderRecordOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ExpireOrderRecord)
+        com.wali.live.proto.PayProto.ExpireOrderRecordOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_ExpireOrderRecord_descriptor;
@@ -46198,7 +45887,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // optional string order_id = 1;
       private java.lang.Object orderId_ = "";
       /**
        * <code>optional string order_id = 1;</code>
@@ -46212,9 +45900,12 @@ public final class PayProto {
       public java.lang.String getOrderId() {
         java.lang.Object ref = orderId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          orderId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            orderId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -46272,7 +45963,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 uuid = 2;
       private int uuid_ ;
       /**
        * <code>optional uint32 uuid = 2;</code>
@@ -46305,7 +45995,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 gift_id = 3;
       private int giftId_ ;
       /**
        * <code>optional uint32 gift_id = 3;</code>
@@ -46354,7 +46043,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 gift_cnt = 4;
       private int giftCnt_ ;
       /**
        * <code>optional uint32 gift_cnt = 4;</code>
@@ -46403,7 +46091,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 worth_gem = 5;
       private int worthGem_ ;
       /**
        * <code>optional uint32 worth_gem = 5;</code>
@@ -46452,7 +46139,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint64 begin_time = 6;
       private long beginTime_ ;
       /**
        * <code>optional uint64 begin_time = 6;</code>
@@ -46501,7 +46187,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint64 end_time = 7;
       private long endTime_ ;
       /**
        * <code>optional uint64 end_time = 7;</code>
@@ -46550,7 +46235,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 expire_type = 8;
       private int expireType_ ;
       /**
        * <code>optional uint32 expire_type = 8;</code>
@@ -46583,7 +46267,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint64 create_time = 9;
       private long createTime_ ;
       /**
        * <code>optional uint64 create_time = 9;</code>
@@ -46632,7 +46315,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 status = 10;
       private int status_ ;
       /**
        * <code>optional uint32 status = 10;</code>
@@ -46681,7 +46363,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .GrantType type = 11 [default = CARD];
       private com.wali.live.proto.PayProto.GrantType type_ = com.wali.live.proto.PayProto.GrantType.CARD;
       /**
        * <code>optional .GrantType type = 11 [default = CARD];</code>
@@ -46740,10 +46421,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:ExpireOrderRecord)
   }
 
-  public interface YzbGemExchangeOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface YzbGemExchangeOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:YzbGemExchange)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 exchange_id = 1;
     /**
      * <code>required uint32 exchange_id = 1;</code>
      */
@@ -46753,7 +46434,6 @@ public final class PayProto {
      */
     int getExchangeId();
 
-    // required uint32 gem_cnt = 2;
     /**
      * <code>required uint32 gem_cnt = 2;</code>
      */
@@ -46763,7 +46443,6 @@ public final class PayProto {
      */
     int getGemCnt();
 
-    // required uint32 yzb_ticket = 3;
     /**
      * <code>required uint32 yzb_ticket = 3;</code>
      */
@@ -46781,8 +46460,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class YzbGemExchange extends
-      com.google.protobuf.GeneratedMessage
-      implements YzbGemExchangeOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:YzbGemExchange)
+      YzbGemExchangeOrBuilder {
     // Use YzbGemExchange.newBuilder() to construct.
     private YzbGemExchange(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -46883,7 +46563,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 exchange_id = 1;
     public static final int EXCHANGE_ID_FIELD_NUMBER = 1;
     private int exchangeId_;
     /**
@@ -46899,7 +46578,6 @@ public final class PayProto {
       return exchangeId_;
     }
 
-    // required uint32 gem_cnt = 2;
     public static final int GEM_CNT_FIELD_NUMBER = 2;
     private int gemCnt_;
     /**
@@ -46915,7 +46593,6 @@ public final class PayProto {
       return gemCnt_;
     }
 
-    // required uint32 yzb_ticket = 3;
     public static final int YZB_TICKET_FIELD_NUMBER = 3;
     private int yzbTicket_;
     /**
@@ -46939,7 +46616,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasExchangeId()) {
         memoizedIsInitialized = 0;
@@ -47076,8 +46754,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.YzbGemExchangeOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:YzbGemExchange)
+        com.wali.live.proto.PayProto.YzbGemExchangeOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_YzbGemExchange_descriptor;
@@ -47220,7 +46899,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 exchange_id = 1;
       private int exchangeId_ ;
       /**
        * <code>required uint32 exchange_id = 1;</code>
@@ -47253,7 +46931,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint32 gem_cnt = 2;
       private int gemCnt_ ;
       /**
        * <code>required uint32 gem_cnt = 2;</code>
@@ -47286,7 +46963,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint32 yzb_ticket = 3;
       private int yzbTicket_ ;
       /**
        * <code>required uint32 yzb_ticket = 3;</code>
@@ -47330,10 +47006,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:YzbGemExchange)
   }
 
-  public interface YzbExchageListRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface YzbExchageListRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:YzbExchageListRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 userId = 1;
     /**
      * <code>required uint64 userId = 1;</code>
      *
@@ -47351,7 +47027,6 @@ public final class PayProto {
      */
     long getUserId();
 
-    // optional .Platform platform = 2;
     /**
      * <code>optional .Platform platform = 2;</code>
      *
@@ -47373,8 +47048,9 @@ public final class PayProto {
    * Protobuf type {@code YzbExchageListRequest}
    */
   public static final class YzbExchageListRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements YzbExchageListRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:YzbExchageListRequest)
+      YzbExchageListRequestOrBuilder {
     // Use YzbExchageListRequest.newBuilder() to construct.
     private YzbExchageListRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -47476,7 +47152,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint64 userId = 1;
     public static final int USERID_FIELD_NUMBER = 1;
     private long userId_;
     /**
@@ -47500,7 +47175,6 @@ public final class PayProto {
       return userId_;
     }
 
-    // optional .Platform platform = 2;
     public static final int PLATFORM_FIELD_NUMBER = 2;
     private com.wali.live.proto.PayProto.Platform platform_;
     /**
@@ -47531,7 +47205,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUserId()) {
         memoizedIsInitialized = 0;
@@ -47649,8 +47324,9 @@ public final class PayProto {
      * Protobuf type {@code YzbExchageListRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.YzbExchageListRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:YzbExchageListRequest)
+        com.wali.live.proto.PayProto.YzbExchageListRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_YzbExchageListRequest_descriptor;
@@ -47776,7 +47452,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint64 userId = 1;
       private long userId_ ;
       /**
        * <code>required uint64 userId = 1;</code>
@@ -47825,7 +47500,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .Platform platform = 2;
       private com.wali.live.proto.PayProto.Platform platform_ = com.wali.live.proto.PayProto.Platform.IOS;
       /**
        * <code>optional .Platform platform = 2;</code>
@@ -47888,10 +47562,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:YzbExchageListRequest)
   }
 
-  public interface YzbExchageListResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface YzbExchageListResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:YzbExchageListResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -47909,7 +47583,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // repeated .YzbGemExchange gem_exchanges = 2;
     /**
      * <code>repeated .YzbGemExchange gem_exchanges = 2;</code>
      */
@@ -47938,8 +47611,9 @@ public final class PayProto {
    * Protobuf type {@code YzbExchageListResponse}
    */
   public static final class YzbExchageListResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements YzbExchageListResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:YzbExchageListResponse)
+      YzbExchageListResponseOrBuilder {
     // Use YzbExchageListResponse.newBuilder() to construct.
     private YzbExchageListResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -48041,7 +47715,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -48065,7 +47738,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // repeated .YzbGemExchange gem_exchanges = 2;
     public static final int GEM_EXCHANGES_FIELD_NUMBER = 2;
     private java.util.List<com.wali.live.proto.PayProto.YzbGemExchange> gemExchanges_;
     /**
@@ -48108,7 +47780,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -48232,8 +47905,9 @@ public final class PayProto {
      * Protobuf type {@code YzbExchageListResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.YzbExchageListResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:YzbExchageListResponse)
+        com.wali.live.proto.PayProto.YzbExchageListResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_YzbExchageListResponse_descriptor;
@@ -48398,7 +48072,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -48447,7 +48120,6 @@ public final class PayProto {
         return this;
       }
 
-      // repeated .YzbGemExchange gem_exchanges = 2;
       private java.util.List<com.wali.live.proto.PayProto.YzbGemExchange> gemExchanges_ =
         java.util.Collections.emptyList();
       private void ensureGemExchangesIsMutable() {
@@ -48589,7 +48261,8 @@ public final class PayProto {
           java.lang.Iterable<? extends com.wali.live.proto.PayProto.YzbGemExchange> values) {
         if (gemExchangesBuilder_ == null) {
           ensureGemExchangesIsMutable();
-          super.addAll(values, gemExchanges_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, gemExchanges_);
           onChanged();
         } else {
           gemExchangesBuilder_.addAllMessages(values);
@@ -48698,10 +48371,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:YzbExchageListResponse)
   }
 
-  public interface YzbExchangeRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface YzbExchangeRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:YzbExchangeRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string yzb_order_id = 1;
     /**
      * <code>required string yzb_order_id = 1;</code>
      */
@@ -48716,7 +48389,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getYzbOrderIdBytes();
 
-    // required uint64 userId = 2;
     /**
      * <code>required uint64 userId = 2;</code>
      *
@@ -48734,7 +48406,6 @@ public final class PayProto {
      */
     long getUserId();
 
-    // required uint32 exchange_id = 3;
     /**
      * <code>required uint32 exchange_id = 3;</code>
      *
@@ -48752,7 +48423,6 @@ public final class PayProto {
      */
     int getExchangeId();
 
-    // required uint64 timestamp = 4;
     /**
      * <code>required uint64 timestamp = 4;</code>
      *
@@ -48770,7 +48440,6 @@ public final class PayProto {
      */
     long getTimestamp();
 
-    // optional uint32 count = 5 [default = 1];
     /**
      * <code>optional uint32 count = 5 [default = 1];</code>
      *
@@ -48788,7 +48457,6 @@ public final class PayProto {
      */
     int getCount();
 
-    // optional .Platform platform = 6;
     /**
      * <code>optional .Platform platform = 6;</code>
      *
@@ -48806,7 +48474,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.Platform getPlatform();
 
-    // required string package_name = 7;
     /**
      * <code>required string package_name = 7;</code>
      *
@@ -48842,8 +48509,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class YzbExchangeRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements YzbExchangeRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:YzbExchangeRequest)
+      YzbExchangeRequestOrBuilder {
     // Use YzbExchangeRequest.newBuilder() to construct.
     private YzbExchangeRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -48890,8 +48558,9 @@ public final class PayProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              yzbOrderId_ = input.readBytes();
+              yzbOrderId_ = bs;
               break;
             }
             case 16: {
@@ -48926,8 +48595,9 @@ public final class PayProto {
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              packageName_ = input.readBytes();
+              packageName_ = bs;
               break;
             }
           }
@@ -48970,7 +48640,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required string yzb_order_id = 1;
     public static final int YZB_ORDER_ID_FIELD_NUMBER = 1;
     private java.lang.Object yzbOrderId_;
     /**
@@ -49013,7 +48682,6 @@ public final class PayProto {
       }
     }
 
-    // required uint64 userId = 2;
     public static final int USERID_FIELD_NUMBER = 2;
     private long userId_;
     /**
@@ -49037,7 +48705,6 @@ public final class PayProto {
       return userId_;
     }
 
-    // required uint32 exchange_id = 3;
     public static final int EXCHANGE_ID_FIELD_NUMBER = 3;
     private int exchangeId_;
     /**
@@ -49061,7 +48728,6 @@ public final class PayProto {
       return exchangeId_;
     }
 
-    // required uint64 timestamp = 4;
     public static final int TIMESTAMP_FIELD_NUMBER = 4;
     private long timestamp_;
     /**
@@ -49085,7 +48751,6 @@ public final class PayProto {
       return timestamp_;
     }
 
-    // optional uint32 count = 5 [default = 1];
     public static final int COUNT_FIELD_NUMBER = 5;
     private int count_;
     /**
@@ -49109,7 +48774,6 @@ public final class PayProto {
       return count_;
     }
 
-    // optional .Platform platform = 6;
     public static final int PLATFORM_FIELD_NUMBER = 6;
     private com.wali.live.proto.PayProto.Platform platform_;
     /**
@@ -49133,7 +48797,6 @@ public final class PayProto {
       return platform_;
     }
 
-    // required string package_name = 7;
     public static final int PACKAGE_NAME_FIELD_NUMBER = 7;
     private java.lang.Object packageName_;
     /**
@@ -49200,7 +48863,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasYzbOrderId()) {
         memoizedIsInitialized = 0;
@@ -49374,8 +49038,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.YzbExchangeRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:YzbExchangeRequest)
+        com.wali.live.proto.PayProto.YzbExchangeRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_YzbExchangeRequest_descriptor;
@@ -49566,7 +49231,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required string yzb_order_id = 1;
       private java.lang.Object yzbOrderId_ = "";
       /**
        * <code>required string yzb_order_id = 1;</code>
@@ -49580,9 +49244,12 @@ public final class PayProto {
       public java.lang.String getYzbOrderId() {
         java.lang.Object ref = yzbOrderId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          yzbOrderId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            yzbOrderId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -49640,7 +49307,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint64 userId = 2;
       private long userId_ ;
       /**
        * <code>required uint64 userId = 2;</code>
@@ -49689,7 +49355,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint32 exchange_id = 3;
       private int exchangeId_ ;
       /**
        * <code>required uint32 exchange_id = 3;</code>
@@ -49738,7 +49403,6 @@ public final class PayProto {
         return this;
       }
 
-      // required uint64 timestamp = 4;
       private long timestamp_ ;
       /**
        * <code>required uint64 timestamp = 4;</code>
@@ -49787,7 +49451,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 count = 5 [default = 1];
       private int count_ = 1;
       /**
        * <code>optional uint32 count = 5 [default = 1];</code>
@@ -49836,7 +49499,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .Platform platform = 6;
       private com.wali.live.proto.PayProto.Platform platform_ = com.wali.live.proto.PayProto.Platform.IOS;
       /**
        * <code>optional .Platform platform = 6;</code>
@@ -49888,7 +49550,6 @@ public final class PayProto {
         return this;
       }
 
-      // required string package_name = 7;
       private java.lang.Object packageName_ = "";
       /**
        * <code>required string package_name = 7;</code>
@@ -49910,9 +49571,12 @@ public final class PayProto {
       public java.lang.String getPackageName() {
         java.lang.Object ref = packageName_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          packageName_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            packageName_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -49997,10 +49661,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:YzbExchangeRequest)
   }
 
-  public interface YzbExchangeResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface YzbExchangeResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:YzbExchangeResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -50018,7 +49682,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // optional string retMsg = 2;
     /**
      * <code>optional string retMsg = 2;</code>
      *
@@ -50045,7 +49708,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getRetMsgBytes();
 
-    // optional uint32 usable_gem_cnt = 3;
     /**
      * <code>optional uint32 usable_gem_cnt = 3;</code>
      *
@@ -50063,7 +49725,6 @@ public final class PayProto {
      */
     int getUsableGemCnt();
 
-    // optional uint64 user_asset_timestamp = 4;
     /**
      * <code>optional uint64 user_asset_timestamp = 4;</code>
      *
@@ -50081,7 +49742,6 @@ public final class PayProto {
      */
     long getUserAssetTimestamp();
 
-    // optional uint32 yzb_ticket = 5;
     /**
      * <code>optional uint32 yzb_ticket = 5;</code>
      *
@@ -50103,8 +49763,9 @@ public final class PayProto {
    * Protobuf type {@code YzbExchangeResponse}
    */
   public static final class YzbExchangeResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements YzbExchangeResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:YzbExchangeResponse)
+      YzbExchangeResponseOrBuilder {
     // Use YzbExchangeResponse.newBuilder() to construct.
     private YzbExchangeResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -50156,8 +49817,9 @@ public final class PayProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              retMsg_ = input.readBytes();
+              retMsg_ = bs;
               break;
             }
             case 24: {
@@ -50215,7 +49877,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -50239,7 +49900,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // optional string retMsg = 2;
     public static final int RETMSG_FIELD_NUMBER = 2;
     private java.lang.Object retMsg_;
     /**
@@ -50294,7 +49954,6 @@ public final class PayProto {
       }
     }
 
-    // optional uint32 usable_gem_cnt = 3;
     public static final int USABLE_GEM_CNT_FIELD_NUMBER = 3;
     private int usableGemCnt_;
     /**
@@ -50318,7 +49977,6 @@ public final class PayProto {
       return usableGemCnt_;
     }
 
-    // optional uint64 user_asset_timestamp = 4;
     public static final int USER_ASSET_TIMESTAMP_FIELD_NUMBER = 4;
     private long userAssetTimestamp_;
     /**
@@ -50342,7 +50000,6 @@ public final class PayProto {
       return userAssetTimestamp_;
     }
 
-    // optional uint32 yzb_ticket = 5;
     public static final int YZB_TICKET_FIELD_NUMBER = 5;
     private int yzbTicket_;
     /**
@@ -50376,7 +50033,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -50515,8 +50173,9 @@ public final class PayProto {
      * Protobuf type {@code YzbExchangeResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.YzbExchangeResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:YzbExchangeResponse)
+        com.wali.live.proto.PayProto.YzbExchangeResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_YzbExchangeResponse_descriptor;
@@ -50671,7 +50330,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -50720,7 +50378,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string retMsg = 2;
       private java.lang.Object retMsg_ = "";
       /**
        * <code>optional string retMsg = 2;</code>
@@ -50742,9 +50399,12 @@ public final class PayProto {
       public java.lang.String getRetMsg() {
         java.lang.Object ref = retMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          retMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            retMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -50818,7 +50478,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 usable_gem_cnt = 3;
       private int usableGemCnt_ ;
       /**
        * <code>optional uint32 usable_gem_cnt = 3;</code>
@@ -50867,7 +50526,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint64 user_asset_timestamp = 4;
       private long userAssetTimestamp_ ;
       /**
        * <code>optional uint64 user_asset_timestamp = 4;</code>
@@ -50916,7 +50574,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 yzb_ticket = 5;
       private int yzbTicket_ ;
       /**
        * <code>optional uint32 yzb_ticket = 5;</code>
@@ -50976,10 +50633,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:YzbExchangeResponse)
   }
 
-  public interface RechargeRecordRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface RechargeRecordRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:RechargeRecordRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      */
@@ -50989,7 +50646,6 @@ public final class PayProto {
      */
     long getUuid();
 
-    // optional .Platform platform = 4;
     /**
      * <code>optional .Platform platform = 4;</code>
      *
@@ -51016,8 +50672,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class RechargeRecordRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements RechargeRecordRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:RechargeRecordRequest)
+      RechargeRecordRequestOrBuilder {
     // Use RechargeRecordRequest.newBuilder() to construct.
     private RechargeRecordRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -51119,7 +50776,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -51135,7 +50791,6 @@ public final class PayProto {
       return uuid_;
     }
 
-    // optional .Platform platform = 4;
     public static final int PLATFORM_FIELD_NUMBER = 4;
     private com.wali.live.proto.PayProto.Platform platform_;
     /**
@@ -51166,7 +50821,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -51289,8 +50945,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.RechargeRecordRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:RechargeRecordRequest)
+        com.wali.live.proto.PayProto.RechargeRecordRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_RechargeRecordRequest_descriptor;
@@ -51416,7 +51073,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -51449,7 +51105,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .Platform platform = 4;
       private com.wali.live.proto.PayProto.Platform platform_ = com.wali.live.proto.PayProto.Platform.IOS;
       /**
        * <code>optional .Platform platform = 4;</code>
@@ -51512,10 +51167,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:RechargeRecordRequest)
   }
 
-  public interface ProfitRecordResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ProfitRecordResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ProfitRecordResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint32 retCode = 1;
     /**
      * <code>optional uint32 retCode = 1;</code>
      */
@@ -51525,7 +51180,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // optional int64 incomeProfitRMB = 2;
     /**
      * <code>optional int64 incomeProfitRMB = 2;</code>
      *
@@ -51543,7 +51197,6 @@ public final class PayProto {
      */
     long getIncomeProfitRMB();
 
-    // optional int64 incomeProfitDollar = 3;
     /**
      * <code>optional int64 incomeProfitDollar = 3;</code>
      *
@@ -51561,7 +51214,6 @@ public final class PayProto {
      */
     long getIncomeProfitDollar();
 
-    // optional int64 costProfitRMB = 4;
     /**
      * <code>optional int64 costProfitRMB = 4;</code>
      *
@@ -51579,7 +51231,6 @@ public final class PayProto {
      */
     long getCostProfitRMB();
 
-    // optional int64 costProfitDollar = 5;
     /**
      * <code>optional int64 costProfitDollar = 5;</code>
      *
@@ -51597,7 +51248,6 @@ public final class PayProto {
      */
     long getCostProfitDollar();
 
-    // repeated .ProfitDayDetail profitDayDetails = 6;
     /**
      * <code>repeated .ProfitDayDetail profitDayDetails = 6;</code>
      *
@@ -51646,8 +51296,9 @@ public final class PayProto {
    * Protobuf type {@code ProfitRecordResponse}
    */
   public static final class ProfitRecordResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements ProfitRecordResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ProfitRecordResponse)
+      ProfitRecordResponseOrBuilder {
     // Use ProfitRecordResponse.newBuilder() to construct.
     private ProfitRecordResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -51769,7 +51420,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // optional uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -51785,7 +51435,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // optional int64 incomeProfitRMB = 2;
     public static final int INCOMEPROFITRMB_FIELD_NUMBER = 2;
     private long incomeProfitRMB_;
     /**
@@ -51809,7 +51458,6 @@ public final class PayProto {
       return incomeProfitRMB_;
     }
 
-    // optional int64 incomeProfitDollar = 3;
     public static final int INCOMEPROFITDOLLAR_FIELD_NUMBER = 3;
     private long incomeProfitDollar_;
     /**
@@ -51833,7 +51481,6 @@ public final class PayProto {
       return incomeProfitDollar_;
     }
 
-    // optional int64 costProfitRMB = 4;
     public static final int COSTPROFITRMB_FIELD_NUMBER = 4;
     private long costProfitRMB_;
     /**
@@ -51857,7 +51504,6 @@ public final class PayProto {
       return costProfitRMB_;
     }
 
-    // optional int64 costProfitDollar = 5;
     public static final int COSTPROFITDOLLAR_FIELD_NUMBER = 5;
     private long costProfitDollar_;
     /**
@@ -51881,7 +51527,6 @@ public final class PayProto {
       return costProfitDollar_;
     }
 
-    // repeated .ProfitDayDetail profitDayDetails = 6;
     public static final int PROFITDAYDETAILS_FIELD_NUMBER = 6;
     private java.util.List<com.wali.live.proto.PayProto.ProfitDayDetail> profitDayDetails_;
     /**
@@ -51948,7 +51593,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -52090,8 +51736,9 @@ public final class PayProto {
      * Protobuf type {@code ProfitRecordResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.ProfitRecordResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ProfitRecordResponse)
+        com.wali.live.proto.PayProto.ProfitRecordResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_ProfitRecordResponse_descriptor;
@@ -52282,7 +51929,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // optional uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>optional uint32 retCode = 1;</code>
@@ -52315,7 +51961,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional int64 incomeProfitRMB = 2;
       private long incomeProfitRMB_ ;
       /**
        * <code>optional int64 incomeProfitRMB = 2;</code>
@@ -52364,7 +52009,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional int64 incomeProfitDollar = 3;
       private long incomeProfitDollar_ ;
       /**
        * <code>optional int64 incomeProfitDollar = 3;</code>
@@ -52413,7 +52057,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional int64 costProfitRMB = 4;
       private long costProfitRMB_ ;
       /**
        * <code>optional int64 costProfitRMB = 4;</code>
@@ -52462,7 +52105,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional int64 costProfitDollar = 5;
       private long costProfitDollar_ ;
       /**
        * <code>optional int64 costProfitDollar = 5;</code>
@@ -52511,7 +52153,6 @@ public final class PayProto {
         return this;
       }
 
-      // repeated .ProfitDayDetail profitDayDetails = 6;
       private java.util.List<com.wali.live.proto.PayProto.ProfitDayDetail> profitDayDetails_ =
         java.util.Collections.emptyList();
       private void ensureProfitDayDetailsIsMutable() {
@@ -52693,7 +52334,8 @@ public final class PayProto {
           java.lang.Iterable<? extends com.wali.live.proto.PayProto.ProfitDayDetail> values) {
         if (profitDayDetailsBuilder_ == null) {
           ensureProfitDayDetailsIsMutable();
-          super.addAll(values, profitDayDetails_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, profitDayDetails_);
           onChanged();
         } else {
           profitDayDetailsBuilder_.addAllMessages(values);
@@ -52834,10 +52476,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:ProfitRecordResponse)
   }
 
-  public interface ProfitRecordRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ProfitRecordRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ProfitRecordRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint64 uuid = 1;
     /**
      * <code>optional uint64 uuid = 1;</code>
      */
@@ -52847,7 +52489,6 @@ public final class PayProto {
      */
     long getUuid();
 
-    // optional uint32 year = 2;
     /**
      * <code>optional uint32 year = 2;</code>
      */
@@ -52857,7 +52498,6 @@ public final class PayProto {
      */
     int getYear();
 
-    // optional uint32 month = 3;
     /**
      * <code>optional uint32 month = 3;</code>
      */
@@ -52876,8 +52516,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class ProfitRecordRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements ProfitRecordRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ProfitRecordRequest)
+      ProfitRecordRequestOrBuilder {
     // Use ProfitRecordRequest.newBuilder() to construct.
     private ProfitRecordRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -52978,7 +52619,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // optional uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -52994,7 +52634,6 @@ public final class PayProto {
       return uuid_;
     }
 
-    // optional uint32 year = 2;
     public static final int YEAR_FIELD_NUMBER = 2;
     private int year_;
     /**
@@ -53010,7 +52649,6 @@ public final class PayProto {
       return year_;
     }
 
-    // optional uint32 month = 3;
     public static final int MONTH_FIELD_NUMBER = 3;
     private int month_;
     /**
@@ -53034,7 +52672,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -53160,8 +52799,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.ProfitRecordRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ProfitRecordRequest)
+        com.wali.live.proto.PayProto.ProfitRecordRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_ProfitRecordRequest_descriptor;
@@ -53292,7 +52932,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // optional uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 1;</code>
@@ -53325,7 +52964,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 year = 2;
       private int year_ ;
       /**
        * <code>optional uint32 year = 2;</code>
@@ -53358,7 +52996,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 month = 3;
       private int month_ ;
       /**
        * <code>optional uint32 month = 3;</code>
@@ -53402,10 +53039,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:ProfitRecordRequest)
   }
 
-  public interface ProfitDayDetailOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ProfitDayDetailOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ProfitDayDetail)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint32 day = 1;
     /**
      * <code>optional uint32 day = 1;</code>
      *
@@ -53423,7 +53060,6 @@ public final class PayProto {
      */
     int getDay();
 
-    // repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;
     /**
      * <code>repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;</code>
      *
@@ -53476,8 +53112,9 @@ public final class PayProto {
    * </pre>
    */
   public static final class ProfitDayDetail extends
-      com.google.protobuf.GeneratedMessage
-      implements ProfitDayDetailOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ProfitDayDetail)
+      ProfitDayDetailOrBuilder {
     // Use ProfitDayDetail.newBuilder() to construct.
     private ProfitDayDetail(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -53579,7 +53216,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // optional uint32 day = 1;
     public static final int DAY_FIELD_NUMBER = 1;
     private int day_;
     /**
@@ -53603,7 +53239,6 @@ public final class PayProto {
       return day_;
     }
 
-    // repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;
     public static final int PROFITDAYDETAILINFO_FIELD_NUMBER = 2;
     private java.util.List<com.wali.live.proto.PayProto.ProfitDayDetailInfo> profitDayDetailInfo_;
     /**
@@ -53666,7 +53301,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -53784,8 +53420,9 @@ public final class PayProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.ProfitDayDetailOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ProfitDayDetail)
+        com.wali.live.proto.PayProto.ProfitDayDetailOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_ProfitDayDetail_descriptor;
@@ -53940,7 +53577,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // optional uint32 day = 1;
       private int day_ ;
       /**
        * <code>optional uint32 day = 1;</code>
@@ -53989,7 +53625,6 @@ public final class PayProto {
         return this;
       }
 
-      // repeated .ProfitDayDetailInfo profitDayDetailInfo = 2;
       private java.util.List<com.wali.live.proto.PayProto.ProfitDayDetailInfo> profitDayDetailInfo_ =
         java.util.Collections.emptyList();
       private void ensureProfitDayDetailInfoIsMutable() {
@@ -54171,7 +53806,8 @@ public final class PayProto {
           java.lang.Iterable<? extends com.wali.live.proto.PayProto.ProfitDayDetailInfo> values) {
         if (profitDayDetailInfoBuilder_ == null) {
           ensureProfitDayDetailInfoIsMutable();
-          super.addAll(values, profitDayDetailInfo_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, profitDayDetailInfo_);
           onChanged();
         } else {
           profitDayDetailInfoBuilder_.addAllMessages(values);
@@ -54312,10 +53948,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:ProfitDayDetail)
   }
 
-  public interface ProfitDayDetailInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ProfitDayDetailInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ProfitDayDetailInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint32 source_type = 1;
     /**
      * <code>optional uint32 source_type = 1;</code>
      *
@@ -54333,7 +53969,6 @@ public final class PayProto {
      */
     int getSourceType();
 
-    // optional uint32 profitType = 2;
     /**
      * <code>optional uint32 profitType = 2;</code>
      *
@@ -54351,7 +53986,6 @@ public final class PayProto {
      */
     int getProfitType();
 
-    // optional int64 profitChangeRMB = 3;
     /**
      * <code>optional int64 profitChangeRMB = 3;</code>
      *
@@ -54369,7 +54003,6 @@ public final class PayProto {
      */
     long getProfitChangeRMB();
 
-    // optional int64 profitChangeDollar = 4;
     /**
      * <code>optional int64 profitChangeDollar = 4;</code>
      *
@@ -54387,7 +54020,6 @@ public final class PayProto {
      */
     long getProfitChangeDollar();
 
-    // repeated .Languages language = 5;
     /**
      * <code>repeated .Languages language = 5;</code>
      *
@@ -54436,8 +54068,9 @@ public final class PayProto {
    * Protobuf type {@code ProfitDayDetailInfo}
    */
   public static final class ProfitDayDetailInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements ProfitDayDetailInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ProfitDayDetailInfo)
+      ProfitDayDetailInfoOrBuilder {
     // Use ProfitDayDetailInfo.newBuilder() to construct.
     private ProfitDayDetailInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -54554,7 +54187,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // optional uint32 source_type = 1;
     public static final int SOURCE_TYPE_FIELD_NUMBER = 1;
     private int sourceType_;
     /**
@@ -54578,7 +54210,6 @@ public final class PayProto {
       return sourceType_;
     }
 
-    // optional uint32 profitType = 2;
     public static final int PROFITTYPE_FIELD_NUMBER = 2;
     private int profitType_;
     /**
@@ -54602,7 +54233,6 @@ public final class PayProto {
       return profitType_;
     }
 
-    // optional int64 profitChangeRMB = 3;
     public static final int PROFITCHANGERMB_FIELD_NUMBER = 3;
     private long profitChangeRMB_;
     /**
@@ -54626,7 +54256,6 @@ public final class PayProto {
       return profitChangeRMB_;
     }
 
-    // optional int64 profitChangeDollar = 4;
     public static final int PROFITCHANGEDOLLAR_FIELD_NUMBER = 4;
     private long profitChangeDollar_;
     /**
@@ -54650,7 +54279,6 @@ public final class PayProto {
       return profitChangeDollar_;
     }
 
-    // repeated .Languages language = 5;
     public static final int LANGUAGE_FIELD_NUMBER = 5;
     private java.util.List<com.wali.live.proto.PayProto.Languages> language_;
     /**
@@ -54716,7 +54344,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -54851,8 +54480,9 @@ public final class PayProto {
      * Protobuf type {@code ProfitDayDetailInfo}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.ProfitDayDetailInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ProfitDayDetailInfo)
+        com.wali.live.proto.PayProto.ProfitDayDetailInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_ProfitDayDetailInfo_descriptor;
@@ -55034,7 +54664,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // optional uint32 source_type = 1;
       private int sourceType_ ;
       /**
        * <code>optional uint32 source_type = 1;</code>
@@ -55083,7 +54712,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 profitType = 2;
       private int profitType_ ;
       /**
        * <code>optional uint32 profitType = 2;</code>
@@ -55132,7 +54760,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional int64 profitChangeRMB = 3;
       private long profitChangeRMB_ ;
       /**
        * <code>optional int64 profitChangeRMB = 3;</code>
@@ -55181,7 +54808,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional int64 profitChangeDollar = 4;
       private long profitChangeDollar_ ;
       /**
        * <code>optional int64 profitChangeDollar = 4;</code>
@@ -55230,7 +54856,6 @@ public final class PayProto {
         return this;
       }
 
-      // repeated .Languages language = 5;
       private java.util.List<com.wali.live.proto.PayProto.Languages> language_ =
         java.util.Collections.emptyList();
       private void ensureLanguageIsMutable() {
@@ -55412,7 +55037,8 @@ public final class PayProto {
           java.lang.Iterable<? extends com.wali.live.proto.PayProto.Languages> values) {
         if (languageBuilder_ == null) {
           ensureLanguageIsMutable();
-          super.addAll(values, language_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, language_);
           onChanged();
         } else {
           languageBuilder_.addAllMessages(values);
@@ -55553,10 +55179,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:ProfitDayDetailInfo)
   }
 
-  public interface LanguagesOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface LanguagesOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:Languages)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint32 language_code = 1;
     /**
      * <code>optional uint32 language_code = 1;</code>
      *
@@ -55574,7 +55200,6 @@ public final class PayProto {
      */
     int getLanguageCode();
 
-    // optional string text = 2;
     /**
      * <code>optional string text = 2;</code>
      *
@@ -55605,8 +55230,9 @@ public final class PayProto {
    * Protobuf type {@code Languages}
    */
   public static final class Languages extends
-      com.google.protobuf.GeneratedMessage
-      implements LanguagesOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:Languages)
+      LanguagesOrBuilder {
     // Use Languages.newBuilder() to construct.
     private Languages(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -55658,8 +55284,9 @@ public final class PayProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              text_ = input.readBytes();
+              text_ = bs;
               break;
             }
           }
@@ -55702,7 +55329,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // optional uint32 language_code = 1;
     public static final int LANGUAGE_CODE_FIELD_NUMBER = 1;
     private int languageCode_;
     /**
@@ -55726,7 +55352,6 @@ public final class PayProto {
       return languageCode_;
     }
 
-    // optional string text = 2;
     public static final int TEXT_FIELD_NUMBER = 2;
     private java.lang.Object text_;
     /**
@@ -55788,7 +55413,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -55902,8 +55528,9 @@ public final class PayProto {
      * Protobuf type {@code Languages}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.LanguagesOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:Languages)
+        com.wali.live.proto.PayProto.LanguagesOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_Languages_descriptor;
@@ -56027,7 +55654,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // optional uint32 language_code = 1;
       private int languageCode_ ;
       /**
        * <code>optional uint32 language_code = 1;</code>
@@ -56076,7 +55702,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string text = 2;
       private java.lang.Object text_ = "";
       /**
        * <code>optional string text = 2;</code>
@@ -56098,9 +55723,12 @@ public final class PayProto {
       public java.lang.String getText() {
         java.lang.Object ref = text_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          text_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            text_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -56185,10 +55813,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:Languages)
   }
 
-  public interface RechargeRecordOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface RechargeRecordOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:RechargeRecord)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string item_id = 1;
     /**
      * <code>optional string item_id = 1;</code>
      */
@@ -56203,7 +55831,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getItemIdBytes();
 
-    // optional uint32 gem_cnt = 2;
     /**
      * <code>optional uint32 gem_cnt = 2;</code>
      *
@@ -56221,7 +55848,6 @@ public final class PayProto {
      */
     int getGemCnt();
 
-    // optional uint32 amount = 3;
     /**
      * <code>optional uint32 amount = 3;</code>
      *
@@ -56239,7 +55865,6 @@ public final class PayProto {
      */
     int getAmount();
 
-    // optional uint64 timestamp = 4;
     /**
      * <code>optional uint64 timestamp = 4;</code>
      *
@@ -56257,7 +55882,6 @@ public final class PayProto {
      */
     long getTimestamp();
 
-    // optional uint32 status = 5;
     /**
      * <code>optional uint32 status = 5;</code>
      *
@@ -56275,7 +55899,6 @@ public final class PayProto {
      */
     int getStatus();
 
-    // optional string order_id = 6;
     /**
      * <code>optional string order_id = 6;</code>
      *
@@ -56302,7 +55925,6 @@ public final class PayProto {
     com.google.protobuf.ByteString
         getOrderIdBytes();
 
-    // optional .PayType payType = 7;
     /**
      * <code>optional .PayType payType = 7;</code>
      *
@@ -56320,7 +55942,6 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.PayType getPayType();
 
-    // optional .Platform platform = 8;
     /**
      * <code>optional .Platform platform = 8;</code>
      *
@@ -56342,8 +55963,9 @@ public final class PayProto {
    * Protobuf type {@code RechargeRecord}
    */
   public static final class RechargeRecord extends
-      com.google.protobuf.GeneratedMessage
-      implements RechargeRecordOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:RechargeRecord)
+      RechargeRecordOrBuilder {
     // Use RechargeRecord.newBuilder() to construct.
     private RechargeRecord(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -56390,8 +56012,9 @@ public final class PayProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              itemId_ = input.readBytes();
+              itemId_ = bs;
               break;
             }
             case 16: {
@@ -56415,8 +56038,9 @@ public final class PayProto {
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              orderId_ = input.readBytes();
+              orderId_ = bs;
               break;
             }
             case 56: {
@@ -56481,7 +56105,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // optional string item_id = 1;
     public static final int ITEM_ID_FIELD_NUMBER = 1;
     private java.lang.Object itemId_;
     /**
@@ -56524,7 +56147,6 @@ public final class PayProto {
       }
     }
 
-    // optional uint32 gem_cnt = 2;
     public static final int GEM_CNT_FIELD_NUMBER = 2;
     private int gemCnt_;
     /**
@@ -56548,7 +56170,6 @@ public final class PayProto {
       return gemCnt_;
     }
 
-    // optional uint32 amount = 3;
     public static final int AMOUNT_FIELD_NUMBER = 3;
     private int amount_;
     /**
@@ -56572,7 +56193,6 @@ public final class PayProto {
       return amount_;
     }
 
-    // optional uint64 timestamp = 4;
     public static final int TIMESTAMP_FIELD_NUMBER = 4;
     private long timestamp_;
     /**
@@ -56596,7 +56216,6 @@ public final class PayProto {
       return timestamp_;
     }
 
-    // optional uint32 status = 5;
     public static final int STATUS_FIELD_NUMBER = 5;
     private int status_;
     /**
@@ -56620,7 +56239,6 @@ public final class PayProto {
       return status_;
     }
 
-    // optional string order_id = 6;
     public static final int ORDER_ID_FIELD_NUMBER = 6;
     private java.lang.Object orderId_;
     /**
@@ -56675,7 +56293,6 @@ public final class PayProto {
       }
     }
 
-    // optional .PayType payType = 7;
     public static final int PAYTYPE_FIELD_NUMBER = 7;
     private com.wali.live.proto.PayProto.PayType payType_;
     /**
@@ -56699,7 +56316,6 @@ public final class PayProto {
       return payType_;
     }
 
-    // optional .Platform platform = 8;
     public static final int PLATFORM_FIELD_NUMBER = 8;
     private com.wali.live.proto.PayProto.Platform platform_;
     /**
@@ -56736,7 +56352,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -56892,8 +56509,9 @@ public final class PayProto {
      * Protobuf type {@code RechargeRecord}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.RechargeRecordOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:RechargeRecord)
+        com.wali.live.proto.PayProto.RechargeRecordOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_RechargeRecord_descriptor;
@@ -57073,7 +56691,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // optional string item_id = 1;
       private java.lang.Object itemId_ = "";
       /**
        * <code>optional string item_id = 1;</code>
@@ -57087,9 +56704,12 @@ public final class PayProto {
       public java.lang.String getItemId() {
         java.lang.Object ref = itemId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          itemId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            itemId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -57147,7 +56767,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 gem_cnt = 2;
       private int gemCnt_ ;
       /**
        * <code>optional uint32 gem_cnt = 2;</code>
@@ -57196,7 +56815,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 amount = 3;
       private int amount_ ;
       /**
        * <code>optional uint32 amount = 3;</code>
@@ -57245,7 +56863,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint64 timestamp = 4;
       private long timestamp_ ;
       /**
        * <code>optional uint64 timestamp = 4;</code>
@@ -57294,7 +56911,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional uint32 status = 5;
       private int status_ ;
       /**
        * <code>optional uint32 status = 5;</code>
@@ -57343,7 +56959,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional string order_id = 6;
       private java.lang.Object orderId_ = "";
       /**
        * <code>optional string order_id = 6;</code>
@@ -57365,9 +56980,12 @@ public final class PayProto {
       public java.lang.String getOrderId() {
         java.lang.Object ref = orderId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          orderId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            orderId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -57441,7 +57059,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .PayType payType = 7;
       private com.wali.live.proto.PayProto.PayType payType_ = com.wali.live.proto.PayProto.PayType.IAP;
       /**
        * <code>optional .PayType payType = 7;</code>
@@ -57493,7 +57110,6 @@ public final class PayProto {
         return this;
       }
 
-      // optional .Platform platform = 8;
       private com.wali.live.proto.PayProto.Platform platform_ = com.wali.live.proto.PayProto.Platform.IOS;
       /**
        * <code>optional .Platform platform = 8;</code>
@@ -57556,10 +57172,10 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:RechargeRecord)
   }
 
-  public interface RechargeRecordResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface RechargeRecordResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:RechargeRecordResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret_code = 1;
     /**
      * <code>required uint32 ret_code = 1;</code>
      */
@@ -57569,7 +57185,6 @@ public final class PayProto {
      */
     int getRetCode();
 
-    // repeated .RechargeRecord rechargeRecords = 2;
     /**
      * <code>repeated .RechargeRecord rechargeRecords = 2;</code>
      */
@@ -57598,8 +57213,9 @@ public final class PayProto {
    * Protobuf type {@code RechargeRecordResponse}
    */
   public static final class RechargeRecordResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements RechargeRecordResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:RechargeRecordResponse)
+      RechargeRecordResponseOrBuilder {
     // Use RechargeRecordResponse.newBuilder() to construct.
     private RechargeRecordResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -57701,7 +57317,6 @@ public final class PayProto {
     }
 
     private int bitField0_;
-    // required uint32 ret_code = 1;
     public static final int RET_CODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -57717,7 +57332,6 @@ public final class PayProto {
       return retCode_;
     }
 
-    // repeated .RechargeRecord rechargeRecords = 2;
     public static final int RECHARGERECORDS_FIELD_NUMBER = 2;
     private java.util.List<com.wali.live.proto.PayProto.RechargeRecord> rechargeRecords_;
     /**
@@ -57760,7 +57374,8 @@ public final class PayProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -57878,8 +57493,9 @@ public final class PayProto {
      * Protobuf type {@code RechargeRecordResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.PayProto.RechargeRecordResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:RechargeRecordResponse)
+        com.wali.live.proto.PayProto.RechargeRecordResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.PayProto.internal_static_RechargeRecordResponse_descriptor;
@@ -58038,7 +57654,6 @@ public final class PayProto {
       }
       private int bitField0_;
 
-      // required uint32 ret_code = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 ret_code = 1;</code>
@@ -58071,7 +57686,6 @@ public final class PayProto {
         return this;
       }
 
-      // repeated .RechargeRecord rechargeRecords = 2;
       private java.util.List<com.wali.live.proto.PayProto.RechargeRecord> rechargeRecords_ =
         java.util.Collections.emptyList();
       private void ensureRechargeRecordsIsMutable() {
@@ -58213,7 +57827,8 @@ public final class PayProto {
           java.lang.Iterable<? extends com.wali.live.proto.PayProto.RechargeRecord> values) {
         if (rechargeRecordsBuilder_ == null) {
           ensureRechargeRecordsIsMutable();
-          super.addAll(values, rechargeRecords_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, rechargeRecords_);
           onChanged();
         } else {
           rechargeRecordsBuilder_.addAllMessages(values);
@@ -58322,287 +57937,287 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:RechargeRecordResponse)
   }
 
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_QueryAccountRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_QueryAccountRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_QueryAccountResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_QueryAccountResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ConsumGemRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ConsumGemRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ConsumGemResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ConsumGemResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetGemPriceRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetGemPriceRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GemGoods_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GemGoods_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetGemPriceResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetGemPriceResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RechargeDayAmount_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RechargeDayAmount_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_CreateOrderRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_CreateOrderRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_CreateOrderResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_CreateOrderResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_CheckOrderRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_CheckOrderRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_CheckOrderResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_CheckOrderResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_QueryProfitRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_QueryProfitRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_AliPay_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_AliPay_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_WeixinPay_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_WeixinPay_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_PaypalPay_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_PaypalPay_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_QueryProfitResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_QueryProfitResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetExchangeRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetExchangeRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GemExchange_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GemExchange_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetExchangeResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetExchangeResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ExchangeGemRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ExchangeGemRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ExchangeGemResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ExchangeGemResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_WithdrawRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_WithdrawRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_WithdrawResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_WithdrawResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_WithdrawRecordRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_WithdrawRecordRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_WithdrawRecord_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_WithdrawRecord_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_WithdrawRecordResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_WithdrawRecordResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_BindRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_BindRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_BindResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_BindResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_AuthAndWithdrawRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_AuthAndWithdrawRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_AuthAndWithdrawResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_AuthAndWithdrawResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetRankListRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetRankListRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetRankListResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetRankListResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RedPointConfig_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RedPointConfig_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetRedPointConfigRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetRedPointConfigRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetRedPointConfigResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetRedPointConfigResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GiftCard_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GiftCard_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_PayPush_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_PayPush_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GiftCardPush_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GiftCardPush_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_QueryBalanceDetailRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_QueryBalanceDetailRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_QueryBalanceDetailResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_QueryBalanceDetailResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_VirtualGem_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_VirtualGem_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ExpireOrderHistoryRecord_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ExpireOrderHistoryRecord_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ExpireOrderRecord_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ExpireOrderRecord_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_YzbGemExchange_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_YzbGemExchange_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_YzbExchageListRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_YzbExchageListRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_YzbExchageListResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_YzbExchageListResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_YzbExchangeRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_YzbExchangeRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_YzbExchangeResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_YzbExchangeResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RechargeRecordRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RechargeRecordRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ProfitRecordResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ProfitRecordResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ProfitRecordRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ProfitRecordRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ProfitDayDetail_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ProfitDayDetail_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ProfitDayDetailInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ProfitDayDetailInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_Languages_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_Languages_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RechargeRecord_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RechargeRecord_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RechargeRecordResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -58812,379 +58427,380 @@ public final class PayProto {
       "2\t.Platform\"T\n\026RechargeRecordResponse\022\020\n" +
       "\010ret_code\030\001 \002(\r\022(\n\017rechargeRecords\030\002 \003(\013" +
       "2\017.RechargeRecord* \n\010Platform\022\007\n\003IOS\020\001\022\013" +
-      "\n\007ANDROID\020\002*\237\001\n\010RChannel\022\n\n\006IOS_CH\020\001\022\n\n\006" +
+      "\n\007ANDROID\020\002*\260\001\n\010RChannel\022\n\n\006IOS_CH\020\001\022\n\n\006" +
       "AND_CH\020\002\022\n\n\006WEB_CH\020\003\022\013\n\007PAYU_CH\020\004\022\r\n\tPAY" +
       "PAL_CH\020\005\022\016\n\nGO_PLAY_CH\020\006\022\013\n\007TEST_CH\020\007\022\014\n" +
       "\010PAYTM_CH\020\010\022\023\n\017CODA_IDR_DCB_CH\020\t\022\023\n\017CODA",
-      "_IDR_ATM_CH\020\n*\306\001\n\007PayType\022\007\n\003IAP\020\001\022\n\n\006WE" +
-      "IXIN\020\002\022\n\n\006ALIPAY\020\003\022\t\n\005MIPAY\020\004\022\n\n\006SYSTEM\020" +
-      "\005\022\013\n\007OPERATE\020\006\022\n\n\006DIRECT\020\007\022\010\n\004PAYU\020\010\022\n\n\006" +
-      "PAYPAU\020\t\022\013\n\007GO_PLAY\020\n\022\n\n\006PAYPAL\020\013\022\014\n\010MIW" +
-      "ALLET\020\014\022\t\n\005PAYTM\020\r\022\020\n\014CODA_IDR_DCB\020\016\022\020\n\014" +
-      "CODA_IDR_ATM\020\017*M\n\014WithdrawType\022\023\n\017ALIPAY" +
-      "_WITHDRAW\020\001\022\023\n\017WEIXIN_WITHDRAW\020\002\022\023\n\017PAYP" +
-      "AL_WITHDRAW\020\003*c\n\007ActType\022\031\n\025NEWMAN_FIRST" +
-      "_RECHARGE\020\001\022\026\n\022RECHARGE_CNT_LIMIT\020\002\022\031\n\025R" +
-      "ECHARGE_PERIOD_LIMIT\020\003\022\n\n\006NORMAL\020\004*>\n\007Ap",
-      "pType\022\t\n\005ZHIBO\020\000\022\021\n\rZHIBO_ZHUSHOU\020\001\022\025\n\021Z" +
-      "HIBO_ZHUSHOU_AAR\020\002*\"\n\nNotifyType\022\t\n\005TOAS" +
-      "T\020\001\022\t\n\005ALERT\020\002*\036\n\tGrantType\022\010\n\004CARD\020\001\022\007\n" +
-      "\003GEM\020\002B\037\n\023com.wali.live.protoB\010PayProto"
+      "_IDR_ATM_CH\020\n\022\017\n\013ACTIVITY_CH\020\016*\306\001\n\007PayTy" +
+      "pe\022\007\n\003IAP\020\001\022\n\n\006WEIXIN\020\002\022\n\n\006ALIPAY\020\003\022\t\n\005M" +
+      "IPAY\020\004\022\n\n\006SYSTEM\020\005\022\013\n\007OPERATE\020\006\022\n\n\006DIREC" +
+      "T\020\007\022\010\n\004PAYU\020\010\022\n\n\006PAYPAU\020\t\022\013\n\007GO_PLAY\020\n\022\n" +
+      "\n\006PAYPAL\020\013\022\014\n\010MIWALLET\020\014\022\t\n\005PAYTM\020\r\022\020\n\014C" +
+      "ODA_IDR_DCB\020\016\022\020\n\014CODA_IDR_ATM\020\017*M\n\014Withd" +
+      "rawType\022\023\n\017ALIPAY_WITHDRAW\020\001\022\023\n\017WEIXIN_W" +
+      "ITHDRAW\020\002\022\023\n\017PAYPAL_WITHDRAW\020\003*c\n\007ActTyp" +
+      "e\022\031\n\025NEWMAN_FIRST_RECHARGE\020\001\022\026\n\022RECHARGE" +
+      "_CNT_LIMIT\020\002\022\031\n\025RECHARGE_PERIOD_LIMIT\020\003\022",
+      "\n\n\006NORMAL\020\004*>\n\007AppType\022\t\n\005ZHIBO\020\000\022\021\n\rZHI" +
+      "BO_ZHUSHOU\020\001\022\025\n\021ZHIBO_ZHUSHOU_AAR\020\002*\"\n\nN" +
+      "otifyType\022\t\n\005TOAST\020\001\022\t\n\005ALERT\020\002*\036\n\tGrant" +
+      "Type\022\010\n\004CARD\020\001\022\007\n\003GEM\020\002B\037\n\023com.wali.live" +
+      ".protoB\010PayProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_QueryAccountRequest_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_QueryAccountRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_QueryAccountRequest_descriptor,
-              new java.lang.String[] { "Uuid", "Platform", });
-          internal_static_QueryAccountResponse_descriptor =
-            getDescriptor().getMessageTypes().get(1);
-          internal_static_QueryAccountResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_QueryAccountResponse_descriptor,
-              new java.lang.String[] { "RetCode", "UsableGemCnt", "ConsumGemCnt", "UsableTicketCnt", "TotalTicketCnt", "RankTopThreeList", });
-          internal_static_ConsumGemRequest_descriptor =
-            getDescriptor().getMessageTypes().get(2);
-          internal_static_ConsumGemRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ConsumGemRequest_descriptor,
-              new java.lang.String[] { "Uuid", "OutOrderId", "GiftId", "ConsumGemCnt", "ReceiverId", "GiveTicketCnt", "Platform", });
-          internal_static_ConsumGemResponse_descriptor =
-            getDescriptor().getMessageTypes().get(3);
-          internal_static_ConsumGemResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ConsumGemResponse_descriptor,
-              new java.lang.String[] { "RetCode", "UsableGemCnt", "Timestamp", });
-          internal_static_GetGemPriceRequest_descriptor =
-            getDescriptor().getMessageTypes().get(4);
-          internal_static_GetGemPriceRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetGemPriceRequest_descriptor,
-              new java.lang.String[] { "Uuid", "Platform", "Channel", });
-          internal_static_GemGoods_descriptor =
-            getDescriptor().getMessageTypes().get(5);
-          internal_static_GemGoods_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GemGoods_descriptor,
-              new java.lang.String[] { "GoodsId", "GemCnt", "Price", "GiveGemCnt", "MaxBuyTimes", "BeginTime", "EndTime", "Subtitle", "Icon", "ActType", });
-          internal_static_GetGemPriceResponse_descriptor =
-            getDescriptor().getMessageTypes().get(6);
-          internal_static_GetGemPriceResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetGemPriceResponse_descriptor,
-              new java.lang.String[] { "RetCode", "UsableGemCnt", "GemGoodsList", "NotifyType", "Msg", "ExchangeableGemCnt", "ExpireVirtualGemCnt", "ExpireGiftCardCnt", "UsableVirtualGemCnt", "Amount", });
-          internal_static_RechargeDayAmount_descriptor =
-            getDescriptor().getMessageTypes().get(7);
-          internal_static_RechargeDayAmount_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_RechargeDayAmount_descriptor,
-              new java.lang.String[] { "WxpayAmount", "MiwalletAmount", });
-          internal_static_CreateOrderRequest_descriptor =
-            getDescriptor().getMessageTypes().get(8);
-          internal_static_CreateOrderRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_CreateOrderRequest_descriptor,
-              new java.lang.String[] { "Uuid", "Platform", "GoodsId", "GemCnt", "Price", "PayType", "Channel", "GiveGemCnt", "AppChannel", "AppType", });
-          internal_static_CreateOrderResponse_descriptor =
-            getDescriptor().getMessageTypes().get(9);
-          internal_static_CreateOrderResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_CreateOrderResponse_descriptor,
-              new java.lang.String[] { "RetCode", "OrderId", "UserInfo", "NotifyType", "Msg", });
-          internal_static_CheckOrderRequest_descriptor =
-            getDescriptor().getMessageTypes().get(10);
-          internal_static_CheckOrderRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_CheckOrderRequest_descriptor,
-              new java.lang.String[] { "Uuid", "Platform", "OrderId", "Puid", "Receipt", "TransactionId", });
-          internal_static_CheckOrderResponse_descriptor =
-            getDescriptor().getMessageTypes().get(11);
-          internal_static_CheckOrderResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_CheckOrderResponse_descriptor,
-              new java.lang.String[] { "RetCode", "UsableGemCnt", });
-          internal_static_QueryProfitRequest_descriptor =
-            getDescriptor().getMessageTypes().get(12);
-          internal_static_QueryProfitRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_QueryProfitRequest_descriptor,
-              new java.lang.String[] { "Uuid", "Platform", });
-          internal_static_AliPay_descriptor =
-            getDescriptor().getMessageTypes().get(13);
-          internal_static_AliPay_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_AliPay_descriptor,
-              new java.lang.String[] { "Account", "RealName", "MaxCashCntOnetime", });
-          internal_static_WeixinPay_descriptor =
-            getDescriptor().getMessageTypes().get(14);
-          internal_static_WeixinPay_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_WeixinPay_descriptor,
-              new java.lang.String[] { "UserName", "Headimgurl", "Vertification", "Unionid", });
-          internal_static_PaypalPay_descriptor =
-            getDescriptor().getMessageTypes().get(15);
-          internal_static_PaypalPay_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_PaypalPay_descriptor,
-              new java.lang.String[] { "Account", "Firstname", "Lastname", "Vertification", });
-          internal_static_QueryProfitResponse_descriptor =
-            getDescriptor().getMessageTypes().get(16);
-          internal_static_QueryProfitResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_QueryProfitResponse_descriptor,
-              new java.lang.String[] { "RetCode", "UsableTicketCnt", "ExchangeCashCnt", "ExchangeCashTodayCnt", "Alipay", "AccountStatus", "MaxCashCntTimes", "Wxpay", "NotifyType", "Msg", "Paypal", "ExchangeUsdCashCnt", "ExchangeUsdCashTodayCnt", "ExchangeMinCashCntOnetime", "ExchangeMinUsdCashCntOnetime", "ExchangeMaxCashCntOnetime", "ExchangeMaxUsdCashCntOnetime", "SignStatus", "RedirectUrl", "FrozenUsableTicketCnt", "UsableMibiTicketCnt", "ClearMibiTicketCnt", "MonthlyWithdrawAmount", "RemainNotaxQuota", "ClearCashCnt", "ClearUsdCashCnt", "TicketCashCnt", "TicketUsdCashCnt", "GameTicketCashCnt", "GameTicketUsdCashCnt", });
-          internal_static_GetExchangeRequest_descriptor =
-            getDescriptor().getMessageTypes().get(17);
-          internal_static_GetExchangeRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetExchangeRequest_descriptor,
-              new java.lang.String[] { "Uuid", "Platform", });
-          internal_static_GemExchange_descriptor =
-            getDescriptor().getMessageTypes().get(18);
-          internal_static_GemExchange_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GemExchange_descriptor,
-              new java.lang.String[] { "ExchangeId", "GemCnt", "TicketCnt", "GiveGemCnt", "Subtitle", "BeginTime", "EndTime", "GoldGemCnt", "VirtualGemCnt", });
-          internal_static_GetExchangeResponse_descriptor =
-            getDescriptor().getMessageTypes().get(19);
-          internal_static_GetExchangeResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetExchangeResponse_descriptor,
-              new java.lang.String[] { "RetCode", "UsableGemCnt", "GemExchangeList", "UasbleTicketCnt", "NotifyType", "Msg", "UsableGameTicketCnt", });
-          internal_static_ExchangeGemRequest_descriptor =
-            getDescriptor().getMessageTypes().get(20);
-          internal_static_ExchangeGemRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ExchangeGemRequest_descriptor,
-              new java.lang.String[] { "Uuid", "ClientId", "ExchangeId", "GemCnt", "TichketCnt", "GiveGemCnt", "Platform", });
-          internal_static_ExchangeGemResponse_descriptor =
-            getDescriptor().getMessageTypes().get(21);
-          internal_static_ExchangeGemResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ExchangeGemResponse_descriptor,
-              new java.lang.String[] { "RetCode", "UsableGemCnt", "UsableTicketCnt", });
-          internal_static_WithdrawRequest_descriptor =
-            getDescriptor().getMessageTypes().get(22);
-          internal_static_WithdrawRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_WithdrawRequest_descriptor,
-              new java.lang.String[] { "Uuid", "ClientId", "WithdrawAmount", "ConsumTicketCnt", "WithdrawType", "Platform", "ChannelId", "Unionid", "NeedRealResule", });
-          internal_static_WithdrawResponse_descriptor =
-            getDescriptor().getMessageTypes().get(23);
-          internal_static_WithdrawResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_WithdrawResponse_descriptor,
-              new java.lang.String[] { "RetCode", "UsableTicketCnt", "ExchangeCashCnt", "TodayExchangeCashCnt", "NotifyType", "Msg", });
-          internal_static_WithdrawRecordRequest_descriptor =
-            getDescriptor().getMessageTypes().get(24);
-          internal_static_WithdrawRecordRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_WithdrawRecordRequest_descriptor,
-              new java.lang.String[] { "Uuid", "ItemId", "Limit", });
-          internal_static_WithdrawRecord_descriptor =
-            getDescriptor().getMessageTypes().get(25);
-          internal_static_WithdrawRecord_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_WithdrawRecord_descriptor,
-              new java.lang.String[] { "ItemId", "Amount", "Timestamp", "Status", "ItemKey", "StatusMsg", "OrtherCurrencyAmount", "WithdrawType", });
-          internal_static_WithdrawRecordResponse_descriptor =
-            getDescriptor().getMessageTypes().get(26);
-          internal_static_WithdrawRecordResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_WithdrawRecordResponse_descriptor,
-              new java.lang.String[] { "RetCode", "WithdrawRecords", });
-          internal_static_BindRequest_descriptor =
-            getDescriptor().getMessageTypes().get(27);
-          internal_static_BindRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_BindRequest_descriptor,
-              new java.lang.String[] { "Uuid", "RealName", "Account", "CardId", "OauthCode", "Type", "PaypalAccount", "PaypalFirstname", "PaypalLastname", });
-          internal_static_BindResponse_descriptor =
-            getDescriptor().getMessageTypes().get(28);
-          internal_static_BindResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_BindResponse_descriptor,
-              new java.lang.String[] { "RetCode", "Openid", "Alipay", "Wxpay", "Paypal", });
-          internal_static_AuthAndWithdrawRequest_descriptor =
-            getDescriptor().getMessageTypes().get(29);
-          internal_static_AuthAndWithdrawRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_AuthAndWithdrawRequest_descriptor,
-              new java.lang.String[] { "Uuid", "RealName", "Account", "CardId", "OauthCode", "Type", "Platform", });
-          internal_static_AuthAndWithdrawResponse_descriptor =
-            getDescriptor().getMessageTypes().get(30);
-          internal_static_AuthAndWithdrawResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_AuthAndWithdrawResponse_descriptor,
-              new java.lang.String[] { "RetCode", "Openid", "Alipay", "Wxpay", });
-          internal_static_GetRankListRequest_descriptor =
-            getDescriptor().getMessageTypes().get(31);
-          internal_static_GetRankListRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetRankListRequest_descriptor,
-              new java.lang.String[] { });
-          internal_static_GetRankListResponse_descriptor =
-            getDescriptor().getMessageTypes().get(32);
-          internal_static_GetRankListResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetRankListResponse_descriptor,
-              new java.lang.String[] { });
-          internal_static_RedPointConfig_descriptor =
-            getDescriptor().getMessageTypes().get(33);
-          internal_static_RedPointConfig_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_RedPointConfig_descriptor,
-              new java.lang.String[] { "StartTime", "EndTime", "Uniq", });
-          internal_static_GetRedPointConfigRequest_descriptor =
-            getDescriptor().getMessageTypes().get(34);
-          internal_static_GetRedPointConfigRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetRedPointConfigRequest_descriptor,
-              new java.lang.String[] { "Type", "Uniq", });
-          internal_static_GetRedPointConfigResponse_descriptor =
-            getDescriptor().getMessageTypes().get(35);
-          internal_static_GetRedPointConfigResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetRedPointConfigResponse_descriptor,
-              new java.lang.String[] { "RetCode", "Config", });
-          internal_static_GiftCard_descriptor =
-            getDescriptor().getMessageTypes().get(36);
-          internal_static_GiftCard_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GiftCard_descriptor,
-              new java.lang.String[] { "GiftId", "GiftCardCnt", "BeginTime", "EndTime", "ActiveId", });
-          internal_static_PayPush_descriptor =
-            getDescriptor().getMessageTypes().get(37);
-          internal_static_PayPush_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_PayPush_descriptor,
-              new java.lang.String[] { "RetCode", "OrderId", "UsableGemCnt", });
-          internal_static_GiftCardPush_descriptor =
-            getDescriptor().getMessageTypes().get(38);
-          internal_static_GiftCardPush_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GiftCardPush_descriptor,
-              new java.lang.String[] { "RetCode", "GiftCards", "IosUsableGemCnt", "AndUsableGemCnt", "UserAssetTimestamp", "UsableVirtualGemCnt", });
-          internal_static_QueryBalanceDetailRequest_descriptor =
-            getDescriptor().getMessageTypes().get(39);
-          internal_static_QueryBalanceDetailRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_QueryBalanceDetailRequest_descriptor,
-              new java.lang.String[] { "Uuid", "Platform", });
-          internal_static_QueryBalanceDetailResponse_descriptor =
-            getDescriptor().getMessageTypes().get(40);
-          internal_static_QueryBalanceDetailResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_QueryBalanceDetailResponse_descriptor,
-              new java.lang.String[] { "RetCode", "RealGemCnt", "VirtualGemList", "GiftCardList", "UsableVirtualGemCnt", "History", });
-          internal_static_VirtualGem_descriptor =
-            getDescriptor().getMessageTypes().get(41);
-          internal_static_VirtualGem_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_VirtualGem_descriptor,
-              new java.lang.String[] { "VirtualGemCnt", "BeginTime", "EndTime", });
-          internal_static_ExpireOrderHistoryRecord_descriptor =
-            getDescriptor().getMessageTypes().get(42);
-          internal_static_ExpireOrderHistoryRecord_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ExpireOrderHistoryRecord_descriptor,
-              new java.lang.String[] { "Cards", "Gems", });
-          internal_static_ExpireOrderRecord_descriptor =
-            getDescriptor().getMessageTypes().get(43);
-          internal_static_ExpireOrderRecord_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ExpireOrderRecord_descriptor,
-              new java.lang.String[] { "OrderId", "Uuid", "GiftId", "GiftCnt", "WorthGem", "BeginTime", "EndTime", "ExpireType", "CreateTime", "Status", "Type", });
-          internal_static_YzbGemExchange_descriptor =
-            getDescriptor().getMessageTypes().get(44);
-          internal_static_YzbGemExchange_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_YzbGemExchange_descriptor,
-              new java.lang.String[] { "ExchangeId", "GemCnt", "YzbTicket", });
-          internal_static_YzbExchageListRequest_descriptor =
-            getDescriptor().getMessageTypes().get(45);
-          internal_static_YzbExchageListRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_YzbExchageListRequest_descriptor,
-              new java.lang.String[] { "UserId", "Platform", });
-          internal_static_YzbExchageListResponse_descriptor =
-            getDescriptor().getMessageTypes().get(46);
-          internal_static_YzbExchageListResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_YzbExchageListResponse_descriptor,
-              new java.lang.String[] { "RetCode", "GemExchanges", });
-          internal_static_YzbExchangeRequest_descriptor =
-            getDescriptor().getMessageTypes().get(47);
-          internal_static_YzbExchangeRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_YzbExchangeRequest_descriptor,
-              new java.lang.String[] { "YzbOrderId", "UserId", "ExchangeId", "Timestamp", "Count", "Platform", "PackageName", });
-          internal_static_YzbExchangeResponse_descriptor =
-            getDescriptor().getMessageTypes().get(48);
-          internal_static_YzbExchangeResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_YzbExchangeResponse_descriptor,
-              new java.lang.String[] { "RetCode", "RetMsg", "UsableGemCnt", "UserAssetTimestamp", "YzbTicket", });
-          internal_static_RechargeRecordRequest_descriptor =
-            getDescriptor().getMessageTypes().get(49);
-          internal_static_RechargeRecordRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_RechargeRecordRequest_descriptor,
-              new java.lang.String[] { "Uuid", "Platform", });
-          internal_static_ProfitRecordResponse_descriptor =
-            getDescriptor().getMessageTypes().get(50);
-          internal_static_ProfitRecordResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ProfitRecordResponse_descriptor,
-              new java.lang.String[] { "RetCode", "IncomeProfitRMB", "IncomeProfitDollar", "CostProfitRMB", "CostProfitDollar", "ProfitDayDetails", });
-          internal_static_ProfitRecordRequest_descriptor =
-            getDescriptor().getMessageTypes().get(51);
-          internal_static_ProfitRecordRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ProfitRecordRequest_descriptor,
-              new java.lang.String[] { "Uuid", "Year", "Month", });
-          internal_static_ProfitDayDetail_descriptor =
-            getDescriptor().getMessageTypes().get(52);
-          internal_static_ProfitDayDetail_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ProfitDayDetail_descriptor,
-              new java.lang.String[] { "Day", "ProfitDayDetailInfo", });
-          internal_static_ProfitDayDetailInfo_descriptor =
-            getDescriptor().getMessageTypes().get(53);
-          internal_static_ProfitDayDetailInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ProfitDayDetailInfo_descriptor,
-              new java.lang.String[] { "SourceType", "ProfitType", "ProfitChangeRMB", "ProfitChangeDollar", "Language", });
-          internal_static_Languages_descriptor =
-            getDescriptor().getMessageTypes().get(54);
-          internal_static_Languages_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_Languages_descriptor,
-              new java.lang.String[] { "LanguageCode", "Text", });
-          internal_static_RechargeRecord_descriptor =
-            getDescriptor().getMessageTypes().get(55);
-          internal_static_RechargeRecord_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_RechargeRecord_descriptor,
-              new java.lang.String[] { "ItemId", "GemCnt", "Amount", "Timestamp", "Status", "OrderId", "PayType", "Platform", });
-          internal_static_RechargeRecordResponse_descriptor =
-            getDescriptor().getMessageTypes().get(56);
-          internal_static_RechargeRecordResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_RechargeRecordResponse_descriptor,
-              new java.lang.String[] { "RetCode", "RechargeRecords", });
-          return null;
-        }
-      };
+        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            return null;
+          }
+        };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
+    internal_static_QueryAccountRequest_descriptor =
+      getDescriptor().getMessageTypes().get(0);
+    internal_static_QueryAccountRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_QueryAccountRequest_descriptor,
+        new java.lang.String[] { "Uuid", "Platform", });
+    internal_static_QueryAccountResponse_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_QueryAccountResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_QueryAccountResponse_descriptor,
+        new java.lang.String[] { "RetCode", "UsableGemCnt", "ConsumGemCnt", "UsableTicketCnt", "TotalTicketCnt", "RankTopThreeList", });
+    internal_static_ConsumGemRequest_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_ConsumGemRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ConsumGemRequest_descriptor,
+        new java.lang.String[] { "Uuid", "OutOrderId", "GiftId", "ConsumGemCnt", "ReceiverId", "GiveTicketCnt", "Platform", });
+    internal_static_ConsumGemResponse_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_ConsumGemResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ConsumGemResponse_descriptor,
+        new java.lang.String[] { "RetCode", "UsableGemCnt", "Timestamp", });
+    internal_static_GetGemPriceRequest_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_GetGemPriceRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetGemPriceRequest_descriptor,
+        new java.lang.String[] { "Uuid", "Platform", "Channel", });
+    internal_static_GemGoods_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_GemGoods_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GemGoods_descriptor,
+        new java.lang.String[] { "GoodsId", "GemCnt", "Price", "GiveGemCnt", "MaxBuyTimes", "BeginTime", "EndTime", "Subtitle", "Icon", "ActType", });
+    internal_static_GetGemPriceResponse_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_GetGemPriceResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetGemPriceResponse_descriptor,
+        new java.lang.String[] { "RetCode", "UsableGemCnt", "GemGoodsList", "NotifyType", "Msg", "ExchangeableGemCnt", "ExpireVirtualGemCnt", "ExpireGiftCardCnt", "UsableVirtualGemCnt", "Amount", });
+    internal_static_RechargeDayAmount_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_RechargeDayAmount_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_RechargeDayAmount_descriptor,
+        new java.lang.String[] { "WxpayAmount", "MiwalletAmount", });
+    internal_static_CreateOrderRequest_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_CreateOrderRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_CreateOrderRequest_descriptor,
+        new java.lang.String[] { "Uuid", "Platform", "GoodsId", "GemCnt", "Price", "PayType", "Channel", "GiveGemCnt", "AppChannel", "AppType", });
+    internal_static_CreateOrderResponse_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_CreateOrderResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_CreateOrderResponse_descriptor,
+        new java.lang.String[] { "RetCode", "OrderId", "UserInfo", "NotifyType", "Msg", });
+    internal_static_CheckOrderRequest_descriptor =
+      getDescriptor().getMessageTypes().get(10);
+    internal_static_CheckOrderRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_CheckOrderRequest_descriptor,
+        new java.lang.String[] { "Uuid", "Platform", "OrderId", "Puid", "Receipt", "TransactionId", });
+    internal_static_CheckOrderResponse_descriptor =
+      getDescriptor().getMessageTypes().get(11);
+    internal_static_CheckOrderResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_CheckOrderResponse_descriptor,
+        new java.lang.String[] { "RetCode", "UsableGemCnt", });
+    internal_static_QueryProfitRequest_descriptor =
+      getDescriptor().getMessageTypes().get(12);
+    internal_static_QueryProfitRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_QueryProfitRequest_descriptor,
+        new java.lang.String[] { "Uuid", "Platform", });
+    internal_static_AliPay_descriptor =
+      getDescriptor().getMessageTypes().get(13);
+    internal_static_AliPay_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_AliPay_descriptor,
+        new java.lang.String[] { "Account", "RealName", "MaxCashCntOnetime", });
+    internal_static_WeixinPay_descriptor =
+      getDescriptor().getMessageTypes().get(14);
+    internal_static_WeixinPay_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_WeixinPay_descriptor,
+        new java.lang.String[] { "UserName", "Headimgurl", "Vertification", "Unionid", });
+    internal_static_PaypalPay_descriptor =
+      getDescriptor().getMessageTypes().get(15);
+    internal_static_PaypalPay_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_PaypalPay_descriptor,
+        new java.lang.String[] { "Account", "Firstname", "Lastname", "Vertification", });
+    internal_static_QueryProfitResponse_descriptor =
+      getDescriptor().getMessageTypes().get(16);
+    internal_static_QueryProfitResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_QueryProfitResponse_descriptor,
+        new java.lang.String[] { "RetCode", "UsableTicketCnt", "ExchangeCashCnt", "ExchangeCashTodayCnt", "Alipay", "AccountStatus", "MaxCashCntTimes", "Wxpay", "NotifyType", "Msg", "Paypal", "ExchangeUsdCashCnt", "ExchangeUsdCashTodayCnt", "ExchangeMinCashCntOnetime", "ExchangeMinUsdCashCntOnetime", "ExchangeMaxCashCntOnetime", "ExchangeMaxUsdCashCntOnetime", "SignStatus", "RedirectUrl", "FrozenUsableTicketCnt", "UsableMibiTicketCnt", "ClearMibiTicketCnt", "MonthlyWithdrawAmount", "RemainNotaxQuota", "ClearCashCnt", "ClearUsdCashCnt", "TicketCashCnt", "TicketUsdCashCnt", "GameTicketCashCnt", "GameTicketUsdCashCnt", });
+    internal_static_GetExchangeRequest_descriptor =
+      getDescriptor().getMessageTypes().get(17);
+    internal_static_GetExchangeRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetExchangeRequest_descriptor,
+        new java.lang.String[] { "Uuid", "Platform", });
+    internal_static_GemExchange_descriptor =
+      getDescriptor().getMessageTypes().get(18);
+    internal_static_GemExchange_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GemExchange_descriptor,
+        new java.lang.String[] { "ExchangeId", "GemCnt", "TicketCnt", "GiveGemCnt", "Subtitle", "BeginTime", "EndTime", "GoldGemCnt", "VirtualGemCnt", });
+    internal_static_GetExchangeResponse_descriptor =
+      getDescriptor().getMessageTypes().get(19);
+    internal_static_GetExchangeResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetExchangeResponse_descriptor,
+        new java.lang.String[] { "RetCode", "UsableGemCnt", "GemExchangeList", "UasbleTicketCnt", "NotifyType", "Msg", "UsableGameTicketCnt", });
+    internal_static_ExchangeGemRequest_descriptor =
+      getDescriptor().getMessageTypes().get(20);
+    internal_static_ExchangeGemRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ExchangeGemRequest_descriptor,
+        new java.lang.String[] { "Uuid", "ClientId", "ExchangeId", "GemCnt", "TichketCnt", "GiveGemCnt", "Platform", });
+    internal_static_ExchangeGemResponse_descriptor =
+      getDescriptor().getMessageTypes().get(21);
+    internal_static_ExchangeGemResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ExchangeGemResponse_descriptor,
+        new java.lang.String[] { "RetCode", "UsableGemCnt", "UsableTicketCnt", });
+    internal_static_WithdrawRequest_descriptor =
+      getDescriptor().getMessageTypes().get(22);
+    internal_static_WithdrawRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_WithdrawRequest_descriptor,
+        new java.lang.String[] { "Uuid", "ClientId", "WithdrawAmount", "ConsumTicketCnt", "WithdrawType", "Platform", "ChannelId", "Unionid", "NeedRealResule", });
+    internal_static_WithdrawResponse_descriptor =
+      getDescriptor().getMessageTypes().get(23);
+    internal_static_WithdrawResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_WithdrawResponse_descriptor,
+        new java.lang.String[] { "RetCode", "UsableTicketCnt", "ExchangeCashCnt", "TodayExchangeCashCnt", "NotifyType", "Msg", });
+    internal_static_WithdrawRecordRequest_descriptor =
+      getDescriptor().getMessageTypes().get(24);
+    internal_static_WithdrawRecordRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_WithdrawRecordRequest_descriptor,
+        new java.lang.String[] { "Uuid", "ItemId", "Limit", });
+    internal_static_WithdrawRecord_descriptor =
+      getDescriptor().getMessageTypes().get(25);
+    internal_static_WithdrawRecord_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_WithdrawRecord_descriptor,
+        new java.lang.String[] { "ItemId", "Amount", "Timestamp", "Status", "ItemKey", "StatusMsg", "OrtherCurrencyAmount", "WithdrawType", });
+    internal_static_WithdrawRecordResponse_descriptor =
+      getDescriptor().getMessageTypes().get(26);
+    internal_static_WithdrawRecordResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_WithdrawRecordResponse_descriptor,
+        new java.lang.String[] { "RetCode", "WithdrawRecords", });
+    internal_static_BindRequest_descriptor =
+      getDescriptor().getMessageTypes().get(27);
+    internal_static_BindRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_BindRequest_descriptor,
+        new java.lang.String[] { "Uuid", "RealName", "Account", "CardId", "OauthCode", "Type", "PaypalAccount", "PaypalFirstname", "PaypalLastname", });
+    internal_static_BindResponse_descriptor =
+      getDescriptor().getMessageTypes().get(28);
+    internal_static_BindResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_BindResponse_descriptor,
+        new java.lang.String[] { "RetCode", "Openid", "Alipay", "Wxpay", "Paypal", });
+    internal_static_AuthAndWithdrawRequest_descriptor =
+      getDescriptor().getMessageTypes().get(29);
+    internal_static_AuthAndWithdrawRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_AuthAndWithdrawRequest_descriptor,
+        new java.lang.String[] { "Uuid", "RealName", "Account", "CardId", "OauthCode", "Type", "Platform", });
+    internal_static_AuthAndWithdrawResponse_descriptor =
+      getDescriptor().getMessageTypes().get(30);
+    internal_static_AuthAndWithdrawResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_AuthAndWithdrawResponse_descriptor,
+        new java.lang.String[] { "RetCode", "Openid", "Alipay", "Wxpay", });
+    internal_static_GetRankListRequest_descriptor =
+      getDescriptor().getMessageTypes().get(31);
+    internal_static_GetRankListRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetRankListRequest_descriptor,
+        new java.lang.String[] { });
+    internal_static_GetRankListResponse_descriptor =
+      getDescriptor().getMessageTypes().get(32);
+    internal_static_GetRankListResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetRankListResponse_descriptor,
+        new java.lang.String[] { });
+    internal_static_RedPointConfig_descriptor =
+      getDescriptor().getMessageTypes().get(33);
+    internal_static_RedPointConfig_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_RedPointConfig_descriptor,
+        new java.lang.String[] { "StartTime", "EndTime", "Uniq", });
+    internal_static_GetRedPointConfigRequest_descriptor =
+      getDescriptor().getMessageTypes().get(34);
+    internal_static_GetRedPointConfigRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetRedPointConfigRequest_descriptor,
+        new java.lang.String[] { "Type", "Uniq", });
+    internal_static_GetRedPointConfigResponse_descriptor =
+      getDescriptor().getMessageTypes().get(35);
+    internal_static_GetRedPointConfigResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetRedPointConfigResponse_descriptor,
+        new java.lang.String[] { "RetCode", "Config", });
+    internal_static_GiftCard_descriptor =
+      getDescriptor().getMessageTypes().get(36);
+    internal_static_GiftCard_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GiftCard_descriptor,
+        new java.lang.String[] { "GiftId", "GiftCardCnt", "BeginTime", "EndTime", "ActiveId", });
+    internal_static_PayPush_descriptor =
+      getDescriptor().getMessageTypes().get(37);
+    internal_static_PayPush_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_PayPush_descriptor,
+        new java.lang.String[] { "RetCode", "OrderId", "UsableGemCnt", });
+    internal_static_GiftCardPush_descriptor =
+      getDescriptor().getMessageTypes().get(38);
+    internal_static_GiftCardPush_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GiftCardPush_descriptor,
+        new java.lang.String[] { "RetCode", "GiftCards", "IosUsableGemCnt", "AndUsableGemCnt", "UserAssetTimestamp", "UsableVirtualGemCnt", });
+    internal_static_QueryBalanceDetailRequest_descriptor =
+      getDescriptor().getMessageTypes().get(39);
+    internal_static_QueryBalanceDetailRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_QueryBalanceDetailRequest_descriptor,
+        new java.lang.String[] { "Uuid", "Platform", });
+    internal_static_QueryBalanceDetailResponse_descriptor =
+      getDescriptor().getMessageTypes().get(40);
+    internal_static_QueryBalanceDetailResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_QueryBalanceDetailResponse_descriptor,
+        new java.lang.String[] { "RetCode", "RealGemCnt", "VirtualGemList", "GiftCardList", "UsableVirtualGemCnt", "History", });
+    internal_static_VirtualGem_descriptor =
+      getDescriptor().getMessageTypes().get(41);
+    internal_static_VirtualGem_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_VirtualGem_descriptor,
+        new java.lang.String[] { "VirtualGemCnt", "BeginTime", "EndTime", });
+    internal_static_ExpireOrderHistoryRecord_descriptor =
+      getDescriptor().getMessageTypes().get(42);
+    internal_static_ExpireOrderHistoryRecord_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ExpireOrderHistoryRecord_descriptor,
+        new java.lang.String[] { "Cards", "Gems", });
+    internal_static_ExpireOrderRecord_descriptor =
+      getDescriptor().getMessageTypes().get(43);
+    internal_static_ExpireOrderRecord_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ExpireOrderRecord_descriptor,
+        new java.lang.String[] { "OrderId", "Uuid", "GiftId", "GiftCnt", "WorthGem", "BeginTime", "EndTime", "ExpireType", "CreateTime", "Status", "Type", });
+    internal_static_YzbGemExchange_descriptor =
+      getDescriptor().getMessageTypes().get(44);
+    internal_static_YzbGemExchange_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_YzbGemExchange_descriptor,
+        new java.lang.String[] { "ExchangeId", "GemCnt", "YzbTicket", });
+    internal_static_YzbExchageListRequest_descriptor =
+      getDescriptor().getMessageTypes().get(45);
+    internal_static_YzbExchageListRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_YzbExchageListRequest_descriptor,
+        new java.lang.String[] { "UserId", "Platform", });
+    internal_static_YzbExchageListResponse_descriptor =
+      getDescriptor().getMessageTypes().get(46);
+    internal_static_YzbExchageListResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_YzbExchageListResponse_descriptor,
+        new java.lang.String[] { "RetCode", "GemExchanges", });
+    internal_static_YzbExchangeRequest_descriptor =
+      getDescriptor().getMessageTypes().get(47);
+    internal_static_YzbExchangeRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_YzbExchangeRequest_descriptor,
+        new java.lang.String[] { "YzbOrderId", "UserId", "ExchangeId", "Timestamp", "Count", "Platform", "PackageName", });
+    internal_static_YzbExchangeResponse_descriptor =
+      getDescriptor().getMessageTypes().get(48);
+    internal_static_YzbExchangeResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_YzbExchangeResponse_descriptor,
+        new java.lang.String[] { "RetCode", "RetMsg", "UsableGemCnt", "UserAssetTimestamp", "YzbTicket", });
+    internal_static_RechargeRecordRequest_descriptor =
+      getDescriptor().getMessageTypes().get(49);
+    internal_static_RechargeRecordRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_RechargeRecordRequest_descriptor,
+        new java.lang.String[] { "Uuid", "Platform", });
+    internal_static_ProfitRecordResponse_descriptor =
+      getDescriptor().getMessageTypes().get(50);
+    internal_static_ProfitRecordResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ProfitRecordResponse_descriptor,
+        new java.lang.String[] { "RetCode", "IncomeProfitRMB", "IncomeProfitDollar", "CostProfitRMB", "CostProfitDollar", "ProfitDayDetails", });
+    internal_static_ProfitRecordRequest_descriptor =
+      getDescriptor().getMessageTypes().get(51);
+    internal_static_ProfitRecordRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ProfitRecordRequest_descriptor,
+        new java.lang.String[] { "Uuid", "Year", "Month", });
+    internal_static_ProfitDayDetail_descriptor =
+      getDescriptor().getMessageTypes().get(52);
+    internal_static_ProfitDayDetail_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ProfitDayDetail_descriptor,
+        new java.lang.String[] { "Day", "ProfitDayDetailInfo", });
+    internal_static_ProfitDayDetailInfo_descriptor =
+      getDescriptor().getMessageTypes().get(53);
+    internal_static_ProfitDayDetailInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ProfitDayDetailInfo_descriptor,
+        new java.lang.String[] { "SourceType", "ProfitType", "ProfitChangeRMB", "ProfitChangeDollar", "Language", });
+    internal_static_Languages_descriptor =
+      getDescriptor().getMessageTypes().get(54);
+    internal_static_Languages_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_Languages_descriptor,
+        new java.lang.String[] { "LanguageCode", "Text", });
+    internal_static_RechargeRecord_descriptor =
+      getDescriptor().getMessageTypes().get(55);
+    internal_static_RechargeRecord_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_RechargeRecord_descriptor,
+        new java.lang.String[] { "ItemId", "GemCnt", "Amount", "Timestamp", "Status", "OrderId", "PayType", "Platform", });
+    internal_static_RechargeRecordResponse_descriptor =
+      getDescriptor().getMessageTypes().get(56);
+    internal_static_RechargeRecordResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_RechargeRecordResponse_descriptor,
+        new java.lang.String[] { "RetCode", "RechargeRecords", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

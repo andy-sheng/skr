@@ -306,7 +306,7 @@ public class OperationAnimManager {
      * @return
      */
     private static String getJsonPathIfResExist(File animationResFile, String jsonFileName) {
-        MyLog.d("zjnTest animationResFile:" + animationResFile + ", jsonFileName:" + jsonFileName);
+        MyLog.d("animationResFile:" + animationResFile + ", jsonFileName:" + jsonFileName);
         if (!animationResFile.exists()) {
             //文件夹都不存在，肯定没有资源
             MyLog.d(TAG, "zjnTest animationResFile is null");

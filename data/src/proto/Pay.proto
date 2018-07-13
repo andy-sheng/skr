@@ -19,6 +19,7 @@ enum RChannel {
     PAYTM_CH = 8; //paytm渠道
     CODA_IDR_DCB_CH = 9; //coda印尼短信渠道
     CODA_IDR_ATM_CH = 10; //coda印尼atm渠道
+    ACTIVITY_CH = 14;
 }
 
 //充值类型

@@ -71,6 +71,7 @@ import com.wali.live.event.UserActionEvent;
 import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.receiver.NetworkReceiver;
 import com.wali.live.receiver.PhoneStateReceiver;
+import com.wali.live.recharge.RechargeDirectPayFragment;
 import com.wali.live.recharge.view.RechargeFragment;
 import com.wali.live.utils.AppNetworkUtils;
 import com.wali.live.utils.AvatarUtils;
@@ -535,6 +536,16 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
      */
     public void goToRecharge() {
         mRechargeFragment = (RechargeFragment) FragmentNaviUtils.addFragment(this, R.id.main_act_container, RechargeFragment.class, null, true, true, true);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(com.wali.live.watchsdk.eventbus.EventClass.H5FirstPayEvent event) {
+        MyLog.d(TAG, "H5FirstPayEvent");
+        if(event == null) {
+            return;
+        }
+
+        RechargeDirectPayFragment.openFragment(this, R.id.main_act_container, event.gooid, event.gemCnt, event.giveGemCnt, event.goodPrice, event.payType, event.channel);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

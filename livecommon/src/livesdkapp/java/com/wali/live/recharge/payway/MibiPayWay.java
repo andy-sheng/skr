@@ -124,6 +124,7 @@ public class MibiPayWay implements IPayWay {
 //                                        showToast(getErrorMsgByErrorCode(code));
                                         StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
                                                 getRechargeTemplate(CANCEL, com.wali.live.pay.constant.PayWay.MIBI), TIMES, "1");
+                                        EventBus.getDefault().post(new EventClass.HideRechargeProgressEvent());
                                         break;
                                     case MiErrorCode.MI_XIAOMI_PAYMENT_ERROR_ACTION_EXECUTED:
                                         //操作正在进行中

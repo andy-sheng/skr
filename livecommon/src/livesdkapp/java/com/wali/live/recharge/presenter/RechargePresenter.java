@@ -201,6 +201,10 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                 });
     }
 
+    @MainThread
+    public void recharge(final Diamond goods, @NonNull final PayWay payWay) {
+        recharge(goods, payWay, null, null);
+    }
 
     /**
      * 充值
@@ -209,7 +213,7 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
      * @param payWay
      */
     @MainThread
-    public void recharge(final Diamond goods, @NonNull final PayWay payWay) {
+    public void recharge(final Diamond goods, @NonNull final PayWay payWay, final PayProto.RChannel channel, final PayProto.PayType paytype) {
         MyLog.w(TAG, "start buy diamond, payWay:" + payWay);
         Observable.just(0)
                 .doOnSubscribe(new Action0() {
@@ -231,7 +235,8 @@ public class RechargePresenter extends RxLifeCyclePresenter implements IRecharge
                 .map(new Func1<Object, PayProto.CreateOrderResponse>() {
                     @Override
                     public PayProto.CreateOrderResponse call(Object o) {
-                        return new CreateOrderRequest(goods, payWay.getPayType(), payWay.getChannel()).syncRsp();
+                        MyLog.d("goods to string:" + goods.toString());
+                        return new CreateOrderRequest(goods, paytype != null ? paytype : payWay.getPayType(), channel != null ? channel : payWay.getChannel()).syncRsp();
                     }
                 })
                 .flatMap(new Func1<PayProto.CreateOrderResponse, Observable<PayProto.CreateOrderResponse>>() {
