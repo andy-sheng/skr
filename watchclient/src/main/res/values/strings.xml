@@ -788,4 +788,6 @@
     <string name="report_success">举报成功</string>
     <string name="report_fail">举报失败</string>
 
+    <string name="barrage_send_pop_tip">主播好寂寞，\n快来撩一下~</string>
+
 </resources>

@@ -15,12 +15,14 @@ import com.base.dialog.MyAlertDialog;
 import com.base.event.KeyboardEvent;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.preference.PreferenceUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.data.LastBarrage;
+import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.push.event.BarrageMsgEvent;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
@@ -54,6 +56,7 @@ import java.util.Map;
 import java.util.Set;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -75,6 +78,9 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
 
     protected static final long CLEAR_BARRAGE_CACHE_INTERVAL = 12 * 60 * 60 * 1000;// 清理弹幕缓存的时间间隔
     protected static final int MSG_SEND_BARRAGE_COUNT_DOWN = 301;
+
+    protected static final int SHOW_BARRAGE_SEND_POP_TIME = 15 * 1000; // 每天第一次进入直播间且停留超过15秒没有发送弹幕 提示气泡
+    protected Runnable mShowBarragePopRunnable;
 
     protected static final Map<String, LastBarrage> mLastBarrageMap = new HashMap<>();
 
@@ -114,6 +120,8 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
             EventBus.getDefault().register(this);
         }
         getGroupDetailFromServer();
+
+        postShowBarragePopRunnable();
     }
 
     @Override
@@ -126,12 +134,104 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
         if (mSubscriptions != null) {
             mSubscriptions.clear();
         }
+
+        removeBarragePopCallback();
     }
 
     @Override
     public void destroy() {
         super.destroy();
         mUIHandler.removeCallbacksAndMessages(null);
+    }
+
+    private void checkIfShowBarragePop() {
+        Subscription subscription = rx.Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                long lastShowTime = PreferenceUtils.getSettingLong(PreferenceKeys.PRE_KEY_LAST_BARRAGE_POP_TIME, 0);
+
+                Date lastDate = new Date(lastShowTime);
+                Date nowDate = new Date();
+
+                subscriber.onNext(lastDate.getDate() != nowDate.getDate());
+                subscriber.onCompleted();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        MyLog.v(TAG, "get show pop time onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.e(TAG, e);
+                    }
+
+                    @Override
+                    public void onNext(Boolean show) {
+                        MyLog.v(TAG, "get show pop time onNext, result is " + show);
+                        if (show) {
+                            // 发送事件通知弹出气泡
+                            EventBus.getDefault().post(new EventClass.ShowBarragePopEvent());
+                        }
+                    }
+                });
+        mSubscriptions.add(subscription);
+    }
+
+    private void postShowBarragePopRunnable() {
+        if (mShowBarragePopRunnable == null) {
+            MyLog.d(TAG, "postdelay show pop runnable");
+            mShowBarragePopRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    checkIfShowBarragePop();
+                }
+            };
+            mUIHandler.postDelayed(mShowBarragePopRunnable, SHOW_BARRAGE_SEND_POP_TIME);
+        }
+    }
+
+    private void removeBarragePopCallback() {
+        if (mShowBarragePopRunnable != null) {
+            MyLog.d(TAG, "remove show pop runnable");
+            mUIHandler.removeCallbacks(mShowBarragePopRunnable);
+            mShowBarragePopRunnable = null;
+        }
+    }
+
+    private void setSendedBarrage() {
+        MyLog.d(TAG, "barrage sended, reset time and remove show pop runnable");
+        Subscription subscription = rx.Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                // 发送弹幕之后今日也无需再提示气泡
+                PreferenceUtils.setSettingLong(PreferenceKeys.PRE_KEY_LAST_BARRAGE_POP_TIME, System.currentTimeMillis());
+                subscriber.onCompleted();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+
+                    }
+                });
+        mSubscriptions.add(subscription);
+
+        removeBarragePopCallback();
     }
 
     private void getGroupDetailFromServer() {
@@ -308,6 +408,8 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
                 sendBarrageByType(msg, BarrageMsgType.B_MSG_TYPE_TEXT);
                 break;
         }
+
+        setSendedBarrage();
     }
 
     private void sendBarrageByType(String msg, int type) {

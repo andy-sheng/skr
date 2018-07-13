@@ -298,4 +298,11 @@ public abstract class EventClass {
      */
     public static class H5ExchangeEvent {
     }
+
+    /**
+     * 直播观众端展示发弹幕气泡
+     */
+    public static final class ShowBarragePopEvent {
+
+    }
 }
