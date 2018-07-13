@@ -13,6 +13,7 @@ import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
+import com.base.utils.display.DisplayUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.thornbirds.component.view.IOrientationListener;
 import com.thornbirds.component.view.IViewProxy;
@@ -112,11 +113,12 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         mMyInfoIconView = new MyInfoIconView(getContext());
         addCreatedView(mMyInfoIconView, R.id.my_info_btn);
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mMyInfoIconView.getLayoutParams();
-        layoutParams.setMargins(BTN_MARGIN, BTN_MARGIN, 0, BTN_MARGIN);
+        layoutParams.setMargins(BTN_MARGIN, BTN_MARGIN, 0,  DisplayUtils.dip2px(6.67f));
 
 
         mGiftFastSendView = createFastGiftView();
         addCreatedView(mGiftFastSendView, R.id.gift_fast_sent_container);
+
         if (mIsHuYaLive) {
             mGiftFastSendView.setVisibility(View.GONE);
         }
@@ -277,9 +279,17 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
                 mRotateBtn.setOnClickListener(this);
             }
             mRotateBtn.setVisibility(View.VISIBLE);
+            if (mMyInfoIconView != null) {
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mMyInfoIconView.getLayoutParams();
+                layoutParams.setMargins(BTN_MARGIN, BTN_MARGIN, 0,  BTN_MARGIN);
+            }
         } else {
             if (mRotateBtn != null) {
                 mRotateBtn.setVisibility(View.GONE);
+            }
+            if (mMyInfoIconView != null) {
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mMyInfoIconView.getLayoutParams();
+                layoutParams.setMargins(BTN_MARGIN, BTN_MARGIN, 0,  DisplayUtils.dip2px(6.67f));
             }
         }
         super.orientChild();

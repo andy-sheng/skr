@@ -158,6 +158,7 @@ public abstract class BaseBottomButton<PRESENTER, VIEW extends IViewProxy> imple
                     List<AlginParams> list = new ArrayList<>();
                     if (j != 0) {
                         list.add(new AlginParams(guardId, RelativeLayout.ABOVE, 0));
+                    }else{
                     }
                     list.add(new AlginParams(0, 0, RelativeLayout.ALIGN_PARENT_RIGHT));
                     alignViewToGuard(view2, list);

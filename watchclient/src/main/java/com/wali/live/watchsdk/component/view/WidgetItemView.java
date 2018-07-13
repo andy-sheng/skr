@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.component.view;
 
+import android.accounts.AccountManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -41,6 +42,7 @@ import com.facebook.imagepipeline.image.ImageInfo;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.jakewharton.rxbinding.view.RxView;
+import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.repository.GiftRepository;
 import com.trello.rxlifecycle.ActivityEvent;
@@ -51,6 +53,7 @@ import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.webview.InjectedWebViewClient;
 import com.wali.live.watchsdk.webview.LiveWebViewClient;
@@ -217,7 +220,9 @@ public class WidgetItemView extends LinearLayout {
                                 ToastUtils.showToast(R.string.no_net);
                                 return;
                             }
-
+                            if (!AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                                return;
+                            }
                             mIsCanClick = false;
                             GiftRepository.clickCounter(info.getWidgetID(), mPresenter.getUid(), mPresenter.getRoomId())
                                     .throttleFirst(3000, TimeUnit.MILLISECONDS)
