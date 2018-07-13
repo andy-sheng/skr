@@ -120,7 +120,7 @@ public class BarrageBtnView extends FrameLayout implements
         mBarrageBtnViewIv = $(R.id.barrage_btn_view_img);
         mBarrageBtnViewIv.setEnabled(false);
 
-        mBarrageBtnViewTv.setHint(getResources().getString(R.string.empty_edittext_hint));
+        mBarrageBtnViewTv.setText(getResources().getString(R.string.empty_edittext_hint));
         $click(mBarrageBtnViewTv, new OnClickListener() {
             @Override
             public void onClick(View view) {

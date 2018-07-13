@@ -11,6 +11,7 @@
         android:background="@drawable/milive_sdk_bubble_bg"
         android:textColor="@color/color_white"
         android:textSize="@dimen/text_size_39"
+        android:textStyle="bold"
         android:gravity="center"
         android:paddingBottom="@dimen/view_dimen_10"
         android:text="@string/barrage_send_pop_tip"/>
