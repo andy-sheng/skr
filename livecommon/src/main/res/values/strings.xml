@@ -350,4 +350,6 @@
     <string name="photo_select">选择</string>
     <string name="add_photo_pick_title">选择图片</string>
     <string name="unknown_error">对不起，服务器开小差了，请稍后重试</string>
+
+    <string name="clear_screen_btn_text">清屏</string>
 </resources>

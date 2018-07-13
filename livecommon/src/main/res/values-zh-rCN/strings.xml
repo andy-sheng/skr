@@ -323,4 +323,6 @@
     <string name="packet_count_not_enough">超过背包内礼物数量</string>
     <string name="copy_link">复制链接</string>
     <string name="copied_to_clipboard">已复制到剪贴板</string>
+
+    <string name="clear_screen_btn_text">清屏</string>
 </resources>

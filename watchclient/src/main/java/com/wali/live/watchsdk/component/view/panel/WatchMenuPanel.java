@@ -47,6 +47,7 @@ public class WatchMenuPanel extends BaseBottomPanel<RelativeLayout, RelativeLayo
     private WatchMenuItemView mMsgIv;
     private WatchMenuItemView mFansIv;
     private WatchMenuItemView mFeedBackIv;
+    private WatchMenuItemView mClearScreenIv;
 
     @Override
     public void onClick(View v) {
@@ -59,6 +60,8 @@ public class WatchMenuPanel extends BaseBottomPanel<RelativeLayout, RelativeLayo
             mPresenter.showVipFansView();
         } else if(i == R.id.feed_back_btn) {
             mPresenter.onFeedBackClick();
+        } else if(i == R.id.clear_screen) {
+
         }
     }
 
@@ -88,21 +91,30 @@ public class WatchMenuPanel extends BaseBottomPanel<RelativeLayout, RelativeLayo
     }
 
     private void initView() {
-        mMsgIv = createImageView(R.drawable.live_icon_msg_btn, R.string.private_message, R.id.msg_ctrl_btn);
-        mMsgIv.setUnread(mUnReadCnt);
-
+        // 私信按钮关闭
+//        mMsgIv = createImageView(R.drawable.live_icon_msg_btn, R.string.private_message, R.id.msg_ctrl_btn);
+//        mMsgIv.setUnread(mUnReadCnt);
 //        mBottomBtnSet.add(mMsgIv);
-        if (mEnableShare) {
-            mShareIv = createImageView(R.drawable.live_menu_share_btn, R.string.watch_share_btn, R.id.share_btn);
-            mBottomBtnSet.add(mShareIv);
-        }
+
+        // 清屏
+        mClearScreenIv = createImageView(R.drawable.live_icon_eliminate, R.string.clear_screen_btn_text,  R.id.clear_screen);
+        mBottomBtnSet.add(mClearScreenIv);
+
+        // 反馈
+        mFeedBackIv = createImageView(R.drawable.live_menu_feedback_btn, R.string.watch_feedback_btn, R.id.feed_back_btn);
+        mBottomBtnSet.add(mFeedBackIv);
+
+        // 粉丝团
         if (mEnableFans) {
             mFansIv = createImageView(R.drawable.menu_live_icon_pet, R.string.vfan_me, R.id.vip_fans_btn);
             mBottomBtnSet.add(mFansIv);
         }
 
-        mFeedBackIv = createImageView(R.drawable.live_menu_feedback_btn, R.string.watch_feedback_btn,R.id.feed_back_btn);
-        mBottomBtnSet.add(mFeedBackIv);
+        // 分享
+        if (mEnableShare) {
+            mShareIv = createImageView(R.drawable.live_menu_share_btn, R.string.watch_share_btn, R.id.share_btn);
+            mBottomBtnSet.add(mShareIv);
+        }
 
         orientChild();
         orientSelf();
