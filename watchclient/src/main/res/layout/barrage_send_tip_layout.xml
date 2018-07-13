@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="@dimen/view_dimen_424"
+    android:layout_height="@dimen/view_dimen_310">
+    <TextView
+        android:id="@+id/pop_text"
+        android:layout_width="@dimen/view_dimen_324"
+        android:layout_height="@dimen/view_dimen_160"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/milive_sdk_bubble_bg"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/text_size_39"
+        android:gravity="center"
+        android:paddingBottom="@dimen/view_dimen_10"
+        android:text="@string/barrage_send_pop_tip"/>
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/barrage_btn_bg_shining"
+        android:layout_width="@dimen/view_dimen_424"
+        android:layout_height="@dimen/view_dimen_110" 
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

@@ -306,7 +306,7 @@
     <string name="group_quiting_success">群退出成功</string>
     <string name="group_quiting_failed">群退出失败</string>
     <string name="fans_task_get_reword_fail">领取失败，请稍候重试</string>
-    <string name="empty_edittext_hint">跟大家说点什么</string>
+    <string name="empty_edittext_hint">和我聊聊吧…</string>
     <string name="vfans_vip_horn_hint">%1$d级宠爱团VIP专享免费%2$d条/天</string>
     <string name="vfans_free_horn_hint">今日剩余%d条免费飘屏</string>
     <string name="flybarrage_none">飘屏次数已达上限，发太多会影响用户观看直播哦。</string>
@@ -636,4 +636,5 @@
     <string name="install_weixin">未安装微信客户端，请先下载安装</string>
 
     <string name="channel_default_text_line1">%s的直播间</string>
+    <string name="barrage_send_pop_tip">主播好寂寞，\n快来撩一下~</string>
 </resources>

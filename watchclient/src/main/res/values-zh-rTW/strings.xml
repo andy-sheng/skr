@@ -306,7 +306,7 @@
     <string name="group_quiting_success">群組退出成功</string>
     <string name="group_quiting_failed">群組退出失敗</string>
     <string name="fans_task_get_reword_fail">領取失敗，請稍候重試</string>
-    <string name="empty_edittext_hint">跟大家說點什麼</string>
+    <string name="empty_edittext_hint">和我聊聊吧…</string>
     <string name="vfans_vip_horn_hint">%1$d級寵愛團VIP專享免費%2$d條/天</string>
     <string name="vfans_free_horn_hint">今日剩餘%d條免費飄屏</string>
     <string name="flybarrage_none">飄屏次數已達上限，發太多會影響使用者觀看直播哦。</string>
@@ -628,4 +628,6 @@
     <string name="lable_month">月</string>
     <string name="logining">登录中...</string>
     <string name="install_weixin">未安装微信客户端，请先下载安装</string>
+
+    <string name="barrage_send_pop_tip">主播好寂寞，\n快来撩一下~</string>
 </resources>
