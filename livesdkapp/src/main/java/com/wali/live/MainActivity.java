@@ -163,7 +163,7 @@ public class MainActivity extends BaseSdkActivity {
 
         List<TestItem> dataList = new ArrayList<>();
 
-        dataList.add(new TestItem("登陆", new Runnable() {
+        dataList.add(new TestItem("登录", new Runnable() {
 
             @Override
             public void run() {
