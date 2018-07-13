@@ -110,7 +110,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
     protected TopAreaView mTopAreaView;
     protected LiveCommentView mLiveCommentView;
     protected View mBarrageBtnView;
-//    protected BarrageControlAnimView mBarrageControlAnimView;
+    //    protected BarrageControlAnimView mBarrageControlAnimView;
     protected SuperLevelUserEnterAnimControlView mSuperLevelUserBarrageAnimView;
 
     protected GiftContinueViewGroup mGiftContinueViewGroup;
@@ -486,21 +486,21 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
     }
 
     private void start() {
-        if(mSuperLevelUserBarrageAnimPresenter != null) {
+        if (mSuperLevelUserBarrageAnimPresenter != null) {
             mSuperLevelUserBarrageAnimPresenter.start();
         }
     }
 
     private void destory() {
-        if(mSuperLevelUserBarrageAnimPresenter != null) {
+        if (mSuperLevelUserBarrageAnimPresenter != null) {
             mSuperLevelUserBarrageAnimPresenter.destroy();
         }
 
-        if(mNobleUserEnterAnimControlPresenter != null) {
+        if (mNobleUserEnterAnimControlPresenter != null) {
             mNobleUserEnterAnimControlPresenter.destroy();
         }
 
-        if(mWatchBigTurnTablePanelPresenter != null) {
+        if (mWatchBigTurnTablePanelPresenter != null) {
             mWatchBigTurnTablePanelPresenter.destroy();
         }
     }
@@ -532,7 +532,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
         mWatchBottomButton.reset();
         mTopAreaView.reset();
 
-        if(mSuperLevelUserBarrageAnimPresenter != null) {
+        if (mSuperLevelUserBarrageAnimPresenter != null) {
             mSuperLevelUserBarrageAnimPresenter.reset();
         }
     }
@@ -564,7 +564,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             if (CommonUtils.isNotchPhone() && !CommonUtils.isOpenHideNotch()) {
                 int toRight = CommonUtils.getStatusBarHeight();
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRotateBtn.getLayoutParams();
-                layoutParams.setMargins(0, 0, toRight, 0);
+                layoutParams.setMargins(0, toRight, layoutParams.rightMargin, 0);
                 mRotateBtn.setLayoutParams(layoutParams);
             }
 
@@ -637,7 +637,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                     mController.postEvent(MSG_HIDE_GAME_INPUT);
                 }
                 mTopAreaView.onOrientation(false);
-                if(mWatchBigTurnTablePanelPresenter != null) {
+                if (mWatchBigTurnTablePanelPresenter != null) {
                     mWatchBigTurnTablePanelPresenter.orientationChange(false);
                 }
                 updateRotateBtn();
@@ -652,7 +652,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                     mController.postEvent(MSG_SHOW_GAME_INPUT);
                 }
                 mTopAreaView.onOrientation(true);
-                if(mWatchBigTurnTablePanelPresenter != null) {
+                if (mWatchBigTurnTablePanelPresenter != null) {
                     mWatchBigTurnTablePanelPresenter.orientationChange(true);
                 }
                 updateRotateBtn();
@@ -748,7 +748,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 break;
             case MSG_SHOW_BIG_TURN_TABLE_BTN:
                 mTurnTableConfigModel = (TurnTableConfigModel) params.getItem(0);
-                if(mWatchBigTurnTablePanelPresenter != null) {
+                if (mWatchBigTurnTablePanelPresenter != null) {
                     mWatchBigTurnTablePanelPresenter.setTurnTableData(mTurnTableConfigModel);
                 }
                 break;

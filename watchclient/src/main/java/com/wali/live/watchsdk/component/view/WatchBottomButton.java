@@ -149,8 +149,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             mBigTurnTableBtn = createImageView(R.drawable.bg_big_turn_table_show);
             addCreatedView(mBigTurnTableBtn, R.id.big_turn_table_btn);
         }
-        mRightBtnSetPort.add(mBigTurnTableBtn);
         if (!mIsHuYaLive) {
+            mRightBtnSetPort.add(mBigTurnTableBtn);
             mBottomBtnSetLand.add(mBigTurnTableBtn);
         }
         orientChild();
@@ -159,9 +159,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     private void hideBigTurnTableBtn() {
         if (mBigTurnTableBtn != null) {
             mRightBtnSetPort.remove(mBigTurnTableBtn);
-            if (!mIsHuYaLive) {
-                mBottomBtnSetLand.remove(mBigTurnTableBtn);
-            }
+            mBottomBtnSetLand.remove(mBigTurnTableBtn);
             orientChild();
         }
     }
