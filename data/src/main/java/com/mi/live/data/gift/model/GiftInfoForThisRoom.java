@@ -80,4 +80,15 @@ public class GiftInfoForThisRoom {
             }
         }
     }
+
+    public void updateGiftCardInfoChange(GiftCard card, long ts) {
+        if (card != null) {
+
+            if (ts > updateGiftCardTs) {
+                put(card.getGiftId(), card);
+            }
+
+            updateGiftCardTs = ts;
+        }
+    }
 }

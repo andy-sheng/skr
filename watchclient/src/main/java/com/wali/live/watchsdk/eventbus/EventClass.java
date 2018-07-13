@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.eventbus;
 
 import android.support.annotation.NonNull;
 
+import com.mi.live.data.gift.model.GiftCard;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.wali.live.watchsdk.fans.adapter.FansMemberAdapter;
 
