@@ -193,6 +193,16 @@ public class SchemeConstants {
     public static final String PATH_PREPARE = "/prepare";
     public static final String PARAM_ZUID = "zuid";
 
+    public final static String PATH_DIRECT_PAY = "/directpay";
+    public final static String PARAM_UUID = "uuid";
+    public final static String PARAM_GOODS_ID = "goods_id";
+    public final static String PARAM_GEM_CNT = "gem_cnt";
+    public final static String PARAM_PRICE = "price";
+    public final static String PARAM_GIVE_GEM_CNT = "give_gem_cnt";
+    public final static String PARAM_TIMES = "times";
+    public final static String PARAM_PAY_TYPE = "paytype";
+    public final static String PARAM_PAY_CHANNEL = "channel";
+
     /**
      *SchemeConstants 和 SpecificConstants 添加的scheme和host都要在這裡添加一下。否則会被过滤掉导致ui上不被显示。
      */

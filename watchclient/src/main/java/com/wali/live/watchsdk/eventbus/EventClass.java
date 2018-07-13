@@ -240,4 +240,22 @@ public class EventClass {
             this.linkUrl = linkUrl;
         }
     }
+
+    public static class H5FirstPayEvent {
+        public int gooid;
+        public int gemCnt;
+        public int giveGemCnt;
+        public int goodPrice;
+        public int payType;
+        public int channel;
+
+        public H5FirstPayEvent(int gooid, int gemCnt, int giveGemCnt, int goodPrice, int payType, int channel) {
+            this.gooid = gooid;
+            this.gemCnt = gemCnt;
+            this.giveGemCnt = giveGemCnt;
+            this.goodPrice = goodPrice;
+            this.payType = payType;
+            this.channel = channel;
+        }
+    }
 }

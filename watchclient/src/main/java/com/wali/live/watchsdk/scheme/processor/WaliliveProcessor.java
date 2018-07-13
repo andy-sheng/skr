@@ -68,7 +68,12 @@ public class WaliliveProcessor extends CommonProcessor {
                 EventBus.getDefault().post(new EventClass.H5UnloginEvent());
                 break;
             case SchemeConstants.HOST_RECHARGE:
-                jumpToRechargeActivity(activity);
+                if (isLegalPath(uri, "processDirectPay", SchemeConstants.PATH_DIRECT_PAY)) {
+                    processRechargeDirectPay(uri, activity);
+                } else {
+                    jumpToRechargeActivity(activity);
+                }
+//                jumpToRechargeActivity(activity);
                 break;
             case SchemeConstants.HOST_CONTEST:
                 jumpToContestPrepare(uri, activity);
@@ -157,5 +162,18 @@ public class WaliliveProcessor extends CommonProcessor {
         }
         long zuid = SchemeUtils.getLong(uri, SchemeConstants.PARAM_ZUID, 0);
         ContestPrepareActivity.open(activity, zuid);
+    }
+
+    private static void processRechargeDirectPay(Uri uri, @NonNull Activity activity) {
+        long uuid = SchemeUtils.getLong(uri, SchemeConstants.PARAM_UUID, 0);
+        int goodId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_GOODS_ID, 0);
+        int gemCnt = SchemeUtils.getInt(uri, SchemeConstants.PARAM_GEM_CNT, 0);
+        int giveGemCnt = SchemeUtils.getInt(uri, SchemeConstants.PARAM_GIVE_GEM_CNT, 0);
+        int goodPrice = SchemeUtils.getInt(uri, SchemeConstants.PARAM_PRICE, 0);
+        int times = SchemeUtils.getInt(uri, SchemeConstants.PARAM_TIMES, 0);
+        int payType = SchemeUtils.getInt(uri, SchemeConstants.PARAM_PAY_TYPE, 0);
+        int channel = SchemeUtils.getInt(uri, SchemeConstants.PARAM_PAY_CHANNEL, -1);
+//        RechargeDirectPayActivity.openActivity(activity, uuid, goodId, gemCnt, giveGemCnt, goodPrice, times, payType, channel);
+        EventBus.getDefault().post(new com.wali.live.watchsdk.eventbus.EventClass.H5FirstPayEvent(goodId, gemCnt, giveGemCnt, goodPrice, payType, channel));
     }
 }
