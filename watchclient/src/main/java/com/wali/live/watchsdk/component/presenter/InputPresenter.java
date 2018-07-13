@@ -325,11 +325,11 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
             globalRoomMsgExt.getInnerGlobalRoomMessageExtList().add(ext);
         }
 
-        if(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_HUYA){
+        if (mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_HUYA) {
             long huyaAnchorId = mMyRoomData.getHuyaInfo() == null ? 0 : mMyRoomData.getHuyaInfo().getUuid();
             mLiveRoomChatMsgManager.sendHuyaBarrageMessageAsync(msg, type,
-                    mMyRoomData.getRoomId(), huyaAnchorId , mMyRoomData.getUid(), null, null, mMyRoomData.getLiveType(), globalRoomMsgExt, mMyRoomData.getHuyaInfo().getSource());
-        }else{
+                    mMyRoomData.getRoomId(), mMyRoomData.getUid(), huyaAnchorId, null, null, mMyRoomData.getLiveType(), globalRoomMsgExt, mMyRoomData.getHuyaInfo().getSource());
+        } else {
             mLiveRoomChatMsgManager.sendBarrageMessageAsync(msg, type,
                     mMyRoomData.getRoomId(), mMyRoomData.getUid(), null, null, globalRoomMsgExt);
         }

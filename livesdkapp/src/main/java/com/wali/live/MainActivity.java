@@ -13,20 +13,28 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.fragment.utils.FragmentNaviUtils;
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.channel.ReleaseChannelUtils;
 import com.base.utils.toast.ToastUtils;
+import com.base.utils.version.VersionManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.channel.HostChannelManager;
+import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.liveassistant.R;
+import com.mi.milink.sdk.base.debug.TraceLevel;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
@@ -52,6 +60,7 @@ import com.wali.live.watchsdk.webview.WebViewActivity;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -64,16 +73,12 @@ import rx.schedulers.Schedulers;
  * Created by lan on 16/11/25.
  */
 @Deprecated
-public class MainActivity extends BaseSdkActivity implements IChannelView, IChannelListView {
+public class MainActivity extends BaseSdkActivity {
     protected SwipeRefreshLayout mRefreshLayout;
     protected RecyclerView mRecyclerView;
     protected LinearLayoutManager mLayoutManager;
-    protected ChannelRecyclerAdapter mRecyclerAdapter;
-    protected EditText mInputEditText;
+    protected TestItemAdapter mTestItemAdapter;
 
-    protected ChannelListPresenter mChannelListPresenter;
-    protected IChannelPresenter mChannelPresenter;
-    //    protected long mChannelId = 20;
     protected LoginPresenter mLoginPresenter;
 
     @Override
@@ -82,7 +87,6 @@ public class MainActivity extends BaseSdkActivity implements IChannelView, IChan
         setContentView(R.layout.activity_main);
 
         initViews();
-        initPresenters();
         if (CommonUtils.isNeedShowCtaDialog()) {
             CTANotifyFragment.openFragment(this, android.R.id.content, new CTANotifyFragment.CTANotifyButtonClickListener() {
                 @Override
@@ -107,7 +111,6 @@ public class MainActivity extends BaseSdkActivity implements IChannelView, IChan
 
     private void syncDataFromServer() {
         syncGiftList();
-        getChannelFromServer();
     }
 
 
@@ -145,8 +148,8 @@ public class MainActivity extends BaseSdkActivity implements IChannelView, IChan
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                ChannelListRequest channelListRequest = new ChannelListRequest(0);
-                doRefresh();
+//                ChannelListRequest channelListRequest = new ChannelListRequest(0);
+//                doRefresh();
             }
         });
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -155,70 +158,68 @@ public class MainActivity extends BaseSdkActivity implements IChannelView, IChan
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mInputEditText = $(R.id.live_input_tv);
+        mTestItemAdapter = new TestItemAdapter();
+        mRecyclerView.setAdapter(mTestItemAdapter);
 
-        $(R.id.contest_prepare_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String input = mInputEditText.getText().toString();
-                if (CommonUtils.isNumeric(input)) {
-                    ContestPrepareActivity.open(MainActivity.this, Long.parseLong(input));
-                } else {
-                    ContestPrepareActivity.open(MainActivity.this, 0);
-                }
+        List<TestItem> dataList = new ArrayList<>();
 
-            }
-        });
-        $(R.id.watch_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String input = mInputEditText.getText().toString();
-                if (TextUtils.isEmpty(input)) {
-                    ToastUtils.showToast("主播id不能为空");
-                    return;
-                }
-                if (CommonUtils.isNumeric(input)) {
-                    RoomInfo roomInfo = RoomInfo.Builder.newInstance(Long.parseLong(input), null, null)
-                            .setLiveType(0)
-                            .setEnableRelationChain(false)
-                            .build();
-                    WatchSdkActivity.openActivity(MainActivity.this, roomInfo);
-                } else {
-                    ToastUtils.showToast("主播id不是数字");
-                }
-            }
-        });
+        dataList.add(new TestItem("登陆", new Runnable() {
 
-        $(R.id.show_live_tv).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (AccountAuthManager.triggerActionNeedAccount(MainActivity.this)) {
-                    LiveSdkActivity.openActivity(MainActivity.this, null, false, false);
-                }
-            }
-        });
-
-        $(R.id.game_live_tv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (AccountAuthManager.triggerActionNeedAccount(MainActivity.this)) {
-                    LiveSdkActivity.openActivity(MainActivity.this, null, false, true);
-                }
-            }
-        });
-
-        ($(R.id.login_tv)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            public void run() {
                 if (mLoginPresenter == null) {
                     mLoginPresenter = new LoginPresenter(MainActivity.this);
                 }
                 mLoginPresenter.miLogin(HostChannelManager.getInstance().getChannelId());
             }
-        });
-        ($(R.id.replay_tv)).setOnClickListener(new View.OnClickListener() {
+        }));
+
+
+        dataList.add(new TestItem("渠道版本", new Runnable() {
             @Override
-            public void onClick(View v) {
+            public void run() {
+                String info = String.format("渠道号%s,版本%s"
+                        , ReleaseChannelUtils.getReleaseChannel()
+                        , VersionManager.getCurrentVersionCode(GlobalData.app()));
+                ToastUtils.showToast(info);
+            }
+        }));
+
+        dataList.add(new TestItem("冲顶大会(废弃功能)", new Runnable() {
+            @Override
+            public void run() {
+                inputDialog("输入id","0", new InputSuccessCallback() {
+                    @Override
+                    public void inputSuccess(String input) {
+                        if (CommonUtils.isNumeric(input)) {
+                            ContestPrepareActivity.open(MainActivity.this, Long.parseLong(input));
+                        } else {
+                            ContestPrepareActivity.open(MainActivity.this, 0);
+                        }
+                    }
+                });
+            }
+        }));
+
+        dataList.add(new TestItem("跳到直播", new Runnable() {
+            @Override
+            public void run() {
+                inputDialog("输入主播id","29719885", new InputSuccessCallback() {
+                    @Override
+                    public void inputSuccess(String input) {
+                        RoomInfo roomInfo = RoomInfo.Builder.newInstance(Long.parseLong(input), null, null)
+                                .setLiveType(0)
+                                .setEnableRelationChain(false)
+                                .build();
+                        WatchSdkActivity.openActivity(MainActivity.this, roomInfo);
+                    }
+                });
+            }
+        }));
+
+        dataList.add(new TestItem("跳到回放", new Runnable() {
+            @Override
+            public void run() {
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(101743, "101743_1471260348",
                         "http://playback.ks.zb.mi.com/record/live/101743_1471260348/hls/101743_1471260348.m3u8?playui=1")
                         .setLiveType(6)
@@ -226,128 +227,94 @@ public class MainActivity extends BaseSdkActivity implements IChannelView, IChan
                         .build();
                 VideoDetailSdkActivity.openActivity(MainActivity.this, roomInfo);
             }
-        });
+        }));
 
-        ($(R.id.channel_tv)).setOnClickListener(new View.OnClickListener() {
+        dataList.add(new TestItem("秀场直播", new Runnable() {
             @Override
-            public void onClick(View v) {
-                syncDataFromServer();
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("input channelId");
-                final EditText input = new EditText(MainActivity.this);
-                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                builder.setView(input);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String text = input.getText().toString();
-                        try {
-                            int channelId = Integer.parseInt(text);
-                            getChannelById(channelId);
-                        } catch (Exception e) {
-
-                        }
-
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
-
+            public void run() {
+                if (AccountAuthManager.triggerActionNeedAccount(MainActivity.this)) {
+                    LiveSdkActivity.openActivity(MainActivity.this, null, false, false);
+                }
             }
-        });
+        }));
 
-        ($(R.id.box_tv)).setOnClickListener(new View.OnClickListener() {
+
+        dataList.add(new TestItem("游戏直播", new Runnable() {
+
             @Override
-            public void onClick(View v) {
+            public void run() {
+                if (AccountAuthManager.triggerActionNeedAccount(MainActivity.this)) {
+                    LiveSdkActivity.openActivity(MainActivity.this, null, false, false);
+                }
+            }
+        }));
+
+
+        dataList.add(new TestItem("跳转频道", new Runnable() {
+
+            @Override
+            public void run() {
+                inputDialog("输入频道id","20", new InputSuccessCallback() {
+                    @Override
+                    public void inputSuccess(String input) {
+                        int channelId = Integer.parseInt(input);
+                        getChannelById(channelId);
+                    }
+                });
+            }
+        }));
+
+        dataList.add(new TestItem("神龙宝箱", new Runnable() {
+
+            @Override
+            public void run() {
                 WebViewActivity.open(MainActivity.this, "https://activity.zb.mi.com/tbox/index.html?actId=2016111101&version=3.0&pos=window&zuid=2199938&lid=2199938_1515139027");
             }
-        });
+        }));
 
-        $(R.id.channel_btn).setOnClickListener(new View.OnClickListener() {
+
+        dataList.add(new TestItem("频道列表(小米音乐)", new Runnable() {
+
             @Override
-            public void onClick(View v) {
+            public void run() {
+                HostChannelManager.getInstance().setChannelData(50019, "com.miui.player");
                 ChannelListSdkActivity.openActivity(MainActivity.this);
             }
-        });
-        $(R.id.channel_info_btn).setOnClickListener(new View.OnClickListener() {
+        }));
+
+        dataList.add(new TestItem("个人中心(废弃)", new Runnable() {
+
             @Override
-            public void onClick(View v) {
-                ToastUtils.showToast("渠道号:"+ ReleaseChannelUtils.getReleaseChannel());
-            }
-        });
-        $(R.id.personal_center_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!UserAccountManager.getInstance().hasAccount()) {
+            public void run() {
+                if (!UserAccountManager.getInstance().hasAccount()) {
                     ToastUtils.showToast("请先登录");
                     return;
                 }
                 PersonalCenterFragment.openFragment(MainActivity.this, R.id.main_act_container);
             }
-        });
+        }));
 
-    }
+        dataList.add(new TestItem("日志全开", new Runnable() {
 
-    private void initPresenters() {
-        mChannelListPresenter = new ChannelListPresenter(this, this);
-        mChannelListPresenter.setFcId(0);
-        mChannelPresenter = new ChannelPresenter(this, this);
-//        mChannelPresenter.setChannelId(mChannelId);
-    }
-
-    private void getChannelFromServer() {
-      //  mChannelListPresenter.start();
-    }
-
-    @Override
-    public void listUpdateView(List<? extends ChannelShow> models) {
-        for (ChannelShow show : models) {
-            if (show.getChannelName().equals("推荐")) {
-                long channelId = show.getChannelId();
-                mChannelPresenter.setChannelId(channelId);
-                mRecyclerAdapter = new ChannelRecyclerAdapter(this, channelId);
-                mRecyclerView.setAdapter(mRecyclerAdapter);
-                mChannelPresenter.start();
+            @Override
+            public void run() {
+                if (MyLog.getCurrentLogLevel() == TraceLevel.ALL) {
+                    ToastUtils.showToast("已经全开");
+                } else {
+                    MyLog.setLogcatTraceLevel(TraceLevel.ALL, TraceLevel.ALL, "Lite");
+                    MiLinkClientAdapter.getsInstance().setMilinkLogLevel(TraceLevel.ALL);
+                }
             }
-        }
-    }
+        }));
 
-    @Override
-    public void updateView(List<? extends BaseViewModel> models) {
-        mRecyclerAdapter.setData(models);
-    }
-
-
-    @Override
-    public void finishRefresh() {
-        mRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
-    public void doRefresh() {
-        getChannelFromServer();
-        mRefreshLayout.setRefreshing(true);
+        mTestItemAdapter.setDataList(dataList);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mChannelPresenter != null) {
-            mChannelPresenter.stop();
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(MiLinkEvent.StatusConnected event) {
-        MyLog.d(TAG, "milink is connected");
-        if (event != null) {
-            getChannelFromServer();
+        if (mLoginPresenter != null) {
+            mLoginPresenter.stop();
         }
     }
 
@@ -362,5 +329,95 @@ public class MainActivity extends BaseSdkActivity implements IChannelView, IChan
         intent.putExtra("extra_channel_id", 50001);
         intent.putExtra("extra_package_name", "com.wali.live.sdk.manager.demo");
         startActivity(intent);
+    }
+
+
+    void inputDialog(String title,String defaultValue, final InputSuccessCallback callback) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle(title);
+        final EditText input = new EditText(MainActivity.this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        input.setText(defaultValue);
+        builder.setView(input);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String text = input.getText().toString();
+
+                if (callback != null) {
+                    callback.inputSuccess(text);
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    interface InputSuccessCallback {
+        void inputSuccess(String input);
+    }
+
+    static class TestItemAdapter extends RecyclerView.Adapter {
+
+        ArrayList<TestItem> list = new ArrayList<TestItem>();
+
+        public void setDataList(List<TestItem> l) {
+            list.clear();
+            list.addAll(l);
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.test_item_layout, parent, false);
+            return new TestHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            final TestItem testItem = list.get(position);
+            if (holder instanceof TestHolder) {
+                TestHolder testHolder = (TestHolder) holder;
+                testHolder.titleTv.setText(testItem.title);
+                testHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        testItem.runnable.run();
+                    }
+                });
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return list.size();
+        }
+    }
+
+    static class TestItem {
+        public String title;
+        public Runnable runnable;
+
+        public TestItem(String title, Runnable runnable) {
+            this.title = title;
+            this.runnable = runnable;
+        }
+    }
+
+    static class TestHolder extends RecyclerView.ViewHolder {
+
+        TextView titleTv;
+
+        public TestHolder(View itemView) {
+            super(itemView);
+
+            titleTv = (TextView) itemView.findViewById(R.id.title_tv);
+        }
     }
 }
