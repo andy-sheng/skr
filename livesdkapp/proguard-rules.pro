@@ -210,6 +210,15 @@
     @retrofit.http.* <methods>;
 }
 
+-keep class com.wali.live.watchsdk.webview.JsBridgeImpl { *; }
+
+-keepclassmembers class com.wali.live.watchsdk.webview.InjectedWebViewClient {
+     public *;
+}
+-keepclassmembers class com.wali.live.watchsdk.webview.JsBridgeImpl {
+      public *;
+}
+
 #阿里百川sdk
 -keepattributes Signature
 -keep class sun.misc.Unsafe {*;}
