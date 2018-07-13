@@ -1109,6 +1109,16 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
 //        }
 //    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventClass.GiftCardChangeEvent event) {
+        MyLog.d(TAG, "GiftCardChangeEvent");
+        if (event != null && event.card != null) {
+            if (mGiftInfoForThisRoom != null) {
+                mGiftInfoForThisRoom.updateGiftCardInfoChange(event.card, event.timeStamp);
+            }
+        }
+    }
+
     @Override
     public void onActivityDestroy() {
         EventBus.getDefault().unregister(this);

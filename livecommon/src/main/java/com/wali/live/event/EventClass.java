@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.mi.live.data.gift.model.GiftCard;
 import com.wali.live.common.model.CommentModel;
 import com.wali.live.pay.constant.PayWay;
 import com.wali.live.proto.PayProto;
@@ -304,5 +305,15 @@ public abstract class EventClass {
      */
     public static final class ShowBarragePopEvent {
 
+    }
+
+    public static class GiftCardChangeEvent {
+        public GiftCard card;
+        public long timeStamp;
+
+        public GiftCardChangeEvent(GiftCard card, long timeStamp) {
+            this.card = card;
+            this.timeStamp = timeStamp;
+        }
     }
 }

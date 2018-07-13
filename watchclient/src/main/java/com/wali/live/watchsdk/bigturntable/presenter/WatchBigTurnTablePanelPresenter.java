@@ -11,6 +11,7 @@ import com.base.utils.date.DateTimeUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.api.ErrorCode;
+import com.mi.live.data.gift.model.GiftCard;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.repository.model.turntable.PrizeItemModel;
@@ -23,6 +24,9 @@ import com.wali.live.proto.BigTurnTableProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.bigturntable.api.BigTurnTableApi;
 import com.wali.live.watchsdk.bigturntable.view.WatchBigTurnTablePanelView;
+import com.wali.live.watchsdk.eventbus.EventClass;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -253,17 +257,16 @@ public class WatchBigTurnTablePanelPresenter extends RxLifeCyclePresenter {
                     public void onNext(BigTurnTableProto.RewardTurntableRsp rsp) {
                         if (rsp != null && rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
                             if (data.getToWhom() == BigTurnTableProto.ToWhom.ANCHOR) {
-                                //TODO-后面补上
-//                                BigTurnTableProto.VGiftCard giftCard = rsp.getGiftCard();
-//                                if (giftCard != null) {
-//                                    MyLog.w(TAG, "rewardTurntableReq time:" + DateTimeUtils.formatFeedsJournalCreateData(System.currentTimeMillis(), System.currentTimeMillis())
-//                                            + "get gift card gift id:" + giftCard.getGiftId() + ", gift card cnt:" + giftCard.getGiftCardCnt() + ", end time:" + giftCard.getEndTime());
-//                                    GiftCard giftCard1 = new GiftCard();
-//                                    giftCard1.setEndTime(giftCard.getEndTime());
-//                                    giftCard1.setGiftId(giftCard.getGiftId());
-//                                    giftCard1.setGiftCardCount(giftCard.getGiftCardCnt());
-//                                    EventBus.getDefault().post(new EventClass.GiftCardChangeEvent(giftCard1, rsp.getUserAssetTimestamp()));
-//                                }
+                                BigTurnTableProto.VGiftCard giftCard = rsp.getGiftCard();
+                                if (giftCard != null) {
+                                    MyLog.w(TAG, "rewardTurntableReq time:" + DateTimeUtils.formatFeedsJournalCreateData(System.currentTimeMillis(), System.currentTimeMillis())
+                                            + "get gift card gift id:" + giftCard.getGiftId() + ", gift card cnt:" + giftCard.getGiftCardCnt() + ", end time:" + giftCard.getEndTime());
+                                    GiftCard giftCard1 = new GiftCard();
+                                    giftCard1.setEndTime(giftCard.getEndTime());
+                                    giftCard1.setGiftId(giftCard.getGiftId());
+                                    giftCard1.setGiftCardCount(giftCard.getGiftCardCnt());
+                                    EventBus.getDefault().post(new com.wali.live.event.EventClass.GiftCardChangeEvent(giftCard1, rsp.getUserAssetTimestamp()));
+                                }
 
                                 if (data.getGiftType() == BigTurnTableProto.GiftType.VIRTUAL_GIFT_VALUE
                                         && data.getToWhom() == BigTurnTableProto.ToWhom.ANCHOR) {

@@ -41,6 +41,7 @@ import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.event.TurnTableEvent;
 import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
+import com.mi.live.data.gift.model.GiftInfoForThisRoom;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
