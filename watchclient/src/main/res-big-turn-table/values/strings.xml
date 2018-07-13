@@ -29,5 +29,5 @@
     <string name="big_turn_table_charge_fail">扣款失败，请重试。</string>
     <string name="big_turn_table_lottery_fail">哎呀，抽奖失败，请重试。</string>
     <string name="gift_tips">在大转盘中喜中一个%s,并送给主播</string>
-    <string name="gift_tips1">在大转盘中喜中主播奖励：%s,请主播兑现;同时主播将获赠50星票</string>
+    <string formatted="false" name="gift_tips1">在大转盘中喜中主播奖励：%s,请主播兑现;同时主播将获赠%s星票</string>
 </resources>

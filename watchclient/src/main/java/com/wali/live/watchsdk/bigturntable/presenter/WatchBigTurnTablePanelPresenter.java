@@ -271,7 +271,7 @@ public class WatchBigTurnTablePanelPresenter extends RxLifeCyclePresenter {
                                     if (giftById != null) {
                                         String des = null;
                                         if (data.isCustom()) {
-                                            des = String.format(GlobalData.app().getResources().getString(R.string.gift_tips1), giftById.getName());
+                                            des = String.format(GlobalData.app().getResources().getString(R.string.gift_tips1), giftById.getName(), ((mDataSource != null && mDataSource.getType() == BigTurnTableProto.TurntableType.TYPE_500) ? String.valueOf(188) : String.valueOf(50)));
                                         } else {
                                             des = String.format(GlobalData.app().getResources().getString(R.string.gift_tips), giftById.getName());
                                         }
