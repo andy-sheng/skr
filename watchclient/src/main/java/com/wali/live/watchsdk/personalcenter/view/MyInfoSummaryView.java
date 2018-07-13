@@ -99,7 +99,7 @@ public class MyInfoSummaryView extends RelativeLayout {
             @Override
             public void onClick(View v) {
                 if (debug) {
-                    if (CommonUtils.isFastDoubleClick()) {
+                    if (CommonUtils.isFastDoubleClick(2000)) {
                         try {
                             Class debugActivity = Class.forName("com.wali.live.MainActivity");
                             Intent intent = new Intent(context, debugActivity);

@@ -336,7 +336,7 @@ public class MainActivity extends BaseSdkActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle(title);
         final EditText input = new EditText(MainActivity.this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
         input.setText(defaultValue);
         builder.setView(input);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
