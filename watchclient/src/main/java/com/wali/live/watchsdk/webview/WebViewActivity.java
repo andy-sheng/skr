@@ -473,6 +473,11 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.CloseWebEvent event) {
+        finish();
+    }
+
     @Override
     protected void onDestroy() {
         destroyWebView();
