@@ -165,6 +165,7 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_CLEAR_SCREEN_VIEW_GONE = MSG_COMPOUND_FIRST + 7;     // 清屏view可见
     public static final int MSG_CLEAR_SCREEN_VIEW_VISIABLE = MSG_COMPOUND_FIRST + 8;     // 清屏view不可见
     public static final int MSG_CLEAR_SCREEN_CANCEL = MSG_COMPOUND_FIRST + 9;     // 清屏view不可见
+    public static final int MSG_CLEAR_SCREEN_CLICK = MSG_COMPOUND_FIRST + 10;     // 点击清屏按钮清屏
 
     // 触摸相关消息
     private static final int MSG_TOUCH_FIRST = 21000;

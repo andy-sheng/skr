@@ -61,7 +61,7 @@ public class WatchMenuPanel extends BaseBottomPanel<RelativeLayout, RelativeLayo
         } else if(i == R.id.feed_back_btn) {
             mPresenter.onFeedBackClick();
         } else if(i == R.id.clear_screen) {
-
+            mPresenter.notifyClearScreen();
         }
     }
 
@@ -244,6 +244,8 @@ public class WatchMenuPanel extends BaseBottomPanel<RelativeLayout, RelativeLayo
         void stopPresenter();
 
         void onFeedBackClick();
+
+        void notifyClearScreen();
     }
 
     public interface IView extends IViewProxy {

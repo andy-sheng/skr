@@ -32,6 +32,7 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import static com.wali.live.component.BaseSdkController.MSG_CLEAR_SCREEN_CLICK;
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_BOTTOM_PANEL;
 import static com.wali.live.component.BaseSdkController.MSG_ON_MENU_PANEL_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
@@ -80,6 +81,12 @@ public class WatchMenuPresenter extends BaseSdkRxPresenter<WatchMenuPanel.IView>
     @Override
     public void onFeedBackClick() {
         postEvent(MSG_SHOW_FEEDBACK_VIEW);
+    }
+
+    @Override
+    public void notifyClearScreen() {
+        postEvent(MSG_HIDE_BOTTOM_PANEL);
+        postEvent(MSG_CLEAR_SCREEN_CLICK);
     }
 
     @Override
