@@ -139,8 +139,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             mMoreBtn = new WatchMenuIconView(getContext());
             addCreatedView(mMoreBtn, R.id.more_btn);
         }
-        mRightBtnSetPort.add(mMoreBtn);
-        mBottomBtnSetLand.add(mMoreBtn);
+        mRightBtnSetPort.add(1, mMoreBtn);
+        mBottomBtnSetLand.add(1, mMoreBtn);
         orientChild();
     }
 
