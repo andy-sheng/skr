@@ -83,7 +83,7 @@ public class RechargeDirectPayFragment extends BaseFragment implements IRecharge
 
     @Override
     public void hideProcessDialog(long least) {
-        MyLog.d(TAG, "zjnTest hideProcessDialog");
+        MyLog.d(TAG, " hideProcessDialog");
         if (mProgressDialog != null) {
             mProgressDialog.hide(least);
         }
